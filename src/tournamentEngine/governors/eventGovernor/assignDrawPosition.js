@@ -1,5 +1,5 @@
 import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function assignDrawPosition(props) {
   const {tournamentRecord, drawEngine, drawId, structureId, drawPosition, bye, participantId, qualifier} = props;

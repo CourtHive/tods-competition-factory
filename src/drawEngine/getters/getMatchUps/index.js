@@ -8,4 +8,4 @@ export {
   getRoundMatchUps,
   publicGetRoundMatchUps,
   getCollectionPositionMatchUps
-} from 'competitionFactory/drawEngine/accessors/matchUpAccessor';
+} from 'src/drawEngine/accessors/matchUpAccessor';

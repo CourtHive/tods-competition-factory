@@ -1,11 +1,11 @@
-import { makeDeepCopy } from 'competitionFactory/utilities';
-import { auditEngine } from 'competitionFactory/auditEngine';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { tournamentEngine } from 'competitionFactory/tournamentEngine';
+import { makeDeepCopy } from 'src/utilities';
+import { auditEngine } from 'src/auditEngine';
+import { drawEngine } from 'src/drawEngine';
+import { tournamentEngine } from 'src/tournamentEngine';
 
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 let devContext;
 let errors = [];

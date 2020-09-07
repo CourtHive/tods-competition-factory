@@ -1,11 +1,11 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange } from 'competitionFactory/utilities';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { getStructureSeedAssignments } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getValidSeedBlocks, getNextSeedBlock } from 'competitionFactory/drawEngine/getters/seedGetter';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange } from 'src/utilities';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { getValidSeedBlocks, getNextSeedBlock } from 'src/drawEngine/getters/seedGetter';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function getStructurePositionedSeeds({structure}) {
   const { positionAssignments } = structureAssignedDrawPositions({structure});

@@ -1,5 +1,5 @@
-import { TEAM, INDIVIDUAL, PAIR } from 'competitionFactory/constants/participantTypes';
-import { SINGLES, DOUBLES } from 'competitionFactory/constants/matchUpTypes';
+import { TEAM, INDIVIDUAL, PAIR } from 'src/constants/participantTypes';
+import { SINGLES, DOUBLES } from 'src/constants/matchUpTypes';
 
 export function getMatchUpType({matchUp}) {
   if (matchUp.matchUpType) return matchUp.matchUpType;

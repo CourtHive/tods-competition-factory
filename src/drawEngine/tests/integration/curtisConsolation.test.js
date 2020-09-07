@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange } from 'competitionFactory/utilities';
-import { MAIN, CONSOLATION, CURTIS } from 'competitionFactory/constants/drawDefinitionConstants';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange } from 'src/utilities';
+import { MAIN, CONSOLATION, CURTIS } from 'src/constants/drawDefinitionConstants';
 
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId, consolation1stStructureId, consolation2ndStructureId, playoffStructureId;

@@ -1,4 +1,4 @@
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function deleteEvents({tournamentRecord, eventIds}) {
   if (!tournamentRecord.Events) return { error: 'No Events' };

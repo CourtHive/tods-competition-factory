@@ -1,4 +1,4 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
+import { drawEngine } from 'src/drawEngine';
 
 export function verifyLinks({
   linksProfiles=[]

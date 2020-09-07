@@ -1,9 +1,9 @@
-import { participantInEntries } from 'competitionFactory/drawEngine/getters/entryGetter';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { isValidSeedPosition } from 'competitionFactory/drawEngine/getters/seedGetter';
-import { findStructure, getStructureSeedAssignments } from 'competitionFactory/drawEngine/getters/structureGetter';
+import { participantInEntries } from 'src/drawEngine/getters/entryGetter';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { isValidSeedPosition } from 'src/drawEngine/getters/seedGetter';
+import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function assignSeed({drawDefinition, structureId, seedNumber, seedValue, participantId}) {
   const { structure } = findStructure({ drawDefinition, structureId });

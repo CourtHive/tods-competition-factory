@@ -1,9 +1,9 @@
 import {
   ALTERNATE, WILDCARD,
   DIRECT_ACCEPTANCE,
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function validStage({stage, drawDefinition}) {
   return Boolean(stageExists({stage, drawDefinition}) && stageDrawPositionsCount({stage, drawDefinition}));

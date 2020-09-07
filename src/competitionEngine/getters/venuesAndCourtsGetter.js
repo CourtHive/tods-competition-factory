@@ -1,4 +1,4 @@
-import { makeDeepCopy } from "competitionFactory/utilities";
+import { makeDeepCopy } from "../../utilities";
 
 export function getVenuesAndCourts({tournamentRecords}) {
   if (!tournamentRecords) return { error: 'Missing tournamentRecords' };

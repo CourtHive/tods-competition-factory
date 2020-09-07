@@ -6,11 +6,11 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   QUALIFYING,
   ROUND_ROBIN,
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_USTA';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
-import { RANKING } from 'competitionFactory/constants/participantConstants';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_USTA';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import { RANKING } from 'src/constants/participantConstants';
 
 export function generateDrawDefinition(props) {
   const {

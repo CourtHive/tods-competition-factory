@@ -1,4 +1,4 @@
-import { makeDeepCopy } from 'competitionFactory/utilities/makeDeepCopy';
+import { makeDeepCopy } from 'src/utilities/makeDeepCopy';
 import itemGovernor from './governors/itemGovernor';
 
 let devContext;

@@ -1,18 +1,18 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { numericSort } from 'competitionFactory/utilities';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { positionTargets } from 'competitionFactory/drawEngine/governors/positionGovernor/positionTargets';
-import { removeMatchUpDrawPosition } from 'competitionFactory/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
+import { drawEngine } from 'src/drawEngine';
+import { numericSort } from 'src/utilities';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
+import { removeMatchUpDrawPosition } from 'src/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
 
 import {
   structureAssignedDrawPositions,
   structureActiveDrawPositions
 }
-from 'competitionFactory/drawEngine/getters/positionsGetter';
+from 'src/drawEngine/getters/positionsGetter';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { BYE, TO_BE_PLAYED } from 'competitionFactory/constants/matchUpStatusConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { BYE, TO_BE_PLAYED } from 'src/constants/matchUpStatusConstants';
 
 export function clearDrawPosition({drawDefinition, structureId, participantId, drawPosition}) {
   const { structure } = findStructure({ drawDefinition, structureId });

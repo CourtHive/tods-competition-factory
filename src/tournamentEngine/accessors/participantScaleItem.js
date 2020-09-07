@@ -1,4 +1,4 @@
-import { SCALE } from 'competitionFactory/constants/participantConstants';
+import { SCALE } from 'src/constants/participantConstants';
 
 export function participantScaleItem({participant, scaleAttributes, requireTimeStamp}) {
   if (participant && Array.isArray(participant.timeItems)) {

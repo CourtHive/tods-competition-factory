@@ -1,4 +1,4 @@
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 /*
    pull seedBlocks out of current policy

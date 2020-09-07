@@ -1,14 +1,14 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { shuffleArray } from 'competitionFactory/utilities';
-import { stageEntries } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { findStructure, getStructureSeedAssignments } from 'competitionFactory/drawEngine/getters/structureGetter';
+import { drawEngine } from 'src/drawEngine';
+import { shuffleArray } from 'src/utilities';
+import { stageEntries } from 'src/drawEngine/getters/stageGetter';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
 
 import {
   WILDCARD, DIRECT_ACCEPTANCE
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function positionUnseededParticipants({drawDefinition, structure, structureId}) {
   if (!structure) ({ structure } = findStructure({drawDefinition, structureId}));

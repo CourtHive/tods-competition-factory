@@ -1,8 +1,8 @@
-import { countValues, numericSort } from 'competitionFactory/utilities';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
+import { countValues, numericSort } from 'src/utilities';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
 
-import { CONTAINER } from 'competitionFactory/constants/drawDefinitionConstants';
+import { CONTAINER } from 'src/constants/drawDefinitionConstants';
 
 // TODO: write unit test for this method
 export function getDrawPositions({structure}) {

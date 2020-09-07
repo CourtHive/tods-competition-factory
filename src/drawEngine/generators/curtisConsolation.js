@@ -1,11 +1,11 @@
-import { feedInLinks } from 'competitionFactory/drawEngine/generators/feedInLinks';
-import { stageDrawPositionsCount } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { treeMatchUps, feedInMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
-import { structureTemplate } from 'competitionFactory/drawEngine/generators/structureTemplate';
+import { feedInLinks } from 'src/drawEngine/generators/feedInLinks';
+import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
+import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { structureTemplate } from 'src/drawEngine/generators/structureTemplate';
 import {
   MAIN, CONSOLATION, PLAYOFF, TOP_DOWN, LOSER
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+} from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function generateCurtisConsolation({
   stageSequence=1,

@@ -4,9 +4,9 @@ import {
 } from './participantGroupings';
 import { addParticipants } from './addParticipants';
 
-import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from 'competitionFactory/constants/participantConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { INDIVIDUAL } from 'competitionFactory/constants/participantTypes';
+import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from 'src/constants/participantConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { INDIVIDUAL } from 'src/constants/participantTypes';
 
 export function participantsSignInStatus({tournamentRecord, participantIds, signInState}) {
   const validSignInState = [SIGNED_IN, SIGNED_OUT].includes(signInState);

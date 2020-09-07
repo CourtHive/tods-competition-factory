@@ -1,9 +1,9 @@
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { getMatchUpLinks, getTargetLink } from 'competitionFactory/drawEngine/getters/linkGetter';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { getMatchUpLinks, getTargetLink } from 'src/drawEngine/getters/linkGetter';
 
-import { LOSER, WINNER } from 'competitionFactory/constants/drawDefinitionConstants';
-import { BYE } from 'competitionFactory/constants/matchUpStatusConstants';
+import { LOSER, WINNER } from 'src/constants/drawDefinitionConstants';
+import { BYE } from 'src/constants/matchUpStatusConstants';
 
 import { positionActions } from './positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';

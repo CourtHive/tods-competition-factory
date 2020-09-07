@@ -1,4 +1,4 @@
-import drawEngine from 'competitionFactory/drawEngine';
+import drawEngine from 'src/drawEngine';
 import { reset, initialize, qualifyingDrawPositions, mainDrawPositions } from '../../../tests/primitives/primitives';
 
 import {
@@ -6,7 +6,7 @@ import {
   EXISTING_PARTICIPANT,
   MAIN, QUALIFYING
 } from '../../../../constants/drawDefinitionConstants';
-import { ERROR, SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { ERROR, SUCCESS } from 'src/constants/resultConstants';
 
 let result;
 

@@ -1,11 +1,11 @@
 import {
   MAIN, CONSOLATION
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { feedInLinks } from 'competitionFactory/drawEngine/generators/feedInLinks';
-import { stageDrawPositionsCount } from 'competitionFactory/drawEngine/getters/stageGetter';
-import structureTemplate from 'competitionFactory/drawEngine/generators/structureTemplate';
-import { treeMatchUps, feedInMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
+} from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { feedInLinks } from 'src/drawEngine/generators/feedInLinks';
+import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
+import structureTemplate from 'src/drawEngine/generators/structureTemplate';
+import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
 
 // export function feedInChampionship({drawDefinition, feedsFromFinal, feedRounds}={}) {
 export function feedInChampionship(props={}) {

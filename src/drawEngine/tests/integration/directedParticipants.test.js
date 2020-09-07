@@ -1,29 +1,29 @@
 import fs from 'fs';
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
-import { stageEntries } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { mainDrawWithEntries } from 'competitionFactory/drawEngine/tests/primitives/primitives';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
+import { stageEntries } from 'src/drawEngine/getters/stageGetter';
+import { drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { mainDrawWithEntries } from 'src/drawEngine/tests/primitives/primitives';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
 
-import { FMLC } from 'competitionFactory/constants/drawDefinitionConstants';
+import { FMLC } from 'src/constants/drawDefinitionConstants';
 
 import {
   completeMatchUp,
   verifyMatchUps,
   getMatchUpWinnerLoserIds,
   findMatchUpByRoundNumberAndPosition
-} from 'competitionFactory/drawEngine/tests/primitives/verifyMatchUps';
+} from 'src/drawEngine/tests/primitives/verifyMatchUps';
 
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import { generateFMLC } from 'competitionFactory/drawEngine/tests/primitives/fmlc';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import { generateFMLC } from 'src/drawEngine/tests/primitives/fmlc';
 
 import {
   BYE, RETIRED, COMPLETED,
   TO_BE_PLAYED, DEFAULTED, SUSPENDED
-} from 'competitionFactory/constants/matchUpStatusConstants';
+} from 'src/constants/matchUpStatusConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from 'competitionFactory/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from 'src/constants/drawDefinitionConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;

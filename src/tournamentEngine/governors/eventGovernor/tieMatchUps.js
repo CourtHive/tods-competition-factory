@@ -1,10 +1,10 @@
-import { UUID } from 'competitionFactory/utilities/UUID';
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
+import { UUID } from 'src/utilities/UUID';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
 
-import { COMPETITOR } from 'competitionFactory/constants/participantRoles';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { DOUBLES } from 'competitionFactory/constants/matchUpTypes';
-import { PAIR } from 'competitionFactory/constants/participantTypes';
+import { COMPETITOR } from 'src/constants/participantRoles';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { DOUBLES } from 'src/constants/matchUpTypes';
+import { PAIR } from 'src/constants/participantTypes';
 
 export function assignTieMatchUpParticipantId(props) {
   const errors = [];

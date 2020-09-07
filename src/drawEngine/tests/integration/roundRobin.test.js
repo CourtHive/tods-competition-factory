@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange } from 'competitionFactory/utilities';
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange } from 'src/utilities';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
 
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_USTA';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
-import { MAIN, ROUND_ROBIN, WATERFALL } from 'competitionFactory/constants/drawDefinitionConstants';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_USTA';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import { MAIN, ROUND_ROBIN, WATERFALL } from 'src/constants/drawDefinitionConstants';
 
 it('can generate and verify round robin structures', () => {
   let structureId;

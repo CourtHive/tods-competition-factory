@@ -1,10 +1,10 @@
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
 import { reset, initialize, mainDrawPositions } from './primitives';
-import { drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
+import { drawStructures } from 'src/drawEngine/getters/structureGetter';
 
 import {
   MAIN, CONSOLATION
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 export function feedInChampionship({drawSize, drawType}) {
   reset();

@@ -1,17 +1,17 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange } from 'competitionFactory/utilities';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange } from 'src/utilities';
 import {
   MAIN, DOUBLE_ELIMINATION,
   LOSER, WINNER,
   BOTTOM_UP, TOP_DOWN
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import { verifyLinks } from 'competitionFactory/drawEngine/tests/primitives/verifyLinks';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import { verifyLinks } from 'src/drawEngine/tests/primitives/verifyLinks';
 
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
 
 it('can generate and verify double elimination', () => {
   let mainStructureId, consolationStructureId, deciderStructureId;

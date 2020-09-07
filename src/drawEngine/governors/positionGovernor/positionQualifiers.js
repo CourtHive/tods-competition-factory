@@ -1,10 +1,10 @@
-import { generateRange } from 'competitionFactory/utilities';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getStageQualifiersCount } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
+import { generateRange } from 'src/utilities';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { getStageQualifiersCount } from 'src/drawEngine/getters/stageGetter';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
 
-import { CONSOLATION } from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { CONSOLATION } from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function positionQualifiers(props) {
   let { structure, structureId } = props;

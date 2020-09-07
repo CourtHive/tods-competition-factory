@@ -1,8 +1,8 @@
-import { UUID, generateRange, makeDeepCopy } from 'competitionFactory/utilities';
-import { findVenue } from 'competitionFactory/tournamentEngine/getters/venueGetter';
-import { courtTemplate } from 'competitionFactory/tournamentEngine/generators/courtTemplate';
+import { UUID, generateRange, makeDeepCopy } from 'src/utilities';
+import { findVenue } from 'src/tournamentEngine/getters/venueGetter';
+import { courtTemplate } from 'src/tournamentEngine/generators/courtTemplate';
 
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function addCourt({tournamentRecord, venueId, court}) {
   let { venue } = findVenue({tournamentRecord, venueId});

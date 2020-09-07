@@ -1,13 +1,13 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange } from 'competitionFactory/utilities';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange } from 'src/utilities';
 
 import {
   MAIN,
   ALTERNATE,
   ELIMINATION, QUALIFYING
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
+} from 'src/constants/drawDefinitionConstants';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
 
 export function generateEliminationWithQualifying({
   qualifyingRound,

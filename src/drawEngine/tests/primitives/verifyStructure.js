@@ -1,10 +1,10 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { chunkArray, generateRange } from 'competitionFactory/utilities';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { verifyDrawHierarchy } from 'competitionFactory/drawEngine/tests/primitives/verifyDrawHierarchy';
-import { findStructure, getStructureSeedAssignments } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getStructurePositionedSeeds } from 'competitionFactory/drawEngine/governors/positionGovernor/positionSeeds';
+import { drawEngine } from 'src/drawEngine';
+import { chunkArray, generateRange } from 'src/utilities';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { verifyDrawHierarchy } from 'src/drawEngine/tests/primitives/verifyDrawHierarchy';
+import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { getStructurePositionedSeeds } from 'src/drawEngine/governors/positionGovernor/positionSeeds';
 
 export function verifyStructure({
   structureId,

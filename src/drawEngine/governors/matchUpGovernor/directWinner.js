@@ -1,6 +1,6 @@
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { assignDrawPosition } from 'competitionFactory/drawEngine/governors/positionGovernor/positionAssignment';
-import { assignMatchUpDrawPosition } from 'competitionFactory/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { assignDrawPosition } from 'src/drawEngine/governors/positionGovernor/positionAssignment';
+import { assignMatchUpDrawPosition } from 'src/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
 
 export function directWinner({drawDefinition, targetMatchUpSide, winnerTargetLink, winningDrawPosition, winnerMatchUp}) {
   let error;

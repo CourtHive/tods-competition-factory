@@ -1,6 +1,6 @@
-import { getDrawDefinition } from "competitionFactory/tournamentEngine/getters/eventGetter";
+import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
 
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function reorderUpcomingMatchUps(params) {
   const { drawEngine, tournamentRecords } = params;

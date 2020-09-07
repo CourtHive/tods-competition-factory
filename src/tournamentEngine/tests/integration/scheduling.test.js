@@ -1,11 +1,11 @@
-import { tournamentEngine } from 'competitionFactory/tournamentEngine';
-import { competitionEngine } from 'competitionFactory/competitionEngine';
+import { tournamentEngine } from 'src/tournamentEngine';
+import { competitionEngine } from 'src/competitionEngine';
 
-import { matchUpTiming } from 'competitionFactory/competitionEngine/governors/scheduleGovernor/garman/garman';
-import { tournamentRecordWithParticipants } from 'competitionFactory/tournamentEngine/tests/primitives';
+import { matchUpTiming } from 'src/competitionEngine/governors/scheduleGovernor/garman/garman';
+import { tournamentRecordWithParticipants } from 'src/tournamentEngine/tests/primitives';
 
-import { SINGLES } from 'competitionFactory/constants/eventConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SINGLES } from 'src/constants/eventConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 let result;
 

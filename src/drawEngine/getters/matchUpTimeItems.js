@@ -1,7 +1,7 @@
-import { findMatchUp } from "competitionFactory/drawEngine/getters/getMatchUps";
-import { getMatchUpParticipantIds } from 'competitionFactory/drawEngine/accessors/participantAccessor';
+import { findMatchUp } from "src/drawEngine/getters/getMatchUps";
+import { getMatchUpParticipantIds } from 'src/drawEngine/accessors/participantAccessor';
 
-import { CHECK_IN, CHECK_OUT } from 'competitionFactory/constants/timeItemConstants';
+import { CHECK_IN, CHECK_OUT } from 'src/constants/timeItemConstants';
 
 /*
   takes either a matchUpWithContext or a matchUpId

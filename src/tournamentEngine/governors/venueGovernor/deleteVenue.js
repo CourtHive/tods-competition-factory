@@ -1,8 +1,8 @@
-import { getCourts } from 'competitionFactory/tournamentEngine/getters/courtGetter';
-import { allTournamentMatchUps } from 'competitionFactory/tournamentEngine/getters/matchUpsGetter'
+import { getCourts } from 'src/tournamentEngine/getters/courtGetter';
+import { allTournamentMatchUps } from 'src/tournamentEngine/getters/matchUpsGetter'
 
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
-import { COURT, ASSIGNMENT } from 'competitionFactory/constants/timeItemConstants';
+import { SUCCESS } from "src/constants/resultConstants";
+import { COURT, ASSIGNMENT } from 'src/constants/timeItemConstants';
 
 export function deleteVenue({tournamentRecord, drawEngine, venueId}) {
   if (!tournamentRecord.venues) return { error: 'No Venues' };

@@ -1,6 +1,6 @@
-import { UUID, makeDeepCopy } from 'competitionFactory/utilities';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { venueTemplate } from 'competitionFactory/tournamentEngine/generators/venueTemplate';
+import { UUID, makeDeepCopy } from 'src/utilities';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { venueTemplate } from 'src/tournamentEngine/generators/venueTemplate';
 
 export function addVenue({tournamentRecord, venue}) {
   if (!tournamentRecord.venues) tournamentRecord.venues = [];

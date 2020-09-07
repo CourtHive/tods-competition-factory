@@ -1,4 +1,4 @@
-import { getNextSeedBlock } from 'competitionFactory/drawEngine/getters/seedGetter';
+import { getNextSeedBlock } from 'src/drawEngine/getters/seedGetter';
 
 // import { assignCollectionPosition, assignDrawPosition } from './positionAssignment';
 import { assignDrawPosition } from './positionAssignment';

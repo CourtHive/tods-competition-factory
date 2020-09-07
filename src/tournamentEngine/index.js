@@ -1,7 +1,7 @@
-import { UUID } from 'competitionFactory/utilities';
-import { makeDeepCopy } from 'competitionFactory/utilities';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { auditEngine } from 'competitionFactory/auditEngine';
+import { UUID } from 'src/utilities';
+import { makeDeepCopy } from 'src/utilities';
+import { drawEngine } from '../drawEngine';
+import { auditEngine } from '../auditEngine';
 
 import { findEvent } from './getters/eventGetter';
 import eventGovernor from './governors/eventGovernor';
@@ -12,7 +12,7 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 let devContext;
 let errors = [];

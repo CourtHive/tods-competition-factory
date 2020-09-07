@@ -1,4 +1,4 @@
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function mergeParticipants({tournamentRecord, participants: incomingParticipants}) {
   if (!tournamentRecord.participants) tournamentRecord.participants = [];

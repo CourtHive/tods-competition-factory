@@ -1,6 +1,6 @@
 
 
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 import { removeParticipantsFromAllTeams } from "./participantGroupings";
 
 export function deleteParticipants({tournamentRecord, participantIds}) {

@@ -1,4 +1,4 @@
-import { SINGLES } from 'competitionFactory/constants/eventConstants';
+import { SINGLES } from 'src/constants/eventConstants';
 
 export const eventTemplate = () => ({
   eventId: null,

@@ -1,4 +1,4 @@
-import { UUID } from 'competitionFactory/utilities';
+import { UUID } from 'src/utilities';
 
 export const tieFormatDefaults = () => ({
   winCriteria: {

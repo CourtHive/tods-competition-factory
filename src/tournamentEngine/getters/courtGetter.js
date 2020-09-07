@@ -1,4 +1,4 @@
-import { makeDeepCopy } from "competitionFactory/utilities";
+import { makeDeepCopy } from "src/utilities";
 
 export function findCourt({tournamentRecord, courtId}) {
   let court, venue;

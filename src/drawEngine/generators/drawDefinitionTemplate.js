@@ -1,6 +1,6 @@
 import {
   MAIN, QUALIFYING
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 export const definitionTemplate = () => ({
   drawId: null,

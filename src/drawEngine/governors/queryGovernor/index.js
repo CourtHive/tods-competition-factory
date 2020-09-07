@@ -1,14 +1,14 @@
 import { matchUpActions } from './matchUpActions';
 import {
   calcTieMatchUpScore, matchUpDuration, getMatchUpScheduleDetails
-} from 'competitionFactory/drawEngine/accessors/matchUpAccessor';
+} from 'src/drawEngine/accessors/matchUpAccessor';
 
 import { positionActions, getNextUnfilledDrawPositions } from './positionActions';
 
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getMatchUpParticipantIds } from 'competitionFactory/drawEngine/accessors/participantAccessor';
-import { getAllDrawMatchUps, getDrawMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { getMatchUpParticipantIds } from 'src/drawEngine/accessors/participantAccessor';
+import { getAllDrawMatchUps, getDrawMatchUps } from 'src/drawEngine/getters/getMatchUps';
 
 /*
   return an array of all matchUps within a drawDefinition

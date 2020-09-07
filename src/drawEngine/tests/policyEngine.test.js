@@ -1,8 +1,8 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { getPolicyEngine } from 'competitionFactory/drawEngine';
+import { drawEngine } from 'src/drawEngine';
+import { getPolicyEngine } from 'src/drawEngine';
 
-import { ERROR, SUCCESS } from 'competitionFactory/constants/resultConstants';
-import ITF_SEEDING from 'competitionFactory/fixtures/SEEDING_ITF';
+import { ERROR, SUCCESS } from 'src/constants/resultConstants';
+import ITF_SEEDING from 'src/fixtures/SEEDING_ITF';
 
 it('can set and reset policy engine', () => {
   let result;

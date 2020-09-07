@@ -1,9 +1,9 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import { generateFeedIn, generateDrawStructure } from 'competitionFactory/drawEngine/tests/primitives/generateDrawStructure';
+import { drawEngine } from 'src/drawEngine';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import { generateFeedIn, generateDrawStructure } from 'src/drawEngine/tests/primitives/generateDrawStructure';
 
-import { FEED_IN } from 'competitionFactory/constants/drawDefinitionConstants';
+import { FEED_IN } from 'src/constants/drawDefinitionConstants';
 
 it('can generate and verify feed-in structures', () => {
   let structureId;

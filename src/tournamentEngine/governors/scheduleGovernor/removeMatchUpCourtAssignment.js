@@ -1,4 +1,4 @@
-import { getDrawDefinition } from "competitionFactory/tournamentEngine/getters/eventGetter";
+import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
 
 export function removeMatchUpCourtAssignment({tournamentRecord, drawEngine, matchUp, courtId, courtDayDate}) {
   const { drawId } = matchUp;

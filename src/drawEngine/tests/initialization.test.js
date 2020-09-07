@@ -1,11 +1,11 @@
-import drawEngine from 'competitionFactory/drawEngine';
+import drawEngine from 'src/drawEngine';
 import { reset, initialize } from './primitives/primitives';
 import definitionTemplate from '../generators/drawDefinitionTemplate';
 
 import {
   MAIN, QUALIFYING, CONSOLATION
 } from '../../constants/drawDefinitionConstants';
-import { ERROR, SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { ERROR, SUCCESS } from 'src/constants/resultConstants';
 
 let result;
 

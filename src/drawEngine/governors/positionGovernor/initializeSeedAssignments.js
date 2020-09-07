@@ -1,8 +1,8 @@
-import { generateRange } from 'competitionFactory/utilities';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
+import { generateRange } from 'src/utilities';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function initializeStructureSeedAssignments({drawDefinition, structureId, seedsCount}) {
   const { structure } = findStructure({ drawDefinition, structureId });

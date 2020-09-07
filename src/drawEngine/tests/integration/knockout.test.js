@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateRange, unique } from 'competitionFactory/utilities';
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import { generateDrawStructure } from 'competitionFactory/drawEngine/tests/primitives/generateDrawStructure';
-import { completeMatchUp, verifyMatchUps } from 'competitionFactory/drawEngine/tests/primitives/verifyMatchUps';
+import { drawEngine } from 'src/drawEngine';
+import { generateRange, unique } from 'src/utilities';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import { generateDrawStructure } from 'src/drawEngine/tests/primitives/generateDrawStructure';
+import { completeMatchUp, verifyMatchUps } from 'src/drawEngine/tests/primitives/verifyMatchUps';
 
-import { ELIMINATION } from 'competitionFactory/constants/drawDefinitionConstants';
+import { ELIMINATION } from 'src/constants/drawDefinitionConstants';
 
 it('can generate and verify elmination structures', () => {
   let structureId;

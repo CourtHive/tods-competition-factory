@@ -1,9 +1,9 @@
-import { generateParticipants } from 'competitionFactory/tests/fakerParticipants';
+import { generateParticipants } from 'src/tests/fakerParticipants';
 
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { generateDrawStructure } from 'competitionFactory/drawEngine/tests/primitives/generateDrawStructure';
+import { drawEngine } from 'src/drawEngine';
+import { generateDrawStructure } from 'src/drawEngine/tests/primitives/generateDrawStructure';
 
-import { SUCCESS, ERROR } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS, ERROR } from 'src/constants/resultConstants';
 
 it('can add schedule items', () => {
   const { participants } = generateParticipants({ participantsCount: 32, matchUpType: 'DOUBLES' });

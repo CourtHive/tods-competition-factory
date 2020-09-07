@@ -1,12 +1,12 @@
 import { rankByRatings } from './rankByRatings';
-import { makeDeepCopy } from 'competitionFactory/utilities';
+import { makeDeepCopy } from 'src/utilities';
 import { addParticipants } from './addParticipants';
 import { mergeParticipants } from './mergeParticipants'
 import { deleteParticipants } from './deleteParticipants';
-import { findTournamentParticipant } from 'competitionFactory/tournamentEngine/getters/participantGetter';
+import { findTournamentParticipant } from 'src/tournamentEngine/getters/participantGetter';
 import {
   generateTeamsFromParticipantAttribute
-} from 'competitionFactory/tournamentEngine/generators/teamsGenerator';
+} from 'src/tournamentEngine/generators/teamsGenerator';
 import {
   addParticipantsToGrouping,
   removeParticipantsFromGroup,

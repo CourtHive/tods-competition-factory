@@ -1,6 +1,6 @@
 import { addParticipantsToGrouping } from './participantGroupings';
 
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function addParticipant({tournamentRecord, participant}) {
   const { participantId } = participant || {};

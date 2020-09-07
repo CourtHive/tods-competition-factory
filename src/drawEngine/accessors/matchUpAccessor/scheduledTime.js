@@ -1,4 +1,4 @@
-import { SCHEDULED_TIME } from 'competitionFactory/constants/timeItemConstants';
+import { SCHEDULED_TIME } from 'src/constants/timeItemConstants';
 
 export function scheduledMatchUpTime({matchUp}) {
   const timeItems = matchUp.timeItems || [];

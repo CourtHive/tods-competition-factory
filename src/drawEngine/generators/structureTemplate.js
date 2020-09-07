@@ -1,7 +1,7 @@
-import { unique, UUID } from 'competitionFactory/utilities';
+import { unique, UUID } from 'src/utilities';
 import {
   ROUND_OUTCOME
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 export const structureTemplate = ({
   stage,

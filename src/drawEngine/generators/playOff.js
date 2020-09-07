@@ -1,10 +1,10 @@
-import { generateRange } from 'competitionFactory/utilities';
+import { generateRange } from 'src/utilities';
 import {
   MAIN, TOP_DOWN, LOSER
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { treeMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
-import structureTemplate from 'competitionFactory/drawEngine/generators/structureTemplate';
+} from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { treeMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import structureTemplate from 'src/drawEngine/generators/structureTemplate';
 
 export function playOff(props) {
   const { structure, childStructures} = playOffStructures(props); 

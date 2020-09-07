@@ -1,11 +1,11 @@
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
-import { feedInChampionship } from 'competitionFactory/drawEngine/tests/primitives/feedIn';
-import { findStructure, drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { reset, initialize, mainDrawPositions } from 'competitionFactory/drawEngine/tests/primitives/primitives';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
+import { feedInChampionship } from 'src/drawEngine/tests/primitives/feedIn';
+import { findStructure, drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
 import {
   COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import { ERROR } from 'competitionFactory/constants/resultConstants';
+} from 'src/constants/drawDefinitionConstants';
+import { ERROR } from 'src/constants/resultConstants';
 
 it('can find structures by structureId', () => {
   reset();

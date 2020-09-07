@@ -1,4 +1,4 @@
-import { buildDrawHierarchy } from 'competitionFactory/drawEngine/generators/drawHierarchy';
+import { buildDrawHierarchy } from 'src/drawEngine/generators/drawHierarchy';
 
 export function verifyDrawHierarchy({matchUps, hierarchyVerification=[]}) {
   const { hierarchy: drawHierarchy } = buildDrawHierarchy({matchUps});

@@ -1,6 +1,6 @@
-import { numericSort } from 'competitionFactory/utilities';
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { numericSort } from 'src/utilities';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function assignMatchUpDrawPosition({drawDefinition, matchUpId, drawPosition}) {
   const { matchUp } = findMatchUp({drawDefinition, matchUpId});

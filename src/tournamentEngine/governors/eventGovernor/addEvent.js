@@ -1,6 +1,6 @@
-import { UUID } from 'competitionFactory/utilities';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { eventTemplate } from 'competitionFactory/tournamentEngine/generators/eventTemplate';
+import { UUID } from 'src/utilities';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { eventTemplate } from 'src/tournamentEngine/generators/eventTemplate';
 
 export function addEvent({tournamentRecord, event}) {
   if (!tournamentRecord.Events) tournamentRecord.Events = [];

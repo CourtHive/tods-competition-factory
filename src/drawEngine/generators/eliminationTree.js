@@ -5,14 +5,14 @@ import {
     powerOf2,
     randomPop,
     UUID
-} from 'competitionFactory/utilities';
+} from 'src/utilities';
 
 import {
     RANDOM,
     TOP_DOWN,
     BOTTOM_UP,
     WATERFALL
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 

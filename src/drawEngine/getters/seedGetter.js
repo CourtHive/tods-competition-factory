@@ -1,11 +1,11 @@
-import { getPolicyEngine } from 'competitionFactory/drawEngine';
-import { powerOf2, shuffleArray } from 'competitionFactory/utilities';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'competitionFactory/drawEngine/getters/positionsGetter';
-import { findStructure, getStructureSeedAssignments } from 'competitionFactory/drawEngine/getters/structureGetter';
+import { getPolicyEngine } from 'src/drawEngine';
+import { powerOf2, shuffleArray } from 'src/utilities';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
 
-import { CONTAINER, WATERFALL } from 'competitionFactory/constants/drawDefinitionConstants';
-import { generateRange } from 'competitionFactory/utilities';
+import { CONTAINER, WATERFALL } from 'src/constants/drawDefinitionConstants';
+import { generateRange } from 'src/utilities';
 
 export function getValidSeedBlocks({structure, allPositions}) {
   let waterfallSeeding;

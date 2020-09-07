@@ -1,14 +1,14 @@
-import { generateRange } from 'competitionFactory/utilities';
-import { drawEngine } from 'competitionFactory/drawEngine/index';
-import { getRoundMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { feedInMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
-import { feedInChampionship } from 'competitionFactory/drawEngine/tests/primitives/feedIn';
-import { reset, initialize, mainDrawPositions } from 'competitionFactory/drawEngine/tests/primitives/primitives';
+import { generateRange } from 'src/utilities';
+import { drawEngine } from 'src/drawEngine/index';
+import { getRoundMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { feedInChampionship } from 'src/drawEngine/tests/primitives/feedIn';
+import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
 
 import {
   TOP_DOWN, BOTTOM_UP, MFIC, LOSER, FEED_IN,
   FEED_IN_CHAMPIONSHIP, FICR16, FICQF, FICSF
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 it('can generate structured entry draw', () => {
   reset();

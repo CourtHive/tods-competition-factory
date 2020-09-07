@@ -1,5 +1,5 @@
-import { getDrawDefinition } from "competitionFactory/tournamentEngine/getters/eventGetter";
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function setDrawParticipantRepresentatives({tournamentRecord, drawId, representatives}) {
 

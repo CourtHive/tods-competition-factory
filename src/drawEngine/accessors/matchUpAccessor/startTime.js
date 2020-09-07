@@ -1,4 +1,4 @@
-import { START_TIME } from 'competitionFactory/constants/timeItemConstants';
+import { START_TIME } from 'src/constants/timeItemConstants';
 
 export function matchUpStartTime({matchUp}) {
   const timeItems = matchUp.timeItems || [];

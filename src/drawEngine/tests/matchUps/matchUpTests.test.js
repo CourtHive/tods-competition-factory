@@ -1,18 +1,18 @@
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
-import { findMatchUp} from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { knockoutMatchUpsWithParticipants } from 'competitionFactory/drawEngine/tests/primitives/primitives';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
+import { findMatchUp} from 'src/drawEngine/getters/getMatchUps';
+import { drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { knockoutMatchUpsWithParticipants } from 'src/drawEngine/tests/primitives/primitives';
 
-import { structureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getAllStructureMatchUps, } from 'competitionFactory/drawEngine/getters/getMatchUps'; 
+import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { getAllStructureMatchUps, } from 'src/drawEngine/getters/getMatchUps'; 
 
 import {
   reset, initialize, mainDrawPositions
-} from 'competitionFactory/drawEngine/tests/primitives/primitives';
+} from 'src/drawEngine/tests/primitives/primitives';
 
 import {
   MAIN, ROUND_ROBIN, KNOCKOUT
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 it('can return matchUps from a KNOCKOUT structure', () => {
   reset();

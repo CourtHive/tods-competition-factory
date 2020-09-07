@@ -1,5 +1,5 @@
-import { findEvent } from 'competitionFactory/tournamentEngine/getters/eventGetter';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { findEvent } from 'src/tournamentEngine/getters/eventGetter';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function deleteEventEntries({tournamentRecord, eventId, participantIds}) {
   if (!eventId) return { error: 'Missing eventId' };

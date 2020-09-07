@@ -1,12 +1,12 @@
 import fs from 'fs';
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { verifyStructure } from 'competitionFactory/drawEngine/tests/primitives/verifyStructure';
-import { completeMatchUp, verifyMatchUps } from 'competitionFactory/drawEngine/tests/primitives/verifyMatchUps';
+import { drawEngine } from 'src/drawEngine';
+import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
+import { completeMatchUp, verifyMatchUps } from 'src/drawEngine/tests/primitives/verifyMatchUps';
 
-import { generateFMLC } from 'competitionFactory/drawEngine/tests/primitives/fmlc';
+import { generateFMLC } from 'src/drawEngine/tests/primitives/fmlc';
 
-import { BYE, RETIRED } from 'competitionFactory/constants/matchUpStatusConstants';
-import { MAIN, FMLC, CONSOLATION } from 'competitionFactory/constants/drawDefinitionConstants';
+import { BYE, RETIRED } from 'src/constants/matchUpStatusConstants';
+import { MAIN, FMLC, CONSOLATION } from 'src/constants/drawDefinitionConstants';
 
 it('can generate FMLC', () => {
   const drawSize = 32;

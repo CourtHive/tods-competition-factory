@@ -1,6 +1,6 @@
-import { COMPETITOR } from 'competitionFactory/constants/participantRoles';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { TEAM } from 'competitionFactory/constants/participantTypes';
+import { COMPETITOR } from 'src/constants/participantRoles';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { TEAM } from 'src/constants/participantTypes';
 
 export function addParticipantsToGrouping(props) {
   let { tournamentRecord } = props;

@@ -1,8 +1,8 @@
 import Faker from 'faker';
-import { generateRange } from 'competitionFactory/utilities';
-import { countries } from 'competitionFactory/fixtures/countryData';
-import { COMPETITOR } from 'competitionFactory/constants/participantRoles';
-import { INDIVIDUAL, PAIR, TEAM } from 'competitionFactory/constants/participantTypes';
+import { generateRange } from 'src/utilities';
+import { countries } from 'src/fixtures/countryData';
+import { COMPETITOR } from 'src/constants/participantRoles';
+import { INDIVIDUAL, PAIR, TEAM } from 'src/constants/participantTypes';
 
 export function generateParticipants({participantsCount=32, matchUpType}) {
   const isoCountries = countries.filter(country => country.iso);

@@ -1,5 +1,5 @@
-import { SCALE } from 'competitionFactory/constants/participantConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SCALE } from 'src/constants/participantConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function setParticipantScaleItem({ tournamentRecord, participantId, scaleItem }) {
   let modificationApplied;

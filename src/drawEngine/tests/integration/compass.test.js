@@ -1,16 +1,16 @@
 import fs from 'fs';
-import { generateRange } from 'competitionFactory/utilities';
-import { drawEngine, getDrawDefinition } from 'competitionFactory/drawEngine';
+import { generateRange } from 'src/utilities';
+import { drawEngine, getDrawDefinition } from 'src/drawEngine';
 
-import { getDrawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { structureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getDrawMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { clearDrawPosition } from 'competitionFactory/drawEngine/governors/positionGovernor/positionClear';
+import { getDrawStructures } from 'src/drawEngine/getters/structureGetter';
+import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { getDrawMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { clearDrawPosition } from 'src/drawEngine/governors/positionGovernor/positionClear';
 
-import { MAIN, COMPASS } from 'competitionFactory/constants/drawDefinitionConstants';
-import SEEDING_POLICY from 'competitionFactory/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'competitionFactory/fixtures/AVOIDANCE_COUNTRY';
-import { BYE } from 'competitionFactory/constants/matchUpStatusConstants';
+import { MAIN, COMPASS } from 'src/constants/drawDefinitionConstants';
+import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import { BYE } from 'src/constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   const writeFile = process.env.TMX_TEST_FILES;

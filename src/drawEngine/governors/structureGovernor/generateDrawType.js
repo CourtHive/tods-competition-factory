@@ -1,17 +1,17 @@
-import { powerOf2, makeDeepCopy } from 'competitionFactory/utilities';
-import { stageDrawPositionsCount } from 'competitionFactory/drawEngine/getters/stageGetter';
-import structureTemplate from 'competitionFactory/drawEngine/generators/structureTemplate';
+import { powerOf2, makeDeepCopy } from 'src/utilities';
+import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
+import structureTemplate from 'src/drawEngine/generators/structureTemplate';
 
-import { playOff } from 'competitionFactory/drawEngine/generators/playOff';
-import { getAllDrawMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getDrawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { generateTieMatchUps } from 'competitionFactory/drawEngine/generators/tieMatchUps';
-import { feedInChampionship } from 'competitionFactory/drawEngine/generators/feedInChampionShip';
-import { generateCurtisConsolation} from 'competitionFactory/drawEngine/generators/curtisConsolation';
-import { treeMatchUps, feedInMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
-import { generateDoubleElimination } from 'competitionFactory/drawEngine/generators/doubleEliminattion';
-import { firstMatchLoserConsolation } from 'competitionFactory/drawEngine/generators/firstMatchLoserConsolation';
-import { generateRoundRobin, generateRoundRobinWithPlayOff } from 'competitionFactory/drawEngine/generators/roundRobin';
+import { playOff } from 'src/drawEngine/generators/playOff';
+import { getAllDrawMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { getDrawStructures } from 'src/drawEngine/getters/structureGetter';
+import { generateTieMatchUps } from 'src/drawEngine/generators/tieMatchUps';
+import { feedInChampionship } from 'src/drawEngine/generators/feedInChampionShip';
+import { generateCurtisConsolation} from 'src/drawEngine/generators/curtisConsolation';
+import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { generateDoubleElimination } from 'src/drawEngine/generators/doubleEliminattion';
+import { firstMatchLoserConsolation } from 'src/drawEngine/generators/firstMatchLoserConsolation';
+import { generateRoundRobin, generateRoundRobinWithPlayOff } from 'src/drawEngine/generators/roundRobin';
 
 import {
   MAIN, ELIMINATION, DOUBLE_ELIMINATION, PLAYOFF,
@@ -19,9 +19,9 @@ import {
   FEED_IN, FEED_IN_CHAMPIONSHIP, FICR16, FICQF, FICSF, MFIC, FMLC,
   COMPASS, OLYMPIC, COMPASS_NAMING, OLYMPIC_NAMING,
   MISSING_DRAW_DEFINITION
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 export function generateDrawType(props={}) {
   let {

@@ -1,14 +1,14 @@
 import { addTimeItem } from './timeItems';
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
 
 import {
   START_TIME, END_TIME,
   STOP_TIME, RESUME_TIME,
   COURT, ASSIGNMENT, OFFICIAL,
   SCHEDULED_DATE, SCHEDULED_TIME,
-} from 'competitionFactory/constants/timeItemConstants';
+} from 'src/constants/timeItemConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 /* 
   local version of addTimeItem for functions in this module which

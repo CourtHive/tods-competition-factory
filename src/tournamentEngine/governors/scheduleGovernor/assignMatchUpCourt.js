@@ -1,4 +1,4 @@
-import { getDrawDefinition } from "competitionFactory/tournamentEngine/getters/eventGetter";
+import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
 
 export function assignMatchUpCourt({tournamentRecord, drawEngine, matchUpId, drawId, courtId, courtDayDate}) {
   const { drawDefinition, event } = getDrawDefinition({tournamentRecord, drawId});

@@ -1,14 +1,14 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { treeMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
+import { drawEngine } from 'src/drawEngine';
+import { treeMatchUps } from 'src/drawEngine/generators/eliminationTree';
 
-import { reset, initialize, mainDrawPositions } from 'competitionFactory/drawEngine/tests/primitives/primitives';
+import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
 
 import {
   MAIN, CONSOLATION, TOP_DOWN, BOTTOM_UP,
   FMLC, LOSER, CURTIS, ELIMINATION
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { ERROR } from 'competitionFactory/constants/resultConstants';
+import { ERROR } from 'src/constants/resultConstants';
 
 it('can generate main draw', () => {
   reset();

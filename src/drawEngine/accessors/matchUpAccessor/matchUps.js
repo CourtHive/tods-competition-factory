@@ -1,4 +1,4 @@
-import { makeDeepCopy } from 'competitionFactory/utilities';
+import { makeDeepCopy } from 'src/utilities';
 
 export function getMatchUp({matchUps, matchUpId}) {
   const matchUp = (matchUps || []).reduce((matchUp, current) => {

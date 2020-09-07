@@ -2,8 +2,8 @@ import {
   allCompetitionMatchUps,
   competitionMatchUps,
   competitionScheduleMatchUps
-} from 'competitionFactory/competitionEngine/getters/matchUpsGetter';
-import { getVenuesAndCourts } from 'competitionFactory/competitionEngine/getters/venuesAndCourtsGetter';
+} from '../../getters/matchUpsGetter';
+import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 
 const queryGovernor = {
   competitionScheduleMatchUps,

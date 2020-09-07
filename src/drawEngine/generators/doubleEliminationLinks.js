@@ -1,6 +1,6 @@
 import {
   BOTTOM_UP, TOP_DOWN, LOSER, WINNER
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 export function doubleEliminationLinks({ mainStructure, consolationStructure, deciderStructure}) {
   const consolationMatchUps = consolationStructure.matchUps;

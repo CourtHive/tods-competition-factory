@@ -1,15 +1,15 @@
-import { generateRange } from 'competitionFactory/utilities';
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
-import { stageEntries } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { structureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
+import { generateRange } from 'src/utilities';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
+import { stageEntries } from 'src/drawEngine/getters/stageGetter';
+import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { drawStructures } from 'src/drawEngine/getters/structureGetter';
 
-import { structureAssignedDrawPositions, } from 'competitionFactory/drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions, } from 'src/drawEngine/getters/positionsGetter';
 
 import {
   MAIN, QUALIFYING, DIRECT_ACCEPTANCE, WILDCARD
-} from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+} from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 
 let result;
 

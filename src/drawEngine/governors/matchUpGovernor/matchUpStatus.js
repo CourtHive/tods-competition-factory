@@ -1,11 +1,11 @@
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { positionTargets } from 'competitionFactory/drawEngine/governors/positionGovernor/positionTargets';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
 
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from './checkStatusType';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { BYE, COMPLETED } from 'competitionFactory/constants/matchUpStatusConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { BYE, COMPLETED } from 'src/constants/matchUpStatusConstants';
 
 export function setMatchUpStatus(props) {
   let errors = [];

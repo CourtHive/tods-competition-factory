@@ -1,15 +1,15 @@
-import { getDrawDefinition, drawEngine } from 'competitionFactory/drawEngine';
-import { drawStructures } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { structureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { feedInChampionship } from 'competitionFactory/drawEngine/tests/primitives/feedIn';
-import { positionTargets } from 'competitionFactory/drawEngine/governors/positionGovernor/positionTargets';
-import { reset, initialize, mainDrawPositions } from 'competitionFactory/drawEngine/tests/primitives/primitives';
+import { getDrawDefinition, drawEngine } from 'src/drawEngine';
+import { drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { feedInChampionship } from 'src/drawEngine/tests/primitives/feedIn';
+import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
+import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
 
 import {
   MAIN, FEED_IN_CHAMPIONSHIP, FMLC, COMPASS
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { ERROR } from 'competitionFactory/constants/resultConstants';
+import { ERROR } from 'src/constants/resultConstants';
 
 it('can direct participants in KNOCKOUT with BACKDRAW', () => {
   reset();

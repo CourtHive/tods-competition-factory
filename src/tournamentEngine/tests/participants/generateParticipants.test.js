@@ -1,9 +1,9 @@
-import { tournamentEngine } from 'competitionFactory/tournamentEngine';
+import { tournamentEngine } from 'src/tournamentEngine';
 
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { RANKING } from 'competitionFactory/constants/participantConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { RANKING } from 'src/constants/participantConstants';
 
 it('can set participant scaleItems', () => {
     const { tournamentRecord } = tournamentRecordWithParticipants({ participantsCount: 100 });

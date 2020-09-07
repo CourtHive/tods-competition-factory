@@ -1,13 +1,13 @@
-import { treeMatchUps } from 'competitionFactory/drawEngine/generators/eliminationTree';
-import { stageDrawPositionsCount } from 'competitionFactory/drawEngine/getters/stageGetter';
-import { structureTemplate } from 'competitionFactory/drawEngine/generators/structureTemplate';
-import { generateRange, numericSort, unique, UUID } from 'competitionFactory/utilities';
+import { treeMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
+import { structureTemplate } from 'src/drawEngine/generators/structureTemplate';
+import { generateRange, numericSort, unique, UUID } from 'src/utilities';
 
 import {
   MAIN, WIN_RATIO, PLAYOFF, DRAW, QUALIFYING, CONTAINER, ITEM, WINNER
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function drawPositionsHash(drawPositions) {

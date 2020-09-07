@@ -1,12 +1,12 @@
-import { getMatchUpLinks, getTargetLink } from 'competitionFactory/drawEngine/getters/linkGetter';
-import { findMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { nextRoundMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getTargetMatchUp } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
+import { getMatchUpLinks, getTargetLink } from 'src/drawEngine/getters/linkGetter';
+import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { nextRoundMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { getTargetMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
 
 import {
   LOSER, WINNER, ROUND_OUTCOME
-} from 'competitionFactory/constants/drawDefinitionConstants';
+} from 'src/constants/drawDefinitionConstants';
 
 /*
   positionTargets 

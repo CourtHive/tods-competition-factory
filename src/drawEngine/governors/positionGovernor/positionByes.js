@@ -1,26 +1,26 @@
-import { drawEngine } from 'competitionFactory/drawEngine';
-import { getPolicyEngine } from 'competitionFactory/drawEngine';
-import { getValidSeedBlocks } from 'competitionFactory/drawEngine/getters/seedGetter';
-import { findStructure } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'competitionFactory/drawEngine/getters/getMatchUps';
-import { chunkArray, numericSort, shuffleArray, unique } from 'competitionFactory/utilities';
-import { positionTargets } from 'competitionFactory/drawEngine/governors/positionGovernor/positionTargets';
-import { getStructurePositionedSeeds } from 'competitionFactory/drawEngine/governors/positionGovernor/positionSeeds';
-import { assignMatchUpDrawPosition } from 'competitionFactory/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
+import { drawEngine } from 'src/drawEngine';
+import { getPolicyEngine } from 'src/drawEngine';
+import { getValidSeedBlocks } from 'src/drawEngine/getters/seedGetter';
+import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
+import { chunkArray, numericSort, shuffleArray, unique } from 'src/utilities';
+import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
+import { getStructurePositionedSeeds } from 'src/drawEngine/governors/positionGovernor/positionSeeds';
+import { assignMatchUpDrawPosition } from 'src/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
 
 import {
   structureAssignedDrawPositions,
   structureActiveDrawPositions,
-} from 'competitionFactory/drawEngine/getters/positionsGetter';
+} from 'src/drawEngine/getters/positionsGetter';
 
 import {
   stageEntries,
   getStageQualifiersCount
-} from 'competitionFactory/drawEngine/getters/stageGetter';
+} from 'src/drawEngine/getters/stageGetter';
 
-import { CONTAINER, DIRECT_ACCEPTANCE, WILDCARD } from 'competitionFactory/constants/drawDefinitionConstants';
-import { SUCCESS } from 'competitionFactory/constants/resultConstants';
-import { BYE } from 'competitionFactory/constants/matchUpStatusConstants';
+import { CONTAINER, DIRECT_ACCEPTANCE, WILDCARD } from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from 'src/constants/resultConstants';
+import { BYE } from 'src/constants/matchUpStatusConstants';
 
 export function assignDrawPositionBye({drawDefinition, structureId, drawPosition}) {
   const { structure } = findStructure({ drawDefinition, structureId });

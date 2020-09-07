@@ -1,8 +1,8 @@
 import { addParticipantScaleItem } from "./scaleItems";
-import { participantScaleItem } from 'competitionFactory/tournamentEngine/accessors/participantScaleItem';
+import { participantScaleItem } from 'src/tournamentEngine/accessors/participantScaleItem';
 
-import { RANKING, RATING } from "competitionFactory/constants/participantConstants";
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { RANKING, RATING } from "src/constants/participantConstants";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function rankByRatings({tournamentRecord, participantIds, category, eventType}) {
   const relevantParticipants = (tournamentRecord.participants || [])

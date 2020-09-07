@@ -1,6 +1,6 @@
 import { generateDrawType } from './generateDrawType';
-import { getDrawStructures, getStructureQualifiersCount } from 'competitionFactory/drawEngine/getters/structureGetter';
-import { buildDrawHierarchy } from 'competitionFactory/drawEngine/generators/drawHierarchy';
+import { getDrawStructures, getStructureQualifiersCount } from 'src/drawEngine/getters/structureGetter';
+import { buildDrawHierarchy } from 'src/drawEngine/generators/drawHierarchy';
 
 const structureGovernor = {
   getDrawStructures,

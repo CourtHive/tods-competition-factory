@@ -1,5 +1,5 @@
-import { findMatchUp } from "competitionFactory/drawEngine/getters/getMatchUps";
-import { SUCCESS } from "competitionFactory/constants/resultConstants";
+import { findMatchUp } from "src/drawEngine/getters/getMatchUps";
+import { SUCCESS } from "src/constants/resultConstants";
 
 export function updateTieMatchUpScore({drawDefinition, matchUpId}) {
   if (!drawDefinition) return { error: 'Missing drawDefinition' };
