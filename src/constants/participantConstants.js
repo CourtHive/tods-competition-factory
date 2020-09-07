@@ -13,3 +13,10 @@ export const TEAM = 'TEAM';
 export const ALTERNATE='ALTERNATE';
 export const QUALIFYING='QUALIFYING';
 export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';
+
+export const participantConstants = {
+  SIGN_IN_STATUS, SIGNED_IN, SIGNED_OUT,
+  SCALE, RATING, RANKING,
+  INDIVIDUAL, PAIR, TEAM,
+  ALTERNATE, QUALIFYING
+};

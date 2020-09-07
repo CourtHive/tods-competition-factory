@@ -268,3 +268,8 @@ export function timeToDate(time, date=null) {
 }
 
 function zeroPad(number) { return number.toString()[1] ? number : "0" + number; }
+
+export const dateTime = {
+   convertTime, DateHHMM, formatDate, offsetDate, offsetTime, futureDate,
+   currentUTCDate, getDateByWeek, ymd2date, timeUTC, momentFormat
+};
