@@ -1,0 +1,1 @@
+export { tournamentRecordWithParticipants } from './generateTournament';
