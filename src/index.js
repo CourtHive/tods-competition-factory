@@ -17,14 +17,15 @@ export const utilities = {
 export { competitionEngine } from './competitionEngine';
 export { tournamentEngine } from './tournamentEngine';
 export { drawEngine } from './drawEngine';
+export { fixtures } from  './fixtures';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
-export { eventConstants } from './constants/eventConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
-export { matchUpTypes } from './constants/matchUpTypes';
-export { optionConstants } from './constants/optionConstants';
 export { participantConstants } from './constants/participantConstants';
+export { timeItemConstants } from './constants/timeItemConstants';
 export { participantRoles } from './constants/participantRoles';
 export { participantTypes } from './constants/participantTypes';
+export { optionConstants } from './constants/optionConstants';
 export { resultConstants } from './constants/resultConstants';
-export { timeItemConstants } from './constants/timeItemConstants';
+export { eventConstants } from './constants/eventConstants';
+export { matchUpTypes } from './constants/matchUpTypes';
