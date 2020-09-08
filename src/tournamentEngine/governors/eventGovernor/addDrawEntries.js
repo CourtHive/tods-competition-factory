@@ -1,5 +1,5 @@
-import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
-import { SUCCESS } from "src/constants/resultConstants";
+import { getDrawDefinition } from "../../getters/eventGetter";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function addDrawEntries({tournamentRecord, drawEngine, drawId, participantIds, entryStage, entryType}) {
   const { drawDefinition, event } = getDrawDefinition({tournamentRecord, drawId});

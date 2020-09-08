@@ -1,4 +1,4 @@
-import { makeDeepCopy } from "src/utilities";
+import { makeDeepCopy } from "../../utilities";
 
 export function findCourt({tournamentRecord, courtId}) {
   let court, venue;
