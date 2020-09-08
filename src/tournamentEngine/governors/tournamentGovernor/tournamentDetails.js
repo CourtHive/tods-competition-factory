@@ -1,4 +1,4 @@
-import { SUCCESS } from "../../constants/resultConstants";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function setTournamentName({tournamentRecord, name}) {
   tournamentRecord.name = name;
