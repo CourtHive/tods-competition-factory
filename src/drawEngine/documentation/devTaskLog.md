@@ -12,7 +12,7 @@
 
 - how to determine that a matchUp is a FEED_IN?  one assigned drawPosition is not found in RoundNumber: 1 matchUps
 
-# Seeding
+## Seeding
 
 - all **qualifying** stage structures may be seeded; progressive draws consist of sequences of qualifying structures which feed into each other, and each stageSequence may be seeded independently
 - **main** stageSequence: 1 structures may be seeded, but **main** stageSequence 1+n are not seeded as long as participant draw positions are continuous, e.g. fed TOP DOWN or BOTTOM UP with a fixed pattern.
