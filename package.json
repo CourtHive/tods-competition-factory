@@ -1,6 +1,6 @@
 {
   "name": "tods-competition-factory",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Create and mutate TODS compliant tournament objects",
   "keywords": [
     "TODS",
