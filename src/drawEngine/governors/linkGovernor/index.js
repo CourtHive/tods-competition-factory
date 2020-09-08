@@ -1,4 +1,4 @@
-import { WINNER, DRAW } from 'src/constants/drawDefinitionConstants';
+import { WINNER, DRAW } from '../../../constants/drawDefinitionConstants';
 
 function createQualifyingLink({
   qualifyingStructureId,

@@ -1,10 +1,10 @@
-import { participantInEntries } from 'src/drawEngine/getters/entryGetter';
-import { validStage, stageSpace, } from 'src/drawEngine/getters/stageGetter';
+import { participantInEntries } from '../../getters/entryGetter';
+import { validStage, stageSpace, } from '../../getters/stageGetter';
 
 import {
   DIRECT_ACCEPTANCE, EXISTING_PARTICIPANT
-} from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
+} from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addEntry({participantId, participant, stage, drawDefinition, entryType=DIRECT_ACCEPTANCE}) {
   if (!drawDefinition) return { error: 'Draw undefined' };

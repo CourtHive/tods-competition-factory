@@ -1,10 +1,10 @@
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
 
-import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 
-import { MAIN, FMLC, CONSOLATION } from 'src/constants/drawDefinitionConstants';
+import { MAIN, FMLC, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 export function generateFMLC({drawSize, seedsCount, participantsCount}) {
   const drawType = FMLC;

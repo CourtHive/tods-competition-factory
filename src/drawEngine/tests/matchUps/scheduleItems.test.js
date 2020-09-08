@@ -1,9 +1,9 @@
-import { generateParticipants } from 'src/tests/fakerParticipants';
+import { generateParticipants } from '../../../tests/fakerParticipants';
+import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
 
-import { drawEngine } from 'src/drawEngine';
-import { generateDrawStructure } from 'src/drawEngine/tests/primitives/generateDrawStructure';
+import { drawEngine } from '../../../drawEngine';
 
-import { SUCCESS, ERROR } from 'src/constants/resultConstants';
+import { SUCCESS, ERROR } from '../../../constants/resultConstants';
 
 it('can add schedule items', () => {
   const { participants } = generateParticipants({ participantsCount: 32, matchUpType: 'DOUBLES' });

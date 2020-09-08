@@ -1,4 +1,4 @@
-import { makeDeepCopy } from 'src/utilities';
+import { makeDeepCopy } from '../../../utilities';
 
 export function getMatchUp({matchUps, matchUpId}) {
   const matchUp = (matchUps || []).reduce((matchUp, current) => {

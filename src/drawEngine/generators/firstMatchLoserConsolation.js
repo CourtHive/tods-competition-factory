@@ -1,11 +1,11 @@
-import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
-import { treeMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 
-import structureTemplate from 'src/drawEngine/generators/structureTemplate';
+import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import {
   MAIN, CONSOLATION, TOP_DOWN, LOSER
-} from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
+} from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function firstMatchLoserConsolation(props) {
   let { 

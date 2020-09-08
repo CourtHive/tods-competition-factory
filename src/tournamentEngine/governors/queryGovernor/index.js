@@ -1,16 +1,16 @@
 import {
   tournamentMatchUps, allTournamentMatchUps,
   eventMatchUps, allEventMatchUps, matchUpActions,
-} from 'src/tournamentEngine/getters/matchUpsGetter';
+} from '../../getters/matchUpsGetter';
 
 import { getParticipantScaleItem } from './scaleValue';
 import { getParticipantSignInStatus } from './signInStatus';
-import { getCourts } from 'src/tournamentEngine/getters/courtGetter';
-import { getVenues, findVenue } from 'src/tournamentEngine/getters/venueGetter';
-import { participantScaleItem } from 'src/tournamentEngine/accessors/participantScaleItem';
+import { getCourts } from '../../getters/courtGetter';
+import { getVenues, findVenue } from '../../getters/venueGetter';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
 
-import { drawEngine } from 'src/drawEngine';
-import { publicFindMatchUp } from 'src/tournamentEngine/getters/matchUpsGetter';
+import { drawEngine } from '../../../drawEngine';
+import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 
 const queryGovernor = {
   allTournamentMatchUps,

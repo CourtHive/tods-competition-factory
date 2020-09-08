@@ -1,7 +1,7 @@
-import { makeDeepCopy } from 'src/utilities';
+import { makeDeepCopy } from '../../../utilities';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { getMatchUp } from 'src/drawEngine/accessors/matchUpAccessor';
-import { drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
+import { drawStructures } from '../../../drawEngine/getters/structureGetter';
 
 /*
   public version of findMatchUp

@@ -1,5 +1,5 @@
-import { generateRange } from 'src/utilities/arrays';
-import { DateHHMM, currentUTCDate } from 'src/utilities/dateTime';
+import { generateRange } from '../../../../utilities/arrays';
+import { DateHHMM, currentUTCDate } from '../../../../utilities/dateTime';
 
 export function timeToDate(time, date=null) {
   let [hours, minutes] = (time || '00:00').split(':');

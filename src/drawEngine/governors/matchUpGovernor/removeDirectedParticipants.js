@@ -1,11 +1,11 @@
-import { instanceCount } from 'src/utilities';
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { updateTieMatchUpScore } from 'src/drawEngine/accessors/matchUpAccessor/tieMatchUpScore';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { findStructure } from '../../getters/structureGetter';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { instanceCount } from '../../../utilities';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(props) {
   const {drawDefinition, structure, matchUp, matchUpStatus, targetData} = props;

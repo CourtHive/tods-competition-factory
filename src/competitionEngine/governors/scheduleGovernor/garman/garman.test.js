@@ -1,5 +1,5 @@
 import garman from './garman';
-import { generateRange } from 'src/utilities';
+import { generateRange } from '../../../../utilities';
 
 const date = new Date();
 

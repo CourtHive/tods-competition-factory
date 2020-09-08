@@ -1,16 +1,16 @@
-import { numericSort } from 'src/utilities';
-import { getDrawDefinition, drawEngine } from 'src/drawEngine';
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { getValidSeedBlocks } from 'src/drawEngine/getters/seedGetter';
-import { getDrawStructures } from 'src/drawEngine/getters/structureGetter';
-import { mainDrawWithEntries } from 'src/drawEngine/tests/primitives/primitives';
-import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { numericSort } from '../../../utilities';
+import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { stageEntries } from '../../getters/stageGetter';
+import { getValidSeedBlocks } from '../../getters/seedGetter';
+import { getDrawStructures } from '../../getters/structureGetter';
+import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { findStructure, getStructureSeedAssignments } from '../../getters/structureGetter';
 
-import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from 'src/constants/drawDefinitionConstants';
-import { ERROR, SUCCESS } from 'src/constants/resultConstants';
+import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from '../../../constants/drawDefinitionConstants';
+import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
-import ITF_SEEDING from 'src/fixtures/SEEDING_ITF';
-import USTA_SEEDING from 'src/fixtures/SEEDING_USTA';
+import ITF_SEEDING from '../../../fixtures/SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/SEEDING_USTA';
 
 it('can define seedAssignments', () => {
   let drawSize = 8;

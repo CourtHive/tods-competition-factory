@@ -1,14 +1,14 @@
-import { drawEngine } from 'src/drawEngine';
-import { treeMatchUps } from 'src/drawEngine/generators/eliminationTree';
+import { drawEngine } from '../../../drawEngine';
+import { treeMatchUps } from '../../generators/eliminationTree';
 
-import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
+import { reset, initialize, mainDrawPositions } from '../../tests/primitives/primitives';
 
 import {
   MAIN, CONSOLATION, TOP_DOWN, BOTTOM_UP,
   FMLC, LOSER, CURTIS, ELIMINATION
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { ERROR } from 'src/constants/resultConstants';
+import { ERROR } from '../../../constants/resultConstants';
 
 it('can generate main draw', () => {
   reset();

@@ -1,4 +1,4 @@
-import { COURT } from 'src/constants/timeItemConstants';
+import { COURT } from '../../../constants/timeItemConstants';
 
 export function matchUpAssignedCourtId({matchUp}) {
   const timeItems = matchUp.timeItems || [];

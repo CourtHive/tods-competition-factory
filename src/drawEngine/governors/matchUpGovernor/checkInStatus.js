@@ -1,10 +1,10 @@
 import { addTimeItem } from './timeItems';
 
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { getCheckedInParticipantIds } from 'src/drawEngine/getters/matchUpTimeItems';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 
-import { CHECK_IN, CHECK_OUT } from "src/constants/timeItemConstants";
-import { getMatchUpParticipantIds } from 'src/drawEngine/accessors/participantAccessor';
+import { CHECK_IN, CHECK_OUT } from "../../../constants/timeItemConstants";
+import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 
 /*
   function is only able to check whether participant is alredy checked in 

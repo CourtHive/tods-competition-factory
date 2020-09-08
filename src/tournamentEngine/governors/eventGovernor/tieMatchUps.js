@@ -1,10 +1,10 @@
-import { UUID } from 'src/utilities/UUID';
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { UUID } from '../../../utilities/UUID';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps';
 
-import { COMPETITOR } from 'src/constants/participantRoles';
-import { SUCCESS } from 'src/constants/resultConstants';
-import { DOUBLES } from 'src/constants/matchUpTypes';
-import { PAIR } from 'src/constants/participantTypes';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES } from '../../../constants/matchUpTypes';
+import { PAIR } from '../../../constants/participantTypes';
 
 export function assignTieMatchUpParticipantId(props) {
   const errors = [];

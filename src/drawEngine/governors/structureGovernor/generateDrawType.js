@@ -1,17 +1,16 @@
-import { powerOf2, makeDeepCopy } from 'src/utilities';
-import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
-import structureTemplate from 'src/drawEngine/generators/structureTemplate';
+import { stageDrawPositionsCount } from '../../getters/stageGetter';
+import structureTemplate from '../../generators/structureTemplate';
 
-import { playOff } from 'src/drawEngine/generators/playOff';
-import { getAllDrawMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { getDrawStructures } from 'src/drawEngine/getters/structureGetter';
-import { generateTieMatchUps } from 'src/drawEngine/generators/tieMatchUps';
-import { feedInChampionship } from 'src/drawEngine/generators/feedInChampionShip';
-import { generateCurtisConsolation} from 'src/drawEngine/generators/curtisConsolation';
-import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
-import { generateDoubleElimination } from 'src/drawEngine/generators/doubleEliminattion';
-import { firstMatchLoserConsolation } from 'src/drawEngine/generators/firstMatchLoserConsolation';
-import { generateRoundRobin, generateRoundRobinWithPlayOff } from 'src/drawEngine/generators/roundRobin';
+import { playOff } from '../../generators/playOff';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps';
+import { getDrawStructures } from '../../getters/structureGetter';
+import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { feedInChampionship } from '../../generators/feedInChampionShip';
+import { generateCurtisConsolation} from '../../generators/curtisConsolation';
+import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
+import { generateDoubleElimination } from '../../generators/doubleEliminattion';
+import { firstMatchLoserConsolation } from '../../generators/firstMatchLoserConsolation';
+import { generateRoundRobin, generateRoundRobinWithPlayOff } from '../../generators/roundRobin';
 
 import {
   MAIN, ELIMINATION, DOUBLE_ELIMINATION, PLAYOFF,
@@ -19,9 +18,10 @@ import {
   FEED_IN, FEED_IN_CHAMPIONSHIP, FICR16, FICQF, FICSF, MFIC, FMLC,
   COMPASS, OLYMPIC, COMPASS_NAMING, OLYMPIC_NAMING,
   MISSING_DRAW_DEFINITION
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { powerOf2, makeDeepCopy } from '../../../utilities';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function generateDrawType(props={}) {
   let {

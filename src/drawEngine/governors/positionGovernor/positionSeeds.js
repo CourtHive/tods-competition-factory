@@ -1,11 +1,11 @@
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
-import { getValidSeedBlocks, getNextSeedBlock } from 'src/drawEngine/getters/seedGetter';
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
+import { findStructure } from '../../getters/structureGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getStructureSeedAssignments } from '../../getters/structureGetter';
+import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getStructurePositionedSeeds({structure}) {
   const { positionAssignments } = structureAssignedDrawPositions({structure});

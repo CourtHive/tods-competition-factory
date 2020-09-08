@@ -1,12 +1,13 @@
 import fs from 'fs';
-import { drawEngine } from 'src/drawEngine';
-import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
-import { completeMatchUp, verifyMatchUps } from 'src/drawEngine/tests/primitives/verifyMatchUps';
 
-import { generateFMLC } from 'src/drawEngine/tests/primitives/fmlc';
+import { drawEngine } from '../../../drawEngine';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { completeMatchUp, verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
 
-import { BYE, RETIRED } from 'src/constants/matchUpStatusConstants';
-import { MAIN, FMLC, CONSOLATION } from 'src/constants/drawDefinitionConstants';
+import { generateFMLC } from '../../tests/primitives/fmlc';
+
+import { BYE, RETIRED } from '../../../constants/matchUpStatusConstants';
+import { MAIN, FMLC, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 it('can generate FMLC', () => {
   const drawSize = 32;
@@ -116,7 +117,7 @@ it('can write to the file system', () => {
   const drawType = FMLC;
   const drawDefinition = drawEngine.getState();
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
 })

@@ -1,10 +1,10 @@
-import { drawEngine } from 'src/drawEngine';
-import { chunkArray, generateRange } from 'src/utilities';
-import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { verifyDrawHierarchy } from 'src/drawEngine/tests/primitives/verifyDrawHierarchy';
-import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
-import { getStructurePositionedSeeds } from 'src/drawEngine/governors/positionGovernor/positionSeeds';
+import { drawEngine } from '../../../drawEngine';
+import { chunkArray, generateRange } from '../../../utilities';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
+import { findStructure, getStructureSeedAssignments } from '../../getters/structureGetter';
+import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
 
 export function verifyStructure({
   structureId,

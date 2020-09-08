@@ -1,14 +1,14 @@
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { getNextSeedBlock } from 'src/drawEngine/getters/seedGetter';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { getByesData } from 'src/drawEngine/governors/positionGovernor/positionByes';
-import { getQualifiersData } from 'src/drawEngine/governors/positionGovernor/positionQualifiers';
+import { stageEntries } from '../../getters/stageGetter';
+import { getNextSeedBlock } from '../../getters/seedGetter';
+import { findStructure } from '../../getters/structureGetter';
+import { getByesData } from '../../governors/positionGovernor/positionByes';
+import { getQualifiersData } from '../../governors/positionGovernor/positionQualifiers';
 import {
   structureAssignedDrawPositions,
   structureActiveDrawPositions
-} from 'src/drawEngine/getters/positionsGetter';
+} from '../../getters/positionsGetter';
 
-import { WILDCARD, DIRECT_ACCEPTANCE } from 'src/constants/drawDefinitionConstants';
+import { WILDCARD, DIRECT_ACCEPTANCE } from '../../../constants/drawDefinitionConstants';
 
 /*
   return an array of all possible validActions for a given drawPosition within a structure

@@ -1,8 +1,8 @@
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { findStructure } from '../../getters/structureGetter';
 
-import { SUCCESS } from 'src/constants/resultConstants';
-import { TEAM } from 'src/constants/participantTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/participantTypes';
 
 export function setMatchUpFormat(props) {
   let errors = [];

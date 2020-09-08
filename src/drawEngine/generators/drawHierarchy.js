@@ -1,5 +1,5 @@
-import { getRoundMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { generateRange, makeDeepCopy, unique, UUID } from 'src/utilities';
+import { getRoundMatchUps } from '../../drawEngine/getters/getMatchUps';
+import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 
 /*
     matchUps should contain sufficient information for a draw hierarchy to be reconstructed

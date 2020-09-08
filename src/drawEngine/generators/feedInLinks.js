@@ -1,7 +1,7 @@
-import { generateRange } from 'src/utilities';
+import { generateRange } from '../../utilities';
 import {
   BOTTOM_UP, TOP_DOWN, LOSER
-} from 'src/constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 export function feedInLinks({ mainStructure, consolationStructure, roundsCount, roundOffset=0 }) {
   const consolationMatchUps = consolationStructure.matchUps;

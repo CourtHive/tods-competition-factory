@@ -1,4 +1,4 @@
-import { makeDeepCopy } from 'src/utilities';
+import { makeDeepCopy } from '../../utilities';
 
 export function getVenues({tournamentRecord}) {
   const venues = tournamentRecord.venues || [];

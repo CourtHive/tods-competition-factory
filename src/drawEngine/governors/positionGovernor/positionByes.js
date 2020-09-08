@@ -1,26 +1,25 @@
-import { drawEngine } from 'src/drawEngine';
-import { getPolicyEngine } from 'src/drawEngine';
-import { getValidSeedBlocks } from 'src/drawEngine/getters/seedGetter';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { chunkArray, numericSort, shuffleArray, unique } from 'src/utilities';
-import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
-import { getStructurePositionedSeeds } from 'src/drawEngine/governors/positionGovernor/positionSeeds';
-import { assignMatchUpDrawPosition } from 'src/drawEngine/governors/matchUpGovernor/matchUpDrawPosition';
+import { drawEngine, getPolicyEngine } from '../../../drawEngine';
+import { getValidSeedBlocks } from '../../getters/seedGetter';
+import { findStructure } from '../../getters/structureGetter';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
+import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
+import { chunkArray, numericSort, shuffleArray, unique } from '../../../utilities';
 
 import {
   structureAssignedDrawPositions,
   structureActiveDrawPositions,
-} from 'src/drawEngine/getters/positionsGetter';
+} from '../../getters/positionsGetter';
 
 import {
   stageEntries,
   getStageQualifiersCount
-} from 'src/drawEngine/getters/stageGetter';
+} from '../../getters/stageGetter';
 
-import { CONTAINER, DIRECT_ACCEPTANCE, WILDCARD } from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
-import { BYE } from 'src/constants/matchUpStatusConstants';
+import { CONTAINER, DIRECT_ACCEPTANCE, WILDCARD } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function assignDrawPositionBye({drawDefinition, structureId, drawPosition}) {
   const { structure } = findStructure({ drawDefinition, structureId });

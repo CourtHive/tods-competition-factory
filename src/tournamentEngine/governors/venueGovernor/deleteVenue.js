@@ -1,8 +1,8 @@
-import { getCourts } from 'src/tournamentEngine/getters/courtGetter';
-import { allTournamentMatchUps } from 'src/tournamentEngine/getters/matchUpsGetter'
+import { getCourts } from '../../getters/courtGetter';
+import { allTournamentMatchUps } from '../../getters/matchUpsGetter'
 
-import { SUCCESS } from "src/constants/resultConstants";
-import { COURT, ASSIGNMENT } from 'src/constants/timeItemConstants';
+import { SUCCESS } from "../../../constants/resultConstants";
+import { COURT, ASSIGNMENT } from '../../../constants/timeItemConstants';
 
 export function deleteVenue({tournamentRecord, drawEngine, venueId}) {
   if (!tournamentRecord.venues) return { error: 'No Venues' };

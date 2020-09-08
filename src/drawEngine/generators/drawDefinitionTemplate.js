@@ -1,6 +1,6 @@
 import {
   MAIN, QUALIFYING
-} from 'src/constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 export const definitionTemplate = () => ({
   drawId: null,

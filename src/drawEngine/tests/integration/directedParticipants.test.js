@@ -1,29 +1,30 @@
 import fs from 'fs';
-import { getDrawDefinition, drawEngine } from 'src/drawEngine';
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { drawStructures } from 'src/drawEngine/getters/structureGetter';
-import { mainDrawWithEntries } from 'src/drawEngine/tests/primitives/primitives';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
 
-import { FMLC } from 'src/constants/drawDefinitionConstants';
+import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { stageEntries } from '../../getters/stageGetter';
+import { drawStructures } from '../../getters/structureGetter';
+import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+
+import { FMLC } from '../../../constants/drawDefinitionConstants';
 
 import {
   completeMatchUp,
   verifyMatchUps,
   getMatchUpWinnerLoserIds,
   findMatchUpByRoundNumberAndPosition
-} from 'src/drawEngine/tests/primitives/verifyMatchUps';
+} from '../../tests/primitives/verifyMatchUps';
 
-import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
-import { generateFMLC } from 'src/drawEngine/tests/primitives/fmlc';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { generateFMLC } from '../../tests/primitives/fmlc';
 
 import {
   BYE, RETIRED, COMPLETED,
   TO_BE_PLAYED, DEFAULTED, SUSPENDED
-} from 'src/constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
-import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from 'src/constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN, DIRECT_ACCEPTANCE, WILDCARD } from '../../../constants/drawDefinitionConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -301,7 +302,7 @@ it('can write to the file system', () => {
   const drawType = FMLC;
   const drawDefinition = drawEngine.getState();
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
 })

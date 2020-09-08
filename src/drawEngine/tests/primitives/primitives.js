@@ -1,15 +1,15 @@
-import { generateRange } from 'src/utilities';
-import { getDrawDefinition, drawEngine } from 'src/drawEngine';
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { drawStructures } from 'src/drawEngine/getters/structureGetter';
+import { generateRange } from '../../../utilities';
+import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { stageEntries } from '../../getters/stageGetter';
+import { structureMatchUps } from '../../getters/getMatchUps';
+import { drawStructures } from '../../getters/structureGetter';
 
-import { structureAssignedDrawPositions, } from 'src/drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions, } from '../../getters/positionsGetter';
 
 import {
   MAIN, QUALIFYING, DIRECT_ACCEPTANCE, WILDCARD
-} from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
+} from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 

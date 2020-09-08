@@ -1,5 +1,5 @@
-import { findTournamentParticipant } from 'src/tournamentEngine/getters/participantGetter';
-import { SIGNED_IN, SIGN_IN_STATUS } from 'src/constants/participantConstants';
+import { findTournamentParticipant } from '../../getters/participantGetter';
+import { SIGNED_IN, SIGN_IN_STATUS } from '../../../constants/participantConstants';
 
 export function getParticipantSignInStatus({tournamentRecord, participantId}) {
   const {participant} = findTournamentParticipant({tournamentRecord, participantId});

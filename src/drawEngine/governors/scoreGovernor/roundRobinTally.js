@@ -1,4 +1,4 @@
-import { unique, indices, subSort, occurrences } from 'src/utilities/arrays';
+import { unique, indices, subSort, occurrences } from '../../../utilities/arrays';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 function getSetsToWin(best_of) { return (best_of && Math.ceil(best_of/2)) || 1; }

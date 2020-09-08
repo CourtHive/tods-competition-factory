@@ -1,4 +1,4 @@
-import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME } from 'src/constants/timeItemConstants';
+import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME } from '../../../constants/timeItemConstants';
 
 export function matchUpDuration({matchUp}) {
   if (!matchUp) return { error: 'Missing matchUp' }; 

@@ -1,9 +1,9 @@
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { findStructure } from '../../../drawEngine/getters/structureGetter';
 
 import {
   TOP_DOWN, BOTTOM_UP, RANDOM, DRAW
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
 export function getTargetMatchUp({
   drawDefinition,

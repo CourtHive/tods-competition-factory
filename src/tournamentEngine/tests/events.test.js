@@ -1,8 +1,8 @@
-import { tournamentEngine } from 'src/tournamentEngine';
+import { tournamentEngine } from '../../tournamentEngine';
 import { tournamentRecordWithParticipants } from './primitives/generateTournament';
 
-import { SUCCESS } from 'src/constants/resultConstants';
-import { SINGLES } from 'src/constants/eventConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { SINGLES } from '../../constants/eventConstants';
 
 let result;
 

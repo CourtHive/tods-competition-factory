@@ -1,5 +1,5 @@
-import { findTournamentParticipant } from 'src/tournamentEngine/getters/participantGetter';
-import { participantScaleItem } from 'src/tournamentEngine/accessors/participantScaleItem';
+import { findTournamentParticipant } from '../../getters/participantGetter';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 export function getParticipantScaleItem({tournamentRecord, participantId, scaleAttributes}) {
   const {participant} = findTournamentParticipant({tournamentRecord, participantId});

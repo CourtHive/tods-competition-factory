@@ -1,11 +1,11 @@
 import {
   MAIN, CONSOLATION
-} from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
-import { feedInLinks } from 'src/drawEngine/generators/feedInLinks';
-import { stageDrawPositionsCount } from 'src/drawEngine/getters/stageGetter';
-import structureTemplate from 'src/drawEngine/generators/structureTemplate';
-import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
+} from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
+import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { treeMatchUps, feedInMatchUps } from '../../drawEngine/generators/eliminationTree';
 
 // export function feedInChampionship({drawDefinition, feedsFromFinal, feedRounds}={}) {
 export function feedInChampionship(props={}) {

@@ -1,10 +1,9 @@
-import { generateParticipants } from 'src/tests/fakerParticipants';
+import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
+import { generateParticipants } from '../../../tests/fakerParticipants';
 
-import { drawEngine } from 'src/drawEngine';
-import { generateDrawStructure } from 'src/drawEngine/tests/primitives/generateDrawStructure';
-
-import { SUCCESS } from 'src/constants/resultConstants';
-import { PAIR } from 'src/constants/participantConstants';
+import { drawEngine } from '../../../drawEngine';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { PAIR } from '../../../constants/participantConstants';
 
 it('can check-in and check-out matchUp participants', () => {
     const { participants } = generateParticipants({ participantsCount: 32, matchUpType: 'DOUBLES' });

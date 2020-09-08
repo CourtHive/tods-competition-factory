@@ -1,4 +1,4 @@
-import { SCALE } from 'src/constants/participantConstants';
+import { SCALE } from '../../constants/participantConstants';
 
 export function participantScaleItem({participant, scaleAttributes, requireTimeStamp}) {
   if (participant && Array.isArray(participant.timeItems)) {

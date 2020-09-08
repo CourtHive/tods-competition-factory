@@ -1,6 +1,6 @@
-import { numericSort } from 'src/utilities';
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { numericSort } from '../../../utilities';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignMatchUpDrawPosition({drawDefinition, matchUpId, drawPosition}) {
   const { matchUp } = findMatchUp({drawDefinition, matchUpId});

@@ -1,4 +1,4 @@
-import { countValues } from 'src/utilities';
+import { countValues } from '../../utilities';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1,1,2,3,4,5,5,6];

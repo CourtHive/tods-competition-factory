@@ -1,4 +1,4 @@
-import { tournamentEngine } from 'src/tournamentEngine';
+import { tournamentEngine } from '../../tournamentEngine';
 
 it('can define a new venue', () => {
   let result = tournamentEngine.newTournamentRecord();

@@ -1,11 +1,11 @@
-import { getPolicyEngine } from 'src/drawEngine';
-import { powerOf2, shuffleArray } from 'src/utilities';
-import { getAllStructureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { getPolicyEngine } from '../../drawEngine';
+import { powerOf2, shuffleArray } from '../../utilities';
+import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps';
+import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
+import { findStructure, getStructureSeedAssignments } from '../../drawEngine/getters/structureGetter';
 
-import { CONTAINER, WATERFALL } from 'src/constants/drawDefinitionConstants';
-import { generateRange } from 'src/utilities';
+import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
+import { generateRange } from '../../utilities';
 
 export function getValidSeedBlocks({structure, allPositions}) {
   let waterfallSeeding;

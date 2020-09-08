@@ -1,8 +1,8 @@
-import { UUID, generateRange, makeDeepCopy } from 'src/utilities';
-import { findVenue } from 'src/tournamentEngine/getters/venueGetter';
-import { courtTemplate } from 'src/tournamentEngine/generators/courtTemplate';
+import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
+import { findVenue } from '../../getters/venueGetter';
+import { courtTemplate } from '../../generators/courtTemplate';
 
-import { SUCCESS } from "src/constants/resultConstants";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function addCourt({tournamentRecord, venueId, court}) {
   let { venue } = findVenue({tournamentRecord, venueId});

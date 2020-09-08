@@ -1,4 +1,4 @@
-import { makeDeepCopy } from 'src/utilities/makeDeepCopy';
+import { makeDeepCopy } from '../utilities/makeDeepCopy';
 import itemGovernor from './governors/itemGovernor';
 
 let devContext;

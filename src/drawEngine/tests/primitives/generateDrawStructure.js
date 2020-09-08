@@ -1,15 +1,15 @@
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
 
 import {
   MAIN,
   ALTERNATE,
   ELIMINATION,
   FEED_IN
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 
 export function generateDrawStructure({
   automated,

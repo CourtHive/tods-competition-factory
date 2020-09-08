@@ -1,5 +1,5 @@
 import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function checkInParticipant(props) {
   Object.assign(props, { method: 'checkInParticipant' });

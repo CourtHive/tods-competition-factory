@@ -1,16 +1,16 @@
 import fs from 'fs';
-import { generateRange } from 'src/utilities';
-import { drawEngine, getDrawDefinition } from 'src/drawEngine';
+import { generateRange } from '../../../utilities';
+import { drawEngine, getDrawDefinition } from '../../../drawEngine';
 
-import { getDrawStructures } from 'src/drawEngine/getters/structureGetter';
-import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { getDrawMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { clearDrawPosition } from 'src/drawEngine/governors/positionGovernor/positionClear';
+import { getDrawStructures } from '../../getters/structureGetter';
+import { structureMatchUps } from '../../getters/getMatchUps';
+import { getDrawMatchUps } from '../../getters/getMatchUps';
+import { clearDrawPosition } from '../../governors/positionGovernor/positionClear';
 
-import { MAIN, COMPASS } from 'src/constants/drawDefinitionConstants';
-import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
-import { BYE } from 'src/constants/matchUpStatusConstants';
+import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
+import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   const writeFile = process.env.TMX_TEST_FILES;
@@ -213,7 +213,7 @@ function generateCompass({
   checkByeAdvancedDrawPositions({stage, advanced: false, expectedByeDrawPositions});
   
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(snapshot, null, 2));
 }

@@ -1,4 +1,4 @@
-import drawEngine from 'src/drawEngine';
+import drawEngine from '../../../drawEngine';
 import { reset, initialize, mainDrawPositions, qualifyingDrawPositions } from '../primitives/primitives';
 import {
   DRAW, WINNER,
@@ -6,7 +6,7 @@ import {
   QUALIFYING, MAIN,
   WIN_RATIO, ROUND_OUTCOME,
   ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
   reset();

@@ -4,15 +4,15 @@ import {
   getStageQualifiersCount,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
-} from 'src/drawEngine/getters/stageGetter';
+} from '../../getters/stageGetter';
 
 import {
   ALTERNATE,
   INVALID_STAGE, MAIN,
   MISSING_DRAW_DEFINITION,
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setStageDrawSize({drawDefinition, stage, drawSize}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

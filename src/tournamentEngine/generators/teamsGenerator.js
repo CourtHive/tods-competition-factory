@@ -1,7 +1,7 @@
-import { UUID } from "src/utilities";
-import { SUCCESS } from "src/constants/resultConstants";
-import { COMPETITOR } from 'src/constants/participantRoles';
-import { TEAM } from "src/constants/participantTypes";
+import { UUID } from "../../utilities";
+import { SUCCESS } from "../../constants/resultConstants";
+import { COMPETITOR } from '../../constants/participantRoles';
+import { TEAM } from "../../constants/participantTypes";
 
 export function generateTeamsFromParticipantAttribute(props) {
   const {

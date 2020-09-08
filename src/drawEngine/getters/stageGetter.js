@@ -1,9 +1,9 @@
 import {
   ALTERNATE, WILDCARD,
   DIRECT_ACCEPTANCE,
-} from 'src/constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function validStage({stage, drawDefinition}) {
   return Boolean(stageExists({stage, drawDefinition}) && stageDrawPositionsCount({stage, drawDefinition}));

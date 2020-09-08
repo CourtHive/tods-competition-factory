@@ -1,5 +1,5 @@
-import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
-import { SUCCESS } from "src/constants/resultConstants";
+import { getDrawDefinition } from "../../../tournamentEngine/getters/eventGetter";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function toggleParticipantCheckInState(params) {
   const { drawEngine, tournamentRecords } = params;

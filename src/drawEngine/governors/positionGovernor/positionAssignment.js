@@ -1,9 +1,9 @@
-import { isValidSeedPosition } from 'src/drawEngine/getters/seedGetter';
-import { participantInEntries } from 'src/drawEngine/getters/entryGetter';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { isValidSeedPosition } from '../../getters/seedGetter';
+import { participantInEntries } from '../../getters/entryGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { findStructure, getStructureSeedAssignments } from '../../getters/structureGetter';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignDrawPosition({
   drawDefinition,

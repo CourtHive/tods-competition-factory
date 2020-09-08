@@ -1,10 +1,10 @@
-import { doubleEliminationLinks } from 'src/drawEngine/generators/doubleEliminationLinks';
-import { treeMatchUps, feedInMatchUps } from 'src/drawEngine/generators/eliminationTree';
-import { structureTemplate } from 'src/drawEngine/generators/structureTemplate';
+import { doubleEliminationLinks } from '../../drawEngine/generators/doubleEliminationLinks';
+import { treeMatchUps, feedInMatchUps } from '../../drawEngine/generators/eliminationTree';
+import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import {
   MAIN, BACKDRAW
-} from 'src/constants/drawDefinitionConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
+} from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateDoubleElimination({
   structureName,

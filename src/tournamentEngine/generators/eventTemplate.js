@@ -1,4 +1,4 @@
-import { SINGLES } from 'src/constants/eventConstants';
+import { SINGLES } from '../../constants/eventConstants';
 
 export const eventTemplate = () => ({
   eventId: null,

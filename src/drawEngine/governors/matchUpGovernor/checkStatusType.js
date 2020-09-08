@@ -3,7 +3,7 @@ import {
   NOT_PLAYED, ABANDONED,        // no participant advancement
   IN_PROGRESS, SUSPENDED,       // no participant advancement
   BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED // advancement
-} from 'src/constants/matchUpStatusConstants';
+} from '../../../constants/matchUpStatusConstants';
 
 export function isDirectingMatchUpStatus({matchUpStatus}) {
   return [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED]

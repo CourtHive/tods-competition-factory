@@ -1,14 +1,14 @@
-import { drawEngine } from 'src/drawEngine';
-import { shuffleArray } from 'src/utilities';
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { findStructure, getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
+import { drawEngine } from '../../../drawEngine';
+import { shuffleArray } from '../../../utilities';
+import { stageEntries } from '../../getters/stageGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { findStructure, getStructureSeedAssignments } from '../../getters/structureGetter';
 
 import {
   WILDCARD, DIRECT_ACCEPTANCE
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionUnseededParticipants({drawDefinition, structure, structureId}) {
   if (!structure) ({ structure } = findStructure({drawDefinition, structureId}));

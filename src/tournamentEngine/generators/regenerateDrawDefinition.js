@@ -1,6 +1,6 @@
 import { getDrawDefinition } from "../getters/eventGetter";
 import { generateDrawDefinition } from "./generateDrawDefinition";
-import { SUCCESS } from "src/constants/resultConstants";
+import { SUCCESS } from "../../constants/resultConstants";
 
 export function regenerateDrawDefinition({tournamentRecord, auditEngine, drawEngine, drawId, auditData}) {
   const { drawDefinition, event } = getDrawDefinition({tournamentRecord, drawId});

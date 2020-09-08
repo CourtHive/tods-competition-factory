@@ -1,7 +1,7 @@
-import { findEvent } from 'src/tournamentEngine/getters/eventGetter';
-import { SUCCESS } from 'src/constants/resultConstants';
-import { MAIN } from 'src/constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE } from 'src/constants/participantConstants';
+import { findEvent } from '../../getters/eventGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE } from '../../../constants/participantConstants';
 
 export function addEventEntries(props) {
   const {

@@ -1,6 +1,5 @@
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-
-import { SUCCESS } from "src/constants/resultConstants";
+import { findMatchUp } from '../../getters/getMatchUps';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
   generic function to addTimeItem

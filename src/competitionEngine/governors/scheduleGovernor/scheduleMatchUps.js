@@ -1,7 +1,7 @@
-import { timeToDate, matchUpTiming } from 'src/competitionEngine/governors/scheduleGovernor/garman/garman';
-import { getDrawDefinition } from 'src/tournamentEngine/getters/eventGetter';
-import { getVenuesAndCourts } from 'src/competitionEngine/getters/venuesAndCourtsGetter';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { timeToDate, matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
+import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function scheduleMatchUps(props) {
   const {

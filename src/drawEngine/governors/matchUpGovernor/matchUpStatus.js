@@ -1,11 +1,11 @@
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { positionTargets } from 'src/drawEngine/governors/positionGovernor/positionTargets';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { positionTargets } from '..//positionGovernor/positionTargets';
 
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from './checkStatusType';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 
-import { SUCCESS } from 'src/constants/resultConstants';
-import { BYE, COMPLETED } from 'src/constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
 
 export function setMatchUpStatus(props) {
   let errors = [];

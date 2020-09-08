@@ -7,11 +7,11 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 import definitionTemplate, { keyValidation } from './generators/drawDefinitionTemplate';
 
-import { auditEngine } from 'src/auditEngine';
-import { policyEngine } from 'src/policyEngine';
+import { auditEngine } from '../auditEngine';
+import { policyEngine } from '../policyEngine';
 
-import { UUID, makeDeepCopy } from 'src/utilities';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { UUID, makeDeepCopy } from '../utilities';
+import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];

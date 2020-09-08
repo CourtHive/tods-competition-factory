@@ -1,6 +1,6 @@
-import { findCourt } from 'src/tournamentEngine/getters/courtGetter';
+import { findCourt } from '../../getters/courtGetter';
 
-import { SUCCESS } from "src/constants/resultConstants";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function setVenueAddress({tournamentRecord, venueId, address}) {
   return SUCCESS;

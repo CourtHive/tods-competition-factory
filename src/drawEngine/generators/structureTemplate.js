@@ -1,7 +1,7 @@
-import { unique, UUID } from 'src/utilities';
+import { unique, UUID } from '../../utilities';
 import {
   ROUND_OUTCOME
-} from 'src/constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 export const structureTemplate = ({
   stage,

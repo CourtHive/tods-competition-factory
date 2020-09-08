@@ -1,5 +1,5 @@
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { assignDrawPosition } from 'src/drawEngine/governors/positionGovernor/positionAssignment';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 
 export function directLoser({drawDefinition, targetMatchUpSide, loserTargetLink, loserDrawPosition, loserMatchUp}) {
   let error;

@@ -1,8 +1,8 @@
-import { tournamentEngine } from 'src/tournamentEngine';
-import { generateParticipants } from 'src/tests/fakerParticipants';
+import { tournamentEngine } from '../../../tournamentEngine';
+import { generateParticipants } from '../../../tests/fakerParticipants';
 
-import { SUCCESS } from 'src/constants/resultConstants';
-import { SINGLES } from 'src/constants/eventConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 export function tournamentRecordWithParticipants({ startDate, endDate, participantsCount, matchUpType=SINGLES }) {
     tournamentEngine.newTournamentRecord({ startDate, endDate});

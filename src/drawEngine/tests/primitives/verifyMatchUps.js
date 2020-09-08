@@ -1,8 +1,8 @@
-import { drawEngine } from 'src/drawEngine';
-import { findMatchUp } from 'src/drawEngine/getters/getMatchUps';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { structureMatchUps } from 'src/drawEngine/getters/getMatchUps';
-import { getRoundMatchUps, getAllStructureMatchUps, } from 'src/drawEngine/getters/getMatchUps';
+import { drawEngine } from '../../../drawEngine';
+import { findMatchUp } from '../../getters/getMatchUps';
+import { findStructure } from '../../getters/structureGetter';
+import { structureMatchUps } from '../../getters/getMatchUps';
+import { getRoundMatchUps, getAllStructureMatchUps, } from '../../getters/getMatchUps';
 
 export function completeMatchUp({structureId, roundNumber, roundPosition, matchUpStatus, winningSide, score, sets}) {
   const { matchUp } = findMatchUpByRoundNumberAndPosition({structureId, roundNumber, roundPosition});

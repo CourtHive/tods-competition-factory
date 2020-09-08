@@ -1,11 +1,11 @@
-import { drawEngine } from 'src/drawEngine';
-import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
+import { drawEngine } from '../../../drawEngine';
+import { reset, initialize, mainDrawPositions } from '../../tests/primitives/primitives';
 
 import {
  TOP_DOWN, LOSER, COMPASS, PLAYOFF
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { ERROR } from 'src/constants/resultConstants';
+import { ERROR } from '../../../constants/resultConstants';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playOffDraw({ drawSize: 3, drawType: COMPASS });

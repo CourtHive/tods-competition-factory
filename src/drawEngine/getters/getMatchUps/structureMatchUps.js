@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined

@@ -1,11 +1,11 @@
 import { isDirectingMatchUpStatus } from './checkStatusType';
-import { directLoser } from 'src/drawEngine/governors/matchUpGovernor/directLoser';
-import { directWinner } from 'src/drawEngine/governors/matchUpGovernor/directWinner';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { updateTieMatchUpScore } from 'src/drawEngine/accessors/matchUpAccessor/tieMatchUpScore';
+import { directLoser } from './directLoser';
+import { directWinner } from './directWinner';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
 
-import { COMPLETED } from 'src/constants/matchUpStatusConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directParticipants(props) {
   const {drawDefinition, matchUpStatus, structure, matchUp, winningSide, targetData, score, sets} = props;

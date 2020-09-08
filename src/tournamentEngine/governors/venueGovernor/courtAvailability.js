@@ -1,5 +1,5 @@
-import { findCourt } from 'src/tournamentEngine/getters/courtGetter';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { findCourt } from '../../getters/courtGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyCourtAvailability({tournamentRecord, courtId, dates, availability}) {
   let { court } = findCourt({tournamentRecord, courtId});

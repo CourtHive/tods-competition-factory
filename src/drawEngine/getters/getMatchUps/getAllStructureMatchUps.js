@@ -1,17 +1,17 @@
 import { filterMatchUps } from './filterMatchUps';
-import { getPolicyEngine } from 'src/drawEngine';
-import { getDrawDefinition } from 'src/drawEngine';
-import { makeDeepCopy, numericSort } from 'src/utilities';
-import { getCheckedInParticipantIds } from 'src/drawEngine/getters/matchUpTimeItems';
-import { getStructureSeedAssignments } from 'src/drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-import { getMatchUpType, getMatchUpScheduleDetails } from 'src/drawEngine/accessors/matchUpAccessor';
+import { getPolicyEngine } from '../../../drawEngine';
+import { getDrawDefinition } from '../../../drawEngine';
+import { makeDeepCopy, numericSort } from '../../../utilities';
+import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
+import { getStructureSeedAssignments } from '../../../drawEngine/getters/structureGetter';
+import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { getMatchUpType, getMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor';
 
 import {
   getRoundMatchUps,
   getCollectionPositionMatchUps
-} from 'src/drawEngine/accessors/matchUpAccessor';
-import { BYE } from 'src/constants/matchUpStatusConstants';
+} from '../../../drawEngine/accessors/matchUpAccessor';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 /*
   return all matchUps within a structure and its child structures

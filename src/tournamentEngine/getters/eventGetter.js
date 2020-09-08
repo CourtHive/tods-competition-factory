@@ -1,4 +1,4 @@
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function findEvent({tournamentRecord, eventId, drawId}) {
   const events = (tournamentRecord && tournamentRecord.Events) || [];

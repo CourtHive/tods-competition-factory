@@ -1,4 +1,4 @@
-import { generateRange, UUID } from 'src/utilities';
+import { generateRange, UUID } from '../../utilities';
 
 export function generateTieMatchUps({tieFormat}) {
   const { collectionDefinitions } = tieFormat || {};

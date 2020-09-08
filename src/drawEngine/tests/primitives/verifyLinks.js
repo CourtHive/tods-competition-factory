@@ -1,4 +1,4 @@
-import { drawEngine } from 'src/drawEngine';
+import { drawEngine } from '../../../drawEngine';
 
 export function verifyLinks({
   linksProfiles=[]

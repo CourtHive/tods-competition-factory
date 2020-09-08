@@ -2,9 +2,9 @@ import { positionByes } from './positionByes';
 import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionParticipants';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
+import { findStructure } from '../../getters/structureGetter';
 
-import { WATERFALL } from 'src/constants/drawDefinitionConstants';
+import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 
 export function automatedPositioning({drawDefinition, structureId}) {
   const { structure, error } = findStructure({ drawDefinition, structureId });

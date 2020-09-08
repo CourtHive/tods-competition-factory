@@ -1,4 +1,4 @@
-import { UUID } from 'src/utilities';
+import { UUID } from '../../utilities';
 
 export const tieFormatDefaults = () => ({
   winCriteria: {

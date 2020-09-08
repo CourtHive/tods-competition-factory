@@ -1,12 +1,11 @@
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
-
 import { directParticipants } from './directParticipants';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from './checkStatusType';
+import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
-import { BYE, COMPLETED, INCOMPLETE } from 'src/constants/matchUpStatusConstants';
-import { SUCCESS } from 'src/constants/resultConstants';
-import { updateTieMatchUpScore } from 'src/drawEngine/accessors/matchUpAccessor/tieMatchUpScore';
+import { BYE, COMPLETED, INCOMPLETE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, score, winningSide } = props;

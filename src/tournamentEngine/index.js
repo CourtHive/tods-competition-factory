@@ -1,5 +1,5 @@
-import { UUID } from 'src/utilities';
-import { makeDeepCopy } from 'src/utilities';
+import { UUID } from '../utilities';
+import { makeDeepCopy } from '../utilities';
 import { drawEngine } from '../drawEngine';
 import { auditEngine } from '../auditEngine';
 
@@ -12,7 +12,7 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];

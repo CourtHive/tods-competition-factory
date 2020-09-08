@@ -5,14 +5,14 @@ import {
     powerOf2,
     randomPop,
     UUID
-} from 'src/utilities';
+} from '../../utilities';
 
 import {
     RANDOM,
     TOP_DOWN,
     BOTTOM_UP,
     WATERFALL
-} from 'src/constants/drawDefinitionConstants';
+} from '../../constants/drawDefinitionConstants';
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 

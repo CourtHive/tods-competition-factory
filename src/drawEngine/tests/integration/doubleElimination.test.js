@@ -1,17 +1,18 @@
 import fs from 'fs';
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
+
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
 import {
   MAIN, DOUBLE_ELIMINATION,
   LOSER, WINNER,
   BOTTOM_UP, TOP_DOWN
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
-import { verifyLinks } from 'src/drawEngine/tests/primitives/verifyLinks';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { verifyLinks } from '../../tests/primitives/verifyLinks';
 
-import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 
 it('can generate and verify double elimination', () => {
   let mainStructureId, consolationStructureId, deciderStructureId;
@@ -97,7 +98,7 @@ it('can write to the file system', () => {
   
   const drawType = DOUBLE_ELIMINATION;
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
 })

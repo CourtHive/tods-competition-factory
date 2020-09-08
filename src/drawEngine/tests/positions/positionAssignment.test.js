@@ -1,16 +1,16 @@
-import { getDrawDefinition, drawEngine } from 'src/drawEngine';
-import { stageEntries } from 'src/drawEngine/getters/stageGetter';
-import { drawStructures } from 'src/drawEngine/getters/structureGetter';
-import { mainDrawWithEntries } from 'src/drawEngine/tests/primitives/primitives';
-import { reset, initialize, mainDrawPositions } from 'src/drawEngine/tests/primitives/primitives';
+import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { stageEntries } from '../../getters/stageGetter';
+import { drawStructures } from '../../getters/structureGetter';
+import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { reset, initialize, mainDrawPositions } from '../../tests/primitives/primitives';
 
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 import {
   MAIN, ROUND_ROBIN, CONTAINER, DIRECT_ACCEPTANCE, WILDCARD
-} from 'src/constants/drawDefinitionConstants';
+} from '../../../constants/drawDefinitionConstants';
 
-import { ERROR, SUCCESS } from 'src/constants/resultConstants';
+import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 

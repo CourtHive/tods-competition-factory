@@ -1,5 +1,5 @@
 import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function deleteDrawDefinitions({tournamentRecord, eventId, drawIds}) {
   let { event } = findEvent({tournamentRecord, eventId});

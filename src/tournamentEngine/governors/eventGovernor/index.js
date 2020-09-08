@@ -12,8 +12,8 @@ import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import { checkInParticipant, checkOutParticipant } from './participantCheckInState';
 import { setDrawParticipantRepresentatives } from './setDrawParticipantRepresentatives';
 
-import { regenerateDrawDefinition } from 'src/tournamentEngine/generators/regenerateDrawDefinition';
-import { generateDrawDefinition } from 'src/tournamentEngine/generators/generateDrawDefinition';
+import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
+import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 
 const eventGovernor = {
   addEvent,

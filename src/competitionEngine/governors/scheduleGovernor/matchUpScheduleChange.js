@@ -1,6 +1,6 @@
-import { getDrawDefinition } from "src/tournamentEngine/getters/eventGetter";
+import { getDrawDefinition } from "../../../tournamentEngine/getters/eventGetter";
 
-import { SUCCESS } from "src/constants/resultConstants";
+import { SUCCESS } from "../../../constants/resultConstants";
 
 export function matchUpScheduleChange(params) {
   const { drawEngine, tournamentRecords } = params;

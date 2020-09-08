@@ -1,8 +1,8 @@
-import { generateRange } from 'src/utilities';
-import { findStructure } from 'src/drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from 'src/drawEngine/getters/positionsGetter';
+import { findStructure } from '../../getters/structureGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
-import { SUCCESS } from 'src/constants/resultConstants';
+import { generateRange } from '../../../utilities';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function initializeStructureSeedAssignments({drawDefinition, structureId, seedsCount}) {
   const { structure } = findStructure({ drawDefinition, structureId });

@@ -1,5 +1,5 @@
-import { makeDeepCopy } from 'src/utilities/makeDeepCopy';
-import { findMatchUp as drawEngineFindMatchUp } from 'src/drawEngine/getters/getMatchUps';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
+import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps';
 
 export function allTournamentMatchUps({tournamentRecord, drawEngine, matchUpFilters, contextFilters}) {
   const { tournamentId } = tournamentRecord;

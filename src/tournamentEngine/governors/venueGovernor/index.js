@@ -2,7 +2,7 @@ import { addVenue } from './addVenue';
 import { addCourt, addCourts } from './addCourt';
 import { deleteVenue, deleteVenues } from './deleteVenue';
 import { deleteCourt, setVenueAddress } from './modifyVenue';
-import { publicFindVenue } from 'src/tournamentEngine/getters/venueGetter';
+import { publicFindVenue } from '../../getters/venueGetter';
 import { modifyCourtAvailability } from './courtAvailability';
 
 const locationGovernor = {

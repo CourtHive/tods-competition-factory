@@ -1,11 +1,12 @@
 import fs from 'fs';
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
-import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
 
-import SEEDING_POLICY from 'src/fixtures/SEEDING_USTA';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
-import { MAIN, ROUND_ROBIN, WATERFALL } from 'src/constants/drawDefinitionConstants';
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+
+import SEEDING_POLICY from '../../../fixtures/SEEDING_USTA';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import { MAIN, ROUND_ROBIN, WATERFALL } from '../../../constants/drawDefinitionConstants';
 
 it('can generate and verify round robin structures', () => {
   let structureId;
@@ -123,7 +124,7 @@ it('can write to the file system', () => {
   const drawDefinition = drawEngine.getState();
   const drawType = ROUND_ROBIN;
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
 });

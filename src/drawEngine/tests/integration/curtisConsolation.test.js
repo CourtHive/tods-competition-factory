@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { drawEngine } from 'src/drawEngine';
-import { generateRange } from 'src/utilities';
-import { MAIN, CONSOLATION, CURTIS } from 'src/constants/drawDefinitionConstants';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
 
-import { verifyStructure } from 'src/drawEngine/tests/primitives/verifyStructure';
-import SEEDING_POLICY from 'src/fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from 'src/fixtures/AVOIDANCE_COUNTRY';
+import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
+import { MAIN, CONSOLATION, CURTIS } from '../../../constants/drawDefinitionConstants';
+import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
+import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId, consolation1stStructureId, consolation2ndStructureId, playoffStructureId;
@@ -110,7 +110,7 @@ it('can write to the file system', () => {
   
   const drawType = CURTIS;
   const fileName = `${drawType}.json`;
-  const dirPath = './src/engines/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile) fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
 })

@@ -1,11 +1,11 @@
-import { makeDeepCopy } from 'src/utilities';
-import { auditEngine } from 'src/auditEngine';
-import { drawEngine } from 'src/drawEngine';
-import { tournamentEngine } from 'src/tournamentEngine';
+import { makeDeepCopy } from '../utilities';
+import { auditEngine } from '../auditEngine';
+import { drawEngine } from '../drawEngine';
+import { tournamentEngine } from '../tournamentEngine';
 
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];

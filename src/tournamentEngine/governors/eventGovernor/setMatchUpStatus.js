@@ -1,5 +1,5 @@
-import { SUCCESS } from 'src/constants/resultConstants';
-import { findEvent } from 'src/tournamentEngine/getters/eventGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { findEvent } from '../../getters/eventGetter';
 
 export function setMatchUpStatus(props) {
   const { drawEngine, event, drawId, matchUpId, matchUpTieId, matchUpFormat, outcome } = props;

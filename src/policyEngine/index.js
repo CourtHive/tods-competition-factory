@@ -1,5 +1,5 @@
-import { makeDeepCopy } from 'src/utilities';
-import { SUCCESS } from 'src/constants/resultConstants';
+import { makeDeepCopy } from '../utilities';
+import { SUCCESS } from '../constants/resultConstants';
 import seedingGovernor from './governors/seedingGovernor';
 import scoringGovernor from './governors/scoringGovernor';
 import policyTemplate from './generators/policyDefinitionTemplate';
