@@ -1,3 +1,9 @@
+/*
+  based on an answer provided by Jeff Ward on StackOverflow; November 2019
+  https://stackoverflow.com/users/1026023/jeff-ward
+  https://stackoverflow.com/questions/105034/how-to-create-guid-uuid?rq=1
+*/
+
 export function UUID() {
   let lut = [];
   
@@ -5,10 +11,10 @@ export function UUID() {
     lut[i] = (i<16?'0':'')+(i).toString(16);
   }
   
-  var d0 = Math.random()*0xffffffff|0;
-  var d1 = Math.random()*0xffffffff|0;
-  var d2 = Math.random()*0xffffffff|0;
-  var d3 = Math.random()*0xffffffff|0;
+  const d0 = Math.random()*0xffffffff|0;
+  const d1 = Math.random()*0xffffffff|0;
+  const d2 = Math.random()*0xffffffff|0;
+  const d3 = Math.random()*0xffffffff|0;
   // eslint-disable-next-line no-mixed-operators
   return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
     // eslint-disable-next-line no-mixed-operators
