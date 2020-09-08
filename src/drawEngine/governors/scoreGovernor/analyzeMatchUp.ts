@@ -3,16 +3,7 @@ import { analyzeSet } from './analyzeSet';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 
-interface MatchAnalysisInterface {
-   matchUp: any;
-   sideNumber: number;
-   setNumber: number;
-   isTiebreakValue: boolean;
-   isPointValue: boolean;
-   matchUpFormat: any;
-}
-
-export function analyzeMatchUp(props: MatchAnalysisInterface) {
+export function analyzeMatchUp(props) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } = props || {};
   let { matchUpFormat } = props || {};
 

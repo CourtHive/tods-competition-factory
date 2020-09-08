@@ -34,27 +34,12 @@ it('correctly calculates high tiebreak values with NOAD', () => {
   tiebreakTest({ tiebreakNoAd: true, isSide1: false, lowValue: '99', tiebreakTo: 7, expectation: [7, 6] });
 });
 
-interface SetScoreTestParams {
-  isSide1: boolean;
-  lowValue: string;
-  setTo: number;
-  tiebreakAt?: number;
-  expectation: number[];
-}
-
-function setScoreTest(input: SetScoreTestParams) {
+function setScoreTest(input) {
   let result = getSetComplement({...input});
   expect(result).toEqual(input.expectation);
 }
 
-interface TiebreakTestParams {
-  isSide1: boolean;
-  lowValue: string;
-  tiebreakTo: number;
-  tiebreakNoAd?: boolean;
-  expectation: number[];
-}
-function tiebreakTest(input: TiebreakTestParams) {
+function tiebreakTest(input) {
   let result = getTiebreakComplement({...input});
   expect(result).toEqual(input.expectation);
 }

@@ -1,9 +1,4 @@
-interface SetAnalysisInterface {
-  setObject: any;
-  matchUpScoringFormat: any;
-}
-
-export function analyzeSet(props: SetAnalysisInterface) {
+export function analyzeSet(props) {
   const {setObject, matchUpScoringFormat} = props;
   const { setNumber } = setObject || {};
   const { bestOf } = matchUpScoringFormat || {};

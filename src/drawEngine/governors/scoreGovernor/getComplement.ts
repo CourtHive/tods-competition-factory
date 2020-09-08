@@ -1,11 +1,4 @@
-interface ScoreParams {
-  isSide1?: boolean;
-  lowValue: string;
-  setTo: number;
-  tiebreakAt?: number;
-}
-
-export const getSetComplement = ( props: ScoreParams ) => {
+export const getSetComplement = (props) => {
   const { isSide1, lowValue, setTo, tiebreakAt } = props;
   let valueAsNumber = parseInt(lowValue);
   if (valueAsNumber?.toString().length > 2) {
@@ -27,14 +20,7 @@ export const getSetComplement = ( props: ScoreParams ) => {
   return [side1Result, side2Result];
 };
 
-interface TiebreakScoreParams {
-  isSide1?: boolean;
-  lowValue: string;
-  tiebreakTo: number;
-  tiebreakNoAd?: boolean;
-}
-
-export const getTiebreakComplement = ( props: TiebreakScoreParams ) => {
+export const getTiebreakComplement = (props) => {
   const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = props;
   let valueAsNumber = parseInt(lowValue);
 
@@ -54,13 +40,7 @@ export const getTiebreakComplement = ( props: TiebreakScoreParams ) => {
   return [side1Result, side2Result];
 };
 
-interface HighTiebreakValue {
-  lowValue: number,
-  NoAD?: boolean,
-  tiebreakTo: number
-}
-
-function getHighTiebreakValue(props: HighTiebreakValue) {
+function getHighTiebreakValue(props) {
   const { lowValue, NoAD, tiebreakTo } = props;
   const winBy = NoAD ? 1 : 2;
   if (lowValue + 1 >= tiebreakTo) { return lowValue + winBy; }
