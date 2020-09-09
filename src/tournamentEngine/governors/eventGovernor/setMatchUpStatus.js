@@ -2,10 +2,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { findEvent } from '../../getters/eventGetter';
 
 export function setMatchUpStatus(props) {
-  const { drawEngine, event, drawId, matchUpId, matchUpTieId, matchUpFormat, outcome } = props;
+  const { drawEngine, drawDefinition, event, drawId, matchUpId, matchUpTieId, matchUpFormat, outcome } = props;
   let errors = [];
 
-  if (matchUpFormat) { drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId }); }
+  if (matchUpFormat) {
+    drawEngine
+      .setState(drawDefinition)
+      .setMatchUpFormat({ matchUpFormat, matchUpId });
+  }
 
   const { errors: setMatchUpStatusErrors } = drawEngine.setMatchUpStatus({
     matchUpId,
