@@ -1,5 +1,3 @@
-import moment from "moment";
-
 export function isDate(dateArg) {
    if (typeof dateArg == 'boolean') return false;
    var t = (dateArg instanceof Date) ? dateArg : !isNaN(dateArg) ? new Date(dateArg) : false;
@@ -103,16 +101,6 @@ export function dateRange(startDt, endDt) {
       return (offsetDate(minDate) <= offsetDate(maxDate));
    }
 }
-
-const dateFormat = 'YYYY-MM-DD';
-function momentFormatter(format) {
-   return {
-      formatDate: date => moment(date).format(format),
-      parseDate: str => moment(str, format).toDate(),
-      placeholder: format,
-   };
-}
-export const momentFormat = momentFormatter(dateFormat);
 
 // returns 2020-01-01T00:00:00.000Z
 export function isoDateString(date) {
@@ -271,5 +259,5 @@ function zeroPad(number) { return number.toString()[1] ? number : "0" + number; 
 
 export const dateTime = {
    convertTime, DateHHMM, formatDate, offsetDate, offsetTime, futureDate,
-   currentUTCDate, getDateByWeek, ymd2date, timeUTC, momentFormat
+   currentUTCDate, getDateByWeek, ymd2date, timeUTC
 };
