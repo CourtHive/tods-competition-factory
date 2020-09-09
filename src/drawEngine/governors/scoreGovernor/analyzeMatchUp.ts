@@ -1,7 +1,7 @@
 import { analyzeSet } from './analyzeSet';
 
-// import { matchUpFormatCode } from 'tods-matchup-format-code';
-let { matchUpFormatCode } = require('tods-matchup-format-code');
+import { matchUpFormatCode } from 'tods-matchup-format-code';
+// let { matchUpFormatCode } = require('tods-matchup-format-code');
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 interface MatchAnalysisInterface {

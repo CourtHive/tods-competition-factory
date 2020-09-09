@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "./dist/",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,6 +13,7 @@
     "baseUrl": "src",
   },
   "include": [
-    "src"
+    "src",
+    "index.d.ts"
   ]
 }
