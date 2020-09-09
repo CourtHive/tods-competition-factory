@@ -1,6 +1,8 @@
 src
 .gitignore
-babel.config
+tsconfig.json
+babel.config.js
+webpack.config.js
 jsconfig.json
 node_modules
 *.code-workspace
