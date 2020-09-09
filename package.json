@@ -15,7 +15,10 @@
   },
   "main": "dist/index.min.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "dev": "webpack --mode development",
+    "start": "webpack-dev-server --mode development --open",
+    "build": "webpack --mode production"
   },
   "repository": {
     "type": "git",
@@ -35,12 +38,12 @@
     "ts-loader": "^8.0.3",
     "typescript": "^4.0.2",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
     "@types/jest": "^26.0.13",
     "faker": "^5.1.0",
-    "moment": "^2.27.0",
     "tods-matchup-format-code": "^1.0.6"
   },
   "jest": {
