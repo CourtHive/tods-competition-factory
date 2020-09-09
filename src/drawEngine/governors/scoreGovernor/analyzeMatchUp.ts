@@ -1,9 +1,19 @@
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { analyzeSet } from './analyzeSet';
 
-// TODO: what about checking array of sets are in order? ( setNumber )
+// import { matchUpFormatCode } from 'tods-matchup-format-code';
+let { matchUpFormatCode } = require('tods-matchup-format-code');
 
-export function analyzeMatchUp(props) {
+// TODO: what about checking array of sets are in order? ( setNumber )
+interface MatchAnalysisInterface {
+  matchUp: any;
+  sideNumber: number;
+  setNumber: number;
+  isTiebreakValue: boolean;
+  isPointValue: boolean;
+  matchUpFormat: any;
+}
+
+export function analyzeMatchUp(props: MatchAnalysisInterface) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } = props || {};
   let { matchUpFormat } = props || {};
 
@@ -13,11 +23,11 @@ export function analyzeMatchUp(props) {
 
   const setsCount = matchUp?.sets?.length;
   const setIndex = setNumber && setNumber - 1;
-  const isExistingSet = !!matchUp?.sets?.find((set, index) => set.setNumber === setNumber && index === setIndex);
-  const completedSets = matchUp?.sets?.filter(set => set?.winningSide) || [];
+  const isExistingSet = !!matchUp?.sets?.find((set: any, index: number) => set.setNumber === setNumber && index === setIndex);
+  const completedSets = matchUp?.sets?.filter((set: any) => set?.winningSide) || [];
   const completedSetsCount = completedSets?.length || 0;
   const setsFollowingCurrent = (setNumber && matchUp?.sets?.slice(setNumber)) || [];
-  const isLastSetWithValues = !!(setsCount && setNumber && setsFollowingCurrent?.reduce((noValues, set) => {
+  const isLastSetWithValues = !!(setsCount && setNumber && setsFollowingCurrent?.reduce((noValues: boolean, set: any) => {
     return (
       !set ||
       (
@@ -31,7 +41,7 @@ export function analyzeMatchUp(props) {
       && noValues;
   }, true));
 
-  const setObject = setNumber <= setsCount && matchUp?.sets.find((set) => set.setNumber === setNumber);
+  const setObject = setNumber <= setsCount && matchUp?.sets.find((set: any) => set.setNumber === setNumber);
   const specifiedSetAnalysis = analyzeSet({ setObject, matchUpScoringFormat });
   const {
     isCompletedSet,
@@ -52,10 +62,10 @@ export function analyzeMatchUp(props) {
   const hasExistingValue = !!existingValue;
 
   const completedSetsHaveValidOutcomes = completedSets &&
-    completedSets.map((setObject) => analyzeSet({ setObject, matchUpScoringFormat}).isValidSetOutcome)
-    .reduce((valid, validOutcome) => valid && validOutcome, true);
+    completedSets.map((setObject: any) => analyzeSet({ setObject, matchUpScoringFormat}).isValidSetOutcome)
+    .reduce((valid: boolean, validOutcome: boolean) => valid && validOutcome, true);
 
-  const setsWinCounts = completedSets.reduce((counts, set) => {
+  const setsWinCounts = completedSets.reduce((counts: number[], set: any) => {
     const { winningSide } = set;
     const winningSideIndex = winningSide - 1;
     counts[winningSideIndex]++;
