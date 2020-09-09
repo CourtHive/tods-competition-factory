@@ -1,6 +1,6 @@
 {
   "name": "tods-competition-factory",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Create and mutate TODS compliant tournament objects",
   "keywords": [
     "TODS",
@@ -13,7 +13,7 @@
     "url": "https://github.com/CourtHive/CompetitionFactory/issues",
     "email": "support@CourtHive.com"
   },
-  "main": "bundle/index.min.js",
+  "main": "dist/index.min.js",
   "scripts": {
     "test": "jest"
   },
