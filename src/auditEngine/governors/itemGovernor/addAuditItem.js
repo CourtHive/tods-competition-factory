@@ -1,3 +1,3 @@
-export function addAuditItem({auditTrail, auditData}) {
+export function addAuditItem({ auditTrail, auditData }) {
   auditTrail.push(auditData);
 }

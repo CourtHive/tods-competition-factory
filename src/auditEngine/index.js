@@ -7,9 +7,9 @@ let auditTrail = [];
 export const auditEngine = function() {
   let fx = {};
 
-  fx.reset = () => auditTrail = [];
+  fx.reset = () => (auditTrail = []);
   fx.getState = () => makeDeepCopy(auditTrail);
-  fx.devContext = (isDev) => { devContext = isDev; return fx; }
+  fx.devContext = isDev => { devContext = isDev; return fx; }
   
   importGovernors([
     itemGovernor
