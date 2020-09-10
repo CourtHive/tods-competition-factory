@@ -7,39 +7,36 @@ import { SINGLES } from '../../constants/eventConstants';
 let result;
 
 it('can add events to a tournament records', () => {
-  let {
-    tournamentRecord,
-    participants
-  }= tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32
+    participantsCount: 32,
   });
 
   tournamentEngine.setState(tournamentRecord);
 
-  let event = {
+  const event = {
     eventName: 'Test Event',
-    eventType: SINGLES
+    eventType: SINGLES,
   };
 
   result = tournamentEngine.addEvent({ event });
-  let { Event, success } = result;
-  let { eventId } = Event;
+  const { Event, success } = result;
+  const { eventId } = Event;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p=>p.participantId);
-  result = tournamentEngine.addEventEntries({eventId, participantIds});
-  expect(result).toEqual(SUCCESS)
+  const participantIds = participants.map(p => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result).toEqual(SUCCESS);
 
-  let values = {
+  const values = {
     automated: true,
     drawSize: 32,
     eventId,
-    event: Event
-  }
-  let { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
+    event: Event,
+  };
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 
-  result = tournamentEngine.addDrawDefinition({eventId, drawDefinition});
-  expect(result).toEqual(SUCCESS)
+  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+  expect(result).toEqual(SUCCESS);
 });

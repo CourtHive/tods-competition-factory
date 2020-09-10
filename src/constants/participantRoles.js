@@ -3,5 +3,7 @@ export const OFFICIAL = 'OFFICIAL';
 export const COMPETITOR = 'COMPETITOR';
 
 export const participantRoles = {
-  OFFICIAL, COMPETITOR, MEDICAL
+  OFFICIAL,
+  COMPETITOR,
+  MEDICAL,
 };

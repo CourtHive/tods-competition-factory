@@ -4,12 +4,12 @@ import { matchUpDuration } from './matchUpDuration';
 import { scheduledMatchUpTime } from './scheduledTime';
 import { matchUpAssignedCourtId } from './courtAssignment';
 
-export function getMatchUpScheduleDetails({matchUp}) {
-  const { milliseconds, time } = matchUpDuration({matchUp});
-  const { scheduledTime } = scheduledMatchUpTime({matchUp});
-  const { startTime } = matchUpStartTime({matchUp});
-  const { endTime } = matchUpEndTime({matchUp});
-  const { courtId } = matchUpAssignedCourtId({matchUp});
+export function getMatchUpScheduleDetails({ matchUp }) {
+  const { milliseconds, time } = matchUpDuration({ matchUp });
+  const { scheduledTime } = scheduledMatchUpTime({ matchUp });
+  const { startTime } = matchUpStartTime({ matchUp });
+  const { endTime } = matchUpEndTime({ matchUp });
+  const { courtId } = matchUpAssignedCourtId({ matchUp });
 
   const schedule = {
     time,
@@ -17,7 +17,7 @@ export function getMatchUpScheduleDetails({matchUp}) {
     startTime,
     endTime,
     milliseconds,
-    scheduledTime
+    scheduledTime,
   };
 
   return { schedule };

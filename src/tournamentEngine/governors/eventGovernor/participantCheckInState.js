@@ -12,14 +12,22 @@ export function checkOutParticipant(props) {
 }
 
 function participantCheckInAction({
-  tournamentRecord, drawEngine,
-  drawId, matchUpId, participantId,
-  matchUp, method
+  tournamentRecord,
+  drawEngine,
+  drawId,
+  matchUpId,
+  participantId,
+  matchUp,
+  method,
 }) {
-  if (matchUp && !drawId) { ({drawId} = matchUp); }
-  if (matchUp && !matchUpId) { ({matchUpId} = matchUp); }
-  
-  const { event, drawDefinition } = findEvent({tournamentRecord, drawId});
+  if (matchUp && !drawId) {
+    ({ drawId } = matchUp);
+  }
+  if (matchUp && !matchUpId) {
+    ({ matchUpId } = matchUp);
+  }
+
+  const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
 
   let errors = [];
 
@@ -28,20 +36,22 @@ function participantCheckInAction({
     .setParticipants(tournamentRecord.participants);
 
   if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
- 
+
   if (event) {
-    const result = drawEngine[method]({matchUpId, participantId});
+    const result = drawEngine[method]({ matchUpId, participantId });
 
     if (result.success) {
       event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
-        return drawDefinition.drawId === drawId ? drawEngine.getState() : drawDefinition;   
+        return drawDefinition.drawId === drawId
+          ? drawEngine.getState()
+          : drawDefinition;
       });
     } else {
-      errors.push(result.error); 
+      errors.push(result.error);
     }
   } else {
     errors.push({ error: 'event not found' });
   }
 
-  return (errors && errors.length) ? { errors } : SUCCESS;
+  return errors && errors.length ? { errors } : SUCCESS;
 }

@@ -1,11 +1,9 @@
 import { unique, UUID } from '../../utilities';
-import {
-  ROUND_OUTCOME
-} from '../../constants/drawDefinitionConstants';
+import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 
 export const structureTemplate = ({
   stage,
-  matchUps=[],
+  matchUps = [],
   structures,
   stageOrder,
   roundLimit,
@@ -15,16 +13,16 @@ export const structureTemplate = ({
   seedingProfile,
   structureIndex,
   qualifyingRound,
-  stageSequence=1,
-  seedAssignments=[],
-  finishingPosition=ROUND_OUTCOME
+  stageSequence = 1,
+  seedAssignments = [],
+  finishingPosition = ROUND_OUTCOME,
 }) => {
-  let structure = {
+  const structure = {
     structureName,
     stageSequence,
     finishingPosition,
     seedAssignments,
-    structureId: UUID()
+    structureId: UUID(),
   };
 
   if (stage) structure.stage = stage;
@@ -34,19 +32,21 @@ export const structureTemplate = ({
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) structure.seedingProfile = seedingProfile;
   if (qualifyingRound) structure.qualifyingRound = qualifyingRound;
-  
-  const positionAssignments = [].concat(...matchUps.map(matchUp => matchUp.drawPositions)).filter(f=>f);
-  
+
+  const positionAssignments = []
+    .concat(...matchUps.map(matchUp => matchUp.drawPositions))
+    .filter(f => f);
+
   if (structures) {
     structure.structures = structures;
   } else {
-    structure.matchUps = matchUps;   
+    structure.matchUps = matchUps;
     structure.positionAssignments = unique(positionAssignments)
       .sort((a, b) => a - b)
       .map(drawPosition => ({ drawPosition }));
     if (structureIndex) structure.structureIndex = structureIndex;
   }
-  
+
   return structure;
 };
 

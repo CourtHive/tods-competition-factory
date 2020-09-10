@@ -8,8 +8,10 @@
 import { assignSeed } from './seedAssignment';
 
 import {
-  setStageDrawSize, setStageAlternates,
-  setStageWildcardsCount, setStageQualifiersCount,
+  setStageDrawSize,
+  setStageAlternates,
+  setStageWildcardsCount,
+  setStageQualifiersCount,
 } from './stageEntryCounts';
 import { addEntry, addDrawEntries } from './addingDrawEntries';
 import { removeEntry } from './removingDrawEntries';
@@ -19,7 +21,7 @@ const entryGovernor = {
   addDrawEntries,
   assignSeed,
   removeEntry,
-  
+
   setStageDrawSize,
   setStageAlternates,
   setStageWildcardsCount,

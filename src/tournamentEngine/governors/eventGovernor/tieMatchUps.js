@@ -13,7 +13,10 @@ export function assignTieMatchUpParticipantId(props) {
   const { tournamentRecord, drawDefinition, drawId, event } = props;
   const { participantId, sideNumber, sideMember, tieMatchUpId } = props;
 
-  const { matchUp: tieMatchUp } = findMatchUp({ drawDefinition, matchUpId: tieMatchUpId });
+  const { matchUp: tieMatchUp } = findMatchUp({
+    drawDefinition,
+    matchUpId: tieMatchUpId,
+  });
   if (event && tieMatchUp) {
     const side = tieMatchUp.Sides[sideNumber - 1];
     if (tieMatchUp.matchUpType === DOUBLES) {
@@ -36,24 +39,27 @@ export function assignTieMatchUpParticipantId(props) {
 
   function addParticipantIdToPair({ side, sideMember }) {
     if (!side.participant) side.participant = { individualParticipants: [] };
-    individualParticipants = individualParticipants || side.participant.individualParticipants;
+    individualParticipants =
+      individualParticipants || side.participant.individualParticipants;
     individualParticipants[sideMember - 1] = { participantId };
 
-    const sideParticipantsCount = individualParticipants.filter((p) => p && p.participantId).length;
+    const sideParticipantsCount = individualParticipants.filter(
+      p => p && p.participantId
+    ).length;
 
     if (sideParticipantsCount === 2) {
       const sideParticipantsIdHash = pairHash(individualParticipants);
 
       const tournamentParticipants = tournamentRecord.participants || [];
       const doublesPairsHashes = tournamentParticipants
-        .filter((participant) => participant.participantType === PAIR)
-        .map((pairParticipant) => {
+        .filter(participant => participant.participantType === PAIR)
+        .map(pairParticipant => {
           const hash = pairHash(pairParticipant.individualParticipants);
           return { [hash]: pairParticipant.participantId };
         });
       const doublesPairLookup = Object.assign({}, ...doublesPairsHashes);
       const sideParticipantId = doublesPairLookup[sideParticipantsIdHash];
-      
+
       if (sideParticipantId) {
         side.participantId = sideParticipantId;
       } else {
@@ -62,14 +68,18 @@ export function assignTieMatchUpParticipantId(props) {
           participantId: side.participantId,
           participantType: PAIR,
           participantRole: COMPETITOR,
-          name: side.participant.individualParticipants.map(personFamilyName).join('/'),
-          individualParticipants
+          name: side.participant.individualParticipants
+            .map(personFamilyName)
+            .join('/'),
+          individualParticipants,
         };
         tournamentRecord.participants.push(newPairParticipant);
       }
       delete side.participant;
     } else {
-      side.participant.individualParticipants[sideMember - 1] = { participantId };
+      side.participant.individualParticipants[sideMember - 1] = {
+        participantId,
+      };
     }
 
     return SUCCESS;
@@ -77,16 +87,19 @@ export function assignTieMatchUpParticipantId(props) {
 
   function personFamilyName(participant) {
     const { participantId } = participant;
-    const participantData = tournamentRecord.participants.reduce((data, candidate) => {
-      return candidate.participantId === participantId ? candidate : data;
-    }, undefined);
+    const participantData = tournamentRecord.participants.reduce(
+      (data, candidate) => {
+        return candidate.participantId === participantId ? candidate : data;
+      },
+      undefined
+    );
     const person = participantData && participantData.person;
     return person && person.standardFamilyName;
   }
 
   function pairHash(pair) {
     return pair
-      .map((participant) => participant.participantId)
+      .map(participant => participant.participantId)
       .sort()
       .join('|');
   }
@@ -94,16 +107,17 @@ export function assignTieMatchUpParticipantId(props) {
   function removeParticipantIdFromPair({ side, sideMember }) {
     side.participantId = undefined;
     if (!side.participant) side.participant = { individualParticipants: [] };
-    side.participant.individualParticipants = individualParticipants
-      .map((participant, index) => {
-        return (index + 1 === sideMember) ? undefined : participant;
-      });
+    side.participant.individualParticipants = individualParticipants.map(
+      (participant, index) => {
+        return index + 1 === sideMember ? undefined : participant;
+      }
+    );
 
     return SUCCESS;
   }
 
   function updateDrawDefinition() {
-    event.drawDefinitions = event.drawDefinitions.map((candidate) => {
+    event.drawDefinitions = event.drawDefinitions.map(candidate => {
       return candidate.drawId === drawId ? drawDefinition : candidate;
     });
   }

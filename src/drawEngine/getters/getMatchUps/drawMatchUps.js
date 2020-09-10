@@ -9,44 +9,54 @@ export function getAllDrawMatchUps(props) {
     completedMatchUps,
     upcomingMatchUps,
     pendingMatchUps,
-    byeMatchUps
+    byeMatchUps,
   } = getDrawMatchUps(props);
-  const matchUps  = [].concat(...completedMatchUps, ...upcomingMatchUps, ...pendingMatchUps, ...byeMatchUps);
+  const matchUps = [].concat(
+    ...completedMatchUps,
+    ...upcomingMatchUps,
+    ...pendingMatchUps,
+    ...byeMatchUps
+  );
   return { matchUps };
 }
 
 export function getDrawMatchUps({
-  drawDefinition, tournamentParticipants,
-  requireParticipants, roundFilter,
-  inContext, includeByeMatchUps,
-  context, matchUpFilters, contextFilters
+  drawDefinition,
+  tournamentParticipants,
+  requireParticipants,
+  roundFilter,
+  inContext,
+  includeByeMatchUps,
+  context,
+  matchUpFilters,
+  contextFilters,
 }) {
   let allByeMatchUps = [];
   let allPendingMatchUps = [];
   let allUpcomingMatchUps = [];
   let allAbandonedMatchUps = [];
   let allCompletedMatchUps = [];
-  
-  const { structures } = drawStructures({drawDefinition});
-  
+
+  const { structures } = drawStructures({ drawDefinition });
+
   structures.forEach(structure => {
     const {
-      byeMatchUps=[],
+      byeMatchUps = [],
       pendingMatchUps,
       upcomingMatchUps,
       completedMatchUps,
       abandonedMatchUps,
     } = structureMatchUps({
-        structure,
-        inContext,
-        roundFilter,
-        context,
-        matchUpFilters,
-        contextFilters,
-        includeByeMatchUps,
-        requireParticipants,
-        tournamentParticipants,
-      });
+      structure,
+      inContext,
+      roundFilter,
+      context,
+      matchUpFilters,
+      contextFilters,
+      includeByeMatchUps,
+      requireParticipants,
+      tournamentParticipants,
+    });
 
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
     allPendingMatchUps = allPendingMatchUps.concat(...pendingMatchUps);
@@ -54,14 +64,14 @@ export function getDrawMatchUps({
     allAbandonedMatchUps = allAbandonedMatchUps.concat(...abandonedMatchUps);
     allCompletedMatchUps = allCompletedMatchUps.concat(...completedMatchUps);
   });
-    
-  let matchUpGroups = {
+
+  const matchUpGroups = {
     byeMatchUps: allByeMatchUps,
     pendingMatchUps: allPendingMatchUps,
     upcomingMatchUps: allUpcomingMatchUps,
     abandonedMatchUps: allAbandonedMatchUps,
-    completedMatchUps: allCompletedMatchUps
+    completedMatchUps: allCompletedMatchUps,
   };
-  
+
   return matchUpGroups;
 }

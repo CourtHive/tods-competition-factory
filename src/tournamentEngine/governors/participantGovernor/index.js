@@ -1,16 +1,14 @@
 import { rankByRatings } from './rankByRatings';
 import { makeDeepCopy } from '../../../utilities';
 import { addParticipants } from './addParticipants';
-import { mergeParticipants } from './mergeParticipants'
+import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { findTournamentParticipant } from '../../getters/participantGetter';
-import {
-  generateTeamsFromParticipantAttribute
-} from '../../generators/teamsGenerator';
+import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import {
   addParticipantsToGrouping,
   removeParticipantsFromGroup,
-  removeParticipantsFromAllTeams
+  removeParticipantsFromAllTeams,
 } from './participantGroupings';
 import {
   modifyParticipant,
@@ -19,10 +17,13 @@ import {
 import { setParticipantScaleItem } from './scaleItems';
 import { setParticipantScaleItems } from './scaleItems';
 
-const findTournamentParticipantCopy = ({tournamentRecord, participantId}) => {
-  const { participant } = findTournamentParticipant({tournamentRecord, participantId});
+const findTournamentParticipantCopy = ({ tournamentRecord, participantId }) => {
+  const { participant } = findTournamentParticipant({
+    tournamentRecord,
+    participantId,
+  });
   return { participant: makeDeepCopy(participant) };
-}
+};
 
 const participantGovernor = {
   addParticipants,
@@ -42,7 +43,7 @@ const participantGovernor = {
   setParticipantScaleItems,
   participantsSignInStatus,
 
-  findParticipant: findTournamentParticipantCopy
+  findParticipant: findTournamentParticipantCopy,
 };
 
 export default participantGovernor;

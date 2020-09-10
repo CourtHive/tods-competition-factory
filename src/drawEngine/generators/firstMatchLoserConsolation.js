@@ -3,46 +3,49 @@ import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import {
-  MAIN, CONSOLATION, TOP_DOWN, LOSER
+  MAIN,
+  CONSOLATION,
+  TOP_DOWN,
+  LOSER,
 } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function firstMatchLoserConsolation(props) {
-  let { 
-    stage=MAIN,
+  const {
+    stage = MAIN,
     structureName,
     drawDefinition,
-    stageSequence=1,
-    finishingPositionOffset
+    stageSequence = 1,
+    finishingPositionOffset,
   } = props;
-  
-  const drawSize = stageDrawPositionsCount({stage, drawDefinition});
+
+  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
   const mainStructure = structureTemplate({
     stage: MAIN,
     matchUps,
     stageSequence,
-    structureName: structureName || MAIN
+    structureName: structureName || MAIN,
   });
 
   drawDefinition.structures.push(mainStructure);
-  
+
   const consolationDrawPositions = drawSize / 2;
 
-  const { matchUps: consolationMatchUps } = treeMatchUps({ 
+  const { matchUps: consolationMatchUps } = treeMatchUps({
     drawSize: consolationDrawPositions,
-    finishingPositionOffset: consolationDrawPositions
+    finishingPositionOffset: consolationDrawPositions,
   });
-  
+
   const consolationStructure = structureTemplate({
     stage: CONSOLATION,
     matchUps: consolationMatchUps,
     stageSequence: 1,
-    structureName: CONSOLATION
+    structureName: CONSOLATION,
   });
 
   drawDefinition.structures.push(consolationStructure);
-  
+
   const link = {
     linkSubject: LOSER,
     source: {
@@ -52,11 +55,14 @@ export function firstMatchLoserConsolation(props) {
     target: {
       roundNumber: 1,
       feedProfile: TOP_DOWN,
-      structureId: consolationStructure.structureId
-    }
+      structureId: consolationStructure.structureId,
+    },
   };
-  
-  drawDefinition.links.push(link); 
-  
-  return Object.assign({ mainStructure, consolationStructure, links: drawDefinition.links }, SUCCESS);
+
+  drawDefinition.links.push(link);
+
+  return Object.assign(
+    { mainStructure, consolationStructure, links: drawDefinition.links },
+    SUCCESS
+  );
 }

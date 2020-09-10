@@ -9,7 +9,7 @@ export const courtTemplate = () => ({
   surfaceDate: null,
   dateAvailability: [],
   onlineProfiles: [], // { type: '', identifier: 'URL' },
-  notes: null
+  notes: null,
 });
 
 export default courtTemplate;

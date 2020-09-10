@@ -1,6 +1,6 @@
 import { SUCCESS } from '../../constants/resultConstants';
 
-export function findEvent({tournamentRecord, eventId, drawId}) {
+export function findEvent({ tournamentRecord, eventId, drawId }) {
   const events = (tournamentRecord && tournamentRecord.Events) || [];
   if (eventId) {
     const event = events.reduce((event, candidate) => {
@@ -10,9 +10,12 @@ export function findEvent({tournamentRecord, eventId, drawId}) {
   } else if (drawId) {
     const { event, drawDefinition } = events.reduce((result, candidate) => {
       const drawDefinitions = (candidate && candidate.drawDefinitions) || [];
-      let drawDefinition = drawDefinitions.reduce((drawDefinition, candidate) => {
-        return candidate.drawId === drawId ? candidate : drawDefinition;
-      }, undefined);
+      const drawDefinition = drawDefinitions.reduce(
+        (drawDefinition, candidate) => {
+          return candidate.drawId === drawId ? candidate : drawDefinition;
+        },
+        undefined
+      );
       return drawDefinition ? { event: candidate, drawDefinition } : result;
     }, {});
 
@@ -21,18 +24,24 @@ export function findEvent({tournamentRecord, eventId, drawId}) {
   return {};
 }
 
-export function getDrawDefinition({tournamentRecord, drawId}) {
+export function getDrawDefinition({ tournamentRecord, drawId }) {
   if (!drawId) {
-    return { error: 'Missing drawId' }
-  };
+    return { error: 'Missing drawId' };
+  }
 
-  const target = (tournamentRecord.Events || [])
-    .reduce((target, event) => {
-      let candidate = (event.drawDefinitions || []).reduce((drawDefinition, candidate) => {
+  const target = (tournamentRecord.Events || []).reduce((target, event) => {
+    const candidate = (event.drawDefinitions || []).reduce(
+      (drawDefinition, candidate) => {
         return candidate.drawId === drawId ? candidate : drawDefinition;
-      }, undefined);
-      return candidate && candidate.drawId === drawId ? { event, drawDefinition: candidate } : target;
-    }, undefined);
+      },
+      undefined
+    );
+    return candidate && candidate.drawId === drawId
+      ? { event, drawDefinition: candidate }
+      : target;
+  }, undefined);
 
-  return target ? { ...target, SUCCESS } : { error: 'drawDefinition not found' };
+  return target
+    ? { ...target, SUCCESS }
+    : { error: 'drawDefinition not found' };
 }

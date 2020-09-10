@@ -1,6 +1,6 @@
 import { END_TIME } from '../../../constants/timeItemConstants';
 
-export function matchUpEndTime({matchUp}) {
+export function matchUpEndTime({ matchUp }) {
   const timeItems = matchUp.timeItems || [];
 
   const endTimeItem = timeItems.reduce((endTimeItem, timeItem) => {

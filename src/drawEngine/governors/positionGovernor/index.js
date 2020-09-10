@@ -10,14 +10,14 @@ import { clearDrawPosition } from './positionClear';
 const positionGovernor = {
   clearDrawPosition,
   assignDrawPosition,
-//  assignCollectionPosition,
+  //  assignCollectionPosition,
 
   automatedPositioning,
   assignDrawPositionBye,
- 
+
   // probably not part of drawEngine final
   initializeStructureSeedAssignments,
   getNextSeedBlock,
-}
+};
 
 export default positionGovernor;

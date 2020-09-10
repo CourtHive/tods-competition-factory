@@ -1,10 +1,11 @@
-import { SUCCESS } from "../../../constants/resultConstants";
+import { SUCCESS } from '../../../constants/resultConstants';
 
-export function deleteEvents({tournamentRecord, eventIds}) {
+export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord.Events) return { error: 'No Events' };
 
-  tournamentRecord.Events = (tournamentRecord.Events || [])
-    .filter(event => !eventIds.includes(event.eventId));
+  tournamentRecord.Events = (tournamentRecord.Events || []).filter(
+    event => !eventIds.includes(event.eventId)
+  );
 
   return SUCCESS;
 }

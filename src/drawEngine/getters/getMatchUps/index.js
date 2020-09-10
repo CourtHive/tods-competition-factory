@@ -7,5 +7,5 @@ export { getDrawMatchUps, getAllDrawMatchUps } from './drawMatchUps';
 export {
   getRoundMatchUps,
   publicGetRoundMatchUps,
-  getCollectionPositionMatchUps
+  getCollectionPositionMatchUps,
 } from '../../accessors/matchUpAccessor';

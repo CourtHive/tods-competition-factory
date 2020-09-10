@@ -11,13 +11,16 @@ import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 /*
   return an array of all possible validActions for a given matchUp
 */
-export function matchUpActions({drawDefinition, policyEngine, matchUpId}) {
+export function matchUpActions({ drawDefinition, policyEngine, matchUpId }) {
   const { matchUp, structure } = findMatchUp({ drawDefinition, matchUpId });
-  const { assignedPositions, allPositionsAssigned } = structureAssignedDrawPositions({ structure });
+  const {
+    assignedPositions,
+    allPositionsAssigned,
+  } = structureAssignedDrawPositions({ structure });
   const { drawPositions } = matchUp || {};
   const { structureId } = structure || {};
 
-  let validActions = [];
+  const validActions = [];
   if (!structureId) return { validActions };
 
   const participantAssignedDrawPositions = assignedPositions
@@ -29,45 +32,76 @@ export function matchUpActions({drawDefinition, policyEngine, matchUpId}) {
     .map(assignment => assignment.drawPosition);
 
   const isCollectionMatchUp = matchUp.collectionId;
-  const isByeMatchUp = matchUp.matchUpStatus === BYE || (!isCollectionMatchUp && matchUp.drawPositions
-    .reduce((isByeMatchUp, drawPosition) => {
-      return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
-    }, false));
+  const isByeMatchUp =
+    matchUp.matchUpStatus === BYE ||
+    (!isCollectionMatchUp &&
+      matchUp.drawPositions.reduce((isByeMatchUp, drawPosition) => {
+        return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
+      }, false));
 
-  const matchDrawPositionsAreAssigned = drawPositions && drawPositions.length && drawPositions
-    .reduce((assignedBoolean, drawPosition) => participantAssignedDrawPositions.includes(drawPosition) && assignedBoolean, true);
+  const matchDrawPositionsAreAssigned =
+    drawPositions &&
+    drawPositions.length &&
+    drawPositions.reduce(
+      (assignedBoolean, drawPosition) =>
+        participantAssignedDrawPositions.includes(drawPosition) &&
+        assignedBoolean,
+      true
+    );
 
-  const { links: { source } } = getMatchUpLinks({drawDefinition, matchUp, structureId});
+  const {
+    links: { source },
+  } = getMatchUpLinks({ drawDefinition, matchUp, structureId });
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
   const winnerTargetLink = getTargetLink({ source, subject: WINNER });
 
   if (loserTargetLink || winnerTargetLink) {
-    console.log({source, loserTargetLink, winnerTargetLink});
+    console.log({ source, loserTargetLink, winnerTargetLink });
   }
 
   if (isByeMatchUp) {
-    const nonByeDrawPosition = matchUp.drawPositions.reduce((nonByeDrawPosition, drawPosition) => {
-      return !byeAssignedDrawPositions.includes(drawPosition) ? drawPosition : nonByeDrawPosition;
-    }, undefined);
+    const nonByeDrawPosition = matchUp.drawPositions.reduce(
+      (nonByeDrawPosition, drawPosition) => {
+        return !byeAssignedDrawPositions.includes(drawPosition)
+          ? drawPosition
+          : nonByeDrawPosition;
+      },
+      undefined
+    );
 
-    const participantId = assignedPositions.reduce((participantId, assignment) => {
-      return assignment.drawPosition === nonByeDrawPosition ? assignment.participantId : participantId;
-    }, undefined);
+    const participantId = assignedPositions.reduce(
+      (participantId, assignment) => {
+        return assignment.drawPosition === nonByeDrawPosition
+          ? assignment.participantId
+          : participantId;
+      },
+      undefined
+    );
 
     if (participantId) {
-      return positionActions({drawDefinition, participantId, structureId, drawPosition: nonByeDrawPosition});
+      return positionActions({
+        drawDefinition,
+        participantId,
+        structureId,
+        drawPosition: nonByeDrawPosition,
+      });
     } else {
       return { validActions, isByeMatchUp };
     }
   } else {
     validActions.push({ type: 'REFEREE' });
-    const isInComplete = !isDirectingMatchUpStatus({ matchUpStatus: matchUp.matchUpStatus });
-    const requireAllPositionsAssigned = policyEngine.requireAllPositionsAssigned().required;
-    const scoringActive = !requireAllPositionsAssigned || (allPositionsAssigned);
-    const hasParticipants = matchUp.Sides && matchUp.Sides.filter(side => side && side.participantId).length === 2;
+    const isInComplete = !isDirectingMatchUpStatus({
+      matchUpStatus: matchUp.matchUpStatus,
+    });
+    const requireAllPositionsAssigned = policyEngine.requireAllPositionsAssigned()
+      .required;
+    const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
+    const hasParticipants =
+      matchUp.Sides &&
+      matchUp.Sides.filter(side => side && side.participantId).length === 2;
 
     const readyToScore = matchDrawPositionsAreAssigned || hasParticipants;
-    
+
     if (isInComplete && !isByeMatchUp) {
       validActions.push({ type: 'SCHEDULE' });
     }

@@ -4,5 +4,8 @@ export const PAIR = 'PAIR';
 export const GROUP = 'GROUP';
 
 export const participantTypes = {
-  INDIVIDUAL, TEAM, PAIR, GROUP
+  INDIVIDUAL,
+  TEAM,
+  PAIR,
+  GROUP,
 };

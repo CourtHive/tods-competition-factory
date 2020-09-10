@@ -2,7 +2,10 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../../../drawEngine/getters/structureGetter';
 
 import {
-  TOP_DOWN, BOTTOM_UP, RANDOM, DRAW
+  TOP_DOWN,
+  BOTTOM_UP,
+  RANDOM,
+  DRAW,
 } from '../../../constants/drawDefinitionConstants';
 
 export function getTargetMatchUp({
@@ -10,18 +13,29 @@ export function getTargetMatchUp({
   tournamentParticipants,
   targetLink,
   sourceRoundPosition,
-  sourceRoundMatchUpCount
+  sourceRoundMatchUpCount,
 }) {
   if (!targetLink) return { error: 'no target link' };
-  const { target: { structureId, feedProfile, roundNumber }} = targetLink;
-  const { structure: targetStructure } = findStructure({drawDefinition, structureId});
-  const { matchUps } = getAllStructureMatchUps({structure: targetStructure, tournamentParticipants, inContext: true});
-  const targetRoundMatchUps = matchUps.filter(matchUp => matchUp.roundNumber === roundNumber);
+  const {
+    target: { structureId, feedProfile, roundNumber },
+  } = targetLink;
+  const { structure: targetStructure } = findStructure({
+    drawDefinition,
+    structureId,
+  });
+  const { matchUps } = getAllStructureMatchUps({
+    structure: targetStructure,
+    tournamentParticipants,
+    inContext: true,
+  });
+  const targetRoundMatchUps = matchUps.filter(
+    matchUp => matchUp.roundNumber === roundNumber
+  );
   const targetRoundMatchUpCount = targetRoundMatchUps.length;
- 
+
   const matchUpCountFactor = targetRoundMatchUpCount / sourceRoundMatchUpCount;
   let targetRoundPosition = Math.ceil(matchUpCountFactor * sourceRoundPosition);
-  
+
   if (feedProfile === TOP_DOWN) {
     /*
       TOP_DOWN feed profile implies that the roundPosition in the
@@ -37,16 +51,17 @@ export function getTargetMatchUp({
     /*
       RANDOM feed profile selects a random position from available
     */
-    console.log('not implemented:', { feedProfile })
+    console.log('not implemented:', { feedProfile });
   } else if (feedProfile === DRAW) {
     /*
       targetRoundPosition is undetermined for DRAW feedProfile
     */
-  } else {
   }
-  const matchUp = targetRoundPosition && targetRoundMatchUps.reduce((matchUp, current) => {
-    return current.roundPosition === targetRoundPosition ? current : matchUp;
-  }, undefined);
-  
+  const matchUp =
+    targetRoundPosition &&
+    targetRoundMatchUps.reduce((matchUp, current) => {
+      return current.roundPosition === targetRoundPosition ? current : matchUp;
+    }, undefined);
+
   return { matchUp };
 }

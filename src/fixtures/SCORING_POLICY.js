@@ -1,8 +1,7 @@
 export const SCORING_POLICY = {
   scoring: {
-    requireAllPositionsAssigned: true
-  }
+    requireAllPositionsAssigned: true,
+  },
 };
 
 export default SCORING_POLICY;
-

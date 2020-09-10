@@ -16,7 +16,7 @@ const locationGovernor = {
   deleteCourt,
   modifyCourtAvailability,
 
-  findVenue: publicFindVenue
+  findVenue: publicFindVenue,
 };
 
 export default locationGovernor;

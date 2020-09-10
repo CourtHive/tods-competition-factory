@@ -1,31 +1,32 @@
-import {
-  MAIN, CONSOLATION
-} from '../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
-import { treeMatchUps, feedInMatchUps } from '../../drawEngine/generators/eliminationTree';
+import {
+  treeMatchUps,
+  feedInMatchUps,
+} from '../../drawEngine/generators/eliminationTree';
 
 // export function feedInChampionship({drawDefinition, feedsFromFinal, feedRounds}={}) {
-export function feedInChampionship(props={}) {
-  let { 
-    stage=MAIN,
+export function feedInChampionship(props = {}) {
+  const {
+    stage = MAIN,
     feedRounds,
     structureName,
     drawDefinition,
     feedsFromFinal,
-    stageSequence=1,
-    finishingPositionOffset
+    stageSequence = 1,
+    finishingPositionOffset,
   } = props;
-  
-  const drawSize = stageDrawPositionsCount({stage, drawDefinition});
+
+  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
   const mainStructure = structureTemplate({
     stage: MAIN,
     matchUps,
     structureName: structureName || MAIN,
-    stageSequence
+    stageSequence,
   });
 
   drawDefinition.structures.push(mainStructure);
@@ -36,14 +37,14 @@ export function feedInChampionship(props={}) {
     baseDrawSize,
     feedsFromFinal,
     isConsolation: true,
-    finishingPositionOffset: baseDrawSize
+    finishingPositionOffset: baseDrawSize,
   });
-  
+
   const consolationStructure = structureTemplate({
     stage: CONSOLATION,
     matchUps: consolationMatchUps,
     structureName: CONSOLATION,
-    stageSequence: 1
+    stageSequence: 1,
   });
 
   drawDefinition.structures.push(consolationStructure);
@@ -51,10 +52,13 @@ export function feedInChampionship(props={}) {
   const links = feedInLinks({
     mainStructure,
     consolationStructure,
-    roundsCount
+    roundsCount,
   });
 
   drawDefinition.links = drawDefinition.links.concat(...links);
 
-  return Object.assign({ mainStructure, consolationStructure, links: drawDefinition.links }, SUCCESS);
-};
+  return Object.assign(
+    { mainStructure, consolationStructure, links: drawDefinition.links },
+    SUCCESS
+  );
+}

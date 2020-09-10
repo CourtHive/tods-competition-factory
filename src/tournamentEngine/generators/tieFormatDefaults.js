@@ -2,7 +2,7 @@ import { UUID } from '../../utilities';
 
 export const tieFormatDefaults = () => ({
   winCriteria: {
-    valueGoal: 5
+    valueGoal: 5,
   },
   collectionDefinitions: [
     {
@@ -11,7 +11,7 @@ export const tieFormatDefaults = () => ({
       matchUpType: 'DOUBLES',
       matchUpCount: 3,
       matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-      matchUpValue: 1
+      matchUpValue: 1,
     },
     {
       collectionId: UUID(),
@@ -19,9 +19,9 @@ export const tieFormatDefaults = () => ({
       matchUpType: 'SINGLES',
       matchUpCount: 6,
       matchUpFormat: 'SET3-S:6/TB7',
-      matchUpValue: 1
-    }
-  ]
+      matchUpValue: 1,
+    },
+  ],
 });
 
 export default tieFormatDefaults;

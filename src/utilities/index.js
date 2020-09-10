@@ -10,5 +10,5 @@ export {
   randomPop,
   randomMember,
   shuffleArray,
-  unique
+  unique,
 } from './arrays';

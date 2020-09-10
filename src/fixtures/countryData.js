@@ -3,15 +3,19 @@
 
 export function countryToFlag(isoCode) {
   return isoCode && typeof String.fromCodePoint !== 'undefined'
-    ? isoCode.toUpperCase().replace(/./g, char => String.fromCodePoint(char.charCodeAt(0) + 127397))
+    ? isoCode
+        .toUpperCase()
+        .replace(/./g, char =>
+          String.fromCodePoint(char.charCodeAt(0) + 127397)
+        )
     : isoCode;
 }
 
 export function flagIOC(ioc) {
   const ioc2iso = Object.assign(
-    {}, 
-    ...countries.filter(c=>c.ioc).map(c => ({[c.ioc]: c.iso})
-  ));
+    {},
+    ...countries.filter(c => c.ioc).map(c => ({ [c.ioc]: c.iso }))
+  );
   return countryToFlag(ioc2iso[ioc]);
 }
 
@@ -57,7 +61,12 @@ export const countries = [
   { ioc: '', iso: 'CC', label: 'Cocos (Keeling) Islands', phone: '61' },
   { ioc: 'CGO', iso: 'CD', label: 'Congo, Republic of the', phone: '242' },
   { ioc: 'CAF', iso: 'CF', label: 'Central African Republic', phone: '236' },
-  { ioc: 'COD', iso: 'CG', label: 'Congo, Democratic Republic of the', phone: '243' },
+  {
+    ioc: 'COD',
+    iso: 'CG',
+    label: 'Congo, Democratic Republic of the',
+    phone: '243',
+  },
   { ioc: 'SUI', iso: 'CH', label: 'Switzerland', phone: '41' },
   { ioc: 'CIV', iso: 'CI', label: "Cote d'Ivoire", phone: '225' },
   { ioc: 'COK', iso: 'CK', label: 'Cook Islands', phone: '682' },
@@ -88,7 +97,12 @@ export const countries = [
   { ioc: 'FIN', iso: 'FI', label: 'Finland', phone: '358' },
   { ioc: 'FIJ', iso: 'FJ', label: 'Fiji', phone: '679' },
   { ioc: 'FLK', iso: 'FK', label: 'Falkland Islands (Malvinas)', phone: '500' },
-  { ioc: 'FSM', iso: 'FM', label: 'Micronesia, Federated States of', phone: '691' },
+  {
+    ioc: 'FSM',
+    iso: 'FM',
+    label: 'Micronesia, Federated States of',
+    phone: '691',
+  },
   { ioc: 'FAR', iso: 'FO', label: 'Faroe Islands', phone: '298' },
   { ioc: 'FRA', iso: 'FR', label: 'France', phone: '33', suggested: true },
   { ioc: 'GAB', iso: 'GA', label: 'Gabon', phone: '241' },
@@ -105,13 +119,23 @@ export const countries = [
   { ioc: 'GUD', iso: 'GP', label: 'Guadeloupe', phone: '590' },
   { ioc: 'GEQ', iso: 'GQ', label: 'Equatorial Guinea', phone: '240' },
   { ioc: 'GRE', iso: 'GR', label: 'Greece', phone: '30' },
-  { ioc: '', iso: 'GS', label: 'South Georgia and the South Sandwich Islands', phone: '500' },
+  {
+    ioc: '',
+    iso: 'GS',
+    label: 'South Georgia and the South Sandwich Islands',
+    phone: '500',
+  },
   { ioc: 'GUA', iso: 'GT', label: 'Guatemala', phone: '502' },
   { ioc: 'GUM', iso: 'GU', label: 'Guam', phone: '1-671' },
   { ioc: 'GBS', iso: 'GW', label: 'Guinea-Bissau', phone: '245' },
   { ioc: 'GUY', iso: 'GY', label: 'Guyana', phone: '592' },
   { ioc: 'HKG', iso: 'HK', label: 'Hong Kong', phone: '852' },
-  { ioc: '', iso: 'HM', label: 'Heard Island and McDonald Islands', phone: '672' },
+  {
+    ioc: '',
+    iso: 'HM',
+    label: 'Heard Island and McDonald Islands',
+    phone: '672',
+  },
   { ioc: 'HON', iso: 'HN', label: 'Honduras', phone: '504' },
   { ioc: 'CRO', iso: 'HR', label: 'Croatia', phone: '385' },
   { ioc: 'HAI', iso: 'HT', label: 'Haiti', phone: '509' },
@@ -136,12 +160,22 @@ export const countries = [
   { ioc: 'KIR', iso: 'KI', label: 'Kiribati', phone: '686' },
   { ioc: 'COM', iso: 'KM', label: 'Comoros', phone: '269' },
   { ioc: 'SKN', iso: 'KN', label: 'Saint Kitts and Nevis', phone: '1-869' },
-  { ioc: 'KOR', iso: 'KP', label: "Korea, Democratic People's Republic of", phone: '850' },
+  {
+    ioc: 'KOR',
+    iso: 'KP',
+    label: "Korea, Democratic People's Republic of",
+    phone: '850',
+  },
   { ioc: 'PRK', iso: 'KR', label: 'Korea, Republic of', phone: '82' },
   { ioc: 'KUW', iso: 'KW', label: 'Kuwait', phone: '965' },
   { ioc: 'CAY', iso: 'KY', label: 'Cayman Islands', phone: '1-345' },
   { ioc: 'KAZ', iso: 'KZ', label: 'Kazakhstan', phone: '7' },
-  { ioc: 'LAO', iso: 'LA', label: "Lao People's Democratic Republic", phone: '856' },
+  {
+    ioc: 'LAO',
+    iso: 'LA',
+    label: "Lao People's Democratic Republic",
+    phone: '856',
+  },
   { ioc: 'LIB', iso: 'LB', label: 'Lebanon', phone: '961' },
   { ioc: 'LCA', iso: 'LC', label: 'Saint Lucia', phone: '1-758' },
   { ioc: 'LIE', iso: 'LI', label: 'Liechtenstein', phone: '423' },
@@ -159,7 +193,12 @@ export const countries = [
   { ioc: '', iso: 'MF', label: 'Saint Martin (French part)', phone: '590' },
   { ioc: 'MAD', iso: 'MG', label: 'Madagascar', phone: '261' },
   { ioc: 'MSH', iso: 'MH', label: 'Marshall Islands', phone: '692' },
-  { ioc: 'MKD', iso: 'MK', label: 'Macedonia, the Former Yugoslav Republic of', phone: '389' },
+  {
+    ioc: 'MKD',
+    iso: 'MK',
+    label: 'Macedonia, the Former Yugoslav Republic of',
+    phone: '389',
+  },
   { ioc: 'MLI', iso: 'ML', label: 'Mali', phone: '223' },
   { ioc: 'MYA', iso: 'MM', label: 'Myanmar', phone: '95' },
   { ioc: 'MGL', iso: 'MN', label: 'Mongolia', phone: '976' },
@@ -247,11 +286,22 @@ export const countries = [
   { ioc: 'TAN', iso: 'TZ', label: 'United Republic of Tanzania', phone: '255' },
   { ioc: 'UKR', iso: 'UA', label: 'Ukraine', phone: '380' },
   { ioc: 'UGA', iso: 'UG', label: 'Uganda', phone: '256' },
-  { ioc: 'USA', iso: 'US', label: 'United States', phone: '1', suggested: true },
+  {
+    ioc: 'USA',
+    iso: 'US',
+    label: 'United States',
+    phone: '1',
+    suggested: true,
+  },
   { ioc: 'URU', iso: 'UY', label: 'Uruguay', phone: '598' },
   { ioc: 'UZB', iso: 'UZ', label: 'Uzbekistan', phone: '998' },
   { ioc: '', iso: 'VA', label: 'Holy See (Vatican City State)', phone: '379' },
-  { ioc: 'VIN', iso: 'VC', label: 'Saint Vincent and the Grenadines', phone: '1-784' },
+  {
+    ioc: 'VIN',
+    iso: 'VC',
+    label: 'Saint Vincent and the Grenadines',
+    phone: '1-784',
+  },
   { ioc: 'VEN', iso: 'VE', label: 'Venezuela', phone: '58' },
   { ioc: 'IVB', iso: 'VG', label: 'British Virgin Islands', phone: '1-284' },
   { ioc: 'ISV', iso: 'VI', label: 'US Virgin Islands', phone: '1-340' },

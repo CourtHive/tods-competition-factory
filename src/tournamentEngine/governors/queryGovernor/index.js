@@ -1,6 +1,9 @@
 import {
-  tournamentMatchUps, allTournamentMatchUps,
-  eventMatchUps, allEventMatchUps, matchUpActions,
+  tournamentMatchUps,
+  allTournamentMatchUps,
+  eventMatchUps,
+  allEventMatchUps,
+  matchUpActions,
 } from '../../getters/matchUpsGetter';
 
 import { getParticipantScaleItem } from './scaleValue';

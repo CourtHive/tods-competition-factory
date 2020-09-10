@@ -8,7 +8,7 @@ const scoreGovernor = {
   analyzeMatchUp,
   getSetComplement,
   getTiebreakComplement,
-  tallyBracket
+  tallyBracket,
 };
 
 export default scoreGovernor;

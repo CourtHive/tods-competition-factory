@@ -1,5 +1,8 @@
 import { generateDrawType } from './generateDrawType';
-import { getDrawStructures, getStructureQualifiersCount } from '../../getters/structureGetter';
+import {
+  getDrawStructures,
+  getStructureQualifiersCount,
+} from '../../getters/structureGetter';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 
 const structureGovernor = {
@@ -8,6 +11,6 @@ const structureGovernor = {
   getStructureQualifiersCount,
 
   buildDrawHierarchy,
-}
- 
+};
+
 export default structureGovernor;

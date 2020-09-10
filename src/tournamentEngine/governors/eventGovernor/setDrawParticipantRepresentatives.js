@@ -1,9 +1,15 @@
-import { getDrawDefinition } from "../../getters/eventGetter";
-import { SUCCESS } from "../../../constants/resultConstants";
+import { getDrawDefinition } from '../../getters/eventGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
 
-export function setDrawParticipantRepresentatives({tournamentRecord, drawId, representatives}) {
-
-  const { event, drawDefinition } = getDrawDefinition({tournamentRecord, drawId});
+export function setDrawParticipantRepresentatives({
+  tournamentRecord,
+  drawId,
+  representatives,
+}) {
+  const { event, drawDefinition } = getDrawDefinition({
+    tournamentRecord,
+    drawId,
+  });
   if (!event) return { error: 'Event not found' };
   if (!drawDefinition) return { error: 'Draw not found' };
 
@@ -15,7 +21,7 @@ export function setDrawParticipantRepresentatives({tournamentRecord, drawId, rep
     } else {
       delete entry.representative;
     }
-  })
+  });
 
   return SUCCESS;
 }

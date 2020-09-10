@@ -6,27 +6,35 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { RANKING } from '../../../constants/participantConstants';
 
 it('can set participant scaleItems', () => {
-    const { tournamentRecord } = tournamentRecordWithParticipants({ participantsCount: 100 });
-    tournamentEngine.setState(tournamentRecord);
+  const { tournamentRecord } = tournamentRecordWithParticipants({
+    participantsCount: 100,
+  });
+  tournamentEngine.setState(tournamentRecord);
 
-    const participants = tournamentRecord.participants;
+  const participants = tournamentRecord.participants;
 
-    let { participantId } = participants[0];
-    let { participant } = tournamentEngine.findParticipant({participantId});
-    expect(participant.participantId).toEqual(participantId);
-    
-    let scaleItem = {
-        scaleValue: 8.3,
-        scaleName: 'WTN',
-        scaleType: RANKING,
-        eventType: 'SINGLES',
-        scaleDate: '2020-06-06',
-    };
+  const { participantId } = participants[0];
+  const { participant } = tournamentEngine.findParticipant({ participantId });
+  expect(participant.participantId).toEqual(participantId);
 
-    let result = tournamentEngine.setParticipantScaleItem({participantId, scaleItem});
-    expect(result).toMatchObject(SUCCESS);
+  const scaleItem = {
+    scaleValue: 8.3,
+    scaleName: 'WTN',
+    scaleType: RANKING,
+    eventType: 'SINGLES',
+    scaleDate: '2020-06-06',
+  };
 
-    const scaleAttributes = { scaleName: 'WTN' };
-    ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({participantId, scaleAttributes}));
-    expect(result.scaleValue).toEqual(scaleItem.scaleValue);
+  let result = tournamentEngine.setParticipantScaleItem({
+    participantId,
+    scaleItem,
+  });
+  expect(result).toMatchObject(SUCCESS);
+
+  const scaleAttributes = { scaleName: 'WTN' };
+  ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
+    participantId,
+    scaleAttributes,
+  }));
+  expect(result.scaleValue).toEqual(scaleItem.scaleValue);
 });

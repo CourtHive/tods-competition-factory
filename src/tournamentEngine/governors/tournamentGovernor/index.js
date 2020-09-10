@@ -1,13 +1,15 @@
 import {
-  setTournamentName, setTournamentNotes,
-  setTournamentStartDate, setTournamentEndDate
+  setTournamentName,
+  setTournamentNotes,
+  setTournamentStartDate,
+  setTournamentEndDate,
 } from './tournamentDetails';
 
 const tournamentGovernor = {
   setTournamentName,
   setTournamentNotes,
   setTournamentEndDate,
-  setTournamentStartDate
+  setTournamentStartDate,
 };
 
 export default tournamentGovernor;

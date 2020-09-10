@@ -20,7 +20,7 @@ export const tournamentRecordTemplate = () => ({
 
   indoorOutdoor: null,
   surfaceCategory: null,
-  
+
   entriesOpen: null,
   entriesClose: null,
   withdrawalDeadline: null,

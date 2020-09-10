@@ -4,20 +4,37 @@ import { numericSort } from './utilities/sorting';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { nearestPowerOf2, powerOf2 } from './utilities/math';
 import {
-  countValues, chunkArray, generateRange, instanceCount,
-  randomPop, randomMember, shuffleArray, unique
+  countValues,
+  chunkArray,
+  generateRange,
+  instanceCount,
+  randomPop,
+  randomMember,
+  shuffleArray,
+  unique,
 } from './utilities/arrays';
 
 export const utilities = {
-  UUID, dateTime, numericSort, makeDeepCopy, nearestPowerOf2, powerOf2,
-  countValues, chunkArray, generateRange, instanceCount,
-  randomPop, randomMember, shuffleArray, unique
+  UUID,
+  dateTime,
+  numericSort,
+  makeDeepCopy,
+  nearestPowerOf2,
+  powerOf2,
+  countValues,
+  chunkArray,
+  generateRange,
+  instanceCount,
+  randomPop,
+  randomMember,
+  shuffleArray,
+  unique,
 };
 
 export { competitionEngine } from './competitionEngine';
 export { tournamentEngine } from './tournamentEngine';
 export { drawEngine } from './drawEngine';
-export { fixtures } from  './fixtures';
+export { fixtures } from './fixtures';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
@@ -29,4 +46,3 @@ export { optionConstants } from './constants/optionConstants';
 export { resultConstants } from './constants/resultConstants';
 export { eventConstants } from './constants/eventConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
-

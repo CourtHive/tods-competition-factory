@@ -1,6 +1,6 @@
-import { INDIVIDUAL } from "../../constants/participantTypes";
+import { INDIVIDUAL } from '../../constants/participantTypes';
 
-export function getMatchUpParticipantIds({matchUp}) {
+export function getMatchUpParticipantIds({ matchUp }) {
   let error;
   let sideParticipantIds = [];
   let individualParticipantIds = [];
@@ -13,20 +13,31 @@ export function getMatchUpParticipantIds({matchUp}) {
   if (!error) {
     sideParticipantIds = matchUp.Sides.map(side => side.participantId);
 
-    const sideIndividualParticipantIds = matchUp.Sides
-      .filter(side => side.participantType === INDIVIDUAL)
-      .map(participant => participant.participantId);
+    const sideIndividualParticipantIds = matchUp.Sides.filter(
+      side => side.participantType === INDIVIDUAL
+    ).map(participant => participant.participantId);
 
-    const nestedIndividualParticipants = matchUp.Sides
-      .map(side => side.participant && side.participant.individualParticipants)
-      .filter(f=>f);
+    const nestedIndividualParticipants = matchUp.Sides.map(
+      side => side.participant && side.participant.individualParticipants
+    ).filter(f => f);
 
-    nestedIndividualParticipantIds = nestedIndividualParticipants
-      .map(participants => participants.filter(f=>f).map(participant => participant.participantId));
+    nestedIndividualParticipantIds = nestedIndividualParticipants.map(
+      participants =>
+        participants
+          .filter(f => f)
+          .map(participant => participant.participantId)
+    );
 
-    individualParticipantIds = []
-      .concat(...sideIndividualParticipantIds, ...nestedIndividualParticipantIds.flat());
+    individualParticipantIds = [].concat(
+      ...sideIndividualParticipantIds,
+      ...nestedIndividualParticipantIds.flat()
+    );
   }
 
-  return { error, sideParticipantIds, nestedIndividualParticipantIds, individualParticipantIds };
+  return {
+    error,
+    sideParticipantIds,
+    nestedIndividualParticipantIds,
+    individualParticipantIds,
+  };
 }

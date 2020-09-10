@@ -18,94 +18,113 @@ let devContext;
 let errors = [];
 let tournamentRecord;
 
-export const tournamentEngine = function() {
-  let fx = {};
+export const tournamentEngine = (function() {
+  const fx = {
+    ...queryGovernor,
+    ...eventGovernor,
+    ...venueGovernor,
+    ...scheduleGovernor,
+    ...tournamentGovernor,
+    ...participantGovernor,
+  };
 
-  fx.devContext = (isDev) => {
+  fx.devContext = isDev => {
     devContext = isDev;
     drawEngine.devContext(isDev);
     auditEngine.devContext(isDev);
     return fx;
-  }
+  };
   fx.getState = () => makeDeepCopy(tournamentRecord);
   fx.getAudit = () => {
     const auditTrail = auditEngine.getState();
     auditEngine.reset();
     return auditTrail;
-  }
+  };
 
   fx.setState = tournament => {
     const result = fx.load(tournament);
     if (result && result.error) errors.push(result.error);
     return fx;
-  }
+  };
 
   fx.flushErrors = () => {
     errors = [];
     return fx;
-  }
-  
+  };
+
   fx.load = tournament => {
     if (typeof tournament !== 'object') return { error: 'Invalid Object' };
     if (!tournament.tournamentId) return { error: 'Missing tournamentId' };
     tournamentRecord = makeDeepCopy(tournament);
-    return Object.assign({tournamentId: tournamentRecord.tournamentId}, SUCCESS );
+    return Object.assign(
+      { tournamentId: tournamentRecord.tournamentId },
+      SUCCESS
+    );
   };
 
-  fx.newTournamentRecord = (props={}) => {
+  fx.newTournamentRecord = (props = {}) => {
     fx.flushErrors();
     tournamentRecord = newTournamentRecord(props);
-    return Object.assign({tournamentId: tournamentRecord.tournamentId}, SUCCESS );
-  }
+    return Object.assign(
+      { tournamentId: tournamentRecord.tournamentId },
+      SUCCESS
+    );
+  };
   importGovernors([
     queryGovernor,
     eventGovernor,
     venueGovernor,
     scheduleGovernor,
     tournamentGovernor,
-    participantGovernor
+    participantGovernor,
   ]);
 
   return fx;
-  
+
   function newTournamentRecord(props) {
     if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-    let template = definitionTemplate();
+    const template = definitionTemplate();
     return Object.assign({}, template, props);
   }
 
   // enable Middleware
   function engineInvoke(fx, params) {
     if (params) {
-      let { drawId } = params || (params.matchUp && params.matchUp.drawId);
+      const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
       if (drawId) {
-        const { event, drawDefinition } = findEvent({tournamentRecord, drawId});
-        const { errors: drawEngineErrors } = drawEngine.setState(drawDefinition);
+        const { event, drawDefinition } = findEvent({
+          tournamentRecord,
+          drawId,
+        });
+        const { errors: drawEngineErrors } = drawEngine.setState(
+          drawDefinition
+        );
         if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
         params = Object.assign({}, params, { drawDefinition, event });
       }
     }
 
-    return fx({...params, tournamentRecord, drawEngine, auditEngine})
+    return fx({ ...params, tournamentRecord, drawEngine, auditEngine });
   }
 
   function importGovernors(governors) {
     governors.forEach(governor => {
-      Object.keys(governor)
-        .forEach(key => {
-          fx[key] = params => {
-            if (devContext) {
+      Object.keys(governor).forEach(key => {
+        fx[key] = params => {
+          if (devContext) {
+            return engineInvoke(governor[key], params);
+          } else {
+            try {
               return engineInvoke(governor[key], params);
-            } else {
-              try { return engineInvoke(governor[key], params); }
-              catch (err) { console.log('%c ERROR', 'color: orange', {err}); }
+            } catch (err) {
+              console.log('%c ERROR', 'color: orange', { err });
             }
           }
-        });
-    })
+        };
+      });
+    });
   }
-
-}();
+})();
 
 export default tournamentEngine;

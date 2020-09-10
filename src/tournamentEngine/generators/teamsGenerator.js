@@ -1,14 +1,10 @@
-import { UUID } from "../../utilities";
-import { SUCCESS } from "../../constants/resultConstants";
+import { UUID } from '../../utilities';
+import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { TEAM } from "../../constants/participantTypes";
+import { TEAM } from '../../constants/participantTypes';
 
 export function generateTeamsFromParticipantAttribute(props) {
-  const {
-    tournamentRecord,
-    personAttribute,
-    participantAttribute,
-  } = props;
+  const { tournamentRecord, personAttribute, participantAttribute } = props;
 
   const teams = {};
   const participants = tournamentRecord.participants || [];
@@ -17,9 +13,9 @@ export function generateTeamsFromParticipantAttribute(props) {
     if (!participant.person) return;
     if (participant.participantRole !== COMPETITOR) return;
 
-    const attributeValue = personAttribute ?
-      participant.person[personAttribute] :
-      participant[participantAttribute];
+    const attributeValue = personAttribute
+      ? participant.person[personAttribute]
+      : participant[participantAttribute];
 
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
@@ -30,28 +26,32 @@ export function generateTeamsFromParticipantAttribute(props) {
           participantRole: COMPETITOR,
           individualParticipants: [],
           participantProfile: {
-            groupingAttribute:  personAttribute || participantAttribute
-          }
+            groupingAttribute: personAttribute || participantAttribute,
+          },
         };
       }
-      
-      teams[attributeValue].individualParticipants.push(participant.participantId);
+
+      teams[attributeValue].individualParticipants.push(
+        participant.participantId
+      );
     }
   });
 
   const groupingAttributes = Object.keys(teams);
 
-  const overlappingTeamParticipantids = participants.map(participant => {
-    if (participant.participantType !== 'TEAM') return undefined;
-    if (participant.participantRole !== 'COMPETITOR') return undefined;
-    const { participantProfile } = participant;
-    const { groupingAttribute } = participantProfile || {};
+  const overlappingTeamParticipantids = participants
+    .map(participant => {
+      if (participant.participantType !== 'TEAM') return undefined;
+      if (participant.participantRole !== 'COMPETITOR') return undefined;
+      const { participantProfile } = participant;
+      const { groupingAttribute } = participantProfile || {};
 
-    if (groupingAttributes.includes(groupingAttribute)) {
-      return participant.participantId;
-    }
-    return undefined;
-  }).filter(f=>f);
+      if (groupingAttributes.includes(groupingAttribute)) {
+        return participant.participantId;
+      }
+      return undefined;
+    })
+    .filter(f => f);
 
   let participantsAdded = 0;
   Object.keys(teams).forEach(attributeValue => {
@@ -63,7 +63,7 @@ export function generateTeamsFromParticipantAttribute(props) {
     }
   });
 
-  console.log({participantsAdded});
+  console.log({ participantsAdded });
 
   if (participantsAdded) return SUCCESS;
 }

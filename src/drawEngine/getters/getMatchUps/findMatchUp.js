@@ -14,13 +14,22 @@ export function publicFindMatchUp(props) {
 /*
   function to find a matchUp within a draw
 */
-export function findMatchUp({drawDefinition, tournamentParticipants, matchUpId, inContext}) {
-  const { structures } = drawStructures({drawDefinition});
+export function findMatchUp({
+  drawDefinition,
+  tournamentParticipants,
+  matchUpId,
+  inContext,
+}) {
+  const { structures } = drawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {
-    const { matchUps } = getAllStructureMatchUps({structure, tournamentParticipants, inContext});
-    const { matchUp } = getMatchUp({matchUps, matchUpId});
+    const { matchUps } = getAllStructureMatchUps({
+      structure,
+      tournamentParticipants,
+      inContext,
+    });
+    const { matchUp } = getMatchUp({ matchUps, matchUpId });
     return matchUp ? { matchUp, structure } : result;
   }, {});
-  
+
   return { matchUp, structure };
 }

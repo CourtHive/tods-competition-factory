@@ -4,20 +4,20 @@ import { addTimeItem, resetTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 
-import { publicFindMatchUp, publicGetRoundMatchUps } from '../../getters/getMatchUps';
+import {
+  publicFindMatchUp,
+  publicGetRoundMatchUps,
+} from '../../getters/getMatchUps';
 
 import {
   addMatchUpScheduledDayDate,
   addMatchUpScheduledTime,
-  
   addMatchUpStartTime,
   addMatchUpEndTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
-
   assignMatchUpCourt,
   addMatchUpOfficial,
-  
 } from './scheduleItems';
 
 const matchUpGovernor = {

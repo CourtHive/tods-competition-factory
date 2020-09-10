@@ -4,10 +4,9 @@ function createQualifyingLink({
   qualifyingStructureId,
   mainStructureId,
   qualifyingRound,
-  mainEntryRound=1,
-  drawDefinition
+  mainEntryRound = 1,
+  drawDefinition,
 }) {
- 
   const link = {
     linkSubject: WINNER,
     source: {
@@ -17,11 +16,11 @@ function createQualifyingLink({
     target: {
       feedProfile: DRAW,
       roundNumber: mainEntryRound,
-      structureId: mainStructureId
-    }
+      structureId: mainStructureId,
+    },
   };
-  
-  drawDefinition.links.push(link); 
+
+  drawDefinition.links.push(link);
 }
 
 const linkGovernor = {

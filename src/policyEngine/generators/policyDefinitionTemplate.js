@@ -3,8 +3,8 @@ export const policyTemplate = () => ({
     seedBlocks: {},
   },
   scoring: {
-    requireAllPositionsAssigned: true  
-  }
+    requireAllPositionsAssigned: true,
+  },
 });
 
 export default policyTemplate;

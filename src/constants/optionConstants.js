@@ -10,5 +10,6 @@ export const ASSIGN_PARTICIPANT = 'assignParticipant';
 */
 
 export const optionConstants = {
-  REMOVE_PARTICIPANT, ASSIGN_PARTICIPANT
+  REMOVE_PARTICIPANT,
+  ASSIGN_PARTICIPANT,
 };

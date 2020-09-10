@@ -1,6 +1,6 @@
-import { getDrawDefinition } from "../../../tournamentEngine/getters/eventGetter";
+import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
-import { SUCCESS } from "../../../constants/resultConstants";
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function reorderUpcomingMatchUps(params) {
   const { drawEngine, tournamentRecords } = params;
@@ -13,24 +13,40 @@ export function reorderUpcomingMatchUps(params) {
     let calculatedIndex = index + (firstToLast ? -1 : 1);
     if (calculatedIndex < 0) calculatedIndex = matchUpsCount - 1;
     if (calculatedIndex === matchUpsCount) calculatedIndex = 0;
-    const scheduledTime = matchUpsContextIds[calculatedIndex].schedule.scheduledTime;
-    let result = assignMatchUpScheduledTime({ tournamentId, drawId, matchUpId, scheduledTime});
+    const scheduledTime =
+      matchUpsContextIds[calculatedIndex].schedule.scheduledTime;
+    const result = assignMatchUpScheduledTime({
+      tournamentId,
+      drawId,
+      matchUpId,
+      scheduledTime,
+    });
     if (result.success) matchUpsModified++;
   });
 
   return matchUpsModified ? SUCCESS : undefined;
 
-  function assignMatchUpScheduledTime({ tournamentId, drawId, matchUpId, scheduledTime }) {
+  function assignMatchUpScheduledTime({
+    tournamentId,
+    drawId,
+    matchUpId,
+    scheduledTime,
+  }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition, event } = getDrawDefinition({tournamentRecord, drawId});
+    const { drawDefinition, event } = getDrawDefinition({
+      tournamentRecord,
+      drawId,
+    });
     const result = drawEngine
       .setState(drawDefinition)
-      .addMatchUpScheduledTime({matchUpId, scheduledTime});
-    
+      .addMatchUpScheduledTime({ matchUpId, scheduledTime });
+
     if (result.success) {
       const updatedDrawDefinition = drawEngine.getState();
       event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
-        return drawDefinition.drawId === drawId ? updatedDrawDefinition : drawDefinition;   
+        return drawDefinition.drawId === drawId
+          ? updatedDrawDefinition
+          : drawDefinition;
       });
 
       return SUCCESS;

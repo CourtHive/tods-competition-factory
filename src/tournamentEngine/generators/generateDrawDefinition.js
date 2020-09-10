@@ -13,28 +13,20 @@ import AVOIDANCE_POLICY from '../../fixtures/AVOIDANCE_COUNTRY';
 import { RANKING } from '../../constants/participantConstants';
 
 export function generateDrawDefinition(props) {
-  const {
-    tournamentRecord,
-    drawEngine,
-    event
-  } = props;
+  const { tournamentRecord, drawEngine, event } = props;
 
-  let {
+  const {
     category,
     groupSize,
     customName,
-    seedsCount,
-    drawSize=32,
-    automated=true,
+    automated = true,
     qualifyingRound,
     qualifyingPositions,
-    drawType='ELIMINATION',
-
-    tieFormat,
-    matchUpFormat,
+    drawType = 'ELIMINATION',
     matchUpType,
-
   } = props;
+
+  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
 
   if (tieFormat || (matchUpType === 'TEAM' && !tieFormat)) {
     tieFormat = tieFormatDefaults();
@@ -45,23 +37,32 @@ export function generateDrawDefinition(props) {
   }
 
   const drawProfile = {
-    category, groupSize, customName,
-    seedsCount, drawSize, qualifyingRound,
-    qualifyingPositions, automated, drawType,
-    tieFormat, matchUpFormat, matchUpType
-  }
+    category,
+    groupSize,
+    customName,
+    seedsCount,
+    drawSize,
+    qualifyingRound,
+    qualifyingPositions,
+    automated,
+    drawType,
+    tieFormat,
+    matchUpFormat,
+    matchUpType,
+  };
 
   const entries = event.entries || [];
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stage = drawIsRRWP ? QUALIFYING : MAIN;
   const stageEntries = entries.filter(entry => entry.entryStage === stage);
-  if ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType)) drawSize = stageEntries.length;
+  if ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType))
+    drawSize = stageEntries.length;
 
   const structureOptions = drawIsRRWP
-    ?  {
+    ? {
         playOffGroups: [
           { finishingPositions: [1, 2], structureName: 'Playoffs' },
-        ]
+        ],
       }
     : drawType === ROUND_ROBIN
     ? { groupSize, groupSizeLimit: 8 }
@@ -71,19 +72,28 @@ export function generateDrawDefinition(props) {
   drawEngine.newDrawDefinition({ drawProfile });
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.setMatchUpFormat({ matchUpFormat, tieFormat, matchUpType });
-  drawEngine.generateDrawType({ stage, drawType, structureOptions, qualifyingRound, qualifyingPositions });
-  
-  const { structures } = drawEngine.getDrawStructures({ stage, stageSequence: 1});
+  drawEngine.generateDrawType({
+    stage,
+    drawType,
+    structureOptions,
+    qualifyingRound,
+    qualifyingPositions,
+  });
+
+  const { structures } = drawEngine.getDrawStructures({
+    stage,
+    stageSequence: 1,
+  });
   const [structure] = structures;
   const { structureId } = structure || {};
-  
+
   drawEngine.loadPolicy(SEEDING_POLICY);
   drawEngine.loadPolicy(AVOIDANCE_POLICY);
 
   entries.forEach(entry => {
     // TODO: attach participant scaleValues to entry information (if relevant?)
     const entryData = Object.assign({}, entry, { stage: entry.entryStage });
-    drawEngine.addEntry(entryData); 
+    drawEngine.addEntry(entryData);
   });
 
   if (seedsCount > drawSize) seedsCount = drawSize;
@@ -91,45 +101,54 @@ export function generateDrawDefinition(props) {
 
   if (category) {
     const scaleAttributes = {
-        scaleType: RANKING,
-        scaleName: category,
-        eventType: event.eventType
+      scaleType: RANKING,
+      scaleName: category,
+      eventType: event.eventType,
     };
 
     const scaledEntries = entries
       .map(entry => {
         const { participantId } = entry;
-        const { scaleItem } = getParticipantScaleItem({tournamentRecord, participantId, scaleAttributes});
+        const { scaleItem } = getParticipantScaleItem({
+          tournamentRecord,
+          participantId,
+          scaleAttributes,
+        });
         return Object.assign({}, entry, scaleItem);
       })
       .filter(scaledEntry => scaledEntry.scaleValue)
-      .sort(scaleValueSort)
+      .sort(scaleValueSort);
 
     if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
 
     drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-    scaledEntries
-      .slice(0, seedsCount)
-      .forEach((scaledEntry, index) => {
-        const seedNumber = index + 1;
-        const seedValue = seedNumber;
-        // const scaleValue = scaledEntry.scaleValue;
-        // TODO: attach basis of seeding information to seedAssignment
-        const { participantId } = scaledEntry;
-        let result = drawEngine.assignSeed({structureId, seedNumber, seedValue, participantId});
-        if (!result.success) console.log(`%c ${result.error}`, 'color: red');
+    scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
+      const seedNumber = index + 1;
+      const seedValue = seedNumber;
+      // const scaleValue = scaledEntry.scaleValue;
+      // TODO: attach basis of seeding information to seedAssignment
+      const { participantId } = scaledEntry;
+      const result = drawEngine.assignSeed({
+        structureId,
+        seedNumber,
+        seedValue,
+        participantId,
       });
+      if (!result.success) console.log(`%c ${result.error}`, 'color: red');
+    });
   }
 
-  if (automated !== false) drawEngine.automatedPositioning({structureId});
-  
+  if (automated !== false) drawEngine.automatedPositioning({ structureId });
+
   const drawDefinition = drawEngine.getState();
 
-  let drawName = customName || drawType;
+  const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
-  
+
   return { structureId, drawDefinition };
 }
 
-function scaleValueSort(a, b) { return parseFloat(a.scaleValue || 9999) - parseFloat(b.scaleValue || 9999); }
+function scaleValueSort(a, b) {
+  return parseFloat(a.scaleValue || 9999) - parseFloat(b.scaleValue || 9999);
+}

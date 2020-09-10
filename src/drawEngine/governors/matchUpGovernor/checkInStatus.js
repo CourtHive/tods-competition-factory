@@ -3,7 +3,7 @@ import { addTimeItem } from './timeItems';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 
-import { CHECK_IN, CHECK_OUT } from "../../../constants/timeItemConstants";
+import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 
 /*
@@ -11,57 +11,81 @@ import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
   if given full context, which means tournamentParticipants loaded in drawEngine
   Otherwise a participant may be checked in multiple times
 */
-export function checkInParticipant({drawDefinition, tournamentParticipants, matchUpId, participantId}) {
+export function checkInParticipant({
+  drawDefinition,
+  tournamentParticipants,
+  matchUpId,
+  participantId,
+}) {
   if (!participantId) return { error: 'Missing participantId' };
   if (!matchUpId) return { error: 'Missing matchUpId' };
- 
+
   if (tournamentParticipants && tournamentParticipants.length) {
-    const { matchUp } = findMatchUp({drawDefinition, tournamentParticipants, matchUpId, inContext: true});
-    const { checkedInParticipantIds } = getCheckedInParticipantIds({matchUp});
+    const { matchUp } = findMatchUp({
+      drawDefinition,
+      tournamentParticipants,
+      matchUpId,
+      inContext: true,
+    });
+    const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
     if (checkedInParticipantIds.includes(participantId)) {
       return { error: 'participant already checked in' };
     }
   }
-  
+
   const timeItem = {
     itemSubject: CHECK_IN,
-    itemValue: participantId
+    itemValue: participantId,
   };
 
-  return addTimeItem({drawDefinition, matchUpId, timeItem});
+  return addTimeItem({ drawDefinition, matchUpId, timeItem });
 }
 
-export function checkOutParticipant({drawDefinition, tournamentParticipants, matchUpId, participantId}) {
+export function checkOutParticipant({
+  drawDefinition,
+  tournamentParticipants,
+  matchUpId,
+  participantId,
+}) {
   if (!participantId) return { error: 'Missing participantId' };
   if (!matchUpId) return { error: 'Missing matchUpId' };
 
-  // TODO: disallow checkout of participants if a matchUp is in progress 
+  // TODO: disallow checkout of participants if a matchUp is in progress
 
   if (tournamentParticipants && tournamentParticipants.length) {
-    const { matchUp } = findMatchUp({drawDefinition, tournamentParticipants, matchUpId, inContext: true});
-    const { checkedInParticipantIds } = getCheckedInParticipantIds({matchUp});
+    const { matchUp } = findMatchUp({
+      drawDefinition,
+      tournamentParticipants,
+      matchUpId,
+      inContext: true,
+    });
+    const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
     if (!checkedInParticipantIds.includes(participantId)) {
       return { error: 'participant not checked in' };
     }
 
-    const { sideParticipantIds, nestedIndividualParticipantIds } = getMatchUpParticipantIds({matchUp});
+    const {
+      sideParticipantIds,
+      nestedIndividualParticipantIds,
+    } = getMatchUpParticipantIds({ matchUp });
     const sideIndex = sideParticipantIds.indexOf(participantId);
-    if ([0,1].includes(sideIndex)) {
-      (nestedIndividualParticipantIds[sideIndex] || []).forEach(participantId => {
-        const timeItem = {
-          itemSubject: CHECK_OUT,
-          itemValue: participantId
-        };
-        addTimeItem({drawDefinition, matchUpId, timeItem});
-      });
+    if ([0, 1].includes(sideIndex)) {
+      (nestedIndividualParticipantIds[sideIndex] || []).forEach(
+        participantId => {
+          const timeItem = {
+            itemSubject: CHECK_OUT,
+            itemValue: participantId,
+          };
+          addTimeItem({ drawDefinition, matchUpId, timeItem });
+        }
+      );
     }
   }
-  
+
   const timeItem = {
     itemSubject: CHECK_OUT,
-    itemValue: participantId
+    itemValue: participantId,
   };
 
-  return addTimeItem({drawDefinition, matchUpId, timeItem});
+  return addTimeItem({ drawDefinition, matchUpId, timeItem });
 }
-

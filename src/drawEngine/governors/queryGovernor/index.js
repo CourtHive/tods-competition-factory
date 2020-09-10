@@ -1,9 +1,14 @@
 import { matchUpActions } from './matchUpActions';
 import {
-  calcTieMatchUpScore, matchUpDuration, getMatchUpScheduleDetails
+  calcTieMatchUpScore,
+  matchUpDuration,
+  getMatchUpScheduleDetails,
 } from '../../accessors/matchUpAccessor';
 
-import { positionActions, getNextUnfilledDrawPositions } from './positionActions';
+import {
+  positionActions,
+  getNextUnfilledDrawPositions,
+} from './positionActions';
 
 import { findStructure } from '../../getters/structureGetter';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -42,7 +47,7 @@ const queryGovernor = {
 
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
- 
+
   calcTieMatchUpScore,
   matchUpDuration,
 };

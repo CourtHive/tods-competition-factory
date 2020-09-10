@@ -9,7 +9,10 @@ import { assignTieMatchUpParticipantId } from './tieMatchUps';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 import { removeDrawPositionAssignment } from './removeDrawPositionAssignment';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
-import { checkInParticipant, checkOutParticipant } from './participantCheckInState';
+import {
+  checkInParticipant,
+  checkOutParticipant,
+} from './participantCheckInState';
 import { setDrawParticipantRepresentatives } from './setDrawParticipantRepresentatives';
 
 import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
@@ -28,7 +31,7 @@ const eventGovernor = {
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
-  
+
   assignDrawPosition,
   removeDrawPositionAssignment,
   setDrawParticipantRepresentatives,

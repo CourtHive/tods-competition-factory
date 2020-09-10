@@ -3,11 +3,9 @@ export const venueTemplate = () => ({
   venueName: '',
   venueAbbreviation: '',
   venueType: null,
-  onlineProfiles: [
-    { type: '', identifier: '' },
-  ],
+  onlineProfiles: [{ type: '', identifier: '' }],
   addresses: [],
-  courts: []
+  courts: [],
 });
 
 export default venueTemplate;

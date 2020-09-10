@@ -1,25 +1,44 @@
 import {
-  BOTTOM_UP, TOP_DOWN, LOSER, WINNER
+  BOTTOM_UP,
+  TOP_DOWN,
+  LOSER,
+  WINNER,
 } from '../../constants/drawDefinitionConstants';
 
-export function doubleEliminationLinks({ mainStructure, consolationStructure, deciderStructure}) {
+export function doubleEliminationLinks({
+  mainStructure,
+  consolationStructure,
+  deciderStructure,
+}) {
   const consolationMatchUps = consolationStructure.matchUps;
-  
+
   // roundsFed are those rounds which are generated with drawPositions (not undefined or null)
   const roundsFed = consolationMatchUps.reduce((rf, matchUp) => {
-    const drawPositions = (matchUp.drawPositions || []).filter(f=>f);
-    return drawPositions.length && !rf.includes(matchUp.roundNumber) ? rf.concat(matchUp.roundNumber) : rf; 
+    const drawPositions = (matchUp.drawPositions || []).filter(f => f);
+    return drawPositions.length && !rf.includes(matchUp.roundNumber)
+      ? rf.concat(matchUp.roundNumber)
+      : rf;
   }, []);
 
-  const mainFinalRound = mainStructure.matchUps.reduce((finalRound, matchUp) => {
-    return !finalRound || matchUp.roundNumber > finalRound ? matchUp.roundNumber : finalRound;
-  }, undefined);
+  const mainFinalRound = mainStructure.matchUps.reduce(
+    (finalRound, matchUp) => {
+      return !finalRound || matchUp.roundNumber > finalRound
+        ? matchUp.roundNumber
+        : finalRound;
+    },
+    undefined
+  );
 
-  const consolationFinalRound = consolationStructure.matchUps.reduce((finalRound, matchUp) => {
-    return !finalRound || matchUp.roundNumber > finalRound ? matchUp.roundNumber : finalRound;
-  }, undefined);
+  const consolationFinalRound = consolationStructure.matchUps.reduce(
+    (finalRound, matchUp) => {
+      return !finalRound || matchUp.roundNumber > finalRound
+        ? matchUp.roundNumber
+        : finalRound;
+    },
+    undefined
+  );
 
-  const initialRounds = [1,2].map(roundNumber => {
+  const initialRounds = [1, 2].map(roundNumber => {
     const feedProfile = roundNumber % 2 ? BOTTOM_UP : TOP_DOWN;
     const link = {
       linkSubject: LOSER,
@@ -31,8 +50,8 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
         feedProfile,
         roundNumber: 1,
         positionInterleave: 1,
-        structureId: consolationStructure.structureId
-      }
+        structureId: consolationStructure.structureId,
+      },
     };
     return link;
   });
@@ -51,8 +70,8 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
       target: {
         feedProfile,
         roundNumber,
-        structureId: consolationStructure.structureId
-      }
+        structureId: consolationStructure.structureId,
+      },
     };
     return link;
   });
@@ -66,8 +85,8 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
     target: {
       feedProfile: TOP_DOWN,
       roundNumber: mainFinalRound,
-      structureId: mainStructure.structureId
-    }
+      structureId: mainStructure.structureId,
+    },
   };
 
   const deciderLinks = [
@@ -80,8 +99,8 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
       target: {
         feedProfile: TOP_DOWN,
         roundNumber: 1,
-        structureId: deciderStructure.structureId
-      }
+        structureId: deciderStructure.structureId,
+      },
     },
     {
       linkSubject: LOSER,
@@ -92,12 +111,17 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
       target: {
         feedProfile: TOP_DOWN,
         roundNumber: 1,
-        structureId: deciderStructure.structureId
-      }
-    }
+        structureId: deciderStructure.structureId,
+      },
+    },
   ];
 
-  const links = [...initialRounds, ...fedRounds, finalistsLink, ...deciderLinks];
+  const links = [
+    ...initialRounds,
+    ...fedRounds,
+    finalistsLink,
+    ...deciderLinks,
+  ];
 
   return links;
 }

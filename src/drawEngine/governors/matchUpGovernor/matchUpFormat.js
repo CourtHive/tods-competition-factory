@@ -5,17 +5,24 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
 
 export function setMatchUpFormat(props) {
-  let errors = [];
-  const {drawDefinition, structureId, matchUpId, matchUpType, matchUpFormat, tieFormat } = props;
+  const errors = [];
+  const {
+    drawDefinition,
+    structureId,
+    matchUpId,
+    matchUpType,
+    matchUpFormat,
+    tieFormat,
+  } = props;
 
   if (matchUpId) {
-    const { matchUp, error } = findMatchUp({drawDefinition, matchUpId});
+    const { matchUp, error } = findMatchUp({ drawDefinition, matchUpId });
     if (error) errors.push(error);
 
     if (!matchUp) {
       errors.push({ error: 'matchUp not found' });
-    // } else if (matchUp.winningSide) {
-    //   errors.push({ error: 'cannot set format for completed matchUp' });
+      // } else if (matchUp.winningSide) {
+      //   errors.push({ error: 'cannot set format for completed matchUp' });
     } else {
       if (matchUpType) matchUp.matchUpType = matchUpType;
       if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
@@ -25,7 +32,7 @@ export function setMatchUpFormat(props) {
       }
     }
   } else if (structureId) {
-    const { structure, error } = findStructure({drawDefinition, structureId});
+    const { structure, error } = findStructure({ drawDefinition, structureId });
     if (error) errors.push(error);
     if (!structure) {
       errors.push({ error: 'structure not found' });

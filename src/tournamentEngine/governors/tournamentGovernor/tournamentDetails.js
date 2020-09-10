@@ -1,27 +1,27 @@
-import { SUCCESS } from "../../../constants/resultConstants";
+import { SUCCESS } from '../../../constants/resultConstants';
 
-export function setTournamentName({tournamentRecord, name}) {
+export function setTournamentName({ tournamentRecord, name }) {
   tournamentRecord.name = name;
-  return SUCCESS; 
+  return SUCCESS;
 }
 
-export function setTournamentNotes({tournamentRecord, notes}) {
+export function setTournamentNotes({ tournamentRecord, notes }) {
   tournamentRecord.notes = notes;
-  return SUCCESS; 
+  return SUCCESS;
 }
 
-export function setTournamentStartDate({tournamentRecord, startDate}) {
+export function setTournamentStartDate({ tournamentRecord, startDate }) {
   if (new Date(startDate) > new Date(tournamentRecord.startDate)) {
-    console.log('TODO: check for events to be unscheduled')
+    console.log('TODO: check for events to be unscheduled');
   }
   tournamentRecord.startDate = startDate;
-  return SUCCESS; 
+  return SUCCESS;
 }
 
-export function setTournamentEndDate({tournamentRecord, endDate}) {
+export function setTournamentEndDate({ tournamentRecord, endDate }) {
   if (new Date(endDate) < new Date(tournamentRecord.endDate)) {
-    console.log('TODO: check for events to be unscheduled')
+    console.log('TODO: check for events to be unscheduled');
   }
   tournamentRecord.endDate = endDate;
-  return SUCCESS; 
+  return SUCCESS;
 }

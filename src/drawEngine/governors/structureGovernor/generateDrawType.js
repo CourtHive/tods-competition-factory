@@ -6,51 +6,79 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
-import { generateCurtisConsolation} from '../../generators/curtisConsolation';
+import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { firstMatchLoserConsolation } from '../../generators/firstMatchLoserConsolation';
-import { generateRoundRobin, generateRoundRobinWithPlayOff } from '../../generators/roundRobin';
+import {
+  generateRoundRobin,
+  generateRoundRobinWithPlayOff,
+} from '../../generators/roundRobin';
 
 import {
-  MAIN, ELIMINATION, DOUBLE_ELIMINATION, PLAYOFF,
-  QUALIFYING, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF, CURTIS,
-  FEED_IN, FEED_IN_CHAMPIONSHIP, FICR16, FICQF, FICSF, MFIC, FMLC,
-  COMPASS, OLYMPIC, COMPASS_NAMING, OLYMPIC_NAMING,
-  MISSING_DRAW_DEFINITION
+  MAIN,
+  ELIMINATION,
+  DOUBLE_ELIMINATION,
+  PLAYOFF,
+  QUALIFYING,
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
+  CURTIS,
+  FEED_IN,
+  FEED_IN_CHAMPIONSHIP,
+  FICR16,
+  FICQF,
+  FICSF,
+  MFIC,
+  FMLC,
+  COMPASS,
+  OLYMPIC,
+  COMPASS_NAMING,
+  OLYMPIC_NAMING,
+  MISSING_DRAW_DEFINITION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { powerOf2, makeDeepCopy } from '../../../utilities';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function generateDrawType(props={}) {
-  let {
-    stage=MAIN,
+export function generateDrawType(props = {}) {
+  const {
+    stage = MAIN,
     structureName,
-    stageSequence=1,
-    drawType=ELIMINATION,
-    drawDefinition
+    stageSequence = 1,
+    drawType = ELIMINATION,
+    drawDefinition,
   } = props;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  
-  const drawSize = stageDrawPositionsCount({stage, drawDefinition});
+
+  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
   Object.assign(props, { drawSize });
 
-  const validDoubleEliminationSize = powerOf2(drawSize * 2/3);
-  
-  // check that drawSize is a valid value
-  const invalidDrawSize = drawType !== FEED_IN &&
-    (drawSize < 2 || 
-    (drawType === ROUND_ROBIN && drawSize < 3) ||
-    (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
-    (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType) && !powerOf2(drawSize)));
+  const validDoubleEliminationSize = powerOf2((drawSize * 2) / 3);
 
-  if (invalidDrawSize) { return { error: 'Invalid Draw Size' }; }
- 
+  // check that drawSize is a valid value
+  const invalidDrawSize =
+    drawType !== FEED_IN &&
+    (drawSize < 2 ||
+      (drawType === ROUND_ROBIN && drawSize < 3) ||
+      (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
+      (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
+        drawType
+      ) &&
+        !powerOf2(drawSize)));
+
+  if (invalidDrawSize) {
+    return { error: 'Invalid Draw Size' };
+  }
+
   // there can be no existing main structure
   const sequenceLimit = stageSequence === 1 ? 1 : undefined;
-  const { structures: stageStructures } = getDrawStructures({stage, stageSequence, drawDefinition});
+  const { structures: stageStructures } = getDrawStructures({
+    stage,
+    stageSequence,
+    drawDefinition,
+  });
   const structureCount = stageStructures.length;
   if (structureCount >= sequenceLimit) return { error: 'stageSequence Limit' };
 
@@ -64,17 +92,29 @@ export function generateDrawType(props={}) {
         roundLimit: derivedRoundLimit,
         structureName: structureName || stage,
         stageSequence,
-        stage
+        stage,
       });
 
       drawDefinition.structures.push(structure);
       return Object.assign({ structure }, SUCCESS);
     },
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(props),
-    [COMPASS]: () => playOff(Object.assign(props, { roundOffsetLimit: 3, playOffNaming: COMPASS_NAMING})),
-    [OLYMPIC]: () => playOff(Object.assign(props, { roundOffsetLimit: 2, playOffNaming: OLYMPIC_NAMING})),
+    [COMPASS]: () =>
+      playOff(
+        Object.assign(props, {
+          roundOffsetLimit: 3,
+          playOffNaming: COMPASS_NAMING,
+        })
+      ),
+    [OLYMPIC]: () =>
+      playOff(
+        Object.assign(props, {
+          roundOffsetLimit: 2,
+          playOffNaming: OLYMPIC_NAMING,
+        })
+      ),
     [PLAYOFF]: () => playOff(props),
-    
+
     [FEED_IN]: () => {
       const { matchUps } = feedInMatchUps({ drawSize });
 
@@ -82,25 +122,28 @@ export function generateDrawType(props={}) {
         matchUps,
         structureName: structureName || stage,
         stageSequence,
-        stage
+        stage,
       });
 
       drawDefinition.structures.push(structure);
       return Object.assign({ structure }, SUCCESS);
     },
-    
+
     [FMLC]: () => firstMatchLoserConsolation(props),
-    [MFIC]: () => feedInChampionship(Object.assign(props, {feedRounds: 1})),
-    [FICQF]: () => feedInChampionship(Object.assign(props, {feedsFromFinal: 2})),
-    [FICSF]: () => feedInChampionship(Object.assign(props, {feedsFromFinal: 1})),
-    [FICR16]: () => feedInChampionship(Object.assign(props, {feedsFromFinal: 3})),
+    [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
+    [FICQF]: () =>
+      feedInChampionship(Object.assign(props, { feedsFromFinal: 2 })),
+    [FICSF]: () =>
+      feedInChampionship(Object.assign(props, { feedsFromFinal: 1 })),
+    [FICR16]: () =>
+      feedInChampionship(Object.assign(props, { feedsFromFinal: 3 })),
     [FEED_IN_CHAMPIONSHIP]: () => feedInChampionship(props),
-    
+
     [CURTIS]: () => generateCurtisConsolation(props),
-    
+
     [ROUND_ROBIN]: () => generateRoundRobin(props),
     [ROUND_ROBIN_WITH_PLAYOFF]: () => generateRoundRobinWithPlayOff(props),
-  }
+  };
 
   const generator = generators[drawType];
   const result = generator && generator();
@@ -110,15 +153,15 @@ export function generateDrawType(props={}) {
   const { matchUpFormat, tieFormat, matchUpType } = drawDefinition || {};
   const additionalParams = { matchUpType };
   if (matchUpFormat) additionalParams.matchUpFormat = matchUpFormat;
-  
-  const { matchUps } = getAllDrawMatchUps({drawDefinition});
+
+  const { matchUps } = getAllDrawMatchUps({ drawDefinition });
   matchUps.forEach(matchUp => {
     if (tieFormat) {
       additionalParams.tieFormat = tieFormat;
-      const { tieMatchUps } = generateTieMatchUps({tieFormat});
+      const { tieMatchUps } = generateTieMatchUps({ tieFormat });
       additionalParams.tieMatchUps = tieMatchUps;
     }
-    Object.assign(matchUp, additionalParams)
+    Object.assign(matchUp, additionalParams);
   });
 
   /*

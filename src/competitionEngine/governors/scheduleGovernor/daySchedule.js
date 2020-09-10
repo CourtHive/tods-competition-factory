@@ -1,3 +1,3 @@
-export function getDaySchedule({tournamentRecord}) {
-  
+export function getDaySchedule({ tournamentRecord }) {
+  console.log({ tournamentRecord });
 }
