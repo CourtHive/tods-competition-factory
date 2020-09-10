@@ -95,8 +95,8 @@ function checkValidStandardSetOutcome({ setObject, setFormat, sideGameScores, si
 
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
   const validTiebreakScores = sideTiebreakScores?.filter((s: any) => !isNaN(s)).length === 2;
-  const winningSideTiebreakScore = sideTiebreakScores[winningSideIndex];
-  const losingSideTiebreakScore = sideTiebreakScores[losingSideIndex];
+  const winningSideTiebreakScore = sideTiebreakScores && sideTiebreakScores[winningSideIndex];
+  const losingSideTiebreakScore = sideTiebreakScores && sideTiebreakScores[losingSideIndex];
   
   const hasTiebreakCondition = tiebreakAt && sideGameScores.filter((gameScore: number) => gameScore >= tiebreakAt).length === 2;
   if (setTiebreakDefined) { 
@@ -124,8 +124,7 @@ function checkValidStandardSetOutcome({ setObject, setFormat, sideGameScores, si
         return { result: false, error: 'invalid winning game score (1)' };
       }
 
-      const winningSideIsHighTiebreakValue = winningSideTiebreakScore > losingSideTiebreakScore;
-      if (!winningSideIsHighTiebreakValue) {
+      if (!winningSideTiebreakScore || !losingSideTiebreakScore || winningSideTiebreakScore < losingSideTiebreakScore) {
         return { result: false, error: 'winningSide tiebreak value is not high' };
       }
 
@@ -205,8 +204,7 @@ function checkValidTiebreakSetOutcome({ setObject, setFormat, sideTiebreakScores
   const winningSideTiebreakScore = sideTiebreakScores[winningSideIndex];
   const losingSideTiebreakScore = sideTiebreakScores[losingSideIndex];
 
-  const winningSideIsHighTiebreakValue = winningSideTiebreakScore > losingSideTiebreakScore;
-  if (!winningSideIsHighTiebreakValue) {
+  if (!winningSideTiebreakScore || !losingSideTiebreakScore || winningSideTiebreakScore < losingSideTiebreakScore) {
     return { result: false, error: 'winningSide tiebreak value is not high' };
   }
 

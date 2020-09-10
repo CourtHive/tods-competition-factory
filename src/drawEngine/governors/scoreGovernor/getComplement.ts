@@ -17,7 +17,7 @@ export const getSetComplement = ( props: ScoreParams ) => {
   } 
 
   const calculatedValue = valueAsNumber + 1 < setTo ? setTo
-    : (tiebreakAt < setTo && valueAsNumber === tiebreakAt) ? setTo
+    : (tiebreakAt && tiebreakAt < setTo && valueAsNumber === tiebreakAt) ? setTo
     : !tiebreakAt ? valueAsNumber + 2
     : setTo + 1;
 

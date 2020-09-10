@@ -29,3 +29,4 @@ export { optionConstants } from './constants/optionConstants';
 export { resultConstants } from './constants/resultConstants';
 export { eventConstants } from './constants/eventConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
+

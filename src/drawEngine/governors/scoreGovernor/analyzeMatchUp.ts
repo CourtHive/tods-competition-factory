@@ -53,7 +53,7 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
     (setNumber && setNumber === setsCount + 1 && !isCompletedMatchUp));
 
   const isValidSideNumber = [1, 2].includes(sideNumber);
-  const sideIndex = isValidSideNumber && sideNumber - 1;
+  const sideIndex = isValidSideNumber ? sideNumber - 1 : 0;
   
   const existingValue = setObject && isValidSideNumber && (
     (!isTiebreakValue && !isPointValue && sideGameScores[sideIndex] !== undefined && sideGameScores[sideIndex]) ||

@@ -1,19 +1,21 @@
 {
+  "include": ["src", "types"],
   "compilerOptions": {
-    "outDir": "./dist/",
-    "noImplicitAny": false,
-    "strictNullChecks": false,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "module": "es6",
-    "target": "es5",
+    "module": "esnext",
+    "lib": ["dom", "esnext"],
     "allowJs": true,
-    "baseUrl": "src",
-  },
-  "include": [
-    "src",
-    "index.d.ts"
-  ]
+    "importHelpers": true,
+    "declaration": true,
+    "sourceMap": true,
+    "rootDir": "./src",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitAny": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "esModuleInterop": true
+  }
 }

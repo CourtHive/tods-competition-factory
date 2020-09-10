@@ -1,13 +1,7 @@
-# dev
-*.un~
-*.code-workspace
-node_modules
-
-# test
-test-directory
-
-# distribution
-dist
-
-# Mac
+*.log
 .DS_Store
+node_modules
+dist
+*.un~
+.*.un~
+*.code-workspace
