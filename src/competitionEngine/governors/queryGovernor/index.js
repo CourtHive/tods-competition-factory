@@ -1,7 +1,7 @@
 import {
   allCompetitionMatchUps,
   competitionMatchUps,
-  competitionScheduleMatchUps
+  competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 

@@ -1,28 +1,41 @@
 import { generateRange } from '../../../../utilities/arrays';
 import { DateHHMM, currentUTCDate } from '../../../../utilities/dateTime';
 
-export function timeToDate(time, date=null) {
-  let [hours, minutes] = (time || '00:00').split(':');
+export function timeToDate(time, date = null) {
+  const [hours, minutes] = (time || '00:00').split(':');
   return date
-  ? new Date(date).setHours(hours, minutes, 0, 0)
-  : new Date().setHours(hours, minutes, 0, 0);
+    ? new Date(date).setHours(hours, minutes, 0, 0)
+    : new Date().setHours(hours, minutes, 0, 0);
 }
 
-export function courtsAvailableAtPeriodStart({ courts, date, periodStart, averageMatchTime, includeBookingTypes }) {
+export function courtsAvailableAtPeriodStart({
+  courts,
+  date,
+  periodStart,
+  averageMatchTime,
+  includeBookingTypes,
+}) {
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchTime);
 
-  const availableCourts = courts.filter((court) => {
-    const available = Array.isArray(court.dateAvailability) && court.dateAvailability.filter(sameDay).filter(enoughTime);
+  const availableCourts = courts.filter(court => {
+    const available =
+      Array.isArray(court.dateAvailability) &&
+      court.dateAvailability.filter(sameDay).filter(enoughTime);
     return !!available.length;
   });
 
-  const available = availableCourts.map((court) => ({ locationId: court.locationId, identifier: court.identifier }));
+  const available = availableCourts.map(court => ({
+    locationId: court.locationId,
+    identifier: court.identifier,
+  }));
   return { available, count: available.length };
 
-  function sameDay(courtDate) { return courtDate.date === date; }
+  function sameDay(courtDate) {
+    return courtDate.date === date;
+  }
   function enoughTime(courtDate) {
-    const timeSlots = generateTimeSlots({courtDate, includeBookingTypes});
+    const timeSlots = generateTimeSlots({ courtDate, includeBookingTypes });
     const availableTimeSlots = timeSlots.filter(validTimeSlot);
     return !!availableTimeSlots.length;
   }
@@ -31,7 +44,12 @@ export function courtsAvailableAtPeriodStart({ courts, date, periodStart, averag
     const [startHours, startMinutes] = timeSlot.startTime.split(':');
     const slotStartTime = new Date().setHours(startHours, startMinutes, 0, 0);
     const [endHours, endMinutes] = timeSlot.endTime.split(':');
-    const slotEndTime = new Date().setHours(parseInt(endHours), parseInt(endMinutes), 0, 0);
+    const slotEndTime = new Date().setHours(
+      parseInt(endHours),
+      parseInt(endMinutes),
+      0,
+      0
+    );
     if (slotStartTime > periodStartTime) {
       return false;
     }
@@ -44,26 +62,36 @@ export function courtsAvailableAtPeriodStart({ courts, date, periodStart, averag
   }
 }
 
-export function generateTimeSlots({courtDate, includeBookingTypes=[]}) {
-  let timeSlots = [];
+export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
+  const timeSlots = [];
   let startTime = timeToDate(courtDate.startTime);
 
   (courtDate.bookings || [])
-    .filter(booking => !booking.bookingType || !includeBookingTypes.includes(booking.bookingType))
+    .filter(
+      booking =>
+        !booking.bookingType ||
+        !includeBookingTypes.includes(booking.bookingType)
+    )
     .forEach(booking => {
       const timeSlot = {
         startTime: DateHHMM(startTime, { display_seconds: false }),
-        endTime: booking.startTime
+        endTime: booking.startTime,
       };
-      if (timeToDate(booking.startTime) > startTime) { timeSlots.push(timeSlot); }
-      if (timeToDate(booking.endTime) > startTime) { startTime = timeToDate(booking.endTime); }
-    })
-  
-  const timeSlot = { 
+      if (timeToDate(booking.startTime) > startTime) {
+        timeSlots.push(timeSlot);
+      }
+      if (timeToDate(booking.endTime) > startTime) {
+        startTime = timeToDate(booking.endTime);
+      }
+    });
+
+  const timeSlot = {
     startTime: DateHHMM(startTime, { display_seconds: false }),
-    endTime: courtDate.endTime
+    endTime: courtDate.endTime,
   };
-  if (timeToDate(courtDate.endTime) > startTime) { timeSlots.push(timeSlot); }
+  if (timeToDate(courtDate.endTime) > startTime) {
+    timeSlots.push(timeSlot);
+  }
 
   return timeSlots;
 }
@@ -74,7 +102,7 @@ export function matchUpTiming({
   date = currentUTCDate(),
   periodLength = 30,
   averageMatchTime = 90,
-  courts
+  courts,
 } = {}) {
   // value of previous calculation
   let previousCalculation = 0;
@@ -99,16 +127,24 @@ export function matchUpTiming({
   const periodCount = Math.floor(dayMinutes / periodLength);
   const periods = generateRange(0, periodCount + 1);
 
-  const timingProfile = periods.map((period) => {
+  const timingProfile = periods.map(period => {
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
     const periodStart = DateHHMM(periodStartTime, { display_seconds: false });
 
     // availableCourts calculated from periodStartTime and averageMatchTime
     // a court is only available if it can accommodate matchUps of duration averageMatchTime
-    const availableCourts = courtsAvailableAtPeriodStart({ courts, date, periodStart, averageMatchTime }).count;
+    const availableCourts = courtsAvailableAtPeriodStart({
+      courts,
+      date,
+      periodStart,
+      averageMatchTime,
+    }).count;
 
     // newCourts are courts which have become available for the start of current time period
-    const newCourts = availableCourts > previousAvailableCourts ? availableCourts - previousAvailableCourts : 0;
+    const newCourts =
+      availableCourts > previousAvailableCourts
+        ? availableCourts - previousAvailableCourts
+        : 0;
 
     cumulativePeriods += period ? availableCourts : 0;
     const averageCourts = period ? cumulativePeriods / period : availableCourts;
@@ -118,7 +154,9 @@ export function matchUpTiming({
     // available over the accumulated time
     const accumulatedTime = periodLength * averageCourts;
     const matchesCalculation = accumulatedTime / averageMatchTime;
-    const calculatedTotal = period ? matchesCalculation * (period - 1) + averageCourts : averageCourts;
+    const calculatedTotal = period
+      ? matchesCalculation * (period - 1) + averageCourts
+      : averageCourts;
 
     // used to increment cumulativeMatches
     // difference between current calculation and previous calculation
@@ -142,16 +180,20 @@ export function matchUpTiming({
       add: addToSchedule,
       availableCourts,
       newCourts,
-      totalMatchUps
+      totalMatchUps,
     };
   });
 
-  let scheduleTimes = timingProfile.reduce((scheduleTimes, profile) => {
-    return scheduleTimes.concat(...generateRange(0, profile.add).map(_ => {
-      const scheduleTime = profile.periodStart;
-      return { scheduleTime };  
-    }));
-  }, []).flat();
+  const scheduleTimes = timingProfile
+    .reduce((scheduleTimes, profile) => {
+      return scheduleTimes.concat(
+        ...generateRange(0, profile.add).map(_ => {
+          const scheduleTime = profile.periodStart;
+          return { scheduleTime };
+        })
+      );
+    }, [])
+    .flat();
 
   return { scheduleTimes, timingProfile, totalMatchUps };
 }
@@ -171,7 +213,7 @@ function addMinutes(startDate, minutes) {
 const garman = {
   matchUpTiming,
   generateTimeSlots,
-  courtsAvailableAtPeriodStart
+  courtsAvailableAtPeriodStart,
 };
 
 export default garman;

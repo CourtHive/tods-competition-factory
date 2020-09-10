@@ -1,8 +1,8 @@
-import { makeDeepCopy } from "../../utilities";
+import { makeDeepCopy } from '../../utilities';
 
-export function getVenuesAndCourts({tournamentRecords}) {
+export function getVenuesAndCourts({ tournamentRecords }) {
   if (!tournamentRecords) return { error: 'Missing tournamentRecords' };
- 
+
   const venues = [];
   const courts = [];
   const uniqueVenueIds = [];
@@ -17,7 +17,9 @@ export function getVenuesAndCourts({tournamentRecords}) {
       }
       venue.courts.forEach(court => {
         if (!uniqueCourtIds.includes(court.courtId)) {
-          const inContextCourt = Object.assign({}, makeDeepCopy(court), { venueId: venue.venueId });
+          const inContextCourt = Object.assign({}, makeDeepCopy(court), {
+            venueId: venue.venueId,
+          });
           courts.push(inContextCourt);
         }
       });
