@@ -105,6 +105,7 @@ export function subSort(arr, i, n, sortFx) {
     ...arr.slice(i + n, arr.length)
   );
 }
+/*
 export function inPlaceSubSort(arr, i, n, sortFx) {
   const newarray = [].concat(
     ...arr.slice(0, i),
@@ -112,9 +113,10 @@ export function inPlaceSubSort(arr, i, n, sortFx) {
     ...arr.slice(i + n, arr.length)
   );
   arr.length = 0;
-  arr.push.apply(arr, newarray);
+  arr.push.apply(arr, newarray); // TODO: eslint use spread operator instead
   return arr;
 }
+*/
 export function chunkArray(arr, chunksize) {
   return arr.reduce((all, one, i) => {
     const ch = Math.floor(i / chunksize);
