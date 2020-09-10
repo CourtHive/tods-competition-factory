@@ -1,5 +1,6 @@
 {
   "include": ["src", "types"],
+  "exclude": ["node_modules", "public", "**/*.d.ts", "dist"],
   "compilerOptions": {
     "module": "esnext",
     "lib": ["dom", "esnext"],
@@ -16,6 +17,7 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "jsx": "react",
+    "noEmit": true,
     "esModuleInterop": true
   }
 }
