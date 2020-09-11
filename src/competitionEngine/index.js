@@ -13,6 +13,11 @@ let tournamentRecords;
 
 export const competitionEngine = (function() {
   const fx = {
+    load: () => {},
+    getState: () => {},
+    setState: () => {},
+    devContext: () => {},
+    flushErrors: () => {},
     ...queryGovernor,
     ...scheduleGovernor,
   };

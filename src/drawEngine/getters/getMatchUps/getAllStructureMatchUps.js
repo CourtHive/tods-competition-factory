@@ -23,8 +23,9 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 export function getAllStructureMatchUps({
   structure,
   inContext,
-  context = {},
   roundFilter,
+  context = {},
+  drawDefinition,
   contextFilters,
   matchUpFilters,
   tournamentParticipants,
@@ -52,12 +53,14 @@ export function getAllStructureMatchUps({
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { structureId, structureName } = structure;
-  const { drawDefinition } = getDrawDefinition();
-  const { drawId } = drawDefinition;
+  if (!drawDefinition) {
+    ({ drawDefinition } = getDrawDefinition());
+  }
+  const { drawId } = drawDefinition || {};
 
   // a collectionDefinition can be found as a propery of tieFormat
   // which can be found as a property of either a structure or a drawDefinition
-  const tieFormat = structure.tieFormat || drawDefinition.tieFormat;
+  const tieFormat = structure.tieFormat || drawDefinition?.tieFormat;
   const collectionDefinitions = tieFormat && tieFormat.collectionDefinitions;
 
   if (structure.matchUps) {
@@ -148,11 +151,12 @@ export function getAllStructureMatchUps({
 
       if (!matchUp.matchUpFormat) {
         const matchUpFormat =
-          structure.matchUpFormat || drawDefinition.matchUpFormat;
+          structure.matchUpFormat || drawDefinition?.matchUpFormat;
         if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
       }
       if (!matchUp.matchUpType) {
-        const matchUpType = structure.matchUpType || drawDefinition.matchUpType;
+        const matchUpType =
+          structure.matchUpType || drawDefinition?.matchUpType;
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
     } else if (matchUp.collectionId && !matchUp.matchUpFormat) {

@@ -29,6 +29,18 @@ export function getPolicyEngine() {
 
 export const drawEngine = (function() {
   const fx = {
+    load: () => {},
+    reset: () => {},
+    getState: () => {},
+    setState: () => {},
+    setDrawId: () => {},
+    getErrors: () => {},
+    devContext: () => {},
+    loadPolicy: () => {},
+    flushErrors: () => {},
+    setParticipants: () => {},
+    newDrawDefinition: () => {},
+    setDrawDescription: () => {},
     ...linkGovernor,
     ...queryGovernor,
     ...scoreGovernor,
