@@ -319,7 +319,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize, seedsCount });
 
-  drawEngine.loadPolicy(ITF_SEEDING);
+  drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
   let drawDefinition = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({
@@ -462,7 +462,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
     ...[].concat(...expectedBlocks.map(b => b.seedNumbers))
   );
 
-  drawEngine.loadPolicy(policy);
+  drawEngine.attachPolicy({ policyDefinition: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
   const drawDefinition = drawEngine.getState();

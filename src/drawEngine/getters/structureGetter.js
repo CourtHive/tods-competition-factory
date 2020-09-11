@@ -76,6 +76,7 @@ export function getStructureSeedAssignments({
 
 export function getStructureQualifiersCount({
   drawDefinition,
+  policies,
   structure,
   structureId,
 }) {
@@ -90,6 +91,7 @@ export function getStructureQualifiersCount({
       const { matchUps } = getAllStructureMatchUps({
         drawDefinition,
         structure,
+        policies,
       });
       qualifiersCount = matchUps.reduce((count, matchUp) => {
         return count + (matchUp.finishingRound === 1 ? 1 : 0);

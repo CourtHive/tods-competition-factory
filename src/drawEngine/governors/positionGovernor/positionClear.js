@@ -14,6 +14,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 export function clearDrawPosition({
+  policies,
   drawDefinition,
   structureId,
   participantId,
@@ -66,6 +67,7 @@ export function clearDrawPosition({
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     structure,
+    policies,
     matchUpFilters,
     inContext: true,
   });

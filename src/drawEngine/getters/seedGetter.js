@@ -1,5 +1,5 @@
-import { getPolicyEngine } from '../../drawEngine';
-import { powerOf2, shuffleArray } from '../../utilities';
+import { drawEngine } from '../../drawEngine';
+import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
 import {
@@ -8,7 +8,6 @@ import {
 } from '../../drawEngine/getters/structureGetter';
 
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
-import { generateRange } from '../../utilities';
 
 export function getValidSeedBlocks({ structure, allPositions }) {
   let waterfallSeeding;
@@ -51,8 +50,8 @@ export function getValidSeedBlocks({ structure, allPositions }) {
   const firstRoundDrawPositionOffset =
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
-  const { policyEngine } = getPolicyEngine();
-  const { seedBlocks, error: policyEngineError } = policyEngine.getSeedBlocks();
+  const { seedBlocks, error: policyEngineError } = drawEngine.getSeedBlocks();
+
   if (policyEngineError) errors.push({ policyEngineError });
   const baseDrawSize =
     (firstRoundDrawPositions && firstRoundDrawPositions.length) || 0;
@@ -322,7 +321,6 @@ export function isValidSeedPosition({
 }
 
 export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
-  const { policyEngine } = getPolicyEngine();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -407,8 +405,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
 
   // TODO: policy determines whether to allow duplicate seedNumbers or not
   const allowsDuplicateSeedNumbers =
-    (policyEngine.seeding && policyEngine.seeding().duplicateSeedNumbers) ||
-    true;
+    drawEngine.getSeedingConfig().duplicateSeedNumbers || true;
   const unplacedSeedParticipantIds = allowsDuplicateSeedNumbers
     ? randomlySelectedUnplacedSeedValueIds
     : unplacedSeedNumberIds;

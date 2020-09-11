@@ -2,6 +2,7 @@ import linkGovernor from './governors/linkGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
+import policyGovernor from './governors/policyGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
 import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
@@ -10,19 +11,14 @@ import definitionTemplate, {
 } from './generators/drawDefinitionTemplate';
 
 import { auditEngine } from '../auditEngine';
-import { policyEngine } from '../policyEngine';
-
 import { UUID, makeDeepCopy } from '../utilities';
 import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];
+const policies = {};
 let drawDefinition;
 let tournamentParticipants;
-
-export function getPolicyEngine() {
-  return { policyEngine };
-}
 
 export const drawEngine = (function() {
   const fx = {};
@@ -61,7 +57,6 @@ export const drawEngine = (function() {
   };
 
   fx.reset = () => {
-    policyEngine.reset();
     drawDefinition = null;
     return SUCCESS;
   };
@@ -79,22 +74,12 @@ export const drawEngine = (function() {
     return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
   };
 
-  fx.loadPolicy = policy => {
-    if (!drawDefinition) {
-      errors = errors.concat({ error: 'Missing drawDefinition' });
-      return fx;
-    }
-    const result = policyEngine.loadPolicy(policy);
-    if (result && result.errors) errors = errors.concat(result.errors);
-    addPolicyProfile({ policy });
-    return fx;
-  };
-
   importGovernors([
     linkGovernor,
     queryGovernor,
     scoreGovernor,
     entryGovernor,
+    policyGovernor,
     matchUpGovernor,
     positionGovernor,
     structureGovernor,
@@ -105,32 +90,6 @@ export const drawEngine = (function() {
   function newDrawDefinition({ drawId, drawProfile } = {}) {
     const template = definitionTemplate();
     return Object.assign({}, template, { drawId, drawProfile });
-  }
-
-  function addPolicyProfile({ policy }) {
-    if (!drawDefinition.appliedPolicies) drawDefinition.appliedPolicies = [];
-    Object.keys(policy).forEach(policyClass => {
-      const policyType = policy[policyClass].policyType;
-      if (policyType) {
-        const profileExists = drawDefinition.appliedPolicies.reduce(
-          (exists, profile) => {
-            return profile.policyType === policyType &&
-              policy.policyClass === policyClass
-              ? exists || true
-              : exists;
-          },
-          false
-        );
-        if (!profileExists) {
-          const appliedPolicy = { policyClass, policyType };
-          if (policy[policyClass].policyAttributes) {
-            appliedPolicy.policyAttributes =
-              policy[policyClass].policyAttributes;
-          }
-          drawDefinition.appliedPolicies.push(appliedPolicy);
-        }
-      }
-    });
   }
 
   function validDefinitionKeys(definition) {
@@ -163,10 +122,10 @@ export const drawEngine = (function() {
   function invoke({ params, governor, key }) {
     return governor[key]({
       ...params,
+      policies,
       drawDefinition,
       tournamentParticipants,
       auditEngine,
-      policyEngine,
     });
   }
 })();

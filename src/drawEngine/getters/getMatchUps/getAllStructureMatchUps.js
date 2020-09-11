@@ -1,5 +1,4 @@
 import { filterMatchUps } from './filterMatchUps';
-import { getPolicyEngine } from '../../../drawEngine';
 import { makeDeepCopy, numericSort } from '../../../utilities';
 import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
 import { getStructureSeedAssignments } from '../../../drawEngine/getters/structureGetter';
@@ -20,6 +19,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 export function getAllStructureMatchUps({
+  policies,
   structure,
   inContext,
   roundFilter,
@@ -41,9 +41,8 @@ export function getAllStructureMatchUps({
     };
   }
 
-  const { policyEngine } = getPolicyEngine();
-  const requireAllPositionsAssigned = policyEngine.requireAllPositionsAssigned()
-    .required;
+  const requireAllPositionsAssigned =
+    policies?.scoring?.requireAllPositionsAssigned;
 
   const {
     positionAssignments,

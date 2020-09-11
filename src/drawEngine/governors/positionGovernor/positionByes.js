@@ -1,4 +1,4 @@
-import { drawEngine, getPolicyEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/structureGetter';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -194,8 +194,7 @@ export function positionByes({
 }
 
 function getUnseededByePositions({ structure, isFeedIn }) {
-  const { policyEngine } = getPolicyEngine();
-  const { seedBlocks } = policyEngine.getSeedBlocks();
+  const { seedBlocks } = drawEngine.getSeedBlocks();
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
     .filter(assignment => assignment.participantId)

@@ -87,8 +87,8 @@ export function generateDrawDefinition(props) {
   const [structure] = structures;
   const { structureId } = structure || {};
 
-  drawEngine.loadPolicy(SEEDING_POLICY);
-  drawEngine.loadPolicy(AVOIDANCE_POLICY);
+  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   entries.forEach(entry => {
     // TODO: attach participant scaleValues to entry information (if relevant?)
