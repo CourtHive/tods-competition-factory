@@ -125,7 +125,7 @@ it('can generate and verify curtis structures', () => {
 
 it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const drawType = CURTIS;
   const fileName = `${drawType}.json`;

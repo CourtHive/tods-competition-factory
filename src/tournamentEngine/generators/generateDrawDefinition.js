@@ -141,7 +141,7 @@ export function generateDrawDefinition(props) {
 
   if (automated !== false) drawEngine.automatedPositioning({ structureId });
 
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });

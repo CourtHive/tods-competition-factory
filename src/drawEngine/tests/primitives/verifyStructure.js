@@ -20,7 +20,7 @@ export function verifyStructure({
   expectedQualifierAssignments,
   expectedPositionsAssignedCount,
 }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({ structure });

@@ -92,7 +92,7 @@ export function generateDrawStructure({
 
   if (automated !== false) drawEngine.automatedPositioning({ structureId });
 
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   return { structureId, drawDefinition };
 }
@@ -144,7 +144,7 @@ export function generateFeedIn({
 
   if (automated !== false) drawEngine.automatedPositioning({ structureId });
 
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   return { structureId, drawDefinition };
 }

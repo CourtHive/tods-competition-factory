@@ -49,7 +49,10 @@ export const drawEngine = (function() {
     return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
   };
 
-  fx.getState = () => makeDeepCopy(drawDefinition);
+  fx.getState = () => ({
+    drawDefinition: makeDeepCopy(drawDefinition),
+    policies: makeDeepCopy(policies),
+  });
   fx.getErrors = () => makeDeepCopy(errors);
   fx.flushErrors = () => {
     errors = [];

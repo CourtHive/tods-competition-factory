@@ -22,7 +22,7 @@ it('can find structures by structureId', () => {
   initialize();
   mainDrawPositions({ drawSize: 32 });
   drawEngine.generateDrawType({ drawType: COMPASS });
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { structures } = drawStructures({ drawDefinition, stage: MAIN });
   const structureIdMap = Object.assign(
     {},
@@ -41,7 +41,7 @@ it('can find structures by stage and stageSequence', () => {
   initialize();
   mainDrawPositions({ drawSize: 32 });
   drawEngine.generateDrawType({ drawType: COMPASS });
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const { structures: stage2Structures } = drawStructures({
     drawDefinition,
@@ -82,7 +82,7 @@ it('can find structures by stage and stageSequence', () => {
 
 it('can find structures by stage', () => {
   feedInChampionship({ drawSize: 16, drawType: FEED_IN_CHAMPIONSHIP });
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = drawStructures({ drawDefinition, stage: MAIN });

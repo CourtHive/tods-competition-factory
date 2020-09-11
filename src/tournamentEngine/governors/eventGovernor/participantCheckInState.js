@@ -41,9 +41,10 @@ function participantCheckInAction({
     const result = drawEngine[method]({ matchUpId, participantId });
 
     if (result.success) {
+      const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
       event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
         return drawDefinition.drawId === drawId
-          ? drawEngine.getState()
+          ? updatedDrawDefinition
           : drawDefinition;
       });
     } else {

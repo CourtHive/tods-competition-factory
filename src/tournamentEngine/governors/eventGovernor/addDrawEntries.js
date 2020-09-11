@@ -21,9 +21,10 @@ export function addDrawEntries({
     .addDrawEntries({ participantIds, stage: entryStage, entryType });
   if (result.error) return result;
 
+  const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
   event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
     return drawDefinition.drawId === drawId
-      ? drawEngine.getState()
+      ? updatedDrawDefinition
       : drawDefinition;
   });
 

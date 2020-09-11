@@ -124,7 +124,7 @@ it('can write to the file system', () => {
   });
 
   const writeFile = process.env.TMX_TEST_FILES;
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const drawType = ROUND_ROBIN;
   const fileName = `${drawType}.json`;
   const dirPath = './src/drawEngine/documentation/generated/';

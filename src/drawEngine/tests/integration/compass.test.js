@@ -271,7 +271,7 @@ function generateCompass({
     expectedByeDrawPositions,
   });
 
-  const snapshot = drawEngine.getState();
+  const { drawDefinition: snapshot } = drawEngine.getState();
 
   testByeRemoval({ stage, expectedByeRemoval });
   checkByeAdvancedDrawPositions({

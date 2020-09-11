@@ -94,7 +94,7 @@ it('can generate and verify double elimination', () => {
 
 it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const drawType = DOUBLE_ELIMINATION;
   const fileName = `${drawType}.json`;

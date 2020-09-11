@@ -38,7 +38,7 @@ export function findMatchUpByRoundNumberAndPosition({
   roundPosition,
   inContext,
 }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -61,7 +61,7 @@ export function verifyMatchUps({
   expectedRoundUpcoming,
   expectedRoundCompleted,
 }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const {
     completedMatchUps,

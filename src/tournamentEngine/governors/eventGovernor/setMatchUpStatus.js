@@ -31,9 +31,10 @@ export function setMatchUpStatus(props) {
   if (setMatchUpStatusErrors) errors = errors.concat(setMatchUpStatusErrors);
 
   if (event) {
+    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
     event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
       return drawDefinition.drawId === drawId
-        ? drawEngine.getState()
+        ? updatedDrawDefinition
         : drawDefinition;
     });
   } else {

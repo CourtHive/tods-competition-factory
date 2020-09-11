@@ -9,7 +9,7 @@ export function feedInChampionship({ drawSize, drawType }) {
   initialize();
   mainDrawPositions({ drawSize });
   const { links } = drawEngine.generateDrawType({ drawType });
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const {
     structures: [mainDraw],
   } = drawStructures({ drawDefinition, stage: MAIN });
