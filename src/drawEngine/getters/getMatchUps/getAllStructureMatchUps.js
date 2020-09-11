@@ -1,6 +1,5 @@
 import { filterMatchUps } from './filterMatchUps';
 import { getPolicyEngine } from '../../../drawEngine';
-import { getDrawDefinition } from '../../../drawEngine';
 import { makeDeepCopy, numericSort } from '../../../utilities';
 import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
 import { getStructureSeedAssignments } from '../../../drawEngine/getters/structureGetter';
@@ -53,9 +52,6 @@ export function getAllStructureMatchUps({
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { structureId, structureName } = structure;
-  if (!drawDefinition) {
-    ({ drawDefinition } = getDrawDefinition());
-  }
   const { drawId } = drawDefinition || {};
 
   // a collectionDefinition can be found as a propery of tieFormat

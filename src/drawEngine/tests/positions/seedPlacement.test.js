@@ -1,5 +1,5 @@
 import { numericSort } from '../../../utilities';
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getDrawStructures } from '../../getters/structureGetter';
@@ -49,10 +49,7 @@ it('can define seedAssignments', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  // returns drawDefinition by reference
-  const {
-    drawDefinition: drawDefinitionAfterAssignments,
-  } = getDrawDefinition();
+  const drawDefinitionAfterAssignments = drawEngine.getState();
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition: drawDefinitionAfterAssignments,
     structureId,
@@ -468,7 +465,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   drawEngine.loadPolicy(policy);
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
   const { validSeedBlocks } = getValidSeedBlocks({ structure });

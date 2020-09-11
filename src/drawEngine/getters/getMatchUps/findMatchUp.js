@@ -23,6 +23,7 @@ export function findMatchUp({
   const { structures } = drawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {
     const { matchUps } = getAllStructureMatchUps({
+      drawDefinition,
       structure,
       tournamentParticipants,
       inContext,

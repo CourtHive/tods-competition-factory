@@ -11,7 +11,10 @@ import {
 } from './positionActions';
 
 import { findStructure } from '../../getters/structureGetter';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import {
+  getAllStructureMatchUps,
+  structureMatchUps,
+} from '../../getters/getMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getAllDrawMatchUps, getDrawMatchUps } from '../../getters/getMatchUps';
 
@@ -37,6 +40,7 @@ function allDrawMatchUps(props) {
 }
 
 const queryGovernor = {
+  structureMatchUps,
   allStructureMatchUps,
   allDrawMatchUps,
   drawMatchUps,

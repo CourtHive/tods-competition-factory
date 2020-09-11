@@ -1,4 +1,4 @@
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { reset, initialize, mainDrawPositions } from './primitives';
 import { drawStructures } from '../../getters/structureGetter';
 
@@ -9,7 +9,7 @@ export function feedInChampionship({ drawSize, drawType }) {
   initialize();
   mainDrawPositions({ drawSize });
   const { links } = drawEngine.generateDrawType({ drawType });
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   const {
     structures: [mainDraw],
   } = drawStructures({ drawDefinition, stage: MAIN });

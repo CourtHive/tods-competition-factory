@@ -90,7 +90,11 @@ export function structureAssignedDrawPositions({
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { matchUps } = getAllStructureMatchUps({ structure, matchUpFilters });
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    structure,
+    matchUpFilters,
+  });
   const { positionAssignments } = getPositionAssignments({
     structure,
     drawDefinition,

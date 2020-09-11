@@ -87,7 +87,10 @@ export function getStructureQualifiersCount({
     if (structure.stage !== QUALIFYING) {
       error = 'Structure is not Qualifying';
     } else {
-      const { matchUps } = getAllStructureMatchUps({ structure });
+      const { matchUps } = getAllStructureMatchUps({
+        drawDefinition,
+        structure,
+      });
       qualifiersCount = matchUps.reduce((count, matchUp) => {
         return count + (matchUp.finishingRound === 1 ? 1 : 0);
       }, 0);

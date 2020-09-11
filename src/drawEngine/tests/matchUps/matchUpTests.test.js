@@ -1,4 +1,4 @@
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { drawStructures } from '../../getters/structureGetter';
 import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
@@ -37,7 +37,7 @@ it('matchUps returned with context cannot modify original', () => {
   initialize();
   mainDrawPositions({ drawSize: 16 });
   drawEngine.generateDrawType({ drawType: KNOCKOUT });
-  let { drawDefinition } = getDrawDefinition();
+  let drawDefinition = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
     structures: [structure],
@@ -48,18 +48,15 @@ it('matchUps returned with context cannot modify original', () => {
   // no matchUp should include a drawId
   matchUps.forEach(matchUp => expect(matchUp.drawId).toEqual(undefined));
 
-  // add a test attribute to first matchUp
   const matchUp = matchUps[0];
   const { matchUpId } = matchUp;
-  matchUp.testAttribute = 'testAttribute';
 
   // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition } = getDrawDefinition());
+  drawDefinition = drawEngine.getState();
   let { matchUp: retrievedMatchUp } = findMatchUp({
     drawDefinition,
     matchUpId,
   });
-  expect(retrievedMatchUp.testAttribute).toEqual(matchUp.testAttribute);
   expect(retrievedMatchUp.drawId).toEqual(undefined);
   expect(retrievedMatchUp.structureId).toEqual(undefined);
 
@@ -76,7 +73,7 @@ it('matchUps returned with context cannot modify original', () => {
   expect(contextMatchUp.structureId).toEqual(structureId);
 
   // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition } = getDrawDefinition());
+  drawDefinition = drawEngine.getState();
 
   // retrieve matchUp from drawDefinition
   // newAttribute should not be present with no context added

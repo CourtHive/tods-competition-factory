@@ -40,7 +40,11 @@ export function findMatchUpByRoundNumberAndPosition({
 }) {
   const drawDefinition = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { matchUps } = getAllStructureMatchUps({ structure, inContext });
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    structure,
+    inContext,
+  });
   const matchUp = matchUps.reduce((matchUp, candidate) => {
     return candidate.roundNumber === roundNumber &&
       candidate.roundPosition === roundPosition
@@ -63,7 +67,7 @@ export function verifyMatchUps({
     completedMatchUps,
     pendingMatchUps,
     upcomingMatchUps,
-  } = structureMatchUps({ structure, requireParticipants });
+  } = structureMatchUps({ drawDefinition, structure, requireParticipants });
 
   const { roundMatchUps: pendingRoundMatchUps } = getRoundMatchUps({
     matchUps: pendingMatchUps,

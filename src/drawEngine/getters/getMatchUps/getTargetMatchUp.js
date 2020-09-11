@@ -24,6 +24,7 @@ export function getTargetMatchUp({
     structureId,
   });
   const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
     structure: targetStructure,
     tournamentParticipants,
     inContext: true,

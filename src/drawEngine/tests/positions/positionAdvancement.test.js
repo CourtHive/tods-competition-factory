@@ -1,4 +1,4 @@
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { drawStructures } from '../../getters/structureGetter';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
@@ -25,7 +25,7 @@ it('can direct participants in KNOCKOUT with BACKDRAW', () => {
   mainDrawPositions({ drawSize });
   const result = drawEngine.generateDrawType({ drawType: FMLC });
   expect(result).not.toHaveProperty(ERROR);
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(1);
   const {
     structures: [structure],
@@ -102,7 +102,7 @@ it('can direct participants in KNOCKOUT with BACKDRAW', () => {
 it('can direct participants in FEED IN CHAMPIONSHIP structure', () => {
   const drawSize = 16;
   feedInChampionship({ drawSize, drawType: FEED_IN_CHAMPIONSHIP });
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(4);
   const {
     structures: [structure],
@@ -198,7 +198,7 @@ it('can direct participants in COMPASS', () => {
   mainDrawPositions({ drawSize: 32 });
   const result = drawEngine.generateDrawType({ drawType: COMPASS });
   expect(result).not.toHaveProperty(ERROR);
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(7);
   const {
     structures: [structure],

@@ -19,21 +19,7 @@ let errors = [];
 let tournamentRecord;
 
 export const tournamentEngine = (function() {
-  const fx = {
-    load: () => {},
-    getState: () => {},
-    setState: () => {},
-    getAudit: () => {},
-    devContext: () => {},
-    flushErrors: () => {},
-    newTournamentRecord: () => {},
-    ...queryGovernor,
-    ...eventGovernor,
-    ...venueGovernor,
-    ...scheduleGovernor,
-    ...tournamentGovernor,
-    ...participantGovernor,
-  };
+  const fx = {};
 
   fx.devContext = isDev => {
     devContext = isDev;

@@ -51,6 +51,7 @@ export function getDrawMatchUps({
       inContext,
       roundFilter,
       context,
+      drawDefinition,
       matchUpFilters,
       contextFilters,
       includeByeMatchUps,

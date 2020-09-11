@@ -111,7 +111,7 @@ function removeDirectedWinner({
       undefined
     );
 
-    const { matchUps } = getAllStructureMatchUps({ structure });
+    const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
     const allDrawPositionInstances = matchUps
       .map(matchUp => matchUp.drawPositions)
       .flat(Infinity)

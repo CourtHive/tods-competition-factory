@@ -31,7 +31,7 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
   const {
     links: { source },
   } = getMatchUpLinks({ drawDefinition, matchUp });
-  const { matchUps } = getAllStructureMatchUps({ structure });
+  const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
   const sourceRoundMatchUpCount = matchUps.reduce((count, currentMatchUp) => {
     return currentMatchUp.roundNumber === matchUp.roundNumber
       ? count + 1

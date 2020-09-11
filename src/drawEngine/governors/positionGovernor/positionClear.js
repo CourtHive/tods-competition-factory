@@ -64,6 +64,7 @@ export function clearDrawPosition({
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
     structure,
     matchUpFilters,
     inContext: true,

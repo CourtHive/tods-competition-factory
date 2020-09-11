@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
 import { drawStructures } from '../../getters/structureGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
@@ -42,7 +42,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   mainDrawWithEntries({ drawSize, byesCount: 2 });
 
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   const {
     structures: [structure],
   } = drawStructures({ drawDefinition, stage });
@@ -250,7 +250,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
 
   mainDrawWithEntries({ drawSize, byesCount: 2 });
 
-  const { drawDefinition } = getDrawDefinition();
+  const drawDefinition = drawEngine.getState();
   const {
     structures: [structure],
   } = drawStructures({ drawDefinition, stage });
@@ -357,7 +357,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(matchUpStatus).toEqual(COMPLETED);
   expect(score).toEqual('6-1 6-2');
 
-  const { drawDefinition } = getDrawDefinition();
+  let drawDefinition = drawEngine.getState();
   ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
     drawDefinition,
     matchUpId,
@@ -408,6 +408,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(winningSide).toEqual(2);
 
   // check that the original loser of the matchUp is now the winner
+  drawDefinition = drawEngine.getState();
   ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
     drawDefinition,
     matchUpId,
@@ -477,6 +478,7 @@ it('can change a first round matchUp winner and update consolation', () => {
     winningSide: 1,
     score: '6-2 1-6 6-1',
   }));
+  drawDefinition = drawEngine.getState();
   ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
     drawDefinition,
     matchUpId,

@@ -1,5 +1,5 @@
 import { generateRange } from '../../../utilities';
-import { getDrawDefinition, drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import { drawStructures } from '../../getters/structureGetter';
@@ -62,17 +62,18 @@ export function mainDrawWithEntries({
 export function knockoutMatchUpsWithParticipants({ drawSize }) {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize });
-  const { drawDefinition } = getDrawDefinition();
+  let drawDefinition = drawEngine.getState();
   const {
-    structures: [structure],
+    structures: [firstStructure],
   } = drawStructures({ drawDefinition, stage });
-  const { structureId } = structure;
+  const { structureId } = firstStructure;
 
   const getDrawMatchUps = drawEngine.drawMatchUps();
   expect(getDrawMatchUps.upcomingMatchUps.length).toEqual(0);
   expect(getDrawMatchUps.pendingMatchUps.length).toEqual(drawSize - 1);
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  drawDefinition = drawEngine.getState();
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
   const participantIds = mainDrawEntries.map(e => e.participantId);
 
@@ -90,19 +91,25 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
       participantId,
     });
     expect(result).toMatchObject(SUCCESS);
+    drawDefinition = drawEngine.getState();
     const {
       unassignedPositions: stillUnassigned,
     } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
+  drawDefinition = drawEngine.getState();
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
   });
   expect(assignedPositions.length).toEqual(drawSize);
+  const {
+    structures: [structure],
+  } = drawStructures({ drawDefinition, stage });
   const { upcomingMatchUps: upcomingStructureMatchUps } = structureMatchUps({
     structure,
+    drawDefinition,
     requireParticipants: true,
   });
   expect(upcomingStructureMatchUps.length).toEqual(drawSize / 2);
@@ -116,7 +123,6 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
   expect(pendingMatchUps.length).toEqual(drawSize / 2 - 1);
   expect(completedMatchUps.length).toEqual(0);
   return {
-    drawDefinition,
     matchUps: { upcomingMatchUps, pendingMatchUps, completedMatchUps },
   };
 }

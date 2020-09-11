@@ -12,15 +12,7 @@ let errors = [];
 let tournamentRecords;
 
 export const competitionEngine = (function() {
-  const fx = {
-    load: () => {},
-    getState: () => {},
-    setState: () => {},
-    devContext: () => {},
-    flushErrors: () => {},
-    ...queryGovernor,
-    ...scheduleGovernor,
-  };
+  const fx = {};
 
   fx.devContext = isDev => {
     devContext = isDev;

@@ -64,7 +64,11 @@ export function assignDrawPositionBye({
   });
 
   const matchUpFilters = { isCollectionMatchUp: false };
-  const { matchUps } = getAllStructureMatchUps({ structure, matchUpFilters });
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    structure,
+    matchUpFilters,
+  });
 
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions.includes(drawPosition)) {
@@ -437,6 +441,7 @@ function getOrderedByePositions({
 export function getByesData({ drawDefinition, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+    drawDefinition,
     structure,
     matchUpFilters,
   });
