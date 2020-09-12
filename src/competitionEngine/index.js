@@ -11,37 +11,41 @@ let devContext;
 let errors = [];
 let tournamentRecords;
 
+function setState(records) {
+  if (typeof records !== 'object') return { error: 'Invalid Object' };
+  tournamentRecords = makeDeepCopy(records);
+  return SUCCESS;
+}
+
+function flushErrors() {
+  errors = [];
+}
+
 export const competitionEngine = (function() {
-  const fx = {};
+  const fx = {
+    getState: () => makeDeepCopy(tournamentRecords),
+    load: records => setState(records),
+  };
+
+  importGovernors([
+    // locationGovernor,
+    queryGovernor,
+    scheduleGovernor,
+  ]);
 
   fx.devContext = isDev => {
     devContext = isDev;
     return fx;
   };
-  fx.getState = () => makeDeepCopy(tournamentRecords);
-
+  fx.flushErrors = () => {
+    flushErrors();
+    return fx;
+  };
   fx.setState = tournamentRecords => {
-    const result = fx.load(tournamentRecords);
+    const result = setState(tournamentRecords);
     if (result && result.error) errors.push(result.error);
     return fx;
   };
-
-  fx.flushErrors = () => {
-    errors = [];
-    return fx;
-  };
-
-  fx.load = records => {
-    if (typeof records !== 'object') return { error: 'Invalid Object' };
-    tournamentRecords = makeDeepCopy(records);
-    return SUCCESS;
-  };
-
-  importGovernors([
-    // venueGovernor,
-    queryGovernor,
-    scheduleGovernor,
-  ]);
 
   return fx;
 
@@ -61,10 +65,12 @@ export const competitionEngine = (function() {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
-            return engineInvoke(governor[key], params);
+            const result = engineInvoke(governor[key], params);
+            return result || fx;
           } else {
             try {
-              return engineInvoke(governor[key], params);
+              const result = engineInvoke(governor[key], params);
+              return result || fx;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }

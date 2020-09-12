@@ -7,8 +7,6 @@ import { tournamentRecordWithParticipants } from '../primitives';
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-let result;
-
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
   const endDate = '2020-01-06';
@@ -29,7 +27,7 @@ it('can add events, venues, and schedule matchUps', () => {
     eventType: SINGLES,
   };
 
-  result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.addEvent({ event });
   const { Event, success } = result;
   const { eventId } = Event;
   expect(success).toEqual(true);
@@ -106,6 +104,7 @@ it('can add events, venues, and schedule matchUps', () => {
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ date, matchUps: upcoming });
+  console.log({ result });
   expect(result).toEqual(SUCCESS);
 
   tournamentRecords = competitionEngine.getState();

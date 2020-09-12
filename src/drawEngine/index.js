@@ -47,14 +47,7 @@ function flushErrors() {
 }
 
 export const drawEngine = (function() {
-  const coreGovernor = {
-    devContext: isDev => {
-      devContext = isDev;
-    },
-    setState: definition => {
-      const result = setState(definition);
-      if (result && result.error) errors.push(result.error);
-    },
+  const fx = {
     load: definition => {
       return setState(definition);
     },
@@ -67,9 +60,6 @@ export const drawEngine = (function() {
     reset: () => {
       drawDefinition = null;
       return SUCCESS;
-    },
-    flushErrors: () => {
-      flushErrors();
     },
     getErrors: () => {
       return makeDeepCopy(errors);
@@ -87,25 +77,9 @@ export const drawEngine = (function() {
       drawDefinition.description = description;
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
-    setParticipants: participants => {
-      tournamentParticipants = participants;
-    },
-  };
-
-  const fx = {
-    ...coreGovernor,
-    ...linkGovernor,
-    ...queryGovernor,
-    ...scoreGovernor,
-    ...entryGovernor,
-    ...policyGovernor,
-    ...matchUpGovernor,
-    ...positionGovernor,
-    ...structureGovernor,
   };
 
   importGovernors([
-    coreGovernor,
     linkGovernor,
     queryGovernor,
     scoreGovernor,
@@ -116,8 +90,21 @@ export const drawEngine = (function() {
     structureGovernor,
   ]);
 
+  fx.flushErrors = () => {
+    flushErrors();
+    return fx;
+  };
+  fx.devContext = isDev => {
+    devContext = isDev;
+    return fx;
+  };
   fx.setParticipants = participants => {
     tournamentParticipants = participants;
+    return fx;
+  };
+  fx.setState = definition => {
+    const result = setState(definition);
+    if (result && result.error) errors.push(result.error);
     return fx;
   };
 

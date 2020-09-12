@@ -18,51 +18,63 @@ let devContext;
 let errors = [];
 let tournamentRecord;
 
-export const tournamentEngine = (function() {
-  const fx = {};
+function newTournamentRecord(props) {
+  if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
+  const template = definitionTemplate();
+  return Object.assign({}, template, props);
+}
 
+function flushErrors() {
+  errors = [];
+}
+
+function setState(tournament) {
+  if (typeof tournament !== 'object') return { error: 'Invalid Object' };
+  if (!tournament.tournamentId) return { error: 'Missing tournamentId' };
+  tournamentRecord = makeDeepCopy(tournament);
+  return Object.assign(
+    { tournamentId: tournamentRecord.tournamentId },
+    SUCCESS
+  );
+}
+
+export const tournamentEngine = (function() {
+  const fx = {
+    getState: () => makeDeepCopy(tournamentRecord),
+    getAudit: () => {
+      const auditTrail = auditEngine.getState();
+      auditEngine.reset();
+      return auditTrail;
+    },
+
+    load: tournament => setState(tournament),
+
+    newTournamentRecord: (props = {}) => {
+      flushErrors();
+      tournamentRecord = newTournamentRecord(props);
+      return Object.assign(
+        { tournamentId: tournamentRecord.tournamentId },
+        SUCCESS
+      );
+    },
+  };
+
+  fx.flushErrors = () => {
+    flushErrors();
+    return fx;
+  };
+  fx.setState = tournament => {
+    const result = setState(tournament);
+    if (result && result.error) errors.push(result.error);
+    return fx;
+  };
   fx.devContext = isDev => {
     devContext = isDev;
     drawEngine.devContext(isDev);
     auditEngine.devContext(isDev);
     return fx;
   };
-  fx.getState = () => makeDeepCopy(tournamentRecord);
-  fx.getAudit = () => {
-    const auditTrail = auditEngine.getState();
-    auditEngine.reset();
-    return auditTrail;
-  };
 
-  fx.setState = tournament => {
-    const result = fx.load(tournament);
-    if (result && result.error) errors.push(result.error);
-    return fx;
-  };
-
-  fx.flushErrors = () => {
-    errors = [];
-    return fx;
-  };
-
-  fx.load = tournament => {
-    if (typeof tournament !== 'object') return { error: 'Invalid Object' };
-    if (!tournament.tournamentId) return { error: 'Missing tournamentId' };
-    tournamentRecord = makeDeepCopy(tournament);
-    return Object.assign(
-      { tournamentId: tournamentRecord.tournamentId },
-      SUCCESS
-    );
-  };
-
-  fx.newTournamentRecord = (props = {}) => {
-    fx.flushErrors();
-    tournamentRecord = newTournamentRecord(props);
-    return Object.assign(
-      { tournamentId: tournamentRecord.tournamentId },
-      SUCCESS
-    );
-  };
   importGovernors([
     queryGovernor,
     eventGovernor,
@@ -73,12 +85,6 @@ export const tournamentEngine = (function() {
   ]);
 
   return fx;
-
-  function newTournamentRecord(props) {
-    if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-    const template = definitionTemplate();
-    return Object.assign({}, template, props);
-  }
 
   // enable Middleware
   function engineInvoke(fx, params) {
@@ -106,10 +112,12 @@ export const tournamentEngine = (function() {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
-            return engineInvoke(governor[key], params);
+            const result = engineInvoke(governor[key], params);
+            return result || fx;
           } else {
             try {
-              return engineInvoke(governor[key], params);
+              const result = engineInvoke(governor[key], params);
+              return result || fx;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
