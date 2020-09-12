@@ -148,6 +148,10 @@ function generateRoundRobin({
 
   drawEngine.reset();
   drawEngine.newDrawDefinition();
+
+  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
+
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.generateDrawType({
     drawType,
@@ -159,9 +163,6 @@ function generateRoundRobin({
     structures: [structure],
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
   const { structureId } = structure;
-
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `ko-uuid${i + 1}`,

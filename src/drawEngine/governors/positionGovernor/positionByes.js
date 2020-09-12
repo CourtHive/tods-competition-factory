@@ -1,4 +1,3 @@
-import { drawEngine } from '../../../drawEngine';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/structureGetter';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -29,6 +28,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 
 export function assignDrawPositionBye({
   drawDefinition,
@@ -74,7 +74,12 @@ export function assignDrawPositionBye({
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions.includes(drawPosition)) {
       const { matchUpId } = matchUp;
-      drawEngine.setMatchUpStatus({ matchUpId, matchUpStatus: BYE });
+      setMatchUpStatus({
+        drawDefinition,
+        policies,
+        matchUpId,
+        matchUpStatus: BYE,
+      });
 
       const pairedDrawPosition = matchUp.drawPositions.reduce(
         (pairedDrawPosition, currentDrawPosition) => {
@@ -139,6 +144,7 @@ export function assignDrawPositionBye({
 
 export function positionByes({
   drawDefinition,
+  policies,
   structure,
   structureId,
   blockOrdered = false,
@@ -160,6 +166,7 @@ export function positionByes({
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
   } = getSeedOrderByePositions({
+    policies,
     structure,
     relevantMatchUps,
   });
@@ -169,6 +176,7 @@ export function positionByes({
     : strictSeedOrderByePositions;
 
   const { unseededByePositions } = getUnseededByePositions({
+    policies,
     structure,
     isFeedIn,
   });
@@ -184,7 +192,9 @@ export function positionByes({
   const byeDrawPositions = byePositions.slice(0, byesToPlace);
 
   for (const drawPosition of byeDrawPositions) {
-    const result = drawEngine.assignDrawPositionBye({
+    const result = assignDrawPositionBye({
+      drawDefinition,
+      policies,
       structureId,
       drawPosition,
     });
@@ -194,8 +204,8 @@ export function positionByes({
   return SUCCESS;
 }
 
-function getUnseededByePositions({ structure, isFeedIn }) {
-  const { seedBlocks } = drawEngine.getSeedBlocks();
+function getUnseededByePositions({ structure, policies, isFeedIn }) {
+  const seedBlocks = policies?.seeding?.seedBlocks;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
     .filter(assignment => assignment.participantId)
@@ -281,6 +291,7 @@ function getUnseededByePositions({ structure, isFeedIn }) {
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
+    policies,
     structure,
     allPositions: true,
   });
@@ -333,8 +344,9 @@ function getUnseededByePositions({ structure, isFeedIn }) {
   return { unseededByePositions };
 }
 
-function getSeedOrderByePositions({ structure, relevantMatchUps }) {
+function getSeedOrderByePositions({ structure, policies, relevantMatchUps }) {
   const { validSeedBlocks, isFeedIn, isContainer } = getValidSeedBlocks({
+    policies,
     structure,
   });
   const positionedSeeds = getStructurePositionedSeeds({ structure });

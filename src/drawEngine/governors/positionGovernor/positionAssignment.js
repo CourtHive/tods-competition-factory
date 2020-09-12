@@ -9,6 +9,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignDrawPosition({
+  policies,
   drawDefinition,
   structureId,
   drawPosition,
@@ -30,6 +31,7 @@ export function assignDrawPosition({
 
   if (participantIsSeed) {
     const isValidDrawPosition = isValidSeedPosition({
+      policies,
       drawDefinition,
       structureId,
       drawPosition,

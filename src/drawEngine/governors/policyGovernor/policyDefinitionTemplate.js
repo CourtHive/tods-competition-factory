@@ -1,7 +1,7 @@
 export const policyTemplate = () => ({
   seeding: {
     seedBlocks: {},
-    duplicateSeedNumbers: null,
+    duplicateSeedNumbers: true,
   },
   scoring: {
     requireAllPositionsAssigned: true,

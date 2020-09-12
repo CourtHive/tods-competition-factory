@@ -1,4 +1,3 @@
-import { drawEngine } from '../../../drawEngine';
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/structureGetter';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -12,6 +11,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 
 export function clearDrawPosition({
   policies,
@@ -93,7 +93,12 @@ export function clearDrawPosition({
 
   function removeByeAndCleanUp({ matchUp, drawPosition }) {
     const { matchUpId } = matchUp;
-    drawEngine.setMatchUpStatus({ matchUpId, matchUpStatus: TO_BE_PLAYED });
+    setMatchUpStatus({
+      drawDefinition,
+      policies,
+      matchUpId,
+      matchUpStatus: TO_BE_PLAYED,
+    });
 
     // if there is a linked draw then BYE must also be placed there
     // This must be propagated through compass draw, for instance

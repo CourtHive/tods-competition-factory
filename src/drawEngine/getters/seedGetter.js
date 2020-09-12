@@ -1,4 +1,3 @@
-import { drawEngine } from '../../drawEngine';
 import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
@@ -9,7 +8,7 @@ import {
 
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 
-export function getValidSeedBlocks({ structure, allPositions }) {
+export function getValidSeedBlocks({ structure, policies, allPositions }) {
   let waterfallSeeding;
   let firstRoundSeedsCount,
     fedSeedNumberOffset = 0;
@@ -50,9 +49,9 @@ export function getValidSeedBlocks({ structure, allPositions }) {
   const firstRoundDrawPositionOffset =
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
-  const { seedBlocks, error: policyEngineError } = drawEngine.getSeedBlocks();
+  const seedBlocks = policies?.seeding?.seedBlocks;
 
-  if (policyEngineError) errors.push({ policyEngineError });
+  if (!seedBlocks) errors.push({ error: 'Missing seeding policy' });
   const baseDrawSize =
     (firstRoundDrawPositions && firstRoundDrawPositions.length) || 0;
 
@@ -308,19 +307,25 @@ function constructBlocks({
 }
 
 export function isValidSeedPosition({
+  policies,
   drawDefinition,
   structureId,
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { validSeedBlocks } = getValidSeedBlocks({ structure });
+  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
   const validSeedPositions = [].concat(
     ...validSeedBlocks.map(seedBlock => seedBlock.drawPositions)
   );
   return validSeedPositions.includes(drawPosition);
 }
 
-export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
+export function getNextSeedBlock({
+  drawDefinition,
+  policies,
+  structureId,
+  randomize,
+}) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -332,7 +337,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     .map(assignment => assignment.drawPosition)
     .filter(f => f);
 
-  const { validSeedBlocks } = getValidSeedBlocks({ structure });
+  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
   const unfilledSeedBlocks = (validSeedBlocks || []).filter(seedBlock => {
     const unfilledPositions = seedBlock.drawPositions.filter(
       drawPosition => !assignedDrawPositions.includes(drawPosition)
@@ -403,9 +408,12 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     .filter(assignment => unplacedSeedNumbers.includes(assignment.seedNumber))
     .map(assignment => assignment.participantId);
 
-  // TODO: policy determines whether to allow duplicate seedNumbers or not
+  // TODO: policies not being passed in roundRobin.test.js
+  // needs to work when doesn't default to true
+  const duplicateSeedNumbers = policies?.seeding?.duplicateSeedNumbers;
   const allowsDuplicateSeedNumbers =
-    drawEngine.getSeedingConfig().duplicateSeedNumbers || true;
+    duplicateSeedNumbers !== undefined ? duplicateSeedNumbers : true;
+
   const unplacedSeedParticipantIds = allowsDuplicateSeedNumbers
     ? randomlySelectedUnplacedSeedValueIds
     : unplacedSeedNumberIds;

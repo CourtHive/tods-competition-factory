@@ -322,7 +322,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   mainDrawWithEntries({ drawSize, seedsCount });
 
   drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
-  let { drawDefinition } = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
@@ -350,7 +350,6 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result).toHaveProperty(ERROR);
 
-  ({ drawDefinition } = drawEngine.getState());
   let { unplacedSeedNumbers, unfilledPositions } = drawEngine.getNextSeedBlock({
     structureId,
   });
@@ -467,10 +466,10 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   drawEngine.attachPolicy({ policyDefinition: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  const { drawDefinition } = drawEngine.getState();
+  const { drawDefinition, policies } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
-  const { validSeedBlocks } = getValidSeedBlocks({ structure });
+  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
 
   validSeedBlocks.forEach((seedBlock, i) => {
     expect(seedBlock.seedNumbers.sort(numericSort)).toMatchObject(
