@@ -18,66 +18,94 @@ let devContext;
 let errors = [];
 const policies = {};
 let drawDefinition;
-let tournamentParticipants;
+let tournamentParticipants = [];
+
+function newDrawDefinition({ drawId, drawProfile } = {}) {
+  const template = definitionTemplate();
+  return Object.assign({}, template, { drawId, drawProfile });
+}
+
+function setState(definition) {
+  if (typeof definition !== 'object') return { error: 'Invalid Object' };
+  if (!definition.drawId) return { error: 'Missing drawid' };
+  if (!validDefinitionKeys(definition)) return { error: 'Invalid Definition' };
+  drawDefinition = makeDeepCopy(definition);
+  return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+}
+
+function validDefinitionKeys(definition) {
+  const definitionKeys = Object.keys(definition);
+  const valid = keyValidation.reduce(
+    (p, key) => (!definitionKeys.includes(key) ? false : p),
+    true
+  );
+  return valid;
+}
+
+function flushErrors() {
+  errors = [];
+}
 
 export const drawEngine = (function() {
-  const fx = {};
-
-  fx.devContext = isDev => {
-    devContext = isDev;
-    return fx;
+  const coreGovernor = {
+    devContext: isDev => {
+      devContext = isDev;
+    },
+    setState: definition => {
+      const result = setState(definition);
+      if (result && result.error) errors.push(result.error);
+    },
+    load: definition => {
+      return setState(definition);
+    },
+    getState: () => {
+      return {
+        drawDefinition: makeDeepCopy(drawDefinition),
+        policies: makeDeepCopy(policies),
+      };
+    },
+    reset: () => {
+      drawDefinition = null;
+      return SUCCESS;
+    },
+    flushErrors: () => {
+      flushErrors();
+    },
+    getErrors: () => {
+      return makeDeepCopy(errors);
+    },
+    newDrawDefinition: ({ drawId = UUID(), drawProfile } = {}) => {
+      flushErrors();
+      drawDefinition = newDrawDefinition({ drawId, drawProfile });
+      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+    },
+    setDrawId: ({ drawId }) => {
+      drawDefinition.drawId = drawId;
+      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+    },
+    setDrawDescription: ({ description }) => {
+      drawDefinition.description = description;
+      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+    },
+    setParticipants: participants => {
+      tournamentParticipants = participants;
+    },
   };
 
-  // convenience method to allow e.g. drawEngine.setState(drawDefinition).allDrawMatchUps();
-  fx.setState = definition => {
-    const result = fx.load(definition);
-    if (result && result.error) errors.push(result.error);
-    return fx;
-  };
-
-  fx.setParticipants = participants => {
-    tournamentParticipants = participants;
-    return fx;
-  };
-
-  fx.load = definition => {
-    if (typeof definition !== 'object') return { error: 'Invalid Object' };
-    if (!definition.drawId) return { error: 'Missing drawid' };
-    if (!validDefinitionKeys(definition))
-      return { error: 'Invalid Definition' };
-    drawDefinition = makeDeepCopy(definition);
-    return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
-  };
-
-  fx.getState = () => ({
-    drawDefinition: makeDeepCopy(drawDefinition),
-    policies: makeDeepCopy(policies),
-  });
-  fx.getErrors = () => makeDeepCopy(errors);
-  fx.flushErrors = () => {
-    errors = [];
-    return fx;
-  };
-
-  fx.reset = () => {
-    drawDefinition = null;
-    return SUCCESS;
-  };
-  fx.newDrawDefinition = ({ drawId = UUID(), drawProfile } = {}) => {
-    fx.flushErrors();
-    drawDefinition = newDrawDefinition({ drawId, drawProfile });
-    return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
-  };
-  fx.setDrawId = ({ drawId }) => {
-    drawDefinition.drawId = drawId;
-    return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
-  };
-  fx.setDrawDescription = ({ description }) => {
-    drawDefinition.description = description;
-    return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+  const fx = {
+    ...coreGovernor,
+    ...linkGovernor,
+    ...queryGovernor,
+    ...scoreGovernor,
+    ...entryGovernor,
+    ...policyGovernor,
+    ...matchUpGovernor,
+    ...positionGovernor,
+    ...structureGovernor,
   };
 
   importGovernors([
+    coreGovernor,
     linkGovernor,
     queryGovernor,
     scoreGovernor,
@@ -88,31 +116,24 @@ export const drawEngine = (function() {
     structureGovernor,
   ]);
 
+  fx.setParticipants = participants => {
+    tournamentParticipants = participants;
+    return fx;
+  };
+
   return fx;
-
-  function newDrawDefinition({ drawId, drawProfile } = {}) {
-    const template = definitionTemplate();
-    return Object.assign({}, template, { drawId, drawProfile });
-  }
-
-  function validDefinitionKeys(definition) {
-    const definitionKeys = Object.keys(definition);
-    const valid = keyValidation.reduce(
-      (p, key) => (!definitionKeys.includes(key) ? false : p),
-      true
-    );
-    return valid;
-  }
 
   function importGovernors(governors) {
     governors.forEach(governor => {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
-            return invoke({ params, governor, key });
+            const result = invoke({ params, governor, key });
+            return result || fx;
           } else {
             try {
-              return invoke({ params, governor, key });
+              const result = invoke({ params, governor, key });
+              return result || fx;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
