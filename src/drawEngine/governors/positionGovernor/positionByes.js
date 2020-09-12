@@ -11,10 +11,8 @@ import {
   unique,
 } from '../../../utilities';
 
-import {
-  structureAssignedDrawPositions,
-  structureActiveDrawPositions,
-} from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import {
   stageEntries,

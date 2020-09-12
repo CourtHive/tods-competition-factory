@@ -1,12 +1,11 @@
+import { getByesData } from '../../governors/positionGovernor/positionByes';
+import { getQualifiersData } from '../../governors/positionGovernor/positionQualifiers';
+
 import { stageEntries } from '../../getters/stageGetter';
 import { getNextSeedBlock } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
-import { getByesData } from '../../governors/positionGovernor/positionByes';
-import { getQualifiersData } from '../../governors/positionGovernor/positionQualifiers';
-import {
-  structureAssignedDrawPositions,
-  structureActiveDrawPositions,
-} from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import {
   WILDCARD,

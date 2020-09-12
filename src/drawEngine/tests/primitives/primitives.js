@@ -1,9 +1,8 @@
-import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
-import { drawStructures } from '../../getters/structureGetter';
-
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 import {

@@ -1,5 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
-import { drawStructures } from '../../getters/structureGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
@@ -8,6 +7,7 @@ import {
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
+import { drawEngine } from '../../../drawEngine';
 
 import {
   MAIN,

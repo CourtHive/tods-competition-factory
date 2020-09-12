@@ -4,10 +4,8 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
-import {
-  structureAssignedDrawPositions,
-  structureActiveDrawPositions,
-} from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';

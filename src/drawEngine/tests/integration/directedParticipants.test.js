@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
-import { drawStructures } from '../../getters/structureGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
