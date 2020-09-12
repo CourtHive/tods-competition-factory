@@ -2,7 +2,7 @@ import { positionByes } from './positionByes';
 import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionParticipants';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 

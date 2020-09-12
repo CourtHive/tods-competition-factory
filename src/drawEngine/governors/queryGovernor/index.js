@@ -10,7 +10,7 @@ import {
   getNextUnfilledDrawPositions,
 } from './positionActions';
 
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import {
   getAllStructureMatchUps,
   structureMatchUps,

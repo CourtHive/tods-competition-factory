@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import {
   getRoundMatchUps,

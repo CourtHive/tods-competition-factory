@@ -1,5 +1,5 @@
 import { findMatchUp } from '../../getters/getMatchUps';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';

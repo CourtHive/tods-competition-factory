@@ -1,4 +1,4 @@
-import { drawStructures } from '../../../drawEngine/getters/structureGetter';
+import { drawStructures } from '../findStructure';
 import { structureMatchUps } from './structureMatchUps';
 /*
   return ALL matchUps within a drawDefinition, regardless of state

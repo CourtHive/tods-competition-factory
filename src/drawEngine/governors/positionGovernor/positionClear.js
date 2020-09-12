@@ -1,5 +1,5 @@
 import { numericSort } from '../../../utilities';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';

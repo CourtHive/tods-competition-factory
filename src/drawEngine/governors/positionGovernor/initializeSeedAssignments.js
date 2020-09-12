@@ -1,4 +1,4 @@
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 import { generateRange } from '../../../utilities';

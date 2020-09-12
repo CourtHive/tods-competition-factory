@@ -1,8 +1,8 @@
 import { generateRange } from '../../../utilities';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getStructureSeedAssignments } from '../../getters/structureGetter';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { assignDrawPosition } from './positionAssignment';

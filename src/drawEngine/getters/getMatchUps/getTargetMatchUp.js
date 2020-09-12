@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { findStructure } from '../../../drawEngine/getters/structureGetter';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
 
 import {
   TOP_DOWN,

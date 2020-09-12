@@ -1,10 +1,8 @@
 import { shuffleArray } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
   WILDCARD,

@@ -1,5 +1,5 @@
+import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
-import { findStructure } from '../../getters/structureGetter';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';

@@ -1,13 +1,11 @@
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
   MAIN,

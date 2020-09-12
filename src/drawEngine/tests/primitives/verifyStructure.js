@@ -1,13 +1,12 @@
-import { drawEngine } from '../../../drawEngine';
-import { chunkArray, generateRange } from '../../../utilities';
+import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
+
+import { drawEngine } from '../../../drawEngine';
+import { chunkArray, generateRange } from '../../../utilities';
 
 export function verifyStructure({
   structureId,

@@ -3,7 +3,7 @@ import { feedInChampionship } from '../../drawEngine/tests/primitives/feedIn';
 import {
   findStructure,
   drawStructures,
-} from '../../drawEngine/getters/structureGetter';
+} from '../../drawEngine/getters/findStructure';
 import {
   reset,
   initialize,

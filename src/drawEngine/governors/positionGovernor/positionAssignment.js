@@ -1,10 +1,8 @@
+import { findStructure } from '../../getters/findStructure';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 

@@ -1,11 +1,9 @@
-import { generateRange, powerOf2, shuffleArray } from '../../utilities';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps';
-import { structureAssignedDrawPositions } from '../../drawEngine/getters/positionsGetter';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../drawEngine/getters/structureGetter';
+import { findStructure } from './findStructure';
+import { structureAssignedDrawPositions } from './positionsGetter';
+import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 
+import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 
 export function getValidSeedBlocks({ structure, policies, allPositions }) {

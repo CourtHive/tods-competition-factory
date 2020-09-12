@@ -1,4 +1,4 @@
-import { findStructure } from './structureGetter';
+import { findStructure } from './findStructure';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 import { countValues, numericSort } from '../../utilities';
