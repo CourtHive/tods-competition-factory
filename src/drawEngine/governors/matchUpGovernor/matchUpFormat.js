@@ -13,10 +13,15 @@ export function setMatchUpFormat(props) {
     matchUpType,
     matchUpFormat,
     tieFormat,
+    policies,
   } = props;
 
   if (matchUpId) {
-    const { matchUp, error } = findMatchUp({ drawDefinition, matchUpId });
+    const { matchUp, error } = findMatchUp({
+      drawDefinition,
+      policies,
+      matchUpId,
+    });
     if (error) errors.push(error);
 
     if (!matchUp) {

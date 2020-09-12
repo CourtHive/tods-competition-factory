@@ -68,9 +68,9 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
   } = drawStructures({ drawDefinition, stage });
   const { structureId } = firstStructure;
 
-  const getDrawMatchUps = drawEngine.drawMatchUps();
-  expect(getDrawMatchUps.upcomingMatchUps.length).toEqual(0);
-  expect(getDrawMatchUps.pendingMatchUps.length).toEqual(drawSize - 1);
+  const allDrawMatchUps = drawEngine.drawMatchUps();
+  expect(allDrawMatchUps.upcomingMatchUps.length).toEqual(0);
+  expect(allDrawMatchUps.pendingMatchUps.length).toEqual(drawSize - 1);
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());

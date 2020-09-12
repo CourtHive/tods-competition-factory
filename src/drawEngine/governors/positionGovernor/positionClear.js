@@ -69,7 +69,7 @@ export function clearDrawPosition({
     structure,
     policies,
     matchUpFilters,
-    inContext: true,
+    // inContext: true, // TODO: is there any reason that clearDrawPosition requires context?
   });
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions.includes(drawPosition)) {
@@ -109,7 +109,7 @@ export function clearDrawPosition({
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
       targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = positionTargets({ drawDefinition, matchUpId });
+    } = positionTargets({ drawDefinition, policies, matchUpId });
 
     // clear Directed Byes
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {

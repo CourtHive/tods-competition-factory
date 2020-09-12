@@ -12,7 +12,11 @@ import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
   return an array of all possible validActions for a given matchUp
 */
 export function matchUpActions({ drawDefinition, policies, matchUpId }) {
-  const { matchUp, structure } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp, structure } = findMatchUp({
+    drawDefinition,
+    policies,
+    matchUpId,
+  });
   const {
     assignedPositions,
     allPositionsAssigned,

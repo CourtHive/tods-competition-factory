@@ -32,6 +32,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
+  policies,
   structureId,
   drawPosition,
 }) {
@@ -89,7 +90,7 @@ export function assignDrawPositionBye({
       const {
         targetLinks: { loserTargetLink },
         targetMatchUps: { loserMatchUp, winnerMatchUp },
-      } = positionTargets({ drawDefinition, matchUpId });
+      } = positionTargets({ drawDefinition, policies, matchUpId });
 
       if (loserMatchUp) {
         // loserMatchUp must have both drawPositions defined

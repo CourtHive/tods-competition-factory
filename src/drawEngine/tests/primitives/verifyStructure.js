@@ -20,7 +20,7 @@ export function verifyStructure({
   expectedQualifierAssignments,
   expectedPositionsAssignedCount,
 }) {
-  const { drawDefinition } = drawEngine.getState();
+  const { drawDefinition, policies } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({ structure });
@@ -71,6 +71,7 @@ export function verifyStructure({
     expect(seedAssignedDrawPositions.length).toEqual(expectedSeeds);
 
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+    policies,
     structure,
     inContext: true,
   });

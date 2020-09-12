@@ -10,10 +10,11 @@ export function assignTieMatchUpParticipantId(props) {
   const errors = [];
 
   let { individualParticipants } = props;
-  const { tournamentRecord, drawDefinition, drawId, event } = props;
+  const { tournamentRecord, drawDefinition, policies, drawId, event } = props;
   const { participantId, sideNumber, sideMember, tieMatchUpId } = props;
 
   const { matchUp: tieMatchUp } = findMatchUp({
+    policies,
     drawDefinition,
     matchUpId: tieMatchUpId,
   });

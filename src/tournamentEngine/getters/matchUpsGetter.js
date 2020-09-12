@@ -131,6 +131,7 @@ export function findMatchUp({
   drawEngine,
   matchUpId,
   drawId,
+  policies,
   inContext,
 }) {
   if (!drawId) {
@@ -149,6 +150,7 @@ export function findMatchUp({
     const tournamentParticipants = tournamentRecord.participants || [];
     const { matchUp } = drawEngineFindMatchUp({
       drawDefinition,
+      policies,
       matchUpId,
       tournamentParticipants,
       inContext,

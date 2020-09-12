@@ -15,16 +15,26 @@ export function setMatchUpStatus(props) {
 
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
-  const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  const {
+    drawDefinition,
+    matchUpId,
+    matchUpStatus,
+    policies,
+    winningSide,
+  } = props;
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
-  const { matchUp, structure } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp, structure } = findMatchUp({
+    drawDefinition,
+    policies,
+    matchUpId,
+  });
 
   if (!matchUp) {
     errors.push({ error: 'matchUp not found' });
   } else {
-    const targetData = positionTargets({ drawDefinition, matchUpId });
+    const targetData = positionTargets({ drawDefinition, policies, matchUpId });
     Object.assign(props, { matchUp, structure, targetData });
     const {
       targetMatchUps: { loserMatchUp, winnerMatchUp },
