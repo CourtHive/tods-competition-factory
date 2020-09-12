@@ -1,5 +1,5 @@
-import { findMatchUp } from '../../drawEngine/getters/getMatchUps';
-import { getMatchUpParticipantIds } from '../../drawEngine/accessors/participantAccessor';
+import { findMatchUp } from './getMatchUps/findMatchUp';
+import { getMatchUpParticipantIds } from '../accessors/participantAccessor';
 
 import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
 
@@ -24,6 +24,8 @@ export function getCheckedInParticipantIds({
       matchUpId,
       inContext: true,
     }));
+    // console.log('Requires inContext matchUp');
+    // return { error: 'requires inContext matchUp' };
   }
 
   if (!matchUp) return { error: 'Missing matchUp' };

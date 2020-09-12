@@ -1,5 +1,5 @@
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 
 /*
   TESTS: structureGetter.test.js

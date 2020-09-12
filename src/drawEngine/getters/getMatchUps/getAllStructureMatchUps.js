@@ -1,18 +1,18 @@
 import { filterMatchUps } from './filterMatchUps';
-import { makeDeepCopy, numericSort } from '../../../utilities';
-import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
+import { getCheckedInParticipantIds } from '../matchUpTimeItems';
+import { getStructureSeedAssignments } from '../structureGetter';
+import { structureAssignedDrawPositions } from '../positionsGetter';
 import {
   getMatchUpType,
   getMatchUpScheduleDetails,
-} from '../../../drawEngine/accessors/matchUpAccessor';
+} from '../../accessors/matchUpAccessor';
 
 import {
   getRoundMatchUps,
   getCollectionPositionMatchUps,
-} from '../../../drawEngine/accessors/matchUpAccessor';
+} from '../../accessors/matchUpAccessor';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { makeDeepCopy, numericSort } from '../../../utilities';
 
 /*
   return all matchUps within a structure and its child structures

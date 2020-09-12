@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps';
+import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 
 /*
   returns the next round matchUp for winner of given matchUp
