@@ -38,16 +38,19 @@ it('can check-in and check-out matchUp participants', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  let {
-    matchUp: { timeItems },
-  } = drawEngine.findMatchUp({ matchUpId });
-  expect(timeItems.length).toEqual(1);
-  expect(timeItems[0].itemValue).toEqual(individualParticipantIds[0]);
+  let { matchUp: updatedMatchUp } = drawEngine.findMatchUp({
+    matchUpId,
+    inContext: true,
+  });
+  expect(updatedMatchUp.timeItems.length).toEqual(1);
+  expect(updatedMatchUp.timeItems[0].itemValue).toEqual(
+    individualParticipantIds[0]
+  );
 
   let {
     allParticipantsCheckedIn,
     checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds(matchUp);
+  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
@@ -59,10 +62,14 @@ it('can check-in and check-out matchUp participants', () => {
 
   // after checking in the first two individual participants the first side participant
   // should also be in checkedInParticipantIds
+  ({ matchUp: updatedMatchUp } = drawEngine.findMatchUp({
+    matchUpId,
+    inContext: true,
+  }));
   ({
     allParticipantsCheckedIn,
     checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds(matchUp));
+  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 
@@ -74,17 +81,22 @@ it('can check-in and check-out matchUp participants', () => {
   expect(result).toMatchObject(SUCCESS);
 
   // since the second side is checked in, individual participants for second side should be considered checked in
+  ({ matchUp: updatedMatchUp } = drawEngine.findMatchUp({
+    matchUpId,
+    inContext: true,
+  }));
   ({
     allParticipantsCheckedIn,
     checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds(matchUp));
+  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(6);
 
-  ({
-    matchUp: { timeItems },
-  } = drawEngine.findMatchUp({ matchUpId }));
-  expect(timeItems.length).toEqual(3);
+  ({ matchUp: updatedMatchUp } = drawEngine.findMatchUp({
+    matchUpId,
+    inContext: true,
+  }));
+  expect(updatedMatchUp.timeItems.length).toEqual(3);
 
   // attempt to check in a participant which is already checked in...
   result = drawEngine.checkInParticipant({
@@ -99,15 +111,16 @@ it('can check-in and check-out matchUp participants', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
+  ({ matchUp: updatedMatchUp } = drawEngine.findMatchUp({
+    matchUpId,
+    inContext: true,
+  }));
   ({
     allParticipantsCheckedIn,
     checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds(matchUp));
+  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 
-  ({
-    matchUp: { timeItems },
-  } = drawEngine.findMatchUp({ matchUpId }));
-  expect(timeItems.length).toEqual(6);
+  expect(updatedMatchUp.timeItems.length).toEqual(6);
 });

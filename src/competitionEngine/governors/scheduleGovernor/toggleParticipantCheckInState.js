@@ -10,9 +10,11 @@ export function toggleParticipantCheckInState(params) {
     tournamentRecord,
     drawId,
   });
-  const { checkedInParticipantIds } = drawEngine
-    .setState(drawDefinition)
-    .getCheckedInParticipantIds({ matchUpId });
+  drawEngine.setState(drawDefinition);
+  const { matchUp } = drawEngine.findMatchUp({ matchUpId, inContext: true });
+  const { checkedInParticipantIds } = drawEngine.getCheckedInParticipantIds({
+    matchUp,
+  });
 
   let result;
   if (checkedInParticipantIds.includes(participantId)) {

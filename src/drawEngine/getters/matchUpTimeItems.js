@@ -1,31 +1,18 @@
-import { findMatchUp } from './getMatchUps/findMatchUp';
 import { getMatchUpParticipantIds } from '../accessors/participantAccessor';
 
 import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
 
 /*
-  takes either a matchUpWithContext or a matchUpId
+  takes a matchUpWithContext
   returns all participaantIds which have current checkedIn status
     - if sideParticipant is participantType TEAM or PAIR then
       sideParticipant is considered checkedIn if all individualParticipants are checkedIn
     - if sideParticipant is participantType TEAM or PAIR and is checkedIn then
       all individualParticipants are considered checkedIn
 */
-export function getCheckedInParticipantIds({
-  drawDefinition,
-  tournamentParticipants,
-  matchUp,
-  matchUpId,
-}) {
+export function getCheckedInParticipantIds({ matchUp }) {
   if (!matchUp || !matchUp.hasContext) {
-    ({ matchUp } = findMatchUp({
-      drawDefinition,
-      tournamentParticipants,
-      matchUpId,
-      inContext: true,
-    }));
-    // console.log('Requires inContext matchUp');
-    // return { error: 'requires inContext matchUp' };
+    return { error: 'requires inContext matchUp' };
   }
 
   if (!matchUp) return { error: 'Missing matchUp' };
