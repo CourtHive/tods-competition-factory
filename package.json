@@ -25,6 +25,9 @@
     "dist",
     "src"
   ],
+  "np": {
+		"contents": "dist"
+	},
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
