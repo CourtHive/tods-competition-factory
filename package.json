@@ -7,7 +7,7 @@
     "tournaments",
     "tennis"
   ],
-  "version": "0.1.13",
+  "version": "0.1.14",
   "license": "MIT",
   "private": false,
   "homepage": "https://github.com/CourtHive/CompetitionFactory",
@@ -26,8 +26,8 @@
     "src"
   ],
   "np": {
-		"contents": "dist"
-	},
+    "contents": "dist"
+  },
   "scripts": {
     "start": "tsdx watch",
     "build": "tsdx build",
