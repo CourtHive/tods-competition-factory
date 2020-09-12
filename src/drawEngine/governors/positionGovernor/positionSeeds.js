@@ -1,11 +1,11 @@
-import { drawEngine } from '../../../drawEngine';
 import { generateRange } from '../../../utilities';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getStructureSeedAssignments } from '../../getters/structureGetter';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { assignDrawPosition } from './positionAssignment';
 
 export function getStructurePositionedSeeds({ structure }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -31,6 +31,7 @@ export function getStructurePositionedSeeds({ structure }) {
 
 export function positionSeedBlocks({
   drawDefinition,
+  policies,
   structure,
   structureId,
   groupsCount,
@@ -42,14 +43,21 @@ export function positionSeedBlocks({
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
 
-  const { validSeedBlocks, error } = getValidSeedBlocks({ structure });
+  const { validSeedBlocks, error } = getValidSeedBlocks({
+    structure,
+    policies,
+  });
   if (error) errors.push(error);
 
   groupsCount = groupsCount || validSeedBlocks.length;
 
   generateRange(0, groupsCount).forEach(() => {
     if (placedSeedBlocks < groupsCount) {
-      const result = positionSeedBlock({ drawDefinition, structureId });
+      const result = positionSeedBlock({
+        drawDefinition,
+        policies,
+        structureId,
+      });
       if (result && result.success) placedSeedBlocks++;
       if (result.error) {
         errors.push({ seedPositionError: result.error });
@@ -59,8 +67,9 @@ export function positionSeedBlocks({
   return { errors };
 }
 
-function positionSeedBlock({ drawDefinition, structureId }) {
+function positionSeedBlock({ drawDefinition, policies, structureId }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
+    policies,
     drawDefinition,
     structureId,
     randomize: true,
@@ -69,7 +78,9 @@ function positionSeedBlock({ drawDefinition, structureId }) {
   for (const participantId of unplacedSeedParticipantIds) {
     const drawPosition = unfilledPositions.pop();
     if (!drawPosition) return { error: 'Missing drawPosition' };
-    const result = drawEngine.assignDrawPosition({
+    const result = assignDrawPosition({
+      policies,
+      drawDefinition,
       structureId,
       drawPosition,
       participantId,

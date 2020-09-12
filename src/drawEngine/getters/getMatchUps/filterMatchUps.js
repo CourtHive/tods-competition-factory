@@ -1,7 +1,7 @@
 import { sameDay } from './sameDay';
-import { scheduledMatchUpTime } from '../../../drawEngine/accessors/matchUpAccessor';
-import { scheduledMatchUpDate } from '../../../drawEngine/accessors/matchUpAccessor';
-import { matchUpAssignedCourtId } from '../../../drawEngine/accessors/matchUpAccessor/courtAssignment';
+import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledTime';
+import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledDate';
+import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 
 export function filterMatchUps({
   drawIds,

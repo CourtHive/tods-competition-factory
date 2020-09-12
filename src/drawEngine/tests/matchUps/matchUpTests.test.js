@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
-import { drawStructures } from '../../getters/structureGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 
 import { structureMatchUps } from '../../getters/getMatchUps';
@@ -37,7 +37,7 @@ it('matchUps returned with context cannot modify original', () => {
   initialize();
   mainDrawPositions({ drawSize: 16 });
   drawEngine.generateDrawType({ drawType: KNOCKOUT });
-  let drawDefinition = drawEngine.getState();
+  let { drawDefinition, policies } = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
     structures: [structure],
@@ -52,8 +52,9 @@ it('matchUps returned with context cannot modify original', () => {
   const { matchUpId } = matchUp;
 
   // refetch the drawDefintion after the modification has been made
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition, policies } = drawEngine.getState());
   let { matchUp: retrievedMatchUp } = findMatchUp({
+    policies,
     drawDefinition,
     matchUpId,
   });
@@ -62,6 +63,7 @@ it('matchUps returned with context cannot modify original', () => {
 
   // retrieve matchUp with context and add an attribute
   const { matchUp: contextMatchUp } = findMatchUp({
+    policies,
     drawDefinition,
     matchUpId,
     inContext: true,
@@ -73,11 +75,15 @@ it('matchUps returned with context cannot modify original', () => {
   expect(contextMatchUp.structureId).toEqual(structureId);
 
   // refetch the drawDefintion after the modification has been made
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition, policies } = drawEngine.getState());
 
   // retrieve matchUp from drawDefinition
   // newAttribute should not be present with no context added
-  ({ matchUp: retrievedMatchUp } = findMatchUp({ drawDefinition, matchUpId }));
+  ({ matchUp: retrievedMatchUp } = findMatchUp({
+    drawDefinition,
+    policies,
+    matchUpId,
+  }));
   expect(retrievedMatchUp.newAttribute).toEqual(undefined);
   expect(retrievedMatchUp.drawId).toEqual(undefined);
   expect(retrievedMatchUp.structureId).toEqual(undefined);
@@ -110,10 +116,10 @@ it('can return matchUps from a ROUND ROBIN structure', () => {
   });
   expect(filteredActiveMatchUps.length).toEqual(8);
 
-  const getDrawMatchUps = drawEngine.drawMatchUps({
+  const allDrawMatchUps = drawEngine.drawMatchUps({
     requireParticipants: false,
   });
-  expect(getDrawMatchUps.upcomingMatchUps.length).toEqual(24);
-  expect(getDrawMatchUps.pendingMatchUps.length).toEqual(0);
-  expect(getDrawMatchUps.completedMatchUps.length).toEqual(0);
+  expect(allDrawMatchUps.upcomingMatchUps.length).toEqual(24);
+  expect(allDrawMatchUps.pendingMatchUps.length).toEqual(0);
+  expect(allDrawMatchUps.completedMatchUps.length).toEqual(0);
 });

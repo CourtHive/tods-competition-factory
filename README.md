@@ -18,4 +18,8 @@ Engines manage different concerns within a document structure representing a tou
 
 ### IMPORTANT
 
-**competitionFactory** is based on a combination of TODS v0.8 and elements which have been proposed for TODS v1.0
+**competitionFactory** is based on a combination of TODS v0.8 and elements which have been proposed for TODS v1.0. Until the v1.0 specification has been released there could be significant volatility in the JSON output of the methods included in this package.  Post v1.0 attempts will be made to provide services to upgrade JSON to the latest TODS version.
+
+### TypeScript
+
+This project is > 95% JavaScript but is built using [tdsx](https://www.npmjs.com/package/tsdx).  At present there are dynamic methods in JavaScript for which TypeScript declaration files are ***NOT*** being generated. As a result, TypeScript projects which include **competitionFactory** components either need to remove **index.d.ts** from the package or insert // @ts-ignore before all lines of source which include such components to avoid TypeScript compilation errors. A future distribution of this package will seek to recitfy this situation!

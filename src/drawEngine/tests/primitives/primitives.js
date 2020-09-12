@@ -1,9 +1,8 @@
-import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
+import { generateRange } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
-import { drawStructures } from '../../getters/structureGetter';
-
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 import {
@@ -19,7 +18,7 @@ let result;
 export function reset() {
   result = drawEngine.reset();
   expect(result).toMatchObject(SUCCESS);
-  const state = drawEngine.getState();
+  const { drawDefinition: state } = drawEngine.getState();
   expect(state).toEqual(null);
 }
 
@@ -62,18 +61,18 @@ export function mainDrawWithEntries({
 export function knockoutMatchUpsWithParticipants({ drawSize }) {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize });
-  let drawDefinition = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [firstStructure],
   } = drawStructures({ drawDefinition, stage });
   const { structureId } = firstStructure;
 
-  const getDrawMatchUps = drawEngine.drawMatchUps();
-  expect(getDrawMatchUps.upcomingMatchUps.length).toEqual(0);
-  expect(getDrawMatchUps.pendingMatchUps.length).toEqual(drawSize - 1);
+  const allDrawMatchUps = drawEngine.drawMatchUps();
+  expect(allDrawMatchUps.upcomingMatchUps.length).toEqual(0);
+  expect(allDrawMatchUps.pendingMatchUps.length).toEqual(drawSize - 1);
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
   const participantIds = mainDrawEntries.map(e => e.participantId);
 
@@ -91,14 +90,14 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
       participantId,
     });
     expect(result).toMatchObject(SUCCESS);
-    drawDefinition = drawEngine.getState();
+    ({ drawDefinition } = drawEngine.getState());
     const {
       unassignedPositions: stillUnassigned,
     } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,

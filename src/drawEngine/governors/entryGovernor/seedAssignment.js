@@ -1,14 +1,13 @@
+import { findStructure } from '../../getters/findStructure';
+import { isValidSeedPosition } from '../../getters/seedGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { isValidSeedPosition } from '../../getters/seedGetter';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignSeed({
+  policies,
   drawDefinition,
   structureId,
   seedNumber,
@@ -37,6 +36,7 @@ export function assignSeed({
 
   if (assignedDrawPosition) {
     const positionIsValid = isValidSeedPosition({
+      policies,
       drawDefinition,
       structureId,
       drawPosition: assignedDrawPosition,

@@ -32,9 +32,10 @@ export function assignDrawPosition(props) {
       });
     }
 
+    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
     event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
       return drawDefinition.drawId === drawId
-        ? drawEngine.getState()
+        ? updatedDrawDefinition
         : drawDefinition;
     });
   } else {

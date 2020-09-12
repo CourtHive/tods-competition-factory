@@ -1,12 +1,11 @@
-import { stageEntries } from '../../getters/stageGetter';
-import { getNextSeedBlock } from '../../getters/seedGetter';
-import { findStructure } from '../../getters/structureGetter';
 import { getByesData } from '../../governors/positionGovernor/positionByes';
 import { getQualifiersData } from '../../governors/positionGovernor/positionQualifiers';
-import {
-  structureAssignedDrawPositions,
-  structureActiveDrawPositions,
-} from '../../getters/positionsGetter';
+
+import { stageEntries } from '../../getters/stageGetter';
+import { getNextSeedBlock } from '../../getters/seedGetter';
+import { findStructure } from '../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import {
   WILDCARD,
@@ -19,6 +18,7 @@ import {
 export function positionActions({
   drawDefinition,
   participantId,
+  policies,
   structureId,
   drawPosition,
 }) {
@@ -54,7 +54,12 @@ export function positionActions({
       unplacedSeedParticipantIds,
       unfilledPositions,
       unplacedSeedAssignments,
-    } = getNextSeedBlock({ drawDefinition, structureId, randomize: true });
+    } = getNextSeedBlock({
+      drawDefinition,
+      policies,
+      structureId,
+      randomize: true,
+    });
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover
     if (unfilledPositions.includes(drawPosition)) {
@@ -147,12 +152,17 @@ function validAssignmentsSort(a, b) {
   return (a.drawOrder || 0) - (b.drawOrder || 0);
 }
 
-export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
+export function getNextUnfilledDrawPositions({
+  drawDefinition,
+  policies,
+  structureId,
+}) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
   if (!structure) return { error: 'No structure found' };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { unfilledPositions } = getNextSeedBlock({
+    policies,
     drawDefinition,
     structureId,
     randomize: true,

@@ -1,5 +1,5 @@
-import { drawStructures } from '../../../drawEngine/getters/structureGetter';
-import { structureMatchUps } from '../../../drawEngine/getters/getMatchUps';
+import { drawStructures } from '../findStructure';
+import { structureMatchUps } from './structureMatchUps';
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
@@ -21,6 +21,7 @@ export function getAllDrawMatchUps(props) {
 }
 
 export function getDrawMatchUps({
+  policies,
   drawDefinition,
   tournamentParticipants,
   requireParticipants,
@@ -47,6 +48,7 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = structureMatchUps({
+      policies,
       structure,
       inContext,
       roundFilter,

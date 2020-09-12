@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
-import { drawStructures } from '../../getters/structureGetter';
+import { drawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import {
   reset,
@@ -26,7 +26,7 @@ it('can assign KNOCKOUT draw drawPositions', () => {
   const stage = MAIN;
   const drawSize = 4;
   mainDrawWithEntries({ drawSize });
-  let drawDefinition = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = drawStructures({ drawDefinition, stage });
@@ -36,7 +36,7 @@ it('can assign KNOCKOUT draw drawPositions', () => {
   const participantIds = mainDrawEntries.map(e => e.participantId);
 
   const { structureId } = structure;
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const { unassignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
@@ -68,14 +68,14 @@ it('can assign KNOCKOUT draw drawPositions', () => {
       participantId,
     });
     expect(result).toMatchObject(SUCCESS);
-    drawDefinition = drawEngine.getState();
+    ({ drawDefinition } = drawEngine.getState());
     const {
       unassignedPositions: stillUnassigned,
     } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
@@ -95,7 +95,7 @@ it('can assign KNOCKOUT draw drawPositions', () => {
 it('can assign ROUND ROBIN draw drawPositions', () => {
   mainDrawWithEntries({ drawSize: 16, drawType: ROUND_ROBIN });
   const stage = MAIN;
-  let drawDefinition = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = drawStructures({ drawDefinition, stage });
@@ -104,7 +104,7 @@ it('can assign ROUND ROBIN draw drawPositions', () => {
   expect(structure.structures.length).toEqual(4);
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
   const participantIds = mainDrawEntries.map(e => e.participantId);
 
@@ -122,21 +122,21 @@ it('can assign ROUND ROBIN draw drawPositions', () => {
       participantId,
     });
     expect(result).toMatchObject(SUCCESS);
-    drawDefinition = drawEngine.getState();
+    ({ drawDefinition } = drawEngine.getState());
     const {
       unassignedPositions: stillUnassigned,
     } = structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
-  drawDefinition = drawEngine.getState();
+  ({ drawDefinition } = drawEngine.getState());
   const { assignedPositions } = structureAssignedDrawPositions({
     drawDefinition,
     structureId,
   });
   expect(assignedPositions.length).toEqual(16);
 
-  const state = drawEngine.getState();
+  const { drawDefinition: state } = drawEngine.getState();
   const groups = state.structures[0].structures;
   groups.forEach((group, i) => {
     const positionAssignments = group.positionAssignments;

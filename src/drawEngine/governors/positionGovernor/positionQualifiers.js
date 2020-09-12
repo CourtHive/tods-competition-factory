@@ -1,4 +1,4 @@
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getStageQualifiersCount } from '../../getters/stageGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 

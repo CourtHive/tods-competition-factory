@@ -1,18 +1,16 @@
 import { filterMatchUps } from './filterMatchUps';
-import { getPolicyEngine } from '../../../drawEngine';
-import { makeDeepCopy, numericSort } from '../../../utilities';
-import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/structureGetter';
-import { structureAssignedDrawPositions } from '../../../drawEngine/getters/positionsGetter';
-import {
-  getMatchUpType,
-  getMatchUpScheduleDetails,
-} from '../../../drawEngine/accessors/matchUpAccessor';
 
+import { getCheckedInParticipantIds } from '../matchUpTimeItems';
+import { structureAssignedDrawPositions } from '../positionsGetter';
+import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import {
   getRoundMatchUps,
   getCollectionPositionMatchUps,
-} from '../../../drawEngine/accessors/matchUpAccessor';
+} from '../../accessors/matchUpAccessor/matchUps';
+import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
+import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+
+import { makeDeepCopy, numericSort } from '../../../utilities';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 /*
@@ -20,6 +18,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 export function getAllStructureMatchUps({
+  policies,
   structure,
   inContext,
   roundFilter,
@@ -41,9 +40,8 @@ export function getAllStructureMatchUps({
     };
   }
 
-  const { policyEngine } = getPolicyEngine();
-  const requireAllPositionsAssigned = policyEngine.requireAllPositionsAssigned()
-    .required;
+  const requireAllPositionsAssigned =
+    policies?.scoring?.requireAllPositionsAssigned;
 
   const {
     positionAssignments,

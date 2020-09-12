@@ -30,8 +30,8 @@ export function generateEliminationWithQualifying({
 }) {
   drawEngine.reset();
   drawEngine.newDrawDefinition();
-  drawEngine.loadPolicy(SEEDING_POLICY);
-  drawEngine.loadPolicy(AVOIDANCE_POLICY);
+  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   drawEngine.setStageDrawSize({
     stage: QUALIFYING,

@@ -15,6 +15,7 @@ export function checkInParticipant({
   drawDefinition,
   tournamentParticipants,
   matchUpId,
+  policies,
   participantId,
 }) {
   if (!participantId) return { error: 'Missing participantId' };
@@ -25,6 +26,7 @@ export function checkInParticipant({
       drawDefinition,
       tournamentParticipants,
       matchUpId,
+      policies,
       inContext: true,
     });
     const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
@@ -45,6 +47,7 @@ export function checkOutParticipant({
   drawDefinition,
   tournamentParticipants,
   matchUpId,
+  policies,
   participantId,
 }) {
   if (!participantId) return { error: 'Missing participantId' };
@@ -57,6 +60,7 @@ export function checkOutParticipant({
       drawDefinition,
       tournamentParticipants,
       matchUpId,
+      policies,
       inContext: true,
     });
     const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });

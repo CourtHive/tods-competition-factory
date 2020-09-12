@@ -1,7 +1,7 @@
-import { makeDeepCopy } from '../../../utilities';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
-import { drawStructures } from '../../../drawEngine/getters/structureGetter';
+import { drawStructures } from '../findStructure';
+import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
+import { makeDeepCopy } from '../../../utilities';
 
 /*
   public version of findMatchUp
@@ -16,6 +16,7 @@ export function publicFindMatchUp(props) {
 */
 export function findMatchUp({
   drawDefinition,
+  policies,
   tournamentParticipants,
   matchUpId,
   inContext,
@@ -27,6 +28,7 @@ export function findMatchUp({
       structure,
       tournamentParticipants,
       inContext,
+      policies,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
     return matchUp ? { matchUp, structure } : result;

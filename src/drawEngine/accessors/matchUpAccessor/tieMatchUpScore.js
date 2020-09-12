@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {

@@ -181,7 +181,7 @@ function playOffDraw({drawSize, drawType, finishingPositionLimit}) {
   initialize();
   mainDrawPositions({drawSize});
   const result = drawEngine.generateDrawType({drawType, finishingPositionLimit});
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   return { result, drawDefinition };
 }
 

@@ -1,7 +1,7 @@
 import { drawEngine } from '../../../drawEngine';
 
 export function verifyLinks({ linksProfiles = [] }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { links } = { ...drawDefinition };
 
   linksProfiles.forEach(linksProfile => {

@@ -28,8 +28,8 @@ export function generateFMLC({ drawSize, seedsCount, participantsCount }) {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   const { structureId: consolationStructureId } = consolationStructure;
 
-  drawEngine.loadPolicy(SEEDING_POLICY);
-  drawEngine.loadPolicy(AVOIDANCE_POLICY);
+  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `fmlc-uuid${i + 1}`,

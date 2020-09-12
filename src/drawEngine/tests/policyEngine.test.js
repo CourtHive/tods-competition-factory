@@ -1,34 +1,32 @@
 import { drawEngine } from '../../drawEngine';
-import { getPolicyEngine } from '../../drawEngine';
 
 import { ERROR, SUCCESS } from '../../constants/resultConstants';
 import ITF_SEEDING from '../../fixtures/SEEDING_ITF';
 
-it('can set and reset policy engine', () => {
-  const { policyEngine } = getPolicyEngine();
+it('can set and reset policy governor', () => {
+  expect(drawEngine).toHaveProperty('attachPolicy');
+  expect(drawEngine).toHaveProperty('getSeedBlocks');
 
-  expect(policyEngine).toHaveProperty('loadPolicy');
-  expect(policyEngine).toHaveProperty('getSeedBlocks');
-
-  let seedBlocks = policyEngine.getSeedBlocks();
+  let seedBlocks = drawEngine.getSeedBlocks();
   expect(seedBlocks).toHaveProperty(ERROR);
 
   // cannot load a policy if no drawDefinition
-  drawEngine.loadPolicy(ITF_SEEDING);
-  let errors = drawEngine.getErrors();
-  expect(errors).toMatchObject([{ error: 'Missing drawDefinition' }]);
+  drawEngine.reset();
+  let result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  expect(result).toMatchObject({ error: 'Missing drawDefinition' });
 
   drawEngine.newDrawDefinition();
-  drawEngine.loadPolicy(ITF_SEEDING);
-  errors = drawEngine.getErrors();
+  const errors = drawEngine.getErrors();
   expect(errors).toMatchObject([]);
 
-  seedBlocks = policyEngine.getSeedBlocks();
+  result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  expect(result).toMatchObject(SUCCESS);
+  seedBlocks = drawEngine.getSeedBlocks();
   expect(seedBlocks).toMatchObject(SUCCESS);
 
-  const result = policyEngine.reset();
+  result = drawEngine.removePolicies();
   expect(result).toMatchObject(SUCCESS);
 
-  seedBlocks = policyEngine.getSeedBlocks();
+  seedBlocks = drawEngine.getSeedBlocks();
   expect(seedBlocks).toHaveProperty(ERROR);
 });

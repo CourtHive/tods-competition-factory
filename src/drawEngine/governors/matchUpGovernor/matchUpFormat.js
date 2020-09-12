@@ -1,5 +1,5 @@
 import { findMatchUp } from '../../getters/getMatchUps';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
@@ -13,10 +13,15 @@ export function setMatchUpFormat(props) {
     matchUpType,
     matchUpFormat,
     tieFormat,
+    policies,
   } = props;
 
   if (matchUpId) {
-    const { matchUp, error } = findMatchUp({ drawDefinition, matchUpId });
+    const { matchUp, error } = findMatchUp({
+      drawDefinition,
+      policies,
+      matchUpId,
+    });
     if (error) errors.push(error);
 
     if (!matchUp) {

@@ -152,7 +152,7 @@ it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
 
   const drawType = FMLC;
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const fileName = `${drawType}.json`;
   const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;

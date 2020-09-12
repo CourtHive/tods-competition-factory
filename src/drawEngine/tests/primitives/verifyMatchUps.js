@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import {
   getRoundMatchUps,
@@ -38,10 +38,11 @@ export function findMatchUpByRoundNumberAndPosition({
   roundPosition,
   inContext,
 }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition, policies } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
+    policies,
     structure,
     inContext,
   });
@@ -61,13 +62,18 @@ export function verifyMatchUps({
   expectedRoundUpcoming,
   expectedRoundCompleted,
 }) {
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition, policies } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const {
     completedMatchUps,
     pendingMatchUps,
     upcomingMatchUps,
-  } = structureMatchUps({ drawDefinition, structure, requireParticipants });
+  } = structureMatchUps({
+    drawDefinition,
+    policies,
+    structure,
+    requireParticipants,
+  });
 
   const { roundMatchUps: pendingRoundMatchUps } = getRoundMatchUps({
     matchUps: pendingMatchUps,
@@ -114,8 +120,13 @@ function verifyRoundCounts({ roundMatchUps, expectedRounds }) {
   });
 }
 
-export function getMatchUpWinnerLoserIds({ drawDefinition, matchUpId }) {
+export function getMatchUpWinnerLoserIds({
+  drawDefinition,
+  policies,
+  matchUpId,
+}) {
   const { matchUp } = findMatchUp({
+    policies,
     drawDefinition,
     matchUpId,
     inContext: true,

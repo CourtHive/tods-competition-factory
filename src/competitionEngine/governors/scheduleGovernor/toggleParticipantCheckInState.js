@@ -10,9 +10,11 @@ export function toggleParticipantCheckInState(params) {
     tournamentRecord,
     drawId,
   });
-  const { checkedInParticipantIds } = drawEngine
-    .setState(drawDefinition)
-    .getCheckedInParticipantIds({ matchUpId });
+  drawEngine.setState(drawDefinition);
+  const { matchUp } = drawEngine.findMatchUp({ matchUpId, inContext: true });
+  const { checkedInParticipantIds } = drawEngine.getCheckedInParticipantIds({
+    matchUp,
+  });
 
   let result;
   if (checkedInParticipantIds.includes(participantId)) {
@@ -22,7 +24,7 @@ export function toggleParticipantCheckInState(params) {
   }
 
   if (result.success) {
-    const updatedDrawDefinition = drawEngine.getState();
+    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
     event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition

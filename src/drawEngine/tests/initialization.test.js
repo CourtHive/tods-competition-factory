@@ -21,7 +21,7 @@ it('can load definition', () => {
   const template = Object.assign({}, definitionTemplate(), { drawId: 'foo' });
   result = drawEngine.load(template);
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.getState();
+  ({ drawDefinition: result } = drawEngine.getState());
   expect(result).toHaveProperty('drawId');
   expect(result.drawId).toEqual('foo');
 });
@@ -45,15 +45,18 @@ it('can initialize, setState, and query', () => {
   result = drawEngine.reset();
   expect(result).toMatchObject(SUCCESS);
   initialize({ drawId: 'uuid-xyz' });
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   drawEngine.reset();
-  const drawId = drawEngine.setState(drawDefinition).getState().drawId;
+  const { drawDefinition: drawDefinitionCopy } = drawEngine
+    .setState(drawDefinition)
+    .getState();
+  const { drawId } = drawDefinitionCopy;
   expect(drawId).toEqual('uuid-xyz');
 });
 
 it('can set draw description', () => {
   const drawDescription = 'Draw Description';
   drawEngine.setDrawDescription({ description: drawDescription });
-  const state = drawEngine.getState();
+  const { drawDefinition: state } = drawEngine.getState();
   expect(state.description).toEqual(drawDescription);
 });

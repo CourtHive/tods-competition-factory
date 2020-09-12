@@ -1,19 +1,18 @@
-import { drawEngine } from '../../../drawEngine';
 import { numericSort } from '../../../utilities';
-import { findStructure } from '../../getters/structureGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
-import {
-  structureAssignedDrawPositions,
-  structureActiveDrawPositions,
-} from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 
 export function clearDrawPosition({
+  policies,
   drawDefinition,
   structureId,
   participantId,
@@ -66,8 +65,9 @@ export function clearDrawPosition({
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     structure,
+    policies,
     matchUpFilters,
-    inContext: true,
+    // inContext: true, // TODO: is there any reason that clearDrawPosition requires context?
   });
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions.includes(drawPosition)) {
@@ -91,7 +91,12 @@ export function clearDrawPosition({
 
   function removeByeAndCleanUp({ matchUp, drawPosition }) {
     const { matchUpId } = matchUp;
-    drawEngine.setMatchUpStatus({ matchUpId, matchUpStatus: TO_BE_PLAYED });
+    setMatchUpStatus({
+      drawDefinition,
+      policies,
+      matchUpId,
+      matchUpStatus: TO_BE_PLAYED,
+    });
 
     // if there is a linked draw then BYE must also be placed there
     // This must be propagated through compass draw, for instance
@@ -107,7 +112,7 @@ export function clearDrawPosition({
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
       targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = positionTargets({ drawDefinition, matchUpId });
+    } = positionTargets({ drawDefinition, policies, matchUpId });
 
     // clear Directed Byes
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {

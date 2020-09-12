@@ -1,11 +1,8 @@
-import { drawEngine } from '../../../drawEngine';
 import { shuffleArray } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
+import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
   WILDCARD,
@@ -13,6 +10,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { assignDrawPosition } from './positionAssignment';
 
 export function positionUnseededParticipants({
   drawDefinition,
@@ -61,12 +59,14 @@ export function positionUnseededParticipants({
   if (teamSeparation) {
     return randomUnseededSeparation({
       structureId,
+      drawDefinition,
       unseededParticipantIds,
       unfilledDrawPositions,
     });
   } else {
     return randomUnseededDistribution({
       structureId,
+      drawDefinition,
       unseededParticipantIds,
       unfilledDrawPositions,
     });
@@ -75,16 +75,18 @@ export function positionUnseededParticipants({
 
 function randomUnseededDistribution({
   structureId,
+  drawDefinition,
   unseededParticipantIds,
   unfilledDrawPositions,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {
     const drawPosition = shuffledDrawPositions.pop();
-    const result = drawEngine.assignDrawPosition({
+    const result = assignDrawPosition({
       structureId,
       drawPosition,
       participantId,
+      drawDefinition,
     });
     if (result && result.error) return result;
   }

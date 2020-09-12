@@ -1,13 +1,11 @@
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
+import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
-import {
-  findStructure,
-  getStructureSeedAssignments,
-} from '../../getters/structureGetter';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
   MAIN,
@@ -26,7 +24,7 @@ it('can define seedAssignments', () => {
   mainDrawWithEntries({ drawSize, seedsCount });
 
   // returns deepCopy of drawDefinition
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
@@ -49,7 +47,9 @@ it('can define seedAssignments', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  const drawDefinitionAfterAssignments = drawEngine.getState();
+  const {
+    drawDefinition: drawDefinitionAfterAssignments,
+  } = drawEngine.getState();
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition: drawDefinitionAfterAssignments,
     structureId,
@@ -319,8 +319,8 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize, seedsCount });
 
-  drawEngine.loadPolicy(ITF_SEEDING);
-  let drawDefinition = drawEngine.getState();
+  drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
@@ -348,7 +348,6 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result).toHaveProperty(ERROR);
 
-  drawDefinition = drawEngine.getState();
   let { unplacedSeedNumbers, unfilledPositions } = drawEngine.getNextSeedBlock({
     structureId,
   });
@@ -462,13 +461,13 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
     ...[].concat(...expectedBlocks.map(b => b.seedNumbers))
   );
 
-  drawEngine.loadPolicy(policy);
+  drawEngine.attachPolicy({ policyDefinition: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition, policies } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
-  const { validSeedBlocks } = getValidSeedBlocks({ structure });
+  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
 
   validSeedBlocks.forEach((seedBlock, i) => {
     expect(seedBlock.seedNumbers.sort(numericSort)).toMatchObject(

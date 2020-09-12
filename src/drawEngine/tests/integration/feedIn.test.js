@@ -128,7 +128,7 @@ it('can generate large feedIn with many BYEs', () => {
 
 it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
-  const drawDefinition = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
 
   const drawType = FEED_IN;
   const fileName = `${drawType}.json`;
