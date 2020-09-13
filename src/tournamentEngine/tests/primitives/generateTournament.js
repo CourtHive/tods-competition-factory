@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../../../tournamentEngine';
-import { generateParticipants } from '../../../tests/fakerParticipants';
+import { generateFakeParticipants } from '../../generators/fakerParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -12,7 +12,7 @@ export function tournamentRecordWithParticipants({
 }) {
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
-  const { participants } = generateParticipants({
+  const { participants } = generateFakeParticipants({
     participantsCount,
     matchUpType,
   });

@@ -1,10 +1,13 @@
 import Faker from 'faker';
-import { generateRange } from '../utilities';
-import { countries } from '../fixtures/countryData';
-import { COMPETITOR } from '../constants/participantRoles';
-import { INDIVIDUAL, PAIR, TEAM } from '../constants/participantTypes';
+import { generateRange } from '../../utilities';
+import { countries } from '../../fixtures/countryData';
+import { COMPETITOR } from '../../constants/participantRoles';
+import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 
-export function generateParticipants({ participantsCount = 32, matchUpType }) {
+export function generateFakeParticipants({
+  participantsCount = 32,
+  matchUpType,
+}) {
   const isoCountries = countries.filter(country => country.iso);
   const countriesCount = isoCountries.length;
   const doubles = matchUpType === 'DOUBLES';
