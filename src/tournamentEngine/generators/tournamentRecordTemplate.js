@@ -15,7 +15,7 @@ export const tournamentRecordTemplate = () => ({
   tournamaentOfficials: [],
 
   venues: [],
-  Events: [],
+  events: [],
   participants: [],
 
   indoorOutdoor: null,
