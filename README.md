@@ -14,7 +14,9 @@ Engines manage different concerns within a document structure representing a tou
 
 ## Installation
 
-```npm install tods-competition-factory```
+```sh
+npm install tods-competition-factory
+```
 
 ### IMPORTANT
 

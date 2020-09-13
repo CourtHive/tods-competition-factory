@@ -74,7 +74,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
     )
     .forEach(booking => {
       const timeSlot = {
-        startTime: DateHHMM(startTime, { display_seconds: false }),
+        startTime: DateHHMM(startTime, { displaySeconds: false }),
         endTime: booking.startTime,
       };
       if (timeToDate(booking.startTime) > startTime) {
@@ -86,7 +86,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
     });
 
   const timeSlot = {
-    startTime: DateHHMM(startTime, { display_seconds: false }),
+    startTime: DateHHMM(startTime, { displaySeconds: false }),
     endTime: courtDate.endTime,
   };
   if (timeToDate(courtDate.endTime) > startTime) {
@@ -129,7 +129,7 @@ export function matchUpTiming({
 
   const timingProfile = periods.map(period => {
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
-    const periodStart = DateHHMM(periodStartTime, { display_seconds: false });
+    const periodStart = DateHHMM(periodStartTime, { displaySeconds: false });
 
     // availableCourts calculated from periodStartTime and averageMatchTime
     // a court is only available if it can accommodate matchUps of duration averageMatchTime
@@ -187,7 +187,7 @@ export function matchUpTiming({
   const scheduleTimes = timingProfile
     .reduce((scheduleTimes, profile) => {
       return scheduleTimes.concat(
-        ...generateRange(0, profile.add).map(_ => {
+        ...generateRange(0, profile.add).map(() => {
           const scheduleTime = profile.periodStart;
           return { scheduleTime };
         })

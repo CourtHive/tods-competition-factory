@@ -1,4 +1,10 @@
-# BYE Positioning
+---
+name: Positioning BYEs
+menu: Draw Engine
+route: /drawEngine/byePositioning
+---
+
+# Positioning BYEs
 
 The **positionByes.js** module first builds a list of *drawPositions* which could be filled with BYES and then iterates over a *byesToPlace* range to fill targeted positions until the range has been satisfied
 

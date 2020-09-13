@@ -1,3 +1,8 @@
+---
+name: Dev Tasks
+menu: Tasks
+---
+
 # drawEngine dev tasks
 
 - assignment of non-BYE drawPositions should check whether paired position is BYE and if so, drawPosition be advanced

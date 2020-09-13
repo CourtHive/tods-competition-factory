@@ -1,10 +1,16 @@
+---
+name: Garman Scheduling
+menu: Competition Engine
+route: /competitionEngine/garman
+---
+
 # Garman Scheduling
 
 The Revisied Garman System is based upon the following formula
 
     TM = Int([ (L * C) / T] * (P - 1) + C)
 
-Where: 
+Where:
 
     C = Number of Courts
     T = Average Match time in Minutes

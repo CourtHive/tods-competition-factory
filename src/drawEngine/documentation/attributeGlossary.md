@@ -1,3 +1,9 @@
+---
+name: Glossary
+menu: Draw Engine
+route: /drawEngine/attributes
+---
+
 # drawDefinition Attribute Glossary
 
 ## drawId
