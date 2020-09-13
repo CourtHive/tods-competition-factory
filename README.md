@@ -1,8 +1,11 @@
-# competitionFactory
+# Competition Factory
 
 The **[Tennis Open Data Standards](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)** provide a document-based representation of all of the elements of a tennis tournament including participants, events, draws, matchUps, contacts, and references to online resources.
 
 The **competitionFactory** is a collection of "engines" for transforming/mutating TODS documents and is intended to insure the integrity of TODS documents by managing all state transformations.
+
+[Online Documentation with examples](https://courthive.github.io/tods-competition-factory/)
+    
 
 ## Engines
 
