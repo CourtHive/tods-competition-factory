@@ -240,8 +240,8 @@ export function tallyBracket({
             : setScore.indexOf('/') > 0
             ? '/'
             : undefined;
-        // eslint-disable-next-line no-useless-escape
         const scores =
+          // eslint-disable-next-line no-useless-escape
           /\d+[\(\)\-\/]*/.test(setScore) && divider
             ? setScore.split(divider).map(s => /\d+/.exec(s)[0])
             : undefined;
@@ -288,8 +288,8 @@ export function tallyBracket({
     } else {
       const setScores = score.split(' ');
       setScores.forEach(setScore => {
-        // eslint-disable-next-line no-useless-escape
         const scores =
+          // eslint-disable-next-line no-useless-escape
           /\d+[\(\)\-\/]*/.test(setScore) && setScore.indexOf('-') > 0
             ? setScore.split('-').map(s => /\d+/.exec(s)[0])
             : undefined;
