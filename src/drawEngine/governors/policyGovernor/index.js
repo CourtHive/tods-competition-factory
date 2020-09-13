@@ -32,6 +32,9 @@ function requireAllPositionsAssigned({ policies }) {
 
 function addPolicyProfile({ drawDefinition, policyDefinition }) {
   if (!drawDefinition.appliedPolicies) drawDefinition.appliedPolicies = [];
+  if (!policyDefinition || typeof policyDefinition !== 'object') {
+    return { errors: [{ error: 'Missing Policy Definition' }] };
+  }
   Object.keys(policyDefinition).forEach(policyClass => {
     const policyType = policyDefinition[policyClass].policyType;
     if (policyType) {
@@ -73,9 +76,10 @@ function attachPolicy({ drawDefinition, policies, policyDefinition }) {
   if (!drawDefinition) {
     return { error: 'Missing drawDefinition' };
   }
-  const result = addPolicy({ policies, policyDefinition });
+  let result = addPolicy({ policies, policyDefinition });
   if (result && result.errors) return { error: result.errors };
-  addPolicyProfile({ drawDefinition, policyDefinition });
+  result = addPolicyProfile({ drawDefinition, policyDefinition });
+  if (result && result.errors) return { error: result.errors };
   return SUCCESS;
 }
 
