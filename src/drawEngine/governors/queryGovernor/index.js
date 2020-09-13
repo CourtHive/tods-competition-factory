@@ -3,6 +3,7 @@ import {
   calcTieMatchUpScore,
   matchUpDuration,
   getMatchUpScheduleDetails,
+  getMatchUpContextIds,
 } from '../../accessors/matchUpAccessor';
 
 import {
@@ -49,6 +50,7 @@ const queryGovernor = {
   positionActions,
   getNextUnfilledDrawPositions,
 
+  getMatchUpContextIds,
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
 

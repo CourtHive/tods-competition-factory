@@ -1,4 +1,5 @@
 export { matchUpDuration } from './matchUpDuration';
+export { getMatchUpContextIds } from './getMatchUpContextIds';
 export { getMatchUpScheduleDetails } from './matchUpScheduleDetails';
 export {
   getMatchUp,
