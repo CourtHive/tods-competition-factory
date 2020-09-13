@@ -1,4 +1,5 @@
 src
+docs
 .gitignore
 tsconfig.json
 babel.config.js
