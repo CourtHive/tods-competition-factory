@@ -1,9 +1,12 @@
 export const tournamentRecordTemplate = () => ({
   tournamentId: null,
+  tournamentRank: null,
+  tournamentCategories: [],
 
   formalName: null,
   tournamentName: null,
   promotionalName: null,
+  onlineResources: [],
 
   localTimeZone: null,
   startDate: null,
@@ -21,9 +24,11 @@ export const tournamentRecordTemplate = () => ({
   indoorOutdoor: null,
   surfaceCategory: null,
 
-  entriesOpen: null,
-  entriesClose: null,
-  withdrawalDeadline: null,
+  registrationProfile: {
+    entriesOpen: null,
+    entriesClose: null,
+    withdrawalDeadline: null,
+  },
 });
 
 export default tournamentRecordTemplate;
