@@ -115,12 +115,10 @@ export const drawEngine = (function() {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
-            const result = invoke({ params, governor, key });
-            return result || fx;
+            return invoke({ params, governor, key });
           } else {
             try {
-              const result = invoke({ params, governor, key });
-              return result || fx;
+              return invoke({ params, governor, key });
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }

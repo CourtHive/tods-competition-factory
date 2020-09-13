@@ -65,12 +65,10 @@ export const competitionEngine = (function() {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
-            const result = engineInvoke(governor[key], params);
-            return result || fx;
+            return engineInvoke(governor[key], params);
           } else {
             try {
-              const result = engineInvoke(governor[key], params);
-              return result || fx;
+              return engineInvoke(governor[key], params);
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
