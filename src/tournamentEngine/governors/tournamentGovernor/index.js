@@ -1,8 +1,9 @@
 import {
   setTournamentName,
   setTournamentNotes,
-  setTournamentStartDate,
   setTournamentEndDate,
+  setTournamentStartDate,
+  setTournamentCategories,
 } from './tournamentDetails';
 
 const tournamentGovernor = {
@@ -10,6 +11,7 @@ const tournamentGovernor = {
   setTournamentNotes,
   setTournamentEndDate,
   setTournamentStartDate,
+  setTournamentCategories,
 };
 
 export default tournamentGovernor;

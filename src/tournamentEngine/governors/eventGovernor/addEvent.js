@@ -3,7 +3,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { eventTemplate } from '../../../tournamentEngine/generators/eventTemplate';
 
 export function addEvent({ tournamentRecord, event }) {
-  if (!tournamentRecord.Events) tournamentRecord.Events = [];
+  if (!tournamentRecord.events) tournamentRecord.events = [];
 
   // set default startDate, endDate based on tournamentRecord
   const { startDate, endDate } = tournamentRecord;
@@ -16,13 +16,13 @@ export function addEvent({ tournamentRecord, event }) {
   );
   if (!eventRecord.eventId) eventRecord.eventId = UUID();
 
-  const eventExists = tournamentRecord.Events.reduce((exists, event) => {
+  const eventExists = tournamentRecord.events.reduce((exists, event) => {
     return exists || event.eventId === eventRecord.eventId;
   }, undefined);
 
   if (!eventExists) {
-    tournamentRecord.Events.push(eventRecord);
-    return Object.assign({}, { Event: eventRecord }, SUCCESS);
+    tournamentRecord.events.push(eventRecord);
+    return Object.assign({}, { event: eventRecord }, SUCCESS);
   } else {
     return { error: 'Event Exists' };
   }

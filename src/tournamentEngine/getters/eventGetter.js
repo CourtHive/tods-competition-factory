@@ -1,7 +1,7 @@
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function findEvent({ tournamentRecord, eventId, drawId }) {
-  const events = (tournamentRecord && tournamentRecord.Events) || [];
+  const events = tournamentRecord?.events || [];
   if (eventId) {
     const event = events.reduce((event, candidate) => {
       return candidate.eventId === eventId ? candidate : event;
@@ -29,7 +29,7 @@ export function getDrawDefinition({ tournamentRecord, drawId }) {
     return { error: 'Missing drawId' };
   }
 
-  const target = (tournamentRecord.Events || []).reduce((target, event) => {
+  const target = (tournamentRecord.events || []).reduce((target, event) => {
     const candidate = (event.drawDefinitions || []).reduce(
       (drawDefinition, candidate) => {
         return candidate.drawId === drawId ? candidate : drawDefinition;

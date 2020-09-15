@@ -21,8 +21,8 @@ it('can add events to a tournament records', () => {
   };
 
   result = tournamentEngine.addEvent({ event });
-  const { Event, success } = result;
-  const { eventId } = Event;
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
   expect(success).toEqual(true);
 
   const participantIds = participants.map(p => p.participantId);
@@ -33,7 +33,7 @@ it('can add events to a tournament records', () => {
     automated: true,
     drawSize: 32,
     eventId,
-    event: Event,
+    event: eventResult,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 

@@ -1,9 +1,9 @@
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function deleteEvents({ tournamentRecord, eventIds }) {
-  if (!tournamentRecord.Events) return { error: 'No Events' };
+  if (!tournamentRecord.events) return { error: 'No events' };
 
-  tournamentRecord.Events = (tournamentRecord.Events || []).filter(
+  tournamentRecord.events = (tournamentRecord.events || []).filter(
     event => !eventIds.includes(event.eventId)
   );
 

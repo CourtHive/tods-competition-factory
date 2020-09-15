@@ -6,7 +6,7 @@ export const eventTemplate = () => ({
   eventType: SINGLES,
   eventLevel: null,
   surfaceCategory: null,
-  ageCategory: null,
+  category: null,
   gender: null,
   startDate: null,
   endDate: null,

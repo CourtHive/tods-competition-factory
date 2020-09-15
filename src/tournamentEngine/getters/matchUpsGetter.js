@@ -8,7 +8,7 @@ export function allTournamentMatchUps({
   contextFilters,
 }) {
   const { tournamentId } = tournamentRecord;
-  const events = (tournamentRecord && tournamentRecord.Events) || [];
+  const events = tournamentRecord?.events || [];
   const participants = getParticipants({ tournamentRecord });
   const matchUps = events
     .map(
@@ -56,7 +56,7 @@ export function tournamentMatchUps({
   contextFilters,
 }) {
   const { tournamentId } = tournamentRecord;
-  const events = (tournamentRecord && tournamentRecord.Events) || [];
+  const events = (tournamentRecord && tournamentRecord.events) || [];
   const participants = getParticipants({ tournamentRecord });
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
   const eventsDrawsMatchUps = events
@@ -177,7 +177,7 @@ export function matchUpActions({
   }
 
   if (drawId) {
-    const events = tournamentRecord.Events || [];
+    const events = tournamentRecord.events || [];
     const drawDefinitions = events
       .map(event => event.drawDefinitions || [])
       .flat();
