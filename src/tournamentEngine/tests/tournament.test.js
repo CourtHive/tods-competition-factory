@@ -67,5 +67,5 @@ it('can set tournament categories', () => {
   expect(result?.success).toEqual(true);
 
   const tournamentRecord = tournamentEngine.getState();
-  expect(tournamentRecord.categories.length).toEqual(3);
+  expect(tournamentRecord.tournamentCategories.length).toEqual(3);
 });
