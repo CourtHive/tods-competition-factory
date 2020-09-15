@@ -1,7 +1,7 @@
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function findEvent({ tournamentRecord, eventId, drawId }) {
-  const events = (tournamentRecord && tournamentRecord.events) || [];
+  const events = tournamentRecord?.events || [];
   if (eventId) {
     const event = events.reduce((event, candidate) => {
       return candidate.eventId === eventId ? candidate : event;

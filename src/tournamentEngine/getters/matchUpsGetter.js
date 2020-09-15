@@ -8,7 +8,7 @@ export function allTournamentMatchUps({
   contextFilters,
 }) {
   const { tournamentId } = tournamentRecord;
-  const events = (tournamentRecord && tournamentRecord.events) || [];
+  const events = tournamentRecord?.events || [];
   const participants = getParticipants({ tournamentRecord });
   const matchUps = events
     .map(
