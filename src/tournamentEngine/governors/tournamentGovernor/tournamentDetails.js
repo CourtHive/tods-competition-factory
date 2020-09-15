@@ -51,6 +51,6 @@ export function setTournamentCategories({ tournamentRecord, categories }) {
   categories = (categories || []).filter(category => {
     return category.categoryName && category.type;
   });
-  tournamentRecord.categories = categories;
+  tournamentRecord.tournamentCategories = categories;
   return SUCCESS;
 }
