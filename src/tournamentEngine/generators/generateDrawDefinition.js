@@ -10,13 +10,11 @@ import {
 
 import SEEDING_POLICY from '../../fixtures/SEEDING_USTA';
 import AVOIDANCE_POLICY from '../../fixtures/AVOIDANCE_COUNTRY';
-import { RANKING } from '../../constants/participantConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
 
   const {
-    category,
     groupSize,
     customName,
     automated = true,
@@ -37,7 +35,7 @@ export function generateDrawDefinition(props) {
   }
 
   const drawProfile = {
-    category,
+    category: event.category,
     groupSize,
     customName,
     seedsCount,
@@ -99,10 +97,10 @@ export function generateDrawDefinition(props) {
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
-  if (category) {
+  if (event.category) {
     const scaleAttributes = {
-      scaleType: RANKING,
-      scaleName: category,
+      scaleType: event.category.type,
+      scaleName: event.category.categoryName,
       eventType: event.eventType,
     };
 

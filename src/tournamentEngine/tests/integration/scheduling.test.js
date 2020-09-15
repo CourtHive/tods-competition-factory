@@ -28,8 +28,8 @@ it('can add events, venues, and schedule matchUps', () => {
   };
 
   let result = tournamentEngine.addEvent({ event });
-  const { Event, success } = result;
-  const { eventId } = Event;
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
   expect(success).toEqual(true);
 
   const participantIds = participants.map(p => p.participantId);
@@ -41,7 +41,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawSize: 32,
     eventId,
     participants,
-    event: Event,
+    event: eventResult,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
