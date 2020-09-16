@@ -7,7 +7,9 @@ export function allTournamentMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
-  const { tournamentId } = tournamentRecord;
+  const tournamentId =
+    tournamentRecord.unifiedTournamentId?.tournamentId ||
+    tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
   const participants = getParticipants({ tournamentRecord });
   const matchUps = events
@@ -55,7 +57,9 @@ export function tournamentMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
-  const { tournamentId } = tournamentRecord;
+  const tournamentId =
+    tournamentRecord.unifiedTournamentId?.tournamentId ||
+    tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
   const participants = getParticipants({ tournamentRecord });
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];

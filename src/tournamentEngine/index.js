@@ -20,7 +20,7 @@ let tournamentRecord;
 
 function newTournamentRecord(props) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-  const template = definitionTemplate();
+  const template = definitionTemplate(props);
   return Object.assign({}, template, props);
 }
 
@@ -30,12 +30,11 @@ function flushErrors() {
 
 function setState(tournament) {
   if (typeof tournament !== 'object') return { error: 'Invalid Object' };
-  if (!tournament.tournamentId) return { error: 'Missing tournamentId' };
+  const tournamentId =
+    tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
+  if (!tournamentId) return { error: 'Missing tournamentId' };
   tournamentRecord = makeDeepCopy(tournament);
-  return Object.assign(
-    { tournamentId: tournamentRecord.tournamentId },
-    SUCCESS
-  );
+  return Object.assign({ tournamentId }, SUCCESS);
 }
 
 export const tournamentEngine = (function() {
@@ -52,10 +51,8 @@ export const tournamentEngine = (function() {
     newTournamentRecord: (props = {}) => {
       flushErrors();
       tournamentRecord = newTournamentRecord(props);
-      return Object.assign(
-        { tournamentId: tournamentRecord.tournamentId },
-        SUCCESS
-      );
+      const tournamentId = tournamentRecord.unifiedTournamentId?.tournamentId;
+      return Object.assign({ tournamentId }, SUCCESS);
     },
   };
 

@@ -1,5 +1,5 @@
-export const tournamentRecordTemplate = () => ({
-  tournamentId: null,
+export const tournamentRecordTemplate = ({ tournamentId }) => ({
+  tournamentId,
   tournamentRank: null,
   tournamentCategories: [],
 
@@ -28,6 +28,15 @@ export const tournamentRecordTemplate = () => ({
     entriesOpen: null,
     entriesClose: null,
     withdrawalDeadline: null,
+  },
+
+  unifiedTournamentId: {
+    tournamentId,
+    organisation: {
+      organisationId: null,
+      organisationName: null,
+      organisationAbbreviation: null,
+    },
   },
 });
 

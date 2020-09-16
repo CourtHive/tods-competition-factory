@@ -98,7 +98,9 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(scheduleTimes.length).toEqual(19);
 
   let tournamentRecord = tournamentEngine.getState();
-  const { tournamentId } = tournamentRecord;
+  const tournamentId =
+    tournamentRecord.unifiedTournamentId?.tournamentId ||
+    tournamentRecord.tournamentId;
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
   result = competitionEngine
