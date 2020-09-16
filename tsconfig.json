@@ -5,9 +5,9 @@
     "module": "esnext",
     "lib": ["dom", "esnext"],
     "allowJs": true,
+    "declaration": false,
     "importHelpers": true,
-    "declaration": true,
-    "sourceMap": true,
+    "sourceMap": false,
     "rootDir": "./src",
     "strict": true,
     "noUnusedLocals": true,
@@ -16,7 +16,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
-    "jsx": "react",
     "noEmit": true,
     "esModuleInterop": true
   }
