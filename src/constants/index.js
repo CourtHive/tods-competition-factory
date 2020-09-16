@@ -8,4 +8,3 @@ export { participantRoles } from './participantRoles';
 export { participantTypes } from './participantTypes';
 export { resultConstants } from './resultConstants';
 export { timeItemConstants } from './timeItemConstants';
-export { categoryTypes } from './categoryTypes';

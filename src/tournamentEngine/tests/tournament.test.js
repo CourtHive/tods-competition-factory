@@ -1,6 +1,6 @@
 import { tournamentEngine } from '../../tournamentEngine';
 
-import { categoryTypes } from '../../constants/categoryTypes';
+import { eventConstants } from '../../constants/eventConstants';
 
 it('can set tournament names', () => {
   let result = tournamentEngine.newTournamentRecord();
@@ -49,15 +49,15 @@ it('can set tournament categories', () => {
   const categories = [
     {
       categoryName: 'U18',
-      type: categoryTypes.AGE,
+      type: eventConstants.AGE,
     },
     {
       categoryName: 'U16',
-      type: categoryTypes.AGE,
+      type: eventConstants.AGE,
     },
     {
       categoryName: 'WTN',
-      type: categoryTypes.RATING,
+      type: eventConstants.RATING,
     },
     {
       categoryName: 'FAILURE',
