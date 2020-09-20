@@ -54,5 +54,16 @@ test('submitScoreChange smoke test', () => {
     setNumber: 3,
     value: 2,
   }));
-  expect(result).toEqual(true);
+  expect(result).toEqual(false);
+  expect(error).toEqual('invalid set value');
+
+  ({ result, error } = submitScoreChange({
+    matchUp,
+    sideNumber: 1,
+    setNumber: 3,
+    value: 6,
+  }));
+  // expect(result).toEqual(false);
+  // expect(error).toEqual('invalid set value');
+  console.log({ result });
 });

@@ -4,7 +4,7 @@ import { tallyBracket } from './roundRobinTally';
 import { generateScoreString } from './generateScoreString';
 import { getSetComplement, getTiebreakComplement } from './getComplement';
 
-const scoreGovernor = {
+export const scoreGovernor = {
   analyzeSet,
   tallyBracket,
   analyzeMatchUp,

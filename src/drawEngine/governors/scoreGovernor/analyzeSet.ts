@@ -1,3 +1,5 @@
+import { getSetWinningSide } from './getSetWinningSide';
+
 interface SetAnalysisInterface {
   setObject: any;
   matchUpScoringFormat: any;
@@ -39,6 +41,12 @@ export function analyzeSet(props: SetAnalysisInterface) {
   const gameScoresCount = sideGameScores?.filter(s => !isNaN(s)).length;
   const tiebreakScoresCount = sideTiebreakScores?.filter(s => !isNaN(s)).length;
 
+  const { tiebreakAt } = setFormat || {};
+  const hasTiebreakCondition =
+    tiebreakAt &&
+    sideGameScores.filter((gameScore: number) => gameScore >= tiebreakAt)
+      .length === 2;
+
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
   const isCompletedSet = !!(setObject && setObject?.winningSide);
@@ -71,27 +79,48 @@ export function analyzeSet(props: SetAnalysisInterface) {
     !(expectStandardSet && isTiebreakSet) &&
     (!isCompletedSet || isValidSetOutcome);
 
-  return {
+  const winningSide = getSetWinningSide({
     isDecidingSet,
+    isTiebreakSet,
+    matchUpScoringFormat,
+    setObject,
+  });
+
+  const analysis: any = {
+    expectTiebreakSet,
+    expectTimedSet,
+    hasTiebreakCondition,
     isCompletedSet,
-    setFormat,
-    standardSetError,
-    tiebreakSetError,
+    isDecidingSet,
+    isTiebreakSet,
     isValidSet,
     isValidSetNumber,
     isValidSetOutcome,
-    isTiebreakSet,
-    expectTiebreakSet,
-    expectTimedSet,
+    setFormat,
     sideGameScores,
-    sidePointScores,
-    sideTiebreakScores,
-    isValidStandardSetOutcome,
-    isValidTiebreakSetOutcome,
     sideGameScoresCount,
+    sidePointScores,
     sidePointScoresCount,
+    sideTiebreakScores,
     sideTiebreakScoresCount,
+    winningSide,
   };
+
+  if (setObject?.winningSide) {
+    if (isTiebreakSet) {
+      analysis.isValidStandardSetOutcome = isValidStandardSetOutcome;
+      if (!isValidTiebreakSetOutcome) {
+        analysis.tiebreakSetError = tiebreakSetError;
+      }
+    } else {
+      analysis.isValidStandardSetOutcome = isValidStandardSetOutcome;
+      if (!isValidStandardSetOutcome) {
+        analysis.standardSetError = standardSetError;
+      }
+    }
+  }
+
+  return analysis;
 }
 
 interface ValidSetOutcomeInterface {
@@ -136,8 +165,9 @@ function checkValidStandardSetOutcome({
   const losingSideGameScore = sideGameScores[losingSideIndex];
   const gamesDifference = winningSideGameScore - losingSideGameScore;
   const winningSideIsHighGameValue = winningSideGameScore > losingSideGameScore;
-  if (!winningSideIsHighGameValue)
+  if (!winningSideIsHighGameValue) {
     return { result: false, error: 'winningSide game score is not high' };
+  }
 
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
   const validTiebreakScores =

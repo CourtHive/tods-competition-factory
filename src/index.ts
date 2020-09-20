@@ -31,6 +31,7 @@ export const utilities = {
   unique,
 };
 
+export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { competitionEngine } from 'src/competitionEngine';
 export { tournamentEngine } from 'src/tournamentEngine';
 export { drawEngine } from 'src/drawEngine';

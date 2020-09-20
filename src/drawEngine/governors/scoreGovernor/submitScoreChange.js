@@ -24,12 +24,15 @@ export function submitScoreChange(props) {
     return { result: false, error: 'invalid side number' };
 
   const { modifiedSet, isValidSet, winnerChanged } = getModifiedSet(props);
-  console.log({ analysis, modifiedSet, isValidSet, winnerChanged });
+  if (!isValidSet) return { result: false, error: 'invalid set value' };
 
-  if (analysis.isLastSetWithValues) {
-    console.log('is last set with values');
-  } else {
-    console.log('is NOT last set with values');
+  if (winnerChanged) {
+    if (!analysis.isLastSetWithValues) {
+      console.log('is NOT last set with values');
+      console.log('winner changed: all subsequent sets must be removed');
+    } else {
+      console.log('valid set modification', { modifiedSet });
+    }
   }
 
   return { result: true };
@@ -76,14 +79,47 @@ function getModifiedSet(props) {
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
   const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
-  const modifiedSetAnalysis = analyzeSet({
+  let modifiedSetAnalysis = analyzeSet({
     setObject: modifiedSet,
     matchUpScoringFormat,
   });
-  const { isValidSet } = modifiedSetAnalysis;
 
-  // TODO: getWinner of set
+  modifiedSet.winningSide = modifiedSetAnalysis.winningSide;
+
+  const { isValidSet } = modifiedSetAnalysis;
+  if (!isValidSet) {
+    // check modifications which might make it a valid set
+    const {
+      hasTiebreakCondition,
+      sideTiebreakScoresCount,
+    } = modifiedSetAnalysis;
+
+    if (hasTiebreakCondition && sideTiebreakScoresCount) {
+      modifiedSet.side1TiebreakScore = undefined;
+      modifiedSet.side2TiebreakScore = undefined;
+      modifiedSet.winningSide = false;
+
+      const attemptedModificationAnalysis = analyzeSet({
+        setObject: modifiedSet,
+        matchUpScoringFormat,
+      });
+
+      if (attemptedModificationAnalysis.isValidSet) {
+        modifiedSet.winningSide = attemptedModificationAnalysis.winningSide;
+        const winnerChanged =
+          setObject?.winningSide !== modifiedSet.winningSide;
+        modifiedSetAnalysis = attemptedModificationAnalysis;
+        return {
+          modifiedSet,
+          isValidSet: true,
+          winnerChanged,
+          modifiedSetAnalysis,
+        };
+      }
+    }
+  }
+
   const winnerChanged = setObject?.winningSide !== modifiedSet.winningSide;
 
-  return { modifiedSet, isValidSet, winnerChanged };
+  return { modifiedSet, isValidSet, winnerChanged, modifiedSetAnalysis };
 }
