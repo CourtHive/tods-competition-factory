@@ -98,6 +98,14 @@ export const tournamentEngine = (function() {
         );
         if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
         params = Object.assign({}, params, { drawDefinition, event });
+      } else if (params.eventId && !params.event) {
+        const { event } = findEvent({
+          tournamentRecord,
+          eventId: params.eventId,
+        });
+        if (event) {
+          params = Object.assign({}, params, { event });
+        }
       }
     }
 
