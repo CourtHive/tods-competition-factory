@@ -243,14 +243,10 @@ test('can recognize when sets do not map to matchUpFormat', () => {
   analysis = analyzeMatchUp({ matchUp, setNumber: 1 });
   expect(analysis.completedSetsCount).toEqual(3);
   expect(analysis.isValidSetOutcome).toEqual(false);
-  expect(analysis.isValidTiebreakSetOutcome).toEqual(false);
-  expect(analysis.tiebreakSetError).toEqual('invalid tiebreak scores (1)');
 
   analysis = analyzeMatchUp({ matchUp, setNumber: 2 });
   expect(analysis.completedSetsCount).toEqual(3);
   expect(analysis.isValidSetOutcome).toEqual(false);
-  expect(analysis.isValidTiebreakSetOutcome).toEqual(false);
-  expect(analysis.tiebreakSetError).toEqual('invalid tiebreak scores (1)');
 
   analysis = analyzeMatchUp({ matchUp, setNumber: 3 });
   expect(analysis.completedSetsCount).toEqual(3);

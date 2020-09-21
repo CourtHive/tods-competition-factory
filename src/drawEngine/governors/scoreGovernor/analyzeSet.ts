@@ -106,9 +106,13 @@ export function analyzeSet(props: SetAnalysisInterface) {
     winningSide,
   };
 
-  if (setObject?.winningSide) {
+  if (!setObject) {
+    analysis.setError = 'missing setObject';
+  }
+
+  if (setObject?.winningSide !== undefined) {
     if (isTiebreakSet) {
-      analysis.isValidStandardSetOutcome = isValidStandardSetOutcome;
+      analysis.isValidTiebreakSetOutcome = isValidTiebreakSetOutcome;
       if (!isValidTiebreakSetOutcome) {
         analysis.tiebreakSetError = tiebreakSetError;
       }

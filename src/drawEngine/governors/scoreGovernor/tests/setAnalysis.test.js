@@ -7,7 +7,7 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
 
   let analysis = analyzeSet({ matchUpScoringFormat });
-  let { standardSetError: error, isValidSetOutcome } = analysis;
+  let { setError: error, isValidSetOutcome } = analysis;
   expect(isValidSetOutcome).toEqual(false);
   expect(analysis.isValidSet).toEqual(false);
   expect(error).toEqual('missing setObject');
@@ -202,9 +202,6 @@ test('can recognize when set format does not match expected format', () => {
     winningSide: 1,
   };
   const analysis = analyzeSet({ setObject, matchUpScoringFormat });
-  const { tiebreakSetError: error, isValidTiebreakSetOutcome } = analysis;
-  expect(error).toEqual('invalid tiebreak scores (1)');
   expect(analysis.isValidSet).toEqual(false);
   expect(analysis.isValidSetOutcome).toEqual(false);
-  expect(isValidTiebreakSetOutcome).toEqual(false);
 });
