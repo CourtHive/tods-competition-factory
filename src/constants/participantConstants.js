@@ -10,6 +10,7 @@ export const INDIVIDUAL = 'INDIVIDUAL';
 export const PAIR = 'PAIR';
 export const TEAM = 'TEAM';
 
+export const WILDCARD = 'WILDCARD';
 export const ALTERNATE = 'ALTERNATE';
 export const QUALIFYING = 'QUALIFYING';
 export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';

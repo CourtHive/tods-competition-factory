@@ -3,15 +3,17 @@ import { generateRange } from '../../utilities';
 import { countries } from '../../fixtures/countryData';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { DOUBLES } from '../../constants/matchUpTypes';
 
 export function generateFakeParticipants({
   participantsCount = 32,
   matchUpType,
+  sex,
 }) {
   const isoCountries = countries.filter(country => country.iso);
   const countriesCount = isoCountries.length;
-  const doubles = matchUpType === 'DOUBLES';
-  const team = matchUpType === 'TEAM';
+  const doubles = matchUpType === DOUBLES;
+  const team = matchUpType === TEAM;
 
   const participants = generateRange(1, participantsCount + 1)
     .map(() => {
@@ -63,6 +65,7 @@ export function generateFakeParticipants({
         standardFamilyName,
         standardGivenName,
         nationalityCode,
+        sex,
       },
     };
     return participant;
