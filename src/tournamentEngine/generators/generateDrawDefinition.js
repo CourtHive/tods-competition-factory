@@ -26,6 +26,10 @@ export function generateDrawDefinition(props) {
 
   let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
 
+  // coersion
+  if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
+  if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount);
+
   if (tieFormat || (matchUpType === 'TEAM' && !tieFormat)) {
     tieFormat = tieFormatDefaults();
     matchUpFormat = undefined;

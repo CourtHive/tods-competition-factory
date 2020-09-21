@@ -27,7 +27,7 @@ export function treeMatchUps({
     return { matchUps: [], roundsCount: 0 };
   }
 
-  const nodes = generateRange(1, drawSize + 1).map(drawPosition => ({
+  const nodes = generateRange(1, parseInt(drawSize) + 1).map(drawPosition => ({
     drawPosition,
   }));
 
