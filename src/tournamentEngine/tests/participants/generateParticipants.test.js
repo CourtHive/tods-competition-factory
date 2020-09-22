@@ -31,10 +31,18 @@ it('can set participant scaleItems', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  const scaleAttributes = { scaleName: 'WTN' };
+  let scaleAttributes = { scaleName: 'WTN' };
   ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
     participantId,
     scaleAttributes,
   }));
-  expect(result.scaleValue).toEqual(scaleItem.scaleValue);
+  expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
+
+  scaleAttributes = { scaleName: 'U18' };
+  ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
+    participantId,
+    scaleAttributes,
+  }));
+
+  expect(result?.scaleValue).toEqual(undefined);
 });

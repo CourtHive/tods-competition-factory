@@ -25,12 +25,23 @@ export function participantScaleItem({
           new Date(b.timeStamp || undefined)
       )
       .reduce((scaleValue, candidate) => {
-        return candidate.itemName === scaleAttributes.scaleName ||
-          candidate.itemType === scaleAttributes.scaleType ||
-          candidate.itemId === scaleAttributes.scaleId
+        return (candidate.itemName === scaleAttributes.scaleName &&
+          (!scaleAttributes.scaleType ||
+            candidate.itemType === scaleAttributes.scaleType) &&
+          (!scaleAttributes.scaleClass ||
+            candidate.itemClass === scaleAttributes.scaleClass)) ||
+          (candidate.itemId &&
+            scaleAttributes.scaleId &&
+            candidate.itemId === scaleAttributes.scaleId)
           ? candidate
           : scaleValue;
       }, undefined);
+
+    console.log({
+      timeItems: participant.timeItems,
+      timeItem,
+      scaleAttributes,
+    });
 
     if (timeItem) {
       const scaleItem = {
