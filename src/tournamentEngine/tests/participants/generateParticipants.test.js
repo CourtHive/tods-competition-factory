@@ -3,7 +3,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { RANKING } from '../../../constants/participantConstants';
+import { RATING } from '../../../constants/participantConstants';
 
 it('can set participant scaleItems', () => {
   const { tournamentRecord } = tournamentRecordWithParticipants({
@@ -20,7 +20,7 @@ it('can set participant scaleItems', () => {
   const scaleItem = {
     scaleValue: 8.3,
     scaleName: 'WTN',
-    scaleType: RANKING,
+    scaleType: RATING,
     eventType: 'SINGLES',
     scaleDate: '2020-06-06',
   };
