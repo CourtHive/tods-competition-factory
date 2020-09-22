@@ -2,7 +2,8 @@ import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
-  const { event } = findEvent({ tournamentRecord, eventId });
+  const drawId = Array.isArray(drawIds) && drawIds[0];
+  const { event } = findEvent({ tournamentRecord, eventId, drawId });
 
   if (event) {
     if (!event.drawDefinitions) {
