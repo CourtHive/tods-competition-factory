@@ -10,6 +10,7 @@ import {
 
 import SEEDING_POLICY from '../../fixtures/SEEDING_USTA';
 import AVOIDANCE_POLICY from '../../fixtures/AVOIDANCE_COUNTRY';
+import { RANKING } from '../../constants/participantConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -102,8 +103,11 @@ export function generateDrawDefinition(props) {
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
   if (event.category) {
+    /**
+     * CONVENIENCE SEED BY RANKING WHEN POSSIBLE
+     */
     const scaleAttributes = {
-      scaleType: event.category.type,
+      scaleType: RANKING,
       scaleName: event.category.categoryName,
       eventType: event.eventType,
     };
