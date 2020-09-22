@@ -37,12 +37,6 @@ export function participantScaleItem({
           : scaleValue;
       }, undefined);
 
-    console.log({
-      timeItems: participant.timeItems,
-      timeItem,
-      scaleAttributes,
-    });
-
     if (timeItem) {
       const scaleItem = {
         scaleDate: timeItem.itemDate,
