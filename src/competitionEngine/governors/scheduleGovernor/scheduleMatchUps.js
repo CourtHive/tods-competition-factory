@@ -53,39 +53,43 @@ export function scheduleMatchUps(props) {
   const { scheduleTimes } = matchUpTiming(timingParameters);
 
   // TODO: can be optimized by aggregating all matchUpIds to be scheduled for a particular drawDefinition
-  matchUps.forEach(targetMatchUp => {
-    const { drawId, matchUpId, tournamentId } = targetMatchUp;
-    const tournamentRecord = tournamentRecords[tournamentId];
-    if (tournamentRecord) {
-      const { drawDefinition, event } = getDrawDefinition({
-        tournamentRecord,
-        drawId,
-      });
-
-      if (drawDefinition && scheduleTimes.length) {
-        const { scheduleTime } = scheduleTimes.shift();
-
-        // must include date being scheduled to generate proper ISO string
-        const scheduledTime = new Date(
-          timeToDate(scheduleTime, date)
-        ).toISOString();
-
-        drawEngine
-          .setState(drawDefinition)
-          .addMatchUpScheduledTime({ matchUpId, scheduledTime });
-
-        const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-
-        event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
-          return drawDefinition.drawId === drawId
-            ? updatedDrawDefinition
-            : drawDefinition;
+  if (matchUps?.length) {
+    matchUps.forEach(targetMatchUp => {
+      const { drawId, matchUpId, tournamentId } = targetMatchUp;
+      const tournamentRecord = tournamentRecords[tournamentId];
+      if (tournamentRecord) {
+        const { drawDefinition, event } = getDrawDefinition({
+          tournamentRecord,
+          drawId,
         });
+
+        if (drawDefinition && scheduleTimes.length) {
+          const { scheduleTime } = scheduleTimes.shift();
+
+          // must include date being scheduled to generate proper ISO string
+          const scheduledTime = new Date(
+            timeToDate(scheduleTime, date)
+          ).toISOString();
+
+          drawEngine
+            .setState(drawDefinition)
+            .addMatchUpScheduledTime({ matchUpId, scheduledTime });
+
+          const {
+            drawDefinition: updatedDrawDefinition,
+          } = drawEngine.getState();
+
+          event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+            return drawDefinition.drawId === drawId
+              ? updatedDrawDefinition
+              : drawDefinition;
+          });
+        }
+      } else {
+        console.log('missing tournamentId');
       }
-    } else {
-      console.log('missing tournamentId');
-    }
-  });
+    });
+  }
 
   return SUCCESS;
 }

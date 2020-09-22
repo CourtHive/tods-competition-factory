@@ -65,6 +65,7 @@ export const competitionEngine = (function() {
       Object.keys(governor).forEach(key => {
         fx[key] = params => {
           if (devContext) {
+            console.log({ params });
             return engineInvoke(governor[key], params);
           } else {
             try {

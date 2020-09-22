@@ -26,7 +26,7 @@ export function deleteVenue({ tournamentRecord, drawEngine, venueId }) {
       );
 
       if (hasCourtAssignment) {
-        console.log('TODO remove court assignment', { matchUp });
+        // console.log('TODO remove court assignment', { matchUp });
         // TODO: This needs to operate on original matchUp not inContext matchUp
         // should probably call drawEngine assignMatchUp function, which means it
         // would need to find drawDefinition
