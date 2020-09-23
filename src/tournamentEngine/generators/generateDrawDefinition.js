@@ -10,7 +10,7 @@ import {
 
 import SEEDING_POLICY from '../../fixtures/SEEDING_USTA';
 import AVOIDANCE_POLICY from '../../fixtures/AVOIDANCE_COUNTRY';
-import { RANKING } from '../../constants/participantConstants';
+import { ALTERNATE, RANKING } from '../../constants/participantConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -57,9 +57,12 @@ export function generateDrawDefinition(props) {
   const entries = event.entries || [];
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stage = drawIsRRWP ? QUALIFYING : MAIN;
-  const stageEntries = entries.filter(entry => entry.entryStage === stage);
-  if ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType))
+  const stageEntries = entries.filter(
+    entry => entry.entryStage === stage && entry.entryStatus !== ALTERNATE
+  );
+  if ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType)) {
     drawSize = stageEntries.length;
+  }
 
   const structureOptions = drawIsRRWP
     ? {
