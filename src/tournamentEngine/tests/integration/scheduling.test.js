@@ -106,7 +106,6 @@ it('can add events, venues, and schedule matchUps', () => {
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ date, matchUps: upcoming });
-  console.log({ result });
   expect(result).toEqual(SUCCESS);
 
   tournamentRecords = competitionEngine.getState();
