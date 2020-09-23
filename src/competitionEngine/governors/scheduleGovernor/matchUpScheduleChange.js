@@ -33,7 +33,7 @@ export function matchUpScheduleChange(params) {
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
     });
-    if (result.success) matchUpsModified++;
+    if (result?.success) matchUpsModified++;
   } else if (
     sourceCourtId &&
     targetCourtId &&
@@ -73,7 +73,7 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
 
-    if (result.success) {
+    if (result?.success) {
       const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
       event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
         return drawDefinition.drawId === drawId
