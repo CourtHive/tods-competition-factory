@@ -58,9 +58,10 @@ export function stageAlternates({ stage, drawDefinition }) {
 export function getStageWildcardsCount({ stage, drawDefinition }) {
   return drawDefinition.entryProfile[stage].wildcardsCount || 0;
 }
-export function getStageEntryTypeCount({ stage, drawDefinition, entryType }) {
+export function getStageEntryTypeCount({ stage, drawDefinition, entryStatus }) {
   return drawDefinition.entries.reduce(
-    (p, c) => (c.entryStage === stage && c.entryType === entryType ? p + 1 : p),
+    (p, c) =>
+      c.entryStage === stage && c.entryStatus === entryStatus ? p + 1 : p,
     0
   );
 }
@@ -78,7 +79,7 @@ export function stageEntries({
 }) {
   return drawDefinition.entries.reduce((p, c) => {
     const sameStage = c.entryStage === stage;
-    const matchesEntryType = !entryTypes || entryTypes.includes(c.entryType);
+    const matchesEntryType = !entryTypes || entryTypes.includes(c.entryStatus);
     const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
     const sameStageSequence =
       !stageSequence || entryStageSequence === stageSequence;
@@ -89,25 +90,29 @@ export function getStageDirectEntriesCount({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
     stage,
     drawDefinition,
-    entryType: DIRECT_ACCEPTANCE,
+    entryStatus: DIRECT_ACCEPTANCE,
   });
 }
 export function getStageWildcardEntriesCount({ stage, drawDefinition }) {
-  return getStageEntryTypeCount({ stage, drawDefinition, entryType: WILDCARD });
+  return getStageEntryTypeCount({
+    stage,
+    drawDefinition,
+    entryStatus: WILDCARD,
+  });
 }
 export function stageAlternateEntries({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
     stage,
     drawDefinition,
-    entryType: ALTERNATE,
+    entryStatus: ALTERNATE,
   });
 }
 export function stageSpace({
   stage,
   drawDefinition,
-  entryType = DIRECT_ACCEPTANCE,
+  entryStatus = DIRECT_ACCEPTANCE,
 }) {
-  if (entryType === ALTERNATE) {
+  if (entryStatus === ALTERNATE) {
     if (stageAlternates({ stage, drawDefinition })) {
       return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
     } else {
@@ -123,12 +128,12 @@ export function stageSpace({
   const wildcardEntriesCount = getStageEntryTypeCount({
     stage,
     drawDefinition,
-    entryType: WILDCARD,
+    entryStatus: WILDCARD,
   });
   const directEntriesCount = getStageEntryTypeCount({
     stage,
     drawDefinition,
-    entryType: DIRECT_ACCEPTANCE,
+    entryStatus: DIRECT_ACCEPTANCE,
   });
   const totalEntriesCount = wildcardEntriesCount + directEntriesCount;
   const stageFull = totalEntriesCount >= stageDrawPositionsAvailable;
@@ -136,7 +141,7 @@ export function stageSpace({
 
   if (stageFull) return { error: 'No Space Available' };
 
-  if (entryType === WILDCARD) {
+  if (entryStatus === WILDCARD) {
     if (wildcardEntriesCount < wildcardPositions) return SUCCESS;
     return { error: 'No Wildcard space available' };
   }

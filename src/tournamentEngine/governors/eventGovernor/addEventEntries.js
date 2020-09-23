@@ -8,7 +8,7 @@ export function addEventEntries(props) {
     tournamentRecord,
     eventId,
     participantIds = [],
-    entryType = DIRECT_ACCEPTANCE,
+    entryStatus = DIRECT_ACCEPTANCE,
     entryStage = MAIN,
   } = props;
 
@@ -27,7 +27,7 @@ export function addEventEntries(props) {
     if (!existingIds.includes(participantId)) {
       event.entries.push({
         participantId,
-        entryType,
+        entryStatus,
         entryStage,
       });
     }

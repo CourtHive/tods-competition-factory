@@ -12,12 +12,12 @@ export function addEntry({
   participant,
   stage,
   drawDefinition,
-  entryType = DIRECT_ACCEPTANCE,
+  entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (!drawDefinition) return { error: 'Draw undefined' };
   if (!stage) return { error: 'Missing Stage' };
   if (!validStage({ stage, drawDefinition })) return { error: 'Invalid Stage' };
-  const spaceAvailable = stageSpace({ stage, drawDefinition, entryType });
+  const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
   if (!spaceAvailable.success) return { error: spaceAvailable.error };
 
   participantId = participantId || (participant && participant.participantId);
@@ -28,7 +28,7 @@ export function addEntry({
   const entry = Object.assign({}, participant, {
     participantId,
     entryStage: stage,
-    entryType,
+    entryStatus,
   });
   drawDefinition.entries.push(entry);
   return SUCCESS;
@@ -38,7 +38,7 @@ export function addDrawEntries({
   participantIds,
   stage,
   drawDefinition,
-  entryType = DIRECT_ACCEPTANCE,
+  entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (!stage) return { error: 'Missing Stage' };
   if (!drawDefinition) return { error: 'Draw undefined' };
@@ -46,7 +46,7 @@ export function addDrawEntries({
     return { error: 'Invalid participants array' };
   if (!validStage({ stage, drawDefinition })) return { error: 'Invalid Stage' };
 
-  const spaceAvailable = stageSpace({ stage, drawDefinition, entryType });
+  const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
   if (!spaceAvailable.success) return { error: spaceAvailable.error };
   const positionsAvailable = spaceAvailable.positionsAvailable || 0;
   if (positionsAvailable < participantIds.length)
@@ -67,7 +67,7 @@ export function addDrawEntries({
     const entry = Object.assign(
       {},
       { participantId },
-      { entryStage: stage, entryType }
+      { entryStage: stage, entryStatus }
     );
     drawDefinition.entries.push(entry);
   });

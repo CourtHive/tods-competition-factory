@@ -73,7 +73,7 @@ export function generateDrawStructure({
   drawEngine.addDrawEntries({
     stage: MAIN,
     participantIds: alternateParticipantIds,
-    entryType: ALTERNATE,
+    entryStatus: ALTERNATE,
   });
 
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });

@@ -7,7 +7,7 @@ export function addDrawEntries({
   drawId,
   participantIds,
   entryStage,
-  entryType,
+  entryStatus,
 }) {
   const { drawDefinition, event } = getDrawDefinition({
     tournamentRecord,
@@ -18,7 +18,7 @@ export function addDrawEntries({
 
   const result = drawEngine
     .setState(drawDefinition)
-    .addDrawEntries({ participantIds, stage: entryStage, entryType });
+    .addDrawEntries({ participantIds, stage: entryStage, entryStatus });
   if (result.error) return result;
 
   const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();

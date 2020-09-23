@@ -18,62 +18,62 @@
     {
       "participantId": "ko-uuid1",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid2",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid3",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid4",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid5",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid6",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid7",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid8",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid9",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid10",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid11",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid12",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     }
   ],
   "links": [

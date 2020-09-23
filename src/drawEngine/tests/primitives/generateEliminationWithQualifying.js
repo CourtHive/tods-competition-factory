@@ -92,7 +92,7 @@ export function generateEliminationWithQualifying({
   drawEngine.addDrawEntries({
     stage: QUALIFYING,
     participantIds: alternateParticipantIds,
-    entryType: ALTERNATE,
+    entryStatus: ALTERNATE,
   });
 
   const { structures: mainStructures } = drawEngine.getDrawStructures({

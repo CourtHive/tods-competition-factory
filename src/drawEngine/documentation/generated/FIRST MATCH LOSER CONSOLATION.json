@@ -19,152 +19,152 @@
     {
       "participantId": "fmlc-uuid1",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid2",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid3",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid4",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid5",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid6",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid7",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid8",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid9",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid10",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid11",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid12",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid13",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid14",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid15",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid16",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid17",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid18",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid19",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid20",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid21",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid22",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid23",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid24",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid25",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid26",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid27",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid28",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid29",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "fmlc-uuid30",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     }
   ],
   "links": [

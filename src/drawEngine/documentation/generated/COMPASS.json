@@ -19,142 +19,142 @@
     {
       "participantId": "ko-uuid1",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid2",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid3",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid4",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid5",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid6",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid7",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid8",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid9",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid10",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid11",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid12",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid13",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid14",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid15",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid16",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid17",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid18",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid19",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid20",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid21",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid22",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid23",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid24",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid25",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid26",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid27",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     },
     {
       "participantId": "ko-uuid28",
       "entryStage": "MAIN",
-      "entryType": "DIRECT_ACCEPTANCE"
+      "entryStatus": "DIRECT_ACCEPTANCE"
     }
   ],
   "links": [
