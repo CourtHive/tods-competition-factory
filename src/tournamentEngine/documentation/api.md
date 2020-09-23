@@ -1,6 +1,6 @@
 ---
 name: API
-menu: tournamentEngine
+menu: Tournament Engine
 route: /tournamentEngine/api
 ---
 

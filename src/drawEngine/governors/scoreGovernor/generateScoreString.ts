@@ -1,9 +1,12 @@
-export function generateScoreString({ sets }) {
+export function generateScoreString({ sets, matchUpStatus }) {
   if (!sets?.length) return '';
   const scoreString = sets
     .sort(setSort)
     .map(setString)
     .join(' ');
+  if (matchUpStatus) {
+    console.log('add outcome status string');
+  }
   return scoreString;
 }
 

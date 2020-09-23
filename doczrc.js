@@ -19,11 +19,22 @@ export default {
     'Readme',
     {
       name: 'Competition Engine',
-      menu: ['Garman Scheduling'],
+      menu: ['Garman Scheduling', 'API'],
+    },
+    {
+      name: 'Tournament Engine',
+      menu: ['API'],
     },
     {
       name: 'Draw Engine',
-      menu: ['Overview', 'Positioning BYEs', 'Positioning Seeds', 'Glossary'],
+      menu: [
+        'Overview',
+        'Avoidance',
+        'Positioning BYEs',
+        'Positioning Seeds',
+        'Attributes',
+        'API',
+      ],
     },
     {
       name: 'Examples',
