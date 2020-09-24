@@ -109,7 +109,13 @@ export const tournamentEngine = (function() {
       }
     }
 
-    return fx({ ...params, tournamentRecord, drawEngine, auditEngine });
+    return fx({
+      ...params,
+      devContext,
+      drawEngine,
+      auditEngine,
+      tournamentRecord,
+    });
   }
 
   function importGovernors(governors) {

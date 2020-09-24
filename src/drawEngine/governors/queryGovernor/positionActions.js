@@ -10,30 +10,55 @@ import { structureActiveDrawPositions } from '../../getters/structureActiveDrawP
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
+  DRAW,
+  LOSER,
 } from '../../../constants/drawDefinitionConstants';
 
 /*
   return an array of all possible validActions for a given drawPosition within a structure
 */
 export function positionActions({
-  drawDefinition,
-  participantId,
   policies,
+  devContext,
   structureId,
   drawPosition,
+  participantId,
+  drawDefinition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
 
   const validActions = [];
 
   if (!structure) {
-    console.log('no structure found', {
-      drawDefinition,
-      structureId,
-      drawPosition,
-      participantId,
-    });
+    if (devContext) {
+      console.log('no structure found', {
+        drawDefinition,
+        structureId,
+        drawPosition,
+        participantId,
+      });
+    }
     return { validActions };
+  }
+
+  /**
+   * If structure is > stageSequence 1 then it will only have valid position actions if:
+   * 1. Links are directing winners to this structure, and
+   * 2. the feedProfile is not "DRAW"
+   *
+   * Directions such as West in Compass or Playoff structures should not have an positionActions
+   */
+  if (structure.stageSequence > 1) {
+    const asTargetLink = drawDefinition.links?.find(
+      link => link.target.structureId === structureId
+    );
+    if (
+      asTargetLink?.linkSubject === LOSER &&
+      asTargetLink?.feedProfile !== DRAW
+    ) {
+      if (devContext) console.log('ss2 no valid actions');
+      return { validActions };
+    }
   }
 
   const { assignedPositions } = structureAssignedDrawPositions({ structure });

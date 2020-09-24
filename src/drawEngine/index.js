@@ -132,6 +132,7 @@ export const drawEngine = (function() {
     return governor[key]({
       ...params,
       policies,
+      devContext,
       drawDefinition,
       tournamentParticipants,
       auditEngine,
