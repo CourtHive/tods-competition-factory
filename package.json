@@ -5,19 +5,20 @@
     "TODS",
     "tournament",
     "tournaments",
+    "competition",
     "tennis"
   ],
   "version": "0.1.31",
   "license": "MIT",
   "private": false,
-  "homepage": "https://github.com/CourtHive/CompetitionFactory",
+  "homepage": "https://github.com/CourtHive/tods-competition-factory",
   "bugs": {
-    "url": "https://github.com/CourtHive/CompetitionFactory/issues",
+    "url": "https://github.com/CourtHive/tods-competition-factory/issues",
     "email": "support@CourtHive.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/CourtHive/CompetitionFactory"
+    "url": "https://github.com/CourtHive/tods-competition-factory"
   },
   "main": "dist/index.js",
   "files": [
@@ -49,7 +50,7 @@
     "trailingComma": "es5"
   },
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
-  "module": "dist/mylib.esm.js",
+  "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
     "@babel/preset-typescript": "7.10.4",
     "@types/jest": "26.0.14",
