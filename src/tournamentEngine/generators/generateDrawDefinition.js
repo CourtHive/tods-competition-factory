@@ -104,6 +104,7 @@ export function generateDrawDefinition(props) {
 
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
+  drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
   if (event.category) {
     /**
@@ -130,7 +131,7 @@ export function generateDrawDefinition(props) {
 
     if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
 
-    drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
+    // drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
     scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
       const seedNumber = index + 1;

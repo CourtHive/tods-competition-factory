@@ -94,7 +94,6 @@ function validDefinitionKeys(definition) {
 }
 
 const policyGovernor = {
-  addPolicy,
   attachPolicy,
   removePolicies,
 
