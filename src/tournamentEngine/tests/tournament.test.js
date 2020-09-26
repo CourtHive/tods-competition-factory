@@ -45,7 +45,7 @@ it('can generate a tournament with events and draws', () => {
   expect(result).toEqual(SUCCESS);
 
   drawEngine.setState(drawDefinition);
-  const structureSeedAssignments = drawEngine.getSeedAssignments({});
+  const structureSeedAssignments = drawEngine.getSeedAssignments();
   expect(structureSeedAssignments.length).toEqual(1);
   expect(structureSeedAssignments[0].seedAssignments.length).toEqual(8);
 

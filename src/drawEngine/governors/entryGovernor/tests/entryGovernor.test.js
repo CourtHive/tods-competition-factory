@@ -18,7 +18,7 @@ let result;
 
 it('rejects adding participants when stage drawSize undefined', () => {
   initialize();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: '123' },
     stage: QUALIFYING,
   });
@@ -29,12 +29,12 @@ it('will not allow duplicate entries', () => {
   reset();
   initialize();
   qualifyingDrawPositions();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },
     stage: QUALIFYING,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },
     stage: QUALIFYING,
   });
@@ -43,12 +43,12 @@ it('will not allow duplicate entries', () => {
   reset();
   initialize();
   mainDrawPositions();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },
     stage: MAIN,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },
     stage: MAIN,
   });
@@ -56,7 +56,7 @@ it('will not allow duplicate entries', () => {
 
   // now test to insure participant cannot be added to two stages
   qualifyingDrawPositions();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },
     stage: QUALIFYING,
   });
@@ -68,54 +68,54 @@ it('adds partitipants to stage until stage drawPositions filled', () => {
   initialize({ drawId: 'uuid-abc' });
 
   qualifyingDrawPositions();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid0' },
     stage: QUALIFYING,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid2' },
     stage: QUALIFYING,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid3' },
     stage: QUALIFYING,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid4' },
     stage: QUALIFYING,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid5' },
     stage: QUALIFYING,
   });
   expect(result).toHaveProperty(ERROR);
 
   mainDrawPositions();
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid6' },
     stage: MAIN,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid7' },
     stage: MAIN,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid8' },
     stage: MAIN,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid9' },
     stage: MAIN,
   });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addEntry({
+  result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid10' },
     stage: MAIN,
   });

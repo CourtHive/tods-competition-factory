@@ -13,11 +13,11 @@ import {
   setStageWildcardsCount,
   setStageQualifiersCount,
 } from './stageEntryCounts';
-import { addEntry, addDrawEntries } from './addingDrawEntries';
+import { addDrawEntry, addDrawEntries } from './addingDrawEntries';
 import { removeEntry } from './removingDrawEntries';
 
 const entryGovernor = {
-  addEntry,
+  addDrawEntry,
   addDrawEntries,
   assignSeed,
   removeEntry,

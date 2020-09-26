@@ -7,7 +7,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addEntry({
+export function addDrawEntry({
   participantId,
   participant,
   stage,

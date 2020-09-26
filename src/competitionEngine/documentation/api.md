@@ -8,28 +8,56 @@ route: /competitionEngine/api
 
 ## allCompetitionMatchUps
 
+---
+
 ## competitionMatchUps
+
+---
 
 ## competitionScheduleMatchUps
 
+---
+
 ## devContext
+
+---
 
 ## flushErrors
 
+---
+
 ## getState
+
+---
 
 ## getVenuesAndCourts
 
+---
+
 ## load
+
+---
 
 ## matchUpScheduleChange
 
+---
+
 ## removeMatchUpCourtAssignment
+
+---
 
 ## reorderUpcomingMatchUps
 
+---
+
 ## scheduleMatchUps
+
+---
 
 ## setState
 
+---
+
 ## toggleParticipantCheckInState
+
+---

@@ -8,29 +8,55 @@ route: /tournamentEngine/api
 
 ## addCourt
 
+---
+
 ## addCourts
+
+---
 
 ## addDrawDefinition
 
+---
+
 ## addDrawEntries
+
+---
 
 ## addEvent
 
+---
+
 ## addEventEntries
+
+---
 
 ## addParticipants
 
+---
+
 ## addParticipantsToGrouping
+
+---
 
 ## addVenue
 
+---
+
 ## allEventMatchUps
+
+---
 
 ## allTournamentMatchUps
 
+---
+
 ## assignDrawPosition
 
+---
+
 ## assignMatchUpCourt
+
+---
 
 ## assignSeedPositions
 
@@ -64,106 +90,212 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 | stageSequence         | Optional | number  | Locate target structure by stageSequence; used together with stage |
 | useExistingSeedLimits | Optional | boolean | Restrict ability to assign seedNumbers beyond established limit |
 
+---
+
 ## assignTieMatchUpParticipantId
+
+---
 
 ## bulkMatchUpStatusUpdate
 
+---
+
 ## checkInParticipant
+
+---
 
 ## checkOutParticipant
 
+---
+
 ## deleteCourt
+
+---
 
 ## deleteDrawDefinitions
 
+---
+
 ## deleteEventEntries
+
+---
 
 ## deleteEvents
 
+---
+
 ## deleteParticipants
+
+---
 
 ## deleteVenue
 
+---
+
 ## deleteVenues
+
+---
 
 ## devContext
 
+---
+
 ## eventMatchUps
+
+---
 
 ## findMatchUp
 
+---
+
 ## findParticipant
+
+---
 
 ## findVenue
 
+---
+
 ## flushErrors
+
+---
 
 ## generateDrawDefinition
 
+---
+
 ## generateFakeParticipants
+
+---
 
 ## generateTeamsFromParticipantAttribute
 
+---
+
 ## getAudit
+
+---
 
 ## getCourts
 
+---
+
 ## getMatchUpScheduleDetails
+
+---
 
 ## getParticipantScaleItem
 
+---
+
 ## getParticipantSignInStatus
+
+---
 
 ## getState
 
+---
+
 ## getVenues
+
+---
 
 ## load
 
+---
+
 ## matchUpActions
+
+---
 
 ## mergeParticipants
 
+---
+
 ## modifyCourtAvailability
+
+---
 
 ## modifyParticipant
 
+---
+
 ## newTournamentRecord
+
+---
 
 ## participantScaleItem
 
+---
+
 ## participantsSignInStatus
+
+---
 
 ## rankByRatings
 
+---
+
 ## regenerateDrawDefinition
+
+---
 
 ## removeDrawPositionAssignment
 
+---
+
 ## removeParticipantsFromAllTeams
+
+---
 
 ## removeParticipantsFromGroup
 
+---
+
 ## setDrawParticipantRepresentatives
+
+---
 
 ## setMatchUpStatus
 
+---
+
 ## setParticipantScaleItem
+
+---
 
 ## setParticipantScaleItems
 
+---
+
 ## setState
+
+---
 
 ## setTournamentCategories
 
+---
+
 ## setTournamentEndDate
+
+---
 
 ## setTournamentName
 
+---
+
 ## setTournamentNotes
+
+---
 
 ## setTournamentStartDate
 
+---
+
 ## setVenueAddress
 
+---
+
 ## tournamentMatchUps
+
+---

@@ -99,7 +99,7 @@ export function generateDrawDefinition(props) {
   entries.forEach(entry => {
     // TODO: attach participant scaleValues to entry information (if relevant?)
     const entryData = Object.assign({}, entry, { stage: entry.entryStage });
-    drawEngine.addEntry(entryData);
+    drawEngine.addDrawEntry(entryData);
   });
 
   if (seedsCount > drawSize) seedsCount = drawSize;
