@@ -46,8 +46,9 @@ it('can generate a tournament with events and draws', () => {
 
   drawEngine.setState(drawDefinition);
   const structureSeedAssignments = drawEngine.getSeedAssignments();
+  const { seedAssignments } = structureSeedAssignments[0];
   expect(structureSeedAssignments.length).toEqual(1);
-  expect(structureSeedAssignments[0].seedAssignments.length).toEqual(8);
+  expect(seedAssignments.length).toEqual(8);
 
   result = tournamentEngine.assignSeedPositions({
     eventId,
@@ -55,8 +56,16 @@ it('can generate a tournament with events and draws', () => {
   });
   expect(result?.error).toEqual('Missing assignments');
 
-  const assignments = [
-    { seedNumber: 1, seedValue: 1, participantId: participantIds[0] },
+  const { positionAssignments } = drawDefinition.structures[0];
+  function getPositionParticipantId(drawPosition) {
+    const targetAssignment = positionAssignments.find(
+      assignment => assignment.drawPosition === drawPosition
+    );
+    return targetAssignment?.participantId;
+  }
+
+  let assignments = [
+    { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(1) },
   ];
   result = tournamentEngine.assignSeedPositions({
     assignments,
@@ -64,6 +73,18 @@ it('can generate a tournament with events and draws', () => {
     drawId,
   });
   expect(result?.success).toEqual(true);
+
+  // drawPositions are already assigned, so drawPosition 2 is not valid for 1st seed
+
+  assignments = [
+    { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(2) },
+  ];
+  result = tournamentEngine.assignSeedPositions({
+    assignments,
+    eventId,
+    drawId,
+  });
+  expect(result?.error).not.toBeUndefined();
 });
 
 it('can set tournament names', () => {

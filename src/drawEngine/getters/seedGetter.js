@@ -304,14 +304,39 @@ function constructBlocks({
   return { blocks };
 }
 
+/**
+ *
+ * @param {Object} drawDefinition - TODS JSON Object containing draw components
+ * @param {string} structureId - identifier for relevant structure within drawDefinition
+ * @param {number} drawPosition - position being checked for valid seed placement
+ * @param {Object} policies - policy definitions; in this case only 'seeding' policies are relevant
+ * @param {number} seedNumber - used with srict seeding policy to determine valid seedBlock
+ *
+ * method operates in three modes:
+ * 1. Lenient (default) - any valid seed number can go in any valid seed position
+ * 2. Ignore - method is bypassed and always returns true
+ * 3. Strict - drawPosition is only valid if it is found in seedBlock which contains seedNumber
+ *
+ */
 export function isValidSeedPosition({
   policies,
+  seedNumber,
   drawDefinition,
   structureId,
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
+
+  if (policies?.seeding?.validSeedPositions?.ignore) return true;
+  if (policies?.seeding?.validSeedPositions?.strict) {
+    const targetSeedBlock = validSeedBlocks.find(seedBlock =>
+      seedBlock.seedNumbers.includes(seedNumber)
+    );
+    const validSeedPositions = targetSeedBlock?.drawPositions || [];
+    return validSeedPositions.includes(drawPosition);
+  }
+
   const validSeedPositions = [].concat(
     ...validSeedBlocks.map(seedBlock => seedBlock.drawPositions)
   );

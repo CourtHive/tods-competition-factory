@@ -23,16 +23,22 @@ export function assignDrawPosition({
   });
   if (!validParticipantId) return { error: 'Invalid participantId' };
 
-  const participantIsSeed = seedAssignments.reduce((isSeed, assignment) => {
-    return assignment.participantId === participantId ? true : isSeed;
-  }, false);
+  const participantSeedNumber = seedAssignments.reduce(
+    (seedNumber, assignment) => {
+      return assignment.participantId === participantId
+        ? assignment.seedNumber
+        : seedNumber;
+    },
+    undefined
+  );
 
-  if (participantIsSeed) {
+  if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
       policies,
-      drawDefinition,
       structureId,
       drawPosition,
+      drawDefinition,
+      seedNumber: participantSeedNumber,
     });
     if (!isValidDrawPosition)
       return { error: 'Invalid drawPosition for participant seedAssignment' };

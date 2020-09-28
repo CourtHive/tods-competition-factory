@@ -38,6 +38,7 @@ export function assignSeed({
   if (assignedDrawPosition) {
     const positionIsValid = isValidSeedPosition({
       policies,
+      seedNumber,
       drawDefinition,
       structureId,
       drawPosition: assignedDrawPosition,

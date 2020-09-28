@@ -101,6 +101,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     };
   }
 
+  const errors: string[] = [];
   updatedAssignments.forEach((assignment: any) => {
     const result = drawEngine.assignSeed({
       policies,
@@ -108,7 +109,12 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
       drawDefinition,
       structureId: identifiedStructureId,
     });
-    if (result?.success) modifications++;
+    if (result?.error) {
+      modifications = 0;
+      errors.push(result?.error);
+    } else if (!errors.length && result?.success) {
+      modifications++;
+    }
   });
 
   if (modifications && event) {
@@ -120,5 +126,9 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     });
   }
 
-  return modifications ? SUCCESS : { error: 'No modifications applied ' };
+  return modifications
+    ? SUCCESS
+    : errors.length
+    ? { error: 'No modifications applied', errors }
+    : { error: 'No modifications applied' };
 }
