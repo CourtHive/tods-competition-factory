@@ -41,7 +41,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   if (!tournamentRecord) return { error: 'Missing tournamentRecord' };
   if (!drawId) return { error: 'Missing drawId' };
 
-  const { drawDefinition } = findEvent({
+  const { event, drawDefinition } = findEvent({
     tournamentRecord,
     eventId,
     drawId,
@@ -109,6 +109,13 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
       structureId: identifiedStructureId,
     });
     if (result?.success) modifications++;
+  });
+
+  const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
+  event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    return drawDefinition.drawId === drawId
+      ? updatedDrawDefinition
+      : drawDefinition;
   });
 
   return modifications ? SUCCESS : { error: 'No modifications applied ' };
