@@ -111,12 +111,14 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     if (result?.success) modifications++;
   });
 
-  const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-  event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
-    return drawDefinition.drawId === drawId
-      ? updatedDrawDefinition
-      : drawDefinition;
-  });
+  if (modifications && event) {
+    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
+    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+      return drawDefinition.drawId === drawId
+        ? updatedDrawDefinition
+        : drawDefinition;
+    });
+  }
 
   return modifications ? SUCCESS : { error: 'No modifications applied ' };
 }
