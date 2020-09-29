@@ -1,5 +1,5 @@
 {
-  "drawId": "c89e5467-c829-415c-b58f-e1c0ad398d4a",
+  "drawId": "a0e2476b-0565-4a1e-8a70-99109b6331c3",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -321,60 +321,60 @@
       "linkSubject": "LOSER",
       "source": {
         "roundNumber": 1,
-        "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf"
+        "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99"
       },
       "target": {
         "feedProfile": "TOP_DOWN",
         "roundNumber": 1,
-        "structureId": "8145c3ac-0c14-424c-b9fd-7c5ce5bd71e3"
+        "structureId": "9c82bac5-ed9f-456d-bd97-fa56ecf6e34d"
       }
     },
     {
       "linkSubject": "LOSER",
       "source": {
         "roundNumber": 2,
-        "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf"
+        "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99"
       },
       "target": {
         "feedProfile": "BOTTOM_UP",
         "roundNumber": 2,
-        "structureId": "8145c3ac-0c14-424c-b9fd-7c5ce5bd71e3"
+        "structureId": "9c82bac5-ed9f-456d-bd97-fa56ecf6e34d"
       }
     },
     {
       "linkSubject": "LOSER",
       "source": {
         "roundNumber": 3,
-        "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf"
+        "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99"
       },
       "target": {
         "feedProfile": "TOP_DOWN",
         "roundNumber": 1,
-        "structureId": "0cbedb19-e861-451d-acfe-15325f837d80"
+        "structureId": "1a785b45-4eb7-434a-ad79-2eb8853fb930"
       }
     },
     {
       "linkSubject": "LOSER",
       "source": {
         "roundNumber": 4,
-        "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf"
+        "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99"
       },
       "target": {
         "feedProfile": "BOTTOM_UP",
         "roundNumber": 2,
-        "structureId": "0cbedb19-e861-451d-acfe-15325f837d80"
+        "structureId": "1a785b45-4eb7-434a-ad79-2eb8853fb930"
       }
     },
     {
       "linkSubject": "LOSER",
       "source": {
         "roundNumber": 5,
-        "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf"
+        "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99"
       },
       "target": {
         "roundNumber": 1,
         "feedProfile": "TOP_DOWN",
-        "structureId": "6be4b76c-7739-4744-887b-988c0bae29ce"
+        "structureId": "ef85de7f-7cfe-41d7-8f3e-9ca0c4079095"
       }
     }
   ],
@@ -463,11 +463,11 @@
           "seedValue": 16
         }
       ],
-      "structureId": "8e1b6ed7-e3b9-4468-8a55-575ada31dbdf",
+      "structureId": "3fb57bd6-ff3f-440d-9fa3-65547faf9a99",
       "stage": "MAIN",
       "matchUps": [
         {
-          "matchUpId": "093f980e-e7d5-4eb0-a8f1-ef6ac18af1bb",
+          "matchUpId": "17c77858-e372-40e9-93d2-3cbb1c0df5dc",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "BYE",
@@ -488,7 +488,7 @@
           }
         },
         {
-          "matchUpId": "9c57291f-09ef-4e20-8653-8abcdcfa36f2",
+          "matchUpId": "7040645f-2e40-4894-a662-3598a3fe3c76",
           "roundNumber": 1,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -509,7 +509,7 @@
           }
         },
         {
-          "matchUpId": "688303fa-9a2c-4545-a903-480b124d7fc7",
+          "matchUpId": "ef91e085-c609-4c10-ad38-4ce24ee45dd5",
           "roundNumber": 1,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -530,7 +530,7 @@
           }
         },
         {
-          "matchUpId": "11233045-2b35-4241-9964-47d131da6889",
+          "matchUpId": "f33aad4e-30f0-4283-9f6f-1d2265566a92",
           "roundNumber": 1,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -551,7 +551,7 @@
           }
         },
         {
-          "matchUpId": "8abb8b9d-eb4d-4ce2-8078-5e5f66e7c10e",
+          "matchUpId": "259857a3-d8b8-4f5d-a402-47ec26257422",
           "roundNumber": 1,
           "roundPosition": 5,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -572,7 +572,7 @@
           }
         },
         {
-          "matchUpId": "108c1959-92a5-4a9e-9dc7-4068f2990f0f",
+          "matchUpId": "cd1ad5a8-1b60-4f84-aeb1-c1db58d1ddf3",
           "roundNumber": 1,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -593,7 +593,7 @@
           }
         },
         {
-          "matchUpId": "51515ace-30d0-4bd9-a49b-00c5bac729c1",
+          "matchUpId": "901df2e0-3219-468a-9d33-41c48ee01809",
           "roundNumber": 1,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -614,7 +614,7 @@
           }
         },
         {
-          "matchUpId": "0e7b4083-ccdd-44a4-b001-4cdf9ea6f434",
+          "matchUpId": "6a99db78-5835-46dd-9dd4-82ca61fdfea6",
           "roundNumber": 1,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -635,7 +635,7 @@
           }
         },
         {
-          "matchUpId": "69da8ade-3962-4bf7-9946-1c65d78636fe",
+          "matchUpId": "d8d7d180-10ff-42ae-885c-3f0aed3ee4d3",
           "roundNumber": 1,
           "roundPosition": 9,
           "matchUpStatus": "BYE",
@@ -656,7 +656,7 @@
           }
         },
         {
-          "matchUpId": "80a68cdb-db0a-444b-bde0-14efe2c8c8d5",
+          "matchUpId": "0dbac7de-239f-4f9c-899d-4ce75d4ca454",
           "roundNumber": 1,
           "roundPosition": 10,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -677,7 +677,7 @@
           }
         },
         {
-          "matchUpId": "a44953e8-c716-4b59-8137-cc3003b115eb",
+          "matchUpId": "9ed60bfc-84b3-456a-bce2-b0e8b3e3a85b",
           "roundNumber": 1,
           "roundPosition": 11,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -698,7 +698,7 @@
           }
         },
         {
-          "matchUpId": "2a7d594e-3a65-4838-8e89-1af17d2e50f6",
+          "matchUpId": "91ce59fa-7cd8-429f-be5d-7a9af91ef779",
           "roundNumber": 1,
           "roundPosition": 12,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -719,7 +719,7 @@
           }
         },
         {
-          "matchUpId": "d3977eed-8572-4f59-b469-b02ef436630d",
+          "matchUpId": "948624a9-a706-4384-8f85-8ea53a21d3bc",
           "roundNumber": 1,
           "roundPosition": 13,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -740,7 +740,7 @@
           }
         },
         {
-          "matchUpId": "9ee2496c-a95b-4ab5-8c79-cc3f6d63ae3c",
+          "matchUpId": "fc87dde7-ff38-4024-9aa6-c5ce54638840",
           "roundNumber": 1,
           "roundPosition": 14,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -761,7 +761,7 @@
           }
         },
         {
-          "matchUpId": "99b8654e-5ed2-485d-a1e3-c3a235ae5be4",
+          "matchUpId": "1da07081-a9f8-4f95-bd3d-4dcb95faea14",
           "roundNumber": 1,
           "roundPosition": 15,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -782,7 +782,7 @@
           }
         },
         {
-          "matchUpId": "6ff386fe-6a36-4b2f-9cd3-161f5296b119",
+          "matchUpId": "5b377b72-e471-4294-8b5c-a5a01c60d63a",
           "roundNumber": 1,
           "roundPosition": 16,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -803,7 +803,7 @@
           }
         },
         {
-          "matchUpId": "5e4777a9-bdda-44ef-8bdf-ccc02272573e",
+          "matchUpId": "14aa3990-49f0-408e-8fa3-2cb6ff4ed347",
           "roundNumber": 1,
           "roundPosition": 17,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -824,7 +824,7 @@
           }
         },
         {
-          "matchUpId": "8c26f6b8-f0f3-407e-b3fa-fbbc302e06da",
+          "matchUpId": "0adb5074-c2d2-4152-9417-38ac40a93671",
           "roundNumber": 1,
           "roundPosition": 18,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -845,7 +845,7 @@
           }
         },
         {
-          "matchUpId": "a30bf8b4-0d48-4368-b189-4c0486b67d2f",
+          "matchUpId": "76213e22-dac3-4fbe-9555-077663dc90fa",
           "roundNumber": 1,
           "roundPosition": 19,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -866,7 +866,7 @@
           }
         },
         {
-          "matchUpId": "07d08128-0125-4801-9c73-7bf75a0f605b",
+          "matchUpId": "72322bb5-d385-4aa5-8f65-33b77d65c4ad",
           "roundNumber": 1,
           "roundPosition": 20,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -887,7 +887,7 @@
           }
         },
         {
-          "matchUpId": "e92220d9-84ab-4e40-ac63-756f12a725a6",
+          "matchUpId": "804f4fda-abb5-43a1-8bab-cb9d4ee1009b",
           "roundNumber": 1,
           "roundPosition": 21,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -908,7 +908,7 @@
           }
         },
         {
-          "matchUpId": "b0d53311-bf15-4c57-9174-f86e32069320",
+          "matchUpId": "93a8cf4c-c91c-4ab2-8d4b-de58cd73bf0c",
           "roundNumber": 1,
           "roundPosition": 22,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -929,7 +929,7 @@
           }
         },
         {
-          "matchUpId": "428e1b6f-d595-4aa4-b01a-4eb3ffe88f97",
+          "matchUpId": "6f4164ec-a8b2-45b4-bff6-06d8491e7649",
           "roundNumber": 1,
           "roundPosition": 23,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -950,7 +950,7 @@
           }
         },
         {
-          "matchUpId": "f6f85e5f-0d7c-4ece-bd4f-c62f39a31a7d",
+          "matchUpId": "331fce08-ab18-4114-94dd-11d613fc69c8",
           "roundNumber": 1,
           "roundPosition": 24,
           "matchUpStatus": "BYE",
@@ -971,7 +971,7 @@
           }
         },
         {
-          "matchUpId": "827f7993-b6b5-4235-9caa-f9882814a1a9",
+          "matchUpId": "a5becc4c-1323-4f0d-953d-edaa5f4ced97",
           "roundNumber": 1,
           "roundPosition": 25,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -992,7 +992,7 @@
           }
         },
         {
-          "matchUpId": "d1969c49-7870-41dc-b336-51ef6f3c4e04",
+          "matchUpId": "7f8316fd-9caf-4da4-b2aa-1c0095bc79ef",
           "roundNumber": 1,
           "roundPosition": 26,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1013,7 +1013,7 @@
           }
         },
         {
-          "matchUpId": "0d045aec-d980-4e85-be06-c076c544f490",
+          "matchUpId": "e8fcfe9b-da15-4199-b2aa-ef5b67ccc7f6",
           "roundNumber": 1,
           "roundPosition": 27,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1034,7 +1034,7 @@
           }
         },
         {
-          "matchUpId": "3845777a-557b-4e40-a64f-9c897f04e189",
+          "matchUpId": "b105cf75-7e9f-4b3c-8f2f-868173a72304",
           "roundNumber": 1,
           "roundPosition": 28,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1055,7 +1055,7 @@
           }
         },
         {
-          "matchUpId": "e7ed2cf4-ad54-402b-a6cb-8d4c1018d56f",
+          "matchUpId": "1aeaee88-6274-44bd-80ab-f9f5b120a110",
           "roundNumber": 1,
           "roundPosition": 29,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1076,7 +1076,7 @@
           }
         },
         {
-          "matchUpId": "2ae80c36-e529-4daa-9110-b7d5ecf5cf89",
+          "matchUpId": "8ecf3c22-8ddc-4f75-b06e-8c0f76b162c1",
           "roundNumber": 1,
           "roundPosition": 30,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1097,7 +1097,7 @@
           }
         },
         {
-          "matchUpId": "bc41b882-d672-4960-872f-524186edf7e2",
+          "matchUpId": "ffa631b1-4dd8-4b57-bb7b-915b955a7d46",
           "roundNumber": 1,
           "roundPosition": 31,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1118,7 +1118,7 @@
           }
         },
         {
-          "matchUpId": "e7e91f50-5b3a-439f-86cb-040cabaef1c6",
+          "matchUpId": "258fd18e-5fae-4af8-b6a7-f3cdc7614ad1",
           "roundNumber": 1,
           "roundPosition": 32,
           "matchUpStatus": "BYE",
@@ -1139,7 +1139,7 @@
           }
         },
         {
-          "matchUpId": "6d45c57d-3a9d-4026-b129-4a83f859ae59",
+          "matchUpId": "7c3ee122-225f-4f62-aef1-a9d74e613012",
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1160,7 +1160,7 @@
           }
         },
         {
-          "matchUpId": "c6fe90b9-4057-4540-8d8b-7e7f76b71984",
+          "matchUpId": "4eb1f762-bd16-412f-8d46-c80bcf253642",
           "roundNumber": 2,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1181,7 +1181,7 @@
           }
         },
         {
-          "matchUpId": "a2a7342a-fcf3-4850-a9e6-6c4e2ec6e909",
+          "matchUpId": "b1c9315f-fb28-4160-9c89-5591ba85b22c",
           "roundNumber": 2,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1202,7 +1202,7 @@
           }
         },
         {
-          "matchUpId": "34c948dd-91c2-488d-b950-704bf6a2d2bd",
+          "matchUpId": "4cee2e9b-b4ca-4ced-82f6-5b17513824d3",
           "roundNumber": 2,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1223,7 +1223,7 @@
           }
         },
         {
-          "matchUpId": "9a53993b-e980-4df3-876a-40ab50e8da70",
+          "matchUpId": "481d2f60-0936-4eb6-85aa-36d55df93fcc",
           "roundNumber": 2,
           "roundPosition": 5,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1244,7 +1244,7 @@
           }
         },
         {
-          "matchUpId": "0d906ddd-8821-4469-a8eb-90000eb8ff6e",
+          "matchUpId": "a5250cca-0e01-4d81-9953-878633bfdb9e",
           "roundNumber": 2,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1265,7 +1265,7 @@
           }
         },
         {
-          "matchUpId": "658725dd-d85f-435f-a7cc-26f68c9f3f6f",
+          "matchUpId": "8d03abde-859d-4482-898e-d278353e37e1",
           "roundNumber": 2,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1286,7 +1286,7 @@
           }
         },
         {
-          "matchUpId": "9d5d1356-2e4b-4bae-92e3-ba11c66d6a5c",
+          "matchUpId": "a8988ecd-5dab-4282-8670-954c55273d64",
           "roundNumber": 2,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1307,7 +1307,7 @@
           }
         },
         {
-          "matchUpId": "1f0c3c42-87e9-47dd-a12c-cfae3146626a",
+          "matchUpId": "259f57ba-37f9-4a45-9a4b-9c12d8b0733b",
           "roundNumber": 2,
           "roundPosition": 9,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1328,7 +1328,7 @@
           }
         },
         {
-          "matchUpId": "ba7b9e19-ec9e-4d05-be20-1f03b868c85a",
+          "matchUpId": "b55c1673-e609-4fbb-b424-a1b250f911a1",
           "roundNumber": 2,
           "roundPosition": 10,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1349,7 +1349,7 @@
           }
         },
         {
-          "matchUpId": "c329d7bb-0efb-4c66-a4bb-dc0f04ae016b",
+          "matchUpId": "49bbe9b6-8ff3-4edf-adee-1a1e6eea9af6",
           "roundNumber": 2,
           "roundPosition": 11,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1370,7 +1370,7 @@
           }
         },
         {
-          "matchUpId": "b5fa263e-45ed-4af6-bcd0-92f62bc3a796",
+          "matchUpId": "82171129-dcc8-42b1-8ba1-ff1dca801ac9",
           "roundNumber": 2,
           "roundPosition": 12,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1391,7 +1391,7 @@
           }
         },
         {
-          "matchUpId": "469d44c3-b0cd-458d-8b26-f2681f2006f5",
+          "matchUpId": "b0b6ae8c-9ee0-4f0a-b7e3-991d0cf3c691",
           "roundNumber": 2,
           "roundPosition": 13,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1412,7 +1412,7 @@
           }
         },
         {
-          "matchUpId": "d38e0ef4-0552-4f03-9232-4d9ec465bf7f",
+          "matchUpId": "31498914-23d2-4797-a926-f2f63e1ad37e",
           "roundNumber": 2,
           "roundPosition": 14,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1433,7 +1433,7 @@
           }
         },
         {
-          "matchUpId": "3e695c7e-4581-4ba3-afcd-ac4a4c8bc24f",
+          "matchUpId": "59cfff24-09b6-405f-a7c3-ddcf2ec58907",
           "roundNumber": 2,
           "roundPosition": 15,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1454,7 +1454,7 @@
           }
         },
         {
-          "matchUpId": "64dc5337-d160-4b10-9dd1-b18958683eb5",
+          "matchUpId": "44bee9ea-4be6-46c8-8c62-f364d0855744",
           "roundNumber": 2,
           "roundPosition": 16,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1475,7 +1475,7 @@
           }
         },
         {
-          "matchUpId": "9e5ae973-1bfe-40c8-b4b5-5661123c60a0",
+          "matchUpId": "93fc5c69-e25b-40dc-8ca9-b433976460a3",
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1496,7 +1496,7 @@
           }
         },
         {
-          "matchUpId": "70c4e7f9-ea85-4aac-a854-79411afbe960",
+          "matchUpId": "b889584c-ad0d-4439-bbdb-39e811fdda5c",
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1517,7 +1517,7 @@
           }
         },
         {
-          "matchUpId": "015b70a1-9ecc-4b8e-b853-d4b3080f74b9",
+          "matchUpId": "d6ee9985-64f1-426b-a959-b41a0dac9477",
           "roundNumber": 3,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1538,7 +1538,7 @@
           }
         },
         {
-          "matchUpId": "6496ca38-3d1e-48e2-bae2-a9b08b3e2417",
+          "matchUpId": "ddc13782-2919-4261-93f9-e62a11d6ed42",
           "roundNumber": 3,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1559,7 +1559,7 @@
           }
         },
         {
-          "matchUpId": "4a9fb202-8a81-42d0-b838-63eed2547257",
+          "matchUpId": "bf870588-7c2a-4df4-8153-2add0fd954a1",
           "roundNumber": 3,
           "roundPosition": 5,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1580,7 +1580,7 @@
           }
         },
         {
-          "matchUpId": "e18a0bc8-ab07-4a4a-87e2-98e60647642f",
+          "matchUpId": "41ca8f5c-87b4-46b9-bc2b-f67b772f2d7e",
           "roundNumber": 3,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1601,7 +1601,7 @@
           }
         },
         {
-          "matchUpId": "84ddf70b-e229-40d5-adad-4c287d5458c2",
+          "matchUpId": "3ef8a71a-06f4-4967-ba82-d560bdca8559",
           "roundNumber": 3,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1622,7 +1622,7 @@
           }
         },
         {
-          "matchUpId": "5cf491c4-6096-4636-bb84-638cf1e86ac2",
+          "matchUpId": "d6ecdd52-11ad-4182-8b42-97b6585c9318",
           "roundNumber": 3,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1643,7 +1643,7 @@
           }
         },
         {
-          "matchUpId": "aea06519-e22a-44aa-82d3-a6722a5f2c4d",
+          "matchUpId": "9a8484e3-05cd-4778-b58c-50812b2653ef",
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1664,7 +1664,7 @@
           }
         },
         {
-          "matchUpId": "6c8dd389-2113-4f55-ae3c-f5eb78249d82",
+          "matchUpId": "e822361a-6582-49c6-87d3-f55f7562d0a2",
           "roundNumber": 4,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1685,7 +1685,7 @@
           }
         },
         {
-          "matchUpId": "aff0c43e-8521-417f-8b1d-7e84d0ab4413",
+          "matchUpId": "3a538a60-11a7-474b-b54b-2dd162ee0cab",
           "roundNumber": 4,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1706,7 +1706,7 @@
           }
         },
         {
-          "matchUpId": "0e5e9690-c872-42e7-b2fb-6fee0d8f7d8e",
+          "matchUpId": "8c4b9cbc-ec39-4be1-8d47-a69b5bdf4bd4",
           "roundNumber": 4,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1727,7 +1727,7 @@
           }
         },
         {
-          "matchUpId": "531eb449-a283-4b16-bff1-d380a5b34645",
+          "matchUpId": "324727d6-810e-4d42-95f6-459eea797729",
           "roundNumber": 5,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1748,7 +1748,7 @@
           }
         },
         {
-          "matchUpId": "5c0fee6b-6fa2-4a19-a171-cda3032bfe38",
+          "matchUpId": "eb3accc2-600b-475b-ae0f-612e69e3bfc0",
           "roundNumber": 5,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1769,7 +1769,7 @@
           }
         },
         {
-          "matchUpId": "53dec0b2-50de-44a2-9bf0-bb5d646f594d",
+          "matchUpId": "1d5e2de0-9cdf-49ee-86a8-ea6d4f9b7d24",
           "roundNumber": 6,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -1803,57 +1803,59 @@
         },
         {
           "drawPosition": 3,
-          "participantId": "ko-uuid43"
+          "participantId": "ko-uuid39"
         },
         {
           "drawPosition": 4,
-          "participantId": "ko-uuid24"
+          "participantId": "ko-uuid23"
         },
         {
           "drawPosition": 5,
-          "participantId": "ko-uuid29"
+          "participantId": "ko-uuid51"
         },
         {
           "drawPosition": 6,
-          "participantId": "ko-uuid33"
+          "participantId": "ko-uuid53"
         },
         {
           "drawPosition": 7,
-          "participantId": "ko-uuid41"
+          "participantId": "ko-uuid20"
         },
         {
           "drawPosition": 8,
+          "participantId": "ko-uuid12",
+          "seedNumber": 12,
+          "seedValue": 12
+        },
+        {
+          "drawPosition": 9,
           "participantId": "ko-uuid13",
           "seedNumber": 13,
           "seedValue": 13
         },
         {
-          "drawPosition": 9,
-          "participantId": "ko-uuid56"
-        },
-        {
           "drawPosition": 10,
-          "participantId": "ko-uuid49"
+          "participantId": "ko-uuid25"
         },
         {
           "drawPosition": 11,
-          "participantId": "ko-uuid19"
+          "participantId": "ko-uuid26"
         },
         {
           "drawPosition": 12,
-          "participantId": "ko-uuid35"
+          "participantId": "ko-uuid38"
         },
         {
           "drawPosition": 13,
-          "participantId": "ko-uuid40"
+          "participantId": "ko-uuid44"
         },
         {
           "drawPosition": 14,
-          "participantId": "ko-uuid47"
+          "participantId": "ko-uuid40"
         },
         {
           "drawPosition": 15,
-          "participantId": "ko-uuid16"
+          "participantId": "ko-uuid32"
         },
         {
           "drawPosition": 16,
@@ -1873,29 +1875,29 @@
         },
         {
           "drawPosition": 19,
-          "participantId": "ko-uuid57"
+          "participantId": "ko-uuid28"
         },
         {
           "drawPosition": 20,
-          "participantId": "ko-uuid46"
+          "participantId": "ko-uuid60"
         },
         {
           "drawPosition": 21,
-          "participantId": "ko-uuid31"
+          "participantId": "ko-uuid45"
         },
         {
           "drawPosition": 22,
-          "participantId": "ko-uuid55"
+          "participantId": "ko-uuid46"
         },
         {
           "drawPosition": 23,
-          "participantId": "ko-uuid20"
+          "participantId": "ko-uuid54"
         },
         {
           "drawPosition": 24,
-          "participantId": "ko-uuid14",
-          "seedNumber": 14,
-          "seedValue": 14
+          "participantId": "ko-uuid9",
+          "seedNumber": 9,
+          "seedValue": 9
         },
         {
           "drawPosition": 25,
@@ -1905,93 +1907,93 @@
         },
         {
           "drawPosition": 26,
-          "participantId": "ko-uuid26"
+          "participantId": "ko-uuid42"
         },
         {
           "drawPosition": 27,
-          "participantId": "ko-uuid18"
+          "participantId": "ko-uuid50"
         },
         {
           "drawPosition": 28,
-          "participantId": "ko-uuid25"
+          "participantId": "ko-uuid34"
         },
         {
           "drawPosition": 29,
-          "participantId": "ko-uuid54"
+          "participantId": "ko-uuid24"
         },
         {
           "drawPosition": 30,
-          "participantId": "ko-uuid17"
+          "participantId": "ko-uuid37"
         },
         {
           "drawPosition": 31,
-          "participantId": "ko-uuid23"
+          "participantId": "ko-uuid48"
         },
         {
           "drawPosition": 32,
+          "participantId": "ko-uuid8",
+          "seedNumber": 8,
+          "seedValue": 8
+        },
+        {
+          "drawPosition": 33,
           "participantId": "ko-uuid7",
           "seedNumber": 7,
           "seedValue": 7
         },
         {
-          "drawPosition": 33,
-          "participantId": "ko-uuid5",
-          "seedNumber": 5,
-          "seedValue": 5
-        },
-        {
           "drawPosition": 34,
-          "participantId": "ko-uuid39"
+          "participantId": "ko-uuid19"
         },
         {
           "drawPosition": 35,
-          "participantId": "ko-uuid59"
+          "participantId": "ko-uuid31"
         },
         {
           "drawPosition": 36,
-          "participantId": "ko-uuid37"
+          "participantId": "ko-uuid17"
         },
         {
           "drawPosition": 37,
-          "participantId": "ko-uuid28"
+          "participantId": "ko-uuid29"
         },
         {
           "drawPosition": 38,
-          "participantId": "ko-uuid53"
+          "participantId": "ko-uuid21"
         },
         {
           "drawPosition": 39,
-          "participantId": "ko-uuid27"
+          "participantId": "ko-uuid43"
         },
         {
           "drawPosition": 40,
-          "participantId": "ko-uuid45"
+          "participantId": "ko-uuid14",
+          "seedNumber": 14,
+          "seedValue": 14
         },
         {
           "drawPosition": 41,
-          "participantId": "ko-uuid10",
-          "seedNumber": 10,
-          "seedValue": 10
+          "participantId": "ko-uuid56"
         },
         {
           "drawPosition": 42,
-          "participantId": "ko-uuid30"
+          "participantId": "ko-uuid18"
         },
         {
           "drawPosition": 43,
-          "participantId": "ko-uuid51"
+          "participantId": "ko-uuid27"
         },
         {
           "drawPosition": 44,
-          "participantId": "ko-uuid22"
+          "participantId": "ko-uuid41"
         },
         {
           "drawPosition": 45,
-          "participantId": "ko-uuid60"
+          "participantId": "ko-uuid30"
         },
         {
           "drawPosition": 46,
-          "participantId": "ko-uuid15"
+          "participantId": "ko-uuid58"
         },
         {
           "drawPosition": 47,
@@ -2005,65 +2007,63 @@
         },
         {
           "drawPosition": 49,
-          "participantId": "ko-uuid8",
-          "seedNumber": 8,
-          "seedValue": 8
+          "participantId": "ko-uuid5",
+          "seedNumber": 5,
+          "seedValue": 5
         },
         {
           "drawPosition": 50,
-          "participantId": "ko-uuid42"
+          "participantId": "ko-uuid59"
         },
         {
           "drawPosition": 51,
-          "participantId": "ko-uuid52"
+          "participantId": "ko-uuid22"
         },
         {
           "drawPosition": 52,
-          "participantId": "ko-uuid58"
+          "participantId": "ko-uuid57"
         },
         {
           "drawPosition": 53,
-          "participantId": "ko-uuid44"
+          "participantId": "ko-uuid16"
         },
         {
           "drawPosition": 54,
-          "participantId": "ko-uuid32"
-        },
-        {
-          "drawPosition": 55,
-          "participantId": "ko-uuid50"
-        },
-        {
-          "drawPosition": 56,
-          "participantId": "ko-uuid9",
-          "seedNumber": 9,
-          "seedValue": 9
-        },
-        {
-          "drawPosition": 57,
-          "participantId": "ko-uuid12",
-          "seedNumber": 12,
-          "seedValue": 12
-        },
-        {
-          "drawPosition": 58,
-          "participantId": "ko-uuid34"
-        },
-        {
-          "drawPosition": 59,
           "participantId": "ko-uuid36"
         },
         {
+          "drawPosition": 55,
+          "participantId": "ko-uuid15"
+        },
+        {
+          "drawPosition": 56,
+          "participantId": "ko-uuid47"
+        },
+        {
+          "drawPosition": 57,
+          "participantId": "ko-uuid10",
+          "seedNumber": 10,
+          "seedValue": 10
+        },
+        {
+          "drawPosition": 58,
+          "participantId": "ko-uuid52"
+        },
+        {
+          "drawPosition": 59,
+          "participantId": "ko-uuid35"
+        },
+        {
           "drawPosition": 60,
-          "participantId": "ko-uuid38"
+          "participantId": "ko-uuid49"
         },
         {
           "drawPosition": 61,
-          "participantId": "ko-uuid48"
+          "participantId": "ko-uuid55"
         },
         {
           "drawPosition": 62,
-          "participantId": "ko-uuid21"
+          "participantId": "ko-uuid33"
         },
         {
           "drawPosition": 63,
@@ -2083,11 +2083,11 @@
       "stageSequence": 1,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "8145c3ac-0c14-424c-b9fd-7c5ce5bd71e3",
+      "structureId": "9c82bac5-ed9f-456d-bd97-fa56ecf6e34d",
       "stage": "CONSOLATION",
       "matchUps": [
         {
-          "matchUpId": "3b148a9b-26c9-4cd7-955d-b2e6c6122052",
+          "matchUpId": "9435d107-f7ff-4b62-b39a-777c726565a7",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "BYE",
@@ -2108,7 +2108,7 @@
           }
         },
         {
-          "matchUpId": "485c2a90-2618-49d1-a645-90f260308a13",
+          "matchUpId": "03ebff5a-3b91-4960-bd1f-d9c54e9d58b8",
           "roundNumber": 1,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2129,7 +2129,7 @@
           }
         },
         {
-          "matchUpId": "563d744a-a514-490b-a5ff-d693cb23997e",
+          "matchUpId": "49bf9509-aa22-49e4-8536-b5ce4e42900d",
           "roundNumber": 1,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2150,7 +2150,7 @@
           }
         },
         {
-          "matchUpId": "afc8a3ba-98ff-4f0e-83e7-028a7df5ee3a",
+          "matchUpId": "34256259-b9bf-4089-b09a-6ce8af9788b9",
           "roundNumber": 1,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2171,7 +2171,7 @@
           }
         },
         {
-          "matchUpId": "57a3781b-d9ad-46cc-93aa-809dfaac262c",
+          "matchUpId": "981a621d-c777-4d47-af67-50823c4f3a5b",
           "roundNumber": 1,
           "roundPosition": 5,
           "matchUpStatus": "BYE",
@@ -2192,7 +2192,7 @@
           }
         },
         {
-          "matchUpId": "4a6ac494-7fd9-4807-b4aa-2b8930c4a096",
+          "matchUpId": "11dc58d0-2342-4f99-803a-50092b4bcc05",
           "roundNumber": 1,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2213,7 +2213,7 @@
           }
         },
         {
-          "matchUpId": "f9a05563-d891-4d19-91ea-4452a6bcb918",
+          "matchUpId": "00fce40c-5773-4ba2-9727-c82581de0ec6",
           "roundNumber": 1,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2234,7 +2234,7 @@
           }
         },
         {
-          "matchUpId": "0d2303cc-a052-4d84-98f6-f0043573ae1a",
+          "matchUpId": "6634b7d0-6151-44a7-a4bb-91c542781443",
           "roundNumber": 1,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2255,7 +2255,7 @@
           }
         },
         {
-          "matchUpId": "ad5166c9-0a5e-40d6-9cdb-76b1bd85deb8",
+          "matchUpId": "819492c7-0ca7-4502-a0f3-2535551c0a1d",
           "roundNumber": 1,
           "roundPosition": 9,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2276,7 +2276,7 @@
           }
         },
         {
-          "matchUpId": "f5e46473-41f7-4c6a-815e-3479bacd33ce",
+          "matchUpId": "cce0b54e-48b4-4677-ba68-1a64c59cdf70",
           "roundNumber": 1,
           "roundPosition": 10,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2297,7 +2297,7 @@
           }
         },
         {
-          "matchUpId": "ae2f3360-2c59-4138-a253-31894e1c2696",
+          "matchUpId": "45a40836-8ca5-4e80-b0da-9dee8bd40c2b",
           "roundNumber": 1,
           "roundPosition": 11,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2318,7 +2318,7 @@
           }
         },
         {
-          "matchUpId": "0694771c-1cfc-4d84-a3f9-f409e4c658ff",
+          "matchUpId": "e81426b1-c4fd-4a78-8061-d02985cef613",
           "roundNumber": 1,
           "roundPosition": 12,
           "matchUpStatus": "BYE",
@@ -2339,7 +2339,7 @@
           }
         },
         {
-          "matchUpId": "986fe03a-8e43-4402-939e-d2116b7129a5",
+          "matchUpId": "ff2869ba-10ae-49a1-8dc5-d29cb5543a66",
           "roundNumber": 1,
           "roundPosition": 13,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2360,7 +2360,7 @@
           }
         },
         {
-          "matchUpId": "ee8a6ac3-ec67-4190-8886-3257417fc266",
+          "matchUpId": "f0bde502-f316-4b1d-b960-0403990977d3",
           "roundNumber": 1,
           "roundPosition": 14,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2381,7 +2381,7 @@
           }
         },
         {
-          "matchUpId": "55fbe79a-fdea-4483-8d16-1e3fd9d5d650",
+          "matchUpId": "9e3f1c1f-31d4-4cd5-a40c-82f879a45f11",
           "roundNumber": 1,
           "roundPosition": 15,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2402,7 +2402,7 @@
           }
         },
         {
-          "matchUpId": "87cbcfab-f76f-4a00-b03c-d5f376bd0b48",
+          "matchUpId": "d53d3f03-e91b-44e7-a8ff-271022217f66",
           "roundNumber": 1,
           "roundPosition": 16,
           "matchUpStatus": "BYE",
@@ -2424,7 +2424,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "e23fe04a-9f8c-424d-9368-e12d4d803246",
+          "matchUpId": "46ab2ed5-e048-45c3-a032-706640814305",
           "roundPosition": 1,
           "drawPositions": [
             1,
@@ -2444,7 +2444,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "aeb9b9bc-7121-4942-84e3-c71c6c4165e8",
+          "matchUpId": "81cf1da2-82d1-4266-ab20-05b22c190064",
           "roundPosition": 2,
           "drawPositions": [
             2,
@@ -2464,7 +2464,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "b62827af-a627-4f94-bd1d-d9c4c48df5b2",
+          "matchUpId": "692d5615-4f48-4959-b1e2-d27406b948ae",
           "roundPosition": 3,
           "drawPositions": [
             3,
@@ -2484,7 +2484,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "72caba4f-3a0d-442e-892a-76fb384b0949",
+          "matchUpId": "bac19607-ea52-44dc-9218-73d221c53b9f",
           "roundPosition": 4,
           "drawPositions": [
             4,
@@ -2504,7 +2504,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "5894f89e-5a63-497a-871d-66600a76cd1f",
+          "matchUpId": "c541b9af-60a5-4080-a970-7c1b6742b9a8",
           "roundPosition": 5,
           "drawPositions": [
             5,
@@ -2524,7 +2524,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "061322fc-2f65-457b-961f-9e6c5dbb85b9",
+          "matchUpId": "ca6b8156-2348-41ec-acac-e58c96eb68ab",
           "roundPosition": 6,
           "drawPositions": [
             6,
@@ -2544,7 +2544,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "6f530e6d-8d03-4012-876a-1b7b49b778cc",
+          "matchUpId": "f961aeda-cf1a-4516-96fe-2ba73da5e32f",
           "roundPosition": 7,
           "drawPositions": [
             7,
@@ -2564,7 +2564,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "0e4fec30-992c-41b0-a45a-0192be35b2fd",
+          "matchUpId": "50b0bfa0-7228-40b6-9cc5-4a9814070aa4",
           "roundPosition": 8,
           "drawPositions": [
             8,
@@ -2584,7 +2584,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "196aab62-6e51-4528-ba83-08f7551445f4",
+          "matchUpId": "d6b7c5d7-2aed-41e6-a475-6ce33a0bb398",
           "roundPosition": 9,
           "drawPositions": [
             9,
@@ -2604,7 +2604,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "16adc088-8488-493e-a9d1-826294c55096",
+          "matchUpId": "515130d3-4b91-41ed-9142-09363fcc8ffb",
           "roundPosition": 10,
           "drawPositions": [
             10,
@@ -2624,7 +2624,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "1577cb7f-54d7-4f43-961c-4b57ac60ed42",
+          "matchUpId": "a5555c1f-03cc-40e6-8179-0019cc3c0899",
           "roundPosition": 11,
           "drawPositions": [
             11,
@@ -2644,7 +2644,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "20f7d285-9b06-4e8a-8440-170dc6b59c64",
+          "matchUpId": "73231d3a-8135-4063-afa3-3e8e326854f4",
           "roundPosition": 12,
           "drawPositions": [
             12,
@@ -2664,7 +2664,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "94960d23-8d31-4881-ba50-fcbf3a9321a3",
+          "matchUpId": "bf0f499a-7cb6-4a50-96f3-36219361fab8",
           "roundPosition": 13,
           "drawPositions": [
             13,
@@ -2684,7 +2684,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "656539ae-ca27-41e8-9b8a-684b381e76bf",
+          "matchUpId": "02c29298-304b-43b8-a503-81b391f3d9c2",
           "roundPosition": 14,
           "drawPositions": [
             14,
@@ -2704,7 +2704,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "94e474be-c9ce-4364-a75f-af293e0c2e52",
+          "matchUpId": "4f584559-aaa5-444e-a73d-6884608a39fa",
           "roundPosition": 15,
           "drawPositions": [
             15,
@@ -2724,7 +2724,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "fb8fac85-32eb-4d4e-9483-45014fa09767",
+          "matchUpId": "a451d3ac-5812-4e7a-8b24-51b0556ab2e1",
           "roundPosition": 16,
           "drawPositions": [
             16,
@@ -2743,7 +2743,7 @@
           }
         },
         {
-          "matchUpId": "52e4514f-dcab-4bc6-a7b7-a05a8d4f7c5a",
+          "matchUpId": "5ecaa17e-d864-4ef3-8f86-42e585478cd5",
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2764,7 +2764,7 @@
           }
         },
         {
-          "matchUpId": "0cc4d206-68a9-44e8-affc-5a993bd539ef",
+          "matchUpId": "cd506556-1331-440a-9250-6015b259c09f",
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2785,7 +2785,7 @@
           }
         },
         {
-          "matchUpId": "f2007c0f-15f4-4aeb-be26-919b2d1bede7",
+          "matchUpId": "fcddfc7d-7c6f-4d5c-a297-32b0fd26a092",
           "roundNumber": 3,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2806,7 +2806,7 @@
           }
         },
         {
-          "matchUpId": "b284fe25-a5d1-49bd-81d3-d0b0598f5ea0",
+          "matchUpId": "5f95a692-fc92-477e-8777-bf0f1fb978e1",
           "roundNumber": 3,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2827,7 +2827,7 @@
           }
         },
         {
-          "matchUpId": "729ef429-e83a-49fd-9ef6-69fbdcc47368",
+          "matchUpId": "47630e4d-9cad-4562-9a44-5002a1d45631",
           "roundNumber": 3,
           "roundPosition": 5,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2848,7 +2848,7 @@
           }
         },
         {
-          "matchUpId": "65b5a921-e471-4bbb-9bfc-c1f4a032c31f",
+          "matchUpId": "595ea31f-b6cd-42f5-aa90-6e9f6d0777dd",
           "roundNumber": 3,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2869,7 +2869,7 @@
           }
         },
         {
-          "matchUpId": "514e19c2-e69d-412e-b4de-2d966746028b",
+          "matchUpId": "93a0e80b-9e0d-4719-9111-0bdbcef85ba5",
           "roundNumber": 3,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2890,7 +2890,7 @@
           }
         },
         {
-          "matchUpId": "24f5828f-ee5d-40f3-b431-7fe60392bc14",
+          "matchUpId": "4e8e1059-60a8-44cc-97b6-bad937aed40e",
           "roundNumber": 3,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2911,7 +2911,7 @@
           }
         },
         {
-          "matchUpId": "60cfbc42-09d2-4852-ba6f-96cdcceaa7f9",
+          "matchUpId": "35c09ecd-ce3b-4824-bb0f-0454f81e530c",
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2932,7 +2932,7 @@
           }
         },
         {
-          "matchUpId": "3214602d-5f60-45e4-a061-4c790fbcfc95",
+          "matchUpId": "ac660c0e-f9a2-467e-a26d-79e165a6d1ac",
           "roundNumber": 4,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2953,7 +2953,7 @@
           }
         },
         {
-          "matchUpId": "99fd2020-71ba-4c8d-aaa6-50d8a2f47604",
+          "matchUpId": "9f006f02-66b3-4e1d-98d0-66133b05b493",
           "roundNumber": 4,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2974,7 +2974,7 @@
           }
         },
         {
-          "matchUpId": "7241a365-38da-4b7d-9d82-1f163631c8f0",
+          "matchUpId": "6dc3c437-7223-481d-bd43-9d95f4d9bf72",
           "roundNumber": 4,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -2995,7 +2995,7 @@
           }
         },
         {
-          "matchUpId": "9910dfab-5121-46f2-8666-cc1a4e0023cf",
+          "matchUpId": "655877d4-db85-484b-9ae2-fdf2e7533b4a",
           "roundNumber": 5,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3016,7 +3016,7 @@
           }
         },
         {
-          "matchUpId": "0fe71052-89de-43d9-b9cd-d3562140ec9f",
+          "matchUpId": "824c18f9-44f4-4591-af88-a9502b74cbd4",
           "roundNumber": 5,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3037,7 +3037,7 @@
           }
         },
         {
-          "matchUpId": "b58c2992-b35e-4154-972e-1d8a6f7427e6",
+          "matchUpId": "68eb3630-90c1-442c-8f67-efd44d91235f",
           "roundNumber": 6,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3214,11 +3214,11 @@
       "stageSequence": 2,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "0cbedb19-e861-451d-acfe-15325f837d80",
+      "structureId": "1a785b45-4eb7-434a-ad79-2eb8853fb930",
       "stage": "CONSOLATION",
       "matchUps": [
         {
-          "matchUpId": "ece061c9-745b-4090-a03d-7aa9ca4a505c",
+          "matchUpId": "528c7e32-0b08-4179-80c4-f62b226c1543",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3239,7 +3239,7 @@
           }
         },
         {
-          "matchUpId": "c7346b91-4b99-4a68-9e28-d4b6379ee0c5",
+          "matchUpId": "4f7dd3c0-693f-4937-a3a0-a8c5aabbd94e",
           "roundNumber": 1,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3260,7 +3260,7 @@
           }
         },
         {
-          "matchUpId": "58e5fadf-4c95-44bc-847f-d4c1bd26d423",
+          "matchUpId": "01ee8d92-25d7-494e-8abe-d4997217476e",
           "roundNumber": 1,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3281,7 +3281,7 @@
           }
         },
         {
-          "matchUpId": "e41c7690-7ac6-40f9-ba8e-3ac6feed79c0",
+          "matchUpId": "d486fc9d-34ae-43e9-ad1c-0902bffbf834",
           "roundNumber": 1,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3303,7 +3303,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "282c6312-760c-40e9-a013-5d6bd51cfee9",
+          "matchUpId": "09d86b32-c77f-48e2-b599-2e6a01450508",
           "roundPosition": 1,
           "drawPositions": [
             1,
@@ -3323,7 +3323,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "7e2624bd-f1c4-462c-8fc3-cc364a92ef3f",
+          "matchUpId": "00ec8c62-51f0-4e43-8c4d-47a79e0dba2b",
           "roundPosition": 2,
           "drawPositions": [
             2,
@@ -3343,7 +3343,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "e3702e7b-3087-4edc-ba02-e6fa868f18e5",
+          "matchUpId": "96fda047-6d65-45db-9005-fc141fd604c0",
           "roundPosition": 3,
           "drawPositions": [
             3,
@@ -3363,7 +3363,7 @@
         },
         {
           "roundNumber": 2,
-          "matchUpId": "1e129d10-435b-4954-aaaa-3251e825adf1",
+          "matchUpId": "50b1547c-b2e8-47e5-b93f-c924f5b043ba",
           "roundPosition": 4,
           "drawPositions": [
             4,
@@ -3382,7 +3382,7 @@
           }
         },
         {
-          "matchUpId": "5480ec8a-374e-4360-824e-88cbccc9654d",
+          "matchUpId": "d6e22cf5-b9e6-4113-bb75-611b6ae56abd",
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3403,7 +3403,7 @@
           }
         },
         {
-          "matchUpId": "786e39ba-024a-46f6-b33d-c5b6482b9ae4",
+          "matchUpId": "01811927-c53f-4d79-be5c-674174b25c02",
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3424,7 +3424,7 @@
           }
         },
         {
-          "matchUpId": "6213b0e3-76c8-413c-9fa0-8def46ea77f0",
+          "matchUpId": "1fec1a53-cdfd-4db7-88d0-6fe0fe415aa8",
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3489,11 +3489,11 @@
       "stageSequence": 2,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "6be4b76c-7739-4744-887b-988c0bae29ce",
+      "structureId": "ef85de7f-7cfe-41d7-8f3e-9ca0c4079095",
       "stage": "MAIN",
       "matchUps": [
         {
-          "matchUpId": "23f58a23-eb40-48d6-b57e-b4ce18971194",
+          "matchUpId": "5f773d27-f054-4a6f-ad9c-4c1ecf097f96",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -3529,7 +3529,7 @@
       "name": "appliedPolicies",
       "value": {
         "seeding": {
-          "policyType": "ITF",
+          "policyName": "ITF",
           "duplicateSeedNumbers": true,
           "seedBlocks": {
             "1": [
@@ -3806,7 +3806,7 @@
           }
         },
         "avoidance": {
-          "policyType": "Person",
+          "policyName": "Person",
           "policyAttributes": [
             "country"
           ]

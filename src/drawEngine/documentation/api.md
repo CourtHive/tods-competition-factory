@@ -80,6 +80,23 @@ route: /drawEngine/api
 
 ## attachPolicy
 
+Attaches a policy to a drawDefinition.  Policies determine the rules for seeding, avoidance, etc.
+
+| Parameters            | Required | Type    | Description |
+| :---                  | :---     | :---    | :--- |
+| policyDefinition      | Required | Object  | A policy definition object (see below) |
+
+The structure of an ***assignment object*** is as follows:
+
+```json
+{
+  [policyName]: {      // e.g. 'seeding' or 'avoidance'
+    policyName: 'name'  // for 'seeding' can be the provider of the policy, e.g. 'ITF' or 'USTA'
+    ...attributes       // attributes relevant to the policyName
+  },
+}
+```
+
 ---
 
 ## automatedPositioning

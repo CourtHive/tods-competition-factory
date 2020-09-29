@@ -1,6 +1,6 @@
 export const SEEDING_USTA = {
   seeding: {
-    policyType: 'USTA',
+    policyName: 'USTA',
     duplicateSeedNumbers: true,
     validSeedPositions: { ignore: true },
     seedBlocks: {

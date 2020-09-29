@@ -1,5 +1,5 @@
 {
-  "drawId": "e4d7f247-c5e6-4120-b1f7-75df4a7eb5da",
+  "drawId": "63366a1f-774f-4cd3-8765-d72f92c63bb5",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -33,11 +33,11 @@
       "stageSequence": 1,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "5e2826fb-1a04-4a94-8601-997f85bd150d",
+      "structureId": "79fdf818-9f60-49fa-8d5b-7465016efc9e",
       "stage": "MAIN",
       "matchUps": [
         {
-          "matchUpId": "ee3a4072-4746-488c-8f98-beb6b0ea3462",
+          "matchUpId": "aa3dda4f-a5d6-44a9-a0cf-60161b3878b2",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -77,7 +77,7 @@
       "name": "appliedPolicies",
       "value": {
         "seeding": {
-          "policyType": "ITF",
+          "policyName": "ITF",
           "duplicateSeedNumbers": true,
           "seedBlocks": {
             "1": [
@@ -354,7 +354,7 @@
           }
         },
         "avoidance": {
-          "policyType": "Person",
+          "policyName": "Person",
           "policyAttributes": [
             "country"
           ]

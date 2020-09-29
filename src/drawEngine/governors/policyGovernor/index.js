@@ -9,8 +9,8 @@ function getSeedBlocks({ policies }) {
   const { seeding } = policies;
   if (!seeding) return { error: 'No seeding policy defined' };
 
-  const { seedBlocks, policyType } = seeding;
-  return Object.assign({ seedBlocks, policyType }, SUCCESS);
+  const { seedBlocks, policyName } = seeding;
+  return Object.assign({ seedBlocks, policyName }, SUCCESS);
 }
 
 function getSeedingConfig({ policies }) {
@@ -41,11 +41,11 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
 
-  Object.keys(policyDefinition).forEach(policyClass => {
-    if (!appliedPolicies[policyClass]) {
-      appliedPolicies[policyClass] = policyDefinition[policyClass];
+  Object.keys(policyDefinition).forEach(policyType => {
+    if (!appliedPolicies[policyType]) {
+      appliedPolicies[policyType] = policyDefinition[policyType];
     } else {
-      errors.push({ error: `Policy ${policyClass} already applied` });
+      errors.push({ error: `Policy ${policyType} already applied` });
     }
   });
 

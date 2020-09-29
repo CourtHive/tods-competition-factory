@@ -1,5 +1,5 @@
 {
-  "drawId": "d6622a0c-3e5b-4120-946f-34e66ee32071",
+  "drawId": "5813dc85-b1e0-47d1-8185-e5f519753ba8",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -48,7 +48,7 @@
       "stageSequence": 1,
       "finishingPosition": "winRatio",
       "seedAssignments": [],
-      "structureId": "85f32dca-054b-4f74-b715-f442b9cef86a",
+      "structureId": "6aed3c02-efdb-4c87-8218-6aa4ba65d8fe",
       "stage": "MAIN",
       "structureType": "CONTAINER",
       "structures": [
@@ -57,7 +57,7 @@
           "stageSequence": 1,
           "finishingPosition": "winRatio",
           "seedAssignments": [],
-          "structureId": "b7757816-dd02-4735-af96-df347886c73d",
+          "structureId": "d7679afa-3666-4adf-9518-496fd75d2d7d",
           "structureType": "ITEM",
           "matchUps": [
             {
@@ -67,7 +67,7 @@
                 2
               ],
               "structureIndex": 1,
-              "matchUpId": "87f47cd3-6d60-4b95-bc3e-4f18c6037a6e",
+              "matchUpId": "c20952bc-40d2-4934-afba-6df09e17020b",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -77,7 +77,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "b593883b-ffaa-452e-8b3e-a55337b9dce1",
+              "matchUpId": "35cb8503-2bb6-43e9-af80-b3f29157b2d2",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -87,7 +87,7 @@
                 3
               ],
               "structureIndex": 1,
-              "matchUpId": "32caac6f-cac6-4964-a936-ea5e5e52f615",
+              "matchUpId": "b85cf7a7-82ba-4bed-8910-956e276a2b97",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -97,7 +97,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "6e94c9e2-f174-47d0-a3af-5a8039cec74d",
+              "matchUpId": "8674f1e6-1098-49f2-b940-3628c83f8e3e",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -107,7 +107,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "c0074660-9f0d-4475-bbed-198b28c3246a",
+              "matchUpId": "2934a47e-8407-44d0-95e7-b16591aca7fc",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -117,7 +117,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "6dfb75a8-873f-41d0-b97d-cfc53e7b098a",
+              "matchUpId": "1d930baa-a601-48f3-8011-4eb9adac5e1c",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -127,7 +127,7 @@
                 3
               ],
               "structureIndex": 1,
-              "matchUpId": "0e94264c-ca78-4f3c-951b-a0db8cc13a21",
+              "matchUpId": "029fe278-d4bd-4605-9270-0c74e22bcd80",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -137,7 +137,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "1fbbcc3d-56c5-4977-8fac-6f2def490ca2",
+              "matchUpId": "d64c684b-c157-4378-8b96-76564d035b88",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -147,7 +147,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "1e0619f5-a292-4085-aa48-33450a3428c5",
+              "matchUpId": "781ab9c8-7e37-44f7-b248-62063a65016c",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -157,30 +157,30 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "83f855cd-4394-464e-bfb4-aba3a288c0bc",
+              "matchUpId": "6737e16d-d943-4609-96f3-05af58b24d8a",
               "matchUpStatus": "TO_BE_PLAYED"
             }
           ],
           "positionAssignments": [
             {
               "drawPosition": 1,
-              "participantId": "ko-uuid3"
-            },
-            {
-              "drawPosition": 2,
               "participantId": "ko-uuid5"
             },
             {
-              "drawPosition": 3,
-              "participantId": "ko-uuid2"
-            },
-            {
-              "drawPosition": 4,
+              "drawPosition": 2,
               "participantId": "ko-uuid1"
             },
             {
-              "drawPosition": 5,
+              "drawPosition": 3,
               "participantId": "ko-uuid4"
+            },
+            {
+              "drawPosition": 4,
+              "participantId": "ko-uuid3"
+            },
+            {
+              "drawPosition": 5,
+              "participantId": "ko-uuid2"
             }
           ],
           "structureIndex": 1
@@ -194,7 +194,7 @@
       "name": "appliedPolicies",
       "value": {
         "seeding": {
-          "policyType": "USTA",
+          "policyName": "USTA",
           "duplicateSeedNumbers": true,
           "validSeedPositions": {
             "ignore": true
@@ -474,7 +474,7 @@
           }
         },
         "avoidance": {
-          "policyType": "Person",
+          "policyName": "Person",
           "policyAttributes": [
             "country"
           ]

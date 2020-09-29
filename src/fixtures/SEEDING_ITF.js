@@ -1,6 +1,6 @@
 export const SEEDING_ITF = {
   seeding: {
-    policyType: 'ITF',
+    policyName: 'ITF',
     duplicateSeedNumbers: true,
     seedBlocks: {
       '1': [['1', '0']],

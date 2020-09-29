@@ -1,6 +1,6 @@
 export const COUNTRY_AVOIDANCE = {
   avoidance: {
-    policyType: 'Person', // policyTypes: 'person', 'team', 'group'
+    policyName: 'Person', // policyTypes: 'person', 'team', 'group'
     policyAttributes: ['country'],
   },
 };

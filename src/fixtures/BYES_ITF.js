@@ -1,6 +1,6 @@
 export const BYES_ITF = {
   byePlacement: {
-    policyType: 'ITF',
+    policyName: 'ITF',
   },
 };
 
