@@ -1,14 +1,11 @@
 import { drawEngine } from '..';
+import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 
-import { ERROR, SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import ITF_SEEDING from '../../fixtures/SEEDING_ITF';
 
 it('can set and reset policy governor', () => {
   expect(drawEngine).toHaveProperty('attachPolicy');
-  expect(drawEngine).toHaveProperty('getSeedBlocks');
-
-  let seedBlocks = drawEngine.getSeedBlocks();
-  expect(seedBlocks).toHaveProperty(ERROR);
 
   // cannot load a policy if no drawDefinition
   drawEngine.reset();
@@ -21,12 +18,11 @@ it('can set and reset policy governor', () => {
 
   result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
   expect(result).toMatchObject(SUCCESS);
-  seedBlocks = drawEngine.getSeedBlocks();
-  expect(seedBlocks).toMatchObject(SUCCESS);
 
-  result = drawEngine.removePolicies();
-  expect(result).toMatchObject(SUCCESS);
+  const { drawDefinition } = drawEngine.getState();
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { seedBlocks, policyName } = appliedPolicies?.seeding;
 
-  seedBlocks = drawEngine.getSeedBlocks();
-  expect(seedBlocks).toHaveProperty(ERROR);
+  expect(policyName).toEqual('ITF');
+  expect(seedBlocks).not.toBeUndefined();
 });

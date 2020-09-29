@@ -1,5 +1,5 @@
 {
-  "drawId": "5813dc85-b1e0-47d1-8185-e5f519753ba8",
+  "drawId": "4faa4425-eb52-41a7-b45c-ebf899b1da93",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -48,7 +48,7 @@
       "stageSequence": 1,
       "finishingPosition": "winRatio",
       "seedAssignments": [],
-      "structureId": "6aed3c02-efdb-4c87-8218-6aa4ba65d8fe",
+      "structureId": "622655ff-d267-4963-b820-d280675a8fd7",
       "stage": "MAIN",
       "structureType": "CONTAINER",
       "structures": [
@@ -57,7 +57,7 @@
           "stageSequence": 1,
           "finishingPosition": "winRatio",
           "seedAssignments": [],
-          "structureId": "d7679afa-3666-4adf-9518-496fd75d2d7d",
+          "structureId": "e5bf37f5-97b8-4361-a721-e2bbd18c0d75",
           "structureType": "ITEM",
           "matchUps": [
             {
@@ -67,7 +67,7 @@
                 2
               ],
               "structureIndex": 1,
-              "matchUpId": "c20952bc-40d2-4934-afba-6df09e17020b",
+              "matchUpId": "bc4ff1b5-96c4-476d-8f27-bc3f4bb139f4",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -77,7 +77,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "35cb8503-2bb6-43e9-af80-b3f29157b2d2",
+              "matchUpId": "16453cb0-29ac-4680-ac7f-c5c65bf3d5e8",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -87,7 +87,7 @@
                 3
               ],
               "structureIndex": 1,
-              "matchUpId": "b85cf7a7-82ba-4bed-8910-956e276a2b97",
+              "matchUpId": "8fa14c0c-b2af-4e21-9435-fbc7bce6f8b8",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -97,7 +97,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "8674f1e6-1098-49f2-b940-3628c83f8e3e",
+              "matchUpId": "5ebdb00d-e32c-4ee3-9f58-1adeca8f2ed8",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -107,7 +107,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "2934a47e-8407-44d0-95e7-b16591aca7fc",
+              "matchUpId": "b432aa64-1f57-4668-a726-111fa762ed24",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -117,7 +117,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "1d930baa-a601-48f3-8011-4eb9adac5e1c",
+              "matchUpId": "f66acc91-0017-4303-98ed-c43e42134f9c",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -127,7 +127,7 @@
                 3
               ],
               "structureIndex": 1,
-              "matchUpId": "029fe278-d4bd-4605-9270-0c74e22bcd80",
+              "matchUpId": "672317cb-ff5b-4f73-86a5-683b70fd72f0",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -137,7 +137,7 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "d64c684b-c157-4378-8b96-76564d035b88",
+              "matchUpId": "23480d3c-ae6e-4883-909c-e2f753d2825e",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -147,7 +147,7 @@
                 4
               ],
               "structureIndex": 1,
-              "matchUpId": "781ab9c8-7e37-44f7-b248-62063a65016c",
+              "matchUpId": "afb5cc1c-fae1-4b11-9e4f-a2a25f309e9c",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
@@ -157,30 +157,30 @@
                 5
               ],
               "structureIndex": 1,
-              "matchUpId": "6737e16d-d943-4609-96f3-05af58b24d8a",
+              "matchUpId": "1ea74f26-f693-4583-b97a-b8f8d3e4ef12",
               "matchUpStatus": "TO_BE_PLAYED"
             }
           ],
           "positionAssignments": [
             {
               "drawPosition": 1,
-              "participantId": "ko-uuid5"
-            },
-            {
-              "drawPosition": 2,
               "participantId": "ko-uuid1"
             },
             {
-              "drawPosition": 3,
+              "drawPosition": 2,
               "participantId": "ko-uuid4"
             },
             {
-              "drawPosition": 4,
+              "drawPosition": 3,
               "participantId": "ko-uuid3"
             },
             {
-              "drawPosition": 5,
+              "drawPosition": 4,
               "participantId": "ko-uuid2"
+            },
+            {
+              "drawPosition": 5,
+              "participantId": "ko-uuid5"
             }
           ],
           "structureIndex": 1

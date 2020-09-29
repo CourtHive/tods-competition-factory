@@ -16,9 +16,10 @@ import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];
-const policies = {};
 let drawDefinition;
 let tournamentParticipants = [];
+
+const policies = {};
 
 function newDrawDefinition({ drawId, drawProfile } = {}) {
   const template = definitionTemplate();
@@ -52,10 +53,7 @@ export const drawEngine = (function() {
       return setState(definition);
     },
     getState: () => {
-      return {
-        drawDefinition: makeDeepCopy(drawDefinition),
-        policies: makeDeepCopy(policies),
-      };
+      return { drawDefinition: makeDeepCopy(drawDefinition) };
     },
     reset: () => {
       drawDefinition = null;

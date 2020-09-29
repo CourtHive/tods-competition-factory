@@ -1,5 +1,5 @@
 {
-  "drawId": "63366a1f-774f-4cd3-8765-d72f92c63bb5",
+  "drawId": "e491d93a-fd72-4108-a97d-49e716a5bc64",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -33,11 +33,11 @@
       "stageSequence": 1,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "79fdf818-9f60-49fa-8d5b-7465016efc9e",
+      "structureId": "723ffc0d-ed7b-4045-87d8-ee4c2e99ab9e",
       "stage": "MAIN",
       "matchUps": [
         {
-          "matchUpId": "aa3dda4f-a5d6-44a9-a0cf-60161b3878b2",
+          "matchUpId": "3640a798-1175-4075-a480-c4bf6a53997f",
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
@@ -62,11 +62,11 @@
       "positionAssignments": [
         {
           "drawPosition": 1,
-          "participantId": "ko-uuid1"
+          "participantId": "ko-uuid2"
         },
         {
           "drawPosition": 2,
-          "participantId": "ko-uuid2"
+          "participantId": "ko-uuid1"
         }
       ]
     }

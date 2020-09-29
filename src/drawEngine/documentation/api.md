@@ -235,14 +235,6 @@ const { seedAssignments } = firstStructureDetails;
 
 ---
 
-## getSeedBlocks
-
----
-
-## getSeedingConfig
-
----
-
 ## getSetComplement
 
 ---
@@ -284,14 +276,6 @@ const { seedAssignments } = firstStructureDetails;
 ---
 
 ## removeEntry
-
----
-
-## removePolicies
-
----
-
-## requireAllPositionsAssigned
 
 ---
 

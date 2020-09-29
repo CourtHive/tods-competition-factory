@@ -7,6 +7,7 @@ import { findEvent } from './getters/eventGetter';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
+import policyGovernor from './governors/policyGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
@@ -76,6 +77,7 @@ export const tournamentEngine = (function() {
     queryGovernor,
     eventGovernor,
     venueGovernor,
+    policyGovernor,
     scheduleGovernor,
     tournamentGovernor,
     participantGovernor,

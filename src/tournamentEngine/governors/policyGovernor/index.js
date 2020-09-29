@@ -2,15 +2,15 @@ import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-function addPolicyProfile({ drawDefinition, policyDefinition }) {
+function addPolicyProfile({ tournamentRecord, policyDefinition }) {
   const errors = [];
   if (!policyDefinition || typeof policyDefinition !== 'object') {
     errors.push({ error: 'Missing Policy Definition' });
     return { errors };
   }
 
-  if (!drawDefinition.extensions) drawDefinition.extensions = [];
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
   Object.keys(policyDefinition).forEach(policyType => {
     if (!appliedPolicies[policyType]) {
@@ -21,10 +21,10 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
   });
 
   if (!errors.length) {
-    drawDefinition.extensions = drawDefinition.extensions.filter(
+    tournamentRecord.extensions = tournamentRecord.extensions.filter(
       extension => extension.name !== 'appliedPolicies'
     );
-    drawDefinition.extensions.push({
+    tournamentRecord.extensions.push({
       name: 'appliedPolicies',
       value: appliedPolicies,
     });
@@ -41,13 +41,13 @@ function addPolicy({ policies, policyDefinition }) {
   return SUCCESS;
 }
 
-function attachPolicy({ drawDefinition, policies, policyDefinition }) {
-  if (!drawDefinition) {
-    return { error: 'Missing drawDefinition' };
+function attachPolicy({ tournamentRecord, policies, policyDefinition }) {
+  if (!tournamentRecord) {
+    return { error: 'Missing tournamentRecord' };
   }
   let result = addPolicy({ policies, policyDefinition });
   if (result && result.errors) return { error: result.errors };
-  result = addPolicyProfile({ drawDefinition, policyDefinition });
+  result = addPolicyProfile({ tournamentRecord, policyDefinition });
   if (result && result.errors) return { error: result.errors };
   return SUCCESS;
 }
