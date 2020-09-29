@@ -2,8 +2,10 @@ import { tournamentRecordWithParticipants } from './primitives/generateTournamen
 import { tournamentEngine } from '../../tournamentEngine';
 import { drawEngine } from '../../drawEngine';
 
+import ITF_SEEDING_POLICY from '../../fixtures/SEEDING_ITF';
 import { eventConstants } from '../../constants/eventConstants';
 import { resultConstants } from '../../constants/resultConstants';
+import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -37,6 +39,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     seedsCount: 8,
     event: eventResult,
+    seedingPolicy: ITF_SEEDING_POLICY,
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
@@ -45,6 +48,12 @@ it('can generate a tournament with events and draws', () => {
   expect(result).toEqual(SUCCESS);
 
   drawEngine.setState(drawDefinition);
+
+  const { extensions } = drawDefinition;
+  expect(extensions.length).toEqual(1);
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  expect(appliedPolicies.seeding.policyType).toEqual('ITF');
+
   const structureSeedAssignments = drawEngine.getSeedAssignments();
   const { seedAssignments } = structureSeedAssignments[0];
   expect(structureSeedAssignments.length).toEqual(1);

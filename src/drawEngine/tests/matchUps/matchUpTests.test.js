@@ -37,7 +37,7 @@ it('matchUps returned with context cannot modify original', () => {
   initialize();
   mainDrawPositions({ drawSize: 16 });
   drawEngine.generateDrawType({ drawType: KNOCKOUT });
-  let { drawDefinition, policies } = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
     structures: [structure],
@@ -52,9 +52,8 @@ it('matchUps returned with context cannot modify original', () => {
   const { matchUpId } = matchUp;
 
   // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition, policies } = drawEngine.getState());
+  ({ drawDefinition } = drawEngine.getState());
   let { matchUp: retrievedMatchUp } = findMatchUp({
-    policies,
     drawDefinition,
     matchUpId,
   });
@@ -63,7 +62,6 @@ it('matchUps returned with context cannot modify original', () => {
 
   // retrieve matchUp with context and add an attribute
   const { matchUp: contextMatchUp } = findMatchUp({
-    policies,
     drawDefinition,
     matchUpId,
     inContext: true,
@@ -75,13 +73,12 @@ it('matchUps returned with context cannot modify original', () => {
   expect(contextMatchUp.structureId).toEqual(structureId);
 
   // refetch the drawDefintion after the modification has been made
-  ({ drawDefinition, policies } = drawEngine.getState());
+  ({ drawDefinition } = drawEngine.getState());
 
   // retrieve matchUp from drawDefinition
   // newAttribute should not be present with no context added
   ({ matchUp: retrievedMatchUp } = findMatchUp({
     drawDefinition,
-    policies,
     matchUpId,
   }));
   expect(retrievedMatchUp.newAttribute).toEqual(undefined);

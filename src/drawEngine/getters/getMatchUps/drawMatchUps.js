@@ -21,7 +21,6 @@ export function getAllDrawMatchUps(props) {
 }
 
 export function getDrawMatchUps({
-  policies,
   drawDefinition,
   tournamentParticipants,
   requireParticipants,
@@ -48,7 +47,6 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = structureMatchUps({
-      policies,
       structure,
       inContext,
       roundFilter,

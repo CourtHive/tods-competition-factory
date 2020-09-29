@@ -9,7 +9,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 export function getTargetMatchUp({
-  policies,
   drawDefinition,
   tournamentParticipants,
   targetLink,
@@ -25,7 +24,6 @@ export function getTargetMatchUp({
     structureId,
   });
   const { matchUps } = getAllStructureMatchUps({
-    policies,
     drawDefinition,
     structure: targetStructure,
     tournamentParticipants,

@@ -27,10 +27,10 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 export function assignDrawPositionBye({
   drawDefinition,
-  policies,
   structureId,
   drawPosition,
 }) {
@@ -74,7 +74,6 @@ export function assignDrawPositionBye({
       const { matchUpId } = matchUp;
       setMatchUpStatus({
         drawDefinition,
-        policies,
         matchUpId,
         matchUpStatus: BYE,
       });
@@ -93,7 +92,7 @@ export function assignDrawPositionBye({
       const {
         targetLinks: { loserTargetLink },
         targetMatchUps: { loserMatchUp, winnerMatchUp },
-      } = positionTargets({ drawDefinition, policies, matchUpId });
+      } = positionTargets({ drawDefinition, matchUpId });
 
       if (loserMatchUp) {
         // loserMatchUp must have both drawPositions defined
@@ -142,7 +141,6 @@ export function assignDrawPositionBye({
 
 export function positionByes({
   drawDefinition,
-  policies,
   structure,
   structureId,
   blockOrdered = false,
@@ -159,12 +157,13 @@ export function positionByes({
   if (byesToPlace < 0) return { error: 'Too many byes have been placed' };
   if (byesToPlace === 0) return SUCCESS;
 
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const {
     isFeedIn,
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
   } = getSeedOrderByePositions({
-    policies,
+    appliedPolicies,
     structure,
     relevantMatchUps,
   });
@@ -174,7 +173,7 @@ export function positionByes({
     : strictSeedOrderByePositions;
 
   const { unseededByePositions } = getUnseededByePositions({
-    policies,
+    appliedPolicies,
     structure,
     isFeedIn,
   });
@@ -192,7 +191,6 @@ export function positionByes({
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
       drawDefinition,
-      policies,
       structureId,
       drawPosition,
     });
@@ -202,8 +200,8 @@ export function positionByes({
   return SUCCESS;
 }
 
-function getUnseededByePositions({ structure, policies, isFeedIn }) {
-  const seedBlocks = policies?.seeding?.seedBlocks;
+function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
+  const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
     .filter(assignment => assignment.participantId)
@@ -289,8 +287,8 @@ function getUnseededByePositions({ structure, policies, isFeedIn }) {
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
-    policies,
     structure,
+    appliedPolicies,
     allPositions: true,
   });
   const validBlockDrawPositions = validSeedBlocks.map(block =>
@@ -342,9 +340,13 @@ function getUnseededByePositions({ structure, policies, isFeedIn }) {
   return { unseededByePositions };
 }
 
-function getSeedOrderByePositions({ structure, policies, relevantMatchUps }) {
+function getSeedOrderByePositions({
+  structure,
+  appliedPolicies,
+  relevantMatchUps,
+}) {
   const { validSeedBlocks, isFeedIn, isContainer } = getValidSeedBlocks({
-    policies,
+    appliedPolicies,
     structure,
   });
   const positionedSeeds = getStructurePositionedSeeds({ structure });

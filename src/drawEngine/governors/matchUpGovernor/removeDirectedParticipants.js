@@ -88,7 +88,6 @@ export function removeDirectedParticipants(props) {
 }
 
 function removeDirectedWinner({
-  policies,
   drawDefinition,
   winnerTargetLink,
   winnerParticipantId,
@@ -133,7 +132,6 @@ function removeDirectedWinner({
       // console.log('not removing from position assignments since instances > 1')
     }
     const { matchUp } = findMatchUp({
-      policies,
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
@@ -142,7 +140,6 @@ function removeDirectedWinner({
     });
   } else {
     const { matchUp } = findMatchUp({
-      policies,
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });

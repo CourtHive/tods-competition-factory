@@ -7,16 +7,11 @@ import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
 // TODO: write unit test for this method
 // active drawPositions occur more than once in the mmatchUps of a structure
-export function structureActiveDrawPositions({
-  drawDefinition,
-  policies,
-  structureId,
-}) {
+export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    policies,
     structure,
     matchUpFilters,
   });

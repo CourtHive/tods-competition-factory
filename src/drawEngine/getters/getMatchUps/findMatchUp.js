@@ -16,7 +16,6 @@ export function publicFindMatchUp(props) {
 */
 export function findMatchUp({
   drawDefinition,
-  policies,
   tournamentParticipants,
   matchUpId,
   inContext,
@@ -28,7 +27,6 @@ export function findMatchUp({
       structure,
       tournamentParticipants,
       inContext,
-      policies,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
     return matchUp ? { matchUp, structure } : result;

@@ -10,7 +10,6 @@ interface Assignment {
 
 interface SeedAssignmentProps {
   tournamentRecord: any;
-  policies?: any;
   drawEngine: any;
   drawId: string;
   eventId?: string;
@@ -25,7 +24,6 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   const {
     tournamentRecord,
     drawEngine,
-    policies,
     eventId,
     drawId,
     structureId,
@@ -104,7 +102,6 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   const errors: string[] = [];
   updatedAssignments.forEach((assignment: any) => {
     const result = drawEngine.assignSeed({
-      policies,
       ...assignment,
       drawDefinition,
       structureId: identifiedStructureId,

@@ -5,8 +5,13 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 
 import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
+import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 
-export function getValidSeedBlocks({ structure, policies, allPositions }) {
+export function getValidSeedBlocks({
+  structure,
+  appliedPolicies,
+  allPositions,
+}) {
   let waterfallSeeding;
   let firstRoundSeedsCount,
     fedSeedNumberOffset = 0;
@@ -47,7 +52,7 @@ export function getValidSeedBlocks({ structure, policies, allPositions }) {
   const firstRoundDrawPositionOffset =
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
-  const seedBlocks = policies?.seeding?.seedBlocks;
+  const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
 
   if (!seedBlocks) errors.push({ error: 'Missing seeding policy' });
   const baseDrawSize =
@@ -309,7 +314,6 @@ function constructBlocks({
  * @param {Object} drawDefinition - TODS JSON Object containing draw components
  * @param {string} structureId - identifier for relevant structure within drawDefinition
  * @param {number} drawPosition - position being checked for valid seed placement
- * @param {Object} policies - policy definitions; in this case only 'seeding' policies are relevant
  * @param {number} seedNumber - used with srict seeding policy to determine valid seedBlock
  *
  * method operates in three modes:
@@ -319,17 +323,20 @@ function constructBlocks({
  *
  */
 export function isValidSeedPosition({
-  policies,
   seedNumber,
   drawDefinition,
   structureId,
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { validSeedBlocks } = getValidSeedBlocks({
+    structure,
+    appliedPolicies,
+  });
 
-  if (policies?.seeding?.validSeedPositions?.ignore) return true;
-  if (policies?.seeding?.validSeedPositions?.strict) {
+  if (appliedPolicies?.seeding?.validSeedPositions?.ignore) return true;
+  if (appliedPolicies?.seeding?.validSeedPositions?.strict) {
     const targetSeedBlock = validSeedBlocks.find(seedBlock =>
       seedBlock.seedNumbers.includes(seedNumber)
     );
@@ -343,12 +350,7 @@ export function isValidSeedPosition({
   return validSeedPositions.includes(drawPosition);
 }
 
-export function getNextSeedBlock({
-  drawDefinition,
-  policies,
-  structureId,
-  randomize,
-}) {
+export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -360,7 +362,11 @@ export function getNextSeedBlock({
     .map(assignment => assignment.drawPosition)
     .filter(f => f);
 
-  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { validSeedBlocks } = getValidSeedBlocks({
+    structure,
+    appliedPolicies,
+  });
   const unfilledSeedBlocks = (validSeedBlocks || []).filter(seedBlock => {
     const unfilledPositions = seedBlock.drawPositions.filter(
       drawPosition => !assignedDrawPositions.includes(drawPosition)
@@ -431,9 +437,7 @@ export function getNextSeedBlock({
     .filter(assignment => unplacedSeedNumbers.includes(assignment.seedNumber))
     .map(assignment => assignment.participantId);
 
-  // TODO: policies not being passed in roundRobin.test.js
-  // needs to work when doesn't default to true
-  const duplicateSeedNumbers = policies?.seeding?.duplicateSeedNumbers;
+  const duplicateSeedNumbers = appliedPolicies?.seeding?.duplicateSeedNumbers;
   const allowsDuplicateSeedNumbers =
     duplicateSeedNumbers !== undefined ? duplicateSeedNumbers : true;
 

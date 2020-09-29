@@ -10,7 +10,6 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 export function structureMatchUps({
   inContext,
   context,
-  policies,
   structure,
   drawDefinition,
   tournamentParticipants,
@@ -23,7 +22,6 @@ export function structureMatchUps({
     structure,
     inContext,
     context,
-    policies,
     drawDefinition,
     matchUpFilters,
     contextFilters,

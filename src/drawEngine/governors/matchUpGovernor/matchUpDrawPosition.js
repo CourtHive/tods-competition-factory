@@ -5,10 +5,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function assignMatchUpDrawPosition({
   drawDefinition,
   matchUpId,
-  policies,
   drawPosition,
 }) {
-  const { matchUp } = findMatchUp({ drawDefinition, policies, matchUpId });
+  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
 
   let positionAssigned = false;
   matchUp.drawPositions = matchUp.drawPositions

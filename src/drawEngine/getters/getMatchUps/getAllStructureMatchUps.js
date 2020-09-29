@@ -12,13 +12,13 @@ import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/match
 
 import { makeDeepCopy, numericSort } from '../../../utilities';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 
 /*
   return all matchUps within a structure and its child structures
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 export function getAllStructureMatchUps({
-  policies,
   structure,
   inContext,
   roundFilter,
@@ -40,8 +40,9 @@ export function getAllStructureMatchUps({
     };
   }
 
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const requireAllPositionsAssigned =
-    policies?.scoring?.requireAllPositionsAssigned;
+    appliedPolicies?.scoring?.requireAllPositionsAssigned;
 
   const {
     positionAssignments,

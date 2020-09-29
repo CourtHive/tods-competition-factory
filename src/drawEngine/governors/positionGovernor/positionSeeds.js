@@ -6,6 +6,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { assignDrawPosition } from './positionAssignment';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 export function getStructurePositionedSeeds({ structure }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -31,7 +32,6 @@ export function getStructurePositionedSeeds({ structure }) {
 
 export function positionSeedBlocks({
   drawDefinition,
-  policies,
   structure,
   structureId,
   groupsCount,
@@ -43,9 +43,10 @@ export function positionSeedBlocks({
     ({ structure } = findStructure({ drawDefinition, structureId }));
   if (!structureId) ({ structureId } = structure);
 
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks, error } = getValidSeedBlocks({
     structure,
-    policies,
+    appliedPolicies,
   });
   if (error) errors.push(error);
 
@@ -55,7 +56,6 @@ export function positionSeedBlocks({
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
         drawDefinition,
-        policies,
         structureId,
       });
       if (result && result.success) placedSeedBlocks++;
@@ -67,9 +67,8 @@ export function positionSeedBlocks({
   return { errors };
 }
 
-function positionSeedBlock({ drawDefinition, policies, structureId }) {
+function positionSeedBlock({ drawDefinition, structureId }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
-    policies,
     drawDefinition,
     structureId,
     randomize: true,
@@ -79,7 +78,6 @@ function positionSeedBlock({ drawDefinition, policies, structureId }) {
     const drawPosition = unfilledPositions.pop();
     if (!drawPosition) return { error: 'Missing drawPosition' };
     const result = assignDrawPosition({
-      policies,
       drawDefinition,
       structureId,
       drawPosition,

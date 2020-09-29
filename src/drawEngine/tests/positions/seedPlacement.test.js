@@ -16,6 +16,7 @@ import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 import ITF_SEEDING from '../../../fixtures/SEEDING_ITF';
 import USTA_SEEDING from '../../../fixtures/SEEDING_USTA';
+import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
@@ -472,10 +473,14 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   drawEngine.attachPolicy({ policyDefinition: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  const { drawDefinition, policies } = drawEngine.getState();
+  const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
-  const { validSeedBlocks } = getValidSeedBlocks({ structure, policies });
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { validSeedBlocks } = getValidSeedBlocks({
+    structure,
+    appliedPolicies,
+  });
 
   validSeedBlocks.forEach((seedBlock, i) => {
     expect(seedBlock.seedNumbers.sort(numericSort)).toMatchObject(

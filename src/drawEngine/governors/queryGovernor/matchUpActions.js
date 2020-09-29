@@ -7,14 +7,14 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 
 import { positionActions } from './positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 /*
   return an array of all possible validActions for a given matchUp
 */
-export function matchUpActions({ drawDefinition, policies, matchUpId }) {
+export function matchUpActions({ drawDefinition, matchUpId }) {
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
-    policies,
     matchUpId,
   });
   const {
@@ -97,8 +97,9 @@ export function matchUpActions({ drawDefinition, policies, matchUpId }) {
     const isInComplete = !isDirectingMatchUpStatus({
       matchUpStatus: matchUp.matchUpStatus,
     });
+    const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
     const requireAllPositionsAssigned =
-      policies?.scoring?.requireAllPositionsAssigned;
+      appliedPolicies?.scoring?.requireAllPositionsAssigned;
     const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
     const hasParticipants =
       matchUp.Sides &&

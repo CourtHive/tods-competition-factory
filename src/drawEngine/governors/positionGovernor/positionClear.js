@@ -12,7 +12,6 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 
 export function clearDrawPosition({
-  policies,
   drawDefinition,
   structureId,
   participantId,
@@ -65,7 +64,6 @@ export function clearDrawPosition({
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     structure,
-    policies,
     matchUpFilters,
     // inContext: true, // TODO: is there any reason that clearDrawPosition requires context?
   });
@@ -93,7 +91,6 @@ export function clearDrawPosition({
     const { matchUpId } = matchUp;
     setMatchUpStatus({
       drawDefinition,
-      policies,
       matchUpId,
       matchUpStatus: TO_BE_PLAYED,
     });
@@ -112,7 +109,7 @@ export function clearDrawPosition({
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
       targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = positionTargets({ drawDefinition, policies, matchUpId });
+    } = positionTargets({ drawDefinition, matchUpId });
 
     // clear Directed Byes
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {

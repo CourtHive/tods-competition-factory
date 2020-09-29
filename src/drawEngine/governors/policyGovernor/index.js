@@ -1,4 +1,5 @@
 import policyTemplate from './policyDefinitionTemplate';
+import { getAppliedPolicies } from './getAppliedPolicies';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
@@ -31,32 +32,34 @@ function requireAllPositionsAssigned({ policies }) {
 }
 
 function addPolicyProfile({ drawDefinition, policyDefinition }) {
-  if (!drawDefinition.appliedPolicies) drawDefinition.appliedPolicies = [];
+  const errors = [];
   if (!policyDefinition || typeof policyDefinition !== 'object') {
-    return { errors: [{ error: 'Missing Policy Definition' }] };
+    errors.push({ error: 'Missing Policy Definition' });
+    return { errors };
   }
+
+  if (!drawDefinition.extensions) drawDefinition.extensions = [];
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+
   Object.keys(policyDefinition).forEach(policyClass => {
-    const policyType = policyDefinition[policyClass].policyType;
-    if (policyType) {
-      const profileExists = drawDefinition.appliedPolicies.reduce(
-        (exists, profile) => {
-          return profile.policyType === policyType &&
-            policyDefinition.policyClass === policyClass
-            ? exists || true
-            : exists;
-        },
-        false
-      );
-      if (!profileExists) {
-        const appliedPolicy = { policyClass, policyType };
-        if (policyDefinition[policyClass].policyAttributes) {
-          appliedPolicy.policyAttributes =
-            policyDefinition[policyClass].policyAttributes;
-        }
-        drawDefinition.appliedPolicies.push(appliedPolicy);
-      }
+    if (!appliedPolicies[policyClass]) {
+      appliedPolicies[policyClass] = policyDefinition[policyClass];
+    } else {
+      errors.push({ error: `Policy ${policyClass} already applied` });
     }
   });
+
+  if (!errors.length) {
+    drawDefinition.extensions = drawDefinition.extensions.filter(
+      extension => extension.name !== 'appliedPolicies'
+    );
+    drawDefinition.extensions.push({
+      name: 'appliedPolicies',
+      value: appliedPolicies,
+    });
+  }
+
+  return errors.length ? errors : SUCCESS;
 }
 
 function removePolicies({ policies }) {

@@ -13,9 +13,8 @@ import {
 /*
   positionTargets 
 */
-export function positionTargets({ drawDefinition, policies, matchUpId }) {
+export function positionTargets({ drawDefinition, matchUpId }) {
   const { matchUp, structure } = findMatchUp({
-    policies,
     drawDefinition,
     matchUpId,
     inContext: true,
@@ -24,21 +23,15 @@ export function positionTargets({ drawDefinition, policies, matchUpId }) {
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({
       drawDefinition,
-      policies,
       matchUp,
       structure,
     });
   } else {
-    return targetByWinRatio({ drawDefinition, policies, matchUp, structure });
+    return targetByWinRatio({ drawDefinition, matchUp, structure });
   }
 }
 
-function targetByRoundOutcome({
-  drawDefinition,
-  policies,
-  matchUp,
-  structure,
-}) {
+function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
   const {
     links: { source },
   } = getMatchUpLinks({ drawDefinition, matchUp });
@@ -52,7 +45,6 @@ function targetByRoundOutcome({
   const sourceRoundPosition = matchUp.roundPosition;
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
   const { matchUp: loserMatchUp } = getTargetMatchUp({
-    policies,
     drawDefinition,
     sourceRoundPosition,
     sourceRoundMatchUpCount,
@@ -63,7 +55,6 @@ function targetByRoundOutcome({
   const winnerTargetLink = getTargetLink({ source, subject: WINNER });
   if (winnerTargetLink) {
     ({ matchUp: winnerMatchUp } = getTargetMatchUp({
-      policies,
       drawDefinition,
       sourceRoundPosition,
       sourceRoundMatchUpCount,
@@ -71,7 +62,7 @@ function targetByRoundOutcome({
     }));
   } else {
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
-      policies,
+      //       appliedPolicies,
       structure,
       matchUp,
     }));

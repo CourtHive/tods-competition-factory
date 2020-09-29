@@ -7,7 +7,6 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignDrawPosition({
-  policies,
   drawDefinition,
   structureId,
   drawPosition,
@@ -34,7 +33,6 @@ export function assignDrawPosition({
 
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
-      policies,
       structureId,
       drawPosition,
       drawDefinition,

@@ -6,11 +6,7 @@ import { findStructure } from '../../getters/findStructure';
 
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 
-export function automatedPositioning({
-  drawDefinition,
-  policies,
-  structureId,
-}) {
+export function automatedPositioning({ drawDefinition, structureId }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { errors: [error] };
 
@@ -24,11 +20,9 @@ export function automatedPositioning({
     // BYEs must be placed first to insure lower seeds get BYEs
     ({ error: byePositionError } = positionByes({
       drawDefinition,
-      policies,
       structure,
     }));
     ({ errors: seedBlockErrors } = positionSeedBlocks({
-      policies,
       drawDefinition,
       structure,
     }));
@@ -36,13 +30,11 @@ export function automatedPositioning({
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     ({ errors: seedBlockErrors } = positionSeedBlocks({
-      policies,
       drawDefinition,
       structure,
     }));
     ({ error: byePositionError } = positionByes({
       drawDefinition,
-      policies,
       structure,
     }));
   }

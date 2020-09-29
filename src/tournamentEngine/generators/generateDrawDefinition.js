@@ -18,6 +18,8 @@ export function generateDrawDefinition(props) {
   const {
     groupSize,
     customName,
+    seedingPolicy,
+    avoidancePolicy,
     automated = true,
     qualifyingRound,
     qualifyingPositions,
@@ -93,8 +95,12 @@ export function generateDrawDefinition(props) {
   const [structure] = structures;
   const { structureId } = structure || {};
 
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
+  drawEngine.attachPolicy({
+    policyDefinition: seedingPolicy || SEEDING_POLICY,
+  });
+  drawEngine.attachPolicy({
+    policyDefinition: avoidancePolicy || AVOIDANCE_POLICY,
+  });
 
   entries.forEach(entry => {
     // TODO: attach participant scaleValues to entry information (if relevant?)

@@ -1,6 +1,5 @@
 {
-  "drawId": "a07fd0bf-2efb-43c1-b1eb-4a879221418f",
-  "description": null,
+  "drawId": "e4d7f247-c5e6-4120-b1f7-75df4a7eb5da",
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": null,
@@ -9,9 +8,9 @@
       "wildcardsCount": null
     },
     "MAIN": {
-      "drawSize": 16,
+      "drawSize": 2,
       "qualifiersCount": null,
-      "alternates": false,
+      "alternates": true,
       "wildcardsCount": null
     }
   },
@@ -25,71 +24,6 @@
       "participantId": "ko-uuid2",
       "entryStage": "MAIN",
       "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid3",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid4",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid5",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid6",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid7",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid8",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid9",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid10",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid11",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid12",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid13",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid14",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
-    },
-    {
-      "participantId": "ko-uuid15",
-      "entryStage": "MAIN",
-      "entryStatus": "DIRECT_ACCEPTANCE"
     }
   ],
   "links": [],
@@ -99,313 +33,17 @@
       "stageSequence": 1,
       "finishingPosition": "roundOutcome",
       "seedAssignments": [],
-      "structureId": "fb037fc3-5dea-4da8-89ee-de4fdac6698a",
+      "structureId": "5e2826fb-1a04-4a94-8601-997f85bd150d",
       "stage": "MAIN",
       "matchUps": [
         {
-          "matchUpId": "ddb958e7-fd80-4816-8933-2e55aedcc314",
+          "matchUpId": "ee3a4072-4746-488c-8f98-beb6b0ea3462",
           "roundNumber": 1,
-          "roundPosition": 1,
-          "matchUpStatus": "BYE",
-          "drawPositions": [
-            1,
-            2
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "e14df7b0-44f8-4986-9a5c-3e3b25c074ae",
-          "roundNumber": 1,
-          "roundPosition": 2,
-          "matchUpStatus": "COMPLETED",
-          "drawPositions": [
-            3,
-            4
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          },
-          "winningSide": 2
-        },
-        {
-          "matchUpId": "432a1fb7-2f3b-408e-968a-8432dd0ef158",
-          "roundNumber": 1,
-          "roundPosition": 3,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            5,
-            6
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "6b95e3cc-acfa-4dc2-9d42-b40000733042",
-          "roundNumber": 1,
-          "roundPosition": 4,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            7,
-            8
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "908df38a-f068-4db0-94f8-0f10a8ebe774",
-          "roundNumber": 1,
-          "roundPosition": 5,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            9,
-            10
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "cf123403-52bb-4ede-a559-896ff5433e4b",
-          "roundNumber": 1,
-          "roundPosition": 6,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            11,
-            12
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "b791d3f8-99b8-4bfe-b3bd-b09f72844d58",
-          "roundNumber": 1,
-          "roundPosition": 7,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            13,
-            14
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "23269fd5-2d6f-421b-8448-aaac9a91b87a",
-          "roundNumber": 1,
-          "roundPosition": 8,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            15,
-            16
-          ],
-          "finishingRound": 4,
-          "finishingPositionRange": {
-            "loser": [
-              9,
-              16
-            ],
-            "winner": [
-              1,
-              8
-            ]
-          }
-        },
-        {
-          "matchUpId": "1d79dd58-8518-4060-bb75-ca85802c65a5",
-          "roundNumber": 2,
-          "roundPosition": 1,
-          "matchUpStatus": "COMPLETED",
-          "drawPositions": [
-            1,
-            4
-          ],
-          "finishingRound": 3,
-          "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
-          },
-          "winningSide": 1
-        },
-        {
-          "matchUpId": "59b6120c-fc8c-4bd7-b4c6-03a1a3090fa7",
-          "roundNumber": 2,
-          "roundPosition": 2,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
-          "finishingRound": 3,
-          "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
-          }
-        },
-        {
-          "matchUpId": "459ac424-28ed-4417-872c-ae1059c1edab",
-          "roundNumber": 2,
-          "roundPosition": 3,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
-          "finishingRound": 3,
-          "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
-          }
-        },
-        {
-          "matchUpId": "caac35de-172f-47f9-861c-3464ed9d6d6b",
-          "roundNumber": 2,
-          "roundPosition": 4,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
-          "finishingRound": 3,
-          "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
-          }
-        },
-        {
-          "matchUpId": "4beea92a-1575-46cb-8283-fc60e387295a",
-          "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
           "drawPositions": [
             1,
-            null
-          ],
-          "finishingRound": 2,
-          "finishingPositionRange": {
-            "loser": [
-              3,
-              4
-            ],
-            "winner": [
-              1,
-              2
-            ]
-          }
-        },
-        {
-          "matchUpId": "8882947e-fd32-4e5a-b91f-1cb813717368",
-          "roundNumber": 3,
-          "roundPosition": 2,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
-          "finishingRound": 2,
-          "finishingPositionRange": {
-            "loser": [
-              3,
-              4
-            ],
-            "winner": [
-              1,
-              2
-            ]
-          }
-        },
-        {
-          "matchUpId": "d5b839bb-0d96-4bd4-a836-167bd5cd9045",
-          "roundNumber": 4,
-          "roundPosition": 1,
-          "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
+            2
           ],
           "finishingRound": 1,
           "finishingPositionRange": {
@@ -417,88 +55,311 @@
               1,
               1
             ]
-          }
+          },
+          "matchUpFormat": "SET3-S:6/TB"
         }
       ],
       "positionAssignments": [
         {
           "drawPosition": 1,
-          "participantId": "ko-uuid7"
+          "participantId": "ko-uuid1"
         },
         {
           "drawPosition": 2,
-          "bye": true
-        },
-        {
-          "drawPosition": 3,
-          "participantId": "ko-uuid12"
-        },
-        {
-          "drawPosition": 4,
-          "participantId": "ko-uuid15"
-        },
-        {
-          "drawPosition": 5,
-          "participantId": "ko-uuid4"
-        },
-        {
-          "drawPosition": 6,
-          "participantId": "ko-uuid8"
-        },
-        {
-          "drawPosition": 7,
-          "participantId": "ko-uuid10"
-        },
-        {
-          "drawPosition": 8,
-          "participantId": "ko-uuid3"
-        },
-        {
-          "drawPosition": 9,
-          "participantId": "ko-uuid13"
-        },
-        {
-          "drawPosition": 10,
-          "participantId": "ko-uuid14"
-        },
-        {
-          "drawPosition": 11,
           "participantId": "ko-uuid2"
-        },
-        {
-          "drawPosition": 12,
-          "participantId": "ko-uuid11"
-        },
-        {
-          "drawPosition": 13,
-          "participantId": "ko-uuid9"
-        },
-        {
-          "drawPosition": 14,
-          "participantId": "ko-uuid6"
-        },
-        {
-          "drawPosition": 15,
-          "participantId": "ko-uuid5"
-        },
-        {
-          "drawPosition": 16,
-          "participantId": "ko-uuid1"
         }
       ]
     }
   ],
-  "appliedPolicies": [
+  "matchUpFormat": "SET3-S:6/TB",
+  "extensions": [
     {
-      "policyClass": "seeding",
-      "policyType": "ITF"
-    },
-    {
-      "policyClass": "avoidance",
-      "policyType": "Person",
-      "policyAttributes": [
-        "country"
-      ]
+      "name": "appliedPolicies",
+      "value": {
+        "seeding": {
+          "policyType": "ITF",
+          "duplicateSeedNumbers": true,
+          "seedBlocks": {
+            "1": [
+              [
+                "1",
+                "0"
+              ]
+            ],
+            "2": [
+              [
+                "0",
+                "1"
+              ]
+            ],
+            "3": [
+              [
+                "1",
+                ".250"
+              ],
+              [
+                "0",
+                ".750"
+              ]
+            ],
+            "5": [
+              [
+                "0",
+                ".250"
+              ],
+              [
+                "0",
+                ".500"
+              ],
+              [
+                "1",
+                ".500"
+              ],
+              [
+                "1",
+                ".750"
+              ]
+            ],
+            "9": [
+              [
+                "1",
+                ".125"
+              ],
+              [
+                "0",
+                ".375"
+              ],
+              [
+                "1",
+                ".625"
+              ],
+              [
+                "0",
+                ".875"
+              ],
+              [
+                "0",
+                ".125"
+              ],
+              [
+                "1",
+                ".375"
+              ],
+              [
+                "0",
+                ".625"
+              ],
+              [
+                "1",
+                ".875"
+              ]
+            ],
+            "17": [
+              [
+                "1",
+                ".0625"
+              ],
+              [
+                "0",
+                ".1875"
+              ],
+              [
+                "1",
+                ".3125"
+              ],
+              [
+                "0",
+                ".4375"
+              ],
+              [
+                "1",
+                ".5625"
+              ],
+              [
+                "0",
+                ".6875"
+              ],
+              [
+                "1",
+                ".8125"
+              ],
+              [
+                "0",
+                ".9375"
+              ],
+              [
+                "0",
+                ".0625"
+              ],
+              [
+                "1",
+                ".1875"
+              ],
+              [
+                "0",
+                ".3125"
+              ],
+              [
+                "1",
+                ".4375"
+              ],
+              [
+                "0",
+                ".5625"
+              ],
+              [
+                "1",
+                ".6875"
+              ],
+              [
+                "0",
+                ".8125"
+              ],
+              [
+                "1",
+                ".9375"
+              ]
+            ],
+            "33": [
+              [
+                "1",
+                ".03125"
+              ],
+              [
+                "0",
+                ".09375"
+              ],
+              [
+                "1",
+                ".15625"
+              ],
+              [
+                "0",
+                ".21875"
+              ],
+              [
+                "1",
+                ".28125"
+              ],
+              [
+                "0",
+                ".34375"
+              ],
+              [
+                "1",
+                ".40625"
+              ],
+              [
+                "0",
+                ".46875"
+              ],
+              [
+                "1",
+                ".53125"
+              ],
+              [
+                "0",
+                ".59375"
+              ],
+              [
+                "1",
+                ".65625"
+              ],
+              [
+                "0",
+                ".71875"
+              ],
+              [
+                "1",
+                ".78125"
+              ],
+              [
+                "0",
+                ".84375"
+              ],
+              [
+                "1",
+                ".90625"
+              ],
+              [
+                "0",
+                ".96875"
+              ],
+              [
+                "0",
+                ".03125"
+              ],
+              [
+                "1",
+                ".09375"
+              ],
+              [
+                "0",
+                ".15625"
+              ],
+              [
+                "1",
+                ".21875"
+              ],
+              [
+                "0",
+                ".28125"
+              ],
+              [
+                "1",
+                ".34375"
+              ],
+              [
+                "0",
+                ".40625"
+              ],
+              [
+                "1",
+                ".46875"
+              ],
+              [
+                "0",
+                ".53125"
+              ],
+              [
+                "1",
+                ".59375"
+              ],
+              [
+                "0",
+                ".65625"
+              ],
+              [
+                "1",
+                ".71875"
+              ],
+              [
+                "0",
+                ".78125"
+              ],
+              [
+                "1",
+                ".84375"
+              ],
+              [
+                "0",
+                ".90625"
+              ],
+              [
+                "1",
+                ".96875"
+              ]
+            ],
+            "49": []
+          }
+        },
+        "avoidance": {
+          "policyType": "Person",
+          "policyAttributes": [
+            "country"
+          ]
+        }
+      }
     }
   ]
 }

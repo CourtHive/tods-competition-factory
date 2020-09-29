@@ -4,14 +4,12 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
   returns the next round matchUp for winner of given matchUp
 */
 export function nextRoundMatchUp({
-  policies,
   structure,
   tournamentParticipants,
   matchUp,
 }) {
   const { roundNumber, roundPosition } = matchUp;
   const { matchUps } = getAllStructureMatchUps({
-    policies,
     structure,
     tournamentParticipants,
     inContext: true,

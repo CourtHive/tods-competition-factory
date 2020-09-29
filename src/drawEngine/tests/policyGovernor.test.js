@@ -1,4 +1,4 @@
-import { drawEngine } from '../../drawEngine';
+import { drawEngine } from '..';
 
 import { ERROR, SUCCESS } from '../../constants/resultConstants';
 import ITF_SEEDING from '../../fixtures/SEEDING_ITF';

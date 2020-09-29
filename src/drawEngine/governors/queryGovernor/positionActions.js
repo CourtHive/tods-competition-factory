@@ -18,7 +18,6 @@ import {
   return an array of all possible validActions for a given drawPosition within a structure
 */
 export function positionActions({
-  policies,
   devContext,
   structureId,
   drawPosition,
@@ -81,7 +80,6 @@ export function positionActions({
       unplacedSeedAssignments,
     } = getNextSeedBlock({
       drawDefinition,
-      policies,
       structureId,
       randomize: true,
     });
@@ -177,17 +175,12 @@ function validAssignmentsSort(a, b) {
   return (a.drawOrder || 0) - (b.drawOrder || 0);
 }
 
-export function getNextUnfilledDrawPositions({
-  drawDefinition,
-  policies,
-  structureId,
-}) {
+export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
   if (!structure) return { error: 'No structure found' };
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { unfilledPositions } = getNextSeedBlock({
-    policies,
     drawDefinition,
     structureId,
     randomize: true,
