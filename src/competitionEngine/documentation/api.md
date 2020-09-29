@@ -28,6 +28,18 @@ route: /competitionEngine/api
 
 ## getState
 
+No parameters.
+
+Returns a deep copy of the current competitionEngine state.
+
+### Usage
+
+```js
+const { tournamentRecords } = compedtitionEngine.getState();
+```
+
+Where **tournamentRecords** is an Array of **tournamentRecord** objects.
+
 ---
 
 ## getVenuesAndCourts

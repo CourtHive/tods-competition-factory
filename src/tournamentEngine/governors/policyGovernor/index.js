@@ -1,5 +1,7 @@
 import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
+import { allowedDrawTypes, allowedScoringFormats } from './allowedTypes';
+
 import { SUCCESS } from '../../../constants/resultConstants';
 
 function addPolicyProfile({ tournamentRecord, policyDefinition }) {
@@ -64,6 +66,8 @@ function validDefinitionKeys(definition) {
 
 const policyGovernor = {
   attachPolicy,
+  allowedDrawTypes,
+  allowedScoringFormats,
 };
 
 export default policyGovernor;

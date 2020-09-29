@@ -21,5 +21,6 @@ export function tournamentRecordWithParticipants({
   const result = tournamentEngine.addParticipants({ participants });
   expect(result).toMatchObject(SUCCESS);
 
-  return { tournamentRecord: tournamentEngine.getState(), participants };
+  const { tournamentRecord } = tournamentEngine.getState();
+  return { tournamentRecord, participants };
 }

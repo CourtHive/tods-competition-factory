@@ -1,14 +1,14 @@
-import { drawEngine } from '..';
-import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { drawEngine } from '../..';
+import { getAppliedPolicies } from './getAppliedPolicies';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import ITF_SEEDING from '../../fixtures/SEEDING_ITF';
+import { SUCCESS } from '../../../constants/resultConstants';
+import ITF_SEEDING from '../../../fixtures/SEEDING_ITF';
 
 it('can set and reset policy governor', () => {
   expect(drawEngine).toHaveProperty('attachPolicy');
 
-  // cannot load a policy if no drawDefinition
   drawEngine.reset();
+  // cannot attach a policy if no drawDefinition
   let result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
   expect(result).toMatchObject({ error: 'Missing drawDefinition' });
 

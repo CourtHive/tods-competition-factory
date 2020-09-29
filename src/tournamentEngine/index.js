@@ -19,6 +19,8 @@ let devContext;
 let errors = [];
 let tournamentRecord;
 
+const policies = {};
+
 function newTournamentRecord(props) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
   const template = definitionTemplate(props);
@@ -40,7 +42,7 @@ function setState(tournament) {
 
 export const tournamentEngine = (function() {
   const fx = {
-    getState: () => makeDeepCopy(tournamentRecord),
+    getState: () => ({ tournamentRecord: makeDeepCopy(tournamentRecord) }),
     getAudit: () => {
       const auditTrail = auditEngine.getState();
       auditEngine.reset();
@@ -57,6 +59,13 @@ export const tournamentEngine = (function() {
     },
   };
 
+  fx.reset = () => {
+    tournamentRecord = null;
+    return SUCCESS;
+  };
+  fx.getErrors = () => {
+    return makeDeepCopy(errors);
+  };
   fx.flushErrors = () => {
     flushErrors();
     return fx;
@@ -113,6 +122,8 @@ export const tournamentEngine = (function() {
 
     return fx({
       ...params,
+
+      policies,
       devContext,
       drawEngine,
       auditEngine,

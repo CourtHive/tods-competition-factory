@@ -1,9 +1,9 @@
 export const policyTemplate = () => ({
   scoring: {
-    allowedScoringFormats: [],
+    allowedScoringFormats: undefined,
   },
   draws: {
-    allowedDrawTypes: [],
+    allowedDrawTypes: undefined,
   },
 });
 

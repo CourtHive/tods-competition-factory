@@ -221,8 +221,6 @@ The structure of an ***assignment object*** is as follows:
 }
 ```
 
-### Usage
-
 The most basic usage is to retrieve seed assignments for a draw which has a single main stage structure
 
 ```js
@@ -240,6 +238,14 @@ const { seedAssignments } = firstStructureDetails;
 ---
 
 ## getState
+
+No parameters.
+
+Returns a deep copy of the current drawEngine state.
+
+```js
+const { drawDefinition } = drawEngine.getState();
+```
 
 ---
 

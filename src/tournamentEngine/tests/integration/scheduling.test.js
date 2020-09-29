@@ -97,7 +97,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const { scheduleTimes } = matchUpTiming(timingParameters);
   expect(scheduleTimes.length).toEqual(19);
 
-  let tournamentRecord = tournamentEngine.getState();
+  let { tournamentRecord } = tournamentEngine.getState();
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
@@ -108,7 +108,7 @@ it('can add events, venues, and schedule matchUps', () => {
     .scheduleMatchUps({ date, matchUps: upcoming });
   expect(result).toEqual(SUCCESS);
 
-  tournamentRecords = competitionEngine.getState();
+  ({ tournamentRecords } = competitionEngine.getState());
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 

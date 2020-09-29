@@ -23,7 +23,7 @@ function flushErrors() {
 
 export const competitionEngine = (function() {
   const fx = {
-    getState: () => makeDeepCopy(tournamentRecords),
+    getState: () => ({ tournamentRecords: makeDeepCopy(tournamentRecords) }),
     load: records => setState(records),
   };
 

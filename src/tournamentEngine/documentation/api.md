@@ -42,6 +42,22 @@ route: /tournamentEngine/api
 
 ---
 
+## allowedDrawTypes
+
+No parameters.
+
+Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
+
+---
+
+## allowedScoringFormats
+
+No parameters.
+
+Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
+
+---
+
 ## allEventMatchUps
 
 ---
@@ -193,6 +209,14 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 ---
 
 ## getState
+
+No parameters.
+
+Returns a deep copy of the current tournamentEngine state.
+
+```js
+const { tournamentRecord } = tournamentEngine.getState();
+```
 
 ---
 

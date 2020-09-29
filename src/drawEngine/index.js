@@ -52,9 +52,7 @@ export const drawEngine = (function() {
     load: definition => {
       return setState(definition);
     },
-    getState: () => {
-      return { drawDefinition: makeDeepCopy(drawDefinition) };
-    },
+    getState: () => ({ drawDefinition: makeDeepCopy(drawDefinition) }),
     reset: () => {
       drawDefinition = null;
       return SUCCESS;
