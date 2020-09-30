@@ -41,6 +41,7 @@ export function getAllStructureMatchUps({
   }
 
   // TODO: code is shared with matchUpActions.js
+  // TODO: extend testing to restrict for MAIN while leaving consolation unrestricted
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =

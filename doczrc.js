@@ -32,6 +32,7 @@ export default {
         'Avoidance',
         'Positioning BYEs',
         'Positioning Seeds',
+        'Policies',
         'Attributes',
         'API',
       ],
