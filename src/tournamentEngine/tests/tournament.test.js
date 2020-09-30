@@ -39,7 +39,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     seedsCount: 8,
     event: eventResult,
-    seedingPolicy: ITF_SEEDING_POLICY,
+    policyDefinitions: [ITF_SEEDING_POLICY],
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;

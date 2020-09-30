@@ -9,8 +9,8 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/SEEDING_USTA';
-import AVOIDANCE_POLICY from '../../fixtures/AVOIDANCE_COUNTRY';
 import { ALTERNATE, RANKING } from '../../constants/participantConstants';
+import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -18,10 +18,9 @@ export function generateDrawDefinition(props) {
   const {
     groupSize,
     customName,
-    seedingPolicy,
-    avoidancePolicy,
     automated = true,
     qualifyingRound,
+    policyDefinitions,
     qualifyingPositions,
     drawType = 'ELIMINATION',
     matchUpType,
@@ -95,12 +94,14 @@ export function generateDrawDefinition(props) {
   const [structure] = structures;
   const { structureId } = structure || {};
 
-  drawEngine.attachPolicy({
-    policyDefinition: seedingPolicy || SEEDING_POLICY,
+  (policyDefinitions || []).forEach(policyDefinition => {
+    drawEngine.attachPolicy({ policyDefinition });
   });
-  drawEngine.attachPolicy({
-    policyDefinition: avoidancePolicy || AVOIDANCE_POLICY,
-  });
+
+  const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
+  if (!appliedPolicies?.seeding) {
+    drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  }
 
   entries.forEach(entry => {
     // TODO: attach participant scaleValues to entry information (if relevant?)
