@@ -40,9 +40,19 @@ export function getAllStructureMatchUps({
     };
   }
 
+  // TODO: code is shared with matchUpActions.js
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const structureScoringPolicies = appliedPolicies?.scoring?.structures;
+  const stageSpecificPolicies =
+    structureScoringPolicies?.stage &&
+    structureScoringPolicies?.stage[structure.stage];
+  const sequenceSpecificPolicies =
+    stageSpecificPolicies?.stageSequence &&
+    stageSpecificPolicies.stageSequence[structure.stageSequence];
   const requireAllPositionsAssigned =
-    appliedPolicies?.scoring?.requireAllPositionsAssigned;
+    appliedPolicies?.scoring?.requireAllPositionsAssigned ||
+    stageSpecificPolicies?.requireAllPositionsAssigned ||
+    sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
   const {
     positionAssignments,

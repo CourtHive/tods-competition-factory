@@ -98,9 +98,19 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       matchUpStatus: matchUp.matchUpStatus,
     });
     const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+    const structureScoringPolicies = appliedPolicies?.scoring?.structures;
+    const stageSpecificPolicies =
+      structureScoringPolicies?.stage &&
+      structureScoringPolicies?.stage[structure.stage];
+    const sequenceSpecificPolicies =
+      stageSpecificPolicies?.stageSequence &&
+      stageSpecificPolicies.stageSequence[structure.stageSequence];
     const requireAllPositionsAssigned =
-      appliedPolicies?.scoring?.requireAllPositionsAssigned;
+      appliedPolicies?.scoring?.requireAllPositionsAssigned ||
+      stageSpecificPolicies?.requireAllPositionsAssigned ||
+      sequenceSpecificPolicies?.requireAllPositionsAssigned;
     const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
+
     const hasParticipants =
       matchUp.Sides &&
       matchUp.Sides.filter(side => side && side.participantId).length === 2;
