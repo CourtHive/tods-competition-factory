@@ -29,6 +29,8 @@ export function regenerateDrawDefinition({
       ...drawDefinition.drawProfile,
     });
 
+    // TODO: write test to insure that appliedPolicies are copied faithfully
+
     if (newDrawDefinition) {
       event.drawDefinitions = event.drawDefinitions.map(dd => {
         return dd.drawId === drawId ? newDrawDefinition : dd;
