@@ -1,9 +1,9 @@
 import { getAppliedPolicies } from './getAppliedPolicies';
 
-export function allowedScoringFormats({ tournamentRecord }) {
+export function allowedMatchUpFormats({ tournamentRecord }) {
   if (!tournamentRecord) return { error: 'Missing tournamentRecord' };
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
-  return appliedPolicies?.scoring?.allowedScoringFormats;
+  return appliedPolicies?.scoring?.allowedMatchUpFormats;
 }
 
 export function allowedDrawTypes({ tournamentRecord }) {

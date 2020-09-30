@@ -50,7 +50,7 @@ Returns an array of names of allowed Draw Types, if any applicable policies have
 
 ---
 
-## allowedScoringFormats
+## allowedMatchUpFormats
 
 No parameters.
 

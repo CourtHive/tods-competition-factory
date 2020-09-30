@@ -11,7 +11,7 @@ it('can set and reset policy governor', () => {
   const scoringPolicy = {
     scoring: {
       policyName: 'TEST',
-      allowedScoringFormats: ['SET3-S:6/TB7'],
+      allowedMatchUpFormats: ['SET3-S:6/TB7'],
     },
   };
   let result = tournamentEngine.attachPolicy({
@@ -32,4 +32,10 @@ it('can set and reset policy governor', () => {
   const { tournamentRecord } = tournamentEngine.getState();
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   expect(appliedPolicies.scoring.policyName).toEqual('TEST');
+
+  const allowedMatchUpFormats = tournamentEngine.allowedMatchUpFormats();
+  expect(allowedMatchUpFormats.length).toEqual(1);
+  expect(allowedMatchUpFormats[0]).toEqual(
+    scoringPolicy.scoring.allowedMatchUpFormats[0]
+  );
 });

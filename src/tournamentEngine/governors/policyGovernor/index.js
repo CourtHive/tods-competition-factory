@@ -1,6 +1,6 @@
 import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
-import { allowedDrawTypes, allowedScoringFormats } from './allowedTypes';
+import { allowedDrawTypes, allowedMatchUpFormats } from './allowedTypes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -67,7 +67,7 @@ function validDefinitionKeys(definition) {
 const policyGovernor = {
   attachPolicy,
   allowedDrawTypes,
-  allowedScoringFormats,
+  allowedMatchUpFormats,
 };
 
 export default policyGovernor;

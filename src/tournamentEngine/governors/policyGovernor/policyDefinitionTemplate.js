@@ -1,6 +1,6 @@
 export const policyTemplate = () => ({
   scoring: {
-    allowedScoringFormats: undefined,
+    allowedMatchUpFormats: undefined,
   },
   draws: {
     allowedDrawTypes: undefined,
