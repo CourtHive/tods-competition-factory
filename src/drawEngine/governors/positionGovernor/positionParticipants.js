@@ -2,6 +2,7 @@ import { shuffleArray } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
@@ -64,8 +65,9 @@ export function positionUnseededParticipants({
       structureId,
       participants,
       drawDefinition,
-      unseededParticipantIds,
+      positionAssignments,
       unfilledDrawPositions,
+      unseededParticipantIds,
     });
   } else {
     return randomUnseededDistribution({
@@ -94,16 +96,5 @@ function randomUnseededDistribution({
     });
     if (result && result.error) return result;
   }
-  return SUCCESS;
-}
-
-function randomUnseededSeparation({
-  avoidance,
-  participants,
-  unseededParticipantIds,
-  unfilledDrawPositions,
-}) {
-  console.log({ avoidance, participants });
-  console.log(unseededParticipantIds.length, unfilledDrawPositions.length);
   return SUCCESS;
 }
