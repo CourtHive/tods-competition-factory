@@ -7,9 +7,7 @@ import {
   ELIMINATION,
   FEED_IN,
 } from '../../../constants/drawDefinitionConstants';
-
-import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 export function generateDrawStructure({
   automated,
@@ -49,7 +47,6 @@ export function generateDrawStructure({
   const { structureId } = structure || {};
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   if (participants && participantsCount !== undefined) {
     participants = participants.slice(0, participantsCount);
@@ -118,7 +115,6 @@ export function generateFeedIn({
   const { structureId } = structure;
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `ko-uuid${i + 1}`,

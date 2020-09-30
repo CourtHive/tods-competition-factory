@@ -8,7 +8,7 @@ import {
   ROUND_ROBIN,
 } from '../../constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from '../../fixtures/SEEDING_USTA';
+import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
 import { ALTERNATE, RANKING } from '../../constants/participantConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
@@ -156,7 +156,11 @@ export function generateDrawDefinition(props) {
     });
   }
 
-  if (automated !== false) drawEngine.automatedPositioning({ structureId });
+  if (automated !== false)
+    drawEngine.automatedPositioning({
+      structureId,
+      participants: tournamentRecord?.participants,
+    });
 
   const { drawDefinition } = drawEngine.getState();
 

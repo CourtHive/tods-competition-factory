@@ -4,13 +4,12 @@ import { drawEngine } from '../../../drawEngine';
 import { generateRange } from '../../../utilities';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 
-import SEEDING_POLICY from '../../../fixtures/SEEDING_USTA';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 import {
   MAIN,
   ROUND_ROBIN,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_USTA';
 
 it('can generate and verify round robin structures', () => {
   let structureId;
@@ -150,7 +149,6 @@ function generateRoundRobin({
   drawEngine.newDrawDefinition();
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.generateDrawType({

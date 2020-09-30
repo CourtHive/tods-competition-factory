@@ -2,7 +2,7 @@ import { drawEngine } from '../..';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import ITF_SEEDING from '../../../fixtures/SEEDING_ITF';
+import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 
 it('can set and reset policy governor', () => {
   expect(drawEngine).toHaveProperty('attachPolicy');

@@ -6,7 +6,11 @@ import { findStructure } from '../../getters/findStructure';
 
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 
-export function automatedPositioning({ drawDefinition, structureId }) {
+export function automatedPositioning({
+  drawDefinition,
+  participants,
+  structureId,
+}) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { errors: [error] };
 
@@ -24,6 +28,7 @@ export function automatedPositioning({ drawDefinition, structureId }) {
     }));
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
+      participants,
       structure,
     }));
   } else {
@@ -31,6 +36,7 @@ export function automatedPositioning({ drawDefinition, structureId }) {
     // can follow the seedValues of placed seeds
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
+      participants,
       structure,
     }));
     ({ error: byePositionError } = positionByes({
@@ -41,10 +47,12 @@ export function automatedPositioning({ drawDefinition, structureId }) {
 
   const { error: unseededPositionError } = positionUnseededParticipants({
     drawDefinition,
+    participants,
     structure,
   });
   const { error: qualifierPositionError } = positionQualifiers({
     drawDefinition,
+    participants,
     structure,
   });
 

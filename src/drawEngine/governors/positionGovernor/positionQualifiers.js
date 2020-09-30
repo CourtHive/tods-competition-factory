@@ -7,7 +7,7 @@ import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionQualifiers(props) {
-  let { structure, structureId } = props;
+  let { structure, structureId } = props; // participants is being passed in
   if (!structure) ({ structure } = findStructure(props));
   if (!structureId) ({ structureId } = structure);
   if (structure.stage === CONSOLATION) {

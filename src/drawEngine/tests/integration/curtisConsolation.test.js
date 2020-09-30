@@ -8,8 +8,7 @@ import {
   CONSOLATION,
   CURTIS,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId,
@@ -175,7 +174,6 @@ function generateCurtis({
   const { structureId: consolation2ndStructureId } = consolation2ndStructure;
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `ko-uuid${i + 1}`,

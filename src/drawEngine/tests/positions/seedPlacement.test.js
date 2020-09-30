@@ -5,6 +5,7 @@ import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import {
@@ -14,9 +15,8 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
-import ITF_SEEDING from '../../../fixtures/SEEDING_ITF';
-import USTA_SEEDING from '../../../fixtures/SEEDING_USTA';
-import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
+import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;

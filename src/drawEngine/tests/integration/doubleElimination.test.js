@@ -14,8 +14,7 @@ import {
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyLinks } from '../../tests/primitives/verifyLinks';
 
-import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 it('can generate and verify double elimination', () => {
   const {
@@ -134,7 +133,6 @@ function generateDouble({
   const { structureId: deciderStructureId } = { ...deciderStructure };
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `ko-uuid${i + 1}`,

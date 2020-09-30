@@ -1,4 +1,4 @@
-import { MAIN } from '../constants/drawDefinitionConstants';
+import { MAIN } from '../../constants/drawDefinitionConstants';
 
 /**
  * default SCORING_POLICY requires all stage:MAIN, stageSequence:1 drawPositions to be assigned **BEFORE** scoring is enabled,

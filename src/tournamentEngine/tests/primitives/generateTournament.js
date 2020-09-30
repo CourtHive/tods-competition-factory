@@ -5,14 +5,23 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 export function tournamentRecordWithParticipants({
-  startDate,
   endDate,
+  startDate,
+
+  addressProps,
+  nationalityCodes,
+  nationalityCodesCount,
+
   participantsCount,
   matchUpType = SINGLES,
 }) {
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
   const { participants } = generateFakeParticipants({
+    nationalityCodesCount,
+    nationalityCodes,
+    addressProps,
+
     participantsCount,
     matchUpType,
   });

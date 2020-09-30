@@ -3804,12 +3804,6 @@
             ],
             "49": []
           }
-        },
-        "avoidance": {
-          "policyName": "Person",
-          "policyAttributes": [
-            "country"
-          ]
         }
       }
     }

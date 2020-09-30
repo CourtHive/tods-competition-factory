@@ -3,9 +3,8 @@ import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   const writeFile = process.env.TMX_TEST_FILES;
@@ -246,7 +245,6 @@ function generateCompass({
   const { structureId } = structure;
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `ko-uuid${i + 1}`,

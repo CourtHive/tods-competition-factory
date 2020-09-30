@@ -7,8 +7,7 @@ import {
   ELIMINATION,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/SEEDING_ITF';
-import AVOIDANCE_POLICY from '../../../fixtures/AVOIDANCE_COUNTRY';
+import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 export function generateEliminationWithQualifying({
   qualifyingRound,
@@ -31,7 +30,6 @@ export function generateEliminationWithQualifying({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-  drawEngine.attachPolicy({ policyDefinition: AVOIDANCE_POLICY });
 
   drawEngine.setStageDrawSize({
     stage: QUALIFYING,

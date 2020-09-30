@@ -2,7 +2,7 @@ import { tournamentRecordWithParticipants } from './primitives/generateTournamen
 import { tournamentEngine } from '../../tournamentEngine';
 import { drawEngine } from '../../drawEngine';
 
-import ITF_SEEDING_POLICY from '../../fixtures/SEEDING_ITF';
+import ITF_SEEDING_POLICY from '../../fixtures/seeding/SEEDING_ITF';
 import { eventConstants } from '../../constants/eventConstants';
 import { resultConstants } from '../../constants/resultConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';

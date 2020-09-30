@@ -32,9 +32,10 @@ export function getStructurePositionedSeeds({ structure }) {
 
 export function positionSeedBlocks({
   drawDefinition,
-  structure,
-  structureId,
+  participants,
   groupsCount,
+  structureId,
+  structure,
 }) {
   const errors = [];
   let placedSeedBlocks = 0;
@@ -56,6 +57,7 @@ export function positionSeedBlocks({
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
         drawDefinition,
+        participants,
         structureId,
       });
       if (result && result.success) placedSeedBlocks++;
@@ -67,12 +69,18 @@ export function positionSeedBlocks({
   return { errors };
 }
 
-function positionSeedBlock({ drawDefinition, structureId }) {
+function positionSeedBlock({ drawDefinition, structureId, participants }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     drawDefinition,
     structureId,
     randomize: true,
   });
+
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { avoidance } = appliedPolicies || {};
+  if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
+    console.log('seed placement avoidance');
+  }
 
   for (const participantId of unplacedSeedParticipantIds) {
     const drawPosition = unfilledPositions.pop();

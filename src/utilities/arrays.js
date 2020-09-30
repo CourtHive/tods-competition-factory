@@ -46,7 +46,11 @@ function onlyUnique(value, index, self) {
 export function uniqueValues(arr) {
   return arr.filter(onlyUnique);
 }
-
+export function randomPop(array) {
+  return Array.isArray(array) && array.length
+    ? array.splice(Math.floor(Math.random() * array.length), 1)[0]
+    : undefined;
+}
 export function randomMember(arr) {
   const index = Math.floor(Math.random() * arr.length);
   return arr[index];
@@ -77,11 +81,6 @@ export function intersection(a, b) {
   return a
     .filter(n => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
-}
-export function randomPop(array) {
-  return Array.isArray(array) && array.length
-    ? array.splice(Math.floor(Math.random() * array.length), 1)[0]
-    : undefined;
 }
 export function occurrences(val, arr) {
   return (

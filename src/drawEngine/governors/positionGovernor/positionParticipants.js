@@ -11,11 +11,13 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { assignDrawPosition } from './positionAssignment';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 export function positionUnseededParticipants({
   drawDefinition,
-  structure,
+  participants,
   structureId,
+  structure,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -54,11 +56,13 @@ export function positionUnseededParticipants({
     return { error: 'Insufficient drawPositions to accommodate entries' };
   }
 
-  // check if drawDefinition has an avoidance policy
-  const teamSeparation = false;
-  if (teamSeparation) {
+  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { avoidance } = appliedPolicies || {};
+  if (avoidance && participants) {
     return randomUnseededSeparation({
+      avoidance,
       structureId,
+      participants,
       drawDefinition,
       unseededParticipantIds,
       unfilledDrawPositions,
@@ -94,10 +98,12 @@ function randomUnseededDistribution({
 }
 
 function randomUnseededSeparation({
-  // structureId,
+  avoidance,
+  participants,
   unseededParticipantIds,
   unfilledDrawPositions,
 }) {
+  console.log({ avoidance, participants });
   console.log(unseededParticipantIds.length, unfilledDrawPositions.length);
   return SUCCESS;
 }
