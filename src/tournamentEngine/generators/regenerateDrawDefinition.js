@@ -1,5 +1,6 @@
 import { getDrawDefinition } from '../getters/eventGetter';
 import { generateDrawDefinition } from './generateDrawDefinition';
+import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function regenerateDrawDefinition({
@@ -16,11 +17,15 @@ export function regenerateDrawDefinition({
   if (!event) return { error: 'Missing Event' };
   if (!drawDefinition) return { error: 'Draw not found' };
 
+  const { appliedPolicies: policyDefinitions } = getAppliedPolicies({
+    drawDefinition,
+  });
   if (drawDefinition.drawProfile) {
     const { drawDefinition: newDrawDefinition } = generateDrawDefinition({
-      tournamentRecord,
-      drawEngine,
       event,
+      drawEngine,
+      tournamentRecord,
+      policyDefinitions,
       ...drawDefinition.drawProfile,
     });
 
