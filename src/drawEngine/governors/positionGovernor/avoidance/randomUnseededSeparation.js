@@ -14,14 +14,15 @@ import {
 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { intersection } from '../../../../utilities/arrays';
 
 /**
  *
  * @param {object} avoidance - an avoidance policy
  * @param {string} structureId - id of the structure within a drawDefinition in which participantIds will be assigned drawPositions
- * @param {array} participants - all tournament participants; used to access attribute values for grouping
+ * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
  * @param {object} drawDefinition - object containing the definition of a draw including all entries, structures and links
- * @param {array} unseededParticipantIds - participantIds which are to be assigned drawPositions
+ * @param {string[]} unseededParticipantIds - participantIds which are to be assigned drawPositions
  *
  */
 export function randomUnseededSeparation({
@@ -116,7 +117,6 @@ export function randomUnseededSeparation({
       checkDrawPositionsChunk({
         allGroups,
         unfilledPositions,
-        drawPositionPairs,
         positionAssignments,
         chunkedDrawPositions,
         groupsToAvoid: selectedParticipantGroups,
@@ -149,27 +149,60 @@ function getParticipantGroups({ allGroups, participantId }) {
   );
 }
 
+/**
+ *
+ * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
+ * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
+ * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
+ * @param {object[]} positionAssignments - array of assignment objects
+ * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
+ */
 function checkDrawPositionsChunk({
   allGroups,
-  unfilledPositions,
-  positionAssgnments,
   groupsToAvoid,
+  unfilledPositions,
+  positionAssignments,
   chunkedDrawPositions,
 }) {
+  const profiledPositions = Object.assign(
+    {},
+    ...positionAssignments
+      .filter(assignment => assignment?.participantId)
+      .map(assginment => {
+        const { drawPosition, participantId } = assginment;
+        const participantGroups = getParticipantGroups({
+          allGroups,
+          participantId,
+        });
+        const includesGroupsToAvoid = !!intersection(
+          groupsToAvoid,
+          participantGroups
+        ).length;
+        return { [drawPosition]: { participantGroups, includesGroupsToAvoid } };
+      })
+  );
+
   const checkedChunk = chunkedDrawPositions.map(chunkedGrouping => {
     const unassigned = unfilledPositions.filter(unfilledPosition =>
       chunkedGrouping.includes(unfilledPosition)
     );
     const unpaired = unpairedPositions(unassigned);
-    return { unassigned, unpaired };
+    const paired = unassigned.filter(
+      drawPosition => !unpaired.includes(drawPosition)
+    );
+    const pairedNoConflict = paired.filter(drawPosition => {
+      const pairedPosition = getPairedPosition(drawPosition);
+      return !profiledPositions[pairedPosition].includesGroupsToAvoid;
+    });
+    return { unassigned, unpaired, pairedNoConflict };
   });
   return checkedChunk;
 
   function unpairedPositions(unassigned) {
     return unassigned.filter(u => !pairAssigned(u));
 
-    function pairAssigned(position) {
-      const pairedPosition = position % 2 ? position + 1 : position - 1;
+    function pairAssigned(drawPosition) {
+      const pairedPosition = getPairedPosition(drawPosition);
       return !unassigned.includes(pairedPosition);
     }
   }
@@ -177,9 +210,19 @@ function checkDrawPositionsChunk({
 
 /**
  *
- * @param {array} participants - all tournament participants; used to access attribute values for grouping
- * @param {array} policyAtributtes - participant attributes to be processed to create groupings
- * @param {array} targetParticipantIds - participantIds to be processed
+ * @param {string} drawPosition
+ *
+ * Returns paired position for first round matches in elimination structures
+ */
+function getPairedPosition(drawPosition) {
+  return drawPosition % 2 ? drawPosition + 1 : drawPosition - 1;
+}
+
+/**
+ *
+ * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
+ * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
+ * @param {string[]} targetParticipantIds - participantIds to be processed
  * @param {string} groupKey - OPTIONAL - specify default grouping
  *
  * @param {boolean} useSpecifiedGroupKey - defaults to true; use specified group key, if present
@@ -226,8 +269,8 @@ function getNextParticipantId({
 
 /**
  *
- * @param {array} participantIds
- * @param {array} positionAssignments - assignment objects which associate drawPositions with participantIds
+ * @param {string[]} participantIds
+ * @param {string[]} positionAssignments - assignment objects which associate drawPositions with participantIds
  *
  * Returns an array of participantsIds which have not been assigned
  */
@@ -242,8 +285,8 @@ function getUnplacedParticipantIds({ participantIds, positionAssignments }) {
 
 /**
  *
- * @param {array} matchUps
- * @param {array} positionAssignments - assignment objects which associate drawPositions with participantIds
+ * @param {object[]} matchUps
+ * @param {object[]} positionAssignments - assignment objects which associate drawPositions with participantIds
  *
  * Returns an array of drawPositions which have not been filled
  */
