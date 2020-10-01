@@ -6,7 +6,7 @@ import { countValues, numericSort } from '../../utilities';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
 // TODO: write unit test for this method
-// active drawPositions occur more than once in the mmatchUps of a structure
+// active drawPositions occur more than once in the matchUps of a structure
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });

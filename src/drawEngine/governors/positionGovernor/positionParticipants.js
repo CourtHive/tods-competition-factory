@@ -65,8 +65,6 @@ export function positionUnseededParticipants({
       structureId,
       participants,
       drawDefinition,
-      positionAssignments,
-      unfilledDrawPositions,
       unseededParticipantIds,
     });
   } else {

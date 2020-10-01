@@ -106,9 +106,9 @@ export function generateFakeParticipants({
 function generateAddress(addressAttributes) {
   const { cities, states, postalCodes, nationalityCode } = addressAttributes;
   const address = {
-    city: randomMember(cities),
-    state: randomMember(states),
-    postalCode: randomMember(postalCodes),
+    city: cities && randomMember(cities),
+    state: states && randomMember(states),
+    postalCode: postalCodes && randomMember(postalCodes),
     countryCode: nationalityCode,
   };
   return address;

@@ -2,7 +2,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 import { generateFakeParticipants } from '../../generators/fakerParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES, DOUBLES } from '../../../constants/eventConstants';
 
 export function tournamentRecordWithParticipants({
   endDate,
@@ -25,7 +25,12 @@ export function tournamentRecordWithParticipants({
     participantsCount,
     matchUpType,
   });
-  expect(participants.length).toEqual(participantsCount);
+
+  if (matchUpType === SINGLES) {
+    expect(participants.length).toEqual(participantsCount);
+  } else if (matchUpType === DOUBLES) {
+    expect(participants.length).toEqual(participantsCount * 3);
+  }
 
   const result = tournamentEngine.addParticipants({ participants });
   expect(result).toMatchObject(SUCCESS);

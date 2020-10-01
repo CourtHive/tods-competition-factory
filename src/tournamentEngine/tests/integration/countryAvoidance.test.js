@@ -7,7 +7,7 @@ import {
 } from '../../..';
 
 const { SUCCESS } = resultConstants;
-const { SINGLES } = eventConstants;
+const { SINGLES, DOUBLES } = eventConstants;
 
 const { avoidance } = fixtures;
 const { AVOIDANCE_COUNTRY } = avoidance;
@@ -18,7 +18,10 @@ it('can generate drawDefinition using country avoidance', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
+
+    matchUpType: DOUBLES,
     participantsCount: 32,
+
     nationalityCodesCount: 10,
     addressProps: {
       citiesCount: 10,

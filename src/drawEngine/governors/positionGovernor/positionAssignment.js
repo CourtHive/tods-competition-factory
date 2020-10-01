@@ -63,7 +63,7 @@ export function assignDrawPosition({
     }
   });
 
-  return SUCCESS;
+  return Object.assign({ positionAssignments }, SUCCESS);
 
   function drawPositionFilled(positionState) {
     const containsBye = positionState.bye;

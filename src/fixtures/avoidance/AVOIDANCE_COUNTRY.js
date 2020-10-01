@@ -1,7 +1,11 @@
 export const AVOIDANCE_COUNTRY = {
   avoidance: {
+    avoidanceMode: 'maximum', // maximum || firstRound
     policyName: 'Nationality Code',
-    policyAttributes: ['person.nationalityCode'],
+    policyAttributes: [
+      'person.nationalityCode',
+      'individualParticipants.person.nationalityCode',
+    ],
   },
 };
 
