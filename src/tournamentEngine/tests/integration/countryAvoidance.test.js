@@ -1,10 +1,12 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { extractAttributeValues } from '../../../drawEngine/getters/getAttributeGrouping';
 import {
   fixtures,
   tournamentEngine,
   resultConstants,
   eventConstants,
 } from '../../..';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 const { SUCCESS } = resultConstants;
 const { SINGLES, DOUBLES } = eventConstants;
@@ -42,7 +44,9 @@ it('can generate drawDefinition using country avoidance', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants
+    .filter(participant => participant.participantType === INDIVIDUAL)
+    .map(p => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -62,11 +66,20 @@ it('can generate drawDefinition using country avoidance', () => {
       [participant.participantId]: participant,
     }))
   );
-  const positionedParticipants = positionAssignments.map(assignment =>
-    Object.assign({}, assignment, {
-      participant: participantsMap[assignment.participantId],
-    })
-  );
+
+  const { policyAttributes } = AVOIDANCE_COUNTRY.avoidance;
+  const positionedParticipants = positionAssignments.map(assignment => {
+    const participant = participantsMap[assignment.participantId];
+    const { values } = extractAttributeValues({
+      participant,
+      policyAttributes,
+    });
+    return Object.assign({}, assignment, {
+      participant,
+      values,
+    });
+  });
+
   console.log(positionedParticipants);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });

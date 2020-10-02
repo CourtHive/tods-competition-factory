@@ -2,9 +2,9 @@ import { unique } from '../../utilities';
 
 /**
  *
- * @param {array} participants - all tournament participants; used to access attribute values for grouping
- * @param {array} policyAtributtes - participant attributes to be processed to create groupings
- * @param {array} targetParticipantIds - participantIds to be processed
+ * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
+ * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
+ * @param {string[]} targetParticipantIds - participantIds to be processed
  *
  * Each policyAttribute is a string definining how to access the nested participant attribute to be accessed
  * 'person.nationalityCode' targets => { participant: { person: { natinalityCode }}}
@@ -46,6 +46,12 @@ export function getAttributeGroupings({
   return groupings;
 }
 
+/**
+ *
+ * @param {string[]} policyAtributtes - participant attributes to be processed to create groupings
+ * @param {object} participant - participant from which attribute values will be extracted
+ *
+ */
 export function extractAttributeValues({ policyAttributes, participant }) {
   if (!Array.isArray(policyAttributes)) {
     return { error: 'Missing policyAttributes' };
@@ -61,7 +67,8 @@ export function extractAttributeValues({ policyAttributes, participant }) {
     processKeys({ value, keys });
   });
 
-  return { values: unique(extractedValues) };
+  const values = unique(extractedValues);
+  return { values };
 
   function processKeys({ value, keys }) {
     for (const [index, key] of keys.entries()) {
