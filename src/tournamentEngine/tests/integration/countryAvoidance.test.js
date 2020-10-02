@@ -115,7 +115,7 @@ it('can generate Singles drawDefinition using country avoidance', () => {
 
   const event = {
     eventName: 'Test Event',
-    eventType: DOUBLES,
+    eventType: SINGLES,
   };
 
   result = tournamentEngine.addEvent({ event });
