@@ -14,7 +14,7 @@ import {
 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { intersection } from '../../../../utilities/arrays';
+import { intersection, randomPop } from '../../../../utilities/arrays';
 
 /**
  *
@@ -23,6 +23,7 @@ import { intersection } from '../../../../utilities/arrays';
  * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
  * @param {object} drawDefinition - object containing the definition of a draw including all entries, structures and links
  * @param {string[]} unseededParticipantIds - participantIds which are to be assigned drawPositions
+ * @param {number} roundsToSeparate - number of rounds to consider for avoidance; defaults to max
  *
  */
 export function randomUnseededSeparation({
@@ -32,7 +33,11 @@ export function randomUnseededSeparation({
   drawDefinition,
   unseededParticipantIds,
 }) {
+  // policyAttributes determines participant attributes which are to be used for avoidance
   const policyAttributes = avoidance?.policyAttributes;
+  // roundsToSeparate determines desired degree of separation between players with matching attribute values
+  const roundsToSeparate = avoidance?.roundsToSeparate;
+
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure });
   const {
@@ -58,16 +63,24 @@ export function randomUnseededSeparation({
     drawPositon => drawPositon > greatestFirstRoundDrawPosition
   );
 
-  // TODO: calculate chunking for fed drawPositions
-  if (fedDrawPositions.length) console.log({ fedDrawPositions });
-
   const structureSize = firstRoundMatchUpDrawPositions.length;
-  const chunkSizes = generateRange(2, structureSize)
-    .filter(f => f === nearestPowerOf2(f))
+  const roundSizes = generateRange(2, structureSize).filter(
+    f => f === nearestPowerOf2(f)
+  );
+
+  const chunkSizes = roundSizes
+    .slice(0, roundsToSeparate || roundSizes.length)
     .reverse();
   const drawPositionsChunks = chunkSizes.map(size =>
     chunkArray(firstRoundMatchUpDrawPositions, size)
   );
+
+  if (fedDrawPositions.length) {
+    // TODO: calculate chunking for fed drawPositions and add to appropriate drawPositionChunks
+    // This calculation will be based on "{ roundPosition, roundNumber } = matchUp"
+    // ...for matchUps which include fedDrawPositions
+    console.log({ fedDrawPositions });
+  }
 
   const allGroups = getAttributeGroupings({
     participants,
@@ -113,17 +126,32 @@ export function randomUnseededSeparation({
       participantId: selectedParticipantId,
     });
 
-    const vettedChunks = drawPositionsChunks.map(chunkedDrawPositions =>
-      checkDrawPositionsChunk({
-        allGroups,
-        unfilledPositions,
-        positionAssignments,
-        chunkedDrawPositions,
-        groupsToAvoid: selectedParticipantGroups,
-      })
-    );
-    const targetDrawPosition = randomMember(unfilledPositions);
-    console.log(vettedChunks);
+    const drawPositionOptions = organizeDrawPositionOptions({
+      allGroups,
+      unfilledPositions,
+      drawPositionsChunks,
+      positionAssignments,
+      selectedParticipantGroups,
+    });
+    const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
+
+    // desiredOptions are selected as follows:
+    // 1. unpaired positions
+    // 2. paired positions which have no conflict
+
+    // the first element of each options array represents the greatest possible round separation
+
+    const desiredOptions =
+      (unpaired?.length && unpaired[0]) ||
+      (pairedNoConflict?.length && pairedNoConflict[0]);
+
+    let targetDrawPosition;
+    if (desiredOptions) {
+      const section = randomPop(desiredOptions);
+      targetDrawPosition = randomPop(section);
+    } else {
+      targetDrawPosition = randomPop(unassigned.flat());
+    }
 
     const result = assignDrawPosition({
       drawDefinition,
@@ -154,10 +182,78 @@ function getParticipantGroups({ allGroups, participantId }) {
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
  * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
  * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
+ * @param {object[]} drawPositionsChunks - ranges of drawPositions grouped by levels of separation
+ * @param {object[]} positionAssignments - array of assignment objects
+ *
+ * Returns different types of placement options.
+ * Similar to analyzeDraawPositions, but aggregates options.
+ * Options are arranged from largest to smallest chunk sizes.
+ * To achieve maximum separation start with largest chunk sizes.
+ *
+ * 1. positions which are unassigned
+ * 2. unassigned positions which are not paired with any other participantId
+ * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
+ *
+ */
+function organizeDrawPositionOptions({
+  allGroups,
+  unfilledPositions,
+  drawPositionsChunks,
+  positionAssignments,
+  selectedParticipantGroups,
+}) {
+  const vettedChunks = drawPositionsChunks.map(chunkedDrawPositions =>
+    analyzeDrawPositions({
+      allGroups,
+      unfilledPositions,
+      positionAssignments,
+      chunkedDrawPositions,
+      groupsToAvoid: selectedParticipantGroups,
+    })
+  );
+
+  // each type of vettedChunk is first extracted and filtered...
+  // ...then combined with others of the same type and filtered
+  const unassigned = vettedChunks
+    .map(chunk =>
+      chunk
+        .map(grouping => grouping.unassigned)
+        .filter(unassigned => unassigned?.length)
+    )
+    .filter(f => f?.length);
+  const unpaired = vettedChunks
+    .map(chunk =>
+      chunk
+        .map(grouping => grouping.unpaired)
+        .filter(unpaired => unpaired?.length)
+    )
+    .filter(f => f?.length);
+  const pairedNoConflict = vettedChunks
+    .map(chunk =>
+      chunk
+        .map(grouping => grouping.pairedNoConflict)
+        .filter(pairedNoConflict => pairedNoConflict?.length)
+    )
+    .filter(f => f?.length);
+
+  return { unassigned, unpaired, pairedNoConflict };
+}
+
+/**
+ *
+ * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
+ * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
+ * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
  * @param {object[]} positionAssignments - array of assignment objects
  * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
+ *
+ * Returns different types of placement options.
+ * 1. positions which are unassigned
+ * 2. unassigned positions which are not paired with any other participantId
+ * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
+ *
  */
-function checkDrawPositionsChunk({
+function analyzeDrawPositions({
   allGroups,
   groupsToAvoid,
   unfilledPositions,
@@ -196,6 +292,7 @@ function checkDrawPositionsChunk({
     });
     return { unassigned, unpaired, pairedNoConflict };
   });
+
   return checkedChunk;
 
   function unpairedPositions(unassigned) {
