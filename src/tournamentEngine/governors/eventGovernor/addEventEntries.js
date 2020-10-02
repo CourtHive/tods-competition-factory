@@ -57,5 +57,10 @@ export function addEventEntries(props) {
     }
   });
 
-  return SUCCESS;
+  const invalidParticipantIds = !!(
+    validParticipantIds.length !== participantIds.length
+  );
+  return !invalidParticipantIds
+    ? SUCCESS
+    : { error: 'Invalid participant types' };
 }
