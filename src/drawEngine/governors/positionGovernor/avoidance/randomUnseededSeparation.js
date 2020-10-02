@@ -33,10 +33,15 @@ export function randomUnseededSeparation({
   drawDefinition,
   unseededParticipantIds,
 }) {
+  if (!avoidance) {
+    return { error: 'Missing avoidance policy' };
+  }
+  const { policyAttributes, roundsToSeparate, pairedPriority } = avoidance;
+
   // policyAttributes determines participant attributes which are to be used for avoidance
-  const policyAttributes = avoidance?.policyAttributes;
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
-  const roundsToSeparate = avoidance?.roundsToSeparate;
+  // pairedPriority determines whether to prioritize positions which are paired with a non-conflicting participant or unpaired positions
+  // pairedPriority is true by default and pairs with no conflict are ony de-prioritiezed if pairedPriority === false
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure });
@@ -142,12 +147,16 @@ export function randomUnseededSeparation({
     // the first element of each options array represents the greatest possible round separation
 
     const desiredOptions =
-      (unpaired?.length && unpaired[0]) ||
-      (pairedNoConflict?.length && pairedNoConflict[0]);
+      (pairedNoConflict?.length && pairedNoConflict[0]) ||
+      (unpaired?.length && unpaired[0]);
+
+    const prioritizedOptions =
+      desiredOptions &&
+      (pairedPriority === false ? desiredOptions.reverse() : desiredOptions);
 
     let targetDrawPosition;
-    if (desiredOptions) {
-      const section = randomPop(desiredOptions);
+    if (prioritizedOptions) {
+      const section = randomPop(prioritizedOptions);
       targetDrawPosition = randomPop(section);
     } else {
       targetDrawPosition = randomPop(unassigned.flat());

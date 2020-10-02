@@ -55,6 +55,20 @@ it('can generate drawDefinition using country avoidance', () => {
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 
+  const { positionAssignments } = drawDefinition.structures[0];
+  const participantsMap = Object.assign(
+    {},
+    ...participants.map(participant => ({
+      [participant.participantId]: participant,
+    }))
+  );
+  const positionedParticipants = positionAssignments.map(assignment =>
+    Object.assign({}, assignment, {
+      participant: participantsMap[assignment.participantId],
+    })
+  );
+  console.log(positionedParticipants);
+
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 });

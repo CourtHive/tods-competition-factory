@@ -1,3 +1,5 @@
+import { unique } from '../../utilities';
+
 /**
  *
  * @param {array} participants - all tournament participants; used to access attribute values for grouping
@@ -29,42 +31,62 @@ export function getAttributeGroupings({
     const participant = participants.find(
       candidate => candidate.participantId === participantId
     );
-    policyAttributes.forEach(policyAttribute => {
-      const value = participant;
-      const keys = policyAttribute.split('.');
 
-      processKeys({ value, keys });
+    const { values } = extractAttributeValues({
+      participant,
+      policyAttributes,
     });
-
-    function processKeys({ value, keys }) {
-      for (const [index, key] of keys.entries()) {
-        if (value && value[key]) {
-          if (Array.isArray(value[key])) {
-            const values = value[key];
-            const remainingKeys = keys.slice(index);
-            values.forEach(nestedValue =>
-              processKeys({ value: nestedValue, keys: remainingKeys })
-            );
-          } else {
-            value = value[key];
-            checkValue({ value, index });
-          }
-        }
+    values.forEach(value => {
+      if (!groupings[value]) groupings[value] = [];
+      if (!groupings[value].includes(participantId)) {
+        groupings[value].push(participantId);
       }
+    });
+  });
+  return groupings;
+}
 
-      function checkValue({ value, index }) {
-        if (
-          value &&
-          index === keys.length - 1 &&
-          ['string', 'number'].includes(typeof value)
-        ) {
-          if (!groupings[value]) groupings[value] = [];
-          if (!groupings[value].includes(participantId)) {
-            groupings[value].push(participantId);
-          }
+export function extractAttributeValues({ policyAttributes, participant }) {
+  if (!Array.isArray(policyAttributes)) {
+    return { error: 'Missing policyAttributes' };
+  }
+  if (!participant) {
+    return { error: 'Missing participant' };
+  }
+  const extractedValues = [];
+  policyAttributes.forEach(policyAttribute => {
+    const value = participant;
+    const keys = policyAttribute.split('.');
+
+    processKeys({ value, keys });
+  });
+
+  return { values: unique(extractedValues) };
+
+  function processKeys({ value, keys }) {
+    for (const [index, key] of keys.entries()) {
+      if (value && value[key]) {
+        if (Array.isArray(value[key])) {
+          const values = value[key];
+          const remainingKeys = keys.slice(index);
+          values.forEach(nestedValue =>
+            processKeys({ value: nestedValue, keys: remainingKeys })
+          );
+        } else {
+          value = value[key];
+          checkValue({ value, index });
         }
       }
     }
-  });
-  return groupings;
+
+    function checkValue({ value, index }) {
+      if (
+        value &&
+        index === keys.length - 1 &&
+        ['string', 'number'].includes(typeof value)
+      ) {
+        extractedValues.push(value);
+      }
+    }
+  }
 }

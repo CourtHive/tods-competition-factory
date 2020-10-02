@@ -1,5 +1,6 @@
 export const AVOIDANCE_COUNTRY = {
   avoidance: {
+    pairedPriority: true,
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
     policyAttributes: [
