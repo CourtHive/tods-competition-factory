@@ -9,8 +9,6 @@ import {
 
 export function addParticipantContext({ participants }) {
   const participantsWithContext = makeDeepCopy(participants);
-  return participantsWithContext;
-  /*
   const teamParticipants = participantsWithContext.filter(
     participant => participant.participantType === TEAM
   );
@@ -22,12 +20,33 @@ export function addParticipantContext({ participants }) {
   );
   participantsWithContext.forEach(participant => {
     const { participantId } = participant;
+    participant.teamParticipantIds = [];
+    participant.groupParticipantIds = [];
+    participant.pairedParticipantIds = [];
+
     if (participant.participantType === INDIVIDUAL) {
+      teamParticipants.forEach(team => {
+        (team?.individualParticipants || []).forEach(ip => {
+          if (ip.participantId === participantId) {
+            participant.teamParticipantIds.push(ip.participantId);
+          }
+        });
+      });
       pairParticipants.forEach(pair => {
-        if (pair?.individualParticipants) {
-        }
+        (pair?.individualParticipants || []).forEach(ip => {
+          if (ip.participantId === participantId) {
+            participant.pairedParticipantIds.push(ip.participantId);
+          }
+        });
+      });
+      groupParticipants.forEach(group => {
+        (group?.individualParticipants || []).forEach(ip => {
+          if (ip.participantId === participantId) {
+            participant.groupParticipantIds.push(ip.participantId);
+          }
+        });
       });
     }
   });
-  */
+  return participantsWithContext;
 }

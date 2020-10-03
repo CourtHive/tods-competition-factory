@@ -45,12 +45,18 @@ export function automatedPositioning({
     }));
   }
 
-  const { error: unseededPositionError } = positionUnseededParticipants({
+  const {
+    error: unseededPositionError,
+    conflicts: unseededConflicts,
+  } = positionUnseededParticipants({
     drawDefinition,
     participants,
     structure,
   });
-  const { error: qualifierPositionError } = positionQualifiers({
+  const {
+    error: qualifierPositionError,
+    conflicts: qualifierConflicts,
+  } = positionQualifiers({
     drawDefinition,
     participants,
     structure,
@@ -61,5 +67,6 @@ export function automatedPositioning({
   if (qualifierPositionError) errors.push(qualifierPositionError);
   if (unseededPositionError) errors.push(unseededPositionError);
 
-  return { errors };
+  const conflicts = { unseededConflicts, qualifierConflicts };
+  return { errors, conflicts };
 }

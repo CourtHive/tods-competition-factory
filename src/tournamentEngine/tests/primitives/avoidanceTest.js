@@ -1,0 +1,65 @@
+import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { tournamentEngine, resultConstants } from '../../..';
+
+const { SUCCESS } = resultConstants;
+
+/**
+ *
+ * @param {object} avoidance - an avoidance policy
+ * @param {string} eventType - DOUBLES or SINGLES; controls what type of event is generated
+ * @param {string} participantType = INDIVIDUAL or PAIR; used to filter participants for draw generation
+ *
+ */
+
+export function avoidanceTest(props) {
+  const { avoidance, eventType, participantType } = props;
+  const { valuesCount = 10, participantsCount = 32 } = props;
+
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+
+    participantType,
+    participantsCount,
+
+    nationalityCodesCount: valuesCount,
+    addressProps: {
+      citiesCount: valuesCount,
+      statesCount: valuesCount,
+      postalCodesCount: valuesCount,
+    },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const event = {
+    eventName: 'Test Event',
+    eventType,
+  };
+
+  let result = tournamentEngine.addEvent({ event });
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
+  expect(success).toEqual(true);
+
+  const participantIds = participants
+    .filter(participant => participant.participantType === participantType)
+    .map(p => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result).toEqual(SUCCESS);
+
+  const values = {
+    automated: true,
+    drawSize: 32,
+    eventId,
+    event: eventResult,
+    policyDefinitions: [{ avoidance }],
+  };
+  const { conflicts, drawDefinition } = tournamentEngine.generateDrawDefinition(
+    values
+  );
+
+  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+  expect(result).toEqual(SUCCESS);
+  return { conflicts };
+}

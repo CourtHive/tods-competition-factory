@@ -40,7 +40,6 @@ In this case the **policydefinition** specifies that participants in the generat
 ```js
 export const AVOIDANCE_COUNTRY = {
   avoidance: {
-    pairedPriority: true,
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
     policyAttributes: [
@@ -52,8 +51,6 @@ export const AVOIDANCE_COUNTRY = {
 ```
 
 **policyName** is not required but useful for identifying a policy which has been attached to a **drawDefinition**
-
-**pairedPriority** determines whether to prioritize positions which are paired with a non-conflicting participant or unpaired positions; true by default and pairs with no conflict are ony de-prioritiezed if pairedPriority === false. The logic is that the sooner participants are paired with a non-conflicting participant the greater probility that conflicts can be avoided as available positions become more scarce.
 
 **roundsToSeparate** defines the desired separation; if undefined defaults to maximum separation.
 

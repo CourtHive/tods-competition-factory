@@ -156,18 +156,19 @@ export function generateDrawDefinition(props) {
     });
   }
 
+  let conflicts = [];
   if (automated !== false)
-    drawEngine.automatedPositioning({
+    ({ conflicts } = drawEngine.automatedPositioning({
       structureId,
       participants: tournamentRecord?.participants,
-    });
+    }));
 
   const { drawDefinition } = drawEngine.getState();
 
   const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
-  return { structureId, drawDefinition };
+  return { structureId, drawDefinition, conflicts };
 }
 
 function scaleValueSort(a, b) {
