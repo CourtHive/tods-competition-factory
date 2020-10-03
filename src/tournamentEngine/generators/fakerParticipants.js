@@ -11,6 +11,7 @@ export function generateFakeParticipants({
   nationalityCodesCount,
   participantsCount = 32,
   addressProps,
+  participantType,
   matchUpType,
   sex,
 }) {
@@ -40,8 +41,8 @@ export function generateFakeParticipants({
     : isoCountries;
 
   const countriesCount = isoList.length;
-  const doubles = matchUpType === DOUBLES;
-  const team = matchUpType === TEAM;
+  const doubles = participantType === PAIR || matchUpType === DOUBLES;
+  const team = participantType === TEAM || matchUpType === TEAM;
 
   const participants = generateRange(1, participantsCount + 1)
     .map(() => {

@@ -58,3 +58,11 @@ export const AVOIDANCE_COUNTRY = {
 **roundsToSeparate** defines the desired separation; if undefined defaults to maximum separation.
 
 **policyAttrributes** is an array of "accessors" which determine which attributes of participants to consider. In the example above the _nationalityCode_ of participants can be found in different places depending on whether the participant is an INDIVIDUAL or a PAIR. This notation works regardless of whether child attributes are strings, numbers, or arrays, as is the case with _individualPartcipants_ in PAIR participants.
+
+INDIVIDUAL participants may be mebmers of PAIR, TEAM and GROUP participants; the INDIVIDUAL participant object does not contain these attributes, so they must be added as "context" before avoidance processing can proceed. Three additional attributes are therefore added to the INDIVIDUAL partcipant objects:
+
+- pairParticipantIds
+- teamParticipantIds
+- groupParticipantIds
+
+Other desired avoidance attributes may exist on participant objects as extensions. Any such extensions will be added as attributes to the particpant object prior to processing.

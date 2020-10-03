@@ -4,11 +4,12 @@ import { generateDrawStructure } from '../../tests/primitives/generateDrawStruct
 import { drawEngine } from '../../../drawEngine';
 
 import { SUCCESS, ERROR } from '../../../constants/resultConstants';
+import { PAIR } from '../../../constants/participantTypes';
 
 it('can add schedule items', () => {
   const { participants } = generateFakeParticipants({
     participantsCount: 32,
-    matchUpType: 'DOUBLES',
+    participantType: PAIR,
   });
 
   generateDrawStructure({

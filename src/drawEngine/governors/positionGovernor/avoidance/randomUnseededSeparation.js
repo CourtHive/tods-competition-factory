@@ -1,5 +1,7 @@
 import { assignDrawPosition } from '../positionAssignment';
 import { findStructure } from '../../../getters/findStructure';
+import { addParticipantContext } from './addParticipantContext';
+import { intersection, randomPop } from '../../../../utilities/arrays';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
@@ -14,7 +16,6 @@ import {
 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { intersection, randomPop } from '../../../../utilities/arrays';
 
 /**
  *
@@ -42,6 +43,12 @@ export function randomUnseededSeparation({
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
   // pairedPriority determines whether to prioritize positions which are paired with a non-conflicting participant or unpaired positions
   // pairedPriority is true by default and pairs with no conflict are ony de-prioritiezed if pairedPriority === false
+
+  // TODO: add context to INDIVIDUAL particpants by iterating through TEAM and GROUP particpants...
+  // ... to add .groupParticipantIds and .teamParticipantIds {string[]} attributes
+  // perhaps in .extensions? => { extensions: [{ name: 'groupParticipantIds', value: [] }] }
+  // Adding context will attach any extensions to the participant object... this will handle 'section' and 'region'
+  const participantsWithContext = addParticipantContext({ participants });
 
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure });
@@ -88,8 +95,8 @@ export function randomUnseededSeparation({
   }
 
   const allGroups = getAttributeGroupings({
-    participants,
     policyAttributes,
+    participants: participantsWithContext,
     targetParticipantIds: unseededParticipantIds,
   });
 
@@ -121,7 +128,7 @@ export function randomUnseededSeparation({
 
     ({ participantId: selectedParticipantId, groupKey } = getNextParticipantId({
       groupKey,
-      participants,
+      participants: participantsWithContext,
       policyAttributes,
       targetParticipantIds,
     }));
@@ -159,7 +166,8 @@ export function randomUnseededSeparation({
       const section = randomPop(prioritizedOptions);
       targetDrawPosition = randomPop(section);
     } else {
-      targetDrawPosition = randomPop(unassigned.flat());
+      const section = randomPop(unassigned[0]);
+      targetDrawPosition = randomPop(section);
     }
 
     const result = assignDrawPosition({
@@ -171,6 +179,7 @@ export function randomUnseededSeparation({
     if (result.success) {
       positionAssignments = result.positionAssignments;
     } else {
+      console.log('ERROR:', result.error, { targetDrawPosition });
       errors.push(result.error);
     }
   });

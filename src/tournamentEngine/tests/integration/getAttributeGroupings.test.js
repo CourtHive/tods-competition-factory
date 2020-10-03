@@ -1,10 +1,9 @@
 import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeGrouping';
 import { generateFakeParticipants } from '../../generators/fakerParticipants';
-import { fixtures, eventConstants, participantTypes } from '../../..';
+import { fixtures, participantTypes } from '../../..';
 
 const { avoidance } = fixtures;
 const { AVOIDANCE_COUNTRY } = avoidance;
-const { DOUBLES } = eventConstants;
 const { PAIR } = participantTypes;
 
 it('can generate groupings accurately', () => {
@@ -17,7 +16,7 @@ it('can generate groupings accurately', () => {
     },
 
     participantsCount: 32,
-    matchUpType: DOUBLES,
+    participantType: PAIR,
   });
 
   const doublesParticipants = participants.filter(

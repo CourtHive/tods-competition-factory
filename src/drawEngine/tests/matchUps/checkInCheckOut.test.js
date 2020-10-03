@@ -8,7 +8,7 @@ import { PAIR } from '../../../constants/participantConstants';
 it('can check-in and check-out matchUp participants', () => {
   const { participants } = generateFakeParticipants({
     participantsCount: 32,
-    matchUpType: 'DOUBLES',
+    participantType: PAIR,
   });
   const doublesParticipants = participants.filter(
     participant => participant.participantType === PAIR
