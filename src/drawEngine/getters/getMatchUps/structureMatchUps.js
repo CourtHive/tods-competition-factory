@@ -45,7 +45,7 @@ export function structureMatchUps({
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
         isCollectionMatchUp &&
-        matchUp.Sides.reduce((assigned, side) => {
+        matchUp.sides.reduce((assigned, side) => {
           return side.participantId && assigned;
         }, true);
 

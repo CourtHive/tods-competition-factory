@@ -3,8 +3,8 @@ import { SINGLES, DOUBLES } from '../../../constants/matchUpTypes';
 
 export function getMatchUpType({ matchUp }) {
   if (matchUp.matchUpType) return matchUp.matchUpType;
-  if (matchUp.Sides && matchUp.Sides.filter(f => f).length) {
-    const side1 = matchUp.Sides[0];
+  if (matchUp.sides && matchUp.sides.filter(f => f).length) {
+    const side1 = matchUp.sides[0];
     const participant = side1 && side1.participant;
     const participantType = participant && participant.participantType;
     if (participantType === INDIVIDUAL) {

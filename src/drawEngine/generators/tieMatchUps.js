@@ -17,7 +17,7 @@ export function generateTieMatchUps({ tieFormat }) {
           matchUpFormat,
           collectionPosition,
           matchUpId: UUID(),
-          Sides: [{ SideNumber: 1 }, { SideNumber: 2 }],
+          sides: [{ SideNumber: 1 }, { SideNumber: 2 }],
         };
 
         return matchUp;

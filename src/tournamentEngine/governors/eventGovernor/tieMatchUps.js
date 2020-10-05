@@ -18,7 +18,7 @@ export function assignTieMatchUpParticipantId(props) {
     matchUpId: tieMatchUpId,
   });
   if (event && tieMatchUp) {
-    const side = tieMatchUp.Sides[sideNumber - 1];
+    const side = tieMatchUp.sides[sideNumber - 1];
     if (tieMatchUp.matchUpType === DOUBLES) {
       if (participantId) {
         const result = addParticipantIdToPair({ side, sideMember });

@@ -112,8 +112,8 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
 
     const hasParticipants =
-      matchUp.Sides &&
-      matchUp.Sides.filter(side => side && side.participantId).length === 2;
+      matchUp.sides &&
+      matchUp.sides.filter(side => side && side.participantId).length === 2;
 
     const readyToScore = matchDrawPositionsAreAssigned || hasParticipants;
 

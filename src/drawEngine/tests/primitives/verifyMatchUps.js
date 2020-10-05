@@ -124,16 +124,16 @@ export function getMatchUpWinnerLoserIds({ drawDefinition, matchUpId }) {
     matchUpId,
     inContext: true,
   });
-  const { Sides, winningSide } = matchUp;
+  const { sides, winningSide } = matchUp;
 
   const sideWinning =
     winningSide &&
-    Sides.reduce((sideWinning, side) => {
+    sides.reduce((sideWinning, side) => {
       return side.sideNumber === winningSide ? side : sideWinning;
     }, undefined);
   const sideLosing =
     winningSide &&
-    Sides.reduce((sideLosing, side) => {
+    sides.reduce((sideLosing, side) => {
       return side.sideNumber === 3 - winningSide ? side : sideLosing;
     }, undefined);
 

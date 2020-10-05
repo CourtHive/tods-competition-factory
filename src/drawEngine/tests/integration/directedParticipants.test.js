@@ -336,7 +336,7 @@ it('can change a first round matchUp winner and update consolation', () => {
 
   let result, errors;
   let winningParticipantId, losingParticipantId;
-  let matchUp, matchUpId, matchUpStatus, Sides, score, winningSide;
+  let matchUp, matchUpId, matchUpStatus, sides, score, winningSide;
 
   ({ errors, matchUpId } = completeMatchUp({
     structureId,
@@ -353,7 +353,7 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundPosition: 2,
     inContext: true,
   }));
-  ({ matchUpStatus, Sides, score } = matchUp);
+  ({ matchUpStatus, sides, score } = matchUp);
   expect(matchUpStatus).toEqual(COMPLETED);
   expect(score).toEqual('6-1 6-2');
 
@@ -371,10 +371,10 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundPosition: 1,
     inContext: true,
   }));
-  ({ matchUpStatus, Sides } = matchUp);
+  ({ matchUpStatus, sides } = matchUp);
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(matchUp.drawPositions).toMatchObject([1, 3]);
-  expect(Sides[1].participantId).toEqual(winningParticipantId);
+  expect(sides[1].participantId).toEqual(winningParticipantId);
 
   // check that first matchUp in consolation draw is BYE and that loser was directed
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
@@ -383,10 +383,10 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundPosition: 1,
     inContext: true,
   }));
-  ({ matchUpStatus, Sides } = matchUp);
+  ({ matchUpStatus, sides } = matchUp);
   expect(matchUpStatus).toEqual(BYE);
-  expect(Sides[0].bye).toEqual(true);
-  expect(Sides[1].participantId).toEqual(losingParticipantId);
+  expect(sides[0].bye).toEqual(true);
+  expect(sides[1].participantId).toEqual(losingParticipantId);
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,

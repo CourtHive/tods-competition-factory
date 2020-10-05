@@ -47,7 +47,7 @@ export function buildDrawHierarchy({ matchUps }) {
           structureId,
           matchUpId: UUID(),
           drawPositions: [undefined, undefined],
-          Sides: [undefined, undefined],
+          sides: [undefined, undefined],
           roundNumber,
           roundPosition,
           finishingRound,
@@ -86,7 +86,7 @@ export function buildDrawHierarchy({ matchUps }) {
         undefined
       );
       const targetIndex = matchUp.drawPositions.indexOf(targetDrawPosition);
-      const targetSide = matchUp.Sides[targetIndex];
+      const targetSide = matchUp.sides[targetIndex];
       return { [targetDrawPosition]: targetSide };
     });
 
@@ -106,11 +106,11 @@ export function buildDrawHierarchy({ matchUps }) {
 
     missingMatchUps = missingPairs.map((drawPositions, index) => {
       const roundPosition = Math.max(...drawPositions) / 2;
-      const Sides = drawPositions.map(drawPosition => {
+      const sides = drawPositions.map(drawPosition => {
         return entrySides[drawPosition] || { bye: true, drawPosition };
       });
       const matchUp = {
-        Sides,
+        sides,
         drawId,
         structureId,
         roundPosition,
@@ -150,13 +150,13 @@ export function buildDrawHierarchy({ matchUps }) {
         const { matchUpId, structureId } = matchUp;
         const children = [
           {
-            ...matchUp.Sides[0],
+            ...matchUp.sides[0],
             drawPosition: drawPositions[0],
             matchUpId,
             structureId,
           },
           {
-            ...matchUp.Sides[1],
+            ...matchUp.sides[1],
             drawPosition: drawPositions[1],
             matchUpId,
             structureId,
@@ -178,19 +178,21 @@ export function buildDrawHierarchy({ matchUps }) {
             return firstRoundDrawPositions.includes(position) ? fed : position;
           }, undefined);
 
-        const fedSide = matchUp.Sides.filter(f => f).reduce((fedSide, side) => {
-          return side.participantId &&
-            !previousRoundWinnerIds.includes(side.participantId)
-            ? side
-            : fedSide;
-        }, undefined);
+        const fedSide = matchUp.sides
+          .filter(f => f)
+          .reduce((fedSide, side) => {
+            return side.participantId &&
+              !previousRoundWinnerIds.includes(side.participantId)
+              ? side
+              : fedSide;
+          }, undefined);
 
         const children = [
           {
             ...fedSide,
             drawPosition: fedDrawPosition,
             feedRoundNumber,
-            Sides: matchUp.Sides,
+            sides: matchUp.sides,
             matchUpId,
             structureId,
           },
@@ -221,7 +223,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
 function getWinningParticipantId(matchUp) {
   if (!matchUp.winningSide) return undefined;
-  const participantId = matchUp.Sides.reduce(
+  const participantId = matchUp.sides.reduce(
     (p, c) => (c.sideNumber === matchUp.winningSide ? c.participantId : p),
     undefined
   );

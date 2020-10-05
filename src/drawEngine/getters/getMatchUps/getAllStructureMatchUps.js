@@ -147,13 +147,13 @@ export function getAllStructureMatchUps({
 
     const { drawPositions } = matchUp;
     if (Array.isArray(drawPositions)) {
-      const Sides = drawPositions
+      const sides = drawPositions
         .sort(numericSort)
         .map((drawPosition, index) => {
           const sideNumber = index + 1;
           return getSide({ drawPosition, sideNumber });
         });
-      Object.assign(matchUpWithContext, makeDeepCopy({ Sides }));
+      Object.assign(matchUpWithContext, makeDeepCopy({ sides }));
 
       if (!matchUp.matchUpFormat) {
         const matchUpFormat =
@@ -184,32 +184,34 @@ export function getAllStructureMatchUps({
         Object.assign(matchUpWithContext, { matchUpFormat, matchUpType });
     }
 
-    if (tournamentParticipants && matchUpWithContext.Sides) {
-      matchUpWithContext.Sides.filter(f => f).forEach(side => {
-        if (side.participantId) {
-          const participant = findParticipant({
-            tournamentParticipants,
-            participantId: side.participantId,
-          });
-          if (participant) {
-            Object.assign(side, { participant });
-          }
-        }
-        if (side.participant && side.participant.individualParticipants) {
-          const individualParticipants = side.participant.individualParticipants.map(
-            participant => {
-              return (
-                participant &&
-                findParticipant({
-                  tournamentParticipants,
-                  participantId: participant.participantId,
-                })
-              );
+    if (tournamentParticipants && matchUpWithContext.sides) {
+      matchUpWithContext.sides
+        .filter(f => f)
+        .forEach(side => {
+          if (side.participantId) {
+            const participant = findParticipant({
+              tournamentParticipants,
+              participantId: side.participantId,
+            });
+            if (participant) {
+              Object.assign(side, { participant });
             }
-          );
-          Object.assign(side.participant, { individualParticipants });
-        }
-      });
+          }
+          if (side.participant && side.participant.individualParticipants) {
+            const individualParticipants = side.participant.individualParticipants.map(
+              participant => {
+                return (
+                  participant &&
+                  findParticipant({
+                    tournamentParticipants,
+                    participantId: participant.participantId,
+                  })
+                );
+              }
+            );
+            Object.assign(side.participant, { individualParticipants });
+          }
+        });
 
       if (!matchUpWithContext.matchUpType) {
         const matchUpType = getMatchUpType({ matchUp: matchUpWithContext });
@@ -218,8 +220,8 @@ export function getAllStructureMatchUps({
     }
 
     const hasParticipants =
-      matchUpWithContext.Sides &&
-      matchUpWithContext.Sides.filter(side => side && side.participantId)
+      matchUpWithContext.sides &&
+      matchUpWithContext.sides.filter(side => side && side.participantId)
         .length === 2;
     const hasNoWinner = !matchUpWithContext.winningSide;
     const readyToScore = scoringActive && hasParticipants && hasNoWinner;

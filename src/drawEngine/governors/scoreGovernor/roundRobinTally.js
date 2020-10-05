@@ -100,8 +100,8 @@ export function tallyBracket({
         participantResults[losingParticipantId].pointsWon += pointsTally[1];
         participantResults[losingParticipantId].pointsLost += pointsTally[0];
       } else {
-        if (matchUp.Sides)
-          matchUp.Sides.forEach(side =>
+        if (matchUp.sides)
+          matchUp.sides.forEach(side =>
             checkInitializeParticipant(side.participantId)
           );
       }
@@ -500,11 +500,11 @@ function getLosingSideId(matchUp) {
 }
 
 function getSideId(matchUp, index) {
-  if (!matchUp || !matchUp.Sides) {
+  if (!matchUp || !matchUp.sides) {
     console.log('no sides:', { matchUp });
     return 'foo';
   }
-  const Side = matchUp.Sides[index];
+  const Side = matchUp.sides[index];
   if (!Side) {
     console.log('No Side', { matchUp, index });
     return 'foo';
@@ -531,8 +531,12 @@ export function tallyBracketAndModifyPlayers({
     headToHeadPriority,
   });
 
-  // eslint-disable-next-line
-    let instanceCount = (values) => values.reduce((a, c)=>{a[c]++?0:a[c]=1;return a; },{});
+  const instanceCount = values =>
+    values.reduce((a, c) => {
+      // eslint-disable-next-line
+      a[c]++ ? 0 : (a[c] = 1);
+      return a;
+    }, {});
   const qordz = Object.keys(tbr.participantResults).map(
     t => tbr.participantResults[t].bracketOrder
   );
