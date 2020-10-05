@@ -9,6 +9,15 @@ export function isDate(dateArg) {
   return t && !isNaN(t.valueOf());
 }
 
+export function isDateObject(value) {
+  if (typeof value !== 'object' || Array.isArray(value)) {
+    return false;
+  } else {
+    const datePrototype = Object.prototype.toString.call(value);
+    return datePrototype === '[object Date]';
+  }
+}
+
 export function DateHHMM(date) {
   const dt = new Date(date);
   const secs = dt.getSeconds() + 60 * dt.getMinutes() + 60 * 60 * dt.getHours();
