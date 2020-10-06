@@ -29,7 +29,7 @@ export function getValidSeedBlocks({
   const { seedAssignments } = getStructureSeedAssignments({ structure });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsCount = positionAssignments.length;
-  const seedsCount = seedAssignments.length;
+  const seedsCount = seedAssignments?.length || 0;
 
   let allDrawPositions = [];
   const roundNumbers = Object.keys(roundMatchUps).sort((a, b) => a - b);

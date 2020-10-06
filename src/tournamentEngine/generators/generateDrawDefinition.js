@@ -30,7 +30,7 @@ export function generateDrawDefinition(props) {
 
   // coersion
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
-  if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount);
+  if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
   if (tieFormat || (matchUpType === 'TEAM' && !tieFormat)) {
     tieFormat = tieFormatDefaults();

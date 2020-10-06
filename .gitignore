@@ -7,3 +7,4 @@ dist
 .*.un~
 *.code-workspace
 .docz
+*.VSCodeCounter
