@@ -1,5 +1,6 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 import { tournamentEngine, resultConstants } from '../../..';
+import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
 const { SUCCESS } = resultConstants;
 
@@ -13,7 +14,11 @@ const { SUCCESS } = resultConstants;
 
 export function avoidanceTest(props) {
   const { avoidance, eventType, participantType } = props;
-  const { valuesCount = 10, participantsCount = 32 } = props;
+  const {
+    valuesCount = 10,
+    participantsCount = 32,
+    drawType = ELIMINATION,
+  } = props;
 
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
@@ -51,6 +56,7 @@ export function avoidanceTest(props) {
   const values = {
     automated: true,
     drawSize: 32,
+    drawType,
     eventId,
     event: eventResult,
     policyDefinitions: [{ avoidance }],
@@ -61,5 +67,5 @@ export function avoidanceTest(props) {
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
-  return { conflicts };
+  return { conflicts, drawDefinition };
 }

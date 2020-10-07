@@ -3,9 +3,10 @@ import { getParticipantScaleItem } from '../governors/queryGovernor/scaleValue';
 
 import {
   MAIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
   QUALIFYING,
   ROUND_ROBIN,
+  ELIMINATION,
+  ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
@@ -22,7 +23,7 @@ export function generateDrawDefinition(props) {
     qualifyingRound,
     policyDefinitions,
     qualifyingPositions,
-    drawType = 'ELIMINATION',
+    drawType = ELIMINATION,
     matchUpType,
   } = props;
 
