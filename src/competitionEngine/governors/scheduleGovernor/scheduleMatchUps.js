@@ -5,6 +5,14 @@ import {
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  BYE,
+  ABANDONED,
+  DEFAULTED,
+  RETIRED,
+  WALKOVER,
+  COMPLETED,
+} from '../../../constants/matchUpStatusConstants';
 
 export function scheduleMatchUps(props) {
   const {
@@ -52,9 +60,21 @@ export function scheduleMatchUps(props) {
   };
   const { scheduleTimes } = matchUpTiming(timingParameters);
 
+  const matchUpsToSchedule = matchUps.filter(matchUp => {
+    const doNotSchedule = ![
+      BYE,
+      DEFAULTED,
+      COMPLETED,
+      ABANDONED,
+      RETIRED,
+      WALKOVER,
+    ].includes(matchUp?.matchUpStatus);
+    return !matchUp?.winningSide && !doNotSchedule;
+  });
+
   // TODO: can be optimized by aggregating all matchUpIds to be scheduled for a particular drawDefinition
-  if (matchUps?.length) {
-    matchUps.forEach(targetMatchUp => {
+  if (matchUpsToSchedule?.length) {
+    matchUpsToSchedule.forEach(targetMatchUp => {
       const { drawId, matchUpId, tournamentId } = targetMatchUp;
       const tournamentRecord = tournamentRecords[tournamentId];
       if (tournamentRecord) {
