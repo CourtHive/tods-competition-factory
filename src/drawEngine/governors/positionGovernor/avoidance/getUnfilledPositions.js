@@ -7,7 +7,7 @@
  */
 
 export function getUnfilledPositions({
-  drawPositionPairs,
+  drawPositionGroups,
   positionAssignments,
 }) {
   const assignmentMap = Object.assign(
@@ -17,14 +17,14 @@ export function getUnfilledPositions({
     }))
   );
 
-  const unpairedPositions = drawPositionPairs
+  const unpairedPositions = drawPositionGroups
     .map(drawPositions => {
-      const unpaired = drawPositions
+      const unfilled = drawPositions
         .filter(f => f)
         .map(drawPosition => assignmentMap[drawPosition])
         .filter(assignment => !assignment.participantId)
         .map(assignment => assignment.drawPosition);
-      return unpaired;
+      return unfilled;
     })
     .flat()
     .filter(f => f);

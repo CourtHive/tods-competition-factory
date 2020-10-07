@@ -9,6 +9,7 @@ import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getNextParticipantId } from './getNextParticipantId';
 
 import { chunkArray, generateRange, makeDeepCopy } from '../../../../utilities';
+import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups';
 
 /**
  *
@@ -20,8 +21,8 @@ export function generatePositioningCandidate({
   participantsWithContext,
   unseededParticipantIds,
   opponentsToPlaceCount,
-  drawPositionsChunks,
-  drawPositionPairs,
+  drawPositionChunks,
+  drawPositionGroups,
   policyAttributes,
   drawDefinition,
   pairedPriority,
@@ -33,6 +34,11 @@ export function generatePositioningCandidate({
   let candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
   const candidateDrawDefinition = makeDeepCopy(drawDefinition);
 
+  const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
+    return group.length > largest ? group.length : largest;
+  }, 0);
+  const useSpecifiedGroupKey = !!(largestGroupSize > 2);
+
   generateRange(0, opponentsToPlaceCount).forEach(() => {
     const targetParticipantIds = getUnplacedParticipantIds({
       participantIds: unseededParticipantIds,
@@ -40,7 +46,7 @@ export function generatePositioningCandidate({
     });
 
     const unfilledPositions = getUnfilledPositions({
-      drawPositionPairs,
+      drawPositionGroups,
       positionAssignments: candidatePositionAssignments,
     });
 
@@ -48,6 +54,7 @@ export function generatePositioningCandidate({
       groupKey,
       policyAttributes,
       targetParticipantIds,
+      useSpecifiedGroupKey,
       participants: participantsWithContext,
     }));
 
@@ -59,34 +66,43 @@ export function generatePositioningCandidate({
     const drawPositionOptions = organizeDrawPositionOptions({
       allGroups,
       unfilledPositions,
-      drawPositionsChunks,
+      drawPositionChunks,
       positionAssignments: candidatePositionAssignments,
       selectedParticipantGroups,
     });
     const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
 
-    // desiredOptions are selected as follows:
-    // 1. unpaired positions
-    // 2. paired positions which have no conflict
-
     // the first element of each options array represents the greatest possible round separation
 
-    const desiredOptions =
-      (pairedNoConflict?.length && pairedNoConflict[0]) ||
-      (unpaired?.length && unpaired[0]);
+    const prioritizeUnpaired = pairedPriority === false || useSpecifiedGroupKey;
+    const desiredOptions = prioritizeUnpaired
+      ? unpaired?.length && unpaired[0]
+      : pairedNoConflict?.length && pairedNoConflict[0];
+
+    const fallbackOptions = prioritizeUnpaired
+      ? pairedNoConflict?.length && pairedNoConflict[0]
+      : unpaired?.length && unpaired[0];
 
     const prioritizedOptions =
-      desiredOptions &&
-      (pairedPriority === false ? desiredOptions.reverse() : desiredOptions);
+      (desiredOptions?.length && desiredOptions) ||
+      (fallbackOptions?.length && fallbackOptions) ||
+      [];
 
     let targetDrawPosition;
-    if (prioritizedOptions) {
+    if (prioritizedOptions.length) {
       const section = randomPop(prioritizedOptions);
       targetDrawPosition = randomPop(section);
     } else {
       const section = randomPop(unassigned[0]);
       targetDrawPosition = randomPop(section);
     }
+
+    console.log({
+      prioritizeUnpaired,
+      prioritizedOptions,
+      targetDrawPosition,
+      groupKey,
+    });
 
     const result = assignDrawPosition({
       structureId,
@@ -121,22 +137,62 @@ export function generatePositioningCandidate({
   );
 
   let avoidanceConflicts = 0;
-  const pairedParticipants = chunkArray(positionedParticipants, 2);
-  pairedParticipants.forEach(matchUpPair => {
-    const avoidanceConflict = intersection(
-      matchUpPair[0].values,
-      matchUpPair[1].values
-    ).length;
+  const groupSize = Math.min(...drawPositionGroups.map(dpg => dpg.length));
+  const isRoundRobin = groupSize > 2;
+  const groupedParticipants = chunkArray(positionedParticipants, groupSize);
 
-    if (avoidanceConflict) {
-      avoidanceConflicts++;
-      matchUpPair.conflict = true;
-    }
-  });
+  if (isRoundRobin) {
+    groupedParticipants.forEach(participantGroup => {
+      const drawPositions = participantGroup.map(
+        participant => participant.drawPosition
+      );
+      const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
+        drawPositions,
+      });
+      const drawPositionValuesMap = Object.assign(
+        {},
+        ...participantGroup.map(participant => ({
+          [participant.drawPosition]: participant,
+        }))
+      );
+      uniqueMatchUpGroupings.forEach(grouping => {
+        const avoidanceConflict = intersection(
+          drawPositionValuesMap[grouping[0]].values,
+          drawPositionValuesMap[grouping[1]].values
+        ).length;
+
+        if (avoidanceConflict) {
+          avoidanceConflicts++;
+          participantGroup.conflict = true;
+          /*
+          console.log(drawPositionValuesMap);
+          console.log(
+            grouping,
+            drawPositionValuesMap[grouping[0]],
+            drawPositionValuesMap[grouping[1]]
+          );
+          */
+        }
+      });
+    });
+  } else {
+    groupedParticipants.forEach(matchUpPair => {
+      const avoidanceConflict = intersection(
+        matchUpPair[0].values,
+        matchUpPair[1].values
+      ).length;
+
+      if (avoidanceConflict) {
+        avoidanceConflicts++;
+        matchUpPair.conflict = true;
+      }
+    });
+  }
 
   return {
     positionAssignments: candidatePositionAssignments,
-    conflicts: avoidanceConflicts && pairedParticipants,
+    conflicts: avoidanceConflicts,
+    groupedParticipants,
     errors,
   };
 }

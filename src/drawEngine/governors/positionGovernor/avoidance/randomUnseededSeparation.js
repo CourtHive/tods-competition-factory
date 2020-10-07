@@ -17,6 +17,7 @@ import {
 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -38,11 +39,7 @@ export function randomUnseededSeparation({
   if (!avoidance) {
     return { error: 'Missing avoidance policy' };
   }
-  const {
-    policyAttributes,
-    roundsToSeparate,
-    candidatesCount = 20,
-  } = avoidance;
+  const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
@@ -52,10 +49,10 @@ export function randomUnseededSeparation({
   // perhaps in .extensions? => { extensions: [{ name: 'groupParticipantIds', value: [] }] }
   // Adding context will attach any extensions to the participant object... this will handle 'section' and 'region'
   const participantsWithContext = addParticipantContext({ participants });
-
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
+
   const unassignedPositions = positionAssignments.filter(
     assignment => !assignment.participantId
   );
@@ -63,37 +60,16 @@ export function randomUnseededSeparation({
   const allDrawPositions = positionAssignments.map(
     assignment => assignment.drawPosition
   );
-  const drawPositionPairs = matchUps
-    .filter(matchUp => matchUp.roundNumber === 1)
-    .map(matchUp => matchUp.drawPositions);
-  const firstRoundMatchUpDrawPositions = drawPositionPairs
-    .flat()
-    .sort(numericSort);
-  const greatestFirstRoundDrawPosition = Math.max(
-    ...firstRoundMatchUpDrawPositions
-  );
-  const fedDrawPositions = allDrawPositions.filter(
-    drawPositon => drawPositon > greatestFirstRoundDrawPosition
-  );
 
-  const structureSize = firstRoundMatchUpDrawPositions.length;
-  const roundSizes = generateRange(2, structureSize).filter(
-    f => f === nearestPowerOf2(f)
-  );
+  const isRoundRobin = structure.structureType === CONTAINER;
 
-  const chunkSizes = roundSizes
-    .slice(0, roundsToSeparate || roundSizes.length)
-    .reverse();
-  const drawPositionsChunks = chunkSizes.map(size =>
-    chunkArray(firstRoundMatchUpDrawPositions, size)
-  );
+  const props = isRoundRobin
+    ? { structure, matchUps, allDrawPositions, roundsToSeparate }
+    : { matchUps, allDrawPositions, roundsToSeparate };
 
-  if (fedDrawPositions.length) {
-    // TODO: calculate chunking for fed drawPositions and add to appropriate drawPositionChunks
-    // This calculation will be based on "{ roundPosition, roundNumber } = matchUp"
-    // ...for matchUps which include fedDrawPositions
-    console.log({ fedDrawPositions });
-  }
+  const { drawPositionGroups, drawPositionChunks } = isRoundRobin
+    ? roundRobinParticipantGroups(props)
+    : eliminationParticipantGroups(props);
 
   const allGroups = getAttributeGroupings({
     policyAttributes,
@@ -119,8 +95,8 @@ export function randomUnseededSeparation({
       participantsWithContext,
       unseededParticipantIds,
       opponentsToPlaceCount,
-      drawPositionsChunks,
-      drawPositionPairs,
+      drawPositionChunks,
+      drawPositionGroups,
       drawDefinition,
       structureId,
       allGroups,
@@ -136,8 +112,8 @@ export function randomUnseededSeparation({
       participantsWithContext,
       unseededParticipantIds,
       opponentsToPlaceCount,
-      drawPositionsChunks,
-      drawPositionPairs,
+      drawPositionChunks,
+      drawPositionGroups,
       drawDefinition,
       structureId,
       allGroups,
@@ -147,12 +123,17 @@ export function randomUnseededSeparation({
     })
   );
 
-  const candidate = noPairPriorityCandidates
-    .concat(...pairedPriorityCandidates)
-    .reduce(
-      (p, c) => (!p || c.conflicts.length < p.conflicts.length ? c : p),
-      undefined
-    );
+  const candidates = noPairPriorityCandidates.concat(
+    ...pairedPriorityCandidates
+  );
+  console.log(
+    'conflicts:',
+    candidates.map(c => c.conflicts || 0)
+  );
+  const candidate = candidates.reduce(
+    (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
+    undefined
+  );
 
   candidate.positionAssignments.forEach(assignment => {
     const result = assignDrawPosition({
@@ -175,4 +156,54 @@ export function randomUnseededSeparation({
         },
         SUCCESS
       );
+}
+
+function roundRobinParticipantGroups(props) {
+  const {
+    structure: { structures },
+  } = props;
+  const drawPositionGroups = structures.map(structure =>
+    structure.positionAssignments.map(assignment => assignment.drawPosition)
+  );
+  return { drawPositionGroups, drawPositionChunks: [drawPositionGroups] };
+}
+
+function eliminationParticipantGroups({
+  matchUps,
+  allDrawPositions,
+  roundsToSeparate,
+}) {
+  const drawPositionPairs = matchUps
+    .filter(matchUp => matchUp.roundNumber === 1)
+    .map(matchUp => matchUp.drawPositions);
+  const firstRoundMatchUpDrawPositions = drawPositionPairs
+    .flat()
+    .sort(numericSort);
+  const greatestFirstRoundDrawPosition = Math.max(
+    ...firstRoundMatchUpDrawPositions
+  );
+  const fedDrawPositions = allDrawPositions.filter(
+    drawPositon => drawPositon > greatestFirstRoundDrawPosition
+  );
+
+  const structureSize = firstRoundMatchUpDrawPositions.length;
+  const roundSizes = generateRange(2, structureSize).filter(
+    f => f === nearestPowerOf2(f)
+  );
+
+  const chunkSizes = roundSizes
+    .slice(0, roundsToSeparate || roundSizes.length)
+    .reverse();
+  const drawPositionChunks = chunkSizes.map(size =>
+    chunkArray(firstRoundMatchUpDrawPositions, size)
+  );
+
+  if (fedDrawPositions.length) {
+    // TODO: calculate chunking for fed drawPositions and add to appropriate drawPositionChunks
+    // This calculation will be based on "{ roundPosition, roundNumber } = matchUp"
+    // ...for matchUps which include fedDrawPositions
+    console.log({ fedDrawPositions });
+  }
+
+  return { drawPositionGroups: drawPositionPairs, drawPositionChunks };
 }
