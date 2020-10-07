@@ -2,6 +2,7 @@ import { eventConstants } from '../../..';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 const { SINGLES, DOUBLES } = eventConstants;
 
 const avoidancePolicy = {
@@ -13,13 +14,13 @@ const avoidancePolicy = {
   ],
 };
 
-it('can generate drawDefinition using country avoidance', () => {
+it('can generate ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
   let { conflicts } = avoidanceTest({
     eventType: DOUBLES,
     participantType: PAIR,
     avoidance: avoidancePolicy,
   });
-  if (conflicts?.unseededConflicts?.length) console.log(conflicts);
+  if (conflicts?.unseededConflicts) console.log(conflicts);
 
   ({ conflicts } = avoidanceTest({
     eventType: DOUBLES,
@@ -27,11 +28,10 @@ it('can generate drawDefinition using country avoidance', () => {
     avoidance: avoidancePolicy,
     valuesCount: 5,
   }));
-  if (conflicts?.unseededConflicts?.length)
-    console.log(conflicts.unseededConflicts);
+  if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
-it('can generate drawDefinition for singles using country avoidance', () => {
+it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
   avoidanceTest({
     eventType: SINGLES,
     participantType: INDIVIDUAL,
@@ -44,6 +44,16 @@ it('can generate drawDefinition for singles using country avoidance', () => {
     avoidance: avoidancePolicy,
     valuesCount: 4,
   });
-  if (conflicts?.unseededConflicts?.length)
-    console.log(conflicts.unseededConflicts);
+  if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
+});
+
+it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
+  const { conflicts } = avoidanceTest({
+    eventType: SINGLES,
+    drawType: ROUND_ROBIN,
+    participantType: INDIVIDUAL,
+    avoidance: avoidancePolicy,
+    valuesCount: 8,
+  });
+  if (conflicts?.unseededConflicts) console.log(conflicts?.unseededConflicts);
 });
