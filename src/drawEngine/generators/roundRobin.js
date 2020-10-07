@@ -1,7 +1,8 @@
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import { generateRange, numericSort, unique, UUID } from '../../utilities';
+import { generateRange, UUID } from '../../utilities';
+import { drawPositionsHash } from './roundRobinGroups';
 
 import {
   MAIN,
@@ -16,10 +17,7 @@ import {
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-
-export function drawPositionsHash(drawPositions) {
-  return drawPositions.sort(numericSort).join('|');
-}
+import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 
 export function generateRoundRobin({
   stage = MAIN,
@@ -182,13 +180,12 @@ function roundRobinMatchUps({ groupSize, structureIndex }) {
     groupSize + 1 + drawPositionOffset
   );
 
-  const bracketMatchups = [].concat(...drawPositions.map(positionMatchups));
-  const uniqueBracketMatchups = unique(
-    bracketMatchups.map(drawPositionsHash)
-  ).map(h => h.split('|').map(p => +p));
+  const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
+    drawPositions,
+  });
   const rounds = groupRounds({ groupSize, drawPositionOffset });
 
-  const matchUps = uniqueBracketMatchups
+  const matchUps = uniqueMatchUpGroupings
     .map(positionMatchUp)
     .sort((a, b) => a.roundNumber - b.roundNumber);
 
@@ -212,13 +209,6 @@ function roundRobinMatchUps({ groupSize, structureIndex }) {
       matchUpStatus: TO_BE_PLAYED,
     };
     return matchUp;
-  }
-
-  function positionMatchups(position) {
-    const matchups = drawPositions
-      .filter(p => p !== position)
-      .map(o => [position, o]);
-    return matchups;
   }
 }
 

@@ -59,6 +59,7 @@ export function positionUnseededParticipants({
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { avoidance } = appliedPolicies || {};
+
   if (avoidance && participants) {
     return randomUnseededSeparation({
       avoidance,
