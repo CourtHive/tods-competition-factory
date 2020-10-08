@@ -71,7 +71,7 @@
     {
       "structureName": "MAIN",
       "stageSequence": 1,
-      "finishingPosition": "roundOutcome",
+      "finishingPosition": "ROUND_OUTCOME",
       "seedAssignments": [],
       "structureId": "c5cc7b6b-b452-49a9-ba2d-793f115cdc9e",
       "stage": "MAIN",
@@ -81,20 +81,11 @@
           "roundNumber": 1,
           "roundPosition": 1,
           "matchUpStatus": "BYE",
-          "drawPositions": [
-            5,
-            6
-          ],
+          "drawPositions": [5, 6],
           "finishingRound": 4,
           "finishingPositionRange": {
-            "loser": [
-              9,
-              12
-            ],
-            "winner": [
-              1,
-              8
-            ]
+            "loser": [9, 12],
+            "winner": [1, 8]
           }
         },
         {
@@ -102,20 +93,11 @@
           "roundNumber": 1,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            7,
-            8
-          ],
+          "drawPositions": [7, 8],
           "finishingRound": 4,
           "finishingPositionRange": {
-            "loser": [
-              9,
-              12
-            ],
-            "winner": [
-              1,
-              8
-            ]
+            "loser": [9, 12],
+            "winner": [1, 8]
           }
         },
         {
@@ -123,20 +105,11 @@
           "roundNumber": 1,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            9,
-            10
-          ],
+          "drawPositions": [9, 10],
           "finishingRound": 4,
           "finishingPositionRange": {
-            "loser": [
-              9,
-              12
-            ],
-            "winner": [
-              1,
-              8
-            ]
+            "loser": [9, 12],
+            "winner": [1, 8]
           }
         },
         {
@@ -144,100 +117,55 @@
           "roundNumber": 1,
           "roundPosition": 4,
           "matchUpStatus": "BYE",
-          "drawPositions": [
-            11,
-            12
-          ],
+          "drawPositions": [11, 12],
           "finishingRound": 4,
           "finishingPositionRange": {
-            "loser": [
-              9,
-              12
-            ],
-            "winner": [
-              1,
-              8
-            ]
+            "loser": [9, 12],
+            "winner": [1, 8]
           }
         },
         {
           "roundNumber": 2,
           "matchUpId": "a902af26-04ac-4478-a793-10cd5bc58318",
           "roundPosition": 1,
-          "drawPositions": [
-            1,
-            5
-          ],
+          "drawPositions": [1, 5],
           "finishingRound": 3,
           "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
+            "loser": [5, 8],
+            "winner": [1, 4]
           }
         },
         {
           "roundNumber": 2,
           "matchUpId": "e01a38a5-3c97-4823-a2c5-8e175541119f",
           "roundPosition": 2,
-          "drawPositions": [
-            2,
-            null
-          ],
+          "drawPositions": [2, null],
           "finishingRound": 3,
           "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
+            "loser": [5, 8],
+            "winner": [1, 4]
           }
         },
         {
           "roundNumber": 2,
           "matchUpId": "ca2dc06d-14cf-4478-be58-660ab1df28aa",
           "roundPosition": 3,
-          "drawPositions": [
-            3,
-            null
-          ],
+          "drawPositions": [3, null],
           "finishingRound": 3,
           "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
+            "loser": [5, 8],
+            "winner": [1, 4]
           }
         },
         {
           "roundNumber": 2,
           "matchUpId": "4c6d2906-d1ef-442b-8683-b3ae00905185",
           "roundPosition": 4,
-          "drawPositions": [
-            4,
-            12
-          ],
+          "drawPositions": [4, 12],
           "finishingRound": 3,
           "finishingPositionRange": {
-            "loser": [
-              5,
-              8
-            ],
-            "winner": [
-              1,
-              4
-            ]
+            "loser": [5, 8],
+            "winner": [1, 4]
           }
         },
         {
@@ -245,20 +173,11 @@
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
+          "drawPositions": [null, null],
           "finishingRound": 2,
           "finishingPositionRange": {
-            "loser": [
-              3,
-              4
-            ],
-            "winner": [
-              1,
-              2
-            ]
+            "loser": [3, 4],
+            "winner": [1, 2]
           }
         },
         {
@@ -266,20 +185,11 @@
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
+          "drawPositions": [null, null],
           "finishingRound": 2,
           "finishingPositionRange": {
-            "loser": [
-              3,
-              4
-            ],
-            "winner": [
-              1,
-              2
-            ]
+            "loser": [3, 4],
+            "winner": [1, 2]
           }
         },
         {
@@ -287,20 +197,11 @@
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [
-            null,
-            null
-          ],
+          "drawPositions": [null, null],
           "finishingRound": 1,
           "finishingPositionRange": {
-            "loser": [
-              2,
-              2
-            ],
-            "winner": [
-              1,
-              1
-            ]
+            "loser": [2, 2],
+            "winner": [1, 1]
           }
         }
       ],
@@ -364,275 +265,79 @@
           "policyName": "ITF",
           "duplicateSeedNumbers": true,
           "seedBlocks": {
-            "1": [
-              [
-                "1",
-                "0"
-              ]
-            ],
-            "2": [
-              [
-                "0",
-                "1"
-              ]
-            ],
+            "1": [["1", "0"]],
+            "2": [["0", "1"]],
             "3": [
-              [
-                "1",
-                ".250"
-              ],
-              [
-                "0",
-                ".750"
-              ]
+              ["1", ".250"],
+              ["0", ".750"]
             ],
             "5": [
-              [
-                "0",
-                ".250"
-              ],
-              [
-                "0",
-                ".500"
-              ],
-              [
-                "1",
-                ".500"
-              ],
-              [
-                "1",
-                ".750"
-              ]
+              ["0", ".250"],
+              ["0", ".500"],
+              ["1", ".500"],
+              ["1", ".750"]
             ],
             "9": [
-              [
-                "1",
-                ".125"
-              ],
-              [
-                "0",
-                ".375"
-              ],
-              [
-                "1",
-                ".625"
-              ],
-              [
-                "0",
-                ".875"
-              ],
-              [
-                "0",
-                ".125"
-              ],
-              [
-                "1",
-                ".375"
-              ],
-              [
-                "0",
-                ".625"
-              ],
-              [
-                "1",
-                ".875"
-              ]
+              ["1", ".125"],
+              ["0", ".375"],
+              ["1", ".625"],
+              ["0", ".875"],
+              ["0", ".125"],
+              ["1", ".375"],
+              ["0", ".625"],
+              ["1", ".875"]
             ],
             "17": [
-              [
-                "1",
-                ".0625"
-              ],
-              [
-                "0",
-                ".1875"
-              ],
-              [
-                "1",
-                ".3125"
-              ],
-              [
-                "0",
-                ".4375"
-              ],
-              [
-                "1",
-                ".5625"
-              ],
-              [
-                "0",
-                ".6875"
-              ],
-              [
-                "1",
-                ".8125"
-              ],
-              [
-                "0",
-                ".9375"
-              ],
-              [
-                "0",
-                ".0625"
-              ],
-              [
-                "1",
-                ".1875"
-              ],
-              [
-                "0",
-                ".3125"
-              ],
-              [
-                "1",
-                ".4375"
-              ],
-              [
-                "0",
-                ".5625"
-              ],
-              [
-                "1",
-                ".6875"
-              ],
-              [
-                "0",
-                ".8125"
-              ],
-              [
-                "1",
-                ".9375"
-              ]
+              ["1", ".0625"],
+              ["0", ".1875"],
+              ["1", ".3125"],
+              ["0", ".4375"],
+              ["1", ".5625"],
+              ["0", ".6875"],
+              ["1", ".8125"],
+              ["0", ".9375"],
+              ["0", ".0625"],
+              ["1", ".1875"],
+              ["0", ".3125"],
+              ["1", ".4375"],
+              ["0", ".5625"],
+              ["1", ".6875"],
+              ["0", ".8125"],
+              ["1", ".9375"]
             ],
             "33": [
-              [
-                "1",
-                ".03125"
-              ],
-              [
-                "0",
-                ".09375"
-              ],
-              [
-                "1",
-                ".15625"
-              ],
-              [
-                "0",
-                ".21875"
-              ],
-              [
-                "1",
-                ".28125"
-              ],
-              [
-                "0",
-                ".34375"
-              ],
-              [
-                "1",
-                ".40625"
-              ],
-              [
-                "0",
-                ".46875"
-              ],
-              [
-                "1",
-                ".53125"
-              ],
-              [
-                "0",
-                ".59375"
-              ],
-              [
-                "1",
-                ".65625"
-              ],
-              [
-                "0",
-                ".71875"
-              ],
-              [
-                "1",
-                ".78125"
-              ],
-              [
-                "0",
-                ".84375"
-              ],
-              [
-                "1",
-                ".90625"
-              ],
-              [
-                "0",
-                ".96875"
-              ],
-              [
-                "0",
-                ".03125"
-              ],
-              [
-                "1",
-                ".09375"
-              ],
-              [
-                "0",
-                ".15625"
-              ],
-              [
-                "1",
-                ".21875"
-              ],
-              [
-                "0",
-                ".28125"
-              ],
-              [
-                "1",
-                ".34375"
-              ],
-              [
-                "0",
-                ".40625"
-              ],
-              [
-                "1",
-                ".46875"
-              ],
-              [
-                "0",
-                ".53125"
-              ],
-              [
-                "1",
-                ".59375"
-              ],
-              [
-                "0",
-                ".65625"
-              ],
-              [
-                "1",
-                ".71875"
-              ],
-              [
-                "0",
-                ".78125"
-              ],
-              [
-                "1",
-                ".84375"
-              ],
-              [
-                "0",
-                ".90625"
-              ],
-              [
-                "1",
-                ".96875"
-              ]
+              ["1", ".03125"],
+              ["0", ".09375"],
+              ["1", ".15625"],
+              ["0", ".21875"],
+              ["1", ".28125"],
+              ["0", ".34375"],
+              ["1", ".40625"],
+              ["0", ".46875"],
+              ["1", ".53125"],
+              ["0", ".59375"],
+              ["1", ".65625"],
+              ["0", ".71875"],
+              ["1", ".78125"],
+              ["0", ".84375"],
+              ["1", ".90625"],
+              ["0", ".96875"],
+              ["0", ".03125"],
+              ["1", ".09375"],
+              ["0", ".15625"],
+              ["1", ".21875"],
+              ["0", ".28125"],
+              ["1", ".34375"],
+              ["0", ".40625"],
+              ["1", ".46875"],
+              ["0", ".53125"],
+              ["1", ".59375"],
+              ["0", ".65625"],
+              ["1", ".71875"],
+              ["0", ".78125"],
+              ["1", ".84375"],
+              ["0", ".90625"],
+              ["1", ".96875"]
             ],
             "49": []
           }

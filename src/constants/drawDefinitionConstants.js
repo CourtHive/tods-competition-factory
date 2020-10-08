@@ -70,8 +70,8 @@ export const BOTTOM_UP = 'BOTTOM_UP';
 export const WATERFALL = 'WATERFALL';
 
 // finishingPosition determination
-export const WIN_RATIO = 'winRatio';
-export const ROUND_OUTCOME = 'roundOutcome';
+export const WIN_RATIO = 'WIN_RATIO';
+export const ROUND_OUTCOME = 'ROUND_OUTCOME';
 
 export const drawDefinitionConstants = {
   ALTERNATE,
