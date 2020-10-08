@@ -18,6 +18,7 @@ import { intersection } from '../../../../utilities/arrays';
 export function analyzeDrawPositions({
   allGroups,
   groupsToAvoid,
+  largestGroupSize,
   unfilledPositions,
   positionAssignments,
   chunkedDrawPositions,
@@ -50,9 +51,12 @@ export function analyzeDrawPositions({
     );
     const pairedNoConflict = paired.filter(drawPosition => {
       const pairedPosition = getPairedPosition(drawPosition);
-      return !profiledPositions[pairedPosition].includesGroupsToAvoid;
+      return !profiledPositions[pairedPosition]?.includesGroupsToAvoid;
     });
-    return { unassigned, unpaired, pairedNoConflict };
+    const withoutAssignments =
+      chunkedGrouping.length === largestGroupSize ? chunkedGrouping : [];
+    if (withoutAssignments.length) console.log({ withoutAssignments });
+    return { unassigned, unpaired, pairedNoConflict, withoutAssignments: [] };
   });
 
   return checkedChunk;

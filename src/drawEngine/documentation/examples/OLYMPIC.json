@@ -16,677 +16,750 @@
     }
   },
   "positionAssignments": [],
-  "links": [{
-    "source": {
-      "roundNumber": 1,
-      "structureName": "WEST",
-      "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4"
+  "links": [
+    {
+      "source": {
+        "roundNumber": 1,
+        "structureName": "WEST",
+        "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4"
+      },
+      "target": {
+        "roundNumber": 1,
+        "feedProfile": "TOP_DOWN",
+        "structureName": "SOUTH",
+        "structureId": "889d5bf2-ad5b-4f5f-a98e-75d808a15603"
+      }
     },
-    "target": {
-      "roundNumber": 1,
-      "feedProfile": "TOP_DOWN",
+    {
+      "source": {
+        "roundNumber": 1,
+        "structureName": "EAST",
+        "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a"
+      },
+      "target": {
+        "roundNumber": 1,
+        "feedProfile": "TOP_DOWN",
+        "structureName": "WEST",
+        "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4"
+      }
+    },
+    {
+      "source": {
+        "roundNumber": 2,
+        "structureName": "EAST",
+        "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a"
+      },
+      "target": {
+        "roundNumber": 1,
+        "feedProfile": "TOP_DOWN",
+        "structureName": "NORTH",
+        "structureId": "b3d601fb-4110-4384-8979-ecfadd48aa10"
+      }
+    }
+  ],
+  "structures": [
+    {
+      "structureName": "EAST",
+      "stageSequence": 1,
+      "finishingPosition": "ROUND_OUTCOME",
+      "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a",
+      "stage": "MAIN",
+      "drawPositions": [],
+      "matchUps": [
+        {
+          "matchUpId": "0504e5d3-2bfe-464b-a910-86cd335b571f",
+          "roundNumber": 1,
+          "roundPosition": 1,
+          "drawPositions": [1, 2],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "3d24edcd-031a-46d3-86ed-64dd37170592",
+          "roundNumber": 1,
+          "roundPosition": 2,
+          "drawPositions": [3, 4],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "61ce717e-897d-4b28-b999-af8b9d3dde6d",
+          "roundNumber": 1,
+          "roundPosition": 3,
+          "drawPositions": [5, 6],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "be98e9b9-72be-45ed-9db7-9a9a617de8c7",
+          "roundNumber": 1,
+          "roundPosition": 4,
+          "drawPositions": [7, 8],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "8002031d-e07f-442a-9988-5f7b4e0f5df6",
+          "roundNumber": 1,
+          "roundPosition": 5,
+          "drawPositions": [9, 10],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "e38444ff-e98c-447c-b5f6-509860dad8d4",
+          "roundNumber": 1,
+          "roundPosition": 6,
+          "drawPositions": [11, 12],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "ddf593a3-4f8b-48df-b08c-f46475790801",
+          "roundNumber": 1,
+          "roundPosition": 7,
+          "drawPositions": [13, 14],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "6509bcd6-cdc8-46b1-9be8-c869ec3b1c2e",
+          "roundNumber": 1,
+          "roundPosition": 8,
+          "drawPositions": [15, 16],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "441e4e65-f39c-4a31-98e6-7978353a9d53",
+          "roundNumber": 1,
+          "roundPosition": 9,
+          "drawPositions": [17, 18],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "fc667755-1dd2-4d08-b617-c4c6b07d9e16",
+          "roundNumber": 1,
+          "roundPosition": 10,
+          "drawPositions": [19, 20],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "6334a4e1-7040-42cf-a1a1-c29e348a394b",
+          "roundNumber": 1,
+          "roundPosition": 11,
+          "drawPositions": [21, 22],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "eadc7109-e673-4839-a363-3ac22ba7786d",
+          "roundNumber": 1,
+          "roundPosition": 12,
+          "drawPositions": [23, 24],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "4b45ec0a-7eae-4658-b735-2a8ead9cf781",
+          "roundNumber": 1,
+          "roundPosition": 13,
+          "drawPositions": [25, 26],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "d9301363-79ce-49df-892c-c3b9913b0daf",
+          "roundNumber": 1,
+          "roundPosition": 14,
+          "drawPositions": [27, 28],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "a0688f46-c3ac-408b-a43e-e6ffbcd5e7aa",
+          "roundNumber": 1,
+          "roundPosition": 15,
+          "drawPositions": [29, 30],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "d306ba3c-c171-4876-9435-ab80900cf6be",
+          "roundNumber": 1,
+          "roundPosition": 16,
+          "drawPositions": [31, 32],
+          "finishingRound": 5,
+          "finishingPositionRange": {
+            "loser": [17, 32],
+            "winner": [1, 16]
+          }
+        },
+        {
+          "matchUpId": "8d72b878-57fd-476a-8b21-c5f4d60a4af5",
+          "roundNumber": 2,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "b0acbe59-0af9-4529-8cfd-19b6b43e4dc5",
+          "roundNumber": 2,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "3650da68-d579-4547-aa73-1fbacf0fab1a",
+          "roundNumber": 2,
+          "roundPosition": 3,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "f3150d59-cd65-4aa5-ab2a-718a8ea21368",
+          "roundNumber": 2,
+          "roundPosition": 4,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "8001e822-1dda-4144-900b-58ce04bc0f88",
+          "roundNumber": 2,
+          "roundPosition": 5,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "217f4cd7-cf8c-4c37-9726-fdab974841d7",
+          "roundNumber": 2,
+          "roundPosition": 6,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "4b6a5959-9e6f-4141-8a62-b51d1590c257",
+          "roundNumber": 2,
+          "roundPosition": 7,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "c55171a9-6749-434a-a9e4-caf6ac871b6a",
+          "roundNumber": 2,
+          "roundPosition": 8,
+          "drawPositions": [null, null],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [9, 16],
+            "winner": [1, 8]
+          }
+        },
+        {
+          "matchUpId": "a7d9df48-c029-4bc2-bdda-7c9580c6a517",
+          "roundNumber": 3,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [5, 8],
+            "winner": [1, 4]
+          }
+        },
+        {
+          "matchUpId": "07e13c01-7620-4d2d-998f-63c0eba21e98",
+          "roundNumber": 3,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [5, 8],
+            "winner": [1, 4]
+          }
+        },
+        {
+          "matchUpId": "bf7c8607-777e-45a4-87ee-c5e7355fbad8",
+          "roundNumber": 3,
+          "roundPosition": 3,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [5, 8],
+            "winner": [1, 4]
+          }
+        },
+        {
+          "matchUpId": "2e80b36f-8632-46e3-a067-863cd50d2135",
+          "roundNumber": 3,
+          "roundPosition": 4,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [5, 8],
+            "winner": [1, 4]
+          }
+        },
+        {
+          "matchUpId": "71f150b1-6fe4-42bc-9561-3a86d4a0e950",
+          "roundNumber": 4,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [3, 4],
+            "winner": [1, 2]
+          }
+        },
+        {
+          "matchUpId": "1c7be058-50cf-44a0-96df-8553506ba25b",
+          "roundNumber": 4,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [3, 4],
+            "winner": [1, 2]
+          }
+        },
+        {
+          "matchUpId": "4528372b-1b51-49fe-b9a3-45490df50431",
+          "roundNumber": 5,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 1,
+          "finishingPositionRange": {
+            "loser": [2, 2],
+            "winner": [1, 1]
+          }
+        }
+      ]
+    },
+    {
+      "structureName": "WEST",
+      "stageSequence": 2,
+      "finishingPosition": "ROUND_OUTCOME",
+      "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4",
+      "stage": "MAIN",
+      "roundOffset": 1,
+      "drawPositions": [],
+      "matchUps": [
+        {
+          "matchUpId": "5a35646b-6a78-4664-b5ed-c2b453738e79",
+          "roundNumber": 1,
+          "roundPosition": 1,
+          "drawPositions": [1, 2],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "6a38d7f8-9388-4acb-98f3-a6bff43b138e",
+          "roundNumber": 1,
+          "roundPosition": 2,
+          "drawPositions": [3, 4],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "68d2cb05-68b2-4cbf-abf2-51acb140224b",
+          "roundNumber": 1,
+          "roundPosition": 3,
+          "drawPositions": [5, 6],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "8d8236a0-0c0a-4fed-81b4-aa4d5900d78d",
+          "roundNumber": 1,
+          "roundPosition": 4,
+          "drawPositions": [7, 8],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "e8d12f34-044c-4cbb-a047-755f472ab0c7",
+          "roundNumber": 1,
+          "roundPosition": 5,
+          "drawPositions": [9, 10],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "d6876873-a9ea-49e1-8f67-6615845805b6",
+          "roundNumber": 1,
+          "roundPosition": 6,
+          "drawPositions": [11, 12],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "d46cd6c9-5289-4cd6-a0e0-096f7f877979",
+          "roundNumber": 1,
+          "roundPosition": 7,
+          "drawPositions": [13, 14],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "6df57ca1-e6da-46ab-b05d-6e92d2e4b350",
+          "roundNumber": 1,
+          "roundPosition": 8,
+          "drawPositions": [15, 16],
+          "finishingRound": 4,
+          "finishingPositionRange": {
+            "loser": [25, 32],
+            "winner": [17, 24]
+          }
+        },
+        {
+          "matchUpId": "6eca7bf5-2d71-4c33-9416-198c599fe413",
+          "roundNumber": 2,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [21, 24],
+            "winner": [17, 20]
+          }
+        },
+        {
+          "matchUpId": "bc717141-db56-4a3f-beeb-83c1e1e3d80f",
+          "roundNumber": 2,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [21, 24],
+            "winner": [17, 20]
+          }
+        },
+        {
+          "matchUpId": "11cd5a47-8df8-490e-ac75-1ebfe37a25c3",
+          "roundNumber": 2,
+          "roundPosition": 3,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [21, 24],
+            "winner": [17, 20]
+          }
+        },
+        {
+          "matchUpId": "42e9e99a-253f-4d8a-981e-205c15e2d0dd",
+          "roundNumber": 2,
+          "roundPosition": 4,
+          "drawPositions": [null, null],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [21, 24],
+            "winner": [17, 20]
+          }
+        },
+        {
+          "matchUpId": "511825a9-196a-4778-874c-6ff5d507f067",
+          "roundNumber": 3,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [19, 20],
+            "winner": [17, 18]
+          }
+        },
+        {
+          "matchUpId": "45019931-f083-4bae-b687-f364a66fb119",
+          "roundNumber": 3,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [19, 20],
+            "winner": [17, 18]
+          }
+        },
+        {
+          "matchUpId": "b102de25-a4e3-41ee-9e5c-ecc478461616",
+          "roundNumber": 4,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 1,
+          "finishingPositionRange": {
+            "loser": [18, 18],
+            "winner": [17, 17]
+          }
+        }
+      ]
+    },
+    {
       "structureName": "SOUTH",
-      "structureId": "889d5bf2-ad5b-4f5f-a98e-75d808a15603"
-    }
-  }, {
-    "source": {
-      "roundNumber": 1,
-      "structureName": "EAST",
-      "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a"
+      "stageSequence": 3,
+      "finishingPosition": "ROUND_OUTCOME",
+      "structureId": "889d5bf2-ad5b-4f5f-a98e-75d808a15603",
+      "stage": "MAIN",
+      "roundOffset": 2,
+      "drawPositions": [],
+      "matchUps": [
+        {
+          "matchUpId": "48007a20-4ae2-40e1-8570-78c219c6202e",
+          "roundNumber": 1,
+          "roundPosition": 1,
+          "drawPositions": [1, 2],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [29, 32],
+            "winner": [25, 28]
+          }
+        },
+        {
+          "matchUpId": "74616256-63e5-4fca-ac60-abea4599e383",
+          "roundNumber": 1,
+          "roundPosition": 2,
+          "drawPositions": [3, 4],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [29, 32],
+            "winner": [25, 28]
+          }
+        },
+        {
+          "matchUpId": "bed317b6-88f3-44f1-a7c8-bf74ebeb1270",
+          "roundNumber": 1,
+          "roundPosition": 3,
+          "drawPositions": [5, 6],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [29, 32],
+            "winner": [25, 28]
+          }
+        },
+        {
+          "matchUpId": "3c54951a-b963-40b7-8af3-17486dca21c9",
+          "roundNumber": 1,
+          "roundPosition": 4,
+          "drawPositions": [7, 8],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [29, 32],
+            "winner": [25, 28]
+          }
+        },
+        {
+          "matchUpId": "ea34d2f4-661e-400e-85c4-53d968d1df63",
+          "roundNumber": 2,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [27, 28],
+            "winner": [25, 26]
+          }
+        },
+        {
+          "matchUpId": "195d5736-ffd6-4c2a-8d0e-c93a40795bb0",
+          "roundNumber": 2,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [27, 28],
+            "winner": [25, 26]
+          }
+        },
+        {
+          "matchUpId": "17a51701-bf72-42ee-85df-184db0e1fb7b",
+          "roundNumber": 3,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 1,
+          "finishingPositionRange": {
+            "loser": [26, 26],
+            "winner": [25, 25]
+          }
+        }
+      ]
     },
-    "target": {
-      "roundNumber": 1,
-      "feedProfile": "TOP_DOWN",
-      "structureName": "WEST",
-      "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4"
-    }
-  }, {
-    "source": {
-      "roundNumber": 2,
-      "structureName": "EAST",
-      "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a"
-    },
-    "target": {
-      "roundNumber": 1,
-      "feedProfile": "TOP_DOWN",
+    {
       "structureName": "NORTH",
-      "structureId": "b3d601fb-4110-4384-8979-ecfadd48aa10"
+      "stageSequence": 2,
+      "finishingPosition": "ROUND_OUTCOME",
+      "structureId": "b3d601fb-4110-4384-8979-ecfadd48aa10",
+      "stage": "MAIN",
+      "roundOffset": 2,
+      "drawPositions": [],
+      "matchUps": [
+        {
+          "matchUpId": "3ea37344-05ee-4844-bebf-fd9f960b8d10",
+          "roundNumber": 1,
+          "roundPosition": 1,
+          "drawPositions": [1, 2],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [13, 16],
+            "winner": [9, 12]
+          }
+        },
+        {
+          "matchUpId": "5612cea4-f325-4c4e-843d-c948cc5d25e0",
+          "roundNumber": 1,
+          "roundPosition": 2,
+          "drawPositions": [3, 4],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [13, 16],
+            "winner": [9, 12]
+          }
+        },
+        {
+          "matchUpId": "16176a23-2a91-4f56-85f3-83b75c8a4bcf",
+          "roundNumber": 1,
+          "roundPosition": 3,
+          "drawPositions": [5, 6],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [13, 16],
+            "winner": [9, 12]
+          }
+        },
+        {
+          "matchUpId": "8a674725-dec2-4b21-859e-5e06f85336db",
+          "roundNumber": 1,
+          "roundPosition": 4,
+          "drawPositions": [7, 8],
+          "finishingRound": 3,
+          "finishingPositionRange": {
+            "loser": [13, 16],
+            "winner": [9, 12]
+          }
+        },
+        {
+          "matchUpId": "67137769-d1fd-4b5b-8672-43516d461b3d",
+          "roundNumber": 2,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [11, 12],
+            "winner": [9, 10]
+          }
+        },
+        {
+          "matchUpId": "be01d7b3-0149-450e-9bae-99d3070a11de",
+          "roundNumber": 2,
+          "roundPosition": 2,
+          "drawPositions": [null, null],
+          "finishingRound": 2,
+          "finishingPositionRange": {
+            "loser": [11, 12],
+            "winner": [9, 10]
+          }
+        },
+        {
+          "matchUpId": "d5729766-eafb-464d-aa31-68fed891795f",
+          "roundNumber": 3,
+          "roundPosition": 1,
+          "drawPositions": [null, null],
+          "finishingRound": 1,
+          "finishingPositionRange": {
+            "loser": [10, 10],
+            "winner": [9, 9]
+          }
+        }
+      ]
     }
-  }],
-  "structures": [{
-    "structureName": "EAST",
-    "stageSequence": 1,
-    "finishingPosition": "roundOutcome",
-    "structureId": "c25e1319-b60c-4073-aced-54fc6a15683a",
-    "stage": "MAIN",
-    "drawPositions": [],
-    "matchUps": [{
-      "matchUpId": "0504e5d3-2bfe-464b-a910-86cd335b571f",
-      "roundNumber": 1,
-      "roundPosition": 1,
-      "drawPositions": [1, 2],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "3d24edcd-031a-46d3-86ed-64dd37170592",
-      "roundNumber": 1,
-      "roundPosition": 2,
-      "drawPositions": [3, 4],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "61ce717e-897d-4b28-b999-af8b9d3dde6d",
-      "roundNumber": 1,
-      "roundPosition": 3,
-      "drawPositions": [5, 6],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "be98e9b9-72be-45ed-9db7-9a9a617de8c7",
-      "roundNumber": 1,
-      "roundPosition": 4,
-      "drawPositions": [7, 8],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "8002031d-e07f-442a-9988-5f7b4e0f5df6",
-      "roundNumber": 1,
-      "roundPosition": 5,
-      "drawPositions": [9, 10],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "e38444ff-e98c-447c-b5f6-509860dad8d4",
-      "roundNumber": 1,
-      "roundPosition": 6,
-      "drawPositions": [11, 12],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "ddf593a3-4f8b-48df-b08c-f46475790801",
-      "roundNumber": 1,
-      "roundPosition": 7,
-      "drawPositions": [13, 14],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "6509bcd6-cdc8-46b1-9be8-c869ec3b1c2e",
-      "roundNumber": 1,
-      "roundPosition": 8,
-      "drawPositions": [15, 16],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "441e4e65-f39c-4a31-98e6-7978353a9d53",
-      "roundNumber": 1,
-      "roundPosition": 9,
-      "drawPositions": [17, 18],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "fc667755-1dd2-4d08-b617-c4c6b07d9e16",
-      "roundNumber": 1,
-      "roundPosition": 10,
-      "drawPositions": [19, 20],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "6334a4e1-7040-42cf-a1a1-c29e348a394b",
-      "roundNumber": 1,
-      "roundPosition": 11,
-      "drawPositions": [21, 22],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "eadc7109-e673-4839-a363-3ac22ba7786d",
-      "roundNumber": 1,
-      "roundPosition": 12,
-      "drawPositions": [23, 24],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "4b45ec0a-7eae-4658-b735-2a8ead9cf781",
-      "roundNumber": 1,
-      "roundPosition": 13,
-      "drawPositions": [25, 26],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "d9301363-79ce-49df-892c-c3b9913b0daf",
-      "roundNumber": 1,
-      "roundPosition": 14,
-      "drawPositions": [27, 28],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "a0688f46-c3ac-408b-a43e-e6ffbcd5e7aa",
-      "roundNumber": 1,
-      "roundPosition": 15,
-      "drawPositions": [29, 30],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "d306ba3c-c171-4876-9435-ab80900cf6be",
-      "roundNumber": 1,
-      "roundPosition": 16,
-      "drawPositions": [31, 32],
-      "finishingRound": 5,
-      "finishingPositionRange": {
-        "loser": [17, 32],
-        "winner": [1, 16]
-      }
-    }, {
-      "matchUpId": "8d72b878-57fd-476a-8b21-c5f4d60a4af5",
-      "roundNumber": 2,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "b0acbe59-0af9-4529-8cfd-19b6b43e4dc5",
-      "roundNumber": 2,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "3650da68-d579-4547-aa73-1fbacf0fab1a",
-      "roundNumber": 2,
-      "roundPosition": 3,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "f3150d59-cd65-4aa5-ab2a-718a8ea21368",
-      "roundNumber": 2,
-      "roundPosition": 4,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "8001e822-1dda-4144-900b-58ce04bc0f88",
-      "roundNumber": 2,
-      "roundPosition": 5,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "217f4cd7-cf8c-4c37-9726-fdab974841d7",
-      "roundNumber": 2,
-      "roundPosition": 6,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "4b6a5959-9e6f-4141-8a62-b51d1590c257",
-      "roundNumber": 2,
-      "roundPosition": 7,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "c55171a9-6749-434a-a9e4-caf6ac871b6a",
-      "roundNumber": 2,
-      "roundPosition": 8,
-      "drawPositions": [null, null],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [9, 16],
-        "winner": [1, 8]
-      }
-    }, {
-      "matchUpId": "a7d9df48-c029-4bc2-bdda-7c9580c6a517",
-      "roundNumber": 3,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [5, 8],
-        "winner": [1, 4]
-      }
-    }, {
-      "matchUpId": "07e13c01-7620-4d2d-998f-63c0eba21e98",
-      "roundNumber": 3,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [5, 8],
-        "winner": [1, 4]
-      }
-    }, {
-      "matchUpId": "bf7c8607-777e-45a4-87ee-c5e7355fbad8",
-      "roundNumber": 3,
-      "roundPosition": 3,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [5, 8],
-        "winner": [1, 4]
-      }
-    }, {
-      "matchUpId": "2e80b36f-8632-46e3-a067-863cd50d2135",
-      "roundNumber": 3,
-      "roundPosition": 4,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [5, 8],
-        "winner": [1, 4]
-      }
-    }, {
-      "matchUpId": "71f150b1-6fe4-42bc-9561-3a86d4a0e950",
-      "roundNumber": 4,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [3, 4],
-        "winner": [1, 2]
-      }
-    }, {
-      "matchUpId": "1c7be058-50cf-44a0-96df-8553506ba25b",
-      "roundNumber": 4,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [3, 4],
-        "winner": [1, 2]
-      }
-    }, {
-      "matchUpId": "4528372b-1b51-49fe-b9a3-45490df50431",
-      "roundNumber": 5,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 1,
-      "finishingPositionRange": {
-        "loser": [2, 2],
-        "winner": [1, 1]
-      }
-    }]
-  }, {
-    "structureName": "WEST",
-    "stageSequence": 2,
-    "finishingPosition": "roundOutcome",
-    "structureId": "40c84cf2-a5f8-47b7-8a47-ace06603a6e4",
-    "stage": "MAIN",
-    "roundOffset": 1,
-    "drawPositions": [],
-    "matchUps": [{
-      "matchUpId": "5a35646b-6a78-4664-b5ed-c2b453738e79",
-      "roundNumber": 1,
-      "roundPosition": 1,
-      "drawPositions": [1, 2],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "6a38d7f8-9388-4acb-98f3-a6bff43b138e",
-      "roundNumber": 1,
-      "roundPosition": 2,
-      "drawPositions": [3, 4],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "68d2cb05-68b2-4cbf-abf2-51acb140224b",
-      "roundNumber": 1,
-      "roundPosition": 3,
-      "drawPositions": [5, 6],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "8d8236a0-0c0a-4fed-81b4-aa4d5900d78d",
-      "roundNumber": 1,
-      "roundPosition": 4,
-      "drawPositions": [7, 8],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "e8d12f34-044c-4cbb-a047-755f472ab0c7",
-      "roundNumber": 1,
-      "roundPosition": 5,
-      "drawPositions": [9, 10],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "d6876873-a9ea-49e1-8f67-6615845805b6",
-      "roundNumber": 1,
-      "roundPosition": 6,
-      "drawPositions": [11, 12],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "d46cd6c9-5289-4cd6-a0e0-096f7f877979",
-      "roundNumber": 1,
-      "roundPosition": 7,
-      "drawPositions": [13, 14],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "6df57ca1-e6da-46ab-b05d-6e92d2e4b350",
-      "roundNumber": 1,
-      "roundPosition": 8,
-      "drawPositions": [15, 16],
-      "finishingRound": 4,
-      "finishingPositionRange": {
-        "loser": [25, 32],
-        "winner": [17, 24]
-      }
-    }, {
-      "matchUpId": "6eca7bf5-2d71-4c33-9416-198c599fe413",
-      "roundNumber": 2,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [21, 24],
-        "winner": [17, 20]
-      }
-    }, {
-      "matchUpId": "bc717141-db56-4a3f-beeb-83c1e1e3d80f",
-      "roundNumber": 2,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [21, 24],
-        "winner": [17, 20]
-      }
-    }, {
-      "matchUpId": "11cd5a47-8df8-490e-ac75-1ebfe37a25c3",
-      "roundNumber": 2,
-      "roundPosition": 3,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [21, 24],
-        "winner": [17, 20]
-      }
-    }, {
-      "matchUpId": "42e9e99a-253f-4d8a-981e-205c15e2d0dd",
-      "roundNumber": 2,
-      "roundPosition": 4,
-      "drawPositions": [null, null],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [21, 24],
-        "winner": [17, 20]
-      }
-    }, {
-      "matchUpId": "511825a9-196a-4778-874c-6ff5d507f067",
-      "roundNumber": 3,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [19, 20],
-        "winner": [17, 18]
-      }
-    }, {
-      "matchUpId": "45019931-f083-4bae-b687-f364a66fb119",
-      "roundNumber": 3,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [19, 20],
-        "winner": [17, 18]
-      }
-    }, {
-      "matchUpId": "b102de25-a4e3-41ee-9e5c-ecc478461616",
-      "roundNumber": 4,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 1,
-      "finishingPositionRange": {
-        "loser": [18, 18],
-        "winner": [17, 17]
-      }
-    }]
-  }, {
-    "structureName": "SOUTH",
-    "stageSequence": 3,
-    "finishingPosition": "roundOutcome",
-    "structureId": "889d5bf2-ad5b-4f5f-a98e-75d808a15603",
-    "stage": "MAIN",
-    "roundOffset": 2,
-    "drawPositions": [],
-    "matchUps": [{
-      "matchUpId": "48007a20-4ae2-40e1-8570-78c219c6202e",
-      "roundNumber": 1,
-      "roundPosition": 1,
-      "drawPositions": [1, 2],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [29, 32],
-        "winner": [25, 28]
-      }
-    }, {
-      "matchUpId": "74616256-63e5-4fca-ac60-abea4599e383",
-      "roundNumber": 1,
-      "roundPosition": 2,
-      "drawPositions": [3, 4],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [29, 32],
-        "winner": [25, 28]
-      }
-    }, {
-      "matchUpId": "bed317b6-88f3-44f1-a7c8-bf74ebeb1270",
-      "roundNumber": 1,
-      "roundPosition": 3,
-      "drawPositions": [5, 6],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [29, 32],
-        "winner": [25, 28]
-      }
-    }, {
-      "matchUpId": "3c54951a-b963-40b7-8af3-17486dca21c9",
-      "roundNumber": 1,
-      "roundPosition": 4,
-      "drawPositions": [7, 8],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [29, 32],
-        "winner": [25, 28]
-      }
-    }, {
-      "matchUpId": "ea34d2f4-661e-400e-85c4-53d968d1df63",
-      "roundNumber": 2,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [27, 28],
-        "winner": [25, 26]
-      }
-    }, {
-      "matchUpId": "195d5736-ffd6-4c2a-8d0e-c93a40795bb0",
-      "roundNumber": 2,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [27, 28],
-        "winner": [25, 26]
-      }
-    }, {
-      "matchUpId": "17a51701-bf72-42ee-85df-184db0e1fb7b",
-      "roundNumber": 3,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 1,
-      "finishingPositionRange": {
-        "loser": [26, 26],
-        "winner": [25, 25]
-      }
-    }]
-  }, {
-    "structureName": "NORTH",
-    "stageSequence": 2,
-    "finishingPosition": "roundOutcome",
-    "structureId": "b3d601fb-4110-4384-8979-ecfadd48aa10",
-    "stage": "MAIN",
-    "roundOffset": 2,
-    "drawPositions": [],
-    "matchUps": [{
-      "matchUpId": "3ea37344-05ee-4844-bebf-fd9f960b8d10",
-      "roundNumber": 1,
-      "roundPosition": 1,
-      "drawPositions": [1, 2],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [13, 16],
-        "winner": [9, 12]
-      }
-    }, {
-      "matchUpId": "5612cea4-f325-4c4e-843d-c948cc5d25e0",
-      "roundNumber": 1,
-      "roundPosition": 2,
-      "drawPositions": [3, 4],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [13, 16],
-        "winner": [9, 12]
-      }
-    }, {
-      "matchUpId": "16176a23-2a91-4f56-85f3-83b75c8a4bcf",
-      "roundNumber": 1,
-      "roundPosition": 3,
-      "drawPositions": [5, 6],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [13, 16],
-        "winner": [9, 12]
-      }
-    }, {
-      "matchUpId": "8a674725-dec2-4b21-859e-5e06f85336db",
-      "roundNumber": 1,
-      "roundPosition": 4,
-      "drawPositions": [7, 8],
-      "finishingRound": 3,
-      "finishingPositionRange": {
-        "loser": [13, 16],
-        "winner": [9, 12]
-      }
-    }, {
-      "matchUpId": "67137769-d1fd-4b5b-8672-43516d461b3d",
-      "roundNumber": 2,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [11, 12],
-        "winner": [9, 10]
-      }
-    }, {
-      "matchUpId": "be01d7b3-0149-450e-9bae-99d3070a11de",
-      "roundNumber": 2,
-      "roundPosition": 2,
-      "drawPositions": [null, null],
-      "finishingRound": 2,
-      "finishingPositionRange": {
-        "loser": [11, 12],
-        "winner": [9, 10]
-      }
-    }, {
-      "matchUpId": "d5729766-eafb-464d-aa31-68fed891795f",
-      "roundNumber": 3,
-      "roundPosition": 1,
-      "drawPositions": [null, null],
-      "finishingRound": 1,
-      "finishingPositionRange": {
-        "loser": [10, 10],
-        "winner": [9, 9]
-      }
-    }]
-  }]
+  ]
 }

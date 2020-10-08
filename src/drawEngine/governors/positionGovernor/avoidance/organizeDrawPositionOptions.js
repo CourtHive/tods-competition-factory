@@ -5,7 +5,7 @@ import { analyzeDrawPositions } from './analyzeDrawPositions';
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
  * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
  * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
- * @param {object[]} drawPositionsChunks - ranges of drawPositions grouped by levels of separation
+ * @param {object[]} drawPositionChunks - ranges of drawPositions grouped by levels of separation
  * @param {object[]} positionAssignments - array of assignment objects
  *
  * Returns different types of placement options.
@@ -20,14 +20,16 @@ import { analyzeDrawPositions } from './analyzeDrawPositions';
  */
 export function organizeDrawPositionOptions({
   allGroups,
+  largestGroupSize,
   unfilledPositions,
-  drawPositionsChunks,
+  drawPositionChunks,
   positionAssignments,
   selectedParticipantGroups,
 }) {
-  const vettedChunks = drawPositionsChunks.map(chunkedDrawPositions =>
+  const vettedChunks = drawPositionChunks.map(chunkedDrawPositions =>
     analyzeDrawPositions({
       allGroups,
+      largestGroupSize,
       unfilledPositions,
       positionAssignments,
       chunkedDrawPositions,
@@ -58,6 +60,13 @@ export function organizeDrawPositionOptions({
         .filter(pairedNoConflict => pairedNoConflict?.length)
     )
     .filter(f => f?.length);
+  const withoutAssignments = vettedChunks
+    .map(chunk =>
+      chunk
+        .map(grouping => grouping.withoutAssignments)
+        .filter(withoutAssignments => withoutAssignments?.length)
+    )
+    .filter(f => f?.length);
 
-  return { unassigned, unpaired, pairedNoConflict };
+  return { unassigned, unpaired, pairedNoConflict, withoutAssignments };
 }
