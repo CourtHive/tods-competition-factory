@@ -20,6 +20,7 @@ import { analyzeDrawPositions } from './analyzeDrawPositions';
  */
 export function organizeDrawPositionOptions({
   allGroups,
+  largestGroupSize,
   unfilledPositions,
   drawPositionChunks,
   positionAssignments,
@@ -28,6 +29,7 @@ export function organizeDrawPositionOptions({
   const vettedChunks = drawPositionChunks.map(chunkedDrawPositions =>
     analyzeDrawPositions({
       allGroups,
+      largestGroupSize,
       unfilledPositions,
       positionAssignments,
       chunkedDrawPositions,
@@ -58,6 +60,13 @@ export function organizeDrawPositionOptions({
         .filter(pairedNoConflict => pairedNoConflict?.length)
     )
     .filter(f => f?.length);
+  const withoutAssignments = vettedChunks
+    .map(chunk =>
+      chunk
+        .map(grouping => grouping.withoutAssignments)
+        .filter(withoutAssignments => withoutAssignments?.length)
+    )
+    .filter(f => f?.length);
 
-  return { unassigned, unpaired, pairedNoConflict };
+  return { unassigned, unpaired, pairedNoConflict, withoutAssignments };
 }

@@ -65,23 +65,30 @@ export function generatePositioningCandidate({
 
     const drawPositionOptions = organizeDrawPositionOptions({
       allGroups,
+      largestGroupSize,
       unfilledPositions,
       drawPositionChunks,
       positionAssignments: candidatePositionAssignments,
       selectedParticipantGroups,
     });
-    const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
+    const {
+      unassigned,
+      unpaired,
+      pairedNoConflict,
+      withoutAssignments,
+    } = drawPositionOptions;
 
     // the first element of each options array represents the greatest possible round separation
 
-    const prioritizeUnpaired = pairedPriority === false || useSpecifiedGroupKey;
-    const desiredOptions = prioritizeUnpaired
-      ? unpaired?.length && unpaired[0]
-      : pairedNoConflict?.length && pairedNoConflict[0];
-
-    const fallbackOptions = prioritizeUnpaired
+    const desiredOptions = useSpecifiedGroupKey
+      ? withoutAssignments?.length && withoutAssignments[0]
+      : pairedPriority
       ? pairedNoConflict?.length && pairedNoConflict[0]
       : unpaired?.length && unpaired[0];
+
+    const fallbackOptions = pairedPriority
+      ? unpaired?.length && unpaired[0]
+      : pairedNoConflict?.length && pairedNoConflict[0];
 
     const prioritizedOptions =
       (desiredOptions?.length && desiredOptions) ||
@@ -98,7 +105,7 @@ export function generatePositioningCandidate({
     }
 
     console.log({
-      prioritizeUnpaired,
+      withoutAssignments: withoutAssignments[0],
       prioritizedOptions,
       targetDrawPosition,
       groupKey,

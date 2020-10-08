@@ -62,15 +62,20 @@ export function extractAttributeValues({ policyAttributes, participant }) {
   const extractedValues = [];
   policyAttributes.forEach(policyAttribute => {
     const value = participant;
-    const keys = policyAttribute.split('.');
-
-    processKeys({ value, keys });
+    const keys =
+      typeof policyAttribute === 'string'
+        ? policyAttribute.split('.')
+        : policyAttribute?.key.split('.');
+    const significantCharacters =
+      typeof policyAttribute === 'object' &&
+      policyAttribute.significantCharacters;
+    processKeys({ value, keys, significantCharacters });
   });
 
   const values = unique(extractedValues);
   return { values };
 
-  function processKeys({ value, keys }) {
+  function processKeys({ value, keys, significantCharacters }) {
     for (const [index, key] of keys.entries()) {
       if (value && value[key]) {
         if (Array.isArray(value[key])) {
@@ -92,7 +97,10 @@ export function extractAttributeValues({ policyAttributes, participant }) {
         index === keys.length - 1 &&
         ['string', 'number'].includes(typeof value)
       ) {
-        extractedValues.push(value);
+        const extractedValue = significantCharacters
+          ? value.slice(0, significantCharacters)
+          : value;
+        extractedValues.push(extractedValue);
       }
     }
   }

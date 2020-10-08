@@ -9,8 +9,8 @@ const avoidancePolicy = {
   roundsToSeparate: undefined,
   policyName: 'Nationality Code',
   policyAttributes: [
-    'person.nationalityCode',
-    'individualParticipants.person.nationalityCode',
+    { key: 'person.nationalityCode' },
+    { key: 'individualParticipants.person.nationalityCode' },
   ],
 };
 
@@ -47,7 +47,7 @@ it('can generate ELIMINATION drawDefinition using country avoidance with INDIVID
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
-it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
+it.only('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
   const { conflicts } = avoidanceTest({
     eventType: SINGLES,
     drawType: ROUND_ROBIN,

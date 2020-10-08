@@ -3,8 +3,8 @@ export const AVOIDANCE_COUNTRY = {
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
     policyAttributes: [
-      'person.nationalityCode',
-      'individualParticipants.person.nationalityCode',
+      { key: 'person.nationalityCode' },
+      { key: 'individualParticipants.person.nationalityCode' },
     ],
   },
 };
