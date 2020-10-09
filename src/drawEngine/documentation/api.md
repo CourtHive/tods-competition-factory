@@ -80,13 +80,13 @@ route: /drawEngine/api
 
 ## attachPolicy
 
-Attaches a policy to a drawDefinition.  Policies determine the rules for seeding, avoidance, etc.
+Attaches a policy to a drawDefinition. Policies determine the rules for seeding, avoidance, etc.
 
-| Parameters            | Required | Type    | Description |
-| :---                  | :---     | :---    | :--- |
-| policyDefinition      | Required | Object  | A policy definition object (see below) |
+| Parameters       | Required | Type   | Description                            |
+| :--------------- | :------- | :----- | :------------------------------------- |
+| policyDefinition | Required | Object | A policy definition object (see below) |
 
-The structure of an ***assignment object*** is as follows:
+The structure of an **_assignment object_** is as follows:
 
 ```json
 {
@@ -149,6 +149,14 @@ The structure of an ***assignment object*** is as follows:
 
 ## generateScoreString
 
+| Parameters    | Required | Type    | Description                                                              |
+| :------------ | :------- | :------ | :----------------------------------------------------------------------- |
+| sets          | Required | object  | An array of TODS sets objects                                            |
+| matchUpStatus | Optional | string  | TODS matchUpStatus ENUM                                                  |
+| winningSide   | Optional | number  | TODS side indicator: 1 or 2 (can also be string)                         |
+| winnerFirst   | Optional | boolean | Whether or not to display the winning side on the left of each set score |
+| autoComplete  | Optional | boolean | Whether or not to convert **undefined** to 0                             |
+
 ---
 
 ## getCheckedInParticipantIds
@@ -189,13 +197,13 @@ The structure of an ***assignment object*** is as follows:
 
 ## getSeedAssignments
 
-Returns existing seedAssignments for ***all*** structures within a draw
+Returns existing seedAssignments for **_all_** structures within a draw
 
-| Parameters            | Required | Type    | Description |
-| :---                  | :---     | :---    | :--- |
-| structureId           | Optional | string  | Return assignments for a specific structure, identified by structureId |
-| stage                 | Optional | string  | Locate structure by stage; used together with stageSequence |
-| stageSequence         | Optional | number  | Locate structure by stageSequence; used together with stage |
+| Parameters    | Required | Type   | Description                                                            |
+| :------------ | :------- | :----- | :--------------------------------------------------------------------- |
+| structureId   | Optional | string | Return assignments for a specific structure, identified by structureId |
+| stage         | Optional | string | Locate structure by stage; used together with stageSequence            |
+| stageSequence | Optional | number | Locate structure by stageSequence; used together with stage            |
 
 ```json
 Defaults to { stage: 'MAIN', stageSequence: 1 } if { structureId: undefined }
@@ -203,21 +211,21 @@ Defaults to { stage: 'MAIN', stageSequence: 1 } if { structureId: undefined }
 
 The result is an array of objects which contain seeding details for all structures within the current draw
 
-| Object Attributes | Type    | Description |
-| :---              | :---    | :--- |
-| structureId       | string  | unique identifier for draw structure |
-| seedAssignments   | array   | array of assignment objects |
-| stage             | string  | draw stage within which structure appears |
-| stageSequence     | number  | stageSequence within a draw stage |
-| seedLimit         | number  | either defined structure seedLimit or number of drawPositions |
+| Object Attributes | Type   | Description                                                   |
+| :---------------- | :----- | :------------------------------------------------------------ |
+| structureId       | string | unique identifier for draw structure                          |
+| seedAssignments   | array  | array of assignment objects                                   |
+| stage             | string | draw stage within which structure appears                     |
+| stageSequence     | number | stageSequence within a draw stage                             |
+| seedLimit         | number | either defined structure seedLimit or number of drawPositions |
 
-The structure of an ***assignment object*** is as follows:
+The structure of an **_assignment object_** is as follows:
 
 ```json
 {
-  seedNumber: 1,
-  seedValue: 1,
-  participantId: 'uuid-of-participant'
+  "seedNumber": 1,
+  "seedValue": 1,
+  "participantId": "uuid-of-participant"
 }
 ```
 
@@ -228,7 +236,6 @@ drawEngine.setState(drawDefinition);
 const structureSeedingDetails = drawEngine.getSeedAssignments();
 const firstStructureDetails = structureSeedingDetails[0];
 const { seedAssignments } = firstStructureDetails;
-
 ```
 
 ---

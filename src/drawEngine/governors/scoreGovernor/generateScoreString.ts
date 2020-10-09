@@ -1,52 +1,96 @@
-export function generateScoreString({ sets, matchUpStatus }) {
-  if (!sets?.length) return '';
-  const scoreString = sets
-    .sort(setSort)
-    .map(setString)
-    .join(' ');
-  if (matchUpStatus) {
-    console.log('add outcome status string');
+import {
+  ABANDONED,
+  DEAD_RUBBER,
+  DEFAULTED,
+  RETIRED,
+  SUSPENDED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
+
+/**
+ *
+ * @param {object[]} - sets - TODS sets object
+ * @param {string} - matchUpStatus - TODS matchUpStatus ENUM
+ * @param {number || string} - winningSide - TODS side declaration: 1 or 2
+ * @param {boolean} - winnerFirst - generate string with winner on left side
+ * @param {boolean} - autoComplete - whether to convert undefined values to 0
+ *
+ */
+export function generateScoreString(props: any) {
+  const {
+    sets,
+    matchUpStatus,
+    winningSide,
+    winnerFirst = true,
+    autoComplete = true,
+  } = props;
+  const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
+
+  const outcomeString = getOutcomeString({ matchUpStatus });
+
+  const setScores =
+    sets
+      ?.sort(setSort)
+      .map(setString)
+      .join(' ') || '';
+
+  if (!outcomeString) return setScores;
+  if (winningSide === 2) return `${outcomeString} ${setScores}`;
+  return `${setScores} ${outcomeString}`;
+
+  function setString(currentSet) {
+    const hasGameScores = set =>
+      set?.side1Score !== undefined || set?.side2Score !== undefined;
+    const hasTiebreakScores = set =>
+      set?.side1TiebreakScore !== undefined ||
+      set?.side2TiebreakScore !== undefined;
+
+    const isTiebreakSet =
+      !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
+    if (isTiebreakSet) {
+      const tiebreakScore = scoresInSideOrder
+        ? [
+            currentSet.side1TiebreakScore || 0,
+            currentSet.side2TiebreakScore || 0,
+          ]
+        : [
+            currentSet.side2TiebreakScore || 0,
+            currentSet.side1TiebreakScore || 0,
+          ];
+      return `[${tiebreakScore.join('-')}]`;
+    }
+    const {
+      side1Score,
+      side2Score,
+      side1TiebreakScore,
+      side2TiebreakScore,
+    } = currentSet;
+
+    const t1 = side1TiebreakScore || (autoComplete ? 0 : '');
+    const t2 = side2TiebreakScore || (autoComplete ? 0 : '');
+    const lowTiebreakScore = Math.min(t1, t2);
+    const tiebreak = lowTiebreakScore ? `(${lowTiebreakScore})` : '';
+
+    const s1 = side1Score || (autoComplete ? 0 : '');
+    const s2 = side2Score || (autoComplete ? 0 : '');
+
+    return scoresInSideOrder
+      ? `${[s1, s2].join('-')}${tiebreak}`
+      : `${[s2, s1].join('-')}${tiebreak}`;
   }
-  return scoreString;
 }
 
-function setString(set) {
-  const {
-    side1Score,
-    side2Score,
-    side1TiebreakScore,
-    side2TiebreakScore,
-    winningSide,
-  } = set;
+function getOutcomeString({ matchUpStatus }) {
+  const outcomeStrings = {
+    [RETIRED]: 'RET',
+    [WALKOVER]: 'WO',
+    [SUSPENDED]: 'SUS',
+    [ABANDONED]: 'ABN',
+    [DEFAULTED]: 'DEF',
+    [DEAD_RUBBER]: 'DR',
+  };
 
-  if (
-    side1Score === undefined &&
-    side2Score === undefined &&
-    (side1TiebreakScore || side2TiebreakScore)
-  ) {
-    return `[${side1TiebreakScore || 0}-${side2TiebreakScore || 0}]`;
-  } else if (
-    side1TiebreakScore === undefined &&
-    side2TiebreakScore === undefined &&
-    (side1Score || side2Score)
-  ) {
-    return `${side1Score || 0}-${side2Score || 0}`;
-  } else {
-    if (
-      (side1Score || side2Score) &&
-      (side1TiebreakScore || side2TiebreakScore)
-    ) {
-      const tiebreakScore =
-        winningSide === 1
-          ? side2TiebreakScore
-          : winningSide === 2
-          ? side1TiebreakScore
-          : `${side1TiebreakScore}-${side2TiebreakScore}`;
-      return `${side1Score || 0}-${side2Score || 0}(${tiebreakScore})`;
-    }
-  }
-
-  return '';
+  return (matchUpStatus && outcomeStrings[matchUpStatus]) || '';
 }
 
 function setSort(a, b) {
