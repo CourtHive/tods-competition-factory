@@ -36,6 +36,7 @@ export function avoidanceTest(props) {
   });
 
   tournamentEngine.setState(tournamentRecord);
+  console.log('version:', tournamentEngine.version());
 
   const event = {
     eventName: 'Test Event',

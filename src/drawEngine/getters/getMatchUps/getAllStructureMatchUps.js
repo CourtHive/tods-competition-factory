@@ -13,6 +13,7 @@ import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/match
 import { makeDeepCopy, numericSort } from '../../../utilities';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
+import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
 
 /*
   return all matchUps within a structure and its child structures
@@ -185,6 +186,7 @@ export function getAllStructureMatchUps({
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
+      const sets = matchUpWithContext.sets;
       matchUpWithContext.sides
         .filter(f => f)
         .forEach(side => {
@@ -196,6 +198,11 @@ export function getAllStructureMatchUps({
             if (participant) {
               Object.assign(side, { participant });
             }
+          }
+          if (sets && side.sideNumber) {
+            const reversed = side.sideNumber === 2;
+            const score = generateScoreString({ sets, reversed });
+            Object.assign(side, { score });
           }
           if (side.participant && side.participant.individualParticipants) {
             const individualParticipants = side.participant.individualParticipants.map(

@@ -35,7 +35,8 @@
     "prepare": "tsdx build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
-    "docz:serve": "docz build && docz serve"
+    "docz:serve": "docz build && docz serve",
+    "prepublishOnly": "./addVersion $npm_package_version"
   },
   "peerDependencies": {},
   "husky": {

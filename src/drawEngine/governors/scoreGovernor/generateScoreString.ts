@@ -20,12 +20,14 @@ import { isNumeric } from '../../../utilities/math';
 export function generateScoreString(props: any) {
   const {
     sets,
-    matchUpStatus,
     winningSide,
+    autoComplete,
+    matchUpStatus,
+    reversed = false,
     winnerFirst = true,
-    autoComplete = true,
   } = props;
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
+  const reverseScores = reversed || !scoresInSideOrder;
 
   const outcomeString = getOutcomeString({ matchUpStatus });
 
@@ -47,18 +49,7 @@ export function generateScoreString(props: any) {
 
     const isTiebreakSet =
       !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
-    if (isTiebreakSet) {
-      const tiebreakScore = scoresInSideOrder
-        ? [
-            currentSet.side1TiebreakScore || (autoComplete ? 0 : ''),
-            currentSet.side2TiebreakScore || (autoComplete ? 0 : ''),
-          ]
-        : [
-            currentSet.side2TiebreakScore || (autoComplete ? 0 : ''),
-            currentSet.side1TiebreakScore || (autoComplete ? 0 : ''),
-          ];
-      return `[${tiebreakScore.join('-')}]`;
-    }
+
     const {
       side1Score,
       side2Score,
@@ -66,17 +57,34 @@ export function generateScoreString(props: any) {
       side2TiebreakScore,
     } = currentSet;
 
-    const t1 = side1TiebreakScore || (autoComplete ? 0 : '');
-    const t2 = side2TiebreakScore || (autoComplete ? 0 : '');
+    const t1 =
+      side1TiebreakScore ||
+      (isNumeric(side1TiebreakScore) || autoComplete ? 0 : '');
+    const t2 =
+      side2TiebreakScore ||
+      (isNumeric(side2TiebreakScore) || autoComplete ? 0 : '');
+
+    if (isTiebreakSet) {
+      const tiebreakScore = reversed ? [t2, t1] : [t1, t2];
+      return `[${tiebreakScore.join('-')}]`;
+    }
+
+    /*
+    const tiebreakScores = [side1TiebreakScore, side2TiebreakScore].filter(
+      tiebreakScore => {
+        return tiebreakScore !== undefined && tiebreakScore !== false;
+      }
+    );
+    */
     const lowTiebreakScore = Math.min(t1, t2);
     const tiebreak = lowTiebreakScore ? `(${lowTiebreakScore})` : '';
 
-    const s1 = side1Score || (autoComplete ? 0 : '');
-    const s2 = side2Score || (autoComplete ? 0 : '');
+    const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
+    const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    return scoresInSideOrder
-      ? `${[s1, s2].join('-')}${tiebreak}`
-      : `${[s2, s1].join('-')}${tiebreak}`;
+    return reverseScores
+      ? `${[s2, s1].join('-')}${tiebreak}`
+      : `${[s1, s2].join('-')}${tiebreak}`;
   }
 }
 
