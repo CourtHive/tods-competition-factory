@@ -6,6 +6,7 @@ import {
   SUSPENDED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { isNumeric } from '../../../utilities/math';
 
 /**
  *
@@ -40,22 +41,21 @@ export function generateScoreString(props: any) {
 
   function setString(currentSet) {
     const hasGameScores = set =>
-      set?.side1Score !== undefined || set?.side2Score !== undefined;
+      isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
     const hasTiebreakScores = set =>
-      set?.side1TiebreakScore !== undefined ||
-      set?.side2TiebreakScore !== undefined;
+      isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
 
     const isTiebreakSet =
       !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
     if (isTiebreakSet) {
       const tiebreakScore = scoresInSideOrder
         ? [
-            currentSet.side1TiebreakScore || 0,
-            currentSet.side2TiebreakScore || 0,
+            currentSet.side1TiebreakScore || (autoComplete ? 0 : ''),
+            currentSet.side2TiebreakScore || (autoComplete ? 0 : ''),
           ]
         : [
-            currentSet.side2TiebreakScore || 0,
-            currentSet.side1TiebreakScore || 0,
+            currentSet.side2TiebreakScore || (autoComplete ? 0 : ''),
+            currentSet.side1TiebreakScore || (autoComplete ? 0 : ''),
           ];
       return `[${tiebreakScore.join('-')}]`;
     }

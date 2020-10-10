@@ -2,7 +2,7 @@ import { UUID } from './utilities/UUID';
 import { dateTime } from './utilities/dateTime';
 import { numericSort } from './utilities/sorting';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
-import { nearestPowerOf2, powerOf2 } from './utilities/math';
+import { nearestPowerOf2, powerOf2, isNumeric } from './utilities/math';
 import {
   countValues,
   chunkArray,
@@ -16,6 +16,7 @@ import {
 
 export const utilities = {
   UUID,
+  isNumeric,
   dateTime,
   numericSort,
   makeDeepCopy,

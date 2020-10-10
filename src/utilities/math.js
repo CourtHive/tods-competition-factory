@@ -6,3 +6,7 @@ export function powerOf2(n) {
 export function nearestPowerOf2(val) {
   return Math.pow(2, Math.round(Math.log(val) / Math.log(2)));
 }
+
+export function isNumeric(value) {
+  return !isNaN(parseFloat(value));
+}
