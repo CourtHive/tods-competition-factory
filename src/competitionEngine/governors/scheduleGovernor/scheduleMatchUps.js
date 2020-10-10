@@ -61,7 +61,7 @@ export function scheduleMatchUps(props) {
   const { scheduleTimes } = matchUpTiming(timingParameters);
 
   const matchUpsToSchedule = matchUps.filter(matchUp => {
-    const doNotSchedule = ![
+    const doNotSchedule = [
       BYE,
       DEFAULTED,
       COMPLETED,
