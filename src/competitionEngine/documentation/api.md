@@ -73,3 +73,9 @@ Where **tournamentRecords** is an Array of **tournamentRecord** objects.
 ## toggleParticipantCheckInState
 
 ---
+
+## version
+
+Returns NPM package version
+
+---

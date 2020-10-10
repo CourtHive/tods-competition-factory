@@ -82,13 +82,13 @@ Assign **participantIds** to **seedNumbers** within a target draw structure.
 Defaults to { stage: 'MAIN', stageSequence: 1 } if { structureId: undefined }
 ```
 
-The structure of an ***assignment object*** is as follows:
+The structure of an **_assignment object_** is as follows:
 
 ```json
 {
-  seedNumber: 1,
-  seedValue: 1,
-  participantId: 'uuid-of-participant'
+  "seedNumber": 1,
+  "seedValue": 1,
+  "participantId": "uuid-of-participant"
 }
 ```
 
@@ -96,15 +96,15 @@ The structure of an ***assignment object*** is as follows:
 
 This allows seeds 5-8 to be visually represented as all having a seed value of '5' or '5-8'.
 
-| Parameters            | Required | Type    | Description |
-| :---                  | :---     | :---    | :--- |
-| drawId                | Required | string  | Unique identifier for target drawDefinition |
-| assignments           | Required | array   | Array of assignment objects |
-| eventId               | Optional | string  | Not required; optimizes locating draw witthin tournamentRecord |
+| Parameters            | Required | Type    | Description                                                          |
+| :-------------------- | :------- | :------ | :------------------------------------------------------------------- |
+| drawId                | Required | string  | Unique identifier for target drawDefinition                          |
+| assignments           | Required | array   | Array of assignment objects                                          |
+| eventId               | Optional | string  | Not required; optimizes locating draw witthin tournamentRecord       |
 | structureId           | Optional | string  | Apply assignments to a specific structure, identified by structureId |
-| stage                 | Optional | string  | Locate target structure by stage; used together with stageSequence |
-| stageSequence         | Optional | number  | Locate target structure by stageSequence; used together with stage |
-| useExistingSeedLimits | Optional | boolean | Restrict ability to assign seedNumbers beyond established limit |
+| stage                 | Optional | string  | Locate target structure by stage; used together with stageSequence   |
+| stageSequence         | Optional | number  | Locate target structure by stageSequence; used together with stage   |
+| useExistingSeedLimits | Optional | boolean | Restrict ability to assign seedNumbers beyond established limit      |
 
 ---
 
@@ -321,5 +321,11 @@ const { tournamentRecord } = tournamentEngine.getState();
 ---
 
 ## tournamentMatchUps
+
+---
+
+## version
+
+Returns NPM package version
 
 ---

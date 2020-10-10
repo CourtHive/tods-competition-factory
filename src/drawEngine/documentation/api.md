@@ -347,3 +347,9 @@ const { drawDefinition } = drawEngine.getState();
 ## tallyBracket
 
 ---
+
+## version
+
+Returns NPM package version
+
+---
