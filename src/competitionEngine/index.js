@@ -33,6 +33,9 @@ export const competitionEngine = (function() {
     scheduleGovernor,
   ]);
 
+  fx.version = () => {
+    return process.env.npm_package_version;
+  };
   fx.devContext = isDev => {
     devContext = isDev;
     return fx;

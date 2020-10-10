@@ -59,6 +59,9 @@ export const tournamentEngine = (function() {
     },
   };
 
+  fx.version = () => {
+    return process.env.npm_package_version;
+  };
   fx.reset = () => {
     tournamentRecord = null;
     return SUCCESS;
