@@ -68,48 +68,30 @@ export function generatePositioningCandidate({
       largestGroupSize,
       unfilledPositions,
       drawPositionChunks,
+      isRoundRobin: useSpecifiedGroupKey,
       positionAssignments: candidatePositionAssignments,
       selectedParticipantGroups,
     });
-    const {
-      unassigned,
-      unpaired,
-      pairedNoConflict,
-      withoutAssignments,
-    } = drawPositionOptions;
+    const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
 
     // the first element of each options array represents the greatest possible round separation
-
-    const desiredOptions = useSpecifiedGroupKey
-      ? withoutAssignments?.length && withoutAssignments[0]
-      : pairedPriority
-      ? pairedNoConflict?.length && pairedNoConflict[0]
-      : unpaired?.length && unpaired[0];
-
-    const fallbackOptions = pairedPriority
-      ? unpaired?.length && unpaired[0]
-      : pairedNoConflict?.length && pairedNoConflict[0];
+    const pnc = pairedNoConflict?.length && pairedNoConflict[0];
+    const up = unpaired?.length && unpaired[0];
+    const desiredOptions = pairedPriority && pnc ? pnc : up;
+    const fallbackOptions = pairedPriority ? up : pnc;
 
     const prioritizedOptions =
       (desiredOptions?.length && desiredOptions) ||
-      (fallbackOptions?.length && fallbackOptions) ||
-      [];
+      (fallbackOptions?.length && fallbackOptions);
 
     let targetDrawPosition;
-    if (prioritizedOptions.length) {
+    if (prioritizedOptions?.length) {
       const section = randomPop(prioritizedOptions);
       targetDrawPosition = randomPop(section);
     } else {
       const section = randomPop(unassigned[0]);
       targetDrawPosition = randomPop(section);
     }
-
-    console.log({
-      withoutAssignments: withoutAssignments[0],
-      prioritizedOptions,
-      targetDrawPosition,
-      groupKey,
-    });
 
     const result = assignDrawPosition({
       structureId,

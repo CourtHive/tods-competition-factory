@@ -127,7 +127,7 @@ export function randomUnseededSeparation({
     ...pairedPriorityCandidates
   );
   console.log(
-    'conflicts:',
+    'candidate conflicts:',
     candidates.map(c => c.conflicts || 0)
   );
   const candidate = candidates.reduce(

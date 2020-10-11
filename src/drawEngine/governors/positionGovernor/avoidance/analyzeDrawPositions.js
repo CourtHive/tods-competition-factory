@@ -4,26 +4,15 @@ import { intersection } from '../../../../utilities/arrays';
  *
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
  * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
- * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
- * @param {object[]} positionAssignments - array of assignment objects
- * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
- *
- * Returns different types of placement options.
- * 1. positions which are unassigned
- * 2. unassigned positions which are not paired with any other participantId
- * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
+ * @param {object[]} positionAssignments - array of assignment objects { drawPosition, particpantId }
  *
  */
-
-export function analyzeDrawPositions({
+function getPositionProfiles({
   allGroups,
   groupsToAvoid,
-  largestGroupSize,
-  unfilledPositions,
   positionAssignments,
-  chunkedDrawPositions,
 }) {
-  const profiledPositions = Object.assign(
+  return Object.assign(
     {},
     ...positionAssignments
       .filter(assignment => assignment?.participantId)
@@ -40,6 +29,25 @@ export function analyzeDrawPositions({
         return { [drawPosition]: { participantGroups, includesGroupsToAvoid } };
       })
   );
+}
+
+/**
+ *
+ * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
+ * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
+ * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
+ * @param {object[]} positionAssignments - array of assignment objects { drawPosition, particpantId }
+ * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
+ *
+ * Returns different types of placement options.
+ * 1. positions which are unassigned
+ * 2. unassigned positions which are not paired with any other participantId
+ * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
+ *
+ */
+export function analyzeEliminationDrawPositions(props) {
+  const { unfilledPositions, chunkedDrawPositions } = props;
+  const profiledPositions = getPositionProfiles(props);
 
   const checkedChunk = chunkedDrawPositions.map(chunkedGrouping => {
     const unassigned = unfilledPositions.filter(unfilledPosition =>
@@ -53,10 +61,7 @@ export function analyzeDrawPositions({
       const pairedPosition = getPairedPosition(drawPosition);
       return !profiledPositions[pairedPosition]?.includesGroupsToAvoid;
     });
-    const withoutAssignments =
-      chunkedGrouping.length === largestGroupSize ? chunkedGrouping : [];
-    if (withoutAssignments.length) console.log({ withoutAssignments });
-    return { unassigned, unpaired, pairedNoConflict, withoutAssignments: [] };
+    return { unassigned, unpaired, pairedNoConflict };
   });
 
   return checkedChunk;
@@ -69,6 +74,41 @@ export function analyzeDrawPositions({
       return !unassigned.includes(pairedPosition);
     }
   }
+}
+
+/**
+ *
+ * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
+ * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
+ * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
+ * @param {object[]} positionAssignments - array of assignment objects
+ * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
+ *
+ * Returns different types of placement options.
+ * 1. positions which are unassigned
+ * 2. unassigned positions which are not paired with any other participantId
+ * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
+ *
+ */
+
+export function analyzeRoundRobinDrawPositions(props) {
+  const { unfilledPositions, chunkedDrawPositions } = props;
+  const profiledPositions = getPositionProfiles(props);
+
+  const checkedChunk = chunkedDrawPositions.map(chunkedGrouping => {
+    const unassigned = unfilledPositions.filter(unfilledPosition =>
+      chunkedGrouping.includes(unfilledPosition)
+    );
+    const unpaired =
+      unassigned.length === chunkedGrouping.length ? unassigned : [];
+    const conflictsCount = chunkedGrouping.filter(
+      drawPosition => profiledPositions[drawPosition]?.includesGroupsToAvoid
+    ).length;
+    const pairedNoConflict = conflictsCount ? [] : unassigned;
+    return { unassigned, unpaired, pairedNoConflict, conflictsCount };
+  });
+
+  return checkedChunk;
 }
 
 /**
