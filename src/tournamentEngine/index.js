@@ -60,7 +60,7 @@ export const tournamentEngine = (function() {
   };
 
   fx.version = () => {
-    return '@VERSION@';
+    return process?.env?.npm_package_version || '@VERSION@';
   };
   fx.reset = () => {
     tournamentRecord = null;

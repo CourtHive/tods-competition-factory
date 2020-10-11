@@ -2,10 +2,12 @@ export const venueTemplate = () => ({
   venueId: null,
   venueName: '',
   venueAbbreviation: '',
+  onlineResources: [],
   venueType: null,
-  onlineProfiles: [{ type: '', identifier: '' }],
   addresses: [],
+  contacts: [],
   courts: [],
+  roles: [],
 });
 
 export default venueTemplate;

@@ -8,7 +8,8 @@ export const courtTemplate = () => ({
   surfaceType: null,
   surfaceDate: null,
   dateAvailability: [],
-  onlineProfiles: [], // { type: '', identifier: 'URL' },
+  onlineResources: [],
+  courtDimensions: null,
   notes: null,
 });
 

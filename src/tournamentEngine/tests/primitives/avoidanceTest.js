@@ -10,6 +10,10 @@ const { SUCCESS } = resultConstants;
  * @param {string} eventType - DOUBLES or SINGLES; controls what type of event is generated
  * @param {string} participantType = INDIVIDUAL or PAIR; used to filter participants for draw generation
  *
+ * @param {number} valuesCount - how many variations to generate for each value type
+ * @param {number} participantsCount - how many participants to place in the draw
+ * @param {string} drawType - type of draw to generate
+ *
  */
 
 export function avoidanceTest(props) {
@@ -36,7 +40,6 @@ export function avoidanceTest(props) {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  console.log('version:', tournamentEngine.version());
 
   const event = {
     eventName: 'Test Event',

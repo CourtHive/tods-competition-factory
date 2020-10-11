@@ -3,10 +3,11 @@ import { analyzeDrawPositions } from './analyzeDrawPositions';
 /**
  *
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
- * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
+ * @param {number} largestGroupSize - largestGroupSize greater than 2 indicates Round Robin groupings
  * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
  * @param {object[]} drawPositionChunks - ranges of drawPositions grouped by levels of separation
  * @param {object[]} positionAssignments - array of assignment objects
+ * @param {string[]} selectedParticipantGroups - names of groups which contain the participantId currently being placed
  *
  * Returns different types of placement options.
  * Similar to analyzeDraawPositions, but aggregates options.
