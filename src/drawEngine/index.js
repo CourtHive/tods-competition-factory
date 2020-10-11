@@ -53,7 +53,7 @@ export const drawEngine = (function() {
       return setState(definition);
     },
     getState: () => ({ drawDefinition: makeDeepCopy(drawDefinition) }),
-    version: () => process?.env?.npm_package_version || '@VERSION@',
+    version: () => '@VERSION@',
     reset: () => {
       drawDefinition = null;
       return SUCCESS;

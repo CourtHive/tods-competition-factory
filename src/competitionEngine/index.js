@@ -34,7 +34,7 @@ export const competitionEngine = (function() {
   ]);
 
   fx.version = () => {
-    return process?.env?.npm_package_version || '@VERSION@';
+    return '@VERSION@';
   };
   fx.devContext = isDev => {
     devContext = isDev;
