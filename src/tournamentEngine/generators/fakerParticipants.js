@@ -103,7 +103,7 @@ export function generateFakeParticipants({
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
     const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);
-    if (!nationalityCode) {
+    if (countriesList?.length && !nationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
     }
     const address = generateAddress({
