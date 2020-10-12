@@ -1,6 +1,6 @@
 import Faker from 'faker';
 import { countries } from '../../fixtures/countryData';
-import { generateRange, shuffleArray, randomMember } from '../../utilities';
+import { unique, generateRange, shuffleArray } from '../../utilities';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -10,29 +10,49 @@ export function generateFakeParticipants({
   nationalityCodes,
   nationalityCodesCount,
   participantsCount = 32,
-  addressProps,
+  valuesInstanceLimit,
+
   participantType,
+  addressProps,
   matchUpType,
   sex,
 }) {
+  const doubles = participantType === PAIR || matchUpType === DOUBLES;
+  const team = participantType === TEAM || matchUpType === TEAM;
+  const individualParticipantsCount =
+    participantsCount * (doubles ? 2 : team ? 8 : 1);
+
   const isoCountries = countries.filter(country => country.iso);
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
-  const cities =
-    citiesCount &&
-    generateRange(0, citiesCount).map(() => Faker.address.city());
+  function getMin(count) {
+    const instances = Math.ceil(individualParticipantsCount / count);
+    if (valuesInstanceLimit && instances > valuesInstanceLimit)
+      return Math.ceil(individualParticipantsCount / valuesInstanceLimit);
+    return count;
+  }
 
-  const states =
-    statesCount &&
-    generateRange(0, statesCount).map(() => Faker.address.state());
+  function getList(count, fx) {
+    const minItems = count && getMin(count);
+    const items =
+      minItems &&
+      unique(generateRange(0, minItems * 4).map(() => fx())).slice(0, minItems);
+    const list = generateRange(
+      0,
+      Math.ceil(individualParticipantsCount / minItems)
+    )
+      .map(() => items)
+      .flat(Infinity);
+    return shuffleArray(list);
+  }
 
-  const postalCodes =
-    postalCodesCount &&
-    generateRange(0, postalCodesCount).map(() => Faker.address.zipCode());
-
+  const cities = getList(citiesCount, Faker.address.city);
+  const states = getList(statesCount, Faker.address.state);
+  const postalCodes = getList(postalCodesCount, Faker.address.zipCode);
   const addressValues = { cities, states, postalCodes };
 
-  const isoList = nationalityCodesCount
+  const isoMin = getMin(nationalityCodesCount);
+  const isoList = isoMin
     ? shuffleArray(isoCountries).slice(0, nationalityCodesCount)
     : nationalityCodes
     ? isoCountries.filter(isoCountry =>
@@ -40,17 +60,22 @@ export function generateFakeParticipants({
       )
     : isoCountries;
 
-  const countriesCount = isoList.length;
-  const doubles = participantType === PAIR || matchUpType === DOUBLES;
-  const team = participantType === TEAM || matchUpType === TEAM;
+  const countriesList = shuffleArray(
+    generateRange(0, Math.ceil(individualParticipantsCount / isoMin))
+      .map(() => isoList)
+      .flat(Infinity)
+  );
 
-  const participants = generateRange(1, participantsCount + 1)
-    .map(() => {
+  const participants = generateRange(0, participantsCount)
+    .map(i => {
       const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;
       const individualParticipants = generateRange(
         0,
         sideParticipantsCount
-      ).map(() => generateIndividualParticipant());
+      ).map(j => {
+        const participantIndex = i * sideParticipantsCount + j;
+        return generateIndividualParticipant(participantIndex);
+      });
 
       const pairName = individualParticipants
         .map(i => i.person.standardFamilyName)
@@ -72,20 +97,20 @@ export function generateFakeParticipants({
 
   return { participants };
 
-  function generateIndividualParticipant() {
-    const countryIndex = Faker.random.number({
-      min: 0,
-      max: countriesCount - 1,
-    });
+  function generateIndividualParticipant(participantIndex) {
     const standardGivenName = Faker.name.firstName();
     const standardFamilyName = Faker.name.lastName();
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
-    const country = isoList[countryIndex];
+    const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);
     if (!nationalityCode) {
-      console.log('%c Invalid Nationality Code', countryIndex, { country });
+      console.log('%c Invalid Nationality Code', { participantIndex, country });
     }
-    const address = generateAddress({ ...addressValues, nationalityCode });
+    const address = generateAddress({
+      ...addressValues,
+      participantIndex,
+      nationalityCode,
+    });
     const participant = {
       participantId: Faker.random.uuid(),
       participantType: INDIVIDUAL,
@@ -105,11 +130,17 @@ export function generateFakeParticipants({
 }
 
 function generateAddress(addressAttributes) {
-  const { cities, states, postalCodes, nationalityCode } = addressAttributes;
+  const {
+    cities,
+    states,
+    postalCodes,
+    nationalityCode,
+    participantIndex,
+  } = addressAttributes;
   const address = {
-    city: cities && randomMember(cities),
-    state: states && randomMember(states),
-    postalCode: postalCodes && randomMember(postalCodes),
+    city: cities && cities[participantIndex],
+    state: states && states[participantIndex],
+    postalCode: postalCodes && postalCodes[participantIndex],
     countryCode: nationalityCode,
   };
   return address;

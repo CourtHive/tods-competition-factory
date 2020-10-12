@@ -20,6 +20,7 @@ export function avoidanceTest(props) {
   const { avoidance, eventType, participantType } = props;
   const {
     valuesCount = 10,
+    valuesInstanceLimit,
     participantsCount = 32,
     drawType = ELIMINATION,
   } = props;
@@ -31,6 +32,7 @@ export function avoidanceTest(props) {
     participantType,
     participantsCount,
 
+    valuesInstanceLimit,
     nationalityCodesCount: valuesCount,
     addressProps: {
       citiesCount: valuesCount,

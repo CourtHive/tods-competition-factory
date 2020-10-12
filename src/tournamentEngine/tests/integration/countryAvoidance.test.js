@@ -54,6 +54,8 @@ it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVID
     participantType: INDIVIDUAL,
     avoidance: avoidancePolicy,
     participantsCount: 8,
+
+    valuesInstanceLimit: 4,
     valuesCount: 8,
   });
   if (conflicts?.unseededConflicts)

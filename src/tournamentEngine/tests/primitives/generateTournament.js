@@ -14,6 +14,8 @@ export function tournamentRecordWithParticipants({
 
   participantsCount,
   participantType = INDIVIDUAL,
+
+  valuesInstanceLimit,
 }) {
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
@@ -24,6 +26,8 @@ export function tournamentRecordWithParticipants({
 
     participantsCount,
     participantType,
+
+    valuesInstanceLimit,
   });
 
   if (participantType === INDIVIDUAL) {
