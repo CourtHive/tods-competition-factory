@@ -7,7 +7,7 @@ import {
   BACKSPACE,
   OUTCOMEKEYS,
   OUTCOME_COMPLETE,
-  VALID_CALC_KEYS,
+  VALID_VALUE_KEYS,
   SCORE_JOINER,
   MATCH_TIEBREAK_JOINER,
   ALTERNATE_JOINERS,
@@ -38,6 +38,8 @@ export {
   getLeadingSide,
   checkSetIsComplete,
 } from './winningSide';
+
+export { keyValueConstants } from './constants';
 
 export function keyValueMatchUpScore(props) {
   const { matchUp } = props;
@@ -89,7 +91,7 @@ export function keyValueScore(props) {
   const isShifted =
     (shiftFirst && lowSide === 2) || (!shiftFirst && lowSide === 1);
 
-  if (!VALID_CALC_KEYS.includes(value)) {
+  if (!VALID_VALUE_KEYS.includes(value)) {
     return { updated: false, message: 'invalid key' };
   }
 

@@ -97,8 +97,8 @@ export const MODIFIERS = [SCORE_JOINER, BACKSPACE].concat(
   CLOSERS,
   ALTERNATE_JOINERS
 );
-export const VALID_CALC_KEYS = [SIDE1KEYS, SIDE2KEYS, MODIFIERS].join(',');
-export const HOTKEYS = [VALID_CALC_KEYS, MOVEUP, MOVEDOWN, TEST].join(',');
+export const VALID_VALUE_KEYS = [SIDE1KEYS, SIDE2KEYS, MODIFIERS].join(',');
+export const HOTKEYS = [VALID_VALUE_KEYS, MOVEUP, MOVEDOWN, TEST].join(',');
 
 // for testing purposes; side keys overrepresented
 export const SCORE_TEST_KEYS = [].concat(
@@ -112,3 +112,13 @@ export const SCORE_TEST_KEYS = [].concat(
   ...SIDE1KEYS,
   ...SIDE1KEYS
 );
+
+export const keyValueConstants = {
+  SIDE1KEYS,
+  SIDE2KEYS,
+  MODIFIERS,
+  PROMPT,
+  MOVEUP,
+  MOVEDOWN,
+  HOTKEYS,
+};

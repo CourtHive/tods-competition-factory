@@ -5,6 +5,7 @@ import {
   keyValueScore,
   getWinningSide,
   getLeadingSide,
+  keyValueConstants,
   checkSetIsComplete,
 } from './keyValueScore';
 import { generateScoreString } from './generateScoreString';
@@ -18,6 +19,7 @@ export const scoreGovernor = {
   getLeadingSide,
   analyzeMatchUp,
   getSetComplement,
+  keyValueConstants,
   checkSetIsComplete,
   generateScoreString,
   getTiebreakComplement,
