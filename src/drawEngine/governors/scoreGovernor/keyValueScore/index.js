@@ -33,6 +33,12 @@ import { processIncompleteSetScore } from './processIncompleteSetScore';
 import { getScoreAnalysis } from './scoreAnalysis';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
 
+export {
+  getWinningSide,
+  getLeadingSide,
+  checkSetIsComplete,
+} from './winningSide';
+
 export function keyValueMatchUpScore(props) {
   const { matchUp } = props;
   const { matchUpFormat } = matchUp;
