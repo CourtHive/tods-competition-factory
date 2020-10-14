@@ -95,9 +95,11 @@ export function generateDrawDefinition(props) {
   const [structure] = structures;
   const { structureId } = structure || {};
 
-  (policyDefinitions || []).forEach(policyDefinition => {
-    drawEngine.attachPolicy({ policyDefinition });
-  });
+  if (Array.isArray(policyDefinitions)) {
+    policyDefinitions.forEach(policyDefinition => {
+      drawEngine.attachPolicy({ policyDefinition });
+    });
+  }
 
   const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
   if (!appliedPolicies?.seeding) {

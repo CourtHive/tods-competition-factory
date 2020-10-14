@@ -20,6 +20,7 @@ export function regenerateDrawDefinition({
   const { appliedPolicies: policyDefinitions } = getAppliedPolicies({
     drawDefinition,
   });
+
   if (drawDefinition.drawProfile) {
     const { drawDefinition: newDrawDefinition } = generateDrawDefinition({
       event,
