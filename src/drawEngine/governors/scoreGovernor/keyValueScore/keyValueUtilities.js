@@ -158,13 +158,13 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
       }
       if (analysis.isTimedSet) {
         if (lastSet.side1Score) {
-          newSets = sets;
+          newSets = sets || [];
           newSets[sets.length - 1] = lastSet;
         } else {
           newSets = sets?.slice(0, sets.length - 1) || [];
         }
       } else {
-        newSets = sets;
+        newSets = sets || [];
         newSets[sets.length - 1] = lastSet;
       }
 
@@ -172,8 +172,8 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
         Object.assign(newSets[newSets.length - 1], { winningSide: undefined });
       }
     } else if (openSetTiebreak) {
-      newSets = sets;
-      Object.assign(newSets[newSets.length - 1], {
+      newSets = sets || [];
+      Object.assign(newSets[newSets.length - 1] || {}, {
         winningSide: undefined,
         side1TiebreakScore: undefined,
         side2TiebreakScore: undefined,
