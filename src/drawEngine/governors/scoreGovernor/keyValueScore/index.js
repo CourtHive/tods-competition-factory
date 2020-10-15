@@ -97,6 +97,14 @@ export function keyValueScore(props) {
 
   if (shiftFirst) lowSide = 3 - lowSide;
 
+  const { matchUpWinningSide } = getMatchUpWinner({
+    sets,
+    winningSide,
+    matchUpStatus,
+    matchUpFormat,
+  });
+  winningSide = matchUpWinningSide;
+
   const analysis = getScoreAnalysis({
     value,
     winningSide,
@@ -150,7 +158,7 @@ export function keyValueScore(props) {
       value,
     }));
   } else if (OUTCOMEKEYS.includes(value)) {
-    if (analysis.finalSetIsComplete || analysis.hasWinningSide) {
+    if (analysis.finalSetIsComplete || winningSide) {
       message = 'final set is already complete';
     } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
       ({ sets, score, matchUpStatus, winningSide, updated } = processOutcome({
@@ -208,7 +216,7 @@ export function keyValueScore(props) {
     }
   } else if ([SCORE_JOINER, MATCH_TIEBREAK_JOINER].includes(value)) {
     message = 'invalid location for joiner';
-  } else if (analysis.hasWinningSide) {
+  } else if (winningSide) {
     return { updated: false, message: 'matchUp is complete' };
   } else if (analysis.isIncompleteSetScore) {
     if (analysis.isNumericValue) {
@@ -315,10 +323,10 @@ export function keyValueScore(props) {
   if (updated) {
     sets = sets?.filter(f => f);
     const { matchUpWinningSide } = getMatchUpWinner({
-      analysis,
       sets,
-      matchUpStatus,
       winningSide,
+      matchUpStatus,
+      matchUpFormat,
     });
     winningSide = matchUpWinningSide;
     if (

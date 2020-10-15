@@ -1,4 +1,4 @@
-import { keyValueMatchUpScore } from './index';
+import { keyValueMatchUpScore } from '../index';
 import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from './formatConstants';
 
 function scoreMatchUp({ lowSide, value, matchUp }) {

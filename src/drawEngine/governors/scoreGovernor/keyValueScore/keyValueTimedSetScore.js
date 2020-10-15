@@ -22,7 +22,7 @@ export function keyValueTimedSetScore({
     const { side1Score, side2Score } = lastSet;
     if (side1Score && !side2Score) {
       message = 'missing side2Score';
-    } else if (analysis.finalSetIsComplete || analysis.hasWinningSide) {
+    } else if (analysis.finalSetIsComplete || winningSide) {
       message = 'final set is already complete';
     } else if (analysis.isIncompleteSetScore) {
       message = 'incomplete set score';
@@ -64,7 +64,7 @@ export function keyValueTimedSetScore({
     updated = true;
   } else if (analysis.hasOutcome) {
     message = 'has outcome';
-  } else if (analysis.hasWinningSide) {
+  } else if (winningSide) {
     return {
       sets,
       score,

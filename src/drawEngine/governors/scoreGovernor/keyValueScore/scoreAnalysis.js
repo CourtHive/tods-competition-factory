@@ -22,8 +22,7 @@ export function getScoreAnalysis({
   value,
 }) {
   const completedSets = sets?.filter(set => set?.winningSide)?.length || 0;
-  const hasWinningSide = winningSide;
-  const setNumber = completedSets + (hasWinningSide ? 0 : 1);
+  const setNumber = completedSets + (winningSide ? 0 : 1);
 
   const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
   const isDecidingSet = setNumber === matchUpScoringFormat?.bestOf;
@@ -108,7 +107,6 @@ export function getScoreAnalysis({
     isNumericValue,
     hasOpener,
     hasOutcome,
-    hasWinningSide,
     finalSet,
     finalSetIsComplete,
     lastSetIsComplete,
