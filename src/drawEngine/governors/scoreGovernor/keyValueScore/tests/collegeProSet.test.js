@@ -3,7 +3,6 @@ import { enterValues } from './primitives';
 
 it('support best of five sets with NO ADVANTAGE in Games', () => {
   const matchUpFormat = FORMAT_COLLEGE_PRO_SET;
-  console.log({ matchUpFormat });
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
   const values = [{ lowSide: 2, value: '3' }];
