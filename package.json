@@ -54,7 +54,7 @@
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
-    "@babel/preset-typescript": "7.12.0",
+    "@babel/preset-typescript": "7.12.1",
     "@types/jest": "26.0.14",
     "docz": "2.3.1",
     "eslint-config-prettier": "6.12.0",
