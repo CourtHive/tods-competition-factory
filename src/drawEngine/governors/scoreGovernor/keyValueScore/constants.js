@@ -1,7 +1,7 @@
 export const SPACE_CHARACTER = ' ';
 
 export const OUTCOME_DEFAULT = 'DEF';
-export const OUTCOME_COMPLETE = 'COMPLETE';
+export const OUTCOME_COMPLETE = 'COMPLETED';
 export const OUTCOME_WALKOVER = 'WO';
 export const OUTCOME_ABANDONED = 'ABN';
 export const OUTCOME_SUSPENDED = 'SUS';
@@ -23,7 +23,7 @@ export const WINNING_OUTCOMES = [
 ];
 
 export const STATUS_DEFAULT = 'DEFAULT';
-export const STATUS_COMPLETE = 'COMPLETE';
+export const STATUS_COMPLETE = 'COMPLETED';
 export const STATUS_WALKOVER = 'WALKOVER';
 export const STATUS_ABANDONED = 'ABANDONED';
 export const STATUS_SUSPENDED = 'SUSPENDED';
