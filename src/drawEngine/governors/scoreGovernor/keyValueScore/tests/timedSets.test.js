@@ -1,7 +1,7 @@
 import { keyValueMatchUpScore } from '..';
 import { enterValues } from './primitives';
 
-it.only('can enter single timed set', () => {
+it('can enter single timed set', () => {
   const matchUpFormat = 'SET1-S:T10';
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
