@@ -52,7 +52,10 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
   if (removed) return { score, sets, outcomeRemoved: true };
 
   let lastSet = sets[sets.length - 1] || {};
-  const setValuesCount = Object.values(lastSet).filter(f => f).length;
+  // Looking for the last set which has some values defined
+  // setValues Count determines if there are any values other than setNumber
+  const setValuesCount = Object.values(lastSet).filter(f => f !== undefined)
+    .length;
   if (lastSet.setNumber && setValuesCount === 1) {
     sets = sets.slice(0, sets.length - 1);
     lastSet = sets[sets.length - 1] || {};
