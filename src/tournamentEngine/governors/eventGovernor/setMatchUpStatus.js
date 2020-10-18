@@ -45,7 +45,7 @@ export function setMatchUpStatus(props) {
 }
 
 export function bulkMatchUpStatusUpdate(props) {
-  const { tournamentRecord, drawEngine, outcomes } = props;
+  const { tournamentRecord, drawEngine, outcomes, devContext } = props;
   let errors = [];
   let modified = 0;
   const events = {};
@@ -75,6 +75,7 @@ export function bulkMatchUpStatusUpdate(props) {
         });
         if (result.errors) {
           errors = errors.concat(...result.errors);
+          if (devContext) console.log('error:', result);
         } else {
           modified++;
         }
@@ -82,5 +83,5 @@ export function bulkMatchUpStatusUpdate(props) {
     });
   });
 
-  return modified && SUCCESS;
+  return (modified && SUCCESS) || (errors.length && { error: errors });
 }
