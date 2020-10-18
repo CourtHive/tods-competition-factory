@@ -5,6 +5,8 @@ import { getWinningSide } from './winningSide';
 export function processIncompleteSetScore({ analysis, score, sets, value }) {
   let updated;
 
+  if (!sets?.length) return { sets: [] };
+
   const set = sets[sets.length - 1];
   value = parseInt(value);
   const { validSide2Score, requiresTiebreak } = checkValidSide2Score({
@@ -35,7 +37,7 @@ export function processIncompleteSetScore({ analysis, score, sets, value }) {
   return { sets, score, updated };
 }
 
-function checkValidSide2Score({ analysis, set, value }) {
+function checkValidSide2Score({ analysis, set = {}, value }) {
   const setFormat =
     (analysis.isDecidingSet && analysis.matchUpScoringFormat.finalSetFormat) ||
     analysis.matchUpScoringFormat.setFormat;
