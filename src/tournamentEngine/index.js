@@ -54,7 +54,7 @@ export const tournamentEngine = (function() {
     newTournamentRecord: (props = {}) => {
       flushErrors();
       tournamentRecord = newTournamentRecord(props);
-      const tournamentId = tournamentRecord.unifiedTournamentId?.tournamentId;
+      const tournamentId = tournamentRecord.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
     },
   };
