@@ -19,6 +19,7 @@ export function generateDrawDefinition(props) {
   const {
     groupSize,
     customName,
+    seedingProfile,
     automated = true,
     qualifyingRound,
     policyDefinitions,
@@ -83,6 +84,7 @@ export function generateDrawDefinition(props) {
   drawEngine.generateDrawType({
     stage,
     drawType,
+    seedingProfile,
     structureOptions,
     qualifyingRound,
     qualifyingPositions,
