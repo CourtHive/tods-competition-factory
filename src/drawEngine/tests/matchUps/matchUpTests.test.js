@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
-import { drawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../getters/findStructure';
 import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 
 import { structureMatchUps } from '../../getters/getMatchUps';
@@ -41,7 +41,7 @@ it('matchUps returned with context cannot modify original', () => {
   const { drawId } = drawDefinition;
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage: MAIN });
+  } = getDrawStructures({ drawDefinition, stage: MAIN });
   const { structureId } = structure;
   const { matchUps } = getAllStructureMatchUps({ structure });
 

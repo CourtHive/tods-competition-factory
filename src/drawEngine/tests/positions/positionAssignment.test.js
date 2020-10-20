@@ -1,6 +1,6 @@
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
-import { drawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import {
   reset,
@@ -29,7 +29,7 @@ it('can assign KNOCKOUT draw drawPositions', () => {
   let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
@@ -98,7 +98,7 @@ it('can assign ROUND ROBIN draw drawPositions', () => {
   let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
   const { structureId } = structure;
   expect(structure.structureType).toEqual(CONTAINER);
   expect(structure.structures.length).toEqual(4);

@@ -1,7 +1,7 @@
 import { drawEngine } from '../../../drawEngine';
 import { generateRange } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
-import { drawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../getters/findStructure';
 import { structureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
@@ -64,7 +64,7 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
   let { drawDefinition } = drawEngine.getState();
   const {
     structures: [firstStructure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
   const { structureId } = firstStructure;
 
   const allDrawMatchUps = drawEngine.drawMatchUps();
@@ -105,7 +105,7 @@ export function knockoutMatchUpsWithParticipants({ drawSize }) {
   expect(assignedPositions.length).toEqual(drawSize);
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
   const { upcomingMatchUps: upcomingStructureMatchUps } = structureMatchUps({
     structure,
     drawDefinition,

@@ -1,6 +1,6 @@
 import { drawEngine } from '../..';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
-import { findStructure, drawStructures } from '../findStructure';
+import { findStructure, getDrawStructures } from '../findStructure';
 import {
   reset,
   initialize,
@@ -20,7 +20,7 @@ it('can find structures by structureId', () => {
   mainDrawPositions({ drawSize: 32 });
   drawEngine.generateDrawType({ drawType: COMPASS });
   const { drawDefinition } = drawEngine.getState();
-  const { structures } = drawStructures({ drawDefinition, stage: MAIN });
+  const { structures } = getDrawStructures({ drawDefinition, stage: MAIN });
   const structureIdMap = Object.assign(
     {},
     ...structures.map(structure => ({
@@ -40,7 +40,7 @@ it('can find structures by stage and stageSequence', () => {
   drawEngine.generateDrawType({ drawType: COMPASS });
   const { drawDefinition } = drawEngine.getState();
 
-  const { structures: stage2Structures } = drawStructures({
+  const { structures: stage2Structures } = getDrawStructures({
     drawDefinition,
     stage: MAIN,
     stageSequence: 2,
@@ -50,7 +50,7 @@ it('can find structures by stage and stageSequence', () => {
     stage2Structures.map(structure => structure.structureName)
   ).toMatchObject(['WEST', 'NORTH', 'NORTHEAST']);
 
-  const { structures: stage3Structures } = drawStructures({
+  const { structures: stage3Structures } = getDrawStructures({
     drawDefinition,
     stage: MAIN,
     stageSequence: 3,
@@ -60,7 +60,7 @@ it('can find structures by stage and stageSequence', () => {
     stage3Structures.map(structure => structure.structureName)
   ).toMatchObject(['SOUTH', 'SOUTHWEST', 'NORTHWEST']);
 
-  const { structures: stage4Structures } = drawStructures({
+  const { structures: stage4Structures } = getDrawStructures({
     drawDefinition,
     stage: MAIN,
     stageSequence: 4,
@@ -69,7 +69,7 @@ it('can find structures by stage and stageSequence', () => {
     stage4Structures.map(structure => structure.structureName)
   ).toMatchObject(['SOUTHEAST']);
 
-  const { structures: consolationStructures } = drawStructures({
+  const { structures: consolationStructures } = getDrawStructures({
     drawDefinition,
     stage: CONSOLATION,
     stageSequence: 1,
@@ -82,13 +82,13 @@ it('can find structures by stage', () => {
   const { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage: MAIN });
+  } = getDrawStructures({ drawDefinition, stage: MAIN });
   expect(structure.structureName).toEqual(MAIN);
   const {
     structures: [consolation],
-  } = drawStructures({ drawDefinition, stage: CONSOLATION });
+  } = getDrawStructures({ drawDefinition, stage: CONSOLATION });
   expect(consolation.structureName).toEqual(CONSOLATION);
 
-  const result = drawStructures({ stage: CONSOLATION });
+  const result = getDrawStructures({ stage: CONSOLATION });
   expect(result).toHaveProperty(ERROR);
 });

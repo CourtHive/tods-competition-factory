@@ -1,4 +1,4 @@
-import { drawStructures } from '../findStructure';
+import { getDrawStructures } from '../findStructure';
 import { structureMatchUps } from './structureMatchUps';
 /*
   return ALL matchUps within a drawDefinition, regardless of state
@@ -37,7 +37,7 @@ export function getDrawMatchUps({
   let allAbandonedMatchUps = [];
   let allCompletedMatchUps = [];
 
-  const { structures } = drawStructures({ drawDefinition });
+  const { structures } = getDrawStructures({ drawDefinition });
 
   structures.forEach(structure => {
     const {

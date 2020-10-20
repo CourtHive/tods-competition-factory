@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { drawStructures } from '../findStructure';
+import { getDrawStructures } from '../findStructure';
 import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -20,7 +20,7 @@ export function findMatchUp({
   matchUpId,
   inContext,
 }) {
-  const { structures } = drawStructures({ drawDefinition });
+  const { structures } = getDrawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {
     const { matchUps } = getAllStructureMatchUps({
       drawDefinition,

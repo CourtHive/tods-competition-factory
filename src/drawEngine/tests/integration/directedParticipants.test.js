@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
-import { drawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
@@ -45,7 +45,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   const { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
@@ -253,7 +253,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   const { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
-  } = drawStructures({ drawDefinition, stage });
+  } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });

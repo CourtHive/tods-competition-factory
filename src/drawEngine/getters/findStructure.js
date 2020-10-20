@@ -2,7 +2,7 @@
   TESTS: structureGetter.test.js
 */
 export function findStructure({ drawDefinition, structureId }) {
-  const { structures } = drawStructures({ drawDefinition });
+  const { structures } = getDrawStructures({ drawDefinition });
   const structure = structures.reduce((target, current) => {
     return current.structureId === structureId ? current : target;
   }, undefined);
@@ -13,7 +13,7 @@ export function findStructure({ drawDefinition, structureId }) {
 /*
   TESTS: structureGetter.test.js
 */
-export function drawStructures({ stage, stageSequence, drawDefinition }) {
+export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
   const error = !drawDefinition
     ? 'Missing drawDefinition'
     : !drawDefinition.structures
