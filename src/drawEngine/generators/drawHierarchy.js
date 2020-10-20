@@ -1,3 +1,4 @@
+import { BYE } from '../../constants/matchUpStatusConstants';
 import { getRoundMatchUps } from '../../drawEngine/getters/getMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 
@@ -139,7 +140,7 @@ export function buildDrawHierarchy({ matchUps }) {
       roundNumber: roundNumber - 1,
     });
     const previousRoundWinnerIds = previousRoundMatchUps
-      .map(getWinningParticipantId)
+      .map(getAdvancingParticipantId)
       .filter(f => f);
 
     const feedRound = roundMatchUps.length === previousRound.length;
@@ -221,7 +222,14 @@ export function buildDrawHierarchy({ matchUps }) {
   }
 }
 
-function getWinningParticipantId(matchUp) {
+function getAdvancingParticipantId(matchUp) {
+  if (matchUp.matchUpStatus === BYE) {
+    const participantId = matchUp.sides.reduce(
+      (p, c) => c.participantId || p,
+      undefined
+    );
+    return participantId;
+  }
   if (!matchUp.winningSide) return undefined;
   const participantId = matchUp.sides.reduce(
     (p, c) => (c.sideNumber === matchUp.winningSide ? c.participantId : p),
