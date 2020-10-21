@@ -10,3 +10,11 @@ export function nearestPowerOf2(val) {
 export function isNumeric(value) {
   return !isNaN(parseFloat(value));
 }
+
+export function nextPowerOf2(n) {
+  if (isNaN(n)) return false;
+  while (!powerOf2(n)) {
+    n++;
+  }
+  return n;
+}
