@@ -64,25 +64,25 @@ it('can generate and verify double elimination', () => {
         sourceStructureId: mainStructureId,
         targetStructureId: consolationStructureId,
         linkProfiles: [
-          { linkSubject: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [1, 1] },
-          { linkSubject: LOSER, feedProfile: TOP_DOWN, linkedRounds: [2, 1] },
-          { linkSubject: LOSER, feedProfile: TOP_DOWN, linkedRounds: [3, 3] },
-          { linkSubject: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [4, 5] },
+          { linkType: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [1, 1] },
+          { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [2, 1] },
+          { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [3, 3] },
+          { linkType: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [4, 5] },
         ],
       },
       {
         sourceStructureId: consolationStructureId,
         targetStructureId: mainStructureId,
         linkProfiles: [
-          { linkSubject: WINNER, feedProfile: TOP_DOWN, linkedRounds: [5, 5] },
+          { linkType: WINNER, feedProfile: TOP_DOWN, linkedRounds: [5, 5] },
         ],
       },
       {
         sourceStructureId: mainStructureId,
         targetStructureId: deciderStructureId,
         linkProfiles: [
-          { linkSubject: WINNER, feedProfile: TOP_DOWN, linkedRounds: [5, 1] },
-          { linkSubject: LOSER, feedProfile: TOP_DOWN, linkedRounds: [5, 1] },
+          { linkType: WINNER, feedProfile: TOP_DOWN, linkedRounds: [5, 1] },
+          { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [5, 1] },
         ],
       },
     ],

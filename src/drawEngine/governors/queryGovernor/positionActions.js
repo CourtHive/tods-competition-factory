@@ -52,7 +52,7 @@ export function positionActions({
       link => link.target.structureId === structureId
     );
     if (
-      asTargetLink?.linkSubject === LOSER &&
+      asTargetLink?.linkType === LOSER &&
       asTargetLink?.feedProfile !== DRAW
     ) {
       if (devContext) console.log('ss2 no valid actions');

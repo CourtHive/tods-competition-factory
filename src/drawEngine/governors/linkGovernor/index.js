@@ -8,7 +8,7 @@ function createQualifyingLink({
   drawDefinition,
 }) {
   const link = {
-    linkSubject: WINNER,
+    linkType: WINNER,
     source: {
       roundNumber: qualifyingRound,
       structureId: qualifyingStructureId,

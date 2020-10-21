@@ -31,7 +31,7 @@ export function feedInLinks({
           : (roundNumber - roundOffset - 2) * 2 + 2;
 
       const link = {
-        linkSubject: LOSER,
+        linkType: LOSER,
         source: {
           roundNumber,
           structureId: mainStructure.structureId,

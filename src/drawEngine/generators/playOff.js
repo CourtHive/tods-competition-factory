@@ -78,7 +78,7 @@ export function playOffStructures({
     });
 
     const link = {
-      linkSubject: LOSER,
+      linkType: LOSER,
       source: {
         roundNumber,
         structureName,

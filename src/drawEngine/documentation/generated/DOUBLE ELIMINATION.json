@@ -78,7 +78,7 @@
   ],
   "links": [
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 1,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"
@@ -91,7 +91,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 2,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"
@@ -104,7 +104,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 3,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"
@@ -116,7 +116,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 4,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"
@@ -128,7 +128,7 @@
       }
     },
     {
-      "linkSubject": "WINNER",
+      "linkType": "WINNER",
       "source": {
         "roundNumber": 5,
         "structureId": "cc5b181c-bf7c-46e5-ba5b-d7244bc87ce7"
@@ -140,7 +140,7 @@
       }
     },
     {
-      "linkSubject": "WINNER",
+      "linkType": "WINNER",
       "source": {
         "roundNumber": 5,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"
@@ -152,7 +152,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 5,
         "structureId": "e67d3c30-06db-4589-a81f-f1dbfa1fc1ee"

@@ -21,7 +21,7 @@ export function getMatchUpLinks({ drawDefinition, matchUp, structureId }) {
 
 export function getTargetLink({ source, subject }) {
   const target = source.reduce((target, link) => {
-    return link.linkSubject === subject ? link : target;
+    return link.linkType === subject ? link : target;
   }, undefined);
   return target;
 }

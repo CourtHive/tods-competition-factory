@@ -4,12 +4,21 @@ import { TEAM } from '../../../constants/participantTypes';
 
 export function addParticipantsToGrouping(props) {
   const { tournamentRecord } = props;
-  const { groupingParticipantId, participantIds, removeFromOtherTeams } = props;
+  const {
+    groupingType = TEAM,
+    groupingParticipantId,
+    participantIds,
+    removeFromOtherTeams,
+  } = props;
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const groupingParticipant = tournamentParticipants.find(
     participant => participant.participantId === groupingParticipantId
   );
+
+  if (groupingParticipant.participantType !== groupingType) {
+    return { error: `Expected participantType to be ${groupingType}` };
+  }
 
   let added = false;
   if (groupingParticipant) {
@@ -83,6 +92,7 @@ function removeParticipantIdsFromGrouping({
 }
 
 export function removeParticipantsFromAllTeams({
+  groupingType = TEAM,
   tournamentRecord,
   participantIds,
 }) {
@@ -94,7 +104,7 @@ export function removeParticipantsFromAllTeams({
       return (
         (participant.participantRole === COMPETITOR ||
           !participant.participantRole) &&
-        participant.participantType === TEAM
+        participant.participantType === groupingType
       );
     })
     .forEach(team => {

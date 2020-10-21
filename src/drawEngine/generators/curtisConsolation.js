@@ -77,7 +77,7 @@ export function generateCurtisConsolation({
     });
 
     const playOffLink = {
-      linkSubject: LOSER,
+      linkType: LOSER,
       source: {
         roundNumber: mainDrawRoundsCount - 1,
         structureId: mainStructure.structureId,

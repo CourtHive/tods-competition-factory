@@ -47,7 +47,7 @@ export function firstMatchLoserConsolation(props) {
   drawDefinition.structures.push(consolationStructure);
 
   const link = {
-    linkSubject: LOSER,
+    linkType: LOSER,
     source: {
       roundNumber: 1,
       structureId: mainStructure.structureId,

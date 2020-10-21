@@ -161,7 +161,7 @@ it('can generate a Curtis Consolation draw', () => {
   const feedProfiles = [TOP_DOWN, BOTTOM_UP, TOP_DOWN, BOTTOM_UP, TOP_DOWN];
 
   state.links.forEach((link, i) => {
-    expect(link.linkSubject).toEqual(LOSER);
+    expect(link.linkType).toEqual(LOSER);
     expect(link.source.roundNumber).toEqual(sourceRounds[i]);
     expect(link.target.roundNumber).toEqual(targetRounds[i]);
     expect(link.target.feedProfile).toEqual(feedProfiles[i]);

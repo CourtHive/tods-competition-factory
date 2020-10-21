@@ -30,7 +30,7 @@ export function verifyLinks({ linksProfiles = [] }) {
       ];
       expect(linkProfile.linkedRounds).toMatchObject(linkedRounds);
       expect(linkProfile.feedProfile).toEqual(filteredLink.target.feedProfile);
-      expect(linkProfile.linkSubject).toEqual(filteredLink.linkSubject);
+      expect(linkProfile.linkType).toEqual(filteredLink.linkType);
     });
   });
 }

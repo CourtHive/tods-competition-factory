@@ -55,7 +55,7 @@ it('can generate compass draws', () => {
   expect(drawDefinition.links.length).toEqual(7);
   expect(drawDefinition.structures.length).toEqual(8);
   drawDefinition.links.forEach(link => {
-    expect(link.linkSubject).toEqual(LOSER);
+    expect(link.linkType).toEqual(LOSER);
     expect(link.target.feedProfile).toEqual(TOP_DOWN);
   });
   structureNames = drawDefinition.structures.map(

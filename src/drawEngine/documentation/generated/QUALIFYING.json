@@ -238,7 +238,7 @@
   ],
   "links": [
     {
-      "linkSubject": "WINNER",
+      "linkType": "WINNER",
       "source": {
         "roundNumber": 1,
         "structureId": "a5a82dfc-0f5e-498a-b301-adaf8e3360e2"

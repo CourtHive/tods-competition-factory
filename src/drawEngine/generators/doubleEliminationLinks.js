@@ -41,7 +41,7 @@ export function doubleEliminationLinks({
   const initialRounds = [1, 2].map(roundNumber => {
     const feedProfile = roundNumber % 2 ? BOTTOM_UP : TOP_DOWN;
     const link = {
-      linkSubject: LOSER,
+      linkType: LOSER,
       source: {
         roundNumber,
         structureId: mainStructure.structureId,
@@ -62,7 +62,7 @@ export function doubleEliminationLinks({
     const sourceRoundNumber = 3 + i;
 
     const link = {
-      linkSubject: LOSER,
+      linkType: LOSER,
       source: {
         roundNumber: sourceRoundNumber,
         structureId: mainStructure.structureId,
@@ -77,7 +77,7 @@ export function doubleEliminationLinks({
   });
 
   const finalistsLink = {
-    linkSubject: WINNER,
+    linkType: WINNER,
     source: {
       roundNumber: consolationFinalRound,
       structureId: consolationStructure.structureId,
@@ -91,7 +91,7 @@ export function doubleEliminationLinks({
 
   const deciderLinks = [
     {
-      linkSubject: WINNER,
+      linkType: WINNER,
       source: {
         roundNumber: mainFinalRound,
         structureId: mainStructure.structureId,
@@ -103,7 +103,7 @@ export function doubleEliminationLinks({
       },
     },
     {
-      linkSubject: LOSER,
+      linkType: LOSER,
       source: {
         roundNumber: mainFinalRound,
         structureId: mainStructure.structureId,

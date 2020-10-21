@@ -168,7 +168,7 @@
   ],
   "links": [
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 1,
         "structureId": "0849c912-11af-44e0-9d37-663c30eb1c44"

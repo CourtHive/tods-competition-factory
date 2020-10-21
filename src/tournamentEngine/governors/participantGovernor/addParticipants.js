@@ -1,6 +1,7 @@
 import { addParticipantsToGrouping } from './participantGroupings';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { GROUP, TEAM } from '../../../constants/participantTypes';
 
 export function addParticipant({ tournamentRecord, participant }) {
   const { participantId } = participant || {};
@@ -19,6 +20,7 @@ export function addParticipants({
   participants,
   source,
   teamId,
+  groupId,
 }) {
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const existingParticipantIds = tournamentRecord.participants.map(
@@ -33,12 +35,14 @@ export function addParticipants({
       ...newParticipants
     );
     if (source !== undefined) participantSource({ tournamentRecord, source });
-    if (teamId) {
+    if (teamId || groupId) {
+      const groupingType = teamId ? TEAM : GROUP;
       const participantIds = newParticipants.map(np => np.participantId);
       addParticipantsToGrouping({
-        tournamentRecord,
+        groupingType,
         participantIds,
-        groupingParticiantId: teamId,
+        tournamentRecord,
+        groupingParticipantId: teamId || groupId,
         removeFromOtherTeams: true,
       });
     }

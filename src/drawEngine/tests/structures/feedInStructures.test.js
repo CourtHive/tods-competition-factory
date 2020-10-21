@@ -111,13 +111,13 @@ it('can generate feed in championship', () => {
   expect(consolationMatchUps.length).toEqual(14);
 
   expect(links.length).toEqual(4);
-  expect(links[0].linkSubject).toEqual(LOSER);
+  expect(links[0].linkType).toEqual(LOSER);
   expect(links[0].target.feedProfile).toEqual(TOP_DOWN);
-  expect(links[1].linkSubject).toEqual(LOSER);
+  expect(links[1].linkType).toEqual(LOSER);
   expect(links[1].target.feedProfile).toEqual(BOTTOM_UP);
-  expect(links[2].linkSubject).toEqual(LOSER);
+  expect(links[2].linkType).toEqual(LOSER);
   expect(links[2].target.feedProfile).toEqual(TOP_DOWN);
-  expect(links[3].linkSubject).toEqual(LOSER);
+  expect(links[3].linkType).toEqual(LOSER);
   expect(links[3].target.feedProfile).toEqual(BOTTOM_UP);
 
   expect(links[0].source.roundNumber).toEqual(1);

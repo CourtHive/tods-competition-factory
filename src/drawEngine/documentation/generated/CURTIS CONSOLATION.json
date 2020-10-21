@@ -318,7 +318,7 @@
   ],
   "links": [
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 1,
         "structureId": "379faafe-7946-4250-bf73-ec1110c26a49"
@@ -330,7 +330,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 2,
         "structureId": "379faafe-7946-4250-bf73-ec1110c26a49"
@@ -342,7 +342,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 3,
         "structureId": "379faafe-7946-4250-bf73-ec1110c26a49"
@@ -354,7 +354,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 4,
         "structureId": "379faafe-7946-4250-bf73-ec1110c26a49"
@@ -366,7 +366,7 @@
       }
     },
     {
-      "linkSubject": "LOSER",
+      "linkType": "LOSER",
       "source": {
         "roundNumber": 5,
         "structureId": "379faafe-7946-4250-bf73-ec1110c26a49"
