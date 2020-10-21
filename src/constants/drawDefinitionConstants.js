@@ -18,9 +18,10 @@ export const CONSOLATION = 'CONSOLATION';
 export const ITEM = 'ITEM';
 export const CONTAINER = 'CONTAINER';
 
-// Match and Link subjects
-export const WINNER = 'WINNER';
-export const LOSER = 'LOSER';
+// Match and Link types
+export const POSITION = 'POSITION'; // participant advances based on their finishing position
+export const WINNER = 'WINNER'; // participant advances based on winning a matchUp
+export const LOSER = 'LOSER'; // partticipant advances based on losing a matchUp
 
 // draw types
 export const FEED_IN = 'FEED IN';
