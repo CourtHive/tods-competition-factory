@@ -1,7 +1,7 @@
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import { generateRange, UUID } from '../../utilities';
+import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { drawPositionsHash } from './roundRobinGroups';
 
 import {
@@ -12,7 +12,7 @@ import {
   QUALIFYING,
   CONTAINER,
   ITEM,
-  WINNER,
+  POSITION,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -70,9 +70,11 @@ export function generateRoundRobinWithPlayOff(props) {
     drawDefinition,
   } = props;
 
-  const qualifyingDrawProperties = Object.assign({}, props, {
-    stage: QUALIFYING,
-  });
+  const qualifyingDrawProperties = Object.assign(
+    { structureName: QUALIFYING }, // default structureName
+    props,
+    { stage: QUALIFYING }
+  );
   const {
     structure: qualifyingStructure,
     groupCount,
@@ -87,7 +89,7 @@ export function generateRoundRobinWithPlayOff(props) {
   const mainStructures = playOffGroups
     .map((playOffGroup, order) => {
       const stageOrder = order + 1;
-      const validFinishingPositions = generateRange(1, groupSize);
+      const validFinishingPositions = generateRange(1, groupSize + 1);
       const finishingPositions = playOffGroup.finishingPositions;
 
       const finishingPositionsAreValid = finishingPositions.reduce(
@@ -99,10 +101,11 @@ export function generateRoundRobinWithPlayOff(props) {
 
       // CHECK VALIDITY: draw structure is not generated...
       // if playOffGroup finishingPositions are not present in GroupSize
-      if (!finishingPositionsAreValid) return undefined;
+      if (!finishingPositionsAreValid) {
+        return undefined;
+      }
 
-      const drawSize = groupCount * finishingPositions.length;
-
+      const drawSize = nextPowerOf2(groupCount * finishingPositions.length);
       const { matchUps } = treeMatchUps({ drawSize });
 
       const mainStructure = structureTemplate({
@@ -117,7 +120,7 @@ export function generateRoundRobinWithPlayOff(props) {
       drawDefinition.structures.push(mainStructure);
 
       const link = {
-        linkSubject: WINNER,
+        linkType: POSITION,
         source: {
           finishingPositions,
           structureId: qualifyingStructure.structureId,

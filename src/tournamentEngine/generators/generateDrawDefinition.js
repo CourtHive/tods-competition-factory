@@ -15,13 +15,14 @@ import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/ge
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
+  let { structureOptions } = props;
 
   const {
     groupSize,
     customName,
     seedingProfile,
-    automated = true,
     qualifyingRound,
+    automated = true,
     policyDefinitions,
     qualifyingPositions,
     drawType = ELIMINATION,
@@ -43,7 +44,7 @@ export function generateDrawDefinition(props) {
   }
 
   const drawProfile = {
-    category: event.category,
+    category: event?.category,
     groupSize,
     customName,
     seedsCount,
@@ -57,25 +58,25 @@ export function generateDrawDefinition(props) {
     matchUpType,
   };
 
-  const entries = event.entries || [];
+  const entries = event?.entries || [];
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stage = drawIsRRWP ? QUALIFYING : MAIN;
   const stageEntries = entries.filter(
     entry => entry.entryStage === stage && entry.entryStatus !== ALTERNATE
   );
-  if ([ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(drawType)) {
+  if ([ROUND_ROBIN].includes(drawType)) {
     drawSize = stageEntries.length;
   }
 
-  const structureOptions = drawIsRRWP
-    ? {
-        playOffGroups: [
-          { finishingPositions: [1, 2], structureName: 'Playoffs' },
-        ],
-      }
-    : drawType === ROUND_ROBIN
-    ? { groupSize, groupSizeLimit: 8 }
-    : undefined;
+  if (drawIsRRWP && !structureOptions) {
+    structureOptions = drawIsRRWP
+      ? {
+          playOffGroups: [
+            { finishingPositions: [1, 2], structureName: 'Playoffs' },
+          ],
+        }
+      : undefined;
+  }
 
   drawEngine.reset();
   drawEngine.newDrawDefinition({ drawProfile });
@@ -118,10 +119,8 @@ export function generateDrawDefinition(props) {
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  if (event.category) {
-    /**
-     * CONVENIENCE SEED BY RANKING WHEN POSSIBLE
-     */
+  if (event?.category) {
+    // CONVENIENCE SEED BY RANKING WHEN POSSIBLE
     const scaleAttributes = {
       scaleType: RANKING,
       scaleName: event.category.categoryName,
@@ -143,12 +142,9 @@ export function generateDrawDefinition(props) {
 
     if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
 
-    // drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
-
     scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
       const seedNumber = index + 1;
       const seedValue = seedNumber;
-      // const scaleValue = scaledEntry.scaleValue;
       // TODO: attach basis of seeding information to seedAssignment
       const { participantId } = scaledEntry;
       const result = drawEngine.assignSeed({
@@ -162,11 +158,13 @@ export function generateDrawDefinition(props) {
   }
 
   let conflicts = [];
-  if (automated !== false)
+  if (automated !== false) {
+    const participants = tournamentRecord?.participants;
     ({ conflicts } = drawEngine.automatedPositioning({
       structureId,
-      participants: tournamentRecord?.participants,
+      participants,
     }));
+  }
 
   const { drawDefinition } = drawEngine.getState();
 

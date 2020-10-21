@@ -1,4 +1,6 @@
 import drawEngine from '../../../drawEngine';
+import tournamentEngine from '../../../tournamentEngine';
+
 import {
   reset,
   initialize,
@@ -7,7 +9,7 @@ import {
 } from '../primitives/primitives';
 import {
   DRAW,
-  WINNER,
+  POSITION,
   CONTAINER,
   ITEM,
   QUALIFYING,
@@ -117,12 +119,12 @@ it('can generate Round Robins 32 with playoffs', () => {
   expect(mainStructures[0].matchUps[0].finishingRound).toEqual(3);
 
   expect(links.length).toEqual(2);
-  expect(links[0].linkSubject).toEqual(WINNER);
+  expect(links[0].linkType).toEqual(POSITION);
   expect(links[0].source.finishingPositions).toMatchObject([1]);
   expect(links[0].target.roundNumber).toEqual(1);
   expect(links[0].target.feedProfile).toEqual(DRAW);
 
-  expect(links[1].linkSubject).toEqual(WINNER);
+  expect(links[1].linkType).toEqual(POSITION);
   expect(links[1].source.finishingPositions).toMatchObject([2]);
   expect(links[1].target.roundNumber).toEqual(1);
   expect(links[1].target.feedProfile).toEqual(DRAW);
@@ -163,13 +165,87 @@ it('can generate Round Robins 16 with playoffs', () => {
   expect(mainStructures[0].matchUps[0].finishingRound).toEqual(2);
 
   expect(links.length).toEqual(2);
-  expect(links[0].linkSubject).toEqual(WINNER);
+  expect(links[0].linkType).toEqual(POSITION);
   expect(links[0].source.finishingPositions).toMatchObject([1]);
   expect(links[0].target.roundNumber).toEqual(1);
   expect(links[0].target.feedProfile).toEqual(DRAW);
 
-  expect(links[1].linkSubject).toEqual(WINNER);
+  expect(links[1].linkType).toEqual(POSITION);
   expect(links[1].source.finishingPositions).toMatchObject([2]);
   expect(links[1].target.roundNumber).toEqual(1);
   expect(links[1].target.feedProfile).toEqual(DRAW);
+});
+
+it('Round Robin with Playoffs testbed', () => {
+  reset();
+  initialize();
+  const drawType = ROUND_ROBIN_WITH_PLAYOFF;
+  const structureOptions = {
+    groupSize: 5,
+    groupCount: 4,
+    playOffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight' },
+      { finishingPositions: [2], structureName: 'Silver Flight' },
+      { finishingPositions: [3], structureName: 'Bronze Flight' },
+      { finishingPositions: [4], structureName: 'Green Flight' },
+      { finishingPositions: [5], structureName: 'Yellow Flight' },
+    ],
+  };
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawType,
+    drawSize: 20,
+    structureOptions,
+  });
+
+  const qualifyingStructure = drawDefinition.structures.find(
+    structure => structure.stage === QUALIFYING
+  );
+  const mainStructures = drawDefinition.structures.reduce(
+    (structures, structure) => {
+      return structure.stage === MAIN
+        ? structures.concat(structure)
+        : structures;
+    },
+    []
+  );
+  expect(qualifyingStructure.structures.length).toEqual(4);
+  expect(mainStructures.length).toEqual(5);
+  expect(mainStructures[0].positionAssignments.length).toEqual(4);
+});
+
+it('Round Robin with Playoffs testbed', () => {
+  reset();
+  initialize();
+  const drawType = ROUND_ROBIN_WITH_PLAYOFF;
+  const structureOptions = {
+    groupSize: 4,
+    groupCount: 5,
+    playOffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight' },
+      { finishingPositions: [2], structureName: 'Silver Flight' },
+      { finishingPositions: [3], structureName: 'Bronze Flight' },
+      { finishingPositions: [4], structureName: 'Green Flight' },
+    ],
+  };
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawType,
+    drawSize: 20,
+    structureOptions,
+  });
+
+  const qualifyingStructure = drawDefinition.structures.find(
+    structure => structure.stage === QUALIFYING
+  );
+  const mainStructures = drawDefinition.structures.reduce(
+    (structures, structure) => {
+      return structure.stage === MAIN
+        ? structures.concat(structure)
+        : structures;
+    },
+    []
+  );
+
+  expect(qualifyingStructure.structures.length).toEqual(5);
+  expect(mainStructures.length).toEqual(4);
+  expect(mainStructures[0].positionAssignments.length).toEqual(8);
 });
