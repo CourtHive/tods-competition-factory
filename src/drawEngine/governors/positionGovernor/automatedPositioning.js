@@ -11,7 +11,7 @@ export function automatedPositioning({
   participants,
   structureId,
 }) {
-  if (!participants.length) return { error: 'Missing participants' };
+  if (!participants?.length) return { error: 'Missing participants' };
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { errors: [error] };
 
