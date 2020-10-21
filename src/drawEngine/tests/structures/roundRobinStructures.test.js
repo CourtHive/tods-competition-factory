@@ -182,7 +182,6 @@ it('Round Robin with Playoffs testbed', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
     groupSize: 5,
-    groupCount: 4,
     playOffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
@@ -219,7 +218,6 @@ it('Round Robin with Playoffs testbed', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
     groupSize: 4,
-    groupCount: 5,
     playOffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
