@@ -3,7 +3,12 @@ import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionParticipants';
 import { findStructure } from '../../getters/findStructure';
+import { stageEntries } from '../../getters/stageGetter';
 
+import {
+  WILDCARD,
+  DIRECT_ACCEPTANCE,
+} from '../../../constants/drawDefinitionConstants';
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 
 export function automatedPositioning({
@@ -13,6 +18,16 @@ export function automatedPositioning({
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { errors: [error] };
+
+  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entries = stageEntries({
+    drawDefinition,
+    stage: structure.stage,
+    stageSequence: structure.stageSequence,
+    entryTypes,
+  });
+
+  if (!entries?.length) return { error: 'Missing entries' };
 
   const { seedingProfile } = structure;
 
