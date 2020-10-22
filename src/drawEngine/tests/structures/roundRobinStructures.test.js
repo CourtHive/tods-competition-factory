@@ -1,7 +1,8 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
-import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 
+import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import {
@@ -239,8 +240,8 @@ it('Round Robin with Playoffs testbed', () => {
   };
 
   let result = tournamentEngine.addEvent({ event });
-  const { event: eventResult, success } = result;
-  const { eventId } = eventResult;
+  const { event: createdEvent, success } = result;
+  const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
   const participantIds = participants.map(p => p.participantId);
@@ -255,9 +256,20 @@ it('Round Robin with Playoffs testbed', () => {
     seedingProfile: WATERFALL,
   });
 
+  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+  expect(result).toEqual(SUCCESS);
+
   const mainStructure = drawDefinition.structures.find(
     structure => structure.stage === MAIN
   );
+
+  const { upcomingMatchUps: matchUps } = getStructureMatchUps({
+    structure: mainStructure,
+  });
+  const matchUpIds = matchUps.map(matchUp => matchUp.matchUpId);
+  const { drawId } = drawDefinition;
+  scoreAllMatchUps({ drawId, event: createdEvent, matchUpIds });
+
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === PLAYOFF
@@ -270,8 +282,21 @@ it('Round Robin with Playoffs testbed', () => {
   expect(mainStructure.structures.length).toEqual(5);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
-  console.log(mainStructure.structures[0].positionAssignments);
-
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 });
+
+function scoreAllMatchUps({ drawId, matchUpIds }) {
+  const sets = [
+    { side1Score: 6, side2Score: 3 },
+    { side1Score: 6, side2Score: 3 },
+  ];
+  const score = '6-3 6-3';
+  const outcome = { score, sets };
+  const result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: matchUpIds[0],
+    outcome,
+  });
+  console.log(result);
+}
