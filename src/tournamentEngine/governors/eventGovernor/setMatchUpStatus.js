@@ -14,10 +14,10 @@ export function setMatchUpStatus(props) {
   } = props;
   let errors = [];
 
+  drawEngine.setState(drawDefinition);
+
   if (matchUpFormat) {
-    drawEngine
-      .setState(drawDefinition)
-      .setMatchUpFormat({ matchUpFormat, matchUpId });
+    drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });
   }
 
   const { errors: setMatchUpStatusErrors } = drawEngine.setMatchUpStatus({
