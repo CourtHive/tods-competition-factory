@@ -1,23 +1,18 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
-import {
-  reset,
-  initialize,
-  mainDrawPositions,
-  qualifyingDrawPositions,
-} from '../primitives/primitives';
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import {
   DRAW,
   POSITION,
   CONTAINER,
   ITEM,
-  QUALIFYING,
   WIN_RATIO,
   ROUND_OUTCOME,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   PLAYOFF,
+  MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
@@ -90,9 +85,8 @@ it('can generate Round Robins 32 with playoffs', () => {
   reset();
   initialize();
   const drawSize = 32;
-  const stage = QUALIFYING;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  qualifyingDrawPositions({ drawSize });
+  mainDrawPositions({ drawSize });
   const structureOptions = {
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
@@ -100,13 +94,12 @@ it('can generate Round Robins 32 with playoffs', () => {
     ],
   };
   const result = drawEngine.generateDrawType({
-    stage,
     drawType,
     structureOptions,
   });
   const { mainStructure, playoffStructures, links } = result;
 
-  expect(mainStructure.stage).toEqual(QUALIFYING);
+  expect(mainStructure.stage).toEqual(MAIN);
   expect(mainStructure.structures.length).toEqual(8);
 
   expect(playoffStructures.length).toEqual(2);
@@ -133,9 +126,8 @@ it('can generate Round Robins 32 with playoffs', () => {
 it('can generate Round Robins 16 with playoffs', () => {
   reset();
   initialize();
-  const stage = QUALIFYING;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  qualifyingDrawPositions({ drawSize: 16 });
+  mainDrawPositions({ drawSize: 16 });
   const structureOptions = {
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
@@ -147,12 +139,11 @@ it('can generate Round Robins 16 with playoffs', () => {
     playoffStructures,
     links,
   } = drawEngine.generateDrawType({
-    stage,
     drawType,
     structureOptions,
   });
 
-  expect(mainStructure.stage).toEqual(QUALIFYING);
+  expect(mainStructure.stage).toEqual(MAIN);
   expect(mainStructure.structures.length).toEqual(4);
 
   expect(playoffStructures.length).toEqual(2);
@@ -197,7 +188,7 @@ it('Round Robin with Playoffs testbed', () => {
   });
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === QUALIFYING
+    structure => structure.stage === MAIN
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
@@ -232,7 +223,7 @@ it('Round Robin with Playoffs testbed', () => {
   });
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === QUALIFYING
+    structure => structure.stage === MAIN
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {

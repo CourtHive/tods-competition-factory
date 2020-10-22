@@ -9,7 +9,6 @@ import {
   WIN_RATIO,
   PLAYOFF,
   DRAW,
-  QUALIFYING,
   CONTAINER,
   ITEM,
   POSITION,
@@ -73,7 +72,7 @@ export function generateRoundRobinWithPlayOff(props) {
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
     props,
-    { stage: QUALIFYING }
+    { stage: MAIN }
   );
   const {
     structure: mainStructure,

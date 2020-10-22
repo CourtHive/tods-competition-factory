@@ -3,7 +3,6 @@ import { getParticipantScaleItem } from '../governors/queryGovernor/scaleValue';
 
 import {
   MAIN,
-  QUALIFYING,
   ROUND_ROBIN,
   ELIMINATION,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -12,6 +11,7 @@ import {
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
 import { ALTERNATE, RANKING } from '../../constants/participantConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { TEAM } from '../../constants/matchUpTypes';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -35,7 +35,7 @@ export function generateDrawDefinition(props) {
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
   if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
-  if (tieFormat || (matchUpType === 'TEAM' && !tieFormat)) {
+  if (tieFormat || (matchUpType === TEAM && !tieFormat)) {
     tieFormat = tieFormatDefaults();
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
@@ -58,9 +58,9 @@ export function generateDrawDefinition(props) {
     matchUpType,
   };
 
+  const stage = MAIN;
   const entries = event?.entries || [];
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
-  const stage = drawIsRRWP ? QUALIFYING : MAIN;
   const stageEntries = entries.filter(
     entry => entry.entryStage === stage && entry.entryStatus !== ALTERNATE
   );
