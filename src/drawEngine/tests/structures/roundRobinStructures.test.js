@@ -1,7 +1,9 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
+import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+
 import {
   DRAW,
   POSITION,
@@ -13,7 +15,11 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   PLAYOFF,
   MAIN,
+  WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
+
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 it('can generate Round Robin Main Draws', () => {
   reset();
@@ -167,12 +173,14 @@ it('can generate Round Robins 16 with playoffs', () => {
   expect(links[1].target.feedProfile).toEqual(DRAW);
 });
 
-it('Round Robin with Playoffs testbed', () => {
+it('can generate Round Robin with Playoffs', () => {
   reset();
   initialize();
+  const drawSize = 20;
+  const groupSize = 5;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
-    groupSize: 5,
+    groupSize,
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
@@ -183,7 +191,7 @@ it('Round Robin with Playoffs testbed', () => {
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     drawType,
-    drawSize: 20,
+    drawSize,
     structureOptions,
   });
 
@@ -199,6 +207,7 @@ it('Round Robin with Playoffs testbed', () => {
     []
   );
   expect(mainStructure.structures.length).toEqual(4);
+  expect(mainStructure.structures[0].positionAssignments.length).toEqual(5);
   expect(playoffStructures.length).toEqual(5);
   expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 });
@@ -206,9 +215,11 @@ it('Round Robin with Playoffs testbed', () => {
 it('Round Robin with Playoffs testbed', () => {
   reset();
   initialize();
+  const drawSize = 20;
+  const groupSize = 4;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
-    groupSize: 4,
+    groupSize,
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
@@ -216,10 +227,32 @@ it('Round Robin with Playoffs testbed', () => {
       { finishingPositions: [4], structureName: 'Green Flight' },
     ],
   };
+
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+    participantsCount: drawSize,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const event = {
+    eventName: 'Round Robin w/ Playoffs',
+    eventType: SINGLES,
+  };
+
+  let result = tournamentEngine.addEvent({ event });
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
+  expect(success).toEqual(true);
+
+  const participantIds = participants.map(p => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result).toEqual(SUCCESS);
+
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    eventId,
     drawType,
-    drawSize: 20,
+    drawSize,
     structureOptions,
+    seedingProfile: WATERFALL,
   });
 
   const mainStructure = drawDefinition.structures.find(
@@ -235,6 +268,10 @@ it('Round Robin with Playoffs testbed', () => {
   );
 
   expect(mainStructure.structures.length).toEqual(5);
+  expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
+
+  console.log(mainStructure.structures[0].positionAssignments);
+
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 });
