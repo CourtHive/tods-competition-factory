@@ -3,7 +3,7 @@ import { findMatchUp } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
 import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 
-import { structureMatchUps } from '../../getters/getMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 
 import {
@@ -25,7 +25,7 @@ it('can return matchUps from a KNOCKOUT structure', () => {
   const { structure } = drawEngine.generateDrawType({ drawType: KNOCKOUT });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(15);
-  const { upcomingMatchUps } = structureMatchUps({
+  const { upcomingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });
@@ -101,12 +101,12 @@ it('can return matchUps from a ROUND ROBIN structure', () => {
   const { structure } = drawEngine.generateDrawType({ drawType });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(24);
-  const { upcomingMatchUps } = structureMatchUps({
+  const { upcomingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });
   expect(upcomingMatchUps.length).toEqual(24);
-  const { upcomingMatchUps: filteredActiveMatchUps } = structureMatchUps({
+  const { upcomingMatchUps: filteredActiveMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
     roundFilter: 1,

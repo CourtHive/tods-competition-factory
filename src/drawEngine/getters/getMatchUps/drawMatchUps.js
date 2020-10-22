@@ -1,5 +1,5 @@
 import { getDrawStructures } from '../findStructure';
-import { structureMatchUps } from './structureMatchUps';
+import { getStructureMatchUps } from './structureMatchUps';
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
@@ -46,7 +46,7 @@ export function getDrawMatchUps({
       upcomingMatchUps,
       completedMatchUps,
       abandonedMatchUps,
-    } = structureMatchUps({
+    } = getStructureMatchUps({
       structure,
       inContext,
       roundFilter,

@@ -1,5 +1,5 @@
 import { getDrawStructures } from '../../getters/findStructure';
-import { structureMatchUps } from '../../getters/getMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import {
@@ -32,7 +32,7 @@ it('can direct participants in KNOCKOUT with BACKDRAW', () => {
   } = getDrawStructures({ drawDefinition, stage: MAIN });
 
   // not requiring participants, just checking round Positions
-  const { upcomingMatchUps, pendingMatchUps } = structureMatchUps({
+  const { upcomingMatchUps, pendingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });
@@ -109,7 +109,7 @@ it('can direct participants in FEED IN CHAMPIONSHIP structure', () => {
   } = getDrawStructures({ drawDefinition, stage: MAIN });
 
   // not requiring participants for this round of testing
-  const { upcomingMatchUps, pendingMatchUps } = structureMatchUps({
+  const { upcomingMatchUps, pendingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });
@@ -205,7 +205,7 @@ it('can direct participants in COMPASS', () => {
   } = getDrawStructures({ drawDefinition, stage: MAIN });
 
   // not requiring participants, just checking round Positions
-  const { upcomingMatchUps, pendingMatchUps } = structureMatchUps({
+  const { upcomingMatchUps, pendingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });

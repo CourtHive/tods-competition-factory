@@ -1,7 +1,7 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
-import { structureMatchUps } from '../../getters/getMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 import {
   getRoundMatchUps,
   getAllStructureMatchUps,
@@ -67,7 +67,7 @@ export function verifyMatchUps({
     completedMatchUps,
     pendingMatchUps,
     upcomingMatchUps,
-  } = structureMatchUps({
+  } = getStructureMatchUps({
     drawDefinition,
     structure,
     requireParticipants,

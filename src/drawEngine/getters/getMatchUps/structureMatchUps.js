@@ -7,7 +7,7 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
   pendingMatchUps are those matchUps where a drawPosition is undefined
   *AND* where both drawPositions map to assigned participantIds
 */
-export function structureMatchUps({
+export function getStructureMatchUps({
   inContext,
   context,
   structure,

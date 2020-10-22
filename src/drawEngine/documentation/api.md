@@ -340,7 +340,7 @@ const { drawDefinition } = drawEngine.getState();
 
 ---
 
-## structureMatchUps
+## getStructureMatchUps
 
 ---
 

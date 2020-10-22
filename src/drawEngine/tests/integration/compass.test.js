@@ -153,7 +153,7 @@ function checkByeAdvancedDrawPositions({
   Object.keys(expectedByeDrawPositions).forEach(direction => {
     const structure = findStructureByName(structures, direction);
     const includeByeMatchUps = expectedByeDrawPositions.includeByeMatchUps;
-    const { pendingMatchUps } = drawEngine.structureMatchUps({
+    const { pendingMatchUps } = drawEngine.getStructureMatchUps({
       structure,
       includeByeMatchUps,
     });
