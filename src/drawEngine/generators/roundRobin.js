@@ -108,8 +108,8 @@ export function generateRoundRobinWithPlayOff(props) {
       const drawSize = nextPowerOf2(groupCount * finishingPositions.length);
       const { matchUps } = treeMatchUps({ drawSize });
 
-      const mainStructure = structureTemplate({
-        stage: MAIN,
+      const playoffStructure = structureTemplate({
+        stage: PLAYOFF,
         matchUps,
         stageOrder,
         stageSequence,
@@ -117,24 +117,24 @@ export function generateRoundRobinWithPlayOff(props) {
         structureName: playoffGroup.structureName,
       });
 
-      drawDefinition.structures.push(mainStructure);
+      drawDefinition.structures.push(playoffStructure);
 
       const link = {
         linkType: POSITION,
         source: {
           finishingPositions,
-          structureId: mainStructure.structureId,
+          structureId: playoffStructure.structureId,
         },
         target: {
           roundNumber: 1,
           feedProfile: DRAW,
-          structureId: mainStructure.structureId,
+          structureId: playoffStructure.structureId,
         },
       };
 
       drawDefinition.links.push(link);
 
-      return mainStructure;
+      return playoffStructure;
     })
     .filter(f => f);
 

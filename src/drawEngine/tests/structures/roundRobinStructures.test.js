@@ -13,11 +13,11 @@ import {
   CONTAINER,
   ITEM,
   QUALIFYING,
-  MAIN,
   WIN_RATIO,
   ROUND_OUTCOME,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
+  PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
@@ -113,7 +113,7 @@ it('can generate Round Robins 32 with playoffs', () => {
   expect(playoffStructures[0].structureName).toEqual('Gold Flight');
   expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(playoffStructures[0].stage).toEqual(MAIN);
+  expect(playoffStructures[0].stage).toEqual(PLAYOFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
   expect(playoffStructures[0].matchUps.length).toEqual(7);
   expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(3);
@@ -159,7 +159,7 @@ it('can generate Round Robins 16 with playoffs', () => {
   expect(playoffStructures[0].structureName).toEqual('Gold Flight');
   expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(playoffStructures[0].stage).toEqual(MAIN);
+  expect(playoffStructures[0].stage).toEqual(PLAYOFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
   expect(playoffStructures[0].matchUps.length).toEqual(3);
   expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(2);
@@ -201,7 +201,7 @@ it('Round Robin with Playoffs testbed', () => {
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === MAIN
+      return structure.stage === PLAYOFF
         ? structures.concat(structure)
         : structures;
     },
@@ -236,7 +236,7 @@ it('Round Robin with Playoffs testbed', () => {
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === MAIN
+      return structure.stage === PLAYOFF
         ? structures.concat(structure)
         : structures;
     },
