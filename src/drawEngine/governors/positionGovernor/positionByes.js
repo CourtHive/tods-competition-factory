@@ -460,10 +460,15 @@ export function getByesData({ drawDefinition, structure }) {
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 
   // firstRoundMatchUps don't work for CONTAINER / ROUND_ROBIN structures
-  const relevantMatchUps =
-    structure.structureType === CONTAINER ? matchUps : firstRoundMatchUps;
+
+  const isRoundRobin = structure?.structureType === CONTAINER;
+  const relevantMatchUps = isRoundRobin ? matchUps : firstRoundMatchUps;
   const relevantMatchUpsCount = relevantMatchUps.length;
-  const maxByes = relevantMatchUpsCount;
+
+  // maxByes for RR can only be the number of structures... no more than one bye per structure
+  const maxByes = isRoundRobin
+    ? structure?.structures?.length || 0
+    : relevantMatchUpsCount;
 
   // get stage/stageSequence Entries and qualifiers
   const { stage, stageSequence } = structure;
