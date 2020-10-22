@@ -70,27 +70,27 @@ export function generateRoundRobinWithPlayOff(props) {
     drawDefinition,
   } = props;
 
-  const qualifyingDrawProperties = Object.assign(
-    { structureName: QUALIFYING }, // default structureName
+  const mainDrawProperties = Object.assign(
+    { structureName: MAIN }, // default structureName
     props,
     { stage: QUALIFYING }
   );
   const {
-    structure: qualifyingStructure,
+    structure: mainStructure,
     groupCount,
     groupSize,
-  } = generateRoundRobin(qualifyingDrawProperties);
+  } = generateRoundRobin(mainDrawProperties);
 
-  const playOffGroups = (structureOptions &&
-    structureOptions.playOffGroups) || [
+  const playoffGroups = (structureOptions &&
+    structureOptions.playoffGroups) || [
     { finishingPositions: [1], structureName: PLAYOFF },
   ];
 
-  const mainStructures = playOffGroups
-    .map((playOffGroup, order) => {
+  const playoffStructures = playoffGroups
+    .map((playoffGroup, order) => {
       const stageOrder = order + 1;
       const validFinishingPositions = generateRange(1, groupSize + 1);
-      const finishingPositions = playOffGroup.finishingPositions;
+      const finishingPositions = playoffGroup.finishingPositions;
 
       const finishingPositionsAreValid = finishingPositions.reduce(
         (p, finishingPosition) => {
@@ -100,7 +100,7 @@ export function generateRoundRobinWithPlayOff(props) {
       );
 
       // CHECK VALIDITY: draw structure is not generated...
-      // if playOffGroup finishingPositions are not present in GroupSize
+      // if playoffGroup finishingPositions are not present in GroupSize
       if (!finishingPositionsAreValid) {
         return undefined;
       }
@@ -114,7 +114,7 @@ export function generateRoundRobinWithPlayOff(props) {
         stageOrder,
         stageSequence,
         seedingProfile,
-        structureName: playOffGroup.structureName,
+        structureName: playoffGroup.structureName,
       });
 
       drawDefinition.structures.push(mainStructure);
@@ -123,7 +123,7 @@ export function generateRoundRobinWithPlayOff(props) {
         linkType: POSITION,
         source: {
           finishingPositions,
-          structureId: qualifyingStructure.structureId,
+          structureId: mainStructure.structureId,
         },
         target: {
           roundNumber: 1,
@@ -139,7 +139,7 @@ export function generateRoundRobinWithPlayOff(props) {
     .filter(f => f);
 
   return Object.assign(
-    { qualifyingStructure, mainStructures, links: drawDefinition.links },
+    { mainStructure, playoffStructures, links: drawDefinition.links },
     SUCCESS
   );
 }

@@ -94,7 +94,7 @@ it('can generate Round Robins 32 with playoffs', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   qualifyingDrawPositions({ drawSize });
   const structureOptions = {
-    playOffGroups: [
+    playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
@@ -104,19 +104,19 @@ it('can generate Round Robins 32 with playoffs', () => {
     drawType,
     structureOptions,
   });
-  const { qualifyingStructure, mainStructures, links } = result;
+  const { mainStructure, playoffStructures, links } = result;
 
-  expect(qualifyingStructure.stage).toEqual(QUALIFYING);
-  expect(qualifyingStructure.structures.length).toEqual(8);
+  expect(mainStructure.stage).toEqual(QUALIFYING);
+  expect(mainStructure.structures.length).toEqual(8);
 
-  expect(mainStructures.length).toEqual(2);
-  expect(mainStructures[0].structureName).toEqual('Gold Flight');
-  expect(mainStructures[1].structureName).toEqual('Silver Flight');
+  expect(playoffStructures.length).toEqual(2);
+  expect(playoffStructures[0].structureName).toEqual('Gold Flight');
+  expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(mainStructures[0].stage).toEqual(MAIN);
-  expect(mainStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
-  expect(mainStructures[0].matchUps.length).toEqual(7);
-  expect(mainStructures[0].matchUps[0].finishingRound).toEqual(3);
+  expect(playoffStructures[0].stage).toEqual(MAIN);
+  expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
+  expect(playoffStructures[0].matchUps.length).toEqual(7);
+  expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(3);
 
   expect(links.length).toEqual(2);
   expect(links[0].linkType).toEqual(POSITION);
@@ -137,14 +137,14 @@ it('can generate Round Robins 16 with playoffs', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   qualifyingDrawPositions({ drawSize: 16 });
   const structureOptions = {
-    playOffGroups: [
+    playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
   const {
-    qualifyingStructure,
-    mainStructures,
+    mainStructure,
+    playoffStructures,
     links,
   } = drawEngine.generateDrawType({
     stage,
@@ -152,17 +152,17 @@ it('can generate Round Robins 16 with playoffs', () => {
     structureOptions,
   });
 
-  expect(qualifyingStructure.stage).toEqual(QUALIFYING);
-  expect(qualifyingStructure.structures.length).toEqual(4);
+  expect(mainStructure.stage).toEqual(QUALIFYING);
+  expect(mainStructure.structures.length).toEqual(4);
 
-  expect(mainStructures.length).toEqual(2);
-  expect(mainStructures[0].structureName).toEqual('Gold Flight');
-  expect(mainStructures[1].structureName).toEqual('Silver Flight');
+  expect(playoffStructures.length).toEqual(2);
+  expect(playoffStructures[0].structureName).toEqual('Gold Flight');
+  expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(mainStructures[0].stage).toEqual(MAIN);
-  expect(mainStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
-  expect(mainStructures[0].matchUps.length).toEqual(3);
-  expect(mainStructures[0].matchUps[0].finishingRound).toEqual(2);
+  expect(playoffStructures[0].stage).toEqual(MAIN);
+  expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
+  expect(playoffStructures[0].matchUps.length).toEqual(3);
+  expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(2);
 
   expect(links.length).toEqual(2);
   expect(links[0].linkType).toEqual(POSITION);
@@ -182,7 +182,7 @@ it('Round Robin with Playoffs testbed', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
     groupSize: 5,
-    playOffGroups: [
+    playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
       { finishingPositions: [3], structureName: 'Bronze Flight' },
@@ -196,10 +196,10 @@ it('Round Robin with Playoffs testbed', () => {
     structureOptions,
   });
 
-  const qualifyingStructure = drawDefinition.structures.find(
+  const mainStructure = drawDefinition.structures.find(
     structure => structure.stage === QUALIFYING
   );
-  const mainStructures = drawDefinition.structures.reduce(
+  const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === MAIN
         ? structures.concat(structure)
@@ -207,9 +207,9 @@ it('Round Robin with Playoffs testbed', () => {
     },
     []
   );
-  expect(qualifyingStructure.structures.length).toEqual(4);
-  expect(mainStructures.length).toEqual(5);
-  expect(mainStructures[0].positionAssignments.length).toEqual(4);
+  expect(mainStructure.structures.length).toEqual(4);
+  expect(playoffStructures.length).toEqual(5);
+  expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 });
 
 it('Round Robin with Playoffs testbed', () => {
@@ -218,7 +218,7 @@ it('Round Robin with Playoffs testbed', () => {
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
     groupSize: 4,
-    playOffGroups: [
+    playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
       { finishingPositions: [2], structureName: 'Silver Flight' },
       { finishingPositions: [3], structureName: 'Bronze Flight' },
@@ -231,10 +231,10 @@ it('Round Robin with Playoffs testbed', () => {
     structureOptions,
   });
 
-  const qualifyingStructure = drawDefinition.structures.find(
+  const mainStructure = drawDefinition.structures.find(
     structure => structure.stage === QUALIFYING
   );
-  const mainStructures = drawDefinition.structures.reduce(
+  const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === MAIN
         ? structures.concat(structure)
@@ -243,7 +243,7 @@ it('Round Robin with Playoffs testbed', () => {
     []
   );
 
-  expect(qualifyingStructure.structures.length).toEqual(5);
-  expect(mainStructures.length).toEqual(4);
-  expect(mainStructures[0].positionAssignments.length).toEqual(8);
+  expect(mainStructure.structures.length).toEqual(5);
+  expect(playoffStructures.length).toEqual(4);
+  expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 });

@@ -15,13 +15,13 @@ import {
 import { ERROR } from '../../../constants/resultConstants';
 
 it('can generate compass draws', () => {
-  let { result, drawDefinition } = playOffDraw({
+  let { result, drawDefinition } = playoffDraw({
     drawSize: 3,
     drawType: COMPASS,
   });
   expect(result).toHaveProperty(ERROR);
 
-  ({ result, drawDefinition } = playOffDraw({
+  ({ result, drawDefinition } = playoffDraw({
     drawSize: 4,
     drawType: COMPASS,
   }));
@@ -34,7 +34,7 @@ it('can generate compass draws', () => {
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
-  ({ result, drawDefinition } = playOffDraw({
+  ({ result, drawDefinition } = playoffDraw({
     drawSize: 8,
     drawType: COMPASS,
   }));
@@ -47,7 +47,7 @@ it('can generate compass draws', () => {
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
-  ({ result, drawDefinition } = playOffDraw({
+  ({ result, drawDefinition } = playoffDraw({
     drawSize: 32,
     drawType: COMPASS,
   }));
@@ -74,7 +74,7 @@ it('can generate compass draws', () => {
     expect(structureNames.includes(direction)).toEqual(true);
   });
 
-  ({ result, drawDefinition } = playOffDraw({
+  ({ result, drawDefinition } = playoffDraw({
     drawSize: 64,
     drawType: COMPASS,
   }));
@@ -84,7 +84,7 @@ it('can generate compass draws', () => {
 });
 
 it('generates compass draws with correct links', () => {
-  const { result, drawDefinition } = playOffDraw({
+  const { result, drawDefinition } = playoffDraw({
     drawSize: 32,
     drawType: COMPASS,
   });
@@ -179,7 +179,7 @@ it('generates compass draws with correct links', () => {
 });
 
 it('generates compass draws with correct finishing drawPositions', () => {
-  let { result, drawDefinition } = playOffDraw({
+  let { result, drawDefinition } = playoffDraw({
     drawSize: 32,
     drawType: COMPASS,
   });
@@ -252,7 +252,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
   });
   expect(matchUp.finishingPositionRange.loser).toMatchObject([23, 24]);
 
-  ({ result, drawDefinition } = playOffDraw({
+  ({ result, drawDefinition } = playoffDraw({
     drawSize: 64,
     drawType: COMPASS,
   }));
@@ -327,7 +327,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 });
 
 it('can generate draw which plays off all drawPositions', () => {
-  const { result, drawDefinition } = playOffDraw({
+  const { result, drawDefinition } = playoffDraw({
     drawSize: 64,
     drawType: PLAYOFF,
   });
@@ -379,7 +379,7 @@ it('can generate draw which plays off all drawPositions', () => {
 });
 
 it('can generate knockout which specifies drawPositions to playoff', () => {
-  let { drawDefinition } = playOffDraw({
+  let { drawDefinition } = playoffDraw({
     drawSize: 16,
     drawType: PLAYOFF,
     finishingPositionLimit: 4,
@@ -389,7 +389,7 @@ it('can generate knockout which specifies drawPositions to playoff', () => {
   expect(drawDefinition.structures[0].matchUps.length).toEqual(15);
   expect(drawDefinition.structures[1].matchUps.length).toEqual(1);
 
-  ({ drawDefinition } = playOffDraw({
+  ({ drawDefinition } = playoffDraw({
     drawSize: 16,
     drawType: PLAYOFF,
     finishingPositionLimit: 8,
@@ -401,7 +401,7 @@ it('can generate knockout which specifies drawPositions to playoff', () => {
   expect(drawDefinition.structures[2].matchUps.length).toEqual(1);
   expect(drawDefinition.structures[3].matchUps.length).toEqual(1);
 
-  ({ drawDefinition } = playOffDraw({
+  ({ drawDefinition } = playoffDraw({
     drawSize: 32,
     drawType: PLAYOFF,
     finishingPositionLimit: 8,
@@ -414,7 +414,7 @@ it('can generate knockout which specifies drawPositions to playoff', () => {
   expect(drawDefinition.structures[3].matchUps.length).toEqual(1);
 });
 
-function playOffDraw({ drawSize, drawType, finishingPositionLimit }) {
+function playoffDraw({ drawSize, drawType, finishingPositionLimit }) {
   reset();
   initialize();
   mainDrawPositions({ drawSize });

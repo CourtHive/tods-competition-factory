@@ -1,18 +1,18 @@
 import { generateRange } from '../../utilities';
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
-import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { treeMatchUps } from './eliminationTree';
+import structureTemplate from './structureTemplate';
 
-export function playOff(props) {
-  const { structure, childStructures } = playOffStructures(props);
+export function playoff(props) {
+  const { structure, childStructures } = playoffStructures(props);
   return Object.assign({ structure, childStructures }, SUCCESS);
 }
 
-export function playOffStructures({
+export function playoffStructures({
   stage = MAIN,
   drawSize,
-  playOffNaming,
+  playoffNaming,
   roundOffset = 0,
   drawDefinition,
   stageSequence = 1,
@@ -28,7 +28,7 @@ export function playOffStructures({
   const finishingPositionsTo = finishingPositionOffset + drawSize;
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
   const structureName =
-    (playOffNaming && playOffNaming[exitProfile]) || finishingPositionRange;
+    (playoffNaming && playoffNaming[exitProfile]) || finishingPositionRange;
   const structure = structureTemplate({
     stage,
     matchUps,
@@ -53,8 +53,8 @@ export function playOffStructures({
   return { structure, structureName, childStructures };
 
   function generateChildStructures(roundNumber) {
-    const playOffDrawPositions = drawSize / Math.pow(2, roundNumber);
-    if (playOffDrawPositions < 2) return;
+    const playoffDrawPositions = drawSize / Math.pow(2, roundNumber);
+    if (playoffDrawPositions < 2) return;
 
     const childFinishingPositionOffset =
       drawSize / Math.pow(2, roundNumber) + finishingPositionOffset;
@@ -64,14 +64,14 @@ export function playOffStructures({
       structure: targetStructure,
       structureName: targetName,
       childStructures,
-    } = playOffStructures({
+    } = playoffStructures({
       stage,
-      playOffNaming,
+      playoffNaming,
       drawDefinition,
       roundOffsetLimit,
       finishingPositionLimit,
       stageSequence: stageSequence + 1,
-      drawSize: playOffDrawPositions,
+      drawSize: playoffDrawPositions,
       roundOffset: roundOffset + roundNumber,
       exitProfile: `${exitProfile}-${roundNumber}`,
       finishingPositionOffset: childFinishingPositionOffset,

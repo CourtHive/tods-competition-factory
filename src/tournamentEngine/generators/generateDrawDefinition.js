@@ -71,7 +71,7 @@ export function generateDrawDefinition(props) {
   if (drawIsRRWP && !structureOptions) {
     structureOptions = drawIsRRWP
       ? {
-          playOffGroups: [
+          playoffGroups: [
             { finishingPositions: [1, 2], structureName: 'Playoffs' },
           ],
         }

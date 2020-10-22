@@ -60,23 +60,23 @@ export function generateCurtisConsolation({
   const links = consolationItems.map(item => item.links);
   drawDefinition.links = drawDefinition.links.concat(...links);
 
-  // only add 3-4 playOff structure
+  // only add 3-4 playoff structure
   // 1. if there is one consolation round, drawSize === 16
   // 2. if drawSize > 32
   // when drawSize === 32 then all rounds feed into the two consolation structures
   if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
-    const { matchUps: playOffMatchUps } = treeMatchUps({
+    const { matchUps: playoffMatchUps } = treeMatchUps({
       drawSize: 2,
       finishingPositionOffset: 2,
     });
-    const playOffStructure = structureTemplate({
-      matchUps: playOffMatchUps,
+    const playoffStructure = structureTemplate({
+      matchUps: playoffMatchUps,
       stage: MAIN,
       structureName: PLAYOFF,
       stageSequence: 2,
     });
 
-    const playOffLink = {
+    const playoffLink = {
       linkType: LOSER,
       source: {
         roundNumber: mainDrawRoundsCount - 1,
@@ -85,12 +85,12 @@ export function generateCurtisConsolation({
       target: {
         roundNumber: 1,
         feedProfile: TOP_DOWN,
-        structureId: playOffStructure.structureId,
+        structureId: playoffStructure.structureId,
       },
     };
 
-    drawDefinition.structures.push(playOffStructure);
-    drawDefinition.links.push(playOffLink);
+    drawDefinition.structures.push(playoffStructure);
+    drawDefinition.links.push(playoffLink);
   }
 
   return Object.assign(

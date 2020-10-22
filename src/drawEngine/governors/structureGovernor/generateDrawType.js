@@ -1,7 +1,7 @@
 import { stageDrawPositionsCount } from '../../getters/stageGetter';
 import structureTemplate from '../../generators/structureTemplate';
 
-import { playOff } from '../../generators/playOff';
+import { playoff } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
@@ -100,20 +100,20 @@ export function generateDrawType(props = {}) {
     },
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(props),
     [COMPASS]: () =>
-      playOff(
+      playoff(
         Object.assign(props, {
           roundOffsetLimit: 3,
-          playOffNaming: COMPASS_NAMING,
+          playoffNaming: COMPASS_NAMING,
         })
       ),
     [OLYMPIC]: () =>
-      playOff(
+      playoff(
         Object.assign(props, {
           roundOffsetLimit: 2,
-          playOffNaming: OLYMPIC_NAMING,
+          playoffNaming: OLYMPIC_NAMING,
         })
       ),
-    [PLAYOFF]: () => playOff(props),
+    [PLAYOFF]: () => playoff(props),
 
     [FEED_IN]: () => {
       const { matchUps } = feedInMatchUps({ drawSize });
