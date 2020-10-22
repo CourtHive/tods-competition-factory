@@ -22,6 +22,7 @@ export function addParticipants({
   teamId,
   groupId,
 }) {
+  if (!tournamentRecord) return { error: 'Missing tournamentRecord ' };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const existingParticipantIds = tournamentRecord.participants.map(
     p => p.participantId
