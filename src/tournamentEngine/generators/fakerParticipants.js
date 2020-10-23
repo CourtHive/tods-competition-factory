@@ -77,6 +77,10 @@ export function generateFakeParticipants({
         return generateIndividualParticipant(participantIndex);
       });
 
+      const individualParticipantIds = individualParticipants.map(
+        participant => participant.participantId
+      );
+
       const pairName = individualParticipants
         .map(i => i.person.standardFamilyName)
         .join('/');
@@ -87,7 +91,8 @@ export function generateFakeParticipants({
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
         name: doubles ? pairName : teamName,
-        individualParticipants,
+        individualParticipantIds,
+        individualParticipants, // TODO: remove
       };
       return doubles || team
         ? [groupParticipant, ...individualParticipants]

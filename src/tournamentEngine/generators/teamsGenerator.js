@@ -24,14 +24,14 @@ export function generateTeamsFromParticipantAttribute(props) {
           participantId: UUID(),
           participantType: TEAM,
           participantRole: COMPETITOR,
-          individualParticipants: [],
+          individualParticipantIds: [],
           participantProfile: {
             groupingAttribute: personAttribute || participantAttribute,
           },
         };
       }
 
-      teams[attributeValue].individualParticipants.push(
+      teams[attributeValue].individualParticipantIds.push(
         participant.participantId
       );
     }

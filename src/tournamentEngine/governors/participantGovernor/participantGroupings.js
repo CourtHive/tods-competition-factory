@@ -24,9 +24,12 @@ export function addParticipantsToGrouping(props) {
   if (groupingParticipant) {
     const individualParticipants =
       groupingParticipant.individualParticipants || [];
-    const individualParticipantIds = individualParticipants.map(value => {
-      return typeof value === 'object' ? value.participantId : value;
-    });
+    const individualParticipantIds =
+      groupingParticipant.individualParticipantIds ||
+      // TODO: remove expectation that individualParticpiants will be present
+      individualParticipants.map(value => {
+        return typeof value === 'object' ? value.participantId : value;
+      });
     const participantIdsToAdd = participantIds.filter(participantId => {
       const participantIsMember = individualParticipantIds.includes(
         participantId

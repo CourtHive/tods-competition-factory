@@ -38,7 +38,11 @@ export function assignTieMatchUpParticipantId(props) {
   return errors && errors.length ? { errors } : SUCCESS;
 
   function addParticipantIdToPair({ side, sideMember }) {
-    if (!side.participant) side.participant = { individualParticipants: [] };
+    if (!side.participant)
+      side.participant = {
+        individualParticipants: [], // TODO: remove expanded participants
+        individualParticipantIds: [],
+      };
     individualParticipants =
       individualParticipants || side.participant.individualParticipants;
     individualParticipants[sideMember - 1] = { participantId };

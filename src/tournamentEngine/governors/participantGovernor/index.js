@@ -3,6 +3,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { addParticipants } from './addParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
+import { createGroupParticipant } from './createGroupParticipant';
 import { findTournamentParticipant } from '../../getters/participantGetter';
 import { generateFakeParticipants } from '../../generators/fakerParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
@@ -29,6 +30,7 @@ const findTournamentParticipantCopy = ({ tournamentRecord, participantId }) => {
 const participantGovernor = {
   addParticipants,
   deleteParticipants,
+  createGroupParticipant,
 
   addParticipantsToGrouping,
   removeParticipantsFromGroup,
