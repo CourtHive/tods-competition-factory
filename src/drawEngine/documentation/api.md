@@ -78,6 +78,10 @@ route: /drawEngine/api
 
 ---
 
+## attachEventPolicy
+
+---
+
 ## attachPolicy
 
 Attaches a policy to a drawDefinition. Policies determine the rules for seeding, avoidance, etc.
@@ -168,6 +172,10 @@ The structure of an **_assignment object_** is as follows:
 ---
 
 ## getErrors
+
+---
+
+## getEventAppliedPolicies
 
 ---
 

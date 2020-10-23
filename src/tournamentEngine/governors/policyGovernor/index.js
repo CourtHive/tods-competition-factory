@@ -1,5 +1,8 @@
 import policyTemplate from './policyDefinitionTemplate';
-import { getAppliedPolicies } from './getAppliedPolicies';
+import {
+  getAppliedPolicies,
+  getEventAppliedPolicies,
+} from './getAppliedPolicies';
 import { allowedDrawTypes, allowedMatchUpFormats } from './allowedTypes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -54,6 +57,31 @@ function attachPolicy({ tournamentRecord, policies, policyDefinition }) {
   return SUCCESS;
 }
 
+function attachEventPolicy({ tournamentRecord, event, policyDefinition }) {
+  if (!tournamentRecord) {
+    return { error: 'Missing tournamentRecord' };
+  }
+  if (!event) {
+    return { error: 'Missing event' };
+  }
+  if (!policyDefinition) {
+    return { error: 'Missing policyDefinition' };
+  }
+
+  if (!event.extensions) event.extensions = [];
+  const { appliedPolicies } = getEventAppliedPolicies({ event });
+  Object.keys(policyDefinition).forEach(policyType => {
+    appliedPolicies[policyType] = policyDefinition[policyType];
+  });
+
+  event.extensions = event.extensions.filter(
+    extension => extension.name === 'appliedPolicies'
+  );
+  event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
+
+  return SUCCESS;
+}
+
 function validDefinitionKeys(definition) {
   const definitionKeys = Object.keys(definition);
   const validKeys = Object.keys(policyTemplate());
@@ -66,8 +94,11 @@ function validDefinitionKeys(definition) {
 
 const policyGovernor = {
   attachPolicy,
+  attachEventPolicy,
+
   allowedDrawTypes,
   allowedMatchUpFormats,
+  getEventAppliedPolicies,
 };
 
 export default policyGovernor;
