@@ -18,7 +18,6 @@ export function generateDrawDefinition(props) {
   let { structureOptions } = props;
 
   const {
-    groupSize,
     customName,
     seedingProfile,
     qualifyingRound,
@@ -44,18 +43,21 @@ export function generateDrawDefinition(props) {
   }
 
   const drawProfile = {
-    category: event?.category,
-    groupSize,
+    drawType,
+    drawSize,
+    automated,
     customName,
     seedsCount,
-    drawSize,
+
+    tieFormat,
+    matchUpType,
+    matchUpFormat,
+
+    structureOptions,
     qualifyingRound,
     qualifyingPositions,
-    automated,
-    drawType,
-    tieFormat,
-    matchUpFormat,
-    matchUpType,
+
+    category: event?.category,
   };
 
   const stage = MAIN;
