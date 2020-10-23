@@ -11,6 +11,8 @@ export function addParticipantsToGrouping(props) {
     removeFromOtherTeams,
   } = props;
 
+  // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
+
   const tournamentParticipants = tournamentRecord.participants || [];
   const groupingParticipant = tournamentParticipants.find(
     participant => participant.participantId === groupingParticipantId
