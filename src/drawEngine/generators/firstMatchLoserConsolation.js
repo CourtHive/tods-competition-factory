@@ -11,6 +11,7 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function firstMatchLoserConsolation(props) {
+  let { drawSize, consolationStructureName } = props;
   const {
     stage = MAIN,
     structureName,
@@ -19,16 +20,18 @@ export function firstMatchLoserConsolation(props) {
     finishingPositionOffset,
   } = props;
 
-  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
+  drawSize = drawSize || stageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
   const mainStructure = structureTemplate({
-    stage: MAIN,
+    stage,
     matchUps,
     stageSequence,
     structureName: structureName || MAIN,
   });
 
-  drawDefinition.structures.push(mainStructure);
+  if (drawDefinition) {
+    drawDefinition.structures.push(mainStructure);
+  }
 
   const consolationDrawPositions = drawSize / 2;
 
@@ -37,14 +40,20 @@ export function firstMatchLoserConsolation(props) {
     finishingPositionOffset: consolationDrawPositions,
   });
 
+  consolationStructureName =
+    consolationStructureName ||
+    (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
+
   const consolationStructure = structureTemplate({
     stage: CONSOLATION,
     matchUps: consolationMatchUps,
     stageSequence: 1,
-    structureName: CONSOLATION,
+    structureName: consolationStructureName,
   });
 
-  drawDefinition.structures.push(consolationStructure);
+  if (drawDefinition) {
+    drawDefinition.structures.push(consolationStructure);
+  }
 
   const link = {
     linkType: LOSER,
@@ -59,10 +68,12 @@ export function firstMatchLoserConsolation(props) {
     },
   };
 
-  drawDefinition.links.push(link);
+  if (drawDefinition) {
+    drawDefinition.links.push(link);
+  }
 
   return Object.assign(
-    { mainStructure, consolationStructure, links: drawDefinition.links },
+    { mainStructure, consolationStructure, link, links: drawDefinition?.links },
     SUCCESS
   );
 }
