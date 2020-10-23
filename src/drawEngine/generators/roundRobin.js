@@ -2,21 +2,24 @@ import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
+import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { drawPositionsHash } from './roundRobinGroups';
 
 import {
   MAIN,
-  WIN_RATIO,
-  PLAYOFF,
   DRAW,
-  CONTAINER,
   ITEM,
+  PLAYOFF,
   POSITION,
+  WIN_RATIO,
+  CONTAINER,
+  ELIMINATION,
+  FMLC,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
+import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
 
 export function generateRoundRobin({
   stage = MAIN,
@@ -62,12 +65,7 @@ export function generateRoundRobin({
 // future iteration should allow structureOptions to specify
 // groups of finishing drawPositions which playoff
 export function generateRoundRobinWithPlayOff(props) {
-  const {
-    stageSequence = 1,
-    structureOptions,
-    seedingProfile,
-    drawDefinition,
-  } = props;
+  const { stageSequence = 1, structureOptions, drawDefinition } = props;
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
@@ -104,39 +102,53 @@ export function generateRoundRobinWithPlayOff(props) {
         return undefined;
       }
 
+      const playoffDrawType = playoffGroup.drawType || ELIMINATION;
       const drawSize = nextPowerOf2(groupCount * finishingPositions.length);
-      const { matchUps } = treeMatchUps({ drawSize });
 
-      const playoffStructure = structureTemplate({
-        stage: PLAYOFF,
-        matchUps,
-        stageOrder,
-        stageSequence,
-        seedingProfile,
-        structureName: playoffGroup.structureName,
-      });
+      if (playoffDrawType === ELIMINATION) {
+        const { matchUps } = treeMatchUps({ drawSize });
 
-      drawDefinition.structures.push(playoffStructure);
+        const playoffStructure = structureTemplate({
+          stage: PLAYOFF,
+          matchUps,
+          stageOrder,
+          stageSequence,
+          structureName: playoffGroup.structureName,
+        });
 
-      const link = {
-        linkType: POSITION,
-        source: {
-          finishingPositions,
-          structureId: playoffStructure.structureId,
-        },
-        target: {
-          roundNumber: 1,
-          feedProfile: DRAW,
-          structureId: playoffStructure.structureId,
-        },
-      };
-
-      drawDefinition.links.push(link);
-
-      return playoffStructure;
+        drawDefinition.structures.push(playoffStructure);
+        const link = {
+          linkType: POSITION,
+          source: {
+            finishingPositions,
+            structureId: playoffStructure.structureId,
+          },
+          target: {
+            roundNumber: 1,
+            feedProfile: DRAW,
+            structureId: playoffStructure.structureId,
+          },
+        };
+        drawDefinition.links.push(link);
+        return playoffStructure;
+      } else if (playoffDrawType === FMLC) {
+        const {
+          mainStructure,
+          consolationStructure,
+          link,
+        } = firstMatchLoserConsolation({
+          drawSize,
+          stage: PLAYOFF,
+          structureName: playoffGroup.structureName,
+        });
+        drawDefinition.structures.push(mainStructure);
+        drawDefinition.structures.push(consolationStructure);
+        drawDefinition.links.push(link);
+      }
     })
     .filter(f => f);
 
+  // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(
     { mainStructure, playoffStructures, links: drawDefinition.links },
     SUCCESS
