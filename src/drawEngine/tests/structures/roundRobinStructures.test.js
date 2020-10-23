@@ -7,16 +7,19 @@ import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import {
   DRAW,
+  ITEM,
+  FMLC,
+  MAIN,
+  PLAYOFF,
   POSITION,
   CONTAINER,
-  ITEM,
   WIN_RATIO,
-  ROUND_OUTCOME,
-  ROUND_ROBIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-  PLAYOFF,
-  MAIN,
   WATERFALL,
+  ROUND_ROBIN,
+  ROUND_OUTCOME,
+  ROUND_ROBIN_WITH_PLAYOFF,
+  ELIMINATION,
+  CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -222,8 +225,16 @@ it('Round Robin with Playoffs testbed', () => {
   const structureOptions = {
     groupSize,
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight' },
-      { finishingPositions: [2], structureName: 'Silver Flight' },
+      {
+        finishingPositions: [1],
+        structureName: 'Gold Flight',
+        drawType: FMLC,
+      },
+      {
+        finishingPositions: [2],
+        structureName: 'Silver Flight',
+        drawType: ELIMINATION,
+      },
       { finishingPositions: [3], structureName: 'Bronze Flight' },
       { finishingPositions: [4], structureName: 'Green Flight' },
     ],
@@ -279,11 +290,21 @@ it('Round Robin with Playoffs testbed', () => {
     []
   );
 
+  const consolationStructures = drawDefinition.structures.reduce(
+    (structures, structure) => {
+      return structure.stage === CONSOLATION
+        ? structures.concat(structure)
+        : structures;
+    },
+    []
+  );
   expect(mainStructure.structures.length).toEqual(5);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
+
+  expect(consolationStructures.length).toEqual(1);
 });
 
 function scoreAllMatchUps({ drawId, matchUpIds }) {
