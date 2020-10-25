@@ -9,14 +9,6 @@ import { matchUpFormatCode } from 'tods-matchup-format-code';
 function getSetsToWin(bestOfGames) {
   return (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
 }
-function playersHash(players) {
-  return players
-    .map(p => p && p.id)
-    .filter(f => f)
-    .sort()
-    .join('-');
-}
-
 export function tallyBracket({
   matchUps = [],
   perPlayer,
@@ -512,6 +504,16 @@ function getSideId(matchUp, index) {
   return Side.participantId;
 }
 
+/*
+function playersHash(players) {
+  return players
+    .map(p => p && p.id)
+    .filter(f => f)
+    .sort()
+    .join('-');
+}
+
+// "classic" code
 export function tallyBracketAndModifyPlayers({
   matchUps,
   teams,
@@ -596,3 +598,4 @@ export function tallyBracketAndModifyPlayers({
 
   return participantResults;
 }
+*/
