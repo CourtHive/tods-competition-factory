@@ -20,6 +20,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   ELIMINATION,
   CONSOLATION,
+  LOSER,
 } from '../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -267,12 +268,17 @@ it('Round Robin with Playoffs testbed', () => {
     seedingProfile: WATERFALL,
   });
 
+  expect(drawDefinition.links.length).toEqual(5);
+
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
     structure => structure.stage === MAIN
   );
+
+  expect(mainStructure.structures.length).toEqual(5);
+  expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
   const { upcomingMatchUps: matchUps } = getStructureMatchUps({
     structure: mainStructure,
@@ -290,6 +296,34 @@ it('Round Robin with Playoffs testbed', () => {
     []
   );
 
+  expect(playoffStructures.length).toEqual(4);
+  expect(playoffStructures[0].positionAssignments.length).toEqual(8);
+
+  const playoffStructureIds = playoffStructures.map(
+    structure => structure.structureId
+  );
+
+  const positioningLinks = drawDefinition.links.filter(
+    link => link.linkType === POSITION
+  );
+
+  const loserLinks = drawDefinition.links.filter(
+    link => link.linkType === LOSER
+  );
+
+  expect(loserLinks.length).toEqual(1);
+  expect(
+    playoffStructureIds.includes(loserLinks[0].source.structureId)
+  ).toEqual(true);
+
+  positioningLinks.forEach(link => {
+    expect(link.source.structureId).toEqual(mainStructure.structureId);
+    const targetIsPlayoffStructure = playoffStructureIds.includes(
+      link.target.structureId
+    );
+    expect(targetIsPlayoffStructure).toEqual(true);
+  });
+
   const consolationStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === CONSOLATION
@@ -298,13 +332,11 @@ it('Round Robin with Playoffs testbed', () => {
     },
     []
   );
-  expect(mainStructure.structures.length).toEqual(5);
-  expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
-
-  expect(playoffStructures.length).toEqual(4);
-  expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 
   expect(consolationStructures.length).toEqual(1);
+  expect(consolationStructures[0].structureId).toEqual(
+    loserLinks[0].target.structureId
+  );
 });
 
 function scoreAllMatchUps({ drawId, matchUpIds }) {

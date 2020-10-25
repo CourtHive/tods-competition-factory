@@ -117,33 +117,33 @@ export function generateRoundRobinWithPlayOff(props) {
         });
 
         drawDefinition.structures.push(playoffStructure);
-        const link = {
-          linkType: POSITION,
-          source: {
-            finishingPositions,
-            structureId: playoffStructure.structureId,
-          },
-          target: {
-            roundNumber: 1,
-            feedProfile: DRAW,
-            structureId: playoffStructure.structureId,
-          },
-        };
-        drawDefinition.links.push(link);
+        const playoffLink = generatePlayoffLink({
+          mainStructure,
+          playoffStructure,
+          finishingPositions,
+        });
+        drawDefinition.links.push(playoffLink);
         return playoffStructure;
       } else if (playoffDrawType === FMLC) {
         const {
-          mainStructure,
+          mainStructure: playoffStructure,
           consolationStructure,
-          link,
+          link: consolationLink,
         } = firstMatchLoserConsolation({
           drawSize,
           stage: PLAYOFF,
           structureName: playoffGroup.structureName,
         });
-        drawDefinition.structures.push(mainStructure);
+        const playoffLink = generatePlayoffLink({
+          mainStructure,
+          playoffStructure,
+          finishingPositions,
+        });
+        drawDefinition.links.push(playoffLink);
+        drawDefinition.structures.push(playoffStructure);
         drawDefinition.structures.push(consolationStructure);
-        drawDefinition.links.push(link);
+        drawDefinition.links.push(consolationLink);
+        return playoffStructure;
       }
     })
     .filter(f => f);
@@ -153,6 +153,25 @@ export function generateRoundRobinWithPlayOff(props) {
     { mainStructure, playoffStructures, links: drawDefinition.links },
     SUCCESS
   );
+}
+
+function generatePlayoffLink({
+  mainStructure,
+  playoffStructure,
+  finishingPositions,
+}) {
+  return {
+    linkType: POSITION,
+    source: {
+      finishingPositions,
+      structureId: mainStructure.structureId,
+    },
+    target: {
+      roundNumber: 1,
+      feedProfile: DRAW,
+      structureId: playoffStructure.structureId,
+    },
+  };
 }
 
 function deriveGroups({ structureOptions, drawSize }) {
