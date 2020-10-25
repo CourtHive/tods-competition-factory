@@ -40,13 +40,15 @@ export function allEventMatchUps({
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
   const drawDefinitions = event.drawDefinitions || [];
-  const matchUps = drawDefinitions.map(drawDefinition => {
-    const { matchUps } = drawEngine
-      .setState(drawDefinition)
-      .setParticipants(participants)
-      .allDrawMatchUps({ context, matchUpFilters, contextFilters });
-    return matchUps;
-  });
+  const matchUps = drawDefinitions
+    .map(drawDefinition => {
+      const { matchUps } = drawEngine
+        .setState(drawDefinition)
+        .setParticipants(participants)
+        .allDrawMatchUps({ context, matchUpFilters, contextFilters });
+      return matchUps;
+    })
+    .flat(Infinity);
 
   return { matchUps };
 }
