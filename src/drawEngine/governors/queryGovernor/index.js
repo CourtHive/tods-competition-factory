@@ -6,6 +6,7 @@ import {
   getMatchUpContextIds,
 } from '../../accessors/matchUpAccessor';
 
+import { drawActions } from './drawActions';
 import {
   positionActions,
   getNextUnfilledDrawPositions,
@@ -47,6 +48,7 @@ const queryGovernor = {
   allDrawMatchUps,
   drawMatchUps,
 
+  drawActions,
   matchUpActions,
   positionActions,
   getSeedAssignments,
