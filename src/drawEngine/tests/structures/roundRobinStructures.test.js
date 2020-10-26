@@ -1,9 +1,11 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
-import { getStructureMatchUps } from '../../getters/getMatchUps';
 
 import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+
+import { setsValues } from './roundRobinSetsValues.js';
 
 import {
   DRAW,
@@ -280,13 +282,6 @@ it('Round Robin with Playoffs testbed', () => {
   expect(mainStructure.structures.length).toEqual(5);
   expect(mainStructure.structures[0].positionAssignments.length).toEqual(4);
 
-  const { upcomingMatchUps: matchUps } = getStructureMatchUps({
-    structure: mainStructure,
-  });
-  const matchUpIds = matchUps.map(matchUp => matchUp.matchUpId);
-  const { drawId } = drawDefinition;
-  scoreAllMatchUps({ drawId, event: createdEvent, matchUpIds });
-
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === PLAYOFF
@@ -337,19 +332,46 @@ it('Round Robin with Playoffs testbed', () => {
   expect(consolationStructures[0].structureId).toEqual(
     loserLinks[0].target.structureId
   );
-});
 
-function scoreAllMatchUps({ drawId, matchUpIds }) {
-  const sets = [
-    { side1Score: 6, side2Score: 3 },
-    { side1Score: 6, side2Score: 3 },
-  ];
-  const score = '6-3 6-3';
-  const outcome = { score, sets };
-  const result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId: matchUpIds[0],
-    outcome,
+  const matchUpFormat = 'SET3-S:6/TB7';
+  const { drawId } = drawDefinition;
+  mainStructure.structures.forEach((structure, structureIndex) => {
+    const values = setsValues[structureIndex];
+    const structureMatchUps = structure.matchUps;
+    structureMatchUps.forEach((matchUp, matchUpindex) => {
+      const { matchUpId } = matchUp;
+      const outcome = generateMatchUpOutcome({
+        matchUpFormat,
+        setValues: values[matchUpindex],
+      });
+      const result = tournamentEngine.setMatchUpStatus({
+        drawId,
+        matchUpId,
+        outcome,
+      });
+      expect(result).toEqual(SUCCESS);
+    });
   });
-  console.log(result);
-}
+
+  const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
+    eventId,
+  });
+
+  mainStructure.structures.forEach((structure, structureIndex) => {
+    const { structureId } = structure;
+    const structureMatchUps = eventMatchUps.filter(
+      matchUp => matchUp.structureId === structureId
+    );
+    const { participantResults } = drawEngine.tallyBracket({
+      matchUps: structureMatchUps,
+      matchUpFormat,
+    });
+    console.log(
+      structureIndex,
+      Object.keys(participantResults).map(key => {
+        const { ratioHash, bracketOrder, result } = participantResults[key];
+        return { ratioHash, bracketOrder, result };
+      })
+    );
+  });
+});
