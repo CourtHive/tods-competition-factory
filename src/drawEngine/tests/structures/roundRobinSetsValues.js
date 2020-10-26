@@ -1,3 +1,17 @@
+/**
+    bracketOrder: [1, 2, 3, 4],
+    bracketOrder: [1, 3, 2, 4],
+    bracketOrder: [1, 3, 4, 2],
+    bracketOrder: [2, 3, 1, 4],
+    bracketOrder: [2, 4, 1, 3],
+    bracketOrder: [3, 3, 1, 1],
+
+    // ties
+    bracketOrder: [1, 1, 3, 3],
+    bracketOrder: [1, 1, 1, 4],
+    bracketOrder: [1, 4, 1, 1],
+ */
+
 export const valueProfiles = [
   {
     bracketOrder: [1, 2, 3, 4],
@@ -89,7 +103,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [2, 1, 4, 3],
+    bracketOrder: [1, 1, 3, 3],
     setValues: [
       [
         [0, 6],
@@ -118,7 +132,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 4, 3, 2],
+    bracketOrder: [1, 4, 1, 1],
     setValues: [
       [
         [0, 6],
@@ -205,7 +219,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [3, 4, 1, 2],
+    bracketOrder: [3, 3, 1, 1],
     setValues: [
       [
         [6, 0],
@@ -276,6 +290,6 @@ export const setsValues = {
   '0': getSetValues({ bracketOrder: [1, 2, 3, 4] }),
   '1': getSetValues({ bracketOrder: [1, 3, 2, 4] }),
   '2': getSetValues({ bracketOrder: [1, 3, 4, 2] }),
-  '3': getSetValues({ bracketOrder: [2, 1, 4, 3] }),
-  '4': getSetValues({ bracketOrder: [1, 4, 3, 2] }),
+  '3': getSetValues({ bracketOrder: [2, 3, 1, 4] }),
+  '4': getSetValues({ bracketOrder: [2, 4, 1, 3] }),
 };
