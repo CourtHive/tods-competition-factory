@@ -41,7 +41,8 @@ export function generateMatchUpOutcome({
   Object.assign(outcome, { sets });
   const analysis = drawEngine.analyzeMatchUp({ matchUp: outcome });
   const { calculatedWinningSide: winningSide } = analysis;
+  Object.assign(outcome, { winningSide });
   const score = drawEngine.generateScoreString(outcome);
-  Object.assign(outcome, { winningSide, score });
+  Object.assign(outcome, { score });
   return outcome;
 }
