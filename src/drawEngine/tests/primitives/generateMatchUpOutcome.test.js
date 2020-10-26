@@ -28,7 +28,7 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  expect(outcome.score).toEqual('0-6 6-7(3)');
+  expect(outcome.score).toEqual('6-0 7-6(3)');
 
   setValues = [
     [0, 6],
@@ -37,5 +37,5 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  expect(outcome.score).toEqual('0-6 6-0 6-7(3)');
+  expect(outcome.score).toEqual('6-0 0-6 7-6(3)');
 });
