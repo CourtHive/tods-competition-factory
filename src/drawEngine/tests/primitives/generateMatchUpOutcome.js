@@ -39,9 +39,8 @@ export function generateMatchUpOutcome({
     return Object.assign(set, { winningSide });
   });
   Object.assign(outcome, { sets });
-  const { calculatedWinningSide: winningSide } = drawEngine.analyzeMatchUp({
-    matchUp: outcome,
-  });
+  const analysis = drawEngine.analyzeMatchUp({ matchUp: outcome });
+  const { calculatedWinningSide: winningSide } = analysis;
   const score = drawEngine.generateScoreString(outcome);
   Object.assign(outcome, { winningSide, score });
   return outcome;
