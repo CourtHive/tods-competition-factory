@@ -53,6 +53,7 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
     setNumber <= setsCount &&
     matchUp?.sets.find((set: any) => set.setNumber === setNumber);
   const specifiedSetAnalysis = analyzeSet({ setObject, matchUpScoringFormat });
+
   const {
     isCompletedSet,
     sideGameScores,
@@ -100,7 +101,6 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
     },
     [0, 0]
   );
-
   const matchUpWinningSide = matchUp?.winningSide;
   const matchUpWinningSideIndex = matchUpWinningSide && matchUpWinningSide - 1;
   const matchUpLosingSideIndex = 1 - matchUpWinningSideIndex;
@@ -109,6 +109,7 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
 
   const maxSetsCount = Math.max(...setsWinCounts);
   const calculatedWinningSide = setsWinCounts.indexOf(maxSetsCount) + 1;
+
   const validMatchUpWinningSide =
     winningSideSetsCount > losingSideSetsCount &&
     matchUpWinningSide === calculatedWinningSide;
@@ -116,17 +117,18 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
     completedSetsHaveValidOutcomes && validMatchUpWinningSide;
 
   return {
-    isValidSideNumber,
-    matchUpScoringFormat,
-    hasExistingValue,
-    existingValue,
-    validMatchUpWinningSide,
-    validMatchUpOutcome,
-    isExistingSet,
     isActiveSet,
-    isLastSetWithValues,
-    isCompletedMatchUp,
+    isExistingSet,
+    existingValue,
+    hasExistingValue,
+    isValidSideNumber,
     completedSetsCount,
+    isCompletedMatchUp,
+    isLastSetWithValues,
+    validMatchUpOutcome,
+    matchUpScoringFormat,
+    calculatedWinningSide,
+    validMatchUpWinningSide,
     completedSetsHaveValidOutcomes,
     ...specifiedSetAnalysis,
   };
