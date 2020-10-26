@@ -340,9 +340,10 @@ it('Round Robin with Playoffs testbed', () => {
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpindex) => {
       const { matchUpId } = matchUp;
+      const setValues = values[matchUpindex];
       const outcome = generateMatchUpOutcome({
         matchUpFormat,
-        setValues: values[matchUpindex],
+        setValues,
       });
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
