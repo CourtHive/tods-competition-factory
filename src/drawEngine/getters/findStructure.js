@@ -3,7 +3,14 @@
 */
 export function findStructure({ drawDefinition, structureId }) {
   const { structures } = getDrawStructures({ drawDefinition });
-  const structure = structures.reduce((target, current) => {
+  const allStructures = structures
+    .map(structure => {
+      return structure.structures
+        ? [].concat(...structure.structures, structure)
+        : structure;
+    })
+    .flat();
+  const structure = allStructures.reduce((target, current) => {
     return current.structureId === structureId ? current : target;
   }, undefined);
   if (!structure) return { error: 'Structure not found' };
