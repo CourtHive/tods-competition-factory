@@ -3,8 +3,8 @@ import tournamentEngine from '../../../tournamentEngine';
 
 import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 
+import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { setsValues } from './roundRobinSetsValues.js';
 
 import {
@@ -367,11 +367,14 @@ it('Round Robin with Playoffs testbed', () => {
       matchUps: structureMatchUps,
       matchUpFormat,
     });
+    const scores = structureMatchUps.map(matchUp => matchUp.score);
     console.log(
       structureIndex,
+      scores,
+      // participantResults
       Object.keys(participantResults).map(key => {
-        const { ratioHash, bracketOrder, result } = participantResults[key];
-        return { ratioHash, bracketOrder, result };
+        const { bracketOrder, result, games } = participantResults[key];
+        return { bracketOrder, result, games };
       })
     );
   });
