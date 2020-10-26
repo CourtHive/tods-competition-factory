@@ -73,9 +73,23 @@ export function getAllStructureMatchUps({
   if (structure.matchUps) {
     matchUps = structure.matchUps;
   } else if (structure.structures) {
-    matchUps = [].concat(
-      ...structure.structures.map(structure => structure.matchUps)
-    );
+    if (inContext) {
+      // Round Robin structures are nested so the accurate structureId when in context must be assigned here
+      matchUps = [].concat(
+        ...structure.structures.map(structure => {
+          const { structureId } = structure;
+          return structure.matchUps.map(matchUp => {
+            return Object.assign(makeDeepCopy(matchUp), { structureId });
+          });
+        })
+      );
+    } else {
+      matchUps = [].concat(
+        ...structure.structures.map(structure => {
+          return structure.matchUps;
+        })
+      );
+    }
   }
 
   const matchUpTies = matchUps.filter(matchUp =>
@@ -123,8 +137,9 @@ export function getAllStructureMatchUps({
   function addMatchUpContext({ matchUp, isCollectionBye, matchUpTieId }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({ matchUp });
+
+    // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
-      makeDeepCopy(matchUp),
       {
         drawId,
         structureId,
@@ -133,6 +148,7 @@ export function getAllStructureMatchUps({
         matchUpStatus,
         matchUpTieId,
       },
+      makeDeepCopy(matchUp),
       context
     );
 
