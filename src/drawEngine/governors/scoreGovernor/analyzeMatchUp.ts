@@ -1,4 +1,5 @@
 import { analyzeSet } from './analyzeSet';
+import { instanceCount } from '../../../utilities/arrays';
 
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
@@ -108,7 +109,14 @@ export function analyzeMatchUp(props: MatchAnalysisInterface) {
   const losingSideSetsCount = setsWinCounts[matchUpLosingSideIndex];
 
   const maxSetsCount = Math.max(...setsWinCounts);
-  const calculatedWinningSide = setsWinCounts.indexOf(maxSetsCount) + 1;
+  const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
+  const { bestOf } = matchUpScoringFormat || {};
+  const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
+  const calculatedWinningSide =
+    (maxSetsCount === setsToWin &&
+      maxSetsInstances === 1 &&
+      setsWinCounts.indexOf(maxSetsCount) + 1) ||
+    undefined;
 
   const validMatchUpWinningSide =
     winningSideSetsCount > losingSideSetsCount &&
