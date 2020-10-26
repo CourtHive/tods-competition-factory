@@ -47,7 +47,7 @@
             "loser": [2, 2],
             "winner": [1, 1]
           },
-          "matchUpFormat": "SET3-S:6/TB"
+          "matchUpFormat": "SET3-S:6/TB7"
         }
       ],
       "positionAssignments": [
@@ -62,7 +62,7 @@
       ]
     }
   ],
-  "matchUpFormat": "SET3-S:6/TB",
+  "matchUpFormat": "SET3-S:6/TB7",
   "extensions": [
     {
       "name": "appliedPolicies",
