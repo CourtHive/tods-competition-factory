@@ -3,8 +3,6 @@ import { analyzeMatchUp } from './analyzeMatchUp';
 import { tallyBracket } from './roundRobinTally';
 import {
   keyValueScore,
-  getWinningSide,
-  getLeadingSide,
   keyValueConstants,
   checkSetIsComplete,
 } from './keyValueScore';
@@ -15,8 +13,6 @@ export const scoreGovernor = {
   analyzeSet,
   tallyBracket,
   keyValueScore,
-  getWinningSide,
-  getLeadingSide,
   analyzeMatchUp,
   getSetComplement,
   keyValueConstants,
