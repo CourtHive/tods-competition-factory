@@ -70,4 +70,14 @@ it('can set and reset policy governor', () => {
   expect(updatedAppliedPolicies.avoidance.policyName).toEqual(
     'Nationality Code'
   );
+
+  result = tournamentEngine.attachEventPolicy({
+    eventId,
+    policyDefinition: AVOIDANCE_COUNTRY,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  const { tournamentRecord: updatedRecord2 } = tournamentEngine.getState();
+  expect(updatedRecord2.events.length).toEqual(1);
+  expect(updatedRecord2.events[0].extensions.length).toEqual(1);
 });

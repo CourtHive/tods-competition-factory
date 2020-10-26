@@ -75,7 +75,7 @@ function attachEventPolicy({ tournamentRecord, event, policyDefinition }) {
   });
 
   event.extensions = event.extensions.filter(
-    extension => extension.name === 'appliedPolicies'
+    extension => extension.name !== 'appliedPolicies'
   );
   event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
 
