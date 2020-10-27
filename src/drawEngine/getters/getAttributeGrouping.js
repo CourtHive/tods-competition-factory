@@ -65,7 +65,7 @@ export function extractAttributeValues({ policyAttributes, participant }) {
     const keys =
       typeof policyAttribute === 'string'
         ? policyAttribute.split('.')
-        : policyAttribute?.key.split('.');
+        : policyAttribute?.key?.split('.');
     const significantCharacters =
       typeof policyAttribute === 'object' &&
       policyAttribute.significantCharacters;
@@ -75,7 +75,7 @@ export function extractAttributeValues({ policyAttributes, participant }) {
   const values = unique(extractedValues);
   return { values };
 
-  function processKeys({ value, keys, significantCharacters }) {
+  function processKeys({ value, keys = [], significantCharacters }) {
     for (const [index, key] of keys.entries()) {
       if (value && value[key]) {
         if (Array.isArray(value[key])) {

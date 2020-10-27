@@ -47,6 +47,9 @@ export function getNextParticipantId({
       ? groupKey
       : randomGroupKey;
 
-  const participantId = randomMember(targetGroups[groupKey]);
+  const participantId =
+    groupKey && targetGroups[groupKey]
+      ? randomMember(targetGroups[groupKey])
+      : randomMember(targetParticipantIds);
   return { participantId, groupKey };
 }

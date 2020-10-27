@@ -29,6 +29,11 @@ export function generatePositioningCandidate({
   structureId,
   allGroups,
 }) {
+  const participantsWithPairedContext = participantsWithContext.filter(
+    participant => participant.pairedParticipantIds?.length
+  );
+  console.log({ policyAttributes, participantsWithPairedContext });
+
   const errors = [];
   let groupKey, selectedParticipantId;
   let candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
