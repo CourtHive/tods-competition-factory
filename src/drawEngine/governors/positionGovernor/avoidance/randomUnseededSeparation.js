@@ -44,10 +44,6 @@ export function randomUnseededSeparation({
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
 
-  // TODO: add context to INDIVIDUAL particpants by iterating through TEAM and GROUP particpants...
-  // ... to add .groupParticipantIds and .teamParticipantIds {string[]} attributes
-  // perhaps in .extensions? => { extensions: [{ name: 'groupParticipantIds', value: [] }] }
-  // Adding context will attach any extensions to the participant object... this will handle 'section' and 'region'
   const participantsWithContext = addParticipantContext({ participants });
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure });
