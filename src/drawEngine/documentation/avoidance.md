@@ -38,7 +38,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 In this case the **policydefinition** specifies that participants in the generated draw are to be separated according to any country values that may exist on participant records. The policy is defined as follows:
 
 ```js
-export const AVOIDANCE_COUNTRY = {
+const AVOIDANCE_COUNTRY = {
   avoidance: {
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
@@ -63,5 +63,17 @@ INDIVIDUAL participants may be mebmers of PAIR, TEAM and GROUP participants; the
 - pairParticipantIds
 - teamParticipantIds
 - groupParticipantIds
+
+Specifying that PAIR, TEAM or GROUP particpants should be considered for avoidance is achieved via 'directives' rather than keys because the value are handled differently.
+
+```js
+const pairAvoidancePolicy = {
+  roundsToSeparate: undefined,
+  policyName: 'Doubles Partner Avoidance',
+  policyAttributes: [{ directive: 'pairParticipants' }],
+};
+```
+
+To restrict the participantIds to be considered, add **_includeIds_** as an attribute containing an array of desired participantIds.
 
 Other desired avoidance attributes may exist on participant objects as extensions. Any such extensions will be added as attributes to the particpant object prior to processing.

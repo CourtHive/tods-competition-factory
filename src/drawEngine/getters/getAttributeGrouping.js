@@ -75,18 +75,24 @@ export function extractAttributeValues({
       const keys = key.split('.');
       processKeys({ value, keys, significantCharacters });
     } else if (directive) {
-      const collectionIds = idCollections && idCollections[directive];
+      const includeIds = policyAttribute?.includeIds;
+      const collectionIds = (
+        (idCollections && idCollections[directive]) ||
+        []
+      ).filter(
+        participantId => !includeIds || includeIds.includes(participantId)
+      );
       if (collectionIds?.length) {
-        collectionIds.forEach(pairParticipantid => {
-          const pairParticipant = participants.find(
-            participant => participant.participantId === pairParticipantid
+        collectionIds.forEach(collectionParticipantId => {
+          const collectionParticipant = participants.find(
+            participant => participant.participantId === collectionParticipantId
           );
           if (
-            pairParticipant?.individualParticipantIds?.includes(
+            collectionParticipant?.individualParticipantIds?.includes(
               participant.participantId
             )
           ) {
-            const participantId = pairParticipant?.participantId;
+            const participantId = collectionParticipant?.participantId;
             extractedValues.push(participantId);
           }
         });
