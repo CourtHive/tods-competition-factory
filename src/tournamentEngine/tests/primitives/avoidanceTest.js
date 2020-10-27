@@ -1,6 +1,8 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 import { tournamentEngine, resultConstants } from '../../..';
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 
 const { SUCCESS } = resultConstants;
 
@@ -53,8 +55,11 @@ export function avoidanceTest(props) {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
+  const eventParticipantType =
+    eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
+
   const participantIds = participants
-    .filter(participant => participant.participantType === participantType)
+    .filter(participant => participant.participantType === eventParticipantType)
     .map(p => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);

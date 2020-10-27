@@ -15,14 +15,18 @@ export function addParticipantContext({ participants }) {
   const groupParticipants = participantsWithContext.filter(
     participant => participant.participantType === GROUP
   );
+
+  // pairParticipants should only consider those that are in the same event as current draw
+  // TODO: this requires access to the parent event which is not currently in scope
   const pairParticipants = participantsWithContext.filter(
     participant => participant.participantType === PAIR
   );
+
   participantsWithContext.forEach(participant => {
     const { participantId } = participant;
     participant.teamParticipantIds = [];
     participant.groupParticipantIds = [];
-    participant.pairedParticipantIds = [];
+    participant.pairParticipantIds = [];
 
     if (participant.participantType === INDIVIDUAL) {
       teamParticipants.forEach(team => {
@@ -35,7 +39,7 @@ export function addParticipantContext({ participants }) {
       pairParticipants.forEach(pair => {
         (pair?.individualParticipants || []).forEach(ip => {
           if (ip.participantId === participantId) {
-            participant.pairedParticipantIds.push(ip.participantId);
+            participant.pairParticipantIds.push(ip.participantId);
           }
         });
       });

@@ -17,6 +17,7 @@ import { unique } from '../../utilities';
 
 export function getAttributeGroupings({
   participants,
+  idCollections,
   policyAttributes,
   targetParticipantIds,
 }) {
@@ -34,6 +35,8 @@ export function getAttributeGroupings({
 
     const { values } = extractAttributeValues({
       participant,
+      participants,
+      idCollections,
       policyAttributes,
     });
     values.forEach(value => {
@@ -52,7 +55,12 @@ export function getAttributeGroupings({
  * @param {object} participant - participant from which attribute values will be extracted
  *
  */
-export function extractAttributeValues({ policyAttributes, participant }) {
+export function extractAttributeValues({
+  participant,
+  participants,
+  idCollections,
+  policyAttributes,
+}) {
   if (!Array.isArray(policyAttributes)) {
     return { error: 'Missing policyAttributes' };
   }
@@ -62,14 +70,28 @@ export function extractAttributeValues({ policyAttributes, participant }) {
   const extractedValues = [];
   policyAttributes.forEach(policyAttribute => {
     const value = participant;
-    const keys =
-      typeof policyAttribute === 'string'
-        ? policyAttribute.split('.')
-        : policyAttribute?.key?.split('.');
-    const significantCharacters =
-      typeof policyAttribute === 'object' &&
-      policyAttribute.significantCharacters;
-    processKeys({ value, keys, significantCharacters });
+    const { key, directive, significantCharacters } = policyAttribute || {};
+    if (key) {
+      const keys = key.split('.');
+      processKeys({ value, keys, significantCharacters });
+    } else if (directive) {
+      const collectionIds = idCollections && idCollections[directive];
+      if (collectionIds?.length) {
+        collectionIds.forEach(pairParticipantid => {
+          const pairParticipant = participants.find(
+            participant => participant.participantId === pairParticipantid
+          );
+          if (
+            pairParticipant?.individualParticipantIds?.includes(
+              participant.participantId
+            )
+          ) {
+            const participantId = pairParticipant?.participantId;
+            extractedValues.push(participantId);
+          }
+        });
+      }
+    }
   });
 
   const values = unique(extractedValues);

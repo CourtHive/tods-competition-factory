@@ -11,6 +11,8 @@ import { getNextParticipantId } from './getNextParticipantId';
 import { chunkArray, generateRange, makeDeepCopy } from '../../../../utilities';
 import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups';
 
+import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+
 /**
  *
  * @param {object} initialPositionAssignments
@@ -29,10 +31,16 @@ export function generatePositioningCandidate({
   structureId,
   allGroups,
 }) {
-  const participantsWithPairedContext = participantsWithContext.filter(
-    participant => participant.pairedParticipantIds?.length
-  );
-  console.log({ policyAttributes, participantsWithPairedContext });
+  const idCollections = {};
+  idCollections.groupParticipants = participantsWithContext
+    .filter(participant => participant.participantType === GROUP)
+    .map(participant => participant.participantId);
+  idCollections.teamParticipants = participantsWithContext
+    .filter(participant => participant.participantType === TEAM)
+    .map(participant => participant.participantId);
+  idCollections.pairParticipants = participantsWithContext
+    .filter(participant => participant.participantType === PAIR)
+    .map(participant => participant.participantId);
 
   const errors = [];
   let groupKey, selectedParticipantId;
@@ -57,6 +65,7 @@ export function generatePositioningCandidate({
 
     ({ participantId: selectedParticipantId, groupKey } = getNextParticipantId({
       groupKey,
+      idCollections,
       policyAttributes,
       targetParticipantIds,
       useSpecifiedGroupKey,

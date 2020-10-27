@@ -21,11 +21,13 @@ export function getNextParticipantId({
   targetParticipantIds,
 
   groupKey,
+  idCollections,
   largestFirst = true,
   useSpecifiedGroupKey = false,
 }) {
   const targetGroups = getAttributeGroupings({
     participants,
+    idCollections,
     policyAttributes,
     targetParticipantIds,
   });

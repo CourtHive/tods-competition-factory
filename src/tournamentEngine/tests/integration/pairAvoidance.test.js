@@ -2,28 +2,20 @@ import { eventConstants } from '../../..';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 
 import { PAIR } from '../../../constants/participantTypes';
-const { DOUBLES } = eventConstants;
+const { SINGLES } = eventConstants;
 
-const avoidancePolicy = {
+const pairAvoidancePolicy = {
   roundsToSeparate: undefined,
   policyName: 'Doubles Partner Avoidance',
-  policyAttributes: [{ directive: 'pairedParticipants' }],
+  policyAttributes: [{ directive: 'pairParticipants' }],
 };
 
 it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
   const result = avoidanceTest({
-    eventType: DOUBLES,
+    eventType: SINGLES,
     participantType: PAIR,
-    avoidance: avoidancePolicy,
+    avoidance: pairAvoidancePolicy,
   });
-  let { conflicts } = result || {};
+  const { conflicts } = result || {};
   if (conflicts?.unseededConflicts) console.log(conflicts);
-
-  ({ conflicts } = avoidanceTest({
-    eventType: DOUBLES,
-    participantType: PAIR,
-    avoidance: avoidancePolicy,
-    valuesCount: 5,
-  }));
-  if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
