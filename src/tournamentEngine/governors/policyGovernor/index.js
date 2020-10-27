@@ -82,6 +82,37 @@ function attachEventPolicy({ tournamentRecord, event, policyDefinition }) {
   return SUCCESS;
 }
 
+export function removeEventPolicy({ tournamentRecord, event, policyType }) {
+  if (!tournamentRecord) {
+    return { error: 'Missing tournamentRecord' };
+  }
+  if (!event) {
+    return { error: 'Missing event' };
+  }
+
+  let policyRemoved;
+
+  if (event.extensions) {
+    const { appliedPolicies } = getEventAppliedPolicies({ event });
+    if (appliedPolicies) {
+      delete appliedPolicies[policyType];
+      policyRemoved = true;
+
+      event.extensions = event.extensions.filter(
+        extension => extension.name !== 'appliedPolicies'
+      );
+
+      if (Object.keys(appliedPolicies).length) {
+        event.extensions.push({
+          name: 'appliedPolicies',
+          value: appliedPolicies,
+        });
+      }
+    }
+  }
+  return policyRemoved ? SUCCESS : { error: 'Policy not found' };
+}
+
 function validDefinitionKeys(definition) {
   const definitionKeys = Object.keys(definition);
   const validKeys = Object.keys(policyTemplate());
@@ -95,6 +126,7 @@ function validDefinitionKeys(definition) {
 const policyGovernor = {
   attachPolicy,
   attachEventPolicy,
+  removeEventPolicy,
 
   allowedDrawTypes,
   allowedMatchUpFormats,

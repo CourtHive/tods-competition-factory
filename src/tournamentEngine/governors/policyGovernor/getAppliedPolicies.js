@@ -7,7 +7,8 @@ export function getAppliedPolicies({ tournamentRecord }) {
 export function getEventAppliedPolicies({ event }) {
   if (!event) return { error: 'Missing event' };
   const extensions = event.extensions || [];
-  return extractAappliedPolicies({ extensions });
+  const extract = extractAappliedPolicies({ extensions });
+  return { appliedPolicies: extract?.appliedPolicies, error: extract?.error };
 }
 
 function extractAappliedPolicies({ extensions }) {

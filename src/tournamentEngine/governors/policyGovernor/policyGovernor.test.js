@@ -4,6 +4,7 @@ import { getAppliedPolicies } from './getAppliedPolicies';
 import AVOIDANCE_COUNTRY from '../../../fixtures/avoidance/AVOIDANCE_COUNTRY';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 
 it('can set and reset policy governor', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicy');
@@ -80,4 +81,12 @@ it('can set and reset policy governor', () => {
   const { tournamentRecord: updatedRecord2 } = tournamentEngine.getState();
   expect(updatedRecord2.events.length).toEqual(1);
   expect(updatedRecord2.events[0].extensions.length).toEqual(1);
+
+  const eventState = updatedRecord2.events[0];
+
+  result = tournamentEngine.removeEventPolicy({
+    event: eventState,
+    policyType: POLICY_TYPE_AVOIDANCE,
+  });
+  expect(result).toEqual(SUCCESS);
 });
