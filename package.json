@@ -55,9 +55,9 @@
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
     "@babel/preset-typescript": "7.12.1",
-    "@types/jest": "26.0.14",
+    "@types/jest": "26.0.15",
     "docz": "2.3.1",
-    "eslint-config-prettier": "6.13.0",
+    "eslint-config-prettier": "6.14.0",
     "eslint-plugin-jest": "24.1.0",
     "husky": "4.3.0",
     "np": "*",
@@ -65,7 +65,7 @@
     "react-dom": "16.14.0",
     "tsdx": "0.14.1",
     "tslib": "2.0.3",
-    "typescript": "4.0.3"
+    "typescript": "4.0.5"
   },
   "dependencies": {
     "faker": "^5.1.0",
