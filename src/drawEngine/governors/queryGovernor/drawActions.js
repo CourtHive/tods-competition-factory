@@ -26,9 +26,10 @@ export function isCompletedStructure(props) {
   const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
     structureMatchUps || {};
 
-  return (
+  const isComplete =
     completedMatchUps?.length &&
     !pendingMatchUps?.length &&
-    !upcomingMatchUps.length
-  );
+    !upcomingMatchUps.length;
+
+  return !!isComplete;
 }
