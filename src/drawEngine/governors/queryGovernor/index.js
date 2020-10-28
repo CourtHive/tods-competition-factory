@@ -6,7 +6,7 @@ import {
   getMatchUpContextIds,
 } from '../../accessors/matchUpAccessor';
 
-import { drawActions } from './drawActions';
+import { drawActions, isCompletedStructure } from './drawActions';
 import {
   positionActions,
   getNextUnfilledDrawPositions,
@@ -43,6 +43,7 @@ function allDrawMatchUps(props) {
 }
 
 const queryGovernor = {
+  isCompletedStructure,
   getStructureMatchUps,
   allStructureMatchUps,
   allDrawMatchUps,

@@ -1,4 +1,5 @@
 import { findStructure } from '../../getters/findStructure';
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 
 /**
  *
@@ -7,10 +8,27 @@ import { findStructure } from '../../getters/findStructure';
  *
  */
 export function drawActions(props) {
-  const structure = findStructure(props);
+  const { structure } = findStructure(props);
   if (structure?.structure) {
     // structure is Round Robin
   } else {
     // structure is Elimination
   }
+}
+
+/**
+ *
+ * @param {string} structureId - return a boolean indicating whether structure is complete
+ */
+export function isCompletedStructure(props) {
+  const structureMatchUps = getStructureMatchUps(props);
+
+  const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
+    structureMatchUps || {};
+
+  return (
+    completedMatchUps?.length &&
+    !pendingMatchUps?.length &&
+    !upcomingMatchUps.length
+  );
 }
