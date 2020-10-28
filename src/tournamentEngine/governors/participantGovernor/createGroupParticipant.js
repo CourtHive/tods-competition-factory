@@ -1,4 +1,4 @@
-import { ASSOCIATION } from '../../../constants/participantRoles';
+import { COMPETITOR } from '../../../constants/participantRoles';
 import { GROUP } from '../../../constants/participantTypes';
 import { UUID } from '../../../utilities';
 
@@ -8,7 +8,7 @@ import { UUID } from '../../../utilities';
 export function createGroupParticipant({
   groupName,
   individualParticipantIds = [],
-  participantRole = ASSOCIATION,
+  participantRole = COMPETITOR,
 }) {
   const groupParticipant = {
     participantId: UUID(),
