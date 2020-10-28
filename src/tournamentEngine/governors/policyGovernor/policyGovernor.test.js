@@ -85,8 +85,12 @@ it('can set and reset policy governor', () => {
   const eventState = updatedRecord2.events[0];
 
   result = tournamentEngine.removeEventPolicy({
-    event: eventState,
+    eventId: eventState.eventId,
     policyType: POLICY_TYPE_AVOIDANCE,
   });
   expect(result).toEqual(SUCCESS);
+
+  const { tournamentRecord: updatedRecord3 } = tournamentEngine.getState();
+  expect(updatedRecord3.events.length).toEqual(1);
+  expect(updatedRecord3.events[0].extensions.length).toEqual(0);
 });
