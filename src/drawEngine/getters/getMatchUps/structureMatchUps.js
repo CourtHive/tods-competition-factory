@@ -1,3 +1,4 @@
+import { findStructure } from '../findStructure';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
@@ -11,6 +12,7 @@ export function getStructureMatchUps({
   inContext,
   context,
   structure,
+  structureId,
   drawDefinition,
   tournamentParticipants,
   requireParticipants = true,
@@ -18,6 +20,9 @@ export function getStructureMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
+  if (!structure && structureId) {
+    ({ structure } = findStructure({ drawDefinition, structureId }));
+  }
   const { matchUps, error } = getAllStructureMatchUps({
     structure,
     inContext,
