@@ -32,10 +32,10 @@ export function tallyBracket({
 
   if (!matchUps) return;
 
-  // for all matchUps winner score comes first!
   relevantMatchUps
     .filter(f => f)
     .forEach(matchUp => {
+      const scoreString = matchUp.score;
       const parsedMatchUpFormat =
         matchUpFormatCode.parse(matchUp.matchUpFormat || matchUpFormat) || {};
 
@@ -62,7 +62,7 @@ export function tallyBracket({
         checkInitializeParticipant(winningParticipantId);
         checkInitializeParticipant(losingParticipantId);
 
-        if (matchUp.score && disqualifyingScore(matchUp.score))
+        if (scoreString && disqualifyingScore(scoreString))
           disqualified.push(losingParticipantId);
 
         participantResults[winningParticipantId].matchUpsWon += 1;
@@ -78,7 +78,7 @@ export function tallyBracket({
           winner: 0,
           parsedMatchUpFormat,
           sets: matchUp.sets,
-          score: matchUp.score,
+          scoreString,
         });
         participantResults[winningParticipantId].setsWon += setsTally[0];
         participantResults[winningParticipantId].setsLost += setsTally[1];
@@ -89,14 +89,14 @@ export function tallyBracket({
           winner: 0,
           parsedMatchUpFormat,
           sets: matchUp.sets,
-          score: matchUp.score,
+          scoreString,
         });
         participantResults[winningParticipantId].gamesWon += gamesTally[0];
         participantResults[winningParticipantId].gamesLost += gamesTally[1];
         participantResults[losingParticipantId].gamesWon += gamesTally[1];
         participantResults[losingParticipantId].gamesLost += gamesTally[0];
 
-        const pointsTally = countPoints({ score: matchUp.score });
+        const pointsTally = countPoints({ scoreString });
         participantResults[winningParticipantId].pointsWon += pointsTally[0];
         participantResults[winningParticipantId].pointsLost += pointsTally[1];
         participantResults[losingParticipantId].pointsWon += pointsTally[1];
@@ -213,25 +213,25 @@ export function tallyBracket({
 
   return { participantResults };
 
-  function walkedOver(score) {
-    return /W/.test(score) && /O/.test(score);
+  function walkedOver(scoreString) {
+    return /W/.test(scoreString) && /O/.test(scoreString);
   }
-  function defaulted(score) {
-    return /DEF/.test(score);
+  function defaulted(scoreString) {
+    return /DEF/.test(scoreString);
   }
-  function retired(score) {
-    return /RET/.test(score);
+  function retired(scoreString) {
+    return /RET/.test(scoreString);
   }
-  function disqualifyingScore(score) {
-    return walkedOver(score) || defaulted(score);
+  function disqualifyingScore(scoreString) {
+    return walkedOver(scoreString) || defaulted(scoreString);
   }
 
-  function countSets({ score, sets, winner, parsedMatchUpFormat }) {
+  function countSets({ scoreString, sets, winner, parsedMatchUpFormat }) {
     const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 3);
 
     const setsTally = [0, 0];
-    if (!score) return setsTally;
-    if (disqualifyingScore(score)) {
+    if (!scoreString) return setsTally;
+    if (disqualifyingScore(scoreString)) {
       if (winner !== undefined && setsToWin) setsTally[winner] = setsToWin;
     } else {
       if (sets) {
@@ -239,23 +239,9 @@ export function tallyBracket({
           const { winningSide } = set;
           if (winningSide) setsTally[winningSide - 1] += 1;
         });
-      } else {
-        // TODO: Remove
-        const setScores = score.split(' ');
-        setScores.forEach(setScore => {
-          const divider = '-';
-          const scores =
-            // eslint-disable-next-line no-useless-escape
-            /\d+[\(\)\-\/]*/.test(setScore) && divider
-              ? setScore.split(divider).map(s => /\d+/.exec(s)[0])
-              : undefined;
-          if (scores) {
-            setsTally[parseInt(scores[0]) > parseInt(scores[1]) ? 0 : 1] += 1;
-          }
-        });
       }
     }
-    if (retired(score) && winner !== undefined && setsToWin) {
+    if (retired(scoreString) && winner !== undefined && setsToWin) {
       // if the loser has setsToWin then last set was incomplete and needs to be subtracted from loser
       if (+setsTally[1 - winner] === setsToWin) setsTally[1 - winner] -= 1;
       setsTally[winner] = setsToWin;
@@ -263,10 +249,10 @@ export function tallyBracket({
     return setsTally;
   }
 
-  function countPoints({ score }) {
+  function countPoints({ scoreString }) {
     const pointsTally = [0, 0];
-    if (!score) return pointsTally;
-    const setScores = score.split(' ');
+    if (!scoreString) return pointsTally;
+    const setScores = scoreString.split(' ');
     setScores.forEach(setScore => {
       const scores = /\d+\/\d+/.test(setScore)
         ? setScore.split('/').map(s => /\d+/.exec(s)[0])
@@ -279,16 +265,16 @@ export function tallyBracket({
     return pointsTally;
   }
 
-  function countGames({ score, sets, winner, parsedMatchUpFormat }) {
+  function countGames({ scoreString, sets, winner, parsedMatchUpFormat }) {
     let side1Score = 0,
       side2Score = 0;
     const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 3);
     const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 6;
     const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 6;
-    if (!score) return [side1Score, side2Score];
+    if (!scoreString) return [side1Score, side2Score];
     const minimumGameWins = setsToWin * gamesForSet;
     const gamesTally = [[], []];
-    if (disqualifyingScore(score)) {
+    if (disqualifyingScore(scoreString)) {
       if (winner !== undefined && setsToWin && gamesForSet) {
         gamesTally[winner].push(minimumGameWins);
       }
@@ -301,7 +287,7 @@ export function tallyBracket({
         });
       } else {
         // TODO: Remove
-        const setScores = score.split(' ');
+        const setScores = scoreString.split(' ');
         setScores.forEach(setScore => {
           const scores =
             // eslint-disable-next-line no-useless-escape
@@ -316,8 +302,18 @@ export function tallyBracket({
         });
       }
     }
-    if (retired(score) && winner !== undefined && setsToWin && gamesForSet) {
-      const setsTally = countSets({ score, sets, winner, parsedMatchUpFormat });
+    if (
+      retired(scoreString) &&
+      winner !== undefined &&
+      setsToWin &&
+      gamesForSet
+    ) {
+      const setsTally = countSets({
+        scoreString,
+        sets,
+        winner,
+        parsedMatchUpFormat,
+      });
       const totalSets = setsTally.reduce((a, b) => a + b, 0);
       const loserLeadSet = gamesTally
         .map(g => g[winner] <= g[1 - winner])

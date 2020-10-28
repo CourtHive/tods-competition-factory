@@ -217,8 +217,8 @@ export function getAllStructureMatchUps({
           }
           if (sets && side.sideNumber) {
             const reversed = side.sideNumber === 2;
-            const score = generateScoreString({ sets, reversed });
-            Object.assign(side, { score });
+            const scoreString = generateScoreString({ sets, reversed });
+            Object.assign(side, { score: scoreString });
           }
           if (side.participant && side.participant.individualParticipants) {
             const individualParticipants = side.participant.individualParticipants.map(

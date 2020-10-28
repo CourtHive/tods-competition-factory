@@ -17,6 +17,11 @@ export function setMatchUpStatus(props) {
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
 
+  // prep for score objects which may be added to TODS
+  if (props?.score && typeof props.score === 'string') {
+    props.scoreString = props.score;
+  }
+
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
   const { matchUp, structure } = findMatchUp({

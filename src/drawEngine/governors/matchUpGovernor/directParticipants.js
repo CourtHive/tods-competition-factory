@@ -15,7 +15,7 @@ export function directParticipants(props) {
     matchUp,
     winningSide,
     targetData,
-    score,
+    scoreString,
     sets,
   } = props;
   const errors = [];
@@ -33,7 +33,7 @@ export function directParticipants(props) {
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
   matchUp.matchUpStatus = (matchUpStatusIsValid && matchUpStatus) || COMPLETED;
 
-  if (score) matchUp.score = score;
+  if (scoreString) matchUp.score = scoreString;
   if (sets) matchUp.sets = sets;
 
   if (isCollectionMatchUp) {

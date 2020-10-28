@@ -6,8 +6,8 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (!matchUpId) return { error: 'Missing matchUpId' };
   const matchUp = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: 'matchUp Not Found' };
-  const score = calcTieMatchUpScore({ matchUp });
-  matchUp.score = score;
+  const scoreString = calcTieMatchUpScore({ matchUp });
+  matchUp.score = scoreString;
   return SUCCESS;
 }
 
@@ -53,8 +53,8 @@ export function calcTieMatchUpScore({ matchUp, separator = '-' }) {
     }
   });
 
-  const score = sidePoints.join(` ${separator} `);
-  return score;
+  const scoreString = sidePoints.join(` ${separator} `);
+  return scoreString;
 }
 
 function getCollectionPositionValue({

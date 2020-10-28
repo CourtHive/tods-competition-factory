@@ -15,7 +15,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, score, winningSide } = props;
+  const { matchUp, matchUpStatus, scoreString, winningSide } = props;
   let errors = [];
 
   if (winningSide) {
@@ -24,12 +24,12 @@ export function noDownstreamDependencies(props) {
   } else if (matchUpStatus) {
     const { errors: matchUpStatusErrors } = attemptToSetMatchUpStatus(props);
     if (matchUpStatusErrors) errors = errors.concat(matchUpStatusErrors);
-  } else if (!winningSide && score) {
+  } else if (!winningSide && scoreString) {
     const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
       props
     );
     if (incompleteScoreErrors) errors = errors.concat(incompleteScoreErrors);
-  } else if (!winningSide && matchUp.winningSide && !score) {
+  } else if (!winningSide && matchUp.winningSide && !scoreString) {
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
     );
