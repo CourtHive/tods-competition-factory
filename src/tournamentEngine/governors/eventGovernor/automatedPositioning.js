@@ -1,4 +1,3 @@
-import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PLAYOFF } from '../../../constants/drawDefinitionConstants';
 

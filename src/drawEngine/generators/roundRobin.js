@@ -153,6 +153,7 @@ export function generateRoundRobinWithPlayOff(props) {
         drawDefinition.links.push(consolationLink);
         return playoffStructure;
       }
+      return undefined;
     })
     .filter(f => f);
 
