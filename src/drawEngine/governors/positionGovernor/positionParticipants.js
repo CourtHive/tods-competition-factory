@@ -35,9 +35,10 @@ export function positionUnseededParticipants({
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = stageEntries({
     drawDefinition,
-    stage,
     stageSequence,
+    structureId,
     entryTypes,
+    stage,
   });
   const unseededEntries = entries.filter(
     entry => !assignedSeedParticipantIds.includes(entry.participantId)

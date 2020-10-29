@@ -471,13 +471,14 @@ export function getByesData({ drawDefinition, structure }) {
     : relevantMatchUpsCount;
 
   // get stage/stageSequence Entries and qualifiers
-  const { stage, stageSequence } = structure;
+  const { structureId, stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = stageEntries({
     drawDefinition,
-    stage,
     stageSequence,
+    structureId,
     entryTypes,
+    stage,
   });
   const qualifiersCount = getStageQualifiersCount({ drawDefinition, stage });
   const entriesCount = entries.length + qualifiersCount;

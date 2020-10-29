@@ -24,6 +24,7 @@ export function automatedPositioning({
     drawDefinition,
     stage: structure.stage,
     stageSequence: structure.stageSequence,
+    structureId,
     entryTypes,
   });
 

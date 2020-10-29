@@ -107,9 +107,10 @@ export function positionActions({
       const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
       const entries = stageEntries({
         drawDefinition,
-        stage,
         stageSequence,
+        structureId,
         entryTypes,
+        stage,
       });
       const assignedParticipantIds = assignedPositions.map(
         assignment => assignment.participantId
