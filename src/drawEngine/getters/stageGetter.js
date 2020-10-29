@@ -4,6 +4,7 @@ import {
   DIRECT_ACCEPTANCE,
   POSITION,
   CONTAINER,
+  PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -76,13 +77,24 @@ export function stageSeededEntries({ stage, drawDefinition }) {
     []
   );
 }
+
+/**
+ *
+ * @param {string[]} entryTypes - ENUM - entry status, e.g. DIRECT_ACCEPTANCE, WILDCARD
+ * @param {object} drawDefinition
+ * @param {string} stage - ENUM - QUALIFYING, MAIN, PLAYOFF, CONSOLATION
+ * @param {number} stageSequence - sequence within a stage
+ *
+ * @param {string} structureId - optional; used for round robin participant results
+ *
+ */
 export function stageEntries({
-  stage,
-  stageSequence,
-  drawDefinition,
-  participants,
-  structureId,
   entryTypes,
+  drawDefinition,
+  stageSequence,
+  stage,
+
+  structureId,
 }) {
   const entries = drawDefinition.entries.reduce((p, c) => {
     const sameStage = c.entryStage === stage;
@@ -95,45 +107,77 @@ export function stageEntries({
 
   // handle POSITION entries
   if (structureId && !entries.length) {
-    const inboundLink = drawDefinition.links.find(
-      link =>
-        link.linkType === POSITION && link.target.structureId === structureId
-    );
-    if (inboundLink) {
-      const { finishingPositions, structureId } = inboundLink.source;
-      const { structure: sourceStructure } = findStructure({
-        drawDefinition,
-        structureId,
-      });
-      console.log({ finishingPositions });
-      if (sourceStructure.structureType === CONTAINER) {
-        sourceStructure.structures.forEach(structure => {
-          const { matchUps } = getAllStructureMatchUps({
-            structure,
-            drawDefinition,
-            inContext: true,
-            tournamentParticipants: participants,
-          });
-          const matchUpFormat =
-            sourceStructure.matchUpFormat ||
-            (matchUps?.length && matchUps[0].matchUpFormat);
-          const { participantResults } = tallyParticipantResults({
-            matchUpFormat,
-            matchUps,
-          });
-          const enteredParticipants = Object.keys(participantResults).filter(
-            key => {
-              const result = participantResults[key];
-              return finishingPositions.includes(result.groupOrder);
-            }
-          );
-          console.log({ enteredParticipants });
-        });
-      }
-    }
+    return playoffEntries({ drawDefinition, structureId });
   }
   return entries;
 }
+
+/**
+ *
+ * @param {object} drawDefinition
+ * @param {string} structureId - id of structure within drawDefinition
+ *
+ */
+export function playoffEntries({ drawDefinition, structureId }) {
+  const entries = [];
+  const inboundLink = drawDefinition.links.find(
+    link =>
+      link.linkType === POSITION && link.target.structureId === structureId
+  );
+  if (inboundLink) {
+    // links from round robins include an array of finishing positions
+    // which qualify participants to travel across a link to a playoff structure
+    const { finishingPositions, structureId } = inboundLink.source;
+
+    const { structure: sourceStructure } = findStructure({
+      drawDefinition,
+      structureId,
+    });
+
+    // for group participant results to be tallied,
+    // the source structure must be a container of other structures
+    if (sourceStructure.structureType === CONTAINER) {
+      sourceStructure.structures.forEach(structure => {
+        // context is required so that matchUp.sides are present
+        const { matchUps } = getAllStructureMatchUps({
+          structure,
+          drawDefinition,
+          inContext: true,
+        });
+        const matchUpFormat =
+          sourceStructure.matchUpFormat ||
+          (matchUps?.length && matchUps[0].matchUpFormat);
+        const { participantResults } = tallyParticipantResults({
+          matchUpFormat,
+          matchUps,
+        });
+
+        Object.keys(participantResults)
+          .filter(key => {
+            const result = participantResults[key];
+            return finishingPositions.includes(result.groupOrder);
+          })
+          .forEach(participantId => {
+            const participantResult = participantResults[participantId];
+            const { groupOrder, GEMscore } = participantResult;
+            const placementGroup =
+              finishingPositions.sort().indexOf(groupOrder) + 1;
+
+            entries.push({
+              participantId,
+              entryStage: PLAYOFF,
+              entryStatus: DIRECT_ACCEPTANCE, // POSITION_ADVANCEMENT?
+              placementGroup,
+              GEMscore,
+            });
+          });
+      });
+    }
+  }
+
+  return entries;
+}
+
 export function getStageDirectEntriesCount({ stage, drawDefinition }) {
   return getStageEntryTypeCount({
     stage,

@@ -3,7 +3,6 @@ import tournamentEngine from '../../../tournamentEngine';
 
 import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { stageEntries } from '../../getters/stageGetter';
 
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { setsValues } from './roundRobinSetsValues.js';
@@ -264,7 +263,7 @@ it('Round Robin with Playoffs testbed', () => {
   expect(result).toEqual(SUCCESS);
 
   const matchUpFormat = 'SET3-S:6/TB7';
-  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,
     drawSize,
@@ -397,15 +396,9 @@ it('Round Robin with Playoffs testbed', () => {
     });
   });
 
-  ({ drawDefinition } = drawEngine.getState());
   playoffStructures.forEach(structure => {
-    const { stage, stageSequence, structureId } = structure;
-    const entries = stageEntries({
-      stage,
-      structureId,
-      stageSequence,
-      drawDefinition,
-    });
-    if (entries?.length) console.log({ entries });
+    const { structureId } = structure;
+    drawEngine.automatedPositioning({ structureId });
   });
+  // ({ drawDefinition } = drawEngine.getState());
 });

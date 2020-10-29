@@ -188,7 +188,7 @@ export function tallyParticipantResults({
     const rankOrderList = order.map(o => o.rankOrder);
 
     order.forEach(o => {
-      participantResults[o.id].ratioHash = o.ratioHash;
+      participantResults[o.id].GEMscore = o.GEMscore;
       if (o !== undefined && o.rankOrder !== undefined) {
         participantResults[o.id].groupOrder = o.rankOrder;
         if (
@@ -370,7 +370,7 @@ export function tallyParticipantResults({
     }
 
     complete.forEach(p => (p.orderHash = getOrderHash(p)));
-    complete.forEach(p => (p.ratioHash = getRatioHash(p)));
+    complete.forEach(p => (p.GEMscore = getRatioHash(p)));
 
     // START ORDER HASH
     if (headToHeadPriority) {
@@ -435,17 +435,17 @@ export function tallyParticipantResults({
       complete.sort(ratioHashSort);
     }
 
-    const ratioOrder = unique(complete.map(c => c.ratioHash));
-    complete.forEach(p => (p.ratioOrder = ratioOrder.indexOf(p.ratioHash) + 1));
+    const ratioOrder = unique(complete.map(c => c.GEMscore));
+    complete.forEach(p => (p.ratioOrder = ratioOrder.indexOf(p.GEMscore) + 1));
 
     // pointsOrder is used for awarding points and may differ from
     // rankOrder if a player unable to advance due to walkover
     let pointsOrder = 0;
-    let ratioHash = undefined;
+    let GEMscore = undefined;
     complete.forEach((p, i) => {
-      if (p.ratioHash !== ratioHash) {
+      if (p.GEMscore !== GEMscore) {
         pointsOrder = i + 1;
-        ratioHash = p.ratioHash;
+        GEMscore = p.GEMscore;
       }
       p.pointsOrder = pointsOrder;
     });
@@ -454,7 +454,7 @@ export function tallyParticipantResults({
     return complete;
 
     function ratioHashSort(a, b) {
-      return b.ratioHash - a.ratioHash;
+      return b.GEMscore - a.GEMscore;
     }
     function orderHashSort(a, b) {
       return b.orderHash - a.orderHash;
@@ -465,7 +465,7 @@ export function tallyParticipantResults({
       if (side1Head2Head || side2Head2Head) {
         return side2Head2Head ? 1 : -1;
       }
-      return b.ratioHash - a.ratioHash;
+      return b.GEMscore - a.GEMscore;
     }
 
     function h2hOrder(a, b) {
@@ -607,7 +607,7 @@ export function tallyBracketAndModifyPlayers({
           gamesRatio: tbr.participantResults[participantId].gamesRatio,
           pointsRatio: tbr.participantResults[participantId].pointsRatio,
 
-          ratioHash: tbr.participantResults[participantId].ratioHash,
+          GEMscore: tbr.participantResults[participantId].GEMscore,
         };
         participant.result = tbr.participantResults[participantId].result;
         participant.games = tbr.participantResults[participantId].games;
