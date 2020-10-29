@@ -8,6 +8,7 @@ export const structureTemplate = ({
   stageOrder,
   roundLimit,
   roundOffset,
+  matchUpFormat,
   structureType,
   structureName,
   seedingProfile,
@@ -19,6 +20,7 @@ export const structureTemplate = ({
 }) => {
   const structure = {
     structureName,
+    matchUpFormat,
     stageSequence,
     finishingPosition,
     seedAssignments,

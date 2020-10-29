@@ -28,6 +28,7 @@ export function generateRoundRobin({
   structureOptions,
   seedingProfile,
   drawDefinition,
+  matchUpFormat,
 }) {
   const finishingPosition = WIN_RATIO;
   const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
@@ -38,6 +39,7 @@ export function generateRoundRobin({
 
   const structures = generateRange(1, groupCount + 1).map(structureIndex =>
     structureTemplate({
+      matchUpFormat,
       structureIndex,
       finishingPosition,
       structureType: ITEM,
@@ -49,6 +51,7 @@ export function generateRoundRobin({
   const structure = structureTemplate({
     stage,
     structures,
+    matchUpFormat,
     structureName,
     stageSequence,
     seedingProfile,
@@ -77,6 +80,11 @@ export function generateRoundRobinWithPlayOff(props) {
     groupCount,
     groupSize,
   } = generateRoundRobin(mainDrawProperties);
+
+  // TODO: test for and handle this situation
+  if (groupCount < 1) {
+    console.log('INVALID CONFIGURATION');
+  }
 
   const playoffGroups = (structureOptions &&
     structureOptions.playoffGroups) || [
