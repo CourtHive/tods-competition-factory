@@ -1,20 +1,20 @@
 /**
-    bracketOrder: [1, 2, 3, 4],
-    bracketOrder: [1, 3, 2, 4],
-    bracketOrder: [1, 3, 4, 2],
-    bracketOrder: [2, 3, 1, 4],
-    bracketOrder: [2, 4, 1, 3],
-    bracketOrder: [3, 3, 1, 1],
+    groupOrder: [1, 2, 3, 4],
+    groupOrder: [1, 3, 2, 4],
+    groupOrder: [1, 3, 4, 2],
+    groupOrder: [2, 3, 1, 4],
+    groupOrder: [2, 4, 1, 3],
+    groupOrder: [3, 3, 1, 1],
 
     // ties
-    bracketOrder: [1, 1, 3, 3],
-    bracketOrder: [1, 1, 1, 4],
-    bracketOrder: [1, 4, 1, 1],
+    groupOrder: [1, 1, 3, 3],
+    groupOrder: [1, 1, 1, 4],
+    groupOrder: [1, 4, 1, 1],
  */
 
 export const valueProfiles = [
   {
-    bracketOrder: [1, 2, 3, 4],
+    groupOrder: [1, 2, 3, 4],
     setValues: [
       [
         [6, 0],
@@ -43,7 +43,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 3, 2, 4],
+    groupOrder: [1, 3, 2, 4],
     setValues: [
       [
         [3, 6],
@@ -74,7 +74,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 3, 4, 2],
+    groupOrder: [1, 3, 4, 2],
     setValues: [
       [
         [6, 1],
@@ -103,7 +103,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 1, 3, 3],
+    groupOrder: [1, 1, 3, 3],
     setValues: [
       [
         [0, 6],
@@ -132,7 +132,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 4, 1, 1],
+    groupOrder: [1, 4, 1, 1],
     setValues: [
       [
         [0, 6],
@@ -161,7 +161,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [2, 3, 1, 4],
+    groupOrder: [2, 3, 1, 4],
     setValues: [
       [
         [0, 6],
@@ -190,7 +190,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [2, 4, 1, 3],
+    groupOrder: [2, 4, 1, 3],
     setValues: [
       [
         [6, 0],
@@ -219,7 +219,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [3, 3, 1, 1],
+    groupOrder: [3, 3, 1, 1],
     setValues: [
       [
         [6, 0],
@@ -248,7 +248,7 @@ export const valueProfiles = [
     ],
   },
   {
-    bracketOrder: [1, 1, 1, 4],
+    groupOrder: [1, 1, 1, 4],
     setValues: [
       [
         [6, 1],
@@ -278,18 +278,18 @@ export const valueProfiles = [
   },
 ];
 
-export function getSetValues({ bracketOrder } = {}) {
-  if (!Array.isArray(bracketOrder)) return undefined;
+export function getSetValues({ groupOrder } = {}) {
+  if (!Array.isArray(groupOrder)) return undefined;
   const valueProfile = valueProfiles.find(valueProfile => {
-    return bracketOrder.join('-') === valueProfile.bracketOrder.join('-');
+    return groupOrder.join('-') === valueProfile.groupOrder.join('-');
   });
   return valueProfile?.setValues;
 }
 
 export const setsValues = {
-  '0': getSetValues({ bracketOrder: [1, 2, 3, 4] }),
-  '1': getSetValues({ bracketOrder: [1, 3, 2, 4] }),
-  '2': getSetValues({ bracketOrder: [1, 3, 4, 2] }),
-  '3': getSetValues({ bracketOrder: [2, 3, 1, 4] }),
-  '4': getSetValues({ bracketOrder: [2, 4, 1, 3] }),
+  '0': getSetValues({ groupOrder: [1, 2, 3, 4] }),
+  '1': getSetValues({ groupOrder: [1, 3, 2, 4] }),
+  '2': getSetValues({ groupOrder: [1, 3, 4, 2] }),
+  '3': getSetValues({ groupOrder: [2, 3, 1, 4] }),
+  '4': getSetValues({ groupOrder: [2, 4, 1, 3] }),
 };

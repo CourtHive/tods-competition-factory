@@ -9,14 +9,15 @@ import { matchUpFormatCode } from 'tods-matchup-format-code';
 function getSetsToWin(bestOfGames) {
   return (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
 }
-export function tallyBracket({
+export function tallyParticipantResults({
   matchUps = [],
   perPlayer,
   matchUpFormat,
   headToHeadPriority,
 }) {
-  const parsedBracketMatchUpForat =
-    matchUpFormatCode.parse(matchUpFormat) || {};
+  if (!Array.isArray(matchUps)) return { error: 'Missing matchUps' };
+
+  const parsedGroupMatchUpFormat = matchUpFormatCode.parse(matchUpFormat) || {};
 
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   const relevantMatchUps = matchUps.filter(
@@ -29,8 +30,6 @@ export function tallyBracket({
 
   const disqualified = [];
   const participantResults = {};
-
-  if (!matchUps) return;
 
   relevantMatchUps
     .filter(f => f)
@@ -128,10 +127,10 @@ export function tallyBracket({
 
   // the difference here is totals must be calcuulated using the expected
   // matchUp scoring format for the bracket, not the inidivudal matchUp formats
-  const bracketSetsToWin = getSetsToWin(parsedBracketMatchUpForat.bestOf);
+  const bracketSetsToWin = getSetsToWin(parsedGroupMatchUpFormat.bestOf);
   const bracketGamesForSet =
-    parsedBracketMatchUpForat.setFormat &&
-    parsedBracketMatchUpForat.setFormat.setTo;
+    parsedGroupMatchUpFormat.setFormat &&
+    parsedGroupMatchUpFormat.setFormat.setTo;
 
   Object.keys(participantResults).forEach(participantId => {
     const setsNumerator = participantResults[participantId].setsWon;
@@ -191,7 +190,7 @@ export function tallyBracket({
     order.forEach(o => {
       participantResults[o.id].ratioHash = o.ratioHash;
       if (o !== undefined && o.rankOrder !== undefined) {
-        participantResults[o.id].bracketOrder = o.rankOrder;
+        participantResults[o.id].groupOrder = o.rankOrder;
         if (
           occurrences(o.rankOrder, rankOrderList) > 1 &&
           participantResults[o.id].subOrder === undefined
@@ -547,7 +546,7 @@ export function tallyBracketAndModifyPlayers({
   const participantResults = {};
 
   perPlayer = perPlayer || (teams && teams.length - 1) || 1;
-  const tbr = tallyBracket({
+  const tbr = tallyParticipantResults({
     matchUps,
     perPlayer,
     matchUpFormat,
@@ -561,7 +560,7 @@ export function tallyBracketAndModifyPlayers({
       return a;
     }, {});
   const qordz = Object.keys(tbr.participantResults).map(
-    t => tbr.participantResults[t].bracketOrder
+    t => tbr.participantResults[t].groupOrder
   );
   const ic = instanceCount(qordz);
 
@@ -577,8 +576,8 @@ export function tallyBracketAndModifyPlayers({
         const participant = {};
         const participantId = player.id;
 
-        participant.bracketOrder =
-          tbr.participantResults[participantId].bracketOrder;
+        participant.groupOrder =
+          tbr.participantResults[participantId].groupOrder;
 
         if (reset) {
           // in this case subOrder is overridden
@@ -586,7 +585,7 @@ export function tallyBracketAndModifyPlayers({
         } else {
           // in this context subOrder give preference to existing value
           participant.subOrder =
-            (validForSubOrder.indexOf(participant.bracketOrder) >= 0 &&
+            (validForSubOrder.indexOf(participant.groupOrder) >= 0 &&
               participant.subOrder) ||
             tbr.participantResults[participantId].subOrder;
         }
