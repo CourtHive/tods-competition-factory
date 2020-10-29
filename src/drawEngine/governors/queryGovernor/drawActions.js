@@ -33,3 +33,8 @@ export function isCompletedStructure(props) {
 
   return !!isComplete;
 }
+
+export function isReadyToGenerate(props) {
+  const { structure } = findStructure(props);
+  console.log({ structure });
+}

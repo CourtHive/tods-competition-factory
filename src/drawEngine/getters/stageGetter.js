@@ -2,9 +2,14 @@ import {
   ALTERNATE,
   WILDCARD,
   DIRECT_ACCEPTANCE,
+  POSITION,
+  CONTAINER,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
+import { tallyParticipantResults } from '../governors/scoreGovernor/roundRobinTally';
+import { findStructure } from './findStructure';
+import { getAllStructureMatchUps } from './getMatchUps';
 
 export function validStage({ stage, drawDefinition }) {
   return Boolean(
@@ -75,9 +80,11 @@ export function stageEntries({
   stage,
   stageSequence,
   drawDefinition,
+  participants,
+  structureId,
   entryTypes,
 }) {
-  return drawDefinition.entries.reduce((p, c) => {
+  const entries = drawDefinition.entries.reduce((p, c) => {
     const sameStage = c.entryStage === stage;
     const matchesEntryType = !entryTypes || entryTypes.includes(c.entryStatus);
     const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
@@ -85,6 +92,47 @@ export function stageEntries({
       !stageSequence || entryStageSequence === stageSequence;
     return sameStage && sameStageSequence && matchesEntryType ? p.concat(c) : p;
   }, []);
+
+  // handle POSITION entries
+  if (structureId && !entries.length) {
+    const inboundLink = drawDefinition.links.find(
+      link =>
+        link.linkType === POSITION && link.target.structureId === structureId
+    );
+    if (inboundLink) {
+      const { finishingPositions, structureId } = inboundLink.source;
+      const { structure: sourceStructure } = findStructure({
+        drawDefinition,
+        structureId,
+      });
+      console.log({ finishingPositions });
+      if (sourceStructure.structureType === CONTAINER) {
+        sourceStructure.structures.forEach(structure => {
+          const { matchUps } = getAllStructureMatchUps({
+            structure,
+            drawDefinition,
+            inContext: true,
+            tournamentParticipants: participants,
+          });
+          const matchUpFormat =
+            sourceStructure.matchUpFormat ||
+            (matchUps?.length && matchUps[0].matchUpFormat);
+          const { participantResults } = tallyParticipantResults({
+            matchUpFormat,
+            matchUps,
+          });
+          const enteredParticipants = Object.keys(participantResults).filter(
+            key => {
+              const result = participantResults[key];
+              return finishingPositions.includes(result.groupOrder);
+            }
+          );
+          console.log({ enteredParticipants });
+        });
+      }
+    }
+  }
+  return entries;
 }
 export function getStageDirectEntriesCount({ stage, drawDefinition }) {
   return getStageEntryTypeCount({

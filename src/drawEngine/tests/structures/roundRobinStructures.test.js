@@ -3,6 +3,7 @@ import tournamentEngine from '../../../tournamentEngine';
 
 import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { stageEntries } from '../../getters/stageGetter';
 
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { setsValues } from './roundRobinSetsValues.js';
@@ -262,10 +263,12 @@ it('Round Robin with Playoffs testbed', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  const matchUpFormat = 'SET3-S:6/TB7';
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,
     drawSize,
+    matchUpFormat,
     structureOptions,
     seedingProfile: WATERFALL,
   });
@@ -333,14 +336,19 @@ it('Round Robin with Playoffs testbed', () => {
     loserLinks[0].target.structureId
   );
 
-  const matchUpFormat = 'SET3-S:6/TB7';
   const { drawId } = drawDefinition;
+  const { matchUps: allStructureMatchUps } = drawEngine.allStructureMatchUps({
+    structureId: mainStructure.structureId,
+  });
+  const allStructureMatchUpsCount = allStructureMatchUps.length;
+  const matchUpsPerStructure =
+    allStructureMatchUpsCount / (drawSize / groupSize);
   mainStructure.structures.forEach((structure, structureIndex) => {
     const values = setsValues[structureIndex];
     const structureMatchUps = structure.matchUps;
-    structureMatchUps.forEach((matchUp, matchUpindex) => {
+    structureMatchUps.forEach((matchUp, matchUpIndex) => {
       const { matchUpId } = matchUp;
-      const setValues = values[matchUpindex];
+      const setValues = values[matchUpIndex];
       const outcome = generateMatchUpOutcome({
         matchUpFormat,
         setValues,
@@ -351,6 +359,22 @@ it('Round Robin with Playoffs testbed', () => {
         outcome,
       });
       expect(result).toEqual(SUCCESS);
+
+      const thisStructureIsCompleted = drawEngine.isCompletedStructure({
+        structureId: structure.structureId,
+      });
+      expect(thisStructureIsCompleted).toEqual(
+        matchUpIndex + 1 === matchUpsPerStructure
+      );
+
+      const matchUpInstance =
+        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
+      const mainStructureIsCompleted = drawEngine.isCompletedStructure({
+        structureId: mainStructure.structureId,
+      });
+      const expectCompletedStructure =
+        matchUpInstance === allStructureMatchUpsCount;
+      expect(mainStructureIsCompleted).toEqual(expectCompletedStructure);
     });
   });
 
@@ -358,24 +382,30 @@ it('Round Robin with Playoffs testbed', () => {
     eventId,
   });
 
-  mainStructure.structures.forEach((structure, structureIndex) => {
+  mainStructure.structures.forEach(structure => {
     const { structureId } = structure;
     const structureMatchUps = eventMatchUps.filter(
       matchUp => matchUp.structureId === structureId
     );
-    const { participantResults } = drawEngine.tallyBracket({
+    const { participantResults } = drawEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
-    const scores = structureMatchUps.map(matchUp => matchUp.score);
-    console.log(
-      structureIndex,
-      scores,
-      // participantResults
-      Object.keys(participantResults).map(key => {
-        const { bracketOrder, result, games } = participantResults[key];
-        return { bracketOrder, result, games };
-      })
-    );
+    Object.keys(participantResults).forEach(key => {
+      const { groupOrder } = participantResults[key];
+      expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
+    });
+  });
+
+  ({ drawDefinition } = drawEngine.getState());
+  playoffStructures.forEach(structure => {
+    const { stage, stageSequence, structureId } = structure;
+    const entries = stageEntries({
+      stage,
+      structureId,
+      stageSequence,
+      drawDefinition,
+    });
+    if (entries?.length) console.log({ entries });
   });
 });
