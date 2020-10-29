@@ -24,9 +24,8 @@ export function addParticipants({
 }) {
   if (!tournamentRecord) return { error: 'Missing tournamentRecord ' };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
-  const existingParticipantIds = tournamentRecord.participants.map(
-    p => p.participantId
-  );
+  const existingParticipantIds =
+    tournamentRecord.participants?.map(p => p.participantId) || [];
   const newParticipants = participants.filter(
     participant => !existingParticipantIds.includes(participant.participantId)
   );
