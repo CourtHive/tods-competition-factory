@@ -5,6 +5,7 @@ import {
   POSITION,
   CONTAINER,
   PLAYOFF,
+  FEED_IN,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -166,7 +167,7 @@ export function playoffEntries({ drawDefinition, structureId }) {
             entries.push({
               participantId,
               entryStage: PLAYOFF,
-              entryStatus: DIRECT_ACCEPTANCE, // POSITION_ADVANCEMENT?
+              entryStatus: FEED_IN,
               placementGroup,
               GEMscore,
             });

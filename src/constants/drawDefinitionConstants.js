@@ -1,8 +1,13 @@
 // entry
 export const ALTERNATE = 'ALTERNATE';
-// export const QUALIFYING = 'QUALIFYNG'; // is duplicated below
+// export const FEED_IN = 'FEED_IN';
+export const QUALIFIER = 'QUALIFIER';
 export const WILDCARD = 'WILDCARD';
 export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';
+export const CONFIRMED = 'CONFIRMED';
+export const LUCKY_LOSER = 'LUCKY_LOSER';
+export const ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE';
+export const WITHDRAWN = 'WITHDRAWN';
 
 // error states
 export const EXISTING_PARTICIPANT = 'Participant Exists';
@@ -75,9 +80,6 @@ export const WIN_RATIO = 'WIN_RATIO';
 export const ROUND_OUTCOME = 'ROUND_OUTCOME';
 
 export const drawDefinitionConstants = {
-  ALTERNATE,
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
   EXISTING_PARTICIPANT,
   MISSING_DRAW_DEFINITION,
   INVALID_STAGE,
@@ -113,4 +115,13 @@ export const drawDefinitionConstants = {
   WATERFALL,
   WIN_RATIO,
   ROUND_OUTCOME,
+
+  QUALIFIER,
+  CONFIRMED,
+  LUCKY_LOSER,
+  ORGANISER_ACCEPTANCE,
+  WITHDRAWN,
+  ALTERNATE,
+  WILDCARD,
+  DIRECT_ACCEPTANCE,
 };
