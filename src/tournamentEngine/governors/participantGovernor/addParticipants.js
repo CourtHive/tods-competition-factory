@@ -17,7 +17,7 @@ export function addParticipant({ tournamentRecord, participant }) {
 
 export function addParticipants({
   tournamentRecord,
-  participants,
+  participants = [],
   source,
   teamId,
   groupId,

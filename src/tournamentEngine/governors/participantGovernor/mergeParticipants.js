@@ -2,7 +2,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function mergeParticipants({
   tournamentRecord,
-  participants: incomingParticipants,
+  participants: incomingParticipants = [],
 }) {
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
