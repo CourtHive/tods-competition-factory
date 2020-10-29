@@ -52,6 +52,13 @@ route: /drawEngine/api
 
 ## allStructureMatchUps
 
+Returns object { matchUps } with array of all matchUps within a structure
+
+| Parameters     | Required | Type   | Description                                           |
+| :------------- | :------- | :----- | :---------------------------------------------------- |
+| structureId    | Required | string | id of structure for which matchUps are requeste4d     |
+| drawDefinition | Optional | object | if drawEngine does not already contain drawDefinition |
+
 ---
 
 ## analyzeMatchUp
@@ -352,7 +359,7 @@ const { drawDefinition } = drawEngine.getState();
 
 ---
 
-## tallyBracket
+## tallyParticipantResults
 
 ---
 
