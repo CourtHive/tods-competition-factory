@@ -87,6 +87,7 @@ export function generateDrawDefinition(props) {
   drawEngine.generateDrawType({
     stage,
     drawType,
+    matchUpFormat,
     seedingProfile,
     structureOptions,
     qualifyingRound,
