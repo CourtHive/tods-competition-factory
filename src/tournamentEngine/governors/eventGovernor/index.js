@@ -6,6 +6,10 @@ import { addDrawDefinition } from './addDrawDefinition';
 import { deleteEventEntries } from './deleteEventEntries';
 import { assignDrawPosition } from './assignDrawPosition';
 import { assignSeedPositions } from './assignSeedPositions';
+import {
+  automatedPositioning,
+  automatedPlayoffPositioning,
+} from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './tieMatchUps';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 import { removeDrawPositionAssignment } from './removeDrawPositionAssignment';
@@ -37,6 +41,9 @@ const eventGovernor = {
   assignSeedPositions,
   removeDrawPositionAssignment,
   setDrawParticipantRepresentatives,
+
+  automatedPositioning,
+  automatedPlayoffPositioning,
 
   checkInParticipant,
   checkOutParticipant,

@@ -47,6 +47,8 @@ export function addParticipants({
       });
     }
     return SUCCESS;
+  } else {
+    return { error: 'No new participants to add' };
   }
 }
 
