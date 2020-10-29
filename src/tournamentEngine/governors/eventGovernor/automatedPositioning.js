@@ -45,9 +45,14 @@ export function automatedPlayoffPositioning({
   if (!event) return { error: 'event not found' };
   if (!drawDefinition) return { error: 'drawDefinition not found' };
 
-  const structure = findStructure({ drawDefinition, structureId });
-  const playoffStructures = structure.structures.filter(
-    structure => structure.stage === PLAYOFF
+  const targetStructureIds = drawDefinition.links
+    .filter(link => link.source?.structureId === structureId)
+    .map(link => link.target?.structureId);
+
+  const playoffStructures = drawDefinition.structures?.filter(
+    structure =>
+      targetStructureIds.includes(structure.structureId) &&
+      structure.stage === PLAYOFF
   );
 
   drawEngine.setState(drawDefinition);
