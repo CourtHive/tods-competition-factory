@@ -4,6 +4,7 @@ import tournamentEngine from '../../../tournamentEngine';
 import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
+import { findStructure } from '../../getters/findStructure';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { setsValues } from './roundRobinSetsValues.js';
 
@@ -27,6 +28,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { intersection } from '../../../utilities/arrays';
 
 it('can generate Round Robin Main Draws', () => {
   reset();
@@ -381,6 +383,7 @@ it('Round Robin with Playoffs testbed', () => {
     eventId,
   });
 
+  const finishingPositionGroups = {};
   mainStructure.structures.forEach(structure => {
     const { structureId } = structure;
     const structureMatchUps = eventMatchUps.filter(
@@ -392,13 +395,42 @@ it('Round Robin with Playoffs testbed', () => {
     });
     Object.keys(participantResults).forEach(key => {
       const { groupOrder } = participantResults[key];
+      if (!finishingPositionGroups[groupOrder])
+        finishingPositionGroups[groupOrder] = [];
+      finishingPositionGroups[groupOrder].push(key);
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
+  });
+  Object.keys(finishingPositionGroups).forEach(key => {
+    expect(finishingPositionGroups[key].length).toEqual(5);
   });
 
   playoffStructures.forEach(structure => {
     const { structureId } = structure;
+    // position participants
     drawEngine.automatedPositioning({ structureId });
+
+    // verify that positioning participants are expected
+    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
+    const { structure: updatedStructure } = findStructure({
+      drawDefinition: updatedDrawDefinition,
+      structureId,
+    });
+    const positioningLink = positioningLinks.find(
+      link => link.target.structureId === structure.structureId
+    );
+    const structureFinishingPositions =
+      positioningLink.source.finishingPositions;
+    const finishingPositionGroup = structureFinishingPositions
+      .map(finishingPosition => finishingPositionGroups[finishingPosition])
+      .flat();
+    const structureParticipantIds = updatedStructure.positionAssignments
+      .map(assignment => assignment.participantId)
+      .filter(f => f);
+    const expectedParticipantIds = intersection(
+      structureParticipantIds,
+      finishingPositionGroup
+    );
+    expect(expectedParticipantIds.length).toEqual(5);
   });
-  // ({ drawDefinition } = drawEngine.getState());
 });
