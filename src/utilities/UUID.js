@@ -42,3 +42,10 @@ export function UUID() {
     lut[(d3 >> 24) & 0xff]
   );
 }
+
+/**
+ * UUID prepended with 'u_' which is safe for html attribute ids
+ */
+export function safeUUID() {
+  return `u_${UUID()}`;
+}
