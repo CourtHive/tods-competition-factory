@@ -62,6 +62,13 @@ export function positionUnseededParticipants({
   }
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+
+  if (structure.stage === 'PLAYOFF') {
+    // TODO: generate avoidance policies automatically for Playoffs from Round Robin Groups
+    // perhaps attach groups directly to avoidance object... which may be a way to directly attach
+    // in the future for group avoidances in general
+    console.log('groups from groupvalue', entries);
+  }
   const { avoidance } = appliedPolicies || {};
 
   if (avoidance && participants) {
