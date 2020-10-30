@@ -21,7 +21,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { intersection } from '../../../utilities/arrays';
 
-it.only('can advance players in Round Robin with Playoffs', () => {
+it('can advance players in Round Robin with Playoffs', () => {
   reset();
   initialize();
   const drawSize = 20;
@@ -182,7 +182,6 @@ it.only('can advance players in Round Robin with Playoffs', () => {
     expect(finishingPositionGroups[key].length).toEqual(groupsCount);
   });
 
-  console.log({ finishingPositionGroups });
   playoffStructures.forEach(structure => {
     const { structureId } = structure;
     // position participants
@@ -194,7 +193,6 @@ it.only('can advance players in Round Robin with Playoffs', () => {
       drawDefinition: updatedDrawDefinition,
       structureId,
     });
-    console.log(updatedStructure.positionAssignments);
     const positioningLink = positioningLinks.find(
       link => link.target.structureId === structure.structureId
     );
@@ -214,4 +212,9 @@ it.only('can advance players in Round Robin with Playoffs', () => {
       groupsCount * structureFinishingPositions.length
     );
   });
+
+  const allPlayoffPositionsFilled = drawEngine.allPlayoffPositionsFilled({
+    structureId: mainStructure.structureId,
+  });
+  expect(allPlayoffPositionsFilled).toEqual(true);
 });

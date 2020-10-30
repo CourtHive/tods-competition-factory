@@ -163,8 +163,9 @@ export function positionByes({
     strictSeedOrderByePositions,
     blockSeedOrderByePositions,
   } = getSeedOrderByePositions({
-    appliedPolicies,
     structure,
+    drawDefinition,
+    appliedPolicies,
     relevantMatchUps,
   });
 

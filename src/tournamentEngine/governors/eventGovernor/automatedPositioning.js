@@ -1,5 +1,5 @@
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { getPlayoffStructures } from '../../getters/structureGetter';
 
 /**
  *
@@ -44,15 +44,10 @@ export function automatedPlayoffPositioning({
   if (!event) return { error: 'event not found' };
   if (!drawDefinition) return { error: 'drawDefinition not found' };
 
-  const targetStructureIds = drawDefinition.links
-    .filter(link => link.source?.structureId === structureId)
-    .map(link => link.target?.structureId);
-
-  const playoffStructures = drawDefinition.structures?.filter(
-    structure =>
-      targetStructureIds.includes(structure.structureId) &&
-      structure.stage === PLAYOFF
-  );
+  const playoffStructures = getPlayoffStructures({
+    drawDefinition,
+    structureId,
+  });
 
   drawEngine.setState(drawDefinition);
 

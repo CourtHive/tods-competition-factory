@@ -1,5 +1,6 @@
-import { findStructure } from '../../getters/findStructure';
+import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps';
+import { findStructure } from '../../getters/findStructure';
 
 /**
  *
@@ -18,7 +19,8 @@ export function drawActions(props) {
 
 /**
  *
- * @param {string} structureId - return a boolean indicating whether structure is complete
+ * @param {object} drawDefinition
+ * @param {string} structureId
  */
 export function isCompletedStructure(props) {
   const structureMatchUps = getStructureMatchUps(props);
@@ -34,7 +36,30 @@ export function isCompletedStructure(props) {
   return !!isComplete;
 }
 
-export function isReadyToGenerate(props) {
-  const { structure } = findStructure(props);
-  console.log({ structure });
+/**
+ *
+ * @param {object} drawDefinition
+ * @param {string} structureId - either drawDefinition and structureId or structure
+ * @param {object} structure - optional
+ */
+export function allPlayoffPositionsFilled(props) {
+  const { drawDefinition, structureId } = props;
+  const playoffStructures = getPlayoffStructures({
+    drawDefinition,
+    structureId,
+  });
+
+  const allPositionsFilled = playoffStructures.reduce(
+    (allFilled, structure) => {
+      const structurePositionsFilled = !structure.positionAssignments.filter(
+        assignment => {
+          return !assignment.bye && !assignment.participantId;
+        }
+      ).length;
+      return structurePositionsFilled && allFilled;
+    },
+    true
+  );
+
+  return allPositionsFilled;
 }

@@ -6,7 +6,11 @@ import {
   getMatchUpContextIds,
 } from '../../accessors/matchUpAccessor';
 
-import { drawActions, isCompletedStructure } from './drawActions';
+import {
+  drawActions,
+  isCompletedStructure,
+  allPlayoffPositionsFilled,
+} from './drawActions';
 import {
   positionActions,
   getNextUnfilledDrawPositions,
@@ -43,6 +47,7 @@ function allDrawMatchUps(props) {
 }
 
 const queryGovernor = {
+  allPlayoffPositionsFilled,
   isCompletedStructure,
   getStructureMatchUps,
   allStructureMatchUps,
