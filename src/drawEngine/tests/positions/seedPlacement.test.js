@@ -479,6 +479,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
     structure,
+    drawDefinition,
     appliedPolicies,
   });
 

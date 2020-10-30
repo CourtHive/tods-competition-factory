@@ -25,6 +25,7 @@ export function generateDrawDefinition(props) {
     policyDefinitions,
     qualifyingPositions,
     drawType = ELIMINATION,
+    playoffMatchUpFormat,
     matchUpType,
   } = props;
 
@@ -87,11 +88,13 @@ export function generateDrawDefinition(props) {
   drawEngine.generateDrawType({
     stage,
     drawType,
-    matchUpFormat,
     seedingProfile,
     structureOptions,
     qualifyingRound,
     qualifyingPositions,
+
+    matchUpFormat,
+    playoffMatchUpFormat,
   });
 
   const { structures } = drawEngine.getDrawStructures({

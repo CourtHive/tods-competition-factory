@@ -8,9 +8,12 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { assignDrawPosition } from './positionAssignment';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
-export function getStructurePositionedSeeds({ structure }) {
+export function getStructurePositionedSeeds({ drawDefinition, structure }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const { seedAssignments } = getStructureSeedAssignments({ structure });
+  const { seedAssignments } = getStructureSeedAssignments({
+    drawDefinition,
+    structure,
+  });
   const seedMap = Object.assign(
     {},
     ...seedAssignments
@@ -47,6 +50,7 @@ export function positionSeedBlocks({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks, error } = getValidSeedBlocks({
     structure,
+    drawDefinition,
     appliedPolicies,
   });
   if (error) errors.push(error);

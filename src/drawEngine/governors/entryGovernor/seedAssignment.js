@@ -15,7 +15,10 @@ export function assignSeed({
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const { seedAssignments } = getStructureSeedAssignments({ structure });
+  const { seedAssignments } = getStructureSeedAssignments({
+    drawDefinition,
+    structure,
+  });
   const seedNumbers = seedAssignments.map(assignment => assignment.seedNumber);
 
   const validParticipantId = participantInEntries({

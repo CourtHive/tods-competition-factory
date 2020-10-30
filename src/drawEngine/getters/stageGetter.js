@@ -99,14 +99,18 @@ export function stageEntries({
 
   structureId,
 }) {
-  const entries = drawDefinition.entries.reduce((p, c) => {
-    const sameStage = c.entryStage === stage;
-    const matchesEntryType = !entryTypes || entryTypes.includes(c.entryStatus);
-    const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
-    const sameStageSequence =
-      !stageSequence || entryStageSequence === stageSequence;
-    return sameStage && sameStageSequence && matchesEntryType ? p.concat(c) : p;
-  }, []);
+  const entries =
+    drawDefinition.entries?.reduce((p, c) => {
+      const sameStage = c.entryStage === stage;
+      const matchesEntryType =
+        !entryTypes || entryTypes.includes(c.entryStatus);
+      const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
+      const sameStageSequence =
+        !stageSequence || entryStageSequence === stageSequence;
+      return sameStage && sameStageSequence && matchesEntryType
+        ? p.concat(c)
+        : p;
+    }, []) || [];
 
   // handle POSITION entries
   if (structureId && !entries.length) {

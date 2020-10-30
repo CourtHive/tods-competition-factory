@@ -342,14 +342,19 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
 
 function getSeedOrderByePositions({
   structure,
+  drawDefinition,
   appliedPolicies,
   relevantMatchUps,
 }) {
   const { validSeedBlocks, isFeedIn, isContainer } = getValidSeedBlocks({
     appliedPolicies,
+    drawDefinition,
     structure,
   });
-  const positionedSeeds = getStructurePositionedSeeds({ structure });
+  const positionedSeeds = getStructurePositionedSeeds({
+    drawDefinition,
+    structure,
+  });
 
   const relevantDrawPositions = unique(
     [].concat(...relevantMatchUps.map(matchUp => matchUp.drawPositions))

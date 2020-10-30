@@ -9,6 +9,7 @@ import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolici
 
 export function getValidSeedBlocks({
   structure,
+  drawDefinition,
   appliedPolicies,
   allPositions,
 }) {
@@ -26,7 +27,10 @@ export function getValidSeedBlocks({
     structure,
     roundFilter: 1,
   });
-  const { seedAssignments } = getStructureSeedAssignments({ structure });
+  const { seedAssignments } = getStructureSeedAssignments({
+    drawDefinition,
+    structure,
+  });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsCount = positionAssignments.length;
   const seedsCount = seedAssignments?.length || 0;
@@ -332,6 +336,7 @@ export function isValidSeedPosition({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
     structure,
+    drawDefinition,
     appliedPolicies,
   });
 
@@ -352,7 +357,10 @@ export function isValidSeedPosition({
 
 export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { seedAssignments } = getStructureSeedAssignments({ structure });
+  const { seedAssignments } = getStructureSeedAssignments({
+    drawDefinition,
+    structure,
+  });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionsWithParticipants = positionAssignments.filter(
     assignment =>
@@ -365,6 +373,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
     structure,
+    drawDefinition,
     appliedPolicies,
   });
   const unfilledSeedBlocks = (validSeedBlocks || []).filter(seedBlock => {

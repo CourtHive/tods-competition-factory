@@ -43,9 +43,10 @@ export function setStageAlternates({ drawDefinition, stage, alternates }) {
 
   drawDefinition.entryProfile[stage].alternates = alternates;
   if (!alternates) {
-    drawDefinition.entries = drawDefinition.entries.filter(entry => {
-      return entry.entryStatus !== ALTERNATE;
-    });
+    drawDefinition.entries =
+      drawDefinition.entries?.filter(entry => {
+        return entry.entryStatus !== ALTERNATE;
+      }) || [];
   }
 }
 

@@ -61,7 +61,10 @@ export function getAllStructureMatchUps({
     allPositionsAssigned,
   } = structureAssignedDrawPositions({ structure });
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
-  const { seedAssignments } = getStructureSeedAssignments({ structure });
+  const { seedAssignments } = getStructureSeedAssignments({
+    drawDefinition,
+    structure,
+  });
   const { structureId, structureName } = structure;
   const { drawId } = drawDefinition || {};
 
