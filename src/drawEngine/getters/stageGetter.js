@@ -144,7 +144,9 @@ export function playoffEntries({ drawDefinition, structureId }) {
     // for group participant results to be tallied,
     // the source structure must be a container of other structures
     if (sourceStructure.structureType === CONTAINER) {
-      sourceStructure.structures.forEach(structure => {
+      const playoffStructures = sourceStructure.structures || [];
+      playoffStructures.forEach(structure => {
+        const { structureId: playoffStructureId } = structure;
         // context is required so that matchUp.sides are present
         const { matchUps } = getAllStructureMatchUps({
           structure,
@@ -159,6 +161,7 @@ export function playoffEntries({ drawDefinition, structureId }) {
           matchUps,
         });
 
+        const groupingValue = playoffStructureId;
         Object.keys(participantResults)
           .filter(key => {
             const result = participantResults[key];
@@ -171,11 +174,12 @@ export function playoffEntries({ drawDefinition, structureId }) {
               finishingPositions.sort().indexOf(groupOrder) + 1;
 
             entries.push({
+              GEMscore,
+              groupingValue,
               participantId,
+              placementGroup,
               entryStage: PLAYOFF,
               entryStatus: FEED_IN,
-              placementGroup,
-              GEMscore,
             });
           });
       });
