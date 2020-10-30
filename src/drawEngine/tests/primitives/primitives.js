@@ -9,7 +9,7 @@ import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/entyStatusConstants';
+} from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 let result;

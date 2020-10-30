@@ -18,7 +18,7 @@ import {
 import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
 
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
