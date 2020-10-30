@@ -8,11 +8,11 @@ import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 import {
-  MAIN,
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';

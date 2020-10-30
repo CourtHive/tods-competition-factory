@@ -27,12 +27,12 @@ import {
   SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  MAIN,
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;

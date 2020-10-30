@@ -5,12 +5,11 @@ import { getDrawStructures } from '../../getters/findStructure';
 import { getStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
-  MAIN,
-  QUALIFYING,
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entyStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 let result;

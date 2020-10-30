@@ -1,0 +1,21 @@
+export const ALTERNATE = 'ALTERNATE';
+export const FEED_IN = 'FEED_IN';
+export const QUALIFIER = 'QUALIFIER';
+export const WILDCARD = 'WILDCARD';
+export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';
+export const CONFIRMED = 'CONFIRMED';
+export const LUCKY_LOSER = 'LUCKY_LOSER';
+export const ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE';
+export const WITHDRAWN = 'WITHDRAWN';
+
+export const entryStatusConstants = {
+  ALTERNATE,
+  FEED_IN,
+  QUALIFIER,
+  WILDCARD,
+  DIRECT_ACCEPTANCE,
+  CONFIRMED,
+  LUCKY_LOSER,
+  ORGANISER_ACCEPTANCE,
+  WITHDRAWN,
+};

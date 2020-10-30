@@ -14,6 +14,8 @@ import {
   MAIN,
   ROUND_ROBIN,
   CONTAINER,
+} from '../../../constants/drawDefinitionConstants';
+import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/drawDefinitionConstants';

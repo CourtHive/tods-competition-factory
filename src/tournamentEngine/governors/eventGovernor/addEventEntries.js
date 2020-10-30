@@ -1,7 +1,7 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE } from '../../../constants/participantConstants';
+import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
 

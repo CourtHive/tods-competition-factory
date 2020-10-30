@@ -8,7 +8,7 @@ import { stageEntries } from '../../getters/stageGetter';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
 
 export function automatedPositioning({

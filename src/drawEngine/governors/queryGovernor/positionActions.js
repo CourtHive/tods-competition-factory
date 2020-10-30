@@ -10,9 +10,8 @@ import { structureActiveDrawPositions } from '../../getters/structureActiveDrawP
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
-  DRAW,
-  LOSER,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
+import { DRAW, LOSER } from '../../../constants/drawDefinitionConstants';
 
 /*
   return an array of all possible validActions for a given drawPosition within a structure

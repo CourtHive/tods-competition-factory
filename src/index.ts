@@ -40,6 +40,7 @@ export { fixtures } from './fixtures';
 
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
+export { entryStatusConstants } from './constants/entryStatusConstants';
 export { participantConstants } from './constants/participantConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
 export { participantRoles } from './constants/participantRoles';

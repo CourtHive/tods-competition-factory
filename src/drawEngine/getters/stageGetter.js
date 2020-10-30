@@ -1,11 +1,13 @@
 import {
   ALTERNATE,
+  FEED_IN,
   WILDCARD,
   DIRECT_ACCEPTANCE,
+} from '../../constants/entryStatusConstants';
+import {
   POSITION,
   CONTAINER,
   PLAYOFF,
-  FEED_IN,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';

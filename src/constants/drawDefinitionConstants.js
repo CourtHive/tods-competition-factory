@@ -1,14 +1,3 @@
-// entry
-export const ALTERNATE = 'ALTERNATE';
-// export const FEED_IN = 'FEED_IN';
-export const QUALIFIER = 'QUALIFIER';
-export const WILDCARD = 'WILDCARD';
-export const DIRECT_ACCEPTANCE = 'DIRECT_ACCEPTANCE';
-export const CONFIRMED = 'CONFIRMED';
-export const LUCKY_LOSER = 'LUCKY_LOSER';
-export const ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE';
-export const WITHDRAWN = 'WITHDRAWN';
-
 // error states
 export const EXISTING_PARTICIPANT = 'Participant Exists';
 export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
@@ -115,13 +104,4 @@ export const drawDefinitionConstants = {
   WATERFALL,
   WIN_RATIO,
   ROUND_OUTCOME,
-
-  QUALIFIER,
-  CONFIRMED,
-  LUCKY_LOSER,
-  ORGANISER_ACCEPTANCE,
-  WITHDRAWN,
-  ALTERNATE,
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
 };

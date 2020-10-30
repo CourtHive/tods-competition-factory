@@ -8,7 +8,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { assignDrawPosition } from './positionAssignment';

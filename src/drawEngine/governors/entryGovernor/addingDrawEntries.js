@@ -1,10 +1,8 @@
 import { participantInEntries } from '../../getters/entryGetter';
 import { validStage, stageSpace } from '../../getters/stageGetter';
 
-import {
-  DIRECT_ACCEPTANCE,
-  EXISTING_PARTICIPANT,
-} from '../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import { EXISTING_PARTICIPANT } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addDrawEntry({

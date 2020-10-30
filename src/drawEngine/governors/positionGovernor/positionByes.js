@@ -4,6 +4,11 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
 import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+
 import {
   chunkArray,
   numericSort,
@@ -11,23 +16,18 @@ import {
   unique,
 } from '../../../utilities';
 
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-
 import {
   stageEntries,
   getStageQualifiersCount,
 } from '../../getters/stageGetter';
 
 import {
-  CONTAINER,
   DIRECT_ACCEPTANCE,
   WILDCARD,
-} from '../../../constants/drawDefinitionConstants';
+} from '../../../constants/entryStatusConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 export function assignDrawPositionBye({
   drawDefinition,
