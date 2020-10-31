@@ -1,3 +1,7 @@
+import { tallyParticipantResults } from '../governors/scoreGovernor/roundRobinTally';
+import { getAllStructureMatchUps } from './getMatchUps';
+import { findStructure } from './findStructure';
+
 import {
   ALTERNATE,
   FEED_IN,
@@ -11,9 +15,6 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import { tallyParticipantResults } from '../governors/scoreGovernor/roundRobinTally';
-import { findStructure } from './findStructure';
-import { getAllStructureMatchUps } from './getMatchUps';
 
 export function validStage({ stage, drawDefinition }) {
   return Boolean(
@@ -147,7 +148,9 @@ export function playoffEntries({ drawDefinition, structureId }) {
       const playoffStructures = sourceStructure.structures || [];
       playoffStructures.forEach(structure => {
         const { structureId: playoffStructureId } = structure;
+
         // context is required so that matchUp.sides are present
+        // TODO: creates circular dependency... use structure.stats attribute for participantResults?
         const { matchUps } = getAllStructureMatchUps({
           structure,
           drawDefinition,
