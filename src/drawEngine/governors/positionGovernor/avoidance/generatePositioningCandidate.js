@@ -167,14 +167,6 @@ export function generatePositioningCandidate({
         if (avoidanceConflict) {
           avoidanceConflicts++;
           participantGroup.conflict = true;
-          /*
-          console.log(drawPositionValuesMap);
-          console.log(
-            grouping,
-            drawPositionValuesMap[grouping[0]],
-            drawPositionValuesMap[grouping[1]]
-          );
-          */
         }
       });
     });
