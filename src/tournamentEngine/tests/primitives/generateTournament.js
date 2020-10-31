@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../../../tournamentEngine';
-import { generateFakeParticipants } from '../../generators/fakerParticipants';
+import { generateFakeParticipants } from '../../generators/mockParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';

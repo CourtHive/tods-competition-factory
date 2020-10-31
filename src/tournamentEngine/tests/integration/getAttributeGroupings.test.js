@@ -1,5 +1,5 @@
 import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeGrouping';
-import { generateFakeParticipants } from '../../generators/fakerParticipants';
+import { generateFakeParticipants } from '../../generators/mockParticipants';
 import { fixtures, participantTypes } from '../../..';
 
 const { avoidance } = fixtures;

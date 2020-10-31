@@ -1,5 +1,5 @@
 import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
-import { generateFakeParticipants } from '../../../tournamentEngine/generators/fakerParticipants';
+import { generateFakeParticipants } from '../../../tournamentEngine/generators/mockParticipants';
 
 import { drawEngine } from '../../../drawEngine';
 import { SUCCESS } from '../../../constants/resultConstants';

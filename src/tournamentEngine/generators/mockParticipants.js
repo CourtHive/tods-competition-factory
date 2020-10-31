@@ -1,6 +1,8 @@
-import Faker from 'faker';
 import { countries } from '../../fixtures/countryData';
-import { unique, generateRange, shuffleArray } from '../../utilities';
+import { unique, generateRange, shuffleArray, UUID } from '../../utilities';
+import { city, state, postalCode } from '../../mocks/address';
+import { teamName } from '../../mocks/team';
+import { person } from '../../mocks/person';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -46,9 +48,9 @@ export function generateFakeParticipants({
     return shuffleArray(list);
   }
 
-  const cities = getList(citiesCount, Faker.address.city);
-  const states = getList(statesCount, Faker.address.state);
-  const postalCodes = getList(postalCodesCount, Faker.address.zipCode);
+  const cities = getList(citiesCount, city);
+  const states = getList(statesCount, state);
+  const postalCodes = getList(postalCodesCount, postalCode);
   const addressValues = { cities, states, postalCodes };
 
   const isoMin = getMin(nationalityCodesCount);
@@ -84,13 +86,12 @@ export function generateFakeParticipants({
       const pairName = individualParticipants
         .map(i => i.person.standardFamilyName)
         .join('/');
-      const teamName = Faker.company.companyName();
 
       const groupParticipant = {
-        participantId: Faker.random.uuid(),
+        participantId: UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
-        name: doubles ? pairName : teamName,
+        name: doubles ? pairName : teamName(),
         individualParticipantIds,
         individualParticipants, // TODO: remove
       };
@@ -103,8 +104,9 @@ export function generateFakeParticipants({
   return { participants };
 
   function generateIndividualParticipant(participantIndex) {
-    const standardGivenName = Faker.name.firstName();
-    const standardFamilyName = Faker.name.lastName();
+    const { firstName, lastName } = person();
+    const standardGivenName = firstName;
+    const standardFamilyName = lastName;
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
     const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);
@@ -117,13 +119,13 @@ export function generateFakeParticipants({
       nationalityCode,
     });
     const participant = {
-      participantId: Faker.random.uuid(),
+      participantId: UUID(),
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
       name,
       person: {
         addresses: [address],
-        personId: Faker.random.uuid(),
+        personId: UUID(),
         standardFamilyName,
         standardGivenName,
         nationalityCode,

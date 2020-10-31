@@ -1,4 +1,4 @@
-import { generateFakeParticipants } from '../../../tournamentEngine/generators/fakerParticipants';
+import { generateFakeParticipants } from '../../../tournamentEngine/generators/mockParticipants';
 import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
 
 import { drawEngine } from '../../../drawEngine';

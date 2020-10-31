@@ -5,7 +5,7 @@ import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { createGroupParticipant } from './createGroupParticipant';
 import { findTournamentParticipant } from '../../getters/participantGetter';
-import { generateFakeParticipants } from '../../generators/fakerParticipants';
+import { generateFakeParticipants } from '../../generators/mockParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import {
   addParticipantsToGrouping,
