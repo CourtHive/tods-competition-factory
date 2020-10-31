@@ -4,15 +4,15 @@ import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { assignDrawPosition } from './positionAssignment';
 
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
-
 import { SUCCESS } from '../../../constants/resultConstants';
-import { assignDrawPosition } from './positionAssignment';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { PLAYOFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
@@ -64,7 +64,7 @@ export function positionUnseededParticipants({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   let { avoidance } = appliedPolicies || {};
 
-  if (structure.stage === 'PLAYOFF') {
+  if (structure.stage === PLAYOFF) {
     // generate avoidance policies automatically for Playoffs from Round Robin Groups
     // perhaps attach groups directly to avoidance object...
     const groupings = entries.reduce((groupings, entry) => {
