@@ -181,8 +181,8 @@ export function generatePositioningCandidate({
   } else {
     groupedParticipants.forEach(matchUpPair => {
       const avoidanceConflict = intersection(
-        matchUpPair[0].values,
-        matchUpPair[1].values
+        matchUpPair[0].values || [],
+        matchUpPair[1].values || []
       ).length;
 
       if (avoidanceConflict) {

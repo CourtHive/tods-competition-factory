@@ -62,14 +62,22 @@ export function positionUnseededParticipants({
   }
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  let { avoidance } = appliedPolicies || {};
 
   if (structure.stage === 'PLAYOFF') {
-    // TODO: generate avoidance policies automatically for Playoffs from Round Robin Groups
-    // perhaps attach groups directly to avoidance object... which may be a way to directly attach
-    // in the future for group avoidances in general
-    console.log('groups from groupvalue', entries);
+    // generate avoidance policies automatically for Playoffs from Round Robin Groups
+    // perhaps attach groups directly to avoidance object...
+    const groupings = entries.reduce((groupings, entry) => {
+      if (!groupings[entry.groupingValue]) groupings[entry.groupingValue] = [];
+      groupings[entry.groupingValue].push(entry.participantId);
+      return groupings;
+    }, {});
+    if (Object.keys(groupings).length) {
+      if (!avoidance) avoidance = { policyName: 'Playoff Avoidance' };
+      if (!avoidance.policyAttributes) avoidance.policyAttributes = [];
+      avoidance.policyAttributes.push({ groupings });
+    }
   }
-  const { avoidance } = appliedPolicies || {};
 
   if (avoidance && participants) {
     return randomUnseededSeparation({

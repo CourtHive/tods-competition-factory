@@ -39,13 +39,16 @@ export function getAttributeGroupings({
       idCollections,
       policyAttributes,
     });
-    values.forEach(value => {
-      if (!groupings[value]) groupings[value] = [];
-      if (!groupings[value].includes(participantId)) {
-        groupings[value].push(participantId);
-      }
-    });
+    if (values) {
+      values.forEach(value => {
+        if (!groupings[value]) groupings[value] = [];
+        if (!groupings[value].includes(participantId)) {
+          groupings[value].push(participantId);
+        }
+      });
+    }
   });
+
   return groupings;
 }
 
@@ -70,7 +73,8 @@ export function extractAttributeValues({
   const extractedValues = [];
   policyAttributes.forEach(policyAttribute => {
     const value = participant;
-    const { key, directive, significantCharacters } = policyAttribute || {};
+    const { directive, groupings, key, significantCharacters } =
+      policyAttribute || {};
     if (key) {
       const keys = key.split('.');
       processKeys({ value, keys, significantCharacters });
@@ -97,6 +101,11 @@ export function extractAttributeValues({
           }
         });
       }
+    } else if (groupings) {
+      Object.keys(groupings).forEach(key => {
+        if (groupings[key].includes(participant.participantId))
+          extractedValues.push(key);
+      });
     }
   });
 
