@@ -1,8 +1,11 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 import { tournamentEngine, resultConstants } from '../../..';
+
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { RANKING } from '../../../constants/participantConstants';
+import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SUCCESS } = resultConstants;
 
@@ -45,8 +48,29 @@ export function avoidanceTest(props) {
 
   tournamentEngine.setState(tournamentRecord);
 
+  const drawSize = 32;
+  const seedsCount = 8;
+  const category = { categoryName: 'U18' };
+
+  const relevantParticipants = participants
+    .filter(participant => participant.participantType === participantType)
+    .slice(0, seedsCount);
+
+  relevantParticipants.forEach((participant, index) => {
+    const scaleItem = {
+      scaleValue: index + 1,
+      scaleName: category.categoryName,
+      scaleType: RANKING,
+      eventType: eventType,
+    };
+
+    const { participantId } = participant;
+    tournamentEngine.setParticipantScaleItem({ participantId, scaleItem });
+  });
+
   const event = {
     eventName: 'Test Event',
+    category,
     eventType,
   };
 
@@ -65,12 +89,13 @@ export function avoidanceTest(props) {
   expect(result).toEqual(SUCCESS);
 
   const values = {
-    automated: true,
-    drawSize: 32,
-    drawType,
     eventId,
+    drawSize,
+    drawType,
+    seedsCount,
+    automated: true,
     event: eventResult,
-    policyDefinitions: [{ avoidance }],
+    policyDefinitions: [{ avoidance }, ITF_SEEDING],
   };
   const { conflicts, drawDefinition } = tournamentEngine.generateDrawDefinition(
     values
@@ -78,5 +103,5 @@ export function avoidanceTest(props) {
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
-  return { conflicts, drawDefinition };
+  return { conflicts, drawDefinition, participants };
 }

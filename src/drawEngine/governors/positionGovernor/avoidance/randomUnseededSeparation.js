@@ -134,7 +134,7 @@ export function randomUnseededSeparation({
       ...assignment,
     });
     if (!result?.success) {
-      console.log('ERROR:', result.error, { assignment });
+      // console.log('ERROR:', result.error, { assignment });
       errors.push(result.error);
     }
   });

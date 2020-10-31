@@ -83,7 +83,7 @@ function positionSeedBlock({ drawDefinition, structureId, participants }) {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { avoidance } = appliedPolicies || {};
   if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
-    console.log('seed placement avoidance');
+    // console.log('implement seed placement avoidance');
   }
 
   for (const participantId of unplacedSeedParticipantIds) {

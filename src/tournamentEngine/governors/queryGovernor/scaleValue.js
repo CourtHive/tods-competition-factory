@@ -10,6 +10,7 @@ export function getParticipantScaleItem({
     tournamentRecord,
     participantId,
   });
+
   if (!participant) return { error: 'Participant Not Found' };
   return participantScaleItem({ participant, scaleAttributes });
 }
