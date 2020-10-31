@@ -26,6 +26,7 @@
     "src"
   ],
   "np": {
+    "yarn": false,
     "contents": "dist"
   },
   "scripts": {
