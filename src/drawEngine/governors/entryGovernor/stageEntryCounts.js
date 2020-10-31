@@ -6,8 +6,9 @@ import {
   getStageWildcardEntriesCount,
 } from '../../getters/stageGetter';
 
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
+
 import {
-  ALTERNATE,
   INVALID_STAGE,
   MAIN,
   MISSING_DRAW_DEFINITION,
