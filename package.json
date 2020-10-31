@@ -8,7 +8,7 @@
     "competition",
     "tennis"
   ],
-  "version": "0.1.67",
+  "version": "0.1.68",
   "license": "MIT",
   "private": false,
   "homepage": "https://github.com/CourtHive/tods-competition-factory",
@@ -26,7 +26,6 @@
     "src"
   ],
   "np": {
-    "yarn": false,
     "contents": "dist"
   },
   "scripts": {
