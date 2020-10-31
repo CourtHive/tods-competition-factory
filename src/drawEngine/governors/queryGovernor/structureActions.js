@@ -1,6 +1,5 @@
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps';
-import { findStructure } from '../../getters/findStructure';
 
 /**
  *
@@ -8,13 +7,11 @@ import { findStructure } from '../../getters/findStructure';
  * @param {string} structureId - UUID of structure to be found within drawDefinition
  *
  */
-export function drawActions(props) {
-  const { structure } = findStructure(props);
-  if (structure?.structure) {
-    // structure is Round Robin
-  } else {
-    // structure is Elimination
-  }
+export function structureActions(props) {
+  const actions = [];
+  const isComplete = isCompletedStructure(props);
+  const hasPlayoffPositionsFilled = allPlayoffPositionsFilled(props);
+  return { actions, state: { isComplete, hasPlayoffPositionsFilled } };
 }
 
 /**

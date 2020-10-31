@@ -7,10 +7,10 @@ import {
 } from '../../accessors/matchUpAccessor';
 
 import {
-  drawActions,
+  structureActions,
   isCompletedStructure,
   allPlayoffPositionsFilled,
-} from './drawActions';
+} from './structureActions';
 import {
   positionActions,
   getNextUnfilledDrawPositions,
@@ -54,7 +54,7 @@ const queryGovernor = {
   allDrawMatchUps,
   drawMatchUps,
 
-  drawActions,
+  structureActions,
   matchUpActions,
   positionActions,
   getSeedAssignments,
