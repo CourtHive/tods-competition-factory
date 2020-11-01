@@ -294,7 +294,10 @@ export function getAllStructureMatchUps({
 
   function getSeeding({ participantId }) {
     return seedAssignments.reduce((seeding, assignment) => {
-      return assignment.participantId === participantId ? assignment : seeding;
+      // seedProxy is used for playoff positioning only and should not be displayed as seeding
+      return !assignment.seedProxy && assignment.participantId === participantId
+        ? assignment
+        : seeding;
     }, undefined);
   }
 }

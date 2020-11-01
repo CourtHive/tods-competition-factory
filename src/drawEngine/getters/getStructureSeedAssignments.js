@@ -33,6 +33,7 @@ export function getStructureSeedAssignments({
             participantId: entry.participantId,
             seedNumber: index + 1,
             seedValue: 1,
+            seedProxy: true, // flag so that proxy seeding information doesn't get used externally
           };
         });
       seedAssignments = seedProxies;
