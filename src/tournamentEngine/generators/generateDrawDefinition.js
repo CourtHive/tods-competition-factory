@@ -27,6 +27,7 @@ export function generateDrawDefinition(props) {
     drawType = ELIMINATION,
     playoffMatchUpFormat,
     matchUpType,
+    seededParticipants,
   } = props;
 
   let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
@@ -125,8 +126,21 @@ export function generateDrawDefinition(props) {
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  if (event?.category) {
-    // CONVENIENCE SEED BY RANKING WHEN POSSIBLE
+  if (seededParticipants) {
+    seededParticipants.forEach(seededParticipant => {
+      const { participantId, seedNumber, seedValue } = seededParticipant;
+      const result = drawEngine.assignSeed({
+        structureId,
+        seedNumber,
+        seedValue,
+        participantId,
+      });
+      if (!result.success) console.log(`%c ${result.error}`, 'color: red');
+    });
+  } else if (event?.category) {
+    // CONVENIENCE SEED BY RANKING IF PRESENT
+    // and if no seededParticipants have been defined
+
     const scaleAttributes = {
       scaleType: RANKING,
       scaleName: event.category.categoryName,
