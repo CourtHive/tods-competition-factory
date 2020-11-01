@@ -27,7 +27,6 @@ it('can generate ELIMINATION drawDefinition using country avoidance with PAIR pa
     avoidance: avoidancePolicy,
     participantType: PAIR,
     eventType: DOUBLES,
-    valuesCount: 5,
     sex: 'F',
   }));
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);

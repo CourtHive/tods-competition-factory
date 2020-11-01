@@ -1,4 +1,5 @@
 import { eventConstants } from '../../..';
+import { intersection } from '../../../utilities/arrays';
 import { avoidanceTest } from '../primitives/avoidanceTest';
 
 import { PAIR } from '../../../constants/participantTypes';
@@ -10,12 +11,47 @@ const pairAvoidancePolicy = {
   policyAttributes: [{ directive: 'pairParticipants' }],
 };
 
-it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
+it.only('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
   const result = avoidanceTest({
     eventType: SINGLES,
     participantType: PAIR,
+    participantsCount: 16,
     avoidance: pairAvoidancePolicy,
   });
-  const { conflicts } = result || {};
+  const { conflicts, report, participants } = result || {};
+  const pairedParticipants = participants
+    .filter(p => p.participantType === PAIR)
+    .map(p => p.individualParticipants.map(ip => ip.name));
+  const pairedOpponents = report.map(r => r.names);
+  pairedParticipants.forEach(pair => {
+    pairedOpponents.forEach(opponents => {
+      const overlap = intersection(pair, opponents);
+      if (overlap.length > 1)
+        console.log('no seeds:', { pair, opponents, overlap });
+      // expect(overlap.length).toBeLessThan(2);
+    });
+  });
+  if (conflicts?.unseededConflicts) console.log(conflicts);
+});
+
+it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants and seeding', () => {
+  const result = avoidanceTest({
+    seedsCount: 4,
+    eventType: SINGLES,
+    participantType: PAIR,
+    participantsCount: 16,
+    avoidance: pairAvoidancePolicy,
+  });
+  const { conflicts, report, participants } = result || {};
+  const pairedParticipants = participants
+    .filter(p => p.participantType === PAIR)
+    .map(p => p.individualParticipants.map(ip => ip.name));
+  const pairedOpponents = report.map(r => r.names);
+  pairedParticipants.forEach(pair => {
+    pairedOpponents.forEach(opponents => {
+      const overlap = intersection(pair, opponents);
+      if (overlap.length > 1) console.log({ pair, opponents, overlap });
+    });
+  });
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });

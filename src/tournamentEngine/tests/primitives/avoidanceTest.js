@@ -110,22 +110,20 @@ export function avoidanceTest(props) {
     drawDefinition,
     requireParticipants: true,
   });
-  const report = upcomingMatchUps
-    .map(m => [
-      m.drawPositions.map(dp => ({ dp })),
-      m.sides.map(s => ({ seed: s.seedValue || '' })),
-      m.sides.map(s => s.participant.name),
-      m.sides.map(s => {
-        if (eventType === DOUBLES) {
-          return s.participant.individualParticipants.map(
-            i => i.person.nationalityCode
-          );
-        } else {
-          return s.participant.person.nationalityCode;
-        }
-      }),
-    ])
-    .flat(1);
+  const report = upcomingMatchUps.map(m => ({
+    drawPositions: m.drawPositions,
+    seeds: m.sides.map(s => s.seedValue || ''),
+    names: m.sides.map(s => s.participant.name),
+    ioc: m.sides.map(s => {
+      if (eventType === DOUBLES) {
+        return s.participant.individualParticipants.map(
+          i => i.person.nationalityCode
+        );
+      } else {
+        return s.participant.person.nationalityCode;
+      }
+    }),
+  }));
 
   return { conflicts, drawDefinition, participants, report };
 }

@@ -39,7 +39,11 @@ export function randomUnseededSeparation({
   if (!avoidance) {
     return { error: 'Missing avoidance policy' };
   }
-  const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
+  const {
+    policyAttributes,
+    roundsToSeparate,
+    candidatesCount = 20,
+  } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
@@ -127,20 +131,29 @@ export function randomUnseededSeparation({
     undefined
   );
 
-  candidate.positionAssignments.forEach(assignment => {
-    const result = assignDrawPosition({
-      drawDefinition,
-      structureId,
-      ...assignment,
+  const alreadyAssignedParticipantIds = (structure.positionAssignments || [])
+    .filter(assignment => assignment.participantId)
+    .map(assignment => assignment.participantId);
+
+  candidate.positionAssignments
+    .filter(
+      assignment =>
+        !alreadyAssignedParticipantIds.includes(assignment.participantId)
+    )
+    .forEach(assignment => {
+      const result = assignDrawPosition({
+        drawDefinition,
+        structureId,
+        ...assignment,
+      });
+      if (!result?.success) {
+        // console.log('ERROR:', result.error, { assignment });
+        errors.push(result.error);
+      }
     });
-    if (!result?.success) {
-      // console.log('ERROR:', result.error, { assignment });
-      errors.push(result.error);
-    }
-  });
 
   return errors.length
-    ? { error: errors }
+    ? { error: errors, conflicts: candidate.conflicts }
     : Object.assign(
         {
           positionAssignments: candidate.positionAssignments,
