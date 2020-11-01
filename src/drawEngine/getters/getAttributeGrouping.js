@@ -86,7 +86,7 @@ export function extractAttributeValues({
       ).filter(
         participantId => !includeIds || includeIds.includes(participantId)
       );
-      if (collectionIds?.length) {
+      if (collectionIds?.length && participants?.length) {
         collectionIds.forEach(collectionParticipantId => {
           const collectionParticipant = participants.find(
             participant => participant.participantId === collectionParticipantId
@@ -108,6 +108,13 @@ export function extractAttributeValues({
       });
     }
   });
+  /*
+  console.log(participant, {
+    idCollections,
+    extractedValues,
+    policyAttributes,
+  });
+  */
 
   const values = unique(extractedValues);
   return { values };

@@ -134,6 +134,9 @@ export function generatePositioningCandidate({
       const { values } = extractAttributeValues({
         participant,
         policyAttributes,
+
+        idCollections,
+        participants: participantsWithContext,
       });
       return Object.assign({}, assignment, { values });
     }
@@ -173,8 +176,8 @@ export function generatePositioningCandidate({
   } else {
     groupedParticipants.forEach(matchUpPair => {
       const avoidanceConflict = intersection(
-        matchUpPair[0].values || [],
-        matchUpPair[1].values || []
+        matchUpPair[0].values,
+        matchUpPair[1].values
       ).length;
 
       if (avoidanceConflict) {

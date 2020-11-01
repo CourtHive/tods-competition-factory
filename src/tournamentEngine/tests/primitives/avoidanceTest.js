@@ -30,6 +30,9 @@ export function avoidanceTest(props) {
     drawType = ELIMINATION,
   } = props;
 
+  let { seedsCount } = props;
+  if (!seedsCount) seedsCount = participantsCount / 4;
+
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -50,11 +53,13 @@ export function avoidanceTest(props) {
   tournamentEngine.setState(tournamentRecord);
 
   const drawSize = 32;
-  const seedsCount = 8;
   const category = { categoryName: 'U18' };
 
+  const eventParticipantType =
+    eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
+
   const relevantParticipants = participants
-    .filter(participant => participant.participantType === participantType)
+    .filter(participant => participant.participantType === eventParticipantType)
     .slice(0, seedsCount);
 
   relevantParticipants.forEach((participant, index) => {
@@ -79,9 +84,6 @@ export function avoidanceTest(props) {
   const { event: eventResult, success } = result;
   const { eventId } = eventResult;
   expect(success).toEqual(true);
-
-  const eventParticipantType =
-    eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
 
   const participantIds = participants
     .filter(participant => participant.participantType === eventParticipantType)

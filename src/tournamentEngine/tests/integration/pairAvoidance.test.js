@@ -9,9 +9,10 @@ const pairAvoidancePolicy = {
   roundsToSeparate: undefined,
   policyName: 'Doubles Partner Avoidance',
   policyAttributes: [{ directive: 'pairParticipants' }],
+  candidatesCount: 1, // force generation of only one candidate for logging during testing
 };
 
-it.only('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
+it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
   const result = avoidanceTest({
     eventType: SINGLES,
     participantType: PAIR,
@@ -26,15 +27,13 @@ it.only('can generate ELIMINATION drawDefinition using pair avoidance with Doubl
   pairedParticipants.forEach(pair => {
     pairedOpponents.forEach(opponents => {
       const overlap = intersection(pair, opponents);
-      if (overlap.length > 1)
-        console.log('no seeds:', { pair, opponents, overlap });
-      // expect(overlap.length).toBeLessThan(2);
+      expect(overlap.length).toBeLessThan(2);
     });
   });
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });
 
-it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants and seeding', () => {
+it.only('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants and seeding', () => {
   const result = avoidanceTest({
     seedsCount: 4,
     eventType: SINGLES,
@@ -53,5 +52,6 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
       if (overlap.length > 1) console.log({ pair, opponents, overlap });
     });
   });
+  console.log(result.report);
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });
