@@ -91,9 +91,9 @@ export function generateMockParticipants({
 
   function generateIndividualParticipant(participantIndex) {
     const { persons } = personMocks({ sex, count: 1 });
-    const { firstName, lastName } = persons[0];
-    const standardGivenName = firstName;
-    const standardFamilyName = lastName;
+    const { firstName, lastName } = persons[0] || {};
+    const standardGivenName = firstName || 'GivenName';
+    const standardFamilyName = lastName || 'FamilyName';
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
     const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);

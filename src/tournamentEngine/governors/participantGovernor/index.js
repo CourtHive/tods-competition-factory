@@ -37,7 +37,6 @@ const participantGovernor = {
   removeParticipantsFromAllTeams,
 
   generateMockParticipants,
-  generateFakeParticipants: generateMockParticipants,
   generateTeamsFromParticipantAttribute,
 
   rankByRatings,
