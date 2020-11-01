@@ -103,18 +103,12 @@ export function extractAttributeValues({
       }
     } else if (groupings) {
       Object.keys(groupings).forEach(key => {
-        if (groupings[key].includes(participant.participantId))
+        if (groupings[key].includes(participant.participantId)) {
           extractedValues.push(key);
+        }
       });
     }
   });
-  /*
-  console.log(participant, {
-    idCollections,
-    extractedValues,
-    policyAttributes,
-  });
-  */
 
   const values = unique(extractedValues);
   return { values };
