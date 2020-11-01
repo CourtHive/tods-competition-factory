@@ -163,8 +163,8 @@ export function generatePositioningCandidate({
       );
       uniqueMatchUpGroupings.forEach(grouping => {
         const avoidanceConflict = intersection(
-          drawPositionValuesMap[grouping[0]].values,
-          drawPositionValuesMap[grouping[1]].values
+          drawPositionValuesMap[grouping[0]].values || [],
+          drawPositionValuesMap[grouping[1]].values || []
         ).length;
 
         if (avoidanceConflict) {
@@ -176,8 +176,8 @@ export function generatePositioningCandidate({
   } else {
     groupedParticipants.forEach(matchUpPair => {
       const avoidanceConflict = intersection(
-        matchUpPair[0].values,
-        matchUpPair[1].values
+        matchUpPair[0].values || [],
+        matchUpPair[1].values || []
       ).length;
 
       if (avoidanceConflict) {
