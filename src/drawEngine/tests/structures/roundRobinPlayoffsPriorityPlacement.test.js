@@ -19,7 +19,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { intersection } from '../../../utilities/arrays';
+import { chunkArray, intersection } from '../../../utilities/arrays';
 
 it('can advance players in Round Robin with Playoffs', () => {
   reset();
@@ -161,16 +161,24 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const finishingPositionGroups = {};
+  const structureParticipantGroupings = [];
+
   mainStructure.structures.forEach(structure => {
     const { structureId } = structure;
+
     const structureMatchUps = eventMatchUps.filter(
       matchUp => matchUp.structureId === structureId
     );
+
     const { participantResults } = drawEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
-    Object.keys(participantResults).forEach(key => {
+
+    const structureParticipantIds = Object.keys(participantResults);
+    structureParticipantGroupings.push(structureParticipantIds);
+
+    structureParticipantIds.forEach(key => {
       const { groupOrder } = participantResults[key];
       if (!finishingPositionGroups[groupOrder])
         finishingPositionGroups[groupOrder] = [];
@@ -178,6 +186,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
   });
+
   Object.keys(finishingPositionGroups).forEach(key => {
     expect(finishingPositionGroups[key].length).toEqual(groupsCount);
   });
@@ -211,6 +220,19 @@ it('can advance players in Round Robin with Playoffs', () => {
     expect(expectedParticipantIds.length).toEqual(
       groupsCount * structureFinishingPositions.length
     );
+
+    const { positionAssignments } = updatedStructure;
+    const pairedPositions = chunkArray(positionAssignments, 2);
+    const pairedParticipantIds = pairedPositions
+      .map(positions => positions.map(position => position.participantId))
+      .filter(pair => pair.filter(p => p).length === 2);
+
+    pairedParticipantIds.forEach(pair => {
+      structureParticipantGroupings.forEach(grouping => {
+        const overlap = intersection(grouping, pair);
+        expect(overlap.length).toBeLessThan(2);
+      });
+    });
   });
 
   const allPlayoffPositionsFilled = drawEngine.allPlayoffPositionsFilled({
