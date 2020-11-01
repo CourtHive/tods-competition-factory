@@ -24,6 +24,10 @@ export function generateMockParticipants({
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
+  const { persons: mockedPersons } = personMocks({
+    sex,
+    count: individualParticipantsCount,
+  });
   const isoCountries = countries.filter(country => country.iso);
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
@@ -90,8 +94,8 @@ export function generateMockParticipants({
   return { participants };
 
   function generateIndividualParticipant(participantIndex) {
-    const { persons } = personMocks({ sex, count: 1 });
-    const { firstName, lastName } = persons[0] || {};
+    const person = mockedPersons[participantIndex];
+    const { firstName, lastName } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;

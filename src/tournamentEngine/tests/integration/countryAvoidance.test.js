@@ -1,5 +1,4 @@
 import { avoidanceTest } from '../primitives/avoidanceTest';
-import { drawEngine } from '../../../drawEngine';
 import { eventConstants } from '../../..';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
@@ -16,25 +15,20 @@ const avoidancePolicy = {
 };
 
 it('can generate ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
-  let { conflicts, drawDefinition, participants } = avoidanceTest({
-    eventType: DOUBLES,
-    participantType: PAIR,
+  let { conflicts } = avoidanceTest({
     avoidance: avoidancePolicy,
+    participantType: PAIR,
+    eventType: DOUBLES,
+    sex: 'M',
   });
   if (conflicts?.unseededConflicts) console.log(conflicts);
 
-  drawEngine.setParticipants(participants);
-  const foo = drawEngine.drawMatchUps({
-    drawDefinition,
-    requireParticipants: true,
-  });
-  console.log(foo.upcomingMatchUps.map(m => m.sides));
-
-  ({ conflicts, drawDefinition, participants } = avoidanceTest({
-    eventType: DOUBLES,
-    participantType: PAIR,
+  ({ conflicts } = avoidanceTest({
     avoidance: avoidancePolicy,
+    participantType: PAIR,
+    eventType: DOUBLES,
     valuesCount: 5,
+    sex: 'F',
   }));
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });

@@ -12,6 +12,7 @@ export function tournamentRecordWithParticipants({
   nationalityCodes,
   nationalityCodesCount,
 
+  sex,
   participantsCount,
   participantType = INDIVIDUAL,
 
@@ -26,6 +27,7 @@ export function tournamentRecordWithParticipants({
 
     participantsCount,
     participantType,
+    sex,
 
     valuesInstanceLimit,
   });

@@ -1,5 +1,5 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
-import { tournamentEngine, resultConstants } from '../../..';
+import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
@@ -22,7 +22,7 @@ const { SUCCESS } = resultConstants;
  */
 
 export function avoidanceTest(props) {
-  const { avoidance, eventType, participantType } = props;
+  const { avoidance, eventType, participantType, sex, log } = props;
   const {
     valuesCount = 10,
     valuesInstanceLimit,
@@ -34,6 +34,7 @@ export function avoidanceTest(props) {
     startDate: '2020-01-01',
     endDate: '2020-01-06',
 
+    sex,
     participantType,
     participantsCount,
 
@@ -103,5 +104,31 @@ export function avoidanceTest(props) {
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
+
+  if (log) {
+    drawEngine.setParticipants(participants);
+    const { upcomingMatchUps } = drawEngine.drawMatchUps({
+      drawDefinition,
+      requireParticipants: true,
+    });
+    console.log(
+      upcomingMatchUps
+        .map(m => [
+          m.drawPositions,
+          m.sides.map(s => s.participant.name),
+          m.sides.map(s => {
+            if (eventType === DOUBLES) {
+              return s.participant.individualParticipants.map(
+                i => i.person.nationalityCode
+              );
+            } else {
+              return s.participant.person.nationalityCode;
+            }
+          }),
+        ])
+        .flat(1)
+    );
+  }
+
   return { conflicts, drawDefinition, participants };
 }
