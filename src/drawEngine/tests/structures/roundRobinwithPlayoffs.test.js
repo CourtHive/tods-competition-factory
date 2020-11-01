@@ -24,7 +24,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { intersection } from '../../../utilities/arrays';
+import { chunkArray, intersection } from '../../../utilities/arrays';
 
 it('can generate Round Robins 32 with playoffs', () => {
   reset();
@@ -506,6 +506,8 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   });
 
   const finishingPositionGroups = {};
+  const structureParticipantGroupings = [];
+
   mainStructure.structures.forEach(structure => {
     const { structureId } = structure;
     const structureMatchUps = eventMatchUps.filter(
@@ -515,7 +517,11 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       matchUps: structureMatchUps,
       matchUpFormat,
     });
-    Object.keys(participantResults).forEach(key => {
+
+    const structureParticipantIds = Object.keys(participantResults);
+    structureParticipantGroupings.push(structureParticipantIds);
+
+    structureParticipantIds.forEach(key => {
       const { groupOrder } = participantResults[key];
       if (!finishingPositionGroups[groupOrder])
         finishingPositionGroups[groupOrder] = [];
@@ -523,6 +529,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
   });
+
   Object.keys(finishingPositionGroups).forEach(key => {
     expect(finishingPositionGroups[key].length).toEqual(groupsCount);
   });
@@ -530,7 +537,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   playoffStructures.forEach(structure => {
     const { structureId } = structure;
     // position participants
-    drawEngine.automatedPositioning({ structureId });
+    drawEngine.automatedPositioning({ participants, structureId });
 
     // verify that positioning participants are expected
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
@@ -554,6 +561,19 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       finishingPositionGroup
     );
     expect(expectedParticipantIds.length).toEqual(groupsCount);
+
+    const { positionAssignments } = updatedStructure;
+    const pairedPositions = chunkArray(positionAssignments, 2);
+    const pairedParticipantIds = pairedPositions
+      .map(positions => positions.map(position => position.participantId))
+      .filter(pair => pair.filter(p => p).length === 2);
+
+    pairedParticipantIds.forEach(pair => {
+      structureParticipantGroupings.forEach(grouping => {
+        const overlap = intersection(grouping, pair);
+        expect(overlap.length).toBeLessThan(2);
+      });
+    });
   });
 
   const allPlayoffPositionsFilled = drawEngine.allPlayoffPositionsFilled({
