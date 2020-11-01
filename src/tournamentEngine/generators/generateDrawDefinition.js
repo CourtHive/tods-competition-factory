@@ -127,16 +127,27 @@ export function generateDrawDefinition(props) {
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
   if (seededParticipants) {
-    seededParticipants.forEach(seededParticipant => {
-      const { participantId, seedNumber, seedValue } = seededParticipant;
-      const result = drawEngine.assignSeed({
-        structureId,
-        seedNumber,
-        seedValue,
-        participantId,
+    seededParticipants
+      .filter(
+        seededParticipant =>
+          !seededParticipant.seedNumber ||
+          seededParticipant.seedNumber > seededParticipants.length
+      )
+      .sort((a, b) => {
+        if (a.seedValue < b.seedValue) return -1;
+        if (a.seedValue < b.seedValue) return 1;
+        return 0;
+      })
+      .forEach(seededParticipant => {
+        const { participantId, seedNumber, seedValue } = seededParticipant;
+        const result = drawEngine.assignSeed({
+          structureId,
+          seedNumber,
+          seedValue,
+          participantId,
+        });
+        if (!result.success) console.log(`%c ${result.error}`, 'color: red');
       });
-      if (!result.success) console.log(`%c ${result.error}`, 'color: red');
-    });
   } else if (event?.category) {
     // CONVENIENCE SEED BY RANKING IF PRESENT
     // and if no seededParticipants have been defined
