@@ -34,12 +34,11 @@ it('can generate ELIMINATION drawDefinition using country avoidance with PAIR pa
 });
 
 it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
-  const { report } = avoidanceTest({
+  avoidanceTest({
     eventType: SINGLES,
     participantType: INDIVIDUAL,
     avoidance: avoidancePolicy,
   });
-  console.log(report);
 
   const { conflicts } = avoidanceTest({
     eventType: SINGLES,
