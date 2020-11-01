@@ -1,5 +1,5 @@
 import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeGrouping';
-import { generateFakeParticipants } from '../../generators/mockParticipants';
+import { generateMockParticipants } from '../../generators/mockParticipants';
 import { fixtures, participantTypes } from '../../..';
 
 const { avoidance } = fixtures;
@@ -7,7 +7,7 @@ const { AVOIDANCE_COUNTRY } = avoidance;
 const { PAIR } = participantTypes;
 
 it('can generate groupings accurately', () => {
-  const { participants } = generateFakeParticipants({
+  const { participants } = generateMockParticipants({
     nationalityCodesCount: 10,
     addressProps: {
       citiesCount: 10,

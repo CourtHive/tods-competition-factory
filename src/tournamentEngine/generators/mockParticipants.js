@@ -1,14 +1,14 @@
 import { countries } from '../../fixtures/countryData';
-import { unique, generateRange, shuffleArray, UUID } from '../../utilities';
-import { city, state, postalCode } from '../../mocks/address';
-import { teamName } from '../../mocks/team';
-import { person } from '../../mocks/person';
+import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { cityMocks, stateMocks, postalCodeMocks } from '../../mocks/address';
+import { teamMocks } from '../../mocks/team';
+import { personMocks } from '../../mocks/person';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/matchUpTypes';
 
-export function generateFakeParticipants({
+export function generateMockParticipants({
   nationalityCodes,
   nationalityCodesCount,
   participantsCount = 32,
@@ -34,23 +34,9 @@ export function generateFakeParticipants({
     return count;
   }
 
-  function getList(count, fx) {
-    const minItems = count && getMin(count);
-    const items =
-      minItems &&
-      unique(generateRange(0, minItems * 4).map(() => fx())).slice(0, minItems);
-    const list = generateRange(
-      0,
-      Math.ceil(individualParticipantsCount / minItems)
-    )
-      .map(() => items)
-      .flat(Infinity);
-    return shuffleArray(list);
-  }
-
-  const cities = getList(citiesCount, city);
-  const states = getList(statesCount, state);
-  const postalCodes = getList(postalCodesCount, postalCode);
+  const { cities } = cityMocks({ count: citiesCount });
+  const { states } = stateMocks({ count: statesCount });
+  const { postalCodes } = postalCodeMocks({ count: postalCodesCount });
   const addressValues = { cities, states, postalCodes };
 
   const isoMin = getMin(nationalityCodesCount);
@@ -91,7 +77,7 @@ export function generateFakeParticipants({
         participantId: UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
-        name: doubles ? pairName : teamName(),
+        name: doubles ? pairName : teamMocks().teams[0],
         individualParticipantIds,
         individualParticipants, // TODO: remove
       };
@@ -104,7 +90,8 @@ export function generateFakeParticipants({
   return { participants };
 
   function generateIndividualParticipant(participantIndex) {
-    const { firstName, lastName } = person();
+    const { persons } = personMocks({ sex, count: 1 });
+    const { firstName, lastName } = persons[0];
     const standardGivenName = firstName;
     const standardFamilyName = lastName;
     const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;

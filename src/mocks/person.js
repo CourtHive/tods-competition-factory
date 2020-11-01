@@ -1,7 +1,11 @@
-import Faker from 'faker';
+import { shuffleArray } from '../utilities';
+import personData from './persons.json';
 
-export function person() {
-  const firstName = Faker.name.firstName();
-  const lastName = Faker.name.lastName();
-  return { firstName, lastName };
+export function personMocks({ count = 1, sex } = {}) {
+  const shuffledPersons = shuffleArray(personData);
+
+  const persons = shuffledPersons
+    .filter(person => !sex || person.sex === sex)
+    .slice(0, count);
+  return { persons };
 }

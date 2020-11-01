@@ -5,7 +5,7 @@ import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { createGroupParticipant } from './createGroupParticipant';
 import { findTournamentParticipant } from '../../getters/participantGetter';
-import { generateFakeParticipants } from '../../generators/mockParticipants';
+import { generateMockParticipants } from '../../generators/mockParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import {
   addParticipantsToGrouping,
@@ -36,7 +36,8 @@ const participantGovernor = {
   removeParticipantsFromGroup,
   removeParticipantsFromAllTeams,
 
-  generateFakeParticipants,
+  generateMockParticipants,
+  generateFakeParticipants: generateMockParticipants,
   generateTeamsFromParticipantAttribute,
 
   rankByRatings,
