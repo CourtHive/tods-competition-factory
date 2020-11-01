@@ -52,7 +52,6 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
       if (overlap.length > 1) console.log({ pair, opponents, overlap });
     });
   });
-  console.log(result.report);
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });
 
