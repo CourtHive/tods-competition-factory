@@ -22,7 +22,7 @@ export const WINNING_OUTCOMES = [
   OUTCOME_WALKOVER,
 ];
 
-export const STATUS_DEFAULT = 'DEFAULT';
+export const STATUS_DEFAULT = 'DEFAULTED';
 export const STATUS_COMPLETE = 'COMPLETED';
 export const STATUS_WALKOVER = 'WALKOVER';
 export const STATUS_ABANDONED = 'ABANDONED';
