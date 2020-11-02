@@ -176,10 +176,22 @@ function validAssignmentsSort(a, b) {
 }
 
 export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
+  if (!drawDefinition) {
+    const error = 'Missing drawDefinition';
+    return { error, nextUnfilledDrawPositions: [] };
+  }
+  if (!structureId) {
+    const error = 'Missing structureId';
+    return { error, nextUnfilledDrawPositions: [] };
+  }
+
   const { structure, error } = findStructure({ drawDefinition, structureId });
+
   if (error) return { error };
   if (!structure) return { error: 'No structure found' };
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
+
+  const result = structureAssignedDrawPositions({ structure });
+  const positionAssignments = result?.positionAssignments || [];
   const { unfilledPositions } = getNextSeedBlock({
     drawDefinition,
     structureId,
@@ -194,7 +206,7 @@ export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
     })
     .map(assignment => assignment.drawPosition);
 
-  if (unfilledPositions.length) {
+  if (unfilledPositions?.length) {
     return { nextUnfilledDrawPositions: unfilledPositions };
   } else {
     return { nextUnfilledDrawPositions: unfilledDrawPositions };

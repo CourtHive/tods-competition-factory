@@ -2,6 +2,8 @@
   TESTS: structureGetter.test.js
 */
 export function findStructure({ drawDefinition, structureId }) {
+  if (!drawDefinition) return { error: 'Missing drawDefinition' };
+  if (!structureId) return { error: 'Missing structureId' };
   const { structures } = getDrawStructures({ drawDefinition });
   const allStructures = structures
     .map(structure => {
@@ -28,7 +30,7 @@ export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
     : undefined;
   const structures =
     (drawDefinition &&
-      drawDefinition.structures.filter(isStage).filter(isStageSequence)) ||
+      drawDefinition.structures?.filter(isStage).filter(isStageSequence)) ||
     [];
   return { structures, error };
 

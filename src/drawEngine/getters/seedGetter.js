@@ -409,8 +409,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
     unplacedSeedAssignments.length || seedsWithoutDrawPositions.length;
   const unfilled =
     (seedsLeftToAssign &&
-      nextSeedBlock &&
-      nextSeedBlock.drawPositions.filter(
+      nextSeedBlock?.drawPositions.filter(
         drawPosition => !assignedDrawPositions.includes(drawPosition)
       )) ||
     [];
