@@ -21,7 +21,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { chunkArray, intersection } from '../../../utilities/arrays';
 
-it.only('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
+it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   reset();
   initialize();
   const drawSize = 16;
