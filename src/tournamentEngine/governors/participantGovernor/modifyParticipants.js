@@ -45,6 +45,7 @@ export function participantsSignInStatus({
   if (participantsModified) return SUCCESS;
 }
 
+// function currently unused
 export function modifyParticipant({ tournamentRecord, participant, teamId }) {
   let modificationApplied;
   const { participantId } = participant || {};

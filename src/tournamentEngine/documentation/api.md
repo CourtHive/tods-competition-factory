@@ -34,6 +34,10 @@ route: /tournamentEngine/api
 
 ---
 
+## addParticipantPenalty
+
+---
+
 ## addParticipantsToGrouping
 
 ---
@@ -261,10 +265,6 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ---
 
-## modifyParticipant
-
----
-
 ## newTournamentRecord
 
 ---
@@ -290,6 +290,10 @@ const { tournamentRecord } = tournamentEngine.getState();
 ---
 
 ## removeParticipantsFromAllTeams
+
+---
+
+## removeParticipantPenalty
 
 ---
 

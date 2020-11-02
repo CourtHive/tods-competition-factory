@@ -12,10 +12,7 @@ import {
   removeParticipantsFromGroup,
   removeParticipantsFromAllTeams,
 } from './participantGroupings';
-import {
-  modifyParticipant,
-  participantsSignInStatus,
-} from './modifyParticipants';
+import { participantsSignInStatus } from './modifyParticipants';
 import { setParticipantScaleItem } from './scaleItems';
 import { setParticipantScaleItems } from './scaleItems';
 
@@ -41,7 +38,6 @@ const participantGovernor = {
 
   rankByRatings,
 
-  modifyParticipant,
   mergeParticipants,
   setParticipantScaleItem,
   setParticipantScaleItems,
