@@ -11,13 +11,15 @@ export function automatedPositioning({
   drawEngine,
   structureId,
   drawDefinition,
+  tournamentRecord,
 }) {
   if (!event) return { error: 'event not found' };
   if (!drawDefinition) return { error: 'drawDefinition not found' };
+  const participants = tournamentRecord?.participants;
 
   const result = drawEngine
     .setState(drawDefinition)
-    .automatedPositioning({ structureId });
+    .automatedPositioning({ participants, structureId });
 
   const errorsCount = result?.errors?.length;
 
@@ -40,9 +42,11 @@ export function automatedPlayoffPositioning({
   drawEngine,
   structureId,
   drawDefinition,
+  tournamentRecord,
 }) {
   if (!event) return { error: 'event not found' };
   if (!drawDefinition) return { error: 'drawDefinition not found' };
+  const participants = tournamentRecord?.participants;
 
   const playoffStructures = getPlayoffStructures({
     drawDefinition,
@@ -55,6 +59,7 @@ export function automatedPlayoffPositioning({
   playoffStructures.forEach(structure => {
     const { structureId: playoffStructureId } = structure;
     const result = drawEngine.automatedPositioning({
+      participants,
       structureId: playoffStructureId,
     });
     result.errors.forEach(error => errors.push(error));

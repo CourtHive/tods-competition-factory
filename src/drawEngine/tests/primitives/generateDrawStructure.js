@@ -87,7 +87,8 @@ export function generateDrawStructure({
     });
   });
 
-  if (automated !== false) drawEngine.automatedPositioning({ structureId });
+  if (automated !== false)
+    drawEngine.automatedPositioning({ participants, structureId });
 
   const { drawDefinition } = drawEngine.getState();
 
