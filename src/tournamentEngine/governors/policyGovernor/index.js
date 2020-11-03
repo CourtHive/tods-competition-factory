@@ -68,10 +68,14 @@ function attachEventPolicy({ tournamentRecord, event, policyDefinition }) {
     return { error: 'Missing policyDefinition' };
   }
 
+  let policiesApplied = 0;
   if (!event.extensions) event.extensions = [];
   const { appliedPolicies } = getEventAppliedPolicies({ event });
   Object.keys(policyDefinition).forEach(policyType => {
-    appliedPolicies[policyType] = policyDefinition[policyType];
+    if (policyDefinition[policyType].policyAttributes) {
+      appliedPolicies[policyType] = policyDefinition[policyType];
+      policiesApplied++;
+    }
   });
 
   event.extensions = event.extensions.filter(
@@ -79,7 +83,7 @@ function attachEventPolicy({ tournamentRecord, event, policyDefinition }) {
   );
   event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
 
-  return SUCCESS;
+  return policiesApplied ? SUCCESS : { error: 'Policy not attached' };
 }
 
 export function removeEventPolicy({ tournamentRecord, event, policyType }) {
@@ -94,7 +98,7 @@ export function removeEventPolicy({ tournamentRecord, event, policyType }) {
 
   if (event.extensions) {
     const { appliedPolicies } = getEventAppliedPolicies({ event });
-    if (appliedPolicies) {
+    if (appliedPolicies && policyType && appliedPolicies[policyType]) {
       delete appliedPolicies[policyType];
       policyRemoved = true;
 
