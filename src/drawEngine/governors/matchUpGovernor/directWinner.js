@@ -12,7 +12,7 @@ export function directWinner({
   let error;
 
   if (winnerTargetLink) {
-    const targetMatchUpDrawPositions = winnerMatchUp.drawPositions;
+    const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
     const targetMatchUpDrawPosition =
       targetMatchUpDrawPositions[targetMatchUpSide];
 

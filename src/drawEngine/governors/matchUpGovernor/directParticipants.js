@@ -42,36 +42,40 @@ export function directParticipants(props) {
     return SUCCESS;
   }
 
-  const winningIndex = winningSide - 1;
-  const losingIndex = 1 - winningIndex;
-  const winningDrawPosition = matchUp.drawPositions[winningIndex];
-  const loserDrawPosition = matchUp.drawPositions[losingIndex];
-  const targetMatchUpSide = 1 - (matchUp.roundPosition % 2);
+  if (matchUp.drawPositions) {
+    const winningIndex = winningSide - 1;
+    const losingIndex = 1 - winningIndex;
+    const winningDrawPosition = matchUp.drawPositions[winningIndex];
+    const loserDrawPosition = matchUp.drawPositions[losingIndex];
+    const targetMatchUpSide = 1 - (matchUp.roundPosition % 2);
 
-  const {
-    targetLinks: { loserTargetLink, winnerTargetLink },
-    targetMatchUps: { loserMatchUp, winnerMatchUp },
-  } = targetData;
+    const {
+      targetLinks: { loserTargetLink, winnerTargetLink },
+      targetMatchUps: { loserMatchUp, winnerMatchUp },
+    } = targetData;
 
-  if (winnerMatchUp) {
-    const { error } = directWinner({
-      drawDefinition,
-      targetMatchUpSide,
-      winnerTargetLink,
-      winningDrawPosition,
-      winnerMatchUp,
-    });
-    if (error) errors.push(error);
-  }
-  if (loserMatchUp) {
-    const { error } = directLoser({
-      drawDefinition,
-      targetMatchUpSide,
-      loserTargetLink,
-      loserDrawPosition,
-      loserMatchUp,
-    });
-    if (error) errors.push(error);
+    if (winnerMatchUp) {
+      const { error } = directWinner({
+        drawDefinition,
+        targetMatchUpSide,
+        winnerTargetLink,
+        winningDrawPosition,
+        winnerMatchUp,
+      });
+      if (error) errors.push(error);
+    }
+    if (loserMatchUp) {
+      const { error } = directLoser({
+        drawDefinition,
+        targetMatchUpSide,
+        loserTargetLink,
+        loserDrawPosition,
+        loserMatchUp,
+      });
+      if (error) errors.push(error);
+    }
+  } else {
+    errors.push({ error: 'machUp is missing drawPositions ' });
   }
 
   return errors.length ? { errors } : SUCCESS;

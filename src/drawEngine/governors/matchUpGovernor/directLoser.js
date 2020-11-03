@@ -10,7 +10,7 @@ export function directLoser({
 }) {
   let error;
 
-  const targetMatchUpDrawPositions = loserMatchUp.drawPositions;
+  const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
   const targetMatchUpDrawPosition =
     targetMatchUpDrawPositions[targetMatchUpSide];
 

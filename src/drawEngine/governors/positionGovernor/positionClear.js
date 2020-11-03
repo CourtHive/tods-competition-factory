@@ -68,8 +68,8 @@ export function clearDrawPosition({
     // inContext: true, // TODO: is there any reason that clearDrawPosition requires context?
   });
   matchUps.forEach(matchUp => {
-    if (matchUp.drawPositions.includes(drawPosition)) {
-      const isByeMatchUp = matchUp.drawPositions.reduce(
+    if (matchUp.drawPositions?.includes(drawPosition)) {
+      const isByeMatchUp = matchUp.drawPositions?.reduce(
         (isByeMatchUp, drawPosition) => {
           return (
             byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp
@@ -97,7 +97,7 @@ export function clearDrawPosition({
 
     // if there is a linked draw then BYE must also be placed there
     // This must be propagated through compass draw, for instance
-    const pairedDrawPosition = matchUp.drawPositions.reduce(
+    const pairedDrawPosition = matchUp.drawPositions?.reduce(
       (pairedDrawPosition, currentDrawPosition) => {
         return currentDrawPosition !== drawPosition
           ? currentDrawPosition
@@ -114,13 +114,15 @@ export function clearDrawPosition({
     // clear Directed Byes
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {
       // loserMatchUp must have both drawPositions defined
-      const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions.filter(
+      const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
         f => f
       ).length;
       if (loserMatchUpDrawPositionsCount !== 2)
         return { error: 'Missing drawPositions in loserMatchUp' };
       // drawPositions must be in numerical order
-      loserMatchUp.drawPositions = loserMatchUp.drawPositions.sort(numericSort);
+      loserMatchUp.drawPositions = loserMatchUp.drawPositions?.sort(
+        numericSort
+      );
       // loser drawPosition in target structure is determined bye even/odd
       const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
 

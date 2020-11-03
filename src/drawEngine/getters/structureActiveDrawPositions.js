@@ -84,7 +84,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   function getPairedDrawPositions(drawPosition) {
     return matchUps
       .reduce((drawPositions, currentMatchup) => {
-        return currentMatchup.drawPositions.includes(drawPosition)
+        return currentMatchup.drawPositions?.includes(drawPosition)
           ? drawPositions.concat(...currentMatchup.drawPositions)
           : drawPositions;
       }, [])
@@ -94,7 +94,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   function getByePairedPosition(drawPosition) {
     return matchUps
       .reduce((drawPositions, currentMatchup) => {
-        return currentMatchup.drawPositions.includes(drawPosition)
+        return currentMatchup.drawPositions?.includes(drawPosition)
           ? drawPositions.concat(...currentMatchup.drawPositions)
           : drawPositions;
       }, [])

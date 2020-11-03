@@ -70,7 +70,7 @@ export function assignDrawPositionBye({
   });
 
   matchUps.forEach(matchUp => {
-    if (matchUp.drawPositions.includes(drawPosition)) {
+    if (matchUp.drawPositions?.includes(drawPosition)) {
       const { matchUpId } = matchUp;
       setMatchUpStatus({
         drawDefinition,
@@ -78,7 +78,7 @@ export function assignDrawPositionBye({
         matchUpStatus: BYE,
       });
 
-      const pairedDrawPosition = matchUp.drawPositions.reduce(
+      const pairedDrawPosition = matchUp.drawPositions?.reduce(
         (pairedDrawPosition, currentDrawPosition) => {
           return currentDrawPosition !== drawPosition
             ? currentDrawPosition
@@ -96,13 +96,13 @@ export function assignDrawPositionBye({
 
       if (loserMatchUp) {
         // loserMatchUp must have both drawPositions defined
-        const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions.filter(
+        const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
           f => f
         ).length;
         if (loserMatchUpDrawPositionsCount !== 2)
           return { error: 'Missing drawPositions in loserMatchUp' };
         // drawPositions must be in numerical order
-        loserMatchUp.drawPositions = loserMatchUp.drawPositions.sort(
+        loserMatchUp.drawPositions = loserMatchUp.drawPositions?.sort(
           numericSort
         );
         // loser drawPosition in target structure is determined bye even/odd
@@ -293,7 +293,7 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
     allPositions: true,
   });
   const validBlockDrawPositions = validSeedBlocks.map(block =>
-    block.drawPositions.map(drawPosition => drawPosition + drawPositionOffset)
+    block.drawPositions?.map(drawPosition => drawPosition + drawPositionOffset)
   );
   let unfilledSeedBlocks = validBlockDrawPositions
     .map(quarterSeparateBlock)
@@ -380,7 +380,7 @@ function getSeedOrderByePositions({
     (result, seedBlock) => {
       const positionedSeedsInBlock = relevantPositionedSeeds
         .filter(positionedSeed =>
-          seedBlock.drawPositions.includes(positionedSeed.drawPosition)
+          seedBlock.drawPositions?.includes(positionedSeed.drawPosition)
         )
         .sort(seedValueSort);
       return result.concat(...positionedSeedsInBlock);
@@ -435,7 +435,7 @@ function getOrderedByePositions({
       return consideredDrawPositionPairs.reduce(
         (drawPositionPair, drawPositions) => {
           if (drawPositionPair) return drawPositionPair; // take the first occurrence
-          return drawPositions.includes(drawPosition)
+          return drawPositions?.includes(drawPosition)
             ? drawPositions
             : drawPositionPair;
         },
@@ -445,7 +445,7 @@ function getOrderedByePositions({
     .filter(f => f);
   const orderedByePositions = seedOrderSortedDrawPositionPairs
     .map(drawPositions => {
-      return drawPositions.reduce((byePosition, drawPosition) => {
+      return drawPositions?.reduce((byePosition, drawPosition) => {
         return orderedSeedDrawPositions.includes(drawPosition)
           ? byePosition
           : drawPosition;
@@ -510,7 +510,7 @@ export function getByesData({ drawDefinition, structure }) {
     .filter(drawPositions => {
       return (
         drawPositions &&
-        drawPositions.reduce(
+        drawPositions?.reduce(
           (noBye, drawPosition) =>
             !placedByePositions.includes(drawPosition) && noBye,
           true

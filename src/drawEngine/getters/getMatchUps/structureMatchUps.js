@@ -58,10 +58,10 @@ export function getStructureMatchUps({
 
       const drawPositionsFilled =
         !isCollectionMatchUp &&
-        matchUp.drawPositions.filter(f => f).length === 2;
+        matchUp.drawPositions?.filter(f => f).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
-        matchUp.drawPositions.reduce((assigned, drawPosition) => {
+        matchUp.drawPositions?.reduce((assigned, drawPosition) => {
           return (
             participantAssignedDrawPositions.includes(drawPosition) && assigned
           );
@@ -73,7 +73,7 @@ export function getStructureMatchUps({
 
       const isByeMatchUp =
         !isCollectionMatchUp &&
-        matchUp.drawPositions.reduce((isByeMatchUp, drawPosition) => {
+        matchUp.drawPositions?.reduce((isByeMatchUp, drawPosition) => {
           return (
             byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp
           );

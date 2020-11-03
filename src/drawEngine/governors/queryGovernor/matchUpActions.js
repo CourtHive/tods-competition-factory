@@ -39,19 +39,16 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   const isByeMatchUp =
     matchUp.matchUpStatus === BYE ||
     (!isCollectionMatchUp &&
-      matchUp.drawPositions.reduce((isByeMatchUp, drawPosition) => {
+      matchUp.drawPositions?.reduce((isByeMatchUp, drawPosition) => {
         return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
       }, false));
 
-  const matchDrawPositionsAreAssigned =
-    drawPositions &&
-    drawPositions.length &&
-    drawPositions.reduce(
-      (assignedBoolean, drawPosition) =>
-        participantAssignedDrawPositions.includes(drawPosition) &&
-        assignedBoolean,
-      true
-    );
+  const matchDrawPositionsAreAssigned = drawPositions?.reduce(
+    (assignedBoolean, drawPosition) =>
+      participantAssignedDrawPositions.includes(drawPosition) &&
+      assignedBoolean,
+    true
+  );
 
   const {
     links: { source },
@@ -64,7 +61,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   }
 
   if (isByeMatchUp) {
-    const nonByeDrawPosition = matchUp.drawPositions.reduce(
+    const nonByeDrawPosition = matchUp.drawPositions?.reduce(
       (nonByeDrawPosition, drawPosition) => {
         return !byeAssignedDrawPositions.includes(drawPosition)
           ? drawPosition

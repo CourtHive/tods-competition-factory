@@ -37,51 +37,55 @@ export function removeDirectedParticipants(props) {
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  const winningSide = matchUp.winningSide;
-  const winningIndex = winningSide - 1;
-  const losingIndex = 1 - winningIndex;
-  const winningDrawPosition = matchUp.drawPositions[winningIndex];
-  const loserDrawPosition = matchUp.drawPositions[losingIndex];
-  const loserParticipantId = positionAssignments.reduce(
-    (participantId, assignment) => {
-      return assignment.drawPosition === loserDrawPosition
-        ? assignment.participantId
-        : participantId;
-    },
-    undefined
-  );
-  const winnerParticipantId = positionAssignments.reduce(
-    (participantId, assignment) => {
-      return assignment.drawPosition === winningDrawPosition
-        ? assignment.participantId
-        : participantId;
-    },
-    undefined
-  );
+  if (matchUp.drawPositions) {
+    const winningSide = matchUp.winningSide;
+    const winningIndex = winningSide - 1;
+    const losingIndex = 1 - winningIndex;
+    const winningDrawPosition = matchUp.drawPositions[winningIndex];
+    const loserDrawPosition = matchUp.drawPositions[losingIndex];
+    const loserParticipantId = positionAssignments.reduce(
+      (participantId, assignment) => {
+        return assignment.drawPosition === loserDrawPosition
+          ? assignment.participantId
+          : participantId;
+      },
+      undefined
+    );
+    const winnerParticipantId = positionAssignments.reduce(
+      (participantId, assignment) => {
+        return assignment.drawPosition === winningDrawPosition
+          ? assignment.participantId
+          : participantId;
+      },
+      undefined
+    );
 
-  delete matchUp.sets;
-  delete matchUp.score;
-  delete matchUp.winningSide;
+    delete matchUp.sets;
+    delete matchUp.score;
+    delete matchUp.winningSide;
 
-  matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus;
 
-  if (winnerMatchUp) {
-    const { error } = removeDirectedWinner({
-      drawDefinition,
-      winnerTargetLink,
-      winnerParticipantId,
-      winningDrawPosition,
-      winnerMatchUp,
-    });
-    if (error) errors.push(error);
-  }
-  if (loserMatchUp) {
-    const { error } = removeDirectedLoser({
-      drawDefinition,
-      loserTargetLink,
-      loserParticipantId,
-    });
-    if (error) errors.push(error);
+    if (winnerMatchUp) {
+      const { error } = removeDirectedWinner({
+        drawDefinition,
+        winnerTargetLink,
+        winnerParticipantId,
+        winningDrawPosition,
+        winnerMatchUp,
+      });
+      if (error) errors.push(error);
+    }
+    if (loserMatchUp) {
+      const { error } = removeDirectedLoser({
+        drawDefinition,
+        loserTargetLink,
+        loserParticipantId,
+      });
+      if (error) errors.push(error);
+    }
+  } else {
+    errors.push({ error: 'matchUp missing drawPositions ' });
   }
 
   return errors.length ? { errors } : SUCCESS;
@@ -135,7 +139,7 @@ function removeDirectedWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = matchUp.drawPositions.map(drawPosition => {
+    matchUp.drawPositions = matchUp.drawPositions?.map(drawPosition => {
       return drawPosition === winnerDrawPosition ? undefined : drawPosition;
     });
   } else {
@@ -143,7 +147,7 @@ function removeDirectedWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = matchUp.drawPositions.map(drawPosition => {
+    matchUp.drawPositions = matchUp.drawPositions?.map(drawPosition => {
       return drawPosition === winningDrawPosition ? undefined : drawPosition;
     });
   }

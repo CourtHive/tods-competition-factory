@@ -145,7 +145,7 @@ function attemptToSetMatchUpStatus(props) {
     const byeAssignedDrawPositions = positionAssignments
       .filter(assignment => assignment.bye)
       .map(assignment => assignment.drawPosition);
-    const matchUpIncludesBye = matchUp.drawPositions.reduce(
+    const matchUpIncludesBye = matchUp.drawPositions?.reduce(
       (includesBye, position) => {
         return byeAssignedDrawPositions.includes(position) ? true : includesBye;
       },

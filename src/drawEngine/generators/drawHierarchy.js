@@ -14,7 +14,10 @@ export function buildDrawHierarchy({ matchUps }) {
 
   const drawPositionSort = (a, b) => parseInt(a) - parseInt(b);
   const allDrawPositions = unique(
-    matchUps.map(matchUp => matchUp.drawPositions).flat()
+    matchUps
+      .map(matchUp => matchUp.drawPositions)
+      .flat()
+      .filter(f => f)
   ).sort(drawPositionSort);
   const expectedDrawPositions = generateRange(
     1,
@@ -76,17 +79,17 @@ export function buildDrawHierarchy({ matchUps }) {
     .sort(drawPositionSort);
   const secondRoundEntriySides = secondRoundMatchUps
     .filter(matchUp =>
-      matchUp.drawPositions.reduce(
+      matchUp.drawPositions?.reduce(
         (p, c) => secondRoundEntries.includes(c) || p,
         undefined
       )
     )
     .map(matchUp => {
-      const targetDrawPosition = matchUp.drawPositions.reduce(
+      const targetDrawPosition = matchUp.drawPositions?.reduce(
         (p, c) => (secondRoundEntries.includes(c) ? c : p),
         undefined
       );
-      const targetIndex = matchUp.drawPositions.indexOf(targetDrawPosition);
+      const targetIndex = matchUp.drawPositions?.indexOf(targetDrawPosition);
       const targetSide = matchUp.sides[targetIndex];
       return { [targetDrawPosition]: targetSide };
     });
@@ -147,7 +150,7 @@ export function buildDrawHierarchy({ matchUps }) {
     const matchRound = roundMatchUps.length === previousRound.length / 2;
     if (roundNumber === 1) {
       roundMatchUps.forEach(matchUp => {
-        const drawPositions = matchUp.drawPositions;
+        const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
         const children = [
           {
@@ -170,7 +173,7 @@ export function buildDrawHierarchy({ matchUps }) {
     if (feedRound) {
       feedRoundNumber++;
       roundMatchUps.forEach((matchUp, i) => {
-        const drawPositions = matchUp.drawPositions;
+        const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
         const fedDrawPosition = drawPositions
           .filter(f => f) // first filter out undefined if no advanced participant
