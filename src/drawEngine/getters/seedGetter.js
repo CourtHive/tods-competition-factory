@@ -59,8 +59,7 @@ export function getValidSeedBlocks({
   const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
 
   if (!seedBlocks) errors.push({ error: 'Missing seeding policy' });
-  const baseDrawSize =
-    (firstRoundDrawPositions && firstRoundDrawPositions.length) || 0;
+  const baseDrawSize = firstRoundDrawPositions?.length || 0;
 
   // firstRoundDrawPositions have been popped
   // seedRangeDrawPositionBlocks determines FEED_IN
@@ -114,7 +113,7 @@ export function getValidSeedBlocks({
   );
   const validSeedPositions = seedDrawPositions.reduce(
     (result, drawPosition) => {
-      return firstRoundDrawPositions.includes(drawPosition) && result;
+      return firstRoundDrawPositions?.includes(drawPosition) && result;
     },
     true
   );
