@@ -2,6 +2,7 @@ import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
 import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
+import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
 
 import { getStructureMatchUps } from '../../getters/getMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -119,4 +120,32 @@ it('can return matchUps from a ROUND ROBIN structure', () => {
   expect(allDrawMatchUps.upcomingMatchUps.length).toEqual(24);
   expect(allDrawMatchUps.pendingMatchUps.length).toEqual(0);
   expect(allDrawMatchUps.completedMatchUps.length).toEqual(0);
+});
+
+it('can set matchUpFormat', () => {
+  reset();
+  initialize();
+  mainDrawPositions({ drawSize: 16 });
+  const { structure } = drawEngine.generateDrawType({ drawType: KNOCKOUT });
+  const { matchUps } = getAllStructureMatchUps({ structure });
+  expect(matchUps.length).toEqual(15);
+  const { upcomingMatchUps } = getStructureMatchUps({
+    structure,
+    requireParticipants: false,
+  });
+
+  const matchUpFormat = 'SET1-S:T10';
+  const matchUp = upcomingMatchUps[0];
+  expect(matchUp.matchUpFormat).toEqual(undefined);
+
+  const { matchUpId } = matchUp;
+  const { drawDefinition } = drawEngine.getState();
+  const result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
+  expect(result.success).toEqual(true);
+
+  const { matchUp: modifiedMatchUp } = findMatchUp({
+    drawDefinition,
+    matchUpId,
+  });
+  expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
 });

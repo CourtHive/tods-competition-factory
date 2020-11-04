@@ -94,6 +94,43 @@ it('can generate a tournament with events and draws', () => {
     drawId,
   });
   expect(result?.error).not.toBeUndefined();
+
+  const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
+
+  const matchUp = upcomingMatchUps[0];
+  const { matchUpId } = matchUp;
+  const matchUpFormat = 'SET1-S:T10';
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    matchUpFormat,
+  });
+  const {
+    upcomingMatchUps: modifiedUpcoming,
+  } = tournamentEngine.tournamentMatchUps();
+  const modifiedMatchUp = modifiedUpcoming[0];
+  expect(modifiedMatchUp.matchUpId).toEqual(matchUpId);
+  expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
+
+  const secondMatchUpFormat = 'SET3-S:T10';
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    matchUpFormat: secondMatchUpFormat,
+    outcome: {
+      sets: [{ side1Score: 6, side2Score: 3 }],
+      score: '6-3',
+    },
+  });
+  expect(result).toEqual(SUCCESS);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const targetMatchUp = matchUps.find(
+    matchUp => matchUp.matchUpId === matchUpId
+  );
+  expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
+  expect(targetMatchUp.score).toEqual('6-3');
+  expect(targetMatchUp.winningSide).toBeUndefined();
 });
 
 it('can set tournament names', () => {

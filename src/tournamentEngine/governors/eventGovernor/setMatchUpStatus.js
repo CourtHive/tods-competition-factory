@@ -17,16 +17,17 @@ export function setMatchUpStatus(props) {
   drawEngine.setState(drawDefinition);
 
   if (matchUpFormat) {
-    drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });
+    const result = drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });
+    if (result.error) return { errors: [{ error: result.error }] };
   }
 
   const { errors: setMatchUpStatusErrors } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpTieId,
-    matchUpStatus: outcome.matchUpStatus,
-    winningSide: outcome.winningSide,
-    score: outcome.score || '',
-    sets: outcome.sets,
+    matchUpStatus: outcome?.matchUpStatus,
+    winningSide: outcome?.winningSide,
+    score: outcome?.score || '',
+    sets: outcome?.sets,
   });
   if (setMatchUpStatusErrors) errors = errors.concat(setMatchUpStatusErrors);
 

@@ -1,5 +1,6 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
@@ -14,6 +15,15 @@ export function setMatchUpFormat(props) {
     matchUpFormat,
     tieFormat,
   } = props;
+
+  if (!drawDefinition) return { error: 'Missing drawDefinition' };
+  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpFormat) return { error: 'Missing matchUpFormat' };
+
+  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
+  if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
+    return { error: 'Unrecognized matchUpFormat' };
+  }
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({
