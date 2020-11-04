@@ -17,7 +17,6 @@ export function setMatchUpFormat(props) {
   } = props;
 
   if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!matchUpId) return { error: 'Missing matchUpId' };
   if (!matchUpFormat) return { error: 'Missing matchUpFormat' };
 
   const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
