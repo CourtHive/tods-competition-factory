@@ -14,6 +14,7 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
+import { getPolicyDefinition } from './getPolicyDefinition';
 
 const queryGovernor = {
   allTournamentMatchUps,
@@ -31,6 +32,8 @@ const queryGovernor = {
   participantScaleItem,
   getParticipantScaleItem,
   getParticipantSignInStatus,
+
+  getPolicyDefinition,
 
   // pass through accessors
   getMatchUpScheduleDetails: drawEngine.getMatchUpScheduleDetails,

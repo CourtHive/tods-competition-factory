@@ -233,6 +233,24 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
+## getPolicyDefinition
+
+Finds policyDefinition for either tournament, event (if eventId), or draw (if drawId);
+Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
+
+---
+
+## getSeedsCount
+
+Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
+
+- @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
+- @param {object} policyDefinition - polictyDefinition object
+- @param {number} participantCount - number of participants in draw structure
+- @param {number} drawSize - number of positions available in draw structure
+
+---
+
 ## getState
 
 No parameters.
