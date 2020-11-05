@@ -31,7 +31,6 @@ export function getSeedsCount({
       ? threshold.drawSize <= drawSize
       : drawSize === threshold.drawSize;
   });
-  console.log({ drawSizeProgression, relevantThresholds });
 
   const seedsCount = relevantThresholds.reduce((seedsCount, threshold) => {
     return participantCount >= threshold.minimumParticipantCount
