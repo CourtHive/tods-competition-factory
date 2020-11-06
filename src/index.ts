@@ -50,4 +50,5 @@ export { participantTypes } from './constants/participantTypes';
 export { penaltyConstants } from './constants/penaltyConstants';
 export { policyConstants } from './constants/policyConstants';
 export { resultConstants } from './constants/resultConstants';
+export { scaleConstants } from './constants/scaleConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
