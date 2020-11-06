@@ -1,4 +1,6 @@
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
+import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 import {
   MAIN,
@@ -8,11 +10,10 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
+
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
-import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { TEAM } from '../../constants/matchUpTypes';
-import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;

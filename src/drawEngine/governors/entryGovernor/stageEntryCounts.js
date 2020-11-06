@@ -6,14 +6,13 @@ import {
   getStageWildcardEntriesCount,
 } from '../../getters/stageGetter';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-
 import {
   INVALID_STAGE,
   MAIN,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/drawDefinitionConstants';
 
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
