@@ -1,4 +1,4 @@
-import { SCALE } from '../../constants/participantConstants';
+import { SCALE } from '../../constants/scaleConstants';
 
 export function participantScaleItem({
   participant,
