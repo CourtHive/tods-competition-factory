@@ -38,6 +38,7 @@ export { tournamentEngine } from './tournamentEngine';
 export { drawEngine } from './drawEngine';
 export { fixtures } from './fixtures';
 
+export { factoryConstants } from './constants';
 export { eventConstants } from './constants/eventConstants';
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export { entryStatusConstants } from './constants/entryStatusConstants';

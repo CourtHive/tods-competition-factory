@@ -1,14 +1,33 @@
-export { eventConstants } from './eventConstants';
-export { drawDefinitionConstants } from './drawDefinitionConstants';
-export { entryStatusConstants } from './entryStatusConstants';
-export { matchUpStatusConstants } from './matchUpStatusConstants';
-export { matchUpTypes } from './matchUpTypes';
-export { optionConstants } from './optionConstants';
-export { participantConstants } from './participantConstants';
-export { participantRoles } from './participantRoles';
-export { participantTypes } from './participantTypes';
-export { penaltyConstants } from './penaltyConstants';
-export { policyConstants } from './policyConstants';
-export { resultConstants } from './resultConstants';
-export { scaleConstants } from './scaleConstants';
-export { timeItemConstants } from './timeItemConstants';
+import { eventConstants } from './eventConstants';
+import { drawDefinitionConstants } from './drawDefinitionConstants';
+import { entryStatusConstants } from './entryStatusConstants';
+import { matchUpStatusConstants } from './matchUpStatusConstants';
+import { matchUpTypes } from './matchUpTypes';
+import { optionConstants } from './optionConstants';
+import { participantConstants } from './participantConstants';
+import { participantRoles } from './participantRoles';
+import { participantTypes } from './participantTypes';
+import { penaltyConstants } from './penaltyConstants';
+import { policyConstants } from './policyConstants';
+import { resultConstants } from './resultConstants';
+import { scaleConstants } from './scaleConstants';
+import { timeItemConstants } from './timeItemConstants';
+
+export const factoryConstants = {
+  eventConstants,
+  drawDefinitionConstants,
+  entryStatusConstants,
+  matchUpStatusConstants,
+  matchUpTypes,
+  optionConstants,
+  participantConstants,
+  participantRoles,
+  participantTypes,
+  penaltyConstants,
+  policyConstants,
+  resultConstants,
+  scaleConstants,
+  timeItemConstants,
+};
+
+export default factoryConstants;
