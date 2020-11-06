@@ -1,7 +1,7 @@
 import { addParticipantScaleItem } from './scaleItems';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
-import { RANKING, RATING } from '../../../constants/participantConstants';
+import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function rankByRatings({

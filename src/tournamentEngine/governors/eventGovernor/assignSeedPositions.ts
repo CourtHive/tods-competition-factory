@@ -20,6 +20,10 @@ interface SeedAssignmentProps {
   useExistingSeedLimit: boolean /* option to restrict assignments to existing seedNumbers */;
 }
 
+/*
+ * Provides the ability to assign seedPositions *after* a structure has been generated
+ * To be used *before* participants are positioned
+ */
 export function assignSeedPositions(props: SeedAssignmentProps) {
   const {
     tournamentRecord,
@@ -46,17 +50,22 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   });
 
   drawEngine.setState(drawDefinition);
-  const existingSeedAssginments = drawEngine.getSeedAssignments({
+  const existingSeedAssignments = drawEngine.getSeedAssignments({
     drawDefinition,
     stage,
     stageSequence,
     structureId,
   });
 
-  if (!existingSeedAssginments.length) {
+  /*
+   * Expecting an array of length 1.
+   * If no items in array then structure not found.
+   * If more than one item in array then insufficient detail.
+   */
+  if (!existingSeedAssignments.length) {
     return { error: 'draw sructure not found' };
   }
-  if (existingSeedAssginments.length > 1) {
+  if (existingSeedAssignments.length > 1) {
     return { error: 'Insufficient detail to determine structure' };
   }
 
@@ -64,7 +73,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     seedLimit,
     seedAssignments,
     structureId: identifiedStructureId,
-  } = existingSeedAssginments[0];
+  } = existingSeedAssignments[0];
   /**
    * mergeObject and seedLimit insure that new assignments do not go beyond already established number of seeds
    */

@@ -1,5 +1,4 @@
 import { tieFormatDefaults } from './tieFormatDefaults';
-import { getParticipantScaleItem } from '../governors/queryGovernor/scaleValue';
 
 import {
   MAIN,
@@ -9,9 +8,11 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
-import { ALTERNATE, RANKING } from '../../constants/participantConstants';
+import { ALTERNATE } from '../../constants/participantConstants';
+import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { TEAM } from '../../constants/matchUpTypes';
+import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -149,27 +150,38 @@ export function generateDrawDefinition(props) {
         if (!result.success) console.log(`%c ${result.error}`, 'color: red');
       });
   } else if (event?.category) {
-    // CONVENIENCE SEED BY RANKING IF PRESENT
-    // and if no seededParticipants have been defined
+    // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
-    const scaleAttributes = {
+    const seedingScaleAttributes = {
+      scaleType: SEEDING,
+      scaleName: event.category.categoryName,
+      eventType: event.eventType,
+    };
+
+    const rankingScaleAttributes = {
       scaleType: RANKING,
       scaleName: event.category.categoryName,
       eventType: event.eventType,
     };
 
-    const scaledEntries = entries
-      .map(entry => {
-        const { participantId } = entry;
-        const { scaleItem } = getParticipantScaleItem({
-          tournamentRecord,
-          participantId,
-          scaleAttributes,
-        });
-        return Object.assign({}, entry, scaleItem);
-      })
-      .filter(scaledEntry => scaledEntry.scaleValue)
-      .sort(scaleValueSort);
+    const { scaledEntries: seedingScaledEntries } = getScaledEntries({
+      scaleAttributes: seedingScaleAttributes,
+      tournamentRecord,
+      event,
+      stage,
+    });
+
+    const { scaledEntries: rankingScaledEntries } = getScaledEntries({
+      scaleAttributes: rankingScaleAttributes,
+      tournamentRecord,
+      event,
+      stage,
+    });
+
+    // Attempt to seed based on seeding scaled entries and then rank scaled entries
+    const scaledEntries = seedingScaledEntries?.length
+      ? seedingScaledEntries
+      : rankingScaledEntries;
 
     if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
 
@@ -203,8 +215,4 @@ export function generateDrawDefinition(props) {
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
   return { structureId, drawDefinition, conflicts };
-}
-
-function scaleValueSort(a, b) {
-  return parseFloat(a.scaleValue || 9999) - parseFloat(b.scaleValue || 9999);
 }

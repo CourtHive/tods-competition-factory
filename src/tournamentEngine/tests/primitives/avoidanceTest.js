@@ -4,7 +4,7 @@ import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { RANKING } from '../../../constants/participantConstants';
+import { RANKING } from '../../../constants/scaleConstants';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SUCCESS } = resultConstants;

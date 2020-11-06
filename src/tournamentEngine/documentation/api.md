@@ -80,6 +80,9 @@ Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any
 
 ## assignSeedPositions
 
+- Provides the ability to assign seedPositions _after_ a structure has been generated
+- To be used _before_ participants are positioned
+
 Assign **participantIds** to **seedNumbers** within a target draw structure.
 
 ```json

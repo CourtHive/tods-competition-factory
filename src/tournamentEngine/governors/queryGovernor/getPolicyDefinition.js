@@ -16,20 +16,29 @@ export function getPolicyDefinition({
     const { appliedPolicies } =
       getDrawAppliedPolicies({ drawDefinition }) || {};
     const policy = appliedPolicies[policyType];
-    return policy && { policyDefinition: { [policyType]: policy } };
+    const policyDefinition = policy && { [policyType]: policy };
+    return policyDefinition
+      ? { policyDefinition }
+      : { error: 'No matching policy found' };
   }
 
   if (event) {
     const { appliedPolicies } = getEventAppliedPolicies({ event }) || {};
     const policy = appliedPolicies[policyType];
-    return policy && { policyDefinition: { [policyType]: policy } };
+    const policyDefinition = policy && { [policyType]: policy };
+    return policyDefinition
+      ? { policyDefinition }
+      : { error: 'No matching policy found' };
   }
 
   if (tournamentRecord) {
     const { appliedPolicies } =
       getTournamentAppliedPolicies({ tournamentRecord }) || {};
     const policy = appliedPolicies[policyType];
-    return policy && { policyDefinition: { [policyType]: policy } };
+    const policyDefinition = policy && { [policyType]: policy };
+    return policyDefinition
+      ? { policyDefinition }
+      : { error: 'No matching policy found' };
   }
 
   return { error: 'Policy not found' };
