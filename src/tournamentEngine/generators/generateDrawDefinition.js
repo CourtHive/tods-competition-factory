@@ -8,7 +8,7 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
-import { ALTERNATE } from '../../constants/participantConstants';
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { TEAM } from '../../constants/matchUpTypes';

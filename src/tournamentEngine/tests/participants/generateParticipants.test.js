@@ -3,7 +3,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { RATING } from '../../../constants/participantConstants';
+import { RATING } from '../../../constants/scaleConstants';
 
 it('can set participant scaleItems', () => {
   const { tournamentRecord } = tournamentRecordWithParticipants({

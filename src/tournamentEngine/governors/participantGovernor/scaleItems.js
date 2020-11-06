@@ -1,4 +1,4 @@
-import { SCALE } from '../../../constants/participantConstants';
+import { SCALE } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setParticipantScaleItem({
