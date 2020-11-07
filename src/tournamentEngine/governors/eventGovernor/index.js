@@ -3,7 +3,7 @@ import { deleteEvents } from './deleteEvent';
 import { addDrawEntries } from './addDrawEntries';
 import { addEventEntries } from './addEventEntries';
 import { addDrawDefinition } from './addDrawDefinition';
-import { deleteEventEntries } from './deleteEventEntries';
+import { removeEventEntries } from './removeEventEntries';
 import { assignDrawPosition } from './assignDrawPosition';
 import { assignSeedPositions } from './assignSeedPositions';
 import {
@@ -32,7 +32,7 @@ const eventGovernor = {
   deleteDrawDefinitions,
 
   addEventEntries,
-  deleteEventEntries,
+  removeEventEntries,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,

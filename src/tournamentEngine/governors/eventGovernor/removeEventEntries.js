@@ -1,20 +1,14 @@
-import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function deleteEventEntries({
-  tournamentRecord,
-  eventId,
-  participantIds,
-}) {
-  if (!eventId) return { error: 'Missing eventId' };
+export function removeEventEntries({ participantIds, event }) {
+  if (!event) return { error: 'Missing event' };
   if (!participantIds || !participantIds.length)
     return { error: 'Missing participantIds' };
 
-  const { event } = findEvent({ tournamentRecord, eventId });
   if (!event || !event.eventId) return { error: 'Event not found' };
   if (!event.entries) event.entries = [];
 
-  // TODO: filter participantIds to delete by those that are active in events
+  // TODO: filter participantIds / don't delete those that are active in drawDefinitions
 
   event.entries = event.entries.filter(entry => {
     const entryId =
