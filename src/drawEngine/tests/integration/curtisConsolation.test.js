@@ -27,11 +27,10 @@ it('can generate and verify curtis structures', () => {
     participantsCount: 30,
   }));
 
-  const structureSeedAssignments = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId: mainStructureId,
   });
-  expect(structureSeedAssignments.length).toEqual(1);
-  expect(structureSeedAssignments[0].seedAssignments.length).toEqual(8);
+  expect(seedAssignments.length).toEqual(8);
 
   verifyStructure({
     structureId: mainStructureId,

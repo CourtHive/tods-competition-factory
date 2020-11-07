@@ -57,11 +57,9 @@ it('can generate a tournament with events and draws', () => {
   // find main structureId more intelligently
   const mainStructureId = drawDefinition.structures[0].structureId;
 
-  const structureSeedAssignments = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId: mainStructureId,
   });
-  const { seedAssignments } = structureSeedAssignments[0];
-  expect(structureSeedAssignments.length).toEqual(1);
   expect(seedAssignments.length).toEqual(8);
 
   result = tournamentEngine.assignSeedPositions({

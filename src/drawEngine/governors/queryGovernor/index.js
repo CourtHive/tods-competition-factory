@@ -23,7 +23,7 @@ import {
 } from '../../getters/getMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getAllDrawMatchUps, getDrawMatchUps } from '../../getters/getMatchUps';
-import { getStructureSeedAssignments } from '../../accessors/seedingAccessor';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 /*
   return an array of all matchUps within a drawDefinition

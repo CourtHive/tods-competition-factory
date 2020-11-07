@@ -48,28 +48,18 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   });
 
   drawEngine.setState(drawDefinition);
-  const existingSeedAssignments = drawEngine.getStructureSeedAssignments({
+  const {
+    seedAssignments,
+    seedLimit,
+    error,
+  } = drawEngine.getStructureSeedAssignments({
     drawDefinition,
     structureId,
   });
 
-  /*
-   * Expecting an array of length 1.
-   * If no items in array then structure not found.
-   * If more than one item in array then insufficient detail.
-   */
-  if (!existingSeedAssignments.length) {
-    return { error: 'draw sructure not found' };
-  }
-  if (existingSeedAssignments.length > 1) {
-    return { error: 'Insufficient detail to determine structure' };
-  }
+  const errors: string[] = [];
+  if (error) errors.push(error);
 
-  const {
-    seedLimit,
-    seedAssignments,
-    structureId: identifiedStructureId,
-  } = existingSeedAssignments[0];
   /**
    * mergeObject and seedLimit insure that new assignments do not go beyond already established number of seeds
    */
@@ -104,12 +94,11 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     };
   }
 
-  const errors: string[] = [];
   updatedAssignments.forEach((assignment: any) => {
     const result = drawEngine.assignSeed({
       ...assignment,
       drawDefinition,
-      structureId: identifiedStructureId,
+      structureId,
     });
     if (result?.error) {
       modifications = 0;

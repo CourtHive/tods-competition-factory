@@ -212,17 +212,13 @@ The structure of an **_assignment object_** is as follows:
 
 ## getStructureSeedAssignments
 
-Returns existing seedAssignments for **_all_** structures within a draw
+Returns seedAssignments a specific structure based on structureId or structure
 
-| Parameters    | Required | Type   | Description                                                            |
-| :------------ | :------- | :----- | :--------------------------------------------------------------------- |
-| structureId   | Optional | string | Return assignments for a specific structure, identified by structureId |
-| stage         | Optional | string | Locate structure by stage; used together with stageSequence            |
-| stageSequence | Optional | number | Locate structure by stageSequence; used together with stage            |
-
-```json
-Defaults to { stage: 'MAIN', stageSequence: 1 } if { structureId: undefined }
-```
+| Parameters     | Required | Type   | Description                                     |
+| :------------- | :------- | :----- | :---------------------------------------------- |
+| drawDefiniiton | required | object | drawDefinition object                           |
+| structure      | Optional | object | Return seedAssignments for a specific structure |
+| structureId    | Optional | string | Return seedAssignments for a specific structure |
 
 The result is an array of objects which contain seeding details for all structures within the current draw
 

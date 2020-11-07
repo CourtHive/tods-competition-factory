@@ -453,12 +453,11 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   expect(unplacedSeedNumbers).toMatchObject([3]);
   expect(unfilledPositions).toMatchObject([17]);
 
-  const structureSeedAssignments = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId,
   });
-  expect(structureSeedAssignments.length).toEqual(1);
-  expect(structureSeedAssignments[0].seedAssignments.length).toEqual(16);
-  const assignedSeedPositions = structureSeedAssignments[0].seedAssignments.filter(
+  expect(seedAssignments.length).toEqual(16);
+  const assignedSeedPositions = seedAssignments.filter(
     assignment => assignment.participantId
   );
   expect(assignedSeedPositions.length).toEqual(3);

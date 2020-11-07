@@ -13,10 +13,12 @@ export function getStructureSeedAssignments({
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }
   if (!structureId) structureId = structure.structureId;
+
+  const { stage, stageSequence } = structure;
+
   if (!error) {
-    const isPlayoffStructure = structure.stage === PLAYOFF;
+    const isPlayoffStructure = stage === PLAYOFF;
     if (isPlayoffStructure && drawDefinition) {
-      const { stage, stageSequence } = structure;
       const entries = stageEntries({
         drawDefinition,
         stageSequence,
@@ -43,6 +45,8 @@ export function getStructureSeedAssignments({
       error = 'Missing seeds';
     }
   }
+  const seedLimit =
+    structure.seedLimit || structure?.positionAssignments?.length;
 
-  return { seedAssignments, error };
+  return { seedAssignments, seedLimit, stage, stageSequence, error };
 }
