@@ -12,6 +12,7 @@ export function getStructureSeedAssignments({
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }
+  if (!structure) return { error: 'structure not found' };
   if (!structureId) structureId = structure.structureId;
 
   const { stage, stageSequence } = structure;
