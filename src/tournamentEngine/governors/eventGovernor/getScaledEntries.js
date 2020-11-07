@@ -23,7 +23,11 @@ export function getScaledEntries({
       });
       return Object.assign({}, entry, scaleItem);
     })
-    .filter(scaledEntry => scaledEntry.scaleValue)
+    .filter(scaledEntry => {
+      const scaleValue = scaledEntry.scaleValue;
+      if (isNaN(scaleValue) || !parseFloat(scaleValue)) return false;
+      return scaleValue;
+    })
     .sort(scaleValueSort);
 
   return { scaledEntries };
