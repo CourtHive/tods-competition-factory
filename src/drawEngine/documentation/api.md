@@ -210,7 +210,7 @@ The structure of an **_assignment object_** is as follows:
 
 ---
 
-## getSeedAssignments
+## getStructureSeedAssignments
 
 Returns existing seedAssignments for **_all_** structures within a draw
 
@@ -248,7 +248,10 @@ The most basic usage is to retrieve seed assignments for a draw which has a sing
 
 ```js
 drawEngine.setState(drawDefinition);
-const structureSeedingDetails = drawEngine.getSeedAssignments();
+const structureId = drawDefinition.structures[0].structureId;
+const structureSeedingDetails = drawEngine.getStructureSeedAssignments({
+  structureId,
+});
 const firstStructureDetails = structureSeedingDetails[0];
 const { seedAssignments } = firstStructureDetails;
 ```

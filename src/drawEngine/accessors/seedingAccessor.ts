@@ -1,23 +1,10 @@
-import { MAIN } from '../../constants/drawDefinitionConstants';
-
-export function getSeedAssignments({
-  drawDefinition,
-  structureId,
-  stage,
-  stageSequence,
-}) {
+export function getStructureSeedAssignments({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!structureId) {
-    if (!stage) stage = MAIN;
-    if (!stageSequence) stageSequence = 1;
-  }
+  if (!structureId) return { error: 'Missing structuerId' };
 
   const { structures } = drawDefinition || [];
   const filteredStructures = structures.filter(structure => {
-    if (stageSequence && structure?.stageSequence !== stageSequence)
-      return false;
     if (structureId && structure?.structureId !== structureId) return false;
-    if (stage && structure?.stage !== stage) return false;
     return true;
   });
 

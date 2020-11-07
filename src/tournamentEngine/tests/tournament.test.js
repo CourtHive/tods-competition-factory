@@ -54,12 +54,18 @@ it('can generate a tournament with events and draws', () => {
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   expect(appliedPolicies.seeding.policyName).toEqual('ITF');
 
-  const structureSeedAssignments = drawEngine.getSeedAssignments();
+  // find main structureId more intelligently
+  const mainStructureId = drawDefinition.structures[0].structureId;
+
+  const structureSeedAssignments = drawEngine.getStructureSeedAssignments({
+    structureId: mainStructureId,
+  });
   const { seedAssignments } = structureSeedAssignments[0];
   expect(structureSeedAssignments.length).toEqual(1);
   expect(seedAssignments.length).toEqual(8);
 
   result = tournamentEngine.assignSeedPositions({
+    structureId: mainStructureId,
     eventId,
     drawId,
   });
@@ -77,6 +83,7 @@ it('can generate a tournament with events and draws', () => {
     { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(1) },
   ];
   result = tournamentEngine.assignSeedPositions({
+    structureId: mainStructureId,
     assignments,
     eventId,
     drawId,
@@ -89,6 +96,7 @@ it('can generate a tournament with events and draws', () => {
     { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(2) },
   ];
   result = tournamentEngine.assignSeedPositions({
+    structureId: mainStructureId,
     assignments,
     eventId,
     drawId,

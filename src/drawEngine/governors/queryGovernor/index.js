@@ -23,7 +23,7 @@ import {
 } from '../../getters/getMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getAllDrawMatchUps, getDrawMatchUps } from '../../getters/getMatchUps';
-import { getSeedAssignments } from '../../accessors/seedingAccessor';
+import { getStructureSeedAssignments } from '../../accessors/seedingAccessor';
 
 /*
   return an array of all matchUps within a drawDefinition
@@ -57,7 +57,7 @@ const queryGovernor = {
   structureActions,
   matchUpActions,
   positionActions,
-  getSeedAssignments,
+  getStructureSeedAssignments,
   getNextUnfilledDrawPositions,
 
   getMatchUpContextIds,

@@ -31,8 +31,6 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     eventId,
     drawId,
     structureId,
-    stage,
-    stageSequence,
     assignments,
     useExistingSeedLimit,
   } = props;
@@ -50,10 +48,8 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   });
 
   drawEngine.setState(drawDefinition);
-  const existingSeedAssignments = drawEngine.getSeedAssignments({
+  const existingSeedAssignments = drawEngine.getStructureSeedAssignments({
     drawDefinition,
-    stage,
-    stageSequence,
     structureId,
   });
 
