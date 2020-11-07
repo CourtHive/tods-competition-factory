@@ -39,9 +39,10 @@ export { drawEngine } from './drawEngine';
 export { fixtures } from './fixtures';
 
 export { factoryConstants } from './constants';
-export { eventConstants } from './constants/eventConstants';
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
+export { eventConstants } from './constants/eventConstants';
 export { entryStatusConstants } from './constants/entryStatusConstants';
+export { genderConstants } from './constants/genderConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
 export { optionConstants } from './constants/optionConstants';

@@ -1,5 +1,6 @@
-import { eventConstants } from './eventConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
+import { eventConstants } from './eventConstants';
+import { genderConstants } from './genderConstants';
 import { entryStatusConstants } from './entryStatusConstants';
 import { matchUpStatusConstants } from './matchUpStatusConstants';
 import { matchUpTypes } from './matchUpTypes';
@@ -14,9 +15,10 @@ import { scaleConstants } from './scaleConstants';
 import { timeItemConstants } from './timeItemConstants';
 
 export const factoryConstants = {
-  eventConstants,
   drawDefinitionConstants,
   entryStatusConstants,
+  eventConstants,
+  genderConstants,
   matchUpStatusConstants,
   matchUpTypes,
   optionConstants,
