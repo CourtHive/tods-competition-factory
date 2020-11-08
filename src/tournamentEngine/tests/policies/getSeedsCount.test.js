@@ -1,3 +1,8 @@
+import {
+  MISSING_DRAW_SIZE,
+  MISSING_PARTICIPANT_COUNT,
+  MISSING_POLICY_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../fixtures/seeding/SEEDING_USTA';
 import { getSeedsCount } from '../../governors/policyGovernor/getSeedsCount';
 
@@ -5,18 +10,18 @@ it('can accurately determine seedsCount from drawSize and participantCount', () 
   let seedsCount, error;
   ({ seedsCount, error } = getSeedsCount());
   expect(seedsCount).toEqual(undefined);
-  expect(error).toEqual('Missing policyDefinition');
+  expect(error).toEqual(MISSING_POLICY_DEFINITION);
 
   ({ seedsCount, error } = getSeedsCount({ policyDefinition: SEEDING_USTA }));
   expect(seedsCount).toEqual(undefined);
-  expect(error).toEqual('Missing participantCount');
+  expect(error).toEqual(MISSING_PARTICIPANT_COUNT);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinition: SEEDING_USTA,
     participantCount: 15,
   }));
   expect(seedsCount).toEqual(undefined);
-  expect(error).toEqual('Missing drawSize');
+  expect(error).toEqual(MISSING_DRAW_SIZE);
 
   ({ seedsCount, error } = getSeedsCount({
     policyDefinition: SEEDING_USTA,

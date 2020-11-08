@@ -4,10 +4,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addDrawEntries({
   tournamentRecord,
   drawEngine,
-  drawId,
+
   participantIds,
-  entryStage,
   entryStatus,
+  entryStage,
+  drawId,
 }) {
   const { drawDefinition, event } = getDrawDefinition({
     tournamentRecord,

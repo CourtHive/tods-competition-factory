@@ -1,3 +1,11 @@
+import {
+  MISSING_VALUE,
+  MISSING_MATCHUP,
+  INVALID_SET_NUMBER,
+  MISSING_SET_NUMBER,
+  MISSING_SIDE_NUMBER,
+  INVALID_SIDE_NUMBER,
+} from '../../../../constants/errorConditionConstants';
 import { submitScoreChange } from '../submitScoreChange';
 import { FORMAT_STANDARD } from './formatConstants';
 
@@ -21,15 +29,15 @@ test('submitScoreChange smoke test', () => {
 
   let { result, error } = submitScoreChange();
   expect(result).toEqual(false);
-  expect(error).toEqual('missing matchUp');
+  expect(error).toEqual(MISSING_MATCHUP);
 
   ({ result, error } = submitScoreChange({ matchUp }));
   expect(result).toEqual(false);
-  expect(error).toEqual('missing sideNumber');
+  expect(error).toEqual(MISSING_SIDE_NUMBER);
 
   ({ result, error } = submitScoreChange({ matchUp, sideNumber: 2 }));
   expect(result).toEqual(false);
-  expect(error).toEqual('missing setNumber');
+  expect(error).toEqual(MISSING_SET_NUMBER);
 
   ({ result, error } = submitScoreChange({
     matchUp,
@@ -37,7 +45,7 @@ test('submitScoreChange smoke test', () => {
     setNumber: 3,
   }));
   expect(result).toEqual(false);
-  expect(error).toEqual('missing value');
+  expect(error).toEqual(MISSING_VALUE);
 
   ({ result, error } = submitScoreChange({
     matchUp,
@@ -46,7 +54,7 @@ test('submitScoreChange smoke test', () => {
     value: 2,
   }));
   expect(result).toEqual(false);
-  expect(error).toEqual('invalid side number');
+  expect(error).toEqual(INVALID_SIDE_NUMBER);
 
   ({ result, error } = submitScoreChange({
     matchUp,
@@ -55,7 +63,7 @@ test('submitScoreChange smoke test', () => {
     value: 2,
   }));
   expect(result).toEqual(false);
-  expect(error).toEqual('invalid set value');
+  expect(error).toEqual(INVALID_SET_NUMBER);
 
   ({ result, error } = submitScoreChange({
     matchUp,
@@ -64,6 +72,6 @@ test('submitScoreChange smoke test', () => {
     value: 6,
   }));
   // expect(result).toEqual(false);
-  // expect(error).toEqual('invalid set value');
+  // expect(error).toEqual(INVALID_SET_NUMBER);
   console.log({ result });
 });

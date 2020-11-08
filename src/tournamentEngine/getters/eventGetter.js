@@ -1,3 +1,7 @@
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_DRAW_ID,
+} from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function findEvent({ tournamentRecord, eventId, drawId }) {
@@ -26,7 +30,7 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {
   if (!drawId) {
-    return { error: 'Missing drawId' };
+    return { error: MISSING_DRAW_ID };
   }
 
   const target = (tournamentRecord.events || []).reduce((target, event) => {
@@ -41,7 +45,5 @@ export function getDrawDefinition({ tournamentRecord, drawId }) {
       : target;
   }, undefined);
 
-  return target
-    ? { ...target, SUCCESS }
-    : { error: 'drawDefinition not found' };
+  return target ? { ...target, SUCCESS } : { error: DRAW_DEFINITION_NOT_FOUND };
 }

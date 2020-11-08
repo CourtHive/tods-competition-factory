@@ -1,6 +1,11 @@
 import { getMatchUpParticipantIds } from '../accessors/participantAccessor';
 
 import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
+import {
+  INVALID_MATCHUP,
+  MISSING_CONTEXT,
+  MISSING_MATCHUP,
+} from '../../constants/errorConditionConstants';
 
 /*
   takes a matchUpWithContext
@@ -12,12 +17,12 @@ import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
 */
 export function getCheckedInParticipantIds({ matchUp }) {
   if (!matchUp || !matchUp.hasContext) {
-    return { error: 'requires inContext matchUp' };
+    return { error: MISSING_CONTEXT };
   }
 
-  if (!matchUp) return { error: 'Missing matchUp' };
+  if (!matchUp) return { error: MISSING_MATCHUP };
   if (!matchUp.sides || matchUp.sides.filter(f => f).length !== 2) {
-    return { error: 'Invalid matchUp' };
+    return { error: INVALID_MATCHUP };
   }
 
   const {

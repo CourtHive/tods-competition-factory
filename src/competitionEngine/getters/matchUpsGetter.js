@@ -1,3 +1,4 @@
+import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 
 export function allCompetitionMatchUps({
@@ -6,7 +7,7 @@ export function allCompetitionMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
-  if (!tournamentRecords) return { error: 'Missing tournamentRecords' };
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const competitionMatchUps = tournamentIds
@@ -74,7 +75,7 @@ export function competitionMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
-  if (!tournamentRecords) return { error: 'Missing tournamentRecords' };
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const tournamentsMatchUps = tournamentIds.map(tournamentId => {

@@ -10,6 +10,12 @@ import { structureActiveDrawPositions } from '../../getters/structureActiveDrawP
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import {
+  DRAW_POSITION_ACTIVE,
+  MISSING_DRAW_POSITION,
+  DRAW_POSITION_NOT_CLEARED,
+  MISSING_DRAW_POSITIONS,
+} from '../../../constants/errorConditionConstants';
 
 export function clearDrawPosition({
   drawDefinition,
@@ -42,13 +48,12 @@ export function clearDrawPosition({
   });
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
 
-  if (!drawPosition) return { error: 'Missing drawPosition' };
+  if (!drawPosition) return { error: MISSING_DRAW_POSITION };
 
   // drawPosition may not be cleared if:
   // 1. drawPosition has been advanced by winning a matchUp
   // 2. drawPosition is paired with another drawPosition which has been advanced by winning a matchUp
-  if (drawPositionIsActive)
-    return { error: 'Cannot clear an active drawPosition' };
+  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
   let drawPositionCleared;
   positionAssignments.forEach(assignment => {
@@ -85,7 +90,7 @@ export function clearDrawPosition({
     }
   });
 
-  return drawPositionCleared ? SUCCESS : { error: 'drawPosition not cleared' };
+  return drawPositionCleared ? SUCCESS : { error: DRAW_POSITION_NOT_CLEARED };
 
   function removeByeAndCleanUp({ matchUp, drawPosition }) {
     const { matchUpId } = matchUp;
@@ -118,7 +123,7 @@ export function clearDrawPosition({
         f => f
       ).length;
       if (loserMatchUpDrawPositionsCount !== 2)
-        return { error: 'Missing drawPositions in loserMatchUp' };
+        return { error: MISSING_DRAW_POSITIONS };
       // drawPositions must be in numerical order
       loserMatchUp.drawPositions = loserMatchUp.drawPositions?.sort(
         numericSort

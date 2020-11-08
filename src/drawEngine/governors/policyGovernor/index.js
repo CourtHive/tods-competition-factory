@@ -1,11 +1,18 @@
 import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_OBJECT,
+  EXISTING_POLICY_TYPE,
+  MISSING_DRAW_DEFINITION,
+  MISSING_POLICY_DEFINITION,
+  INVALID_POLICY_DEFINITION,
+} from '../../../constants/errorConditionConstants';
 
 function addPolicyProfile({ drawDefinition, policyDefinition }) {
   const errors = [];
   if (!policyDefinition || typeof policyDefinition !== 'object') {
-    errors.push({ error: 'Missing Policy Definition' });
+    errors.push({ error: MISSING_POLICY_DEFINITION });
     return { errors };
   }
 
@@ -16,7 +23,7 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
     } else {
-      errors.push({ error: `Policy ${policyType} already applied` });
+      errors.push({ error: EXISTING_POLICY_TYPE });
     }
   });
 
@@ -34,16 +41,16 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
 }
 
 function addPolicy({ policies, policyDefinition }) {
-  if (typeof policyDefinition !== 'object') return { error: 'Invalid Object' };
+  if (typeof policyDefinition !== 'object') return { error: INVALID_OBJECT };
   if (!validDefinitionKeys(policyDefinition))
-    return { error: 'Invalid Definition' };
+    return { error: INVALID_POLICY_DEFINITION };
   Object.assign(policies, policyDefinition);
   return SUCCESS;
 }
 
 function attachPolicy({ drawDefinition, policies, policyDefinition }) {
   if (!drawDefinition) {
-    return { error: 'Missing drawDefinition' };
+    return { error: MISSING_DRAW_DEFINITION };
   }
   let result = addPolicy({ policies, policyDefinition });
   if (result && result.errors) return { error: result.errors };

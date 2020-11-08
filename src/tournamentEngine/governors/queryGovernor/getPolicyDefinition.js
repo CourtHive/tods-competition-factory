@@ -1,3 +1,4 @@
+import { MISSING_POLICY_TYPE } from '../../../constants/errorConditionConstants';
 import { getAppliedPolicies as getDrawAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import {
   getAppliedPolicies as getTournamentAppliedPolicies,
@@ -10,7 +11,7 @@ export function getPolicyDefinition({
   policyType,
   event,
 }) {
-  if (!policyType) return { error: 'Missing policyType' };
+  if (!policyType) return { error: MISSING_POLICY_TYPE };
 
   if (drawDefinition) {
     const { appliedPolicies } =

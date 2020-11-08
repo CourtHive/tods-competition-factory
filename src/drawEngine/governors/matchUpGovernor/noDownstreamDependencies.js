@@ -13,6 +13,10 @@ import {
   INCOMPLETE,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_MATCHUP_STATUS,
+  UNRECOGNIZED_MATCHUP_STATUS,
+} from '../../../constants/errorConditionConstants';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, scoreString, winningSide } = props;
@@ -112,7 +116,7 @@ function attemptToSetMatchUpStatus(props) {
 
   if (matchUp.winningSide) {
     if (matchUpStatus === BYE) {
-      errors.push({ error: 'matchUpStatus cannot be set to BYE' });
+      errors.push({ error: INVALID_MATCHUP_STATUS });
       // TESTED
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       matchUp.matchUpStatus = matchUpStatus;
@@ -129,7 +133,7 @@ function attemptToSetMatchUpStatus(props) {
       }
       // TESTED
     } else {
-      errors.push({ error: 'Unknown matchUpStatus' });
+      errors.push({ error: UNRECOGNIZED_MATCHUP_STATUS });
       // TESTED
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
@@ -156,15 +160,15 @@ function attemptToSetMatchUpStatus(props) {
       matchUp.matchUpStatus = matchUpStatus;
       // TESTED
     } else {
-      errors.push({ error: 'matchUp must include BYE assigned drawPosition' });
+      errors.push({ error: INVALID_MATCHUP_STATUS });
       // TESTED
     }
   } else {
     if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      errors.push({ error: 'Invalid matchUpStatus: no winningSide' });
+      errors.push({ error: INVALID_MATCHUP_STATUS });
       // TESTED
     } else {
-      errors.push({ error: 'Unnkown matchUpStatus' });
+      errors.push({ error: UNRECOGNIZED_MATCHUP_STATUS });
       // TESTED
     }
   }

@@ -1,5 +1,11 @@
 import { unique } from '../../utilities';
 
+import {
+  MISSING_PARTICIPANT,
+  MISSING_PARTICIPANTS,
+  MISSING_POLICY_ATTRIBUTES,
+} from '../../constants/errorConditionConstants';
+
 /**
  *
  * @param {object[]} participants - all tournament participants; used to access attribute values for grouping
@@ -22,10 +28,10 @@ export function getAttributeGroupings({
   targetParticipantIds,
 }) {
   if (!Array.isArray(policyAttributes)) {
-    return { error: 'Missing policyAttributes' };
+    return { error: MISSING_POLICY_ATTRIBUTES };
   }
   if (!Array.isArray(participants)) {
-    return { error: 'Missing participants' };
+    return { error: MISSING_PARTICIPANTS };
   }
   const groupings = {};
   targetParticipantIds.forEach(participantId => {
@@ -65,10 +71,10 @@ export function extractAttributeValues({
   policyAttributes,
 }) {
   if (!Array.isArray(policyAttributes)) {
-    return { error: 'Missing policyAttributes' };
+    return { error: MISSING_POLICY_ATTRIBUTES };
   }
   if (!participant) {
-    return { error: 'Missing participant' };
+    return { error: MISSING_PARTICIPANT };
   }
   const extractedValues = [];
   policyAttributes.forEach(policyAttribute => {

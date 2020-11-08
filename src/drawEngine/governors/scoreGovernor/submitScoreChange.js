@@ -1,4 +1,12 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import {
+  MISSING_MATCHUP,
+  MISSING_SET_NUMBER,
+  MISSING_SIDE_NUMBER,
+  INVALID_SIDE_NUMBER,
+  MISSING_VALUE,
+  INVALID_SET_NUMBER,
+} from '../../../constants/errorConditionConstants';
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
@@ -6,25 +14,25 @@ export function submitScoreChange(props) {
   const { matchUp, sideNumber, setNumber, value } = props || {};
 
   if (!matchUp) {
-    return { result: false, error: 'missing matchUp' };
+    return { result: false, error: MISSING_MATCHUP };
   }
   if (!sideNumber) {
-    return { result: false, error: 'missing sideNumber' };
+    return { result: false, error: MISSING_SIDE_NUMBER };
   }
   if (!setNumber) {
-    return { result: false, error: 'missing setNumber' };
+    return { result: false, error: MISSING_SET_NUMBER };
   }
   if (!value) {
-    return { result: false, error: 'missing value' };
+    return { result: false, error: MISSING_VALUE };
   }
 
   const analysis = analyzeMatchUp(props);
 
   if (!analysis.isValidSideNumber)
-    return { result: false, error: 'invalid side number' };
+    return { result: false, error: INVALID_SIDE_NUMBER };
 
   const { modifiedSet, isValidSet, winnerChanged } = getModifiedSet(props);
-  if (!isValidSet) return { result: false, error: 'invalid set value' };
+  if (!isValidSet) return { result: false, error: INVALID_SET_NUMBER };
 
   if (winnerChanged) {
     if (!analysis.isLastSetWithValues) {

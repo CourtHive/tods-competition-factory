@@ -1,5 +1,9 @@
 import { SCALE } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_SCALE_ITEM,
+  MISSING_PARTICIPANT,
+} from '../../../constants/errorConditionConstants';
 
 export function setParticipantScaleItem({
   tournamentRecord,
@@ -20,7 +24,7 @@ export function setParticipantScaleItem({
       scaleItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 
-  if (!validScaleItem) return { error: 'Invalid Scale Item' };
+  if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
 
   if (
     participantId &&
@@ -92,7 +96,7 @@ function isValidScaleItem({ scaleItem }) {
 
 export function addParticipantScaleItem({ participant, scaleItem }) {
   if (!participant) {
-    return { error: 'Missing participant' };
+    return { error: MISSING_PARTICIPANT };
   }
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
@@ -107,7 +111,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
       scaleItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 
-  if (!validScaleItem) return { error: 'Invalid Scale Item' };
+  if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
 
   const timeStamp = new Date().toISOString();
   if (!participant.timeItems) participant.timeItems = [];

@@ -1,6 +1,7 @@
 import { stageDrawPositionsCount } from '../../getters/stageGetter';
 import structureTemplate from '../../generators/structureTemplate';
 
+import { powerOf2, makeDeepCopy } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/structureGetter';
@@ -38,7 +39,10 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/drawDefinitionConstants';
 
-import { powerOf2, makeDeepCopy } from '../../../utilities';
+import {
+  INVALID_DRAW_SIZE,
+  STAGE_SEQUENCE_LIMIT,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function generateDrawType(props = {}) {
@@ -69,7 +73,7 @@ export function generateDrawType(props = {}) {
         !powerOf2(drawSize)));
 
   if (invalidDrawSize) {
-    return { error: 'Invalid Draw Size' };
+    return { error: INVALID_DRAW_SIZE };
   }
 
   // there can be no existing main structure
@@ -80,7 +84,7 @@ export function generateDrawType(props = {}) {
     drawDefinition,
   });
   const structureCount = stageStructures.length;
-  if (structureCount >= sequenceLimit) return { error: 'stageSequence Limit' };
+  if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
   const generators = {
     [ELIMINATION]: () => {

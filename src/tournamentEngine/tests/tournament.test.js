@@ -6,6 +6,7 @@ import ITF_SEEDING_POLICY from '../../fixtures/seeding/SEEDING_ITF';
 import { eventConstants } from '../../constants/eventConstants';
 import { resultConstants } from '../../constants/resultConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { MISSING_ASSIGNMENTS } from '../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -67,7 +68,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     drawId,
   });
-  expect(result?.error).toEqual('Missing assignments');
+  expect(result?.error).toEqual(MISSING_ASSIGNMENTS);
 
   const { positionAssignments } = drawDefinition.structures[0];
   function getPositionParticipantId(drawPosition) {

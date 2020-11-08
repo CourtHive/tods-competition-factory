@@ -10,6 +10,7 @@ import {
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
 import { WATERFALL } from '../../../constants/drawDefinitionConstants';
+import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 
 export function automatedPositioning({
   drawDefinition,
@@ -28,7 +29,7 @@ export function automatedPositioning({
     entryTypes,
   });
 
-  if (!entries?.length) return { error: 'Missing entries' };
+  if (!entries?.length) return { error: MISSING_ENTRIES };
 
   const { seedingProfile } = structure;
 

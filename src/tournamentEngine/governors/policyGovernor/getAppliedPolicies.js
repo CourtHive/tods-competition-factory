@@ -1,11 +1,16 @@
+import {
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
+
 export function getAppliedPolicies({ tournamentRecord }) {
-  if (!tournamentRecord) return { error: 'Missing tournamentRecord' };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const extensions = tournamentRecord.extensions || [];
   return extractAppliedPolicies({ extensions });
 }
 
 export function getEventAppliedPolicies({ event }) {
-  if (!event) return { error: 'Missing event' };
+  if (!event) return { error: MISSING_EVENT };
   const extensions = event.extensions || [];
   const extract = extractAppliedPolicies({ extensions });
   return { appliedPolicies: extract?.appliedPolicies, error: extract?.error };

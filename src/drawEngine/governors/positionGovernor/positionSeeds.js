@@ -3,10 +3,11 @@ import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { assignDrawPosition } from './positionAssignment';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { assignDrawPosition } from './positionAssignment';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 
 export function getStructurePositionedSeeds({ drawDefinition, structure }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -88,7 +89,7 @@ function positionSeedBlock({ drawDefinition, structureId, participants }) {
 
   for (const participantId of unplacedSeedParticipantIds) {
     const drawPosition = unfilledPositions.pop();
-    if (!drawPosition) return { error: 'Missing drawPosition' };
+    if (!drawPosition) return { error: MISSING_DRAW_POSITION };
     const result = assignDrawPosition({
       drawDefinition,
       structureId,

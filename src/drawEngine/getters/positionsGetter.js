@@ -1,4 +1,8 @@
 import { findStructure } from './findStructure';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_POSITION_ASSIGNMENTS,
+} from '../../constants/errorConditionConstants';
 
 // TODO: write unit test for this method
 export function getDrawPositions({ structure }) {
@@ -21,7 +25,7 @@ export function getPositionAssignments({
     positionAssignments = [];
   if (!structure) {
     if (!drawDefinition) {
-      return { positionAssignments, error: 'Missing drawDefinition' };
+      return { positionAssignments, error: MISSING_DRAW_DEFINITION };
     }
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
     if (error) return { positionAssignments, error };
@@ -35,7 +39,7 @@ export function getPositionAssignments({
   } else if (structure.positionAssignments) {
     positionAssignments = structure.positionAssignments;
   } else {
-    error = 'Missing positionAssignments';
+    error = MISSING_POSITION_ASSIGNMENTS;
   }
   return { positionAssignments, error };
 }

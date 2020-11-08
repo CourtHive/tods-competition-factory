@@ -11,6 +11,15 @@ import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
+import {
+  ASSIGNMENT,
+  PENALTY,
+} from '../../../constants/positionActionConstants';
 import { DRAW, LOSER } from '../../../constants/drawDefinitionConstants';
 
 /*
@@ -29,7 +38,7 @@ export function positionActions({
 
   if (!structure) {
     if (devContext) {
-      console.log('no structure found', {
+      console.log(STRUCTURE_NOT_FOUND, {
         drawDefinition,
         structureId,
         drawPosition,
@@ -100,7 +109,7 @@ export function positionActions({
         unplacedSeedAssignments,
         structure,
       });
-      validActions.push({ type: 'ASSIGNMENT', payload: { validToAssign } });
+      validActions.push({ type: ASSIGNMENT, payload: { validToAssign } });
     } else if (unfilledPositions.length === 0) {
       const { stage, stageSequence } = structure;
       const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
@@ -147,7 +156,7 @@ export function positionActions({
       console.log({ unplacedQualifiersCount });
 
       validToAssign.sort(validAssignmentsSort);
-      validActions.push({ type: 'ASSIGNMENT', payload: { validToAssign } });
+      validActions.push({ type: ASSIGNMENT, payload: { validToAssign } });
     }
   } else {
     const {
@@ -162,7 +171,7 @@ export function positionActions({
     }
     const isByeDrawPosition = byeDrawPositions.includes(drawPosition);
     if (!isByeDrawPosition) {
-      validActions.push({ type: 'PENALTY' });
+      validActions.push({ type: PENALTY });
       validActions.push({ type: 'NICKNAME' });
     }
   }
@@ -177,18 +186,18 @@ function validAssignmentsSort(a, b) {
 
 export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
   if (!drawDefinition) {
-    const error = 'Missing drawDefinition';
+    const error = MISSING_DRAW_DEFINITION;
     return { error, nextUnfilledDrawPositions: [] };
   }
   if (!structureId) {
-    const error = 'Missing structureId';
+    const error = MISSING_STRUCTURE_ID;
     return { error, nextUnfilledDrawPositions: [] };
   }
 
   const { structure, error } = findStructure({ drawDefinition, structureId });
 
   if (error) return { error };
-  if (!structure) return { error: 'No structure found' };
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const result = structureAssignedDrawPositions({ structure });
   const positionAssignments = result?.positionAssignments || [];

@@ -7,11 +7,13 @@ import {
 } from '../../../tests/primitives/primitives';
 
 import {
-  INVALID_STAGE,
-  EXISTING_PARTICIPANT,
   MAIN,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  INVALID_STAGE,
+  EXISTING_PARTICIPANT,
+} from '../../../../constants/errorConditionConstants';
 import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
 
 let result;

@@ -1,6 +1,12 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { uniqueValues } from '../../../utilities/arrays';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_DRAW_ID,
+  MISSING_ASSIGNMENTS,
+  NO_MODIFICATIONS_APPLIED,
+} from '../../../constants/errorConditionConstants';
 
 interface Assignment {
   seedValue?: string;
@@ -37,9 +43,9 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
 
   let modifications = 0;
 
-  if (!assignments?.length) return { error: 'Missing assignments' };
-  if (!tournamentRecord) return { error: 'Missing tournamentRecord' };
-  if (!drawId) return { error: 'Missing drawId' };
+  if (!assignments?.length) return { error: MISSING_ASSIGNMENTS };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!drawId) return { error: MISSING_DRAW_ID };
 
   const { event, drawDefinition } = findEvent({
     tournamentRecord,
@@ -120,6 +126,6 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   return modifications
     ? SUCCESS
     : errors.length
-    ? { error: 'No modifications applied', errors }
-    : { error: 'No modifications applied' };
+    ? { error: NO_MODIFICATIONS_APPLIED, errors }
+    : { error: NO_MODIFICATIONS_APPLIED };
 }

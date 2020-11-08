@@ -5,6 +5,7 @@ import AVOIDANCE_COUNTRY from '../../../fixtures/avoidance/AVOIDANCE_COUNTRY';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 it('can set and reset policy governor', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicy');
@@ -20,7 +21,7 @@ it('can set and reset policy governor', () => {
   let result = tournamentEngine.attachPolicy({
     policyDefinition: scoringPolicy,
   });
-  expect(result).toMatchObject({ error: 'Missing tournamentRecord' });
+  expect(result).toMatchObject({ error: MISSING_TOURNAMENT_RECORD });
 
   const newTournamentRecord = tournamentEngine.newTournamentRecord();
   const errors = tournamentEngine.getErrors();

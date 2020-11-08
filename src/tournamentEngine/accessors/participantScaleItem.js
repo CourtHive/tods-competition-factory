@@ -1,3 +1,7 @@
+import {
+  MISSING_PARTICIPANT,
+  SCALE_ITEM_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
 import { SCALE } from '../../constants/scaleConstants';
 
 export function participantScaleItem({
@@ -47,9 +51,9 @@ export function participantScaleItem({
       };
       return { scaleItem };
     } else {
-      return { error: 'No Matching Scale Item Found' };
+      return { error: SCALE_ITEM_NOT_FOUND };
     }
   }
 
-  return { error: 'Missing Participant' };
+  return { error: MISSING_PARTICIPANT };
 }

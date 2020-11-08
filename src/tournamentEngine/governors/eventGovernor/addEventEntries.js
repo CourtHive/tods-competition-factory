@@ -1,26 +1,31 @@
-import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
+import {
+  EVENT_NOT_FOUND,
+  INVALID_PARTICIPANT_IDS,
+  MISSING_EVENT,
+  MISSING_PARTICIPANT_IDS,
+} from '../../../constants/errorConditionConstants';
 
 export function addEventEntries(props) {
   const {
     tournamentRecord,
-    eventId,
+    event,
+
     participantIds = [],
     entryStatus = DIRECT_ACCEPTANCE,
     entryStage = MAIN,
   } = props;
 
-  if (!eventId) return { error: 'Missing eventId' };
+  if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length) {
-    return { error: 'Missing participants' };
+    return { error: MISSING_PARTICIPANT_IDS };
   }
 
-  const { event } = findEvent({ tournamentRecord, eventId });
-  if (!event || !event.eventId) return { error: 'Event not found' };
+  if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
   const typedParticipantIds = tournamentRecord?.participants
     ?.filter(participant => {
@@ -60,7 +65,5 @@ export function addEventEntries(props) {
   const invalidParticipantIds = !!(
     validParticipantIds.length !== participantIds.length
   );
-  return !invalidParticipantIds
-    ? SUCCESS
-    : { error: 'Invalid participant types' };
+  return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
 }

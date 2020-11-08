@@ -13,6 +13,16 @@ import {
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
 
+import {
+  MISSING_DATE,
+  MISSING_COURT_ID,
+  MISSING_MATCHUP_ID,
+  INVALID_RESUME_TIME,
+  INVALID_START_TIME,
+  EXISTING_END_TIME,
+  INVALID_STOP_TIME,
+  INVALID_END_TIME,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /* 
@@ -33,7 +43,7 @@ export function addMatchUpScheduledDayDate({
   matchUpId,
   scheduledDayDate,
 }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: if there is existing scheduledDayDate and no other relevant timeItems, delete prior
 
@@ -54,7 +64,7 @@ export function addMatchUpScheduledTime({
   matchUpId,
   scheduledTime,
 }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: scheduleTime must be on same day as scheduledDayDate (if it exists)
 
@@ -76,9 +86,9 @@ export function assignMatchUpCourt({
   courtId,
   courtDayDate,
 }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
-  if (courtId === undefined) return { error: 'Missing courtId' }; // if no courtId then matchUp is being UNASSIGNED
-  if (courtDayDate === undefined) return { error: 'Missing date' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (courtId === undefined) return { error: MISSING_COURT_ID }; // if no courtId then matchUp is being UNASSIGNED
+  if (courtDayDate === undefined) return { error: MISSING_DATE };
 
   const timeItem = {
     itemSubject: COURT,
@@ -96,7 +106,7 @@ export function addMatchUpOfficial({
   participantId,
   officialType,
 }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: check that 1) participantId has the appropriate participantRole
 
@@ -111,7 +121,7 @@ export function addMatchUpOfficial({
 }
 
 export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   const timeItems = matchUp.timeItems || [];
@@ -140,12 +150,12 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
     const timeItem = { itemSubject: START_TIME, itemValue };
     return newTimeItem({ matchUp, timeItem });
   } else {
-    return { error: 'Invalid Start Time' };
+    return { error: INVALID_START_TIME };
   }
 }
 
 export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   const timeItems = matchUp.timeItems || [];
@@ -171,12 +181,12 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
     const timeItem = { itemSubject: END_TIME, itemValue };
     return newTimeItem({ matchUp, timeItem });
   } else {
-    return { error: 'Invalid End Time' };
+    return { error: INVALID_END_TIME };
   }
 }
 
 export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   const timeItems = matchUp.timeItems || [];
@@ -188,7 +198,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     return timeItem.itemSubject === END_TIME || hasEndTime;
   }, undefined);
 
-  if (hasEndTime) return { error: 'Existing End Time' };
+  if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
     .filter(timeItem =>
@@ -229,7 +239,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
 
     return newTimeItem({ matchUp, timeItem });
   } else {
-    return { error: 'Invalid Stop Time' };
+    return { error: INVALID_STOP_TIME };
   }
 }
 
@@ -238,7 +248,7 @@ export function addMatchUpResumeTime({
   matchUpId,
   resumeTime,
 }) {
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   const timeItems = matchUp.timeItems || [];
@@ -250,7 +260,7 @@ export function addMatchUpResumeTime({
     return timeItem.itemSubject === END_TIME || hasEndTime;
   }, undefined);
 
-  if (hasEndTime) return { error: 'Existing End Time' };
+  if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
     .filter(timeItem =>
@@ -291,6 +301,6 @@ export function addMatchUpResumeTime({
 
     return newTimeItem({ matchUp, timeItem });
   } else {
-    return { error: 'Invalid Resume Time ' };
+    return { error: INVALID_RESUME_TIME };
   }
 }

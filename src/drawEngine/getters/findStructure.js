@@ -1,9 +1,16 @@
+import {
+  MISSING_STRUCTURES,
+  STRUCTURE_NOT_FOUND,
+  MISSING_STRUCTURE_ID,
+  MISSING_DRAW_DEFINITION,
+} from '../../constants/errorConditionConstants';
+
 /*
   TESTS: structureGetter.test.js
 */
 export function findStructure({ drawDefinition, structureId }) {
-  if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!structureId) return { error: 'Missing structureId' };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { structures } = getDrawStructures({ drawDefinition });
   const allStructures = structures
     .map(structure => {
@@ -15,7 +22,7 @@ export function findStructure({ drawDefinition, structureId }) {
   const structure = allStructures.reduce((target, current) => {
     return current.structureId === structureId ? current : target;
   }, undefined);
-  if (!structure) return { error: 'Structure not found' };
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   return { structure };
 }
 
@@ -24,9 +31,9 @@ export function findStructure({ drawDefinition, structureId }) {
 */
 export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
   const error = !drawDefinition
-    ? 'Missing drawDefinition'
+    ? MISSING_DRAW_DEFINITION
     : !drawDefinition.structures
-    ? 'Missing structures'
+    ? MISSING_STRUCTURES
     : undefined;
   const structures =
     (drawDefinition &&

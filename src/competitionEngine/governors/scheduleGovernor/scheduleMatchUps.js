@@ -13,6 +13,7 @@ import {
   WALKOVER,
   COMPLETED,
 } from '../../../constants/matchUpStatusConstants';
+import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 
 export function scheduleMatchUps(props) {
   const {
@@ -106,7 +107,7 @@ export function scheduleMatchUps(props) {
           });
         }
       } else {
-        console.log('missing tournamentId');
+        console.log(MISSING_TOURNAMENT_ID);
       }
     });
   }

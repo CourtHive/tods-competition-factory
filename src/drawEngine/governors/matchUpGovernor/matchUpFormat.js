@@ -2,8 +2,15 @@ import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_MATCHUP_FORMAT,
+  MISSING_DRAW_DEFINITION,
+  UNRECOGNIZED_MATCHUP_FORMAT,
+  STRUCTURE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/participantTypes';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpFormat(props) {
   const errors = [];
@@ -16,12 +23,12 @@ export function setMatchUpFormat(props) {
     tieFormat,
   } = props;
 
-  if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!matchUpFormat) return { error: 'Missing matchUpFormat' };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
 
   const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
   if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
-    return { error: 'Unrecognized matchUpFormat' };
+    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
   }
 
   if (matchUpId) {
@@ -32,7 +39,7 @@ export function setMatchUpFormat(props) {
     if (error) errors.push(error);
 
     if (!matchUp) {
-      errors.push({ error: 'matchUp not found' });
+      errors.push({ error: MATCHUP_NOT_FOUND });
       // } else if (matchUp.winningSide) {
       //   errors.push({ error: 'cannot set format for completed matchUp' });
     } else {
@@ -47,7 +54,7 @@ export function setMatchUpFormat(props) {
     const { structure, error } = findStructure({ drawDefinition, structureId });
     if (error) errors.push(error);
     if (!structure) {
-      errors.push({ error: 'structure not found' });
+      errors.push({ error: STRUCTURE_NOT_FOUND });
     } else {
       if (matchUpType) structure.matchUpType = matchUpType;
       if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {

@@ -5,6 +5,13 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DRAW_POSITION_ASSIGNED,
+  INVALID_DRAW_POSITION,
+  INVALID_PARTICIPANT_ID,
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  INVALID_DRAW_POSITION_FOR_SEEDING,
+} from '../../../constants/errorConditionConstants';
 
 export function assignDrawPosition({
   drawDefinition,
@@ -23,7 +30,7 @@ export function assignDrawPosition({
     drawDefinition,
     participantId,
   });
-  if (!validParticipantId) return { error: 'Invalid participantId' };
+  if (!validParticipantId) return { error: INVALID_PARTICIPANT_ID };
 
   const participantSeedNumber = seedAssignments.reduce(
     (seedNumber, assignment) => {
@@ -42,7 +49,7 @@ export function assignDrawPosition({
       seedNumber: participantSeedNumber,
     });
     if (!isValidDrawPosition)
-      return { error: 'Invalid drawPosition for participant seedAssignment' };
+      return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
   const positionState = positionAssignments.reduce(
@@ -53,10 +60,11 @@ export function assignDrawPosition({
     .map(d => d.participantId)
     .includes(participantId);
 
-  if (!positionState) return { error: 'Invalid draw position' };
-  if (participantExists) return { error: 'Participant already assigned' };
+  if (!positionState) return { error: INVALID_DRAW_POSITION };
+  if (participantExists)
+    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
   if (drawPositionFilled(positionState))
-    return { error: `drawPosition ${drawPosition} is occupied` };
+    return { error: DRAW_POSITION_ASSIGNED };
 
   positionAssignments.forEach(assignment => {
     if (assignment.drawPosition === drawPosition) {
@@ -86,7 +94,7 @@ export function assignCollectionPosition({
   const { structure } = findStructure({ drawDefinition, structureId });
   
   const validParticipantId = participantInEntries({drawDefinition, participantId});
-  if (!validParticipantId) return { error: 'Invalid participantId' };
+  if (!validParticipantId) return { error: INVALID_PARTICIPANT_ID };
 
   console.log({structure, validParticipantId})
   

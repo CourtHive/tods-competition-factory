@@ -13,6 +13,10 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 
+import {
+  INVALID_OBJECT,
+  MISSING_TOURNAMENT_ID,
+} from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
@@ -32,10 +36,10 @@ function flushErrors() {
 }
 
 function setState(tournament) {
-  if (typeof tournament !== 'object') return { error: 'Invalid Object' };
+  if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
-  if (!tournamentId) return { error: 'Missing tournamentId' };
+  if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
   tournamentRecord = makeDeepCopy(tournament);
   return Object.assign({ tournamentId }, SUCCESS);
 }

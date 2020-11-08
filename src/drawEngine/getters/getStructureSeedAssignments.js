@@ -1,18 +1,23 @@
-import { PLAYOFF } from '../../constants/drawDefinitionConstants';
 import { findStructure } from './findStructure';
 import { stageEntries } from './stageGetter';
 
+import { PLAYOFF } from '../../constants/drawDefinitionConstants';
+import {
+  MISSING_SEED_ASSIGNMENTS,
+  STRUCTURE_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
+
 export function getStructureSeedAssignments({
   drawDefinition,
-  structure,
   structureId,
+  structure,
 }) {
   let error,
     seedAssignments = [];
   if (!structure) {
     ({ structure, error } = findStructure({ drawDefinition, structureId }));
   }
-  if (!structure) return { error: 'structure not found' };
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (!structureId) structureId = structure.structureId;
 
   const { stage, stageSequence } = structure;
@@ -43,7 +48,7 @@ export function getStructureSeedAssignments({
     } else if (structure.seedAssignments) {
       seedAssignments = structure.seedAssignments;
     } else {
-      error = 'Missing seeds';
+      error = MISSING_SEED_ASSIGNMENTS;
     }
   }
   const seedLimit =

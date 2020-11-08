@@ -5,6 +5,7 @@ import {
   occurrences,
 } from '../../../utilities/arrays';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 
 function getSetsToWin(bestOfGames) {
   return (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
@@ -15,7 +16,7 @@ export function tallyParticipantResults({
   matchUpFormat,
   headToHeadPriority,
 }) {
-  if (!Array.isArray(matchUps)) return { error: 'Missing matchUps' };
+  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
   const parsedGroupMatchUpFormat = matchUpFormatCode.parse(matchUpFormat) || {};
 

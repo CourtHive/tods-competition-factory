@@ -1,8 +1,3 @@
-// error states
-export const EXISTING_PARTICIPANT = 'Participant Exists';
-export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
-export const INVALID_STAGE = 'Invalid Stage';
-
 // stage types
 export const MAIN = 'MAIN';
 export const QUALIFYING = 'QUALIFYING';
@@ -69,9 +64,6 @@ export const WIN_RATIO = 'WIN_RATIO';
 export const ROUND_OUTCOME = 'ROUND_OUTCOME';
 
 export const drawDefinitionConstants = {
-  EXISTING_PARTICIPANT,
-  MISSING_DRAW_DEFINITION,
-  INVALID_STAGE,
   MAIN,
   QUALIFYING,
   CONSOLATION,
@@ -105,3 +97,5 @@ export const drawDefinitionConstants = {
   WIN_RATIO,
   ROUND_OUTCOME,
 };
+
+export default drawDefinitionConstants;

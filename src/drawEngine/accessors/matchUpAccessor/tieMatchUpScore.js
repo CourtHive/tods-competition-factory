@@ -1,9 +1,13 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_MATCHUP,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
-  if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!matchUpId) return { error: MISSING_MATCHUP };
   const matchUp = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: 'matchUp Not Found' };
   const scoreString = calcTieMatchUpScore({ matchUp });

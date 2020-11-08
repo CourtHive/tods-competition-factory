@@ -5,6 +5,8 @@ import { tournamentEngine } from '../tournamentEngine';
 
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
+
+import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
@@ -12,7 +14,7 @@ let errors = [];
 let tournamentRecords;
 
 function setState(records) {
-  if (typeof records !== 'object') return { error: 'Invalid Object' };
+  if (typeof records !== 'object') return { error: INVALID_OBJECT };
   tournamentRecords = makeDeepCopy(records);
   return SUCCESS;
 }

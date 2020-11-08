@@ -5,6 +5,11 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 
 import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
+import {
+  MISSING_MATCHUP,
+  MISSING_MATCHUP_ID,
+  MISSING_PARTICIPANT_ID,
+} from '../../../constants/errorConditionConstants';
 
 /*
   function is only able to check whether participant is alredy checked in 
@@ -17,8 +22,8 @@ export function checkInParticipant({
   matchUpId,
   participantId,
 }) {
-  if (!participantId) return { error: 'Missing participantId' };
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!matchUpId) return { error: MISSING_MATCHUP };
 
   if (tournamentParticipants && tournamentParticipants.length) {
     const { matchUp } = findMatchUp({
@@ -47,8 +52,8 @@ export function checkOutParticipant({
   matchUpId,
   participantId,
 }) {
-  if (!participantId) return { error: 'Missing participantId' };
-  if (!matchUpId) return { error: 'Missing matchUpId' };
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: disallow checkout of participants if a matchUp is in progress
 

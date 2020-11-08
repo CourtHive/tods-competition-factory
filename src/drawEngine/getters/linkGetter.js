@@ -1,6 +1,12 @@
+import {
+  MISSING_MATCHUP,
+  MISSING_STRUCTURE_ID,
+  MISSING_DRAW_DEFINITION,
+} from '../../constants/errorConditionConstants';
+
 export function getMatchUpLinks({ drawDefinition, matchUp, structureId }) {
-  if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!matchUp) return { error: 'Missing matchUp' };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!matchUp) return { error: MISSING_MATCHUP };
   if (!structureId) {
     ({ structureId } = matchUp);
   }
@@ -27,8 +33,8 @@ export function getTargetLink({ source, subject }) {
 }
 
 export function getStructureLinks({ drawDefinition, structureId }) {
-  if (!drawDefinition) return { error: 'Missing drawDefinition' };
-  if (!structureId) return { error: 'Missing structureId' };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { links } = drawDefinition;
   const structureLinks = links.reduce(
     (structureLinks, link) => {

@@ -1,7 +1,8 @@
 import { makeDeepCopy } from '../../utilities';
+import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function getVenuesAndCourts({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: 'Missing tournamentRecords' };
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const venues = [];
   const courts = [];

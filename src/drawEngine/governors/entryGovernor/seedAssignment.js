@@ -5,13 +5,18 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_DRAW_POSITION_FOR_SEEDING,
+  INVALID_PARTICIPANT_ID,
+  INVALID_SEED_NUMBER,
+} from '../../../constants/errorConditionConstants';
 
 export function assignSeed({
   drawDefinition,
+  participantId,
   structureId,
   seedNumber,
   seedValue,
-  participantId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -26,7 +31,7 @@ export function assignSeed({
     participantId,
   });
   if (participantId && !validParticipantId)
-    return { error: 'Invalid participantId' };
+    return { error: INVALID_PARTICIPANT_ID };
 
   const assignedDrawPosition = positionAssignments.reduce(
     (drawPosition, assignment) => {
@@ -44,8 +49,7 @@ export function assignSeed({
       structureId,
       drawPosition: assignedDrawPosition,
     });
-    if (!positionIsValid)
-      return { error: 'Invalid drawPosition for seeded participant' };
+    if (!positionIsValid) return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
   if (seedNumbers.includes(seedNumber)) {
@@ -67,6 +71,6 @@ export function assignSeed({
     });
     return result;
   } else {
-    return { error: 'seedNumber not valid for structure' };
+    return { error: INVALID_SEED_NUMBER };
   }
 }

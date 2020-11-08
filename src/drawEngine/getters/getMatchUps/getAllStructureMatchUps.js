@@ -14,6 +14,7 @@ import { makeDeepCopy, numericSort } from '../../../utilities';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
+import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 
 /*
   return all matchUps within a structure and its child structures
@@ -37,7 +38,7 @@ export function getAllStructureMatchUps({
       matchUps,
       collectionPositionMatchUps,
       roundMatchUps,
-      error: 'Missing Structure',
+      error: MISSING_STRUCTURE,
     };
   }
 

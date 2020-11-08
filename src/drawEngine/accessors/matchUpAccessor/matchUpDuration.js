@@ -1,4 +1,8 @@
 import {
+  MISSING_MATCHUP,
+  MISSING_TIME_ITEMS,
+} from '../../../constants/errorConditionConstants';
+import {
   START_TIME,
   STOP_TIME,
   RESUME_TIME,
@@ -6,8 +10,8 @@ import {
 } from '../../../constants/timeItemConstants';
 
 export function matchUpDuration({ matchUp }) {
-  if (!matchUp) return { error: 'Missing matchUp' };
-  if (!matchUp.timeItems) return { error: 'Missing timeItems' };
+  if (!matchUp) return { error: MISSING_MATCHUP };
+  if (!matchUp.timeItems) return { error: MISSING_TIME_ITEMS };
 
   const relevantTimeItems = matchUp.timeItems
     .filter(timeItem =>

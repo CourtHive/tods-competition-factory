@@ -6,6 +6,7 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { MISSING_SEEDING_POLICY } from '../../constants/errorConditionConstants';
 
 export function getValidSeedBlocks({
   structure,
@@ -58,7 +59,7 @@ export function getValidSeedBlocks({
 
   const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
 
-  if (!seedBlocks) errors.push({ error: 'Missing seeding policy' });
+  if (!seedBlocks) errors.push({ error: MISSING_SEEDING_POLICY });
   const baseDrawSize = firstRoundDrawPositions?.length || 0;
 
   // firstRoundDrawPositions have been popped

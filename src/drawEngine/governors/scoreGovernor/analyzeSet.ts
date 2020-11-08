@@ -1,3 +1,8 @@
+import {
+  INVALID_GAME_SCORES,
+  INVALID_WINNING_SIDE,
+  MISSING_SET_OBJECT,
+} from '../../../constants/errorConditionConstants';
 import { getSetWinningSide } from './getSetWinningSide';
 
 interface SetAnalysisInterface {
@@ -107,7 +112,7 @@ export function analyzeSet(props: SetAnalysisInterface) {
   };
 
   if (!setObject) {
-    analysis.setError = 'missing setObject';
+    analysis.setError = MISSING_SET_OBJECT;
   }
 
   if (setObject?.winningSide !== undefined) {
@@ -141,7 +146,7 @@ function checkValidStandardSetOutcome({
   sideTiebreakScores,
 }: ValidSetOutcomeInterface) {
   if (!setObject) {
-    return { result: false, error: 'missing setObject' };
+    return { result: false, error: MISSING_SET_OBJECT };
   }
   const expectTiebreakSet = !!setFormat?.tiebreakSet;
   const expectTimedSet = !!setFormat?.timed;
@@ -151,17 +156,17 @@ function checkValidStandardSetOutcome({
 
   const validGameScores =
     sideGameScores?.filter((s: any) => !isNaN(s)).length === 2;
-  if (!validGameScores) return { result: false, error: 'invalid game scores' };
+  if (!validGameScores) return { result: false, error: INVALID_GAME_SCORES };
 
   const { setTo, tiebreakAt, tiebreakFormat, NoAD } = setFormat || {};
   const meetsSetTo = !!(
     setTo && sideGameScores?.find((gameScore: number) => gameScore >= setTo)
   );
-  if (!meetsSetTo) return { result: false, error: 'invalid game scores' };
+  if (!meetsSetTo) return { result: false, error: INVALID_GAME_SCORES };
 
   const isValidWinningSide = [1, 2].includes(setObject?.winningSide);
   if (!setObject || !isValidWinningSide)
-    return { result: false, error: 'invalid winningSide' };
+    return { result: false, error: INVALID_WINNING_SIDE };
 
   const winningSideIndex = setObject?.winningSide - 1;
   const losingSideIndex = 1 - winningSideIndex;
@@ -281,7 +286,7 @@ function checkValidTiebreakSetOutcome({
   sideTiebreakScores,
 }: ValidTiebreakScoresInterface) {
   if (!setObject) {
-    return { result: false, error: 'missing setObject' };
+    return { result: false, error: MISSING_SET_OBJECT };
   }
   const expectTiebreakSet = !!setFormat?.tiebreakSet;
   const expectTimedSet = !!setFormat?.timed;
@@ -291,7 +296,7 @@ function checkValidTiebreakSetOutcome({
 
   const isValidWinningSide = [1, 2].includes(setObject?.winningSide);
   if (!setObject || !isValidWinningSide)
-    return { result: false, error: 'invalid winningSide' };
+    return { result: false, error: INVALID_WINNING_SIDE };
 
   const { tiebreakSet } = setFormat || {};
   const { NoAD, tiebreakTo } = tiebreakSet || {};

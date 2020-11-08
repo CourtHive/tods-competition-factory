@@ -18,6 +18,7 @@ import {
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -37,7 +38,7 @@ export function randomUnseededSeparation({
   unseededParticipantIds,
 }) {
   if (!avoidance) {
-    return { error: 'Missing avoidance policy' };
+    return { error: MISSING_AVOIDANCE_POLICY };
   }
   const {
     policyAttributes,

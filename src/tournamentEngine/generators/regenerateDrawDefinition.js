@@ -2,6 +2,10 @@ import { getDrawDefinition } from '../getters/eventGetter';
 import { generateDrawDefinition } from './generateDrawDefinition';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { SUCCESS } from '../../constants/resultConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_EVENT,
+} from '../../constants/errorConditionConstants';
 
 export function regenerateDrawDefinition({
   tournamentRecord,
@@ -14,8 +18,8 @@ export function regenerateDrawDefinition({
     tournamentRecord,
     drawId,
   });
-  if (!event) return { error: 'Missing Event' };
-  if (!drawDefinition) return { error: 'Draw not found' };
+  if (!event) return { error: MISSING_EVENT };
+  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   const { appliedPolicies: policyDefinitions } = getAppliedPolicies({
     drawDefinition,

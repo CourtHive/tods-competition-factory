@@ -3,6 +3,10 @@ import { findVenue } from '../../getters/venueGetter';
 import { courtTemplate } from '../../generators/courtTemplate';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_VENUE_ID,
+  MISSING_COURTS_INFO,
+} from '../../../constants/errorConditionConstants';
 
 export function addCourt({ tournamentRecord, venueId, court }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
@@ -35,8 +39,8 @@ export function addCourts({
   courtNames = [],
   dateAvailability = [],
 }) {
-  if (!venueId) return { error: 'Missing venueId' };
-  if (!courtsCount || !courtNames) return { error: 'Count not specified' };
+  if (!venueId) return { error: MISSING_VENUE_ID };
+  if (!courtsCount || !courtNames) return { error: MISSING_COURTS_INFO };
 
   courtsCount = courtsCount || courtNames.length;
   const courts = generateRange(0, courtsCount).map(i => {

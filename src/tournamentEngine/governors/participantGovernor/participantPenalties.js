@@ -1,3 +1,10 @@
+import {
+  PARTICIPANT_NOT_FOUND,
+  MISSING_PARTICIPANT_ID,
+  MISSING_PENALTY_TYPE,
+  MISSING_PENALTY_ID,
+  PENALTY_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID } from '../../../utilities';
 
@@ -12,14 +19,14 @@ export function addParticipantPenalty({
 
   refereeParticipantId,
 }) {
-  if (!penaltyType) return { error: 'Missing penaltyType' };
-  if (!participantId) return { error: 'Missing participantId' };
+  if (!penaltyType) return { error: MISSING_PENALTY_TYPE };
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const participants = tournamentRecord?.participants;
   const participant = participants.find(
     participant => participant.participantId === participantId
   );
-  if (!participant) return { error: 'Participant not found ' };
+  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
   if (!participant.penalties) participant.penalties = [];
 
@@ -43,14 +50,14 @@ export function removeParticipantPenalty({
   participantId,
   penaltyId,
 }) {
-  if (!participantId) return { error: 'Missing participantId' };
-  if (!penaltyId) return { error: 'Missing penaltyId' };
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+  if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
   const participants = tournamentRecord?.participants;
   const participant = participants.find(
     participant => participant.participantId === participantId
   );
-  if (!participant) return { error: 'Participant not found ' };
+  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
   let penaltyRemoved = false;
   participant.penalties = (participant.penalties || []).filter(penalty => {
@@ -59,5 +66,5 @@ export function removeParticipantPenalty({
     return penalty.penaltyId !== penaltyId;
   });
 
-  return penaltyRemoved ? SUCCESS : { error: 'Penalty not found ' };
+  return penaltyRemoved ? SUCCESS : { error: PENALTY_NOT_FOUND };
 }

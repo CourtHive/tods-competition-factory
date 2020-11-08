@@ -5,11 +5,21 @@ import {
 } from './getAppliedPolicies';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_EVENT,
+  MISSING_POLICY_DEFINITION,
+  MISSING_TOURNAMENT_RECORD,
+  INVALID_POLICY_DEFINITION,
+  EXISTING_POLICY_TYPE,
+  POLICY_NOT_ATTACHED,
+  POLICY_NOT_FOUND,
+  INVALID_OBJECT,
+} from '../../../constants/errorConditionConstants';
 
 export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
   const errors = [];
   if (!policyDefinition || typeof policyDefinition !== 'object') {
-    errors.push({ error: 'Missing Policy Definition' });
+    errors.push({ error: MISSING_POLICY_DEFINITION });
     return { errors };
   }
 
@@ -20,7 +30,7 @@ export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
     } else {
-      errors.push({ error: `Policy ${policyType} already applied` });
+      errors.push({ error: EXISTING_POLICY_TYPE });
     }
   });
 
@@ -38,16 +48,16 @@ export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
 }
 
 function addPolicy({ policies, policyDefinition }) {
-  if (typeof policyDefinition !== 'object') return { error: 'Invalid Object' };
+  if (typeof policyDefinition !== 'object') return { error: INVALID_OBJECT };
   if (!validDefinitionKeys(policyDefinition))
-    return { error: 'Invalid Definition' };
+    return { error: INVALID_POLICY_DEFINITION };
   Object.assign(policies, policyDefinition);
   return SUCCESS;
 }
 
 export function attachPolicy({ tournamentRecord, policies, policyDefinition }) {
   if (!tournamentRecord) {
-    return { error: 'Missing tournamentRecord' };
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
   let result = addPolicy({ policies, policyDefinition });
   if (result && result.errors) return { error: result.errors };
@@ -62,13 +72,13 @@ export function attachEventPolicy({
   policyDefinition,
 }) {
   if (!tournamentRecord) {
-    return { error: 'Missing tournamentRecord' };
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
   if (!event) {
-    return { error: 'Missing event' };
+    return { error: MISSING_EVENT };
   }
   if (!policyDefinition) {
-    return { error: 'Missing policyDefinition' };
+    return { error: MISSING_POLICY_DEFINITION };
   }
 
   let policiesApplied = 0;
@@ -86,15 +96,15 @@ export function attachEventPolicy({
   );
   event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
 
-  return policiesApplied ? SUCCESS : { error: 'Policy not attached' };
+  return policiesApplied ? SUCCESS : { error: POLICY_NOT_ATTACHED };
 }
 
 export function removeEventPolicy({ tournamentRecord, event, policyType }) {
   if (!tournamentRecord) {
-    return { error: 'Missing tournamentRecord' };
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
   if (!event) {
-    return { error: 'Missing event' };
+    return { error: MISSING_EVENT };
   }
 
   let policyRemoved;
@@ -117,7 +127,7 @@ export function removeEventPolicy({ tournamentRecord, event, policyType }) {
       }
     }
   }
-  return policyRemoved ? SUCCESS : { error: 'Policy not found' };
+  return policyRemoved ? SUCCESS : { error: POLICY_NOT_FOUND };
 }
 
 function validDefinitionKeys(definition) {

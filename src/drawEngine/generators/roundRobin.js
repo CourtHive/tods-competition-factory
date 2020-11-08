@@ -20,6 +20,7 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
+import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
   stage = MAIN,
@@ -89,7 +90,7 @@ export function generateRoundRobinWithPlayOff(props) {
 
   // TODO: test for and handle this situation
   if (groupCount < 1) {
-    console.log('INVALID CONFIGURATION');
+    console.log(INVALID_CONFIGURATION);
   }
 
   // define a default playoff group if none specified

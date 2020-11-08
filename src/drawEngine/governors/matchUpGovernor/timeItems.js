@@ -1,4 +1,8 @@
 import { findMatchUp } from '../../getters/getMatchUps';
+import {
+  INVALID_TIME_ITEM,
+  MATCHUP_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
@@ -8,7 +12,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
 
-  if (!matchUp) return { error: 'MatchUp Not Found' };
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemSubject', 'itemValue'];
@@ -17,7 +21,7 @@ export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
       timeItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 
-  if (!validTimeItem) return { error: 'Invalid Time Item' };
+  if (!validTimeItem) return { error: INVALID_TIME_ITEM };
 
   if (!matchUp.timeItems) matchUp.timeItems = [];
   const timeStamp = new Date().toISOString();
@@ -29,7 +33,7 @@ export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
 
 export function resetTimeItems({ drawDefinition, matchUpId }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
-  if (!matchUp) return { error: 'MatchUp Not Found' };
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
   return SUCCESS;
 }

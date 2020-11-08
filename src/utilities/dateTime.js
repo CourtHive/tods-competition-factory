@@ -1,3 +1,5 @@
+import { INVALID_DATE } from '../constants/errorConditionConstants';
+
 export function isDate(dateArg) {
   if (typeof dateArg == 'boolean') return false;
   const t =
@@ -296,7 +298,7 @@ export function validDate(datestring, range) {
   if (range && range.end) {
     if (offsetDate(datestring) > offsetDate(range.end)) return false;
   }
-  if (new Date(datestring) === 'Invalid Date') return false;
+  if (new Date(datestring) === INVALID_DATE) return false;
   return true;
 }
 

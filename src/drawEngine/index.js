@@ -13,6 +13,11 @@ import definitionTemplate, {
 import { auditEngine } from '../auditEngine';
 import { UUID, makeDeepCopy } from '../utilities';
 import { SUCCESS } from '../constants/resultConstants';
+import {
+  INVALID_OBJECT,
+  MISSING_DRAW_ID,
+  INVALID_DRAW_DEFINITION,
+} from '../constants/errorConditionConstants';
 
 let devContext;
 let errors = [];
@@ -27,9 +32,10 @@ function newDrawDefinition({ drawId, drawProfile } = {}) {
 }
 
 function setState(definition) {
-  if (typeof definition !== 'object') return { error: 'Invalid Object' };
-  if (!definition.drawId) return { error: 'Missing drawid' };
-  if (!validDefinitionKeys(definition)) return { error: 'Invalid Definition' };
+  if (typeof definition !== 'object') return { error: INVALID_OBJECT };
+  if (!definition.drawId) return { error: MISSING_DRAW_ID };
+  if (!validDefinitionKeys(definition))
+    return { error: INVALID_DRAW_DEFINITION };
   drawDefinition = makeDeepCopy(definition);
   return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
 }

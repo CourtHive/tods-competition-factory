@@ -26,8 +26,15 @@ import {
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import {
+  DRAW_POSITION_ACTIVE,
+  INVALID_DRAW_POSITION,
+  DRAW_POSITION_ASSIGNED,
+  MISSING_DRAW_POSITIONS,
+  NO_DRAW_POSITIONS_AVAILABLE,
+} from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
@@ -49,12 +56,11 @@ export function assignDrawPositionBye({
     undefined
   );
 
-  if (!positionsAvailable) return { error: 'Exceeds byesCount' };
-  if (!positionState) return { error: 'Invalid draw position' };
+  if (!positionsAvailable) return { error: NO_DRAW_POSITIONS_AVAILABLE };
+  if (!positionState) return { error: INVALID_DRAW_POSITION };
   if (drawPositionFilled(positionState))
-    return { error: 'Draw position is occupied' };
-  if (drawPositionIsActive)
-    return { error: 'Cannot place bye in active drawPosition' };
+    return { error: DRAW_POSITION_ASSIGNED };
+  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
   positionAssignments.forEach(assignment => {
     if (assignment.drawPosition === drawPosition) {
@@ -100,7 +106,7 @@ export function assignDrawPositionBye({
           f => f
         ).length;
         if (loserMatchUpDrawPositionsCount !== 2)
-          return { error: 'Missing drawPositions in loserMatchUp' };
+          return { error: MISSING_DRAW_POSITIONS };
         // drawPositions must be in numerical order
         loserMatchUp.drawPositions = loserMatchUp.drawPositions?.sort(
           numericSort

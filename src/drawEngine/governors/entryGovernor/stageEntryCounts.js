@@ -7,8 +7,8 @@ import {
 } from '../../getters/stageGetter';
 
 import {
-  INVALID_STAGE,
   MAIN,
+  INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
 } from '../../../constants/drawDefinitionConstants';
 

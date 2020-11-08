@@ -2,6 +2,7 @@ import { addParticipantsToGrouping } from './participantGroupings';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { GROUP, TEAM } from '../../../constants/participantTypes';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 export function addParticipant({ tournamentRecord, participant }) {
   const { participantId } = participant || {};
@@ -22,7 +23,7 @@ export function addParticipants({
   teamId,
   groupId,
 }) {
-  if (!tournamentRecord) return { error: 'Missing tournamentRecord ' };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const existingParticipantIds =
     tournamentRecord.participants?.map(p => p.participantId) || [];

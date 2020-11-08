@@ -1,3 +1,11 @@
+import {
+  MISSING_DRAW_SIZE,
+  MISSING_PARTICIPANT_COUNT,
+  INVALID_POLICY_DEFINITION,
+  MISSING_POLICY_DEFINITION,
+  MISSING_SEEDCOUNT_THRESHOLDS,
+  PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
+} from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 
 /**
@@ -15,22 +23,21 @@ export function getSeedsCount({
   participantCount,
   drawSize,
 } = {}) {
-  if (!policyDefinition) return { error: 'Missing policyDefinition' };
+  if (!policyDefinition) return { error: MISSING_POLICY_DEFINITION };
   if (requireParticipantCount && !participantCount)
-    return { error: 'Missing participantCount' };
-  if (!drawSize) return { error: 'Missing drawSize' };
+    return { error: MISSING_PARTICIPANT_COUNT };
+  if (!drawSize) return { error: MISSING_DRAW_SIZE };
 
   const consideredParticipantCount =
     (requireParticipantCount && participantCount) || drawSize;
   if (consideredParticipantCount > drawSize)
-    return { error: 'participantCount exceeds drawSize' };
+    return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
   const policy = policyDefinition[POLICY_TYPE_SEEDING];
-  if (!policy) return { error: 'Invalid policyDefinition' };
+  if (!policy) return { error: INVALID_POLICY_DEFINITION };
 
   const seedsCountThresholds = policy.seedsCountThresholds;
-  if (!seedsCountThresholds)
-    return { error: 'Missing seedCountThresholds definitions' };
+  if (!seedsCountThresholds) return { error: MISSING_SEEDCOUNT_THRESHOLDS };
 
   const relevantThresholds = seedsCountThresholds.filter(threshold => {
     return drawSizeProgression

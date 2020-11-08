@@ -1,3 +1,8 @@
+import {
+  MISSING_CONTEXT,
+  MISSING_MATCHUP,
+  INVALID_MATCHUP,
+} from '../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../constants/participantTypes';
 
 export function getMatchUpParticipantIds({ matchUp }) {
@@ -6,9 +11,9 @@ export function getMatchUpParticipantIds({ matchUp }) {
   let individualParticipantIds = [];
   let nestedIndividualParticipantIds = [];
 
-  if (!matchUp) error = 'Missing matchUp';
-  if (matchUp && !matchUp.sides) error = 'Invalid matchUp';
-  if (matchUp && !matchUp.hasContext) error = 'Missing context';
+  if (!matchUp) error = MISSING_MATCHUP;
+  if (matchUp && !matchUp.sides) error = INVALID_MATCHUP;
+  if (matchUp && !matchUp.hasContext) error = MISSING_CONTEXT;
 
   if (!error) {
     sideParticipantIds = matchUp.sides.map(side => side.participantId);

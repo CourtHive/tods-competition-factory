@@ -1,9 +1,14 @@
-import { SUCCESS } from '../../../constants/resultConstants';
 import { removeParticipantsFromAllTeams } from './participantGroupings';
 
+import {
+  MISSING_PARTICIPANT_IDS,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+
 export function deleteParticipants({ tournamentRecord, participantIds }) {
-  if (!tournamentRecord) return { error: 'Missing tournament record' };
-  if (!participantIds?.length) return { error: 'Missing participantIds' };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const participantsCount = tournamentRecord.participants?.length;
   if (!participantsCount) return { error: 'Tournament has no participants' };
