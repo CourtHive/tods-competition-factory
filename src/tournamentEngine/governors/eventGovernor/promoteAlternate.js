@@ -35,7 +35,7 @@ export function promoteAlternate({
 
   if (participantEntry.entryStatus !== ALTERNATE)
     return { error: INVALID_ENTRY_STATUS };
-  if (participantEntry.stage !== stage)
+  if (participantEntry.entryStage !== stage)
     return { error: PARTICIPANT_NOT_ENTERED_IN_STAGE };
   if (stageSequence && participantEntry.stageSequence !== stageSequence)
     return { error: PARTICIPANT_NOT_FOUND_IN_STAGE };
