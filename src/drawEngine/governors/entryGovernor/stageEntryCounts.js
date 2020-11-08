@@ -7,11 +7,10 @@ import {
 } from '../../getters/stageGetter';
 
 import {
-  MAIN,
   INVALID_STAGE,
   MISSING_DRAW_DEFINITION,
-} from '../../../constants/drawDefinitionConstants';
-
+} from '../../../constants/errorConditionConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
