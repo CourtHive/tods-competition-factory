@@ -85,7 +85,8 @@ export const MISSING_PARTICIPANTS = 'Missing participants';
 export const MISSING_PARTICIPANT_ID = 'Missing participantId';
 export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
-export const PARTICIPANT_NOT_FOUND = 'Participant Not Fount';
+export const PARTICIPANT_NOT_FOUND = 'Participant Not Found';
+
 export const EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT =
   'Existing participant drawPosition assignment';
 export const EXISTING_PARTICIPANT = 'Existing participant';
@@ -93,6 +94,13 @@ export const PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE =
   'participantCount exceeds drawSize';
 export const MORE_PARTICIPANTS_THAN_DRAW_POSITIONS =
   'More Participants than Draw Positions';
+
+export const INVALID_ENTRY_STATUS = 'Invalid entry status';
+export const PARTICIPANT_ENTRY_NOT_FOUND = 'Participant Entry Not Found';
+export const PARTICIPANT_NOT_ENTERED_IN_STAGE =
+  'Participant not entered in stage';
+export const PARTICIPANT_NOT_FOUND_IN_STAGE =
+  'Participant not found in stageSequence';
 
 export const MISSING_PENALTY_TYPE = 'Missing penaltyType';
 export const MISSING_PENALTY_ID = 'Missing penaltyId';

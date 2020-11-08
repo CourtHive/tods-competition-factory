@@ -2,6 +2,7 @@ import { addEvent } from './addEvent';
 import { deleteEvents } from './deleteEvent';
 import { addDrawEntries } from './addDrawEntries';
 import { addEventEntries } from './addEventEntries';
+import { promoteAlternate } from './promoteAlternate';
 import { addDrawDefinition } from './addDrawDefinition';
 import { removeEventEntries } from './removeEventEntries';
 import { assignDrawPosition } from './assignDrawPosition';
@@ -32,6 +33,7 @@ const eventGovernor = {
   deleteDrawDefinitions,
 
   addEventEntries,
+  promoteAlternate,
   removeEventEntries,
 
   setMatchUpStatus,
