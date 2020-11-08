@@ -18,31 +18,31 @@ import {
 
 import {
   MAIN,
-  ELIMINATION,
-  DOUBLE_ELIMINATION,
-  PLAYOFF,
-  QUALIFYING,
-  ROUND_ROBIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-  CURTIS,
-  FEED_IN,
-  FEED_IN_CHAMPIONSHIP,
-  FICR16,
   FICQF,
   FICSF,
   MFIC,
   FMLC,
+  CURTIS,
+  FICR16,
   COMPASS,
+  PLAYOFF,
   OLYMPIC,
+  FEED_IN,
+  QUALIFYING,
+  ROUND_ROBIN,
+  ELIMINATION,
+  DOUBLE_ELIMINATION,
+  FEED_IN_CHAMPIONSHIP,
+  ROUND_ROBIN_WITH_PLAYOFF,
   COMPASS_NAMING,
   OLYMPIC_NAMING,
-  MISSING_DRAW_DEFINITION,
 } from '../../../constants/drawDefinitionConstants';
-
 import {
   INVALID_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
 } from '../../../constants/errorConditionConstants';
+
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function generateDrawType(props = {}) {
