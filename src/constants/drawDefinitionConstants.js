@@ -52,7 +52,7 @@ export const OLYMPIC_NAMING = {
   '0-1-1': 'SOUTH',
 };
 
-// feedProfile
+// positioningProfile
 export const DRAW = 'DRAW';
 export const RANDOM = 'RANDOM';
 export const TOP_DOWN = 'TOP_DOWN';
