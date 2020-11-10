@@ -55,7 +55,6 @@ export function generateDrawDefinition(props) {
 
     tieFormat,
     matchUpType,
-    matchUpFormat,
 
     structureOptions,
     qualifyingRound,
@@ -86,8 +85,15 @@ export function generateDrawDefinition(props) {
 
   drawEngine.reset();
   drawEngine.newDrawDefinition({ drawProfile });
+
   drawEngine.setStageDrawSize({ stage, drawSize });
-  drawEngine.setMatchUpFormat({ matchUpFormat, tieFormat, matchUpType });
+  const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({
+    matchUpFormat,
+    tieFormat,
+    matchUpType,
+  });
+  if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
+
   drawEngine.generateDrawType({
     stage,
     drawType,
@@ -215,5 +221,10 @@ export function generateDrawDefinition(props) {
   const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
-  return { structureId, drawDefinition, conflicts };
+  // TODO: extend to aggregate other possible (non fatal) errors
+  const error = matchUpFormatError
+    ? [{ error: matchUpFormatError }]
+    : undefined;
+
+  return { structureId, drawDefinition, conflicts, error };
 }
