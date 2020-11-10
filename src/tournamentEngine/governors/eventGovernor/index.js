@@ -23,6 +23,12 @@ import { setDrawParticipantRepresentatives } from './setDrawParticipantRepresent
 
 import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
+import {
+  setDrawDefaultMatchUpFormat,
+  setEventDefaultMatchUpFormat,
+  setStructureDefaultMatchUpFormat,
+  setCollectionDefaultMatchUpFormat,
+} from './setDefaultmatchUpFormat';
 
 const eventGovernor = {
   addEvent,
@@ -38,6 +44,11 @@ const eventGovernor = {
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
+
+  setDrawDefaultMatchUpFormat,
+  setEventDefaultMatchUpFormat,
+  setStructureDefaultMatchUpFormat,
+  setCollectionDefaultMatchUpFormat,
 
   assignDrawPosition,
   assignSeedPositions,

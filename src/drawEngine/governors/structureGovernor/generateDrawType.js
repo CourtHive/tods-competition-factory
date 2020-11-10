@@ -152,13 +152,12 @@ export function generateDrawType(props = {}) {
   const generator = generators[drawType];
   const result = generator && generator();
 
-  // add matchUpFormat or tieFormat to all generated matchUps
-  // generate tieMatchUps where needed
-  const { matchUpFormat, tieFormat, matchUpType } = drawDefinition || {};
+  // where applicable add tieFormat to all generated matchUps; generate tieMatchUps where needed
+  // CONSIDER: should tieFormat be included here? individual Tie MatchUps can get tieFormat from drawDefinition
+  const { tieFormat, matchUpType } = drawDefinition || {};
   const additionalParams = { matchUpType };
-  if (matchUpFormat) additionalParams.matchUpFormat = matchUpFormat;
 
-  // TODO: matchUpFormat should only be applied to matchUps in the structure(s) generated
+  // TODO: additionalParams should only be applied to matchUps in the structure(s) generated
   const { matchUps } = getAllDrawMatchUps({ drawDefinition });
 
   matchUps.forEach(matchUp => {
