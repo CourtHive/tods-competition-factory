@@ -368,6 +368,13 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ## tournamentMatchUps
 
+Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called
+
+| Parameters     | Required | Type  | Description |
+| :------------- | :------- | :---- | :---------- |
+| matchUpFilters | Optional | array |             |
+| contestFilters | Optional | array |             |
+
 ---
 
 ## version
