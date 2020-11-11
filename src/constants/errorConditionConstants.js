@@ -73,6 +73,7 @@ export const MISSING_DATE = 'Missing date';
 
 // Javascript constant for Date() function
 export const INVALID_DATE = 'Invalid Date';
+export const INVALID_TIME_ZONE = 'Invalid Time Zone';
 
 export const INVALID_GAME_SCORES = 'Invalid game scores';
 export const INVALID_WINNING_SIDE = 'Invalid winningSide';
