@@ -21,7 +21,7 @@ export function courtsAvailableAtPeriodStart({
   const availableCourts = courts.filter(court => {
     const available =
       Array.isArray(court.dateAvailability) &&
-      court.dateAvailability.filter(sameDay).filter(enoughTime);
+      court.dateAvailability.filter(sameDate).filter(enoughTime);
     return !!available.length;
   });
 
@@ -31,7 +31,7 @@ export function courtsAvailableAtPeriodStart({
   }));
   return { available, count: available.length };
 
-  function sameDay(courtDate) {
+  function sameDate(courtDate) {
     return courtDate.date === date;
   }
   function enoughTime(courtDate) {
