@@ -34,8 +34,8 @@ import {
   DOUBLE_ELIMINATION,
   FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN_WITH_PLAYOFF,
-  COMPASS_NAMING,
-  OLYMPIC_NAMING,
+  COMPASS_ATTRIBUTES,
+  OLYMPIC_ATTRIBUTES,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -107,14 +107,14 @@ export function generateDrawType(props = {}) {
       playoff(
         Object.assign(props, {
           roundOffsetLimit: 3,
-          playoffNaming: COMPASS_NAMING,
+          playoffAttributes: COMPASS_ATTRIBUTES,
         })
       ),
     [OLYMPIC]: () =>
       playoff(
         Object.assign(props, {
           roundOffsetLimit: 2,
-          playoffNaming: OLYMPIC_NAMING,
+          playoffAttributes: OLYMPIC_ATTRIBUTES,
         })
       ),
     [PLAYOFF]: () => playoff(props),
