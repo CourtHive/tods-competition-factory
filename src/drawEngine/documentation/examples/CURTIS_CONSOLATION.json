@@ -75,7 +75,7 @@
   ],
   "structures": [
     {
-      "structureName": "CURTIS CONSOLATION",
+      "structureName": "CURTIS_CONSOLATION",
       "stageSequence": 1,
       "finishingPosition": "ROUND_OUTCOME",
       "structureId": "9e180e15-4804-4a78-a283-a1dcf94661d9",
@@ -778,7 +778,7 @@
       ]
     },
     {
-      "structureName": "CURTIS CONSOLATION",
+      "structureName": "CURTIS_CONSOLATION",
       "stageSequence": 1,
       "finishingPosition": "ROUND_OUTCOME",
       "structureId": "a403b0ed-bc7a-4aff-953b-be982032eb77",
@@ -1305,7 +1305,7 @@
       ]
     },
     {
-      "structureName": "CURTIS CONSOLATION",
+      "structureName": "CURTIS_CONSOLATION",
       "stageSequence": 2,
       "finishingPosition": "ROUND_OUTCOME",
       "structureId": "66e8c3bf-b882-485c-a8a3-757745c83b09",

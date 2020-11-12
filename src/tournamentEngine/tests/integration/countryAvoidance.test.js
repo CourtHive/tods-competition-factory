@@ -53,7 +53,7 @@ it('can generate ELIMINATION drawDefinition using country avoidance with INDIVID
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
-it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
+it('can generate ROUND_ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
   const { conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     drawType: ROUND_ROBIN,

@@ -31,7 +31,7 @@
   ],
   "structures": [
     {
-      "structureName": "FIRST MATCH LOSER CONSOLATION",
+      "structureName": "FIRST_MATCH_LOSER_CONSOLATION",
       "stageSequence": 1,
       "finishingPosition": "ROUND_OUTCOME",
       "structureId": "0e18b71d-0120-4a4e-aa96-c06693081861",

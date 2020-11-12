@@ -101,7 +101,7 @@ it('generates structured entry draw with expected finishing drawPositions', () =
   });
 });
 
-it('can generate feed in championship', () => {
+it('can generate FEED_IN_CHAMPIONSHIP', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 16,
     drawType: FEED_IN_CHAMPIONSHIP,
@@ -130,7 +130,7 @@ it('can generate feed in championship', () => {
   expect(links[3].target.roundNumber).toEqual(6);
 });
 
-it('can generate feed in championship to R16', () => {
+it('can generate FEED_IN_CHAMPIONSHIP_TO_R16', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: FICR16,
@@ -141,7 +141,7 @@ it('can generate feed in championship to R16', () => {
   expect(links.length).toEqual(2);
 });
 
-it('can generate feed in championship to RQF', () => {
+it('can generate FEED_IN_CHAMPIONSHIP to RQF', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: FICQF,
@@ -152,7 +152,7 @@ it('can generate feed in championship to RQF', () => {
   expect(links.length).toEqual(3);
 });
 
-it('can generate feed in championship to RSF', () => {
+it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: FICSF,
@@ -163,7 +163,7 @@ it('can generate feed in championship to RSF', () => {
   expect(links.length).toEqual(4);
 });
 
-it('can generate modified feed in championship', () => {
+it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: MFIC,

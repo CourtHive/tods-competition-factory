@@ -94,7 +94,7 @@ it('can return matchUps from KNOCKOUT structure with participants', () => {
   knockoutMatchUpsWithParticipants({ drawSize: 32 });
 });
 
-it('can return matchUps from a ROUND ROBIN structure', () => {
+it('can return matchUps from a ROUND_ROBIN structure', () => {
   reset();
   initialize();
   const drawType = ROUND_ROBIN;

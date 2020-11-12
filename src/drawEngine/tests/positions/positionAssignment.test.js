@@ -94,7 +94,7 @@ it('can assign KNOCKOUT draw drawPositions', () => {
   expect(result).toHaveProperty(ERROR);
 });
 
-it('can assign ROUND ROBIN draw drawPositions', () => {
+it('can assign ROUND_ROBIN draw drawPositions', () => {
   mainDrawWithEntries({ drawSize: 16, drawType: ROUND_ROBIN });
   const stage = MAIN;
   let { drawDefinition } = drawEngine.getState();

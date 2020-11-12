@@ -30,7 +30,7 @@ structures contain matchUps. all structures within a drawDefinition must be conn
 
 - **_structureId_** - _required_ - unique identifier
 - **_structureName_** - _optional_ - e.g. "EAST"
-- **_structureType_** - _optional_ - CONTAINER or ITEM; for grouped structures such as ROUND ROBIN where there is no movement (linkage) between ITEMS but where the outcomes of the contained structures may be linked to other structures
+- **_structureType_** - _optional_ - CONTAINER or ITEM; for grouped structures such as ROUND_ROBIN where there is no movement (linkage) between ITEMS but where the outcomes of the contained structures may be linked to other structures
 - **_stage_** - _required_ - QUALIFYING, MAIN, or CONSOLATION
 - **_stageSequence_** - _optional_ - structural link depth within a stage
 - **_finishingPosition_** - _required_ - how finishing position is determined, e.g. "ROUND_OUTCOME" or "WIN_RATIO"

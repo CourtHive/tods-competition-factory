@@ -99,7 +99,7 @@ it('can direct participants in KNOCKOUT with BACKDRAW', () => {
   expect(loserMatchUp2ndRound).toEqual(undefined);
 });
 
-it('can direct participants in FEED IN CHAMPIONSHIP structure', () => {
+it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   const drawSize = 16;
   feedInChampionship({ drawSize, drawType: FEED_IN_CHAMPIONSHIP });
   const { drawDefinition } = drawEngine.getState();
