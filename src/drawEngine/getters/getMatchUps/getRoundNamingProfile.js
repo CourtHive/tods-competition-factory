@@ -13,7 +13,6 @@ export function getRoundNamingProfile({
   const roundNamingProfile = {};
   const { roundProfile } = getRoundMatchUps({ matchUps });
   const { structureAbbreviation, stage } = structure;
-  const stageConstant = stage && stage !== MAIN && stage[0];
 
   const defaultRoundNamingPolicy =
     ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
@@ -24,6 +23,11 @@ export function getRoundNamingProfile({
 
   const roundNamePrefix =
     roundNamingPolicy?.prefix || defaultRoundNamingPolicy.prefix;
+
+  const stageInitial = stage && stage !== MAIN && stage[0];
+  const stageConstants = roundNamingPolicy?.stageConstants;
+  const stageConstant =
+    (stageConstants && stageConstants[stage]) || stageInitial;
 
   if (isRoundRobin) {
     Object.assign(

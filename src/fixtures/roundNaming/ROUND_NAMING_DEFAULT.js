@@ -1,3 +1,8 @@
+import {
+  MAIN,
+  CONSOLATION,
+  QUALIFYING,
+} from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
 
 export const ROUND_NAMING_DEFAULT = {
@@ -11,6 +16,11 @@ export const ROUND_NAMING_DEFAULT = {
     prefix: {
       roundNumber: 'R',
       preFeedRound: 'Q',
+    },
+    stageConstants: {
+      [MAIN]: '',
+      [QUALIFYING]: 'Q',
+      [CONSOLATION]: 'C',
     },
   },
 };
