@@ -49,9 +49,9 @@ it('can return matchUps with roundNames from a KNOCKOUT structure', () => {
     if (finishingRound === 1) expect(roundName).toEqual('F');
     if (finishingRound === 2) expect(roundName).toEqual('SF');
     if (finishingRound === 3) expect(roundName).toEqual('QF');
-    if (finishingRound === 4) expect(roundName).toEqual('R8');
+    if (finishingRound === 4) expect(roundName).toEqual('R16');
 
-    if (roundNumber === 1) expect(roundName).toEqual('R8');
+    if (roundNumber === 1) expect(roundName).toEqual('R16');
     if (roundNumber === 2) expect(roundName).toEqual('QF');
     if (roundNumber === 3) expect(roundName).toEqual('SF');
     if (roundNumber === 4) expect(roundName).toEqual('F');
@@ -91,9 +91,9 @@ it('can return matchUps with roundNames from a FMLC structure', () => {
     if (finishingRound === 1) expect(roundName).toEqual('F');
     if (finishingRound === 2) expect(roundName).toEqual('SF');
     if (finishingRound === 3) expect(roundName).toEqual('QF');
-    if (finishingRound === 4) expect(roundName).toEqual('R8');
+    if (finishingRound === 4) expect(roundName).toEqual('R16');
 
-    if (roundNumber === 1) expect(roundName).toEqual('R8');
+    if (roundNumber === 1) expect(roundName).toEqual('R16');
     if (roundNumber === 2) expect(roundName).toEqual('QF');
     if (roundNumber === 3) expect(roundName).toEqual('SF');
     if (roundNumber === 4) expect(roundName).toEqual('F');
@@ -140,7 +140,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
 
   matchUps.forEach(matchUp => {
     const { feedRound, finishingRound, roundNumber, roundName } = matchUp;
-    if (roundNumber === 1) expect(roundName).toEqual('Q4');
+    if (roundNumber === 1) expect(roundName).toEqual('Q8');
     if (roundNumber === 2) {
       expect(roundName).toEqual('QF');
       expect(feedRound).toEqual(true);
@@ -151,7 +151,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
     if (finishingRound === 1) expect(roundName).toEqual('F');
     if (finishingRound === 2) expect(roundName).toEqual('SF');
     if (finishingRound === 3) expect(roundName).toEqual('QF');
-    if (finishingRound === 4) expect(roundName).toEqual('Q4');
+    if (finishingRound === 4) expect(roundName).toEqual('Q8');
   });
 });
 
@@ -182,7 +182,7 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
   matchUps.forEach(matchUp => {
     const { finishingRound, roundNumber, roundName, structureName } = matchUp;
     if (roundNumber === 1 && structureName === 'EAST') {
-      expect(roundName).toEqual('E-R8');
+      expect(roundName).toEqual('E-R16');
       expect(finishingRound).toEqual(4);
     }
     if (roundNumber === 2 && structureName === 'EAST')

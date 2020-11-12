@@ -33,7 +33,7 @@ export function getRoundNamingProfile({
     Object.assign(
       roundNamingProfile,
       ...Object.keys(roundProfile).map(key => {
-        const profileSize = `R${roundProfile[key].roundSize}`;
+        const profileSize = `R${key}`;
         return { [key]: profileSize };
       })
     );
@@ -42,13 +42,14 @@ export function getRoundNamingProfile({
       roundNamingProfile,
       ...Object.keys(roundProfile).map(round => {
         const { roundSize, preFeedRound, finishingRound } = roundProfile[round];
+        const participantsCount = roundSize * 2;
         const sizeName = !preFeedRound && finishingRoundNameMap[finishingRound];
         const prefix = preFeedRound
           ? roundNamePrefix.preFeedRound
           : sizeName
           ? ''
           : roundNamePrefix.roundNumber;
-        const profileSize = `${prefix}${sizeName || roundSize}`;
+        const profileSize = `${prefix}${sizeName || participantsCount}`;
         const roundName = [stageConstant, structureAbbreviation, profileSize]
           .filter(f => f)
           .join('-');
