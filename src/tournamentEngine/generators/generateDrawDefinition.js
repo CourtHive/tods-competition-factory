@@ -1,4 +1,5 @@
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
@@ -11,6 +12,7 @@ import {
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
 
+import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -31,6 +33,19 @@ export function generateDrawDefinition(props) {
     matchUpType,
     seededParticipants,
   } = props;
+
+  const tournamentAllowedDrawTypes =
+    tournamentRecord && allowedDrawTypes({ tournamentRecord });
+  if (
+    tournamentAllowedDrawTypes &&
+    !tournamentAllowedDrawTypes.includes(drawType)
+  ) {
+    return { error: INVALID_DRAW_TYPE };
+  }
+  const eventAllowedDrawTypes = event?.allowedDrawTypes;
+  if (eventAllowedDrawTypes && !eventAllowedDrawTypes.includes(drawType)) {
+    return { error: INVALID_DRAW_TYPE };
+  }
 
   let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
 
