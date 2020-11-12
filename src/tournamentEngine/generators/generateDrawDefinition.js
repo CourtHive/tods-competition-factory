@@ -1,6 +1,7 @@
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
+import { checkValidEntries } from '../governors/eventGovernor/checkValidEntries';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 import {
@@ -33,6 +34,14 @@ export function generateDrawDefinition(props) {
     matchUpType,
     seededParticipants,
   } = props;
+
+  const participants = tournamentRecord?.participants;
+
+  const validEntriesTest =
+    event && participants && checkValidEntries({ event, participants });
+  if (validEntriesTest?.error) {
+    return validEntriesTest;
+  }
 
   const tournamentAllowedDrawTypes =
     tournamentRecord && allowedDrawTypes({ tournamentRecord });
@@ -80,6 +89,7 @@ export function generateDrawDefinition(props) {
 
   const stage = MAIN;
   const entries = event?.entries || [];
+  const eventType = event?.eventType;
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stageEntries = entries.filter(
     entry => entry.entryStage === stage && entry.entryStatus !== ALTERNATE
@@ -177,13 +187,13 @@ export function generateDrawDefinition(props) {
     const seedingScaleAttributes = {
       scaleType: SEEDING,
       scaleName: event.category.categoryName,
-      eventType: event.eventType,
+      eventType,
     };
 
     const rankingScaleAttributes = {
       scaleType: RANKING,
       scaleName: event.category.categoryName,
-      eventType: event.eventType,
+      eventType,
     };
 
     const { scaledEntries: seedingScaledEntries } = getScaledEntries({
@@ -224,7 +234,6 @@ export function generateDrawDefinition(props) {
 
   let conflicts = [];
   if (automated !== false) {
-    const participants = tournamentRecord?.participants;
     ({ conflicts } = drawEngine.automatedPositioning({
       structureId,
       participants,

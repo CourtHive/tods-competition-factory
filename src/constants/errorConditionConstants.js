@@ -31,6 +31,7 @@ export const STRUCTURE_NOT_FOUND = 'structure not found';
 export const MISSING_STRUCTURES = 'Missing structures';
 export const MISSING_STRUCTURE = 'Missing structure';
 
+export const UNRECOGNIZED_EVENT_TYPE = 'Unrecognized eventType';
 export const MISSING_EVENT = 'Missing event / eventId';
 export const EVENT_NOT_FOUND = 'Event not found';
 

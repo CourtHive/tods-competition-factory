@@ -58,15 +58,18 @@ export function addDrawEntries({
   if (positionsAvailable < participantIds.length)
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
 
-  const invalidEntries = participantIds.reduce((invalid, participantId) => {
-    if (participantInEntries({ participantId, drawDefinition })) {
-      return invalid.concat({ participantId, error: EXISTING_PARTICIPANT });
-    }
-    return invalid;
-  }, []);
+  const invalidParticipantIds = participantIds.reduce(
+    (invalid, participantId) => {
+      if (participantInEntries({ participantId, drawDefinition })) {
+        return invalid.concat({ participantId, error: EXISTING_PARTICIPANT });
+      }
+      return invalid;
+    },
+    []
+  );
 
-  if (invalidEntries.length) {
-    return { error: INVALID_ENTRIES, invalidEntries };
+  if (invalidParticipantIds.length) {
+    return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
   participantIds.forEach(participantId => {

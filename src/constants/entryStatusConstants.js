@@ -7,6 +7,7 @@ export const CONFIRMED = 'CONFIRMED';
 export const LUCKY_LOSER = 'LUCKY_LOSER';
 export const ORGANISER_ACCEPTANCE = 'ORGANISER_ACCEPTANCE';
 export const WITHDRAWN = 'WITHDRAWN';
+export const UNPAIRED = 'UNPAIRED';
 
 export const STRUCTURE_ENTERED_TYPES = [
   QUALIFIER,
@@ -20,6 +21,7 @@ export const STRUCTURE_ENTERED_TYPES = [
 export const entryStatusConstants = {
   FEED_IN,
   WILDCARD,
+  UNPAIRED,
   ALTERNATE,
   CONFIRMED,
   QUALIFIER,
