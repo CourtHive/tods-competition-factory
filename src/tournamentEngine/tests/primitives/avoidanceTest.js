@@ -85,9 +85,10 @@ export function avoidanceTest(props) {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants
-    .filter(participant => participant.participantType === eventParticipantType)
-    .map(p => p.participantId);
+  const eventParticipants = participants.filter(
+    participant => participant.participantType === eventParticipantType
+  );
+  const participantIds = eventParticipants.map(p => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -100,9 +101,11 @@ export function avoidanceTest(props) {
     event: eventResult,
     policyDefinitions: [{ avoidance }, ITF_SEEDING],
   };
-  const { conflicts, drawDefinition } = tournamentEngine.generateDrawDefinition(
-    values
-  );
+  const {
+    error,
+    conflicts,
+    drawDefinition,
+  } = tournamentEngine.generateDrawDefinition(values);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
@@ -127,5 +130,5 @@ export function avoidanceTest(props) {
     }),
   }));
 
-  return { conflicts, drawDefinition, participants, report };
+  return { conflicts, drawDefinition, error, participants, report };
 }

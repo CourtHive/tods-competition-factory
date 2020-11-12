@@ -15,41 +15,46 @@ const avoidancePolicy = {
 };
 
 it('can generate ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
-  let { conflicts } = avoidanceTest({
+  let { conflicts, error } = avoidanceTest({
     avoidance: avoidancePolicy,
     participantType: PAIR,
     eventType: DOUBLES,
     sex: 'M',
   });
+  if (error) console.log({ error });
   if (conflicts?.unseededConflicts) console.log(conflicts);
 
-  ({ conflicts } = avoidanceTest({
+  ({ conflicts, error } = avoidanceTest({
     avoidance: avoidancePolicy,
     participantType: PAIR,
     eventType: DOUBLES,
     sex: 'F',
   }));
+  if (error) console.log({ error });
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
 it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
-  avoidanceTest({
+  let { conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     participantType: INDIVIDUAL,
     avoidance: avoidancePolicy,
   });
+  if (error) console.log({ error });
+  if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 
-  const { conflicts } = avoidanceTest({
+  ({ conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     participantType: INDIVIDUAL,
     avoidance: avoidancePolicy,
     valuesCount: 4,
-  });
+  }));
+  if (error) console.log({ error });
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
 it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVIDUAL participants', () => {
-  const { conflicts } = avoidanceTest({
+  const { conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     drawType: ROUND_ROBIN,
     participantType: INDIVIDUAL,
@@ -59,6 +64,7 @@ it('can generate ROUND ROBIN drawDefinition using country avoidance with INDIVID
     valuesInstanceLimit: 4,
     valuesCount: 8,
   });
+  if (error) console.log({ error });
   if (conflicts?.unseededConflicts)
     console.log('RR conflicts:', conflicts?.unseededConflicts);
 });
