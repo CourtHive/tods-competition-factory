@@ -6,13 +6,14 @@ import {
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
 
-import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
 import {
   ELIMINATION,
   FEED_IN,
   MAIN,
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
+
+import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can return matchUps from a KNOCKOUT structure', () => {
@@ -41,6 +42,19 @@ it('can return matchUps from a KNOCKOUT structure', () => {
     structureId,
   }));
   expect(upcomingMatchUps.length).toEqual(0);
+
+  matchUps.forEach(matchUp => {
+    const { finishingRound, roundNumber, roundName } = matchUp;
+    if (finishingRound === 1) expect(roundName).toEqual('F');
+    if (finishingRound === 2) expect(roundName).toEqual('SF');
+    if (finishingRound === 3) expect(roundName).toEqual('QF');
+    if (finishingRound === 4) expect(roundName).toEqual('R8');
+
+    if (roundNumber === 1) expect(roundName).toEqual('R8');
+    if (roundNumber === 2) expect(roundName).toEqual('QF');
+    if (roundNumber === 3) expect(roundName).toEqual('SF');
+    if (roundNumber === 4) expect(roundName).toEqual('F');
+  });
 });
 
 it('can return matchUps from a FEED_IN structure and identify feedRounds', () => {
@@ -108,9 +122,36 @@ it('can return matchUps from a OLYMPIC structure', () => {
   const { matchUps } = drawEngine.allDrawMatchUps({
     requireParticipants: false,
   });
-  const namingResult = matchUps.map(matchUp => ({
-    roundNumber: matchUp.roundNumber,
-    roundName: matchUp.roundName,
-  }));
-  console.log({ namingResult });
+  matchUps.forEach(matchUp => {
+    const { finishingRound, roundNumber, roundName, structureName } = matchUp;
+    if (roundNumber === 1 && structureName === 'EAST') {
+      expect(roundName).toEqual('E-R8');
+      expect(finishingRound).toEqual(4);
+    }
+    if (roundNumber === 2 && structureName === 'EAST')
+      expect(roundName).toEqual('E-QF');
+    if (roundNumber === 3 && structureName === 'EAST')
+      expect(roundName).toEqual('E-SF');
+    if (roundNumber === 4 && structureName === 'EAST') {
+      expect(roundName).toEqual('E-F');
+      expect(finishingRound).toEqual(1);
+    }
+
+    if (roundNumber === 1 && structureName === 'WEST')
+      expect(roundName).toEqual('W-QF');
+    if (roundNumber === 2 && structureName === 'WEST')
+      expect(roundName).toEqual('W-SF');
+    if (roundNumber === 3 && structureName === 'WEST')
+      expect(roundName).toEqual('W-F');
+
+    if (roundNumber === 1 && structureName === 'NORTH')
+      expect(roundName).toEqual('N-SF');
+    if (roundNumber === 2 && structureName === 'NORTH')
+      expect(roundName).toEqual('N-F');
+
+    if (roundNumber === 1 && structureName === 'SOUTH')
+      expect(roundName).toEqual('S-SF');
+    if (roundNumber === 2 && structureName === 'SOUTH')
+      expect(roundName).toEqual('S-F');
+  });
 });
