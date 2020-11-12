@@ -9,10 +9,10 @@ import {
 
 export function regenerateDrawDefinition({
   tournamentRecord,
+  auditData = {},
   auditEngine,
   drawEngine,
   drawId,
-  auditData,
 }) {
   const { drawDefinition, event } = getDrawDefinition({
     tournamentRecord,

@@ -1,18 +1,32 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
-export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
+export function deleteDrawDefinitions({
+  tournamentRecord,
+  auditData = {},
+  auditEngine,
+  eventId,
+  drawIds,
+}) {
   const drawId = Array.isArray(drawIds) && drawIds[0];
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
 
   if (event) {
     if (!event.drawDefinitions) {
-      return { error: 'No drawDefinitions in event' };
+      return { error: DRAW_DEFINITION_NOT_FOUND };
     }
 
-    event.drawDefinitions = event.drawDefinitions.filter(
-      drawDefinition => !drawIds.includes(drawDefinition.drawId)
-    );
+    event.drawDefinitions = event.drawDefinitions.filter(drawDefinition => {
+      if (drawIds.includes(drawDefinition.drawId)) {
+        Object.assign(auditData, {
+          action: 'deleteDrawDefinitions',
+          deletedDrawDefinition: drawDefinition,
+        });
+        auditEngine.addAuditItem({ auditData });
+      }
+      return !drawIds.includes(drawDefinition.drawId);
+    });
   }
 
   return SUCCESS;
