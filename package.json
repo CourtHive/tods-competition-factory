@@ -57,7 +57,7 @@
     "@types/jest": "26.0.15",
     "docz": "2.3.1",
     "eslint-config-prettier": "6.15.0",
-    "eslint-plugin-jest": "24.1.0",
+    "eslint-plugin-jest": "24.1.2",
     "husky": "4.3.0",
     "np": "7.0.0",
     "react-dom": "17.0.1",
