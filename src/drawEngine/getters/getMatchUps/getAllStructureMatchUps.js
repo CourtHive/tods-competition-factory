@@ -11,10 +11,13 @@ import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
 
 import { makeDeepCopy, numericSort } from '../../../utilities';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
+import { getRoundNamingProfile } from './getRoundNamingProfile';
+
+import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 /*
   return all matchUps within a structure and its child structures
@@ -73,10 +76,11 @@ export function getAllStructureMatchUps({
   // which can be found as a property of either a structure or a drawDefinition
   const tieFormat = structure.tieFormat || drawDefinition?.tieFormat;
   const collectionDefinitions = tieFormat && tieFormat.collectionDefinitions;
+  const isRoundRobin = structure.structures;
 
   if (structure.matchUps) {
     matchUps = structure.matchUps;
-  } else if (structure.structures) {
+  } else if (isRoundRobin) {
     if (inContext) {
       // Round Robin structures are nested so the accurate structureId when in context must be assigned here
       matchUps = [].concat(
@@ -96,6 +100,15 @@ export function getAllStructureMatchUps({
     }
   }
 
+  const roundNamingPolicy =
+    appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
+  const { roundNamingProfile, roundProfile } = getRoundNamingProfile({
+    roundNamingPolicy,
+    isRoundRobin,
+    structure,
+    matchUps,
+  });
+
   const matchUpTies = matchUps.filter(matchUp =>
     Array.isArray(matchUp.tieMatchUps)
   );
@@ -109,7 +122,14 @@ export function getAllStructureMatchUps({
   }
 
   if (inContext) {
-    matchUps = matchUps.map(matchUp => addMatchUpContext({ matchUp }));
+    matchUps = matchUps.map(matchUp =>
+      addMatchUpContext({
+        matchUp,
+        isRoundRobin,
+        roundProfile,
+        roundNamingProfile,
+      })
+    );
     if (contextFilters) {
       matchUps = filterMatchUps({ matchUps, ...contextFilters });
     }
@@ -138,19 +158,33 @@ export function getAllStructureMatchUps({
   }
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
-  function addMatchUpContext({ matchUp, isCollectionBye, matchUpTieId }) {
+  function addMatchUpContext({
+    matchUp,
+    matchUpTieId,
+    isRoundRobin,
+    roundProfile,
+    isCollectionBye,
+    roundNamingProfile,
+  }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({ matchUp });
+    const roundName =
+      roundNamingProfile && roundNamingProfile[matchUp.roundNumber];
+
+    const feedRound =
+      roundProfile && roundProfile[matchUp.roundNumber].feedRound;
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
       {
         drawId,
-        structureId,
         schedule,
+        feedRound,
+        roundName,
+        structureId,
+        matchUpTieId,
         structureName,
         matchUpStatus,
-        matchUpTieId,
       },
       makeDeepCopy(matchUp),
       context
@@ -161,7 +195,14 @@ export function getAllStructureMatchUps({
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         matchUp => {
           const matchUpTieId = matchUpWithContext.matchUpId;
-          return addMatchUpContext({ matchUp, isCollectionBye, matchUpTieId });
+          return addMatchUpContext({
+            matchUp,
+            matchUpTieId,
+            isRoundRobin,
+            roundProfile,
+            isCollectionBye,
+            roundNamingProfile,
+          });
         }
       );
     }

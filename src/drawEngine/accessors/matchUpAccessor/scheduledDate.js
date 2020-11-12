@@ -1,6 +1,12 @@
+import { getTimeZoneOffset } from '../../../utilities/dateTime';
 import { SCHEDULED_DATE } from '../../../constants/timeItemConstants';
 
-export function scheduledMatchUpDate({ matchUp }) {
+export function scheduledMatchUpDate({
+  matchUp,
+  localTimeZone,
+  localPerspective,
+}) {
+  if (localPerspective) console.log({ localTimeZone });
   const timeItems = matchUp.timeItems || [];
   const scheduledDateItem = timeItems.reduce((scheduledDateItem, timeItem) => {
     const scheduledDateCandidate =
@@ -13,7 +19,16 @@ export function scheduledMatchUpDate({ matchUp }) {
     return laterScheduledTimeItem ? scheduledDateCandidate : scheduledDateItem;
   }, undefined);
 
-  const scheduledDate = scheduledDateItem && scheduledDateItem.itemValue;
+  const itemValue = scheduledDateItem && scheduledDateItem.itemValue;
 
-  return { scheduledDate };
+  if (localPerspective && localTimeZone) {
+    const { offsetDate, error } = getTimeZoneOffset({
+      date: itemValue,
+      timeZone: localTimeZone,
+    });
+    if (error) return { error };
+    return { scheduledTime: offsetDate };
+  }
+
+  return { scheduledDate: itemValue };
 }

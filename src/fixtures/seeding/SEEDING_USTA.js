@@ -1,5 +1,7 @@
+import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+
 export const SEEDING_USTA = {
-  seeding: {
+  [POLICY_TYPE_SEEDING]: {
     policyName: 'USTA',
     duplicateSeedNumbers: true,
     validSeedPositions: { ignore: true },

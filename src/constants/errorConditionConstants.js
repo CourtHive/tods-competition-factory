@@ -15,6 +15,7 @@ export const MISSING_DRAW_POSITIONS = 'Missing drawPositions';
 export const DRAW_POSITION_ACTIVE = 'drawPosition is active';
 export const INVALID_DRAW_POSITION = 'Invlid drawPosition';
 export const MISSING_DRAW_POSITION = 'Missing drawPosition';
+export const INVALID_DRAW_TYPE = 'Invalid drawType';
 export const INVALID_DRAW_SIZE = 'Invalid drawSize';
 export const MISSING_DRAW_SIZE = 'Missing drawSize';
 export const MISSING_DRAW_ID = 'Missing drawId';
@@ -73,6 +74,7 @@ export const MISSING_DATE = 'Missing date';
 
 // Javascript constant for Date() function
 export const INVALID_DATE = 'Invalid Date';
+export const INVALID_TIME_ZONE = 'Invalid Time Zone';
 
 export const INVALID_GAME_SCORES = 'Invalid game scores';
 export const INVALID_WINNING_SIDE = 'Invalid winningSide';

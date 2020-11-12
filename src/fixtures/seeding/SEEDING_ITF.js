@@ -1,5 +1,7 @@
+import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+
 export const SEEDING_ITF = {
-  seeding: {
+  [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF',
     duplicateSeedNumbers: true,
     seedBlocks: {

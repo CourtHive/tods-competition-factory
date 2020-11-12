@@ -1,6 +1,11 @@
+import { getTimeZoneOffset } from '../../../utilities/dateTime';
 import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
 
-export function scheduledMatchUpTime({ matchUp }) {
+export function scheduledMatchUpTime({
+  matchUp,
+  localTimeZone,
+  localPerspective,
+}) {
   const timeItems = matchUp.timeItems || [];
   const getTimeStamp = item => (!item ? 0 : new Date(item.timeStamp).getTime());
   const lastScheduledTimeItem = timeItems
@@ -8,8 +13,16 @@ export function scheduledMatchUpTime({ matchUp }) {
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
 
-  const scheduledTime =
-    lastScheduledTimeItem && lastScheduledTimeItem.itemValue;
+  const itemValue = lastScheduledTimeItem && lastScheduledTimeItem.itemValue;
 
-  return { scheduledTime };
+  if (localPerspective && localTimeZone) {
+    const { offsetDate, error } = getTimeZoneOffset({
+      date: itemValue,
+      timeZone: localTimeZone,
+    });
+    if (error) return { error };
+    return { scheduledTime: offsetDate };
+  }
+
+  return { scheduledTime: itemValue };
 }

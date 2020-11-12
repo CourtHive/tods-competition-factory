@@ -1,4 +1,4 @@
-import { makeDeepCopy } from '../../../utilities';
+import { makeDeepCopy, numericSort } from '../../../utilities';
 
 export function getMatchUp({ matchUps, matchUpId }) {
   const matchUp = (matchUps || []).reduce((matchUp, current) => {
@@ -16,8 +16,9 @@ export function getRoundMatchUps({ matchUps = [] }) {
     .reduce((roundNumbers, matchUp) => {
       return !matchUp.roundNumber || roundNumbers.includes(matchUp.roundNumber)
         ? roundNumbers
-        : roundNumbers.concat(matchUp.roundNumber);
+        : roundNumbers.concat(parseInt(matchUp.roundNumber));
     }, [])
+    .sort(numericSort)
     .map(roundNumber => {
       return {
         [roundNumber]: matchUps.filter(
@@ -26,8 +27,31 @@ export function getRoundMatchUps({ matchUps = [] }) {
       };
     });
 
+  const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
+    if (!mapping[matchUp.roundNumber])
+      mapping[matchUp.roundNumber] = matchUp.finishingRound;
+    return mapping;
+  }, {});
+
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
-  return { roundMatchUps };
+  const roundProfile = Object.assign(
+    {},
+    ...Object.keys(roundMatchUps).map(round => {
+      return { [round]: { roundSize: roundMatchUps[round].length } };
+    })
+  );
+  Object.keys(roundMatchUps).forEach(key => {
+    const round = parseInt(key);
+    roundProfile[round].finishingRound = finishingRoundMap[round];
+    if (
+      roundProfile[round + 1] &&
+      roundProfile[round + 1].roundSize === roundProfile[round].roundSize
+    ) {
+      roundProfile[round + 1].feedRound = true;
+      roundProfile[round].preFeedRound = true;
+    }
+  });
+  return { roundMatchUps, roundProfile };
 }
 
 export function getCollectionPositionMatchUps({ matchUps }) {

@@ -1,4 +1,7 @@
-import { INVALID_DATE } from '../constants/errorConditionConstants';
+import {
+  INVALID_DATE,
+  INVALID_TIME_ZONE,
+} from '../constants/errorConditionConstants';
 
 export function isDate(dateArg) {
   if (typeof dateArg == 'boolean') return false;
@@ -325,15 +328,75 @@ function zeroPad(number) {
   return number.toString()[1] ? number : '0' + number;
 }
 
+export function sameDay(date1, date2) {
+  const d1 = new Date(date1);
+  const d2 = new Date(date2);
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
+
+export function getTimeZoneOffset({ date, timeZone } = {}) {
+  // assume if provided a date string with no time element that
+  // the date is intended to represent this date in local time zone
+  const isDateStringMissingTime =
+    typeof date === 'string' && date.length === 10;
+
+  // if date is a string without time coerce to midnight of the date
+  const dateWithTime = isDateStringMissingTime
+    ? new Date(`${date}T00:00`)
+    : date;
+
+  // if no date was provided assume the goal is current time or to know the difference
+  const originalDate = dateWithTime ? new Date(dateWithTime) : new Date();
+
+  if (originalDate === INVALID_DATE) return { error: INVALID_DATE };
+
+  let localeString;
+
+  try {
+    localeString = originalDate
+      .toLocaleString('en-CA', { timeZone, hour12: false })
+      .replace(', ', 'T');
+  } catch (err) {
+    return { error: INVALID_TIME_ZONE };
+  }
+
+  localeString +=
+    '.' +
+    originalDate
+      .getMilliseconds()
+      .toString()
+      .padStart(3, '0');
+
+  const offsetDate = new Date(localeString + 'Z');
+  const offsetISOString = new Date(offsetDate).toISOString();
+
+  const offsetMilliseconds = -(offsetDate - originalDate);
+  const offsetMinutes = offsetMilliseconds / 60 / 1000;
+
+  return {
+    originalDate,
+    offsetDate,
+    offsetMinutes,
+    offsetISOString,
+    offsetMilliseconds,
+  };
+}
+
 export const dateTime = {
-  convertTime,
+  sameDay,
+  timeUTC,
   DateHHMM,
+  ymd2date,
   formatDate,
   offsetDate,
   offsetTime,
   futureDate,
-  currentUTCDate,
+  convertTime,
   getDateByWeek,
-  ymd2date,
-  timeUTC,
+  currentUTCDate,
+  getTimeZoneOffset,
 };

@@ -12,11 +12,11 @@ export function playoff(props) {
 export function playoffStructures({
   stage = MAIN,
   drawSize,
-  playoffNaming,
   roundOffset = 0,
   drawDefinition,
   stageSequence = 1,
   roundOffsetLimit,
+  playoffAttributes,
   finishingPositionLimit,
   finishingPositionOffset = 0,
   exitProfile = '0', // rounds at which participant exited
@@ -27,14 +27,16 @@ export function playoffStructures({
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
-  const structureName =
-    (playoffNaming && playoffNaming[exitProfile]) || finishingPositionRange;
+  const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
+  const structureName = attributeProfile?.name || finishingPositionRange;
+  const structureAbbreviation = attributeProfile?.abbreviation;
   const structure = structureTemplate({
     stage,
     matchUps,
     roundOffset,
-    structureName,
     stageSequence,
+    structureName,
+    structureAbbreviation,
   });
 
   drawDefinition.structures.push(structure);
@@ -66,7 +68,7 @@ export function playoffStructures({
       childStructures,
     } = playoffStructures({
       stage,
-      playoffNaming,
+      playoffAttributes,
       drawDefinition,
       roundOffsetLimit,
       finishingPositionLimit,

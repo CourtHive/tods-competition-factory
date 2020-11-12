@@ -1,4 +1,4 @@
-import { sameDay } from './sameDay';
+import { sameDay } from '../../../utilities/dateTime';
 import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledTime';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledDate';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
@@ -13,6 +13,8 @@ export function filterMatchUps({
   collectionIds,
   scheduledDate,
   isMatchUpTie,
+  localTimeZone,
+  localPerspective,
   isCollectionMatchUp,
 }) {
   const filteredMatchUps = matchUps.filter(matchUp => {
@@ -49,8 +51,16 @@ export function filterMatchUps({
       return false;
     }
     if (scheduledDate) {
-      const { scheduledTime } = scheduledMatchUpTime({ matchUp });
-      const { scheduledDate: matchUpDate } = scheduledMatchUpDate({ matchUp });
+      const { scheduledTime } = scheduledMatchUpTime({
+        matchUp,
+        localTimeZone,
+        localPerspective,
+      });
+      const { scheduledDate: matchUpDate } = scheduledMatchUpDate({
+        matchUp,
+        localTimeZone,
+        localPerspective,
+      });
       const comparisonDate = scheduledTime || matchUpDate;
       if (!sameDay(scheduledDate, comparisonDate)) return false;
     }

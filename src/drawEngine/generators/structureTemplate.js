@@ -10,6 +10,7 @@ export const structureTemplate = ({
   roundOffset,
   matchUpFormat,
   structureType,
+  structureAbbreviation,
   structureName,
   seedingProfile,
   structureIndex,
@@ -19,6 +20,7 @@ export const structureTemplate = ({
   finishingPosition = ROUND_OUTCOME,
 }) => {
   const structure = {
+    structureAbbreviation,
     structureName,
     matchUpFormat,
     stageSequence,

@@ -35,21 +35,21 @@ export const ROUND_ROBIN_WITH_PLAYOFF = 'ROUND ROBIN WITH PLAYOFF';
 
 // structure naming
 export const BACKDRAW = 'BACKDRAW';
-export const COMPASS_NAMING = {
-  '0': 'EAST',
-  '0-1': 'WEST',
-  '0-2': 'NORTH',
-  '0-3': 'NORTHEAST',
-  '0-1-1': 'SOUTH',
-  '0-1-2': 'SOUTHWEST',
-  '0-2-1': 'NORTHWEST',
-  '0-1-1-1': 'SOUTHEAST',
+export const COMPASS_ATTRIBUTES = {
+  '0': { name: 'EAST', abbreviation: 'E' },
+  '0-1': { name: 'WEST', abbreviation: 'W' },
+  '0-2': { name: 'NORTH', abbreviation: 'N' },
+  '0-3': { name: 'NORTHEAST', abbreviation: 'NE' },
+  '0-1-1': { name: 'SOUTH', abbreviation: 'S' },
+  '0-1-2': { name: 'SOUTHWEST', abbreviation: 'SW' },
+  '0-2-1': { name: 'NORTHWEST', abbreviation: 'NW' },
+  '0-1-1-1': { name: 'SOUTHEAST', abbreviation: 'SE' },
 };
-export const OLYMPIC_NAMING = {
-  '0': 'EAST',
-  '0-1': 'WEST',
-  '0-2': 'NORTH',
-  '0-1-1': 'SOUTH',
+export const OLYMPIC_ATTRIBUTES = {
+  '0': { name: 'EAST', abbreviation: 'E' },
+  '0-1': { name: 'WEST', abbreviation: 'W' },
+  '0-2': { name: 'NORTH', abbreviation: 'N' },
+  '0-1-1': { name: 'SOUTH', abbreviation: 'S' },
 };
 
 // positioningProfile
@@ -88,7 +88,7 @@ export const drawDefinitionConstants = {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   BACKDRAW,
-  COMPASS_NAMING,
+  COMPASS_ATTRIBUTES,
   DRAW,
   RANDOM,
   TOP_DOWN,
