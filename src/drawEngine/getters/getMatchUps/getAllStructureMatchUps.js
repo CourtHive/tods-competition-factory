@@ -13,7 +13,7 @@ import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/match
 import { makeDeepCopy, numericSort } from '../../../utilities';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
-import { getRoundattributeProfile } from './getRoundattributeProfile';
+import { getRoundNamingProfile } from './getRoundNamingProfile';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -102,7 +102,7 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const roundattributeProfile = getRoundattributeProfile({
+  const { roundNamingProfile, roundProfile } = getRoundNamingProfile({
     roundNamingPolicy,
     isRoundRobin,
     structure,
@@ -123,7 +123,12 @@ export function getAllStructureMatchUps({
 
   if (inContext) {
     matchUps = matchUps.map(matchUp =>
-      addMatchUpContext({ matchUp, isRoundRobin, roundattributeProfile })
+      addMatchUpContext({
+        matchUp,
+        isRoundRobin,
+        roundProfile,
+        roundNamingProfile,
+      })
     );
     if (contextFilters) {
       matchUps = filterMatchUps({ matchUps, ...contextFilters });
@@ -157,25 +162,29 @@ export function getAllStructureMatchUps({
     matchUp,
     matchUpTieId,
     isRoundRobin,
+    roundProfile,
     isCollectionBye,
-    roundattributeProfile,
+    roundNamingProfile,
   }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({ matchUp });
+    const roundName =
+      roundNamingProfile && roundNamingProfile[matchUp.roundNumber];
 
-    const roundName = roundattributeProfile[matchUp.roundNumber];
-    if (roundName) console.log(matchUp.roundNumber, roundName);
+    const feedRound =
+      roundProfile && roundProfile[matchUp.roundNumber].feedRound;
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
       {
         drawId,
-        matchUpStatus,
-        matchUpTieId,
-        roundName,
         schedule,
+        feedRound,
+        roundName,
         structureId,
+        matchUpTieId,
         structureName,
+        matchUpStatus,
       },
       makeDeepCopy(matchUp),
       context
@@ -190,8 +199,9 @@ export function getAllStructureMatchUps({
             matchUp,
             matchUpTieId,
             isRoundRobin,
+            roundProfile,
             isCollectionBye,
-            roundattributeProfile,
+            roundNamingProfile,
           });
         }
       );

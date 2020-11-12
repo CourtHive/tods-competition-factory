@@ -1,5 +1,6 @@
 import { getDrawStructures } from '../findStructure';
 import { getStructureMatchUps } from './structureMatchUps';
+import { SUCCESS } from '../../../constants/resultConstants';
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
@@ -72,6 +73,7 @@ export function getDrawMatchUps({
     upcomingMatchUps: allUpcomingMatchUps,
     abandonedMatchUps: allAbandonedMatchUps,
     completedMatchUps: allCompletedMatchUps,
+    ...SUCCESS,
   };
 
   return matchUpGroups;

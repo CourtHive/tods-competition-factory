@@ -157,7 +157,6 @@ export function generateDrawType(props = {}) {
   const { tieFormat, matchUpType } = drawDefinition || {};
   const additionalParams = { matchUpType };
 
-  // TODO: additionalParams should only be applied to matchUps in the structure(s) generated
   const { matchUps } = getAllDrawMatchUps({ drawDefinition });
 
   matchUps.forEach(matchUp => {

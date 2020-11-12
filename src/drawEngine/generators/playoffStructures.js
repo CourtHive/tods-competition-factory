@@ -29,12 +29,14 @@ export function playoffStructures({
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
   const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
   const structureName = attributeProfile?.name || finishingPositionRange;
+  const structureAbbreviation = attributeProfile?.abbreviation;
   const structure = structureTemplate({
     stage,
     matchUps,
     roundOffset,
-    structureName,
     stageSequence,
+    structureName,
+    structureAbbreviation,
   });
 
   drawDefinition.structures.push(structure);
