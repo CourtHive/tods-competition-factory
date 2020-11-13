@@ -15,7 +15,7 @@ import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
 
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 
 export function generateDrawDefinition(props) {
@@ -92,7 +92,9 @@ export function generateDrawDefinition(props) {
   const eventType = event?.eventType;
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stageEntries = entries.filter(
-    entry => entry.entryStage === stage && entry.entryStatus !== ALTERNATE
+    entry =>
+      entry.entryStage === stage &&
+      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
   if ([ROUND_ROBIN].includes(drawType)) {
     drawSize = stageEntries.length;
@@ -150,8 +152,10 @@ export function generateDrawDefinition(props) {
   }
 
   entries.forEach(entry => {
-    // TODO: attach participant scaleValues to entry information (if relevant?)
-    const entryData = Object.assign({}, entry, { stage: entry.entryStage });
+    // convenience: assume MAIN as entryStage if none provided
+    const entryData = Object.assign({}, entry, {
+      entryStage: entry.entryStage || MAIN,
+    });
     drawEngine.addDrawEntry(entryData);
   });
 

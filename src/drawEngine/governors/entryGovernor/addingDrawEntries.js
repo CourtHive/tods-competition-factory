@@ -18,13 +18,18 @@ export function addDrawEntry({
   drawDefinition,
   participantId,
   participant,
-  stage,
+  entryStage,
   entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!stage) return { error: MISSING_STAGE };
-  if (!validStage({ stage, drawDefinition })) return { error: INVALID_STAGE };
-  const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
+  if (!entryStage) return { error: MISSING_STAGE };
+  if (!validStage({ stage: entryStage, drawDefinition }))
+    return { error: INVALID_STAGE };
+  const spaceAvailable = stageSpace({
+    stage: entryStage,
+    drawDefinition,
+    entryStatus,
+  });
   if (!spaceAvailable.success) return { error: spaceAvailable.error };
 
   participantId = participantId || (participant && participant.participantId);
@@ -34,7 +39,7 @@ export function addDrawEntry({
   }
   const entry = Object.assign({}, participant, {
     participantId,
-    entryStage: stage,
+    entryStage,
     entryStatus,
   });
   drawDefinition.entries.push(entry);
