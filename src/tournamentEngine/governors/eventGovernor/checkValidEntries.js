@@ -5,15 +5,16 @@ import {
   MISSING_PARTICIPANTS,
   UNRECOGNIZED_EVENT_TYPE,
 } from '../../../constants/errorConditionConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function checkValidEntries({ event, participants }) {
+export function checkValidEntries({ event, participants, ignoreGender }) {
   if (!event) return { error: MISSING_EVENT };
   if (!participants) return { error: MISSING_PARTICIPANTS };
 
-  const { eventType } = event;
+  const { eventType, gender: eventGender } = event;
   if (![TEAM, SINGLES, DOUBLES].includes(eventType))
     return { error: UNRECOGNIZED_EVENT_TYPE };
   const participantType =
@@ -27,10 +28,20 @@ export function checkValidEntries({ event, participants }) {
   );
 
   const invalidEntries = enteredParticipants.filter(participant => {
-    const mismatch = participant.participantType !== participantType;
     const unpairedDoublesParticipant =
       eventType === DOUBLES && participant.participantType === UNPAIRED;
-    return mismatch && !unpairedDoublesParticipant;
+    const mismatch =
+      participant.participantType !== participantType &&
+      !unpairedDoublesParticipant;
+
+    // TODO: implement gender checking for teams & pairs
+    const wrongGender =
+      !ignoreGender &&
+      eventType === INDIVIDUAL &&
+      [MALE, FEMALE].includes(eventGender) &&
+      participant.sex !== eventGender;
+
+    return mismatch || wrongGender;
   });
 
   if (invalidEntries.length) {
