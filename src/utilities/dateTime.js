@@ -338,6 +338,11 @@ export function sameDay(date1, date2) {
   );
 }
 
+/**
+ *
+ * @param {date || string} date - date object or valid date string
+ * @param {string} timeZone - IANA code, e.g. 'America/New_York'
+ */
 export function getTimeZoneOffset({ date, timeZone } = {}) {
   // assume if provided a date string with no time element that
   // the date is intended to represent this date in local time zone
