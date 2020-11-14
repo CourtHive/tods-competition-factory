@@ -6,7 +6,6 @@ export function scheduledMatchUpDate({
   localTimeZone,
   localPerspective,
 }) {
-  if (localPerspective) console.log({ localTimeZone });
   const timeItems = matchUp.timeItems || [];
   const scheduledDateItem = timeItems.reduce((scheduledDateItem, timeItem) => {
     const scheduledDateCandidate =
