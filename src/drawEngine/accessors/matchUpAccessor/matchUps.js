@@ -12,6 +12,7 @@ export function publicGetRoundMatchUps(props) {
 }
 
 export function getRoundMatchUps({ matchUps = [] }) {
+  // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
     .reduce((roundNumbers, matchUp) => {
       return !matchUp.roundNumber || roundNumbers.includes(matchUp.roundNumber)
@@ -27,13 +28,23 @@ export function getRoundMatchUps({ matchUps = [] }) {
       };
     });
 
+  // calculate the finishing Round for each roundNumber
   const finishingRoundMap = matchUps.reduce((mapping, matchUp) => {
     if (!mapping[matchUp.roundNumber])
       mapping[matchUp.roundNumber] = matchUp.finishingRound;
     return mapping;
   }, {});
 
+  // convert roundMatchUpsArray into an object with roundNumber keys
   const roundMatchUps = Object.assign({}, ...roundMatchUpsArray);
+
+  // create a profle object with roundNubmer keys
+  // provides details for each round, including:
+  //  - matchUpsCount: total number of matchUps
+  //  - preFeedRound: whether the round is followed by a feedRound
+  //  - feedRound: whether round matchUps have fed partitipants
+  //  - roundIndex & feedRoundIndex: index relative to round type
+  //  - finishingRound: reverse count of rounds. Final is finishingRound #1
   const roundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map(round => {
