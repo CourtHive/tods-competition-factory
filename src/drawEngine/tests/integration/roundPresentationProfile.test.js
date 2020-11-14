@@ -78,7 +78,7 @@ it('can reliably generate presentation profiles', () => {
   });
 });
 
-export function getPresentationProfile({ structureId }) {
+function getPresentationProfile({ structureId }) {
   const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({

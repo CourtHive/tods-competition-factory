@@ -3,8 +3,11 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { findStructure } from '../findStructure';
+import { getAllStructureMatchUps } from './getAllStructureMatchUps';
+import { chunkArray } from '../../../utilities';
 
-export function getRoundNamingProfile({
+export function getRoundContextProfile({
   roundNamingPolicy,
   drawDefinition,
   structure,
@@ -69,8 +72,53 @@ export function getRoundNamingProfile({
 
 function getRoundTargets({ drawDefinition, structureId }) {
   const { links } = drawDefinition;
-  const structureTargets = links.filter(
+  const relevantLinks = links.filter(
     link => link.target.structureId === structureId
   );
-  if (structureTargets.length === 4) console.log({ structureTargets });
+  const sourceStructureIds = relevantLinks.reduce(
+    (sourceStructureIds, link) => {
+      const { structureId: sourceStructureId } = link.source;
+      return sourceStructureIds.includes(sourceStructureId)
+        ? sourceStructureIds
+        : sourceStructureIds.concat(sourceStructureId);
+    },
+    []
+  );
+  const sourceStructureProfiles = Object.assign(
+    {},
+    ...sourceStructureIds.map(sourceStructureId => {
+      const { structure } = findStructure({
+        drawDefinition,
+        structureId: sourceStructureId,
+      });
+      const { matchUps } = getAllStructureMatchUps({
+        structure,
+        inContext: true,
+      });
+      const { roundProfile } = getRoundMatchUps({ matchUps });
+      return { [sourceStructureId]: roundProfile };
+    })
+  );
+
+  if (relevantLinks.length === 4) {
+    console.log(relevantLinks, sourceStructureProfiles);
+    relevantLinks.forEach(link => {
+      const { structureId: sourceStructureId, roundNumber } = link.source;
+      const sourceStructureProfile = sourceStructureProfiles[sourceStructureId];
+      const firstRoundDrawPositions = sourceStructureProfile[1].drawPositions;
+      const sourceRoundMatchUpsCount =
+        sourceStructureProfile[roundNumber].matchUpsCount;
+      const chunkSize =
+        firstRoundDrawPositions.length / sourceRoundMatchUpsCount;
+      const drawPositionsChunks = chunkArray(
+        firstRoundDrawPositions,
+        chunkSize
+      );
+      console.log({
+        drawPositionsChunks,
+        sourceRoundMatchUpsCount,
+        roundNumber,
+      });
+    });
+  }
 }

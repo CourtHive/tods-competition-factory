@@ -20,7 +20,7 @@ import {
 } from '../../../utilities';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
-import { getRoundNamingProfile } from './getRoundNamingProfile';
+import { getRoundContextProfile } from './getRoundContextProfile';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -109,7 +109,7 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const { roundNamingProfile, roundProfile } = getRoundNamingProfile({
+  const { roundNamingProfile, roundProfile } = getRoundContextProfile({
     roundNamingPolicy,
     drawDefinition,
     structure,
