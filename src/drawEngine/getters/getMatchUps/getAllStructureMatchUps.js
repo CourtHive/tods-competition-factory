@@ -10,10 +10,17 @@ import {
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
 
-import { makeDeepCopy, numericSort } from '../../../utilities';
+import {
+  makeDeepCopy,
+  allNumeric,
+  noNumeric,
+  numericSort,
+  chunkArray,
+  isOdd,
+} from '../../../utilities';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
-import { getRoundNamingProfile } from './getRoundNamingProfile';
+import { getRoundProfile } from './getRoundProfile';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -102,8 +109,9 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const { roundNamingProfile, roundProfile } = getRoundNamingProfile({
+  const { roundNamingProfile, roundProfile } = getRoundProfile({
     roundNamingPolicy,
+    drawDefinition,
     isRoundRobin,
     structure,
     matchUps,
@@ -207,14 +215,17 @@ export function getAllStructureMatchUps({
       );
     }
 
-    const { drawPositions } = matchUp;
+    const { drawPositions, roundNumber } = matchUp;
     if (Array.isArray(drawPositions)) {
-      const sides = drawPositions
-        .sort(numericSort)
-        .map((drawPosition, index) => {
-          const sideNumber = index + 1;
-          return getSide({ drawPosition, sideNumber });
-        });
+      const orderedDrawPositions = getOrderedDrawPositions({
+        drawPositions,
+        roundProfile,
+        roundNumber,
+      });
+      const sides = orderedDrawPositions.map((drawPosition, index) => {
+        const sideNumber = index + 1;
+        return getSide({ drawPosition, sideNumber });
+      });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }));
 
       if (!matchUp.matchUpFormat) {
@@ -342,4 +353,47 @@ export function getAllStructureMatchUps({
         : seeding;
     }, undefined);
   }
+}
+
+function getOrderedDrawPositions({ drawPositions, roundProfile, roundNumber }) {
+  // drawPositions are always sorted numerically, if present
+  // sideNumber 1 always goes to the lower drawPosition
+  if (allNumeric(drawPositions)) return drawPositions.sort(numericSort);
+
+  // if no drawPositions are present, no sideNumbers will be generated, order unimportant
+  if (noNumeric(drawPositions)) return drawPositions;
+
+  const firstRoundMatchUpsCount = roundProfile[1].matchUpsCount;
+  const currentRoundMatchUpsCount = roundProfile[roundNumber].matchUpsCount;
+  const positionsChunkSize =
+    firstRoundMatchUpsCount / currentRoundMatchUpsCount;
+
+  const drawPosition = drawPositions.find(
+    drawPosition => !isNaN(parseInt(drawPosition))
+  );
+
+  const isFeedRound = roundProfile[roundNumber].feedRound;
+  if (isFeedRound) {
+    // for feedRound matchUps, fed drawPosition always produces { sideNumber: 1 }
+    return [drawPosition, undefined];
+  } else if (positionsChunkSize > 1) {
+    // for normal rounds the first round drawPositions are chunked
+    // the order of a drawPositions is determined by the index of the chunk where it appears
+    const firstRoundDrawPositions = roundProfile[1].drawPositions;
+    const drawPositionsChunks = chunkArray(
+      firstRoundDrawPositions,
+      positionsChunkSize
+    );
+    const drawPositionChunkIndex = drawPositionsChunks.reduce(
+      (index, chunk, i) => (chunk.includes(drawPosition) ? i : index),
+      undefined
+    );
+
+    // this is counter-intuitive because the chunkPositionIndex returns an odd number for an even position
+    // e.g. the first drawPosition count is odd, but the index is 0 (even)
+    return isOdd(drawPositionChunkIndex)
+      ? [undefined, drawPosition]
+      : [drawPosition, undefined];
+  }
+  return drawPositions;
 }

@@ -37,18 +37,31 @@ export function getRoundMatchUps({ matchUps = [] }) {
   const roundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map(round => {
-      return { [round]: { roundSize: roundMatchUps[round].length } };
+      return { [round]: { matchUpsCount: roundMatchUps[round].length } };
     })
   );
+
+  let roundIndex = 0;
+  let feedRoundIndex = 0;
   Object.keys(roundMatchUps).forEach(key => {
     const round = parseInt(key);
+    roundProfile[round].drawPositions = roundMatchUps[round]
+      .map(matchUp => matchUp.drawPositions)
+      .flat();
     roundProfile[round].finishingRound = finishingRoundMap[round];
     if (
       roundProfile[round + 1] &&
-      roundProfile[round + 1].roundSize === roundProfile[round].roundSize
+      roundProfile[round + 1].matchUpsCount ===
+        roundProfile[round].matchUpsCount
     ) {
       roundProfile[round + 1].feedRound = true;
+      roundProfile[round + 1].feedRoundIndex = feedRoundIndex;
       roundProfile[round].preFeedRound = true;
+      feedRoundIndex += 1;
+    }
+    if (!roundProfile[round].feedRound) {
+      roundProfile[round].roundIndex = roundIndex;
+      roundIndex += 1;
     }
   });
   return { roundMatchUps, roundProfile };

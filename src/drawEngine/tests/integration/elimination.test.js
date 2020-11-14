@@ -1,13 +1,14 @@
 import fs from 'fs';
 
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../..';
 import { generateRange, unique } from '../../../utilities';
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import {
   completeMatchUp,
   verifyMatchUps,
-} from '../../tests/primitives/verifyMatchUps';
+  verifySideNumbers,
+} from '../primitives/verifyMatchUps';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
@@ -233,4 +234,116 @@ it('can advance participants in elmination structures', () => {
     expectedRoundUpcoming: [6, 0],
     expectedRoundCompleted: [1, 1],
   });
+});
+
+it('can reliably generate sideNumbers', () => {
+  const { structureId } = generateDrawStructure({
+    drawSize: 16,
+    participantsCount: 16,
+  });
+
+  verifyStructure({
+    structureId,
+    expectedPositionsAssignedCount: 16,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 2,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 4,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 5,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 8,
+    winningSide: 1,
+  });
+
+  let expectedDrawPositions = {
+    '2': [
+      [
+        [3, undefined],
+        [undefined, 2],
+      ],
+      [
+        [7, undefined],
+        [undefined, 2],
+      ],
+      [
+        [10, undefined],
+        [1, undefined],
+      ],
+      [
+        [15, undefined],
+        [undefined, 2],
+      ],
+    ],
+  };
+  verifySideNumbers({ structureId, expectedDrawPositions });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 1,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 3,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 6,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 7,
+    winningSide: 1,
+  });
+
+  expectedDrawPositions = {
+    '2': [
+      [
+        [1, 3],
+        [1, 2],
+      ],
+      [
+        [6, 7],
+        [1, 2],
+      ],
+      [
+        [10, 12],
+        [1, 2],
+      ],
+      [
+        [13, 15],
+        [1, 2],
+      ],
+    ],
+  };
+  verifySideNumbers({ structureId, expectedDrawPositions });
 });

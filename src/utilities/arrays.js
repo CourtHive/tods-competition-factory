@@ -90,13 +90,6 @@ export function occurrences(val, arr) {
     }, {})[val] || 0
   );
 }
-export function flatten(arr) {
-  return arr.reduce(
-    (flat, toFlatten) =>
-      flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten),
-    []
-  );
-}
 export function subSort(arr, i, n, sortFx) {
   return [].concat(
     ...arr.slice(0, i),
@@ -122,4 +115,11 @@ export function chunkArray(arr, chunksize) {
     all[ch] = [].concat(all[ch] || [], one);
     return all;
   }, []);
+}
+
+export function allNumeric(arr) {
+  return arr.reduce((numeric, item) => !isNaN(parseInt(item)) && numeric, true);
+}
+export function noNumeric(arr) {
+  return arr.reduce((numeric, item) => isNaN(parseInt(item)) && numeric, true);
 }

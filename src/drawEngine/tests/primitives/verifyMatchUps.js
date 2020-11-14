@@ -103,6 +103,29 @@ export function verifyMatchUps({
   }
 }
 
+export function verifySideNumbers({ structureId, expectedDrawPositions }) {
+  const { drawDefinition } = drawEngine.getState();
+  const { structure } = findStructure({ drawDefinition, structureId });
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    requireParticipants: false,
+    inContext: true,
+    structure,
+  });
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+
+  const roundNumbers =
+    expectedDrawPositions && Object.keys(expectedDrawPositions);
+  roundNumbers &&
+    roundNumbers.forEach(roundNumber => {
+      const profile = roundMatchUps[roundNumber].map(matchUp => [
+        matchUp.drawPositions,
+        matchUp.sides?.map(side => side?.sideNumber),
+      ]);
+      expect(profile).toMatchObject(expectedDrawPositions[roundNumber]);
+    });
+}
+
 function verifyRoundCounts({ roundMatchUps, expectedRounds }) {
   expectedRounds.forEach((count, i) => {
     const roundNumber = i + 1;

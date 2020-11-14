@@ -9,6 +9,25 @@ import {
 
 import { FEED_IN } from '../../../constants/drawDefinitionConstants';
 
+it('can accurately generate sideNumbers', () => {
+  const { structureId } = generateFeedIn({
+    drawSize: 34,
+    seedsCount: 4,
+    assignSeeds: 4,
+    participantsCount: 32,
+  });
+
+  verifyStructure({
+    structureId,
+    expectedSeeds: 4,
+    expectedSeedsWithByes: 2,
+    expectedByeAssignments: 2,
+    expectedSeedValuesWithBye: [3, 4],
+    expectedPositionsAssignedCount: 34,
+    expectedRoundMatchUpsCounts: [16, 8, 4, 2, 2, 1],
+  });
+});
+
 it('can generate and verify feed-in structures', () => {
   let structureId;
 
@@ -110,11 +129,10 @@ it('can generate large feedIn with many BYEs', () => {
 it('can generate large feedIn with many BYEs', () => {
   const { structureId } = generateDrawStructure({
     drawSize: 12,
+    automated: true,
     drawType: FEED_IN,
     participantsCount: 10,
   });
-
-  drawEngine.automatedPositioning({ structureId });
 
   verifyStructure({
     structureId,

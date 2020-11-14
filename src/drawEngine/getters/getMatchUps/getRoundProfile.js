@@ -4,15 +4,19 @@ import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 
-export function getRoundNamingProfile({
+export function getRoundProfile({
   roundNamingPolicy,
+  drawDefinition,
   isRoundRobin,
   structure,
   matchUps,
 }) {
   const roundNamingProfile = {};
   const { roundProfile } = getRoundMatchUps({ matchUps });
-  const { structureAbbreviation, stage } = structure;
+  const { structureAbbreviation, stage, structureId } = structure;
+  const roundTargets =
+    drawDefinition && getRoundTargets({ drawDefinition, structureId });
+  if (roundTargets) console.log({ roundTargets });
 
   const defaultRoundNamingPolicy =
     ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
@@ -41,8 +45,10 @@ export function getRoundNamingProfile({
     Object.assign(
       roundNamingProfile,
       ...Object.keys(roundProfile).map(round => {
-        const { roundSize, preFeedRound, finishingRound } = roundProfile[round];
-        const participantsCount = roundSize * 2;
+        const { matchUpsCount, preFeedRound, finishingRound } = roundProfile[
+          round
+        ];
+        const participantsCount = matchUpsCount * 2;
         const sizeName = !preFeedRound && finishingRoundNameMap[finishingRound];
         const prefix = preFeedRound
           ? roundNamePrefix.preFeedRound
@@ -59,4 +65,12 @@ export function getRoundNamingProfile({
   }
 
   return { roundNamingProfile, roundProfile };
+}
+
+function getRoundTargets({ drawDefinition, structureId }) {
+  const { links } = drawDefinition;
+  const structureTargets = links.filter(
+    link => link.target.structureId === structureId
+  );
+  if (structureTargets.length === 4) console.log({ structureTargets });
 }

@@ -11,6 +11,13 @@ export function isNumeric(value) {
   return !isNaN(parseFloat(value));
 }
 
+export function isOdd(num) {
+  const numInt = parseInt(num);
+  if (isNaN(numInt)) return undefined;
+  if (numInt === 0) return false;
+  return (numInt & -numInt) === 1;
+}
+
 export function nextPowerOf2(n) {
   if (isNaN(n)) return false;
   while (!powerOf2(n)) {
