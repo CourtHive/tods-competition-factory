@@ -4,14 +4,14 @@ import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 
-export function getRoundProfile({
+export function getRoundNamingProfile({
   roundNamingPolicy,
   drawDefinition,
-  isRoundRobin,
   structure,
   matchUps,
 }) {
   const roundNamingProfile = {};
+  const isRoundRobin = structure.structures;
   const { roundProfile } = getRoundMatchUps({ matchUps });
   const { structureAbbreviation, stage, structureId } = structure;
   const roundTargets =

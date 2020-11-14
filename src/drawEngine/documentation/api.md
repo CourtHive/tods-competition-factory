@@ -270,6 +270,15 @@ const { drawDefinition } = drawEngine.getState();
 
 ---
 
+## getRoundPresentationProfile
+
+Returns an object describing draw rounds such that they can be generated as independent columns
+
+- @param {boolean} isRoundRobin - flag to determine whether to generate for round robin or elimination structure
+- @param {object[]} matchUps - inContext matchUp objects, generally provided by **getAllStructureMatchUps()**
+
+---
+
 ## getStructureQualifiersCount
 
 ---

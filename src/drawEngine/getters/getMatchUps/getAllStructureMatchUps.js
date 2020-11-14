@@ -20,7 +20,7 @@ import {
 } from '../../../utilities';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
-import { getRoundProfile } from './getRoundProfile';
+import { getRoundNamingProfile } from './getRoundNamingProfile';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -109,10 +109,9 @@ export function getAllStructureMatchUps({
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
-  const { roundNamingProfile, roundProfile } = getRoundProfile({
+  const { roundNamingProfile, roundProfile } = getRoundNamingProfile({
     roundNamingPolicy,
     drawDefinition,
-    isRoundRobin,
     structure,
     matchUps,
   });
@@ -333,7 +332,7 @@ export function getAllStructureMatchUps({
   }
 
   function getSideValue({ assignment, participantId, sideNumber }) {
-    const side = { sideNumber };
+    const side = { sideNumber, drawPosition: assignment.drawPosition };
     if (participantId) {
       const seeding = getSeeding({ participantId });
       Object.assign(side, seeding, { participantId });
