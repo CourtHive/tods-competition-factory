@@ -4,7 +4,11 @@ import {
   feedInMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import { MAIN, BACKDRAW } from '../../constants/drawDefinitionConstants';
+import {
+  MAIN,
+  BACKDRAW,
+  DECIDER,
+} from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateDoubleElimination({
@@ -47,7 +51,7 @@ export function generateDoubleElimination({
   const deciderStructure = structureTemplate({
     matchUps: deciderMatchUps,
     stage: MAIN,
-    structureName: 'DECIDER',
+    structureName: DECIDER,
     stageSequence: 3,
   });
 
