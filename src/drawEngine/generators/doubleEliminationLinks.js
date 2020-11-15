@@ -49,7 +49,7 @@ export function doubleEliminationLinks({
       target: {
         feedProfile,
         roundNumber: 1,
-        positionInterleave: 1,
+        positionInterleave: { offset: roundNumber - 1, interleave: 1 },
         structureId: consolationStructure.structureId,
       },
     };
