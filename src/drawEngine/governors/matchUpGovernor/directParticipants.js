@@ -47,30 +47,34 @@ export function directParticipants(props) {
     const losingIndex = 1 - winningIndex;
     const winningDrawPosition = matchUp.drawPositions[winningIndex];
     const loserDrawPosition = matchUp.drawPositions[losingIndex];
-    const targetMatchUpSide = 1 - (matchUp.roundPosition % 2);
 
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
-      targetMatchUps: { loserMatchUp, winnerMatchUp },
+      targetMatchUps: {
+        loserMatchUp,
+        winnerMatchUp,
+        loserMatchUpDrawPositionIndex,
+        winnerMatchUpDrawPositionIndex,
+      },
     } = targetData;
 
     if (winnerMatchUp) {
       const { error } = directWinner({
         drawDefinition,
-        targetMatchUpSide,
         winnerTargetLink,
         winningDrawPosition,
         winnerMatchUp,
+        winnerMatchUpDrawPositionIndex,
       });
       if (error) errors.push(error);
     }
     if (loserMatchUp) {
       const { error } = directLoser({
         drawDefinition,
-        targetMatchUpSide,
         loserTargetLink,
         loserDrawPosition,
         loserMatchUp,
+        loserMatchUpDrawPositionIndex,
       });
       if (error) errors.push(error);
     }

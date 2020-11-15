@@ -22,14 +22,14 @@ export function completeMatchUp({
     roundPosition,
   });
   const { matchUpId } = matchUp;
-  const { errors } = drawEngine.setMatchUpStatus({
+  const { errors, success } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus,
     winningSide,
     score,
     sets,
   });
-  return { errors, matchUpId };
+  return { success, errors, matchUpId };
 }
 
 export function findMatchUpByRoundNumberAndPosition({

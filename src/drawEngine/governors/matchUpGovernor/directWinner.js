@@ -4,17 +4,17 @@ import { assignMatchUpDrawPosition } from './matchUpDrawPosition';
 
 export function directWinner({
   drawDefinition,
-  targetMatchUpSide,
   winnerTargetLink,
   winningDrawPosition,
   winnerMatchUp,
+  winnerMatchUpDrawPositionIndex,
 }) {
   let error;
 
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
     const targetMatchUpDrawPosition =
-      targetMatchUpDrawPositions[targetMatchUpSide];
+      targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
 
     console.log('%c winner is targeted to another structure', 'color: pink', {
       targetMatchUpDrawPositions,

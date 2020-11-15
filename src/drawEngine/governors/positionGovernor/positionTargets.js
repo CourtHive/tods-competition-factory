@@ -44,17 +44,23 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
 
   const sourceRoundPosition = matchUp.roundPosition;
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
-  const { matchUp: loserMatchUp } = getTargetMatchUp({
+  const {
+    matchUp: loserMatchUp,
+    matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
+  } = getTargetMatchUp({
     drawDefinition,
     sourceRoundPosition,
     sourceRoundMatchUpCount,
     targetLink: loserTargetLink,
   });
 
-  let winnerMatchUp;
+  let winnerMatchUp, winnerMatchUpDrawPositionIndex;
   const winnerTargetLink = getTargetLink({ source, subject: WINNER });
   if (winnerTargetLink) {
-    ({ matchUp: winnerMatchUp } = getTargetMatchUp({
+    ({
+      matchUp: winnerMatchUp,
+      matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,
+    } = getTargetMatchUp({
       drawDefinition,
       sourceRoundPosition,
       sourceRoundMatchUpCount,
@@ -71,7 +77,12 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
   return {
     matchUp,
     targetLinks: { loserTargetLink, winnerTargetLink }, // returned for testing
-    targetMatchUps: { loserMatchUp, winnerMatchUp },
+    targetMatchUps: {
+      loserMatchUp,
+      winnerMatchUp,
+      loserMatchUpDrawPositionIndex,
+      winnerMatchUpDrawPositionIndex,
+    },
   };
 }
 

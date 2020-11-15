@@ -15,8 +15,9 @@ import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyLinks } from '../../tests/primitives/verifyLinks';
 
 import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
 
-it.only('can generate and verify double elimination', () => {
+it('can generate and verify double elimination', () => {
   const {
     mainStructureId,
     consolationStructureId,
@@ -64,8 +65,8 @@ it.only('can generate and verify double elimination', () => {
         sourceStructureId: mainStructureId,
         targetStructureId: consolationStructureId,
         linkProfiles: [
-          { linkType: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [1, 1] },
-          { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [2, 1] },
+          { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [1, 1] },
+          { linkType: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [2, 1] },
           { linkType: LOSER, feedProfile: TOP_DOWN, linkedRounds: [3, 3] },
           { linkType: LOSER, feedProfile: BOTTOM_UP, linkedRounds: [4, 5] },
         ],
@@ -88,7 +89,66 @@ it.only('can generate and verify double elimination', () => {
     ],
   });
 
-  // TODO: implement and test participant movement across double elmination links
+  let { success } = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 1,
+    winningSide: 1,
+  });
+  expect(success).toEqual(true);
+  ({ success } = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 2,
+    winningSide: 2,
+  }));
+  expect(success).toEqual(true);
+  ({ success } = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 3,
+    winningSide: 2,
+  }));
+  expect(success).toEqual(true);
+  ({ success } = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 4,
+    winningSide: 1,
+  }));
+  expect(success).toEqual(true);
+
+  let { matchUps } = drawEngine.allStructureMatchUps({
+    structureId: consolationStructureId,
+  });
+
+  // expect that sideNumber: 1 of all target roundNumber: 1 matchUps have been filled
+  expect(matchUps[0].sides[0].sideNumber).toEqual(1);
+  expect(matchUps[1].sides[0].sideNumber).toEqual(1);
+  expect(matchUps[2].sides[0].sideNumber).toEqual(1);
+  expect(matchUps[3].sides[0].sideNumber).toEqual(1);
+  expect(matchUps[0].sides[0].participantId).not.toBeUndefined();
+  expect(matchUps[0].sides[1].participantId).toBeUndefined();
+  expect(matchUps[1].sides[0].participantId).not.toBeUndefined();
+  expect(matchUps[0].sides[1].participantId).toBeUndefined();
+  expect(matchUps[2].sides[0].participantId).not.toBeUndefined();
+  expect(matchUps[0].sides[1].participantId).toBeUndefined();
+  expect(matchUps[3].sides[0].participantId).not.toBeUndefined();
+  expect(matchUps[3].sides[1].participantId).toBeUndefined();
+
+  ({ success } = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 2,
+    roundPosition: 1,
+    winningSide: 1,
+  }));
+  expect(success).toEqual(true);
+
+  ({ matchUps } = drawEngine.allStructureMatchUps({
+    structureId: consolationStructureId,
+  }));
+
+  expect(matchUps[3].sides[1].participantId).not.toBeUndefined();
 });
 
 it('can write to the file system', () => {

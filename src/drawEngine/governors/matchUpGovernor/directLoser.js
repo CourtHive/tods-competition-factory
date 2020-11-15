@@ -3,16 +3,16 @@ import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 
 export function directLoser({
   drawDefinition,
-  targetMatchUpSide,
   loserTargetLink,
   loserDrawPosition,
   loserMatchUp,
+  loserMatchUpDrawPositionIndex,
 }) {
   let error;
 
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
   const targetMatchUpDrawPosition =
-    targetMatchUpDrawPositions[targetMatchUpSide];
+    targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const {

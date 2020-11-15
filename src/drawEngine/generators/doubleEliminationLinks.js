@@ -39,7 +39,7 @@ export function doubleEliminationLinks({
   );
 
   const initialRounds = [1, 2].map(roundNumber => {
-    const feedProfile = roundNumber % 2 ? BOTTOM_UP : TOP_DOWN;
+    const feedProfile = roundNumber % 2 ? TOP_DOWN : BOTTOM_UP;
     const link = {
       linkType: LOSER,
       source: {
