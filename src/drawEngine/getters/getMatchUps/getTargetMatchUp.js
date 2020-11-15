@@ -17,7 +17,7 @@ export function getTargetMatchUp({
 }) {
   if (!targetLink) return { error: 'no target link' };
   const {
-    target: { structureId, feedProfile, roundNumber },
+    target: { structureId, feedProfile, roundNumber, positionInterleave },
   } = targetLink;
   const { structure: targetStructure } = findStructure({
     drawDefinition,
@@ -42,11 +42,13 @@ export function getTargetMatchUp({
       TOP_DOWN feed profile implies that the roundPosition in the
       target is equivalent to the roundPosition in the source
     */
+    if (positionInterleave) console.log({ positionInterleave });
   } else if (feedProfile === BOTTOM_UP) {
     /*
       BOTTOM_UP feed profile implies that the roundPosition in the
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
+    if (positionInterleave) console.log({ positionInterleave });
     targetRoundPosition = targetRoundMatchUps.length + 1 - targetRoundPosition;
   } else if (feedProfile === RANDOM) {
     /*
