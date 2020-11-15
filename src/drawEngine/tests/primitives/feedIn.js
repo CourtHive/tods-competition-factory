@@ -11,12 +11,19 @@ export function feedInChampionship({ drawSize, drawType }) {
   const { links } = drawEngine.generateDrawType({ drawType });
   const { drawDefinition } = drawEngine.getState();
   const {
-    structures: [mainDraw],
+    structures: [mainStructure],
   } = getDrawStructures({ drawDefinition, stage: MAIN });
-  const mainDrawMatchUps = mainDraw && mainDraw.matchUps;
+  const mainDrawMatchUps = mainStructure?.matchUps;
   const {
-    structures: [consolationDraw],
+    structures: [consolationStructure],
   } = getDrawStructures({ drawDefinition, stage: CONSOLATION });
-  const consolationMatchUps = consolationDraw && consolationDraw.matchUps;
-  return { links, mainDrawMatchUps, consolationMatchUps };
+  const consolationMatchUps = consolationStructure?.matchUps;
+
+  return {
+    links,
+    drawDefinition,
+    mainDrawMatchUps,
+    consolationMatchUps,
+    consolationStructure,
+  };
 }

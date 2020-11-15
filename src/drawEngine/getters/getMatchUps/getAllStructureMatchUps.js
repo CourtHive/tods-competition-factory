@@ -25,6 +25,7 @@ import { getRoundContextProfile } from './getRoundContextProfile';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 
 /*
   return all matchUps within a structure and its child structures
@@ -129,12 +130,18 @@ export function getAllStructureMatchUps({
   }
 
   if (inContext) {
+    const { sourceDrawPositionRanges } = getSourceDrawPositionRanges({
+      drawDefinition,
+      structureId,
+    });
+
     matchUps = matchUps.map(matchUp =>
       addMatchUpContext({
         matchUp,
         isRoundRobin,
         roundProfile,
         roundNamingProfile,
+        sourceDrawPositionRanges,
       })
     );
     if (contextFilters) {
@@ -172,14 +179,19 @@ export function getAllStructureMatchUps({
     roundProfile,
     isCollectionBye,
     roundNamingProfile,
+    sourceDrawPositionRanges,
   }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({ matchUp });
-    const roundName =
-      roundNamingProfile && roundNamingProfile[matchUp.roundNumber];
+    const { drawPositions, roundNumber, roundPosition } = matchUp;
 
-    const feedRound =
-      roundProfile && roundProfile[matchUp.roundNumber].feedRound;
+    const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
+    const feedRound = roundProfile && roundProfile[roundNumber].feedRound;
+
+    const sourceDrawPositionRange =
+      sourceDrawPositionRanges &&
+      sourceDrawPositionRanges[roundNumber] &&
+      sourceDrawPositionRanges[roundNumber][roundPosition];
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
@@ -192,6 +204,7 @@ export function getAllStructureMatchUps({
         matchUpTieId,
         structureName,
         matchUpStatus,
+        sourceDrawPositionRange,
       },
       makeDeepCopy(matchUp),
       context
@@ -209,12 +222,12 @@ export function getAllStructureMatchUps({
             roundProfile,
             isCollectionBye,
             roundNamingProfile,
+            sourceDrawPositionRanges,
           });
         }
       );
     }
 
-    const { drawPositions, roundNumber } = matchUp;
     if (Array.isArray(drawPositions)) {
       const orderedDrawPositions = getOrderedDrawPositions({
         drawPositions,
