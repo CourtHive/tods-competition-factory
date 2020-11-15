@@ -9,6 +9,8 @@ import {
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
+  PARTICIPANT_ALREADY_CHECKED_IN,
+  PARTICIPANT_NOT_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
 
 /*
@@ -34,7 +36,7 @@ export function checkInParticipant({
     });
     const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
     if (checkedInParticipantIds.includes(participantId)) {
-      return { error: 'participant already checked in' };
+      return { error: PARTICIPANT_ALREADY_CHECKED_IN };
     }
   }
 
@@ -66,7 +68,7 @@ export function checkOutParticipant({
     });
     const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
     if (!checkedInParticipantIds.includes(participantId)) {
-      return { error: 'participant not checked in' };
+      return { error: PARTICIPANT_NOT_CHECKED_IN };
     }
 
     const {

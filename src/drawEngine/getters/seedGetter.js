@@ -6,7 +6,11 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
-import { MISSING_SEEDING_POLICY } from '../../constants/errorConditionConstants';
+import {
+  MISSING_SEEDING_POLICY,
+  MISSING_SEED_BLOCKS,
+  MISSING_STRUCTURE,
+} from '../../constants/errorConditionConstants';
 
 export function getValidSeedBlocks({
   structure,
@@ -22,7 +26,7 @@ export function getValidSeedBlocks({
     isContainer,
     validSeedBlocks = [];
 
-  if (!structure) return [{ error: 'No Structure' }];
+  if (!structure) return [{ error: MISSING_STRUCTURE }];
 
   const { roundMatchUps } = getAllStructureMatchUps({
     structure,
@@ -243,7 +247,7 @@ function constructPower2Blocks({
 
   // sorted for good measure, shouldn't really be necessary
   const seedBlockKeys = Object.keys(seedBlocks).sort((a, b) => +a - +b);
-  if (!seedBlockKeys.length) return { blocks, error: 'No seedBlocks defined' };
+  if (!seedBlockKeys.length) return { blocks, error: MISSING_SEED_BLOCKS };
 
   // seedBlocks are expected to be well constructed; keys are the sum of all
   // blocks which have come before + 1;

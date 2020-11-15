@@ -4,6 +4,7 @@ import {
   MISSING_MATCHUP_FORMAT,
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_RECORD,
+  NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -15,7 +16,7 @@ export function setEventDefaultMatchUpFormat({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!event) return { error: MISSING_EVENT };
-  return { error: 'not implemented' };
+  return { error: NOT_IMPLEMENTED };
 }
 
 export function setDrawDefaultMatchUpFormat({
@@ -87,5 +88,5 @@ export function setCollectionDefaultMatchUpFormat({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  return { error: 'not implemented' };
+  return { error: NOT_IMPLEMENTED };
 }

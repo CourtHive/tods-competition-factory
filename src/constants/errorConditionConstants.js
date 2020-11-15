@@ -11,6 +11,8 @@ export const INVALID_DRAW_POSITION_FOR_SEEDING =
 export const NO_DRAW_POSITIONS_AVAILABLE = 'No drawPositions available';
 export const DRAW_POSITION_ASSIGNED = 'drawPosition already assigned';
 export const DRAW_POSITION_NOT_CLEARED = 'drawPosition not cleared';
+export const DRAW_POSITION_NOT_FOUND = 'drawPosition not found';
+export const UNRECOGNIZED_DRAW_TYPE = 'Unrecognized drawType';
 export const MISSING_DRAW_POSITIONS = 'Missing drawPositions';
 export const DRAW_POSITION_ACTIVE = 'drawPosition is active';
 export const INVALID_DRAW_POSITION = 'Invlid drawPosition';
@@ -19,12 +21,16 @@ export const INVALID_DRAW_TYPE = 'Invalid drawType';
 export const INVALID_DRAW_SIZE = 'Invalid drawSize';
 export const MISSING_DRAW_SIZE = 'Missing drawSize';
 export const MISSING_DRAW_ID = 'Missing drawId';
+export const DRAW_ID_EXISTS = 'drawId exists';
 
 export const SEEDSCOUNT_GREATER_THAN_DRAW_SIZE =
   'seedsCount greater than drawSize';
 export const MISSING_SEEDCOUNT_THRESHOLDS = 'Missing seedCountThresholds';
 export const MISSING_SEED_ASSIGNMENTS = 'Missing seedAssignments';
+export const MISSING_SEED_BLOCKS = 'Missing seedBlocks';
 export const INVALID_SEED_NUMBER = 'Invalid seedNumber';
+
+export const MISSING_TARGET_LINK = 'Missing targetLink';
 
 export const MISSING_STRUCTURE_ID = 'Missing structureId';
 export const STRUCTURE_NOT_FOUND = 'structure not found';
@@ -34,6 +40,7 @@ export const MISSING_STRUCTURE = 'Missing structure';
 export const UNRECOGNIZED_EVENT_TYPE = 'Unrecognized eventType';
 export const MISSING_EVENT = 'Missing event / eventId';
 export const EVENT_NOT_FOUND = 'Event not found';
+export const EVENT_EXISTS = 'Event exists';
 
 export const MISSING_ENTRIES = 'Missing entries';
 export const INVALID_ENTRIES = 'Invalid entries';
@@ -86,9 +93,12 @@ export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
 export const MISSING_PARTICIPANT = 'Missing participant';
 export const MISSING_PARTICIPANTS = 'Missing participants';
 export const MISSING_PARTICIPANT_ID = 'Missing participantId';
+export const PARTICIPANT_NOT_FOUND = 'Participant Not Found';
+export const NO_PARTICIPANT_REMOVED = 'No participant removed';
 export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
-export const PARTICIPANT_NOT_FOUND = 'Participant Not Found';
+export const PARTICIPANT_NOT_CHECKED_IN = 'Participant not checked in';
+export const PARTICIPANT_ALREADY_CHECKED_IN = 'Participant already checked in';
 
 export const EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT =
   'Existing participant drawPosition assignment';
@@ -109,8 +119,13 @@ export const MISSING_PENALTY_TYPE = 'Missing penaltyType';
 export const MISSING_PENALTY_ID = 'Missing penaltyId';
 export const PENALTY_NOT_FOUND = 'Penalty not found';
 
-export const MISSING_VENUE_ID = 'Missing venueId';
 export const MISSING_COURTS_INFO = 'Missing courtsCount/courtNames';
+export const COURT_NOT_FOUND = 'Court not found';
+export const COURT_EXISTS = 'Court exists';
+
+export const VENUE_EXISTS = 'Venue exists';
+export const VENUE_NOT_FOUND = 'Venue not found';
+export const MISSING_VENUE_ID = 'Missing venueId';
 
 export const INVALID_END_TIME = 'Invalid endTime';
 export const EXISTING_END_TIME = 'Existing endTime';
@@ -130,7 +145,23 @@ export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 export const INVALID_CONFIGURATION = 'Invalid configuration';
 export const INVALID_OBJECT = 'Invalid object';
 
+export const TEAM_NOT_FOUND = 'Team not found';
+
+export const NO_VALID_ACTIONS = 'No valid actions';
+
+export const NOT_IMPLEMENTED = 'Not implemented';
+
 export const errorConditionConstants = {
+  DRAW_ID_EXISTS,
+  NOT_IMPLEMENTED,
+  EVENT_EXISTS,
+  NO_VALID_ACTIONS,
+  COURT_EXISTS,
+  VENUE_EXISTS,
+  COURT_NOT_FOUND,
+  TEAM_NOT_FOUND,
+  MISSING_SEED_BLOCKS,
+  MISSING_TARGET_LINK,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_ID,
@@ -139,7 +170,9 @@ export const errorConditionConstants = {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_DRAW_POSITION_FOR_SEEDING,
   NO_DRAW_POSITIONS_AVAILABLE,
+  UNRECOGNIZED_DRAW_TYPE,
   DRAW_POSITION_ASSIGNED,
+  DRAW_POSITION_NOT_FOUND,
   DRAW_POSITION_NOT_CLEARED,
   MISSING_DRAW_POSITIONS,
   DRAW_POSITION_ACTIVE,
@@ -202,6 +235,8 @@ export const errorConditionConstants = {
   MISSING_PARTICIPANT_ID,
   MISSING_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_COUNT,
+  PARTICIPANT_NOT_CHECKED_IN,
+  PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,

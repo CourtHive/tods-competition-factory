@@ -1,5 +1,6 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function removeDrawPositionAssignment(props) {
   const { tournamentRecord, drawEngine, drawId } = props;
@@ -19,7 +20,7 @@ export function removeDrawPositionAssignment(props) {
         : drawDefinition;
     });
   } else {
-    errors.push({ error: 'event not found' });
+    errors.push({ error: EVENT_NOT_FOUND });
   }
 
   return errors && errors.length ? { errors } : SUCCESS;

@@ -1,6 +1,7 @@
 import { numericSort } from '../../../utilities';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DRAW_POSITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -46,7 +47,5 @@ export function removeMatchUpDrawPosition({
     }
   });
 
-  return positionRemoved
-    ? SUCCESS
-    : { error: 'Not removed: drawPosition not found' };
+  return positionRemoved ? SUCCESS : { error: DRAW_POSITION_NOT_FOUND };
 }

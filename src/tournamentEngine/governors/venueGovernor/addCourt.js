@@ -2,15 +2,17 @@ import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { findVenue } from '../../getters/venueGetter';
 import { courtTemplate } from '../../generators/courtTemplate';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_VENUE_ID,
   MISSING_COURTS_INFO,
+  VENUE_NOT_FOUND,
+  COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addCourt({ tournamentRecord, venueId, court }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
-  if (!venue) return { error: 'Venue Not Found' };
+  if (!venue) return { error: VENUE_NOT_FOUND };
 
   if (!venue.courts) venue.courts = [];
 
@@ -28,7 +30,7 @@ export function addCourt({ tournamentRecord, venueId, court }) {
     const court = Object.assign({}, makeDeepCopy(courtRecord), { venueId });
     return Object.assign({}, { court }, SUCCESS);
   } else {
-    return { error: 'Court Exists' };
+    return { error: COURT_EXISTS };
   }
 }
 

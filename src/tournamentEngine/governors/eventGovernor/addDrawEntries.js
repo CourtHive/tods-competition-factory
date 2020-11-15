@@ -1,4 +1,8 @@
 import { getDrawDefinition } from '../../getters/eventGetter';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  EVENT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addDrawEntries({
@@ -14,8 +18,8 @@ export function addDrawEntries({
     tournamentRecord,
     drawId,
   });
-  if (!event) return { error: 'event not found' };
-  if (!drawDefinition) return { error: 'drawDefinition not found' };
+  if (!event) return { error: EVENT_NOT_FOUND };
+  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   const result = drawEngine
     .setState(drawDefinition)

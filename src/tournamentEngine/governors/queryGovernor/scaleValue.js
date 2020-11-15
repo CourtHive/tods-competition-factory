@@ -1,5 +1,6 @@
 import { findTournamentParticipant } from '../../getters/participantGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { PARTICIPANT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function getParticipantScaleItem({
   tournamentRecord,
@@ -11,6 +12,6 @@ export function getParticipantScaleItem({
     participantId,
   });
 
-  if (!participant) return { error: 'Participant Not Found' };
+  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
   return participantScaleItem({ participant, scaleAttributes });
 }

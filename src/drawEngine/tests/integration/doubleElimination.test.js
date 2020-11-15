@@ -16,7 +16,7 @@ import { verifyLinks } from '../../tests/primitives/verifyLinks';
 
 import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
-it('can generate and verify double elimination', () => {
+it.only('can generate and verify double elimination', () => {
   const {
     mainStructureId,
     consolationStructureId,

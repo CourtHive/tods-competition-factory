@@ -1,5 +1,6 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function checkInParticipant(props) {
   Object.assign(props, { method: 'checkInParticipant' });
@@ -51,7 +52,7 @@ function participantCheckInAction({
       errors.push(result.error);
     }
   } else {
-    errors.push({ error: 'event not found' });
+    errors.push({ error: EVENT_NOT_FOUND });
   }
 
   return errors && errors.length ? { errors } : SUCCESS;

@@ -7,15 +7,18 @@ import {
   RANDOM,
   DRAW,
 } from '../../../constants/drawDefinitionConstants';
+import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
 
 export function getTargetMatchUp({
   drawDefinition,
   tournamentParticipants,
+
   targetLink,
   sourceRoundPosition,
   sourceRoundMatchUpCount,
 }) {
-  if (!targetLink) return { error: 'no target link' };
+  if (!targetLink) return { error: MISSING_TARGET_LINK };
+
   const {
     target: { structureId, feedProfile, roundNumber, positionInterleave },
   } = targetLink;

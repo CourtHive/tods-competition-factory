@@ -1,9 +1,12 @@
-import { MISSING_POLICY_TYPE } from '../../../constants/errorConditionConstants';
 import { getAppliedPolicies as getDrawAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import {
   getAppliedPolicies as getTournamentAppliedPolicies,
   getEventAppliedPolicies,
 } from '../policyGovernor/getAppliedPolicies';
+import {
+  MISSING_POLICY_TYPE,
+  POLICY_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 export function getPolicyDefinition({
   tournamentRecord,
@@ -20,7 +23,7 @@ export function getPolicyDefinition({
     const policyDefinition = policy && { [policyType]: policy };
     return policyDefinition
       ? { policyDefinition }
-      : { error: 'No matching policy found' };
+      : { error: POLICY_NOT_FOUND };
   }
 
   if (event) {
@@ -29,7 +32,7 @@ export function getPolicyDefinition({
     const policyDefinition = policy && { [policyType]: policy };
     return policyDefinition
       ? { policyDefinition }
-      : { error: 'No matching policy found' };
+      : { error: POLICY_NOT_FOUND };
   }
 
   if (tournamentRecord) {
@@ -39,8 +42,8 @@ export function getPolicyDefinition({
     const policyDefinition = policy && { [policyType]: policy };
     return policyDefinition
       ? { policyDefinition }
-      : { error: 'No matching policy found' };
+      : { error: POLICY_NOT_FOUND };
   }
 
-  return { error: 'Policy not found' };
+  return { error: POLICY_NOT_FOUND };
 }

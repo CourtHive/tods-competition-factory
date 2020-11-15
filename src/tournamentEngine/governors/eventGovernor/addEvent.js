@@ -1,6 +1,8 @@
-import { UUID } from '../../../utilities';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { eventTemplate } from '../../../tournamentEngine/generators/eventTemplate';
+
+import { EVENT_EXISTS } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { UUID } from '../../../utilities';
 
 export function addEvent({ tournamentRecord, event }) {
   if (!tournamentRecord.events) tournamentRecord.events = [];
@@ -24,6 +26,6 @@ export function addEvent({ tournamentRecord, event }) {
     tournamentRecord.events.push(eventRecord);
     return Object.assign({}, { event: eventRecord }, SUCCESS);
   } else {
-    return { error: 'Event Exists' };
+    return { error: EVENT_EXISTS };
   }
 }

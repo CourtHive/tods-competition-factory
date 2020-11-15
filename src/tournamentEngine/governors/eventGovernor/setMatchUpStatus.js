@@ -1,3 +1,4 @@
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { findEvent } from '../../getters/eventGetter';
 
@@ -39,7 +40,7 @@ export function setMatchUpStatus(props) {
         : drawDefinition;
     });
   } else {
-    errors.push({ error: 'event not found' });
+    errors.push({ error: EVENT_NOT_FOUND });
   }
 
   return errors && errors.length ? { errors } : SUCCESS;

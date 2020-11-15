@@ -1,3 +1,4 @@
+import { COURT_NOT_FOUND } from '../../constants/errorConditionConstants';
 import { makeDeepCopy } from '../../utilities';
 
 export function findCourt({ tournamentRecord, courtId }) {
@@ -12,7 +13,7 @@ export function findCourt({ tournamentRecord, courtId }) {
     });
   });
 
-  return (court && { court, venue }) || { error: 'Court Not Found' };
+  return (court && { court, venue }) || { error: COURT_NOT_FOUND };
 }
 
 export function getCourts({ tournamentRecord, venueId, venueIds }) {

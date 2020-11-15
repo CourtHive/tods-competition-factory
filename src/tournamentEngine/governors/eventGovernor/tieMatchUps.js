@@ -5,6 +5,7 @@ import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantTypes';
+import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function assignTieMatchUpParticipantId(props) {
   const errors = [];
@@ -32,7 +33,7 @@ export function assignTieMatchUpParticipantId(props) {
       updateDrawDefinition();
     }
   } else {
-    errors.push({ error: 'event not found' });
+    errors.push({ error: EVENT_NOT_FOUND });
   }
 
   return errors && errors.length ? { errors } : SUCCESS;

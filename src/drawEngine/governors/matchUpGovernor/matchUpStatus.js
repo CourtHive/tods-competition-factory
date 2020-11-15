@@ -7,8 +7,12 @@ import {
 } from './checkStatusType';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  NO_VALID_ACTIONS,
+} from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(props) {
   let errors = [];
@@ -30,7 +34,7 @@ export function setMatchUpStatus(props) {
   });
 
   if (!matchUp) {
-    errors.push({ error: 'matchUp not found' });
+    errors.push({ error: MATCHUP_NOT_FOUND });
   } else {
     const targetData = positionTargets({ drawDefinition, matchUpId });
     Object.assign(props, { matchUp, structure, targetData });
@@ -67,7 +71,7 @@ export function setMatchUpStatus(props) {
       if (statusChangeErrors) errors = errors.concat(statusChangeErrors);
     } else {
       console.log('no valid actions', { props });
-      errors.push({ error: 'No valid actions' });
+      errors.push({ error: NO_VALID_ACTIONS });
     }
   }
 

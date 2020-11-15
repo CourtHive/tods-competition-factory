@@ -1,5 +1,6 @@
 import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DRAW_ID_EXISTS } from '../../../constants/errorConditionConstants';
 
 export function addDrawDefinition({
   tournamentRecord,
@@ -18,7 +19,7 @@ export function addDrawDefinition({
     );
 
     if (drawDefinitionExists) {
-      return { error: 'drawId exists' };
+      return { error: DRAW_ID_EXISTS };
     } else {
       event.drawDefinitions.push(drawDefinition);
     }

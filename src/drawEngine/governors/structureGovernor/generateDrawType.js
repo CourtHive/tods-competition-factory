@@ -40,6 +40,7 @@ import {
 import {
   INVALID_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
+  UNRECOGNIZED_DRAW_TYPE,
 } from '../../../constants/errorConditionConstants';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -176,6 +177,6 @@ export function generateDrawType(props = {}) {
   if (result && result.success) {
     return makeDeepCopy(result);
   } else {
-    return { error: 'Unknown drawType' };
+    return { error: UNRECOGNIZED_DRAW_TYPE };
   }
 }

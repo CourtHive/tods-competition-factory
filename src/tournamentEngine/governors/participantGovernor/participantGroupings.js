@@ -1,6 +1,10 @@
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
+import {
+  NO_PARTICIPANT_REMOVED,
+  TEAM_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 export function addParticipantsToGrouping(props) {
   const { tournamentRecord } = props;
@@ -54,7 +58,7 @@ export function addParticipantsToGrouping(props) {
     }
   }
 
-  return added ? SUCCESS : { error: 'Team Not Found' };
+  return added ? SUCCESS : { error: TEAM_NOT_FOUND };
 }
 
 export function removeParticipantsFromGroup({
@@ -73,7 +77,7 @@ export function removeParticipantsFromGroup({
     participantIds,
   });
 
-  return removed ? SUCCESS : { error: 'No Participants Removed' };
+  return removed ? SUCCESS : { error: NO_PARTICIPANT_REMOVED };
 }
 
 function removeParticipantIdsFromGrouping({
@@ -125,5 +129,5 @@ export function removeParticipantsFromAllTeams({
       }
     });
 
-  return modifications ? SUCCESS : { error: 'No Participants Removed' };
+  return modifications ? SUCCESS : { error: NO_PARTICIPANT_REMOVED };
 }

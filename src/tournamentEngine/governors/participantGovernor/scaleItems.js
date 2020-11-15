@@ -3,6 +3,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
+  NO_MODIFICATIONS_APPLIED,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 export function setParticipantScaleItem({
@@ -39,7 +41,7 @@ export function setParticipantScaleItem({
     });
   }
 
-  return modificationApplied ? SUCCESS : { error: 'Participant Not Found' };
+  return modificationApplied ? SUCCESS : { error: PARTICIPANT_NOT_FOUND };
 }
 
 export function setParticipantScaleItems({
@@ -73,9 +75,7 @@ export function setParticipantScaleItems({
         });
       }
     });
-    return modificationApplied
-      ? SUCCESS
-      : { error: 'No Modifications Applied' };
+    return modificationApplied ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
   }
 }
 

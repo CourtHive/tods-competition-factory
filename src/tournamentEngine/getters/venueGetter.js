@@ -1,3 +1,4 @@
+import { VENUE_NOT_FOUND } from '../../constants/errorConditionConstants';
 import { makeDeepCopy } from '../../utilities';
 
 export function getVenues({ tournamentRecord }) {
@@ -11,7 +12,7 @@ export function findVenue({ tournamentRecord, venueId }) {
     return venueRecord.venueId === venueId ? venueRecord : venue;
   }, undefined);
 
-  return (venue && { venue }) || { error: 'Venue Not Found' };
+  return (venue && { venue }) || { error: VENUE_NOT_FOUND };
 }
 
 export function publicFindVenue(props) {

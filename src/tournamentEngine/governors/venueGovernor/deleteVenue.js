@@ -3,9 +3,10 @@ import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { COURT, ASSIGNMENT } from '../../../constants/timeItemConstants';
+import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 export function deleteVenue({ tournamentRecord, drawEngine, venueId }) {
-  if (!tournamentRecord.venues) return { error: 'No Venues' };
+  if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   const { courts } = getCourts({ tournamentRecord, venueId });
   const courtIds = courts.map(court => court.courtId);
@@ -49,7 +50,7 @@ export function deleteVenue({ tournamentRecord, drawEngine, venueId }) {
 }
 
 export function deleteVenues({ tournamentRecord, drawEngine, venueIds }) {
-  if (!tournamentRecord.venues) return { error: 'No Venues' };
+  if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   tournamentRecord.venues.forEach(venue => {
     const { venueId } = venue;
