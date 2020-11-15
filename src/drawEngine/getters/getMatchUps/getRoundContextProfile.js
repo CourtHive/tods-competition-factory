@@ -17,9 +17,9 @@ export function getRoundContextProfile({
   const defaultRoundNamingPolicy =
     ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
 
-  const finishingRoundNameMap =
-    roundNamingPolicy?.finishingRoundNameMap ||
-    defaultRoundNamingPolicy.finishingRoundNameMap;
+  const roundNamingMap =
+    roundNamingPolicy?.roundNamingMap ||
+    defaultRoundNamingPolicy.roundNamingMap;
 
   const roundNamePrefix =
     roundNamingPolicy?.prefix || defaultRoundNamingPolicy.prefix;
@@ -41,11 +41,9 @@ export function getRoundContextProfile({
     Object.assign(
       roundNamingProfile,
       ...Object.keys(roundProfile).map(round => {
-        const { matchUpsCount, preFeedRound, finishingRound } = roundProfile[
-          round
-        ];
+        const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
-        const sizeName = !preFeedRound && finishingRoundNameMap[finishingRound];
+        const sizeName = !preFeedRound && roundNamingMap[matchUpsCount];
         const prefix = preFeedRound
           ? roundNamePrefix.preFeedRound
           : sizeName

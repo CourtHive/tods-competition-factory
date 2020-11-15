@@ -3,7 +3,7 @@ import { feedInChampionship } from '../../tests/primitives/feedIn';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../constants/drawDefinitionConstants';
 
-it.only('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
+it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const {
     links,
     drawDefinition,
@@ -25,8 +25,6 @@ it.only('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
     drawDefinition,
   });
 
-  console.log({ matchUps });
-
   const validations = [
     [1, 1, '1-2', 'C-Q16'],
     [1, 2, '3-4', 'C-Q16'],
@@ -40,6 +38,12 @@ it.only('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
     [2, 2, '25-28', 'C-R16'],
     [2, 3, '21-24', 'C-R16'],
     [2, 4, '17-20', 'C-R16'],
+    [4, 1, '1-8', 'C-QF'],
+    [4, 2, '9-16', 'C-QF'],
+    [4, 3, '17-24', 'C-QF'],
+    [4, 4, '25-32', 'C-QF'],
+    [6, 1, '17-32', 'C-SF'],
+    [6, 2, '1-16', 'C-SF'],
   ];
 
   validateSourceDrawPositionRanges({
