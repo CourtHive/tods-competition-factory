@@ -43,7 +43,7 @@ export function randomUnseededSeparation({
   const {
     policyAttributes,
     roundsToSeparate,
-    candidatesCount = 20,
+    candidatesCount = 10,
   } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
@@ -98,8 +98,6 @@ export function randomUnseededSeparation({
       opponentsToPlaceCount,
       drawPositionChunks,
       drawPositionGroups,
-      drawDefinition,
-      structureId,
       allGroups,
 
       policyAttributes,
@@ -115,8 +113,6 @@ export function randomUnseededSeparation({
       opponentsToPlaceCount,
       drawPositionChunks,
       drawPositionGroups,
-      drawDefinition,
-      structureId,
       allGroups,
 
       policyAttributes,

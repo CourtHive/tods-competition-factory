@@ -1,37 +1,48 @@
-import { randomPop, intersection } from '../../../../utilities/arrays';
-import { assignDrawPosition } from '../positionAssignment';
-import { extractAttributeValues } from '../../../getters/getAttributeGrouping';
-
-import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
-import { getParticipantGroups } from './analyzeDrawPositions';
-import { getUnfilledPositions } from './getUnfilledPositions';
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
-import { getNextParticipantId } from './getNextParticipantId';
-
-import { chunkArray, generateRange, makeDeepCopy } from '../../../../utilities';
-import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups';
+import { getSwapOptions } from './getSwapOptions';
+import { getAvoidanceConflicts } from './getAvoidanceConflicts';
+import { getParticipantPlacement } from './getParticipantPlacement';
+import { getPositionedParticipants } from './getPositionedParticipants';
+import {
+  chunkArray,
+  generateRange,
+  makeDeepCopy,
+  randomPop,
+} from '../../../../utilities';
 
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
 
 /**
  *
- * @param {object} initialPositionAssignments
+ * NOTE: some of these parameters are passed directly through to other functions via ...props
+ *
+ * @param {object[]} initialPositionAssignments - positionAssignments before any new participants placed
+ * @param {object[]} participantsWithContext - participants with added team/group/pair participantIds arrays
+ * @param {string[]} unseededParticipantIds - ids of participants who are unseeded
+ * @param {object[]} drawPositionChunks - drawPositions grouped by round starting with the final round
+ * @param {object[]} drawPositionGroups - drawPositions paird with their initial round opponent drawPosition
+ * @param {object[]} policyAttributes - { key: '' } objects defining accessors for participant values to be compared
+ * @param {object} drawDefinition - drawDefinition object
+ * @param {boolean} pairedPriority - flag whether to prioritize positions which already have one opponent placed
+ * @param {string} structureId - id of the structure in which participants are to be placed
+ * @param {object[]} allGroups - map of values and particpantIds which have those values
  *
  */
-export function generatePositioningCandidate({
-  initialPositionAssignments,
-  participantsWithContext,
-  unseededParticipantIds,
-  opponentsToPlaceCount,
-  drawPositionChunks,
-  drawPositionGroups,
-  policyAttributes,
-  drawDefinition,
-  pairedPriority,
-  structureId,
-  allGroups,
-}) {
-  const idCollections = {};
+export function generatePositioningCandidate(props) {
+  const {
+    initialPositionAssignments,
+    participantsWithContext,
+    opponentsToPlaceCount,
+    drawPositionGroups,
+    policyAttributes,
+  } = props;
+
+  const errors = [],
+    idCollections = {};
+  let groupKey;
+
+  const groupSize = Math.min(...drawPositionGroups.map(dpg => dpg.length));
+  const isRoundRobin = groupSize > 2;
+
   idCollections.groupParticipants = participantsWithContext
     .filter(participant => participant.participantType === GROUP)
     .map(participant => participant.participantId);
@@ -42,155 +53,112 @@ export function generatePositioningCandidate({
     .filter(participant => participant.participantType === PAIR)
     .map(participant => participant.participantId);
 
-  const errors = [];
-  let groupKey, selectedParticipantId;
-  let candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
-  const candidateDrawDefinition = makeDeepCopy(drawDefinition);
+  const candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
 
-  const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
-    return group.length > largest ? group.length : largest;
-  }, 0);
-  const useSpecifiedGroupKey = !!(largestGroupSize > 2);
+  // all drawPositions which are available for placement
+  const potentialDrawPositions = initialPositionAssignments
+    .filter(assignment => !assignment.participantId)
+    .map(assignment => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {
-    const targetParticipantIds = getUnplacedParticipantIds({
-      participantIds: unseededParticipantIds,
-      positionAssignments: candidatePositionAssignments,
-    });
-
-    const unfilledPositions = getUnfilledPositions({
-      drawPositionGroups,
-      positionAssignments: candidatePositionAssignments,
-    });
-
-    ({ participantId: selectedParticipantId, groupKey } = getNextParticipantId({
+    const {
+      newGroupKey,
+      selectedParticipantId,
+      targetDrawPosition,
+    } = getParticipantPlacement({
+      ...props,
       groupKey,
       idCollections,
-      policyAttributes,
-      targetParticipantIds,
-      useSpecifiedGroupKey,
-      participants: participantsWithContext,
-    }));
-
-    const selectedParticipantGroups = getParticipantGroups({
-      allGroups,
-      participantId: selectedParticipantId,
+      candidatePositionAssignments,
     });
+    groupKey = newGroupKey;
 
-    const drawPositionOptions = organizeDrawPositionOptions({
-      allGroups,
-      largestGroupSize,
-      unfilledPositions,
-      drawPositionChunks,
-      isRoundRobin: useSpecifiedGroupKey,
-      positionAssignments: candidatePositionAssignments,
-      selectedParticipantGroups,
-    });
-    const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
-
-    // the first element of each options array represents the greatest possible round separation
-    const pnc = pairedNoConflict?.length && pairedNoConflict[0];
-    const up = unpaired?.length && unpaired[0];
-    const desiredOptions = pairedPriority && pnc ? pnc : up;
-    const fallbackOptions = pairedPriority ? up : pnc;
-
-    const prioritizedOptions =
-      (desiredOptions?.length && desiredOptions) ||
-      (fallbackOptions?.length && fallbackOptions);
-
-    let targetDrawPosition;
-    if (prioritizedOptions?.length) {
-      const section = randomPop(prioritizedOptions);
-      targetDrawPosition = randomPop(section);
-    } else {
-      const section = randomPop(unassigned[0]);
-      targetDrawPosition = randomPop(section);
-    }
-
-    const result = assignDrawPosition({
-      structureId,
-      drawPosition: targetDrawPosition,
-      participantId: selectedParticipantId,
-      drawDefinition: candidateDrawDefinition,
-    });
-    if (result.success) {
-      candidatePositionAssignments = result.positionAssignments;
-    } else {
-      console.log('ERROR:', result.error, { targetDrawPosition });
-      errors.push(result.error);
-    }
-  });
-
-  const participantsMap = Object.assign(
-    {},
-    ...participantsWithContext.map(participant => ({
-      [participant.participantId]: participant,
-    }))
-  );
-
-  const positionedParticipants = candidatePositionAssignments.map(
-    assignment => {
-      const participant = participantsMap[assignment.participantId];
-      const { values } = extractAttributeValues({
-        participant,
-        policyAttributes,
-
-        idCollections,
-        participants: participantsWithContext,
-      });
-      return Object.assign({}, assignment, { values });
-    }
-  );
-
-  let avoidanceConflicts = 0;
-  const groupSize = Math.min(...drawPositionGroups.map(dpg => dpg.length));
-  const isRoundRobin = groupSize > 2;
-  const groupedParticipants = chunkArray(positionedParticipants, groupSize);
-
-  if (isRoundRobin) {
-    groupedParticipants.forEach(participantGroup => {
-      const drawPositions = participantGroup.map(
-        participant => participant.drawPosition
-      );
-      const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
-        drawPositions,
-      });
-      const drawPositionValuesMap = Object.assign(
-        {},
-        ...participantGroup.map(participant => ({
-          [participant.drawPosition]: participant,
-        }))
-      );
-      uniqueMatchUpGroupings.forEach(grouping => {
-        const avoidanceConflict = intersection(
-          drawPositionValuesMap[grouping[0]].values || [],
-          drawPositionValuesMap[grouping[1]].values || []
-        ).length;
-
-        if (avoidanceConflict) {
-          avoidanceConflicts++;
-          participantGroup.conflict = true;
-        }
-      });
-    });
-  } else {
-    groupedParticipants.forEach(matchUpPair => {
-      const avoidanceConflict = intersection(
-        matchUpPair[0].values || [],
-        matchUpPair[1].values || []
-      ).length;
-
-      if (avoidanceConflict) {
-        avoidanceConflicts++;
-        matchUpPair.conflict = true;
+    candidatePositionAssignments.forEach(assignment => {
+      if (assignment.drawPosition === targetDrawPosition) {
+        assignment.participantId = selectedParticipantId;
       }
     });
+  });
+
+  let positionedParticipants = getPositionedParticipants({
+    candidatePositionAssignments,
+    participantsWithContext,
+    policyAttributes,
+    idCollections,
+  });
+
+  let groupedParticipants = chunkArray(positionedParticipants, groupSize);
+  let avoidanceConflicts = getAvoidanceConflicts({
+    isRoundRobin,
+    groupedParticipants,
+  });
+
+  let attempts = 0;
+  while (attempts < 20 && avoidanceConflicts.length) {
+    const swapOptions = getSwapOptions({
+      isRoundRobin,
+      avoidanceConflicts,
+      drawPositionGroups,
+      positionedParticipants,
+      potentialDrawPositions,
+    });
+
+    swapAssignedPositions({
+      candidatePositionAssignments,
+      swapOptions,
+    });
+    positionedParticipants = getPositionedParticipants({
+      candidatePositionAssignments,
+      participantsWithContext,
+      policyAttributes,
+      idCollections,
+    });
+
+    groupedParticipants = chunkArray(positionedParticipants, groupSize);
+    avoidanceConflicts = getAvoidanceConflicts({
+      isRoundRobin,
+      groupedParticipants,
+    });
+
+    attempts++;
   }
 
   return {
     positionAssignments: candidatePositionAssignments,
-    conflicts: avoidanceConflicts,
+    conflicts: avoidanceConflicts.length,
     groupedParticipants,
     errors,
   };
+}
+
+export function swapAssignedPositions({
+  candidatePositionAssignments,
+  swapOptions,
+}) {
+  const swapOption = randomPop(swapOptions);
+  const firstPosition = swapOption.drawPosition;
+  const secondPosition = randomPop(swapOption.possibleDrawPositions);
+  const firstParticipantId = candidatePositionAssignments.find(
+    assignment => assignment.drawPosition === firstPosition
+  ).participantId;
+  const secondParticipantId = candidatePositionAssignments.find(
+    assignment => assignment.drawPosition === secondPosition
+  ).participantId;
+  candidatePositionAssignments.forEach(assignment => {
+    if (assignment.drawPosition === firstPosition) {
+      assignment.participantId = secondParticipantId;
+    }
+    if (assignment.drawPosition === secondPosition) {
+      assignment.participantId = firstParticipantId;
+    }
+  });
+  /*
+  console.log({
+    firstPosition,
+    secondPosition,
+    firstParticipantId,
+    secondParticipantId,
+    candidatePositionAssignments,
+  });
+  */
 }
