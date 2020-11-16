@@ -288,16 +288,13 @@ export function getAllStructureMatchUps({
             const scoreString = generateScoreString({ sets, reversed });
             Object.assign(side, { score: scoreString });
           }
-          if (side.participant && side.participant.individualParticipants) {
-            const individualParticipants = side.participant.individualParticipants.map(
-              participant => {
-                return (
-                  participant &&
-                  findParticipant({
-                    tournamentParticipants,
-                    participantId: participant.participantId,
-                  })
-                );
+          if (side.participant && side.participant.individualParticipantIds) {
+            const individualParticipants = side.participant.individualParticipantIds.map(
+              participantId => {
+                return findParticipant({
+                  tournamentParticipants,
+                  participantId,
+                });
               }
             );
             Object.assign(side.participant, { individualParticipants });
