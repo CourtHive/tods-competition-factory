@@ -22,7 +22,9 @@ it('can generate ELIMINATION drawDefinition using country avoidance with PAIR pa
     sex: 'M',
   });
   if (error) console.log({ error });
-  if (conflicts?.unseededConflicts) console.log(conflicts);
+  if (conflicts?.unseededConflicts) {
+    console.log(conflicts);
+  }
 
   ({ conflicts, error } = avoidanceTest({
     avoidance: avoidancePolicy,
@@ -31,7 +33,9 @@ it('can generate ELIMINATION drawDefinition using country avoidance with PAIR pa
     sex: 'F',
   }));
   if (error) console.log({ error });
-  if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
+  if (conflicts?.unseededConflicts) {
+    console.log(conflicts.unseededConflicts);
+  }
 });
 
 it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
