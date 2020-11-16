@@ -54,7 +54,8 @@ export function generateDrawDefinition(props) {
   ) {
     return { error: INVALID_DRAW_TYPE };
   }
-  const eventAllowedDrawTypes = event?.allowedDrawTypes;
+  const eventAllowedDrawTypes =
+    !ignoreAllowedDrawTypes && event?.allowedDrawTypes;
   if (eventAllowedDrawTypes && !eventAllowedDrawTypes.includes(drawType)) {
     return { error: INVALID_DRAW_TYPE };
   }
