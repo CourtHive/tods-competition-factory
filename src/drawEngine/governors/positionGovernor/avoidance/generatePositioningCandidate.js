@@ -10,6 +10,7 @@ import {
 } from '../../../../utilities';
 
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
@@ -103,24 +104,28 @@ export function generatePositioningCandidate(props) {
       potentialDrawPositions,
     });
 
-    swapAssignedPositions({
-      candidatePositionAssignments,
-      swapOptions,
-    });
-    positionedParticipants = getPositionedParticipants({
-      candidatePositionAssignments,
-      participantsWithContext,
-      policyAttributes,
-      idCollections,
-    });
+    if (swapOptions.length) {
+      swapAssignedPositions({
+        candidatePositionAssignments,
+        swapOptions,
+      });
 
-    groupedParticipants = chunkArray(positionedParticipants, groupSize);
-    avoidanceConflicts = getAvoidanceConflicts({
-      isRoundRobin,
-      groupedParticipants,
-    });
+      positionedParticipants = getPositionedParticipants({
+        candidatePositionAssignments,
+        participantsWithContext,
+        policyAttributes,
+        idCollections,
+      });
 
-    attempts++;
+      groupedParticipants = chunkArray(positionedParticipants, groupSize);
+      avoidanceConflicts = getAvoidanceConflicts({
+        isRoundRobin,
+        groupedParticipants,
+      });
+      attempts++;
+    } else {
+      attempts = 20;
+    }
   }
 
   return {
@@ -136,6 +141,8 @@ export function swapAssignedPositions({
   swapOptions,
 }) {
   const swapOption = randomPop(swapOptions);
+  if (!swapOption) return { error: 'No swap options' };
+
   const firstPosition = swapOption.drawPosition;
   const secondPosition = randomPop(swapOption.possibleDrawPositions);
   const firstParticipantId = candidatePositionAssignments.find(
@@ -152,13 +159,5 @@ export function swapAssignedPositions({
       assignment.participantId = firstParticipantId;
     }
   });
-  /*
-  console.log({
-    firstPosition,
-    secondPosition,
-    firstParticipantId,
-    secondParticipantId,
-    candidatePositionAssignments,
-  });
-  */
+  return SUCCESS;
 }
