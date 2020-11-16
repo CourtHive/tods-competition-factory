@@ -24,6 +24,7 @@ export function generateDrawDefinition(props) {
 
   const {
     customName,
+    matchUpType,
     seedingProfile,
     qualifyingRound,
     automated = true,
@@ -31,7 +32,7 @@ export function generateDrawDefinition(props) {
     qualifyingPositions,
     drawType = ELIMINATION,
     playoffMatchUpFormat,
-    matchUpType,
+    ignoreAllowedDrawTypes,
     seededParticipants,
   } = props;
 
@@ -44,7 +45,9 @@ export function generateDrawDefinition(props) {
   }
 
   const tournamentAllowedDrawTypes =
-    tournamentRecord && allowedDrawTypes({ tournamentRecord });
+    !ignoreAllowedDrawTypes &&
+    tournamentRecord &&
+    allowedDrawTypes({ tournamentRecord });
   if (
     tournamentAllowedDrawTypes &&
     !tournamentAllowedDrawTypes.includes(drawType)
