@@ -1,5 +1,6 @@
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps';
+import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 
 export function allTournamentMatchUps({
   tournamentRecord,
@@ -12,16 +13,20 @@ export function allTournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = tournamentRecord?.events || [];
   const participants = getParticipants({ tournamentRecord });
+  const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+  });
   const matchUps = events
     .map(
       event =>
         allEventMatchUps({
+          event,
           drawEngine,
           participants,
           tournamentId,
-          event,
           matchUpFilters,
           contextFilters,
+          tournamentAppliedPolicies,
         }).matchUps
     )
     .flat(Infinity);
@@ -29,12 +34,13 @@ export function allTournamentMatchUps({
 }
 
 export function allEventMatchUps({
-  drawEngine,
-  participants = [],
-  tournamentId,
   event,
+  drawEngine,
+  tournamentId,
   matchUpFilters,
   contextFilters,
+  participants = [],
+  tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
@@ -45,7 +51,12 @@ export function allEventMatchUps({
       const { matchUps } = drawEngine
         .setState(drawDefinition)
         .setParticipants(participants)
-        .allDrawMatchUps({ context, matchUpFilters, contextFilters });
+        .allDrawMatchUps({
+          context,
+          matchUpFilters,
+          contextFilters,
+          tournamentAppliedPolicies,
+        });
       return matchUps;
     })
     .flat(Infinity);
@@ -64,18 +75,22 @@ export function tournamentMatchUps({
     tournamentRecord.tournamentId;
   const events = (tournamentRecord && tournamentRecord.events) || [];
   const participants = getParticipants({ tournamentRecord });
+  const { appliedPolicies: tournamentAppliedPolicies } = getAppliedPolicies({
+    tournamentRecord,
+  });
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
   const eventsDrawsMatchUps = events
     .filter(event => !filteredEventIds.includes(event.eventId))
     .map(
       event =>
         eventMatchUps({
+          event,
           drawEngine,
           participants,
           tournamentId,
-          event,
           matchUpFilters,
           contextFilters,
+          tournamentAppliedPolicies,
         }).matchUps
     );
 
@@ -98,12 +113,13 @@ export function tournamentMatchUps({
 }
 
 export function eventMatchUps({
+  event,
   drawEngine,
   participants,
   tournamentId,
-  event,
   matchUpFilters,
   contextFilters,
+  tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
@@ -113,7 +129,12 @@ export function eventMatchUps({
     const allDrawMatchUps = drawEngine
       .setState(drawDefinition)
       .setParticipants(participants)
-      .drawMatchUps({ context, matchUpFilters, contextFilters });
+      .drawMatchUps({
+        context,
+        matchUpFilters,
+        contextFilters,
+        tournamentAppliedPolicies,
+      });
     return allDrawMatchUps;
   });
 
@@ -160,40 +181,5 @@ export function findMatchUp({
       inContext,
     });
     return { matchUp };
-  }
-}
-
-export function matchUpActions({
-  tournamentRecord,
-  drawEngine,
-  matchUpId,
-  drawId,
-}) {
-  if (!drawId) {
-    // if matchUp did not have context, find drawId by brute force
-    const { matchUps } = allTournamentMatchUps({
-      tournamentRecord,
-      drawEngine,
-    });
-    drawId = matchUps.reduce((drawId, candidate) => {
-      return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
-    }, undefined);
-  }
-
-  if (drawId) {
-    const events = tournamentRecord.events || [];
-    const drawDefinitions = events
-      .map(event => event.drawDefinitions || [])
-      .flat();
-    const drawDefinition = drawDefinitions.reduce(
-      (drawDefinition, candidate) => {
-        return candidate.drawId === drawId ? candidate : drawDefinition;
-      },
-      undefined
-    );
-    const actions = drawEngine
-      .setState(drawDefinition)
-      .matchUpActions({ matchUpId });
-    return actions;
   }
 }

@@ -40,6 +40,7 @@ export function getAllStructureMatchUps({
   contextFilters,
   matchUpFilters,
   tournamentParticipants,
+  tournamentAppliedPolicies,
 }) {
   let matchUps = [],
     collectionPositionMatchUps = {},
@@ -55,7 +56,15 @@ export function getAllStructureMatchUps({
 
   // TODO: code is shared with matchUpActions.js
   // TODO: extend testing to restrict for MAIN while leaving consolation unrestricted
-  const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
+  const { appliedPolicies: drawAppliedPolicies } = getAppliedPolicies({
+    drawDefinition,
+  });
+  const appliedPolicies = Object.assign(
+    {},
+    tournamentAppliedPolicies,
+    drawAppliedPolicies
+  );
+
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
   const stageSpecificPolicies =
     structureScoringPolicies?.stage &&

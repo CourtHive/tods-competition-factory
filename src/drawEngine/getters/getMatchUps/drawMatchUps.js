@@ -22,15 +22,16 @@ export function getAllDrawMatchUps(props) {
 }
 
 export function getDrawMatchUps({
-  drawDefinition,
-  tournamentParticipants,
-  requireParticipants,
-  roundFilter,
-  inContext,
-  includeByeMatchUps,
   context,
+  inContext,
+  roundFilter,
+  drawDefinition,
   matchUpFilters,
   contextFilters,
+  includeByeMatchUps,
+  requireParticipants,
+  tournamentParticipants,
+  tournamentAppliedPolicies,
 }) {
   let allByeMatchUps = [];
   let allPendingMatchUps = [];
@@ -58,6 +59,7 @@ export function getDrawMatchUps({
       includeByeMatchUps,
       requireParticipants,
       tournamentParticipants,
+      tournamentAppliedPolicies,
     });
 
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);

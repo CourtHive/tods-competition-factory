@@ -3,8 +3,8 @@ import {
   allTournamentMatchUps,
   eventMatchUps,
   allEventMatchUps,
-  matchUpActions,
 } from '../../getters/matchUpsGetter';
+import { matchUpActions } from '../../getters/matchUpActions';
 
 import { getParticipantScaleItem } from './scaleValue';
 import { getParticipantSignInStatus } from './signInStatus';

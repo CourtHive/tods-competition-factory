@@ -9,28 +9,30 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
   *AND* where both drawPositions map to assigned participantIds
 */
 export function getStructureMatchUps({
-  inContext,
   context,
+  inContext,
   structure,
+  roundFilter,
   structureId,
   drawDefinition,
-  tournamentParticipants,
-  requireParticipants = true,
-  roundFilter,
   matchUpFilters,
   contextFilters,
+  tournamentParticipants,
+  tournamentAppliedPolicies,
+  requireParticipants = true,
 }) {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
   const { matchUps, error } = getAllStructureMatchUps({
+    context,
     structure,
     inContext,
-    context,
     drawDefinition,
     matchUpFilters,
     contextFilters,
     tournamentParticipants,
+    tournamentAppliedPolicies,
   });
   if (error) return { error };
   const { assignedPositions } = structureAssignedDrawPositions({ structure });
