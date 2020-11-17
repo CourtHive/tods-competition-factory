@@ -37,18 +37,18 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
   const sourceStructureProfiles = Object.assign(
     {},
     ...sourceStructureIds.map(sourceStructureId => {
-      const { structure } = findStructure({
+      const { roundProfile } = getStructureRoundProfile({
         drawDefinition,
         structureId: sourceStructureId,
       });
-      const { matchUps } = getAllStructureMatchUps({
-        structure,
-        inContext: true,
-      });
-      const { roundProfile } = getRoundMatchUps({ matchUps });
       return { [sourceStructureId]: roundProfile };
     })
   );
+
+  const { roundProfile: targetStructureProfile } = getStructureRoundProfile({
+    drawDefinition,
+    structureId,
+  });
 
   const sourceDrawPositionRanges = {};
   relevantLinks.forEach(link => {
@@ -98,12 +98,24 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     // build an object with keys [targetRoundnumber][roundPosition]
     if (!sourceDrawPositionRanges[targetRoundNumber])
       sourceDrawPositionRanges[targetRoundNumber] = {};
+
+    // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
+    // columnPosition gives an ordered position value relative to a single column
+    // when the number of drawPositions is greater than the number of drawPositionBlocks for a given roundNumber
+    // then sourceDrawPositionRanges are being added to a feedRound
+    // targetStructureProfile also has the boolean attribute .feedRound to flag this case
+    const increment = targetStructureProfile[targetRoundNumber].feedRound
+      ? 2
+      : 1;
+
     drawPositionBlocks.forEach((block, index) => {
-      const roundPosition = index + 1;
-      if (!sourceDrawPositionRanges[targetRoundNumber][roundPosition]) {
+      // fed drawPositions are always sideNumber: 1, so when the increment is 2 the columnPosition is always an odd number
+      // because sideNumber: 1 maps to index: 0 in matchUp.drawPositions
+      const columnPosition = 1 + index * increment;
+      if (!sourceDrawPositionRanges[targetRoundNumber][columnPosition]) {
         const drawPositionRange = getRangeString(block);
         sourceDrawPositionRanges[targetRoundNumber][
-          roundPosition
+          columnPosition
         ] = drawPositionRange;
       }
     });
@@ -118,4 +130,16 @@ function getRangeString(arr) {
   if (!numericArray.length) return '';
   const range = unique([Math.min(...numericArray), Math.max(...numericArray)]);
   return range.join('-');
+}
+
+function getStructureRoundProfile({ drawDefinition, structureId }) {
+  const { structure } = findStructure({
+    drawDefinition,
+    structureId,
+  });
+  const { matchUps } = getAllStructureMatchUps({
+    structure,
+    inContext: true,
+  });
+  return getRoundMatchUps({ matchUps });
 }

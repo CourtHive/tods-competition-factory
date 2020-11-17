@@ -197,10 +197,8 @@ export function getAllStructureMatchUps({
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
     const feedRound = roundProfile && roundProfile[roundNumber].feedRound;
 
-    const sourceDrawPositionRange =
-      sourceDrawPositionRanges &&
-      sourceDrawPositionRanges[roundNumber] &&
-      sourceDrawPositionRanges[roundNumber][roundPosition];
+    const sourceDrawPositionRoundRanges =
+      sourceDrawPositionRanges && sourceDrawPositionRanges[roundNumber];
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
@@ -213,7 +211,6 @@ export function getAllStructureMatchUps({
         matchUpTieId,
         structureName,
         matchUpStatus,
-        sourceDrawPositionRange,
       },
       makeDeepCopy(matchUp),
       context
@@ -245,7 +242,16 @@ export function getAllStructureMatchUps({
       });
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
-        return getSide({ drawPosition, sideNumber });
+        const side = getSide({ drawPosition, sideNumber });
+
+        // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
+        // columnPosition gives an ordered position value relative to a single column
+        const columnPosition = (roundPosition - 1) * 2 + index + 1;
+        const sourceDrawPositionRange =
+          sourceDrawPositionRoundRanges &&
+          sourceDrawPositionRoundRanges[columnPosition];
+
+        return Object.assign({}, side, { sourceDrawPositionRange });
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }));
 
