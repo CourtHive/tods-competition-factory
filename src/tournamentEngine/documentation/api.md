@@ -266,6 +266,18 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ---
 
+## getTournamentParticipants
+
+Returns tournament participants filtered by participantFilters which are arrays of desired participant attribute values
+
+- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
+- @param {object} participantFilters - attribute arrays with filter value strings
+
+  imlemented: eventIds, participantTypes, participantRoles,
+  to be implemented: drawIds, structureIds, signInStates, keyValues,
+
+---
+
 ## getVenues
 
 ---

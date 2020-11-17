@@ -4,7 +4,10 @@ import { addParticipants } from './addParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { createGroupParticipant } from './createGroupParticipant';
-import { findTournamentParticipant } from '../../getters/participantGetter';
+import {
+  findTournamentParticipant,
+  getTournamentParticipants,
+} from '../../getters/participantGetter';
 import { generateMockParticipants } from '../../generators/mockParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import {
@@ -16,12 +19,16 @@ import { participantsSignInStatus } from './modifyParticipants';
 import { setParticipantScaleItem } from './scaleItems';
 import { setParticipantScaleItems } from './scaleItems';
 
-const findTournamentParticipantCopy = ({ tournamentRecord, participantId }) => {
-  const { participant } = findTournamentParticipant({
-    tournamentRecord,
-    participantId,
-  });
-  return { participant: makeDeepCopy(participant) };
+const findTournamentParticipantCopy = props => {
+  const { participant, error } = findTournamentParticipant(props);
+  return { participant: makeDeepCopy(participant), error };
+};
+const getTournamentParticipantsCopy = props => {
+  const { tournamentParticipants, error } = getTournamentParticipants(props);
+  return {
+    tournamentParticipants: makeDeepCopy(tournamentParticipants),
+    error,
+  };
 };
 
 const participantGovernor = {
@@ -44,6 +51,7 @@ const participantGovernor = {
   participantsSignInStatus,
 
   findParticipant: findTournamentParticipantCopy,
+  getTournamentParticipants: getTournamentParticipantsCopy,
 };
 
 export default participantGovernor;
