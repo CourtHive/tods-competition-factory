@@ -1,5 +1,6 @@
 import {
   MAIN,
+  PLAYOFF,
   CONSOLATION,
   QUALIFYING,
 } from '../../constants/drawDefinitionConstants';
@@ -19,6 +20,7 @@ export const ROUND_NAMING_DEFAULT = {
     },
     stageConstants: {
       [MAIN]: '',
+      [PLAYOFF]: 'P',
       [QUALIFYING]: 'Q',
       [CONSOLATION]: 'C',
     },
