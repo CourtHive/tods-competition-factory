@@ -1,17 +1,29 @@
-import { findCourt } from '../../getters/courtGetter';
+import { findVenue } from '../../getters/venueGetter';
+import venueTemplate from '../../generators/venueTemplate';
 
+import {
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
+  NO_VALID_ATTRIBUTES,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function setVenueAddress({ tournamentRecord, venueId, address }) {
-  console.log({ tournamentRecord, venueId, address });
-  return SUCCESS;
-}
+export function modifyVenue({ tournamentRecord, venueId, modifications }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!venueId) return { error: MISSING_VENUE_ID };
 
-export function deleteCourt({ tournamentRecord, courtId }) {
-  const { venue } = findCourt({ tournamentRecord, courtId });
-  venue.courts = (venue.courts || []).filter(courtRecord => {
-    return courtRecord.courtId !== courtId;
-  });
+  const { venue, error } = findVenue({ tournamentRecord, venueId });
+  if (error) return { error };
+
+  const validAttributes = Object.keys(venueTemplate()).filter(
+    attribute => attribute !== 'courtId'
+  );
+
+  if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
+
+  validAttributes.forEach(attribute =>
+    Object.assign(venue, { [attribute]: modifications[attribute] })
+  );
 
   return SUCCESS;
 }

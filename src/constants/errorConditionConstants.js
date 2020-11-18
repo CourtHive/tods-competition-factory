@@ -148,10 +148,12 @@ export const INVALID_OBJECT = 'Invalid object';
 export const TEAM_NOT_FOUND = 'Team not found';
 
 export const NO_VALID_ACTIONS = 'No valid actions';
+export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
+  NO_VALID_ATTRIBUTES,
   DRAW_ID_EXISTS,
   NOT_IMPLEMENTED,
   EVENT_EXISTS,
