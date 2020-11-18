@@ -9,7 +9,7 @@ import {
   TOP_DOWN,
   LOSER,
   COMPASS,
-  PLAYOFF,
+  PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
@@ -329,7 +329,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 it('can generate draw which plays off all drawPositions', () => {
   const { result, drawDefinition } = playoffDraw({
     drawSize: 64,
-    drawType: PLAYOFF,
+    drawType: PLAY_OFF,
   });
   expect(result).not.toHaveProperty(ERROR);
   expect(drawDefinition.links.length).toEqual(31);
@@ -381,7 +381,7 @@ it('can generate draw which plays off all drawPositions', () => {
 it('can generate knockout which specifies drawPositions to playoff', () => {
   let { drawDefinition } = playoffDraw({
     drawSize: 16,
-    drawType: PLAYOFF,
+    drawType: PLAY_OFF,
     finishingPositionLimit: 4,
   });
   expect(drawDefinition.links.length).toEqual(1);
@@ -391,7 +391,7 @@ it('can generate knockout which specifies drawPositions to playoff', () => {
 
   ({ drawDefinition } = playoffDraw({
     drawSize: 16,
-    drawType: PLAYOFF,
+    drawType: PLAY_OFF,
     finishingPositionLimit: 8,
   }));
   expect(drawDefinition.links.length).toEqual(3);
@@ -403,7 +403,7 @@ it('can generate knockout which specifies drawPositions to playoff', () => {
 
   ({ drawDefinition } = playoffDraw({
     drawSize: 32,
-    drawType: PLAYOFF,
+    drawType: PLAY_OFF,
     finishingPositionLimit: 8,
   }));
   expect(drawDefinition.links.length).toEqual(3);

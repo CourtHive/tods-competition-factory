@@ -25,7 +25,7 @@ import {
   CURTIS,
   FICR16,
   COMPASS,
-  PLAYOFF,
+  PLAY_OFF,
   OLYMPIC,
   FEED_IN,
   QUALIFYING,
@@ -118,7 +118,7 @@ export function generateDrawType(props = {}) {
           playoffAttributes: OLYMPIC_ATTRIBUTES,
         })
       ),
-    [PLAYOFF]: () => playoff(props),
+    [PLAY_OFF]: () => playoff(props),
 
     [FEED_IN]: () => {
       const { matchUps } = feedInMatchUps({ drawSize });

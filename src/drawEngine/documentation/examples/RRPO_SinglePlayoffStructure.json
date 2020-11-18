@@ -410,7 +410,7 @@
       ]
     },
     {
-      "structureName": "PLAYOFF",
+      "structureName": "PLAY_OFF",
       "stageSequence": 1,
       "finishingPosition": "ROUND_OUTCOME",
       "structureId": "83d87e4b-4894-465b-a772-c86448ed1b9b",

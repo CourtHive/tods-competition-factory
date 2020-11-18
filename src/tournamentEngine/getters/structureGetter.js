@@ -1,4 +1,4 @@
-import { PLAYOFF } from '../../constants/drawDefinitionConstants';
+import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   const targetStructureIds = drawDefinition.links
@@ -8,7 +8,7 @@ export function getPlayoffStructures({ drawDefinition, structureId }) {
   const playoffStructures = drawDefinition.structures?.filter(
     structure =>
       targetStructureIds.includes(structure.structureId) &&
-      structure.stage === PLAYOFF
+      structure.stage === PLAY_OFF
   );
 
   return playoffStructures;

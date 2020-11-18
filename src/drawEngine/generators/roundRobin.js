@@ -9,7 +9,7 @@ import {
   MAIN,
   DRAW,
   ITEM,
-  PLAYOFF,
+  PLAY_OFF,
   POSITION,
   WIN_RATIO,
   CONTAINER,
@@ -96,7 +96,7 @@ export function generateRoundRobinWithPlayOff(props) {
   // define a default playoff group if none specified
   const playoffGroups = (structureOptions &&
     structureOptions.playoffGroups) || [
-    { finishingPositions: [1], structureName: PLAYOFF },
+    { finishingPositions: [1], structureName: PLAY_OFF },
   ];
 
   const playoffStructures = playoffGroups
@@ -125,7 +125,7 @@ export function generateRoundRobinWithPlayOff(props) {
         const { matchUps } = treeMatchUps({ drawSize });
 
         const playoffStructure = structureTemplate({
-          stage: PLAYOFF,
+          stage: PLAY_OFF,
           matchUps,
           stageOrder,
           stageSequence,
@@ -148,7 +148,7 @@ export function generateRoundRobinWithPlayOff(props) {
           link: consolationLink,
         } = firstMatchLoserConsolation({
           drawSize,
-          stage: PLAYOFF,
+          stage: PLAY_OFF,
           structureName: playoffGroup.structureName,
         });
         const playoffLink = generatePlayoffLink({

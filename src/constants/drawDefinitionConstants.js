@@ -15,7 +15,7 @@ export const LOSER = 'LOSER'; // partticipant advances based on losing a matchUp
 // draw types
 export const FEED_IN = 'FEED IN';
 export const COMPASS = 'COMPASS';
-export const PLAYOFF = 'PLAYOFF';
+export const PLAY_OFF = 'PLAY_OFF';
 export const OLYMPIC = 'OLYMPIC';
 export const KNOCKOUT = 'ELIMINATION';
 export const ELIMINATION = 'ELIMINATION';
@@ -83,7 +83,7 @@ export const drawDefinitionConstants = {
 
   FEED_IN,
   COMPASS,
-  PLAYOFF,
+  PLAY_OFF,
   OLYMPIC,
   KNOCKOUT,
   ELIMINATION,

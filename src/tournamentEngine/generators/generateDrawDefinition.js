@@ -97,7 +97,7 @@ export function generateDrawDefinition(props) {
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stageEntries = entries.filter(
     entry =>
-      entry.entryStage === stage &&
+      (!entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
   if ([ROUND_ROBIN].includes(drawType)) {
@@ -125,7 +125,7 @@ export function generateDrawDefinition(props) {
   });
   if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
 
-  drawEngine.generateDrawType({
+  const { errors: generatedDrawErrors } = drawEngine.generateDrawType({
     stage,
     drawType,
     seedingProfile,
@@ -253,10 +253,9 @@ export function generateDrawDefinition(props) {
   const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
-  // TODO: extend to aggregate other possible (non fatal) errors
-  const error = matchUpFormatError
-    ? [{ error: matchUpFormatError }]
-    : undefined;
+  const errors = generatedDrawErrors || [];
+  if (matchUpFormatError) errors.push(matchUpFormat);
+  const error = errors.length && errors;
 
   return { structureId, drawDefinition, conflicts, error };
 }

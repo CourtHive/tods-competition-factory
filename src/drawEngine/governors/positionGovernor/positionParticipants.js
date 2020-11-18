@@ -12,7 +12,7 @@ import {
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
@@ -64,7 +64,7 @@ export function positionUnseededParticipants({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   let { avoidance } = appliedPolicies || {};
 
-  if (structure.stage === PLAYOFF) {
+  if (structure.stage === PLAY_OFF) {
     // generate avoidance policies automatically for Playoffs from Round Robin Groups
     // perhaps attach groups directly to avoidance object...
     const groupings = entries.reduce((groupings, entry) => {

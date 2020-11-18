@@ -10,7 +10,7 @@ import { setsValues } from './roundRobinSetsValues.js';
 
 import {
   MAIN,
-  PLAYOFF,
+  PLAY_OFF,
   POSITION,
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -88,7 +88,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
 
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === PLAYOFF
+      return structure.stage === PLAY_OFF
         ? structures.concat(structure)
         : structures;
     },
@@ -308,7 +308,7 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === PLAYOFF
+      return structure.stage === PLAY_OFF
         ? structures.concat(structure)
         : structures;
     },

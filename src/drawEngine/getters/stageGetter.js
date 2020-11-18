@@ -11,7 +11,7 @@ import {
 import {
   POSITION,
   CONTAINER,
-  PLAYOFF,
+  PLAY_OFF,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -86,7 +86,7 @@ export function stageSeededEntries({ stage, drawDefinition }) {
  *
  * @param {string[]} entryTypes - ENUM - entry status, e.g. DIRECT_ACCEPTANCE, WILDCARD
  * @param {object} drawDefinition
- * @param {string} stage - ENUM - QUALIFYING, MAIN, PLAYOFF, CONSOLATION
+ * @param {string} stage - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
  * @param {number} stageSequence - sequence within a stage
  *
  * @param {string} structureId - optional; used for round robin participant results
@@ -181,7 +181,7 @@ export function playoffEntries({ drawDefinition, structureId }) {
               groupingValue,
               participantId,
               placementGroup,
-              entryStage: PLAYOFF,
+              entryStage: PLAY_OFF,
               entryStatus: FEED_IN,
             });
           });

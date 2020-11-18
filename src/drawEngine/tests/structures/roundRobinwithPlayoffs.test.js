@@ -12,7 +12,7 @@ import {
   DRAW,
   FMLC,
   MAIN,
-  PLAYOFF,
+  PLAY_OFF,
   POSITION,
   WATERFALL,
   ROUND_OUTCOME,
@@ -51,7 +51,7 @@ it('can generate Round Robins 32 with playoffs', () => {
   expect(playoffStructures[0].structureName).toEqual('Gold Flight');
   expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(playoffStructures[0].stage).toEqual(PLAYOFF);
+  expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
   expect(playoffStructures[0].matchUps.length).toEqual(7);
   expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(3);
@@ -95,7 +95,7 @@ it('can generate Round Robins 16 with playoffs', () => {
   expect(playoffStructures[0].structureName).toEqual('Gold Flight');
   expect(playoffStructures[1].structureName).toEqual('Silver Flight');
 
-  expect(playoffStructures[0].stage).toEqual(PLAYOFF);
+  expect(playoffStructures[0].stage).toEqual(PLAY_OFF);
   expect(playoffStructures[0].finishingPosition).toEqual(ROUND_OUTCOME);
   expect(playoffStructures[0].matchUps.length).toEqual(3);
   expect(playoffStructures[0].matchUps[0].finishingRound).toEqual(2);
@@ -139,7 +139,7 @@ it('can generate Round Robin with Playoffs', () => {
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === PLAYOFF
+      return structure.stage === PLAY_OFF
         ? structures.concat(structure)
         : structures;
     },
@@ -212,7 +212,7 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === PLAYOFF
+      return structure.stage === PLAY_OFF
         ? structures.concat(structure)
         : structures;
     },
@@ -410,7 +410,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
 
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
-      return structure.stage === PLAYOFF
+      return structure.stage === PLAY_OFF
         ? structures.concat(structure)
         : structures;
     },

@@ -8,7 +8,7 @@ import { structureTemplate } from '../../drawEngine/generators/structureTemplate
 import {
   MAIN,
   CONSOLATION,
-  PLAYOFF,
+  PLAY_OFF,
   TOP_DOWN,
   LOSER,
 } from '../../constants/drawDefinitionConstants';
@@ -72,7 +72,7 @@ export function generateCurtisConsolation({
     const playoffStructure = structureTemplate({
       matchUps: playoffMatchUps,
       stage: MAIN,
-      structureName: PLAYOFF,
+      structureName: PLAY_OFF,
       stageSequence: 2,
     });
 
