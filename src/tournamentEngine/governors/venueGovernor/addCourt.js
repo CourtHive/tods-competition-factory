@@ -10,6 +10,12 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+/**
+ *
+ * @param {string} venueId
+ * @param {object} court - court object
+ * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
+ */
 export function addCourt({ tournamentRecord, venueId, court }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
@@ -34,6 +40,12 @@ export function addCourt({ tournamentRecord, venueId, court }) {
   }
 }
 
+/**
+ * @param {string} venueId
+ * @param {number} courtsCount - number of courts to add
+ * @param {string[]} courtNames - array of names to assign to generated courts
+ * @param {object[]} dataAvailability - dataAvailability object
+ */
 export function addCourts({
   tournamentRecord,
   venueId,

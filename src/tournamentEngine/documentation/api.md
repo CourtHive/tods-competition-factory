@@ -8,9 +8,19 @@ route: /tournamentEngine/api
 
 ## addCourt
 
+- @param {string} venueId
+- @param {object} court - court object
+
+{ courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
+
 ---
 
 ## addCourts
+
+- @param {string} venueId
+- @param {number} courtsCount - number of courts to add
+- @param {string[]} courtNames - array of names to assign to generated courts
+- @param {object[]} dataAvailability - dataAvailability object
 
 ---
 

@@ -1,7 +1,8 @@
 export const courtTemplate = () => ({
+  altitude: null,
   courtId: null,
   courtName: '',
-  altitude: null,
+  courtDimensions: null,
   latitude: null,
   longitude: null,
   surfaceCategory: null,
@@ -9,7 +10,7 @@ export const courtTemplate = () => ({
   surfaceDate: null,
   dateAvailability: [],
   onlineResources: [],
-  courtDimensions: null,
+  pace: null,
   notes: null,
 });
 
