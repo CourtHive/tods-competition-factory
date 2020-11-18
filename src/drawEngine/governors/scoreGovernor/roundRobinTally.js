@@ -142,10 +142,10 @@ export function tallyParticipantResults({
 
     const matchesNumerator = participantResults[participantId].matchUpsWon;
     const matchesDenominator = participantResults[participantId].matchUpsLost;
-    let matchesRatio =
+    let matchUpsRatio =
       Math.round((matchesNumerator / matchesDenominator) * 1000) / 1000;
-    if (matchesRatio === Infinity || isNaN(matchesRatio))
-      matchesRatio = matchesNumerator;
+    if (matchUpsRatio === Infinity || isNaN(matchUpsRatio))
+      matchUpsRatio = matchesNumerator;
 
     const gamesNumerator = participantResults[participantId].gamesWon;
     const gamesDenominator = participantResults[participantId].gamesLost;
@@ -171,7 +171,7 @@ export function tallyParticipantResults({
     if (pointsRatio === Infinity || isNaN(pointsRatio)) pointsRatio = 0;
 
     participantResults[participantId].setsRatio = setsRatio;
-    participantResults[participantId].matchesRatio = matchesRatio;
+    participantResults[participantId].matchUpsRatio = matchUpsRatio;
     participantResults[participantId].gamesRatio = gamesRatio;
     participantResults[participantId].gamesDifference = gamesDifference;
     participantResults[participantId].pointsRatio = pointsRatio;
@@ -486,13 +486,13 @@ export function tallyParticipantResults({
       let rh;
       if (headToHeadPriority) {
         rh =
-          p.results.matchesRatio * Math.pow(10, 16) +
+          p.results.matchUpsRatio * Math.pow(10, 16) +
           p.results.setsRatio * Math.pow(10, 12) +
           p.results.gamesDifference * Math.pow(10, 8) +
           p.results.pointsRatio * Math.pow(10, 3);
       } else {
         rh =
-          p.results.matchesRatio * Math.pow(10, 16) +
+          p.results.matchUpsRatio * Math.pow(10, 16) +
           p.results.setsRatio * Math.pow(10, 12) +
           p.results.gamesRatio * Math.pow(10, 8) +
           p.results.pointsRatio * Math.pow(10, 3);
@@ -603,7 +603,7 @@ export function tallyBracketAndModifyPlayers({
           pointsWon: tbr.participantResults[participantId].pointsWon,
           pointsLost: tbr.participantResults[participantId].pointsLost,
 
-          matchesRatio: tbr.participantResults[participantId].matchesRatio,
+          matchUpsRatio: tbr.participantResults[participantId].matchUpsRatio,
           setsRatio: tbr.participantResults[participantId].setsRatio,
           gamesRatio: tbr.participantResults[participantId].gamesRatio,
           pointsRatio: tbr.participantResults[participantId].pointsRatio,

@@ -40,14 +40,21 @@ export { fixtures } from './fixtures';
 
 export { factoryConstants } from './constants';
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
-export { entryStatusConstants } from './constants/entryStatusConstants';
+export {
+  entryStatusConstants,
+  EntryStatusEnum,
+} from './constants/entryStatusConstants';
 export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { genderConstants } from './constants/genderConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
 export { optionConstants } from './constants/optionConstants';
-export { participantConstants } from './constants/participantConstants';
+export {
+  participantConstants,
+  ParticipantTypeEnum,
+  SignedInStatusEnum,
+} from './constants/participantConstants';
 export { participantRoles } from './constants/participantRoles';
 export { participantTypes } from './constants/participantTypes';
 export { penaltyConstants } from './constants/penaltyConstants';
