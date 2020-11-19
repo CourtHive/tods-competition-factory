@@ -2,7 +2,6 @@ import {
   COURT_NOT_FOUND,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_VENUE_ID,
 } from '../../constants/errorConditionConstants';
 import { makeDeepCopy } from '../../utilities';
 
@@ -24,9 +23,13 @@ export function findCourt({ tournamentRecord, courtId }) {
   return (court && { court, venue }) || { error: COURT_NOT_FOUND };
 }
 
+/**
+ *
+ * @param {string} venueId - optional -
+ * @param {string[]} venueIds - optional -
+ */
 export function getCourts({ tournamentRecord, venueId, venueIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!venueId && !venueIds?.length) return { error: MISSING_VENUE_ID };
 
   const courts = (tournamentRecord.venues || [])
     .filter(venue => {
