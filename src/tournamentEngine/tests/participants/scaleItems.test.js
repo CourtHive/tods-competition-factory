@@ -1,5 +1,4 @@
-import { tournamentEngine } from '../../../tournamentEngine';
-
+import { tournamentEngine } from '../..';
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 
 import { SUCCESS } from '../../../constants/resultConstants';
