@@ -18,6 +18,11 @@ import {
 import { participantsSignInStatus } from './modifyParticipants';
 import { setParticipantScaleItem } from './scaleItems';
 import { setParticipantScaleItems } from './scaleItems';
+import {
+  addPenalty,
+  removePenalty,
+  getTournamentPenalties,
+} from './participantPenalties';
 
 const findTournamentParticipantCopy = props => {
   const { participant, error } = findTournamentParticipant(props);
@@ -32,6 +37,10 @@ const getTournamentParticipantsCopy = props => {
 };
 
 const participantGovernor = {
+  addPenalty,
+  removePenalty,
+  getTournamentPenalties,
+
   addParticipants,
   deleteParticipants,
   createGroupParticipant,

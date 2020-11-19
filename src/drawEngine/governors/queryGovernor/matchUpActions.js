@@ -8,6 +8,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 import { positionActions } from './positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { PENALTY } from '../../../constants/positionActionConstants';
 
 /*
   return an array of all possible validActions for a given matchUp
@@ -118,12 +119,12 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       validActions.push({ type: 'SCHEDULE' });
     }
     if (isInComplete && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: 'PENALTY' });
+      validActions.push({ type: PENALTY });
       validActions.push({ type: 'STATUS' });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
       validActions.push({ type: 'SCORE' });
-      validActions.push({ type: 'PENALTY' });
+      validActions.push({ type: PENALTY });
       validActions.push({ type: 'START' });
       validActions.push({ type: 'END' });
     }

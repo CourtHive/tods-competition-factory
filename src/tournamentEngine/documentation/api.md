@@ -44,11 +44,11 @@ route: /tournamentEngine/api
 
 ---
 
-## addParticipantPenalty
+## addParticipantsToGrouping
 
 ---
 
-## addParticipantsToGrouping
+## addPenalty
 
 ---
 
@@ -336,15 +336,15 @@ Returns tournament participants filtered by participantFilters which are arrays 
 
 ---
 
-## removeParticipantPenalty
-
----
-
 ## removeParticipantsFromGroup
 
 ---
 
 ## setDrawParticipantRepresentatives
+
+---
+
+## removePenalty
 
 ---
 

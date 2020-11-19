@@ -29,3 +29,5 @@ export const penaltyConstants = {
   PUNCTUALITY,
   FAILUIRE_TO_SIGN_IN,
 };
+
+export default penaltyConstants;

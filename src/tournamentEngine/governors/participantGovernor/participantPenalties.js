@@ -1,16 +1,26 @@
+import penaltyTemplate from '../../generators/penaltyTemplate';
+
 import {
+  PENALTY_NOT_FOUND,
+  MISSING_PENALTY_ID,
+  MISSING_PENALTY_TYPE,
   PARTICIPANT_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
-  MISSING_PENALTY_TYPE,
-  MISSING_PENALTY_ID,
-  PENALTY_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+  NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { UUID } from '../../../utilities';
 
-export function addParticipantPenalty({
+/**
+ *
+ * @param {string[]} participantIds - ids of participants receiving the panalty
+ * @param {string} penaltyType - enum
+ * @param {string} matchUpId - optional - matchUp in which penalty occurred
+ *
+ */
+export function addPenalty({
   tournamentRecord,
-  participantId,
+  participantIds,
   penaltyType,
   matchUpId,
   notes,
@@ -19,52 +29,93 @@ export function addParticipantPenalty({
 
   refereeParticipantId,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!participantIds) return { error: MISSING_PARTICIPANT_ID };
   if (!penaltyType) return { error: MISSING_PENALTY_TYPE };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const participants = tournamentRecord?.participants;
-  const participant = participants.find(
-    participant => participant.participantId === participantId
+  const participants = tournamentRecord?.participants || [];
+  const relevantParticipants = participants.filter(participant =>
+    participantIds.includes(participant.participantId)
   );
-  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+  if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
 
-  if (!participant.penalties) participant.penalties = [];
-
-  const penaltyItem = {
+  const penaltyItem = Object.assign(penaltyTemplate(), {
     refereeParticipantId,
-    penaltyId: UUID(),
     penaltyType,
     matchUpId,
     notes,
 
     createdAt,
-  };
+  });
 
-  participant.penalties.push(penaltyItem);
+  relevantParticipants.forEach(participant => {
+    if (!participant.penalties) participant.penalties = [];
+    participant.penalties.push(penaltyItem);
+  });
 
   return SUCCESS;
 }
 
-export function removeParticipantPenalty({
-  tournamentRecord,
-  participantId,
-  penaltyId,
-}) {
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+/**
+ *
+ * @param {string} penaltyId
+ *
+ */
+export function removePenalty({ tournamentRecord, penaltyId }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
-  const participants = tournamentRecord?.participants;
-  const participant = participants.find(
-    participant => participant.participantId === participantId
-  );
-  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+  const participants = tournamentRecord?.participants || [];
 
   let penaltyRemoved = false;
-  participant.penalties = (participant.penalties || []).filter(penalty => {
-    if (penalty.penaltyId === penaltyId && !penaltyRemoved)
-      penaltyRemoved = true;
-    return penalty.penaltyId !== penaltyId;
+  participants.forEach(participant => {
+    participant.penalties = (participant.penalties || []).filter(penalty => {
+      if (penalty.penaltyId === penaltyId && !penaltyRemoved)
+        penaltyRemoved = true;
+      return penalty.penaltyId !== penaltyId;
+    });
   });
 
   return penaltyRemoved ? SUCCESS : { error: PENALTY_NOT_FOUND };
+}
+
+export function getTournamentPenalties({ tournamentRecord }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const participants = tournamentRecord?.participants || [];
+  const penalties = participants.reduce((participant, penalties) => {
+    (participant.penalties || []).forEach(penalty => {
+      const { penaltyId } = penalty || {};
+      penalties[penaltyId] = penalty;
+    });
+    return penalties;
+  }, {});
+
+  return { penalties: Object.values(penalties) };
+}
+
+export function editPenalty({ tournamentRecord, penaltyId, modifications }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!penaltyId) return { error: MISSING_PENALTY_ID };
+
+  const participants = tournamentRecord?.participants || [];
+
+  const validAttributes = Object.keys(penaltyTemplate()).filter(
+    attribute => attribute !== 'penaltyId'
+  );
+
+  let penaltyEdited = false;
+  participants.forEach(participant => {
+    participant.penalties = (participant.penalties || [])
+      .filter(penalty => penalty.penaltyId === penaltyId)
+      .forEach(penalty => {
+        if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
+        if (!penaltyEdited) penaltyEdited = true;
+
+        validAttributes.forEach(attribute =>
+          Object.assign(penalty, { [attribute]: modifications[attribute] })
+        );
+      });
+  });
+
+  return penaltyEdited ? SUCCESS : { error: PENALTY_NOT_FOUND };
 }
