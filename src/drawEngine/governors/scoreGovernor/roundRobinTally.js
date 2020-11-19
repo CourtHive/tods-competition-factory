@@ -35,7 +35,10 @@ export function tallyParticipantResults({
   relevantMatchUps
     .filter(f => f)
     .forEach(matchUp => {
-      const scoreString = matchUp.score;
+      const scoreString =
+        typeof matchUp?.score === 'object'
+          ? matchUp.score.scoreStringSide1
+          : matchUp.score;
       const parsedMatchUpFormat =
         matchUpFormatCode.parse(matchUp.matchUpFormat || matchUpFormat) || {};
 
@@ -74,11 +77,15 @@ export function tallyParticipantResults({
           losingParticipantId
         );
 
+        const sets =
+          typeof matchUp?.score === 'object'
+            ? matchUp.score.sets
+            : matchUp.sets;
         const setsTally = countSets({
           winner: 0,
           parsedMatchUpFormat,
-          sets: matchUp.sets,
           scoreString,
+          sets,
         });
         participantResults[winningParticipantId].setsWon += setsTally[0];
         participantResults[winningParticipantId].setsLost += setsTally[1];
@@ -88,8 +95,8 @@ export function tallyParticipantResults({
         const gamesTally = countGames({
           winner: 0,
           parsedMatchUpFormat,
-          sets: matchUp.sets,
           scoreString,
+          sets,
         });
         participantResults[winningParticipantId].gamesWon += gamesTally[0];
         participantResults[winningParticipantId].gamesLost += gamesTally[1];
