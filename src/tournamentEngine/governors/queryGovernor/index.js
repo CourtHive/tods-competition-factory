@@ -8,7 +8,7 @@ import { matchUpActions } from '../../getters/matchUpActions';
 
 import { getParticipantScaleItem } from './scaleValue';
 import { getParticipantSignInStatus } from './signInStatus';
-import { getCourts } from '../../getters/courtGetter';
+import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
@@ -25,6 +25,7 @@ const queryGovernor = {
   getVenues,
   findVenue,
   getCourts,
+  findCourt: publicFindCourt,
 
   matchUpActions,
   findMatchUp: publicFindMatchUp,

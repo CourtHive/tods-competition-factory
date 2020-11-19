@@ -116,13 +116,19 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   const validAttributes = Object.keys(penaltyTemplate()).filter(
     attribute => attribute !== 'penaltyId'
   );
-  if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
+
+  const validModificationAttributes = Object.keys(
+    modifications
+  ).filter(attribute => validAttributes.includes(attribute));
+
+  if (!validModificationAttributes.length)
+    return { error: NO_VALID_ATTRIBUTES };
 
   let updatedPenalty;
   participants.forEach(participant => {
     participant.penalties = (participant.penalties || []).map(penalty => {
       if (penalty.penaltyId === penaltyId) {
-        validAttributes.forEach(attribute =>
+        validModificationAttributes.forEach(attribute =>
           Object.assign(penalty, { [attribute]: modifications[attribute] })
         );
 

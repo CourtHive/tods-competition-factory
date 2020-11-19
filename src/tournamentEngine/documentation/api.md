@@ -177,6 +177,10 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 
 ---
 
+## findCourt
+
+---
+
 ## findMatchUp
 
 ---

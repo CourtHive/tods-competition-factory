@@ -5,6 +5,7 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { makeDeepCopy } from '../../../utilities';
 import courtTemplate from '../../generators/courtTemplate';
 import { findCourt } from '../../getters/courtGetter';
 
@@ -21,11 +22,16 @@ export function modifyCourt({ tournamentRecord, courtId, modifications }) {
     attribute => attribute !== 'courtId'
   );
 
-  if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
+  const validModificationAttributes = Object.keys(
+    modifications
+  ).filter(attribute => validAttributes.includes(attribute));
 
-  validAttributes.forEach(attribute =>
+  if (!validModificationAttributes.length)
+    return { error: NO_VALID_ATTRIBUTES };
+
+  validModificationAttributes.forEach(attribute =>
     Object.assign(court, { [attribute]: modifications[attribute] })
   );
 
-  return SUCCESS;
+  return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }

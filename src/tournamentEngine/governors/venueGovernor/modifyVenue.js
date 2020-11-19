@@ -7,6 +7,7 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { makeDeepCopy } from '../../../utilities';
 
 export function modifyVenue({ tournamentRecord, venueId, modifications }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -16,14 +17,19 @@ export function modifyVenue({ tournamentRecord, venueId, modifications }) {
   if (error) return { error };
 
   const validAttributes = Object.keys(venueTemplate()).filter(
-    attribute => attribute !== 'courtId'
+    attribute => !['courtId', 'courts'].includes(attribute)
   );
 
-  if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
+  const validModificationAttributes = Object.keys(
+    modifications
+  ).filter(attribute => validAttributes.includes(attribute));
 
-  validAttributes.forEach(attribute =>
+  if (!validModificationAttributes.length)
+    return { error: NO_VALID_ATTRIBUTES };
+
+  validModificationAttributes.forEach(attribute =>
     Object.assign(venue, { [attribute]: modifications[attribute] })
   );
 
-  return SUCCESS;
+  return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
 }

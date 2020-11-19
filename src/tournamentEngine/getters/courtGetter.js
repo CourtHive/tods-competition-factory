@@ -23,6 +23,10 @@ export function findCourt({ tournamentRecord, courtId }) {
   return (court && { court, venue }) || { error: COURT_NOT_FOUND };
 }
 
+export function publicFindCourt(props) {
+  return makeDeepCopy(findCourt(props));
+}
+
 /**
  *
  * @param {string} venueId - optional -
