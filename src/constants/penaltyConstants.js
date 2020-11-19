@@ -1,16 +1,16 @@
-const COACHING = 'Coaching';
-const BALL_ABUSE = 'Ball Abuse';
-const RACKET_ABUSE = 'Racket Abuse';
-const VERBAL_ABUSE = 'Verbal Abuse';
-const PHYSICAL_ABUSE = 'Physical Abuse';
-const UNSPORTSMANLIKE_CONDUCT = 'Unsportmanlike Conduct';
-const DRESS_CODE_VIOLATION = 'Dress Code Violation';
-const EQUIMENT_VIOLATION = 'Equipment Violation';
-const LEAVING_THE_COURT = 'Leaving the court';
-const FAILURE_TO_COMPLETE = 'Failure to complete';
-const NO_SHOW = 'No Show';
-const PUNCTUALITY = 'Puncuality';
-const FAILUIRE_TO_SIGN_IN = 'Failure to sign in';
+export const COACHING = 'Coaching';
+export const BALL_ABUSE = 'Ball Abuse';
+export const RACKET_ABUSE = 'Racket Abuse';
+export const VERBAL_ABUSE = 'Verbal Abuse';
+export const PHYSICAL_ABUSE = 'Physical Abuse';
+export const UNSPORTSMANLIKE_CONDUCT = 'Unsportmanlike Conduct';
+export const DRESS_CODE_VIOLATION = 'Dress Code Violation';
+export const EQUIMENT_VIOLATION = 'Equipment Violation';
+export const LEAVING_THE_COURT = 'Leaving the court';
+export const FAILURE_TO_COMPLETE = 'Failure to complete';
+export const NO_SHOW = 'No Show';
+export const PUNCTUALITY = 'Puncuality';
+export const FAILUIRE_TO_SIGN_IN = 'Failure to sign in';
 
 export const penaltyConstants = {
   COACHING,

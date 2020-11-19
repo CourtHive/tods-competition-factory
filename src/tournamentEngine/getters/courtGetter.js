@@ -1,7 +1,15 @@
-import { COURT_NOT_FOUND } from '../../constants/errorConditionConstants';
+import {
+  COURT_NOT_FOUND,
+  MISSING_COURT_ID,
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
+} from '../../constants/errorConditionConstants';
 import { makeDeepCopy } from '../../utilities';
 
 export function findCourt({ tournamentRecord, courtId }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!courtId) return { error: MISSING_COURT_ID };
+
   let court, venue;
 
   (tournamentRecord.venues || []).forEach(venueRecord => {
@@ -17,6 +25,9 @@ export function findCourt({ tournamentRecord, courtId }) {
 }
 
 export function getCourts({ tournamentRecord, venueId, venueIds }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!venueId && !venueIds?.length) return { error: MISSING_VENUE_ID };
+
   const courts = (tournamentRecord.venues || [])
     .filter(venue => {
       if (venueId) return venue.venueId === venueId;

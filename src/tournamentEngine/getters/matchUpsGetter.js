@@ -1,6 +1,7 @@
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 export function allTournamentMatchUps({
   tournamentRecord,
@@ -8,6 +9,8 @@ export function allTournamentMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;

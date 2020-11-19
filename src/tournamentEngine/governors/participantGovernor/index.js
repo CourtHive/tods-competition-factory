@@ -20,6 +20,7 @@ import { setParticipantScaleItem } from './scaleItems';
 import { setParticipantScaleItems } from './scaleItems';
 import {
   addPenalty,
+  modifyPenalty,
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
@@ -38,6 +39,7 @@ const getTournamentParticipantsCopy = props => {
 
 const participantGovernor = {
   addPenalty,
+  modifyPenalty,
   removePenalty,
   getTournamentPenalties,
 

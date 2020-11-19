@@ -288,6 +288,10 @@ Returns tournament participants filtered by participantFilters which are arrays 
 
 ---
 
+## getTournamentPenalties
+
+---
+
 ## getVenues
 
 ---
@@ -305,6 +309,10 @@ Returns tournament participants filtered by participantFilters which are arrays 
 ---
 
 ## modifyCourtAvailability
+
+---
+
+## modifyPenalty
 
 ---
 

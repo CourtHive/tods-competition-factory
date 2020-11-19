@@ -1,19 +1,26 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getMatchUpLinks, getTargetLink } from '../../getters/linkGetter';
+import { positionActions } from './positionActions';
+import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
-import { positionActions } from './positionActions';
-import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { PENALTY } from '../../../constants/positionActionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_MATCHUP_ID,
+} from '../../../constants/errorConditionConstants';
 
 /*
   return an array of all possible validActions for a given matchUp
 */
 export function matchUpActions({ drawDefinition, matchUpId }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
     matchUpId,

@@ -48,12 +48,14 @@ export function addPenalty({
     createdAt,
   });
 
+  const { penaltyId } = penaltyItem;
+
   relevantParticipants.forEach(participant => {
     if (!participant.penalties) participant.penalties = [];
     participant.penalties.push(penaltyItem);
   });
 
-  return SUCCESS;
+  return Object.assign({}, SUCCESS, { penaltyId });
 }
 
 /**
@@ -68,32 +70,44 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
   const participants = tournamentRecord?.participants || [];
 
   let penaltyRemoved = false;
+  let removedPenalty;
   participants.forEach(participant => {
     participant.penalties = (participant.penalties || []).filter(penalty => {
-      if (penalty.penaltyId === penaltyId && !penaltyRemoved)
+      if (penalty.penaltyId === penaltyId && !penaltyRemoved) {
+        removedPenalty = penalty;
         penaltyRemoved = true;
+      }
       return penalty.penaltyId !== penaltyId;
     });
   });
 
-  return penaltyRemoved ? SUCCESS : { error: PENALTY_NOT_FOUND };
+  return removedPenalty
+    ? Object.assign({}, SUCCESS, { penalty: removedPenalty })
+    : { error: PENALTY_NOT_FOUND };
 }
 
 export function getTournamentPenalties({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const participants = tournamentRecord?.participants || [];
-  const penalties = participants.reduce((participant, penalties) => {
+  const allPenalties = participants.reduce((penalties, participant) => {
+    const { participantId } = participant;
     (participant.penalties || []).forEach(penalty => {
       const { penaltyId } = penalty || {};
-      penalties[penaltyId] = penalty;
+      if (penalties[penaltyId]) {
+        penalties[penaltyId].participants.push(participantId);
+      } else {
+        penalties[penaltyId] = Object.assign({}, penalty, {
+          participantIds: [participantId],
+        });
+      }
     });
     return penalties;
   }, {});
 
-  return { penalties: Object.values(penalties) };
+  return { penalties: Object.values(allPenalties) };
 }
 
-export function editPenalty({ tournamentRecord, penaltyId, modifications }) {
+export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
@@ -102,20 +116,24 @@ export function editPenalty({ tournamentRecord, penaltyId, modifications }) {
   const validAttributes = Object.keys(penaltyTemplate()).filter(
     attribute => attribute !== 'penaltyId'
   );
+  if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
-  let penaltyEdited = false;
+  let updatedPenalty;
   participants.forEach(participant => {
-    participant.penalties = (participant.penalties || [])
-      .filter(penalty => penalty.penaltyId === penaltyId)
-      .forEach(penalty => {
-        if (!validAttributes.length) return { error: NO_VALID_ATTRIBUTES };
-        if (!penaltyEdited) penaltyEdited = true;
-
+    participant.penalties = (participant.penalties || []).map(penalty => {
+      if (penalty.penaltyId === penaltyId) {
         validAttributes.forEach(attribute =>
           Object.assign(penalty, { [attribute]: modifications[attribute] })
         );
-      });
+
+        if (!updatedPenalty) updatedPenalty = penalty;
+      }
+
+      return penalty;
+    });
   });
 
-  return penaltyEdited ? SUCCESS : { error: PENALTY_NOT_FOUND };
+  return updatedPenalty
+    ? Object.assign({}, SUCCESS, { penalty: updatedPenalty })
+    : { error: PENALTY_NOT_FOUND };
 }
