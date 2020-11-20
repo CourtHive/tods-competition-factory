@@ -1,6 +1,9 @@
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  UNPAIRED,
+} from '../../../constants/entryStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
 import {
@@ -36,6 +39,13 @@ export function addEventEntries(props) {
         return true;
       }
       if (event.eventType === DOUBLES && participant.participantType === PAIR) {
+        return true;
+      }
+      if (
+        event.eventType === DOUBLES &&
+        participant.participantType === INDIVIDUAL &&
+        entryStatus === UNPAIRED
+      ) {
         return true;
       }
       if (event.eventType === TEAM && participant.participantType === TEAM) {

@@ -20,16 +20,23 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
   const participantType =
     eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : TEAM;
 
-  const enteredParticipantIds = event.entries?.map(
-    entry => entry.participantId
+  const entryStatusMap = Object.assign(
+    {},
+    ...event.entries.map(entry => ({
+      [entry.participantId]: entry.entryStatus,
+    }))
   );
+
+  const enteredParticipantIds = Object.keys(entryStatusMap);
   const enteredParticipants = participants.filter(participant =>
     enteredParticipantIds.includes(participant.participantId)
   );
 
   const invalidEntries = enteredParticipants.filter(participant => {
     const unpairedDoublesParticipant =
-      eventType === DOUBLES && participant.participantType === UNPAIRED;
+      eventType === DOUBLES &&
+      participant.participantType === INDIVIDUAL &&
+      entryStatusMap[participant.participantId] === UNPAIRED;
     const mismatch =
       participant.participantType !== participantType &&
       !unpairedDoublesParticipant;
