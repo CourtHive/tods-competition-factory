@@ -69,7 +69,9 @@ export function addMatchUpScheduledTime({
   // TODO: scheduleTime must be on same day as scheduledDayDate (if it exists)
   // TODO: check that scheduledTime is a date object with time
 
-  const itemValue = new Date(scheduledTime).toISOString();
+  // if only ##:## then add matchUp.scheduledDayDate
+  // const itemValue = new Date(scheduledTime).toISOString();
+  const itemValue = scheduledTime;
   const timeItem = {
     itemSubject: SCHEDULED_TIME,
     itemValue,
