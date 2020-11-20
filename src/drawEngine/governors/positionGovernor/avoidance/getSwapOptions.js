@@ -60,6 +60,8 @@ export function getSwapOptions({
               possibleDrawPositions: possibleDrawPositionsNoConflict,
             };
           }
+
+          return undefined;
         })
         .filter(f => f);
 

@@ -67,11 +67,9 @@ export function addMatchUpScheduledTime({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   // TODO: scheduleTime must be on same day as scheduledDayDate (if it exists)
+  // TODO: check that scheduledTime is a date object with time
 
-  // TODO: check that 1) scheduledDayDate is valid date and 2) is in range for tournament
-  // this must be done in tournamentEngine wrapper
-
-  const itemValue = scheduledTime;
+  const itemValue = new Date(scheduledTime).toISOString();
   const timeItem = {
     itemSubject: SCHEDULED_TIME,
     itemValue,

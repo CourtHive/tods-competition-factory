@@ -1,20 +1,12 @@
-import { getDrawDefinition } from '../../getters/eventGetter';
-
 export function removeMatchUpCourtAssignment({
-  tournamentRecord,
   drawEngine,
+  drawId,
+  event,
   matchUp,
   courtId,
   courtDayDate,
 }) {
-  const { drawId } = matchUp;
-  const { drawDefinition, event } = getDrawDefinition({
-    tournamentRecord,
-    drawId,
-  });
-
   const result = drawEngine.removeMatchUpCourtAssignment({
-    drawDefinition,
     matchUp,
     courtId,
     courtDayDate,

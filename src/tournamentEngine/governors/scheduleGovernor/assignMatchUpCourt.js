@@ -1,22 +1,14 @@
-import { getDrawDefinition } from '../../getters/eventGetter';
-
 export function assignMatchUpCourt({
-  tournamentRecord,
   drawEngine,
   matchUpId,
+  event,
   drawId,
   courtId,
   courtDayDate,
 }) {
-  const { drawDefinition, event } = getDrawDefinition({
-    tournamentRecord,
-    drawId,
-  });
-
   // TODO: check that 1) check that courtId is valid 2) that courtDayDate is valid
 
   const result = drawEngine.assignMatchUpCourt({
-    drawDefinition,
     matchUpId,
     courtId,
     courtDayDate,
