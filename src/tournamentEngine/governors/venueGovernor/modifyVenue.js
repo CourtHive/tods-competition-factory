@@ -1,5 +1,6 @@
-import { findVenue } from '../../getters/venueGetter';
 import venueTemplate from '../../generators/venueTemplate';
+import { findVenue } from '../../getters/venueGetter';
+import { makeDeepCopy } from '../../../utilities';
 
 import {
   MISSING_TOURNAMENT_RECORD,
@@ -7,7 +8,6 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { makeDeepCopy } from '../../../utilities';
 
 export function modifyVenue({ tournamentRecord, venueId, modifications }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
