@@ -1,4 +1,4 @@
-enum EntryStatusEnum {
+export enum EntryStatusEnum {
   ALTERNATE = 'ALTERNATE',
   FEED_IN = 'FEED_IN',
   QUALIFIER = 'QUALIFIER',

@@ -1,6 +1,6 @@
 export const SIGN_IN_STATUS = 'SIGN_IN_STATUS';
 
-enum ParticipantTypeEnum {
+export enum ParticipantTypeEnum {
   INDIVIDUAL = 'INDIVIDUAL',
   PAIR = 'PAIR',
   TEAM = 'TEAM',
@@ -9,7 +9,7 @@ export const INDIVIDUAL = ParticipantTypeEnum.INDIVIDUAL;
 export const PAIR = ParticipantTypeEnum.PAIR;
 export const TEAM = ParticipantTypeEnum.TEAM;
 
-enum SignedInStatusEnum {
+export enum SignedInStatusEnum {
   SIGNED_IN = 'SIGNED_IN',
   SIGNED_OUT = 'SIGNED_OUT',
 }
