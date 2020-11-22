@@ -18,11 +18,13 @@ import {
 
 import { findStructure } from '../../getters/findStructure';
 import {
+  getRoundPresentationProfile,
   getAllStructureMatchUps,
   getStructureMatchUps,
+  getAllDrawMatchUps,
+  getDrawMatchUps,
 } from '../../getters/getMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
-import { getAllDrawMatchUps, getDrawMatchUps } from '../../getters/getMatchUps';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
 /*
@@ -63,6 +65,7 @@ const queryGovernor = {
   getMatchUpContextIds,
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
+  getRoundPresentationProfile,
 
   calcTieMatchUpScore,
   matchUpDuration,

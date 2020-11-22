@@ -1,7 +1,7 @@
 import { drawEngine } from '../../../drawEngine';
 import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
-import { getRoundPresentationProfile } from '../../getters/getMatchUps/getRoundPresentationProfile';
+// import { getRoundPresentationProfile } from '../../getters/getMatchUps/getRoundPresentationProfile';
 import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 
@@ -87,7 +87,7 @@ function getPresentationProfile({ structureId }) {
     inContext: true,
     structure,
   });
-  return getRoundPresentationProfile({ matchUps });
+  return drawEngine.getRoundPresentationProfile({ matchUps });
 }
 
 function checkSide({
