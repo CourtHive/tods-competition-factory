@@ -17,6 +17,7 @@ import {
   addMatchUpStopTime,
   addMatchUpResumeTime,
   assignMatchUpCourt,
+  assignMatchUpVenue,
   addMatchUpOfficial,
 } from './scheduleItems';
 
@@ -39,6 +40,7 @@ const matchUpGovernor = {
 
   addMatchUpOfficial,
   assignMatchUpCourt,
+  assignMatchUpVenue,
 
   findMatchUp: publicFindMatchUp,
   getRoundMatchUps: publicGetRoundMatchUps,

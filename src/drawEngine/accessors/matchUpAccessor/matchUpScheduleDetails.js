@@ -3,6 +3,7 @@ import { matchUpStartTime } from './startTime';
 import { matchUpDuration } from './matchUpDuration';
 import { scheduledMatchUpTime } from './scheduledTime';
 import { matchUpAssignedCourtId } from './courtAssignment';
+import { matchUpAssignedVenueId } from './venueAssignment';
 
 export function getMatchUpScheduleDetails({ matchUp }) {
   const { milliseconds, time } = matchUpDuration({ matchUp });
@@ -10,10 +11,12 @@ export function getMatchUpScheduleDetails({ matchUp }) {
   const { startTime } = matchUpStartTime({ matchUp });
   const { endTime } = matchUpEndTime({ matchUp });
   const { courtId } = matchUpAssignedCourtId({ matchUp });
+  const { venueId } = matchUpAssignedVenueId({ matchUp });
 
   const schedule = {
     time,
     courtId,
+    venueId,
     startTime,
     endTime,
     milliseconds,

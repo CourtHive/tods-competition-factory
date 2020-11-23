@@ -2,6 +2,7 @@ export const CHECK_IN = 'CHECK_IN';
 export const CHECK_OUT = 'CHECK_OUT';
 
 export const COURT = 'COURT';
+export const VENUE = 'VENUE';
 export const SCHEDULED_DATE = 'SCHEDULED_DATE';
 export const SCHEDULED_TIME = 'SCHEDULED_TIME';
 
@@ -17,18 +18,19 @@ export const MEDICAL = 'MEDICAL';
 export const PENALTY = 'PENALTY';
 
 export const timeItemConstants = {
+  ASSIGNMENT,
   CHECK_IN,
   CHECK_OUT,
   COURT,
+  END_TIME,
+  MEDICAL,
+  OFFICIAL,
+  PENALTY,
+  RESUME_TIME,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
   START_TIME,
   STOP_TIME,
-  RESUME_TIME,
-  END_TIME,
-  ASSIGNMENT,
-  OFFICIAL,
   SUSPENSION,
-  MEDICAL,
-  PENALTY,
+  VENUE,
 };

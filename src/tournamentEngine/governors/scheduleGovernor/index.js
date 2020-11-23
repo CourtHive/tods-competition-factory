@@ -1,4 +1,5 @@
 import { assignMatchUpCourt } from './assignMatchUpCourt';
+import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import {
   addMatchUpScheduledDayDate,
@@ -12,6 +13,7 @@ import {
 
 const scheduleGovernor = {
   assignMatchUpCourt,
+  assignMatchUpVenue,
   addMatchUpScheduledDayDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
