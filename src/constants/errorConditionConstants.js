@@ -98,6 +98,7 @@ export const MISSING_PARTICIPANTS = 'Missing participants';
 export const MISSING_PARTICIPANT_ID = 'Missing participantId';
 export const PARTICIPANT_NOT_FOUND = 'Participant Not Found';
 export const PARTICIPANT_ID_EXISTS = 'participantId exists';
+export const PARTICIPANT_PAIR_EXISTS = 'participant pair exists';
 export const NO_PARTICIPANT_REMOVED = 'No participant removed';
 export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
@@ -159,6 +160,7 @@ export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
+  PARTICIPANT_PAIR_EXISTS,
   INVALID_EVENT_TYPE,
   MISSING_PARTICIPANT_ROLE,
   PARTICIPANT_ID_EXISTS,

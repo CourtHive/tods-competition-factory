@@ -16,8 +16,10 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_ID_EXISTS,
   MISSING_PARTICIPANT,
+  PARTICIPANT_PAIR_EXISTS,
 } from '../../../constants/errorConditionConstants';
 import { makeDeepCopy, UUID } from '../../../utilities';
+import { intersection } from '../../../utilities/arrays';
 
 export function addParticipant({ tournamentRecord, participant }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -26,8 +28,9 @@ export function addParticipant({ tournamentRecord, participant }) {
   const { participantId } = participant;
 
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
+
   const idExists = tournamentRecord.participants.reduce(
-    (p, c) => c.participant === participantId || p,
+    (p, c) => c.participantId === participantId || p,
     false
   );
   if (idExists) return { error: PARTICIPANT_ID_EXISTS };
@@ -56,6 +59,23 @@ export function addParticipant({ tournamentRecord, participant }) {
       );
       if (!validPairParticipants) return { error: INVALID_PARTICIPANT_IDS };
     }
+
+    const existingParticipantIdPairs = tournamentParticipants
+      .filter(participant => participant.participantType === PAIR)
+      .map(participant => participant.individualParticipantIds);
+
+    // determine whether a PAIR participant already exists
+    const existingPairParticipant =
+      participant.participantType === PAIR &&
+      existingParticipantIdPairs.find(
+        pairedParticipantIds =>
+          intersection(
+            pairedParticipantIds,
+            participant.individualParticipantIds
+          ).length === 2
+      );
+
+    if (existingPairParticipant) return { error: PARTICIPANT_PAIR_EXISTS };
 
     if (!participant.name) {
       const individualParticipants = tournamentParticipants.filter(
@@ -97,9 +117,10 @@ export function addParticipants({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
+  const tournamentParticipants = tournamentRecord.participants;
 
   const existingParticipantIds =
-    tournamentRecord.participants.map(p => p.participantId) || [];
+    tournamentParticipants.map(p => p.participantId) || [];
 
   participants.forEach(participant => {
     if (!participant.participantId) participant.participantId = UUID();
@@ -112,6 +133,8 @@ export function addParticipants({
   const individualParticipants = newParticipants.filter(
     participant => participant.participantType === INDIVIDUAL
   );
+
+  // exclude PAIR participants
   const groupedParticipants = newParticipants.filter(
     participant => participant.participantType !== INDIVIDUAL
   );

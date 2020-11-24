@@ -6,6 +6,10 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { UNPAIRED } from '../../constants/entryStatusConstants';
+import {
+  PARTICIPANT_ID_EXISTS,
+  PARTICIPANT_PAIR_EXISTS,
+} from '../../constants/errorConditionConstants';
 
 let result;
 
@@ -152,7 +156,7 @@ it('can add doubles events to a tournament record', () => {
   expect(eventDetails[0].eventName).toEqual(eventName);
 });
 
-it.only('can destroy pair entries in doubles events', () => {
+it('can destroy pair entries in doubles events', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -209,11 +213,10 @@ it.only('can destroy pair entries in doubles events', () => {
   };
 
   result = tournamentEngine.addParticipant({ participant });
-  expect(result.success).toEqual(true);
+  expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
 
-  const { participantId } = participant;
   result = tournamentEngine.addEventEntries({
-    participantIds: [participantId],
+    participantIds: [pairParticipantId],
     eventId,
   });
   expect(result.success).toEqual(true);
