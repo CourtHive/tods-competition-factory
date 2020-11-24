@@ -94,17 +94,11 @@ export function addEventEntries(props) {
     const unpairedParticipantIdsToRemove = unpairedIndividualParticipantIds.filter(
       participantId => pairedIndividualParticipantIds.includes(participantId)
     );
-    console.log({
-      unpairedIndividualParticipantIds,
-      pairedIndividualParticipantIds,
-      unpairedParticipantIdsToRemove,
-    });
     if (unpairedParticipantIdsToRemove.length) {
-      const result = removeEventEntries({
+      removeEventEntries({
         participantIds: unpairedParticipantIdsToRemove,
         event,
       });
-      console.log('remove unpaired', { result });
     }
   }
 

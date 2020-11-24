@@ -34,7 +34,7 @@ export function addParticipant({ tournamentRecord, participant }) {
 
   const { participantType, participantRole } = participant;
   if (![PAIR, TEAM, INDIVIDUAL].includes(participantType))
-    return { error: INVALID_PARTICIPANT_TYPE };
+    return { error: INVALID_PARTICIPANT_TYPE, participantType };
 
   if (!participantRole) return { error: MISSING_PARTICIPANT_ROLE };
 
@@ -97,24 +97,38 @@ export function addParticipants({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
+
   const existingParticipantIds =
-    tournamentRecord.participants?.map(p => p.participantId) || [];
+    tournamentRecord.participants.map(p => p.participantId) || [];
 
   participants.forEach(participant => {
     if (!participant.participantId) participant.participantId = UUID();
   });
+
   const newParticipants = participants.filter(
     participant => !existingParticipantIds.includes(participant.participantId)
   );
 
-  if (newParticipants.length) {
-    tournamentRecord.participants = tournamentRecord.participants.concat(
-      ...newParticipants
-    );
+  const individualParticipants = newParticipants.filter(
+    participant => participant.participantType === INDIVIDUAL
+  );
+  const groupedParticipants = newParticipants.filter(
+    participant => participant.participantType !== INDIVIDUAL
+  );
+
+  // add individual participants first so that grouped participants which include them are valid
+  const participantsToAdd = individualParticipants.concat(
+    ...groupedParticipants
+  );
+
+  if (participantsToAdd.length) {
+    participantsToAdd.forEach(participant => {
+      addParticipant({ tournamentRecord, participant });
+    });
     if (source !== undefined) participantSource({ tournamentRecord, source });
     if (teamId || groupId) {
       const groupingType = teamId ? TEAM : GROUP;
-      const participantIds = newParticipants.map(np => np.participantId);
+      const participantIds = participantsToAdd.map(np => np.participantId);
       addParticipantsToGrouping({
         groupingType,
         participantIds,
