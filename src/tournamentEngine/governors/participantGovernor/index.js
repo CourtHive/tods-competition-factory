@@ -7,6 +7,7 @@ import { createGroupParticipant } from './createGroupParticipant';
 import {
   findTournamentParticipant,
   getTournamentParticipants,
+  getParticipantEventDetails,
 } from '../../getters/participantGetter';
 import { generateMockParticipants } from '../../generators/mockParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
@@ -61,6 +62,7 @@ const participantGovernor = {
   setParticipantScaleItems,
   participantsSignInStatus,
 
+  getParticipantEventDetails,
   findParticipant: findTournamentParticipantCopy,
   getTournamentParticipants: getTournamentParticipantsCopy,
 };

@@ -242,6 +242,15 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
+## getParticipantEventDetails
+
+Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
+
+- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
+- @param {string} participantId - id of participant for which events (eventName, eventId) are desired
+
+---
+
 ## getParticipantScaleItem
 
 ---

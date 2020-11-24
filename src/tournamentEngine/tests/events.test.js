@@ -17,8 +17,9 @@ it('can add events to a tournament records', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  const eventName = 'Test Event';
   const event = {
-    eventName: 'Test Event',
+    eventName,
     eventType: SINGLES,
   };
 
@@ -69,8 +70,9 @@ it('can add doubles events to a tournament records', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
+  const eventName = 'Test Event';
   const event = {
-    eventName: 'Test Event',
+    eventName,
     eventType: DOUBLES,
   };
 
@@ -134,4 +136,17 @@ it('can add doubles events to a tournament records', () => {
     participantFilters: { participantRoles: [COMPETITOR] },
   }));
   expect(tournamentParticipants.length).toEqual(96);
+
+  const individualParticipants = tournamentParticipants.filter(
+    participant => participant.participantType === INDIVIDUAL
+  );
+  const individualParticipant = individualParticipants[0];
+  const { participantId } = individualParticipant;
+
+  const { eventDetails } = tournamentEngine.getParticipantEventDetails({
+    participantId,
+  });
+
+  expect(eventDetails.length).toEqual(1);
+  expect(eventDetails[0].eventName).toEqual(eventName);
 });
