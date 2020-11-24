@@ -12,6 +12,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../constants/errorConditionConstants';
+import { removeEventEntries } from './removeEventEntries';
 
 export function addEventEntries(props) {
   const {
@@ -62,6 +63,7 @@ export function addEventEntries(props) {
   const existingIds = event.entries.map(
     e => e.participantId || (e.participant && e.participant.participantId)
   );
+
   validParticipantIds.forEach(participantId => {
     if (!existingIds.includes(participantId)) {
       event.entries.push({
@@ -71,6 +73,40 @@ export function addEventEntries(props) {
       });
     }
   });
+
+  // now remove any unpaired participantIds which exist as part of added paired participants
+  if (event.eventType === DOUBLES) {
+    const enteredParticipantIds = event.entries.map(
+      entry => entry.participantId
+    );
+    const unpairedIndividualParticipantIds = event.entries
+      .filter(entry => entry.entryStatus === UNPAIRED)
+      .map(entry => entry.participantId);
+    const tournamentParticipants = tournamentRecord.participants || [];
+    const pairedIndividualParticipantIds = tournamentParticipants
+      .filter(
+        participant =>
+          enteredParticipantIds.includes(participant.participantId) &&
+          participant.participantType === PAIR
+      )
+      .map(participant => participant.individualParticipantIds)
+      .flat(Infinity);
+    const unpairedParticipantIdsToRemove = unpairedIndividualParticipantIds.filter(
+      participantId => pairedIndividualParticipantIds.includes(participantId)
+    );
+    console.log({
+      unpairedIndividualParticipantIds,
+      pairedIndividualParticipantIds,
+      unpairedParticipantIdsToRemove,
+    });
+    if (unpairedParticipantIdsToRemove.length) {
+      const result = removeEventEntries({
+        participantIds: unpairedParticipantIdsToRemove,
+        event,
+      });
+      console.log('remove unpaired', { result });
+    }
+  }
 
   const invalidParticipantIds = !!(
     validParticipantIds.length !== participantIds.length

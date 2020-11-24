@@ -15,12 +15,18 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
+import { makeDeepCopy } from '../../../utilities';
+
+function getEvent({ event }) {
+  return { event: makeDeepCopy(event) };
+}
 
 const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
   eventMatchUps,
+  getEvent,
 
   getVenues,
   findVenue,
