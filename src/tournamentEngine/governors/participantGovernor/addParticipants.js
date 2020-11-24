@@ -145,8 +145,13 @@ export function addParticipants({
   );
 
   if (participantsToAdd.length) {
+    const addedParticipants = [];
     participantsToAdd.forEach(participant => {
-      addParticipant({ tournamentRecord, participant });
+      const { participant: addedParticipant } = addParticipant({
+        tournamentRecord,
+        participant,
+      });
+      addedParticipants.push(addedParticipant);
     });
     if (source !== undefined) participantSource({ tournamentRecord, source });
     if (teamId || groupId) {
@@ -160,7 +165,9 @@ export function addParticipants({
         removeFromOtherTeams: true,
       });
     }
-    return SUCCESS;
+    return Object.assign({}, SUCCESS, {
+      participants: makeDeepCopy(addedParticipants),
+    });
   } else {
     return { error: 'No new participants to add' };
   }
