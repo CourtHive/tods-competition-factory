@@ -212,6 +212,11 @@ it('can destroy pair entries in doubles events', () => {
   result = tournamentEngine.addParticipant({ participant });
   expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
 
+  result = tournamentEngine.getPairedParticipant({
+    participantIds: individualParticipantIds,
+  });
+  expect(result.participant.participantId).toEqual(pairParticipantId);
+
   result = tournamentEngine.addEventEntries({
     participantIds: [pairParticipantId],
     eventId,

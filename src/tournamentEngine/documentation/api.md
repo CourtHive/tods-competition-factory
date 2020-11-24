@@ -248,7 +248,19 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
+## getEvent
+
+- @param {string} eventId - id of the event to retreive
+
+---
+
 ## getMatchUpScheduleDetails
+
+---
+
+## getPairedParticipant
+
+- @param {string[]} participantIds - ids of the participants
 
 ---
 

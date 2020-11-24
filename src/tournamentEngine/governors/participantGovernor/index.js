@@ -1,9 +1,10 @@
 import { rankByRatings } from './rankByRatings';
 import { makeDeepCopy } from '../../../utilities';
-import { addParticipant, addParticipants } from './addParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
+import { getPairedParticipant } from './getPairedParticipant';
 import { createGroupParticipant } from './createGroupParticipant';
+import { addParticipant, addParticipants } from './addParticipants';
 import {
   findTournamentParticipant,
   getTournamentParticipants,
@@ -59,6 +60,7 @@ const participantGovernor = {
   rankByRatings,
 
   mergeParticipants,
+  getPairedParticipant,
   setParticipantScaleItem,
   setParticipantScaleItems,
   participantsSignInStatus,
