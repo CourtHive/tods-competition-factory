@@ -5,7 +5,6 @@ import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { findEvent } from '../getters/eventGetter';
 import { UNPAIRED } from '../../constants/entryStatusConstants';
 
 let result;
