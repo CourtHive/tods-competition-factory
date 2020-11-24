@@ -5,10 +5,12 @@ import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
+import { UNPAIRED } from '../../constants/entryStatusConstants';
+import { PARTICIPANT_PAIR_EXISTS } from '../../constants/errorConditionConstants';
 
 let result;
 
-it('can add events to a tournament records', () => {
+it('can add events to a tournament record', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -60,7 +62,7 @@ it('can add events to a tournament records', () => {
   ).toEqual(defaultMatchUpFormat);
 });
 
-it('can add doubles events to a tournament records', () => {
+it('can add doubles events to a tournament record', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -149,4 +151,78 @@ it('can add doubles events to a tournament records', () => {
 
   expect(eventDetails.length).toEqual(1);
   expect(eventDetails[0].eventName).toEqual(eventName);
+});
+
+it('can destroy pair entries in doubles events', () => {
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: PAIR,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const eventName = 'Test Event';
+  const event = {
+    eventName,
+    eventType: DOUBLES,
+  };
+
+  result = tournamentEngine.addEvent({ event });
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
+  expect(success).toEqual(true);
+
+  const pairParticipantIds = participants
+    .filter(participant => participant.participantType === PAIR)
+    .map(p => p.participantId);
+  result = tournamentEngine.addEventEntries({
+    eventId,
+    participantIds: pairParticipantIds,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  let { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
+  expect(updatedEvent.entries.length).toEqual(32);
+
+  const pairParticipantId = updatedEvent.entries[0].participantId;
+  result = tournamentEngine.destroyPairEntry({
+    eventId,
+    participantId: pairParticipantId,
+  });
+
+  ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
+  expect(updatedEvent.entries.length).toEqual(33);
+
+  const unpairedEntries = updatedEvent.entries.filter(
+    entry => entry.entryStatus === UNPAIRED
+  );
+  expect(unpairedEntries.length).toEqual(2);
+  const individualParticipantIds = unpairedEntries.map(
+    entry => entry.participantId
+  );
+
+  const participant = {
+    participantType: PAIR,
+    participantRole: COMPETITOR,
+    individualParticipantIds,
+  };
+
+  result = tournamentEngine.addParticipant({ participant });
+  expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
+
+  result = tournamentEngine.getPairedParticipant({
+    participantIds: individualParticipantIds,
+  });
+  expect(result.participant.participantId).toEqual(pairParticipantId);
+
+  result = tournamentEngine.addEventEntries({
+    participantIds: [pairParticipantId],
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
+  expect(updatedEvent.entries.length).toEqual(32);
 });

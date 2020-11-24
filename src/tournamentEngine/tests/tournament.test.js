@@ -214,7 +214,16 @@ it('can add individual and pair participants', () => {
   let result = tournamentEngine.newTournamentRecord();
   expect(result?.success).toEqual(true);
 
-  const participant = {
+  const participant1 = {
+    participantType: INDIVIDUAL,
+    participantRole: COMPETITOR,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+    },
+  };
+
+  const participant2 = {
     participantType: INDIVIDUAL,
     participantRole: COMPETITOR,
     person: {
@@ -224,11 +233,11 @@ it('can add individual and pair participants', () => {
   };
 
   const individualParticipantIds = [];
-  result = tournamentEngine.addParticipant({ participant });
+  result = tournamentEngine.addParticipant({ participant: participant1 });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
-  result = tournamentEngine.addParticipant({ participant });
+  result = tournamentEngine.addParticipant({ participant: participant2 });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
