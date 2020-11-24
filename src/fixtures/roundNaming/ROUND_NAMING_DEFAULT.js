@@ -14,7 +14,7 @@ export const ROUND_NAMING_DEFAULT = {
       '2': 'SF',
       '4': 'QF',
     },
-    prefix: {
+    affixes: {
       roundNumber: 'R',
       preFeedRound: 'Q',
     },

@@ -20,12 +20,12 @@ import {
 } from '../../../utilities';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
+import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { getRoundContextProfile } from './getRoundContextProfile';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 
 /*
   return all matchUps within a structure and its child structures

@@ -40,6 +40,16 @@ route: /tournamentEngine/api
 
 ---
 
+## addParticipant
+
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants
+Generates particpant.participantId if none is provided
+Includes integrity checks for PAIR participants to insure participant.individualParticipantIds are valid
+
+- @param {object} participant - participant object
+
+---
+
 ## addParticipants
 
 ---

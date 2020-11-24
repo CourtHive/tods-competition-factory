@@ -22,7 +22,7 @@ export function getRoundContextProfile({
     defaultRoundNamingPolicy.roundNamingMap;
 
   const roundNamePrefix =
-    roundNamingPolicy?.prefix || defaultRoundNamingPolicy.prefix;
+    roundNamingPolicy?.affixes || defaultRoundNamingPolicy.affixes;
 
   const stageInitial = stage && stage !== MAIN && stage[0];
   const stageConstants = roundNamingPolicy?.stageConstants;
@@ -43,13 +43,12 @@ export function getRoundContextProfile({
       ...Object.keys(roundProfile).map(round => {
         const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
-        const sizeName = !preFeedRound && roundNamingMap[matchUpsCount];
-        const prefix = preFeedRound
-          ? roundNamePrefix.preFeedRound
-          : sizeName
-          ? ''
-          : roundNamePrefix.roundNumber;
-        const profileSize = `${prefix}${sizeName || participantsCount}`;
+        const sizeName =
+          roundNamingMap[matchUpsCount] ||
+          `${roundNamePrefix.roundNumber}${participantsCount}`;
+        if (!sizeName) console.log({ roundNamingMap, matchUpsCount });
+        const suffix = preFeedRound ? `-${roundNamePrefix.preFeedRound}` : '';
+        const profileSize = `${sizeName}${suffix}`;
         const roundName = [stageConstant, structureAbbreviation, profileSize]
           .filter(f => f)
           .join('-');

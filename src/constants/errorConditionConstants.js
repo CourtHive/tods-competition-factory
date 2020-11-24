@@ -90,15 +90,20 @@ export const INVALID_WINNING_SIDE = 'Invalid winningSide';
 export const INVALID_PARTICIPANT = 'Invalid participant';
 export const INVALID_PARTICIPANT_ID = 'Invalid participantId';
 export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
+export const INVALID_PARTICIPANT_TYPE = 'Invalid participantType';
+export const MISSING_PARTICIPANT_ROLE = 'Missing participantRole';
 export const MISSING_PARTICIPANT = 'Missing participant';
 export const MISSING_PARTICIPANTS = 'Missing participants';
 export const MISSING_PARTICIPANT_ID = 'Missing participantId';
 export const PARTICIPANT_NOT_FOUND = 'Participant Not Found';
+export const PARTICIPANT_ID_EXISTS = 'participantId exists';
 export const NO_PARTICIPANT_REMOVED = 'No participant removed';
 export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
 export const PARTICIPANT_NOT_CHECKED_IN = 'Participant not checked in';
 export const PARTICIPANT_ALREADY_CHECKED_IN = 'Participant already checked in';
+
+export const MISSING_PERSON_DETAILS = 'Missing person details';
 
 export const EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT =
   'Existing participant drawPosition assignment';
@@ -153,6 +158,10 @@ export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
+  MISSING_PARTICIPANT_ROLE,
+  PARTICIPANT_ID_EXISTS,
+  INVALID_PARTICIPANT_TYPE,
+  MISSING_PERSON_DETAILS,
   NO_VALID_ATTRIBUTES,
   DRAW_ID_EXISTS,
   NOT_IMPLEMENTED,

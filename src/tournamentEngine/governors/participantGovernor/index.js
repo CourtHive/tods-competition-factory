@@ -1,6 +1,6 @@
 import { rankByRatings } from './rankByRatings';
 import { makeDeepCopy } from '../../../utilities';
-import { addParticipants } from './addParticipants';
+import { addParticipant, addParticipants } from './addParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { createGroupParticipant } from './createGroupParticipant';
@@ -44,6 +44,7 @@ const participantGovernor = {
   removePenalty,
   getTournamentPenalties,
 
+  addParticipant,
   addParticipants,
   deleteParticipants,
   createGroupParticipant,

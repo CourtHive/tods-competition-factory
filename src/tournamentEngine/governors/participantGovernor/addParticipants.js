@@ -1,19 +1,91 @@
 import { addParticipantsToGrouping } from './participantGroupings';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { GROUP, TEAM } from '../../../constants/participantTypes';
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import {
+  GROUP,
+  INDIVIDUAL,
+  PAIR,
+  TEAM,
+} from '../../../constants/participantTypes';
+import {
+  INVALID_PARTICIPANT_IDS,
+  INVALID_PARTICIPANT_TYPE,
+  MISSING_PARTICIPANT_ROLE,
+  MISSING_PARTICIPANT_IDS,
+  MISSING_PERSON_DETAILS,
+  MISSING_TOURNAMENT_RECORD,
+  PARTICIPANT_ID_EXISTS,
+  MISSING_PARTICIPANT,
+} from '../../../constants/errorConditionConstants';
+import { makeDeepCopy, UUID } from '../../../utilities';
 
 export function addParticipant({ tournamentRecord, participant }) {
-  const { participantId } = participant || {};
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!participant) return { error: MISSING_PARTICIPANT };
+  if (!participant.participantId) participant.participantId = UUID();
+  const { participantId } = participant;
+
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const idExists = tournamentRecord.participants.reduce(
     (p, c) => c.participant === participantId || p,
     false
   );
-  if (!participantId || idExists) return;
+  if (idExists) return { error: PARTICIPANT_ID_EXISTS };
+
+  const { participantType, participantRole } = participant;
+  if (![PAIR, TEAM, INDIVIDUAL].includes(participantType))
+    return { error: INVALID_PARTICIPANT_TYPE };
+
+  if (!participantRole) return { error: MISSING_PARTICIPANT_ROLE };
+
+  if (participantType === PAIR) {
+    const tournamentParticipants = tournamentRecord.participants || [];
+
+    if (!participant.individualParticipantIds) {
+      return { error: MISSING_PARTICIPANT_IDS };
+    } else if (participant.individualParticipantIds.length > 2) {
+      return { error: INVALID_PARTICIPANT_IDS };
+    } else {
+      const individualParticipantIds = tournamentParticipants
+        .filter(participant => participant.participantType === INDIVIDUAL)
+        .map(participant => participant.participantId);
+      const validPairParticipants = participant.individualParticipantIds.reduce(
+        (valid, participantId) =>
+          individualParticipantIds.includes(participantId) && valid,
+        true
+      );
+      if (!validPairParticipants) return { error: INVALID_PARTICIPANT_IDS };
+    }
+
+    if (!participant.name) {
+      const individualParticipants = tournamentParticipants.filter(
+        tournamentParticipant =>
+          participant.individualParticipantIds.includes(
+            tournamentParticipant.participantId
+          )
+      );
+      participant.name = individualParticipants
+        .map(participant => participant.person?.standardFamilyName)
+        .filter(f => f)
+        .join('/');
+    }
+  } else if (participantType === INDIVIDUAL) {
+    if (
+      !participant.person ||
+      !participant.person.standardFamilyName ||
+      !participant.person.standardGivenName
+    )
+      return { error: MISSING_PERSON_DETAILS };
+
+    if (!participant.name) {
+      participant.name = `${participant.person.standardFamilyName.toUpperCase()}, ${
+        participant.person.standardGivenName
+      }`;
+    }
+  }
+
   tournamentRecord.participants.push(participant);
-  return SUCCESS;
+  return Object.assign({}, SUCCESS, { participant: makeDeepCopy(participant) });
 }
 
 export function addParticipants({
@@ -27,6 +99,10 @@ export function addParticipants({
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const existingParticipantIds =
     tournamentRecord.participants?.map(p => p.participantId) || [];
+
+  participants.forEach(participant => {
+    if (!participant.participantId) participant.participantId = UUID();
+  });
   const newParticipants = participants.filter(
     participant => !existingParticipantIds.includes(participant.participantId)
   );

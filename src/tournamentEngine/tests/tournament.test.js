@@ -7,6 +7,8 @@ import { eventConstants } from '../../constants/eventConstants';
 import { resultConstants } from '../../constants/resultConstants';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { MISSING_ASSIGNMENTS } from '../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
+import { COMPETITOR } from '../../constants/participantRoles';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -206,4 +208,38 @@ it('can set tournament categories', () => {
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.tournamentCategories.length).toEqual(3);
+});
+
+it('can add individual and pair participants', () => {
+  let result = tournamentEngine.newTournamentRecord();
+  expect(result?.success).toEqual(true);
+
+  const participant = {
+    participantType: INDIVIDUAL,
+    participantRole: COMPETITOR,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+    },
+  };
+
+  const individualParticipantIds = [];
+  result = tournamentEngine.addParticipant({ participant });
+  expect(result.success).toEqual(true);
+  individualParticipantIds.push(result.participant.participantId);
+
+  result = tournamentEngine.addParticipant({ participant });
+  expect(result.success).toEqual(true);
+  individualParticipantIds.push(result.participant.participantId);
+
+  const pairParticipant = {
+    participantType: PAIR,
+    participantRole: COMPETITOR,
+    individualParticipantIds,
+  };
+  result = tournamentEngine.addParticipant({ participant: pairParticipant });
+  expect(result.success).toEqual(true);
+
+  const { tournamentRecord } = tournamentEngine.getState();
+  expect(tournamentRecord.participants.length).toEqual(3);
 });
