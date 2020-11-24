@@ -6,10 +6,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { UNPAIRED } from '../../constants/entryStatusConstants';
-import {
-  PARTICIPANT_ID_EXISTS,
-  PARTICIPANT_PAIR_EXISTS,
-} from '../../constants/errorConditionConstants';
+import { PARTICIPANT_PAIR_EXISTS } from '../../constants/errorConditionConstants';
 
 let result;
 
