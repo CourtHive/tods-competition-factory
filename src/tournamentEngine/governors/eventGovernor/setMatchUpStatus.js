@@ -26,6 +26,7 @@ export function setMatchUpStatus(props) {
     matchUpId,
     matchUpTieId,
     matchUpStatus: outcome?.matchUpStatus,
+    matchUpStatusCodes: outcome?.matchUpStatusCodes,
     winningSide: outcome?.winningSide,
     score: outcome?.score || '',
     sets: outcome?.sets,

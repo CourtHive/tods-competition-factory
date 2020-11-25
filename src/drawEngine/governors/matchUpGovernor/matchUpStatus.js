@@ -142,8 +142,9 @@ function winningSideWithDownstreamDependencies(props) {
 }
 
 function applyMatchUpValues(props) {
-  const { matchUp, matchUpStatus, score, sets } = props;
+  const { matchUp, matchUpStatus, matchUpStatusCodes, score, sets } = props;
   matchUp.matchUpStatus = matchUpStatus || COMPLETED;
+  matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (score) matchUp.score = score;
   if (sets) matchUp.sets = sets;
 }
