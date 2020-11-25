@@ -1,7 +1,8 @@
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/participantTypes';
+import { INDIVIDUAL, TEAM } from '../../../constants/participantTypes';
 import {
+  INVALID_PARTICIPANT_TYPE,
   NO_PARTICIPANT_REMOVED,
   TEAM_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
@@ -15,15 +16,16 @@ export function addParticipantsToGrouping(props) {
     removeFromOtherTeams,
   } = props;
 
-  // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
-
   const tournamentParticipants = tournamentRecord.participants || [];
   const groupingParticipant = tournamentParticipants.find(
     participant => participant.participantId === groupingParticipantId
   );
 
   if (groupingParticipant.participantType !== groupingType) {
-    return { error: `Expected participantType to be ${groupingType}` };
+    return {
+      error: INVALID_PARTICIPANT_TYPE,
+      participantType: groupingParticipant.participantType,
+    };
   }
 
   let added = false;
@@ -31,19 +33,27 @@ export function addParticipantsToGrouping(props) {
     const individualParticipants =
       groupingParticipant.individualParticipants || [];
     const individualParticipantIds =
-      groupingParticipant.individualParticipantIds ||
-      // TODO: remove expectation that individualParticpiants will be present
-      individualParticipants.map(value => {
-        return typeof value === 'object' ? value.participantId : value;
-      });
+      groupingParticipant.individualParticipantIds;
     const participantIdsToAdd = participantIds.filter(participantId => {
       const participantIsMember = individualParticipantIds.includes(
         participantId
       );
       return !participantIsMember;
     });
+
+    // integrity chck to insure only individuals can be added to groupings
+    const invalidParticipantIds = participantIdsToAdd.filter(participantId => {
+      const participant = tournamentParticipants.find(
+        tournamentParticipant =>
+          tournamentParticipant.participantId === participantId
+      );
+      return participant.participantType !== INDIVIDUAL;
+    });
+    if (invalidParticipantIds.length)
+      return { error: INVALID_PARTICIPANT_TYPE, invalidParticipantIds };
+
     if (!participantIdsToAdd.length) {
-      return { error: 'Participant(s) already in Grouping' }; // participants already team members
+      return SUCCESS; // participants already team members
     } else {
       if (removeFromOtherTeams) {
         removeParticipantsFromAllTeams({
