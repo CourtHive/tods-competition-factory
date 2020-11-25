@@ -14,6 +14,13 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { addEventEntries } from './addEventEntries';
 import { removeEventEntries } from './removeEventEntries';
 
+/**
+ *
+ * @param {object} tournamentRecord - passed in by tournamentEngine
+ * @param {string} eventId - resolved to event by tournamentEngine
+ * @param {string} participantId - id of PAIR participant to remove; individualParticipantIds will be added as UNPAIRED participant entries
+ *
+ */
 export function destroyPairEntry({ tournamentRecord, event, participantId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };

@@ -199,6 +199,16 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 
 ---
 
+## destroyPairEntry
+
+Removes a participantType: PAIR entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
+
+- @param {object} tournamentRecord - passed in by tournamentEngine
+- @param {string} eventId - resolved to event by tournamentEngine
+- @param {string} participantId - id of PAIR participant to remove; individualParticipantIds will be added as UNPAIRED participant entries
+
+---
+
 ## devContext
 
 ---
