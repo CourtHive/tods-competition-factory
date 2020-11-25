@@ -1,47 +1,50 @@
-import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
-import { addParticipants } from '../participantGovernor/addParticipants';
 import { intersection } from '../../../utilities/arrays';
+import { addParticipants } from '../participantGovernor/addParticipants';
+import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
+import { addEventEntries } from './addEventEntries';
 
 import {
+  INVALID_EVENT_TYPE,
+  INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-  INVALID_PARTICIPANT_IDS,
 } from '../../../constants/errorConditionConstants';
-
-import {
-  DIRECT_ACCEPTANCE,
-  UNPAIRED,
-} from '../../../constants/entryStatusConstants';
-
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-// TODO: untested
-export function modifyEventEntries({
+/**
+ *
+ * Add PAIR participant to an event
+ * Creates new participantType: PAIR participants if necessary
+ *
+ * @param {object} tournamentRecord - passed in automatically by tournamentEngine
+ * @param {string} eventId - tournamentEngine automatically retrieves event
+ * @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
+ * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
+ * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ *
+ */
+export function addEventEntryPairs({
   event,
   tournamentRecord,
   entryStage = MAIN,
   participantIdPairs = [],
-  unpairedParticipantIds = [],
-  entryStatus = DIRECT_ACCEPTANCE,
+  entryStatus = ALTERNATE,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
+  if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
   const tournamentParticipants = tournamentRecord.particpants || [];
   const individualParticipantIds = tournamentParticipants
     .filter(participant => participant.participantType === INDIVIDUAL)
     .map(participant => participant.participantId);
 
-  // concat all incoming INDIVIDUAL participantIds
-  const incomingIndividualParticipantIds = unpairedParticipantIds
-    .concat(...participantIdPairs)
-    .flat(Infinity);
-
   // insure all participants are present in the tournament record
-  const invalidParticipantIds = incomingIndividualParticipantIds.filter(
+  const invalidParticipantIds = individualParticipantIds.filter(
     participantId => !individualParticipantIds.includes(participantId)
   );
   if (invalidParticipantIds.length)
@@ -76,44 +79,30 @@ export function modifyEventEntries({
     })
   );
 
-  const result = addParticipants({
-    tournamentRecord,
-    participants: newParticipants,
-  });
+  if (newParticipants) {
+    const result = addParticipants({
+      tournamentRecord,
+      participants: newParticipants,
+    });
 
-  if (result.error) return { error: result.error };
+    if (result.error) return { error: result.error };
+  }
 
-  // get all participantIds for PAIR participants
-  const pairParticipantEntries = participantIdPairs
+  const pairParticipantIds = participantIdPairs
     .map(participantIds => {
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
+        entryStatus,
+        entryStage,
       });
       return participant;
     })
-    .map(participantId => ({
-      participantId,
-      entryStatus,
-      entryStage,
-    }));
+    .map(participant => participant.participantId);
 
-  const unpairedParticipantEntries = unpairedParticipantIds.map(
-    participantId => ({
-      entryStatus: UNPAIRED,
-      participantId,
-      entryStage,
-    })
-  );
-
-  event.entries = event.entries.filter(
-    entry => entry.entryStage === entryStage
-  );
-
-  event.entries = event.entries.concat(
-    ...pairParticipantEntries,
-    ...unpairedParticipantEntries
-  );
-
-  return SUCCESS;
+  return addEventEntries({
+    event,
+    tournamentRecord,
+    participantIds: pairParticipantIds,
+  });
 }

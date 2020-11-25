@@ -7,6 +7,7 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { UNPAIRED } from '../../constants/entryStatusConstants';
 import { PARTICIPANT_PAIR_EXISTS } from '../../constants/errorConditionConstants';
+import { chunkArray } from '../../utilities';
 
 let result;
 
@@ -225,4 +226,41 @@ it('can destroy pair entries in doubles events', () => {
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(32);
+});
+
+it('can create pair entries in doubles events', () => {
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: INDIVIDUAL,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const eventName = 'Test Event';
+  const event = {
+    eventName,
+    eventType: DOUBLES,
+  };
+
+  result = tournamentEngine.addEvent({ event });
+  const { event: eventResult, success } = result;
+  const { eventId } = eventResult;
+  expect(success).toEqual(true);
+
+  const participantIdPairs = chunkArray(
+    participants.map(participant => participant.participantId),
+    2
+  );
+
+  result = tournamentEngine.addEventEntryPairs({
+    eventId,
+    participantIdPairs,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  const { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
+
+  expect(updatedEvent.entries.length).toEqual(16);
 });

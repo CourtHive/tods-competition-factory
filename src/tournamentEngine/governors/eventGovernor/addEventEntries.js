@@ -14,6 +14,15 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { removeEventEntries } from './removeEventEntries';
 
+/**
+ *
+ * @param {object} tournamentRecord - passed in automatically by tournamentEngine
+ * @param {string} eventId - tournamentEngine automatically retrieves event
+ * @param {string[]} participantIds - ids of all participants to add to event
+ * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
+ * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ *
+ */
 export function addEventEntries(props) {
   const {
     tournamentRecord,
@@ -105,5 +114,6 @@ export function addEventEntries(props) {
   const invalidParticipantIds = !!(
     validParticipantIds.length !== participantIds.length
   );
+
   return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
 }
