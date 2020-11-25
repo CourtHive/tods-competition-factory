@@ -98,6 +98,7 @@ export function clearDrawPosition({
       drawDefinition,
       matchUpId,
       matchUpStatus: TO_BE_PLAYED,
+      matchUpStatusCodes: [],
     });
 
     // if there is a linked draw then BYE must also be placed there

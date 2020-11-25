@@ -11,6 +11,7 @@ export function directParticipants(props) {
   const {
     drawDefinition,
     matchUpStatus,
+    matchUpStatusCodes,
     structure,
     matchUp,
     winningSide,
@@ -32,6 +33,8 @@ export function directParticipants(props) {
   matchUp.winningSide = winningSide;
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
   matchUp.matchUpStatus = (matchUpStatusIsValid && matchUpStatus) || COMPLETED;
+  matchUp.matchUpStatusCodes =
+    (matchUpStatusIsValid && matchUpStatusCodes) || [];
 
   if (scoreString) matchUp.score = scoreString;
   if (sets) matchUp.sets = sets;

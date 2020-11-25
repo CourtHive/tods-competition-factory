@@ -13,6 +13,7 @@ export function removeDirectedParticipants(props) {
     structure,
     matchUp,
     matchUpStatus,
+    matchUpStatusCodes,
     targetData,
   } = props;
   const errors = [];
@@ -65,6 +66,7 @@ export function removeDirectedParticipants(props) {
     delete matchUp.winningSide;
 
     matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatusCodes = matchUpStatusCodes;
 
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({

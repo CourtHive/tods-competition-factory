@@ -64,6 +64,7 @@ function attemptToSetIncompleteScore(props) {
   if (sets) matchUp.sets = sets;
   delete matchUp.winningSide;
   matchUp.matchUpStatus = INCOMPLETE;
+  matchUp.matchUpStatusCodes = [];
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
@@ -75,7 +76,7 @@ function attemptToSetIncompleteScore(props) {
 }
 
 function attemptToSetWinningSide(props) {
-  const { matchUp, matchUpStatus, winningSide } = props;
+  const { matchUp, matchUpStatus, matchUpStatusCodes, winningSide } = props;
   let errors = [];
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
@@ -99,10 +100,12 @@ function attemptToSetWinningSide(props) {
     // check that matchUpStatus is not incompatible with winningSide
     if (matchUpStatus && isDirectingMatchUpStatus({ matchUpStatus })) {
       matchUp.matchUpStatus = matchUpStatus || COMPLETED;
+      matchUp.matchUpStatusCodes = matchUpStatus && matchUpStatusCodes;
       // TESTED
     } else {
       // determine appropriate matchUpStatus;
       matchUp.matchUpStatus = COMPLETED;
+      matchUp.matchUpStatusCodes = matchUpStatusCodes;
       // TESTED
     }
   }
@@ -111,7 +114,7 @@ function attemptToSetWinningSide(props) {
 }
 
 function attemptToSetMatchUpStatus(props) {
-  const { matchUp, structure, matchUpStatus } = props;
+  const { matchUp, structure, matchUpStatus, matchUpStatusCodes } = props;
   let errors = [];
 
   if (matchUp.winningSide) {
@@ -120,6 +123,7 @@ function attemptToSetMatchUpStatus(props) {
       // TESTED
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       matchUp.matchUpStatus = matchUpStatus;
+      matchUp.matchUpStatusCodes = matchUpStatusCodes;
       // TESTED
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
       // only possible to remove winningSide if neither winner
@@ -138,6 +142,7 @@ function attemptToSetMatchUpStatus(props) {
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
     matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatusCodes = matchUpStatusCodes;
     // TESTED
   } else if (matchUpStatus === BYE) {
     // It is not possible to change matchUp status to BYE unless
@@ -158,6 +163,7 @@ function attemptToSetMatchUpStatus(props) {
 
     if (matchUpIncludesBye) {
       matchUp.matchUpStatus = matchUpStatus;
+      matchUp.matchUpStatusCodes = [];
       // TESTED
     } else {
       errors.push({ error: INVALID_MATCHUP_STATUS });
