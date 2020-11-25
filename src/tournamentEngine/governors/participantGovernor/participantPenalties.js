@@ -21,6 +21,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addPenalty({
   tournamentRecord,
   participantIds,
+  penaltyCode,
   penaltyType,
   matchUpId,
   notes,
@@ -41,6 +42,7 @@ export function addPenalty({
 
   const penaltyItem = Object.assign(penaltyTemplate(), {
     refereeParticipantId,
+    penaltyCode,
     penaltyType,
     matchUpId,
     notes,
