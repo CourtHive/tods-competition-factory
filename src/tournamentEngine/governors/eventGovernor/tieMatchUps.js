@@ -55,6 +55,7 @@ export function assignTieMatchUpParticipantId(props) {
     if (sideParticipantsCount === 2) {
       const sideParticipantsIdHash = pairHash(individualParticipants);
 
+      // TODO: replace this block with getPairedParticipant({ participantIds})
       const tournamentParticipants = tournamentRecord.participants || [];
       const doublesPairsHashes = tournamentParticipants
         .filter(participant => participant.participantType === PAIR)
@@ -64,6 +65,7 @@ export function assignTieMatchUpParticipantId(props) {
         });
       const doublesPairLookup = Object.assign({}, ...doublesPairsHashes);
       const sideParticipantId = doublesPairLookup[sideParticipantsIdHash];
+      // END TODO
 
       if (sideParticipantId) {
         side.participantId = sideParticipantId;
