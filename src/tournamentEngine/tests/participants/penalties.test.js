@@ -22,6 +22,7 @@ it('can add, remove, and edit penalties for participants', () => {
     refereeParticipantId: undefined,
     participantIds: [participantId],
     penaltyType: BALL_ABUSE,
+    penaltyCode: 'ORGCODE',
     matchUpId: 'boo',
     createdAt,
     notes: 'Hit ball into sea',
@@ -37,6 +38,7 @@ it('can add, remove, and edit penalties for participants', () => {
   const modifications = { notes };
   result = tournamentEngine.modifyPenalty({ penaltyId, modifications });
   expect(result.penalty.notes).toEqual(notes);
+  expect(result.penalty.penaltyCode).toEqual('ORGCODE');
 
   result = tournamentEngine.removePenalty({ penaltyId });
   expect(result.success).toEqual(true);
