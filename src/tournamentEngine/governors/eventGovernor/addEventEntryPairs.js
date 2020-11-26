@@ -93,8 +93,6 @@ export function addEventEntryPairs({
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
-        entryStatus,
-        entryStage,
       });
       return participant;
     })
@@ -102,6 +100,8 @@ export function addEventEntryPairs({
 
   return addEventEntries({
     event,
+    entryStage,
+    entryStatus,
     tournamentRecord,
     participantIds: pairParticipantIds,
   });
