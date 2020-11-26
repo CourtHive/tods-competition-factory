@@ -5,9 +5,10 @@ import { DOUBLES, SINGLES } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { UNPAIRED } from '../../constants/entryStatusConstants';
+import { ALTERNATE, UNPAIRED } from '../../constants/entryStatusConstants';
 import { PARTICIPANT_PAIR_EXISTS } from '../../constants/errorConditionConstants';
 import { chunkArray } from '../../utilities';
+import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 let result;
 
@@ -257,10 +258,17 @@ it('can create pair entries in doubles events', () => {
   result = tournamentEngine.addEventEntryPairs({
     eventId,
     participantIdPairs,
+    entryStatus: ALTERNATE,
+    entryStage: QUALIFYING,
   });
   expect(result).toEqual(SUCCESS);
 
   const { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
 
   expect(updatedEvent.entries.length).toEqual(16);
+
+  updatedEvent.entries.forEach(entry => {
+    expect(entry.entryStage).toEqual(QUALIFYING);
+    expect(entry.entryStatus).toEqual(ALTERNATE);
+  });
 });
