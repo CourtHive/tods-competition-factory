@@ -25,7 +25,10 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import {
+  CONSOLATION,
+  CONTAINER,
+} from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import {
   DRAW_POSITION_ACTIVE,
@@ -116,11 +119,15 @@ export function assignDrawPositionBye({
 
         const targetDrawPosition =
           loserMatchUp.drawPositions[targetDrawPositionIndex];
-        assignDrawPositionBye({
+
+        const result = assignDrawPositionBye({
           drawDefinition,
           structureId: loserTargetLink.target.structureId,
           drawPosition: targetDrawPosition,
         });
+        if (result.error) {
+          console.log({ result });
+        }
       }
 
       if (winnerMatchUp && pairedDrawPosition) {
@@ -530,7 +537,11 @@ export function getByesData({ drawDefinition, structure }) {
   // when doubleByes are supported may do away with maxByes
   const drawSize = positionAssignments.length;
   let byesCount = drawSize - entriesCount;
-  if (byesCount > maxByes && structure.stageSequence === 1) {
+  if (
+    byesCount > maxByes &&
+    structure.stageSequence === 1 &&
+    structure.stage !== CONSOLATION
+  ) {
     byesCount = maxByes;
   }
 
