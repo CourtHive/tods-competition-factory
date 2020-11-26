@@ -7,10 +7,19 @@ export const CONSOLATION = 'CONSOLATION';
 export const ITEM = 'ITEM';
 export const CONTAINER = 'CONTAINER';
 
+// positioningProfile
+export const DRAW = 'DRAW';
+export const RANDOM = 'RANDOM';
+export const TOP_DOWN = 'TOP_DOWN';
+export const BOTTOM_UP = 'BOTTOM_UP';
+export const WATERFALL = 'WATERFALL';
+export const LOSS_POSITION = 'LOSS_POSITION'; // For First Match Consolation this refers to the losing round position
+
 // Match and Link types
 export const POSITION = 'POSITION'; // participant advances based on their finishing position
 export const WINNER = 'WINNER'; // participant advances based on winning a matchUp
 export const LOSER = 'LOSER'; // partticipant advances based on losing a matchUp
+export const FIRST_LOSS = 'FIRST_LOSS'; // condition for valididty of link
 
 // draw types
 export const FEED_IN = 'FEED IN';
@@ -58,13 +67,6 @@ export const OLYMPIC_ATTRIBUTES = {
   '0-2': { name: 'NORTH', abbreviation: 'N' },
   '0-1-1': { name: 'SOUTH', abbreviation: 'S' },
 };
-
-// positioningProfile
-export const DRAW = 'DRAW';
-export const RANDOM = 'RANDOM';
-export const TOP_DOWN = 'TOP_DOWN';
-export const BOTTOM_UP = 'BOTTOM_UP';
-export const WATERFALL = 'WATERFALL';
 
 // finishingPosition determination
 export const WIN_RATIO = 'WIN_RATIO';
