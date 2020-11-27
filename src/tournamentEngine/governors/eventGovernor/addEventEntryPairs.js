@@ -31,9 +31,9 @@ export function addEventEntryPairs({
   event,
   tournamentRecord,
   entryStage = MAIN,
-  // provisionalParticipantIds = [],
-  participantIdPairs = [],
   entryStatus = ALTERNATE,
+  participantIdPairs = [],
+  provisionalParticipantIds = [],
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -63,22 +63,24 @@ export function addEventEntryPairs({
     .filter(participant => participant.participantType === PAIR)
     .map(participant => participant.individualParticipantIds);
 
-  // determine participantIdPairs which do not already exist
-  const newParticipantIdPairs = participantIdPairs.filter(
-    incoming =>
-      !existingParticipantIdPairs.find(
-        existing => intersection(existing, incoming).length === 2
-      )
-  );
-
-  // create new participant objects
-  const newParticipants = newParticipantIdPairs.map(
-    individualParticipantIds => ({
+  // create provisional participant objects
+  const provisionalParticipants = participantIdPairs.map(
+    (individualParticipantIds, index) => ({
+      participantId: provisionalParticipantIds[index],
       participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
     })
   );
+
+  // filter out existing participants
+  const newParticipants = provisionalParticipants.filter(participant => {
+    return !existingParticipantIdPairs.find(
+      existing =>
+        intersection(existing, participant.individualParticipantIds).length ===
+        2
+    );
+  });
 
   if (newParticipants) {
     const result = addParticipants({
