@@ -468,7 +468,7 @@ it('can change a first round matchUp winner and update consolation', () => {
     score: '6-1 1-6 6-2',
   }));
 
-  // advance 1st position matchUp in second round of consolation draw
+  // attempt to advance 1st position matchUp in second round of consolation draw
   ({ errors, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 2,
@@ -477,12 +477,9 @@ it('can change a first round matchUp winner and update consolation', () => {
     score: '6-2 1-6 6-1',
   }));
   ({ drawDefinition } = drawEngine.getState());
-  const m = drawEngine.allStructureMatchUps({
-    structureId: consolationStructureId,
-  });
+  expect(errors.length).toEqual(1);
 
-  console.log('errors:', errors, m.roundMatchUps['2']);
-
+  // TODO: advance a valid 2nd round matchUp in consolation draw
   /*
   ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
     drawDefinition,
