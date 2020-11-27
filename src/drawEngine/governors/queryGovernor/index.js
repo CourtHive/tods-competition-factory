@@ -16,7 +16,6 @@ import {
   getNextUnfilledDrawPositions,
 } from './positionActions';
 
-import { findStructure } from '../../getters/findStructure';
 import {
   getRoundPresentationProfile,
   getAllStructureMatchUps,
@@ -24,6 +23,9 @@ import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../getters/getMatchUps';
+
+import { findStructure } from '../../getters/findStructure';
+import { getParticipantIdMatchUps } from './participantIdMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 
@@ -49,6 +51,7 @@ function allDrawMatchUps(props) {
 }
 
 const queryGovernor = {
+  getParticipantIdMatchUps,
   allPlayoffPositionsFilled,
   isCompletedStructure,
   getStructureMatchUps,

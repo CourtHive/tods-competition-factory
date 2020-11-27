@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { drawEngine } from '../..';
-import { generateRange, unique } from '../../../utilities';
+import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import {
@@ -346,4 +346,84 @@ it('can reliably generate sideNumbers', () => {
     ],
   };
   verifySideNumbers({ structureId, expectedDrawPositions });
+});
+
+it('can return participantIdMatchUps', () => {
+  const { structureId } = generateDrawStructure({
+    drawSize: 16,
+    participantsCount: 14,
+  });
+
+  verifyStructure({
+    structureId,
+    expectedPositionsAssignedCount: 16,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 2,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 4,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 5,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 8,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 1,
+    winningSide: 1,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 3,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 6,
+    winningSide: 2,
+  });
+
+  completeMatchUp({
+    structureId,
+    roundNumber: 1,
+    roundPosition: 7,
+    winningSide: 1,
+  });
+
+  const { participantIdMatchUps } = drawEngine.getParticipantIdMatchUps();
+  const participantIds = Object.keys(participantIdMatchUps);
+  expect(participantIds.length).toEqual(14);
+
+  const matchUpsCount = participantIds.map(
+    participantId => participantIdMatchUps[participantId].length
+  );
+
+  const matchUpsCountInstances = instanceCount(matchUpsCount);
+  expect(matchUpsCountInstances[1]).toEqual(6);
+  expect(matchUpsCountInstances[2]).toEqual(8);
 });

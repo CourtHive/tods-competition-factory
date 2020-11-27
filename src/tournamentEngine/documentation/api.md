@@ -303,6 +303,13 @@ Returns { eventDetails: { eventName, eventId }} for events in which participantI
 
 ---
 
+## getParticipantIdFinishingPositions
+
+Returns the Range of finishing positions possible for all participantIds within a draw
+
+- @param {string} drawId - drawId of target draw within a tournament
+- @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
+
 ## getParticipantScaleItem
 
 ---
