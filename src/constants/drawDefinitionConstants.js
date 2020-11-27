@@ -19,7 +19,7 @@ export const LOSS_POSITION = 'LOSS_POSITION'; // For First Match Consolation thi
 export const POSITION = 'POSITION'; // participant advances based on their finishing position
 export const WINNER = 'WINNER'; // participant advances based on winning a matchUp
 export const LOSER = 'LOSER'; // partticipant advances based on losing a matchUp
-export const FIRST_LOSS = 'FIRST_LOSS'; // condition for valididty of link
+export const FIRST_MATCHUP = 'FIRST_MATCHUP'; // condition for valididty of link
 
 // draw types
 export const FEED_IN = 'FEED IN';
@@ -80,6 +80,7 @@ export const drawDefinitionConstants = {
   ITEM,
   CONTAINER,
 
+  FIRST_MATCHUP,
   WINNER,
   LOSER,
 

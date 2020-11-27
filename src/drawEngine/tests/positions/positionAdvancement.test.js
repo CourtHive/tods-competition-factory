@@ -96,8 +96,8 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
   expect(matchUp2ndRound.structureId).toEqual(
     winnerMatchUp2ndRound.structureId
   );
-  console.log({ loserMatchUp2ndRound });
-  // expect(loserMatchUp2ndRound).toEqual(undefined);
+  expect(loserMatchUp2ndRound.roundNumber).toEqual(1);
+  expect(loserMatchUp2ndRound.roundPosition).toEqual(1);
 });
 
 it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {

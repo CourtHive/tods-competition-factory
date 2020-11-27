@@ -7,7 +7,7 @@ import {
   CONSOLATION,
   TOP_DOWN,
   LOSER,
-  FIRST_LOSS,
+  FIRST_MATCHUP,
   LOSS_POSITION,
 } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -72,7 +72,7 @@ export function firstMatchLoserConsolation(props) {
 
   const secondRoundLink = {
     linkType: LOSER,
-    linkCondition: FIRST_LOSS,
+    linkCondition: FIRST_MATCHUP,
     source: {
       roundNumber: 2,
       structureId: mainStructure.structureId,

@@ -1,7 +1,11 @@
+import { getStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 
+/*
+  FMLC linkCondition... check whether it is a participant's first 
+*/
 export function directLoser({
   drawDefinition,
   loserTargetLink,
@@ -55,6 +59,18 @@ export function directLoser({
   const targetPositionIsBye = !!targetPositionAssignments.find(
     assignment => assignment.bye === true
   );
+
+  const loserLinkCondition = loserTargetLink.linkCondition;
+  if (loserLinkCondition) {
+    const {
+      completedMatchUps: completedSourceMatchUps,
+      structure,
+    } = getStructureMatchUps({
+      drawDefinition,
+      structureId: sourceStructureId,
+    });
+    console.log({ structure, loserLinkCondition, completedSourceMatchUps });
+  }
 
   if (
     loserTargetLink.target.roundNumber === 1 &&

@@ -108,13 +108,12 @@ export function getStructureMatchUps({
       return pendingMatchUps.push(matchUp);
     });
 
-  const matchUpGroups = {
+  return {
     completedMatchUps,
     upcomingMatchUps,
     pendingMatchUps,
     abandonedMatchUps,
     byeMatchUps,
+    structure,
   };
-
-  return matchUpGroups;
 }
