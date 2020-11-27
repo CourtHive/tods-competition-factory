@@ -1,10 +1,7 @@
 import { rankByRatings } from './rankByRatings';
 import { makeDeepCopy } from '../../../utilities';
 import { mergeParticipants } from './mergeParticipants';
-import {
-  getParticipantIdFinishingPositions,
-  getParticipantIdMatchUps,
-} from './finishingPositions';
+import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { deleteParticipants } from './deleteParticipants';
 import { getPairedParticipant } from './getPairedParticipant';
 import { createGroupParticipant } from './createGroupParticipant';
@@ -62,7 +59,6 @@ const participantGovernor = {
   generateTeamsFromParticipantAttribute,
 
   rankByRatings,
-  getParticipantIdMatchUps,
   getParticipantIdFinishingPositions,
 
   mergeParticipants,
