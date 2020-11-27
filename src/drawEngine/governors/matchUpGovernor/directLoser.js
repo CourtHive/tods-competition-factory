@@ -70,6 +70,10 @@ export function directLoser({
       structureId: sourceStructureId,
     });
     console.log({ structure, loserLinkCondition, completedSourceMatchUps });
+
+    // get participant's drawPosition in source structure
+    // insure that participant has not participated in any other matchUps other than:
+    // [WALKOVER, DEFAULT, BYE].includes(matchUp.matchUpStatus) && !score
   }
 
   if (
