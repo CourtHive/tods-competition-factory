@@ -31,6 +31,7 @@ export function addEventEntryPairs({
   event,
   tournamentRecord,
   entryStage = MAIN,
+  // provisionalParticipantIds = [],
   participantIdPairs = [],
   entryStatus = ALTERNATE,
 }) {

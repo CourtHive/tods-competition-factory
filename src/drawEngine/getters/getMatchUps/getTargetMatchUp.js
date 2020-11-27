@@ -6,6 +6,7 @@ import {
   BOTTOM_UP,
   RANDOM,
   DRAW,
+  LOSS_POSITION,
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
 
@@ -72,6 +73,11 @@ export function getTargetMatchUp({
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
     targetRoundPosition = targetRoundMatchUps.length + 1 - targetRoundPosition;
+  } else if (feedProfile === LOSS_POSITION) {
+    /*
+      LOSS_POSITION is possible when a loss occurs in a second round to which a participant has advanced via BYE or DEFAULT/WALKOVER
+    */
+    targetRoundPosition = sourceRoundPosition;
   } else if (feedProfile === RANDOM) {
     /*
       RANDOM feed profile selects a random position from available

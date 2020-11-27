@@ -1,5 +1,6 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 export function directLoser({
   drawDefinition,
@@ -9,7 +10,6 @@ export function directLoser({
   loserMatchUpDrawPositionIndex,
 }) {
   let error;
-
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
   const targetMatchUpDrawPosition =
     targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
@@ -52,6 +52,10 @@ export function directLoser({
     targetMatchUpDrawPosition
   );
 
+  const targetPositionIsBye = !!targetPositionAssignments.find(
+    assignment => assignment.bye === true
+  );
+
   if (
     loserTargetLink.target.roundNumber === 1 &&
     targetDrawPositionIsUnfilled
@@ -63,6 +67,7 @@ export function directLoser({
       drawPosition: targetMatchUpDrawPosition,
     });
   } else if (unfilledTargetMatchUpDrawPositions.length) {
+    // if roundNumber !== 1 then it is a feed arm and any unfilled position in target matchUp will do
     const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
     assignDrawPosition({
       drawDefinition,
@@ -70,6 +75,22 @@ export function directLoser({
       participantId: loserParticipantId,
       drawPosition,
     });
+  } else if (targetPositionIsBye) {
+    const result = clearDrawPosition({
+      drawDefinition,
+      structureId: targetStructureId,
+      drawPosition: targetMatchUpDrawPosition,
+    });
+
+    // drawPosition would not clear if player advanced by BYE had progressed
+    if (result.success) {
+      assignDrawPosition({
+        drawDefinition,
+        structureId: targetStructureId,
+        participantId: loserParticipantId,
+        drawPosition: targetMatchUpDrawPosition,
+      });
+    }
   } else {
     error = 'loser target position unavaiallble';
   }

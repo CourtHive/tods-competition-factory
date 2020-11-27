@@ -70,7 +70,6 @@ export function clearDrawPosition({
     drawDefinition,
     structure,
     matchUpFilters,
-    // inContext: true, // TODO: is there any reason that clearDrawPosition requires context?
   });
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
@@ -86,7 +85,6 @@ export function clearDrawPosition({
       if (isByeMatchUp || matchUp.matchUpStatus === BYE) {
         removeByeAndCleanUp({ matchUp, drawPosition });
       }
-      delete matchUp.matchUpStatus;
     }
   });
 

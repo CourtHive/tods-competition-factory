@@ -9,7 +9,11 @@ import {
 
 import { generateFMLC } from '../../tests/primitives/fmlc';
 
-import { BYE, RETIRED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  RETIRED,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 import {
   MAIN,
   FMLC,
@@ -70,15 +74,15 @@ it('can generate FMLC', () => {
 });
 
 it('can direct winners and losers', () => {
-  const {
-    structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
-  const { structureId: mainStructureId } = mainStructure;
+  const drawSize = 32;
+  const seedsCount = 8;
+  const participantsCount = 30;
 
-  const {
-    structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
-  const { structureId: consolationStructureId } = consolationStructure;
+  const { mainStructureId, consolationStructureId } = generateFMLC({
+    drawSize,
+    seedsCount,
+    participantsCount,
+  });
 
   completeMatchUp({
     structureId: mainStructureId,
@@ -113,6 +117,50 @@ it('can direct winners and losers', () => {
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
   });
+
+  completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 2,
+    roundPosition: 1,
+    winningSide: 2,
+  });
+
+  const {
+    structures: [mainStructure],
+  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  const { structureId: verifyMainStructureId } = mainStructure;
+
+  const {
+    structures: [consolationStructure],
+  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  const { structureId: verifyConsolationStructureId } = consolationStructure;
+
+  expect(mainStructureId).toEqual(verifyMainStructureId);
+  expect(consolationStructureId).toEqual(verifyConsolationStructureId);
+
+  // find second round matchUp for first seeded player with BYE
+  const sourceMatchUp = mainStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+  );
+
+  const sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 1
+  )?.participantId;
+  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
+
+  const targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 1
+  )?.participantId;
+
+  const targetMatchUp = consolationStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+  );
+  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+
+  expect(sourceDrawPositionParticipantId).toEqual(
+    targetDrawPositionParticipantId
+  );
 });
 
 it('can change matchUpStatus', () => {
@@ -120,27 +168,29 @@ it('can change matchUpStatus', () => {
     requireParticipants: false,
   });
   const completedMatchUpsCount = completedMatchUps.length;
-  expect(completedMatchUpsCount).toEqual(3);
+  expect(completedMatchUpsCount).toEqual(4);
 
   const [matchUp] = completedMatchUps;
   const { matchUpId } = matchUp;
-  let { errors } = drawEngine.setMatchUpStatus({
+  let result = drawEngine.setMatchUpStatus({
+    matchUpId,
+    matchUpStatus: 'BOGUS',
+  });
+  let hasErrors = Boolean(result?.errors?.length);
+  expect(hasErrors).toEqual(true);
+
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: BYE,
   });
-  let hasErrors = Boolean(errors && errors.length);
+  hasErrors = Boolean(result.errors.length);
   expect(hasErrors).toEqual(true);
-  ({ errors } = drawEngine.setMatchUpStatus({
-    matchUpId,
-    matchUpStatus: 'BOGUS',
-  }));
-  hasErrors = Boolean(errors && errors.length);
-  expect(hasErrors).toEqual(true);
-  ({ errors } = drawEngine.setMatchUpStatus({
+
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
-  }));
-  hasErrors = Boolean(errors && errors.length);
+  });
+  hasErrors = Boolean(result?.errors?.length);
   expect(hasErrors).toEqual(false);
 
   const { matchUp: fetchedMatchUp } = drawEngine.findMatchUp({ matchUpId });

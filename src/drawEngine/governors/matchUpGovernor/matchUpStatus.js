@@ -8,10 +8,15 @@ import {
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 
 import {
+  INVALID_MATCHUP_STATUS,
   MATCHUP_NOT_FOUND,
   NO_VALID_ACTIONS,
 } from '../../../constants/errorConditionConstants';
-import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  COMPLETED,
+  matchUpStatusConstants,
+} from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(props) {
@@ -75,12 +80,16 @@ export function setMatchUpStatus(props) {
     }
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return errors.length ? { errors } : Object.assign({}, SUCCESS, { matchUp });
 }
 
 function attemptStatusChange(props) {
   const errors = [];
   const { matchUp, matchUpStatus } = props;
+
+  if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
+    errors.push({ error: INVALID_MATCHUP_STATUS });
+  }
 
   // if no winningSide is given and matchUp has winningSide
   // check whether intent is to remove winningSide

@@ -414,8 +414,6 @@ it('can change a first round matchUp winner and update consolation', () => {
     matchUpId,
   }));
   expect(losingParticipantId).toEqual(firstWinningParticipantId);
-  const consolationParticipantId = losingParticipantId;
-
   // check that second matchUp in consolation draw is TO_BE_PLAYED
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: consolationStructureId,
@@ -479,11 +477,20 @@ it('can change a first round matchUp winner and update consolation', () => {
     score: '6-2 1-6 6-1',
   }));
   ({ drawDefinition } = drawEngine.getState());
+  const m = drawEngine.allStructureMatchUps({
+    structureId: consolationStructureId,
+  });
+
+  console.log('errors:', errors, m.roundMatchUps['2']);
+
+  /*
   ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
     drawDefinition,
     matchUpId,
   }));
+  const consolationParticipantId = losingParticipantId;
   expect(winningParticipantId).toEqual(consolationParticipantId);
+  */
 
   // Now attempt to change a 1st round matchUpStatus to BYE
   ({
