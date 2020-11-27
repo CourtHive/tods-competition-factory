@@ -138,7 +138,7 @@ it('can generate first matchUp loser consolation', () => {
   const result = drawEngine.generateDrawType({ drawType: FMLC });
   expect(result).not.toHaveProperty(ERROR);
   const { drawDefinition } = drawEngine.getState();
-  expect(drawDefinition.links.length).toEqual(1);
+  expect(drawDefinition.links.length).toEqual(2);
   expect(drawDefinition.structures.length).toEqual(2);
   const mainDraw = drawDefinition.structures[0];
   const consolationDraw = drawDefinition.structures[1];

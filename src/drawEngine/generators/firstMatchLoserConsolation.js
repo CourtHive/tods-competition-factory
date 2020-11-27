@@ -7,6 +7,8 @@ import {
   CONSOLATION,
   TOP_DOWN,
   LOSER,
+  FIRST_LOSS,
+  LOSS_POSITION,
 } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
@@ -55,7 +57,7 @@ export function firstMatchLoserConsolation(props) {
     drawDefinition.structures.push(consolationStructure);
   }
 
-  const link = {
+  const firstRoundLink = {
     linkType: LOSER,
     source: {
       roundNumber: 1,
@@ -68,12 +70,31 @@ export function firstMatchLoserConsolation(props) {
     },
   };
 
+  const secondRoundLink = {
+    linkType: LOSER,
+    linkCondition: FIRST_LOSS,
+    source: {
+      roundNumber: 2,
+      structureId: mainStructure.structureId,
+    },
+    target: {
+      roundNumber: 1,
+      feedProfile: LOSS_POSITION,
+      structureId: consolationStructure.structureId,
+    },
+  };
+
   if (drawDefinition) {
-    drawDefinition.links.push(link);
+    drawDefinition.links.push(firstRoundLink, secondRoundLink);
   }
 
   return Object.assign(
-    { mainStructure, consolationStructure, link, links: drawDefinition?.links },
+    {
+      mainStructure,
+      consolationStructure,
+      link: firstRoundLink,
+      links: drawDefinition?.links,
+    },
     SUCCESS
   );
 }
