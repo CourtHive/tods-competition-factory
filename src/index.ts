@@ -1,4 +1,4 @@
-import { UUID } from './utilities/UUID';
+import { UUID, UUIDS } from './utilities/UUID';
 import { dateTime } from './utilities/dateTime';
 import { numericSort } from './utilities/sorting';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
@@ -16,6 +16,7 @@ import {
 
 export const utilities = {
   UUID,
+  UUIDS,
   isNumeric,
   dateTime,
   numericSort,
