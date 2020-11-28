@@ -29,11 +29,11 @@ import { MAIN } from '../../../constants/drawDefinitionConstants';
  */
 export function addEventEntryPairs({
   event,
+  uuids,
   tournamentRecord,
   entryStage = MAIN,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
-  provisionalParticipantIds = [],
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -65,8 +65,8 @@ export function addEventEntryPairs({
 
   // create provisional participant objects
   const provisionalParticipants = participantIdPairs.map(
-    (individualParticipantIds, index) => ({
-      participantId: provisionalParticipantIds[index],
+    individualParticipantIds => ({
+      participantId: uuids?.pop(),
       participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
