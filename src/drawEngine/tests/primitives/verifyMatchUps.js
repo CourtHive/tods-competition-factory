@@ -16,20 +16,20 @@ export function completeMatchUp({
   score,
   sets,
 }) {
-  const { matchUp } = findMatchUpByRoundNumberAndPosition({
+  const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
     roundNumber,
     roundPosition,
   });
-  const { matchUpId } = matchUp;
-  const { errors, success } = drawEngine.setMatchUpStatus({
+  const { matchUpId } = targetMatchUp;
+  const { matchUp, errors, success } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus,
     winningSide,
     score,
     sets,
   });
-  return { success, errors, matchUpId };
+  return { success, errors, matchUp, matchUpId };
 }
 
 export function findMatchUpByRoundNumberAndPosition({

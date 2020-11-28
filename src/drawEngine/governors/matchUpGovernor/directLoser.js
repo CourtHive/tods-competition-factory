@@ -1,4 +1,6 @@
-import { getStructureMatchUps } from '../../getters/getMatchUps';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { findStructure } from '../../getters/findStructure';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
@@ -7,10 +9,10 @@ import { clearDrawPosition } from '../positionGovernor/positionClear';
   FMLC linkCondition... check whether it is a participant's first 
 */
 export function directLoser({
+  loserMatchUp,
   drawDefinition,
   loserTargetLink,
   loserDrawPosition,
-  loserMatchUp,
   loserMatchUpDrawPositionIndex,
 }) {
   let error;
@@ -62,21 +64,57 @@ export function directLoser({
 
   const loserLinkCondition = loserTargetLink.linkCondition;
   if (loserLinkCondition) {
-    const {
-      completedMatchUps: completedSourceMatchUps,
-      structure,
-    } = getStructureMatchUps({
+    const { structure } = findStructure({
       drawDefinition,
       structureId: sourceStructureId,
     });
-    console.log({ structure, loserLinkCondition, completedSourceMatchUps });
+    const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+      inContext: true,
+      drawDefinition,
+      structure,
+    });
+
+    const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
+      matchUp.drawPositions.includes(loserDrawPosition)
+    );
+
+    const loserDrawPositionWins = drawPositionMatchUps.filter(matchUp => {
+      const drawPositionSide = matchUp.sides.find(
+        side => side.drawPosition === loserDrawPosition
+      );
+      return drawPositionSide?.sideNumber === matchUp.winningSide;
+    });
+
+    const meetsCondition =
+      loserLinkCondition === FIRST_MATCHUP &&
+      loserDrawPositionWins.length === 0;
+
+    if (meetsCondition) {
+      const result =
+        targetPositionIsBye &&
+        clearDrawPosition({
+          drawDefinition,
+          structureId: targetStructureId,
+          drawPosition: targetMatchUpDrawPosition,
+        });
+
+      // drawPosition would not clear if player advanced by BYE had progressed
+      if (result.success || targetDrawPositionIsUnfilled) {
+        assignDrawPosition({
+          drawDefinition,
+          structureId: targetStructureId,
+          participantId: loserParticipantId,
+          drawPosition: targetMatchUpDrawPosition,
+        });
+      }
+    } else {
+      console.log('TODO: insure position is filled with a BYE');
+    }
 
     // get participant's drawPosition in source structure
     // insure that participant has not participated in any other matchUps other than:
     // [WALKOVER, DEFAULT, BYE].includes(matchUp.matchUpStatus) && !score
-  }
-
-  if (
+  } else if (
     loserTargetLink.target.roundNumber === 1 &&
     targetDrawPositionIsUnfilled
   ) {
@@ -95,22 +133,6 @@ export function directLoser({
       participantId: loserParticipantId,
       drawPosition,
     });
-  } else if (targetPositionIsBye) {
-    const result = clearDrawPosition({
-      drawDefinition,
-      structureId: targetStructureId,
-      drawPosition: targetMatchUpDrawPosition,
-    });
-
-    // drawPosition would not clear if player advanced by BYE had progressed
-    if (result.success) {
-      assignDrawPosition({
-        drawDefinition,
-        structureId: targetStructureId,
-        participantId: loserParticipantId,
-        drawPosition: targetMatchUpDrawPosition,
-      });
-    }
   } else {
     error = 'loser target position unavaiallble';
   }

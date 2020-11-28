@@ -329,26 +329,29 @@ it('can change a first round matchUp winner and update consolation', () => {
   const seedsCount = 8;
   const participantsCount = 30;
 
-  const {
-    mainStructureId: structureId,
-    consolationStructureId,
-  } = generateFMLC({ drawSize, seedsCount, participantsCount });
+  const { mainStructureId, consolationStructureId } = generateFMLC({
+    drawSize,
+    seedsCount,
+    participantsCount,
+  });
 
-  let result, errors;
+  let result, errors, success;
   let winningParticipantId, losingParticipantId;
   let matchUp, matchUpId, matchUpStatus, sides, score, winningSide;
 
-  ({ errors, matchUpId } = completeMatchUp({
-    structureId,
+  // complete the 2nd position matchUp, between drawPositions: [3, 4]; 3 advances;
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
     score: '6-1 6-2',
   }));
-  expect(errors).toEqual(undefined);
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([3, 4]);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     inContext: true,
@@ -366,7 +369,7 @@ it('can change a first round matchUp winner and update consolation', () => {
 
   // check that winner advanced to second round matchUp and that matchUpStatus is TO_BE_PLAYED
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 1,
     inContext: true,
@@ -397,7 +400,7 @@ it('can change a first round matchUp winner and update consolation', () => {
 
   // check that the matchUpStatus, winningSide and score changed
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     inContext: true,
@@ -423,77 +426,80 @@ it('can change a first round matchUp winner and update consolation', () => {
   ({ matchUpStatus } = matchUp);
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
 
-  // advance main draw participant to third round
-  ({ errors, matchUpId } = completeMatchUp({
-    structureId,
+  // advance main draw participant in drawPosition: 1 to third round
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+    structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 1,
     winningSide: 1,
     score: '6-2 6-1',
   }));
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([1, 4]);
 
   // attempt to complete 2nd position matchUp in first round of consolation draw
-  ({ errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
     score: '6-1 1-6 6-2',
   }));
+  expect(success).toEqual(undefined);
   // error because matchUp drawPositions are not assigned to participantIds
   expect(errors.length).toBeGreaterThanOrEqual(1);
 
-  // must direct other participants to consolation draw
-  ({ errors, matchUpId } = completeMatchUp({
-    structureId,
+  // complete matchUp between drawPositions: [5, 6] in mainStructure
+  // ...to direct other participants to consolation draw
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 3,
     winningSide: 1,
     score: '6-1 6-3',
   }));
-  ({ errors, matchUpId } = completeMatchUp({
-    structureId,
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([5, 6]);
+
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 4,
     winningSide: 1,
     score: '6-1 6-4',
   }));
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([7, 8]);
 
   // complete 2nd position matchUp in first round of consolation draw
-  ({ errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
     score: '6-1 1-6 6-2',
   }));
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([3, 4]);
 
-  // attempt to advance 1st position matchUp in second round of consolation draw
-  ({ errors, matchUpId } = completeMatchUp({
+  // attempt to advance 1st position matchUp in second round of consolation structure
+  // this should succeed because there is a BYE advanced participant in drawPosition: 2
+  // drawPosition: 1 is a BYE because drawPosition: 1 participant in main structure did not lose second round
+  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 2,
     roundPosition: 1,
     winningSide: 1,
     score: '6-2 1-6 6-1',
   }));
-  ({ drawDefinition } = drawEngine.getState());
-  expect(errors.length).toEqual(1);
-
-  // TODO: advance a valid 2nd round matchUp in consolation draw
-  /*
-  ({ winningParticipantId, losingParticipantId } = getMatchUpWinnerLoserIds({
-    drawDefinition,
-    matchUpId,
-  }));
-  const consolationParticipantId = losingParticipantId;
-  expect(winningParticipantId).toEqual(consolationParticipantId);
-  */
+  expect(success).toEqual(true);
+  expect(matchUp.drawPositions).toEqual([2, 3]);
 
   // Now attempt to change a 1st round matchUpStatus to BYE
   ({
     matchUp: { matchUpId },
   } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     inContext: true,
@@ -509,7 +515,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   ({
     matchUp: { matchUpId },
   } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     inContext: true,
@@ -564,7 +570,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(errors.length).toBeGreaterThanOrEqual(1);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
-    structureId,
+    structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
     inContext: true,
