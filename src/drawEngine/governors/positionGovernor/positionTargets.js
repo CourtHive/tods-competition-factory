@@ -1,4 +1,4 @@
-import { getMatchUpLinks, getTargetLink } from '../../getters/linkGetter';
+import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { nextRoundMatchUp } from '../../getters/getMatchUps';
 import { getTargetMatchUp } from '../../getters/getMatchUps';
@@ -34,7 +34,11 @@ export function positionTargets({ drawDefinition, matchUpId }) {
 function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
   const {
     links: { source },
-  } = getMatchUpLinks({ drawDefinition, matchUp });
+  } = getRoundLinks({
+    drawDefinition,
+    structureId: structure.structureId,
+    roundNumber: matchUp.roundNumber,
+  });
   const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
   const sourceRoundMatchUpCount = matchUps.reduce((count, currentMatchUp) => {
     return currentMatchUp.roundNumber === matchUp.roundNumber
@@ -68,7 +72,6 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
     }));
   } else {
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
-      //       appliedPolicies,
       structure,
       matchUp,
     }));
@@ -76,7 +79,7 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
 
   return {
     matchUp,
-    targetLinks: { loserTargetLink, winnerTargetLink }, // returned for testing
+    targetLinks: { loserTargetLink, winnerTargetLink },
     targetMatchUps: {
       loserMatchUp,
       winnerMatchUp,

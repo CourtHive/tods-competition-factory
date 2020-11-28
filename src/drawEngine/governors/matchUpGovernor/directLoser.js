@@ -1,9 +1,11 @@
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
+import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
+
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -108,7 +110,13 @@ export function directLoser({
         });
       }
     } else {
-      console.log('TODO: insure position is filled with a BYE');
+      // if participant won't be placed in targetStructure, place a BYE
+      const result = assignDrawPositionBye({
+        drawDefinition,
+        structureId: targetStructureId,
+        drawPosition: targetMatchUpDrawPosition,
+      });
+      if (result.error) error = result.error;
     }
 
     // get participant's drawPosition in source structure

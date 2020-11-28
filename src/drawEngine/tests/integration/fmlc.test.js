@@ -47,26 +47,28 @@ it('can generate FMLC', () => {
     expectedRoundCompleted: [0, 0],
   });
 
+  // no BYEs have yet been assigned because participants with first round BYEs may lose in second round
+  // and progress to consolation structure due to first matchUp loss
   verifyStructure({
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 2,
-    expectedPositionsAssignedCount: 2,
+    expectedByeAssignments: 0,
+    expectedPositionsAssignedCount: 0,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
     expectedRoundPending: [0, 4, 2, 1],
-    expectedRoundUpcoming: [6, 0],
+    expectedRoundUpcoming: [8, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [6, 4, 2, 1],
+    expectedRoundPending: [8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -119,7 +121,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [5, 4, 2, 1],
+    expectedRoundPending: [7, 4, 2, 1],
     expectedRoundUpcoming: [1, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -201,7 +203,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [4, 4, 2, 1],
+    expectedRoundPending: [5, 4, 2, 1],
     expectedRoundUpcoming: [3, 0],
     expectedRoundCompleted: [0, 0],
   });

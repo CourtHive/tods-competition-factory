@@ -34,22 +34,22 @@ it('can generate FMLC with double-byes in consolation', () => {
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 15,
-    expectedPositionsAssignedCount: 15,
+    expectedByeAssignments: 0,
+    expectedPositionsAssignedCount: 0,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 0, 0, 0],
-    expectedRoundUpcoming: [0, 0],
+    expectedRoundPending: [0, 4, 2, 1],
+    expectedRoundUpcoming: [8, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 0, 0, 0],
+    expectedRoundPending: [8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -87,22 +87,22 @@ it('can generate FMLC with double-byes in consolation', () => {
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 14,
-    expectedPositionsAssignedCount: 14,
+    expectedByeAssignments: 0,
+    expectedPositionsAssignedCount: 0,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 0, 0, 0],
-    expectedRoundUpcoming: [0, 0],
+    expectedRoundPending: [0, 4, 2, 1],
+    expectedRoundUpcoming: [8, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 0, 0, 1],
+    expectedRoundPending: [8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds

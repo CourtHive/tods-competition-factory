@@ -1,6 +1,6 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getMatchUpLinks, getTargetLink } from '../../getters/linkGetter';
+import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { positionActions } from './positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
@@ -60,7 +60,11 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
 
   const {
     links: { source },
-  } = getMatchUpLinks({ drawDefinition, matchUp, structureId });
+  } = getRoundLinks({
+    drawDefinition,
+    roundNumber: matchUp.roundNumber,
+    structureId,
+  });
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
   const winnerTargetLink = getTargetLink({ source, subject: WINNER });
 

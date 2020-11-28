@@ -38,6 +38,7 @@ import {
   NO_DRAW_POSITIONS_AVAILABLE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getStructureLinks } from '../../getters/linkGetter';
 
 export function assignDrawPositionBye({
   drawDefinition,
@@ -104,6 +105,19 @@ export function assignDrawPositionBye({
       } = positionTargets({ drawDefinition, matchUpId });
 
       if (loserMatchUp) {
+        // find all links which target the same roundNumber of structure within which loserMatchUp occurs
+        const {
+          links: { target: linksTargetingStructure },
+        } = getStructureLinks({
+          drawDefinition,
+          roundNumber: loserMatchUp.roundNumber,
+          structureId: loserTargetLink.target.structureId,
+        });
+
+        const linkCondition = linksTargetingStructure.find(
+          link => link.linkCondition
+        );
+
         // loserMatchUp must have both drawPositions defined
         const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
           f => f
@@ -120,13 +134,19 @@ export function assignDrawPositionBye({
         const targetDrawPosition =
           loserMatchUp.drawPositions[targetDrawPositionIndex];
 
-        const result = assignDrawPositionBye({
-          drawDefinition,
-          structureId: loserTargetLink.target.structureId,
-          drawPosition: targetDrawPosition,
-        });
-        if (result.error) {
-          console.log({ result });
+        // don't assign BYE for FMLC
+        // TODO: make this more explicit
+        const targetBye = !linkCondition;
+
+        if (targetBye) {
+          const result = assignDrawPositionBye({
+            drawDefinition,
+            structureId: loserTargetLink.target.structureId,
+            drawPosition: targetDrawPosition,
+          });
+          if (result.error) {
+            console.log({ result });
+          }
         }
       }
 

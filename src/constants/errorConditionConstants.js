@@ -32,6 +32,7 @@ export const INVALID_SEED_NUMBER = 'Invalid seedNumber';
 
 export const MISSING_TARGET_LINK = 'Missing targetLink';
 
+export const MISSING_ROUND_NUMBER = 'Missing roundNumber';
 export const MISSING_STRUCTURE_ID = 'Missing structureId';
 export const STRUCTURE_NOT_FOUND = 'structure not found';
 export const MISSING_STRUCTURES = 'Missing structures';
@@ -160,6 +161,7 @@ export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
+  MISSING_ROUND_NUMBER,
   PARTICIPANT_PAIR_EXISTS,
   INVALID_EVENT_TYPE,
   MISSING_PARTICIPANT_ROLE,
