@@ -2,11 +2,11 @@ import { tournamentRecordWithParticipants } from '../primitives/generateTourname
 import { tournamentEngine } from '../../../tournamentEngine';
 import { drawEngine } from '../../../drawEngine';
 
-import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
