@@ -23,6 +23,7 @@ import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
+  uuids,
   stage = MAIN,
   stageSequence = 1,
   structureName = MAIN,
@@ -44,6 +45,7 @@ export function generateRoundRobin({
       structureIndex,
       finishingPosition,
       structureType: ITEM,
+      structureId: uuids?.pop(),
       structureName: `Group ${structureIndex}`,
       matchUps: roundRobinMatchUps({ groupSize: groupSize, structureIndex }),
     })
@@ -58,6 +60,7 @@ export function generateRoundRobin({
     seedingProfile,
     finishingPosition,
     structureType: CONTAINER,
+    structureId: uuids?.pop(),
   });
 
   drawDefinition.structures.push(structure);
@@ -70,6 +73,7 @@ export function generateRoundRobin({
 // groups of finishing drawPositions which playoff
 export function generateRoundRobinWithPlayOff(props) {
   const {
+    uuids,
     drawDefinition,
     matchUpFormat,
     playoffMatchUpFormat,
@@ -125,12 +129,13 @@ export function generateRoundRobinWithPlayOff(props) {
         const { matchUps } = treeMatchUps({ drawSize });
 
         const playoffStructure = structureTemplate({
-          stage: PLAY_OFF,
           matchUps,
           stageOrder,
           stageSequence,
-          matchUpFormat: playoffMatchUpFormat || matchUpFormat,
+          stage: PLAY_OFF,
+          structureId: uuids?.pop(),
           structureName: playoffGroup.structureName,
+          matchUpFormat: playoffMatchUpFormat || matchUpFormat,
         });
 
         drawDefinition.structures.push(playoffStructure);
@@ -142,6 +147,7 @@ export function generateRoundRobinWithPlayOff(props) {
         drawDefinition.links.push(playoffLink);
         return playoffStructure;
       } else if (playoffDrawType === FMLC) {
+        const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
         const {
           mainStructure: playoffStructure,
           consolationStructure,
@@ -149,6 +155,7 @@ export function generateRoundRobinWithPlayOff(props) {
         } = firstMatchLoserConsolation({
           drawSize,
           stage: PLAY_OFF,
+          uuids: uuidsFMLC,
           structureName: playoffGroup.structureName,
         });
         const playoffLink = generatePlayoffLink({
@@ -224,7 +231,7 @@ function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
   });
 }
 
-function roundRobinMatchUps({ groupSize, structureIndex }) {
+function roundRobinMatchUps({ groupSize, structureIndex, uuids }) {
   const drawPositionOffset = (structureIndex - 1) * groupSize;
   const drawPositions = generateRange(
     1 + drawPositionOffset,
@@ -256,7 +263,7 @@ function roundRobinMatchUps({ groupSize, structureIndex }) {
       roundNumber,
       drawPositions,
       structureIndex,
-      matchUpId: UUID(),
+      matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: TO_BE_PLAYED,
     };
     return matchUp;

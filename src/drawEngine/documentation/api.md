@@ -206,6 +206,16 @@ The structure of an **_assignment object_** is as follows:
 
 ---
 
+## getParticipantIdFinishingPositions
+
+Returns the range of finishing positions for all participants
+
+- @param {string} drawId - drawId of target draw within a tournament
+- @param {object[]} tournamentParticipants - optional - to return matchUps with inContext participant details
+- @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
+
+---
+
 ## getRoundMatchUps
 
 ---

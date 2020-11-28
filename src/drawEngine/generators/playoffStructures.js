@@ -10,8 +10,9 @@ export function playoff(props) {
 }
 
 export function playoffStructures({
-  stage = MAIN,
+  uuids,
   drawSize,
+  stage = MAIN,
   roundOffset = 0,
   drawDefinition,
   stageSequence = 1,
@@ -37,6 +38,7 @@ export function playoffStructures({
     stageSequence,
     structureName,
     structureAbbreviation,
+    structureId: uuids?.pop(),
   });
 
   drawDefinition.structures.push(structure);

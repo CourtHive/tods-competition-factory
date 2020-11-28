@@ -15,6 +15,7 @@ export function generateDoubleElimination({
   structureName,
   drawDefinition,
   drawSize,
+  uuids,
 }) {
   // feedIn MAIN structure needs 1st round feed and final round feed
   const { matchUps } = feedInMatchUps({
@@ -22,10 +23,11 @@ export function generateDoubleElimination({
     linkFedFinishingRoundNumbers: [1],
   });
   const mainStructure = structureTemplate({
-    matchUps,
     structureName: structureName || MAIN,
+    structureId: uuids?.pop(),
     stageSequence: 1,
     stage: MAIN,
+    matchUps,
   });
 
   drawDefinition.structures.push(mainStructure);
@@ -40,9 +42,10 @@ export function generateDoubleElimination({
 
   const consolationStructure = structureTemplate({
     matchUps: consolationMatchUps,
-    stage: MAIN,
+    structureId: uuids?.pop(),
     structureName: BACKDRAW,
     stageSequence: 2,
+    stage: MAIN,
   });
 
   drawDefinition.structures.push(consolationStructure);
@@ -50,9 +53,10 @@ export function generateDoubleElimination({
   const { matchUps: deciderMatchUps } = treeMatchUps({ drawSize: 2 });
   const deciderStructure = structureTemplate({
     matchUps: deciderMatchUps,
-    stage: MAIN,
+    structureId: uuids?.pop(),
     structureName: DECIDER,
     stageSequence: 3,
+    stage: MAIN,
   });
 
   drawDefinition.structures.push(deciderStructure);

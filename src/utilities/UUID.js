@@ -4,6 +4,17 @@
   https://stackoverflow.com/questions/105034/how-to-create-guid-uuid?rq=1
 */
 
+import { generateRange } from './arrays';
+
+/**
+ * generate a given number of UUIDs
+ *
+ * @param {number} count - number of UUIDs to generate
+ */
+export function UUIDS(count = 1) {
+  return generateRange(0, count).map(UUID);
+}
+
 export function UUID() {
   const lut = [];
 

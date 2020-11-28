@@ -11,8 +11,9 @@ import {
 // export function feedInChampionship({drawDefinition, feedsFromFinal, feedRounds}={}) {
 export function feedInChampionship(props = {}) {
   const {
-    stage = MAIN,
+    uuids,
     feedRounds,
+    stage = MAIN,
     structureName,
     drawDefinition,
     feedsFromFinal,
@@ -23,10 +24,11 @@ export function feedInChampionship(props = {}) {
   const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
   const mainStructure = structureTemplate({
-    stage: MAIN,
     matchUps,
-    structureName: structureName || MAIN,
+    stage: MAIN,
     stageSequence,
+    structureId: uuids?.pop(),
+    structureName: structureName || MAIN,
   });
 
   drawDefinition.structures.push(mainStructure);
@@ -41,10 +43,11 @@ export function feedInChampionship(props = {}) {
   });
 
   const consolationStructure = structureTemplate({
-    stage: CONSOLATION,
-    matchUps: consolationMatchUps,
-    structureName: CONSOLATION,
     stageSequence: 1,
+    stage: CONSOLATION,
+    structureId: uuids?.pop(),
+    structureName: CONSOLATION,
+    matchUps: consolationMatchUps,
   });
 
   drawDefinition.structures.push(consolationStructure);

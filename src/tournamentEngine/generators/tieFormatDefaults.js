@@ -1,12 +1,12 @@
 import { UUID } from '../../utilities';
 
-export const tieFormatDefaults = () => ({
+export const tieFormatDefaults = ({ uuids } = {}) => ({
   winCriteria: {
     valueGoal: 5,
   },
   collectionDefinitions: [
     {
-      collectionId: UUID(),
+      collectionId: uuids?.pop() || UUID(),
       collectionName: 'Doubles',
       matchUpType: 'DOUBLES',
       matchUpCount: 3,
@@ -14,7 +14,7 @@ export const tieFormatDefaults = () => ({
       matchUpValue: 1,
     },
     {
-      collectionId: UUID(),
+      collectionId: uuids?.pop() || UUID(),
       collectionName: 'Singles',
       matchUpType: 'SINGLES',
       matchUpCount: 6,

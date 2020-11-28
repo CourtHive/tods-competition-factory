@@ -15,10 +15,11 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateCurtisConsolation({
+  uuids,
+  drawDefinition,
   stageSequence = 1,
   structureName = MAIN,
   finishingPositionOffset,
-  drawDefinition,
 }) {
   const drawSize = stageDrawPositionsCount({ stage: MAIN, drawDefinition });
 
@@ -31,6 +32,7 @@ export function generateCurtisConsolation({
     stage: MAIN,
     structureName,
     stageSequence,
+    structureId: uuids?.pop(),
   });
 
   drawDefinition.structures.push(mainStructure);
@@ -43,6 +45,7 @@ export function generateCurtisConsolation({
       index,
       roundOffset,
       stageSequence,
+      structureId: uuids?.pop(),
     });
 
     drawDefinition.structures.push(consolationStructure);
@@ -70,10 +73,11 @@ export function generateCurtisConsolation({
       finishingPositionOffset: 2,
     });
     const playoffStructure = structureTemplate({
+      structureId: uuids?.pop(),
       matchUps: playoffMatchUps,
-      stage: MAIN,
       structureName: PLAY_OFF,
       stageSequence: 2,
+      stage: MAIN,
     });
 
     const playoffLink = {
@@ -105,6 +109,7 @@ export function generateCurtisConsolation({
 function consolationFeedStructure({
   drawSize,
   index,
+  structureId,
   roundOffset = 0,
   stageSequence = 1,
 }) {
@@ -126,6 +131,7 @@ function consolationFeedStructure({
     stage: CONSOLATION,
     structureName,
     stageSequence,
+    structureId,
   });
 
   return { consolationStructure, consolationRoundsCount };

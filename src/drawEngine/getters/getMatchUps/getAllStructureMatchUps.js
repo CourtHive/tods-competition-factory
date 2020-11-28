@@ -86,7 +86,7 @@ export function getAllStructureMatchUps({
     drawDefinition,
     structure,
   });
-  const { structureId, structureName } = structure;
+  const { structureId, structureName, stage, stageSequence } = structure;
   const { drawId } = drawDefinition || {};
 
   // a collectionDefinition can be found as a propery of tieFormat
@@ -104,7 +104,12 @@ export function getAllStructureMatchUps({
         ...structure.structures.map(structure => {
           const { structureId } = structure;
           return structure.matchUps.map(matchUp => {
-            return Object.assign(makeDeepCopy(matchUp), { structureId });
+            return Object.assign(makeDeepCopy(matchUp), {
+              structureId,
+              structureName,
+              stageSequence,
+              stage,
+            });
           });
         })
       );
@@ -209,8 +214,10 @@ export function getAllStructureMatchUps({
         roundName,
         structureId,
         matchUpTieId,
-        structureName,
         matchUpStatus,
+        structureName,
+        stageSequence,
+        stage,
       },
       makeDeepCopy(matchUp),
       context

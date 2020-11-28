@@ -7,11 +7,12 @@ import { UUID } from '../../../utilities';
 
 export function createGroupParticipant({
   groupName,
+  participantId,
   individualParticipantIds = [],
   participantRole = OTHER,
 }) {
   const groupParticipant = {
-    participantId: UUID(),
+    participantId: participantId || UUID(),
     participantType: GROUP,
     participantRole,
     name: groupName,

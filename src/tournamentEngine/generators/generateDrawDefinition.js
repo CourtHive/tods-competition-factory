@@ -23,6 +23,7 @@ export function generateDrawDefinition(props) {
   let { structureOptions } = props;
 
   const {
+    uuids,
     customName,
     matchUpType,
     seedingProfile,
@@ -133,6 +134,7 @@ export function generateDrawDefinition(props) {
     qualifyingRound,
     qualifyingPositions,
 
+    uuids,
     matchUpFormat,
     playoffMatchUpFormat,
   });

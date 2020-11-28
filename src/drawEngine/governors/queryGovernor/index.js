@@ -28,6 +28,7 @@ import { findStructure } from '../../getters/findStructure';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getParticipantIdFinishingPositions } from './finishingPositions';
 
 /*
   return an array of all matchUps within a drawDefinition
@@ -51,13 +52,15 @@ function allDrawMatchUps(props) {
 }
 
 const queryGovernor = {
-  getParticipantIdMatchUps,
   allPlayoffPositionsFilled,
   isCompletedStructure,
   getStructureMatchUps,
   allStructureMatchUps,
   allDrawMatchUps,
   drawMatchUps,
+
+  getParticipantIdMatchUps,
+  getParticipantIdFinishingPositions,
 
   structureActions,
   matchUpActions,

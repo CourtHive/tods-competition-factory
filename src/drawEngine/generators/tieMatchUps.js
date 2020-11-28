@@ -1,6 +1,6 @@
 import { generateRange, UUID } from '../../utilities';
 
-export function generateTieMatchUps({ tieFormat }) {
+export function generateTieMatchUps({ tieFormat, uuids }) {
   const { collectionDefinitions } = tieFormat || {};
 
   const tieMatchUps = (collectionDefinitions || [])
@@ -16,7 +16,7 @@ export function generateTieMatchUps({ tieFormat }) {
           matchUpType,
           matchUpFormat,
           collectionPosition,
-          matchUpId: UUID(),
+          matchUpId: uuids?.pop() || UUID(),
           sides: [{ SideNumber: 1 }, { SideNumber: 2 }],
         };
 

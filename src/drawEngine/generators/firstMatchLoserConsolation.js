@@ -15,6 +15,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function firstMatchLoserConsolation(props) {
   let { drawSize, consolationStructureName } = props;
   const {
+    uuids,
     stage = MAIN,
     structureName,
     drawDefinition,
@@ -28,6 +29,7 @@ export function firstMatchLoserConsolation(props) {
     stage,
     matchUps,
     stageSequence,
+    structureId: uuids?.pop(),
     structureName: structureName || MAIN,
   });
 
@@ -47,9 +49,10 @@ export function firstMatchLoserConsolation(props) {
     (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
 
   const consolationStructure = structureTemplate({
-    stage: CONSOLATION,
-    matchUps: consolationMatchUps,
     stageSequence: 1,
+    stage: CONSOLATION,
+    structureId: uuids?.pop(),
+    matchUps: consolationMatchUps,
     structureName: consolationStructureName,
   });
 

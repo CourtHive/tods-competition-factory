@@ -4,7 +4,12 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
 
 export function generateTeamsFromParticipantAttribute(props) {
-  const { tournamentRecord, personAttribute, participantAttribute } = props;
+  const {
+    tournamentRecord,
+    participantAttribute,
+    personAttribute,
+    uuids,
+  } = props;
 
   const teams = {};
   const participants = tournamentRecord.participants || [];
@@ -21,7 +26,7 @@ export function generateTeamsFromParticipantAttribute(props) {
       if (!Object.keys(teams).includes(attributeValue)) {
         teams[attributeValue] = {
           name: attributeValue,
-          participantId: UUID(),
+          participantId: uuids?.pop() || UUID(),
           participantType: TEAM,
           participantRole: COMPETITOR,
           individualParticipantIds: [],

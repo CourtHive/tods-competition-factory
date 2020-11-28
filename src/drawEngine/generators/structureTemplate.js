@@ -3,6 +3,7 @@ import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 
 export const structureTemplate = ({
   stage,
+  structureId,
   matchUps = [],
   structures,
   stageOrder,
@@ -26,7 +27,7 @@ export const structureTemplate = ({
     stageSequence,
     finishingPosition,
     seedAssignments,
-    structureId: UUID(),
+    structureId: structureId || UUID(),
   };
 
   if (stage) structure.stage = stage;

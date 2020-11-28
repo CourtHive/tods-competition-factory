@@ -48,6 +48,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function generateDrawType(props = {}) {
   const {
+    uuids,
     stage = MAIN,
     structureName,
     stageSequence = 1,
@@ -92,12 +93,13 @@ export function generateDrawType(props = {}) {
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(props);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
       const structure = structureTemplate({
+        stage,
         matchUps,
+        stageSequence,
         qualifyingRound,
+        structureId: uuids?.pop(),
         roundLimit: derivedRoundLimit,
         structureName: structureName || stage,
-        stageSequence,
-        stage,
       });
 
       drawDefinition.structures.push(structure);
@@ -124,9 +126,10 @@ export function generateDrawType(props = {}) {
       const { matchUps } = feedInMatchUps({ drawSize });
 
       const structure = structureTemplate({
-        matchUps,
         structureName: structureName || stage,
+        structureId: uuids?.pop(),
         stageSequence,
+        matchUps,
         stage,
       });
 
