@@ -11,6 +11,7 @@ import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { firstMatchLoserConsolation } from '../../generators/firstMatchLoserConsolation';
+import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import {
   generateRoundRobin,
   generateRoundRobinWithPlayOff,
@@ -33,6 +34,7 @@ import {
   ELIMINATION,
   DOUBLE_ELIMINATION,
   FEED_IN_CHAMPIONSHIP,
+  FIRST_ROUND_LOSER_CONSOLATION,
   ROUND_ROBIN_WITH_PLAYOFF,
   COMPASS_ATTRIBUTES,
   OLYMPIC_ATTRIBUTES,
@@ -138,6 +140,7 @@ export function generateDrawType(props = {}) {
     },
 
     [FMLC]: () => firstMatchLoserConsolation(props),
+    [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(props),
     [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
     [FICQF]: () =>
       feedInChampionship(Object.assign(props, { feedsFromFinal: 2 })),
