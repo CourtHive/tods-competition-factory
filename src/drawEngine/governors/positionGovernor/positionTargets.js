@@ -13,7 +13,11 @@ import {
 /*
   positionTargets 
 */
-export function positionTargets({ drawDefinition, matchUpId }) {
+export function positionTargets({
+  matchUpId,
+  drawDefinition,
+  sourceMatchUpWinnerDrawPositionIndex,
+}) {
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
     matchUpId,
@@ -22,6 +26,7 @@ export function positionTargets({ drawDefinition, matchUpId }) {
   const { finishingPosition } = structure;
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({
+      sourceMatchUpWinnerDrawPositionIndex,
       drawDefinition,
       matchUp,
       structure,
@@ -31,13 +36,18 @@ export function positionTargets({ drawDefinition, matchUpId }) {
   }
 }
 
-function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
+function targetByRoundOutcome({
+  matchUp,
+  structure,
+  drawDefinition,
+  sourceMatchUpWinnerDrawPositionIndex,
+}) {
   const {
     links: { source },
   } = getRoundLinks({
     drawDefinition,
-    structureId: structure.structureId,
     roundNumber: matchUp.roundNumber,
+    structureId: structure.structureId,
   });
   const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
   const sourceRoundMatchUpCount = matchUps.reduce((count, currentMatchUp) => {
@@ -46,7 +56,7 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
       : count;
   }, 0);
 
-  const sourceRoundPosition = matchUp.roundPosition;
+  const { roundPosition: sourceRoundPosition } = matchUp;
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
   const {
     matchUp: loserMatchUp,
@@ -56,6 +66,7 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
     sourceRoundPosition,
     sourceRoundMatchUpCount,
     targetLink: loserTargetLink,
+    sourceMatchUpWinnerDrawPositionIndex,
   });
 
   let winnerMatchUp, winnerMatchUpDrawPositionIndex;
@@ -69,6 +80,7 @@ function targetByRoundOutcome({ drawDefinition, matchUp, structure }) {
       sourceRoundPosition,
       sourceRoundMatchUpCount,
       targetLink: winnerTargetLink,
+      sourceMatchUpWinnerDrawPositionIndex,
     }));
   } else {
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({

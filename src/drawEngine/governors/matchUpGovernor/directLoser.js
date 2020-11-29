@@ -19,10 +19,32 @@ export function directLoser({
 }) {
   let error;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
+
+  const sourceStructureId = loserTargetLink.source.structureId;
+  const { structure } = findStructure({
+    drawDefinition,
+    structureId: sourceStructureId,
+  });
+  const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    inContext: true,
+    drawDefinition,
+    structure,
+  });
+
+  const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
+    matchUp.drawPositions.includes(loserDrawPosition)
+  );
+
+  const loserDrawPositionWins = drawPositionMatchUps.filter(matchUp => {
+    const drawPositionSide = matchUp.sides.find(
+      side => side.drawPosition === loserDrawPosition
+    );
+    return drawPositionSide?.sideNumber === matchUp.winningSide;
+  });
+
   const targetMatchUpDrawPosition =
     targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
 
-  const sourceStructureId = loserTargetLink.source.structureId;
   const {
     positionAssignments: sourcePositionAssignments,
   } = structureAssignedDrawPositions({
@@ -56,58 +78,46 @@ export function directLoser({
       return inTarget && unfilled;
     })
     .map(assignment => assignment.drawPosition);
-  const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
-    targetMatchUpDrawPosition
-  );
 
   const targetPositionIsBye = !!targetPositionAssignments.find(
     assignment => assignment.bye === true
   );
 
+  const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
+    targetMatchUpDrawPosition
+  );
+
   const loserLinkCondition = loserTargetLink.linkCondition;
+  const FirstMatchLoss =
+    loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
+
   if (loserLinkCondition) {
-    const { structure } = findStructure({
-      drawDefinition,
-      structureId: sourceStructureId,
-    });
-    const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
-      inContext: true,
-      drawDefinition,
-      structure,
-    });
+    if (FirstMatchLoss) {
+      const drawPosition =
+        targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
 
-    const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
-      matchUp.drawPositions.includes(loserDrawPosition)
-    );
-
-    const loserDrawPositionWins = drawPositionMatchUps.filter(matchUp => {
-      const drawPositionSide = matchUp.sides.find(
-        side => side.drawPosition === loserDrawPosition
+      const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
+        drawPosition
       );
-      return drawPositionSide?.sideNumber === matchUp.winningSide;
-    });
 
-    const meetsCondition =
-      loserLinkCondition === FIRST_MATCHUP &&
-      loserDrawPositionWins.length === 0;
-
-    if (meetsCondition) {
       const result =
         targetPositionIsBye &&
         clearDrawPosition({
           drawDefinition,
           structureId: targetStructureId,
-          drawPosition: targetMatchUpDrawPosition,
+          drawPosition,
         });
 
       // drawPosition would not clear if player advanced by BYE had progressed
       if (result.success || targetDrawPositionIsUnfilled) {
         assignDrawPosition({
+          drawPosition,
           drawDefinition,
           structureId: targetStructureId,
           participantId: loserParticipantId,
-          drawPosition: targetMatchUpDrawPosition,
         });
+      } else {
+        console.log({ result });
       }
     } else {
       // if participant won't be placed in targetStructure, place a BYE
@@ -116,7 +126,9 @@ export function directLoser({
         structureId: targetStructureId,
         drawPosition: targetMatchUpDrawPosition,
       });
-      if (result.error) error = result.error;
+      if (result.error) {
+        error = result.error;
+      }
     }
 
     // get participant's drawPosition in source structure

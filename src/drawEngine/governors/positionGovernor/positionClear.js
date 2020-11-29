@@ -110,10 +110,18 @@ export function clearDrawPosition({
       undefined
     );
 
+    const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
+      drawPosition
+    );
+
     const {
       targetLinks: { loserTargetLink, winnerTargetLink },
       targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = positionTargets({ drawDefinition, matchUpId });
+    } = positionTargets({
+      matchUpId,
+      drawDefinition,
+      sourceMatchUpWinnerDrawPositionIndex,
+    });
 
     // clear Directed Byes
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {

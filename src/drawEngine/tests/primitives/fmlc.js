@@ -8,7 +8,12 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
-export function generateFMLC({ drawSize, seedsCount, participantsCount }) {
+export function generateFMLC({
+  drawSize,
+  seedsCount,
+  participantsCount,
+  policyDefinition,
+}) {
   const drawType = FMLC;
 
   drawEngine.reset();
@@ -26,7 +31,9 @@ export function generateFMLC({ drawSize, seedsCount, participantsCount }) {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   const { structureId: consolationStructureId } = consolationStructure;
 
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicy({
+    policyDefinition: policyDefinition || SEEDING_POLICY,
+  });
 
   const participants = generateRange(0, participantsCount).map(i => ({
     participantId: `fmlc-uuid${i + 1}`,

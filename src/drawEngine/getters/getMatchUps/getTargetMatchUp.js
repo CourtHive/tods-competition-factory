@@ -2,11 +2,11 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 
 import {
-  TOP_DOWN,
-  BOTTOM_UP,
-  RANDOM,
   DRAW,
+  BOTTOM_UP,
   LOSS_POSITION,
+  RANDOM,
+  TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
 
@@ -17,6 +17,7 @@ export function getTargetMatchUp({
   targetLink,
   sourceRoundPosition,
   sourceRoundMatchUpCount,
+  sourceMatchUpWinnerDrawPositionIndex,
 }) {
   if (!targetLink) return { error: MISSING_TARGET_LINK };
 
@@ -43,7 +44,7 @@ export function getTargetMatchUp({
   // usually target structures are half the size of source structures
   // which means the targetRoundPosition for target matchUps is sourceRoundPosition * 0.5
   let targetRoundPosition = Math.ceil(matchUpCountFactor * sourceRoundPosition);
-  // the index in the target matchUp.drawPositions[] array is as follows
+  // the index in the target matchUp.drawPositions[] array is as follows, for ITF_SEEDING policy only!
   let matchUpDrawPositionIndex = 1 - (sourceRoundPosition % 2);
 
   // when more than one source structure or more than one source structure round feed the same round in the target structure
@@ -78,6 +79,11 @@ export function getTargetMatchUp({
       LOSS_POSITION is possible when a loss occurs in a second round to which a participant has advanced via BYE or DEFAULT/WALKOVER
     */
     targetRoundPosition = sourceRoundPosition;
+
+    // always return sourceMatchUpWinnerDrawPositionIndex for FirstMatchLoss / LOSS_POSITION
+    if (sourceMatchUpWinnerDrawPositionIndex !== undefined) {
+      matchUpDrawPositionIndex = sourceMatchUpWinnerDrawPositionIndex;
+    }
   } else if (feedProfile === RANDOM) {
     /*
       RANDOM feed profile selects a random position from available

@@ -62,8 +62,10 @@ export function assignDrawPositionBye({
 
   if (!positionsAvailable) return { error: NO_DRAW_POSITIONS_AVAILABLE };
   if (!positionState) return { error: INVALID_DRAW_POSITION };
-  if (drawPositionFilled(positionState))
+  if (drawPositionFilled(positionState)) {
+    console.log({ drawPosition, positionState });
     return { error: DRAW_POSITION_ASSIGNED };
+  }
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
   positionAssignments.forEach(assignment => {
@@ -97,12 +99,20 @@ export function assignDrawPositionBye({
         undefined
       );
 
+      const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
+        drawPosition
+      );
+
       // if there is a linked draw then BYE must also be placed there
       // This must be propagated through compass draw, for instance
       const {
         targetLinks: { loserTargetLink },
         targetMatchUps: { loserMatchUp, winnerMatchUp },
-      } = positionTargets({ drawDefinition, matchUpId });
+      } = positionTargets({
+        matchUpId,
+        drawDefinition,
+        sourceMatchUpWinnerDrawPositionIndex,
+      });
 
       if (loserMatchUp) {
         // find all links which target the same roundNumber of structure within which loserMatchUp occurs
@@ -145,7 +155,7 @@ export function assignDrawPositionBye({
             drawPosition: targetDrawPosition,
           });
           if (result.error) {
-            console.log({ result });
+            console.log('targetBye', { result });
           }
         }
       }

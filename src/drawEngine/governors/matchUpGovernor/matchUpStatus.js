@@ -41,7 +41,13 @@ export function setMatchUpStatus(props) {
   if (!matchUp) {
     errors.push({ error: MATCHUP_NOT_FOUND });
   } else {
-    const targetData = positionTargets({ drawDefinition, matchUpId });
+    const sourceMatchUpWinnerDrawPositionIndex =
+      winningSide && 1 - (2 - winningSide);
+    const targetData = positionTargets({
+      matchUpId,
+      drawDefinition,
+      sourceMatchUpWinnerDrawPositionIndex,
+    });
     Object.assign(props, { matchUp, structure, targetData });
     const {
       targetMatchUps: { loserMatchUp, winnerMatchUp },
@@ -49,9 +55,8 @@ export function setMatchUpStatus(props) {
 
     // if neither loserMatchUp or winnerMatchUp have winningSide
     // => score matchUp and advance participants along links
-    const loserMatchUpHasWinningSide = loserMatchUp && loserMatchUp.winningSide;
-    const winnerMatchUpHasWinningSide =
-      winnerMatchUp && winnerMatchUp.winningSide;
+    const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
+    const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
     const activeDownstream =
       loserMatchUpHasWinningSide || winnerMatchUpHasWinningSide;
 
