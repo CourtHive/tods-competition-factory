@@ -1,15 +1,16 @@
 import { generateRange } from '../../utilities';
-import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 import { treeMatchUps } from './eliminationTree';
 import structureTemplate from './structureTemplate';
+
+import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function playoff(props) {
   const { structure, childStructures } = playoffStructures(props);
   return Object.assign({ structure, childStructures }, SUCCESS);
 }
 
-export function playoffStructures({
+function playoffStructures({
   uuids,
   drawSize,
   stage = MAIN,

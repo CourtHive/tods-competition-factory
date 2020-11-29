@@ -1,6 +1,7 @@
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
+import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { drawPositionsHash } from './roundRobinGroups';
@@ -19,7 +20,6 @@ import {
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
@@ -103,6 +103,9 @@ export function generateRoundRobinWithPlayOff(props) {
     { finishingPositions: [1], structureName: PLAY_OFF },
   ];
 
+  // keep track of how many playoff positions have been allocated to playoff structures
+  let finishingPositionOffset = 0;
+
   const playoffStructures = playoffGroups
     .map((playoffGroup, order) => {
       const stageOrder = order + 1;
@@ -123,10 +126,14 @@ export function generateRoundRobinWithPlayOff(props) {
       }
 
       const playoffDrawType = playoffGroup.drawType || ELIMINATION;
-      const drawSize = nextPowerOf2(groupCount * finishingPositions.length);
+      const participantsInDraw = groupCount * finishingPositions.length;
+      const drawSize = nextPowerOf2(participantsInDraw);
 
       if (playoffDrawType === ELIMINATION) {
-        const { matchUps } = treeMatchUps({ drawSize });
+        const { matchUps } = treeMatchUps({
+          drawSize,
+          finishingPositionOffset,
+        });
 
         const playoffStructure = structureTemplate({
           matchUps,
@@ -145,6 +152,9 @@ export function generateRoundRobinWithPlayOff(props) {
           finishingPositions,
         });
         drawDefinition.links.push(playoffLink);
+        // update *after* value has been passed into current playoff structure generator
+        finishingPositionOffset += participantsInDraw;
+
         return playoffStructure;
       } else if (playoffDrawType === FMLC) {
         const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
@@ -156,6 +166,7 @@ export function generateRoundRobinWithPlayOff(props) {
           drawSize,
           stage: PLAY_OFF,
           uuids: uuidsFMLC,
+          finishingPositionOffset,
           structureName: playoffGroup.structureName,
         });
         const playoffLink = generatePlayoffLink({
@@ -167,8 +178,12 @@ export function generateRoundRobinWithPlayOff(props) {
         drawDefinition.structures.push(playoffStructure);
         drawDefinition.structures.push(consolationStructure);
         drawDefinition.links.push(consolationLink);
+        // update *after* value has been passed into current playoff structure generator
+        finishingPositionOffset += participantsInDraw;
+
         return playoffStructure;
       }
+
       return undefined;
     })
     .filter(f => f);

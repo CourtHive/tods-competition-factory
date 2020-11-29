@@ -20,7 +20,7 @@ export function firstMatchLoserConsolation(props) {
     structureName,
     drawDefinition,
     stageSequence = 1,
-    finishingPositionOffset,
+    finishingPositionOffset = 0,
   } = props;
 
   drawSize = drawSize || stageDrawPositionsCount({ stage, drawDefinition });
@@ -41,7 +41,7 @@ export function firstMatchLoserConsolation(props) {
 
   const { matchUps: consolationMatchUps } = treeMatchUps({
     drawSize: consolationDrawPositions,
-    finishingPositionOffset: consolationDrawPositions,
+    finishingPositionOffset: finishingPositionOffset + consolationDrawPositions,
   });
 
   consolationStructureName =
