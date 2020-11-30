@@ -177,7 +177,9 @@ export function addParticipants({
       });
     }
   } else {
-    return { error: 'No new participants to add' };
+    return Object.assign({}, SUCCESS, {
+      message: 'No new participants to add',
+    });
   }
 }
 
