@@ -128,7 +128,7 @@ it('can direct winners and losers', () => {
   });
 
   // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
-  // this tests first match loss in the second round for participant who received a first round BYE
+  // this tests first matchUp loss in the second round for participant who received a first round BYE
   // the participant in drawPosition: 1 should go into the consolation structure
   result = completeMatchUp({
     structureId: mainStructureId,

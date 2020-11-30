@@ -2,7 +2,7 @@ import { FORMAT_ATP_DOUBLES } from './formatConstants';
 import { MATCH_TIEBREAK_JOINER } from '../constants';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 
-it('recognizes incomplete match tiebreaks', () => {
+it('recognizes incomplete matchUp tiebreaks', () => {
   let message;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
@@ -42,7 +42,7 @@ it('recognizes incomplete match tiebreaks', () => {
   expect(matchUp.winningSide).toEqual(2);
 });
 
-it('can support 2nd set tiebreaks with 3rd set match tiebreaks', () => {
+it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
@@ -71,7 +71,7 @@ it('can support 2nd set tiebreaks with 3rd set match tiebreaks', () => {
   expect(matchUp.winningSide).toEqual(1);
 });
 
-it('does not allow match tiebreak scores greater than 2 digits', () => {
+it('does not allow matchUp tiebreak scores greater than 2 digits', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
@@ -91,7 +91,7 @@ it('does not allow match tiebreak scores greater than 2 digits', () => {
   expect(matchUp.winningSide).toBeUndefined();
 });
 
-it('can enter 0 for side 2 when match tiebreak open bracket and no match tiebreak score', () => {
+it('can enter 0 for side 2 when matchUp tiebreak open bracket and no matchUp tiebreak score', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 

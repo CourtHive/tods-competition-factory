@@ -6,17 +6,20 @@ import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
 */
-export function directLoser({
-  loserMatchUp,
-  drawDefinition,
-  loserTargetLink,
-  loserDrawPosition,
-  loserMatchUpDrawPositionIndex,
-}) {
+export function directLoser(props) {
+  const {
+    loserMatchUp,
+    drawDefinition,
+    loserTargetLink,
+    loserDrawPosition,
+    loserMatchUpDrawPositionIndex,
+  } = props;
+
   let error;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
 
@@ -88,11 +91,11 @@ export function directLoser({
   );
 
   const loserLinkCondition = loserTargetLink.linkCondition;
-  const FirstMatchLoss =
+  const firstMatchUpLoss =
     loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
 
   if (loserLinkCondition) {
-    if (FirstMatchLoss) {
+    if (firstMatchUpLoss) {
       const drawPosition =
         targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
 
@@ -116,8 +119,25 @@ export function directLoser({
           structureId: targetStructureId,
           participantId: loserParticipantId,
         });
+
+        if (
+          winnerHadBye({
+            sourceMatchUps,
+            loserDrawPosition,
+            drawPositionMatchUps,
+          })
+        ) {
+          const result = assignDrawPositionBye({
+            drawDefinition,
+            structureId: targetStructureId,
+            drawPosition: targetMatchUpDrawPosition,
+          });
+          if (result.error) {
+            error = result.error;
+          }
+        }
       } else {
-        console.log({ result });
+        error = result.error;
       }
     } else {
       // if participant won't be placed in targetStructure, place a BYE
@@ -158,4 +178,25 @@ export function directLoser({
   }
 
   return { error };
+}
+
+function winnerHadBye({
+  sourceMatchUps,
+  loserDrawPosition,
+  drawPositionMatchUps,
+}) {
+  const sourceMatchUp = drawPositionMatchUps.reduce(
+    (sourceMatchUp, matchUp) =>
+      !sourceMatchUp || matchUp.roundNumber > sourceMatchUp.roundNumber
+        ? matchUp
+        : sourceMatchUp,
+    undefined
+  );
+  const winnerDrawPosition = sourceMatchUp.drawPositions.find(
+    drawPosition => drawPosition !== loserDrawPosition
+  );
+  return sourceMatchUps
+    .filter(matchUp => matchUp.drawPositions.includes(winnerDrawPosition))
+    .map(matchUp => matchUp.matchUpStatus)
+    .includes(BYE);
 }

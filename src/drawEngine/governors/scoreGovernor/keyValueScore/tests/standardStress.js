@@ -15,7 +15,7 @@ const { generateRange, randomMember } = utilities;
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });
 
-  it('can enter retirement or default after second set if match is incomplete', () => {
+  it('can enter retirement or default after second set if matchUp is incomplete', () => {
     let matchUp = { score: undefined, sets: [], matchUpFormat };
 
     const values = [
@@ -94,7 +94,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     expect(matchUpWithValues?.winningSide).toEqual(undefined);
   });
 
-  it('can support second set match status outcomes', () => {
+  it('can support second set matchUp status outcomes', () => {
     let updated;
     let matchUp = { score: undefined, sets: [], matchUpFormat };
 
@@ -294,7 +294,7 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     expect(matchUp?.winningSide).toEqual(1);
   });
 
-  it('can support 1st set match status outcomes', () => {
+  it('can support 1st set matchUp status outcomes', () => {
     let updated;
     let matchUp = { score: undefined, sets: [], matchUpFormat };
 

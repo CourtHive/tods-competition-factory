@@ -34,10 +34,29 @@ it('can support ITF Consolation BYE placement', () => {
         .map(pair => pair.drawPosition)
     ) / 2;
 
+  const testingSideIndex = roundPositionReadyToScore < 8 ? 0 : 1;
+  const secondRoundPositionsReadyToScore = testingSideIndex ? [1, 2] : [7, 8];
+  const secondRoundDrawPositions = mainStructure.matchUps
+    .filter(
+      matchUp =>
+        matchUp.roundNumber === 2 &&
+        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition)
+    )
+    .map(matchUp => matchUp.drawPositions)
+    .flat();
+  const participantIds = mainStructure.positionAssignments
+    .filter(assignment =>
+      secondRoundDrawPositions.includes(assignment.drawPosition)
+    )
+    .map(assignment => assignment.participantId);
+
+  // these will be the losing participantIds if side 1 wins first selected matchUp and side 2 wins second selected matchUp
+  const losingParticipantIds = participantIds.slice(1, 3);
+
   const completionValues = [
     [1, roundPositionReadyToScore, 2, true],
-    // [2, 1, 1, true], // side 1 had 1st round BYE, wins matchUp
-    // [2, 2, 2, true], // side 2 had 1st round BYE, wins matchUp
+    [2, secondRoundPositionsReadyToScore[0], 1, true], // side 1 had 1st round BYE, wins matchUp
+    [2, secondRoundPositionsReadyToScore[1], 2, true], // side 2 had 1st round BYE, wins matchUp
   ];
 
   completionValues.forEach(values => {
@@ -54,22 +73,24 @@ it('can support ITF Consolation BYE placement', () => {
   const {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
-  console.log(consolationStructure.positionAssignments);
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
     assignment => !!assignment.bye
   ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
-  ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
-  expect(positionAssignmentParticipantidsCount).toEqual(1);
+  const assignedParticipantIds = consolationStructure.positionAssignments
+    .filter(assignment => !!assignment.participantId)
+    .map(assignment => assignment.participantId);
+  losingParticipantIds.forEach(participantId => {
+    expect(assignedParticipantIds.includes(participantId)).toEqual(true);
+  });
+  expect(positionAssignmentByesCount).toEqual(2);
+  expect(assignedParticipantIds.length).toEqual(3);
 });
 
 it('can support USTA Consolation BYE placement', () => {
   const drawSize = 32;
   const seedsCount = 8;
-  const participantsCount = 24;
+  const participantsCount = 17;
 
   const { mainStructureId } = generateFMLC({
     drawSize,
@@ -93,11 +114,29 @@ it('can support USTA Consolation BYE placement', () => {
         .map(pair => pair.drawPosition)
     ) / 2;
 
+  const testingSideIndex = roundPositionReadyToScore < 8 ? 0 : 1;
+  const secondRoundPositionsReadyToScore = testingSideIndex ? [1, 2] : [7, 8];
+
+  const secondRoundDrawPositions = mainStructure.matchUps
+    .filter(
+      matchUp =>
+        matchUp.roundNumber === 2 &&
+        secondRoundPositionsReadyToScore.includes(matchUp.roundPosition)
+    )
+    .map(matchUp => matchUp.drawPositions)
+    .flat();
+  const participantIds = mainStructure.positionAssignments
+    .filter(assignment =>
+      secondRoundDrawPositions.includes(assignment.drawPosition)
+    )
+    .map(assignment => assignment.participantId);
+
+  const losingParticipantIds = [participantIds[1], participantIds[3]];
+
   const completionValues = [
     [1, roundPositionReadyToScore, 2, true],
-    // [1, 4, 1, true],
-    // [2, 1, 1, true], // side 1 had 1st round BYE, wins matchUp
-    // [2, 2, 1, true], // side 1 had 1st round BYE, wins matchUp
+    [2, secondRoundPositionsReadyToScore[0], 1, true], // side 1 had 1st round BYE, wins matchUp
+    [2, secondRoundPositionsReadyToScore[1], 1, true], // side 1 had 1st round BYE, wins matchUp
   ];
 
   completionValues.forEach(values => {
@@ -118,9 +157,13 @@ it('can support USTA Consolation BYE placement', () => {
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
     assignment => !!assignment.bye
   ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
-  ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
-  expect(positionAssignmentParticipantidsCount).toEqual(1);
+  const assignedParticipantIds = consolationStructure.positionAssignments
+    .filter(assignment => !!assignment.participantId)
+    .map(assignment => assignment.participantId);
+
+  losingParticipantIds.forEach(participantId => {
+    expect(assignedParticipantIds.includes(participantId)).toEqual(true);
+  });
+  expect(positionAssignmentByesCount).toEqual(2);
+  expect(assignedParticipantIds.length).toEqual(3);
 });

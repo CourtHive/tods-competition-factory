@@ -163,7 +163,7 @@ it('can generate timeSlots from dateAvailability', () => {
     endTime: '17:00',
     bookings: [
       { startTime: '8:00', endTime: '9:10', bookingType: 'practice' },
-      { startTime: '9:10', endTime: '12:00', bookingType: 'match' },
+      { startTime: '9:10', endTime: '12:00', bookingType: 'matchUp' },
       { startTime: '12:00', endTime: '13:30', bookingType: 'maintenance' },
       { startTime: '14:00', endTime: '19:10' },
     ],
@@ -171,7 +171,7 @@ it('can generate timeSlots from dateAvailability', () => {
 
   const timeSlots = garman.generateTimeSlots({
     courtDate,
-    includeBookingTypes: ['match'],
+    includeBookingTypes: ['matchUp'],
   });
   expect(timeSlots.length).toEqual(2);
   expect(timeSlots[0]).toEqual({ startTime: '09:10', endTime: '12:00' });

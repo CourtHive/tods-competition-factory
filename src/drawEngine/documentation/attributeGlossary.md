@@ -73,4 +73,4 @@ method by which participants move across links into target structures
 - **_RANDOM_** - drawPositions within target structure are assigned randomly
 - **_LOSS_POSITION_** - drawPositions within target structure are equivalent to the roundPosition when the loss occurred for the directed participant
 
-LOSS_POSITION addresses the scenario where a first match loss occurs after advancement due to BYE or WALKOVER
+LOSS_POSITION addresses the scenario where a first matchUp loss occurs after advancement due to BYE or WALKOVER

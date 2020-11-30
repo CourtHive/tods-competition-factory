@@ -224,7 +224,7 @@ export function keyValueScore(props) {
       }));
     }
   } else if (analysis.isInvalidMatchTiebreakValue) {
-    message = 'invalid match tiebreak character';
+    message = 'invalid matchUp tiebreak character';
   } else if (analysis.isInvalidSetTiebreakValue) {
     message = 'invalid set tiebreak character';
   } else if (analysis.isTiebreakCloser) {

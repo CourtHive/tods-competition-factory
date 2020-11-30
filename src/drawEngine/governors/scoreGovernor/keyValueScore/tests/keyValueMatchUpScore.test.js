@@ -232,7 +232,7 @@ it('can handle score deletions', () => {
   expect(matchUp.score.trim()).toEqual('6-3 7-5');
 });
 
-it('recognizes incomplete match tiebreaks', () => {
+it('recognizes incomplete matchUp tiebreaks', () => {
   let message;
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
@@ -272,7 +272,7 @@ it('recognizes incomplete match tiebreaks', () => {
   expect(matchUp.winningSide).toEqual(2);
 });
 
-it('can support 2nd set tiebreaks with 3rd set match tiebreaks', () => {
+it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
   const matchUpFormat = FORMAT_ATP_DOUBLES;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 

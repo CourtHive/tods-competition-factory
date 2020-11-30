@@ -11,7 +11,7 @@ import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 
-it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first match', () => {
+it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;
@@ -134,7 +134,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   });
 });
 
-it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs lose first match', () => {
+it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs lose first matchUp', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;
@@ -257,7 +257,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   });
 });
 
-it('can direct winners and losers with USTA SEEDING POLICY; all participants with BYEs win first match', () => {
+it('can direct winners and losers with USTA SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;
@@ -379,7 +379,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   });
 });
 
-it('can direct winners and losers with USTA SEEDING POLICY; all participants with BYEs lose first match', () => {
+it('can direct winners and losers with USTA SEEDING POLICY; all participants with BYEs lose first matchUp', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;

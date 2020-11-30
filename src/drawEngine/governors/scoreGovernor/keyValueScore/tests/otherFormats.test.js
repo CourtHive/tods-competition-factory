@@ -31,7 +31,7 @@ it('handles set tiebreak with NoAD', () => {
   expect(matchUp.winningSide).toBeUndefined();
 });
 
-it('handles best of 3 match tiebreaks to 7', () => {
+it('handles best of 3 matchUp tiebreaks to 7', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB7;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
@@ -60,7 +60,7 @@ it('handles best of 3 match tiebreaks to 7', () => {
   expect(matchUp.winningSide).toBeUndefined();
 });
 
-it('handles best of 3 match tiebreaks to 10', () => {
+it('handles best of 3 matchUp tiebreaks to 10', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB10;
   let matchUp = { score: undefined, sets: [], matchUpFormat };
 
