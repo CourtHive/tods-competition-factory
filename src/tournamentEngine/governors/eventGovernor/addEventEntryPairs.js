@@ -39,7 +39,7 @@ export function addEventEntryPairs({
   if (!event) return { error: MISSING_EVENT };
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
-  const tournamentParticipants = tournamentRecord.particpants || [];
+  const tournamentParticipants = tournamentRecord.participants || [];
   const individualParticipantIds = tournamentParticipants
     .filter(participant => participant.participantType === INDIVIDUAL)
     .map(participant => participant.participantId);

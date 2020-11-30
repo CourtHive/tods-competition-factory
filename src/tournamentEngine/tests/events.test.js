@@ -229,7 +229,7 @@ it('can destroy pair entries in doubles events', () => {
   expect(updatedEvent.entries.length).toEqual(32);
 });
 
-it('can create pair entries in doubles events', () => {
+it.only('can create pair entries in doubles events', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -262,6 +262,14 @@ it('can create pair entries in doubles events', () => {
     entryStage: QUALIFYING,
   });
   expect(result).toEqual(SUCCESS);
+
+  result = tournamentEngine.addEventEntryPairs({
+    eventId,
+    participantIdPairs,
+    entryStatus: ALTERNATE,
+    entryStage: QUALIFYING,
+  });
+  expect(result.error).not.toBeUndefined();
 
   const { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
 
