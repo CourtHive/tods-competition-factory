@@ -1,12 +1,12 @@
-import { drawEngine } from '../../../drawEngine';
-import { completeMatchUp } from '../../tests/primitives/verifyMatchUps';
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { drawEngine } from '../..';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
+import { generateFMLC } from '../primitives/fmlc';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 
-it.only('can support ITF BYE placement', () => {
+it('can support ITF Consolation BYE placement', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;
@@ -49,7 +49,7 @@ it.only('can support ITF BYE placement', () => {
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
 
-it.only('can support USTA BYE placement', () => {
+it('can support USTA Consolation BYE placement', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;

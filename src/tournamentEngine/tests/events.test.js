@@ -229,7 +229,7 @@ it('can destroy pair entries in doubles events', () => {
   expect(updatedEvent.entries.length).toEqual(32);
 });
 
-it.only('can create pair entries in doubles events', () => {
+it('can create pair entries in doubles events', () => {
   const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
