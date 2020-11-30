@@ -269,7 +269,8 @@ it('can create pair entries in doubles events', () => {
     entryStatus: ALTERNATE,
     entryStage: QUALIFYING,
   });
-  expect(result.error).not.toBeUndefined();
+  expect(result.success).toEqual(true);
+  expect(result.message).not.toBeUndefined();
 
   const { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
 

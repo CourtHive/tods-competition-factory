@@ -82,6 +82,7 @@ export function addEventEntryPairs({
     );
   });
 
+  let message;
   if (newParticipants) {
     const result = addParticipants({
       tournamentRecord,
@@ -89,6 +90,7 @@ export function addEventEntryPairs({
     });
 
     if (result.error) return { error: result.error };
+    message = result.message;
   }
 
   const pairParticipantIds = participantIdPairs
@@ -101,11 +103,13 @@ export function addEventEntryPairs({
     })
     .map(participant => participant.participantId);
 
-  return addEventEntries({
+  const result = addEventEntries({
     event,
     entryStage,
     entryStatus,
     tournamentRecord,
     participantIds: pairParticipantIds,
   });
+
+  return Object.assign({}, result, { message });
 }
