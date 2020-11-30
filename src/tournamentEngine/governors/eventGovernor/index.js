@@ -33,6 +33,8 @@ import {
   setCollectionDefaultMatchUpFormat,
 } from './setDefaultmatchUpFormat';
 
+import { setEntryPosition, setEntryPositions } from './setEntryPositions';
+
 const eventGovernor = {
   addEvent,
   deleteEvents,
@@ -46,6 +48,8 @@ const eventGovernor = {
   addEventEntries,
   promoteAlternate,
   destroyPairEntry,
+  setEntryPosition,
+  setEntryPositions,
   addEventEntryPairs,
   removeEventEntries,
 
