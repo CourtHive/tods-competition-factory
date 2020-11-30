@@ -48,14 +48,13 @@ function generateEliminationPresentationProfile({
         return matchUp;
       });
     const matchUpsCount = matchUps.length;
-    const columnMultiplier =
-      Math.log2(firstRoundMatchUpsCount / matchUpsCount) + 1;
+    const columnFactor =
+      Math.log(firstRoundMatchUpsCount / matchUpsCount) / Math.log(2);
 
     const profile = {
-      matchUps,
-      columnMultiplier,
+      columnFactor,
       columnType: 'matchUps',
-      matchUpsCount: matchUps.length,
+      matchUps,
       roundName: matchUps[0].roundName,
       roundNumber,
     };
