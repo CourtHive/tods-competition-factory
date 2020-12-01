@@ -54,5 +54,4 @@ it('correctly assigns BYE psotions in consolation structure', () => {
     matchUp => matchUp.matchUpStatus === BYE
   ).length;
   expect(round2ByeCount).toEqual(8);
-  console.log(roundMatchUps[2]);
 });
