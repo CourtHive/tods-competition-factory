@@ -20,7 +20,7 @@ export function participantScaleItem({
       .filter(
         timeItem =>
           !scaleAttributes.eventType ||
-          timeItem.itemClass === scaleAttributes.eventType
+          timeItem.itemSubType === scaleAttributes.eventType
       )
       .filter(timeItem => requireTimeStamp === false || timeItem.timeStamp)
       .sort(
@@ -33,7 +33,7 @@ export function participantScaleItem({
           (!scaleAttributes.scaleType ||
             candidate.itemType === scaleAttributes.scaleType) &&
           (!scaleAttributes.scaleClass ||
-            candidate.itemClass === scaleAttributes.scaleClass)) ||
+            candidate.itemSubType === scaleAttributes.scaleClass)) ||
           (candidate.itemId &&
             scaleAttributes.scaleId &&
             candidate.itemId === scaleAttributes.scaleId)
@@ -46,7 +46,7 @@ export function participantScaleItem({
         scaleDate: timeItem.itemDate,
         scaleName: timeItem.itemName,
         scaleType: timeItem.itemType,
-        eventType: timeItem.itemClass,
+        eventType: timeItem.itemSubType,
         scaleValue: timeItem.itemValue,
       };
       return { scaleItem };
