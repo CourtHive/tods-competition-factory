@@ -34,6 +34,8 @@ export function addPenalty({
   if (!participantIds) return { error: MISSING_PARTICIPANT_ID };
   if (!penaltyType) return { error: MISSING_PENALTY_TYPE };
 
+  // TODO: add penalty timeItem to matchUp.timeItems[]
+
   const participants = tournamentRecord?.participants || [];
   const relevantParticipants = participants.filter(participant =>
     participantIds.includes(participant.participantId)
