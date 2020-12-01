@@ -34,7 +34,9 @@ export function generateDrawDefinition(props) {
     drawType = ELIMINATION,
     playoffMatchUpFormat,
     ignoreAllowedDrawTypes,
+
     seededParticipants,
+    seedByRanking = true,
   } = props;
 
   const participants = tournamentRecord?.participants;
@@ -223,7 +225,7 @@ export function generateDrawDefinition(props) {
     // Attempt to seed based on seeding scaled entries and then rank scaled entries
     const scaledEntries = seedingScaledEntries?.length
       ? seedingScaledEntries
-      : rankingScaledEntries;
+      : seedByRanking && rankingScaledEntries;
 
     if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
 
