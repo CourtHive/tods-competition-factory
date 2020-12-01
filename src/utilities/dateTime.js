@@ -396,6 +396,7 @@ export const dateTime = {
   timeUTC,
   DateHHMM,
   ymd2date,
+  validDate,
   formatDate,
   offsetDate,
   offsetTime,

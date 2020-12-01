@@ -34,6 +34,7 @@ import {
 } from './setDefaultmatchUpFormat';
 
 import { setEntryPosition, setEntryPositions } from './setEntryPositions';
+import { modifyEntriesStatus } from './modifyEntriesStatus';
 
 const eventGovernor = {
   addEvent,
@@ -52,6 +53,7 @@ const eventGovernor = {
   setEntryPositions,
   addEventEntryPairs,
   removeEventEntries,
+  modifyEntriesStatus,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
