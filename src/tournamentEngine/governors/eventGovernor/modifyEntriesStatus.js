@@ -5,6 +5,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyEntriesStatus({
   tournamentRecord,
@@ -25,4 +26,6 @@ export function modifyEntriesStatus({
       entry.entryStatus = entryStatus;
     }
   });
+
+  return SUCCESS;
 }
