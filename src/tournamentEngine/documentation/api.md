@@ -254,6 +254,7 @@ This is a convenience method which handles most use cases for draw generation.
 | customName           | Optional | string  | Custom name for the generated draw structure                                 |
 | seedsCount           | Optional | number  | Desired seeds to be generated from rankings if no seededParticipants data    |
 | seedingProfile       | Optional | string  | Used to specify WATERFALL seeding, for instance, for Round Robin structures  |
+| seedByRanking        | Optional | boolean | Defaults to TRUE; use rankings for seeding if no seededParticipants provided |
 | seededParticipants   | Optional | array   | Array of seeding objects including seedValue and participantId               |
 | qualifyingRound      | Optional | number  | Round of the strucrure which qualifies participants for connected structure  |
 | structureOptions     | Optional | object  | Defines groupSize and playoffGroups for Round Robin structures               |
