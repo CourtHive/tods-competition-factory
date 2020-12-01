@@ -5,6 +5,7 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 /*
   completedMatchUps are those matchUps where a winningSide is defined
   upcomingMatchUps are those matchUps where both drawPositions are defined
+  ===> If requireParticipants then upcmoingMatchUps require drawPositions to be assigned
   pendingMatchUps are those matchUps where a drawPosition is undefined
   *AND* where both drawPositions map to assigned participantIds
 */

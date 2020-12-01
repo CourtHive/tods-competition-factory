@@ -101,14 +101,15 @@ it('generates structured entry draw with expected finishing drawPositions', () =
   });
 });
 
-it('can generate FEED_IN_CHAMPIONSHIP', () => {
+it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
+  const drawSize = 16;
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize: 16,
+    drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
   });
 
-  expect(mainDrawMatchUps.length).toEqual(15);
-  expect(consolationMatchUps.length).toEqual(14);
+  expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
+  expect(consolationMatchUps.length).toEqual(drawSize - 2);
 
   expect(links.length).toEqual(4);
   expect(links[0].linkType).toEqual(LOSER);
@@ -128,6 +129,78 @@ it('can generate FEED_IN_CHAMPIONSHIP', () => {
   expect(links[2].target.roundNumber).toEqual(4);
   expect(links[3].source.roundNumber).toEqual(4);
   expect(links[3].target.roundNumber).toEqual(6);
+});
+
+it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
+  const drawSize = 32;
+  const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
+    drawSize,
+    drawType: FEED_IN_CHAMPIONSHIP,
+  });
+
+  expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
+  expect(consolationMatchUps.length).toEqual(drawSize - 2);
+
+  expect(links.length).toEqual(5);
+  expect(links[0].linkType).toEqual(LOSER);
+  expect(links[0].target.feedProfile).toEqual(TOP_DOWN);
+  expect(links[1].linkType).toEqual(LOSER);
+  expect(links[1].target.feedProfile).toEqual(BOTTOM_UP);
+  expect(links[2].linkType).toEqual(LOSER);
+  expect(links[2].target.feedProfile).toEqual(TOP_DOWN);
+  expect(links[3].linkType).toEqual(LOSER);
+  expect(links[3].target.feedProfile).toEqual(BOTTOM_UP);
+  expect(links[4].linkType).toEqual(LOSER);
+  expect(links[4].target.feedProfile).toEqual(TOP_DOWN);
+
+  expect(links[0].source.roundNumber).toEqual(1);
+  expect(links[0].source.roundNumber).toEqual(1);
+  expect(links[1].target.roundNumber).toEqual(2);
+  expect(links[1].target.roundNumber).toEqual(2);
+  expect(links[2].source.roundNumber).toEqual(3);
+  expect(links[2].target.roundNumber).toEqual(4);
+  expect(links[3].source.roundNumber).toEqual(4);
+  expect(links[3].target.roundNumber).toEqual(6);
+  expect(links[4].source.roundNumber).toEqual(5);
+  expect(links[4].target.roundNumber).toEqual(8);
+});
+
+it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 64', () => {
+  const drawSize = 64;
+  const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
+    drawSize,
+    drawType: FEED_IN_CHAMPIONSHIP,
+  });
+
+  expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
+  expect(consolationMatchUps.length).toEqual(drawSize - 2);
+
+  expect(links.length).toEqual(6);
+  expect(links[0].linkType).toEqual(LOSER);
+  expect(links[0].target.feedProfile).toEqual(TOP_DOWN);
+  expect(links[1].linkType).toEqual(LOSER);
+  expect(links[1].target.feedProfile).toEqual(BOTTOM_UP);
+  expect(links[2].linkType).toEqual(LOSER);
+  expect(links[2].target.feedProfile).toEqual(TOP_DOWN);
+  expect(links[3].linkType).toEqual(LOSER);
+  expect(links[3].target.feedProfile).toEqual(BOTTOM_UP);
+  expect(links[4].linkType).toEqual(LOSER);
+  expect(links[4].target.feedProfile).toEqual(TOP_DOWN);
+  expect(links[5].linkType).toEqual(LOSER);
+  expect(links[5].target.feedProfile).toEqual(BOTTOM_UP);
+
+  expect(links[0].source.roundNumber).toEqual(1);
+  expect(links[0].source.roundNumber).toEqual(1);
+  expect(links[1].target.roundNumber).toEqual(2);
+  expect(links[1].target.roundNumber).toEqual(2);
+  expect(links[2].source.roundNumber).toEqual(3);
+  expect(links[2].target.roundNumber).toEqual(4);
+  expect(links[3].source.roundNumber).toEqual(4);
+  expect(links[3].target.roundNumber).toEqual(6);
+  expect(links[4].source.roundNumber).toEqual(5);
+  expect(links[4].target.roundNumber).toEqual(8);
+  expect(links[5].source.roundNumber).toEqual(6);
+  expect(links[5].target.roundNumber).toEqual(10);
 });
 
 it('can generate FEED_IN_CHAMPIONSHIP_TO_R16', () => {
