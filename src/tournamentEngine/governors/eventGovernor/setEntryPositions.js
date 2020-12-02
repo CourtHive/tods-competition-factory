@@ -2,6 +2,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setEntryPosition({
   tournamentRecord,
@@ -17,6 +18,8 @@ export function setEntryPosition({
       entry.entryPosition = entryPosition;
     }
   });
+
+  return SUCCESS;
 }
 
 export function setEntryPositions({ tournamentRecord, entryPositions, event }) {
@@ -27,4 +30,6 @@ export function setEntryPositions({ tournamentRecord, entryPositions, event }) {
     const { participantId, entryPosition } = positioning;
     setEntryPosition({ tournamentRecord, event, participantId, entryPosition });
   });
+
+  return SUCCESS;
 }
