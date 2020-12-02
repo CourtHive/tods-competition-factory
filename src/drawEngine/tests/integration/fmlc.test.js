@@ -286,6 +286,133 @@ it('can change matchUpStatus', () => {
   expect(matchUpStatus).toEqual(RETIRED);
 });
 
+it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
+  const drawSize = 4;
+  const seedsCount = 0;
+  const participantsCount = 4;
+
+  let result;
+
+  const { mainStructureId, consolationStructureId } = generateFMLC({
+    drawSize,
+    seedsCount,
+    participantsCount,
+  });
+
+  result = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 1,
+    winningSide: 1,
+  });
+  expect(result.success).toEqual(true);
+
+  result = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 1,
+    roundPosition: 2,
+    winningSide: 1,
+  });
+  expect(result.success).toEqual(true);
+
+  verifyMatchUps({
+    structureId: mainStructureId,
+    expectedRoundPending: [0, 0],
+    expectedRoundUpcoming: [0, 1],
+    expectedRoundCompleted: [2, 0],
+  });
+
+  // now the participant in drawPosition: 1 will lose to the winner of 3-4 and be fed into consolation
+  // this tests first matchUp loss in the second round for participant who received a first round BYE
+  // the participant in drawPosition: 1 should go into the consolation structure
+  result = completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 2,
+    roundPosition: 1,
+    winningSide: 2,
+  });
+
+  let {
+    structures: [mainStructure],
+  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 });
+  const { structureId: verifyMainStructureId } = mainStructure;
+
+  let {
+    structures: [consolationStructure],
+  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+  const { structureId: verifyConsolationStructureId } = consolationStructure;
+
+  expect(mainStructureId).toEqual(verifyMainStructureId);
+  expect(consolationStructureId).toEqual(verifyConsolationStructureId);
+
+  // find second round matchUp for first seeded player with BYE
+  let sourceMatchUp = mainStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+  );
+
+  let sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 1
+  )?.participantId;
+  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
+
+  let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 2
+  )?.participantId;
+
+  let targetMatchUp = consolationStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+  );
+  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+
+  expect(sourceDrawPositionParticipantId).not.toEqual(
+    targetDrawPositionParticipantId
+  );
+  expect(consolationStructure.positionAssignments[0].bye).toEqual(undefined);
+
+  // now advance drawPosition 32 in main structure which had a BYE in first round
+  // the loser from drawPositions 29-30 should NOT go into the consolation structure
+  completeMatchUp({
+    structureId: mainStructureId,
+    roundNumber: 2,
+    roundPosition: 1,
+    winningSide: 2,
+  });
+
+  ({
+    structures: [mainStructure],
+  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 }));
+
+  ({
+    structures: [consolationStructure],
+  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
+
+  sourceMatchUp = mainStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+  );
+
+  sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 1
+  )?.participantId;
+  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
+
+  targetMatchUp = consolationStructure.matchUps.find(
+    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+  );
+
+  targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
+    assignment => assignment.drawPosition === 1
+  )?.participantId;
+
+  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+
+  expect(sourceDrawPositionParticipantId).not.toEqual(
+    targetDrawPositionParticipantId
+  );
+  expect(consolationStructure.positionAssignments[1].bye).toEqual(undefined);
+});
+
 it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
 

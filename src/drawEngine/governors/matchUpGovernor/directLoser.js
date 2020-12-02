@@ -139,7 +139,9 @@ export function directLoser(props) {
       } else {
         error = result.error;
       }
-    } else {
+    } else if (
+      winnerHadBye({ sourceMatchUps, drawPositionMatchUps, loserDrawPosition })
+    ) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
         drawDefinition,
