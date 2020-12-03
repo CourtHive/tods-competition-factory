@@ -23,6 +23,8 @@ export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
 export const UNPAIRED = EntryStatusEnum.UNPAIRED;
 
 export const STRUCTURE_ENTERED_TYPES = [
+  ALTERNATE,
+  FEED_IN,
   WITHDRAWN,
   UNPAIRED,
   QUALIFIER,
