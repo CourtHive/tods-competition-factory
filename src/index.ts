@@ -65,4 +65,6 @@ export { policyConstants } from './constants/policyConstants';
 export { positionActionConstants } from './constants/positionActionConstants';
 export { resultConstants } from './constants/resultConstants';
 export { scaleConstants } from './constants/scaleConstants';
+export { surfaceConstants } from './constants/surfaceConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
+export { venueConstants } from './constants/venueConstants';
