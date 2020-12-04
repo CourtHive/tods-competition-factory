@@ -1,5 +1,5 @@
 import { UUID, UUIDS } from './utilities/UUID';
-import { dateTime } from './utilities/dateTime';
+import { dateTime, dateRange } from './utilities/dateTime';
 import { numericSort } from './utilities/sorting';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { nearestPowerOf2, powerOf2, isNumeric } from './utilities/math';
@@ -20,6 +20,7 @@ export const utilities = {
   UUIDS,
   isNumeric,
   dateTime,
+  dateRange,
   intersection,
   numericSort,
   makeDeepCopy,

@@ -88,10 +88,10 @@ it('can define a new venue', () => {
     ],
   };
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-
-  expect(result.venue.venueName).toEqual(venueName);
-  expect(result.venue.venueAbbreviation).toEqual(venueAbbreviation);
-  expect(result.venue.courts.length).toEqual(2);
+  let { venue } = tournamentEngine.findVenue({ venueId });
+  expect(venue.venueName).toEqual(venueName);
+  expect(venue.venueAbbreviation).toEqual(venueAbbreviation);
+  expect(venue.courts.length).toEqual(2);
 
   modifications = {
     courts: [
@@ -118,13 +118,127 @@ it('can define a new venue', () => {
     venueId,
     modifications,
   });
+  ({ venue } = tournamentEngine.findVenue({ venueId }));
   expect(result.venue.courts.length).toEqual(1);
   expect(result.venue.courts[0].dateAvailability.length).toEqual(2);
+
+  modifications = {
+    courts: [
+      {
+        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+        courtName: 'Custom Court 1',
+        dateAvailability: [
+          {
+            date: '2021-01-01',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+          {
+            date: '2021-01-02',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+          {
+            date: '2021-01-03',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+        ],
+      },
+    ],
+  };
+
+  result = tournamentEngine.modifyVenue({
+    venueId,
+    modifications,
+  });
+  ({ venue } = tournamentEngine.findVenue({ venueId }));
+  expect(result.venue.courts.length).toEqual(1);
+  expect(result.venue.courts[0].dateAvailability.length).toEqual(3);
+
+  modifications = {
+    courts: [
+      {
+        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+        courtName: 'Custom Court 1',
+        dateAvailability: [
+          {
+            date: '2021-01-01',
+            startTime: '08:30',
+            endTime: '12:30',
+          },
+          {
+            date: '2021-01-01',
+            startTime: '13:30',
+            endTime: '15:30',
+          },
+          {
+            date: '2021-01-01',
+            startTime: '16:30',
+            endTime: '18:30',
+          },
+        ],
+      },
+    ],
+  };
+
+  result = tournamentEngine.modifyVenue({
+    venueId,
+    modifications,
+  });
+  ({ venue } = tournamentEngine.findVenue({ venueId }));
+  expect(result.venue.courts.length).toEqual(1);
+  expect(result.venue.courts[0].dateAvailability.length).toEqual(3);
 
   result = tournamentEngine.modifyVenue({
     venueId,
     modifications,
     force: true,
   });
-  expect(result.venue.courts.length).toEqual(1);
+  ({ venue } = tournamentEngine.findVenue({ venueId }));
+  expect(venue.courts.length).toEqual(1);
+
+  modifications = {
+    venueName,
+    venueAbbreviation,
+    courts: [
+      {
+        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+        courtName: 'Custom Court 1',
+        dateAvailability: [
+          {
+            date: '2021-01-01',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+          {
+            date: '2021-01-02',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+        ],
+      },
+      {
+        courtId: '886068ac-c176-4cd6-be96-768fa895d0c1',
+        courtName: 'Custom Court 2',
+        dateAvailability: [
+          {
+            date: '2021-01-01',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+          {
+            date: '2021-01-02',
+            startTime: '16:30',
+            endTime: '17:30',
+          },
+        ],
+      },
+    ],
+  };
+  result = tournamentEngine.modifyVenue({ venueId, modifications });
+  ({ venue } = tournamentEngine.findVenue({ venueId }));
+  expect(venue.venueName).toEqual(venueName);
+  expect(venue.venueAbbreviation).toEqual(venueAbbreviation);
+  expect(venue.courts.length).toEqual(2);
 });
