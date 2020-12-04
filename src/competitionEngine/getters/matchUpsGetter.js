@@ -1,5 +1,5 @@
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
+import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function allCompetitionMatchUps({
   tournamentRecords,
@@ -35,7 +35,7 @@ export function competitionScheduleMatchUps(props) {
   ].sort((a, b) => getTime(a) - getTime(b));
 
   const courtsData = courts.map(court => {
-    const matchUps = getCourtMatchUps(court.courtId);
+    const matchUps = getCourtMatchUps(court);
     return {
       ...court,
       matchUps,
@@ -45,7 +45,7 @@ export function competitionScheduleMatchUps(props) {
 
   return { courtsData, completedMatchUps, dateMatchUps, venues };
 
-  function getCourtMatchUps(courtId) {
+  function getCourtMatchUps({ courtId }) {
     return dateMatchUps
       .filter(matchUp => matchUp.schedule?.courtId === courtId)
       .sort(

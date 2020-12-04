@@ -16,7 +16,17 @@ export function getScheduledCourtMatchUps({
     tournamentRecord,
     drawEngine,
   });
-  const matchUps = tournamentMatchUps.filter(m => !m);
+  const matchUps = getCourtMatchUps({ matchUps: tournamentMatchUps, courtId });
 
   return { matchUps };
+
+  function getCourtMatchUps({ matchUps, courtId }) {
+    return matchUps
+      .filter(matchUp => matchUp.schedule?.courtId === courtId)
+      .sort(
+        (a, b) =>
+          new Date(a.scheduledTime).getTime() -
+          new Date(b.scheduledTime).getTime()
+      );
+  }
 }
