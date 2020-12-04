@@ -50,18 +50,15 @@ export function modifyCourt({
   );
 
   const errors = [];
-  modifications.dateAvailability &&
-    modifications.dateAvailability.forEach(availability => {
-      const result = modifyCourtAvailability({
-        tournamentRecord,
-        availability,
-        courtId,
-        force,
-      });
-      if (result.error) errors.push(result.error);
+  if (modifications.dateAvailability) {
+    const result = modifyCourtAvailability({
+      tournamentRecord,
+      availability: modifications.dateAvailability,
+      courtId,
+      force,
     });
-
-  if (errors.length) return { error: { errors } };
+    if (result.error) errors.push(result.error);
+  }
 
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }

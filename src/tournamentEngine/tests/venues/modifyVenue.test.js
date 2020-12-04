@@ -119,6 +119,7 @@ it('can define a new venue', () => {
     modifications,
   });
   expect(result.venue.courts.length).toEqual(1);
+  expect(result.venue.courts[0].dateAvailability.length).toEqual(2);
 
   result = tournamentEngine.modifyVenue({
     venueId,
