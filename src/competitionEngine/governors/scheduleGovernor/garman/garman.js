@@ -12,11 +12,11 @@ export function courtsAvailableAtPeriodStart({
   courts,
   date,
   periodStart,
-  averageMatchTime,
+  averageMatchUpTime,
   includeBookingTypes,
 }) {
   const periodStartTime = timeToDate(periodStart);
-  const periodEndTime = addMinutes(periodStartTime, averageMatchTime);
+  const periodEndTime = addMinutes(periodStartTime, averageMatchUpTime);
 
   const availableCourts = courts.filter(court => {
     const available =
@@ -58,7 +58,7 @@ export function courtsAvailableAtPeriodStart({
     }
 
     const timeSlotMinutes = minutesDifference(slotStartTime, slotEndTime);
-    return timeSlotMinutes > averageMatchTime;
+    return timeSlotMinutes > averageMatchUpTime;
   }
 }
 
@@ -101,7 +101,7 @@ export function matchUpTiming({
   endTime = '19:00',
   date = currentUTCDate(),
   periodLength = 30,
-  averageMatchTime = 90,
+  averageMatchUpTime = 90,
   courts,
 } = {}) {
   // value of previous calculation
@@ -131,13 +131,13 @@ export function matchUpTiming({
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
     const periodStart = DateHHMM(periodStartTime, { displaySeconds: false });
 
-    // availableCourts calculated from periodStartTime and averageMatchTime
-    // a court is only available if it can accommodate matchUps of duration averageMatchTime
+    // availableCourts calculated from periodStartTime and averageMatchUpTime
+    // a court is only available if it can accommodate matchUps of duration averageMatchUpTime
     const availableCourts = courtsAvailableAtPeriodStart({
       courts,
       date,
       periodStart,
-      averageMatchTime,
+      averageMatchUpTime,
     }).count;
 
     // newCourts are courts which have become available for the start of current time period
@@ -153,7 +153,7 @@ export function matchUpTiming({
     // which should be possible given a number of periods and an average number of courts
     // available over the accumulated time
     const accumulatedTime = periodLength * averageCourts;
-    const matchesCalculation = accumulatedTime / averageMatchTime;
+    const matchesCalculation = accumulatedTime / averageMatchUpTime;
     const calculatedTotal = period
       ? matchesCalculation * (period - 1) + averageCourts
       : averageCourts;

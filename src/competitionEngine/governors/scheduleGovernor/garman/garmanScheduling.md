@@ -24,9 +24,9 @@ A **Delta** between the calculations for two periods gives the number of matches
 
     Delta = TM(P) - TM(P - 1)
 
-## TMX Implementation
+## Implementation
 
-The TMX Implementation defines a court availability schema and assumes that court availability varies across courts and that individual court availaiblity may not be continuous.
+The Compeition Factory implementation of the Garman formula defines a court availability schema and assumes that court availability varies across courts and that individual court availaiblity may not be continuous.
 
     {
         identifier: `1`, courtId: `uuid1`, dateAvailability: [
@@ -45,7 +45,7 @@ The **matchUpTiming** function works for a single day and has the following para
     startTime='8:00',
     endTime='19:00',
     periodLength=30
-    averageMatchTime=90
+    averageMatchUpTime=90
     courts                  // array of courts using court availability schema
 
 The output of this function is an array of periods which includes the number of matches which can be expected to be put on court at the start of each period:
@@ -54,4 +54,4 @@ The output of this function is an array of periods which includes the number of 
     1: {periodStart: "8:30", add: 0, availableCourts: 10, new: 0, totalMatchUps: 10}
     2: {periodStart: "9:00", add: 3, availableCourts: 10, new: 0, totalMatchUps: 13}
 
-One further difference from the reference implementation is the use of *endTime* rather than simply the specification of times at which periods start.  An end time is assumed to be a *hard stop* and therefore no matches can be added in a period where there are not *averageMatchTime* minutes remaining before *endTime*.
+One further difference from the reference implementation is the use of _endTime_ rather than simply the specification of times at which periods start. An end time is assumed to be a _hard stop_ and therefore no matches can be added in a period where there are not _averageMatchUpTime_ minutes remaining before _endTime_.

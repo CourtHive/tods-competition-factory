@@ -25,7 +25,7 @@ export function scheduleMatchUps(props) {
     date,
 
     periodLength = 30,
-    averageMatchTime = 90,
+    averageMatchUpTime = 90,
   } = props;
 
   let { startTime, endTime } = props;
@@ -57,7 +57,7 @@ export function scheduleMatchUps(props) {
     startTime,
     endTime,
     periodLength,
-    averageMatchTime,
+    averageMatchUpTime,
   };
   const { scheduleTimes } = matchUpTiming(timingParameters);
 

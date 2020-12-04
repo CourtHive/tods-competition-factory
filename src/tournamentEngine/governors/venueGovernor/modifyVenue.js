@@ -17,7 +17,7 @@ export function modifyVenue({ tournamentRecord, venueId, modifications }) {
   if (error) return { error };
 
   const validAttributes = Object.keys(venueTemplate()).filter(
-    attribute => !['courtId', 'courts'].includes(attribute)
+    attribute => !['courts'].includes(attribute)
   );
 
   const validModificationAttributes = Object.keys(
@@ -33,3 +33,35 @@ export function modifyVenue({ tournamentRecord, venueId, modifications }) {
 
   return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
 }
+
+/*
+{
+	"venueName": "test 2",
+	"venueAbbreviation": "tst2",
+	"courts": [{
+		"courtId": "b9df6177-e430-4a70-ba47-9b9ff60258cb",
+		"courtName": "Custom Court 1",
+		"dateAvailability": [{
+			"date": "01/01/2021",
+			"startTime": "04:30 pm",
+			"endTime": "05:30 pm"
+		}, {
+			"date": "02/01/2021",
+			"startTime": "04:30 pm",
+			"endTime": "04:30 pm"
+		}]
+	}, {
+		"courtId": "886068ac-c176-4cd6-be96-768fa895d0c1",
+		"courtName": "Custom Court 2",
+		"dateAvailability": [{
+			"date": "01/01/2021",
+			"startTime": "04:30 pm",
+			"endTime": "05:30 pm"
+		}, {
+			"date": "02/01/2021",
+			"startTime": "04:30 pm",
+			"endTime": "04:30 pm"
+		}]
+	}]
+}
+*/
