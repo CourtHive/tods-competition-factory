@@ -18,7 +18,7 @@ it('can define a new venue', () => {
 
   const dateAvailability = [
     {
-      date: '2020-01-01',
+      date: '2020-01-01T00:00',
       startTime: '07:00',
       endTime: '19:00',
       bookings: [

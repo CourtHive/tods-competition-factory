@@ -62,7 +62,7 @@ it('can add events, venues, and schedule matchUps', () => {
   } = result;
   expect(result.success).toEqual(true);
 
-  const date = '2020-01-01';
+  const date = '2020-01-01T00:00';
   const dateAvailability = [
     {
       date,

@@ -63,6 +63,13 @@ export function validDateAvailability({ dateAvailability }) {
           message: 'startTime and endTime are equivalent',
         });
       }
+      if (!validTimePeriod({ startTime, endTime })) {
+        errors.push({
+          error: INVALID_TIME,
+          dateAvailability: { startTime, endTime },
+          message: 'endTime must be after startTime',
+        });
+      }
       if (!Array.isArray(bookings)) {
         errors.push({ error: INVALID_BOOKINGS });
       }

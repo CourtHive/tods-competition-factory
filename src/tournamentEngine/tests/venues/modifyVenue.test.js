@@ -41,13 +41,15 @@ it('can define a new venue', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error.errors.length).toEqual(7);
+  expect(result.error.errors.length).toEqual(9);
   expect(result.error.errors[0].error).toEqual(INVALID_DATE);
   expect(result.error.errors[1].error).toEqual(INVALID_TIME);
   expect(result.error.errors[2].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[3].error).toEqual(INVALID_DATE);
-  expect(result.error.errors[4].error).toEqual(INVALID_TIME);
+  expect(result.error.errors[3].error).toEqual(INVALID_TIME);
+  expect(result.error.errors[4].error).toEqual(INVALID_DATE);
   expect(result.error.errors[5].error).toEqual(INVALID_TIME);
+  expect(result.error.errors[6].error).toEqual(INVALID_TIME);
+  expect(result.error.errors[7].error).toEqual(INVALID_TIME);
 
   modifications = {
     venueName,
