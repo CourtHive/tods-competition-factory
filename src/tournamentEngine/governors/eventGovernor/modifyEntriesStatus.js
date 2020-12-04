@@ -4,7 +4,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
+import { VALID_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyEntriesStatus({
@@ -17,7 +17,7 @@ export function modifyEntriesStatus({
   if (!participantIds || !Array.isArray(participantIds))
     return { error: INVALID_PARTICIPANT_ID };
   if (!event) return { error: MISSING_EVENT };
-  if (!STRUCTURE_ENTERED_TYPES.includes(entryStatus))
+  if (!VALID_ENTERED_TYPES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
 
   // TODO: check that entries are not present in any drawDefinitions/structures
