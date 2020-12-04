@@ -18,7 +18,7 @@ export const SCHEDULING_POLICY = {
     averageMatchUpTimes: [
       {
         matchUpFormatCodes: ['*'],
-        averageTimes: [{ categoryNames: ['*'], minutes: { ['*']: 90 } }],
+        averageTimes: [{ categoryNames: [ALL], minutes: { ['*']: 90 } }],
       },
       {
         matchUpFormatCodes: ['SET3-S:6/TB7'], // consider 'SET3-S:6*' as a wildcard match

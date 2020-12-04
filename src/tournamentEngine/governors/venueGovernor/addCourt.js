@@ -9,6 +9,7 @@ import {
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { validDateAvailability } from './dateAvailability';
 
 /**
  *
@@ -22,7 +23,7 @@ export function addCourt({ tournamentRecord, venueId, court }) {
 
   if (!venue.courts) venue.courts = [];
 
-  const courtRecord = Object.assign({}, courtTemplate(), court);
+  const courtRecord = Object.assign({}, courtTemplate(), { venueId });
   if (!courtRecord.courtId) {
     courtRecord.courtId = UUID();
   }
@@ -31,12 +32,35 @@ export function addCourt({ tournamentRecord, venueId, court }) {
     return exists || candidate.courtId === courtRecord.courtId;
   }, undefined);
 
-  if (!courtExists) {
-    venue.courts.push(courtRecord);
-    const court = Object.assign({}, makeDeepCopy(courtRecord), { venueId });
-    return Object.assign({}, { court }, SUCCESS);
-  } else {
+  if (courtExists) {
     return { error: COURT_EXISTS };
+  } else {
+    const errors = [];
+    Object.keys(courtRecord).forEach(attribute => {
+      if (court[attribute]) {
+        if (attribute === 'dateAvailability') {
+          const result = validDateAvailability({
+            dateAvailability: court[attribute],
+          });
+          const { valid, error } = result;
+          if (valid) {
+            courtRecord[attribute] = court[attribute];
+          } else {
+            error.errors.forEach(error => errors.push(error));
+          }
+        } else {
+          courtRecord[attribute] = court[attribute];
+        }
+      }
+    });
+    venue.courts.push(courtRecord);
+
+    if (errors.length) {
+      return { error: { errors } };
+    } else {
+      const result = Object.assign({}, makeDeepCopy(courtRecord), { venueId });
+      return Object.assign({}, { court: result }, SUCCESS);
+    }
   }
 }
 

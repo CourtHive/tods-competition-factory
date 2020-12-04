@@ -69,8 +69,8 @@ it('can add events, venues, and schedule matchUps', () => {
       startTime: '07:00',
       endTime: '19:00',
       bookings: [
-        { startTime: '7:00', endTime: '8:30', bookingType: 'PRACTICE' },
-        { startTime: '8:30', endTime: '9:00', bookingType: 'MAINTENANCE' },
+        { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
+        { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
         { startTime: '13:30', endTime: '14:00', bookingType: 'MAINTENANCE' },
       ],
     },

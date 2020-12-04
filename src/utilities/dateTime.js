@@ -324,7 +324,7 @@ export function timeToDate(time, date = null) {
     : new Date().setHours(hours, minutes, 0, 0);
 }
 
-function zeroPad(number) {
+export function zeroPad(number) {
   return number.toString()[1] ? number : '0' + number;
 }
 

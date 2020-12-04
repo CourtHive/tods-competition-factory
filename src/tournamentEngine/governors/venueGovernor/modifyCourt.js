@@ -8,8 +8,14 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { makeDeepCopy } from '../../../utilities';
 import courtTemplate from '../../generators/courtTemplate';
 import { findCourt } from '../../getters/courtGetter';
+import { modifyCourtAvailability } from './courtAvailability';
 
-export function modifyCourt({ tournamentRecord, courtId, modifications }) {
+export function modifyCourt({
+  tournamentRecord,
+  courtId,
+  modifications,
+  force,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
   if (!modifications || typeof modifications !== 'object')
@@ -18,6 +24,7 @@ export function modifyCourt({ tournamentRecord, courtId, modifications }) {
   const { court, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
+  // not valid to modify a courtId
   const validAttributes = Object.keys(courtTemplate()).filter(
     attribute => attribute !== 'courtId'
   );
@@ -29,9 +36,32 @@ export function modifyCourt({ tournamentRecord, courtId, modifications }) {
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
 
-  validModificationAttributes.forEach(attribute =>
+  // not valid to replace the dateAvailability array
+  const validReplacements = validAttributes.filter(
+    attribute => !['dateAvailability'].includes(attribute)
+  );
+
+  const validReplacementAttributes = Object.keys(
+    modifications
+  ).filter(attribute => validReplacements.includes(attribute));
+
+  validReplacementAttributes.forEach(attribute =>
     Object.assign(court, { [attribute]: modifications[attribute] })
   );
+
+  const errors = [];
+  modifications.dateAvailability &&
+    modifications.dateAvailability.forEach(availability => {
+      const result = modifyCourtAvailability({
+        tournamentRecord,
+        availability,
+        courtId,
+        force,
+      });
+      if (result.error) errors.push(result.error);
+    });
+
+  if (errors.length) return { error: { errors } };
 
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }

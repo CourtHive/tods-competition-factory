@@ -1,20 +1,23 @@
 import { findCourt } from '../../getters/courtGetter';
+
+import {
+  MISSING_COURT_ID,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyCourtAvailability({
   tournamentRecord,
-  courtId,
-  dates,
   availability,
+  courtId,
 }) {
-  const { court } = findCourt({ tournamentRecord, courtId });
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!courtId) return { error: MISSING_COURT_ID };
 
-  // first strip out existing availability for given dates
-  court.dateAvailability = court.dateAvailability.filter(availability => {
-    return !dates.includes(availability.date);
-  });
+  const { court, error } = findCourt({ tournamentRecord, courtId });
+  if (error) return { error };
 
-  court.dateAvailability = court.dateAvailability.concat(...availability);
+  court.dateAvailability = availability;
 
   return SUCCESS;
 }
