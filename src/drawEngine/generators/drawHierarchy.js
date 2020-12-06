@@ -36,10 +36,12 @@ export function buildDrawHierarchy({ matchUps }) {
   const structureId = firstRoundMatchUp.structureId;
 
   const maxRound = Math.max(...Object.keys(roundMatchUps));
+  const preRound = maxRound === 1;
+
   const maxRoundMatchUpsCount = roundMatchUps[maxRound].length;
-  const additionalRounds = Math.ceil(
-    Math.log(maxRoundMatchUpsCount) / Math.log(2)
-  );
+  const additionalRounds = preRound
+    ? 0
+    : Math.ceil(Math.log(maxRoundMatchUpsCount) / Math.log(2));
 
   const additionalRoundMatchUps = generateRange(1, additionalRounds + 1).map(
     finishingRound => {
@@ -148,7 +150,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
     const feedRound = roundMatchUps.length === previousRound.length;
     const matchRound = roundMatchUps.length === previousRound.length / 2;
-    if (roundNumber === 1) {
+    if (roundNumber === 1 && !preRound) {
       roundMatchUps.forEach(matchUp => {
         const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
@@ -212,7 +214,12 @@ export function buildDrawHierarchy({ matchUps }) {
         const node = Object.assign({}, matchUp, { children });
         newRound.push(node);
       });
+    } else if (preRound) {
+      const children = roundMatchUps;
+      const node = { children };
+      newRound.push(node);
     }
+
     previousRound = newRound;
   });
 
