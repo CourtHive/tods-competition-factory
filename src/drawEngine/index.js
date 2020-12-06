@@ -32,6 +32,9 @@ function newDrawDefinition({ drawId, drawProfile } = {}) {
 }
 
 function setState(definition) {
+  if (definition.links) definition.links = [];
+  if (definition.entries) definition.entries = [];
+
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
   if (!definition.drawId) return { error: MISSING_DRAW_ID };
   if (!validDefinitionKeys(definition))

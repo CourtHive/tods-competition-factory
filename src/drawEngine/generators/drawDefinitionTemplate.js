@@ -25,6 +25,6 @@ export const definitionTemplate = () => ({
   structures: [],
 });
 
-export const keyValidation = ['drawId', 'entries', 'links', 'structures'];
+export const keyValidation = ['drawId', 'structures'];
 
 export default definitionTemplate;
