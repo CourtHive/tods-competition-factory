@@ -17,6 +17,9 @@ export function modifyCourtAvailability({
   const { court, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
+  // TODO: determine if any scheduled matchUps would be affected and warn
+  // if forced then remove schedule detail from affected matchUps
+
   court.dateAvailability = availability;
 
   return SUCCESS;

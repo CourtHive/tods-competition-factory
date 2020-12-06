@@ -4,7 +4,7 @@ import {
   INVALID_TIME,
 } from '../../../constants/errorConditionConstants';
 
-it('can define a new venue', () => {
+it('can define and modify a venue', () => {
   let result = tournamentEngine.newTournamentRecord();
   expect(result.success).toEqual(true);
 

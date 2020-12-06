@@ -1,3 +1,5 @@
+import { validTimeString } from '../../../fixtures/validations/regex';
+
 import {
   MISSING_MATCHUP,
   MISSING_TIME_ITEMS,
@@ -9,6 +11,15 @@ import {
   END_TIME,
 } from '../../../constants/timeItemConstants';
 
+function timeDate(value) {
+  if (validTimeString.test(value)) {
+    const td = new Date(`2020-01-01T${value}`);
+    return td;
+  } else {
+    return new Date(value);
+  }
+}
+
 export function matchUpDuration({ matchUp }) {
   if (!matchUp) return { error: MISSING_MATCHUP };
   if (!matchUp.timeItems) return { error: MISSING_TIME_ITEMS };
@@ -19,7 +30,7 @@ export function matchUpDuration({ matchUp }) {
         timeItem.itemSubject
       )
     )
-    .sort((a, b) => new Date(a.itemValue) - new Date(b.itemValue));
+    .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
   const elapsed = relevantTimeItems.reduce(
     (elapsed, timeItem) => {
@@ -34,7 +45,7 @@ export function matchUpDuration({ matchUp }) {
             [START_TIME, RESUME_TIME].includes(elapsed.lastSubject)
           ) {
             const interval =
-              new Date(timeItem.itemValue) - new Date(elapsed.lastValue);
+              timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -43,7 +54,7 @@ export function matchUpDuration({ matchUp }) {
         case STOP_TIME:
           if ([START_TIME, RESUME_TIME].includes(elapsed.lastSubject)) {
             const interval =
-              new Date(timeItem.itemValue) - new Date(elapsed.lastValue);
+              timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
             milliseconds = elapsed.milliseconds + interval;
           } else {
             milliseconds = elapsed.milliseconds;
@@ -64,7 +75,7 @@ export function matchUpDuration({ matchUp }) {
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastSubject)) {
     // matchUp has not completed and is active
-    const interval = new Date() - new Date(elapsed.lastValue);
+    const interval = new Date() - timeDate(elapsed.lastValue);
     elapsed.milliseconds += interval;
   }
 

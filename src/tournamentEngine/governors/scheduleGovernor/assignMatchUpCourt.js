@@ -1,3 +1,8 @@
+import {
+  MISSING_DRAW_ID,
+  MISSING_MATCHUP_ID,
+} from '../../../constants/errorConditionConstants';
+
 export function assignMatchUpCourt({
   drawEngine,
   matchUpId,
@@ -6,6 +11,9 @@ export function assignMatchUpCourt({
   courtId,
   courtDayDate,
 }) {
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (!drawId) return { error: MISSING_DRAW_ID };
+
   // TODO: check that 1) check that courtId is valid 2) that courtDayDate is valid
 
   const result = drawEngine.assignMatchUpCourt({

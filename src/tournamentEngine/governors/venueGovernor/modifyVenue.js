@@ -13,6 +13,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { addCourt } from './addCourt';
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
+import { deletionMessage } from './deletionMessage';
 
 export function modifyVenue({
   tournamentRecord,
@@ -82,9 +83,10 @@ export function modifyVenue({
         courtIdsToModify.includes(court.courtId)
       );
     } else {
-      errors.push({
-        message: `Scheduled would be deleted from ${scheduleDeletionsCount} matchUps; use { force: true }`,
+      const message = deletionMessage({
+        matchUpsCount: scheduleDeletionsCount,
       });
+      errors.push(message);
     }
   }
 
