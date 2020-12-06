@@ -12,7 +12,7 @@ const tournamentRecordJSON = fs.readFileSync(
 const tournamentRecord = JSON.parse(tournamentRecordJSON);
 tournamentEngine.setState(tournamentRecord);
 
-it.only('can extract matchUps', () => {
+it.skip('can extract matchUps', () => {
   const {
     events: [event],
   } = tournamentRecord;
