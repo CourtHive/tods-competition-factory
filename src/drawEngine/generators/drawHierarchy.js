@@ -208,16 +208,12 @@ export function buildDrawHierarchy({ matchUps }) {
         const node = Object.assign({}, matchUp, { children });
         newRound.push(node);
       });
-    } else if (matchRound) {
+    } else if (matchRound || preRound) {
       roundMatchUps.forEach((matchUp, i) => {
         const children = [previousRound[i * 2], previousRound[i * 2 + 1]];
         const node = Object.assign({}, matchUp, { children });
         newRound.push(node);
       });
-    } else if (preRound) {
-      const children = roundMatchUps;
-      const node = { children };
-      newRound.push(node);
     }
 
     previousRound = newRound;
