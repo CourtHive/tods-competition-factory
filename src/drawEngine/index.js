@@ -17,6 +17,7 @@ import {
   INVALID_OBJECT,
   MISSING_DRAW_ID,
   INVALID_DRAW_DEFINITION,
+  MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
 
 let devContext;
@@ -32,15 +33,17 @@ function newDrawDefinition({ drawId, drawProfile } = {}) {
 }
 
 function setState(definition) {
-  if (definition.links) definition.links = [];
-  if (definition.entries) definition.entries = [];
-
+  if (!definition) return { error: MISSING_DRAW_DEFINITION };
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
   if (!definition.drawId) return { error: MISSING_DRAW_ID };
+
+  if (!definition.links) definition.links = [];
+  if (!definition.entries) definition.entries = [];
   if (!validDefinitionKeys(definition))
     return { error: INVALID_DRAW_DEFINITION };
+
   drawDefinition = makeDeepCopy(definition);
-  return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+  return Object.assign({ drawId: definition.drawId }, SUCCESS);
 }
 
 function validDefinitionKeys(definition) {
