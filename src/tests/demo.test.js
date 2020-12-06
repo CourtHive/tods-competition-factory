@@ -12,7 +12,7 @@ const tournamentRecordJSON = fs.readFileSync(
 const tournamentRecord = JSON.parse(tournamentRecordJSON);
 tournamentEngine.setState(tournamentRecord);
 
-it.skip('can extract matchUps', () => {
+it('can extract matchUps', () => {
   const {
     events: [event],
   } = tournamentRecord;
@@ -41,6 +41,6 @@ it.skip('can extract matchUps', () => {
   /*
   const matchUps = drawDefinitions[4].structures[0].matchUps;
   result = drawEngine.buildDrawHierarchy({ matchUps });
-  console.log(result);
+  console.log(result.hierarchy.children[1]);
   */
 });
