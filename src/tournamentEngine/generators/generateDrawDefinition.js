@@ -225,23 +225,25 @@ export function generateDrawDefinition(props) {
     // Attempt to seed based on seeding scaled entries and then rank scaled entries
     const scaledEntries = seedingScaledEntries?.length
       ? seedingScaledEntries
-      : seedByRanking && rankingScaledEntries;
+      : (seedByRanking && rankingScaledEntries) || [];
 
-    if (scaledEntries.length < seedsCount) seedsCount = scaledEntries.length;
+    const scaledEntriesCount = scaledEntries?.length || 0;
+    if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
-    scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
-      const seedNumber = index + 1;
-      const seedValue = seedNumber;
-      // TODO: attach basis of seeding information to seedAssignment
-      const { participantId } = scaledEntry;
-      const result = drawEngine.assignSeed({
-        structureId,
-        seedNumber,
-        seedValue,
-        participantId,
+    scaledEntries &&
+      scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
+        const seedNumber = index + 1;
+        const seedValue = seedNumber;
+        // TODO: attach basis of seeding information to seedAssignment
+        const { participantId } = scaledEntry;
+        const result = drawEngine.assignSeed({
+          structureId,
+          seedNumber,
+          seedValue,
+          participantId,
+        });
+        if (!result.success) console.log(`%c ${result.error}`, 'color: red');
       });
-      if (!result.success) console.log(`%c ${result.error}`, 'color: red');
-    });
   }
 
   let conflicts = [];
