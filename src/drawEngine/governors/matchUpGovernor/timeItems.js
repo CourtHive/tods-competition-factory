@@ -24,8 +24,8 @@ export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
   if (!validTimeItem) return { error: INVALID_TIME_ITEM };
 
   if (!matchUp.timeItems) matchUp.timeItems = [];
-  const timeStamp = new Date().toISOString();
-  Object.assign(timeItem, { timeStamp });
+  const createdAt = new Date().toISOString();
+  Object.assign(timeItem, { createdAt });
   matchUp.timeItems.push(timeItem);
 
   return SUCCESS;

@@ -15,11 +15,11 @@ export function getParticipantSignInStatus({
   if (participant && Array.isArray(participant.timeItems)) {
     const signInStatusItems = participant.timeItems
       .filter(timeItem => timeItem.itemSubject === SIGN_IN_STATUS)
-      .filter(timeItem => timeItem.timeStamp)
+      .filter(timeItem => timeItem.createdAt)
       .sort(
         (a, b) =>
-          new Date(a.timeStamp || undefined) -
-          new Date(b.timeStamp || undefined)
+          new Date(a.createdAt || undefined) -
+          new Date(b.createdAt || undefined)
       );
     const latestStatus = signInStatusItems[signInStatusItems.length - 1];
     const signedIn = latestStatus && latestStatus.itemValue === SIGNED_IN;

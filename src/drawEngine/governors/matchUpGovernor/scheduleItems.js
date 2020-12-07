@@ -39,8 +39,8 @@ import { formatDate } from '../../../utilities/dateTime';
 */
 function newTimeItem({ matchUp, timeItem }) {
   if (!matchUp.timeItems) matchUp.timeItems = [];
-  const timeStamp = new Date().toISOString();
-  Object.assign(timeItem, { timeStamp });
+  const createdAt = new Date().toISOString();
+  Object.assign(timeItem, { createdAt });
   matchUp.timeItems.push(timeItem);
 
   return SUCCESS;
@@ -173,7 +173,6 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
     .filter(timeItem =>
       [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemSubject)
     )
-    // .map(timeItem => new Date(timeItem.itemValue))
     .map(timeItem => timeDate(timeItem.itemValue))
     .reduce(
       (earliest, timeValue) =>
@@ -184,7 +183,6 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
   // START_TIME must be prior to any STOP_TIMEs, RESUME_TIMEs and STOP_TIME
   if (
     !earliestRelevantTimeValue ||
-    // new Date(startTime) < earliestRelevantTimeValue
     timeDate(startTime) < earliestRelevantTimeValue
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
@@ -209,7 +207,6 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
     .filter(timeItem =>
       [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
     )
-    // .map(timeItem => new Date(timeItem.itemValue))
     .map(timeItem => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
@@ -218,7 +215,6 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
     );
 
   // END_TIME must be after any START_TIMEs, STOP_TIMEs, RESUME_TIMEs
-  // if (!latestRelevantTimeValue || new Date(endTime) > latestRelevantTimeValue) {
   if (!latestRelevantTimeValue || timeDate(endTime) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
     matchUp.timeItems = matchUp.timeItems.filter(
@@ -262,7 +258,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     .filter(
       timeItem =>
         !lastRelevantTimeItemIsStop ||
-        timeItem.timeStamp !== lastRelevantTimeItem.timeStamp
+        timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
     // .map(timeItem => new Date(timeItem.itemValue))
     .map(timeItem => timeDate(timeItem.itemValue))
@@ -275,9 +271,9 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
   // if (new Date(stopTime) > latestRelevantTimeValue) {
   if (timeDate(stopTime) > latestRelevantTimeValue) {
     if (lastRelevantTimeItemIsStop) {
-      const targetTimeStamp = lastRelevantTimeItem.timeStamp;
+      const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
-        timeItem => timeItem.timeStamp !== targetTimeStamp
+        timeItem => timeItem.createdAt !== targetTimeStamp
       );
     }
 
@@ -327,7 +323,7 @@ export function addMatchUpResumeTime({
     .filter(
       timeItem =>
         !lastRelevantTimeItemIsResume ||
-        timeItem.timeStamp !== lastRelevantTimeItem.timeStamp
+        timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
     // .map(timeItem => new Date(timeItem.itemValue))
     .map(timeItem => timeDate(timeItem.itemValue))
@@ -340,9 +336,9 @@ export function addMatchUpResumeTime({
   // if (new Date(resumeTime) > latestRelevantTimeValue) {
   if (timeDate(resumeTime) > latestRelevantTimeValue) {
     if (lastRelevantTimeItemIsResume) {
-      const targetTimeStamp = lastRelevantTimeItem.timeStamp;
+      const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
-        timeItem => timeItem.timeStamp !== targetTimeStamp
+        timeItem => timeItem.createdAt !== targetTimeStamp
       );
     }
 

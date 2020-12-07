@@ -113,7 +113,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
 
   if (!validScaleItem) return { error: INVALID_SCALE_ITEM };
 
-  const timeStamp = new Date().toISOString();
+  const createdAt = new Date().toISOString();
   if (!participant.timeItems) participant.timeItems = [];
   const timeItem = {
     itemSubject: SCALE,
@@ -123,7 +123,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     itemValue: scaleItem.scaleValue,
     itemId: scaleItem.scaleId,
     itemDate: scaleItem.scaleDate,
-    timeStamp,
+    createdAt,
   };
   participant.timeItems.push(timeItem);
 

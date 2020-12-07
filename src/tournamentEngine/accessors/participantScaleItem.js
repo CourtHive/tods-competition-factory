@@ -22,11 +22,11 @@ export function participantScaleItem({
           !scaleAttributes.eventType ||
           timeItem.itemSubType === scaleAttributes.eventType
       )
-      .filter(timeItem => requireTimeStamp === false || timeItem.timeStamp)
+      .filter(timeItem => requireTimeStamp === false || timeItem.createdAt)
       .sort(
         (a, b) =>
-          new Date(a.timeStamp || undefined) -
-          new Date(b.timeStamp || undefined)
+          new Date(a.createdAt || undefined) -
+          new Date(b.createdAt || undefined)
       )
       .reduce((scaleValue, candidate) => {
         return (candidate.itemName === scaleAttributes.scaleName &&

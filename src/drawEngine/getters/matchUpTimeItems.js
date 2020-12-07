@@ -33,7 +33,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   const timeItems = matchUp.timeItems || [];
   const checkInItems = timeItems
     .filter(timeItem => [CHECK_IN, CHECK_OUT].includes(timeItem.itemSubject))
-    .sort((a, b) => new Date(a.timeStamp) - new Date(b.timeStamp));
+    .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const timeItemParticipantIds = checkInItems.map(
     timeItem => timeItem.itemValue
   );

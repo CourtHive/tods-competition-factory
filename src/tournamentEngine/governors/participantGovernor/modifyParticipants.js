@@ -27,14 +27,14 @@ export function participantsSignInStatus({
     participants.length &&
     Array.isArray(participantIds)
   ) {
-    const timeStamp = new Date().toISOString();
+    const createdAt = new Date().toISOString();
     participants.forEach(participant => {
       if (participantIds.includes(participant.participantId)) {
         if (!participant.timeItems) participant.timeItems = [];
         const timeItem = {
           itemSubject: SIGN_IN_STATUS,
           itemValue: signInState,
-          timeStamp,
+          createdAt,
         };
         participant.timeItems.push(timeItem);
         participantsModified = true;
