@@ -1,10 +1,12 @@
+import { instanceCount } from '../../../utilities';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
+import { checkIfWinnerHadBye } from './checkIfWinnerHadBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
 
-import { instanceCount } from '../../../utilities';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(props) {
@@ -33,7 +35,11 @@ export function removeDirectedParticipants(props) {
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
-    targetMatchUps: { loserMatchUp, winnerMatchUp },
+    targetMatchUps: {
+      loserMatchUp,
+      winnerMatchUp,
+      loserMatchUpDrawPositionIndex,
+    },
   } = targetData;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -68,18 +74,52 @@ export function removeDirectedParticipants(props) {
     matchUp.matchUpStatus = matchUpStatus;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
 
+    const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+      inContext: true,
+      drawDefinition,
+      structure,
+    });
+
+    const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
+      matchUp.drawPositions.includes(loserDrawPosition)
+    );
+
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({
+        winnerMatchUp,
         drawDefinition,
         winnerTargetLink,
         winnerParticipantId,
         winningDrawPosition,
-        winnerMatchUp,
       });
       if (error) errors.push(error);
     }
     if (loserMatchUp) {
+      const winnerHadBye = checkIfWinnerHadBye({
+        sourceMatchUps,
+        loserDrawPosition,
+        drawPositionMatchUps,
+      });
+
+      const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
+      const targetMatchUpDrawPosition =
+        targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
+      const loserLinkCondition = loserTargetLink.linkCondition;
+      const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
+
+      if (winnerHadBye && firstMatchUpLoss) {
+        const { error } = removeDirectedBye({
+          winningIndex,
+          loserMatchUp,
+          drawDefinition,
+          targetLink: loserTargetLink,
+          targetMatchUpDrawPosition,
+        });
+        if (error) errors.push(error);
+      }
+
       const { error } = removeDirectedLoser({
+        loserMatchUp,
         drawDefinition,
         loserTargetLink,
         loserParticipantId,
@@ -94,11 +134,11 @@ export function removeDirectedParticipants(props) {
 }
 
 function removeDirectedWinner({
+  winnerMatchUp,
   drawDefinition,
   winnerTargetLink,
   winnerParticipantId,
   winningDrawPosition,
-  winnerMatchUp,
 }) {
   let error;
 
@@ -170,6 +210,32 @@ function removeDirectedLoser({
   positionAssignments.forEach(assignment => {
     if (assignment.participantId === loserParticipantId) {
       delete assignment.participantId;
+    }
+  });
+
+  return { error };
+}
+
+function removeDirectedBye({
+  targetLink,
+  loserMatchUp,
+  winningIndex,
+  drawDefinition,
+}) {
+  let error;
+
+  const drawPosition = loserMatchUp.drawPositions[winningIndex];
+
+  const structureId = targetLink.target.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
+  positionAssignments.forEach(assignment => {
+    if (
+      // assignment.drawPosition === targetMatchUpDrawPosition &&
+      assignment.drawPosition === drawPosition &&
+      assignment.bye
+    ) {
+      delete assignment.bye;
     }
   });
 

@@ -1,4 +1,5 @@
 import { findStructure } from '../../getters/findStructure';
+import { checkIfWinnerHadBye } from './checkIfWinnerHadBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
@@ -6,7 +7,6 @@ import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -121,7 +121,7 @@ export function directLoser(props) {
         });
 
         if (
-          winnerHadBye({
+          checkIfWinnerHadBye({
             sourceMatchUps,
             loserDrawPosition,
             drawPositionMatchUps,
@@ -140,7 +140,11 @@ export function directLoser(props) {
         error = result.error;
       }
     } else if (
-      winnerHadBye({ sourceMatchUps, drawPositionMatchUps, loserDrawPosition })
+      checkIfWinnerHadBye({
+        sourceMatchUps,
+        drawPositionMatchUps,
+        loserDrawPosition,
+      })
     ) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
@@ -180,25 +184,4 @@ export function directLoser(props) {
   }
 
   return { error };
-}
-
-function winnerHadBye({
-  sourceMatchUps,
-  loserDrawPosition,
-  drawPositionMatchUps,
-}) {
-  const sourceMatchUp = drawPositionMatchUps.reduce(
-    (sourceMatchUp, matchUp) =>
-      !sourceMatchUp || matchUp.roundNumber > sourceMatchUp.roundNumber
-        ? matchUp
-        : sourceMatchUp,
-    undefined
-  );
-  const winnerDrawPosition = sourceMatchUp.drawPositions.find(
-    drawPosition => drawPosition !== loserDrawPosition
-  );
-  return sourceMatchUps
-    .filter(matchUp => matchUp.drawPositions.includes(winnerDrawPosition))
-    .map(matchUp => matchUp.matchUpStatus)
-    .includes(BYE);
 }

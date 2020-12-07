@@ -248,8 +248,7 @@ it.only('cleans up placed BYES when matchUp results are removed', () => {
   expect(positionAssignmentByesCount).toEqual(2);
   expect(assignedParticipantIds.length).toEqual(3);
 
-  const result = drawEngine.getStructureMatchUps({
+  drawEngine.getStructureMatchUps({
     structureId: mainStructureId,
   });
-  console.log(result);
 });

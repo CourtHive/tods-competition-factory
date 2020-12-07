@@ -8,6 +8,7 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { getStructureLinks } from '../../getters/linkGetter';
 
 import {
   chunkArray,
@@ -38,7 +39,6 @@ import {
   NO_DRAW_POSITIONS_AVAILABLE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getStructureLinks } from '../../getters/linkGetter';
 
 export function assignDrawPositionBye({
   drawDefinition,
