@@ -24,7 +24,6 @@ export const UNPAIRED = EntryStatusEnum.UNPAIRED;
 
 export const STRUCTURE_ENTERED_TYPES = [
   FEED_IN,
-  UNPAIRED,
   QUALIFIER,
   WILDCARD,
   DIRECT_ACCEPTANCE,
