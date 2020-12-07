@@ -44,17 +44,20 @@ it('can add schedule items', () => {
   let startTime, stopTime, resumeTime, endTime;
 
   // test matchUp duration with start and stop time
-  startTime = '08:05';
-  // startTime = '2020-01-01T08:05:00Z';
+  // startTime = '08:05';
+  startTime = '2020-01-01T08:05:00Z';
   result = drawEngine.addMatchUpStartTime({ matchUpId, startTime });
   expect(result).toEqual(SUCCESS);
 
-  endTime = '09:05';
-  // endTime = '2020-01-01T09:05:00Z';
+  // endTime = '09:05';
+  endTime = '2020-01-01T09:05:00Z';
   result = drawEngine.addMatchUpEndTime({ matchUpId, endTime });
   expect(result).toEqual(SUCCESS);
 
   ({ matchUp } = drawEngine.findMatchUp({ matchUpId }));
+  let { schedule } = drawEngine.getMatchUpScheduleDetails({ matchUp });
+  expect(schedule.scheduledDate).toEqual('2020-01-01');
+  expect(schedule.scheduledTime).toEqual('08:00');
 
   ({ milliseconds, time, relevantTimeItems } = drawEngine.matchUpDuration({
     matchUp,
@@ -91,7 +94,7 @@ it('can add schedule items', () => {
   expect(time).toEqual('01:10:00');
   expect(milliseconds).toEqual(4200000);
 
-  const { schedule } = drawEngine.getMatchUpScheduleDetails({ matchUp });
+  ({ schedule } = drawEngine.getMatchUpScheduleDetails({ matchUp }));
   expect(schedule.time).toEqual('01:10:00');
   expect(schedule.milliseconds).toEqual(4200000);
   expect(schedule.startTime).toEqual(startTime);
