@@ -8,6 +8,7 @@ import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchU
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -225,18 +226,12 @@ function removeDirectedBye({
   let error;
 
   const drawPosition = loserMatchUp.drawPositions[winningIndex];
-
   const structureId = targetLink.target.structureId;
-  const { structure } = findStructure({ drawDefinition, structureId });
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  positionAssignments.forEach(assignment => {
-    if (
-      // assignment.drawPosition === targetMatchUpDrawPosition &&
-      assignment.drawPosition === drawPosition &&
-      assignment.bye
-    ) {
-      delete assignment.bye;
-    }
+
+  clearDrawPosition({
+    drawDefinition,
+    structureId,
+    drawPosition,
   });
 
   return { error };

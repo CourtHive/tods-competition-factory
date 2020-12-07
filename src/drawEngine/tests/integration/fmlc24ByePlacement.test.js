@@ -105,65 +105,102 @@ it('can remove BYEs when matchUps are cleared', () => {
     policyDefinition: USTA_SEEDING,
   });
 
-  const completionValues = [
+  let completionValues = [
     [1, 2, 2, true],
     [1, 4, 1, true],
     [2, 1, 1, true], // side 1 had 1st round BYE, wins matchUp
     [2, 2, 1, true], // side 1 had 1st round BYE, wins matchUp
   ];
 
-  completionValues.forEach(values => {
-    const [roundNumber, roundPosition, winningSide, success] = values;
-    const result = completeMatchUp({
-      structureId: mainStructureId,
-      roundNumber,
-      roundPosition,
-      winningSide,
-    });
-    expect(result.success).toEqual(success);
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 2,
+    byesCount: 2,
   });
 
-  let {
+  completionValues = [[2, 1, undefined, true]];
+
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 2,
+    byesCount: 1,
+  });
+
+  completionValues = [[2, 2, undefined, true]];
+
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 2,
+    byesCount: 0,
+  });
+
+  completionValues = [
+    [2, 1, 2, true], // side 1 had 1st round BYE, loses matchUp
+    [2, 2, 2, true], // side 1 had 1st round BYE, loses matchUp
+  ];
+
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 4,
+    byesCount: 0,
+  });
+
+  completionValues = [
+    [2, 1, undefined, true],
+    [2, 2, undefined, true],
+  ];
+
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 2,
+    byesCount: 0,
+  });
+
+  completionValues = [
+    [2, 1, 1, true],
+    [2, 2, 1, true],
+  ];
+
+  checkAssignments({
+    completionValues,
+    structureId: mainStructureId,
+    participantsCount: 2,
+    byesCount: 2,
+  });
+});
+
+function checkAssignments({
+  structureId,
+  completionValues,
+  participantsCount,
+  byesCount,
+}) {
+  completionValues &&
+    completionValues.forEach(values => {
+      const [roundNumber, roundPosition, winningSide, success] = values;
+      const result = completeMatchUp({
+        structureId,
+        roundNumber,
+        roundPosition,
+        winningSide,
+      });
+      expect(result.success).toEqual(success);
+    });
+
+  const {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
-
-  let positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
+  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
     assignment => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     assignment => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(2);
-  expect(positionAssignmentParticipantidsCount).toEqual(2);
-
-  let result = completeMatchUp({
-    structureId: mainStructureId,
-    roundNumber: 2,
-    roundPosition: 1,
-    winningSide: undefined,
-  });
-  expect(result.success).toEqual(true);
-  ({
-    structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
-  positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
-  ).length;
-  expect(positionAssignmentByesCount).toEqual(1);
-
-  result = completeMatchUp({
-    structureId: mainStructureId,
-    roundNumber: 2,
-    roundPosition: 2,
-    winningSide: undefined,
-  });
-  expect(result.success).toEqual(true);
-
-  ({
-    structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
-  positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
-  ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
-});
+  expect(positionAssignmentByesCount).toEqual(byesCount);
+  expect(positionAssignmentParticipantidsCount).toEqual(participantsCount);
+}
