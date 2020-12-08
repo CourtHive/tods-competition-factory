@@ -1,3 +1,4 @@
+import fs from 'fs';
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../..';
 import { tournamentRecordWithParticipants } from '../primitives';
@@ -140,7 +141,6 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     eventId,
   });
 
-  console.log(payload);
   expect(payload.eventInfo.eventId).toEqual(eventId);
   expect(payload.eventInfo.eventName).toEqual(eventName);
 
@@ -156,4 +156,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(payload.drawsData[0].drawId).toEqual(drawDefinition.drawId);
   expect(payload.drawsData[0].groupedStructures.length).toEqual(1);
   expect(payload.drawsData[0].groupedStructures[0].length).toEqual(5);
+
+  const writeFile = process.env.TMX_TEST_FILES;
+  const fileName = `eventData.json`;
+  const dirPath = './src/tournamentEngine/tests/publishing/';
+  const output = `${dirPath}${fileName}`;
+  if (writeFile) fs.writeFileSync(output, JSON.stringify(payload, null, 2));
 });

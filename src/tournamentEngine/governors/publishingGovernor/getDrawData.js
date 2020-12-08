@@ -10,23 +10,7 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
 
   const tournamentParticipants = tournamentRecord.participants || [];
-
-  const structureGroups = [];
-  const links = drawDefinition.links || [];
-  links.forEach(link => {
-    const linkedStructures = [link.source.structureId, link.target.structureId];
-    const existingGroup = structureGroups.find(group => {
-      return intersection(group, linkedStructures).length;
-    });
-    if (existingGroup) {
-      linkedStructures.forEach(structureId => {
-        if (!existingGroup.includes(structureId))
-          existingGroup.push(structureId);
-      });
-    } else {
-      structureGroups.push(linkedStructures);
-    }
-  });
+  const { structureGroups } = getStructureGroups({ drawDefinition });
 
   const groupedStructures = structureGroups.map(structureIds => {
     const structures = structureIds.map(structureId => {
@@ -58,4 +42,37 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
   }))(drawDefinition);
 
   return Object.assign({}, SUCCESS, { drawInfo, groupedStructures });
+}
+
+export function getStructureGroups({ drawDefinition }) {
+  const structureGroups = [];
+  const links = drawDefinition.links || [];
+
+  links.forEach(link => {
+    const linkedStructures = [link.source.structureId, link.target.structureId];
+    const existingGroup = structureGroups.find(group => {
+      return intersection(group, linkedStructures).length;
+    });
+    if (existingGroup) {
+      linkedStructures.forEach(structureId => {
+        if (!existingGroup.includes(structureId))
+          existingGroup.push(structureId);
+      });
+    } else {
+      structureGroups.push(linkedStructures);
+    }
+  });
+
+  const structures = drawDefinition.structures || [];
+  structures.forEach(structure => {
+    const { structureId } = structure;
+    const existingGroup = structureGroups.find(group => {
+      return group.includes(structureId);
+    });
+    if (!existingGroup) {
+      structureGroups.push([structureId]);
+    }
+  });
+
+  return { structureGroups };
 }

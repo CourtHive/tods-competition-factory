@@ -1,0 +1,959 @@
+{
+  "tennisOfficialIds": [],
+  "_id": {
+    "$oid": "5f631bc328e3f86774f6d0dd"
+  },
+  "gender": "MALE",
+  "endDate": "2021-05-10T00:00:00Z",
+  "eventType": "DOUBLES",
+  "startDate": "2021-04-30T00:00:00Z",
+  "entries": [
+    {
+      "participantId": "caa5e35e-3fba-427c-a3eb-04d0f2e66bd5",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "154d2f4c-7bf7-4618-8f5d-1c9332608092",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "8d9a9ef9-71bf-46ad-92f9-a3fdd8c19bbc",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "e2ab24a0-fe58-4b33-a9b0-98e60917f251",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "1d19ebc4-92e0-4430-816d-285eb01f968c",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "a7b8c201-13c8-4f98-938d-06706a3fb05d",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "86190afa-1565-425e-b494-1bde608c9db0",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "80d7f05c-6b09-4790-b4d1-e056144e03cc",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "2b34b3cf-b63c-427a-abb4-49e3cf46e1f1",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "a8e4f169-8a51-45d9-bb12-08ce86a83354",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "ea743e26-4075-4678-be4e-de0117649c72",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "2274971c-27ef-4350-98e2-0400d93781bd",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "8f1482bb-4ae3-41af-850d-bc9616bfd9b2",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "216de1fb-d507-431d-8837-b5023493e285",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "5ff7a1df-e157-411f-aad7-71352ff62332",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "fcebe518-1228-442f-b035-ec8f38d74b3c",
+      "entryStatus": "DIRECT_ACCEPTANCE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "af34f45e-ae6b-411b-90bd-420ec3b57879",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "ca962905-342e-4179-bd25-ddc38f033972",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "caff665c-1f6b-4e55-a5e0-5e7b2d1a7638",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "794920b2-4f83-4a45-8918-b8f24fd38110",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "bbc21205-4177-40b9-a4df-a04ee169cb07",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "9bcfc2e7-2c35-4acd-83f6-0a4b397adc9a",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "686fa6eb-2111-46fa-a018-8701070cbaff",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "43fcf59c-2211-489a-8649-6ba51c343e31",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "8fe38e24-3a04-48c6-90a0-5cea59c9fa80",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "f4d91dda-818a-464a-96b2-c2db86b629d2",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "51b96195-e464-485b-a148-b29eface0cb8",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "afef6126-510f-4002-93e7-e48d0f2e8a87",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "d730a6d9-b4e9-4b76-921d-a62607788854",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "a03f2ace-f5de-46d1-a899-7a8b1dc166d4",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "1fdcbe41-7af9-418d-be90-f8b3519ff397",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "5586dfff-ab85-4f3f-8047-4140b234c226",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "ca28fd96-b1b0-46e4-ad7f-6a834cb44909",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "f26a410e-d6c1-4555-9a8b-48d68adab9c6",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "6e7915d3-aa15-496b-8a8a-ae9d12aa9bff",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "ea94ae80-6d6a-48fb-80df-a2dbc4bd65c2",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "d20d7541-6262-4551-9e3c-045f6df904b9",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "ccbb7f09-c43c-45c6-8055-134fe3751b7b",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "4ca8b07f-6361-47c1-ba9d-18630de91d24",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "86eb3acf-2962-4c38-ae8a-418016b10633",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "593f5a9d-62a9-4f19-9aa5-ff699efd5ebf",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "760e983d-ca2c-4d3d-9416-ce2a5ce33ab9",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "c99c98f0-7076-4435-96af-9f6e24cea949",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "799fc1ae-bc16-453c-bd7a-54cdcccc9a97",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "f8651cf6-7a18-4d96-bf55-bba0ee3c5b41",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "82389163-d429-40f3-87c5-d133afbe5e98",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "7fee5b7a-6d8a-4626-8bd4-9339acd342c9",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    },
+    {
+      "participantId": "094c522c-529d-4e37-83d5-3dd94e6ccec9",
+      "entryStatus": "ALTERNATE",
+      "entryStage": "MAIN"
+    }
+  ],
+  "eventName": "U18 Boys Doubles",
+  "eventId": "6F15E022-A6B7-4117-AA81-B3FE089FAD72",
+  "courtLocation": "OUTDOOR",
+  "category": {
+    "_id": {
+      "$oid": "5f631bc328e3f86774f6d0de"
+    },
+    "ageCategory": "U18",
+    "categoryName": "U18",
+    "type": "AGE",
+    "extensions": [],
+    "createdAt": "2020-09-17T08:18:11.418Z",
+    "updatedAt": "2020-09-17T08:18:11.418Z"
+  },
+  "extensions": [],
+  "drawDefinitions": [
+    {
+      "drawId": "f11f94df-e4ce-4663-b206-dac5bff20cc6",
+      "drawName": "ELIMINATION",
+      "drawProfile": {
+        "drawType": "ELIMINATION",
+        "drawSize": 16,
+        "automated": "automated",
+        "seedsCount": 4,
+        "structureOptions": {
+          "groupSize": ""
+        },
+        "category": {
+          "_id": {
+            "$oid": "5f631bc328e3f86774f6d0de"
+          },
+          "ageCategory": "U18",
+          "categoryName": "U18",
+          "type": "AGE",
+          "extensions": [],
+          "createdAt": "2020-09-17T08:18:11.418Z",
+          "updatedAt": "2020-09-17T08:18:11.418Z"
+        },
+        "matchUpFormat": "SET3-S:6/TB7"
+      },
+      "entryProfile": {
+        "QUALIFYING": {
+          "drawSize": null,
+          "sequenceMap": null,
+          "alternates": true,
+          "wildcardsCount": null
+        },
+        "MAIN": {
+          "drawSize": 16,
+          "qualifiersCount": null,
+          "alternates": true,
+          "wildcardsCount": null
+        }
+      },
+      "entries": [
+        {
+          "participantId": "caa5e35e-3fba-427c-a3eb-04d0f2e66bd5",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "154d2f4c-7bf7-4618-8f5d-1c9332608092",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "8d9a9ef9-71bf-46ad-92f9-a3fdd8c19bbc",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "e2ab24a0-fe58-4b33-a9b0-98e60917f251",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "1d19ebc4-92e0-4430-816d-285eb01f968c",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "a7b8c201-13c8-4f98-938d-06706a3fb05d",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "86190afa-1565-425e-b494-1bde608c9db0",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "80d7f05c-6b09-4790-b4d1-e056144e03cc",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "2b34b3cf-b63c-427a-abb4-49e3cf46e1f1",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "a8e4f169-8a51-45d9-bb12-08ce86a83354",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "ea743e26-4075-4678-be4e-de0117649c72",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "2274971c-27ef-4350-98e2-0400d93781bd",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "8f1482bb-4ae3-41af-850d-bc9616bfd9b2",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "216de1fb-d507-431d-8837-b5023493e285",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "5ff7a1df-e157-411f-aad7-71352ff62332",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "fcebe518-1228-442f-b035-ec8f38d74b3c",
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE"
+        },
+        {
+          "participantId": "af34f45e-ae6b-411b-90bd-420ec3b57879",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "ca962905-342e-4179-bd25-ddc38f033972",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "caff665c-1f6b-4e55-a5e0-5e7b2d1a7638",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "794920b2-4f83-4a45-8918-b8f24fd38110",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "bbc21205-4177-40b9-a4df-a04ee169cb07",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "9bcfc2e7-2c35-4acd-83f6-0a4b397adc9a",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "686fa6eb-2111-46fa-a018-8701070cbaff",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "43fcf59c-2211-489a-8649-6ba51c343e31",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "8fe38e24-3a04-48c6-90a0-5cea59c9fa80",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "f4d91dda-818a-464a-96b2-c2db86b629d2",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "51b96195-e464-485b-a148-b29eface0cb8",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "afef6126-510f-4002-93e7-e48d0f2e8a87",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "d730a6d9-b4e9-4b76-921d-a62607788854",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "a03f2ace-f5de-46d1-a899-7a8b1dc166d4",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "1fdcbe41-7af9-418d-be90-f8b3519ff397",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "5586dfff-ab85-4f3f-8047-4140b234c226",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "ca28fd96-b1b0-46e4-ad7f-6a834cb44909",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "f26a410e-d6c1-4555-9a8b-48d68adab9c6",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "6e7915d3-aa15-496b-8a8a-ae9d12aa9bff",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "ea94ae80-6d6a-48fb-80df-a2dbc4bd65c2",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "d20d7541-6262-4551-9e3c-045f6df904b9",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "ccbb7f09-c43c-45c6-8055-134fe3751b7b",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "4ca8b07f-6361-47c1-ba9d-18630de91d24",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "86eb3acf-2962-4c38-ae8a-418016b10633",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "593f5a9d-62a9-4f19-9aa5-ff699efd5ebf",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "760e983d-ca2c-4d3d-9416-ce2a5ce33ab9",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "c99c98f0-7076-4435-96af-9f6e24cea949",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "799fc1ae-bc16-453c-bd7a-54cdcccc9a97",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "f8651cf6-7a18-4d96-bf55-bba0ee3c5b41",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "82389163-d429-40f3-87c5-d133afbe5e98",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "7fee5b7a-6d8a-4626-8bd4-9339acd342c9",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        },
+        {
+          "participantId": "094c522c-529d-4e37-83d5-3dd94e6ccec9",
+          "entryStage": "MAIN",
+          "entryStatus": "ALTERNATE"
+        }
+      ],
+      "links": [],
+      "structures": [
+        {
+          "structureName": "MAIN",
+          "stageSequence": 1,
+          "finishingPosition": "ROUND_OUTCOME",
+          "seedAssignments": [
+            {
+              "seedNumber": 1,
+              "seedValue": 1
+            },
+            {
+              "seedNumber": 2,
+              "seedValue": 2
+            },
+            {
+              "seedNumber": 3,
+              "seedValue": 3
+            },
+            {
+              "seedNumber": 4,
+              "seedValue": 4
+            }
+          ],
+          "structureId": "68b12099-e663-47b0-aac6-693ccfd2f6e4",
+          "stage": "MAIN",
+          "matchUps": [
+            {
+              "matchUpId": "fb71bdfd-cbab-49dd-88c7-eca4276902ed",
+              "roundNumber": 1,
+              "roundPosition": 1,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [1, 2],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "f4889933-ace3-4a08-9cbf-029516abaa16",
+              "roundNumber": 1,
+              "roundPosition": 2,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [3, 4],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "8716a2c7-1a27-435c-bcf0-66e5eabca9cc",
+              "roundNumber": 1,
+              "roundPosition": 3,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [5, 6],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "d464a643-b732-40d3-9b09-0b5db8f941eb",
+              "roundNumber": 1,
+              "roundPosition": 4,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [7, 8],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "9c56f648-60ef-4e13-8709-1eff39c684f1",
+              "roundNumber": 1,
+              "roundPosition": 5,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [9, 10],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "555b4ca4-4791-47f1-be18-d26a66f6a6a8",
+              "roundNumber": 1,
+              "roundPosition": 6,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [11, 12],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "f099143a-caa1-4477-b02a-8935ffb95842",
+              "roundNumber": 1,
+              "roundPosition": 7,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [13, 14],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "501a835f-07c6-491e-9b30-5c2c7fba980d",
+              "roundNumber": 1,
+              "roundPosition": 8,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [15, 16],
+              "finishingRound": 4,
+              "finishingPositionRange": {
+                "loser": [9, 16],
+                "winner": [1, 8]
+              }
+            },
+            {
+              "matchUpId": "804565e1-5f85-4e43-9b64-61ec8ff869e7",
+              "roundNumber": 2,
+              "roundPosition": 1,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 3,
+              "finishingPositionRange": {
+                "loser": [5, 8],
+                "winner": [1, 4]
+              }
+            },
+            {
+              "matchUpId": "773136b7-3fbb-4ff0-914a-a10fbb5f4d22",
+              "roundNumber": 2,
+              "roundPosition": 2,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 3,
+              "finishingPositionRange": {
+                "loser": [5, 8],
+                "winner": [1, 4]
+              }
+            },
+            {
+              "matchUpId": "8c6f18eb-1fcd-4659-94b4-1ad81ca4fe8f",
+              "roundNumber": 2,
+              "roundPosition": 3,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 3,
+              "finishingPositionRange": {
+                "loser": [5, 8],
+                "winner": [1, 4]
+              }
+            },
+            {
+              "matchUpId": "a17b2a87-9474-4842-9031-9c0ddbf41a21",
+              "roundNumber": 2,
+              "roundPosition": 4,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 3,
+              "finishingPositionRange": {
+                "loser": [5, 8],
+                "winner": [1, 4]
+              }
+            },
+            {
+              "matchUpId": "7a869411-5c00-401e-975e-f144219fccca",
+              "roundNumber": 3,
+              "roundPosition": 1,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 2,
+              "finishingPositionRange": {
+                "loser": [3, 4],
+                "winner": [1, 2]
+              }
+            },
+            {
+              "matchUpId": "30808696-520f-47f5-8c1a-0465098f4314",
+              "roundNumber": 3,
+              "roundPosition": 2,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 2,
+              "finishingPositionRange": {
+                "loser": [3, 4],
+                "winner": [1, 2]
+              }
+            },
+            {
+              "matchUpId": "4b426157-3049-41db-b66c-38f7ecdf75da",
+              "roundNumber": 4,
+              "roundPosition": 1,
+              "matchUpStatus": "TO_BE_PLAYED",
+              "drawPositions": [null, null],
+              "finishingRound": 1,
+              "finishingPositionRange": {
+                "loser": [2, 2],
+                "winner": [1, 1]
+              }
+            }
+          ],
+          "positionAssignments": [
+            {
+              "drawPosition": 1,
+              "participantId": "1d19ebc4-92e0-4430-816d-285eb01f968c"
+            },
+            {
+              "drawPosition": 2,
+              "participantId": "5ff7a1df-e157-411f-aad7-71352ff62332"
+            },
+            {
+              "drawPosition": 3,
+              "participantId": "fcebe518-1228-442f-b035-ec8f38d74b3c"
+            },
+            {
+              "drawPosition": 4,
+              "participantId": "ea743e26-4075-4678-be4e-de0117649c72"
+            },
+            {
+              "drawPosition": 5,
+              "participantId": "154d2f4c-7bf7-4618-8f5d-1c9332608092"
+            },
+            {
+              "drawPosition": 6,
+              "participantId": "8f1482bb-4ae3-41af-850d-bc9616bfd9b2"
+            },
+            {
+              "drawPosition": 7,
+              "participantId": "8d9a9ef9-71bf-46ad-92f9-a3fdd8c19bbc"
+            },
+            {
+              "drawPosition": 8,
+              "participantId": "86190afa-1565-425e-b494-1bde608c9db0"
+            },
+            {
+              "drawPosition": 9,
+              "participantId": "2274971c-27ef-4350-98e2-0400d93781bd"
+            },
+            {
+              "drawPosition": 10,
+              "participantId": "216de1fb-d507-431d-8837-b5023493e285"
+            },
+            {
+              "drawPosition": 11,
+              "participantId": "a8e4f169-8a51-45d9-bb12-08ce86a83354"
+            },
+            {
+              "drawPosition": 12,
+              "participantId": "80d7f05c-6b09-4790-b4d1-e056144e03cc"
+            },
+            {
+              "drawPosition": 13,
+              "participantId": "a7b8c201-13c8-4f98-938d-06706a3fb05d"
+            },
+            {
+              "drawPosition": 14,
+              "participantId": "2b34b3cf-b63c-427a-abb4-49e3cf46e1f1"
+            },
+            {
+              "drawPosition": 15,
+              "participantId": "caa5e35e-3fba-427c-a3eb-04d0f2e66bd5"
+            },
+            {
+              "drawPosition": 16,
+              "participantId": "e2ab24a0-fe58-4b33-a9b0-98e60917f251"
+            }
+          ],
+          "seedLimit": 4
+        }
+      ],
+      "matchUpFormat": "SET3-S:6/TB7",
+      "extensions": [
+        {
+          "name": "appliedPolicies",
+          "value": {
+            "seeding": {
+              "policyName": "USTA",
+              "duplicateSeedNumbers": true,
+              "validSeedPositions": {
+                "ignore": true
+              },
+              "seedsCountThresholds": [
+                {
+                  "drawSize": 4,
+                  "minimumParticipantCount": 3,
+                  "seedsCount": 2
+                },
+                {
+                  "drawSize": 8,
+                  "minimumParticipantCount": 5,
+                  "seedsCount": 2
+                },
+                {
+                  "drawSize": 16,
+                  "minimumParticipantCount": 9,
+                  "seedsCount": 4
+                },
+                {
+                  "drawSize": 32,
+                  "minimumParticipantCount": 17,
+                  "seedsCount": 8
+                },
+                {
+                  "drawSize": 64,
+                  "minimumParticipantCount": 33,
+                  "seedsCount": 16
+                },
+                {
+                  "drawSize": 128,
+                  "minimumParticipantCount": 65,
+                  "seedsCount": 16
+                },
+                {
+                  "drawSize": 128,
+                  "minimumParticipantCount": 97,
+                  "seedsCount": 32
+                }
+              ],
+              "seedBlocks": {
+                "1": [["1", "0"]],
+                "2": [["0", "1"]],
+                "3": [
+                  ["1", ".250"],
+                  ["0", ".750"]
+                ],
+                "5": [
+                  ["1", ".125"],
+                  ["1", ".375"],
+                  ["0", ".625"],
+                  ["0", ".875"]
+                ],
+                "9": [
+                  ["1", ".0625"],
+                  ["1", ".1875"],
+                  ["1", ".3125"],
+                  ["1", ".4375"],
+                  ["0", ".5625"],
+                  ["0", ".6875"],
+                  ["0", ".8125"],
+                  ["0", ".9375"]
+                ],
+                "17": [
+                  ["1", ".03125"],
+                  ["1", ".09375"],
+                  ["1", ".15625"],
+                  ["1", ".21875"],
+                  ["1", ".28125"],
+                  ["1", ".34375"],
+                  ["1", ".40625"],
+                  ["1", ".46875"],
+                  ["0", ".53125"],
+                  ["0", ".59375"],
+                  ["0", ".65625"],
+                  ["0", ".71875"],
+                  ["0", ".78125"],
+                  ["0", ".84375"],
+                  ["0", ".90625"],
+                  ["0", ".96875"]
+                ],
+                "33": [
+                  ["1", "0.015625"],
+                  ["1", "0.046875"],
+                  ["1", "0.078125"],
+                  ["1", "0.109375"],
+                  ["1", "0.140625"],
+                  ["1", "0.171875"],
+                  ["1", "0.203125"],
+                  ["1", "0.234375"],
+                  ["1", "0.265625"],
+                  ["1", "0.296875"],
+                  ["1", "0.328125"],
+                  ["1", "0.359375"],
+                  ["1", "0.390625"],
+                  ["1", "0.421875"],
+                  ["1", "0.453125"],
+                  ["1", "0.484375"],
+                  ["0", "0.515625"],
+                  ["0", "0.546875"],
+                  ["0", "0.578125"],
+                  ["0", "0.609375"],
+                  ["0", "0.640625"],
+                  ["0", "0.671875"],
+                  ["0", "0.703125"],
+                  ["0", "0.734375"],
+                  ["0", "0.765625"],
+                  ["0", "0.796875"],
+                  ["0", "0.828125"],
+                  ["0", "0.859375"],
+                  ["0", "0.890625"],
+                  ["0", "0.921875"],
+                  ["0", "0.953125"],
+                  ["0", "0.984375"]
+                ],
+                "49": []
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "createdAt": "2020-09-17T08:18:11.418Z",
+  "updatedAt": "2020-09-17T08:18:11.418Z",
+  "surfaceCategory": "HARD"
+}

@@ -66,10 +66,12 @@ export function getEventData({ tournamentRecord, event }) {
     discipline,
   }))(event);
 
-  return Object.assign({}, SUCCESS, {
+  const eventData = {
     eventInfo,
     drawsData,
     venuesData,
     tournamentInfo,
-  });
+  };
+
+  return Object.assign({}, SUCCESS, { eventData });
 }
