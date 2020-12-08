@@ -137,29 +137,29 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     structure => structure.structureId
   );
 
-  const payload = tournamentEngine.getEventData({
+  const { eventData } = tournamentEngine.getEventData({
     eventId,
   });
 
-  expect(payload.eventInfo.eventId).toEqual(eventId);
-  expect(payload.eventInfo.eventName).toEqual(eventName);
+  expect(eventData.eventInfo.eventId).toEqual(eventId);
+  expect(eventData.eventInfo.eventName).toEqual(eventName);
 
-  expect(payload.tournamentInfo.tournamentId).toEqual(
+  expect(eventData.tournamentInfo.tournamentId).toEqual(
     tournamentRecord.tournamentId
   );
 
-  expect(payload.venuesData[0].venueId).toEqual(venueId);
-  expect(payload.venuesData[0].venueName).toEqual(venueName);
-  expect(payload.venuesData[0].venueAbbreviation).toEqual(venueAbbreviation);
-  expect(payload.venuesData[0].courtsInfo.length).toEqual(2);
+  expect(eventData.venuesData[0].venueId).toEqual(venueId);
+  expect(eventData.venuesData[0].venueName).toEqual(venueName);
+  expect(eventData.venuesData[0].venueAbbreviation).toEqual(venueAbbreviation);
+  expect(eventData.venuesData[0].courtsInfo.length).toEqual(2);
 
-  expect(payload.drawsData[0].drawId).toEqual(drawDefinition.drawId);
-  expect(payload.drawsData[0].groupedStructures.length).toEqual(1);
-  expect(payload.drawsData[0].groupedStructures[0].length).toEqual(5);
+  expect(eventData.drawsData[0].drawId).toEqual(drawDefinition.drawId);
+  expect(eventData.drawsData[0].groupedStructures.length).toEqual(1);
+  expect(eventData.drawsData[0].groupedStructures[0].length).toEqual(5);
 
   const writeFile = process.env.TMX_TEST_FILES;
   const fileName = `eventData.json`;
   const dirPath = './src/tournamentEngine/tests/publishing/';
   const output = `${dirPath}${fileName}`;
-  if (writeFile) fs.writeFileSync(output, JSON.stringify(payload, null, 2));
+  if (writeFile) fs.writeFileSync(output, JSON.stringify(eventData, null, 2));
 });
