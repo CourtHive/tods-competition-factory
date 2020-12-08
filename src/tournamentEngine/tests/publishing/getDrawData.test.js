@@ -1,12 +1,23 @@
 import fs from 'fs';
 import { getStructureGroups } from '../../governors/publishingGovernor/getDrawData';
 
-const json = fs.readFileSync(
-  './src/tournamentEngine/tests/publishing/eventMock.json'
+const elimination = fs.readFileSync(
+  './src/tournamentEngine/tests/publishing/eliminationMock.json'
+);
+const roundRobin = fs.readFileSync(
+  './src/tournamentEngine/tests/publishing/roundRobinMock.json'
 );
 
-it('can extract structures', () => {
-  const event = JSON.parse(json);
+it('can extract elimination structures', () => {
+  const event = JSON.parse(elimination);
+
+  const drawDefinition = event.drawDefinitions[0];
+  const { structureGroups } = getStructureGroups({ drawDefinition });
+  expect(structureGroups.length).toEqual(1);
+});
+
+it('can extract round robin structures', () => {
+  const event = JSON.parse(roundRobin);
 
   const drawDefinition = event.drawDefinitions[0];
   const { structureGroups } = getStructureGroups({ drawDefinition });

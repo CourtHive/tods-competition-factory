@@ -48,7 +48,6 @@ export function getEventData({ tournamentRecord, event }) {
     gender,
     startDate,
     endDate,
-    entries,
     ballType,
     discipline,
   }) => ({
@@ -61,7 +60,6 @@ export function getEventData({ tournamentRecord, event }) {
     gender,
     startDate,
     endDate,
-    entries,
     ballType,
     discipline,
   }))(event);
