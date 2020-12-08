@@ -301,6 +301,15 @@ Returns an object describing draw rounds such that they can be generated as inde
 
 ---
 
+## isCompletedStructure
+
+Expects drawEngine.setState(drawDefinition) has been previously called
+Returns boolean whether all matchUps in a given structure have been completed
+
+- @param {string} structureId
+
+---
+
 ## load
 
 ---

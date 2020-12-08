@@ -17,6 +17,11 @@ export const SUSPENSION = 'SUSPENSION';
 export const MEDICAL = 'MEDICAL';
 export const PENALTY = 'PENALTY';
 
+export const SCALE = 'SCALE';
+export const RATING = 'RATING';
+export const RANKING = 'RANKING';
+export const SEEDING = 'SEEDING';
+
 export const timeItemConstants = {
   ASSIGNMENT,
   CHECK_IN,
@@ -26,9 +31,13 @@ export const timeItemConstants = {
   MEDICAL,
   OFFICIAL,
   PENALTY,
+  RANKING,
+  RATING,
   RESUME_TIME,
+  SCALE,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
+  SEEDING,
   START_TIME,
   STOP_TIME,
   SUSPENSION,

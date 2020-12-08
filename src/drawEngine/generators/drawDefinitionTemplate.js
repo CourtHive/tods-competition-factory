@@ -2,6 +2,7 @@ import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export const definitionTemplate = () => ({
   drawId: null,
+  drawName: null,
   drawProfile: {
     automated: null,
     drawType: null,

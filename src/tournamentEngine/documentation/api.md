@@ -275,13 +275,25 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
+## getCourtInfo
+
+---
+
 ## getCourts
+
+---
+
+## getDrawData,
 
 ---
 
 ## getEvent
 
 - @param {string} eventId - id of the event to retreive
+
+---
+
+## getEventData,
 
 ---
 
@@ -365,7 +377,15 @@ Returns tournament participants filtered by participantFilters which are arrays 
 
 ---
 
+## getTournamentInfo
+
+---
+
 ## getVenues
+
+---
+
+## getVenueData
 
 ---
 
@@ -398,6 +418,10 @@ Returns tournament participants filtered by participantFilters which are arrays 
 ---
 
 ## participantsSignInStatus
+
+---
+
+## publishEvent
 
 ---
 
@@ -477,6 +501,10 @@ Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(
 | :------------- | :------- | :---- | :---------- |
 | matchUpFilters | Optional | array |             |
 | contestFilters | Optional | array |             |
+
+---
+
+## unPublishEvent
 
 ---
 

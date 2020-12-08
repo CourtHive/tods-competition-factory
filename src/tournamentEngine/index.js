@@ -9,6 +9,7 @@ import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import policyGovernor from './governors/policyGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
+import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
@@ -95,6 +96,7 @@ export const tournamentEngine = (function() {
     venueGovernor,
     policyGovernor,
     scheduleGovernor,
+    publishingGovernor,
     tournamentGovernor,
     participantGovernor,
   ]);
