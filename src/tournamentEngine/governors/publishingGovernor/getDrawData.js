@@ -9,6 +9,10 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
 
+  const drawInfo = (({ drawId, drawName }) => ({
+    drawId,
+  }))(drawDefinition);
+
   const tournamentParticipants = tournamentRecord.participants || [];
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
@@ -18,6 +22,7 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
       const { roundMatchUps } = getAllStructureMatchUps({
         tournamentParticipants,
         inContext: true,
+        context: { drawId: drawInfo.drawId },
         structure,
       });
 
@@ -40,10 +45,6 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
   if (groupedStructures.length > 1) {
     return { error: 'drawDefinition contains unlinked structures' };
   }
-
-  const drawInfo = (({ drawId, drawName }) => ({
-    drawId,
-  }))(drawDefinition);
 
   const structures = groupedStructures.flat();
 

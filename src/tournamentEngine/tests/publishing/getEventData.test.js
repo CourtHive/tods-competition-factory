@@ -156,6 +156,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(eventData.drawsData[0].drawId).toEqual(drawDefinition.drawId);
   expect(eventData.drawsData[0].structures.length).toEqual(5);
 
+  expect(
+    eventData.drawsData[0].structures[0].roundMatchUps[1][0].drawId
+  ).toEqual(drawDefinition.drawId);
+
   const writeFile = process.env.TMX_TEST_FILES;
   const fileName = `eventData.json`;
   const dirPath = './src/tournamentEngine/tests/publishing/';
