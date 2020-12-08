@@ -36,7 +36,7 @@ export function addParticipant({ tournamentRecord, participant }) {
   if (idExists) return { error: PARTICIPANT_ID_EXISTS };
 
   const { participantType, participantRole } = participant;
-  if (![PAIR, TEAM, INDIVIDUAL].includes(participantType))
+  if (![PAIR, TEAM, INDIVIDUAL, GROUP].includes(participantType))
     return { error: INVALID_PARTICIPANT_TYPE, participantType };
 
   if (!participantRole) return { error: MISSING_PARTICIPANT_ROLE };
