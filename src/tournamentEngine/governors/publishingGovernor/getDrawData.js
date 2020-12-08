@@ -37,11 +37,17 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
     return structures;
   });
 
+  if (groupedStructures.length > 1) {
+    return { error: 'drawDefinition contains unlinked structures' };
+  }
+
   const drawInfo = (({ drawId, drawName }) => ({
     drawId,
   }))(drawDefinition);
 
-  return Object.assign({}, SUCCESS, { drawInfo, groupedStructures });
+  const structures = groupedStructures.flat();
+
+  return Object.assign({}, SUCCESS, { drawInfo, structures });
 }
 
 export function getStructureGroups({ drawDefinition }) {

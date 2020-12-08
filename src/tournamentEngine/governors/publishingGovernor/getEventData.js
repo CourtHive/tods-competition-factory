@@ -14,9 +14,9 @@ export function getEventData({ tournamentRecord, event }) {
 
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions.map(drawDefinition =>
-    (({ drawInfo, groupedStructures }) => ({
+    (({ drawInfo, structures }) => ({
       ...drawInfo,
-      groupedStructures,
+      structures,
     }))(
       getDrawData({
         tournamentRecord,
