@@ -196,15 +196,17 @@ export function generateDrawDefinition(props) {
   } else if (event?.category) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
+    const { categoryName, ageCategoryCode } = event.category;
+
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName: event.category.categoryName,
+      scaleName: categoryName || ageCategoryCode,
       eventType,
     };
 
     const rankingScaleAttributes = {
       scaleType: RANKING,
-      scaleName: event.category.categoryName,
+      scaleName: categoryName || ageCategoryCode,
       eventType,
     };
 
