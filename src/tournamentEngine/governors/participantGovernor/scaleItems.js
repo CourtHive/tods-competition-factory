@@ -5,14 +5,16 @@ import {
   MISSING_PARTICIPANT,
   NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
+  VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 export function setParticipantScaleItem({
   tournamentRecord,
   participantId,
   scaleItem,
 }) {
-  let modificationApplied;
+  let modificationApplied, participantFound;
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = [
@@ -35,24 +37,39 @@ export function setParticipantScaleItem({
   ) {
     tournamentRecord.participants.forEach(participant => {
       if (participant.participantId === participantId) {
-        addParticipantScaleItem({ participant, scaleItem });
-        modificationApplied = true;
+        participantFound = true;
+        const { scaleItem: existingScaleItem } = participantScaleItem({
+          participant,
+          scaleAttributes: scaleItem,
+        });
+        const noChange =
+          (!existingScaleItem && !scaleItem.scaleValue) ||
+          existingScaleItem?.scaleValue === scaleItem.scaleValue;
+        const newValue = !noChange;
+        if (newValue) {
+          const result = addParticipantScaleItem({ participant, scaleItem });
+          modificationApplied = !!result.success;
+        }
       }
     });
   }
 
-  return modificationApplied ? SUCCESS : { error: PARTICIPANT_NOT_FOUND };
+  return modificationApplied
+    ? { ...SUCCESS, value: scaleItem.scaleValue }
+    : participantFound
+    ? { ...SUCCESS, message: VALUE_UNCHANGED, value: scaleItem.scaleValue }
+    : { error: PARTICIPANT_NOT_FOUND };
 }
 
 export function setParticipantScaleItems({
   tournamentRecord,
-  scaleItemsWithParticipantIDsArray,
+  scaleItemsWithParticipantIdsArray,
 }) {
   let modificationApplied;
   const participantScaleItemsMap = {};
 
   if (tournamentRecord && tournamentRecord.participants) {
-    scaleItemsWithParticipantIDsArray.forEach(item => {
+    scaleItemsWithParticipantIdsArray.forEach(item => {
       const participantId = item && item.participantId;
       if (item && Array.isArray(item.scaleItems)) {
         item.scaleItems.forEach(scaleItem => {

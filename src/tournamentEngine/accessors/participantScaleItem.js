@@ -9,6 +9,7 @@ export function participantScaleItem({
   scaleAttributes,
   requireTimeStamp,
 }) {
+  if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
     const timeItem = participant.timeItems
       .filter(timeItem => timeItem.itemSubject === SCALE)

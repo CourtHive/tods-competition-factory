@@ -163,6 +163,7 @@ export const TEAM_NOT_FOUND = 'Team not found';
 export const NO_VALID_ACTIONS = 'No valid actions';
 export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 
+export const VALUE_UNCHANGED = 'Value unchanged';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
@@ -283,6 +284,7 @@ export const errorConditionConstants = {
   UNRECOGNIZED_DRAW_TYPE,
   UNRECOGNIZED_MATCHUP_FORMAT,
   UNRECOGNIZED_MATCHUP_STATUS,
+  VALUE_UNCHANGED,
   VENUE_EXISTS,
 };
 
