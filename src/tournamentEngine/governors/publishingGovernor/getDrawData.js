@@ -14,8 +14,10 @@ export function getDrawData({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
 
-  const drawInfo = (({ drawId, drawName }) => ({
+  const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
     drawId,
+    drawName,
+    matchUpFormat,
   }))(drawDefinition);
 
   const tournamentParticipants = tournamentRecord.participants || [];
@@ -32,10 +34,16 @@ export function getDrawData({
         structure,
       });
 
-      const structureInfo = (({ stage, stageSequence, structureName }) => ({
+      const structureInfo = (({
         stage,
         stageSequence,
         structureName,
+        matchUpFormat,
+      }) => ({
+        stage,
+        stageSequence,
+        structureName,
+        matchUpFormat,
       }))(structure);
 
       return {
