@@ -22,15 +22,22 @@ export const RATING = 'RATING';
 export const RANKING = 'RANKING';
 export const SEEDING = 'SEEDING';
 
+export const PUBLISH = 'PUBLISH';
+export const PUBLIC = 'PUBLIC';
+export const HIDDEN = 'HIDDEN';
+
 export const timeItemConstants = {
   ASSIGNMENT,
   CHECK_IN,
   CHECK_OUT,
   COURT,
   END_TIME,
+  HIDDEN,
   MEDICAL,
   OFFICIAL,
   PENALTY,
+  PUBLIC,
+  PUBLISH,
   RANKING,
   RATING,
   RESUME_TIME,

@@ -147,6 +147,7 @@ export const INVALID_START_TIME = 'Invalid startTime';
 export const INVALID_RESUME_TIME = 'Invalid resumeTime';
 
 export const INVALID_TIME_ITEM = 'Invalid timeItem';
+export const MISSING_TIME_ITEM = 'Missing timeItem';
 export const MISSING_TIME_ITEMS = 'Missing timeItems';
 export const MISSING_CONTEXT = 'Missing context';
 
@@ -255,6 +256,7 @@ export const errorConditionConstants = {
   MISSING_STRUCTURE,
   MISSING_STRUCTURES,
   MISSING_TARGET_LINK,
+  MISSING_TIME_ITEM,
   MISSING_TIME_ITEMS,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
