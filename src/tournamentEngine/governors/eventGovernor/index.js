@@ -35,6 +35,7 @@ import {
 
 import { setEntryPosition, setEntryPositions } from './setEntryPositions';
 import { modifyEntriesStatus } from './modifyEntriesStatus';
+import { addEventTimeItem } from './addEventTimeItem';
 
 const eventGovernor = {
   addEvent,
@@ -54,6 +55,8 @@ const eventGovernor = {
   addEventEntryPairs,
   removeEventEntries,
   modifyEntriesStatus,
+
+  addEventTimeItem,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,

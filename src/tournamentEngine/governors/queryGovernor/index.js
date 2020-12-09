@@ -12,6 +12,8 @@ import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
+import { getEventTimeItem, getTournamentTimeItem } from './timeItems';
+
 import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
@@ -32,6 +34,9 @@ const queryGovernor = {
   findVenue,
   getCourts,
   findCourt: publicFindCourt,
+
+  getEventTimeItem,
+  getTournamentTimeItem,
 
   matchUpActions,
   findMatchUp: publicFindMatchUp,

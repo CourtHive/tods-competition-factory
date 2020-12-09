@@ -165,6 +165,7 @@ export const NO_VALID_ACTIONS = 'No valid actions';
 export const NO_VALID_ATTRIBUTES = 'No valid attributes';
 
 export const VALUE_UNCHANGED = 'Value unchanged';
+export const NOT_FOUND = 'Not found';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
 export const errorConditionConstants = {
@@ -268,6 +269,7 @@ export const errorConditionConstants = {
   NO_MODIFICATIONS_APPLIED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,
+  NOT_FOUND,
   NOT_IMPLEMENTED,
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
