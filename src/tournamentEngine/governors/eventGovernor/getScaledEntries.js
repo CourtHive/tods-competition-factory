@@ -10,7 +10,7 @@ export function getScaledEntries({
   const entries = event?.entries || [];
   const stageEntries = entries.filter(
     entry =>
-      entry.entryStage === stage &&
+      (!entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
   const scaledEntries = stageEntries
