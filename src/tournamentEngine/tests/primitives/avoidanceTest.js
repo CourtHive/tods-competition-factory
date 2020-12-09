@@ -118,7 +118,7 @@ export function avoidanceTest(props) {
   const report = upcomingMatchUps.map(m => ({
     drawPositions: m.drawPositions,
     seeds: m.sides.map(s => s.seedValue || ''),
-    names: m.sides.map(s => s.participant.name),
+    names: m.sides.map(s => s.participant.name || s.particpant.participantName),
     ioc: m.sides.map(s => {
       if (eventType === DOUBLES) {
         return s.participant.individualParticipants.map(

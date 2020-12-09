@@ -8,7 +8,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { getTournamentInfo } from './getTournamentInfo';
 import { getVenueData } from './getVenueData';
 
-export function getEventData({ tournamentRecord, event }) {
+// pass in policyDefinitions for roundNaming and personPrivacy
+
+export function getEventData({ tournamentRecord, event, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -21,6 +23,7 @@ export function getEventData({ tournamentRecord, event }) {
       getDrawData({
         tournamentRecord,
         drawDefinition,
+        policyDefinition,
       })
     )
   );

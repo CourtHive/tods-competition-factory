@@ -84,10 +84,12 @@ export function addParticipant({ tournamentRecord, participant }) {
             tournamentParticipant.participantId
           )
       );
-      participant.name = individualParticipants
+      const name = individualParticipants
         .map(participant => participant.person?.standardFamilyName)
         .filter(f => f)
         .join('/');
+      participant.name = name;
+      participant.participantName = name;
     }
   } else if (participantType === INDIVIDUAL) {
     if (
@@ -98,9 +100,11 @@ export function addParticipant({ tournamentRecord, participant }) {
       return { error: MISSING_PERSON_DETAILS };
 
     if (!participant.name) {
-      participant.name = `${participant.person.standardFamilyName.toUpperCase()}, ${
+      const name = `${participant.person.standardFamilyName.toUpperCase()}, ${
         participant.person.standardGivenName
       }`;
+      participant.name = name;
+      participant.participantName = name;
     }
   }
 

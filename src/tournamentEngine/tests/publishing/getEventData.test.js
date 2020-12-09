@@ -12,6 +12,8 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
+import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/participants/PARTICIPANT_POLICY_DEFAULT';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -137,7 +139,13 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     structure => structure.structureId
   );
 
+  const policyDefinition = Object.assign(
+    {},
+    ROUND_NAMING_POLICY,
+    PARTICIPANT_PRIVACY_DEFAULT
+  );
   const { eventData } = tournamentEngine.getEventData({
+    policyDefinition,
     eventId,
   });
 
@@ -159,6 +167,11 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(
     eventData.drawsData[0].structures[0].roundMatchUps[1][0].drawId
   ).toEqual(drawDefinition.drawId);
+
+  // round naming policy test
+  expect(
+    eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
+  ).toEqual('P-Semifinals');
 
   const writeFile = process.env.TMX_TEST_FILES;
   const fileName = `eventData.json`;

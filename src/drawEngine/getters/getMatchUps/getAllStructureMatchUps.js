@@ -22,6 +22,7 @@ import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPol
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { getRoundContextProfile } from './getRoundContextProfile';
+import { findParticipant } from '../participantGetter';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -39,6 +40,7 @@ export function getAllStructureMatchUps({
   drawDefinition,
   contextFilters,
   matchUpFilters,
+  policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
 }) {
@@ -62,7 +64,8 @@ export function getAllStructureMatchUps({
   const appliedPolicies = Object.assign(
     {},
     tournamentAppliedPolicies,
-    drawAppliedPolicies
+    drawAppliedPolicies,
+    policyDefinition
   );
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
@@ -154,6 +157,7 @@ export function getAllStructureMatchUps({
         matchUp,
         isRoundRobin,
         roundProfile,
+        appliedPolicies,
         roundNamingProfile,
         sourceDrawPositionRanges,
       })
@@ -173,24 +177,13 @@ export function getAllStructureMatchUps({
 
   return { matchUps, roundMatchUps, collectionPositionMatchUps };
 
-  function findParticipant({ tournamentParticipants = [], participantId }) {
-    const participant = tournamentParticipants.reduce(
-      (participant, candidate) => {
-        return candidate.participantId === participantId
-          ? candidate
-          : participant;
-      },
-      undefined
-    );
-    return makeDeepCopy(participant);
-  }
-
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
     matchUp,
     matchUpTieId,
     isRoundRobin,
     roundProfile,
+    appliedPolicies,
     isCollectionBye,
     roundNamingProfile,
     sourceDrawPositionRanges,
@@ -233,6 +226,7 @@ export function getAllStructureMatchUps({
             matchUpTieId,
             isRoundRobin,
             roundProfile,
+            appliedPolicies,
             isCollectionBye,
             roundNamingProfile,
             sourceDrawPositionRanges,
@@ -299,6 +293,7 @@ export function getAllStructureMatchUps({
           if (side.participantId) {
             const participant = findParticipant({
               tournamentParticipants,
+              policyDefinition: appliedPolicies,
               participantId: side.participantId,
             });
             if (participant) {
@@ -314,6 +309,7 @@ export function getAllStructureMatchUps({
             const individualParticipants = side.participant.individualParticipantIds.map(
               participantId => {
                 return findParticipant({
+                  policyDefinition: appliedPolicies,
                   tournamentParticipants,
                   participantId,
                 });

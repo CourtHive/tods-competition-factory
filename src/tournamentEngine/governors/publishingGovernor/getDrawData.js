@@ -4,8 +4,13 @@ import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 
-export function getDrawData({ tournamentRecord, drawDefinition }) {
+export function getDrawData({
+  tournamentRecord,
+  drawDefinition,
+  policyDefinition,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
 
@@ -20,9 +25,10 @@ export function getDrawData({ tournamentRecord, drawDefinition }) {
     const structures = structureIds.map(structureId => {
       const { structure } = findStructure({ drawDefinition, structureId });
       const { roundMatchUps } = getAllStructureMatchUps({
-        tournamentParticipants,
-        inContext: true,
         context: { drawId: drawInfo.drawId },
+        tournamentParticipants,
+        policyDefinition,
+        inContext: true,
         structure,
       });
 
