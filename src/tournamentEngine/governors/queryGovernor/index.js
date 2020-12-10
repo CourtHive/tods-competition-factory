@@ -18,6 +18,7 @@ import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
+import { credits } from './credits';
 
 function getEvent({ event }) {
   return { event: makeDeepCopy(event) };
@@ -29,6 +30,7 @@ const queryGovernor = {
   allEventMatchUps,
   eventMatchUps,
   getEvent,
+  credits,
 
   getVenues,
   findVenue,
