@@ -5,14 +5,13 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { RATING } from '../../../constants/scaleConstants';
 import { RANKING } from '../../../constants/timeItemConstants';
 import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 it('can set participant scaleItems', () => {
-  const { tournamentRecord } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
     participantsCount: 100,
   });
   tournamentEngine.setState(tournamentRecord);
-
-  const participants = tournamentRecord.participants;
 
   const { participantId } = participants[0];
   const { participant } = tournamentEngine.findParticipant({ participantId });
@@ -104,4 +103,45 @@ it('can set participant scaleItems', () => {
   });
   expect(result).toMatchObject(SUCCESS);
   expect(result.message).toEqual(VALUE_UNCHANGED);
+});
+
+it('can set participant scaleItems in bulk', () => {
+  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+    participantsCount: 100,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const scaleItemsWithParticipantIds = participants.map(participant => {
+    const { participantId } = participant;
+    const scaleItems = [
+      {
+        scaleValue: 8.3,
+        scaleName: 'WTN',
+        scaleType: RATING,
+        eventType: SINGLES,
+        scaleDate: '2021-01-01',
+      },
+      {
+        scaleValue: 1,
+        scaleName: 'U18',
+        scaleType: RANKING,
+        eventType: SINGLES,
+        scaleDate: '2021-01-01',
+      },
+    ];
+
+    return { participantId, scaleItems };
+  });
+
+  const result = tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds,
+  });
+
+  const {
+    tournamentRecord: { participants: modifiedParticipants },
+  } = tournamentEngine.getState();
+
+  modifiedParticipants.forEach(participant => {
+    expect(participant.timeItems.length).toEqual(2);
+  });
 });

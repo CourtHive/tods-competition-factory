@@ -3,6 +3,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
+  MISSING_PARTICIPANTS,
+  MISSING_TOURNAMENT_RECORD,
   NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
@@ -63,37 +65,39 @@ export function setParticipantScaleItem({
 
 export function setParticipantScaleItems({
   tournamentRecord,
-  scaleItemsWithParticipantIdsArray,
+  scaleItemsWithParticipantIds = [],
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
+
   let modificationApplied;
   const participantScaleItemsMap = {};
 
-  if (tournamentRecord && tournamentRecord.participants) {
-    scaleItemsWithParticipantIdsArray.forEach(item => {
-      const participantId = item && item.participantId;
-      if (item && Array.isArray(item.scaleItems)) {
-        item.scaleItems.forEach(scaleItem => {
-          if (isValidScaleItem({ scaleItem })) {
-            if (!Array.isArray(participantScaleItemsMap[participantId])) {
-              participantScaleItemsMap[participantId] = [];
-            }
-            participantScaleItemsMap[participantId].push(scaleItem);
+  scaleItemsWithParticipantIds.forEach(item => {
+    const participantId = item?.participantId;
+    if (Array.isArray(item?.scaleItems)) {
+      item.scaleItems.forEach(scaleItem => {
+        if (isValidScaleItem({ scaleItem })) {
+          if (!Array.isArray(participantScaleItemsMap[participantId])) {
+            participantScaleItemsMap[participantId] = [];
           }
-        });
-      }
-    });
+          participantScaleItemsMap[participantId].push(scaleItem);
+        }
+      });
+    }
+  });
 
-    tournamentRecord.participants.forEach(participant => {
-      const { participantId } = participant || {};
-      if (Array.isArray(participantScaleItemsMap[participantId])) {
-        participantScaleItemsMap[participantId].forEach(scaleItem => {
-          addParticipantScaleItem({ participant, scaleItem });
-          modificationApplied = true;
-        });
-      }
-    });
-    return modificationApplied ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
-  }
+  tournamentRecord.participants.forEach(participant => {
+    const { participantId } = participant || {};
+    if (Array.isArray(participantScaleItemsMap[participantId])) {
+      participantScaleItemsMap[participantId].forEach(scaleItem => {
+        addParticipantScaleItem({ participant, scaleItem });
+        modificationApplied = true;
+      });
+    }
+  });
+
+  return modificationApplied ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
 }
 
 function isValidScaleItem({ scaleItem }) {
