@@ -211,6 +211,12 @@ Removes a participantType: PAIR entry from an event and adds the individualParti
 
 ## devContext
 
+Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging
+
+```js
+tournamentEngine.devContext(true);
+```
+
 ---
 
 ## eventMatchUps

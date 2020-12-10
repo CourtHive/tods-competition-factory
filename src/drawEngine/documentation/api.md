@@ -8,9 +8,20 @@ route: /drawEngine/api
 
 ## addDrawEntries
 
+- @param {object} drawDefinition - drawDefinition object; passed in automatically when _drawEngine.setState(drawDefinition)_ has been previously called
+- @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
+- @param {string} entryStatus - entry status to be applied to all draw Entries
+- @param {string} stage - entry stage for particpants (QUALIFYING, MAIN)
+
 ---
 
 ## addDrawEntry
+
+- @param {object} drawDefinition - drawDefinition object; passed in automatically by drawEngine when drawEngine.setSTate(drawdefinition) has been previously called
+- @param {string} participantId - id of participant being entered into draw
+- @param {object} participant - optional; for passing participantId
+- @param {string} entryStage - either QUALIFYING or MAIN
+- @param {string} entryStatus - entryStatusEnum (e.g. DIRECT_ACCEPTANCE, WILDCARD)
 
 ---
 
@@ -139,6 +150,12 @@ The structure of an **_assignment object_** is as follows:
 ---
 
 ## devContext
+
+Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging
+
+```js
+tournamentEngine.devContext(true);
+```
 
 ---
 

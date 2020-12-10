@@ -14,6 +14,15 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+/**
+ *
+ * @param {object} drawDefinition - drawDefinition object; passed in automatically by drawEngine when drawEngine.setSTate(drawdefinition) has been previously called
+ * @param {string} participantId - id of participant being entered into draw
+ * @param {object} participant - optional; for passing participantId
+ * @param {string} entryStage - either QUALIFYING or MAIN
+ * @param {string} entryStatus - entryStatusEnum (e.g. DIRECT_ACCEPTANCE, WILDCARD)
+ *
+ */
 export function addDrawEntry({
   drawDefinition,
   participantId,
@@ -46,6 +55,14 @@ export function addDrawEntry({
   return SUCCESS;
 }
 
+/**
+ *
+ * @param {object} drawDefinition - drawDefinition object
+ * @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
+ * @param {string} entryStatus - entry status to be applied to all draw Entries, e.g. DIRECT ACCEPTANCE
+ * @param {string} stage - entry stage for particpants (QUALIFYING, MAIN)
+ *
+ */
 export function addDrawEntries({
   drawDefinition,
   participantIds,
