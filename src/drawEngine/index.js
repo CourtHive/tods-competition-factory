@@ -23,6 +23,7 @@ import {
 let devContext;
 let errors = [];
 let drawDefinition;
+let deepCopy = true;
 let tournamentParticipants = [];
 
 const policies = {};
@@ -32,7 +33,7 @@ function newDrawDefinition({ drawId, drawProfile } = {}) {
   return Object.assign({}, template, { drawId, drawProfile });
 }
 
-function setState(definition, deepCopy) {
+function setState(definition, deepCopyOption = true) {
   if (!definition) return { error: MISSING_DRAW_DEFINITION };
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
   if (!definition.drawId) return { error: MISSING_DRAW_ID };
@@ -42,7 +43,9 @@ function setState(definition, deepCopy) {
   if (!validDefinitionKeys(definition))
     return { error: INVALID_DRAW_DEFINITION };
 
-  drawDefinition = deepCopy ? makeDeepCopy(definition) : definition;
+  drawDefinition = deepCopyOption ? makeDeepCopy(definition) : definition;
+  deepCopy = deepCopyOption;
+
   return Object.assign({ drawId: definition.drawId }, SUCCESS);
 }
 
@@ -61,9 +64,6 @@ function flushErrors() {
 
 export const drawEngine = (function() {
   const fx = {
-    load: definition => {
-      return setState(definition);
-    },
     getState: () => ({ drawDefinition: makeDeepCopy(drawDefinition) }),
     version: () => '@VERSION@',
     reset: () => {
@@ -113,7 +113,7 @@ export const drawEngine = (function() {
   };
   fx.setState = definition => {
     const result = setState(definition);
-    if (result && result.error) errors.push(result.error);
+    if (result.error) return result;
     return fx;
   };
 

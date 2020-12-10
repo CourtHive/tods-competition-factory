@@ -2,23 +2,19 @@ import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
+// TODO: untested...
 export function assignDrawPosition(props) {
   const {
-    tournamentRecord,
-    drawEngine,
     drawId,
+    event,
     structureId,
     drawPosition,
     bye,
     participantId,
     qualifier,
   } = props;
-  const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
 
   let errors = [];
-
-  const { errors: drawEngineErrors } = drawEngine.setState(drawDefinition);
-  if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
 
   if (event) {
     if (bye) {

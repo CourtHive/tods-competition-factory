@@ -11,11 +11,13 @@ import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];
+let deepCopy = true;
 let tournamentRecords;
 
-function setState(records, deepCopy = true) {
+function setState(records, deepCopyOption = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
-  tournamentRecords = deepCopy ? makeDeepCopy(records) : records;
+  tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
+  deepCopy = deepCopyOption;
   return SUCCESS;
 }
 
@@ -26,7 +28,6 @@ function flushErrors() {
 export const competitionEngine = (function() {
   const fx = {
     getState: () => ({ tournamentRecords: makeDeepCopy(tournamentRecords) }),
-    load: records => setState(records),
   };
 
   importGovernors([
@@ -62,6 +63,7 @@ export const competitionEngine = (function() {
       tournamentEngine,
       auditEngine,
       drawEngine,
+      deepCopy,
     });
   }
 

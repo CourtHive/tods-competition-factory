@@ -16,6 +16,7 @@ interface Assignment {
 
 interface SeedAssignmentProps {
   tournamentRecord: any;
+  deepCopy: boolean;
   drawEngine: any;
   drawId: string;
   eventId?: string;
@@ -33,6 +34,7 @@ interface SeedAssignmentProps {
 export function assignSeedPositions(props: SeedAssignmentProps) {
   const {
     tournamentRecord,
+    deepCopy,
     drawEngine,
     eventId,
     drawId,
@@ -53,7 +55,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     drawId,
   });
 
-  drawEngine.setState(drawDefinition);
+  drawEngine.setState(drawDefinition, deepCopy);
   const {
     seedAssignments,
     seedLimit,

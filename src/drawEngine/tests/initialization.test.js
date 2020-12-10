@@ -16,11 +16,10 @@ it('can initialize', () => {
 });
 
 it('can load definition', () => {
-  result = drawEngine.load(definitionTemplate());
+  result = drawEngine.setState(definitionTemplate());
   expect(result).toHaveProperty(ERROR);
   const template = Object.assign({}, definitionTemplate(), { drawId: 'foo' });
-  result = drawEngine.load(template);
-  expect(result).toMatchObject(SUCCESS);
+  drawEngine.setState(template);
   ({ drawDefinition: result } = drawEngine.getState());
   expect(result).toHaveProperty('drawId');
   expect(result.drawId).toEqual('foo');

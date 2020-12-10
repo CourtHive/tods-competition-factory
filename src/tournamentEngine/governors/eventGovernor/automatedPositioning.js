@@ -43,6 +43,7 @@ export function automatedPositioning({
 
 export function automatedPlayoffPositioning({
   event,
+  deepCopy,
   drawEngine,
   structureId,
   drawDefinition,
@@ -57,7 +58,7 @@ export function automatedPlayoffPositioning({
     structureId,
   });
 
-  drawEngine.setState(drawDefinition);
+  drawEngine.setState(drawDefinition, deepCopy);
 
   const errors = [];
   playoffStructures.forEach(structure => {

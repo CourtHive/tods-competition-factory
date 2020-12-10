@@ -327,10 +327,6 @@ Returns boolean whether all matchUps in a given structure have been completed
 
 ---
 
-## load
-
----
-
 ## matchUpActions
 
 ---
@@ -396,6 +392,14 @@ Returns boolean whether all matchUps in a given structure have been completed
 ---
 
 ## setState
+
+Loads a drawDefinition into drawEngine.
+
+```js
+drawEngine.setsState(drawDefinition, deepCopy);
+```
+
+By default a deep copy of the tournament record is made so that mutations made by drawEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 
 ---
 

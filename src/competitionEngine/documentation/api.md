@@ -52,10 +52,6 @@ Where **tournamentRecords** is an Array of **tournamentRecord** objects.
 
 ---
 
-## load
-
----
-
 ## matchUpScheduleChange
 
 ---
@@ -73,6 +69,14 @@ Where **tournamentRecords** is an Array of **tournamentRecord** objects.
 ---
 
 ## setState
+
+Loads tournament records into competitionEngine.
+
+```js
+drawEngine.setsState(tournamentRecords, deepCopy);
+```
+
+By default a deep copy of each tournament record is made so that mutations made by competitionEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 
 ---
 

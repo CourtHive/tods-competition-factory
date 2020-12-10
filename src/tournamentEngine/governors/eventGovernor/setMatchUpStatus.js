@@ -4,6 +4,7 @@ import { findEvent } from '../../getters/eventGetter';
 
 export function setMatchUpStatus(props) {
   const {
+    deepCopy,
     drawEngine,
     drawDefinition,
     event,
@@ -15,7 +16,7 @@ export function setMatchUpStatus(props) {
   } = props;
   let errors = [];
 
-  drawEngine.setState(drawDefinition);
+  drawEngine.setState(drawDefinition, deepCopy);
 
   if (matchUpFormat) {
     const result = drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });

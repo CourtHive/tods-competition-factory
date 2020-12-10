@@ -61,7 +61,7 @@ const timeItem = {
   itemSubject: RETRIEVAL,
   itemType: RANKING,
   itemName: 'U18',
-  itemValue: '2021-01-01T00',
+  itemValue: '2021-01-01T00:00',
 };
 tournamentEngine.addEventTimeItem({ eventId, timeItem });
 ```

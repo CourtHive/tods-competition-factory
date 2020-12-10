@@ -2,7 +2,7 @@ import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function toggleParticipantCheckInState(params) {
-  const { drawEngine, tournamentRecords } = params;
+  const { drawEngine, tournamentRecords, deepCopy } = params;
   const { participantId, tournamentId, matchUpId, drawId } = params;
 
   const tournamentRecord = tournamentRecords[tournamentId];
@@ -10,7 +10,7 @@ export function toggleParticipantCheckInState(params) {
     tournamentRecord,
     drawId,
   });
-  drawEngine.setState(drawDefinition);
+  drawEngine.setState(drawDefinition, deepCopy);
   const { matchUp } = drawEngine.findMatchUp({ matchUpId, inContext: true });
   const { checkedInParticipantIds } = drawEngine.getCheckedInParticipantIds({
     matchUp,

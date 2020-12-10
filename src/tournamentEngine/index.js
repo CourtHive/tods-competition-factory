@@ -22,6 +22,7 @@ import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
 let errors = [];
+let deepCopy = true;
 let tournamentRecord;
 
 const policies = {};
@@ -36,12 +37,14 @@ function flushErrors() {
   errors = [];
 }
 
-function setState(tournament, deepCopy = true) {
+function setState(tournament, deepCopyOption = true) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord = deepCopy ? makeDeepCopy(tournament) : tournament;
+  tournamentRecord = deepCopyOption ? makeDeepCopy(tournament) : tournament;
+  deepCopy = deepCopyOption;
+
   return Object.assign({ tournamentId }, SUCCESS);
 }
 
@@ -53,8 +56,6 @@ export const tournamentEngine = (function() {
       auditEngine.reset();
       return auditTrail;
     },
-
-    load: tournament => setState(tournament),
 
     newTournamentRecord: (props = {}) => {
       flushErrors();
@@ -114,7 +115,8 @@ export const tournamentEngine = (function() {
           drawId,
         });
         const { errors: drawEngineErrors } = drawEngine.setState(
-          drawDefinition
+          drawDefinition,
+          deepCopy // this should be able to be set to false for all invocations by tournamentEngine
         );
         if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
         params = Object.assign({}, params, { drawDefinition, event });
@@ -132,6 +134,7 @@ export const tournamentEngine = (function() {
     return fx({
       ...params,
 
+      deepCopy,
       policies,
       devContext,
       drawEngine,
