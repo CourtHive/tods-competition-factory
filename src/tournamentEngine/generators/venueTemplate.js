@@ -1,9 +1,9 @@
 export const venueTemplate = () => ({
-  venueId: null,
+  venueId: undefined,
   venueName: '',
   venueAbbreviation: '',
   onlineResources: [],
-  venueType: null,
+  venueType: undefined,
   addresses: [],
   contacts: [],
   courts: [],

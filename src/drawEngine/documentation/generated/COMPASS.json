@@ -2,16 +2,11 @@
   "drawId": "12a4d074-b6d2-4573-acba-131185ca0720",
   "entryProfile": {
     "QUALIFYING": {
-      "drawSize": null,
-      "sequenceMap": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     },
     "MAIN": {
       "drawSize": 32,
-      "qualifiersCount": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     }
   },
   "entries": [
@@ -503,7 +498,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [1, null],
+          "drawPositions": [1, undefined],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -515,7 +510,7 @@
           "roundNumber": 2,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -527,7 +522,7 @@
           "roundNumber": 2,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [9, null],
+          "drawPositions": [9, undefined],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -539,7 +534,7 @@
           "roundNumber": 2,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -551,7 +546,7 @@
           "roundNumber": 2,
           "roundPosition": 5,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -563,7 +558,7 @@
           "roundNumber": 2,
           "roundPosition": 6,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [24, null],
+          "drawPositions": [24, undefined],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -575,7 +570,7 @@
           "roundNumber": 2,
           "roundPosition": 7,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -587,7 +582,7 @@
           "roundNumber": 2,
           "roundPosition": 8,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [32, null],
+          "drawPositions": [32, undefined],
           "finishingRound": 4,
           "finishingPositionRange": {
             "loser": [9, 16],
@@ -599,7 +594,7 @@
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -611,7 +606,7 @@
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -623,7 +618,7 @@
           "roundNumber": 3,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -635,7 +630,7 @@
           "roundNumber": 3,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -647,7 +642,7 @@
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -659,7 +654,7 @@
           "roundNumber": 4,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -671,7 +666,7 @@
           "roundNumber": 5,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],
@@ -937,7 +932,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [2, null],
+          "drawPositions": [2, undefined],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [21, 24],
@@ -949,7 +944,7 @@
           "roundNumber": 2,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [6, null],
+          "drawPositions": [6, undefined],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [21, 24],
@@ -961,7 +956,7 @@
           "roundNumber": 2,
           "roundPosition": 3,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [11, null],
+          "drawPositions": [11, undefined],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [21, 24],
@@ -973,7 +968,7 @@
           "roundNumber": 2,
           "roundPosition": 4,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [15, null],
+          "drawPositions": [15, undefined],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [21, 24],
@@ -985,7 +980,7 @@
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [19, 20],
@@ -997,7 +992,7 @@
           "roundNumber": 3,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [19, 20],
@@ -1009,7 +1004,7 @@
           "roundNumber": 4,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [18, 18],
@@ -1158,7 +1153,7 @@
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [26, 26],
@@ -1300,7 +1295,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [22, 22],
@@ -1385,7 +1380,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [11, 12],
@@ -1397,7 +1392,7 @@
           "roundNumber": 2,
           "roundPosition": 2,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [11, 12],
@@ -1409,7 +1404,7 @@
           "roundNumber": 3,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [10, 10],
@@ -1482,7 +1477,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [14, 14],
@@ -1543,7 +1538,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [6, 6],

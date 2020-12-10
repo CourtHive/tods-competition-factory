@@ -2,7 +2,7 @@ import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 
 export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
   const { hierarchy: drawHierarchy } = buildDrawHierarchy({ matchUps });
-  // console.log(JSON.stringify(drawHierarchy, null, 2))
+  // console.log(JSON.stringify(drawHierarchy, undefined, 2))
   expect(drawHierarchy.children.length).toEqual(2);
   expect(
     drawHierarchy.children[0].children[0].children[0].children[0].children[0]

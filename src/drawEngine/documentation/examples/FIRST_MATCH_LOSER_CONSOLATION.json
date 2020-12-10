@@ -1,18 +1,12 @@
 {
   "drawId": "uuid",
-  "description": null,
   "entryProfile": {
     "QUALIFYING": {
-      "drawSize": null,
-      "sequenceMap": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     },
     "MAIN": {
       "drawSize": 16,
-      "qualifiersCount": null,
-      "alternates": false,
-      "wildcardsCount": null
+      "alternates": false
     }
   },
   "positionAssignments": [],
@@ -130,7 +124,7 @@
           "matchUpId": "5df232de-1fa7-4a25-9bf0-2bd548128cd4",
           "roundNumber": 2,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -141,7 +135,7 @@
           "matchUpId": "f5f995fa-c046-494e-90b8-34bcfa01360f",
           "roundNumber": 2,
           "roundPosition": 2,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -152,7 +146,7 @@
           "matchUpId": "48614817-82c5-4dd9-bf38-7ab1979a3223",
           "roundNumber": 2,
           "roundPosition": 3,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -163,7 +157,7 @@
           "matchUpId": "d841ef7e-434b-41ff-923a-efa8d6194ebc",
           "roundNumber": 2,
           "roundPosition": 4,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 3,
           "finishingPositionRange": {
             "loser": [5, 8],
@@ -174,7 +168,7 @@
           "matchUpId": "6a272aa1-c530-487e-9270-f29638393a74",
           "roundNumber": 3,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -185,7 +179,7 @@
           "matchUpId": "bb8e93bc-cb66-4fae-97dd-0ade255f48e2",
           "roundNumber": 3,
           "roundPosition": 2,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -196,7 +190,7 @@
           "matchUpId": "931eb075-7302-44ae-a7bb-6b4869278952",
           "roundNumber": 4,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],
@@ -261,7 +255,7 @@
           "matchUpId": "92e76116-3d5d-40d8-abec-7ff8f7bd68dc",
           "roundNumber": 2,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [11, 12],
@@ -272,7 +266,7 @@
           "matchUpId": "4f931d8c-e714-4923-9faf-3a20ab8a5f56",
           "roundNumber": 2,
           "roundPosition": 2,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [11, 12],
@@ -283,7 +277,7 @@
           "matchUpId": "c904ca12-54cd-4fee-80c6-59fc3bb8d80f",
           "roundNumber": 3,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [10, 10],

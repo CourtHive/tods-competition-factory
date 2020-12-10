@@ -301,16 +301,11 @@
       },
       "entryProfile": {
         "QUALIFYING": {
-          "drawSize": null,
-          "sequenceMap": null,
-          "alternates": true,
-          "wildcardsCount": null
+          "alternates": true
         },
         "MAIN": {
           "drawSize": 16,
-          "qualifiersCount": null,
-          "alternates": true,
-          "wildcardsCount": null
+          "alternates": true
         }
       },
       "entries": [

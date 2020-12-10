@@ -1,24 +1,24 @@
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export const definitionTemplate = () => ({
-  drawId: null,
-  drawName: null,
+  drawId: undefined,
+  drawName: undefined,
   drawProfile: {
-    automated: null,
-    drawType: null,
+    automated: undefined,
+    drawType: undefined,
   },
   entryProfile: {
     [QUALIFYING]: {
-      drawSize: null,
-      sequenceMap: null,
+      drawSize: undefined,
+      sequenceMap: undefined,
       alternates: true,
-      wildcardsCount: null,
+      wildcardsCount: undefined,
     },
     [MAIN]: {
-      drawSize: null,
-      qualifiersCount: null,
+      drawSize: undefined,
+      qualifiersCount: undefined,
       alternates: true,
-      wildcardsCount: null,
+      wildcardsCount: undefined,
     },
   },
   entries: [],

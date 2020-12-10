@@ -1,7 +1,7 @@
 import { isDateObject } from './dateTime';
 
 export function makeDeepCopy(sourceObject) {
-  if (typeof sourceObject !== 'object' || sourceObject === null) {
+  if (typeof sourceObject !== 'object' || sourceObject === undefined) {
     return sourceObject;
   }
 

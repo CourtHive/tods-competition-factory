@@ -18,7 +18,7 @@ export function reset() {
   result = drawEngine.reset();
   expect(result).toMatchObject(SUCCESS);
   const { drawDefinition: state } = drawEngine.getState();
-  expect(state).toEqual(null);
+  expect(state).toEqual(undefined);
 }
 
 export function initialize({ drawId = 'uuid-default' } = {}) {

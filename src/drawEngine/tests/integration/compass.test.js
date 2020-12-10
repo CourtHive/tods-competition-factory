@@ -281,7 +281,8 @@ function generateCompass({
   const fileName = `${drawType}.json`;
   const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
-  if (writeFile) fs.writeFileSync(output, JSON.stringify(snapshot, null, 2));
+  if (writeFile)
+    fs.writeFileSync(output, JSON.stringify(snapshot, undefined, 2));
 }
 
 function assignedByes(assignments) {

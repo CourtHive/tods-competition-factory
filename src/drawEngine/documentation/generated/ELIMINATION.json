@@ -2,16 +2,11 @@
   "drawId": "e491d93a-fd72-4108-a97d-49e716a5bc64",
   "entryProfile": {
     "QUALIFYING": {
-      "drawSize": null,
-      "sequenceMap": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     },
     "MAIN": {
       "drawSize": 2,
-      "qualifiersCount": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     }
   },
   "entries": [

@@ -63,9 +63,9 @@ it('can generate structured entry draw', () => {
     [undefined, 1],
   ];
 
-  matchUps.forEach((matchUp, i) =>
-    expect(matchUp.drawPositions).toMatchObject(drawPositions[i])
-  );
+  matchUps.forEach((matchUp, i) => {
+    expect(matchUp.drawPositions).toMatchObject(drawPositions[i]);
+  });
 });
 
 it('generates structured entry draw with expected finishing drawPositions', () => {

@@ -51,8 +51,8 @@ export function buildDrawHierarchy({ matchUps }) {
           drawId,
           structureId,
           matchUpId: UUID(),
-          drawPositions: [undefined, undefined],
-          sides: [undefined, undefined],
+          drawPositions: [],
+          sides: [],
           roundNumber,
           roundPosition,
           finishingRound,
@@ -251,7 +251,7 @@ export function collapseHierarchy(node, depth) {
   }
   if (node.depth === depth) {
     node._children = node.children || node._children;
-    node.children = null;
+    node.children = undefined;
     return;
   }
   if (node.depth < depth) node.children = node.children || node._children;

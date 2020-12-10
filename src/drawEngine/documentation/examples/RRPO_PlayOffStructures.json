@@ -1,18 +1,12 @@
 {
   "drawId": "uuid",
-  "description": null,
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": 32,
-      "sequenceMap": null,
       "alternates": true,
-      "wildcardsCount": null
     },
     "MAIN": {
-      "drawSize": null,
-      "qualifiersCount": null,
       "alternates": false,
-      "wildcardsCount": null
     }
   },
   "positionAssignments": [],
@@ -477,7 +471,7 @@
           "matchUpId": "57a9d1ef-4c2d-4d0a-8fb4-d5ad24b88db5",
           "roundNumber": 2,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -488,7 +482,7 @@
           "matchUpId": "948d1fa3-00d1-483f-b2aa-2da5c44ae5f8",
           "roundNumber": 2,
           "roundPosition": 2,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -499,7 +493,7 @@
           "matchUpId": "3078f045-3532-4aa6-9f6b-8a738cc87893",
           "roundNumber": 3,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],
@@ -565,7 +559,7 @@
           "matchUpId": "869e13dd-0232-4c79-8ad4-d9e10a37e21d",
           "roundNumber": 2,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -576,7 +570,7 @@
           "matchUpId": "608ae8cc-dcb9-473f-b905-790e6353d783",
           "roundNumber": 2,
           "roundPosition": 2,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 2,
           "finishingPositionRange": {
             "loser": [3, 4],
@@ -587,7 +581,7 @@
           "matchUpId": "24d8d69f-7438-4626-acea-01ef55b04be2",
           "roundNumber": 3,
           "roundPosition": 1,
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],

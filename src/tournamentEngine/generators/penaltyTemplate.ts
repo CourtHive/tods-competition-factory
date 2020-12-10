@@ -1,12 +1,12 @@
 import { UUID } from '../../utilities';
 
 export const penaltyTemplate = ({ penaltyId = UUID() } = {}) => ({
-  refereeParticipantId: null,
-  penaltyCode: null,
-  penaltyType: null,
-  matchUpId: null,
-  createdAt: null,
-  notes: null,
+  refereeParticipantId: undefined,
+  penaltyCode: undefined,
+  penaltyType: undefined,
+  matchUpId: undefined,
+  createdAt: undefined,
+  notes: undefined,
   penaltyId,
 });
 

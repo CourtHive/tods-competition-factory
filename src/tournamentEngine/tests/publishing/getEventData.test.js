@@ -177,5 +177,6 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const fileName = `eventData.json`;
   const dirPath = './src/tournamentEngine/tests/publishing/';
   const output = `${dirPath}${fileName}`;
-  if (writeFile) fs.writeFileSync(output, JSON.stringify(eventData, null, 2));
+  if (writeFile)
+    fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
 });

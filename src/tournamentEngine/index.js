@@ -68,7 +68,7 @@ export const tournamentEngine = (function() {
     return '@VERSION@';
   };
   fx.reset = () => {
-    tournamentRecord = null;
+    tournamentRecord = undefined;
     return SUCCESS;
   };
   fx.getErrors = () => {

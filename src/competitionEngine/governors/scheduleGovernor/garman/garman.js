@@ -1,7 +1,7 @@
 import { generateRange } from '../../../../utilities/arrays';
 import { DateHHMM, currentUTCDate } from '../../../../utilities/dateTime';
 
-export function timeToDate(time, date = null) {
+export function timeToDate(time, date = undefined) {
   const [hours, minutes] = (time || '00:00').split(':');
   return date
     ? new Date(date).setHours(hours, minutes, 0, 0)

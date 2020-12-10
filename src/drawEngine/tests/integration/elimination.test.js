@@ -90,7 +90,7 @@ it('can generate and verify elmination structures', () => {
   });
 
   // const { drawDefinition } = drawEngine.getState();
-  // console.log(JSON.stringify(drawDefinition, null, 2));
+  // console.log(JSON.stringify(drawDefinition, undefined, 2));
 });
 
 it('can write to the file system', () => {
@@ -101,7 +101,7 @@ it('can write to the file system', () => {
   const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
+    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 it('will vary bye distribution', () => {

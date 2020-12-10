@@ -19,8 +19,8 @@ const result = drawEngine.newDrawDefinition();
   {() => {
     const result = drawEngine.newDrawDefinition();
     return (
-      <pre style={{fontSize: 14}}>
-        Result: {JSON.stringify(result, null, 2)}.
+      <pre style={{ fontSize: 14 }}>
+        Result: {JSON.stringify(result, undefined, 2)}.
       </pre>
     );
   }}
@@ -34,8 +34,8 @@ const { drawDefinition } = drawEngine.getState();
   {() => {
     const { drawDefinition } = drawEngine.getState();
     return (
-      <pre style={{fontSize: 14}}>
-        drawDefinition: {JSON.stringify(drawDefinition, null, 2)}.
+      <pre style={{ fontSize: 14 }}>
+        drawDefinition: {JSON.stringify(drawDefinition, undefined, 2)}.
       </pre>
     );
   }}

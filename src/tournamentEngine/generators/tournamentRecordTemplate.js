@@ -1,18 +1,18 @@
 export const tournamentRecordTemplate = ({ tournamentId }) => ({
   tournamentId,
-  tournamentRank: null,
+  tournamentRank: undefined,
   tournamentCategories: [],
 
-  formalName: null,
-  tournamentName: null,
-  promotionalName: null,
+  formalName: undefined,
+  tournamentName: undefined,
+  promotionalName: undefined,
   onlineResources: [],
 
-  localTimeZone: null,
-  startDate: null,
-  endDate: null,
+  localTimeZone: undefined,
+  startDate: undefined,
+  endDate: undefined,
 
-  hostCountryCode: null,
+  hostCountryCode: undefined,
   tournamentContacts: [],
   tournamentAddresses: [],
   tournamaentOfficials: [],
@@ -21,21 +21,21 @@ export const tournamentRecordTemplate = ({ tournamentId }) => ({
   events: [],
   participants: [],
 
-  indoorOutdoor: null,
-  surfaceCategory: null,
+  indoorOutdoor: undefined,
+  surfaceCategory: undefined,
 
   registrationProfile: {
-    entriesOpen: null,
-    entriesClose: null,
-    withdrawalDeadline: null,
+    entriesOpen: undefined,
+    entriesClose: undefined,
+    withdrawalDeadline: undefined,
   },
 
   unifiedTournamentId: {
     tournamentId,
     organisation: {
-      organisationId: null,
-      organisationName: null,
-      organisationAbbreviation: null,
+      organisationId: undefined,
+      organisationName: undefined,
+      organisationAbbreviation: undefined,
     },
   },
 });

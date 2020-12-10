@@ -136,7 +136,7 @@ it('can write to the file system', () => {
   const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, null, 2));
+    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 function generateCurtis({

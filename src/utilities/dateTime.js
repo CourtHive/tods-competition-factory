@@ -317,7 +317,7 @@ export function ymd2date(ymd) {
   return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]);
 }
 
-export function timeToDate(time, date = null) {
+export function timeToDate(time, date = undefined) {
   const [hours, minutes] = (time || '00:00').split(':');
   return date
     ? new Date(date).setHours(hours, minutes, 0, 0)

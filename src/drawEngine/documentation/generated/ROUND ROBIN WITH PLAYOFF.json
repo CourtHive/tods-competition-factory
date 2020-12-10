@@ -3,15 +3,10 @@
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": 16,
-      "sequenceMap": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     },
     "MAIN": {
-      "drawSize": null,
-      "qualifiersCount": null,
-      "alternates": true,
-      "wildcardsCount": null
+      "alternates": true
     }
   },
   "entries": [],
@@ -359,7 +354,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],
@@ -420,7 +415,7 @@
           "roundNumber": 2,
           "roundPosition": 1,
           "matchUpStatus": "TO_BE_PLAYED",
-          "drawPositions": [null, null],
+          "drawPositions": [],
           "finishingRound": 1,
           "finishingPositionRange": {
             "loser": [2, 2],

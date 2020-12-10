@@ -1,17 +1,17 @@
 export const courtTemplate = () => ({
-  altitude: null,
-  courtId: null,
+  altitude: undefined,
+  courtId: undefined,
   courtName: '',
-  courtDimensions: null,
-  latitude: null,
-  longitude: null,
-  surfaceCategory: null,
-  surfaceType: null,
-  surfaceDate: null,
+  courtDimensions: undefined,
+  latitude: undefined,
+  longitude: undefined,
+  surfaceCategory: undefined,
+  surfaceType: undefined,
+  surfaceDate: undefined,
   dateAvailability: [],
   onlineResources: [],
-  pace: null,
-  notes: null,
+  pace: undefined,
+  notes: undefined,
 });
 
 export default courtTemplate;
