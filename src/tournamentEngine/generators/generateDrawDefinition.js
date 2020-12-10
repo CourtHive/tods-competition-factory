@@ -17,6 +17,12 @@ import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import { TEAM } from '../../constants/matchUpTypes';
+import { getEventAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
+import {
+  POLICY_TYPE_AVOIDANCE,
+  POLICY_TYPE_SEEDING,
+} from '../../constants/policyConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -154,9 +160,28 @@ export function generateDrawDefinition(props) {
     });
   }
 
+  const { policyDefinition: eventAvoidancePolicy } =
+    getPolicyDefinition({
+      eventId: event?.eventId,
+      policyType: POLICY_TYPE_AVOIDANCE,
+    }) || {};
+
+  const { policyDefinition: eventSeedingPolicy } =
+    getPolicyDefinition({
+      eventId: event?.eventId,
+      policyType: POLICY_TYPE_SEEDING,
+    }) || {};
+
   const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
   if (!appliedPolicies?.seeding) {
-    drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+    if (eventSeedingPolicy) {
+      drawEngine.attachPolicy({ policyDefinition: eventSeedingPolicy });
+    } else {
+      drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+    }
+  }
+  if (!appliedPolicies?.avoidance && eventAvoidancePolicy) {
+    drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
   }
 
   entries.forEach(entry => {
