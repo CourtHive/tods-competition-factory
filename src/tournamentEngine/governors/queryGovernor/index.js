@@ -22,7 +22,7 @@ import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
-import { credits } from './credits';
+import { credits } from '../../../fixtures/credits';
 
 function getEvent({ event }) {
   return { event: makeDeepCopy(event) };

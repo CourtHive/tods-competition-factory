@@ -24,6 +24,7 @@ import {
   getDrawMatchUps,
 } from '../../getters/getMatchUps';
 
+import { credits } from '../../../fixtures/credits';
 import { findStructure } from '../../getters/findStructure';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
@@ -75,6 +76,7 @@ const queryGovernor = {
 
   calcTieMatchUpScore,
   matchUpDuration,
+  credits,
 };
 
 export default queryGovernor;

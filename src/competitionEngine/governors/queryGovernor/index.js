@@ -3,6 +3,7 @@ import {
   competitionMatchUps,
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
+import { credits } from '../../../fixtures/credits';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 
 const queryGovernor = {
@@ -11,6 +12,7 @@ const queryGovernor = {
   competitionMatchUps,
 
   getVenuesAndCourts,
+  credits,
 };
 
 export default queryGovernor;
