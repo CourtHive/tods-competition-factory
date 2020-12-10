@@ -18,6 +18,10 @@ export default {
   menu: [
     'Readme',
     {
+      name: 'General Concepts',
+      menu: ['Time Items'],
+    },
+    {
       name: 'Competition Engine',
       menu: ['Garman Scheduling', 'API'],
     },

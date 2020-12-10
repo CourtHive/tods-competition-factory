@@ -12,7 +12,11 @@ import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
-import { getEventTimeItem, getTournamentTimeItem } from './timeItems';
+import {
+  getEventTimeItem,
+  getTournamentTimeItem,
+  getDrawDefinitionTimeItem,
+} from './timeItems';
 
 import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
@@ -39,6 +43,7 @@ const queryGovernor = {
 
   getEventTimeItem,
   getTournamentTimeItem,
+  getDrawDefinitionTimeItem,
 
   matchUpActions,
   findMatchUp: publicFindMatchUp,

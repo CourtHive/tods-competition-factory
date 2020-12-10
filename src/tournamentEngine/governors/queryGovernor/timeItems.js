@@ -1,23 +1,38 @@
 import {
-  MISSING_EVENT,
+  MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+
+export function getDrawDefinitionTimeItem({ drawDefinition, itemAttributes }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_ID };
+  if (!drawDefinition.timeItems) return { message: NOT_FOUND };
+
+  const { timeItem, message } = getTimeItem({
+    element: drawDefinition,
+    itemAttributes,
+  });
+  return (timeItem && { timeItem }) || { message };
+}
 
 export function getEventTimeItem({ event, itemAttributes }) {
   if (!event) return { error: MISSING_EVENT };
   if (!event.timeItems) return { message: NOT_FOUND };
 
-  const { timeItem } = getTimeItem({ element: event, itemAttributes });
-  return (timeItem && { timeItem }) || { message: NOT_FOUND };
+  const { timeItem, message } = getTimeItem({ element: event, itemAttributes });
+  return (timeItem && { timeItem }) || { message };
 }
 
 export function getTournamentTimeItem({ tournamentRecord, itemAttributes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.timeItems) return { message: NOT_FOUND };
 
-  const { timeItem } = getTimeItem({ element: event, itemAttributes });
-  return (timeItem && { timeItem }) || { message: NOT_FOUND };
+  const { timeItem, message } = getTimeItem({
+    element: tournamentRecord,
+    itemAttributes,
+  });
+  return (timeItem && { timeItem }) || { message };
 }
 
 function getTimeItem({ element, itemAttributes }) {
@@ -57,9 +72,9 @@ function getTimeItem({ element, itemAttributes }) {
       }, undefined);
 
     if (timeItem) {
-      return { timeItem };
+      return { timeItem, ...SUCCESS };
     } else {
-      return { error: NOT_FOUND };
+      return { message: NOT_FOUND };
     }
   }
 }

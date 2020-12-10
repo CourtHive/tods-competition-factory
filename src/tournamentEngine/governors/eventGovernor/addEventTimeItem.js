@@ -1,6 +1,5 @@
 import {
   INVALID_TIME_ITEM,
-  MATCHUP_NOT_FOUND,
   MISSING_TIME_ITEM,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -26,7 +25,7 @@ export function addEventTimeItem({ event, timeItem }) {
   return SUCCESS;
 }
 
-export function resetTimeItems({ event }) {
+export function resetEventTimeItems({ event }) {
   if (!event) return { error: EVENT_NOT_FOUND };
   event.timeItems = [];
   return SUCCESS;

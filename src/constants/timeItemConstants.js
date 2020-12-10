@@ -26,6 +26,10 @@ export const PUBLISH = 'PUBLISH';
 export const PUBLIC = 'PUBLIC';
 export const HIDDEN = 'HIDDEN';
 
+export const MODIFICATION = 'MODIFICATION';
+export const RETRIEVAL = 'RETRIEVAL'; // accesss to an external resource
+export const OTHER = 'other';
+
 export const timeItemConstants = {
   ASSIGNMENT,
   CHECK_IN,
@@ -35,11 +39,13 @@ export const timeItemConstants = {
   HIDDEN,
   MEDICAL,
   OFFICIAL,
+  OTHER,
   PENALTY,
   PUBLIC,
   PUBLISH,
   RANKING,
   RATING,
+  RETRIEVAL,
   RESUME_TIME,
   SCALE,
   SCHEDULED_DATE,

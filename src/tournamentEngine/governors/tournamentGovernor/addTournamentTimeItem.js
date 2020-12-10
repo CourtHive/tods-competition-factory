@@ -19,7 +19,7 @@ export function addTournamentTimeItem({ tournamentRecord, timeItem }) {
 
   if (!validTimeItem) return { error: INVALID_TIME_ITEM };
 
-  if (!tournamentRecord.timeItems) event.timeItems = [];
+  if (!tournamentRecord.timeItems) tournamentRecord.timeItems = [];
   const createdAt = new Date().toISOString();
   Object.assign(timeItem, { createdAt });
   tournamentRecord.timeItems.push(timeItem);
@@ -27,7 +27,7 @@ export function addTournamentTimeItem({ tournamentRecord, timeItem }) {
   return SUCCESS;
 }
 
-export function resetTimeItems({ tournamentRecord }) {
+export function resetTournamentTimeItems({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   tournamentRecord.timeItems = [];
   return SUCCESS;
