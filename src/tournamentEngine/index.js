@@ -36,12 +36,12 @@ function flushErrors() {
   errors = [];
 }
 
-function setState(tournament) {
+function setState(tournament, deepCopy = true) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord = makeDeepCopy(tournament);
+  tournamentRecord = deepCopy ? makeDeepCopy(tournament) : tournament;
   return Object.assign({ tournamentId }, SUCCESS);
 }
 

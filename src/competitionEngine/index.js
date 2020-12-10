@@ -13,9 +13,9 @@ let devContext;
 let errors = [];
 let tournamentRecords;
 
-function setState(records) {
+function setState(records, deepCopy = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
-  tournamentRecords = makeDeepCopy(records);
+  tournamentRecords = deepCopy ? makeDeepCopy(records) : records;
   return SUCCESS;
 }
 

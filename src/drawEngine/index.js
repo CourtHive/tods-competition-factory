@@ -32,7 +32,7 @@ function newDrawDefinition({ drawId, drawProfile } = {}) {
   return Object.assign({}, template, { drawId, drawProfile });
 }
 
-function setState(definition) {
+function setState(definition, deepCopy) {
   if (!definition) return { error: MISSING_DRAW_DEFINITION };
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
   if (!definition.drawId) return { error: MISSING_DRAW_ID };
@@ -42,7 +42,7 @@ function setState(definition) {
   if (!validDefinitionKeys(definition))
     return { error: INVALID_DRAW_DEFINITION };
 
-  drawDefinition = makeDeepCopy(definition);
+  drawDefinition = deepCopy ? makeDeepCopy(definition) : definition;
   return Object.assign({ drawId: definition.drawId }, SUCCESS);
 }
 
