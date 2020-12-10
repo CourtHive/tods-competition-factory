@@ -21,7 +21,7 @@ it('can set participant scaleItems', () => {
     scaleValue: 8.3,
     scaleName: 'WTN',
     scaleType: RATING,
-    eventType: 'SINGLES',
+    eventType: SINGLES,
     scaleDate: '2020-06-06',
   };
 
@@ -50,7 +50,7 @@ it('can set participant scaleItems', () => {
     scaleValue: 8.4,
     scaleName: 'WTN',
     scaleType: RATING,
-    eventType: 'SINGLES',
+    eventType: SINGLES,
     scaleDate: '2020-06-06',
   };
 
@@ -64,7 +64,7 @@ it('can set participant scaleItems', () => {
     scaleValue: 8.4,
     scaleName: 'WTN',
     scaleType: RATING,
-    eventType: 'SINGLES',
+    eventType: SINGLES,
     scaleDate: '2020-06-06',
   };
 
@@ -79,7 +79,7 @@ it('can set participant scaleItems', () => {
     scaleValue: undefined,
     scaleName: 'WTN',
     scaleType: RATING,
-    eventType: 'SINGLES',
+    eventType: SINGLES,
     scaleDate: '2020-06-06',
   };
 
@@ -93,7 +93,7 @@ it('can set participant scaleItems', () => {
     scaleValue: undefined,
     scaleName: 'U16',
     scaleType: RANKING,
-    eventType: 'SINGLES',
+    eventType: SINGLES,
     scaleDate: '2020-06-06',
   };
 

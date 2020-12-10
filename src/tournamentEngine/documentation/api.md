@@ -461,9 +461,42 @@ Returns tournament participants filtered by participantFilters which are arrays 
 
 ## setParticipantScaleItem
 
+```js
+scaleItem = {
+  scaleValue: 12,
+  scaleName: 'U16',
+  scaleType: RANKING,
+  eventType: SINGLES,
+  scaleDate: '2020-06-06',
+};
+
+result = tournamentEngine.setParticipantScaleItem({
+  participantId,
+  scaleItem,
+});
+```
+
 ---
 
 ## setParticipantScaleItems
+
+```js
+const scaleItemsWithParticipantIds = [
+  {
+    participantId,
+    scaleItems: [
+      {
+        scaleValue: 8.3,
+        scaleName: 'WTN',
+        scaleType: RATING,
+        eventType: SINGLES,
+        scaleDate: '2021-01-01',
+      },
+    ],
+  },
+];
+tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
+```
 
 ---
 
