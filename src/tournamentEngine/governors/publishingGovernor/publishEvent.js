@@ -1,12 +1,12 @@
 import { getEventData } from './getEventData';
-import {} from '../eventGovernor/addEventTimeItem';
+import { addEventTimeItem } from '../eventGovernor/addEventTimeItem';
 
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PUBLISH, PUBLIC } from '../../../constants/timeItemConstants';
+import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 
 export function publishEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -14,12 +14,13 @@ export function publishEvent({ tournamentRecord, event }) {
 
   const timeItem = {
     itemSubject: PUBLISH,
+    itemType: STATUS,
     itemValue: PUBLIC,
   };
   const result = addEventTimeItem({ event, timeItem });
-  if (result.error) return { error };
+  if (result.error) return { error: result.error };
 
-  const eventData = getEventData({ tournamentRecord, event });
+  const { eventData } = getEventData({ tournamentRecord, event });
 
   return Object.assign({}, SUCCESS, { eventData });
 }

@@ -25,6 +25,7 @@ export const SEEDING = 'SEEDING';
 export const PUBLISH = 'PUBLISH';
 export const PUBLIC = 'PUBLIC';
 export const HIDDEN = 'HIDDEN';
+export const STATUS = 'STATUS';
 
 export const MODIFICATION = 'MODIFICATION';
 export const RETRIEVAL = 'RETRIEVAL'; // accesss to an external resource
@@ -52,6 +53,7 @@ export const timeItemConstants = {
   SCHEDULED_TIME,
   SEEDING,
   START_TIME,
+  STATUS,
   STOP_TIME,
   SUSPENSION,
   VENUE,

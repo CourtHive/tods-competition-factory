@@ -1,3 +1,6 @@
+import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { getTournamentInfo } from './getTournamentInfo';
+import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
 import {
@@ -5,8 +8,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getTournamentInfo } from './getTournamentInfo';
-import { getVenueData } from './getVenueData';
+import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
 // pass in policyDefinitions for roundNaming and personPrivacy
 
@@ -75,6 +77,22 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     venuesData,
     tournamentInfo,
   };
+
+  const itemAttributes = {
+    itemSubject: PUBLISH,
+    itemType: STATUS,
+    itemValue: PUBLIC,
+  };
+  const { timeItem, message } = getEventTimeItem({
+    event,
+    itemAttributes,
+  });
+
+  if (timeItem?.itemValue)
+    eventData.eventInfo.publish = {
+      state: timeItem.itemValue,
+      createdAt: timeItem.createdAt,
+    };
 
   return Object.assign({}, SUCCESS, { eventData });
 }

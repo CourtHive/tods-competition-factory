@@ -14,6 +14,7 @@ import { SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
 import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/participants/PARTICIPANT_POLICY_DEFAULT';
+import { PUBLIC } from '../../../constants/timeItemConstants';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -135,9 +136,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 
-  const playoffStructureIds = playoffStructures.map(
-    structure => structure.structureId
-  );
+  result = tournamentEngine.publishEvent({ eventId });
+  expect(result.eventData.eventInfo.publish.state).toEqual(PUBLIC);
 
   const policyDefinition = Object.assign(
     {},
