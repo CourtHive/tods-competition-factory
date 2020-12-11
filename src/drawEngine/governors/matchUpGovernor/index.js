@@ -3,6 +3,7 @@ import { setMatchUpFormat } from './matchUpFormat';
 import { addTimeItem, resetTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
+import { validDrawPositions } from './validDrawPositions';
 
 import {
   publicFindMatchUp,
@@ -44,6 +45,8 @@ const matchUpGovernor = {
 
   findMatchUp: publicFindMatchUp,
   getRoundMatchUps: publicGetRoundMatchUps,
+
+  validDrawPositions,
 };
 
 export default matchUpGovernor;

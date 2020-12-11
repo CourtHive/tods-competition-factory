@@ -23,7 +23,7 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { validDrawPositions } from '../../drawEngine/tests/primitives/validDrawPositions';
+import { validDrawPositions } from '../../drawEngine/governors/matchUpGovernor/validDrawPositions';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;

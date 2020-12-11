@@ -1,7 +1,7 @@
 import fs from 'fs';
 import tournamentEngine from '../../..';
 import drawEngine from '../../../../drawEngine';
-import { validDrawPositions } from '../../../../drawEngine/tests/primitives/validDrawPositions';
+import { validDrawPositions } from '../../../../drawEngine/governors/matchUpGovernor/validDrawPositions';
 
 import { tournament } from './tournament';
 import { mutation } from './mutation.payload';

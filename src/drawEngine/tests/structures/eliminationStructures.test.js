@@ -15,7 +15,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
-import { validDrawPositions } from '../primitives/validDrawPositions';
+import { validDrawPositions } from '../../governors/matchUpGovernor/validDrawPositions';
 
 it('can generate main draw', () => {
   reset();

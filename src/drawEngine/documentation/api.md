@@ -411,6 +411,16 @@ By default a deep copy of the tournament record is made so that mutations made b
 
 ---
 
+## validDrawPositions
+
+Returns boolean indicating whether all matchUps have valid draw positions
+
+```js
+drawEngine.validDrawPositions({ matchUps });
+```
+
+---
+
 ## version
 
 Returns NPM package version
