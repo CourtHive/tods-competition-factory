@@ -11,7 +11,6 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
 // pass in policyDefinitions for roundNaming and personPrivacy
-
 export function getEventData({ tournamentRecord, event, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };

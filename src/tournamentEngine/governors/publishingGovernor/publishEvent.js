@@ -8,7 +8,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
 
-export function publishEvent({ tournamentRecord, event }) {
+export function publishEvent({ tournamentRecord, event, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -20,7 +20,11 @@ export function publishEvent({ tournamentRecord, event }) {
   const result = addEventTimeItem({ event, timeItem });
   if (result.error) return { error: result.error };
 
-  const { eventData } = getEventData({ tournamentRecord, event });
+  const { eventData } = getEventData({
+    tournamentRecord,
+    policyDefinition,
+    event,
+  });
 
   return Object.assign({}, SUCCESS, { eventData });
 }

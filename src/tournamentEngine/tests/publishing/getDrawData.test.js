@@ -12,7 +12,10 @@ it('can extract elimination structures', () => {
   const event = JSON.parse(elimination);
 
   const drawDefinition = event.drawDefinitions[0];
-  const { structureGroups } = getStructureGroups({ drawDefinition });
+  const { structureGroups, allStructuresLinked } = getStructureGroups({
+    drawDefinition,
+  });
+  expect(allStructuresLinked).toEqual(true);
   expect(structureGroups.length).toEqual(1);
 });
 
@@ -20,6 +23,20 @@ it('can extract round robin structures', () => {
   const event = JSON.parse(roundRobin);
 
   const drawDefinition = event.drawDefinitions[0];
-  const { structureGroups } = getStructureGroups({ drawDefinition });
+  const { structureGroups, allStructuresLinked } = getStructureGroups({
+    drawDefinition,
+  });
+  expect(allStructuresLinked).toEqual(true);
   expect(structureGroups.length).toEqual(1);
 });
+
+/*
+it('can extract compass structures', () => {
+  const event = JSON.parse(roundRobin);
+
+  const drawDefinition = event.drawDefinitions[0];
+  const { structureGroups, allStructuresLinked } = getStructureGroups({ drawDefinition });
+  expect(allStructuresLinked).toEqual(true);
+  expect(structureGroups.length).toEqual(1);
+});
+*/
