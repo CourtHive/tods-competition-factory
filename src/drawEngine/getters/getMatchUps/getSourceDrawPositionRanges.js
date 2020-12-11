@@ -1,6 +1,7 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { chunkArray, generateRange, unique } from '../../../utilities';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
+import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { isNumeric } from '../../../utilities/math';
 import { findStructure } from '../findStructure';
 
@@ -130,16 +131,4 @@ function getRangeString(arr) {
   if (!numericArray.length) return '';
   const range = unique([Math.min(...numericArray), Math.max(...numericArray)]);
   return range.join('-');
-}
-
-function getStructureRoundProfile({ drawDefinition, structureId }) {
-  const { structure } = findStructure({
-    drawDefinition,
-    structureId,
-  });
-  const { matchUps } = getAllStructureMatchUps({
-    structure,
-    inContext: true,
-  });
-  return getRoundMatchUps({ matchUps });
 }

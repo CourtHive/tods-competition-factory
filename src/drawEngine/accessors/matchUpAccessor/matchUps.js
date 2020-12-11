@@ -60,6 +60,8 @@ export function getRoundMatchUps({ matchUps = [] }) {
       .map(matchUp => matchUp.drawPositions)
       .flat();
     roundProfile[round].finishingRound = finishingRoundMap[round];
+    roundProfile[round].finishingPositionRange =
+      roundMatchUps[round][0].finishingPositionRange;
     if (
       roundProfile[round + 1] &&
       roundProfile[round + 1].matchUpsCount ===
