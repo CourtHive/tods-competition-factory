@@ -293,7 +293,7 @@ export function generateDrawDefinition(props) {
   const error = errors.length && errors;
 
   if (devContext) {
-    console.log('%s devContext', 'color: yellow');
+    console.log('%c devContext', 'color: yellow');
     const { matchUps } = drawEngine.allDrawMatchUps();
     const valid = validDrawPositions({ matchUps, devContext });
     if (!valid) {
