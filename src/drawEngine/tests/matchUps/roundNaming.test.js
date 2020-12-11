@@ -17,7 +17,7 @@ import {
 import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-it('can return matchUps with roundNames from a KNOCKOUT structure', () => {
+it('can return matchUps with roundNames from an ELIMINATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });

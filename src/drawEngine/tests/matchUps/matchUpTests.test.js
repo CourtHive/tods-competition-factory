@@ -1,7 +1,7 @@
 import { drawEngine } from '../../../drawEngine';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/findStructure';
-import { knockoutMatchUpsWithParticipants } from '../../tests/primitives/primitives';
+import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
 
 import { getStructureMatchUps } from '../../getters/getMatchUps';
@@ -16,14 +16,14 @@ import {
 import {
   MAIN,
   ROUND_ROBIN,
-  KNOCKOUT,
+  ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
-it('can return matchUps from a KNOCKOUT structure', () => {
+it('can return matchUps from an ELIMINATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType: KNOCKOUT });
+  const { structure } = drawEngine.generateDrawType({ drawType: ELIMINATION });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({
@@ -37,7 +37,7 @@ it('matchUps returned with context cannot modify original', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  drawEngine.generateDrawType({ drawType: KNOCKOUT });
+  drawEngine.generateDrawType({ drawType: ELIMINATION });
   let { drawDefinition } = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
@@ -87,11 +87,11 @@ it('matchUps returned with context cannot modify original', () => {
   expect(retrievedMatchUp.structureId).toEqual(undefined);
 });
 
-it('can return matchUps from KNOCKOUT structure with participants', () => {
-  knockoutMatchUpsWithParticipants({ drawSize: 4 });
-  knockoutMatchUpsWithParticipants({ drawSize: 8 });
-  knockoutMatchUpsWithParticipants({ drawSize: 16 });
-  knockoutMatchUpsWithParticipants({ drawSize: 32 });
+it('can return matchUps from ELIMINATION structure with participants', () => {
+  eliminationMatchUpsWithParticipants({ drawSize: 4 });
+  eliminationMatchUpsWithParticipants({ drawSize: 8 });
+  eliminationMatchUpsWithParticipants({ drawSize: 16 });
+  eliminationMatchUpsWithParticipants({ drawSize: 32 });
 });
 
 it('can return matchUps from a ROUND_ROBIN structure', () => {
@@ -126,7 +126,7 @@ it('can set matchUpFormat', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType: KNOCKOUT });
+  const { structure } = drawEngine.generateDrawType({ drawType: ELIMINATION });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({

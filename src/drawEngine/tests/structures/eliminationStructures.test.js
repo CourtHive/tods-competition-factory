@@ -1,11 +1,7 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../..';
 import { treeMatchUps } from '../../generators/eliminationTree';
 
-import {
-  reset,
-  initialize,
-  mainDrawPositions,
-} from '../../tests/primitives/primitives';
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import {
   MAIN,
@@ -19,6 +15,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
+import { validDrawPositions } from '../primitives/validDrawPositions';
 
 it('can generate main draw', () => {
   reset();
@@ -56,6 +53,8 @@ it('can generate main draw', () => {
   matchUps.forEach((matchUp, i) =>
     expect(matchUp.finishingRound).toEqual(finishingRounds[i])
   );
+
+  expect(validDrawPositions({ matchUps })).toEqual(true);
 });
 
 it('generates main draw with expected finishing drawPositions', () => {

@@ -24,7 +24,7 @@ import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 
-it('can assign KNOCKOUT draw drawPositions', () => {
+it('can assign ELIMINATION draw drawPositions', () => {
   const stage = MAIN;
   const drawSize = 4;
   mainDrawWithEntries({ drawSize });
@@ -160,15 +160,15 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   expect(result).toHaveProperty(ERROR);
 });
 
-it('returns positionAssignments for KNOCKOUT and ROUND_ROBIN strucures', () => {
+it('returns positionAssignments for ELIMINATION and ROUND_ROBIN strucures', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure: knockout } = drawEngine.generateDrawType();
+  const { structure: elimination } = drawEngine.generateDrawType();
   const {
-    positionAssignments: knockoutAssignments,
-  } = structureAssignedDrawPositions({ structure: knockout });
-  expect(knockoutAssignments.length).toEqual(16);
+    positionAssignments: eliminationAssignments,
+  } = structureAssignedDrawPositions({ structure: elimination });
+  expect(eliminationAssignments.length).toEqual(16);
 
   reset();
   initialize();

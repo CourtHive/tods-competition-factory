@@ -57,7 +57,7 @@ export function mainDrawWithEntries({
   return result;
 }
 
-export function knockoutMatchUpsWithParticipants({ drawSize }) {
+export function eliminationMatchUpsWithParticipants({ drawSize }) {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize });
   let { drawDefinition } = drawEngine.getState();

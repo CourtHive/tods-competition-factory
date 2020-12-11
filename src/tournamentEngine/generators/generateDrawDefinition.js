@@ -23,6 +23,7 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
+import { validDrawPositions } from '../../drawEngine/tests/primitives/validDrawPositions';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -30,6 +31,7 @@ export function generateDrawDefinition(props) {
 
   const {
     uuids,
+    devContext,
     customName,
     matchUpType,
     seedingProfile,
@@ -289,6 +291,14 @@ export function generateDrawDefinition(props) {
   const errors = generatedDrawErrors || [];
   if (matchUpFormatError) errors.push(matchUpFormat);
   const error = errors.length && errors;
+
+  if (devContext) {
+    const { matchUps } = drawEngine.allDrawMatchUps();
+    const valid = validDrawPositions({ matchUps, devContext });
+    if (!valid) {
+      console.log(props, { matchUps });
+    }
+  }
 
   return { structureId, drawDefinition, conflicts, error };
 }

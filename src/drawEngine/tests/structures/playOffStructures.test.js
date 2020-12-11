@@ -378,7 +378,7 @@ it('can generate draw which plays off all drawPositions', () => {
   });
 });
 
-it('can generate knockout which specifies drawPositions to playoff', () => {
+it('can generate elimination which specifies drawPositions to playoff', () => {
   let { drawDefinition } = playoffDraw({
     drawSize: 16,
     drawType: PLAY_OFF,
