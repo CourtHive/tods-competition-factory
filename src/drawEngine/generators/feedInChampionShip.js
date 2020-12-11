@@ -8,7 +8,6 @@ import {
   feedInMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
 
-// export function feedInChampionship({drawDefinition, feedsFromFinal, feedRounds}={}) {
 export function feedInChampionship(props = {}) {
   const {
     uuids,
