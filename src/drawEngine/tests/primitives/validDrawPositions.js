@@ -19,5 +19,6 @@ function validDrawPosition(drawPosition) {
   const isValid =
     drawPosition !== null &&
     (drawPosition === undefined || !isNaN(drawPosition));
+  console.log([drawPosition, isValid]);
   return isValid;
 }

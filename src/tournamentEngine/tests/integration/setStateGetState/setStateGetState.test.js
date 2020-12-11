@@ -6,10 +6,10 @@ import { validDrawPositions } from '../../../../drawEngine/tests/primitives/vali
 import { tournament } from './tournament';
 import { mutation } from './mutation.payload';
 
-it.skip('can load a tournament', () => {
+it('can recognize invalid matchUps', () => {
   tournamentEngine.setState(tournament);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let result = validDrawPositions({ matchUps, devContextext: true });
+  let result = validDrawPositions({ matchUps });
   expect(result).toEqual(true);
 
   expect(mutation.tournamentId).toEqual(tournament.tournamentId);
@@ -23,8 +23,9 @@ it.skip('can load a tournament', () => {
   const { drawDefinition } = mutation.executionQueue[0].params;
   drawEngine.setState(drawDefinition);
   const { matchUps: drawMatchUps } = drawEngine.allDrawMatchUps();
-  result = validDrawPositions({ matchUps, devContextext: true });
-  expect(result).toEqual(true);
+  result = validDrawPositions({ matchUps: drawMatchUps });
+  // ERROR: !!! mutation has invalid matchUp.drawPositions
+  expect(result).toEqual(false);
 
   const {
     matchUps: postExecutionMatchUps,
@@ -33,5 +34,5 @@ it.skip('can load a tournament', () => {
     matchUps: postExecutionMatchUps,
     devContextext: false,
   });
-  console.log({ result });
+  expect(result).toEqual(false);
 });
