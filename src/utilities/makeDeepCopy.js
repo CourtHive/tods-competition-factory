@@ -9,7 +9,9 @@ export function makeDeepCopy(sourceObject) {
 
   for (const key in sourceObject) {
     const value = sourceObject[key];
-    if (isDateObject(value)) {
+    if (value === null) {
+      return undefined;
+    } else if (isDateObject(value)) {
       targetObject[key] = new Date(value).toISOString();
     } else {
       targetObject[key] = makeDeepCopy(value);
