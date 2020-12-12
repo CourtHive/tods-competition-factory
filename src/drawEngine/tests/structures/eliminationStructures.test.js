@@ -54,7 +54,7 @@ it('can generate main draw', () => {
     expect(matchUp.finishingRound).toEqual(finishingRounds[i])
   );
 
-  expect(validDrawPositions({ matchUps })).toEqual(true);
+  expect(validDrawPositions({ matchUps, devContext: true })).toEqual(true);
 });
 
 it('generates main draw with expected finishing drawPositions', () => {

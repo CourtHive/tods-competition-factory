@@ -135,7 +135,7 @@ export function assignDrawPositionBye({
         if (loserMatchUpDrawPositionsCount !== 2)
           return { error: MISSING_DRAW_POSITIONS };
         // drawPositions must be in numerical order
-        loserMatchUp.drawPositions = loserMatchUp.drawPositions?.sort(
+        loserMatchUp.drawPositions = (loserMatchUp.drawPositions || []).sort(
           numericSort
         );
         // loser drawPosition in target structure is determined bye even/odd

@@ -25,12 +25,13 @@ it('can recognize invalid matchUps', () => {
   const state = drawEngine.getState(drawDefinition);
   expect(state).not.toEqual(drawDefinition);
   const { matchUps: drawMatchUps } = drawEngine.allDrawMatchUps();
-  result = validDrawPositions({ matchUps: drawMatchUps });
+  result = validDrawPositions({ matchUps: drawMatchUps, devContext: true });
   expect(result).toEqual(true);
 
   const {
     matchUps: postExecutionMatchUps,
   } = tournamentEngine.allTournamentMatchUps();
+
   result = validDrawPositions({
     matchUps: postExecutionMatchUps,
     devContextext: false,

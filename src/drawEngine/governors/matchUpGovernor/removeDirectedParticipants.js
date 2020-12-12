@@ -182,7 +182,7 @@ function removeDirectedWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = matchUp.drawPositions?.map(drawPosition => {
+    matchUp.drawPositions = (matchUp.drawPositions || []).map(drawPosition => {
       return drawPosition === winnerDrawPosition ? undefined : drawPosition;
     });
   } else {
@@ -190,7 +190,7 @@ function removeDirectedWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = matchUp.drawPositions?.map(drawPosition => {
+    matchUp.drawPositions = (matchUp.drawPositions || []).map(drawPosition => {
       return drawPosition === winningDrawPosition ? undefined : drawPosition;
     });
   }
