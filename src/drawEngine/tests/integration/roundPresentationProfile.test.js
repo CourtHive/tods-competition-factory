@@ -82,9 +82,9 @@ function getPresentationProfile({ structureId }) {
   const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
-    drawDefinition,
     requireParticipants: false,
     inContext: true,
+    drawDefinition,
     structure,
   });
   return drawEngine.getRoundPresentationProfile({ matchUps });

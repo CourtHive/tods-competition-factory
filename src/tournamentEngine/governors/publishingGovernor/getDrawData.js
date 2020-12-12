@@ -26,11 +26,13 @@ export function getDrawData({
   const groupedStructures = structureGroups.map(structureIds => {
     const structures = structureIds.map(structureId => {
       const { structure } = findStructure({ drawDefinition, structureId });
-      const { roundMatchUps } = getAllStructureMatchUps({
+
+      const { matchUps, roundMatchUps } = getAllStructureMatchUps({
         context: { drawId: drawInfo.drawId },
         tournamentParticipants,
         policyDefinition,
         inContext: true,
+        drawDefinition,
         structure,
       });
 

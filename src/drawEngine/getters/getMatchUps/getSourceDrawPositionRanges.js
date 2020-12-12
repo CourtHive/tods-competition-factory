@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { chunkArray, generateRange, unique } from '../../../utilities';
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
+// import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { isNumeric } from '../../../utilities/math';
 import { findStructure } from '../findStructure';
@@ -20,7 +20,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.stage !== CONSOLATION)
-    return { error: 'Structure is not CONSOLATION stage' };
+    return { message: 'Structure is not CONSOLATION stage' };
 
   const { links } = drawDefinition;
   const relevantLinks = links.filter(

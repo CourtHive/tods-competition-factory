@@ -77,8 +77,8 @@ export function assignDrawPositionBye({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    structure,
     matchUpFilters,
+    structure,
   });
 
   matchUps.forEach(matchUp => {
@@ -503,8 +503,8 @@ export function getByesData({ drawDefinition, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     drawDefinition,
-    structure,
     matchUpFilters,
+    structure,
   });
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 

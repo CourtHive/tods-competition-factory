@@ -68,8 +68,8 @@ export function clearDrawPosition({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    structure,
     matchUpFilters,
+    structure,
   });
   matchUps.forEach(matchUp => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
