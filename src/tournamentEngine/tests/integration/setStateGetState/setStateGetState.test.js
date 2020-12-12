@@ -22,10 +22,11 @@ it('can recognize invalid matchUps', () => {
 
   const { drawDefinition } = mutation.executionQueue[0].params;
   drawEngine.setState(drawDefinition);
+  const state = drawEngine.getState(drawDefinition);
+  expect(state).not.toEqual(drawDefinition);
   const { matchUps: drawMatchUps } = drawEngine.allDrawMatchUps();
   result = validDrawPositions({ matchUps: drawMatchUps });
-  // ERROR: !!! mutation has invalid matchUp.drawPositions
-  expect(result).toEqual(false);
+  expect(result).toEqual(true);
 
   const {
     matchUps: postExecutionMatchUps,
@@ -34,5 +35,5 @@ it('can recognize invalid matchUps', () => {
     matchUps: postExecutionMatchUps,
     devContextext: false,
   });
-  expect(result).toEqual(false);
+  expect(result).toEqual(true);
 });
