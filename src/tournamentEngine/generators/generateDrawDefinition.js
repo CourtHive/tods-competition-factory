@@ -31,7 +31,6 @@ export function generateDrawDefinition(props) {
 
   const {
     uuids,
-    devContext,
     customName,
     matchUpType,
     seedingProfile,
@@ -291,15 +290,6 @@ export function generateDrawDefinition(props) {
   const errors = generatedDrawErrors || [];
   if (matchUpFormatError) errors.push(matchUpFormat);
   const error = errors.length && errors;
-
-  if (devContext) {
-    console.log('%c devContext', 'color: yellow');
-    const { matchUps } = drawEngine.allDrawMatchUps();
-    const valid = validDrawPositions({ matchUps, devContext });
-    if (!valid) {
-      console.log(props, { matchUps });
-    }
-  }
 
   return { structureId, drawDefinition, conflicts, error };
 }
