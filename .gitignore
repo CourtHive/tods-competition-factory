@@ -8,3 +8,4 @@ dist
 *.code-workspace
 .docz
 *.VSCodeCounter
+.nvim*
