@@ -54,7 +54,7 @@
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
     "@babel/preset-typescript": "7.12.7",
-    "@types/jest": "26.0.17",
+    "@types/jest": "26.0.19",
     "docz": "2.3.1",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "7.0.0",
