@@ -280,16 +280,16 @@ export const valueProfiles = [
 
 export function getSetValues({ groupOrder } = {}) {
   if (!Array.isArray(groupOrder)) return undefined;
-  const valueProfile = valueProfiles.find(valueProfile => {
+  const valueProfile = valueProfiles.find((valueProfile) => {
     return groupOrder.join('-') === valueProfile.groupOrder.join('-');
   });
   return valueProfile?.setValues;
 }
 
 export const setsValues = {
-  '0': getSetValues({ groupOrder: [1, 2, 3, 4] }),
-  '1': getSetValues({ groupOrder: [1, 3, 2, 4] }),
-  '2': getSetValues({ groupOrder: [1, 3, 4, 2] }),
-  '3': getSetValues({ groupOrder: [2, 3, 1, 4] }),
-  '4': getSetValues({ groupOrder: [2, 4, 1, 3] }),
+  0: getSetValues({ groupOrder: [1, 2, 3, 4] }),
+  1: getSetValues({ groupOrder: [1, 3, 2, 4] }),
+  2: getSetValues({ groupOrder: [1, 3, 4, 2] }),
+  3: getSetValues({ groupOrder: [2, 3, 1, 4] }),
+  4: getSetValues({ groupOrder: [2, 4, 1, 3] }),
 };

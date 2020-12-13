@@ -22,17 +22,17 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
 
   const entryStatusMap = Object.assign(
     {},
-    ...event.entries.map(entry => ({
+    ...event.entries.map((entry) => ({
       [entry.participantId]: entry.entryStatus,
     }))
   );
 
   const enteredParticipantIds = Object.keys(entryStatusMap);
-  const enteredParticipants = participants.filter(participant =>
+  const enteredParticipants = participants.filter((participant) =>
     enteredParticipantIds.includes(participant.participantId)
   );
 
-  const invalidEntries = enteredParticipants.filter(participant => {
+  const invalidEntries = enteredParticipants.filter((participant) => {
     const unpairedDoublesParticipant =
       eventType === DOUBLES &&
       participant.participantType === INDIVIDUAL &&
@@ -53,7 +53,7 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
 
   if (invalidEntries.length) {
     const invalidParticipantIds = invalidEntries.map(
-      participant => participant.participantId
+      (participant) => participant.participantId
     );
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }

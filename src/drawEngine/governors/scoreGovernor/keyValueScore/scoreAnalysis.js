@@ -21,7 +21,7 @@ export function getScoreAnalysis({
   matchUpFormat,
   value,
 }) {
-  const completedSets = sets?.filter(set => set?.winningSide)?.length || 0;
+  const completedSets = sets?.filter((set) => set?.winningSide)?.length || 0;
   const setNumber = completedSets + (winningSide ? 0 : 1);
 
   const matchUpScoringFormat = matchUpFormatCode.parse(matchUpFormat);
@@ -70,13 +70,13 @@ export function getScoreAnalysis({
   const lastSetIsComplete = sets[sets.length - 1]?.winningSide;
   const isGameScoreEntry = sets?.length && !lastSetIsComplete;
 
-  const hasOutcome = OUTCOMES.find(outcome => score?.indexOf(outcome) >= 0);
+  const hasOutcome = OUTCOMES.find((outcome) => score?.indexOf(outcome) >= 0);
 
   const isNumericValue = !isNaN(value);
 
   const isSpace = value === SPACE_KEY;
   const isCloser = CLOSERS.includes(value);
-  const hasOpener = score?.split('').find(char => OPENERS.includes(char));
+  const hasOpener = score?.split('').find((char) => OPENERS.includes(char));
 
   const isInvalidMatchTiebreakValue =
     isCloser &&

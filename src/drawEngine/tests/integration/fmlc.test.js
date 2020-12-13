@@ -152,20 +152,20 @@ it('can direct winners and losers', () => {
 
   // find second round matchUp for first seeded player with BYE
   let sourceMatchUp = mainStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
   );
 
   let sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 1
+    (assignment) => assignment.drawPosition === 1
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
   let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 1
+    (assignment) => assignment.drawPosition === 1
   )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
   expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
@@ -226,20 +226,20 @@ it('can direct winners and losers', () => {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
 
   sourceMatchUp = mainStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 8
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 8
   );
 
   sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 32
+    (assignment) => assignment.drawPosition === 32
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(32)).toEqual(true);
 
   targetMatchUp = consolationStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 8
+    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 8
   );
 
   targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 16
+    (assignment) => assignment.drawPosition === 16
   )?.participantId;
 
   expect(targetMatchUp.drawPositions.includes(16)).toEqual(true);
@@ -347,20 +347,20 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
 
   // find second round matchUp for first seeded player with BYE
   let sourceMatchUp = mainStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
   );
 
   let sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 1
+    (assignment) => assignment.drawPosition === 1
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
   let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 2
+    (assignment) => assignment.drawPosition === 2
   )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
   expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
@@ -388,20 +388,20 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
 
   sourceMatchUp = mainStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
   );
 
   sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 1
+    (assignment) => assignment.drawPosition === 1
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
   targetMatchUp = consolationStructure.matchUps.find(
-    matchUp => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
+    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
 
   targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    assignment => assignment.drawPosition === 1
+    (assignment) => assignment.drawPosition === 1
   )?.participantId;
 
   expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);

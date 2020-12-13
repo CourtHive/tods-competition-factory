@@ -20,10 +20,10 @@ export function getRoundMatchUps({ matchUps = [] }) {
         : roundNumbers.concat(parseInt(matchUp.roundNumber));
     }, [])
     .sort(numericSort)
-    .map(roundNumber => {
+    .map((roundNumber) => {
       return {
         [roundNumber]: matchUps.filter(
-          matchUp => matchUp.roundNumber === roundNumber
+          (matchUp) => matchUp.roundNumber === roundNumber
         ),
       };
     });
@@ -47,17 +47,17 @@ export function getRoundMatchUps({ matchUps = [] }) {
   //  - finishingRound: reverse count of rounds. Final is finishingRound #1
   const roundProfile = Object.assign(
     {},
-    ...Object.keys(roundMatchUps).map(round => {
+    ...Object.keys(roundMatchUps).map((round) => {
       return { [round]: { matchUpsCount: roundMatchUps[round].length } };
     })
   );
 
   let roundIndex = 0;
   let feedRoundIndex = 0;
-  Object.keys(roundMatchUps).forEach(key => {
+  Object.keys(roundMatchUps).forEach((key) => {
     const round = parseInt(key);
     roundProfile[round].drawPositions = roundMatchUps[round]
-      .map(matchUp => matchUp.drawPositions)
+      .map((matchUp) => matchUp.drawPositions)
       .flat();
     roundProfile[round].finishingRound = finishingRoundMap[round];
     roundProfile[round].finishingPositionRange =
@@ -88,10 +88,10 @@ export function getCollectionPositionMatchUps({ matchUps }) {
         ? collectionPositions
         : collectionPositions.concat(matchUp.collectionPosition);
     }, [])
-    .map(collectionPosition => {
+    .map((collectionPosition) => {
       return {
         [collectionPosition]: matchUps.filter(
-          matchUp => matchUp.collectionPosition === collectionPosition
+          (matchUp) => matchUp.collectionPosition === collectionPosition
         ),
       };
     });

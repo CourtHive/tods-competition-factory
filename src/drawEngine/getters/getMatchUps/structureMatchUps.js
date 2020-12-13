@@ -38,8 +38,8 @@ export function getStructureMatchUps({
   if (error) return { error };
   const { assignedPositions } = structureAssignedDrawPositions({ structure });
   const participantAssignedDrawPositions = assignedPositions
-    .filter(assignment => assignment.participantId)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.participantId)
+    .map((assignment) => assignment.drawPosition);
 
   const byeMatchUps = [];
   const pendingMatchUps = [];
@@ -48,8 +48,8 @@ export function getStructureMatchUps({
   const completedMatchUps = [];
 
   matchUps
-    .filter(matchUp => !matchUp.collectionId) // filter out collection matchUps
-    .forEach(matchUp => {
+    .filter((matchUp) => !matchUp.collectionId) // filter out collection matchUps
+    .forEach((matchUp) => {
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
         isCollectionMatchUp &&
@@ -61,7 +61,7 @@ export function getStructureMatchUps({
 
       const drawPositionsFilled =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.filter(f => f).length === 2;
+        matchUp.drawPositions?.filter((f) => f).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
         matchUp.drawPositions?.reduce((assigned, drawPosition) => {
@@ -71,8 +71,8 @@ export function getStructureMatchUps({
         }, true);
 
       const byeAssignedDrawPositions = assignedPositions
-        .filter(assignment => assignment.bye)
-        .map(assignment => assignment.drawPosition);
+        .filter((assignment) => assignment.bye)
+        .map((assignment) => assignment.drawPosition);
 
       const isByeMatchUp =
         !isCollectionMatchUp &&
@@ -91,7 +91,7 @@ export function getStructureMatchUps({
       const isTieMatchUp = Array.isArray(matchUp.tieMatchUps);
 
       if (isTieMatchUp) {
-        matchUp.tieMatchUps.forEach(tieMatchUp => {
+        matchUp.tieMatchUps.forEach((tieMatchUp) => {
           if (isByeMatchUp) return byeMatchUps.push(tieMatchUp);
           if (isUpcomingMatchUp) return upcomingMatchUps.push(tieMatchUp);
           if (matchUp.winningSide) {

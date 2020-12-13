@@ -194,10 +194,10 @@ function generateDouble({
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 
-  const participants = generateRange(0, participantsCount).map(i => ({
+  const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   drawEngine.addDrawEntries({ stage: MAIN, participantIds });
   drawEngine.initializeStructureSeedAssignments({
@@ -207,7 +207,7 @@ function generateDouble({
 
   assignSeeds = assignSeeds || seedsCount;
   if (assignSeeds > participantsCount) assignSeeds = participantsCount;
-  generateRange(1, assignSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignSeeds + 1).forEach((seedNumber) => {
     const participantId = participants[seedNumber - 1].participantId;
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({

@@ -20,7 +20,7 @@ export function matchUpActions({
   if (drawId) {
     const events = tournamentRecord.events || [];
     const drawDefinitions = events
-      .map(event => event.drawDefinitions || [])
+      .map((event) => event.drawDefinitions || [])
       .flat();
     const drawDefinition = drawDefinitions.reduce(
       (drawDefinition, candidate) => {

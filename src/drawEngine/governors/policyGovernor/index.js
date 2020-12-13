@@ -19,7 +19,7 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
 
-  Object.keys(policyDefinition).forEach(policyType => {
+  Object.keys(policyDefinition).forEach((policyType) => {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
     } else {
@@ -29,7 +29,7 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
 
   if (!errors.length) {
     drawDefinition.extensions = drawDefinition.extensions.filter(
-      extension => extension.name !== 'appliedPolicies'
+      (extension) => extension.name !== 'appliedPolicies'
     );
     drawDefinition.extensions.push({
       name: 'appliedPolicies',

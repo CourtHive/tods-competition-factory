@@ -34,17 +34,18 @@ export function analyzeSet(props: SetAnalysisInterface) {
     setObject?.side2TiebreakScore,
   ];
   const sideGameScoresCount = sideGameScores.filter(
-    sideScore => sideScore !== undefined
+    (sideScore) => sideScore !== undefined
   ).length;
   const sidePointScoresCount = sidePointScores.filter(
-    sideScore => sideScore !== undefined
+    (sideScore) => sideScore !== undefined
   ).length;
   const sideTiebreakScoresCount = sideTiebreakScores.filter(
-    tiebreakScore => tiebreakScore !== undefined
+    (tiebreakScore) => tiebreakScore !== undefined
   ).length;
 
-  const gameScoresCount = sideGameScores?.filter(s => !isNaN(s)).length;
-  const tiebreakScoresCount = sideTiebreakScores?.filter(s => !isNaN(s)).length;
+  const gameScoresCount = sideGameScores?.filter((s) => !isNaN(s)).length;
+  const tiebreakScoresCount = sideTiebreakScores?.filter((s) => !isNaN(s))
+    .length;
 
   const { tiebreakAt } = setFormat || {};
   const hasTiebreakCondition =

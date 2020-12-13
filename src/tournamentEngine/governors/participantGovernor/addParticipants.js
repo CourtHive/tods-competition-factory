@@ -50,8 +50,8 @@ export function addParticipant({ tournamentRecord, participant }) {
       return { error: INVALID_PARTICIPANT_IDS };
     } else {
       const individualParticipantIds = tournamentParticipants
-        .filter(participant => participant.participantType === INDIVIDUAL)
-        .map(participant => participant.participantId);
+        .filter((participant) => participant.participantType === INDIVIDUAL)
+        .map((participant) => participant.participantId);
       const validPairParticipants = participant.individualParticipantIds.reduce(
         (valid, participantId) =>
           individualParticipantIds.includes(participantId) && valid,
@@ -61,14 +61,14 @@ export function addParticipant({ tournamentRecord, participant }) {
     }
 
     const existingParticipantIdPairs = tournamentParticipants
-      .filter(participant => participant.participantType === PAIR)
-      .map(participant => participant.individualParticipantIds);
+      .filter((participant) => participant.participantType === PAIR)
+      .map((participant) => participant.individualParticipantIds);
 
     // determine whether a PAIR participant already exists
     const existingPairParticipant =
       participant.participantType === PAIR &&
       existingParticipantIdPairs.find(
-        pairedParticipantIds =>
+        (pairedParticipantIds) =>
           intersection(
             pairedParticipantIds,
             participant.individualParticipantIds
@@ -79,14 +79,14 @@ export function addParticipant({ tournamentRecord, participant }) {
 
     if (!participant.name) {
       const individualParticipants = tournamentParticipants.filter(
-        tournamentParticipant =>
+        (tournamentParticipant) =>
           participant.individualParticipantIds.includes(
             tournamentParticipant.participantId
           )
       );
       const name = individualParticipants
-        .map(participant => participant.person?.standardFamilyName)
-        .filter(f => f)
+        .map((participant) => participant.person?.standardFamilyName)
+        .filter((f) => f)
         .join('/');
       participant.name = name;
       participant.participantName = name;
@@ -124,23 +124,23 @@ export function addParticipants({
   const tournamentParticipants = tournamentRecord.participants;
 
   const existingParticipantIds =
-    tournamentParticipants.map(p => p.participantId) || [];
+    tournamentParticipants.map((p) => p.participantId) || [];
 
-  participants.forEach(participant => {
+  participants.forEach((participant) => {
     if (!participant.participantId) participant.participantId = UUID();
   });
 
   const newParticipants = participants.filter(
-    participant => !existingParticipantIds.includes(participant.participantId)
+    (participant) => !existingParticipantIds.includes(participant.participantId)
   );
 
   const individualParticipants = newParticipants.filter(
-    participant => participant.participantType === INDIVIDUAL
+    (participant) => participant.participantType === INDIVIDUAL
   );
 
   // exclude PAIR participants
   const groupedParticipants = newParticipants.filter(
-    participant => participant.participantType !== INDIVIDUAL
+    (participant) => participant.participantType !== INDIVIDUAL
   );
 
   // add individual participants first so that grouped participants which include them are valid
@@ -151,7 +151,7 @@ export function addParticipants({
   if (participantsToAdd.length) {
     const errors = [];
     const addedParticipants = [];
-    participantsToAdd.forEach(participant => {
+    participantsToAdd.forEach((participant) => {
       const result = addParticipant({
         tournamentRecord,
         participant,
@@ -163,7 +163,7 @@ export function addParticipants({
     if (source !== undefined) participantSource({ tournamentRecord, source });
     if (teamId || groupId) {
       const groupingType = teamId ? TEAM : GROUP;
-      const participantIds = participantsToAdd.map(np => np.participantId);
+      const participantIds = participantsToAdd.map((np) => np.participantId);
       addParticipantsToGrouping({
         groupingType,
         participantIds,

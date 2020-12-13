@@ -32,7 +32,7 @@ export function scheduleMatchUps(props) {
 
   const { courts: allCourts } = getVenuesAndCourts({ tournamentRecords });
   const courts = allCourts.filter(
-    court => !venueIds || venueIds.includes(court.venueId)
+    (court) => !venueIds || venueIds.includes(court.venueId)
   );
 
   if (!startTime) {
@@ -61,7 +61,7 @@ export function scheduleMatchUps(props) {
   };
   const { scheduleTimes } = matchUpTiming(timingParameters);
 
-  const matchUpsToSchedule = matchUps.filter(matchUp => {
+  const matchUpsToSchedule = matchUps.filter((matchUp) => {
     const doNotSchedule = [
       BYE,
       DEFAULTED,
@@ -75,7 +75,7 @@ export function scheduleMatchUps(props) {
 
   // TODO: can be optimized by aggregating all matchUpIds to be scheduled for a particular drawDefinition
   if (matchUpsToSchedule?.length) {
-    matchUpsToSchedule.forEach(targetMatchUp => {
+    matchUpsToSchedule.forEach((targetMatchUp) => {
       const { drawId, matchUpId, tournamentId } = targetMatchUp;
       const tournamentRecord = tournamentRecords[tournamentId];
       if (tournamentRecord) {
@@ -100,11 +100,13 @@ export function scheduleMatchUps(props) {
             drawDefinition: updatedDrawDefinition,
           } = drawEngine.getState();
 
-          event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
-            return drawDefinition.drawId === drawId
-              ? updatedDrawDefinition
-              : drawDefinition;
-          });
+          event.drawDefinitions = event.drawDefinitions.map(
+            (drawDefinition) => {
+              return drawDefinition.drawId === drawId
+                ? updatedDrawDefinition
+                : drawDefinition;
+            }
+          );
         }
       } else {
         console.log(MISSING_TOURNAMENT_ID);

@@ -15,16 +15,16 @@ export function buildDrawHierarchy({ matchUps }) {
   const drawPositionSort = (a, b) => parseInt(a) - parseInt(b);
   const allDrawPositions = unique(
     matchUps
-      .map(matchUp => matchUp.drawPositions)
+      .map((matchUp) => matchUp.drawPositions)
       .flat()
-      .filter(f => f)
+      .filter((f) => f)
   ).sort(drawPositionSort);
   const expectedDrawPositions = generateRange(
     1,
     Math.max(...allDrawPositions) + 1
   );
   const missingDrawPositions = expectedDrawPositions
-    .filter(drawPosition => !allDrawPositions.includes(drawPosition))
+    .filter((drawPosition) => !allDrawPositions.includes(drawPosition))
     .sort(drawPositionSort);
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
@@ -43,10 +43,10 @@ export function buildDrawHierarchy({ matchUps }) {
   );
 
   const additionalRoundMatchUps = generateRange(1, additionalRounds + 1).map(
-    finishingRound => {
+    (finishingRound) => {
       const matchUpsToGenerate = Math.pow(2, finishingRound - 1);
       const roundNumber = maxRound + additionalRounds - finishingRound + 1;
-      return generateRange(1, matchUpsToGenerate + 1).map(roundPosition => {
+      return generateRange(1, matchUpsToGenerate + 1).map((roundPosition) => {
         const matchUp = {
           drawId,
           structureId,
@@ -68,24 +68,24 @@ export function buildDrawHierarchy({ matchUps }) {
   }
 
   const firstRoundPairedDrawPositions = firstRoundMatchUps.map(
-    matchUp => matchUp.drawPositions
+    (matchUp) => matchUp.drawPositions
   );
   const firstRoundDrawPositions = firstRoundPairedDrawPositions.flat(Infinity);
 
   const secondRoundDrawPositions = secondRoundMatchUps
-    .map(matchUp => matchUp.drawPositions)
+    .map((matchUp) => matchUp.drawPositions)
     .flat(Infinity);
   const secondRoundEntries = secondRoundDrawPositions
-    .filter(drawPosition => !firstRoundDrawPositions.includes(drawPosition))
+    .filter((drawPosition) => !firstRoundDrawPositions.includes(drawPosition))
     .sort(drawPositionSort);
   const secondRoundEntriySides = secondRoundMatchUps
-    .filter(matchUp =>
+    .filter((matchUp) =>
       matchUp.drawPositions?.reduce(
         (p, c) => secondRoundEntries.includes(c) || p,
         undefined
       )
     )
-    .map(matchUp => {
+    .map((matchUp) => {
       const targetDrawPosition = matchUp.drawPositions?.reduce(
         (p, c) => (secondRoundEntries.includes(c) ? c : p),
         undefined
@@ -111,7 +111,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
     missingMatchUps = missingPairs.map((drawPositions, index) => {
       const roundPosition = Math.max(...drawPositions) / 2;
-      const sides = drawPositions.map(drawPosition => {
+      const sides = drawPositions.map((drawPosition) => {
         return entrySides[drawPosition] || { bye: true, drawPosition };
       });
       const matchUp = {
@@ -135,7 +135,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
   const finalRound = maxRound + additionalRounds;
   const roundsIterator = generateRange(1, finalRound + 1);
-  roundsIterator.forEach(roundNumber => {
+  roundsIterator.forEach((roundNumber) => {
     const newRound = [];
     const roundMatchUps = filterRoundMatchUps({ matchUps, roundNumber });
 
@@ -145,12 +145,12 @@ export function buildDrawHierarchy({ matchUps }) {
     });
     const previousRoundWinnerIds = previousRoundMatchUps
       .map(getAdvancingParticipantId)
-      .filter(f => f);
+      .filter((f) => f);
 
     const feedRound = roundMatchUps.length === previousRound.length;
     const matchRound = roundMatchUps.length === previousRound.length / 2;
     if (roundNumber === 1) {
-      roundMatchUps.forEach(matchUp => {
+      roundMatchUps.forEach((matchUp) => {
         const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
         const children = [
@@ -177,14 +177,14 @@ export function buildDrawHierarchy({ matchUps }) {
         const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
         const fedDrawPosition = drawPositions
-          .filter(f => f) // first filter out undefined if no advanced participant
+          .filter((f) => f) // first filter out undefined if no advanced participant
           .reduce((fed, position) => {
             // fed position is not included in first round
             return firstRoundDrawPositions.includes(position) ? fed : position;
           }, undefined);
 
         const fedSide = matchUp.sides
-          .filter(f => f)
+          .filter((f) => f)
           .reduce((fedSide, side) => {
             return side.participantId &&
               !previousRoundWinnerIds.includes(side.participantId)
@@ -223,7 +223,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
   function filterRoundMatchUps({ matchUps, roundNumber }) {
     return matchUps
-      .filter(m => m.roundNumber === roundNumber)
+      .filter((m) => m.roundNumber === roundNumber)
       .sort((a, b) => a.roundPosition - b.roundPosition);
   }
 }
@@ -256,5 +256,5 @@ export function collapseHierarchy(node, depth) {
   }
   if (node.depth < depth) node.children = node.children || node._children;
   if (!node.children) return;
-  node.children.forEach(c => collapseHierarchy(c, depth));
+  node.children.forEach((c) => collapseHierarchy(c, depth));
 }

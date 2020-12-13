@@ -34,7 +34,7 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
     drawDefinition &&
     stage &&
     drawDefinition.structures &&
-    drawDefinition.structures.filter(structure => {
+    drawDefinition.structures.filter((structure) => {
       return (
         structure.stage === stage && structure.stageSequence === stageSequence
       );
@@ -129,7 +129,7 @@ export function stageEntries({
 export function playoffEntries({ drawDefinition, structureId }) {
   const entries = [];
   const inboundLink = drawDefinition.links.find(
-    link =>
+    (link) =>
       link.linkType === POSITION && link.target.structureId === structureId
   );
   if (inboundLink) {
@@ -146,7 +146,7 @@ export function playoffEntries({ drawDefinition, structureId }) {
     // the source structure must be a container of other structures
     if (sourceStructure.structureType === CONTAINER) {
       const playoffStructures = sourceStructure.structures || [];
-      playoffStructures.forEach(structure => {
+      playoffStructures.forEach((structure) => {
         const { structureId: playoffStructureId } = structure;
 
         // context is required so that matchUp.sides are present
@@ -166,11 +166,11 @@ export function playoffEntries({ drawDefinition, structureId }) {
 
         const groupingValue = playoffStructureId;
         Object.keys(participantResults)
-          .filter(key => {
+          .filter((key) => {
             const result = participantResults[key];
             return finishingPositions.includes(result.groupOrder);
           })
-          .forEach(participantId => {
+          .forEach((participantId) => {
             const participantResult = participantResults[participantId];
             const { groupOrder, GEMscore } = participantResult;
             const placementGroup =

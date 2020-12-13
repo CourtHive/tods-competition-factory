@@ -53,19 +53,19 @@ export function generateDrawStructure({
   } else {
     participants =
       participants ||
-      generateRange(0, participantsCount).map(i => ({
+      generateRange(0, participantsCount).map((i) => ({
         participantId: `ko-uuid${i + 1}`,
       }));
   }
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   drawEngine.addDrawEntries({ stage, participantIds });
 
-  const alternateParticipants = generateRange(0, alternatesCount).map(i => ({
+  const alternateParticipants = generateRange(0, alternatesCount).map((i) => ({
     participantId: `alt-uuid${i + 1}`,
   }));
   const alternateParticipantIds = alternateParticipants.map(
-    p => p.participantId
+    (p) => p.participantId
   );
   drawEngine.addDrawEntries({
     stage: MAIN,
@@ -76,7 +76,7 @@ export function generateDrawStructure({
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
   assignSeeds = assignSeeds || seedsCount;
-  generateRange(1, assignSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignSeeds + 1).forEach((seedNumber) => {
     const participantId = participants[seedNumber - 1].participantId;
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({
@@ -117,10 +117,10 @@ export function generateFeedIn({
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 
-  const participants = generateRange(0, participantsCount).map(i => ({
+  const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   drawEngine.addDrawEntries({ stage, participantIds });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
@@ -128,7 +128,7 @@ export function generateFeedIn({
   assignSeeds = assignSeeds || seedsCount;
   if (assignSeeds > participantsCount) assignSeeds = participantsCount;
 
-  generateRange(1, assignSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignSeeds + 1).forEach((seedNumber) => {
     const participantId = participants[seedNumber - 1].participantId;
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({

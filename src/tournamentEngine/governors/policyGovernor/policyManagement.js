@@ -26,7 +26,7 @@ export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
   if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
-  Object.keys(policyDefinition).forEach(policyType => {
+  Object.keys(policyDefinition).forEach((policyType) => {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
     } else {
@@ -36,7 +36,7 @@ export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
 
   if (!errors.length) {
     tournamentRecord.extensions = tournamentRecord.extensions.filter(
-      extension => extension.name !== 'appliedPolicies'
+      (extension) => extension.name !== 'appliedPolicies'
     );
     tournamentRecord.extensions.push({
       name: 'appliedPolicies',
@@ -84,7 +84,7 @@ export function attachEventPolicy({
   let policiesApplied = 0;
   if (!event.extensions) event.extensions = [];
   const { appliedPolicies } = getEventAppliedPolicies({ event });
-  Object.keys(policyDefinition).forEach(policyType => {
+  Object.keys(policyDefinition).forEach((policyType) => {
     if (policyDefinition[policyType].policyAttributes) {
       appliedPolicies[policyType] = policyDefinition[policyType];
       policiesApplied++;
@@ -92,7 +92,7 @@ export function attachEventPolicy({
   });
 
   event.extensions = event.extensions.filter(
-    extension => extension.name !== 'appliedPolicies'
+    (extension) => extension.name !== 'appliedPolicies'
   );
   event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
 
@@ -116,7 +116,7 @@ export function removeEventPolicy({ tournamentRecord, event, policyType }) {
       policyRemoved = true;
 
       event.extensions = event.extensions.filter(
-        extension => extension.name !== 'appliedPolicies'
+        (extension) => extension.name !== 'appliedPolicies'
       );
 
       if (Object.keys(appliedPolicies).length) {

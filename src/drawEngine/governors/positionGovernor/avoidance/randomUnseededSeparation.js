@@ -55,11 +55,11 @@ export function randomUnseededSeparation({
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
   const unassignedPositions = positionAssignments.filter(
-    assignment => !assignment.participantId
+    (assignment) => !assignment.participantId
   );
 
   const allDrawPositions = positionAssignments.map(
-    assignment => assignment.drawPosition
+    (assignment) => assignment.drawPosition
   );
 
   const isRoundRobin = structure.structureType === CONTAINER;
@@ -129,15 +129,15 @@ export function randomUnseededSeparation({
   );
 
   const alreadyAssignedParticipantIds = (structure.positionAssignments || [])
-    .filter(assignment => assignment.participantId)
-    .map(assignment => assignment.participantId);
+    .filter((assignment) => assignment.participantId)
+    .map((assignment) => assignment.participantId);
 
   candidate.positionAssignments
     .filter(
-      assignment =>
+      (assignment) =>
         !alreadyAssignedParticipantIds.includes(assignment.participantId)
     )
-    .forEach(assignment => {
+    .forEach((assignment) => {
       const result = assignDrawPosition({
         drawDefinition,
         structureId,
@@ -164,8 +164,8 @@ function roundRobinParticipantGroups(props) {
   const {
     structure: { structures },
   } = props;
-  const drawPositionGroups = structures.map(structure =>
-    structure.positionAssignments.map(assignment => assignment.drawPosition)
+  const drawPositionGroups = structures.map((structure) =>
+    structure.positionAssignments.map((assignment) => assignment.drawPosition)
   );
   return { drawPositionGroups, drawPositionChunks: [drawPositionGroups] };
 }
@@ -176,8 +176,8 @@ function eliminationParticipantGroups({
   roundsToSeparate,
 }) {
   const drawPositionPairs = matchUps
-    .filter(matchUp => matchUp.roundNumber === 1)
-    .map(matchUp => matchUp.drawPositions);
+    .filter((matchUp) => matchUp.roundNumber === 1)
+    .map((matchUp) => matchUp.drawPositions);
   const firstRoundMatchUpDrawPositions = drawPositionPairs
     .flat()
     .sort(numericSort);
@@ -185,18 +185,18 @@ function eliminationParticipantGroups({
     ...firstRoundMatchUpDrawPositions
   );
   const fedDrawPositions = allDrawPositions.filter(
-    drawPositon => drawPositon > greatestFirstRoundDrawPosition
+    (drawPositon) => drawPositon > greatestFirstRoundDrawPosition
   );
 
   const structureSize = firstRoundMatchUpDrawPositions.length;
   const roundSizes = generateRange(2, structureSize).filter(
-    f => f === nearestPowerOf2(f)
+    (f) => f === nearestPowerOf2(f)
   );
 
   const chunkSizes = roundSizes
     .slice(0, roundsToSeparate || roundSizes.length)
     .reverse();
-  const drawPositionChunks = chunkSizes.map(size =>
+  const drawPositionChunks = chunkSizes.map((size) =>
     chunkArray(firstRoundMatchUpDrawPositions, size)
   );
 

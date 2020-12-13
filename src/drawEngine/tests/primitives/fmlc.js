@@ -35,10 +35,10 @@ export function generateFMLC({
     policyDefinition: policyDefinition || SEEDING_POLICY,
   });
 
-  const participants = generateRange(0, participantsCount).map(i => ({
+  const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `fmlc-uuid${i + 1}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   drawEngine.addDrawEntries({ stage: MAIN, participantIds });
   drawEngine.initializeStructureSeedAssignments({
@@ -46,7 +46,7 @@ export function generateFMLC({
     seedsCount,
   });
 
-  generateRange(0, seedsCount).forEach(i => {
+  generateRange(0, seedsCount).forEach((i) => {
     const seedNumber = i + 1;
     const participantId = participants[i].participantId;
     drawEngine.assignSeed({

@@ -41,25 +41,25 @@ export function generatePositioningCandidate(props) {
     idCollections = {};
   let groupKey;
 
-  const groupSize = Math.min(...drawPositionGroups.map(dpg => dpg.length));
+  const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
   const isRoundRobin = groupSize > 2;
 
   idCollections.groupParticipants = participantsWithContext
-    .filter(participant => participant.participantType === GROUP)
-    .map(participant => participant.participantId);
+    .filter((participant) => participant.participantType === GROUP)
+    .map((participant) => participant.participantId);
   idCollections.teamParticipants = participantsWithContext
-    .filter(participant => participant.participantType === TEAM)
-    .map(participant => participant.participantId);
+    .filter((participant) => participant.participantType === TEAM)
+    .map((participant) => participant.participantId);
   idCollections.pairParticipants = participantsWithContext
-    .filter(participant => participant.participantType === PAIR)
-    .map(participant => participant.participantId);
+    .filter((participant) => participant.participantType === PAIR)
+    .map((participant) => participant.participantId);
 
   const candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
 
   // all drawPositions which are available for placement
   const potentialDrawPositions = initialPositionAssignments
-    .filter(assignment => !assignment.participantId)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => !assignment.participantId)
+    .map((assignment) => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {
     const {
@@ -74,7 +74,7 @@ export function generatePositioningCandidate(props) {
     });
     groupKey = newGroupKey;
 
-    candidatePositionAssignments.forEach(assignment => {
+    candidatePositionAssignments.forEach((assignment) => {
       if (assignment.drawPosition === targetDrawPosition) {
         assignment.participantId = selectedParticipantId;
       }
@@ -146,12 +146,12 @@ export function swapAssignedPositions({
   const firstPosition = swapOption.drawPosition;
   const secondPosition = randomPop(swapOption.possibleDrawPositions);
   const firstParticipantId = candidatePositionAssignments.find(
-    assignment => assignment.drawPosition === firstPosition
+    (assignment) => assignment.drawPosition === firstPosition
   ).participantId;
   const secondParticipantId = candidatePositionAssignments.find(
-    assignment => assignment.drawPosition === secondPosition
+    (assignment) => assignment.drawPosition === secondPosition
   ).participantId;
-  candidatePositionAssignments.forEach(assignment => {
+  candidatePositionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === firstPosition) {
       assignment.participantId = secondParticipantId;
     }

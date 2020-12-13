@@ -2,9 +2,11 @@ import { generateRange, intersection, unique } from '../../../utilities';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_DEFINITION,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 
 export function getDrawData({
   tournamentRecord,
@@ -12,7 +14,7 @@ export function getDrawData({
   policyDefinition,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_ID };
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
     drawId,
@@ -23,11 +25,11 @@ export function getDrawData({
   const tournamentParticipants = tournamentRecord.participants || [];
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
-  const groupedStructures = structureGroups.map(structureIds => {
-    const structures = structureIds.map(structureId => {
+  const groupedStructures = structureGroups.map((structureIds) => {
+    const structures = structureIds.map((structureId) => {
       const { structure } = findStructure({ drawDefinition, structureId });
 
-      const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+      const { roundMatchUps } = getAllStructureMatchUps({
         context: { drawId: drawInfo.drawId },
         tournamentParticipants,
         policyDefinition,
@@ -75,7 +77,7 @@ export function getDrawData({
 export function getStructureGroups({ drawDefinition }) {
   const links = drawDefinition.links || [];
 
-  let linkedStructureIds = links.map(link => [
+  let linkedStructureIds = links.map((link) => [
     link.source.structureId,
     link.target.structureId,
   ]);
@@ -83,7 +85,7 @@ export function getStructureGroups({ drawDefinition }) {
   // iterate through all groups of structureIds to flatten tree of links between structures
   const iterations = linkedStructureIds.length;
   generateRange(0, Math.ceil(iterations / 2)).forEach(() => {
-    linkedStructureIds = generateRange(0, iterations).map(index => {
+    linkedStructureIds = generateRange(0, iterations).map((index) => {
       const structureIds = linkedStructureIds[index];
       const mergedWithOverlappingIds =
         linkedStructureIds.reduce((biggest, ids) => {
@@ -110,13 +112,13 @@ export function getStructureGroups({ drawDefinition }) {
 
   // if a drawDefinition contains no links the no structure groups will exist
   // filter out undefined when there are no links in a drawDefinition
-  const structureGroups = [groupedStructures].filter(f => f);
+  const structureGroups = [groupedStructures].filter((f) => f);
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];
-  structures.forEach(structure => {
+  structures.forEach((structure) => {
     const { structureId } = structure;
-    const existingGroup = structureGroups.find(group => {
+    const existingGroup = structureGroups.find((group) => {
       return group.includes(structureId);
     });
     if (!existingGroup) {

@@ -8,7 +8,9 @@ import {
 export function getDrawPositions({ structure }) {
   if (structure && structure.structures) {
     return [].concat(
-      ...structure.structures.map(structure => getDrawPositions({ structure }))
+      ...structure.structures.map((structure) =>
+        getDrawPositions({ structure })
+      )
     );
   } else if (structure) {
     return structure.positionAssignments || [];
@@ -32,7 +34,7 @@ export function getPositionAssignments({
   }
   if (structure.structures) {
     positionAssignments = [].concat(
-      ...structure.structures.map(structure => {
+      ...structure.structures.map((structure) => {
         return getPositionAssignments({ structure }).positionAssignments;
       })
     );
@@ -55,24 +57,24 @@ export function structureAssignedDrawPositions({
     drawDefinition,
     structureId,
   });
-  const assignedPositions = positionAssignments.filter(drawPosition => {
+  const assignedPositions = positionAssignments.filter((drawPosition) => {
     return (
       drawPosition.participantId || drawPosition.bye || drawPosition.qualifier
     );
   });
   const allPositionsAssigned =
     positionAssignments.length === assignedPositions.length;
-  const unassignedPositions = positionAssignments.filter(drawPosition => {
+  const unassignedPositions = positionAssignments.filter((drawPosition) => {
     return (
       !drawPosition.participantId &&
       !drawPosition.bye &&
       !drawPosition.qualifier
     );
   });
-  const byePositions = positionAssignments.filter(drawPosition => {
+  const byePositions = positionAssignments.filter((drawPosition) => {
     return !drawPosition.participantId && drawPosition.bye;
   });
-  const qualifierPositions = positionAssignments.filter(drawPosition => {
+  const qualifierPositions = positionAssignments.filter((drawPosition) => {
     return !drawPosition.participantId && drawPosition.qualifier;
   });
   return {

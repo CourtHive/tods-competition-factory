@@ -28,9 +28,9 @@ it('can generate compass draws', () => {
   expect(drawDefinition.links.length).toEqual(1);
   expect(drawDefinition.structures.length).toEqual(2);
   let structureNames = drawDefinition.structures.map(
-    structure => structure.structureName
+    (structure) => structure.structureName
   );
-  ['EAST', 'WEST'].forEach(direction =>
+  ['EAST', 'WEST'].forEach((direction) =>
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
@@ -41,9 +41,9 @@ it('can generate compass draws', () => {
   expect(drawDefinition.links.length).toEqual(3);
   expect(drawDefinition.structures.length).toEqual(4);
   structureNames = drawDefinition.structures.map(
-    structure => structure.structureName
+    (structure) => structure.structureName
   );
-  ['EAST', 'WEST', 'NORTH', 'SOUTH'].forEach(direction =>
+  ['EAST', 'WEST', 'NORTH', 'SOUTH'].forEach((direction) =>
     expect(structureNames.includes(direction)).toEqual(true)
   );
 
@@ -54,12 +54,12 @@ it('can generate compass draws', () => {
   expect(result).not.toHaveProperty(ERROR);
   expect(drawDefinition.links.length).toEqual(7);
   expect(drawDefinition.structures.length).toEqual(8);
-  drawDefinition.links.forEach(link => {
+  drawDefinition.links.forEach((link) => {
     expect(link.linkType).toEqual(LOSER);
     expect(link.target.feedProfile).toEqual(TOP_DOWN);
   });
   structureNames = drawDefinition.structures.map(
-    structure => structure.structureName
+    (structure) => structure.structureName
   );
   [
     'EAST',
@@ -70,7 +70,7 @@ it('can generate compass draws', () => {
     'SOUTHWEST',
     'NORTHWEST',
     'SOUTHEAST',
-  ].forEach(direction => {
+  ].forEach((direction) => {
     expect(structureNames.includes(direction)).toEqual(true);
   });
 
@@ -334,11 +334,11 @@ it('can generate draw which plays off all drawPositions', () => {
   expect(result).not.toHaveProperty(ERROR);
   expect(drawDefinition.links.length).toEqual(31);
   expect(drawDefinition.structures.length).toEqual(32);
-  drawDefinition.links.forEach(link =>
+  drawDefinition.links.forEach((link) =>
     expect(link.target.feedProfile).toEqual(TOP_DOWN)
   );
   const structureNames = drawDefinition.structures.map(
-    structure => structure.structureName
+    (structure) => structure.structureName
   );
   [
     '1-64',
@@ -373,7 +373,7 @@ it('can generate draw which plays off all drawPositions', () => {
     '5-8',
     '7-8',
     '3-4',
-  ].forEach(playoff => {
+  ].forEach((playoff) => {
     expect(structureNames.includes(playoff)).toEqual(true);
   });
 });

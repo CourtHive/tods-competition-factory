@@ -13,10 +13,10 @@ export function checkIfWinnerHadBye({
     undefined
   );
   const winnerDrawPosition = sourceMatchUp.drawPositions.find(
-    drawPosition => drawPosition !== loserDrawPosition
+    (drawPosition) => drawPosition !== loserDrawPosition
   );
   return sourceMatchUps
-    .filter(matchUp => matchUp.drawPositions.includes(winnerDrawPosition))
-    .map(matchUp => matchUp.matchUpStatus)
+    .filter((matchUp) => matchUp.drawPositions.includes(winnerDrawPosition))
+    .map((matchUp) => matchUp.matchUpStatus)
     .includes(BYE);
 }

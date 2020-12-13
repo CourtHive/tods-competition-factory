@@ -14,7 +14,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!participantsCount) return { error: 'Tournament has no participants' };
 
   tournamentRecord.participants = tournamentRecord.participants.filter(
-    participant => !participantIds.includes(participant.participantId)
+    (participant) => !participantIds.includes(participant.participantId)
   );
   const participantsRemovedCount =
     participantsCount - tournamentRecord.participants.length;

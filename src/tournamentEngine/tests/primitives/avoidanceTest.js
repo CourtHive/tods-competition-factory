@@ -59,7 +59,9 @@ export function avoidanceTest(props) {
     eventType === SINGLES ? INDIVIDUAL : DOUBLES ? PAIR : participantType;
 
   const relevantParticipants = participants
-    .filter(participant => participant.participantType === eventParticipantType)
+    .filter(
+      (participant) => participant.participantType === eventParticipantType
+    )
     .slice(0, seedsCount);
 
   relevantParticipants.forEach((participant, index) => {
@@ -86,9 +88,9 @@ export function avoidanceTest(props) {
   expect(success).toEqual(true);
 
   const eventParticipants = participants.filter(
-    participant => participant.participantType === eventParticipantType
+    (participant) => participant.participantType === eventParticipantType
   );
-  const participantIds = eventParticipants.map(p => p.participantId);
+  const participantIds = eventParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -115,14 +117,16 @@ export function avoidanceTest(props) {
     drawDefinition,
     requireParticipants: true,
   });
-  const report = upcomingMatchUps.map(m => ({
+  const report = upcomingMatchUps.map((m) => ({
     drawPositions: m.drawPositions,
-    seeds: m.sides.map(s => s.seedValue || ''),
-    names: m.sides.map(s => s.participant.name || s.particpant.participantName),
-    ioc: m.sides.map(s => {
+    seeds: m.sides.map((s) => s.seedValue || ''),
+    names: m.sides.map(
+      (s) => s.participant.name || s.particpant.participantName
+    ),
+    ioc: m.sides.map((s) => {
       if (eventType === DOUBLES) {
         return s.participant.individualParticipants.map(
-          i => i.person.nationalityCode
+          (i) => i.person.nationalityCode
         );
       } else {
         return s.participant.person.nationalityCode;

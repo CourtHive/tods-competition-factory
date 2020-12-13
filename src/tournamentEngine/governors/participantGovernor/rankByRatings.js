@@ -10,11 +10,11 @@ export function rankByRatings({
   category,
   eventType,
 }) {
-  const relevantParticipants = (tournamentRecord.participants || []).filter(p =>
-    participantIds.includes(p.participantId)
-  );
+  const relevantParticipants = (
+    tournamentRecord.participants || []
+  ).filter((p) => participantIds.includes(p.participantId));
 
-  const participantRating = participant => {
+  const participantRating = (participant) => {
     const scaleAttributes = {
       scaleType: RATING,
       scaleName: category,
@@ -31,18 +31,18 @@ export function rankByRatings({
   const ratingSort = (a, b) => (b.rating || 0) - (a.rating || 0);
 
   const sortedParticipantIds = relevantParticipants
-    .map(p => ({
+    .map((p) => ({
       participantId: p.participantId,
       rating: participantRating(p),
     }))
-    .filter(p => p.rating)
+    .filter((p) => p.rating)
     .sort(ratingSort)
     .map((p, i) => ({ [p.participantId]: i + 1 }));
 
   const idMap = Object.assign({}, ...sortedParticipantIds);
 
   let modifiedParticipants = 0;
-  relevantParticipants.forEach(participant => {
+  relevantParticipants.forEach((participant) => {
     const ranking = idMap[participant.participantId];
     const scaleItem = {
       scaleValue: ranking,

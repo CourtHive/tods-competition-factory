@@ -81,7 +81,7 @@ export function removeDirectedParticipants(props) {
       structure,
     });
 
-    const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
+    const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
       matchUp.drawPositions.includes(loserDrawPosition)
     );
 
@@ -160,9 +160,9 @@ function removeDirectedWinner({
 
     const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
     const allDrawPositionInstances = matchUps
-      .map(matchUp => matchUp.drawPositions)
+      .map((matchUp) => matchUp.drawPositions)
       .flat(Infinity)
-      .filter(f => f);
+      .filter((f) => f);
     const drawPositionInstanceCount = instanceCount(allDrawPositionInstances);
     const winnerDrawPositionInstances =
       drawPositionInstanceCount[winnerDrawPosition];
@@ -170,7 +170,7 @@ function removeDirectedWinner({
     if (winnerDrawPositionInstances === 1) {
       // only remove position assignment if it has a single instance...
       // if there are multiple instances then a participant has been fed back into a draw
-      positionAssignments.forEach(assignment => {
+      positionAssignments.forEach((assignment) => {
         if (assignment.participantId === winnerParticipantId) {
           delete assignment.participantId;
         }
@@ -182,17 +182,21 @@ function removeDirectedWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(drawPosition => {
-      return drawPosition === winnerDrawPosition ? undefined : drawPosition;
-    });
+    matchUp.drawPositions = (matchUp.drawPositions || []).map(
+      (drawPosition) => {
+        return drawPosition === winnerDrawPosition ? undefined : drawPosition;
+      }
+    );
   } else {
     const { matchUp } = findMatchUp({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
     });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(drawPosition => {
-      return drawPosition === winningDrawPosition ? undefined : drawPosition;
-    });
+    matchUp.drawPositions = (matchUp.drawPositions || []).map(
+      (drawPosition) => {
+        return drawPosition === winningDrawPosition ? undefined : drawPosition;
+      }
+    );
   }
 
   return { error };
@@ -208,7 +212,7 @@ function removeDirectedLoser({
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  positionAssignments.forEach(assignment => {
+  positionAssignments.forEach((assignment) => {
     if (assignment.participantId === loserParticipantId) {
       delete assignment.participantId;
     }

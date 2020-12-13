@@ -18,7 +18,7 @@ export function addParticipantsToGrouping(props) {
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const groupingParticipant = tournamentParticipants.find(
-    participant => participant.participantId === groupingParticipantId
+    (participant) => participant.participantId === groupingParticipantId
   );
 
   if (groupingParticipant.participantType !== groupingType) {
@@ -34,7 +34,7 @@ export function addParticipantsToGrouping(props) {
       groupingParticipant.individualParticipants || [];
     const individualParticipantIds =
       groupingParticipant.individualParticipantIds;
-    const participantIdsToAdd = participantIds.filter(participantId => {
+    const participantIdsToAdd = participantIds.filter((participantId) => {
       const participantIsMember = individualParticipantIds.includes(
         participantId
       );
@@ -42,13 +42,15 @@ export function addParticipantsToGrouping(props) {
     });
 
     // integrity chck to insure only individuals can be added to groupings
-    const invalidParticipantIds = participantIdsToAdd.filter(participantId => {
-      const participant = tournamentParticipants.find(
-        tournamentParticipant =>
-          tournamentParticipant.participantId === participantId
-      );
-      return participant.participantType !== INDIVIDUAL;
-    });
+    const invalidParticipantIds = participantIdsToAdd.filter(
+      (participantId) => {
+        const participant = tournamentParticipants.find(
+          (tournamentParticipant) =>
+            tournamentParticipant.participantId === participantId
+        );
+        return participant.participantType !== INDIVIDUAL;
+      }
+    );
     if (invalidParticipantIds.length)
       return { error: INVALID_PARTICIPANT_TYPE, invalidParticipantIds };
 
@@ -78,7 +80,7 @@ export function removeParticipantsFromGroup({
 }) {
   const tournamentParticipants = tournamentRecord.participants || [];
 
-  const groupingParticipant = tournamentParticipants.find(participant => {
+  const groupingParticipant = tournamentParticipants.find((participant) => {
     return participant.participantId === groupingParticipantId;
   });
 
@@ -99,7 +101,7 @@ function removeParticipantIdsFromGrouping({
   const individualParticipants =
     groupingParticipant.individualParticipants || [];
   groupingParticipant.individualParticipants = individualParticipants.filter(
-    value => {
+    (value) => {
       const participantId =
         typeof value === 'object' ? value.participantId : value;
       const removeParticipant = participantIds.includes(participantId);
@@ -119,14 +121,14 @@ export function removeParticipantsFromAllTeams({
 
   let modifications = 0;
   tournamentParticipants
-    .filter(participant => {
+    .filter((participant) => {
       return (
         (participant.participantRole === COMPETITOR ||
           !participant.participantRole) &&
         participant.participantType === groupingType
       );
     })
-    .forEach(team => {
+    .forEach((team) => {
       const { groupingParticipant, removed } = removeParticipantIdsFromGrouping(
         {
           groupingParticipant: team,

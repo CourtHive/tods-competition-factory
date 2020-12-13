@@ -17,7 +17,7 @@ export function getPairedParticipant({ tournamentRecord, participantIds }) {
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const existingPairedParticipant = tournamentParticipants.find(
-    participant =>
+    (participant) =>
       participant.participantType === PAIR &&
       intersection(participantIds, participant.individualParticipantIds)
         .length === 2

@@ -22,7 +22,7 @@ export function getScheduledCourtMatchUps({
 
   function getCourtMatchUps({ matchUps, courtId }) {
     return matchUps
-      .filter(matchUp => matchUp.schedule?.courtId === courtId)
+      .filter((matchUp) => matchUp.schedule?.courtId === courtId)
       .sort(
         (a, b) =>
           new Date(a.scheduledTime).getTime() -

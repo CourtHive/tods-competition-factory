@@ -39,10 +39,7 @@ export function HHMMSS(s, format) {
   const timeString = displaySeconds
     ? hours + ':' + minutes + ':' + seconds
     : hours + ':' + minutes;
-  return timeString
-    .split(':')
-    .map(zeroPad)
-    .join(':');
+  return timeString.split(':').map(zeroPad).join(':');
 }
 
 export const currentUTCDate = () => {
@@ -171,10 +168,7 @@ export function militaryTime(value, env) {
       time.hours = '00';
   }
   const timeString = `${time.hours || '12'}:${time.minutes || '00'}`;
-  return timeString
-    .split(':')
-    .map(zeroPad)
-    .join(':');
+  return timeString.split(':').map(zeroPad).join(':');
 }
 
 export function regularTime(value, env) {
@@ -259,7 +253,7 @@ export function timeSort(a, b) {
 }
 
 export function weekDays(date) {
-  const dates = [0, 1, 2, 3, 4, 5, 6].map(i => dayOfWeek(date, i));
+  const dates = [0, 1, 2, 3, 4, 5, 6].map((i) => dayOfWeek(date, i));
   return dates;
 
   function dayOfWeek(date, index) {
@@ -370,11 +364,7 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
   }
 
   localeString +=
-    '.' +
-    originalDate
-      .getMilliseconds()
-      .toString()
-      .padStart(3, '0');
+    '.' + originalDate.getMilliseconds().toString().padStart(3, '0');
 
   const offsetDate = new Date(localeString + 'Z');
   const offsetISOString = new Date(offsetDate).toISOString();

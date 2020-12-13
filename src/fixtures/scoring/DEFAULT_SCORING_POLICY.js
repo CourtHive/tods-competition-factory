@@ -12,7 +12,7 @@ export const SCORING_POLICY = {
     stage: {
       [MAIN]: {
         stageSequence: {
-          '1': {
+          1: {
             requireAllPositionsAssigned: true,
           },
         },

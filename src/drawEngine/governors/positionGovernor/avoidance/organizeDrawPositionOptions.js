@@ -30,7 +30,7 @@ export function organizeDrawPositionOptions({
   positionAssignments,
   selectedParticipantGroups,
 }) {
-  const vettedChunks = drawPositionChunks.map(chunkedDrawPositions => {
+  const vettedChunks = drawPositionChunks.map((chunkedDrawPositions) => {
     if (isRoundRobin) {
       return analyzeRoundRobinDrawPositions({
         allGroups,
@@ -54,51 +54,51 @@ export function organizeDrawPositionOptions({
   // ...then combined with others of the same type and filtered
   if (isRoundRobin) {
     const unassigned = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.unassigned)
-          .filter(unassigned => unassigned?.length)
+          .map((grouping) => grouping.unassigned)
+          .filter((unassigned) => unassigned?.length)
       )
-      .filter(f => f?.length)
+      .filter((f) => f?.length)
       .sort((a, b) => (b.length || 0) - (a.length || 0));
     const unpaired = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.unpaired)
-          .filter(unpaired => unpaired?.length)
+          .map((grouping) => grouping.unpaired)
+          .filter((unpaired) => unpaired?.length)
       )
-      .filter(f => f?.length);
+      .filter((f) => f?.length);
     const pairedNoConflict = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.pairedNoConflict)
-          .filter(pairedNoConflict => pairedNoConflict?.length)
+          .map((grouping) => grouping.pairedNoConflict)
+          .filter((pairedNoConflict) => pairedNoConflict?.length)
       )
-      .filter(f => f?.length)
+      .filter((f) => f?.length)
       .sort((a, b) => (b.length || 0) - (a.length || 0));
     return { unassigned, unpaired, pairedNoConflict };
   } else {
     const unassigned = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.unassigned)
-          .filter(unassigned => unassigned?.length)
+          .map((grouping) => grouping.unassigned)
+          .filter((unassigned) => unassigned?.length)
       )
-      .filter(f => f?.length);
+      .filter((f) => f?.length);
     const unpaired = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.unpaired)
-          .filter(unpaired => unpaired?.length)
+          .map((grouping) => grouping.unpaired)
+          .filter((unpaired) => unpaired?.length)
       )
-      .filter(f => f?.length);
+      .filter((f) => f?.length);
     const pairedNoConflict = vettedChunks
-      .map(chunk =>
+      .map((chunk) =>
         chunk
-          .map(grouping => grouping.pairedNoConflict)
-          .filter(pairedNoConflict => pairedNoConflict?.length)
+          .map((grouping) => grouping.pairedNoConflict)
+          .filter((pairedNoConflict) => pairedNoConflict?.length)
       )
-      .filter(f => f?.length);
+      .filter((f) => f?.length);
 
     return { unassigned, unpaired, pairedNoConflict };
   }

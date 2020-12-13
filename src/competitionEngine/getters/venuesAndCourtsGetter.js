@@ -10,13 +10,13 @@ export function getVenuesAndCourts({ tournamentRecords }) {
   const uniqueCourtIds = [];
 
   const tournamentIds = Object.keys(tournamentRecords);
-  tournamentIds.forEach(tournamentId => {
+  tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    tournamentRecord.venues.forEach(venue => {
+    tournamentRecord.venues.forEach((venue) => {
       if (!uniqueVenueIds.includes(venue.venueId)) {
         venues.push(makeDeepCopy(venue));
       }
-      venue.courts.forEach(court => {
+      venue.courts.forEach((court) => {
         if (!uniqueCourtIds.includes(court.courtId)) {
           const inContextCourt = Object.assign({}, makeDeepCopy(court), {
             venueId: venue.venueId,

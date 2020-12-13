@@ -14,8 +14,8 @@ export function getParticipantSignInStatus({
   });
   if (participant && Array.isArray(participant.timeItems)) {
     const signInStatusItems = participant.timeItems
-      .filter(timeItem => timeItem.itemSubject === SIGN_IN_STATUS)
-      .filter(timeItem => timeItem.createdAt)
+      .filter((timeItem) => timeItem.itemSubject === SIGN_IN_STATUS)
+      .filter((timeItem) => timeItem.createdAt)
       .sort(
         (a, b) =>
           new Date(a.createdAt || undefined) -

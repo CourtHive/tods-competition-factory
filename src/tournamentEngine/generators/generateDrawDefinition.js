@@ -2,6 +2,7 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
 import { checkValidEntries } from '../governors/eventGovernor/checkValidEntries';
+import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 import {
@@ -17,13 +18,10 @@ import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import { TEAM } from '../../constants/matchUpTypes';
-import { getEventAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
-import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { validDrawPositions } from '../../drawEngine/governors/matchUpGovernor/validDrawPositions';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -106,7 +104,7 @@ export function generateDrawDefinition(props) {
   const eventType = event?.eventType;
   const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stageEntries = entries.filter(
-    entry =>
+    (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
@@ -156,7 +154,7 @@ export function generateDrawDefinition(props) {
   const { structureId } = structure || {};
 
   if (Array.isArray(policyDefinitions)) {
-    policyDefinitions.forEach(policyDefinition => {
+    policyDefinitions.forEach((policyDefinition) => {
       drawEngine.attachPolicy({ policyDefinition });
     });
   }
@@ -185,7 +183,7 @@ export function generateDrawDefinition(props) {
     drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
   }
 
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = Object.assign({}, entry, {
       entryStage: entry.entryStage || MAIN,
@@ -200,7 +198,7 @@ export function generateDrawDefinition(props) {
   if (seededParticipants) {
     seededParticipants
       .filter(
-        seededParticipant =>
+        (seededParticipant) =>
           !seededParticipant.seedNumber ||
           seededParticipant.seedNumber > seededParticipants.length
       )
@@ -209,7 +207,7 @@ export function generateDrawDefinition(props) {
         if (a.seedValue < b.seedValue) return 1;
         return 0;
       })
-      .forEach(seededParticipant => {
+      .forEach((seededParticipant) => {
         const { participantId, seedNumber, seedValue } = seededParticipant;
         const result = drawEngine.assignSeed({
           structureId,

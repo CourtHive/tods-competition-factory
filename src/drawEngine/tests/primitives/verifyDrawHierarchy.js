@@ -9,7 +9,7 @@ export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
       .drawPosition
   ).toEqual(1);
 
-  hierarchyVerification.forEach(verification => {
+  hierarchyVerification.forEach((verification) => {
     const attribute = verification.attribute;
     const navigationProfile = verification.navigationProfile;
     const result = navigateToChildNode({

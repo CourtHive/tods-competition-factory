@@ -309,7 +309,7 @@ export function keyValueScore(props) {
         value: parseInt(value),
       });
       if (set) set.setNumber = sets?.length + 1 || 1;
-      sets = sets?.concat(set).filter(f => f) || [set];
+      sets = sets?.concat(set).filter((f) => f) || [set];
       score = newScore || undefined;
     } else {
       console.log('error: unknown outcome');
@@ -317,7 +317,7 @@ export function keyValueScore(props) {
   }
 
   if (updated) {
-    sets = sets?.filter(f => f);
+    sets = sets?.filter((f) => f);
     const { matchUpWinningSide } = getMatchUpWinner({
       sets,
       winningSide,
@@ -330,7 +330,7 @@ export function keyValueScore(props) {
       (!matchUpStatus || [TO_BE_PLAYED, INCOMPLETE].includes(matchUpStatus))
     ) {
       matchUpStatus = OUTCOME_COMPLETE;
-      sets = sets.filter(set => {
+      sets = sets.filter((set) => {
         const {
           side1Score,
           side2Score,

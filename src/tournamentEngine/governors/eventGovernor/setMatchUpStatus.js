@@ -36,7 +36,7 @@ export function setMatchUpStatus(props) {
 
   if (event) {
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;
@@ -53,18 +53,18 @@ export function bulkMatchUpStatusUpdate(props) {
   let errors = [];
   let modified = 0;
   const events = {};
-  outcomes.forEach(outcome => {
+  outcomes.forEach((outcome) => {
     const { eventId } = outcome;
     if (!events[eventId]) events[eventId] = [];
     events[eventId].push(outcome);
   });
 
-  Object.keys(events).forEach(eventId => {
+  Object.keys(events).forEach((eventId) => {
     const { event } = findEvent({ tournamentRecord, eventId });
-    events[eventId].forEach(outcome => {
+    events[eventId].forEach((outcome) => {
       const { drawId } = outcome;
       const drawDefinition = event.drawDefinitions.find(
-        drawDefinition => drawDefinition.drawId === drawId
+        (drawDefinition) => drawDefinition.drawId === drawId
       );
       if (drawDefinition) {
         const { matchUpFormat, matchUpId } = outcome;

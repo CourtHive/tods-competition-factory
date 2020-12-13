@@ -1,4 +1,3 @@
-import fs from 'fs';
 import tournamentEngine from '../../..';
 import drawEngine from '../../../../drawEngine';
 import { validDrawPositions } from '../../../../drawEngine/governors/matchUpGovernor/validDrawPositions';
@@ -14,7 +13,7 @@ it('can recognize invalid matchUps', () => {
 
   expect(mutation.tournamentId).toEqual(tournament.tournamentId);
 
-  mutation.executionQueue.forEach(queueItem => {
+  mutation.executionQueue.forEach((queueItem) => {
     const { method, params } = queueItem;
     const result = tournamentEngine[method](params);
     expect(result.success).toEqual(true);

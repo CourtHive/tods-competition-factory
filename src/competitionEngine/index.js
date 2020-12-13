@@ -25,7 +25,7 @@ function flushErrors() {
   errors = [];
 }
 
-export const competitionEngine = (function() {
+export const competitionEngine = (function () {
   const fx = {
     getState: () => ({ tournamentRecords: makeDeepCopy(tournamentRecords) }),
   };
@@ -39,7 +39,7 @@ export const competitionEngine = (function() {
   fx.version = () => {
     return '@VERSION@';
   };
-  fx.devContext = isDev => {
+  fx.devContext = (isDev) => {
     devContext = isDev;
     return fx;
   };
@@ -47,7 +47,7 @@ export const competitionEngine = (function() {
     flushErrors();
     return fx;
   };
-  fx.setState = tournamentRecords => {
+  fx.setState = (tournamentRecords) => {
     const result = setState(tournamentRecords);
     if (result && result.error) errors.push(result.error);
     return fx;
@@ -68,9 +68,9 @@ export const competitionEngine = (function() {
   }
 
   function importGovernors(governors) {
-    governors.forEach(governor => {
-      Object.keys(governor).forEach(key => {
-        fx[key] = params => {
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((key) => {
+        fx[key] = (params) => {
           if (devContext) {
             return engineInvoke(governor[key], params);
           } else {

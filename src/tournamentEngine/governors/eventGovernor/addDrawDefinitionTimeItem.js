@@ -12,7 +12,7 @@ export function addDrawDefinitionTimeItem({ drawDefinition, timeItem }) {
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];
   const validTimeItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       timeItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 

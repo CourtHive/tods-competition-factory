@@ -49,7 +49,7 @@ export function assignTieMatchUpParticipantId(props) {
     individualParticipants[sideMember - 1] = { participantId };
 
     const sideParticipantsCount = individualParticipants.filter(
-      p => p && p.participantId
+      (p) => p && p.participantId
     ).length;
 
     if (sideParticipantsCount === 2) {
@@ -58,8 +58,8 @@ export function assignTieMatchUpParticipantId(props) {
       // TODO: replace this block with getPairedParticipant({ participantIds})
       const tournamentParticipants = tournamentRecord.participants || [];
       const doublesPairsHashes = tournamentParticipants
-        .filter(participant => participant.participantType === PAIR)
-        .map(pairParticipant => {
+        .filter((participant) => participant.participantType === PAIR)
+        .map((pairParticipant) => {
           const hash = pairHash(pairParticipant.individualParticipants);
           return { [hash]: pairParticipant.participantId };
         });
@@ -106,7 +106,7 @@ export function assignTieMatchUpParticipantId(props) {
 
   function pairHash(pair) {
     return pair
-      .map(participant => participant.participantId)
+      .map((participant) => participant.participantId)
       .sort()
       .join('|');
   }
@@ -124,7 +124,7 @@ export function assignTieMatchUpParticipantId(props) {
   }
 
   function updateDrawDefinition() {
-    event.drawDefinitions = event.drawDefinitions.map(candidate => {
+    event.drawDefinitions = event.drawDefinitions.map((candidate) => {
       return candidate.drawId === drawId ? drawDefinition : candidate;
     });
   }

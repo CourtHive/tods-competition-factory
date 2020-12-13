@@ -17,7 +17,7 @@ export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemSubject', 'itemValue'];
   const validTimeItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       timeItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 

@@ -98,7 +98,7 @@ function checkSide({
   score,
 }) {
   const side = profile[roundNumber - 1].matchUps[roundPosition - 1].sides.find(
-    side => side?.drawPosition === drawPosition
+    (side) => side?.drawPosition === drawPosition
   );
   expect(side?.sourceMatchUp?.score).toEqual(score);
 }

@@ -47,10 +47,10 @@ export function mainDrawWithEntries({
   result = drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
   expect(result).toMatchObject(SUCCESS);
   const participantsToAdd = drawSize - byesCount;
-  const participants = generateRange(0, participantsToAdd).map(i => ({
+  const participants = generateRange(0, participantsToAdd).map((i) => ({
     participantId: `uuid${i}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
   expect(result).toMatchObject(SUCCESS);
   result = drawEngine.generateDrawType({ drawType });
@@ -73,7 +73,7 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
-  const participantIds = mainDrawEntries.map(e => e.participantId);
+  const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { unassignedPositions } = structureAssignedDrawPositions({
     drawDefinition,

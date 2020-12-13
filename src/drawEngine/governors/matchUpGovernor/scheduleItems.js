@@ -170,10 +170,10 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
   const timeItems = matchUp.timeItems || [];
 
   const earliestRelevantTimeValue = timeItems
-    .filter(timeItem =>
+    .filter((timeItem) =>
       [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemSubject)
     )
-    .map(timeItem => timeDate(timeItem.itemValue))
+    .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (earliest, timeValue) =>
         !earliest || timeValue < earliest ? timeValue : earliest,
@@ -187,7 +187,7 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
     matchUp.timeItems = matchUp.timeItems.filter(
-      timeItem => timeItem.itemSubject !== START_TIME
+      (timeItem) => timeItem.itemSubject !== START_TIME
     );
     const timeItem = { itemSubject: START_TIME, itemValue: startTime };
     return newTimeItem({ matchUp, timeItem });
@@ -204,10 +204,10 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   const timeItems = matchUp.timeItems || [];
 
   const latestRelevantTimeValue = timeItems
-    .filter(timeItem =>
+    .filter((timeItem) =>
       [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
     )
-    .map(timeItem => timeDate(timeItem.itemValue))
+    .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
@@ -218,7 +218,7 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   if (!latestRelevantTimeValue || timeDate(endTime) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
     matchUp.timeItems = matchUp.timeItems.filter(
-      timeItem => timeItem.itemSubject !== END_TIME
+      (timeItem) => timeItem.itemSubject !== END_TIME
     );
     const timeItem = { itemSubject: END_TIME, itemValue: endTime };
     return newTimeItem({ matchUp, timeItem });
@@ -244,7 +244,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter(timeItem =>
+    .filter((timeItem) =>
       [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
     )
     // .sort((a, b) => new Date(a.itemValue) - new Date(b.itemValue));
@@ -256,12 +256,12 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter(
-      timeItem =>
+      (timeItem) =>
         !lastRelevantTimeItemIsStop ||
         timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
     // .map(timeItem => new Date(timeItem.itemValue))
-    .map(timeItem => timeDate(timeItem.itemValue))
+    .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
@@ -273,7 +273,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     if (lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
-        timeItem => timeItem.createdAt !== targetTimeStamp
+        (timeItem) => timeItem.createdAt !== targetTimeStamp
       );
     }
 
@@ -309,7 +309,7 @@ export function addMatchUpResumeTime({
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
-    .filter(timeItem =>
+    .filter((timeItem) =>
       [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
     )
     // .sort((a, b) => new Date(a.itemValue) - new Date(b.itemValue));
@@ -321,12 +321,12 @@ export function addMatchUpResumeTime({
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter(
-      timeItem =>
+      (timeItem) =>
         !lastRelevantTimeItemIsResume ||
         timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
     // .map(timeItem => new Date(timeItem.itemValue))
-    .map(timeItem => timeDate(timeItem.itemValue))
+    .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
         !latest || timeValue > latest ? timeValue : latest,
@@ -338,7 +338,7 @@ export function addMatchUpResumeTime({
     if (lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
-        timeItem => timeItem.createdAt !== targetTimeStamp
+        (timeItem) => timeItem.createdAt !== targetTimeStamp
       );
     }
 

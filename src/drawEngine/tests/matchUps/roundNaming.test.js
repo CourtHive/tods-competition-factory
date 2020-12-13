@@ -44,7 +44,7 @@ it('can return matchUps with roundNames from an ELIMINATION structure', () => {
   }));
   expect(upcomingMatchUps.length).toEqual(0);
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const { finishingRound, roundNumber, roundName } = matchUp;
     if (finishingRound === 1) expect(roundName).toEqual('F');
     if (finishingRound === 2) expect(roundName).toEqual('SF');
@@ -86,7 +86,7 @@ it('can return matchUps with roundNames from a FMLC structure', () => {
   }));
   expect(upcomingMatchUps.length).toEqual(0);
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const { finishingRound, roundNumber, roundName } = matchUp;
     if (finishingRound === 1) expect(roundName).toEqual('F');
     if (finishingRound === 2) expect(roundName).toEqual('SF');
@@ -102,7 +102,7 @@ it('can return matchUps with roundNames from a FMLC structure', () => {
   ({ structureId } = consolationStructure);
   ({ matchUps } = drawEngine.allStructureMatchUps({ structureId }));
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const { finishingRound, roundNumber, roundName } = matchUp;
     if (finishingRound === 1) expect(roundName).toEqual('C-F');
     if (finishingRound === 2) expect(roundName).toEqual('C-SF');
@@ -138,7 +138,7 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   const { roundProfile } = drawEngine.getRoundMatchUps({ matchUps });
   expect(roundProfile[2].feedRound).toEqual(true);
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const { feedRound, finishingRound, roundNumber, roundName } = matchUp;
     if (roundNumber === 1) expect(roundName).toEqual('QF-Q');
     if (roundNumber === 2) {
@@ -179,7 +179,7 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
   const { matchUps } = drawEngine.allDrawMatchUps({
     requireParticipants: false,
   });
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const { finishingRound, roundNumber, roundName, structureName } = matchUp;
     if (roundNumber === 1 && structureName === 'EAST') {
       expect(roundName).toEqual('E-R16');

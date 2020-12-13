@@ -20,19 +20,19 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     drawDefinition,
   });
   const byeDrawPositions = positionAssignments
-    .filter(assignment => assignment.bye)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.bye)
+    .map((assignment) => assignment.drawPosition);
   const byePairedPositions = byeDrawPositions
     .map(getByePairedPosition)
     .flat(Infinity);
 
   if (structure.structureType === CONTAINER) {
     const relevantMatchUps = matchUps.filter(
-      matchUp => matchUp.score || matchUp.winningSide
+      (matchUp) => matchUp.score || matchUp.winningSide
     );
     const activeDrawPositions = []
-      .concat(...relevantMatchUps.map(matchUp => matchUp.drawPositions || []))
-      .filter(f => f)
+      .concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions || []))
+      .filter((f) => f)
       .sort(numericSort);
 
     return {
@@ -43,8 +43,8 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     };
   } else {
     const drawPositions = []
-      .concat(...matchUps.map(matchUp => matchUp.drawPositions || []))
-      .filter(f => f)
+      .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
+      .filter((f) => f)
       .sort(numericSort);
 
     // now remove ONE INSTANCE of byePairedPositions from drawPositions
@@ -52,7 +52,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       ...byePairedPositions,
       ...byeDrawPositions
     );
-    instancesToRemove.forEach(drawPosition => {
+    instancesToRemove.forEach((drawPosition) => {
       const index = drawPositions.indexOf(drawPosition);
       drawPositions.splice(index, 1);
     });
@@ -63,7 +63,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .reduce((active, key) => {
         return +key > 1 ? active.concat(...positionCounts[key]) : active;
       }, [])
-      .map(p => parseInt(p));
+      .map((p) => parseInt(p));
 
     // pairedDrawPositions are those positions which are paired with a position which has advanced
     const pairedDrawPositions = [].concat(
@@ -71,7 +71,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     );
     const activeDrawPositions = []
       .concat(...advancedDrawPositions, pairedDrawPositions)
-      .filter(f => f);
+      .filter((f) => f);
 
     return {
       activeDrawPositions,
@@ -88,7 +88,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
           ? drawPositions.concat(...currentMatchup.drawPositions)
           : drawPositions;
       }, [])
-      .filter(dp => dp && dp !== drawPosition);
+      .filter((dp) => dp && dp !== drawPosition);
   }
 
   function getByePairedPosition(drawPosition) {
@@ -98,6 +98,6 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
           ? drawPositions.concat(...currentMatchup.drawPositions)
           : drawPositions;
       }, [])
-      .filter(dp => dp && dp !== drawPosition);
+      .filter((dp) => dp && dp !== drawPosition);
   }
 }

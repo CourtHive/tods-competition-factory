@@ -28,11 +28,11 @@ import {
   getTournamentPenalties,
 } from './participantPenalties';
 
-const findTournamentParticipantCopy = props => {
+const findTournamentParticipantCopy = (props) => {
   const { participant, error } = findTournamentParticipant(props);
   return { participant: makeDeepCopy(participant), error };
 };
-const getTournamentParticipantsCopy = props => {
+const getTournamentParticipantsCopy = (props) => {
   const { tournamentParticipants, error } = getTournamentParticipants(props);
   return {
     tournamentParticipants: makeDeepCopy(tournamentParticipants),

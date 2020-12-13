@@ -46,10 +46,10 @@ export function allPlayoffPositionsFilled(props) {
     structureId,
   });
 
-  const allPositionsFilled = playoffStructures.reduce(
+  const allPositionsFilled = (playoffStructures || []).reduce(
     (allFilled, structure) => {
       const structurePositionsFilled = !structure.positionAssignments.filter(
-        assignment => {
+        (assignment) => {
           return !assignment.bye && !assignment.participantId;
         }
       ).length;

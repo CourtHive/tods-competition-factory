@@ -37,7 +37,7 @@ export function addPenalty({
   // TODO: add penalty timeItem to matchUp.timeItems[]
 
   const participants = tournamentRecord?.participants || [];
-  const relevantParticipants = participants.filter(participant =>
+  const relevantParticipants = participants.filter((participant) =>
     participantIds.includes(participant.participantId)
   );
   if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
@@ -54,7 +54,7 @@ export function addPenalty({
 
   const { penaltyId } = penaltyItem;
 
-  relevantParticipants.forEach(participant => {
+  relevantParticipants.forEach((participant) => {
     if (!participant.penalties) participant.penalties = [];
     participant.penalties.push(penaltyItem);
   });
@@ -75,8 +75,8 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
 
   let penaltyRemoved = false;
   let removedPenalty;
-  participants.forEach(participant => {
-    participant.penalties = (participant.penalties || []).filter(penalty => {
+  participants.forEach((participant) => {
+    participant.penalties = (participant.penalties || []).filter((penalty) => {
       if (penalty.penaltyId === penaltyId && !penaltyRemoved) {
         removedPenalty = penalty;
         penaltyRemoved = true;
@@ -95,7 +95,7 @@ export function getTournamentPenalties({ tournamentRecord }) {
   const participants = tournamentRecord?.participants || [];
   const allPenalties = participants.reduce((penalties, participant) => {
     const { participantId } = participant;
-    (participant.penalties || []).forEach(penalty => {
+    (participant.penalties || []).forEach((penalty) => {
       const { penaltyId } = penalty || {};
       if (penalties[penaltyId]) {
         penalties[penaltyId].participants.push(participantId);
@@ -118,21 +118,21 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   const participants = tournamentRecord?.participants || [];
 
   const validAttributes = Object.keys(penaltyTemplate()).filter(
-    attribute => attribute !== 'penaltyId'
+    (attribute) => attribute !== 'penaltyId'
   );
 
   const validModificationAttributes = Object.keys(
     modifications
-  ).filter(attribute => validAttributes.includes(attribute));
+  ).filter((attribute) => validAttributes.includes(attribute));
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
 
   let updatedPenalty;
-  participants.forEach(participant => {
-    participant.penalties = (participant.penalties || []).map(penalty => {
+  participants.forEach((participant) => {
+    participant.penalties = (participant.penalties || []).map((penalty) => {
       if (penalty.penaltyId === penaltyId) {
-        validModificationAttributes.forEach(attribute =>
+        validModificationAttributes.forEach((attribute) =>
           Object.assign(penalty, { [attribute]: modifications[attribute] })
         );
 

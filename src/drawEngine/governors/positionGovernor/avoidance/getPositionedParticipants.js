@@ -8,12 +8,12 @@ export function getPositionedParticipants({
 }) {
   const participantsMap = Object.assign(
     {},
-    ...participantsWithContext.map(participant => ({
+    ...participantsWithContext.map((participant) => ({
       [participant.participantId]: participant,
     }))
   );
 
-  return candidatePositionAssignments.map(assignment => {
+  return candidatePositionAssignments.map((assignment) => {
     const participant = participantsMap[assignment.participantId];
     const { values } = extractAttributeValues({
       participant,

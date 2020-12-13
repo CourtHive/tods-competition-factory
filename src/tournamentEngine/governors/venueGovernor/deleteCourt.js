@@ -23,14 +23,14 @@ export function deleteCourt({
   });
 
   if (!matchUps.length || force) {
-    matchUps.forEach(matchUp => {
+    matchUps.forEach((matchUp) => {
       removeCourtAssignment({
         tournamentRecord,
         drawDefinition,
         matchUpId: matchUp.matchUpId,
       });
     });
-    venue.courts = (venue.courts || []).filter(courtRecord => {
+    venue.courts = (venue.courts || []).filter((courtRecord) => {
       return courtRecord.courtId !== courtId;
     });
   } else {

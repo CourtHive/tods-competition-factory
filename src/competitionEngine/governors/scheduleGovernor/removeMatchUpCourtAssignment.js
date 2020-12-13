@@ -20,7 +20,7 @@ export function removeMatchUpCourtAssignment(params) {
 
   if (result.success) {
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

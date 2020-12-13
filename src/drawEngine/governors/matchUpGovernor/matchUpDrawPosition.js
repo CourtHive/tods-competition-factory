@@ -12,7 +12,7 @@ export function assignMatchUpDrawPosition({
 
   let positionAssigned = false;
   matchUp.drawPositions = (matchUp.drawPositions || [])
-    ?.map(position => {
+    ?.map((position) => {
       if (!position && !positionAssigned) {
         positionAssigned = true;
         return drawPosition;
@@ -39,7 +39,7 @@ export function removeMatchUpDrawPosition({
 
   let positionRemoved = false;
   matchUp.drawPositions = (matchUp.drawPositions || []).map(
-    existingDrawPosition => {
+    (existingDrawPosition) => {
       if (existingDrawPosition === drawPosition) {
         positionRemoved = true;
         return undefined;

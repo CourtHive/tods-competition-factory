@@ -61,7 +61,7 @@ export function processTiebreakSet({
       const setScores = [
         matchTiebreakScores[0] || 0,
         matchTiebreakScores[1] || 0,
-      ].map(s => parseInt(s));
+      ].map((s) => parseInt(s));
       const highIndex = lowSide === 1 ? 1 : 0;
       setScores[highIndex] = setScores[1 - highIndex] + (NoAD ? 1 : 2);
       if (setScores[highIndex] < tiebreakTo) setScores[highIndex] = tiebreakTo;
@@ -77,7 +77,7 @@ export function processTiebreakSet({
       const setScores = [
         matchTiebreakScores[0] || 0,
         matchTiebreakScores[1] || 0,
-      ].map(s => parseInt(s));
+      ].map((s) => parseInt(s));
 
       const lastSet = sets[sets.length - 1];
       lastSet.side1TiebreakScore = setScores[0];

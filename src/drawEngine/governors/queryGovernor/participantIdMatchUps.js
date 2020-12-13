@@ -19,18 +19,18 @@ export function getParticipantIdMatchUps({
   const participantIds = unique(
     allMatchUps.reduce((participantIds, matchUp) => {
       return participantIds.concat(
-        ...matchUp.sides.map(side => side.participantId).filter(f => f)
+        ...matchUp.sides.map((side) => side.participantId).filter((f) => f)
       );
     }, [])
   );
 
   const participantIdMatchUps = Object.assign(
     {},
-    ...participantIds.map(participantId => {
-      const matchUps = allMatchUps.filter(matchUp => {
+    ...participantIds.map((participantId) => {
+      const matchUps = allMatchUps.filter((matchUp) => {
         const participantIds = matchUp.sides
-          .map(side => side.participantId)
-          .filter(f => f);
+          .map((side) => side.participantId)
+          .filter((f) => f);
         return participantIds.includes(participantId);
       });
       return { [participantId]: matchUps };

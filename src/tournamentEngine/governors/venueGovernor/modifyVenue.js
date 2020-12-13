@@ -33,40 +33,40 @@ export function modifyVenue({
 
   // not valid to modify a venueId
   const validAttributes = Object.keys(venueTemplate()).filter(
-    attribute => attribute !== 'venueId'
+    (attribute) => attribute !== 'venueId'
   );
   const validModificationAttributes = Object.keys(
     modifications
-  ).filter(attribute => validAttributes.includes(attribute));
+  ).filter((attribute) => validAttributes.includes(attribute));
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
 
   const validReplacements = validAttributes.filter(
-    attribute => !['courts'].includes(attribute)
+    (attribute) => !['courts'].includes(attribute)
   );
 
   const validReplacementAttributes = Object.keys(
     modifications
-  ).filter(attribute => validReplacements.includes(attribute));
+  ).filter((attribute) => validReplacements.includes(attribute));
 
-  validReplacementAttributes.forEach(attribute =>
+  validReplacementAttributes.forEach((attribute) =>
     Object.assign(venue, { [attribute]: modifications[attribute] })
   );
 
   const errors = [];
-  const existingCourtIds = venue.courts.map(court => court.courtId);
+  const existingCourtIds = venue.courts.map((court) => court.courtId);
   const courtIdsToModify =
-    modifications.courts?.map(court => court.courtId) || [];
+    modifications.courts?.map((court) => court.courtId) || [];
   const courtIdsToDelete = existingCourtIds.filter(
-    courtId => !courtIdsToModify.includes(courtId)
+    (courtId) => !courtIdsToModify.includes(courtId)
   );
   if (courtIdsToDelete.length) {
-    const courtsToDelete = venue.courts.filter(court =>
+    const courtsToDelete = venue.courts.filter((court) =>
       courtIdsToDelete.includes(court.courtId)
     );
     const scheduleDeletionsCount = courtsToDelete
-      .map(court => {
+      .map((court) => {
         // check whether deleting court would remove schedule from any matchUps
         const { matchUps } = getScheduledCourtMatchUps({
           tournamentRecord,
@@ -79,7 +79,7 @@ export function modifyVenue({
       .reduce((a, b) => a + b);
 
     if (!scheduleDeletionsCount || force) {
-      venue.courts = venue.courts.filter(court =>
+      venue.courts = venue.courts.filter((court) =>
         courtIdsToModify.includes(court.courtId)
       );
     } else {
@@ -91,7 +91,7 @@ export function modifyVenue({
   }
 
   modifications.courts &&
-    modifications.courts.forEach(court => {
+    modifications.courts.forEach((court) => {
       const { courtId } = court || {};
       let result = modifyCourt({
         tournamentRecord,
@@ -104,7 +104,7 @@ export function modifyVenue({
       }
       if (result.error) {
         if (result.error.errors) {
-          result.error.errors.forEach(error => errors.push(error));
+          result.error.errors.forEach((error) => errors.push(error));
         } else {
           errors.push(result.error);
         }

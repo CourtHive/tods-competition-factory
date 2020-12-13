@@ -28,19 +28,19 @@ function generateEliminationPresentationProfile({
 }) {
   let feedTop = true;
 
-  const roundNumbers = Object.keys(roundMatchUps).map(roundNumber =>
+  const roundNumbers = Object.keys(roundMatchUps).map((roundNumber) =>
     parseInt(roundNumber)
   );
   const firstRoundMatchUpsCount = roundMatchUps[roundNumbers[0]].length;
-  const presentationProfile = roundNumbers.map(roundNumber => {
+  const presentationProfile = roundNumbers.map((roundNumber) => {
     const previousRoundMatchUps =
       roundNumber > 1 && roundMatchUps[roundNumber - 1];
     const matchUps = roundMatchUps[roundNumber]
-      .map(matchUp => makeDeepCopy(matchUp))
-      .map(matchUp => {
-        matchUp.sides.forEach(side => {
+      .map((matchUp) => makeDeepCopy(matchUp))
+      .map((matchUp) => {
+        matchUp.sides.forEach((side) => {
           if (previousRoundMatchUps && side?.participantId) {
-            side.sourceMatchUp = previousRoundMatchUps.find(matchUp =>
+            side.sourceMatchUp = previousRoundMatchUps.find((matchUp) =>
               matchUp.drawPositions.includes(side.drawPosition)
             );
           }

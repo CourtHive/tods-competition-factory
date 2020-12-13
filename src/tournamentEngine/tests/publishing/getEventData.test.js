@@ -1,5 +1,4 @@
 import fs from 'fs';
-import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../..';
 import { tournamentRecordWithParticipants } from '../primitives';
 
@@ -8,7 +7,6 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   PLAY_OFF,
-  POSITION,
   ROUND_ROBIN_WITH_PLAYOFF,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
@@ -100,7 +98,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -120,7 +118,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN
+    (structure) => structure.stage === MAIN
   );
 
   expect(mainStructure.structures.length).toEqual(groupsCount);
@@ -253,7 +251,7 @@ it('can generate payload for publishing a compass draw', () => {
   const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -271,7 +269,7 @@ it('can generate payload for publishing a compass draw', () => {
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN && structure.stageSequence === 1
+    (structure) => structure.stage === MAIN && structure.stageSequence === 1
   );
   expect(mainStructure.structureName).toEqual('EAST');
 
@@ -390,7 +388,7 @@ it('can generate payload for publishing a FMLC draw', () => {
   const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -408,7 +406,7 @@ it('can generate payload for publishing a FMLC draw', () => {
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN && structure.stageSequence === 1
+    (structure) => structure.stage === MAIN && structure.stageSequence === 1
   );
   expect(mainStructure.structureName).toEqual('MAIN');
 

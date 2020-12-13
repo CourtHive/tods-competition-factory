@@ -31,7 +31,7 @@ export function automatedPositioning({
     const { drawId } = drawDefinition;
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
 
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;
@@ -61,20 +61,20 @@ export function automatedPlayoffPositioning({
   drawEngine.setState(drawDefinition, deepCopy);
 
   const errors = [];
-  playoffStructures.forEach(structure => {
+  playoffStructures.forEach((structure) => {
     const { structureId: playoffStructureId } = structure;
     const result = drawEngine.automatedPositioning({
       participants,
       structureId: playoffStructureId,
     });
-    result.errors.forEach(error => errors.push(error));
+    result.errors.forEach((error) => errors.push(error));
   });
 
   if (!errors.length) {
     const { drawId } = drawDefinition;
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
 
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

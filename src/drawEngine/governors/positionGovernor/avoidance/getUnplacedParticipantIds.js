@@ -11,9 +11,9 @@ export function getUnplacedParticipantIds({
   positionAssignments,
 }) {
   const assignedParticipantIds = positionAssignments.map(
-    assignment => assignment.participantId
+    (assignment) => assignment.participantId
   );
   return participantIds.filter(
-    participantId => !assignedParticipantIds.includes(participantId)
+    (participantId) => !assignedParticipantIds.includes(participantId)
   );
 }

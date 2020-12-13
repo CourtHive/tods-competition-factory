@@ -18,14 +18,14 @@ export function courtsAvailableAtPeriodStart({
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpTime);
 
-  const availableCourts = courts.filter(court => {
+  const availableCourts = courts.filter((court) => {
     const available =
       Array.isArray(court.dateAvailability) &&
       court.dateAvailability.filter(sameDate).filter(enoughTime);
     return !!available.length;
   });
 
-  const available = availableCourts.map(court => ({
+  const available = availableCourts.map((court) => ({
     locationId: court.locationId,
     identifier: court.identifier,
   }));
@@ -68,11 +68,11 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
 
   (courtDate.bookings || [])
     .filter(
-      booking =>
+      (booking) =>
         !booking.bookingType ||
         !includeBookingTypes.includes(booking.bookingType)
     )
-    .forEach(booking => {
+    .forEach((booking) => {
       const timeSlot = {
         startTime: DateHHMM(startTime, { displaySeconds: false }),
         endTime: booking.startTime,
@@ -127,7 +127,7 @@ export function matchUpTiming({
   const periodCount = Math.floor(dayMinutes / periodLength);
   const periods = generateRange(0, periodCount + 1);
 
-  const timingProfile = periods.map(period => {
+  const timingProfile = periods.map((period) => {
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
     const periodStart = DateHHMM(periodStartTime, { displaySeconds: false });
 

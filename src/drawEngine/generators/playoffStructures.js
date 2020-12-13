@@ -53,7 +53,7 @@ function playoffStructures({
 
   const childStructures = generateRange(1, roundsToPlayOff + 1)
     .map(generateChildStructures)
-    .filter(f => f);
+    .filter((f) => f);
 
   return { structure, structureName, childStructures };
 

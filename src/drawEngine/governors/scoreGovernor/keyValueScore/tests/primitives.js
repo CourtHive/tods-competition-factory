@@ -15,7 +15,7 @@ export function scoreMatchUp({ lowSide, value, matchUp }) {
 export function enterValues({ values, matchUp }) {
   let message;
   const messages = [];
-  values.forEach(item => {
+  values.forEach((item) => {
     const { lowSide, value } = item;
     ({ matchUp, message } = scoreMatchUp({ lowSide, value, matchUp }));
     if (message) messages.push(message);

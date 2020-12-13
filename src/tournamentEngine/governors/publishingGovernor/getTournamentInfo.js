@@ -1,6 +1,7 @@
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function getTournamentInfo({ tournamentRecord, event }) {
+export function getTournamentInfo({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const tournamentInfo = (({

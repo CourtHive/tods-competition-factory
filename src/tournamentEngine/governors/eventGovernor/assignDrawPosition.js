@@ -1,20 +1,20 @@
-import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 // TODO: untested...
 export function assignDrawPosition(props) {
   const {
-    drawId,
-    event,
-    structureId,
-    drawPosition,
     bye,
+    drawEngine,
+    drawId,
+    drawPosition,
+    event,
     participantId,
     qualifier,
+    structureId,
   } = props;
 
-  let errors = [];
+  const errors = [];
 
   if (event) {
     if (bye) {
@@ -30,7 +30,7 @@ export function assignDrawPosition(props) {
     }
 
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

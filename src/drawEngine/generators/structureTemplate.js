@@ -39,8 +39,8 @@ export const structureTemplate = ({
   if (qualifyingRound) structure.qualifyingRound = qualifyingRound;
 
   const positionAssignments = []
-    .concat(...matchUps.map(matchUp => matchUp.drawPositions))
-    .filter(f => f);
+    .concat(...matchUps.map((matchUp) => matchUp.drawPositions))
+    .filter((f) => f);
 
   if (structures) {
     structure.structures = structures;
@@ -48,7 +48,7 @@ export const structureTemplate = ({
     structure.matchUps = matchUps;
     structure.positionAssignments = unique(positionAssignments)
       .sort((a, b) => a - b)
-      .map(drawPosition => ({ drawPosition }));
+      .map((drawPosition) => ({ drawPosition }));
     if (structureIndex) structure.structureIndex = structureIndex;
   }
 

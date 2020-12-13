@@ -30,7 +30,7 @@ export function generateMatchUpOutcome({
     matchUpFormat,
     sets: generateSetScores(setValues),
   };
-  const sets = outcome.sets.map(set => {
+  const sets = outcome.sets.map((set) => {
     const { setNumber } = set;
     const { winningSide } = drawEngine.analyzeMatchUp({
       matchUp: outcome,

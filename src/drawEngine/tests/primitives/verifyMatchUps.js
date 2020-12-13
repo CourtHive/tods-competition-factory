@@ -117,10 +117,10 @@ export function verifySideNumbers({ structureId, expectedDrawPositions }) {
   const roundNumbers =
     expectedDrawPositions && Object.keys(expectedDrawPositions);
   roundNumbers &&
-    roundNumbers.forEach(roundNumber => {
-      const profile = roundMatchUps[roundNumber].map(matchUp => [
+    roundNumbers.forEach((roundNumber) => {
+      const profile = roundMatchUps[roundNumber].map((matchUp) => [
         matchUp.drawPositions,
-        matchUp.sides?.map(side => side?.sideNumber),
+        matchUp.sides?.map((side) => side?.sideNumber),
       ]);
       expect(profile).toMatchObject(expectedDrawPositions[roundNumber]);
     });

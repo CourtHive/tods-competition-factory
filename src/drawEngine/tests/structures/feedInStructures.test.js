@@ -88,7 +88,7 @@ it('generates structured entry draw with expected finishing drawPositions', () =
     { loser: [2, 2], winner: [1, 1] },
   ];
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     const roundIndex = matchUp.roundNumber - 1;
     const expectedLoserRange = finishingPositionRanges[roundIndex].loser;
     const expectedWinnerRange = finishingPositionRanges[roundIndex].winner;
@@ -317,7 +317,7 @@ function verifyexpectedRoundMatchUpsCounts({
     baseDrawSize,
   });
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
-  generateRange(1, roundsCount + 1).forEach(roundNumber => {
+  generateRange(1, roundsCount + 1).forEach((roundNumber) => {
     expect(roundMatchUps[roundNumber].length).toEqual(
       expectedRoundMatchUpsCounts[roundNumber - 1]
     );

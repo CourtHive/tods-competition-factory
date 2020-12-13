@@ -129,8 +129,8 @@ export function keyValueTimedSetScore({
     }
     if (updated) {
       const priorSetScores = (sets.slice(0, setIndex) || [])
-        .filter(set => set)
-        .map(set => {
+        .filter((set) => set)
+        .map((set) => {
           const { side1Score, side2Score } = set;
           return [side1Score, side2Score].join('-');
         })

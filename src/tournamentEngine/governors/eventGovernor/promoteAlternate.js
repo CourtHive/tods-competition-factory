@@ -29,7 +29,7 @@ export function promoteAlternate({
   if (!event) return { error: MISSING_EVENT };
 
   const participantEntry = event.entries.find(
-    entry => entry.participantId === participantId
+    (entry) => entry.participantId === participantId
   );
   if (!participantEntry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 

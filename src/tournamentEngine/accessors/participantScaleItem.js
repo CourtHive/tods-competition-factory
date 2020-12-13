@@ -12,18 +12,18 @@ export function participantScaleItem({
   if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
     const timeItem = participant.timeItems
-      .filter(timeItem => timeItem.itemSubject === SCALE)
+      .filter((timeItem) => timeItem.itemSubject === SCALE)
       .filter(
-        timeItem =>
+        (timeItem) =>
           !scaleAttributes.scaleType ||
           timeItem.itemType === scaleAttributes.scaleType
       )
       .filter(
-        timeItem =>
+        (timeItem) =>
           !scaleAttributes.eventType ||
           timeItem.itemSubType === scaleAttributes.eventType
       )
-      .filter(timeItem => requireTimeStamp === false || timeItem.createdAt)
+      .filter((timeItem) => requireTimeStamp === false || timeItem.createdAt)
       .sort(
         (a, b) =>
           new Date(a.createdAt || undefined) -

@@ -13,7 +13,7 @@ export function feedInLinks({
 }) {
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
-    const drawPositions = (matchUp.drawPositions || []).filter(f => f);
+    const drawPositions = (matchUp.drawPositions || []).filter((f) => f);
     return drawPositions.length && !p.includes(matchUp.roundNumber)
       ? p.concat(matchUp.roundNumber)
       : p;
@@ -21,7 +21,7 @@ export function feedInLinks({
 
   // range excludes final round which is final matchUp
   const links = generateRange(1 + roundOffset, roundsCount + 1 + roundOffset)
-    .map(roundNumber => {
+    .map((roundNumber) => {
       const feedProfile = roundNumber % 2 ? TOP_DOWN : BOTTOM_UP;
 
       // after first two rounds of target feed, matchUps are every other round
@@ -44,7 +44,7 @@ export function feedInLinks({
       };
       return roundsFed.includes(targetRound) ? link : undefined;
     })
-    .filter(f => f);
+    .filter((f) => f);
 
   return links;
 }

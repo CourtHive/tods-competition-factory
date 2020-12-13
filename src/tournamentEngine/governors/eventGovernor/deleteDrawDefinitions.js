@@ -17,7 +17,7 @@ export function deleteDrawDefinitions({
       return { error: DRAW_DEFINITION_NOT_FOUND };
     }
 
-    event.drawDefinitions = event.drawDefinitions.filter(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
         Object.assign(auditData, {
           action: 'deleteDrawDefinitions',

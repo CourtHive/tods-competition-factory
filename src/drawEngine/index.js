@@ -62,7 +62,7 @@ function flushErrors() {
   errors = [];
 }
 
-export const drawEngine = (function() {
+export const drawEngine = (function () {
   const fx = {
     getState: () => ({ drawDefinition: makeDeepCopy(drawDefinition) }),
     version: () => '@VERSION@',
@@ -103,15 +103,15 @@ export const drawEngine = (function() {
     flushErrors();
     return fx;
   };
-  fx.devContext = isDev => {
+  fx.devContext = (isDev) => {
     devContext = isDev;
     return fx;
   };
-  fx.setParticipants = participants => {
+  fx.setParticipants = (participants) => {
     tournamentParticipants = participants;
     return fx;
   };
-  fx.setState = definition => {
+  fx.setState = (definition) => {
     const result = setState(definition);
     if (result.error) return result;
     return fx;
@@ -120,9 +120,9 @@ export const drawEngine = (function() {
   return fx;
 
   function importGovernors(governors) {
-    governors.forEach(governor => {
-      Object.keys(governor).forEach(key => {
-        fx[key] = params => {
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((key) => {
+        fx[key] = (params) => {
           if (devContext) {
             return invoke({ params, governor, key });
           } else {
@@ -141,6 +141,7 @@ export const drawEngine = (function() {
     return governor[key]({
       ...params,
       policies,
+      deepCopy,
       devContext,
       drawDefinition,
       tournamentParticipants,

@@ -59,7 +59,7 @@ export function generateEliminationWithQualifying({
 
   const totalParticipantsCount =
     qualifyingParticipantsCount + mainParticipantsCount - qualifiersCount;
-  const participants = generateRange(0, totalParticipantsCount).map(i => ({
+  const participants = generateRange(0, totalParticipantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
   const qualifyingParticipants = participants.slice(
@@ -67,10 +67,12 @@ export function generateEliminationWithQualifying({
     qualifyingParticipantsCount
   );
   const qualifyingParticipantIds = qualifyingParticipants.map(
-    p => p.participantId
+    (p) => p.participantId
   );
   const mainDrawParticipants = participants.slice(qualifyingParticipantsCount);
-  const mainDrawParticipantIds = mainDrawParticipants.map(p => p.participantId);
+  const mainDrawParticipantIds = mainDrawParticipants.map(
+    (p) => p.participantId
+  );
 
   drawEngine.addDrawEntries({
     stage: QUALIFYING,
@@ -81,11 +83,11 @@ export function generateEliminationWithQualifying({
     participantIds: mainDrawParticipantIds,
   });
 
-  const alternateParticipants = generateRange(0, alternatesCount).map(i => ({
+  const alternateParticipants = generateRange(0, alternatesCount).map((i) => ({
     participantId: `alt-uuid${i + 1}`,
   }));
   const alternateParticipantIds = alternateParticipants.map(
-    p => p.participantId
+    (p) => p.participantId
   );
   drawEngine.addDrawEntries({
     stage: QUALIFYING,
@@ -115,7 +117,7 @@ export function generateEliminationWithQualifying({
   });
 
   assignQualifyingSeeds = assignQualifyingSeeds || qualifyingSeedsCount;
-  generateRange(1, assignQualifyingSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignQualifyingSeeds + 1).forEach((seedNumber) => {
     const participantId = qualifyingParticipants[seedNumber - 1].participantId;
     const seedValue = qualifyingSeedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({
@@ -127,7 +129,7 @@ export function generateEliminationWithQualifying({
   });
 
   assignMainSeeds = assignMainSeeds || mainSeedsCount;
-  generateRange(1, assignMainSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignMainSeeds + 1).forEach((seedNumber) => {
     const participantId = mainDrawParticipants[seedNumber - 1].participantId;
     const seedValue = mainSeedAssignmentProfile[seedNumber] || seedNumber;
     drawEngine.assignSeed({

@@ -7,6 +7,6 @@ it('can count values and determine active drawPositions', () => {
     .reduce((active, key) => {
       return +key > 1 ? active.concat(...positionCounts[key]) : active;
     }, [])
-    .map(p => parseInt(p));
+    .map((p) => parseInt(p));
   expect(activeDrawPositions).toMatchObject([1, 5]);
 });

@@ -12,22 +12,22 @@ export function getUnfilledPositions({
 }) {
   const assignmentMap = Object.assign(
     {},
-    ...positionAssignments.map(assignment => ({
+    ...positionAssignments.map((assignment) => ({
       [assignment.drawPosition]: assignment,
     }))
   );
 
   const unpairedPositions = drawPositionGroups
-    .map(drawPositions => {
+    .map((drawPositions) => {
       const unfilled = drawPositions
-        .filter(f => f)
-        .map(drawPosition => assignmentMap[drawPosition])
-        .filter(assignment => !assignment.participantId && !assignment.bye)
-        .map(assignment => assignment.drawPosition);
+        .filter((f) => f)
+        .map((drawPosition) => assignmentMap[drawPosition])
+        .filter((assignment) => !assignment.participantId && !assignment.bye)
+        .map((assignment) => assignment.drawPosition);
       return unfilled;
     })
     .flat()
-    .filter(f => f);
+    .filter((f) => f);
 
   return unpairedPositions;
 }

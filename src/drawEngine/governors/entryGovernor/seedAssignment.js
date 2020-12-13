@@ -24,7 +24,9 @@ export function assignSeed({
     drawDefinition,
     structure,
   });
-  const seedNumbers = seedAssignments.map(assignment => assignment.seedNumber);
+  const seedNumbers = seedAssignments.map(
+    (assignment) => assignment.seedNumber
+  );
 
   const validParticipantId = participantInEntries({
     drawDefinition,
@@ -54,7 +56,7 @@ export function assignSeed({
 
   if (seedNumbers.includes(seedNumber)) {
     const result = {};
-    seedAssignments.forEach(assignment => {
+    seedAssignments.forEach((assignment) => {
       // insure that this participantId is not assigned to any other seedNumber
       if (
         assignment.participantId === participantId &&

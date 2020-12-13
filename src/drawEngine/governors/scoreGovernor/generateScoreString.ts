@@ -31,20 +31,16 @@ export function generateScoreString(props: any) {
 
   const outcomeString = getOutcomeString({ matchUpStatus });
 
-  const setScores =
-    sets
-      ?.sort(setSort)
-      .map(setString)
-      .join(' ') || '';
+  const setScores = sets?.sort(setSort).map(setString).join(' ') || '';
 
   if (!outcomeString) return setScores;
   if (winningSide === 2) return `${outcomeString} ${setScores}`;
   return `${setScores} ${outcomeString}`;
 
   function setString(currentSet) {
-    const hasGameScores = set =>
+    const hasGameScores = (set) =>
       isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
-    const hasTiebreakScores = set =>
+    const hasTiebreakScores = (set) =>
       isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
 
     const isTiebreakSet =

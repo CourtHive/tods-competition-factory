@@ -60,7 +60,7 @@ export function generateCurtisConsolation({
     return { consolationStructure, links };
   });
 
-  const links = consolationItems.map(item => item.links);
+  const links = consolationItems.map((item) => item.links);
   drawDefinition.links = drawDefinition.links.concat(...links);
 
   // only add 3-4 playoff structure

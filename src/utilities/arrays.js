@@ -5,9 +5,9 @@ export function unique(arr) {
 
 export function shuffleArray(arr) {
   return arr
-    .map(a => [Math.random(), a])
+    .map((a) => [Math.random(), a])
     .sort((a, b) => a[0] - b[0])
-    .map(a => a[1]);
+    .map((a) => a[1]);
 }
 
 // return an object whose attributes are values and whose values are counts for values
@@ -79,7 +79,7 @@ export function arrayIndices(val, arr) {
 }
 export function intersection(a, b) {
   return a
-    .filter(n => b.indexOf(n) !== -1)
+    .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
 }
 export function occurrences(val, arr) {

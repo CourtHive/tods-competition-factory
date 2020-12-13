@@ -16,7 +16,7 @@ function enterKeyValues({
 }) {
   let updated, winningSide;
 
-  valuePairs.forEach(valuePair => {
+  valuePairs.forEach((valuePair) => {
     const { value, lowSide = 2 } = valuePair;
     ({ updated, sets, score, winningSide, matchUpStatus } = keyValueScore({
       value,

@@ -4,7 +4,7 @@ export function countryToFlag(isoCode) {
   return isoCode && typeof String.fromCodePoint !== 'undefined'
     ? isoCode
         .toUpperCase()
-        .replace(/./g, char =>
+        .replace(/./g, (char) =>
           String.fromCodePoint(char.charCodeAt(0) + 127397)
         )
     : isoCode;
@@ -13,7 +13,7 @@ export function countryToFlag(isoCode) {
 export function flagIOC(ioc) {
   const ioc2iso = Object.assign(
     {},
-    ...countries.filter(c => c.ioc).map(c => ({ [c.ioc]: c.iso }))
+    ...countries.filter((c) => c.ioc).map((c) => ({ [c.ioc]: c.iso }))
   );
   return countryToFlag(ioc2iso[ioc]);
 }

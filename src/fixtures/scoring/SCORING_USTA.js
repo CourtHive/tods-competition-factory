@@ -7,7 +7,7 @@ export const SCORING_USTA = {
     stage: {
       [MAIN]: {
         stageSequence: {
-          '1': {
+          1: {
             requireAllPositionsAssigned: true,
           },
         },

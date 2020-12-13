@@ -41,7 +41,7 @@ export function addEventEntries(props) {
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
   const typedParticipantIds = tournamentRecord?.participants
-    ?.filter(participant => {
+    ?.filter((participant) => {
       if (
         event.eventType === SINGLES &&
         participant.participantType === INDIVIDUAL
@@ -62,18 +62,18 @@ export function addEventEntries(props) {
         return true;
       }
     })
-    .map(participant => participant.participantId);
+    .map((participant) => participant.participantId);
 
-  const validParticipantIds = participantIds.filter(participantId =>
+  const validParticipantIds = participantIds.filter((participantId) =>
     typedParticipantIds.includes(participantId)
   );
 
   if (!event.entries) event.entries = [];
   const existingIds = event.entries.map(
-    e => e.participantId || (e.participant && e.participant.participantId)
+    (e) => e.participantId || (e.participant && e.participant.participantId)
   );
 
-  validParticipantIds.forEach(participantId => {
+  validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
       event.entries.push({
         participantId,
@@ -86,22 +86,22 @@ export function addEventEntries(props) {
   // now remove any unpaired participantIds which exist as part of added paired participants
   if (event.eventType === DOUBLES) {
     const enteredParticipantIds = event.entries.map(
-      entry => entry.participantId
+      (entry) => entry.participantId
     );
     const unpairedIndividualParticipantIds = event.entries
-      .filter(entry => entry.entryStatus === UNPAIRED)
-      .map(entry => entry.participantId);
+      .filter((entry) => entry.entryStatus === UNPAIRED)
+      .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord.participants || [];
     const pairedIndividualParticipantIds = tournamentParticipants
       .filter(
-        participant =>
+        (participant) =>
           enteredParticipantIds.includes(participant.participantId) &&
           participant.participantType === PAIR
       )
-      .map(participant => participant.individualParticipantIds)
+      .map((participant) => participant.individualParticipantIds)
       .flat(Infinity);
     const unpairedParticipantIdsToRemove = unpairedIndividualParticipantIds.filter(
-      participantId => pairedIndividualParticipantIds.includes(participantId)
+      (participantId) => pairedIndividualParticipantIds.includes(participantId)
     );
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({

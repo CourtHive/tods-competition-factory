@@ -1,5 +1,6 @@
 import {
   MISSING_DRAW_ID,
+  MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
@@ -39,17 +40,17 @@ function getTimeItem({ element, itemAttributes }) {
   if (element && Array.isArray(element.timeItems)) {
     const timeItem = element.timeItems
       .filter(
-        timeItem =>
+        (timeItem) =>
           !itemAttributes.itemSubject ||
           timeItem.itemSubject === itemAttributes.itemSubject
       )
       .filter(
-        timeItem =>
+        (timeItem) =>
           !itemAttributes.itemType ||
           timeItem.itemType === itemAttributes.itemType
       )
       .filter(
-        timeItem =>
+        (timeItem) =>
           !itemAttributes.itemSubType ||
           timeItem.itemSubType === itemAttributes.itemSubType
       )

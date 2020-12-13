@@ -4,12 +4,12 @@ import itemGovernor from './governors/itemGovernor';
 let devContext;
 let auditTrail = [];
 
-export const auditEngine = (function() {
+export const auditEngine = (function () {
   const fx = {};
 
   fx.reset = () => (auditTrail = []);
   fx.getState = () => makeDeepCopy(auditTrail);
-  fx.devContext = isDev => {
+  fx.devContext = (isDev) => {
     devContext = isDev;
     return fx;
   };
@@ -19,9 +19,9 @@ export const auditEngine = (function() {
   return fx;
 
   function importGovernors(governors) {
-    governors.forEach(governor => {
-      Object.keys(governor).forEach(key => {
-        fx[key] = params => {
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((key) => {
+        fx[key] = (params) => {
           if (devContext) {
             return invoke({ params, governor, key });
           } else {

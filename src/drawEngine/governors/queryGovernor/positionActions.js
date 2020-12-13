@@ -57,7 +57,7 @@ export function positionActions({
    */
   if (structure.stageSequence > 1) {
     const asTargetLink = drawDefinition.links?.find(
-      link => link.target.structureId === structureId
+      (link) => link.target.structureId === structureId
     );
     if (
       asTargetLink?.linkType === LOSER &&
@@ -95,10 +95,10 @@ export function positionActions({
     // add structureId and drawPosition to the payload so the client doesn't need to discover
     if (unfilledPositions.includes(drawPosition)) {
       const validToAssign = unplacedSeedAssignments
-        .filter(seedAssignment =>
+        .filter((seedAssignment) =>
           unplacedSeedParticipantIds.includes(seedAssignment.participantId)
         )
-        .map(valid =>
+        .map((valid) =>
           Object.assign(valid, { drawId, structureId, drawPosition })
         );
 
@@ -121,13 +121,15 @@ export function positionActions({
         stage,
       });
       const assignedParticipantIds = assignedPositions.map(
-        assignment => assignment.participantId
+        (assignment) => assignment.participantId
       );
 
       // first add any unassigned participants
       const validToAssign = entries
-        .filter(entry => !assignedParticipantIds.includes(entry.participantId))
-        .map(valid =>
+        .filter(
+          (entry) => !assignedParticipantIds.includes(entry.participantId)
+        )
+        .map((valid) =>
           Object.assign(valid, { drawId, structureId, drawPosition })
         );
 
@@ -208,12 +210,12 @@ export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
   });
 
   const unfilledDrawPositions = positionAssignments
-    .filter(assignment => {
+    .filter((assignment) => {
       return (
         !assignment.participantId && !assignment.bye && !assignment.qualifier
       );
     })
-    .map(assignment => assignment.drawPosition);
+    .map((assignment) => assignment.drawPosition);
 
   if (unfilledPositions?.length) {
     return { nextUnfilledDrawPositions: unfilledPositions };

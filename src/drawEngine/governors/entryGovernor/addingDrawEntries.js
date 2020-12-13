@@ -94,7 +94,7 @@ export function addDrawEntries({
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
-  participantIds.forEach(participantId => {
+  participantIds.forEach((participantId) => {
     const entry = Object.assign(
       {},
       { participantId },

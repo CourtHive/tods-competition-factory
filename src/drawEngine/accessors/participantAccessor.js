@@ -16,21 +16,23 @@ export function getMatchUpParticipantIds({ matchUp }) {
   if (matchUp && !matchUp.hasContext) error = MISSING_CONTEXT;
 
   if (!error) {
-    sideParticipantIds = matchUp.sides.map(side => side.participantId);
+    sideParticipantIds = matchUp.sides.map((side) => side.participantId);
 
     const sideIndividualParticipantIds = matchUp.sides
-      .filter(side => side.participantType === INDIVIDUAL)
-      .map(participant => participant.participantId);
+      .filter((side) => side.participantType === INDIVIDUAL)
+      .map((participant) => participant.participantId);
 
     const nestedIndividualParticipants = matchUp.sides
-      .map(side => side.participant && side.participant.individualParticipants)
-      .filter(f => f);
+      .map(
+        (side) => side.participant && side.participant.individualParticipants
+      )
+      .filter((f) => f);
 
     nestedIndividualParticipantIds = nestedIndividualParticipants.map(
-      participants =>
+      (participants) =>
         participants
-          .filter(f => f)
-          .map(participant => participant.participantId)
+          .filter((f) => f)
+          .map((participant) => participant.participantId)
     );
 
     individualParticipantIds = [].concat(

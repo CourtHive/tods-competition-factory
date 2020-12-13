@@ -26,7 +26,7 @@ export function setParticipantScaleItem({
     'scaleValue',
   ];
   const validScaleItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 
@@ -37,7 +37,7 @@ export function setParticipantScaleItem({
     validScaleItem &&
     Array.isArray(tournamentRecord.participants)
   ) {
-    tournamentRecord.participants.forEach(participant => {
+    tournamentRecord.participants.forEach((participant) => {
       if (participant.participantId === participantId) {
         participantFound = true;
         const { scaleItem: existingScaleItem } = participantScaleItem({
@@ -73,10 +73,10 @@ export function setParticipantScaleItems({
   let modificationApplied;
   const participantScaleItemsMap = {};
 
-  scaleItemsWithParticipantIds.forEach(item => {
+  scaleItemsWithParticipantIds.forEach((item) => {
     const participantId = item?.participantId;
     if (Array.isArray(item?.scaleItems)) {
-      item.scaleItems.forEach(scaleItem => {
+      item.scaleItems.forEach((scaleItem) => {
         if (isValidScaleItem({ scaleItem })) {
           if (!Array.isArray(participantScaleItemsMap[participantId])) {
             participantScaleItemsMap[participantId] = [];
@@ -87,10 +87,10 @@ export function setParticipantScaleItems({
     }
   });
 
-  tournamentRecord.participants.forEach(participant => {
+  tournamentRecord.participants.forEach((participant) => {
     const { participantId } = participant || {};
     if (Array.isArray(participantScaleItemsMap[participantId])) {
-      participantScaleItemsMap[participantId].forEach(scaleItem => {
+      participantScaleItemsMap[participantId].forEach((scaleItem) => {
         addParticipantScaleItem({ participant, scaleItem });
         modificationApplied = true;
       });
@@ -109,7 +109,7 @@ function isValidScaleItem({ scaleItem }) {
     'scaleValue',
   ];
   const validScaleItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
   return !!validScaleItem;
@@ -128,7 +128,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     'scaleValue',
   ];
   const validScaleItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 

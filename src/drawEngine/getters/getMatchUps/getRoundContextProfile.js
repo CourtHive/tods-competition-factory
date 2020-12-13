@@ -32,7 +32,7 @@ export function getRoundContextProfile({
   if (isRoundRobin) {
     Object.assign(
       roundNamingProfile,
-      ...Object.keys(roundProfile).map(key => {
+      ...Object.keys(roundProfile).map((key) => {
         const profileSize = `R${key}`;
         return { [key]: profileSize };
       })
@@ -40,7 +40,7 @@ export function getRoundContextProfile({
   } else {
     Object.assign(
       roundNamingProfile,
-      ...Object.keys(roundProfile).map(round => {
+      ...Object.keys(roundProfile).map((round) => {
         const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
         const sizeName =
@@ -50,7 +50,7 @@ export function getRoundContextProfile({
         const suffix = preFeedRound ? `-${roundNamePrefix.preFeedRound}` : '';
         const profileSize = `${sizeName}${suffix}`;
         const roundName = [stageConstant, structureAbbreviation, profileSize]
-          .filter(f => f)
+          .filter((f) => f)
           .join('-');
         return { [round]: roundName };
       })

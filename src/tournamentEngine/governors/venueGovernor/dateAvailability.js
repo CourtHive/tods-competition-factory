@@ -22,8 +22,8 @@ export function validDateAvailability({ dateAvailability }) {
   const timeNote = 'Times must be 24 hour => 00:00';
 
   dateAvailability
-    .filter(f => f)
-    .forEach(availability => {
+    .filter((f) => f)
+    .forEach((availability) => {
       if (typeof availability !== 'object') {
         errors.push({ error: INVALID_DATE_AVAILABILITY });
         return;
@@ -75,7 +75,7 @@ export function validDateAvailability({ dateAvailability }) {
       }
 
       bookings &&
-        bookings.forEach(booking => {
+        bookings.forEach((booking) => {
           if (typeof booking !== 'object') {
             errors.push({ error: INVALID_DATE_AVAILABILITY });
             return;

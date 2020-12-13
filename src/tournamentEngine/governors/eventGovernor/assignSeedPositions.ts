@@ -74,11 +74,11 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   const mergeObject = Object.assign(
     {},
     ...seedAssignments
-      .filter(assignment => assignment.seedNumber)
-      .map(assignment => ({ [assignment.seedNumber]: assignment }))
+      .filter((assignment) => assignment.seedNumber)
+      .map((assignment) => ({ [assignment.seedNumber]: assignment }))
   );
 
-  assignments.forEach(newAssignment => {
+  assignments.forEach((newAssignment) => {
     const { seedNumber } = newAssignment;
     if (
       seedNumber <= seedLimit &&
@@ -94,7 +94,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   const updatedAssignments = Object.values(mergeObject);
   const participantIds = updatedAssignments
     .map((assignment: any) => assignment?.participantId)
-    .filter(f => f);
+    .filter((f) => f);
 
   if (participantIds.length !== uniqueValues(participantIds).length) {
     return {
@@ -118,7 +118,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
 
   if (modifications && event) {
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

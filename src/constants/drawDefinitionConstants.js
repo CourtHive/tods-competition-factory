@@ -53,7 +53,7 @@ export const ROUND_ROBIN_WITH_PLAYOFF = 'ROUND_ROBIN_WITH_PLAYOFF';
 export const DECIDER = 'DECIDER';
 export const BACKDRAW = 'BACKDRAW';
 export const COMPASS_ATTRIBUTES = {
-  '0': { name: 'EAST', abbreviation: 'E' },
+  0: { name: 'EAST', abbreviation: 'E' },
   '0-1': { name: 'WEST', abbreviation: 'W' },
   '0-2': { name: 'NORTH', abbreviation: 'N' },
   '0-3': { name: 'NORTHEAST', abbreviation: 'NE' },
@@ -63,7 +63,7 @@ export const COMPASS_ATTRIBUTES = {
   '0-1-1-1': { name: 'SOUTHEAST', abbreviation: 'SE' },
 };
 export const OLYMPIC_ATTRIBUTES = {
-  '0': { name: 'EAST', abbreviation: 'E' },
+  0: { name: 'EAST', abbreviation: 'E' },
   '0-1': { name: 'WEST', abbreviation: 'W' },
   '0-2': { name: 'NORTH', abbreviation: 'N' },
   '0-1-1': { name: 'SOUTH', abbreviation: 'S' },

@@ -78,7 +78,7 @@ export function checkOutParticipant({
     const sideIndex = sideParticipantIds.indexOf(participantId);
     if ([0, 1].includes(sideIndex)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(
-        participantId => {
+        (participantId) => {
           const timeItem = {
             itemSubject: CHECK_OUT,
             itemValue: participantId,

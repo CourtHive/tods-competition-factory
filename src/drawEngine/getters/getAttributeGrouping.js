@@ -34,9 +34,9 @@ export function getAttributeGroupings({
     return { error: MISSING_PARTICIPANTS };
   }
   const groupings = {};
-  targetParticipantIds.forEach(participantId => {
+  targetParticipantIds.forEach((participantId) => {
     const participant = participants.find(
-      candidate => candidate.participantId === participantId
+      (candidate) => candidate.participantId === participantId
     );
 
     const { values } = extractAttributeValues({
@@ -46,7 +46,7 @@ export function getAttributeGroupings({
       policyAttributes,
     });
     if (values) {
-      values.forEach(value => {
+      values.forEach((value) => {
         if (!groupings[value]) groupings[value] = [];
         if (!groupings[value].includes(participantId)) {
           groupings[value].push(participantId);
@@ -77,7 +77,7 @@ export function extractAttributeValues({
     return { error: MISSING_PARTICIPANT };
   }
   const extractedValues = [];
-  policyAttributes.forEach(policyAttribute => {
+  policyAttributes.forEach((policyAttribute) => {
     const value = participant;
     const { directive, groupings, key, significantCharacters } =
       policyAttribute || {};
@@ -90,12 +90,13 @@ export function extractAttributeValues({
         (idCollections && idCollections[directive]) ||
         []
       ).filter(
-        participantId => !includeIds || includeIds.includes(participantId)
+        (participantId) => !includeIds || includeIds.includes(participantId)
       );
       if (collectionIds?.length && participants?.length) {
-        collectionIds.forEach(collectionParticipantId => {
+        collectionIds.forEach((collectionParticipantId) => {
           const collectionParticipant = participants.find(
-            participant => participant.participantId === collectionParticipantId
+            (participant) =>
+              participant.participantId === collectionParticipantId
           );
           if (
             collectionParticipant?.individualParticipantIds?.includes(
@@ -108,7 +109,7 @@ export function extractAttributeValues({
         });
       }
     } else if (groupings) {
-      Object.keys(groupings).forEach(key => {
+      Object.keys(groupings).forEach((key) => {
         if (groupings[key].includes(participant.participantId)) {
           extractedValues.push(key);
         }
@@ -125,7 +126,7 @@ export function extractAttributeValues({
         if (Array.isArray(value[key])) {
           const values = value[key];
           const remainingKeys = keys.slice(index);
-          values.forEach(nestedValue =>
+          values.forEach((nestedValue) =>
             processKeys({ value: nestedValue, keys: remainingKeys })
           );
         } else {

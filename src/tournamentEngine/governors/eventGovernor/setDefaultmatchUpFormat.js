@@ -37,7 +37,7 @@ export function setDrawDefaultMatchUpFormat({
   if (result.success) {
     const { drawId } = drawDefinition;
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;
@@ -68,7 +68,7 @@ export function setStructureDefaultMatchUpFormat({
   if (result.success) {
     const { drawId } = drawDefinition;
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

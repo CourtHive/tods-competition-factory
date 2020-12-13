@@ -92,7 +92,7 @@ export const SIDE1KEYS = [
   '8',
   '9',
 ].concat(OUTCOMEKEYS);
-export const SIDE2KEYS = SIDE1KEYS.map(key => `shift+${key}`);
+export const SIDE2KEYS = SIDE1KEYS.map((key) => `shift+${key}`);
 export const MODIFIERS = [SCORE_JOINER, BACKSPACE].concat(
   CLOSERS,
   ALTERNATE_JOINERS

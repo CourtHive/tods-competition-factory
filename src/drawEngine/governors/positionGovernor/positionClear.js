@@ -30,9 +30,9 @@ export function clearDrawPosition({
   });
 
   const byeAssignedDrawPositions = positionAssignments
-    .filter(assignment => assignment.bye)
-    .map(assignment => assignment.drawPosition)
-    .filter(f => f);
+    .filter((assignment) => assignment.bye)
+    .map((assignment) => assignment.drawPosition)
+    .filter((f) => f);
 
   if (participantId && !drawPosition) {
     drawPosition = positionAssignments.reduce((drawPosition, assignment) => {
@@ -56,7 +56,7 @@ export function clearDrawPosition({
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
   let drawPositionCleared;
-  positionAssignments.forEach(assignment => {
+  positionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.participantId = undefined;
       delete assignment.qualifier;
@@ -71,7 +71,7 @@ export function clearDrawPosition({
     matchUpFilters,
     structure,
   });
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       const isByeMatchUp = matchUp.drawPositions?.reduce(
         (isByeMatchUp, drawPosition) => {
@@ -127,7 +127,7 @@ export function clearDrawPosition({
     if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {
       // loserMatchUp must have both drawPositions defined
       const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
-        f => f
+        (f) => f
       ).length;
       if (loserMatchUpDrawPositionsCount !== 2)
         return { error: MISSING_DRAW_POSITIONS };

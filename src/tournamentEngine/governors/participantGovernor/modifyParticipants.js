@@ -28,7 +28,7 @@ export function participantsSignInStatus({
     Array.isArray(participantIds)
   ) {
     const createdAt = new Date().toISOString();
-    participants.forEach(participant => {
+    participants.forEach((participant) => {
       if (participantIds.includes(participant.participantId)) {
         if (!participant.timeItems) participant.timeItems = [];
         const timeItem = {
@@ -55,7 +55,7 @@ export function modifyParticipant({ tournamentRecord, participant, teamId }) {
   // TODO: test modifying a participantType: 'PAIR' or 'TEAM' for nested participantIds
 
   const tournamentParticipants = tournamentRecord.participants || [];
-  const existingParticipant = tournamentParticipants.find(existing => {
+  const existingParticipant = tournamentParticipants.find((existing) => {
     return existing.participantId === participant?.participantId;
   });
   if (existingParticipant) {

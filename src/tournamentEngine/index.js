@@ -48,7 +48,7 @@ function setState(tournament, deepCopyOption = true) {
   return Object.assign({ tournamentId }, SUCCESS);
 }
 
-export const tournamentEngine = (function() {
+export const tournamentEngine = (function () {
   const fx = {
     getState: () => ({ tournamentRecord: makeDeepCopy(tournamentRecord) }),
     getAudit: () => {
@@ -79,12 +79,12 @@ export const tournamentEngine = (function() {
     flushErrors();
     return fx;
   };
-  fx.setState = tournament => {
+  fx.setState = (tournament) => {
     const result = setState(tournament);
     if (result && result.error) errors.push(result.error);
     return fx;
   };
-  fx.devContext = isDev => {
+  fx.devContext = (isDev) => {
     devContext = isDev;
     drawEngine.devContext(isDev);
     auditEngine.devContext(isDev);
@@ -144,9 +144,9 @@ export const tournamentEngine = (function() {
   }
 
   function importGovernors(governors) {
-    governors.forEach(governor => {
-      Object.keys(governor).forEach(key => {
-        fx[key] = params => {
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((key) => {
+        fx[key] = (params) => {
           if (devContext) {
             return engineInvoke(governor[key], params);
           } else {

@@ -162,10 +162,10 @@ function generateRoundRobin({
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
   const { structureId } = structure;
 
-  const participants = generateRange(0, participantsCount).map(i => ({
+  const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   const { error: entriesError } = drawEngine.addDrawEntries({
     stage,
@@ -182,7 +182,7 @@ function generateRoundRobin({
   if (seedInitializationError) errors.push({ seedInitializationError });
 
   assignSeeds = assignSeeds || seedsCount;
-  generateRange(1, assignSeeds + 1).forEach(seedNumber => {
+  generateRange(1, assignSeeds + 1).forEach((seedNumber) => {
     const participantId = participants[seedNumber - 1].participantId;
     const seedValue = seedAssignmentProfile[seedNumber] || seedNumber;
     const { error: seedAssignmentError } = drawEngine.assignSeed({

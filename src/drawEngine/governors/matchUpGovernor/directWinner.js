@@ -54,7 +54,7 @@ export function directWinner({
     );
 
     const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
-      .filter(assignment => {
+      .filter((assignment) => {
         const inTarget = targetMatchUpDrawPositions.includes(
           assignment.drawPosition
         );
@@ -62,7 +62,7 @@ export function directWinner({
           !assignment.participantId && !assignment.bye && !assignment.qualifier;
         return inTarget && unfilled;
       })
-      .map(assignment => assignment.drawPosition);
+      .map((assignment) => assignment.drawPosition);
     const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
       targetMatchUpDrawPosition
     );

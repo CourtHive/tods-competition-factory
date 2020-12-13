@@ -37,7 +37,7 @@ export function getNextParticipantId({
     0
   );
   const largestSizedGroupings = Object.keys(targetGroups).filter(
-    key => targetGroups[key].length === largestGroupSize
+    (key) => targetGroups[key].length === largestGroupSize
   );
 
   const randomGroupKey = largestFirst

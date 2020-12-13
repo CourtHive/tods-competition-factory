@@ -14,7 +14,7 @@ export function generateTeamsFromParticipantAttribute(props) {
   const teams = {};
   const participants = tournamentRecord.participants || [];
 
-  participants.forEach(participant => {
+  participants.forEach((participant) => {
     if (!participant.person) return;
     if (participant.participantRole !== COMPETITOR) return;
 
@@ -45,7 +45,7 @@ export function generateTeamsFromParticipantAttribute(props) {
   const groupingAttributes = Object.keys(teams);
 
   const overlappingTeamParticipantids = participants
-    .map(participant => {
+    .map((participant) => {
       if (participant.participantType !== 'TEAM') return undefined;
       if (participant.participantRole !== 'COMPETITOR') return undefined;
       const { participantProfile } = participant;
@@ -56,10 +56,10 @@ export function generateTeamsFromParticipantAttribute(props) {
       }
       return undefined;
     })
-    .filter(f => f);
+    .filter((f) => f);
 
   let participantsAdded = 0;
-  Object.keys(teams).forEach(attributeValue => {
+  Object.keys(teams).forEach((attributeValue) => {
     const participant = teams[attributeValue];
     const { participantId } = participant;
     if (!overlappingTeamParticipantids.includes(participantId)) {

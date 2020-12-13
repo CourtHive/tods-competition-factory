@@ -29,7 +29,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -100,7 +100,7 @@ it('can add events, venues, and schedule matchUps', () => {
   }));
   expect(upcomingMatchUps.length).toEqual(0);
 
-  const courtIds = courts.map(court => court.courtId);
+  const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

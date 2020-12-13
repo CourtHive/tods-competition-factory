@@ -21,11 +21,11 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
   });
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
-    .filter(p => p.participantType === PAIR)
-    .map(p => p.individualParticipants.map(ip => ip.name));
-  const pairedOpponents = report.map(r => r.names);
-  pairedParticipants.forEach(pair => {
-    pairedOpponents.forEach(opponents => {
+    .filter((p) => p.participantType === PAIR)
+    .map((p) => p.individualParticipants.map((ip) => ip.name));
+  const pairedOpponents = report.map((r) => r.names);
+  pairedParticipants.forEach((pair) => {
+    pairedOpponents.forEach((opponents) => {
       const overlap = intersection(pair, opponents);
       expect(overlap.length).toBeLessThan(2);
     });
@@ -43,11 +43,11 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
   });
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
-    .filter(p => p.participantType === PAIR)
-    .map(p => p.individualParticipants.map(ip => ip.name));
-  const pairedOpponents = report.map(r => r.names);
-  pairedParticipants.forEach(pair => {
-    pairedOpponents.forEach(opponents => {
+    .filter((p) => p.participantType === PAIR)
+    .map((p) => p.individualParticipants.map((ip) => ip.name));
+  const pairedOpponents = report.map((r) => r.names);
+  pairedParticipants.forEach((pair) => {
+    pairedOpponents.forEach((opponents) => {
       const overlap = intersection(pair, opponents);
       if (overlap.length > 1) console.log({ pair, opponents, overlap });
     });
@@ -75,11 +75,11 @@ it('can generate ELIMINATION drawDefinition using pair and nationality avoidance
   });
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
-    .filter(p => p.participantType === PAIR)
-    .map(p => p.individualParticipants.map(ip => ip.name));
-  const pairedOpponents = report.map(r => r.names);
-  pairedParticipants.forEach(pair => {
-    pairedOpponents.forEach(opponents => {
+    .filter((p) => p.participantType === PAIR)
+    .map((p) => p.individualParticipants.map((ip) => ip.name));
+  const pairedOpponents = report.map((r) => r.names);
+  pairedParticipants.forEach((pair) => {
+    pairedOpponents.forEach((opponents) => {
       const overlap = intersection(pair, opponents);
       if (overlap.length > 1) console.log({ pair, opponents, overlap });
     });

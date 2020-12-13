@@ -19,12 +19,12 @@ export function positionQualifiers(props) {
     props
   );
   const unfilledDrawPositions = positionAssignments
-    .filter(assignment => {
+    .filter((assignment) => {
       return (
         !assignment.participantId && !assignment.bye && !assignment.qualifier
       );
     })
-    .map(assignment => assignment.drawPosition);
+    .map((assignment) => assignment.drawPosition);
 
   if (unplacedQualifiersCount > unfilledDrawPositions.length) {
     return { error: 'Insufficient drawPositions to accommodate qualifiers' };
@@ -32,7 +32,7 @@ export function positionQualifiers(props) {
 
   generateRange(0, unplacedQualifiersCount).forEach(() => {
     const drawPosition = unfilledDrawPositions.pop();
-    positionAssignments.forEach(assignment => {
+    positionAssignments.forEach((assignment) => {
       if (assignment.drawPosition === drawPosition) {
         assignment.qualifier = true;
       }
@@ -49,8 +49,8 @@ export function getQualifiersData({ drawDefinition, structure, structureId }) {
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
   const assignedQualifierPositions = positionAssignments
-    .filter(assignment => assignment.qualifier)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.qualifier)
+    .map((assignment) => assignment.drawPosition);
 
   const { stage, stageSequence } = structure;
   const qualifiersCount = getStageQualifiersCount({

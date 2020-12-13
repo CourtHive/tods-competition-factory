@@ -13,7 +13,7 @@ export function findStructure({ drawDefinition, structureId }) {
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { structures } = getDrawStructures({ drawDefinition });
   const allStructures = structures
-    .map(structure => {
+    .map((structure) => {
       return structure.structures
         ? [].concat(...structure.structures, structure)
         : structure;

@@ -18,11 +18,11 @@ export function getStructurePositionedSeeds({ drawDefinition, structure }) {
   const seedMap = Object.assign(
     {},
     ...seedAssignments
-      .filter(assignment => assignment.participantId)
-      .map(assignment => ({ [assignment.participantId]: assignment }))
+      .filter((assignment) => assignment.participantId)
+      .map((assignment) => ({ [assignment.participantId]: assignment }))
   );
   const positionedSeeds = positionAssignments
-    .map(assignment => {
+    .map((assignment) => {
       return !seedMap[assignment.participantId]
         ? ''
         : Object.assign(assignment, {
@@ -30,7 +30,7 @@ export function getStructurePositionedSeeds({ drawDefinition, structure }) {
             seedValue: seedMap[assignment.participantId].seedValue,
           });
     })
-    .filter(f => f);
+    .filter((f) => f);
   return positionedSeeds;
 }
 

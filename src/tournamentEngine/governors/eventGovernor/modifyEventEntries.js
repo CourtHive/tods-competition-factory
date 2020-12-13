@@ -32,8 +32,8 @@ export function modifyEventEntries({
 
   const tournamentParticipants = tournamentRecord.particpants || [];
   const individualParticipantIds = tournamentParticipants
-    .filter(participant => participant.participantType === INDIVIDUAL)
-    .map(participant => participant.participantId);
+    .filter((participant) => participant.participantType === INDIVIDUAL)
+    .map((participant) => participant.participantId);
 
   // concat all incoming INDIVIDUAL participantIds
   const incomingIndividualParticipantIds = unpairedParticipantIds
@@ -42,34 +42,34 @@ export function modifyEventEntries({
 
   // insure all participants are present in the tournament record
   const invalidParticipantIds = incomingIndividualParticipantIds.filter(
-    participantId => !individualParticipantIds.includes(participantId)
+    (participantId) => !individualParticipantIds.includes(participantId)
   );
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
   // insure all participantIdPairs have two individual participantIds
   const invalidParticipantIdPairs = participantIdPairs.filter(
-    pair => pair.length !== 2
+    (pair) => pair.length !== 2
   );
   if (invalidParticipantIdPairs.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
   // make an array of all existing PAIR partiicpantIds
   const existingParticipantIdPairs = tournamentParticipants
-    .filter(participant => participant.participantType === PAIR)
-    .map(participant => participant.individualParticipantIds);
+    .filter((participant) => participant.participantType === PAIR)
+    .map((participant) => participant.individualParticipantIds);
 
   // determine participantIdPairs which do not already exist
   const newParticipantIdPairs = participantIdPairs.filter(
-    incoming =>
+    (incoming) =>
       !existingParticipantIdPairs.find(
-        existing => intersection(existing, incoming).length === 2
+        (existing) => intersection(existing, incoming).length === 2
       )
   );
 
   // create new participant objects
   const newParticipants = newParticipantIdPairs.map(
-    individualParticipantIds => ({
+    (individualParticipantIds) => ({
       participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
@@ -85,21 +85,21 @@ export function modifyEventEntries({
 
   // get all participantIds for PAIR participants
   const pairParticipantEntries = participantIdPairs
-    .map(participantIds => {
+    .map((participantIds) => {
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
       });
       return participant;
     })
-    .map(participantId => ({
+    .map((participantId) => ({
       participantId,
       entryStatus,
       entryStage,
     }));
 
   const unpairedParticipantEntries = unpairedParticipantIds.map(
-    participantId => ({
+    (participantId) => ({
       entryStatus: UNPAIRED,
       participantId,
       entryStage,
@@ -107,7 +107,7 @@ export function modifyEventEntries({
   );
 
   event.entries = event.entries.filter(
-    entry => entry.entryStage === entryStage
+    (entry) => entry.entryStage === entryStage
   );
 
   event.entries = event.entries.concat(

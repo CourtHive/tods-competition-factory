@@ -41,7 +41,7 @@ export function getDrawMatchUps({
 
   const { structures } = getDrawStructures({ drawDefinition });
 
-  structures.forEach(structure => {
+  structures.forEach((structure) => {
     const {
       byeMatchUps = [],
       pendingMatchUps,

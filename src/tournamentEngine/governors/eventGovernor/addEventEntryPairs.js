@@ -41,31 +41,31 @@ export function addEventEntryPairs({
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const individualParticipantIds = tournamentParticipants
-    .filter(participant => participant.participantType === INDIVIDUAL)
-    .map(participant => participant.participantId);
+    .filter((participant) => participant.participantType === INDIVIDUAL)
+    .map((participant) => participant.participantId);
 
   // insure all participants are present in the tournament record
   const invalidParticipantIds = individualParticipantIds.filter(
-    participantId => !individualParticipantIds.includes(participantId)
+    (participantId) => !individualParticipantIds.includes(participantId)
   );
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
   // insure all participantIdPairs have two individual participantIds
   const invalidParticipantIdPairs = participantIdPairs.filter(
-    pair => pair.length !== 2
+    (pair) => pair.length !== 2
   );
   if (invalidParticipantIdPairs.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
   // make an array of all existing PAIR partiicpantIds
   const existingParticipantIdPairs = tournamentParticipants
-    .filter(participant => participant.participantType === PAIR)
-    .map(participant => participant.individualParticipantIds);
+    .filter((participant) => participant.participantType === PAIR)
+    .map((participant) => participant.individualParticipantIds);
 
   // create provisional participant objects
   const provisionalParticipants = participantIdPairs.map(
-    individualParticipantIds => ({
+    (individualParticipantIds) => ({
       participantId: uuids?.pop(),
       participantType: PAIR,
       participantRole: COMPETITOR,
@@ -74,9 +74,9 @@ export function addEventEntryPairs({
   );
 
   // filter out existing participants
-  const newParticipants = provisionalParticipants.filter(participant => {
+  const newParticipants = provisionalParticipants.filter((participant) => {
     return !existingParticipantIdPairs.find(
-      existing =>
+      (existing) =>
         intersection(existing, participant.individualParticipantIds).length ===
         2
     );
@@ -94,14 +94,14 @@ export function addEventEntryPairs({
   }
 
   const pairParticipantIds = participantIdPairs
-    .map(participantIds => {
+    .map((participantIds) => {
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
       });
       return participant;
     })
-    .map(participant => participant.participantId);
+    .map((participant) => participant.participantId);
 
   const result = addEventEntries({
     event,

@@ -104,9 +104,9 @@ export function getAllStructureMatchUps({
     if (inContext) {
       // Round Robin structures are nested so the accurate structureId when in context must be assigned here
       matchUps = [].concat(
-        ...structure.structures.map(structure => {
+        ...structure.structures.map((structure) => {
           const { structureId } = structure;
-          return structure.matchUps.map(matchUp => {
+          return structure.matchUps.map((matchUp) => {
             return Object.assign(makeDeepCopy(matchUp), {
               structureId,
               structureName,
@@ -118,7 +118,7 @@ export function getAllStructureMatchUps({
       );
     } else {
       matchUps = [].concat(
-        ...structure.structures.map(structure => {
+        ...structure.structures.map((structure) => {
           return structure.matchUps;
         })
       );
@@ -134,10 +134,10 @@ export function getAllStructureMatchUps({
     matchUps,
   });
 
-  const matchUpTies = matchUps.filter(matchUp =>
+  const matchUpTies = matchUps.filter((matchUp) =>
     Array.isArray(matchUp.tieMatchUps)
   );
-  matchUpTies.forEach(matchUpTie => {
+  matchUpTies.forEach((matchUpTie) => {
     const tieMatchUps = matchUpTie.tieMatchUps;
     matchUps = matchUps.concat(...tieMatchUps);
   });
@@ -152,7 +152,7 @@ export function getAllStructureMatchUps({
       structureId,
     });
 
-    matchUps = matchUps.map(matchUp =>
+    matchUps = matchUps.map((matchUp) =>
       addMatchUpContext({
         matchUp,
         isRoundRobin,
@@ -173,7 +173,9 @@ export function getAllStructureMatchUps({
   }));
 
   if (roundFilter)
-    matchUps = matchUps.filter(matchUp => matchUp.roundNumber === roundFilter);
+    matchUps = matchUps.filter(
+      (matchUp) => matchUp.roundNumber === roundFilter
+    );
 
   return { matchUps, roundMatchUps, collectionPositionMatchUps };
 
@@ -219,7 +221,7 @@ export function getAllStructureMatchUps({
     if (matchUpWithContext.tieMatchUps) {
       const isCollectionBye = matchUpWithContext.matchUpStatus === BYE;
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
-        matchUp => {
+        (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
           return addMatchUpContext({
             matchUp,
@@ -288,8 +290,8 @@ export function getAllStructureMatchUps({
     if (tournamentParticipants && matchUpWithContext.sides) {
       const sets = matchUpWithContext.sets;
       matchUpWithContext.sides
-        .filter(f => f)
-        .forEach(side => {
+        .filter((f) => f)
+        .forEach((side) => {
           if (side.participantId) {
             const participant = findParticipant({
               tournamentParticipants,
@@ -307,7 +309,7 @@ export function getAllStructureMatchUps({
           }
           if (side.participant && side.participant.individualParticipantIds) {
             const individualParticipants = side.participant.individualParticipantIds.map(
-              participantId => {
+              (participantId) => {
                 return findParticipant({
                   policyDefinition: appliedPolicies,
                   tournamentParticipants,
@@ -327,7 +329,7 @@ export function getAllStructureMatchUps({
 
     const hasParticipants =
       matchUpWithContext.sides &&
-      matchUpWithContext.sides.filter(side => side && side.participantId)
+      matchUpWithContext.sides.filter((side) => side && side.participantId)
         .length === 2;
     const hasNoWinner = !matchUpWithContext.winningSide;
     const readyToScore = scoringActive && hasParticipants && hasNoWinner;
@@ -396,7 +398,7 @@ function getOrderedDrawPositions({ drawPositions, roundProfile, roundNumber }) {
     firstRoundMatchUpsCount / currentRoundMatchUpsCount;
 
   const drawPosition = drawPositions.find(
-    drawPosition => !isNaN(parseInt(drawPosition))
+    (drawPosition) => !isNaN(parseInt(drawPosition))
   );
 
   const isFeedRound = roundProfile[roundNumber].feedRound;

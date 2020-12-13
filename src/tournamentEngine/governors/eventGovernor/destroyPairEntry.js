@@ -29,7 +29,7 @@ export function destroyPairEntry({ tournamentRecord, event, participantId }) {
 
   const tournamentParticipants = tournamentRecord.participants || [];
   const participant = tournamentParticipants.find(
-    participant => participant.participantId === participantId
+    (participant) => participant.participantId === participantId
   );
 
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
@@ -38,7 +38,7 @@ export function destroyPairEntry({ tournamentRecord, event, participantId }) {
 
   const eventEntries = event.entries || [];
   const entry = eventEntries.find(
-    entry => entry.participantId === participantId
+    (entry) => entry.participantId === participantId
   );
   if (!entry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 

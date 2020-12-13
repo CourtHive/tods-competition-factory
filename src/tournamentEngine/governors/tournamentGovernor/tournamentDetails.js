@@ -50,7 +50,7 @@ export function setTournamentEndDate({ tournamentRecord, endDate }) {
 }
 
 export function setTournamentCategories({ tournamentRecord, categories }) {
-  categories = (categories || []).filter(category => {
+  categories = (categories || []).filter((category) => {
     return category.categoryName && category.type;
   });
   tournamentRecord.tournamentCategories = categories;

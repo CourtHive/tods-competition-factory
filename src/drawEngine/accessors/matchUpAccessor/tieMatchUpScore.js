@@ -20,14 +20,14 @@ export function calcTieMatchUpScore({ matchUp, separator = '-' }) {
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];
-  collectionDefinitions.forEach(collectionDefinition => {
+  collectionDefinitions.forEach((collectionDefinition) => {
     const collectionMatchUps = tieMatchUps.filter(
-      matchUp => matchUp.collectionId === collectionDefinition.collectionId
+      (matchUp) => matchUp.collectionId === collectionDefinition.collectionId
     );
 
     if (collectionDefinition.matchUpValue) {
       const matchUpValue = collectionDefinition.matchUpValue;
-      collectionMatchUps.forEach(matchUp => {
+      collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide)
           sidePoints[matchUp.winningSide - 1] += matchUpValue;
       });
@@ -35,7 +35,7 @@ export function calcTieMatchUpScore({ matchUp, separator = '-' }) {
       const sideWins = [0, 0];
       const winGoal =
         Math.floor(collectionDefinition.matchUpCount / 2).floor + 1;
-      collectionMatchUps.forEach(matchUp => {
+      collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) sideWins[matchUp.winningSide - 1] += 1;
       });
       const collectionWinningSide = sideWins.reduce((winningSide, side) => {
@@ -45,7 +45,7 @@ export function calcTieMatchUpScore({ matchUp, separator = '-' }) {
         sidePoints[collectionWinningSide] +=
           collectionDefinition.collectionValue;
     } else if (collectionDefinition.collectionValueProfile) {
-      collectionMatchUps.forEach(matchUp => {
+      collectionMatchUps.forEach((matchUp) => {
         if (matchUp.winningSide) {
           const collectionPosition = matchUp.collectionPosition;
           const matchUpValue = getCollectionPositionValue({

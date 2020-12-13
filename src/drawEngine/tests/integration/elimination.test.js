@@ -122,13 +122,13 @@ it('will vary bye distribution', () => {
     });
 
     const byesHash = byeAssignedDrawPositions.join('|');
-    const quartersHash = filteredQuarters.map(q => q.join('|')).join('~');
+    const quartersHash = filteredQuarters.map((q) => q.join('|')).join('~');
 
     return { byesHash, quartersHash };
   });
 
-  const byesIterations = iterations.map(i => i.byesHash);
-  const quartersIterations = iterations.map(i => i.quartersHash);
+  const byesIterations = iterations.map((i) => i.byesHash);
+  const quartersIterations = iterations.map((i) => i.quartersHash);
 
   expect(byesIterations.length).not.toEqual(unique(byesIterations).length);
   expect(quartersIterations.length).not.toEqual(
@@ -276,7 +276,7 @@ it('can reliably generate sideNumbers', () => {
   });
 
   let expectedDrawPositions = {
-    '2': [
+    2: [
       [
         [3, undefined],
         [undefined, 2],
@@ -326,7 +326,7 @@ it('can reliably generate sideNumbers', () => {
   });
 
   expectedDrawPositions = {
-    '2': [
+    2: [
       [
         [1, 3],
         [1, 2],
@@ -420,7 +420,7 @@ it('can return participantIdMatchUps', () => {
   expect(participantIds.length).toEqual(14);
 
   const matchUpsCount = participantIds.map(
-    participantId => participantIdMatchUps[participantId].length
+    (participantId) => participantIdMatchUps[participantId].length
   );
 
   const matchUpsCountInstances = instanceCount(matchUpsCount);

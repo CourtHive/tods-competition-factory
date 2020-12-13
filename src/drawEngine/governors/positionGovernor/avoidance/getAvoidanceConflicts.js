@@ -5,20 +5,20 @@ import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups
 export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
   const avoidanceConflicts = [];
   if (isRoundRobin) {
-    groupedParticipants.forEach(participantGroup => {
+    groupedParticipants.forEach((participantGroup) => {
       const drawPositions = participantGroup.map(
-        participant => participant.drawPosition
+        (participant) => participant.drawPosition
       );
       const { uniqueMatchUpGroupings } = getRoundRobinGroupMatchUps({
         drawPositions,
       });
       const drawPositionValuesMap = Object.assign(
         {},
-        ...participantGroup.map(participant => ({
+        ...participantGroup.map((participant) => ({
           [participant.drawPosition]: participant,
         }))
       );
-      uniqueMatchUpGroupings.forEach(grouping => {
+      uniqueMatchUpGroupings.forEach((grouping) => {
         const avoidanceConflict = intersection(
           drawPositionValuesMap[grouping[0]].values || [],
           drawPositionValuesMap[grouping[1]].values || []
@@ -31,7 +31,7 @@ export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
       });
     });
   } else {
-    groupedParticipants.forEach(matchUpPair => {
+    groupedParticipants.forEach((matchUpPair) => {
       const avoidanceConflict = intersection(
         matchUpPair[0].values || [],
         matchUpPair[1].values || []

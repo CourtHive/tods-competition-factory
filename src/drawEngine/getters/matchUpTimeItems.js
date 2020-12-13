@@ -21,7 +21,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
-  if (!matchUp.sides || matchUp.sides.filter(f => f).length !== 2) {
+  if (!matchUp.sides || matchUp.sides.filter((f) => f).length !== 2) {
     return { error: INVALID_MATCHUP };
   }
 
@@ -32,18 +32,18 @@ export function getCheckedInParticipantIds({ matchUp }) {
 
   const timeItems = matchUp.timeItems || [];
   const checkInItems = timeItems
-    .filter(timeItem => [CHECK_IN, CHECK_OUT].includes(timeItem.itemSubject))
+    .filter((timeItem) => [CHECK_IN, CHECK_OUT].includes(timeItem.itemSubject))
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const timeItemParticipantIds = checkInItems.map(
-    timeItem => timeItem.itemValue
+    (timeItem) => timeItem.itemValue
   );
 
   // first determine whether each timeItemParticipantId is checkedIn
   const checkedInParticipantIds = timeItemParticipantIds.filter(
-    participantId => {
+    (participantId) => {
       const participantCheckedIn =
         checkInItems
-          .filter(timeItem => timeItem.itemValue === participantId)
+          .filter((timeItem) => timeItem.itemValue === participantId)
           .reverse()[0].itemSubject === CHECK_IN;
       return participantCheckedIn;
     }
@@ -72,7 +72,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   sideParticipantIds.forEach((sideParticipantId, sideIndex) => {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(
-        participantId => {
+        (participantId) => {
           if (!checkedInParticipantIds.includes(participantId)) {
             checkedInParticipantIds.push(participantId);
           }

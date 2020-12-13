@@ -458,7 +458,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(seedAssignments.length).toEqual(16);
   const assignedSeedPositions = seedAssignments.filter(
-    assignment => assignment.participantId
+    (assignment) => assignment.participantId
   );
   expect(assignedSeedPositions.length).toEqual(3);
 });
@@ -468,7 +468,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
     structure: { structureId },
   } = mainDrawWithEntries({ drawSize });
   const seedsCount = Math.max(
-    ...[].concat(...expectedBlocks.map(b => b.seedNumbers))
+    ...[].concat(...expectedBlocks.map((b) => b.seedNumbers))
   );
 
   drawEngine.attachPolicy({ policyDefinition: policy });

@@ -1,6 +1,5 @@
 import {
   INVALID_TIME_ITEM,
-  MATCHUP_NOT_FOUND,
   MISSING_TIME_ITEM,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
@@ -13,7 +12,7 @@ export function addTournamentTimeItem({ tournamentRecord, timeItem }) {
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];
   const validTimeItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       timeItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 

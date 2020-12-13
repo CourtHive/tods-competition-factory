@@ -21,7 +21,7 @@ export function stateMocks({ count = 1 } = {}) {
   const shuffledStates = shuffleArray(statesData);
   const states = shuffledStates
     .slice(0, count)
-    .map(state => Object.keys(state))
+    .map((state) => Object.keys(state))
     .flat();
   return { states };
 }

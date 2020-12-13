@@ -35,7 +35,7 @@ export function getTargetMatchUp({
     inContext: true,
   });
   const targetRoundMatchUps = matchUps.filter(
-    matchUp => matchUp.roundNumber === roundNumber
+    (matchUp) => matchUp.roundNumber === roundNumber
   );
   const targetRoundMatchUpCount = targetRoundMatchUps.length;
 

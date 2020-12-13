@@ -35,7 +35,7 @@ it('can assign ELIMINATION draw drawPositions', () => {
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
-  const participantIds = mainDrawEntries.map(e => e.participantId);
+  const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { structureId } = structure;
   ({ drawDefinition } = drawEngine.getState());
@@ -108,7 +108,7 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
-  const participantIds = mainDrawEntries.map(e => e.participantId);
+  const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { unassignedPositions } = structureAssignedDrawPositions({
     drawDefinition,

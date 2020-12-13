@@ -11,8 +11,8 @@ export function findCourt({ tournamentRecord, courtId }) {
 
   let court, venue;
 
-  (tournamentRecord.venues || []).forEach(venueRecord => {
-    (venueRecord.courts || []).forEach(courtRecord => {
+  (tournamentRecord.venues || []).forEach((venueRecord) => {
+    (venueRecord.courts || []).forEach((courtRecord) => {
       if (courtRecord.courtId === courtId) {
         court = courtRecord;
         venue = venueRecord;
@@ -36,16 +36,16 @@ export function getCourts({ tournamentRecord, venueId, venueIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const courts = (tournamentRecord.venues || [])
-    .filter(venue => {
+    .filter((venue) => {
       if (venueId) return venue.venueId === venueId;
       if (venueIds) return venueIds.includes(venue.venueId);
       if (!venueId && !venueIds) return true;
       return false;
     })
-    .map(venue => {
+    .map((venue) => {
       const { venueId } = venue;
       const venueCourts = makeDeepCopy(venue.courts || []);
-      venueCourts.forEach(court => Object.assign(court, { venueId }));
+      venueCourts.forEach((court) => Object.assign(court, { venueId }));
       return venueCourts;
     })
     .flat();

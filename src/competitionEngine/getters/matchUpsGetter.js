@@ -11,7 +11,7 @@ export function allCompetitionMatchUps({
 
   const tournamentIds = Object.keys(tournamentRecords);
   const competitionMatchUps = tournamentIds
-    .map(tournamentId => {
+    .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       return tournamentEngine
         .setState(tournamentRecord)
@@ -34,7 +34,7 @@ export function competitionScheduleMatchUps(props) {
     ...(pendingMatchUps || []),
   ].sort((a, b) => getTime(a) - getTime(b));
 
-  const courtsData = courts.map(court => {
+  const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
       ...court,
@@ -47,7 +47,7 @@ export function competitionScheduleMatchUps(props) {
 
   function getCourtMatchUps({ courtId }) {
     return dateMatchUps
-      .filter(matchUp => matchUp.schedule?.courtId === courtId)
+      .filter((matchUp) => matchUp.schedule?.courtId === courtId)
       .sort(
         (a, b) =>
           new Date(a.scheduledTime).getTime() -
@@ -78,7 +78,7 @@ export function competitionMatchUps({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
-  const tournamentsMatchUps = tournamentIds.map(tournamentId => {
+  const tournamentsMatchUps = tournamentIds.map((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     return tournamentEngine
       .setState(tournamentRecord)
@@ -88,7 +88,7 @@ export function competitionMatchUps({
   const matchUpGroupings = tournamentsMatchUps.reduce(
     (groupings, tournamentMatchUps) => {
       const keys = Object.keys(tournamentMatchUps);
-      keys.forEach(key => {
+      keys.forEach((key) => {
         if (!groupings[key]) groupings[key] = [];
         groupings[key] = groupings[key].concat(tournamentMatchUps[key]);
       });

@@ -3,10 +3,10 @@
   "entryProfile": {
     "QUALIFYING": {
       "drawSize": 32,
-      "alternates": true,
+      "alternates": true
     },
     "MAIN": {
-      "alternates": false,
+      "alternates": false
     }
   },
   "positionAssignments": [],

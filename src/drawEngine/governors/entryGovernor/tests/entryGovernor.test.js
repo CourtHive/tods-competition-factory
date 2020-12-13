@@ -138,7 +138,7 @@ it('can add bulk entries', () => {
     { participantId: 'uuid7' },
     { participantId: 'uuid8' },
   ];
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
   expect(result).toMatchObject(SUCCESS);
 });
@@ -157,7 +157,7 @@ it('rejects bulk entries if there is insufficient space', () => {
     { participantId: 'uuid7' },
     { participantId: 'uuid8' },
   ];
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
   expect(result).toHaveProperty(ERROR);
 });

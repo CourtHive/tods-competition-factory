@@ -16,7 +16,7 @@ export function deleteVenue({
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   const { courts } = getCourts({ tournamentRecord, venueId });
-  const courtIds = courts.map(court => court.courtId);
+  const courtIds = courts.map((court) => court.courtId);
   const contextFilters = { courtIds };
   const { matchUps: matchUpsToUnschedule } = allTournamentMatchUps({
     tournamentRecord,
@@ -25,7 +25,7 @@ export function deleteVenue({
   });
 
   if (!matchUpsToUnschedule.length || force) {
-    matchUpsToUnschedule.forEach(matchUp => {
+    matchUpsToUnschedule.forEach((matchUp) => {
       removeCourtAssignment({
         tournamentRecord,
         drawDefinition,
@@ -37,7 +37,7 @@ export function deleteVenue({
   }
 
   tournamentRecord.venues = tournamentRecord.venues.filter(
-    venue => venue.venueId !== venueId
+    (venue) => venue.venueId !== venueId
   );
 
   return SUCCESS;
@@ -46,7 +46,7 @@ export function deleteVenue({
 export function deleteVenues({ tournamentRecord, drawEngine, venueIds }) {
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
-  tournamentRecord.venues.forEach(venue => {
+  tournamentRecord.venues.forEach((venue) => {
     const { venueId } = venue;
     if (venueIds.includes(venueId)) {
       const { venueId } = venue;

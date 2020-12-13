@@ -4,11 +4,11 @@ export function generateTieMatchUps({ tieFormat, uuids }) {
   const { collectionDefinitions } = tieFormat || {};
 
   const tieMatchUps = (collectionDefinitions || [])
-    .map(collectionDefinition => {
+    .map((collectionDefinition) => {
       const { matchUpCount, matchUpFormat, matchUpType, collectionId } =
         collectionDefinition || {};
 
-      const matchUps = generateRange(0, matchUpCount || 0).map(index => {
+      const matchUps = generateRange(0, matchUpCount || 0).map((index) => {
         const collectionPosition = index + 1;
 
         const matchUp = {
@@ -25,7 +25,7 @@ export function generateTieMatchUps({ tieFormat, uuids }) {
 
       return matchUps;
     })
-    .filter(f => f)
+    .filter((f) => f)
     .flat();
   return { tieMatchUps };
 }

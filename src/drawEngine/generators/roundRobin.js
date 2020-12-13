@@ -39,7 +39,7 @@ export function generateRoundRobin({
     drawSize,
   });
 
-  const structures = generateRange(1, groupCount + 1).map(structureIndex =>
+  const structures = generateRange(1, groupCount + 1).map((structureIndex) =>
     structureTemplate({
       matchUpFormat,
       structureIndex,
@@ -186,7 +186,7 @@ export function generateRoundRobinWithPlayOff(props) {
 
       return undefined;
     })
-    .filter(f => f);
+    .filter((f) => f);
 
   // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(
@@ -239,7 +239,7 @@ function deriveGroups({ structureOptions, drawSize }) {
 }
 
 function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
-  return generateRange(3, groupSizeLimit + 1).filter(groupSize => {
+  return generateRange(3, groupSizeLimit + 1).filter((groupSize) => {
     const minimumGroups = Math.ceil(drawSize / groupSize);
     const byes = minimumGroups * groupSize - drawSize;
     return byes < groupSize;
@@ -286,7 +286,7 @@ function roundRobinMatchUps({ groupSize, structureIndex, uuids }) {
 }
 
 function groupRounds({ groupSize, drawPositionOffset }) {
-  const numArr = count => [...Array(count)].map((_, i) => i);
+  const numArr = (count) => [...Array(count)].map((_, i) => i);
   const groupPositions = numArr(2 * Math.round(groupSize / 2) + 1).slice(1);
   const rounds = numArr(groupPositions.length - 1).map(() => []);
 
@@ -310,10 +310,10 @@ function groupRounds({ groupSize, drawPositionOffset }) {
   aRow = [].concat(aHead, bUp, ...aRow);
   bRow = [].concat(...bRow, aDown);
 
-  return rounds.reverse().map(round =>
-    round.map(groupPositions => {
+  return rounds.reverse().map((round) =>
+    round.map((groupPositions) => {
       const drawPositions = groupPositions.map(
-        groupPosition => groupPosition + drawPositionOffset
+        (groupPosition) => groupPosition + drawPositionOffset
       );
       return drawPositionsHash(drawPositions);
     })

@@ -27,9 +27,11 @@ export function treeMatchUps({
     return { matchUps: [], roundsCount: 0 };
   }
 
-  const nodes = generateRange(1, parseInt(drawSize) + 1).map(drawPosition => ({
-    drawPosition,
-  }));
+  const nodes = generateRange(1, parseInt(drawSize) + 1).map(
+    (drawPosition) => ({
+      drawPosition,
+    })
+  );
 
   let roundNodes;
   let matchUps = [];
@@ -60,7 +62,7 @@ export function treeMatchUps({
   });
 
   if (roundLimit) {
-    matchUps = matchUps.filter(matchUp => matchUp.roundNumber <= roundLimit);
+    matchUps = matchUps.filter((matchUp) => matchUp.roundNumber <= roundLimit);
   }
 
   return { matchUps, roundsCount, roundLimit };
@@ -82,7 +84,7 @@ function addFinishingRounds({
   const roundMatchCountArray = Object.values(roundMatchCounts);
 
   // returns a range for array of possible finishing drawPositions
-  const finishingRange = drawPositions => [
+  const finishingRange = (drawPositions) => [
     Math.min(...drawPositions),
     Math.max(...drawPositions),
   ];
@@ -90,7 +92,7 @@ function addFinishingRounds({
   // for qualifying, offset the final round so that qualifyinground is finishingRound
   const finishingRoundOffset = roundLimit ? roundsCount - roundLimit : 0;
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     matchUp.finishingRound =
       roundsCount + 1 - matchUp.roundNumber - finishingRoundOffset;
 
@@ -138,7 +140,7 @@ function buildRound({ roundNumber, nodes, matchUps }) {
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
-      drawPositions: node.children.map(c => c.drawPosition),
+      drawPositions: node.children.map((c) => c.drawPosition),
     });
     index += 2;
     roundPosition++;
@@ -148,7 +150,7 @@ function buildRound({ roundNumber, nodes, matchUps }) {
 }
 
 export function feedDrawSize({ opponentCount }) {
-  const baseRanges = generateRange(0, 10).map(i => {
+  const baseRanges = generateRange(0, 10).map((i) => {
     const positionsBase = Math.pow(2, i);
     const feedPositions = positionsBase - 1;
     const maxByes = positionsBase / 2 - 1;
@@ -168,7 +170,7 @@ export function feedDrawSize({ opponentCount }) {
 function roundMatchCounts({ drawSize }) {
   const rounds = Math.ceil(Math.log(drawSize) / Math.log(2));
   const range = generateRange(0, rounds).reverse();
-  return range.map(r => Math.pow(2, r));
+  return range.map((r) => Math.pow(2, r));
 }
 
 export function feedInMatchUps({
@@ -197,7 +199,7 @@ export function feedInMatchUps({
   } else if (drawSize) {
     // having a drawSize defined trumps other configuration options
     let positionsToFeed = drawSize - baseDrawSize;
-    feedRoundsProfile = baseDrawRounds.filter(feedSize => {
+    feedRoundsProfile = baseDrawRounds.filter((feedSize) => {
       if (feedSize <= positionsToFeed) {
         positionsToFeed -= feedSize;
         return true;
@@ -238,14 +240,14 @@ export function feedInMatchUps({
   // linkFedRoundNumbers[] and linkFedFinishingRoundNumbers[]
   // the difference being which end of the draw structure === 1
   const linkFedRoundNumbersIndices = [
-    ...linkFedRoundNumbers.map(n => n - 1),
-    ...linkFedFinishingRoundNumbers.map(n => roundsCount - n),
+    ...linkFedRoundNumbers.map((n) => n - 1),
+    ...linkFedFinishingRoundNumbers.map((n) => roundsCount - n),
   ];
 
   // positionsFedByLinks can be determined by summing the values in allRounds
   // which are found at linkFedRoundNumbersIndices
   const positionsFedByLinks = linkFedRoundNumbersIndices
-    .map(i => allRounds[i])
+    .map((i) => allRounds[i])
     .reduce((a, b) => a + b, 0);
   positionsFed = positionsFed - positionsFedByLinks;
 
@@ -345,7 +347,7 @@ function buildFeedRound({
   const drawPositionGroup = generateRange(
     0,
     feedRoundMatchUpsCount
-  ).map(value =>
+  ).map((value) =>
     initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
   );
 

@@ -11,7 +11,7 @@ it('can check-in and check-out matchUp participants', () => {
     participantType: PAIR,
   });
   const doublesParticipants = participants.filter(
-    participant => participant.participantType === PAIR
+    (participant) => participant.participantType === PAIR
   );
 
   generateDrawStructure({

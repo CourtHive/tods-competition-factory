@@ -7,16 +7,16 @@ export function mergeParticipants({
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
   incomingParticipants = incomingParticipants.filter(
-    participant => participant.participantId
+    (participant) => participant.participantId
   );
 
   const idMap = Object.assign(
-    ...incomingParticipants.map(p => ({ [p.participantId]: p }))
+    ...incomingParticipants.map((p) => ({ [p.participantId]: p }))
   );
 
   // check for overlap with existing players, add any newly retrieved attributes to existing
   let modifiedParticipants = 0;
-  tournamentRecord.participants.forEach(p => {
+  tournamentRecord.participants.forEach((p) => {
     if (idMap[p.participantId]) {
       Object.assign(p, idMap[p.participantId]);
       modifiedParticipants++;
@@ -24,9 +24,9 @@ export function mergeParticipants({
   });
 
   const existingParticipantIds = tournamentRecord.participants.map(
-    p => p.participantId
+    (p) => p.participantId
   );
-  const newParticipants = incomingParticipants.filter(p =>
+  const newParticipants = incomingParticipants.filter((p) =>
     existingParticipantIds.includes(p.participantId)
   );
 

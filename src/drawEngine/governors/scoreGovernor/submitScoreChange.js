@@ -58,7 +58,7 @@ function getModifiedSet(props) {
   let { matchUpFormat } = props || {};
   const analysis = analyzeMatchUp(props);
 
-  const setObject = matchUp?.sets.find(set => set.setNumber === setNumber);
+  const setObject = matchUp?.sets.find((set) => set.setNumber === setNumber);
   const modifiedSet = Object.assign({}, setObject || { setNumber });
 
   if (isTiebreakValue) {

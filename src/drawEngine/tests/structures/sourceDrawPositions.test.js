@@ -68,7 +68,7 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
 });
 
 function validateSourceDrawPositionRanges({ matchUps, validations }) {
-  validations.forEach(validation => {
+  validations.forEach((validation) => {
     const [
       roundNumber,
       roundPosition,
@@ -77,11 +77,11 @@ function validateSourceDrawPositionRanges({ matchUps, validations }) {
       roundName,
     ] = validation;
     const matchUp = matchUps.find(
-      matchUp =>
+      (matchUp) =>
         matchUp.roundNumber === roundNumber &&
         matchUp.roundPosition === roundPosition
     );
-    const side = matchUp.sides.find(side => side.sideNumber === sideNumber);
+    const side = matchUp.sides.find((side) => side.sideNumber === sideNumber);
 
     if (side?.sourceDrawPositionRange !== range) {
       console.log(validation);

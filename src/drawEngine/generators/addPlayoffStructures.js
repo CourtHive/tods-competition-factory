@@ -6,16 +6,16 @@ import { unique } from '../../utilities';
 export function addPlayoffStructures({
   drawDefinition,
   structureId,
-  playoffPositions,
+  // playoffPositions,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const { roundProfile, roundMatchUps } = getStructureRoundProfile({
+  const { roundProfile /*roundMatchUps*/ } = getStructureRoundProfile({
     drawDefinition,
     structureId,
   });
   const fpr = Object.values(roundProfile)
-    .map(v => [
+    .map((v) => [
       unique(v.finishingPositionRange.loser),
       unique(v.finishingPositionRange.winner),
     ])

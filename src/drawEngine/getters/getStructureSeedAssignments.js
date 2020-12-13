@@ -32,7 +32,7 @@ export function getStructureSeedAssignments({
         stage,
       });
       const seedProxies = entries
-        .filter(entry => entry.placementGroup === 1)
+        .filter((entry) => entry.placementGroup === 1)
         .sort((a, b) => {
           return a.GEMscore < b.GEMscore ? 1 : a.GEMscore > b.GEMscore ? -1 : 0;
         })

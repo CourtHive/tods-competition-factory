@@ -17,7 +17,7 @@ export function removeDrawPositionAssignment(props) {
   if (event) {
     drawEngine.clearDrawPosition(props);
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map(drawDefinition => {
+    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
       return drawDefinition.drawId === drawId
         ? updatedDrawDefinition
         : drawDefinition;

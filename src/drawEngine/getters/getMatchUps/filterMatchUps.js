@@ -17,7 +17,7 @@ export function filterMatchUps({
   localPerspective,
   isCollectionMatchUp,
 }) {
-  const filteredMatchUps = matchUps.filter(matchUp => {
+  const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieFormat) return false;
       if (!isMatchUpTie && matchUp.tieFormat) return false;

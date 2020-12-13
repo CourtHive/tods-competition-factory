@@ -28,7 +28,7 @@ export function generateMockParticipants({
     sex,
     count: individualParticipantsCount,
   });
-  const isoCountries = countries.filter(country => country.iso);
+  const isoCountries = countries.filter((country) => country.iso);
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
   function getMin(count) {
@@ -47,7 +47,7 @@ export function generateMockParticipants({
   const isoList = isoMin
     ? shuffleArray(isoCountries).slice(0, nationalityCodesCount)
     : nationalityCodes
-    ? isoCountries.filter(isoCountry =>
+    ? isoCountries.filter((isoCountry) =>
         nationalityCodes.includes(isoCountry.key)
       )
     : isoCountries;
@@ -59,22 +59,22 @@ export function generateMockParticipants({
   );
 
   const participants = generateRange(0, participantsCount)
-    .map(i => {
+    .map((i) => {
       const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;
       const individualParticipants = generateRange(
         0,
         sideParticipantsCount
-      ).map(j => {
+      ).map((j) => {
         const participantIndex = i * sideParticipantsCount + j;
         return generateIndividualParticipant(participantIndex);
       });
 
       const individualParticipantIds = individualParticipants.map(
-        participant => participant.participantId
+        (participant) => participant.participantId
       );
 
       const pairName = individualParticipants
-        .map(i => i.person.standardFamilyName)
+        .map((i) => i.person.standardFamilyName)
         .join('/');
 
       const groupParticipant = {

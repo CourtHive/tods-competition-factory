@@ -36,7 +36,7 @@ export function addCourt({ tournamentRecord, venueId, court }) {
     return { error: COURT_EXISTS };
   } else {
     const errors = [];
-    Object.keys(courtRecord).forEach(attribute => {
+    Object.keys(courtRecord).forEach((attribute) => {
       if (court[attribute]) {
         if (attribute === 'dateAvailability') {
           const result = validDateAvailability({
@@ -46,7 +46,7 @@ export function addCourt({ tournamentRecord, venueId, court }) {
           if (valid) {
             courtRecord[attribute] = court[attribute];
           } else {
-            error.errors.forEach(error => errors.push(error));
+            error.errors.forEach((error) => errors.push(error));
           }
         } else {
           courtRecord[attribute] = court[attribute];
@@ -81,7 +81,7 @@ export function addCourts({
   if (!courtsCount || !courtNames) return { error: MISSING_COURTS_INFO };
 
   courtsCount = courtsCount || courtNames.length;
-  const courts = generateRange(0, courtsCount).map(i => {
+  const courts = generateRange(0, courtsCount).map((i) => {
     const court = {
       courtName: courtNames[i] || `Court ${i + 1}`,
       dateAvailability,
@@ -89,10 +89,10 @@ export function addCourts({
     return court;
   });
 
-  const result = courts.map(court =>
+  const result = courts.map((court) =>
     addCourt({ tournamentRecord, venueId, court })
   );
-  const courtRecords = result.map(outcome => outcome.court).filter(f => f);
+  const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 
   if (courtRecords.length === courtsCount) {
     return Object.assign({}, { courts: courtRecords }, SUCCESS);

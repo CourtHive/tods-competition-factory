@@ -25,7 +25,7 @@ export function matchUpDuration({ matchUp }) {
   if (!matchUp.timeItems) return { error: MISSING_TIME_ITEMS };
 
   const relevantTimeItems = matchUp.timeItems
-    .filter(timeItem =>
+    .filter((timeItem) =>
       [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
         timeItem.itemSubject
       )

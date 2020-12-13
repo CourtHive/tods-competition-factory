@@ -68,7 +68,7 @@ export function assignDrawPositionBye({
   }
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
-  positionAssignments.forEach(assignment => {
+  positionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.bye = true;
     }
@@ -81,7 +81,7 @@ export function assignDrawPositionBye({
     structure,
   });
 
-  matchUps.forEach(matchUp => {
+  matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       const { matchUpId } = matchUp;
       setMatchUpStatus({
@@ -125,12 +125,12 @@ export function assignDrawPositionBye({
         });
 
         const linkCondition = linksTargetingStructure.find(
-          link => link.linkCondition
+          (link) => link.linkCondition
         );
 
         // loserMatchUp must have both drawPositions defined
         const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
-          f => f
+          (f) => f
         ).length;
         if (loserMatchUpDrawPositionsCount !== 2)
           return { error: MISSING_DRAW_POSITIONS };
@@ -248,8 +248,8 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
   const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
-    .filter(assignment => assignment.participantId)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.participantId)
+    .map((assignment) => assignment.drawPosition);
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
@@ -262,19 +262,19 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
   const relevantMatchUps =
     structure.structureType === CONTAINER ? matchUps : firstRoundMatchUps;
   const relevantDrawPositions = unique(
-    [].concat(...relevantMatchUps.map(matchUp => matchUp.drawPositions))
+    [].concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions))
   );
   const drawPositionOffset = Math.min(...relevantDrawPositions) - 1;
 
-  const filledRelevantDrawPositions = filledDrawPositions.filter(drawPosition =>
-    relevantDrawPositions.includes(drawPosition)
+  const filledRelevantDrawPositions = filledDrawPositions.filter(
+    (drawPosition) => relevantDrawPositions.includes(drawPosition)
   );
 
-  const getHalves = chunk => {
+  const getHalves = (chunk) => {
     const halfLength = Math.ceil(chunk.length / 2);
     const halves = [chunk.slice(0, halfLength), chunk.slice(halfLength)];
     const halfLengths = halves.map(
-      half => [].concat(...half.flat(Infinity)).length
+      (half) => [].concat(...half.flat(Infinity)).length
     );
     const shortLength = Math.min(...halfLengths.flat(Infinity));
     const longLength = Math.max(...halfLengths.flat(Infinity));
@@ -287,7 +287,7 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
         : [shuffledHalves[0], shuffledHalves[1]];
     return { greaterHalf, lesserHalf };
   };
-  const getNextDrawPosition = chunks => {
+  const getNextDrawPosition = (chunks) => {
     const { greaterHalf, lesserHalf } = getHalves(chunks);
     const {
       greaterHalf: greaterQuarter,
@@ -297,7 +297,7 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
     const drawPosition = shuffledQuarter.pop();
     const diminishedQuarter = greaterQuarter
       .flat()
-      .filter(position => position !== drawPosition);
+      .filter((position) => position !== drawPosition);
     const newlyFilteredChunks = [
       ...lesserHalf,
       ...lesserQuarter,
@@ -305,14 +305,14 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
     ];
     return { newlyFilteredChunks, drawPosition };
   };
-  const unfilledDrawPosition = drawPosition =>
+  const unfilledDrawPosition = (drawPosition) =>
     !filledRelevantDrawPositions.includes(drawPosition);
-  const quarterSeparateBlock = block => {
+  const quarterSeparateBlock = (block) => {
     const sortedChunked = chunkArray(
       block.sort(numericSort),
       Math.ceil(block.length / 4)
     );
-    let filteredChunks = sortedChunked.map(chunk =>
+    let filteredChunks = sortedChunked.map((chunk) =>
       chunk.filter(unfilledDrawPosition)
     );
     const drawPositionCount = [].concat(...filteredChunks.flat(Infinity))
@@ -335,40 +335,42 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
     appliedPolicies,
     allPositions: true,
   });
-  const validBlockDrawPositions = validSeedBlocks.map(block =>
-    block.drawPositions?.map(drawPosition => drawPosition + drawPositionOffset)
+  const validBlockDrawPositions = validSeedBlocks.map((block) =>
+    block.drawPositions?.map(
+      (drawPosition) => drawPosition + drawPositionOffset
+    )
   );
   let unfilledSeedBlocks = validBlockDrawPositions
     .map(quarterSeparateBlock)
-    .filter(block => block.length);
+    .filter((block) => block.length);
 
   if (isFeedIn) {
     // FEED_IN structures calculate seedDrawPositions uniquely
     // and require a special case to properly calculate bye positions
     const baseDrawSize = relevantDrawPositions.length;
     const blockDrawPositions = Object.keys(seedBlocks)
-      .filter(key => key < baseDrawSize / 2)
-      .map(key => {
+      .filter((key) => key < baseDrawSize / 2)
+      .map((key) => {
         const seedDrawPositions = seedBlocks[key].map(
-          d => +d[0] + baseDrawSize * d[1]
+          (d) => +d[0] + baseDrawSize * d[1]
         );
         return seedDrawPositions.map(
-          drawPosition => drawPosition + drawPositionOffset
+          (drawPosition) => drawPosition + drawPositionOffset
         );
       });
 
     unfilledSeedBlocks = blockDrawPositions
       .map(quarterSeparateBlock)
-      .filter(block => block.length);
+      .filter((block) => block.length);
   }
 
   // for Round Robins pairs need to be reduced to pairs in drawPosition order
   const matchUpPairedDrawPositions = relevantMatchUps
-    .map(matchUp => matchUp.drawPositions)
-    .map(pair => pair.sort((a, b) => a - b))
-    .filter(pair => pair[0] + 1 === pair[1]);
+    .map((matchUp) => matchUp.drawPositions)
+    .map((pair) => pair.sort((a, b) => a - b))
+    .filter((pair) => pair[0] + 1 === pair[1]);
 
-  const findDrawPositionPair = drawPosition => {
+  const findDrawPositionPair = (drawPosition) => {
     return matchUpPairedDrawPositions.reduce((pair, candidate) => {
       return candidate.includes(drawPosition)
         ? candidate.reduce((p, c) => (c !== drawPosition ? c : p), undefined)
@@ -377,9 +379,9 @@ function getUnseededByePositions({ structure, appliedPolicies, isFeedIn }) {
   };
 
   const unseededByePositions = unfilledSeedBlocks
-    .map(block => block.map(findDrawPositionPair))
+    .map((block) => block.map(findDrawPositionPair))
     .flat(Infinity)
-    .filter(f => f);
+    .filter((f) => f);
 
   return { unseededByePositions };
 }
@@ -401,17 +403,19 @@ function getSeedOrderByePositions({
   });
 
   const relevantDrawPositions = unique(
-    [].concat(...relevantMatchUps.map(matchUp => matchUp.drawPositions))
+    [].concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions))
   );
-  const relevantPositionedSeeds = positionedSeeds.filter(positionedSeed => {
+  const relevantPositionedSeeds = positionedSeeds.filter((positionedSeed) => {
     return relevantDrawPositions.includes(positionedSeed.drawPosition);
   });
 
   const blockSortedRandomDrawPositions = []
     .concat(
-      ...validSeedBlocks.map(seedBlock => shuffleArray(seedBlock.drawPositions))
+      ...validSeedBlocks.map((seedBlock) =>
+        shuffleArray(seedBlock.drawPositions)
+      )
     )
-    .filter(drawPosition => relevantDrawPositions.includes(drawPosition));
+    .filter((drawPosition) => relevantDrawPositions.includes(drawPosition));
 
   // within seedBlocks positionedSeeds are sorted by seedValue to handle the situation
   // where there are multiple players seeded with the same seedValue which have been
@@ -422,7 +426,7 @@ function getSeedOrderByePositions({
   const valueOrderedBlockSortedPositionedSeeds = validSeedBlocks.reduce(
     (result, seedBlock) => {
       const positionedSeedsInBlock = relevantPositionedSeeds
-        .filter(positionedSeed =>
+        .filter((positionedSeed) =>
           seedBlock.drawPositions?.includes(positionedSeed.drawPosition)
         )
         .sort(seedValueSort);
@@ -431,7 +435,7 @@ function getSeedOrderByePositions({
     []
   );
   const orderedSortedFirstRoundSeededDrawPositions = valueOrderedBlockSortedPositionedSeeds.map(
-    positionedSeed => positionedSeed.drawPosition
+    (positionedSeed) => positionedSeed.drawPosition
   );
 
   // returns list of bye positions which strictly follows where seeds
@@ -466,15 +470,15 @@ function getOrderedByePositions({
   // and therefore must placed in drawOrder within Groups
 
   const matchUpDrawPositionPairs = relevantMatchUps.map(
-    matchUp => matchUp.drawPositions
+    (matchUp) => matchUp.drawPositions
   );
   const consideredDrawPositionPairs = matchUpDrawPositionPairs
-    .map(pair => pair.sort((a, b) => a - b))
-    .filter(pair => pair[0] + 1 === pair[1]);
+    .map((pair) => pair.sort((a, b) => a - b))
+    .filter((pair) => pair[0] + 1 === pair[1]);
 
   // sort seededMatchUps so that pairedPositions represent seed order
   const seedOrderSortedDrawPositionPairs = orderedSeedDrawPositions
-    .map(drawPosition => {
+    .map((drawPosition) => {
       return consideredDrawPositionPairs.reduce(
         (drawPositionPair, drawPositions) => {
           if (drawPositionPair) return drawPositionPair; // take the first occurrence
@@ -485,16 +489,16 @@ function getOrderedByePositions({
         undefined
       );
     })
-    .filter(f => f);
+    .filter((f) => f);
   const orderedByePositions = seedOrderSortedDrawPositionPairs
-    .map(drawPositions => {
+    .map((drawPositions) => {
       return drawPositions?.reduce((byePosition, drawPosition) => {
         return orderedSeedDrawPositions.includes(drawPosition)
           ? byePosition
           : drawPosition;
       }, undefined);
     })
-    .filter(f => f);
+    .filter((f) => f);
 
   return orderedByePositions;
 }
@@ -540,17 +544,17 @@ export function getByesData({ drawDefinition, structure }) {
     unassignedPositions,
   } = structureAssignedDrawPositions({ structure });
   const unassignedDrawPositions = unassignedPositions.map(
-    position => position.drawPosition
+    (position) => position.drawPosition
   );
-  const placedByes = positionAssignments.filter(assignment => assignment.bye)
+  const placedByes = positionAssignments.filter((assignment) => assignment.bye)
     .length;
   const placedByePositions = positionAssignments
-    .filter(assignment => assignment.bye)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.bye)
+    .map((assignment) => assignment.drawPosition);
 
   const validByePositions = relevantMatchUps
-    .map(matchUp => matchUp.drawPositions)
-    .filter(drawPositions => {
+    .map((matchUp) => matchUp.drawPositions)
+    .filter((drawPositions) => {
       return (
         drawPositions &&
         drawPositions?.reduce(
@@ -561,7 +565,7 @@ export function getByesData({ drawDefinition, structure }) {
       );
     })
     .flat(Infinity)
-    .filter(drawPosition => unassignedDrawPositions.includes(drawPosition));
+    .filter((drawPosition) => unassignedDrawPositions.includes(drawPosition));
 
   // maxByes limitation applies only to stageSequence #1
   // when doubleByes are supported may do away with maxByes

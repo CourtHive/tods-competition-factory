@@ -22,10 +22,10 @@ export function tallyParticipantResults({
 
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   const relevantMatchUps = matchUps.filter(
-    matchUp => matchUp.matchUpStatus !== 'BYE'
+    (matchUp) => matchUp.matchUpStatus !== 'BYE'
   );
   const bracketComplete =
-    relevantMatchUps.filter(m => m.winningSide !== undefined).length ===
+    relevantMatchUps.filter((m) => m.winningSide !== undefined).length ===
     relevantMatchUps.length;
   if (!bracketComplete) perPlayer = 0;
 
@@ -33,8 +33,8 @@ export function tallyParticipantResults({
   const participantResults = {};
 
   relevantMatchUps
-    .filter(f => f)
-    .forEach(matchUp => {
+    .filter((f) => f)
+    .forEach((matchUp) => {
       const scoreString =
         typeof matchUp?.score === 'object'
           ? matchUp.score.scoreStringSide1
@@ -110,7 +110,7 @@ export function tallyParticipantResults({
         participantResults[losingParticipantId].pointsLost += pointsTally[0];
       } else {
         if (matchUp.sides)
-          matchUp.sides.forEach(side =>
+          matchUp.sides.forEach((side) =>
             checkInitializeParticipant(side.participantId)
           );
       }
@@ -140,7 +140,7 @@ export function tallyParticipantResults({
     parsedGroupMatchUpFormat.setFormat &&
     parsedGroupMatchUpFormat.setFormat.setTo;
 
-  Object.keys(participantResults).forEach(participantId => {
+  Object.keys(participantResults).forEach((participantId) => {
     const setsNumerator = participantResults[participantId].setsWon;
     const setsDenominator = participantResults[participantId].setsLost;
     const setsTotal = perPlayer * (bracketSetsToWin || 0) || setsNumerator;
@@ -193,9 +193,9 @@ export function tallyParticipantResults({
   const order = determineTeamOrder(participantResults);
 
   if (order) {
-    const rankOrderList = order.map(o => o.rankOrder);
+    const rankOrderList = order.map((o) => o.rankOrder);
 
-    order.forEach(o => {
+    order.forEach((o) => {
       participantResults[o.id].GEMscore = o.GEMscore;
       if (o !== undefined && o.rankOrder !== undefined) {
         participantResults[o.id].groupOrder = o.rankOrder;
@@ -242,7 +242,7 @@ export function tallyParticipantResults({
       if (winner !== undefined && setsToWin) setsTally[winner] = setsToWin;
     } else {
       if (sets) {
-        sets.forEach(set => {
+        sets.forEach((set) => {
           const { winningSide } = set;
           if (winningSide) setsTally[winningSide - 1] += 1;
         });
@@ -260,9 +260,9 @@ export function tallyParticipantResults({
     const pointsTally = [0, 0];
     if (!scoreString) return pointsTally;
     const setScores = scoreString.split(' ');
-    setScores.forEach(setScore => {
+    setScores.forEach((setScore) => {
       const scores = /\d+\/\d+/.test(setScore)
-        ? setScore.split('/').map(s => /\d+/.exec(s)[0])
+        ? setScore.split('/').map((s) => /\d+/.exec(s)[0])
         : [0, 0];
       if (scores) {
         pointsTally[0] += parseInt(scores[0]);
@@ -287,7 +287,7 @@ export function tallyParticipantResults({
       }
     } else {
       if (sets) {
-        sets.forEach(set => {
+        sets.forEach((set) => {
           ({ side1Score, side2Score } = set);
           gamesTally[0].push(parseInt(side1Score));
           gamesTally[1].push(parseInt(side2Score));
@@ -295,11 +295,11 @@ export function tallyParticipantResults({
       } else {
         // TODO: Remove
         const setScores = scoreString.split(' ');
-        setScores.forEach(setScore => {
+        setScores.forEach((setScore) => {
           const scores =
             // eslint-disable-next-line no-useless-escape
             /\d+[\(\)\-\/]*/.test(setScore) && setScore.indexOf('-') > 0
-              ? setScore.split('-').map(s => /\d+/.exec(s)[0])
+              ? setScore.split('-').map((s) => /\d+/.exec(s)[0])
               : undefined;
           if (scores) {
             [side1Score, side2Score] = scores;
@@ -323,7 +323,7 @@ export function tallyParticipantResults({
       });
       const totalSets = setsTally.reduce((a, b) => a + b, 0);
       const loserLeadSet = gamesTally
-        .map(g => g[winner] <= g[1 - winner])
+        .map((g) => g[winner] <= g[1 - winner])
         .reduce((a, b) => a + b, 0);
       // if sets where loser lead > awarded sets, adjust last game to winner
       if (loserLeadSet > setsTally[1 - winner]) {
@@ -365,7 +365,7 @@ export function tallyParticipantResults({
       return arr;
     }, []);
     let complete = order.filter(
-      o =>
+      (o) =>
         participantsCount - 1 ===
         o.results.matchUpsWon +
           o.results.matchUpsLost +
@@ -377,17 +377,17 @@ export function tallyParticipantResults({
       return;
     }
 
-    complete.forEach(p => (p.orderHash = getOrderHash(p)));
-    complete.forEach(p => (p.GEMscore = getRatioHash(p)));
+    complete.forEach((p) => (p.orderHash = getOrderHash(p)));
+    complete.forEach((p) => (p.GEMscore = getRatioHash(p)));
 
     // START ORDER HASH
     if (headToHeadPriority) {
       complete.sort(
         (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
       );
-      const wins = complete.map(p => p.results.matchUpsWon);
+      const wins = complete.map((p) => p.results.matchUpsWon);
       const counts = unique(wins);
-      counts.forEach(count => {
+      counts.forEach((count) => {
         const i = indices(count, wins);
         if (i.length && i.length > 1) {
           const start = Math.min(...i);
@@ -404,8 +404,8 @@ export function tallyParticipantResults({
       complete.sort(orderHashSort);
     }
 
-    const hashOrder = unique(complete.map(c => c.orderHash));
-    complete.forEach(p => (p.hashOrder = hashOrder.indexOf(p.orderHash) + 1));
+    const hashOrder = unique(complete.map((c) => c.orderHash));
+    complete.forEach((p) => (p.hashOrder = hashOrder.indexOf(p.orderHash) + 1));
 
     // now account for equivalent hashOrder
     let rankOrder = 0;
@@ -424,9 +424,9 @@ export function tallyParticipantResults({
       complete.sort(
         (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
       );
-      const wins = complete.map(p => p.results.matchUpsWon);
+      const wins = complete.map((p) => p.results.matchUpsWon);
       const counts = unique(wins);
-      counts.forEach(count => {
+      counts.forEach((count) => {
         const i = indices(count, wins);
         if (i.length && i.length > 1) {
           const start = Math.min(...i);
@@ -443,8 +443,10 @@ export function tallyParticipantResults({
       complete.sort(ratioHashSort);
     }
 
-    const ratioOrder = unique(complete.map(c => c.GEMscore));
-    complete.forEach(p => (p.ratioOrder = ratioOrder.indexOf(p.GEMscore) + 1));
+    const ratioOrder = unique(complete.map((c) => c.GEMscore));
+    complete.forEach(
+      (p) => (p.ratioOrder = ratioOrder.indexOf(p.GEMscore) + 1)
+    );
 
     // pointsOrder is used for awarding points and may differ from
     // rankOrder if a player unable to advance due to walkover

@@ -4,7 +4,7 @@ export function verifyLinks({ linksProfiles = [] }) {
   const { drawDefinition } = drawEngine.getState();
   const { links } = { ...drawDefinition };
 
-  linksProfiles.forEach(linksProfile => {
+  linksProfiles.forEach((linksProfile) => {
     const { sourceStructureId, targetStructureId } = { ...linksProfile };
     let { linkProfiles } = { ...linksProfile };
     linkProfiles = linkProfiles.sort(
@@ -12,7 +12,7 @@ export function verifyLinks({ linksProfiles = [] }) {
     );
 
     const filteredLinks = links
-      .filter(link => {
+      .filter((link) => {
         return (
           link.source.structureId === sourceStructureId &&
           link.target.structureId === targetStructureId

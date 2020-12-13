@@ -1,7 +1,10 @@
 import { getCourtInfo } from './getCourtInfo';
 import { findVenue } from '../../getters/venueGetter';
 
-import { MISSING_VENUE_ID } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getVenueData({ tournamentRecord, venueId }) {
@@ -12,7 +15,7 @@ export function getVenueData({ tournamentRecord, venueId }) {
   if (error) return { error };
 
   const courts = venue.courts || [];
-  const courtsInfo = courts.map(court =>
+  const courtsInfo = courts.map((court) =>
     (({ courtInfo }) => ({
       ...courtInfo,
     }))(

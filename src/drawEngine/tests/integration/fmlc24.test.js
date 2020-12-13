@@ -38,7 +38,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
 
   // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 
@@ -68,7 +68,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     [1, 16, 2, undefined], // can't complete BYE
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -105,7 +105,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     [2, 8, 2, true], // side 2 had 1st round BYE, wins matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -118,10 +118,10 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   });
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
@@ -129,7 +129,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: BYE
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
@@ -161,7 +161,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
 
   // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 
@@ -191,7 +191,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     [1, 16, 2, undefined], // can't complete BYE
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -228,7 +228,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     [2, 8, 1, true], // side 2 had 1st round BYE, loses matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -241,10 +241,10 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   });
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(0);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
@@ -252,7 +252,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   // wne participants who advanced in the first-round of the main structure with a BYE lose their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: TO_BE_PLAYED
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 });
@@ -284,7 +284,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
 
   // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 
@@ -314,7 +314,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     [1, 16, 2, undefined], // can't complete BYE
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -351,7 +351,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     [2, 8, 2, true], // side 2 had 1st round BYE, wins matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -363,10 +363,10 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   });
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
@@ -374,7 +374,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: BYE
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
@@ -406,7 +406,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
 
   // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 
@@ -436,7 +436,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     [1, 16, 2, undefined], // can't complete BYE
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -473,7 +473,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     [2, 8, 1, true], // side 2 had 1st round BYE, loses matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -485,10 +485,10 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   });
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(0);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
@@ -496,7 +496,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   // wne participants who advanced in the first-round of the main structure with a BYE lose their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: TO_BE_PLAYED
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
-  roundMatchUps[1].forEach(matchUp => {
+  roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   });
 });

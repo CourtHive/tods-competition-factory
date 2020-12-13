@@ -1,4 +1,5 @@
 import {
+  EVENT_NOT_FOUND,
   INVALID_TIME_ITEM,
   MISSING_TIME_ITEM,
 } from '../../../constants/errorConditionConstants';
@@ -11,7 +12,7 @@ export function addEventTimeItem({ event, timeItem }) {
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];
   const validTimeItem =
-    requiredAttributes.filter(attribute =>
+    requiredAttributes.filter((attribute) =>
       timeItemAttributes.includes(attribute)
     ).length === requiredAttributes.length;
 

@@ -49,7 +49,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
-  const participantIds = mainDrawEntries.map(e => e.participantId);
+  const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { structureId } = structure;
   const { unassignedPositions } = structureAssignedDrawPositions({
@@ -257,7 +257,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
-  const participantIds = mainDrawEntries.map(e => e.participantId);
+  const participantIds = mainDrawEntries.map((e) => e.participantId);
   const [participantId1, participantId2] = participantIds;
 
   const { structureId } = structure;

@@ -2,7 +2,7 @@ import { findCourt } from '../../getters/courtGetter';
 
 import {
   MISSING_COURT_ID,
-  MISSING_VENUE_ID,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 

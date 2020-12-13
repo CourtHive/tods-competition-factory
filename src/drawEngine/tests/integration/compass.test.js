@@ -130,7 +130,7 @@ function testByeRemoval({ stage, expectedByeRemoval }) {
 function checkCompassByes({ stage, expectedCompassByes }) {
   const { structures } = drawEngine.getDrawStructures({ stage });
 
-  Object.keys(expectedCompassByes).forEach(direction => {
+  Object.keys(expectedCompassByes).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
     const byeDrawPositions = assignedByes(structure.positionAssignments);
     expect(byeDrawPositions).toMatchObject(
@@ -150,7 +150,7 @@ function checkByeAdvancedDrawPositions({
 }) {
   const { structures } = drawEngine.getDrawStructures({ stage });
 
-  Object.keys(expectedByeDrawPositions).forEach(direction => {
+  Object.keys(expectedByeDrawPositions).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
     const includeByeMatchUps = expectedByeDrawPositions.includeByeMatchUps;
     const { pendingMatchUps } = drawEngine.getStructureMatchUps({
@@ -218,7 +218,7 @@ function checkByeAdvancedDrawPositions({
   function pendingWithOneParticipant(matchUp) {
     return (
       matchUp.roundNumber === 2 &&
-      matchUp.drawPositions.filter(f => f).length === 1
+      matchUp.drawPositions.filter((f) => f).length === 1
     );
   }
 }
@@ -246,15 +246,15 @@ function generateCompass({
 
   drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 
-  const participants = generateRange(0, participantsCount).map(i => ({
+  const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
   }));
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
 
   drawEngine.addDrawEntries({ stage, participantIds });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  generateRange(0, seedsCount).forEach(i => {
+  generateRange(0, seedsCount).forEach((i) => {
     const seedNumber = i + 1;
     const participantId = participants[i].participantId;
     drawEngine.assignSeed({ structureId, seedNumber, participantId });
@@ -287,13 +287,13 @@ function generateCompass({
 
 function assignedByes(assignments) {
   return assignments
-    .filter(assignment => assignment.bye)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.bye)
+    .map((assignment) => assignment.drawPosition);
 }
 function matchUpsWithBye(matchUps) {
   return matchUps
-    .filter(matchUp => matchUp.matchUpStatus === BYE)
-    .map(matchUp => matchUp.roundPosition);
+    .filter((matchUp) => matchUp.matchUpStatus === BYE)
+    .map((matchUp) => matchUp.roundPosition);
 }
 function findStructureByName(structures, structureName) {
   return structures.reduce((structure, currentStructure) => {

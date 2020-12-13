@@ -36,12 +36,12 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   if (!structureId) return { validActions };
 
   const participantAssignedDrawPositions = assignedPositions
-    .filter(assignment => assignment.participantId)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.participantId)
+    .map((assignment) => assignment.drawPosition);
 
   const byeAssignedDrawPositions = assignedPositions
-    .filter(assignment => assignment.bye)
-    .map(assignment => assignment.drawPosition);
+    .filter((assignment) => assignment.bye)
+    .map((assignment) => assignment.drawPosition);
 
   const isCollectionMatchUp = matchUp.collectionId;
   const isByeMatchUp =
@@ -122,7 +122,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
 
     const hasParticipants =
       matchUp.sides &&
-      matchUp.sides.filter(side => side && side.participantId).length === 2;
+      matchUp.sides.filter((side) => side && side.participantId).length === 2;
 
     const readyToScore = matchDrawPositionsAreAssigned || hasParticipants;
 

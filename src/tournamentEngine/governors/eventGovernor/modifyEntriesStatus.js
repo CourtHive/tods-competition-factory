@@ -21,7 +21,7 @@ export function modifyEntriesStatus({
     return { error: INVALID_ENTRY_STATUS };
 
   // TODO: check that entries are not present in any drawDefinitions/structures
-  event.entries.forEach(entry => {
+  event.entries.forEach((entry) => {
     if (participantIds.includes(entry.participantId)) {
       entry.entryStatus = entryStatus;
     }

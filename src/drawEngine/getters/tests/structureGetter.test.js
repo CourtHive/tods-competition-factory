@@ -23,11 +23,11 @@ it('can find structures by structureId', () => {
   const { structures } = getDrawStructures({ drawDefinition, stage: MAIN });
   const structureIdMap = Object.assign(
     {},
-    ...structures.map(structure => ({
+    ...structures.map((structure) => ({
       [structure.structureId]: structure.structureName,
     }))
   );
-  Object.keys(structureIdMap).forEach(structureId => {
+  Object.keys(structureIdMap).forEach((structureId) => {
     const { structure } = findStructure({ drawDefinition, structureId });
     expect(structure.structureName).toEqual(structureIdMap[structureId]);
   });
@@ -47,7 +47,7 @@ it('can find structures by stage and stageSequence', () => {
   });
   expect(stage2Structures.length).toEqual(3);
   expect(
-    stage2Structures.map(structure => structure.structureName)
+    stage2Structures.map((structure) => structure.structureName)
   ).toMatchObject(['WEST', 'NORTH', 'NORTHEAST']);
 
   const { structures: stage3Structures } = getDrawStructures({
@@ -57,7 +57,7 @@ it('can find structures by stage and stageSequence', () => {
   });
   expect(stage3Structures.length).toEqual(3);
   expect(
-    stage3Structures.map(structure => structure.structureName)
+    stage3Structures.map((structure) => structure.structureName)
   ).toMatchObject(['SOUTH', 'SOUTHWEST', 'NORTHWEST']);
 
   const { structures: stage4Structures } = getDrawStructures({
@@ -66,7 +66,7 @@ it('can find structures by stage and stageSequence', () => {
     stageSequence: 4,
   });
   expect(
-    stage4Structures.map(structure => structure.structureName)
+    stage4Structures.map((structure) => structure.structureName)
   ).toMatchObject(['SOUTHEAST']);
 
   const { structures: consolationStructures } = getDrawStructures({

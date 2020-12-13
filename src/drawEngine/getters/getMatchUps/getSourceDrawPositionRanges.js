@@ -1,6 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { chunkArray, generateRange, unique } from '../../../utilities';
-// import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { isNumeric } from '../../../utilities/math';
 import { findStructure } from '../findStructure';
@@ -24,7 +22,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
 
   const { links } = drawDefinition;
   const relevantLinks = links.filter(
-    link => link.target.structureId === structureId
+    (link) => link.target.structureId === structureId
   );
   const sourceStructureIds = relevantLinks.reduce(
     (sourceStructureIds, link) => {
@@ -37,7 +35,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
   );
   const sourceStructureProfiles = Object.assign(
     {},
-    ...sourceStructureIds.map(sourceStructureId => {
+    ...sourceStructureIds.map((sourceStructureId) => {
       const { roundProfile } = getStructureRoundProfile({
         drawDefinition,
         structureId: sourceStructureId,
@@ -52,7 +50,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
   });
 
   const sourceDrawPositionRanges = {};
-  relevantLinks.forEach(link => {
+  relevantLinks.forEach((link) => {
     const {
       structureId: sourceStructureId,
       roundNumber: sourceRoundNumber,
@@ -85,7 +83,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
       const offset = generateRange(0, positionInterleave.offset).map(
         () => undefined
       );
-      drawPositionBlocks = drawPositionBlocks.map(block => [
+      drawPositionBlocks = drawPositionBlocks.map((block) => [
         block,
         ...interleave,
       ]);

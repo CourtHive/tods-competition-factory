@@ -32,7 +32,7 @@ it('can add events to a tournament record', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -86,8 +86,8 @@ it('can add doubles events to a tournament record', () => {
   expect(success).toEqual(true);
 
   const participantIds = participants
-    .filter(participant => participant.participantType === PAIR)
-    .map(p => p.participantId);
+    .filter((participant) => participant.participantType === PAIR)
+    .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -142,7 +142,7 @@ it('can add doubles events to a tournament record', () => {
   expect(tournamentParticipants.length).toEqual(96);
 
   const individualParticipants = tournamentParticipants.filter(
-    participant => participant.participantType === INDIVIDUAL
+    (participant) => participant.participantType === INDIVIDUAL
   );
   const individualParticipant = individualParticipants[0];
   const { participantId } = individualParticipant;
@@ -177,8 +177,8 @@ it('can destroy pair entries in doubles events', () => {
   expect(success).toEqual(true);
 
   const pairParticipantIds = participants
-    .filter(participant => participant.participantType === PAIR)
-    .map(p => p.participantId);
+    .filter((participant) => participant.participantType === PAIR)
+    .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({
     eventId,
     participantIds: pairParticipantIds,
@@ -198,11 +198,11 @@ it('can destroy pair entries in doubles events', () => {
   expect(updatedEvent.entries.length).toEqual(33);
 
   const unpairedEntries = updatedEvent.entries.filter(
-    entry => entry.entryStatus === UNPAIRED
+    (entry) => entry.entryStatus === UNPAIRED
   );
   expect(unpairedEntries.length).toEqual(2);
   const individualParticipantIds = unpairedEntries.map(
-    entry => entry.participantId
+    (entry) => entry.participantId
   );
 
   const participant = {
@@ -251,7 +251,7 @@ it('can create pair entries in doubles events', () => {
   expect(success).toEqual(true);
 
   const participantIdPairs = chunkArray(
-    participants.map(participant => participant.participantId),
+    participants.map((participant) => participant.participantId),
     2
   );
 
@@ -276,7 +276,7 @@ it('can create pair entries in doubles events', () => {
 
   expect(updatedEvent.entries.length).toEqual(16);
 
-  updatedEvent.entries.forEach(entry => {
+  updatedEvent.entries.forEach((entry) => {
     expect(entry.entryStage).toEqual(QUALIFYING);
     expect(entry.entryStatus).toEqual(ALTERNATE);
   });

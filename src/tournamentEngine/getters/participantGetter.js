@@ -32,17 +32,17 @@ export function getParticipantEventDetails({
   const relevantParticipantIds = [participantId].concat(
     (tournamentRecord.participants || [])
       .filter(
-        participant =>
+        (participant) =>
           [TEAM, PAIR].includes(participant.participantType) &&
           participant.individualParticipantIds?.includes(participantId)
       )
-      .map(participant => participant.participantId)
+      .map((participant) => participant.participantId)
   );
 
   const relevantEvents = (tournamentRecord.events || [])
-    .filter(event => {
+    .filter((event) => {
       const enteredParticipantIds = (event?.entries || []).map(
-        entry => entry.participantId
+        (entry) => entry.participantId
       );
       const overlap = intersection(
         enteredParticipantIds,
@@ -51,7 +51,7 @@ export function getParticipantEventDetails({
       const presentInEvent = !!overlap.length;
       return presentInEvent;
     })
-    .map(event => ({ eventName: event.eventName, eventId: event.eventId }));
+    .map((event) => ({ eventName: event.eventName, eventId: event.eventId }));
 
   return { eventDetails: relevantEvents };
 }
@@ -84,13 +84,13 @@ export function getTournamentParticipants({
   } = participantFilters;
 
   if (isValidFilterArray(participantTypes)) {
-    tournamentParticipants = tournamentParticipants.filter(participant =>
+    tournamentParticipants = tournamentParticipants.filter((participant) =>
       participantTypes.includes(participant.participantType)
     );
   }
 
   if (isValidFilterArray(participantRoles)) {
-    tournamentParticipants = tournamentParticipants.filter(participant =>
+    tournamentParticipants = tournamentParticipants.filter((participant) =>
       participantRoles.includes(participant.participantRole)
     );
   }
@@ -100,22 +100,22 @@ export function getTournamentParticipants({
     isValidFilterArray(tournamentRecord.events)
   ) {
     const participantIds = tournamentRecord.events
-      .filter(event => eventIds.includes(event.eventId))
-      .map(event => {
+      .filter((event) => eventIds.includes(event.eventId))
+      .map((event) => {
         const enteredParticipantIds = event.entries.map(
-          entry => entry.participantId
+          (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
         const individualParticipantIds = tournamentRecord.participants
-          .filter(participant =>
+          .filter((participant) =>
             enteredParticipantIds.includes(participant.participantId)
           )
-          .map(participant => participant.individualParticipantIds)
+          .map((participant) => participant.individualParticipantIds)
           .flat(1);
         return enteredParticipantIds.concat(...individualParticipantIds);
       })
       .flat(1);
-    tournamentParticipants = tournamentParticipants.filter(participant =>
+    tournamentParticipants = tournamentParticipants.filter((participant) =>
       participantIds.includes(participant.participantId)
     );
   }

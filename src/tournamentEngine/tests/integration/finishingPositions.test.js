@@ -28,7 +28,7 @@ it('can aggrgate participant finishingPositions', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -86,7 +86,7 @@ it('can aggrgate participant finishingPositions', () => {
     [4, 1, 1],
   ];
 
-  outcomes.forEach(outcome => {
+  outcomes.forEach((outcome) => {
     const [roundNumber, roundPosition, winningSide] = outcome;
     scoreMatchUp({
       roundNumber,
@@ -112,7 +112,7 @@ function scoreMatchUp({
   winningSide,
 }) {
   const matchUp = matchUps.find(
-    matchUp =>
+    (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition
   );

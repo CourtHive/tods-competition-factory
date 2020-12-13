@@ -111,7 +111,7 @@ it('can set participant scaleItems in bulk', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const scaleItemsWithParticipantIds = participants.map(participant => {
+  const scaleItemsWithParticipantIds = participants.map((participant) => {
     const { participantId } = participant;
     const scaleItems = [
       {
@@ -133,7 +133,7 @@ it('can set participant scaleItems in bulk', () => {
     return { participantId, scaleItems };
   });
 
-  const result = tournamentEngine.setParticipantScaleItems({
+  tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds,
   });
 
@@ -141,7 +141,7 @@ it('can set participant scaleItems in bulk', () => {
     tournamentRecord: { participants: modifiedParticipants },
   } = tournamentEngine.getState();
 
-  modifiedParticipants.forEach(participant => {
+  modifiedParticipants.forEach((participant) => {
     expect(participant.timeItems.length).toEqual(2);
   });
 });

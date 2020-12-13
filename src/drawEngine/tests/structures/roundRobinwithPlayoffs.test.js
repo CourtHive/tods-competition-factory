@@ -135,7 +135,7 @@ it('can generate Round Robin with Playoffs', () => {
   });
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN
+    (structure) => structure.stage === MAIN
   );
   const playoffStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
@@ -184,7 +184,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -204,7 +204,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN
+    (structure) => structure.stage === MAIN
   );
 
   expect(mainStructure.structures.length).toEqual(groupsCount);
@@ -223,14 +223,14 @@ it('can advance players in Round Robin with Playoffs', () => {
   expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 
   const playoffStructureIds = playoffStructures.map(
-    structure => structure.structureId
+    (structure) => structure.structureId
   );
 
   const positioningLinks = drawDefinition.links.filter(
-    link => link.linkType === POSITION
+    (link) => link.linkType === POSITION
   );
 
-  positioningLinks.forEach(link => {
+  positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
     const targetIsPlayoffStructure = playoffStructureIds.includes(
       link.target.structureId
@@ -285,16 +285,16 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const finishingPositionGroups = {};
-  mainStructure.structures.forEach(structure => {
+  mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
     const structureMatchUps = eventMatchUps.filter(
-      matchUp => matchUp.structureId === structureId
+      (matchUp) => matchUp.structureId === structureId
     );
     const { participantResults } = drawEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
       matchUpFormat,
     });
-    Object.keys(participantResults).forEach(key => {
+    Object.keys(participantResults).forEach((key) => {
       const { groupOrder } = participantResults[key];
       if (!finishingPositionGroups[groupOrder])
         finishingPositionGroups[groupOrder] = [];
@@ -302,11 +302,11 @@ it('can advance players in Round Robin with Playoffs', () => {
       expect([1, 2, 3, 4].includes(groupOrder)).toEqual(true);
     });
   });
-  Object.keys(finishingPositionGroups).forEach(key => {
+  Object.keys(finishingPositionGroups).forEach((key) => {
     expect(finishingPositionGroups[key].length).toEqual(groupsCount);
   });
 
-  playoffStructures.forEach(structure => {
+  playoffStructures.forEach((structure) => {
     const { structureId } = structure;
     // position participants
     drawEngine.automatedPositioning({ structureId });
@@ -318,16 +318,16 @@ it('can advance players in Round Robin with Playoffs', () => {
       structureId,
     });
     const positioningLink = positioningLinks.find(
-      link => link.target.structureId === structure.structureId
+      (link) => link.target.structureId === structure.structureId
     );
     const structureFinishingPositions =
       positioningLink.source.finishingPositions;
     const finishingPositionGroup = structureFinishingPositions
-      .map(finishingPosition => finishingPositionGroups[finishingPosition])
+      .map((finishingPosition) => finishingPositionGroups[finishingPosition])
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
-      .map(assignment => assignment.participantId)
-      .filter(f => f);
+      .map((assignment) => assignment.participantId)
+      .filter((f) => f);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -382,7 +382,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const { eventId } = createdEvent;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -402,7 +402,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   expect(result).toEqual(SUCCESS);
 
   const mainStructure = drawDefinition.structures.find(
-    structure => structure.stage === MAIN
+    (structure) => structure.stage === MAIN
   );
 
   expect(mainStructure.structures.length).toEqual(groupsCount);
@@ -421,15 +421,15 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 
   const playoffStructureIds = playoffStructures.map(
-    structure => structure.structureId
+    (structure) => structure.structureId
   );
 
   const positioningLinks = drawDefinition.links.filter(
-    link => link.linkType === POSITION
+    (link) => link.linkType === POSITION
   );
 
   const loserLinks = drawDefinition.links.filter(
-    link => link.linkType === LOSER
+    (link) => link.linkType === LOSER
   );
 
   expect(loserLinks.length).toEqual(1);
@@ -437,7 +437,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     playoffStructureIds.includes(loserLinks[0].source.structureId)
   ).toEqual(true);
 
-  positioningLinks.forEach(link => {
+  positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
     const targetIsPlayoffStructure = playoffStructureIds.includes(
       link.target.structureId
@@ -508,10 +508,10 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const finishingPositionGroups = {};
   const structureParticipantGroupings = [];
 
-  mainStructure.structures.forEach(structure => {
+  mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
     const structureMatchUps = eventMatchUps.filter(
-      matchUp => matchUp.structureId === structureId
+      (matchUp) => matchUp.structureId === structureId
     );
     const { participantResults } = drawEngine.tallyParticipantResults({
       matchUps: structureMatchUps,
@@ -521,7 +521,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     const structureParticipantIds = Object.keys(participantResults);
     structureParticipantGroupings.push(structureParticipantIds);
 
-    structureParticipantIds.forEach(key => {
+    structureParticipantIds.forEach((key) => {
       const { groupOrder } = participantResults[key];
       if (!finishingPositionGroups[groupOrder])
         finishingPositionGroups[groupOrder] = [];
@@ -530,11 +530,11 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     });
   });
 
-  Object.keys(finishingPositionGroups).forEach(key => {
+  Object.keys(finishingPositionGroups).forEach((key) => {
     expect(finishingPositionGroups[key].length).toEqual(groupsCount);
   });
 
-  playoffStructures.forEach(structure => {
+  playoffStructures.forEach((structure) => {
     const { structureId } = structure;
     // position participants
     drawEngine.automatedPositioning({ participants, structureId });
@@ -546,16 +546,16 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       structureId,
     });
     const positioningLink = positioningLinks.find(
-      link => link.target.structureId === structure.structureId
+      (link) => link.target.structureId === structure.structureId
     );
     const structureFinishingPositions =
       positioningLink.source.finishingPositions;
     const finishingPositionGroup = structureFinishingPositions
-      .map(finishingPosition => finishingPositionGroups[finishingPosition])
+      .map((finishingPosition) => finishingPositionGroups[finishingPosition])
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
-      .map(assignment => assignment.participantId)
-      .filter(f => f);
+      .map((assignment) => assignment.participantId)
+      .filter((f) => f);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -565,11 +565,11 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     const { positionAssignments } = updatedStructure;
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
-      .map(positions => positions.map(position => position.participantId))
-      .filter(pair => pair.filter(p => p).length === 2);
+      .map((positions) => positions.map((position) => position.participantId))
+      .filter((pair) => pair.filter((p) => p).length === 2);
 
-    pairedParticipantIds.forEach(pair => {
-      structureParticipantGroupings.forEach(grouping => {
+    pairedParticipantIds.forEach((pair) => {
+      structureParticipantGroupings.forEach((grouping) => {
         const overlap = intersection(grouping, pair);
         expect(overlap.length).toBeLessThan(2);
       });

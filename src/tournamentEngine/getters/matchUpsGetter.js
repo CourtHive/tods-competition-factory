@@ -21,7 +21,7 @@ export function allTournamentMatchUps({
   });
   const matchUps = events
     .map(
-      event =>
+      (event) =>
         allEventMatchUps({
           event,
           drawEngine,
@@ -50,7 +50,7 @@ export function allEventMatchUps({
   if (tournamentId) Object.assign(context, { tournamentId });
   const drawDefinitions = event.drawDefinitions || [];
   const matchUps = drawDefinitions
-    .map(drawDefinition => {
+    .map((drawDefinition) => {
       const { matchUps } = drawEngine
         .setState(drawDefinition)
         .setParticipants(participants)
@@ -83,9 +83,9 @@ export function tournamentMatchUps({
   });
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
   const eventsDrawsMatchUps = events
-    .filter(event => !filteredEventIds.includes(event.eventId))
+    .filter((event) => !filteredEventIds.includes(event.eventId))
     .map(
-      event =>
+      (event) =>
         eventMatchUps({
           event,
           drawEngine,
@@ -99,9 +99,9 @@ export function tournamentMatchUps({
 
   const matchUpGroupings = eventsDrawsMatchUps.reduce(
     (matchUps, eventDraws) => {
-      eventDraws.forEach(eventDraw => {
+      eventDraws.forEach((eventDraw) => {
         const keys = Object.keys(eventDraw);
-        keys.forEach(key => {
+        keys.forEach((key) => {
           if (!matchUps[key]) matchUps[key] = [];
           matchUps[key] = matchUps[key].concat(eventDraw[key]);
         });
@@ -128,7 +128,7 @@ export function eventMatchUps({
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
   const drawDefinitions = event.drawDefinitions || [];
-  const matchUps = drawDefinitions.map(drawDefinition => {
+  const matchUps = drawDefinitions.map((drawDefinition) => {
     const allDrawMatchUps = drawEngine
       .setState(drawDefinition)
       .setParticipants(participants)

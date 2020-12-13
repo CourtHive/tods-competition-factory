@@ -27,7 +27,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { event: createdEvent } = result;
   const { eventId } = createdEvent;
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -47,11 +47,11 @@ it('correctly assigns BYE positions in consolation structure', () => {
 
   const { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
   const round1ByeCount = roundMatchUps[1].map(
-    matchUp => matchUp.matchUpStatus === BYE
+    (matchUp) => matchUp.matchUpStatus === BYE
   ).length;
   expect(round1ByeCount).toEqual(8);
   const round2ByeCount = roundMatchUps[2].map(
-    matchUp => matchUp.matchUpStatus === BYE
+    (matchUp) => matchUp.matchUpStatus === BYE
   ).length;
   expect(round2ByeCount).toEqual(8);
 });

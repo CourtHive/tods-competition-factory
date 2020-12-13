@@ -15,10 +15,10 @@ export function nextRoundMatchUp({
     inContext: true,
   });
   const currentRoundMatchUps = matchUps.filter(
-    matchUp => matchUp.roundNumber === roundNumber
+    (matchUp) => matchUp.roundNumber === roundNumber
   );
   const nextRoundMatchUps = matchUps.filter(
-    matchUp => matchUp.roundNumber === roundNumber + 1
+    (matchUp) => matchUp.roundNumber === roundNumber + 1
   );
 
   if (nextRoundMatchUps.length) {

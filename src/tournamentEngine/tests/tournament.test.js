@@ -32,7 +32,7 @@ it('can generate a tournament with events and draws', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const participantIds = participants.map(p => p.participantId);
+  const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result).toEqual(SUCCESS);
 
@@ -75,7 +75,7 @@ it('can generate a tournament with events and draws', () => {
   const { positionAssignments } = drawDefinition.structures[0];
   function getPositionParticipantId(drawPosition) {
     const targetAssignment = positionAssignments.find(
-      assignment => assignment.drawPosition === drawPosition
+      (assignment) => assignment.drawPosition === drawPosition
     );
     return targetAssignment?.participantId;
   }
@@ -135,7 +135,7 @@ it('can generate a tournament with events and draws', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(
-    matchUp => matchUp.matchUpId === matchUpId
+    (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
   expect(targetMatchUp.score).toEqual('6-3');

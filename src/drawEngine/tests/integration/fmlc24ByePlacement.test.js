@@ -25,7 +25,7 @@ it('can support ITF Consolation BYE placement', () => {
     [2, 2, 2, true], // side 2 had 1st round BYE, wins matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -40,10 +40,10 @@ it('can support ITF Consolation BYE placement', () => {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(2);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
@@ -68,7 +68,7 @@ it('can support USTA Consolation BYE placement', () => {
     [2, 2, 1, true], // side 1 had 1st round BYE, wins matchUp
   ];
 
-  completionValues.forEach(values => {
+  completionValues.forEach((values) => {
     const [roundNumber, roundPosition, winningSide, success] = values;
     const result = completeMatchUp({
       structureId: mainStructureId,
@@ -84,10 +84,10 @@ it('can support USTA Consolation BYE placement', () => {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(2);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
@@ -181,7 +181,7 @@ function checkAssignments({
   byesCount,
 }) {
   completionValues &&
-    completionValues.forEach(values => {
+    completionValues.forEach((values) => {
       const [roundNumber, roundPosition, winningSide, success] = values;
       const result = completeMatchUp({
         structureId,
@@ -196,10 +196,10 @@ function checkAssignments({
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.bye
+    (assignment) => !!assignment.bye
   ).length;
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    assignment => !!assignment.participantId
+    (assignment) => !!assignment.participantId
   ).length;
   expect(positionAssignmentByesCount).toEqual(byesCount);
   expect(positionAssignmentParticipantidsCount).toEqual(participantsCount);

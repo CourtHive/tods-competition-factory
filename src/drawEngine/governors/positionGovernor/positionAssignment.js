@@ -57,7 +57,7 @@ export function assignDrawPosition({
     undefined
   );
   const participantExists = positionAssignments
-    .map(d => d.participantId)
+    .map((d) => d.participantId)
     .includes(participantId);
 
   if (!positionState) return { error: INVALID_DRAW_POSITION };
@@ -66,7 +66,7 @@ export function assignDrawPosition({
   if (drawPositionFilled(positionState))
     return { error: DRAW_POSITION_ASSIGNED };
 
-  positionAssignments.forEach(assignment => {
+  positionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.participantId = participantId;
       delete assignment.qualifier;

@@ -26,26 +26,26 @@ export function modifyCourt({
 
   // not valid to modify a courtId
   const validAttributes = Object.keys(courtTemplate()).filter(
-    attribute => attribute !== 'courtId'
+    (attribute) => attribute !== 'courtId'
   );
 
   const validModificationAttributes = Object.keys(
     modifications
-  ).filter(attribute => validAttributes.includes(attribute));
+  ).filter((attribute) => validAttributes.includes(attribute));
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
 
   // not valid to replace the dateAvailability array
   const validReplacements = validAttributes.filter(
-    attribute => !['dateAvailability'].includes(attribute)
+    (attribute) => !['dateAvailability'].includes(attribute)
   );
 
   const validReplacementAttributes = Object.keys(
     modifications
-  ).filter(attribute => validReplacements.includes(attribute));
+  ).filter((attribute) => validReplacements.includes(attribute));
 
-  validReplacementAttributes.forEach(attribute =>
+  validReplacementAttributes.forEach((attribute) =>
     Object.assign(court, { [attribute]: modifications[attribute] })
   );
 

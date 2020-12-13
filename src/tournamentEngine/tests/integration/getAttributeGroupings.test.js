@@ -20,18 +20,18 @@ it('can generate groupings accurately', () => {
   });
 
   const doublesParticipants = participants.filter(
-    participant => participant.participantType === PAIR
+    (participant) => participant.participantType === PAIR
   );
 
   const doublesParticipantsIds = doublesParticipants.map(
-    participant => participant.participantId
+    (participant) => participant.participantId
   );
 
   const doublesParticipantsNationalityCodes = Object.assign(
     {},
-    ...doublesParticipants.map(participant => {
+    ...doublesParticipants.map((participant) => {
       const nationalityCodes = participant.individualParticipants.map(
-        individualParticipant => {
+        (individualParticipant) => {
           return individualParticipant.person.nationalityCode;
         }
       );
@@ -48,9 +48,9 @@ it('can generate groupings accurately', () => {
     targetParticipantIds: doublesParticipantsIds,
   });
 
-  Object.keys(groupings).forEach(nationalityCode => {
+  Object.keys(groupings).forEach((nationalityCode) => {
     const groupingParticipantIds = groupings[nationalityCode];
-    groupingParticipantIds.forEach(participantId => {
+    groupingParticipantIds.forEach((participantId) => {
       const includesNationalityCode = doublesParticipantsNationalityCodes[
         participantId
       ].includes(nationalityCode);

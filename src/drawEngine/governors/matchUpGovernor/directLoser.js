@@ -34,13 +34,13 @@ export function directLoser(props) {
     structure,
   });
 
-  const drawPositionMatchUps = sourceMatchUps.filter(matchUp =>
+  const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
     matchUp.drawPositions.includes(loserDrawPosition)
   );
 
-  const loserDrawPositionWins = drawPositionMatchUps.filter(matchUp => {
+  const loserDrawPositionWins = drawPositionMatchUps.filter((matchUp) => {
     const drawPositionSide = matchUp.sides.find(
-      side => side.drawPosition === loserDrawPosition
+      (side) => side.drawPosition === loserDrawPosition
     );
     return drawPositionSide?.sideNumber === matchUp.winningSide;
   });
@@ -72,7 +72,7 @@ export function directLoser(props) {
   });
 
   const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
-    .filter(assignment => {
+    .filter((assignment) => {
       const inTarget = targetMatchUpDrawPositions.includes(
         assignment.drawPosition
       );
@@ -80,10 +80,10 @@ export function directLoser(props) {
         !assignment.participantId && !assignment.bye && !assignment.qualifier;
       return inTarget && unfilled;
     })
-    .map(assignment => assignment.drawPosition);
+    .map((assignment) => assignment.drawPosition);
 
   const targetPositionIsBye = !!targetPositionAssignments.find(
-    assignment => assignment.bye === true
+    (assignment) => assignment.bye === true
   );
 
   const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(

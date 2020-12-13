@@ -15,7 +15,7 @@ export function removeEventEntries({ participantIds, event }) {
 
   // TODO: filter participantIds / don't delete those that are active in drawDefinitions
 
-  event.entries = event.entries.filter(entry => {
+  event.entries = event.entries.filter((entry) => {
     const entryId =
       entry.participantId ||
       (entry.participant && entry.participant.participantId);

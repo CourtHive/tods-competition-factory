@@ -16,7 +16,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
   if (!event) return { error: MISSING_EVENT };
 
   const drawDefinitions = event.drawDefinitions || [];
-  const drawsData = drawDefinitions.map(drawDefinition =>
+  const drawsData = drawDefinitions.map((drawDefinition) =>
     (({ drawInfo, structures }) => ({
       ...drawInfo,
       structures,
@@ -31,7 +31,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
-  const venuesData = venues.map(venue =>
+  const venuesData = venues.map((venue) =>
     (({ venueData }) => ({
       ...venueData,
     }))(
@@ -82,7 +82,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     itemType: STATUS,
     itemValue: PUBLIC,
   };
-  const { timeItem, message } = getEventTimeItem({
+  const { timeItem } = getEventTimeItem({
     event,
     itemAttributes,
   });

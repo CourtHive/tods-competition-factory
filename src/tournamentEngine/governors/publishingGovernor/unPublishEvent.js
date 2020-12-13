@@ -1,4 +1,3 @@
-import { getEventData } from './getEventData';
 import { addEventTimeItem } from '../eventGovernor/addEventTimeItem';
 
 import {
@@ -6,7 +5,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HIDDEN, STATUS } from '../../../constants/timeItemConstants';
+import { HIDDEN, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
 export function unPublishEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

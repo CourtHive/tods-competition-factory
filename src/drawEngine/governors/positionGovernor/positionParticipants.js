@@ -31,8 +31,8 @@ export function positionUnseededParticipants({
   });
 
   const assignedSeedParticipantIds = seedAssignments
-    .map(assignment => assignment.participantId)
-    .filter(f => f);
+    .map((assignment) => assignment.participantId)
+    .filter((f) => f);
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
@@ -44,18 +44,18 @@ export function positionUnseededParticipants({
     stage,
   });
   const unseededEntries = entries.filter(
-    entry => !assignedSeedParticipantIds.includes(entry.participantId)
+    (entry) => !assignedSeedParticipantIds.includes(entry.participantId)
   );
   const unseededParticipantIds = unseededEntries.map(
-    entry => entry.participantId
+    (entry) => entry.participantId
   );
   const unfilledDrawPositions = positionAssignments
-    .filter(assignment => {
+    .filter((assignment) => {
       return (
         !assignment.participantId && !assignment.bye && !assignment.qualifier
       );
     })
-    .map(assignment => assignment.drawPosition);
+    .map((assignment) => assignment.drawPosition);
 
   if (unseededParticipantIds.length > unfilledDrawPositions.length) {
     return { error: 'Insufficient drawPositions to accommodate entries' };
