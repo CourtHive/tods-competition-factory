@@ -153,7 +153,6 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     venueDayDate: scheduledDate,
   });
-  console.log({ result });
   expect(result).toEqual(SUCCESS);
 
   result = tournamentEngine.assignMatchUpCourt({
