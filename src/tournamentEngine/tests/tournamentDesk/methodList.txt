@@ -1,0 +1,31 @@
+competitionEngine
+- matchUpScheduleChange
+- removeMatchUpCourtAssignment
+- reorderUpcomingMatchUps
+- scheduleMatchUps
+- toggleParticipantCheckInState
+
+tournamentEngine
+- addDrawDefinition
+- addEventEntryPairs
+- addMatchUpScheduledDayDate
+- addMatchUpScheduledTime
+- addParticipants
+- addVenue
+- assignMatchUpVenue
+- assignTieMatchUpParticipantId
+- attachEventPolicy
+- automatedPlayoffPositioning
+- bulkMatchUpStatusUpdate
+- deleteDrawDefinitions
+- deleteParticipants
+- destroyPairEntry
+- modifyEntriesStatus
+- modifyVenue
+- participantSignInStatus
+- promoteAlternate
+- removeEventPolicy
+- setDrawDefaultMatchUpFormat
+- setEntryPositions
+- setMatchUpStatus
+- setParticipantScaleItem
