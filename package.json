@@ -30,7 +30,11 @@
     "dist"
   ],
   "np": {
-    "contents": "."
+    "contents": ".",
+    "yarn": false
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "release": "np",

@@ -4,7 +4,7 @@ import {
   addMatchUpResumeTime as addResumeTime,
   addMatchUpStartTime as addStartTime,
   addMatchUpStopTime as addStopTime,
-  addMatchUpOffcial as addOfficial,
+  addMatchUpOfficial as addOfficial,
   addMatchUpEndTime as addEndTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
