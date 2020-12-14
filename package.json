@@ -88,8 +88,5 @@
   },
   "dependencies": {
     "tods-matchup-format-code": "^1.0.7"
-  },
-  "engines": {
-    "node": "= 13.12.0"
   }
 }
