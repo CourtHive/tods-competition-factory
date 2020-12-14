@@ -53,7 +53,7 @@ export function automatedPlayoffPositioning({
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   const participants = tournamentRecord?.participants;
 
-  const playoffStructures = getPlayoffStructures({
+  const { playoffStructures } = getPlayoffStructures({
     drawDefinition,
     structureId,
   });
@@ -61,14 +61,15 @@ export function automatedPlayoffPositioning({
   drawEngine.setState(drawDefinition, deepCopy);
 
   const errors = [];
-  playoffStructures.forEach((structure) => {
-    const { structureId: playoffStructureId } = structure;
-    const result = drawEngine.automatedPositioning({
-      participants,
-      structureId: playoffStructureId,
+  playoffStructures &&
+    playoffStructures.forEach((structure) => {
+      const { structureId: playoffStructureId } = structure;
+      const result = drawEngine.automatedPositioning({
+        participants,
+        structureId: playoffStructureId,
+      });
+      result.errors.forEach((error) => errors.push(error));
     });
-    result.errors.forEach((error) => errors.push(error));
-  });
 
   if (!errors.length) {
     const { drawId } = drawDefinition;

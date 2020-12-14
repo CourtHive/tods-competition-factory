@@ -8,11 +8,11 @@ export function getPlayoffStructures({ drawDefinition, structureId }) {
     .filter((link) => link.source?.structureId === structureId)
     .map((link) => link.target?.structureId);
 
-  const playoffStructures = drawDefinition?.structures?.filter(
+  const playoffStructures = (drawDefinition?.structures || []).filter(
     (structure) =>
       targetStructureIds.includes(structure.structureId) &&
       structure.stage === PLAY_OFF
   );
 
-  return playoffStructures || [];
+  return { playoffStructures };
 }

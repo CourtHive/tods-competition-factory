@@ -41,7 +41,7 @@ export function isCompletedStructure(props) {
  */
 export function allPlayoffPositionsFilled(props) {
   const { drawDefinition, structureId } = props;
-  const playoffStructures = getPlayoffStructures({
+  const { playoffStructures } = getPlayoffStructures({
     drawDefinition,
     structureId,
   });
