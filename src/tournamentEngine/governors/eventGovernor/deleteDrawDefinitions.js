@@ -4,7 +4,7 @@ import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionCons
 
 export function deleteDrawDefinitions({
   tournamentRecord,
-  auditData = {},
+  auditData = {}, // TODO: auditData can be picked off by Engines and ignored in methods
   auditEngine,
   eventId,
   drawIds,
