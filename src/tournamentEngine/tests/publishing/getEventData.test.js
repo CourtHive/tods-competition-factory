@@ -147,7 +147,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     policyDefinition,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state).toEqual(PUBLIC);
+  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([]);
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -284,7 +284,7 @@ it('can generate payload for publishing a compass draw', () => {
     policyDefinition,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state).toEqual(PUBLIC);
+  expect(eventData.eventInfo.publish.state[PUBLIC].structureIds).toEqual([]);
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -421,7 +421,7 @@ it('can generate payload for publishing a FMLC draw', () => {
     policyDefinition,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state).toEqual(PUBLIC);
+  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([]);
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);

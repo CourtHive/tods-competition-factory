@@ -87,11 +87,10 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     itemAttributes,
   });
 
-  if (timeItem?.itemValue)
-    eventData.eventInfo.publish = {
-      state: timeItem.itemValue,
-      createdAt: timeItem.createdAt,
-    };
+  eventData.eventInfo.publish = {
+    state: timeItem?.itemValue,
+    createdAt: timeItem?.createdAt,
+  };
 
   return Object.assign({}, SUCCESS, { eventData });
 }
