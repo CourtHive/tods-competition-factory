@@ -59,9 +59,11 @@
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
     "@babel/core": "^7.12.10",
+    "@types/node": "^14.14.13",
     "@babel/preset-env": "^7.12.10",
     "@babel/preset-typescript": "7.12.7",
     "@types/jest": "26.0.19",
+    "babel-jest": "^26.6.3",
     "docz": "2.3.1",
     "eslint": "7.15.0",
     "eslint-config-prettier": "7.0.0",
@@ -82,5 +84,8 @@
   },
   "dependencies": {
     "tods-matchup-format-code": "^1.0.7"
+  },
+  "engines": {
+    "node": "= 13.12.0"
   }
 }
