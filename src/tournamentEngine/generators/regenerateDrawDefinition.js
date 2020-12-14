@@ -37,10 +37,6 @@ export function regenerateDrawDefinition({
     // TODO: write test to insure that appliedPolicies are copied faithfully
 
     if (newDrawDefinition) {
-      event.drawDefinitions = event.drawDefinitions.map((dd) => {
-        return dd.drawId === drawId ? newDrawDefinition : dd;
-      });
-
       Object.assign(auditData, {
         action: 'Regenerate Draw',
         rejectedDrawDefinition: drawDefinition,
