@@ -55,6 +55,7 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
 
 export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
   const result = addStopTime({
+    drawDefinition,
     matchUpId,
     stopTime,
   });
@@ -67,6 +68,7 @@ export function addMatchUpResumeTime({
   resumeTime,
 }) {
   const result = addResumeTime({
+    drawDefinition,
     matchUpId,
     resumeTime,
   });

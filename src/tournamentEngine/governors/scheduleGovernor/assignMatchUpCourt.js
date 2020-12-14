@@ -1,9 +1,6 @@
 import { assignMatchUpCourt as assignCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
-import {
-  MISSING_DRAW_ID,
-  MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
 
 export function assignMatchUpCourt({
   drawDefinition,

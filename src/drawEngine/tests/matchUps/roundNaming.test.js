@@ -21,7 +21,9 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType: SINGLE_ELIMINATION });
+  const { structure } = drawEngine.generateDrawType({
+    drawType: SINGLE_ELIMINATION,
+  });
   expect(structure.structureName).toEqual(MAIN);
   const result = drawEngine.attachPolicy({
     policyDefinition: ROUND_NAMING_DEFAULT,

@@ -1,10 +1,8 @@
 import { assignMatchUpCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-
 export function removeMatchUpCourtAssignment(params) {
-  const { tournamentRecords, deepCopy } = params;
+  const { tournamentRecords } = params;
   const { tournamentId, drawId, matchUpId } = params;
 
   const tournamentRecord = tournamentRecords[tournamentId];
@@ -16,7 +14,7 @@ export function removeMatchUpCourtAssignment(params) {
   return assignMatchUpCourt({
     drawDefinition,
     matchUpId,
-    courtId,
+    courtId: '',
     courtDayDate,
   });
 }

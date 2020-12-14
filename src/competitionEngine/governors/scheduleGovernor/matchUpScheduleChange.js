@@ -64,13 +64,7 @@ export function matchUpScheduleChange(params) {
 
   return matchUpsModified ? SUCCESS : undefined;
 
-  function assignMatchUpCourt({
-    tournamentId,
-    drawId,
-    matchUpId,
-    courtId,
-    deepCopy,
-  }) {
+  function assignMatchUpCourt({ tournamentId, drawId, matchUpId, courtId }) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { drawDefinition } = getDrawDefinition({
       tournamentRecord,

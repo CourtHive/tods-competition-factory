@@ -116,7 +116,7 @@ export const tournamentEngine = (function () {
         });
         const { errors: drawEngineErrors } = drawEngine.setState(
           drawDefinition,
-          false, // deepCopy false when drawEngine invoked within tournamentEngine
+          false // deepCopy false when drawEngine invoked within tournamentEngine
         );
         if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
         params = Object.assign({}, params, { drawDefinition, event });

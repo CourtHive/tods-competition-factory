@@ -1,5 +1,5 @@
-import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { setMatchUpStatus as setStatus } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatus';
+// import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+// import { setMatchUpStatus as setStatus } from '../../../drawEngine/governors/matchUpGovernor/matchUpStatus';
 import { findEvent } from '../../getters/eventGetter';
 
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';

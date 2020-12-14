@@ -5,7 +5,6 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addDrawEntries({
   tournamentRecord,
@@ -22,5 +21,10 @@ export function addDrawEntries({
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  return addEntries({ drawDefinition, participantIds, entryStatus, stage });
+  return addEntries({
+    drawDefinition,
+    participantIds,
+    entryStatus,
+    stage: entryStage,
+  });
 }

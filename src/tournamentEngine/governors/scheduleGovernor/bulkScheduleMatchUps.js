@@ -5,7 +5,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
-import { addMatchUpScheduledTime } from './scheduleItems';
+// import { addMatchUpScheduledTime } from './scheduleItems';
 
 export function bulkScheduleMatchUps({
   tournamentRecord,
@@ -21,6 +21,7 @@ export function bulkScheduleMatchUps({
     return { error: MISSING_SCHEDULE };
 
   const { time, venueId, scheduledDate, scheduledTime } = schedule;
+  console.log({ time, venueId, scheduledDate, scheduledTime });
   const { matchUps } = allTournamentMatchUps({ tournamentRecord, drawEngine });
   matchUps.forEach((matchUp) => {
     if (matchUpIds.includes(matchUp.matchUpId)) {
