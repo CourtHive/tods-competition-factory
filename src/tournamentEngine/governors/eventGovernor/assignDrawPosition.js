@@ -1,4 +1,4 @@
-import { assignDrawPosition as assignPosition } from '../../../drawEngine/governors/positionGovernor';
+import { assignDrawPosition as assignPosition } from '../../../drawEngine/governors/positionGovernor/positionAssignment';
 import { assignDrawPositionBye as assignPositionBye } from '../../../drawEngine/governors/positionGovernor/positionByes';
 
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
