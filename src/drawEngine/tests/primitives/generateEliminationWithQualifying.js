@@ -4,7 +4,7 @@ import { generateRange } from '../../../utilities';
 import {
   MAIN,
   ALTERNATE,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   QUALIFYING,
 } from '../../../constants/drawDefinitionConstants';
 import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
@@ -37,7 +37,7 @@ export function generateEliminationWithQualifying({
   });
   drawEngine.generateDrawType({
     stage: QUALIFYING,
-    drawType: ELIMINATION,
+    drawType: SINGLE_ELIMINATION,
     qualifyingRound,
     qualifyingPositions,
   });
@@ -55,7 +55,7 @@ export function generateEliminationWithQualifying({
 
   drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
   drawEngine.setStageQualifiersCount({ stage: MAIN, qualifiersCount });
-  drawEngine.generateDrawType({ stage: MAIN, drawType: ELIMINATION });
+  drawEngine.generateDrawType({ stage: MAIN, drawType: SINGLE_ELIMINATION });
 
   const totalParticipantsCount =
     qualifyingParticipantsCount + mainParticipantsCount - qualifiersCount;

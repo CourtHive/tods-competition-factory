@@ -31,7 +31,7 @@ import {
   FEED_IN,
   QUALIFYING,
   ROUND_ROBIN,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   DOUBLE_ELIMINATION,
   FEED_IN_CHAMPIONSHIP,
   FIRST_ROUND_LOSER_CONSOLATION,
@@ -54,7 +54,7 @@ export function generateDrawType(props = {}) {
     stage = MAIN,
     structureName,
     stageSequence = 1,
-    drawType = ELIMINATION,
+    drawType = SINGLE_ELIMINATION,
     drawDefinition,
   } = props;
 
@@ -91,7 +91,7 @@ export function generateDrawType(props = {}) {
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
   const generators = {
-    [ELIMINATION]: () => {
+    [SINGLE_ELIMINATION]: () => {
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(props);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
       const structure = structureTemplate({

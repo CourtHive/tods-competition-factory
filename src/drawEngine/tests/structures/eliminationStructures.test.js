@@ -11,7 +11,7 @@ import {
   FMLC,
   LOSER,
   CURTIS,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
@@ -109,7 +109,7 @@ it('can generate qualifying draw based on drawType and qualifyingPositions', () 
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const { structure } = drawEngine.generateDrawType({
-    drawType: ELIMINATION,
+    drawType: SINGLE_ELIMINATION,
     qualifyingPositions: 8,
   });
   const { matchUps } = structure;
@@ -122,7 +122,7 @@ it('can generate qualifying draw based drawType and qualifyingRound', () => {
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const { structure } = drawEngine.generateDrawType({
-    drawType: ELIMINATION,
+    drawType: SINGLE_ELIMINATION,
     qualifyingRound: 1,
   });
   const { matchUps } = structure;

@@ -17,7 +17,7 @@ import {
   WATERFALL,
   ROUND_OUTCOME,
   ROUND_ROBIN_WITH_PLAYOFF,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   CONSOLATION,
   LOSER,
 } from '../../../constants/drawDefinitionConstants';
@@ -348,7 +348,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  const playoffStructuresCount = 5; // 3 x ELIMINATION + 1 FMLC (ELIMINATION + CONSOLATION)
+  const playoffStructuresCount = 5; // 3 x SINGLE_ELIMINATION + 1 FMLC (SINGLE_ELIMINATION + CONSOLATION)
   const structureOptions = {
     groupSize,
     playoffGroups: [
@@ -360,7 +360,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       {
         finishingPositions: [2],
         structureName: 'Silver Flight',
-        drawType: ELIMINATION,
+        drawType: SINGLE_ELIMINATION,
       },
       { finishingPositions: [3], structureName: 'Bronze Flight' },
       { finishingPositions: [4], structureName: 'Green Flight' },

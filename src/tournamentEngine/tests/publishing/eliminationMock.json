@@ -267,9 +267,9 @@
   "drawDefinitions": [
     {
       "drawId": "f11f94df-e4ce-4663-b206-dac5bff20cc6",
-      "drawName": "ELIMINATION",
+      "drawName": "SINGLE_ELIMINATION",
       "drawProfile": {
-        "drawType": "ELIMINATION",
+        "drawType": "SINGLE_ELIMINATION",
         "drawSize": 16,
         "automated": "automated",
         "seedsCount": 4,

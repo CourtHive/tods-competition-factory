@@ -1,7 +1,7 @@
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 
-import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
@@ -27,7 +27,7 @@ export function avoidanceTest(props) {
     valuesCount = 10,
     valuesInstanceLimit,
     participantsCount = 32,
-    drawType = ELIMINATION,
+    drawType = SINGLE_ELIMINATION,
   } = props;
 
   let { seedsCount } = props;

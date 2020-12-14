@@ -8,9 +8,9 @@ export const mutation = {
         eventId: 'DAEA5763-8A83-417C-AAC9-6F2C0A53E901',
         drawDefinition: {
           drawId: '31ffccbb-be42-4f57-8b98-cf89e96adaaa',
-          drawName: 'ELIMINATION',
+          drawName: 'SINGLE_ELIMINATION',
           drawProfile: {
-            drawType: 'ELIMINATION',
+            drawType: 'SINGLE_ELIMINATION',
             drawSize: 32,
             automated: 'automated',
             seedsCount: 8,

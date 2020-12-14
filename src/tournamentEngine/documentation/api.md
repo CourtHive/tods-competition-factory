@@ -251,7 +251,7 @@ This is a convenience method which handles most use cases for draw generation.
 | :------------------- | :------- | :------ | :--------------------------------------------------------------------------- |
 | eventId              | Required | string  | Unique identifier for the event within the current tournament                |
 | drawSize             | Required | number  | Number of draw postions there will be in the draw structure                  |
-| drawType             | Optional | string  | ELIMININATION, ROUND_ROBIN & etc, defaults to ELIMINATION                    |
+| drawType             | Optional | string  | ELIMININATION, ROUND_ROBIN & etc, defaults to SINGLE_ELIMINATION             |
 | automated            | Optional | boolean | Whether or not to automatically generate draw structure(s); defaults to true |
 | matchUpType          | Optional | string  | SINGLES, DOUBLES, or TEAM                                                    |
 | matchUpFormat        | Optional | string  | ITF TODS matchUpFormat code which describes scoring format                   |

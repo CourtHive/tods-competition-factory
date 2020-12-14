@@ -8,7 +8,7 @@ import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/ge
 import {
   MAIN,
   ROUND_ROBIN,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
 
@@ -36,7 +36,7 @@ export function generateDrawDefinition(props) {
     automated = true,
     policyDefinitions,
     qualifyingPositions,
-    drawType = ELIMINATION,
+    drawType = SINGLE_ELIMINATION,
     playoffMatchUpFormat,
     ignoreAllowedDrawTypes,
 

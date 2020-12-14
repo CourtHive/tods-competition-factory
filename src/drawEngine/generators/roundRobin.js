@@ -14,7 +14,7 @@ import {
   POSITION,
   WIN_RATIO,
   CONTAINER,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   FMLC,
 } from '../../constants/drawDefinitionConstants';
 
@@ -125,11 +125,11 @@ export function generateRoundRobinWithPlayOff(props) {
         return undefined;
       }
 
-      const playoffDrawType = playoffGroup.drawType || ELIMINATION;
+      const playoffDrawType = playoffGroup.drawType || SINGLE_ELIMINATION;
       const participantsInDraw = groupCount * finishingPositions.length;
       const drawSize = nextPowerOf2(participantsInDraw);
 
-      if (playoffDrawType === ELIMINATION) {
+      if (playoffDrawType === SINGLE_ELIMINATION) {
         const { matchUps } = treeMatchUps({
           drawSize,
           finishingPositionOffset,

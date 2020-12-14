@@ -10,7 +10,7 @@ import {
   verifySideNumbers,
 } from '../primitives/verifyMatchUps';
 
-import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
 it('can generate and verify elmination structures', () => {
   let structureId;
@@ -96,7 +96,7 @@ it('can generate and verify elmination structures', () => {
 it('can write to the file system', () => {
   const writeFile = process.env.TMX_TEST_FILES;
   const { drawDefinition } = drawEngine.getState();
-  const drawType = ELIMINATION;
+  const drawType = SINGLE_ELIMINATION;
   const fileName = `${drawType}.json`;
   const dirPath = './src/drawEngine/documentation/generated/';
   const output = `${dirPath}${fileName}`;

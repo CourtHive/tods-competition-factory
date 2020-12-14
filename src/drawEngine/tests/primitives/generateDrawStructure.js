@@ -4,7 +4,7 @@ import { generateRange } from '../../../utilities';
 import {
   MAIN,
   ALTERNATE,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   FEED_IN,
 } from '../../../constants/drawDefinitionConstants';
 import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
@@ -26,7 +26,7 @@ export function generateDrawStructure({
   qualifyingRound,
   qualifyingPositions,
   seedAssignmentProfile = {},
-  drawType = ELIMINATION,
+  drawType = SINGLE_ELIMINATION,
 }) {
   drawEngine.reset();
   drawEngine.newDrawDefinition();

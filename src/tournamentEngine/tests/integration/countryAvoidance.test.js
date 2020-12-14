@@ -14,7 +14,7 @@ const avoidancePolicy = {
   ],
 };
 
-it('can generate ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
   let { conflicts, error } = avoidanceTest({
     avoidance: avoidancePolicy,
     participantType: PAIR,
@@ -38,7 +38,7 @@ it('can generate ELIMINATION drawDefinition using country avoidance with PAIR pa
   }
 });
 
-it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants', () => {
   let { conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     participantType: INDIVIDUAL,
@@ -57,7 +57,7 @@ it('can generate ELIMINATION drawDefinition using country avoidance with INDIVID
   if (conflicts?.unseededConflicts) console.log(conflicts.unseededConflicts);
 });
 
-it('can generate ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants and BYEs', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with INDIVIDUAL participants and BYEs', () => {
   let { conflicts, error } = avoidanceTest({
     eventType: SINGLES,
     participantsCount: 17,

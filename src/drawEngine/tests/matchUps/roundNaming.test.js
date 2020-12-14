@@ -7,7 +7,7 @@ import {
 } from '../../tests/primitives/primitives';
 
 import {
-  ELIMINATION,
+  SINGLE_ELIMINATION,
   FEED_IN,
   FMLC,
   MAIN,
@@ -17,11 +17,11 @@ import {
 import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-it('can return matchUps with roundNames from an ELIMINATION structure', () => {
+it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType: ELIMINATION });
+  const { structure } = drawEngine.generateDrawType({ drawType: SINGLE_ELIMINATION });
   expect(structure.structureName).toEqual(MAIN);
   const result = drawEngine.attachPolicy({
     policyDefinition: ROUND_NAMING_DEFAULT,

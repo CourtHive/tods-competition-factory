@@ -12,7 +12,7 @@ const pairAvoidancePolicy = {
   // candidatesCount: 1, // force generation of only one candidate for logging during testing
 };
 
-it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {
   const result = avoidanceTest({
     eventType: SINGLES,
     participantType: PAIR,
@@ -33,7 +33,7 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });
 
-it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles participants and seeding', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Doubles participants and seeding', () => {
   const result = avoidanceTest({
     seedsCount: 4,
     eventType: SINGLES,
@@ -55,7 +55,7 @@ it('can generate ELIMINATION drawDefinition using pair avoidance with Doubles pa
   if (conflicts?.unseededConflicts) console.log(conflicts);
 });
 
-it('can generate ELIMINATION drawDefinition using pair and nationality avoidance with Doubles participants and seeding', () => {
+it('can generate SINGLE_ELIMINATION drawDefinition using pair and nationality avoidance with Doubles participants and seeding', () => {
   const pairAvoidancePolicy = {
     roundsToSeparate: undefined,
     policyName: 'Doubles Partner Avoidance',

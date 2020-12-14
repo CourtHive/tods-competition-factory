@@ -14,7 +14,7 @@ import {
   POSITION,
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -32,12 +32,12 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     {
       finishingPositions: [1, 2],
       structureName: 'Gold Flight',
-      drawType: ELIMINATION,
+      drawType: SINGLE_ELIMINATION,
     },
     {
       finishingPositions: [3, 4],
       structureName: 'Silver Flight',
-      drawType: ELIMINATION,
+      drawType: SINGLE_ELIMINATION,
     },
   ];
   const structureOptions = {
@@ -252,12 +252,12 @@ it('can advance players in Round Robin with Playoffs', () => {
     {
       finishingPositions: [1, 2],
       structureName: 'Gold Flight',
-      drawType: ELIMINATION,
+      drawType: SINGLE_ELIMINATION,
     },
     {
       finishingPositions: [3, 4],
       structureName: 'Silver Flight',
-      drawType: ELIMINATION,
+      drawType: SINGLE_ELIMINATION,
     },
   ];
   const structureOptions = {

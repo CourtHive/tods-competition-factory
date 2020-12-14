@@ -8,7 +8,7 @@ import { generateEliminationWithQualifying } from '../../tests/primitives/genera
 
 import {
   QUALIFYING,
-  ELIMINATION,
+  SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can generate and verify qualifying structures', () => {
@@ -19,7 +19,7 @@ it('can generate and verify qualifying structures', () => {
     stage: QUALIFYING,
     qualifyingRound: 2,
     participantsCount: 17,
-    drawType: ELIMINATION,
+    drawType: SINGLE_ELIMINATION,
     seedAssignmentProfile: { 5: 4 },
   });
 
