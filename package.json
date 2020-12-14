@@ -32,6 +32,9 @@
   "np": {
     "contents": "."
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
   "scripts": {
     "release": "np",
     "start": "tsdx watch",
