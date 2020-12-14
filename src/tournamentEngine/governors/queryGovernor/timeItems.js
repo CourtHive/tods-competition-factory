@@ -41,35 +41,35 @@ function getTimeItem({ element, itemAttributes }) {
     const timeItem = element.timeItems
       .filter(
         (timeItem) =>
-          !itemAttributes.itemSubject ||
-          timeItem.itemSubject === itemAttributes.itemSubject
+          !itemAttributes?.itemSubject ||
+          timeItem?.itemSubject === itemAttributes?.itemSubject
       )
       .filter(
         (timeItem) =>
-          !itemAttributes.itemType ||
-          timeItem.itemType === itemAttributes.itemType
+          !itemAttributes?.itemType ||
+          timeItem?.itemType === itemAttributes?.itemType
       )
       .filter(
         (timeItem) =>
-          !itemAttributes.itemSubType ||
-          timeItem.itemSubType === itemAttributes.itemSubType
+          !itemAttributes?.itemSubType ||
+          timeItem?.itemSubType === itemAttributes?.itemSubType
       )
       .sort(
         (a, b) =>
           new Date(a.createdAt || undefined) -
           new Date(b.createdAt || undefined)
       )
-      .reduce((scaleValue, candidate) => {
-        return (candidate.itemName === itemAttributes.itemName &&
-          (!itemAttributes.itemType ||
-            candidate.itemType === itemAttributes.itemType) &&
-          (!itemAttributes.itemClass ||
-            candidate.itemSubType === itemAttributes.itemClass)) ||
-          (candidate.itemId &&
-            itemAttributes.itemId &&
-            candidate.itemId === itemAttributes.itemId)
+      .reduce((timeItem, candidate) => {
+        return (candidate.itemName === itemAttributes?.itemName &&
+          (!itemAttributes?.itemType ||
+            candidate?.itemType === itemAttributes?.itemType) &&
+          (!itemAttributes?.itemClass ||
+            candidate?.itemSubType === itemAttributes?.itemClass)) ||
+          (candidate?.itemId &&
+            itemAttributes?.itemId &&
+            candidate?.itemId === itemAttributes?.itemId)
           ? candidate
-          : scaleValue;
+          : timeItem;
       }, undefined);
 
     if (timeItem) {
