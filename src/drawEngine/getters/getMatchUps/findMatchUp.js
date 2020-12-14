@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { getDrawStructures } from '../findStructure';
 import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
+import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
 
 /*

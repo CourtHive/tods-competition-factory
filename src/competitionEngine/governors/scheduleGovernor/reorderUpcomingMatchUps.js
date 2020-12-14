@@ -3,7 +3,7 @@ import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function reorderUpcomingMatchUps(params) {
-  const { drawEngine, tournamentRecords } = params;
+  const { drawEngine, tournamentRecords, deepCopy } = params;
   const { matchUpsContextIds, firstToLast } = params;
   const matchUpsCount = matchUpsContextIds.length;
 
@@ -38,7 +38,7 @@ export function reorderUpcomingMatchUps(params) {
       drawId,
     });
     const result = drawEngine
-      .setState(drawDefinition)
+      .setState(drawDefinition, deepCopy)
       .addMatchUpScheduledTime({ matchUpId, scheduledTime });
 
     if (result.success) {

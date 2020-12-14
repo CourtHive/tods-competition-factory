@@ -19,6 +19,7 @@ export function scheduleMatchUps(props) {
   const {
     tournamentRecords,
     drawEngine,
+    deepCopy,
 
     venueIds,
     matchUps,
@@ -93,7 +94,7 @@ export function scheduleMatchUps(props) {
           ).toISOString();
 
           drawEngine
-            .setState(drawDefinition)
+            .setState(drawDefinition, deepCopy)
             .addMatchUpScheduledTime({ matchUpId, scheduledTime });
 
           const {
