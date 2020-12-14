@@ -42,11 +42,13 @@ export function getDrawData({
         stage,
         stageSequence,
         structureName,
+        structureType,
         matchUpFormat,
       }) => ({
         stage,
         stageSequence,
         structureName,
+        structureType,
         matchUpFormat,
       }))(structure);
 
