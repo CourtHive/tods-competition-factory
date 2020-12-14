@@ -1,14 +1,17 @@
-import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  assignDrawPosition as assignPosition,
+  assignDrawPositionBye as assignPositionBye,
+} from '../../../drawEngine/governors/positionGovernor';
+
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 // TODO: untested...
 export function assignDrawPosition(props) {
   const {
     bye,
-    drawEngine,
-    drawId,
+    drawDefinition,
     drawPosition,
-    event,
     participantId,
     qualifier,
     structureId,
@@ -16,25 +19,19 @@ export function assignDrawPosition(props) {
 
   const errors = [];
 
-  if (event) {
+  if (drawDefinition) {
     if (bye) {
-      drawEngine.assignDrawPositionBye({ structureId, drawPosition });
+      assignPositionBye({ drawDefinition, structureId, drawPosition });
     } else if (qualifier) {
       console.log('assign qualifier');
     } else {
-      drawEngine.assignDrawPosition({
+      assignPosition({
+        drawDefinition,
         structureId,
         drawPosition,
         participantId,
       });
     }
-
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
   } else {
     errors.push({ error: EVENT_NOT_FOUND });
   }
