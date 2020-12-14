@@ -153,6 +153,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     venueDayDate: scheduledDate,
   });
+  console.log({ result });
   expect(result).toEqual(SUCCESS);
 
   result = tournamentEngine.assignMatchUpCourt({
@@ -182,6 +183,8 @@ it('can add events, venues, and schedule matchUps', () => {
   contextFilters = { courtIds };
   ({ matchUps } = tournamentEngine.allTournamentMatchUps({ contextFilters }));
   expect(matchUps.length).toEqual(1);
+
+  // TODO: add startTime, stopTime, resumeTime, official
 
   matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(matchUp.timeItems.length).toEqual(5);

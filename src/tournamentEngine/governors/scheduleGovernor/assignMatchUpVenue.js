@@ -1,23 +1,15 @@
+import { assignMatchUpVenue as assignVenue } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+
 export function assignMatchUpVenue({
-  drawEngine,
+  drawDefinition,
   matchUpId,
-  event,
-  drawId,
   venueId,
   venueDayDate,
 }) {
-  const result = drawEngine.assignMatchUpVenue({
+  return assignVenue({
+    drawDefinition,
     matchUpId,
     venueId,
     venueDayDate,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
-  return result;
 }

@@ -1,157 +1,89 @@
+import {
+  addMatchUpScheduledDayDate as addScheduledDayDate,
+  addMatchUpScheduledTime as addScheduledTime,
+  addMatchUpResumeTime as addResumeTime,
+  addMatchUpStartTime as addStartTime,
+  addMatchUpStopTime as addStopTime,
+  addMatchUpOffcial as addOfficial,
+  addMatchUpEndTime as addEndTime,
+} from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+
 export function addMatchUpScheduledDayDate({
-  drawEngine,
-  event,
-  drawId,
+  drawDefinition,
   matchUpId,
   scheduledDayDate,
 }) {
-  const result = drawEngine.addMatchUpScheduledDayDate({
-    matchUpId,
+  // TODO: check that scheduledDayDate is within range of event dates / tournament dates
+
+  const result = addScheduledDayDate({
+    drawDefinition,
     scheduledDayDate,
+    matchUpId,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
+
   return result;
 }
 
 export function addMatchUpScheduledTime({
-  drawEngine,
-  event,
-  drawId,
-  matchUpId,
+  drawDefinition,
   scheduledTime,
+  matchUpId,
 }) {
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 
-  const result = drawEngine.addMatchUpScheduledTime({
-    matchUpId,
-    scheduledTime,
-  });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
+  const result = addScheduledTime({ drawDefinition, matchUpId, scheduledTime });
   return result;
 }
 
-export function addMatchUpStartTime({
-  drawEngine,
-  event,
-  drawId,
-  matchUpId,
-  startTime,
-}) {
-  const result = drawEngine.addMatchUpStartTime({
+export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
+  const result = addStartTime({
+    drawDefinition,
     matchUpId,
     startTime,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
   return result;
 }
 
-export function addMatchUpEndTime({
-  drawEngine,
-  event,
-  drawId,
-  matchUpId,
-  endTime,
-}) {
-  const result = drawEngine.addMatchUpEndTime({
+export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
+  const result = addEndTime({
+    drawDefinition,
     matchUpId,
     endTime,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
   return result;
 }
 
-export function addMatchUpStopTime({
-  drawEngine,
-  event,
-  drawId,
-  matchUpId,
-  stopTime,
-}) {
-  const result = drawEngine.addMatchUpStopTime({
+export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
+  const result = addStopTime({
     matchUpId,
     stopTime,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
   return result;
 }
 
 export function addMatchUpResumeTime({
-  drawEngine,
-  event,
-  drawId,
+  drawDefinition,
   matchUpId,
   resumeTime,
 }) {
-  const result = drawEngine.addMatchUpResumeTime({
+  const result = addResumeTime({
     matchUpId,
     resumeTime,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
   return result;
 }
 
 export function addMatchUpOfficial({
-  drawEngine,
-  event,
-  drawId,
-  matchUpId,
+  drawDefinition,
   participantId,
   officialType,
+  matchUpId,
 }) {
-  const result = drawEngine.addMatchUpOfficial({
-    matchUpId,
+  const result = addOfficial({
+    drawDefinition,
     participantId,
     officialType,
+    matchUpId,
   });
-  if (result.success) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
   return result;
 }

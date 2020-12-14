@@ -1,9 +1,10 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
+import { assignMatchUpCourt as assignCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
-  const { drawEngine, tournamentRecords, deepCopy } = params;
+  const { tournamentRecords, deepCopy } = params;
   const {
     sourceMatchUpContextIds,
     targetMatchUpContextIds,
@@ -71,28 +72,16 @@ export function matchUpScheduleChange(params) {
     deepCopy,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition, event } = getDrawDefinition({
+    const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    const result = drawEngine
-      .setState(drawDefinition, deepCopy)
-      .assignMatchUpCourt({
-        matchUpId: matchUpId,
-        courtId: courtId,
-        courtDayDate,
-        deepCopy,
-      });
 
-    if (result?.success) {
-      const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-      event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-        return drawDefinition.drawId === drawId
-          ? updatedDrawDefinition
-          : drawDefinition;
-      });
-
-      return SUCCESS;
-    }
+    return assignCourt({
+      drawDefinition,
+      matchUpId,
+      courtId,
+      courtDayDate,
+    });
   }
 }

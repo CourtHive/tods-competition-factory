@@ -58,6 +58,7 @@ export const UNRECOGNIZED_MATCHUP_FORMAT = 'Unrecognized matchUpFormat';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
+export const MISSING_MATCHUP_IDS = 'Missing matchUpIds';
 export const MATCHUP_NOT_FOUND = 'matchUp not found';
 export const MISSING_MATCHUPS = 'Missing matchUps';
 export const MISSING_MATCHUP = 'Missing matchUp';
@@ -150,6 +151,7 @@ export const INVALID_TIME_ITEM = 'Invalid timeItem';
 export const MISSING_TIME_ITEM = 'Missing timeItem';
 export const MISSING_TIME_ITEMS = 'Missing timeItems';
 export const MISSING_CONTEXT = 'Missing context';
+export const MISSING_SCHEDULE = 'Missing schedule';
 
 export const INVALID_SCALE_ITEM = 'Invalid scaleItem';
 export const SCALE_ITEM_NOT_FOUND = 'No scaleItem found';
@@ -229,6 +231,7 @@ export const errorConditionConstants = {
   MISSING_EVENT,
   MISSING_MATCHUP_FORMAT,
   MISSING_MATCHUP_ID,
+  MISSING_MATCHUP_IDS,
   MISSING_MATCHUP,
   MISSING_MATCHUPS,
   MISSING_PARTICIPANT_COUNT,
@@ -245,6 +248,7 @@ export const errorConditionConstants = {
   MISSING_POLICY_TYPE,
   MISSING_POSITION_ASSIGNMENTS,
   MISSING_ROUND_NUMBER,
+  MISSING_SCHEDULE,
   MISSING_SEED_ASSIGNMENTS,
   MISSING_SEED_BLOCKS,
   MISSING_SEEDCOUNT_THRESHOLDS,
