@@ -7,7 +7,7 @@ import {
   MISSING_TIME_ITEM,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { RATING, RETRIEVAL } from '../../../constants/timeItemConstants';
+import { RETRIEVAL } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
