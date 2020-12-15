@@ -105,11 +105,11 @@ export function getAllStructureMatchUps({
       // Round Robin structures are nested so the accurate structureId when in context must be assigned here
       matchUps = [].concat(
         ...structure.structures.map((structure) => {
-          const { structureId } = structure;
+          const { structureId, structureName: groupStructureName } = structure;
           return structure.matchUps.map((matchUp) => {
             return Object.assign(makeDeepCopy(matchUp), {
               structureId,
-              structureName,
+              structureName: groupStructureName,
               stageSequence,
               stage,
             });

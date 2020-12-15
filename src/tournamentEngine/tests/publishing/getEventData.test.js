@@ -179,6 +179,13 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
   ).toEqual('P-Semifinals');
 
+  const structureNames = main.roundMatchUps[1].reduce((names, matchUp) => {
+    return names.includes(matchUp.structureName)
+      ? names
+      : names.concat(matchUp.structureName);
+  }, []);
+  expect(structureNames).toEqual(['Group 1', 'Group 2', 'Group 3', 'Group 4']);
+
   const writeFile = process.env.TMX_TEST_FILES;
   const fileName = `eventData.json`;
   const dirPath = './src/tournamentEngine/tests/publishing/';
