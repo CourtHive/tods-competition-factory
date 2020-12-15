@@ -19,5 +19,5 @@ export function unPublishEvent({ tournamentRecord, event }) {
   const result = addEventTimeItem({ event, timeItem });
   if (result.error) return { error: result.error };
 
-  return Object.assign({}, SUCCESS);
+  return Object.assign({ eventId: event.eventId }, SUCCESS);
 }
