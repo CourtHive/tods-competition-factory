@@ -20,7 +20,6 @@ const timeItem = {
   itemName: 'WTN'
   itemValue: 13.20
   createdAt: '2020-01-01T00:00'
-
 }
 ```
 
