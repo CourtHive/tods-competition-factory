@@ -1,6 +1,7 @@
 export const CHECK_IN = 'CHECK_IN'; //
 export const CHECK_OUT = 'CHECK_OUT';
 
+export const SCHEDULE = 'SCHEDULE';
 export const COURT = 'COURT'; // 'SCHEDULE.ASSIGNMENT.COURT'
 export const VENUE = 'VENUE'; // 'SCHEDULE.ASSIGNMENT.VENUE'
 export const SCHEDULED_DATE = 'SCHEDULED_DATE'; // 'SCHEDULE.DATE'

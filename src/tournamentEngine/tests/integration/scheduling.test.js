@@ -6,12 +6,14 @@ import { tournamentRecordWithParticipants } from '../primitives';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+/*
 import {
   COURT,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
   VENUE,
 } from '../../../constants/timeItemConstants';
+*/
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -187,11 +189,12 @@ it('can add events, venues, and schedule matchUps', () => {
 
   matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(matchUp.timeItems.length).toEqual(5);
-  expect(matchUp.timeItems[0].itemSubject).toEqual(SCHEDULED_TIME);
-  expect(matchUp.timeItems[1].itemSubject).toEqual(VENUE);
-  expect(matchUp.timeItems[2].itemSubject).toEqual(COURT);
-  expect(matchUp.timeItems[3].itemSubject).toEqual(SCHEDULED_DATE);
-  expect(matchUp.timeItems[4].itemSubject).toEqual(SCHEDULED_TIME);
+
+  expect(matchUp.timeItems[0].itemType).toEqual('SCHEDULE.TIME.SCHEDULED');
+  expect(matchUp.timeItems[1].itemType).toEqual('SCHEDULE.ASSIGNMENT.VENUE');
+  expect(matchUp.timeItems[2].itemType).toEqual('SCHEDULE.ASSIGNMENT.COURT');
+  expect(matchUp.timeItems[3].itemType).toEqual('SCHEDULE.DATE');
+  expect(matchUp.timeItems[4].itemType).toEqual('SCHEDULE.TIME.SCHEDULED');
 
   const { schedule } = matchUp;
   expect(schedule.courtId).toEqual(courtId);
