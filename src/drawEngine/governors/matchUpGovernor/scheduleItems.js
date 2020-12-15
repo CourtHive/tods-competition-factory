@@ -155,7 +155,7 @@ export function addMatchUpOfficial({
   const timeItem = {
     itemSubject: OFFICIAL,
     itemType: ASSIGNMENT,
-    itemSubType: officialType,
+    itemSubTypes: [officialType],
     itemValue: participantId,
   };
 

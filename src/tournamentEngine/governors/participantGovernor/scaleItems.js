@@ -139,7 +139,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
   const timeItem = {
     itemSubject: SCALE,
     itemType: scaleItem.scaleType,
-    itemSubType: scaleItem.eventType,
+    itemSubTypes: [scaleItem.eventType],
     itemName: scaleItem.scaleName,
     itemValue: scaleItem.scaleValue,
     itemId: scaleItem.scaleId,

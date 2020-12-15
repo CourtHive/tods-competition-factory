@@ -16,9 +16,10 @@ For instance, a **matchUp** may be assigned to one court and scheduled, and then
 const timeItem = {
   itemSubject: SCALE,
   itemType: RANKING,
-  itemSubType: undefined,
+  itemSubTypes: [SINGLES],
   itemName: 'WTN'
-  itemValue: 13.20
+  itemValue: 13.20,
+  itemDate: undefined,
   createdAt: '2020-01-01T00:00'
 }
 ```
@@ -59,6 +60,7 @@ Sometimes a tournament organizer may want to fetch player Rankings and Ratings f
 const timeItem = {
   itemSubject: RETRIEVAL,
   itemType: RANKING,
+  itemSubTypes: [SINGLES],
   itemName: 'U18',
   itemValue: '2021-01-01T00:00',
 };
@@ -71,6 +73,7 @@ tournamentEngine.addEventTimeItem({ eventId, timeItem });
 const itemAttributes = {
   itemSubject: RETRIEVAL,
   itemType: RANKING,
+  itemSubTypes: [SINGLES],
   itemName: 'U18',
 };
 const {

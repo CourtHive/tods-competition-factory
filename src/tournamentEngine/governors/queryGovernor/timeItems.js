@@ -51,8 +51,8 @@ function getTimeItem({ element, itemAttributes }) {
       )
       .filter(
         (timeItem) =>
-          !itemAttributes?.itemSubType ||
-          timeItem?.itemSubType === itemAttributes?.itemSubType
+          !itemAttributes?.itemSubTypes ||
+          timeItem?.itemSubTypes?.includes(itemAttributes?.itemSubTypes)
       )
       .sort(
         (a, b) =>
@@ -64,7 +64,7 @@ function getTimeItem({ element, itemAttributes }) {
           (!itemAttributes?.itemType ||
             candidate?.itemType === itemAttributes?.itemType) &&
           (!itemAttributes?.itemClass ||
-            candidate?.itemSubType === itemAttributes?.itemClass)) ||
+            candidate?.itemSubTypes?.includes(itemAttributes?.itemClass))) ||
           (candidate?.itemId &&
             itemAttributes?.itemId &&
             candidate?.itemId === itemAttributes?.itemId)
