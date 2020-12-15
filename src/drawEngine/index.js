@@ -28,9 +28,9 @@ let tournamentParticipants = [];
 
 const policies = {};
 
-function newDrawDefinition({ drawId, drawProfile } = {}) {
+function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
   const template = definitionTemplate();
-  return Object.assign({}, template, { drawId, drawProfile });
+  return Object.assign({}, template, { drawId, drawType, drawProfile });
 }
 
 function setState(definition, deepCopyOption = true) {
@@ -73,9 +73,9 @@ export const drawEngine = (function () {
     getErrors: () => {
       return makeDeepCopy(errors);
     },
-    newDrawDefinition: ({ drawId = UUID(), drawProfile } = {}) => {
+    newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       flushErrors();
-      drawDefinition = newDrawDefinition({ drawId, drawProfile });
+      drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
     setDrawId: ({ drawId }) => {

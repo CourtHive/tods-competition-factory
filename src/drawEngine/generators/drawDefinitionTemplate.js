@@ -3,6 +3,7 @@ import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 export const definitionTemplate = () => ({
   drawId: undefined,
   drawName: undefined,
+  drawType: undefined, // NOTE: appears both in drawDefinition and in drawDefinitionProfile.  Topic in flux.
   drawProfile: {
     automated: undefined,
     drawType: undefined,

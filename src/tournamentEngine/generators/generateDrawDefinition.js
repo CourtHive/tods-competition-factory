@@ -83,7 +83,6 @@ export function generateDrawDefinition(props) {
   }
 
   const drawProfile = {
-    drawType,
     drawSize,
     automated,
     customName,
@@ -123,7 +122,7 @@ export function generateDrawDefinition(props) {
   }
 
   drawEngine.reset();
-  drawEngine.newDrawDefinition({ drawProfile });
+  drawEngine.newDrawDefinition({ drawType, drawProfile });
 
   drawEngine.setStageDrawSize({ stage, drawSize });
   const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({

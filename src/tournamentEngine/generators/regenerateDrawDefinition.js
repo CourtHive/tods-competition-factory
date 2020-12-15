@@ -31,6 +31,8 @@ export function regenerateDrawDefinition({
       drawEngine,
       tournamentRecord,
       policyDefinitions,
+      drawName: drawDefinition.drawName,
+      drawType: drawDefinition.drawType,
       ...drawDefinition.drawProfile,
     });
 
