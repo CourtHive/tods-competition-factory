@@ -28,6 +28,7 @@ export function removeCourtAssignment({
   if (matchUp.timeItems) {
     const hasCourtAssignment = matchUp.timeItems.reduce(
       (hasAssignment, candidate) => {
+        // return candidate.itemType === 'SCHEDULE.ASSIGNMENT.COURT' ? true : hasAssignment;
         return candidate.itemSubject === COURT ? true : hasAssignment;
       },
       undefined
@@ -35,6 +36,7 @@ export function removeCourtAssignment({
 
     if (hasCourtAssignment) {
       const timeItem = {
+        // itemType = 'SCHEDULE.ASSIGNMENT.COURT',
         itemSubject: COURT,
         itemType: ASSIGNMENT,
         itemValue: '',

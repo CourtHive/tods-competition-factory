@@ -25,16 +25,27 @@ export function matchUpDuration({ matchUp }) {
   if (!matchUp.timeItems) return { error: MISSING_TIME_ITEMS };
 
   const relevantTimeItems = matchUp.timeItems
-    .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
-        timeItem.itemSubject
+    .filter(
+      (timeItem) =>
+        [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
+          timeItem.itemSubject
+        )
+      /*
+      ['SCHEDULE.TIME.START', 'SCHEDULE_TIME.STOP', 'SCHEDULE.TIME.RESUME', SCHEDULE.TIME.END'].includes(
+        timeItem.itemType
       )
+      */
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
   const elapsed = relevantTimeItems.reduce(
     (elapsed, timeItem) => {
       let milliseconds;
+      /*
+      const itemTypeComponents = timeITem?.itemType?.split('.');
+      const scheduleSubject = timeItem?.itemType?.startsWith('SCHEDULE.TIME') && itemTypeComponents[2];
+      */
+      // switch (scheduleSubject) {
       switch (timeItem.itemSubject) {
         case START_TIME:
           milliseconds = 0;
@@ -66,6 +77,7 @@ export function matchUpDuration({ matchUp }) {
       }
       return {
         milliseconds,
+        // lastSubject: lastSubject,
         lastSubject: timeItem.itemSubject,
         lastValue: timeItem.itemValue,
       };
@@ -73,8 +85,9 @@ export function matchUpDuration({ matchUp }) {
     { milliseconds: 0, lastSubject: undefined, lastValue: undefined }
   );
 
+  // if (['SCHEDULE.TIME.START', 'SCHEDULE.TIME.RESUME'].includes(elapsed.lastSubject)) {
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastSubject)) {
-    // matchUp has not completed and is active
+    // matchUp has not clompleted and is active
     const interval = new Date() - timeDate(elapsed.lastValue);
     elapsed.milliseconds += interval;
   }

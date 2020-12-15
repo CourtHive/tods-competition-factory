@@ -35,52 +35,39 @@ it('can add and read timeItems from events', () => {
   expect(result.error).toEqual(MISSING_TIME_ITEM);
 
   timeItem = {
-    itemSubject: RETRIEVAL,
+    itemType: RETRIEVAL,
   };
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   timeItem = {
-    itemSubject: RETRIEVAL,
-    itemType: RATING,
+    itemType: 'RETRIEVAL.RATING',
   };
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   const itemValue = '2021-01-01T00:00';
   timeItem = {
-    itemSubject: RETRIEVAL,
-    itemType: RATING,
-    itemName: 'U18',
+    itemType: 'RETRIEVAL.RATING.SINGLES.U18',
     itemValue,
   };
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result).toEqual(SUCCESS);
 
-  let itemAttributes = {
-    itemSubject: RETRIEVAL,
-    itemType: RATING,
-    itemName: 'U18',
-  };
   let {
     timeItem: retrievedTimeItem,
     message,
   } = tournamentEngine.getEventTimeItem({
     eventId,
-    itemAttributes,
+    itemType: 'RETRIEVAL.RATING.SINGLES.U18',
   });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(message).toEqual(undefined);
 
-  itemAttributes = {
-    itemSubject: RETRIEVAL,
-    itemType: RATING,
-    itemName: 'U16',
-  };
   ({ timeItem: retrievedTimeItem, message } = tournamentEngine.getEventTimeItem(
     {
       eventId,
-      itemAttributes,
+      itemType: 'RETRIEVAL.RATING.SINGLES.U16',
     }
   ));
   expect(retrievedTimeItem).toEqual(undefined);

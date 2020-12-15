@@ -5,6 +5,7 @@ export function matchUpAssignedCourtId({ matchUp }) {
   const getTimeStamp = (item) =>
     !item ? 0 : new Date(item.createdAt).getTime();
   const lastCourtAssignmentItem = timeItems
+    // .filter((timeItem) => timeItem.itemType === `${SCHEDULE}${ASSIGNMENT}${COURT}`)
     .filter((timeItem) => timeItem.itemSubject === COURT)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();

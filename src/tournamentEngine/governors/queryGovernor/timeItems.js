@@ -6,53 +6,57 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function getDrawDefinitionTimeItem({ drawDefinition, itemAttributes }) {
+export function getDrawDefinitionTimeItem({
+  drawDefinition,
+  itemType,
+  itemSubTypes,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!drawDefinition.timeItems) return { message: NOT_FOUND };
 
   const { timeItem, message } = getTimeItem({
     element: drawDefinition,
-    itemAttributes,
+    itemType,
+    itemSubTypes,
   });
   return (timeItem && { timeItem }) || { message };
 }
 
-export function getEventTimeItem({ event, itemAttributes }) {
+export function getEventTimeItem({ event, itemType, itemSubTypes }) {
   if (!event) return { error: MISSING_EVENT };
   if (!event.timeItems) return { message: NOT_FOUND };
 
-  const { timeItem, message } = getTimeItem({ element: event, itemAttributes });
+  const { timeItem, message } = getTimeItem({
+    element: event,
+    itemType,
+    itemSubTypes,
+  });
   return (timeItem && { timeItem }) || { message };
 }
 
-export function getTournamentTimeItem({ tournamentRecord, itemAttributes }) {
+export function getTournamentTimeItem({
+  tournamentRecord,
+  itemType,
+  itemSubTypes,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.timeItems) return { message: NOT_FOUND };
 
   const { timeItem, message } = getTimeItem({
     element: tournamentRecord,
-    itemAttributes,
+    itemType,
+    itemSubTypes,
   });
   return (timeItem && { timeItem }) || { message };
 }
 
-function getTimeItem({ element, itemAttributes }) {
+function getTimeItem({ element, itemType, itemSubTypes }) {
   if (element && Array.isArray(element.timeItems)) {
     const timeItem = element.timeItems
+      .filter((timeItem) => timeItem.itemType === itemType)
       .filter(
         (timeItem) =>
-          !itemAttributes?.itemSubject ||
-          timeItem?.itemSubject === itemAttributes?.itemSubject
-      )
-      .filter(
-        (timeItem) =>
-          !itemAttributes?.itemType ||
-          timeItem?.itemType === itemAttributes?.itemType
-      )
-      .filter(
-        (timeItem) =>
-          !itemAttributes?.itemSubTypes ||
-          timeItem?.itemSubTypes?.includes(itemAttributes?.itemSubTypes)
+          !itemSubTypes || timeItem?.itemSubTypes?.includes(itemSubTypes)
       )
       .sort(
         (a, b) =>
@@ -60,14 +64,8 @@ function getTimeItem({ element, itemAttributes }) {
           new Date(b.createdAt || undefined)
       )
       .reduce((timeItem, candidate) => {
-        return (candidate.itemName === itemAttributes?.itemName &&
-          (!itemAttributes?.itemType ||
-            candidate?.itemType === itemAttributes?.itemType) &&
-          (!itemAttributes?.itemClass ||
-            candidate?.itemSubTypes?.includes(itemAttributes?.itemClass))) ||
-          (candidate?.itemId &&
-            itemAttributes?.itemId &&
-            candidate?.itemId === itemAttributes?.itemId)
+        return candidate.itemType === itemType &&
+          (!itemSubTypes || candidate?.itemSubTypes?.includes(itemSubTypes))
           ? candidate
           : timeItem;
       }, undefined);

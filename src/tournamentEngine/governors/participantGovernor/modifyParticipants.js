@@ -32,6 +32,7 @@ export function participantsSignInStatus({
       if (participantIds.includes(participant.participantId)) {
         if (!participant.timeItems) participant.timeItems = [];
         const timeItem = {
+          // itemType: SIGN_IN_STATUS,
           itemSubject: SIGN_IN_STATUS,
           itemValue: signInState,
           createdAt,

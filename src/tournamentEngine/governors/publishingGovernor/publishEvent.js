@@ -20,8 +20,7 @@ export function publishEvent({
   if (!event) return { error: MISSING_EVENT };
 
   const timeItem = {
-    itemSubject: PUBLISH,
-    itemType: STATUS,
+    itemType: `${PUBLISH}.${STATUS}`,
     itemValue: { [status]: { drawIds, structureIds } },
   };
   const result = addEventTimeItem({ event, timeItem });

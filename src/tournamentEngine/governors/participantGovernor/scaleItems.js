@@ -136,13 +136,19 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
 
   const createdAt = new Date().toISOString();
   if (!participant.timeItems) participant.timeItems = [];
+
+  /*
+  const { scaleType, eventType, scaleName } = scaleItem;
+  const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
+  */
+
   const timeItem = {
     itemSubject: SCALE,
     itemType: scaleItem.scaleType,
+    // itemSubTypes: [scaleItem.scaleId],
     itemSubTypes: [scaleItem.eventType],
     itemName: scaleItem.scaleName,
     itemValue: scaleItem.scaleValue,
-    itemId: scaleItem.scaleId,
     itemDate: scaleItem.scaleDate,
     createdAt,
   };

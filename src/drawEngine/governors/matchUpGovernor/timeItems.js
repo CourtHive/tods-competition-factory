@@ -15,6 +15,7 @@ export function addTimeItem({ drawDefinition, matchUpId, timeItem }) {
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const timeItemAttributes = timeItem && Object.keys(timeItem);
+  // const requiredAttributes = ['itemType', 'itemValue'];
   const requiredAttributes = ['itemSubject', 'itemValue'];
   const validTimeItem =
     requiredAttributes.filter((attribute) =>

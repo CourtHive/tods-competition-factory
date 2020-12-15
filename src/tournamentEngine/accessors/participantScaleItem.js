@@ -11,7 +11,12 @@ export function participantScaleItem({
 }) {
   if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
+    /*
+    const {itemSubject, scaleType, eventType} = scaleAttributes;
+    const filterType = [itemSubject, scaleType, eventType, scaleName].join('.');
+    */
     const timeItem = participant.timeItems
+      // .filter((timeItem) => timeItem.itemType === filterType)
       .filter((timeItem) => timeItem.itemSubject === SCALE)
       .filter(
         (timeItem) =>
@@ -30,24 +35,37 @@ export function participantScaleItem({
           new Date(b.createdAt || undefined)
       )
       .reduce((scaleValue, candidate) => {
-        return (candidate.itemName === scaleAttributes.scaleName &&
+        /*
+        // this can be greatly simplified... we are just going to return the last matching item
+        return candidate.itemType === filterType ? candidate : scaleValue;
+        */
+        return candidate.itemName === scaleAttributes.scaleName &&
           (!scaleAttributes.scaleType ||
             candidate.itemType === scaleAttributes.scaleType) &&
           (!scaleAttributes.scaleClass ||
-            candidate.itemSubTypes?.includes(scaleAttributes.scaleClass))) ||
-          (candidate.itemId &&
-            scaleAttributes.scaleId &&
-            candidate.itemId === scaleAttributes.scaleId)
+            candidate.itemSubTypes?.includes(scaleAttributes.scaleClass))
           ? candidate
           : scaleValue;
       }, undefined);
 
     if (timeItem) {
+      // 'SCALE.RANKING.SINGLES.U18'
+      // 'SCALE.RATING.SINGLES.WTN'
+      /*
+      const [itemSubject, scaleType, eventType, scaleName] = itemType.split('.');
+      const scaleItem = {
+        scaleDate: timeItem.itemDate,
+        scaleName,
+        scaleType,
+        eventType,
+        scaleValue: timeItem.itemValue,
+      };
+      */
       const scaleItem = {
         scaleDate: timeItem.itemDate,
         scaleName: timeItem.itemName,
         scaleType: timeItem.itemType,
-        eventType: timeItem.itemSubTypes,
+        eventType: timeItem.itemSubTypes[0],
         scaleValue: timeItem.itemValue,
       };
       return { scaleItem };

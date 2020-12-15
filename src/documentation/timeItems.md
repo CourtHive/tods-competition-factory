@@ -13,6 +13,27 @@ For instance, a **matchUp** may be assigned to one court and scheduled, and then
 ## Object properties
 
 ```js
+  itemType: 'SCHEDULE.ASSIGNMENT.VENUE',
+  itemType: 'SCHEDULE.ASSIGNMENT.COURT',
+  itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
+  itemType: 'SCHEDULE.DATE',
+  itemType: 'SCHEDULE.TIME.SCHEDULED',
+  itemType: 'SCHEDULE.TIME.START',
+  itemType: 'SCHEDULE.TIME.STOP',
+  itemType: 'SCHEDULE.TIME.RESUME',
+  itemType: 'SCHEDULE.TIME.END',
+```
+
+```js
+const timeItem = {
+  itemType: 'SCALE.RANKING.SINGLES.WTN',
+  itemValue: 13.20,
+  itemDate: '2020-01-01T00:00'
+  createdAt: '2020-01-03T06:21'
+}
+```
+
+```js
 const timeItem = {
   itemSubject: SCALE,
   itemType: RANKING,

@@ -41,6 +41,7 @@ export function checkInParticipant({
   }
 
   const timeItem = {
+    // itemType: CHECK_IN,
     itemSubject: CHECK_IN,
     itemValue: participantId,
   };
@@ -80,6 +81,7 @@ export function checkOutParticipant({
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(
         (participantId) => {
           const timeItem = {
+            // itemType: CHECK_OUT,
             itemSubject: CHECK_OUT,
             itemValue: participantId,
           };
@@ -90,6 +92,7 @@ export function checkOutParticipant({
   }
 
   const timeItem = {
+    // itemType: CHECK_OUT,
     itemSubject: CHECK_OUT,
     itemValue: participantId,
   };

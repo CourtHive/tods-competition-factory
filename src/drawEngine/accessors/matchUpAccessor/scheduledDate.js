@@ -9,6 +9,7 @@ export function scheduledMatchUpDate({
   const timeItems = matchUp.timeItems || [];
   const scheduledDateItem = timeItems.reduce((scheduledDateItem, timeItem) => {
     const scheduledDateCandidate =
+      // timeItem.itemType === 'SCHEDULE.DATE' && timeItem;
       timeItem.itemSubject === SCHEDULED_DATE && timeItem;
     const laterScheduledTimeItem =
       scheduledDateCandidate &&

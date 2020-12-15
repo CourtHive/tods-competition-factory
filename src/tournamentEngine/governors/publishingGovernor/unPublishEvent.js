@@ -12,8 +12,7 @@ export function unPublishEvent({ tournamentRecord, event }) {
   if (!event) return { error: MISSING_EVENT };
 
   const timeItem = {
-    itemSubject: PUBLISH,
-    itemType: STATUS,
+    itemType: `${PUBLISH}.${STATUS}`,
     itemValue: HIDDEN,
   };
   const result = addEventTimeItem({ event, timeItem });

@@ -23,49 +23,39 @@ it('can add and read timeItems from events', () => {
   expect(result.error).toEqual(MISSING_TIME_ITEM);
 
   timeItem = {
-    itemSubject: MODIFICATION,
+    itemType: MODIFICATION,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   timeItem = {
-    itemSubject: MODIFICATION,
-    itemType: 'CONTENT',
+    itemType: 'MODIFICATION.CONTENT',
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   const itemValue = '2021-01-01T00:00';
   timeItem = {
-    itemSubject: MODIFICATION,
-    itemType: 'CONTENT',
+    itemType: 'MODIFICATION.CONTENT',
     itemValue,
   };
   result = tournamentEngine.addTournamentTimeItem({ timeItem });
   expect(result).toEqual(SUCCESS);
 
-  let itemAttributes = {
-    itemSubject: MODIFICATION,
-    itemType: 'CONTENT',
-  };
   let {
     timeItem: retrievedTimeItem,
     message,
   } = tournamentEngine.getTournamentTimeItem({
-    itemAttributes,
+    itemType: 'MODIFICATION.CONTENT',
   });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(message).toEqual(undefined);
 
-  itemAttributes = {
-    itemSubject: MODIFICATION,
-    itemType: 'OTHER',
-  };
   ({
     timeItem: retrievedTimeItem,
     message,
   } = tournamentEngine.getTournamentTimeItem({
-    itemAttributes,
+    itemType: 'MODIFICATION.OTHER',
   }));
   expect(retrievedTimeItem).toEqual(undefined);
   expect(message).toEqual(NOT_FOUND);
