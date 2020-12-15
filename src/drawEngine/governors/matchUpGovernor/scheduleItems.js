@@ -2,19 +2,6 @@ import { addTimeItem } from './timeItems';
 import { findMatchUp } from '../../getters/getMatchUps';
 
 import {
-  ASSIGNMENT,
-  COURT,
-  END_TIME,
-  OFFICIAL,
-  RESUME_TIME,
-  SCHEDULED_DATE,
-  SCHEDULED_TIME,
-  START_TIME,
-  STOP_TIME,
-  VENUE,
-} from '../../../constants/timeItemConstants';
-
-import {
   MISSING_DATE,
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
@@ -75,7 +62,7 @@ export function addMatchUpScheduledDayDate({
   if (!validDate) return { error: INVALID_DATE };
 
   const timeItem = {
-    itemSubject: SCHEDULED_DATE,
+    itemType: 'SCHEDULE.DATE',
     itemValue: scheduledDayDate,
   };
 
@@ -97,7 +84,7 @@ export function addMatchUpScheduledTime({
 
   const itemValue = scheduledTime;
   const timeItem = {
-    itemSubject: SCHEDULED_TIME,
+    itemType: 'SCHEDULE.TIME.SCHEDULED',
     itemValue,
   };
 
@@ -114,8 +101,8 @@ export function assignMatchUpCourt({
   if (courtDayDate === undefined) return { error: MISSING_DATE };
 
   const timeItem = {
-    itemSubject: COURT,
-    itemType: ASSIGNMENT,
+    itemType: 'SCHEDULE.ASSIGNMENT.COURT',
+
     itemValue: courtId,
     itemDate: courtDayDate,
   };
@@ -133,8 +120,7 @@ export function assignMatchUpVenue({
   if (venueDayDate === undefined) return { error: MISSING_DATE };
 
   const timeItem = {
-    itemSubject: VENUE,
-    itemType: ASSIGNMENT,
+    itemType: 'SCHEDULE.ASSIGNMENT.VENUE',
     itemValue: venueId,
     itemDate: venueDayDate,
   };
@@ -153,8 +139,7 @@ export function addMatchUpOfficial({
   // TODO: check that 1) participantId has the appropriate participantRole
 
   const timeItem = {
-    itemSubject: OFFICIAL,
-    itemType: ASSIGNMENT,
+    itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
     itemSubTypes: [officialType],
     itemValue: participantId,
   };
@@ -171,7 +156,11 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
 
   const earliestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemSubject)
+      [
+        'SCHEDULE.TIME.STOP',
+        'SCHEDULE.TIME.RESUME',
+        'SCHEDULE.TIME.END',
+      ].includes(timeItem.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -187,9 +176,9 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
     matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemSubject !== START_TIME
+      (timeItem) => timeItem.itemType !== 'SCHEDULE.TIME.START'
     );
-    const timeItem = { itemSubject: START_TIME, itemValue: startTime };
+    const timeItem = { itemType: 'SCHEDULE.TIME.START', itemValue: startTime };
     return newTimeItem({ matchUp, timeItem });
   } else {
     return { error: INVALID_START_TIME };
@@ -205,7 +194,11 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
 
   const latestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
+      [
+        'SCHEDULE.TIME.START',
+        'SCHEDULE.TIME.RESUME',
+        'SCHEDULE.TIME.STOP',
+      ].includes(timeItem.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -218,9 +211,9 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   if (!latestRelevantTimeValue || timeDate(endTime) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
     matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemSubject !== END_TIME
+      (timeItem) => timeItem.itemType !== 'SCHEDULE.TIME.END'
     );
-    const timeItem = { itemSubject: END_TIME, itemValue: endTime };
+    const timeItem = { itemType: 'SCHEDULE.TIME.END', itemValue: endTime };
     return newTimeItem({ matchUp, timeItem });
   } else {
     return { error: INVALID_END_TIME };
@@ -238,21 +231,25 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
   // if latest relevaant timeItem is a STOP_TIME then overwrite
 
   const hasEndTime = timeItems.reduce((hasEndTime, timeItem) => {
-    return timeItem.itemSubject === END_TIME || hasEndTime;
+    return timeItem.itemType === 'SCHEDULE.TIME.END' || hasEndTime;
   }, undefined);
 
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
+      [
+        'SCHEDULE.TIME.START',
+        'SCHEDULE.TIME.RESUME',
+        'SCHEDULE.TIME.STOP',
+      ].includes(timeItem.itemType)
     )
-    // .sort((a, b) => new Date(a.itemValue) - new Date(b.itemValue));
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
   const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
   const lastRelevantTimeItemIsStop =
-    lastRelevantTimeItem && lastRelevantTimeItem.itemSubject === STOP_TIME;
+    lastRelevantTimeItem &&
+    lastRelevantTimeItem.itemType === 'SCHEDULE.TIME.STOP';
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter(
@@ -260,7 +257,6 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
         !lastRelevantTimeItemIsStop ||
         timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
-    // .map(timeItem => new Date(timeItem.itemValue))
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
@@ -268,7 +264,6 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
       undefined
     );
 
-  // if (new Date(stopTime) > latestRelevantTimeValue) {
   if (timeDate(stopTime) > latestRelevantTimeValue) {
     if (lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
@@ -278,7 +273,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     }
 
     const timeItem = {
-      itemSubject: STOP_TIME,
+      itemType: 'SCHEDULE.TIME.STOP',
       itemValue: stopTime,
     };
 
@@ -303,21 +298,25 @@ export function addMatchUpResumeTime({
   // if latest relevaant timeItem is a RESUME_TIME then overwrite
 
   const hasEndTime = timeItems.reduce((hasEndTime, timeItem) => {
-    return timeItem.itemSubject === END_TIME || hasEndTime;
+    return timeItem.itemType === 'SCHEDULE.TIME.END' || hasEndTime;
   }, undefined);
 
   if (hasEndTime) return { error: EXISTING_END_TIME };
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME].includes(timeItem.itemSubject)
+      [
+        'SCHEDULE.TIME.START',
+        'SCHEDULE.TIME.RESUME',
+        'SCHEDULE.TIME.STOP',
+      ].includes(timeItem.itemType)
     )
-    // .sort((a, b) => new Date(a.itemValue) - new Date(b.itemValue));
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
   const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
   const lastRelevantTimeItemIsResume =
-    lastRelevantTimeItem && lastRelevantTimeItem.itemSubject === RESUME_TIME;
+    lastRelevantTimeItem &&
+    lastRelevantTimeItem.itemType === 'SCHEDULE.TIME.RESUME';
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter(
@@ -325,7 +324,6 @@ export function addMatchUpResumeTime({
         !lastRelevantTimeItemIsResume ||
         timeItem.createdAt !== lastRelevantTimeItem.createdAt
     )
-    // .map(timeItem => new Date(timeItem.itemValue))
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
       (latest, timeValue) =>
@@ -333,7 +331,6 @@ export function addMatchUpResumeTime({
       undefined
     );
 
-  // if (new Date(resumeTime) > latestRelevantTimeValue) {
   if (timeDate(resumeTime) > latestRelevantTimeValue) {
     if (lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
@@ -343,7 +340,7 @@ export function addMatchUpResumeTime({
     }
 
     const timeItem = {
-      itemSubject: RESUME_TIME,
+      itemType: 'SCHEDULE.TIME.RESUME',
       itemValue: resumeTime,
     };
 

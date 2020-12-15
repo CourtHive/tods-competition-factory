@@ -8,7 +8,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PUBLIC, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
 // pass in policyDefinitions for roundNaming and personPrivacy
 export function getEventData({ tournamentRecord, event, policyDefinition }) {
@@ -77,14 +77,9 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     tournamentInfo,
   };
 
-  const itemAttributes = {
-    itemSubject: PUBLISH,
-    itemType: STATUS,
-    itemValue: PUBLIC,
-  };
   const { timeItem } = getEventTimeItem({
     event,
-    itemAttributes,
+    itemType: `${PUBLISH}.${STATUS}`,
   });
 
   eventData.eventInfo.publish = {

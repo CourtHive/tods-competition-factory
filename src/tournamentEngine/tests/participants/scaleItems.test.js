@@ -31,7 +31,11 @@ it('can set participant scaleItems', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  let scaleAttributes = { scaleName: 'WTN' };
+  let scaleAttributes = {
+    scaleType: RATING,
+    eventType: SINGLES,
+    scaleName: 'WTN',
+  };
   ({ scaleItem: result } = tournamentEngine.getParticipantScaleItem({
     participantId,
     scaleAttributes,

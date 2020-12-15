@@ -1,31 +1,32 @@
-export const CHECK_IN = 'CHECK_IN';
+export const CHECK_IN = 'CHECK_IN'; //
 export const CHECK_OUT = 'CHECK_OUT';
 
-export const COURT = 'COURT';
-export const VENUE = 'VENUE';
-export const SCHEDULED_DATE = 'SCHEDULED_DATE';
-export const SCHEDULED_TIME = 'SCHEDULED_TIME';
+export const SCHEDULE = 'SCHEDULE';
+export const COURT = 'COURT'; // 'SCHEDULE.ASSIGNMENT.COURT'
+export const VENUE = 'VENUE'; // 'SCHEDULE.ASSIGNMENT.VENUE'
+export const SCHEDULED_DATE = 'SCHEDULED_DATE'; // 'SCHEDULE.DATE'
+export const SCHEDULED_TIME = 'SCHEDULED_TIME'; // 'SCHEDULE.TIME.SCHEDULED'
 
-export const START_TIME = 'START_TIME';
-export const STOP_TIME = 'STOP_TIME';
-export const RESUME_TIME = 'RESUME_TIME';
-export const END_TIME = 'END_TIME';
+export const START_TIME = 'START_TIME'; // 'SCHEDULE.TIME.START'
+export const STOP_TIME = 'STOP_TIME'; // 'SCHEDULE.TIME.STOP'
+export const RESUME_TIME = 'RESUME_TIME'; // 'SCHEDULE.TIME.RESUME'
+export const END_TIME = 'END_TIME'; // 'SCHEDULE.TIME.END'
 
 export const ASSIGNMENT = 'ASSIGNMENT';
-export const OFFICIAL = 'OFFICIAL';
+export const OFFICIAL = 'OFFICIAL'; // 'SCHEDULE.ASSIGNMENT.OFFICIAL'
 export const SUSPENSION = 'SUSPENSION';
 export const MEDICAL = 'MEDICAL';
 export const PENALTY = 'PENALTY';
 
 export const SCALE = 'SCALE';
-export const RATING = 'RATING';
-export const RANKING = 'RANKING';
-export const SEEDING = 'SEEDING';
+export const RATING = 'RATING'; // 'SCALE.RATING'
+export const RANKING = 'RANKING'; // 'SCALE.RANKING'
+export const SEEDING = 'SEEDING'; // 'SCALE.SEEDING'
 
 export const PUBLISH = 'PUBLISH';
 export const PUBLIC = 'PUBLIC';
 export const HIDDEN = 'HIDDEN';
-export const STATUS = 'STATUS';
+export const STATUS = 'STATUS'; // 'PUBLISH.STATUS'
 
 export const MODIFICATION = 'MODIFICATION';
 export const RETRIEVAL = 'RETRIEVAL'; // accesss to an external resource

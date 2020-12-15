@@ -8,7 +8,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-import { COURT, ASSIGNMENT } from '../../../constants/timeItemConstants';
+// import { COURT, ASSIGNMENT } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeCourtAssignment({
@@ -28,15 +28,19 @@ export function removeCourtAssignment({
   if (matchUp.timeItems) {
     const hasCourtAssignment = matchUp.timeItems.reduce(
       (hasAssignment, candidate) => {
-        return candidate.itemSubject === COURT ? true : hasAssignment;
+        return candidate.itemType === 'SCHEDULE.ASSIGNMENT.COURT'
+          ? true
+          : hasAssignment;
+        // return candidate.itemSubject === COURT ? true : hasAssignment;
       },
       undefined
     );
 
     if (hasCourtAssignment) {
       const timeItem = {
-        itemSubject: COURT,
-        itemType: ASSIGNMENT,
+        itemType: 'SCHEDULE.ASSIGNMENT.COURT',
+        // itemSubject: COURT,
+        // itemType: ASSIGNMENT,
         itemValue: '',
         itemDate: '',
       };
