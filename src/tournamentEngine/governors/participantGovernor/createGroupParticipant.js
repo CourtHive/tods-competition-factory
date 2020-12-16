@@ -15,7 +15,8 @@ export function createGroupParticipant({
     participantId: participantId || UUID(),
     participantType: GROUP,
     participantRole,
-    name: groupName,
+    participantName: groupName,
+    name: groupName, // for backwards compatability
     individualParticipantIds,
   };
 

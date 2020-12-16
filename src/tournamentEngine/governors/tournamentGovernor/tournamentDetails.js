@@ -4,11 +4,13 @@ import { dateValidation } from '../../../fixtures/validations/regex';
 
 export function setTournamentName({
   tournamentRecord,
-  name,
+  name, // TODO: clear up name vs. tournamentName
+  tournamentName,
   promotionalName,
   formalName,
 }) {
   if (name) tournamentRecord.name = name;
+  if (tournamentName) tournamentRecord.tournamentName = tournamentName;
   if (promotionalName) tournamentRecord.promotionalName = promotionalName;
   if (formalName) tournamentRecord.formalName = formalName;
   if (tournamentRecord.promotionalName === tournamentRecord.name) {

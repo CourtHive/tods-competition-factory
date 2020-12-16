@@ -147,7 +147,10 @@ it('can set tournament names', () => {
   expect(result?.success).toEqual(true);
 
   const tournamentName = 'CourtHive Challenge';
-  result = tournamentEngine.setTournamentName({ name: tournamentName });
+  result = tournamentEngine.setTournamentName({
+    name: tournamentName,
+    tournamentName,
+  });
   expect(result?.success).toEqual(true);
 
   let { tournamentRecord } = tournamentEngine.getState();

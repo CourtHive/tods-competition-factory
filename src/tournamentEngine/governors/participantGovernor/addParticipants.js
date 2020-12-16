@@ -77,19 +77,19 @@ export function addParticipant({ tournamentRecord, participant }) {
 
     if (existingPairParticipant) return { error: PARTICIPANT_PAIR_EXISTS };
 
-    if (!participant.name) {
+    if (!participant.participantName) {
       const individualParticipants = tournamentParticipants.filter(
         (tournamentParticipant) =>
           participant.individualParticipantIds.includes(
             tournamentParticipant.participantId
           )
       );
-      const name = individualParticipants
+      const participantName = individualParticipants
         .map((participant) => participant.person?.standardFamilyName)
         .filter((f) => f)
         .join('/');
-      participant.name = name;
-      participant.participantName = name;
+      participant.participantName = participantName;
+      participant.name = participantName; // backwards compatabilty
     }
   } else if (participantType === INDIVIDUAL) {
     if (
@@ -99,12 +99,12 @@ export function addParticipant({ tournamentRecord, participant }) {
     )
       return { error: MISSING_PERSON_DETAILS };
 
-    if (!participant.name) {
-      const name = `${participant.person.standardFamilyName.toUpperCase()}, ${
+    if (!participant.participantName) {
+      const participantName = `${participant.person.standardFamilyName.toUpperCase()}, ${
         participant.person.standardGivenName
       }`;
-      participant.name = name;
-      participant.participantName = name;
+      participant.participantName = participantName;
+      participant.name = participantName; // backwards compatabilty
     }
   }
 

@@ -98,7 +98,7 @@ export function generateMockParticipants({
     const { firstName, lastName } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
-    const name = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
+    const participantName = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
     const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);
     if (countriesList?.length && !nationalityCode) {
@@ -113,7 +113,8 @@ export function generateMockParticipants({
       participantId: UUID(),
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
-      name,
+      participantName,
+      name: participantName, // for backwards compatability
       person: {
         addresses: [address],
         personId: UUID(),
