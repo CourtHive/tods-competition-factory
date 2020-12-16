@@ -2,17 +2,17 @@ competitionEngine
 - matchUpScheduleChange
 - removeMatchUpCourtAssignment
 - reorderUpcomingMatchUps
-- scheduleMatchUps
+* scheduleMatchUps
 - toggleParticipantCheckInState
 
 tournamentEngine
-- addDrawDefinition
-- addEventEntryPairs
-- addMatchUpScheduledDayDate
-- addMatchUpScheduledTime
+* addDrawDefinition
+* addEventEntryPairs
+* addMatchUpScheduledDayDate
+* addMatchUpScheduledTime
 - addParticipants
-- addVenue
-- assignMatchUpVenue
+* addVenue
+* assignMatchUpVenue
 - assignTieMatchUpParticipantId
 - attachEventPolicy
 - automatedPlayoffPositioning
@@ -21,11 +21,11 @@ tournamentEngine
 - deleteParticipants
 - destroyPairEntry
 - modifyEntriesStatus
-- modifyVenue
+* modifyVenue
 - participantSignInStatus
 - promoteAlternate
-- removeEventPolicy
-- setDrawDefaultMatchUpFormat
+* removeEventPolicy
+* setDrawDefaultMatchUpFormat
 - setEntryPositions
-- setMatchUpStatus
-- setParticipantScaleItem
+* setMatchUpStatus
+* setParticipantScaleItem
