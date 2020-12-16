@@ -4,6 +4,12 @@ import {
   MISSING_MATCHUP,
   MISSING_TIME_ITEMS,
 } from '../../../constants/errorConditionConstants';
+import {
+  START_TIME,
+  STOP_TIME,
+  RESUME_TIME,
+  END_TIME,
+} from '../../../constants/timeItemConstants';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -20,12 +26,7 @@ export function matchUpDuration({ matchUp }) {
 
   const relevantTimeItems = matchUp.timeItems
     .filter((timeItem) =>
-      [
-        'SCHEDULE.TIME.START',
-        'SCHEDULE.TIME.STOP',
-        'SCHEDULE.TIME.RESUME',
-        'SCHEDULE.TIME.END',
-      ].includes(timeItem.itemType)
+      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemType)
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
@@ -38,15 +39,13 @@ export function matchUpDuration({ matchUp }) {
         itemTypeComponents[2];
       const scheduleType = `SCHEDULE.TIME.${timeType}`;
       switch (scheduleType) {
-        case 'SCHEDULE.TIME.START':
+        case START_TIME:
           milliseconds = 0;
           break;
-        case 'SCHEDULE.TIME.END':
+        case END_TIME:
           if (
             elapsed.lastValue &&
-            ['SCHEDULE.TIME.START', 'SCHEDULE.TIME.RESUME'].includes(
-              elapsed.lastType
-            )
+            [START_TIME, RESUME_TIME].includes(elapsed.lastType)
           ) {
             const interval =
               timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
@@ -55,12 +54,8 @@ export function matchUpDuration({ matchUp }) {
             milliseconds = elapsed.milliseconds;
           }
           break;
-        case 'SCHEDULE.TIME.STOP':
-          if (
-            ['SCHEDULE.TIME.START', 'SCHECULE.TIME.RESUME'].includes(
-              elapsed.lastType
-            )
-          ) {
+        case STOP_TIME:
+          if ([START_TIME, 'SCHECULE.TIME.RESUME'].includes(elapsed.lastType)) {
             const interval =
               timeDate(timeItem.itemValue) - timeDate(elapsed.lastValue);
             milliseconds = elapsed.milliseconds + interval;
@@ -81,9 +76,7 @@ export function matchUpDuration({ matchUp }) {
     { milliseconds: 0, lastType: undefined, lastValue: undefined }
   );
 
-  if (
-    ['SCHEDULE.TIME.START', 'SCHEDULE.TIME.RESUME'].includes(elapsed.lastType)
-  ) {
+  if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
     console.log('START or RESUME');
     // TODO: test this... matchUp has not clompleted and is active
     const interval = new Date() - timeDate(elapsed.lastValue);

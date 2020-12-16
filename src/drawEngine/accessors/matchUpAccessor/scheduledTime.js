@@ -1,5 +1,5 @@
 import { getTimeZoneOffset } from '../../../utilities/dateTime';
-// import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
+import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
 
 export function scheduledMatchUpTime({
   matchUp,
@@ -10,8 +10,7 @@ export function scheduledMatchUpTime({
   const getTimeStamp = (item) =>
     !item ? 0 : new Date(item.createdAt).getTime();
   const lastScheduledTimeItem = timeItems
-    .filter((timeItem) => timeItem.itemType === 'SCHEDULE.TIME.SCHEDULED')
-    // .filter((timeItem) => timeItem.itemSubject === SCHEDULED_TIME)
+    .filter((timeItem) => timeItem.itemType === SCHEDULED_TIME)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
 

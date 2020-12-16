@@ -37,7 +37,7 @@ itemType is a string, while itemSubTypes is an array of strings. In Competition 
   itemType: 'SCHEDULE.TIME.START',
   itemType: 'SCHEDULE.TIME.STOP',
   itemType: 'SCHEDULE.TIME.RESUME',
-  itemType: 'SCHEDULE.TIME.END',
+  itemType: 'SCHEDULE.TIME.END,
 ```
 
 ## Internal usage
