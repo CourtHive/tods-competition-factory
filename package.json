@@ -63,7 +63,7 @@
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
     "@babel/core": "7.12.10",
-    "@types/node": "14.14.13",
+    "@types/node": "14.14.14",
     "@babel/preset-env": "7.12.11",
     "@babel/preset-typescript": "7.12.7",
     "@types/jest": "26.0.19",
