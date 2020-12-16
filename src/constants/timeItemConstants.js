@@ -32,21 +32,22 @@ export const RETRIEVAL = 'RETRIEVAL';
 export const OTHER = 'other';
 
 export const timeItemConstants = {
+  ASSIGN_COURT,
+  ASSIGN_OFFICIAL,
+  ASSIGN_VENUE,
   CHECK_IN,
   CHECK_OUT,
-  ASSIGN_COURT,
   END_TIME,
   HIDDEN,
   MEDICAL,
-  ASSIGN_OFFICIAL,
   OTHER,
   PENALTY,
   PUBLIC,
   PUBLISH,
   RANKING,
   RATING,
-  RETRIEVAL,
   RESUME_TIME,
+  RETRIEVAL,
   SCALE,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
@@ -55,5 +56,4 @@ export const timeItemConstants = {
   STATUS,
   STOP_TIME,
   SUSPENSION,
-  ASSIGN_VENUE,
 };
