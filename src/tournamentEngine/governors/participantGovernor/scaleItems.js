@@ -40,18 +40,8 @@ export function setParticipantScaleItem({
     tournamentRecord.participants.forEach((participant) => {
       if (participant.participantId === participantId) {
         participantFound = true;
-        const { scaleItem: existingScaleItem } = participantScaleItem({
-          participant,
-          scaleAttributes: scaleItem,
-        });
-        const noChange =
-          (!existingScaleItem && !scaleItem.scaleValue) ||
-          existingScaleItem?.scaleValue === scaleItem.scaleValue;
-        const newValue = !noChange;
-        if (newValue) {
-          const result = addParticipantScaleItem({ participant, scaleItem });
-          modificationApplied = !!result.success;
-        }
+        const result = addParticipantScaleItem({ participant, scaleItem });
+        modificationApplied = result.newValue;
       }
     });
   }
@@ -137,19 +127,30 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
   const createdAt = new Date().toISOString();
   if (!participant.timeItems) participant.timeItems = [];
 
-  const { scaleType, eventType, scaleName } = scaleItem;
-  const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
+  const { scaleItem: existingScaleItem } = participantScaleItem({
+    participant,
+    scaleAttributes: scaleItem,
+  });
+  const noChange =
+    (!existingScaleItem && !scaleItem.scaleValue) ||
+    existingScaleItem?.scaleValue === scaleItem.scaleValue;
+  const newValue = !noChange;
 
-  const timeItem = {
-    itemType,
-    itemValue: scaleItem.scaleValue,
-    itemDate: scaleItem.scaleDate,
-    createdAt,
-  };
-  if (scaleItem.scaleId) {
-    timeItem.itemSubTypes = [scaleItem.scaleId];
+  if (newValue) {
+    const { scaleType, eventType, scaleName } = scaleItem;
+    const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
+
+    const timeItem = {
+      itemType,
+      itemValue: scaleItem.scaleValue,
+      itemDate: scaleItem.scaleDate,
+      createdAt,
+    };
+    if (scaleItem.scaleId) {
+      timeItem.itemSubTypes = [scaleItem.scaleId];
+    }
+    participant.timeItems.push(timeItem);
   }
-  participant.timeItems.push(timeItem);
 
-  return SUCCESS;
+  return Object.assign({ newValue }, SUCCESS);
 }
