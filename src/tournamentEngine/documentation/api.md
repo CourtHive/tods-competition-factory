@@ -108,6 +108,12 @@ Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any
 
 ## allTournamentMatchUps
 
+Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**.
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps();
+```
+
 ---
 
 ## assignDrawPosition
@@ -160,6 +166,15 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 ---
 
 ## bulkMatchUpStatusUpdate
+
+---
+
+## bulkScheduleMatchUps
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {object} drawEngine - passed in automatically by tournamentEngine
+- @param {string[]} matchUpIds - array of matchUpIds to be scheduled
+- @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
 
 ---
 
@@ -538,12 +553,22 @@ By default a deep copy of the tournament record is made so that mutations made b
 
 ## tournamentMatchUps
 
-Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called
+Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called. These matchUps are returned **inContext**.
 
 | Parameters     | Required | Type  | Description |
 | :------------- | :------- | :---- | :---------- |
 | matchUpFilters | Optional | array |             |
 | contestFilters | Optional | array |             |
+
+```js
+const {
+  abandonedMatchUps,
+  byeMatchUps,
+  completedMatchUps,
+  pendingMatchUps,
+  upcomingMatchUps,
+} = tournamentEngine.tournamentMatchUps();
+```
 
 ---
 

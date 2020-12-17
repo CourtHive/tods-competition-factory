@@ -88,10 +88,6 @@ Returns object { matchUps } with array of all matchUps within a structure
 
 ---
 
-## assignMatchUpCourt
-
----
-
 ## assignSeed
 
 ---
