@@ -19,7 +19,7 @@ export default {
     'Readme',
     {
       name: 'General Concepts',
-      menu: ['Time Items'],
+      menu: ['Policies', 'Time Items'],
     },
     {
       name: 'Competition Engine',
