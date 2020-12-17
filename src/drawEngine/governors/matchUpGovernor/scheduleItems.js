@@ -2,7 +2,6 @@ import { addTimeItem } from './timeItems';
 import { findMatchUp } from '../../getters/getMatchUps';
 
 import {
-  MISSING_DATE,
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
   INVALID_START_TIME,
@@ -26,8 +25,6 @@ import {
   END_TIME,
   SCHEDULED_TIME,
   SCHEDULED_DATE,
-  ASSIGN_COURT,
-  ASSIGN_VENUE,
 } from '../../../constants/timeItemConstants';
 
 /* 
@@ -96,43 +93,6 @@ export function addMatchUpScheduledTime({
   const timeItem = {
     itemType: SCHEDULED_TIME,
     itemValue,
-  };
-
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
-}
-
-export function assignMatchUpCourt({
-  drawDefinition,
-  matchUpId,
-  courtId,
-  courtDayDate,
-}) {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (courtDayDate === undefined) return { error: MISSING_DATE };
-
-  const timeItem = {
-    itemType: ASSIGN_COURT,
-
-    itemValue: courtId,
-    itemDate: courtDayDate,
-  };
-
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
-}
-
-export function assignMatchUpVenue({
-  drawDefinition,
-  matchUpId,
-  venueId,
-  venueDayDate,
-}) {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (venueDayDate === undefined) return { error: MISSING_DATE };
-
-  const timeItem = {
-    itemType: ASSIGN_VENUE,
-    itemValue: venueId,
-    itemDate: venueDayDate,
   };
 
   return addTimeItem({ drawDefinition, matchUpId, timeItem });

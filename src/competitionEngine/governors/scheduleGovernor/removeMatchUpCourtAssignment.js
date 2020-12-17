@@ -1,4 +1,4 @@
-import { assignMatchUpCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
 export function removeMatchUpCourtAssignment(params) {

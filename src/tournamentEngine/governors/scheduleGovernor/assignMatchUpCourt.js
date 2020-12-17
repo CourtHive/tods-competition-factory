@@ -1,15 +1,31 @@
-import { assignMatchUpCourt as assignCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { addTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { findCourt } from '../../getters/courtGetter';
 
-import { MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_MATCHUP_ID,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
+import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 
 export function assignMatchUpCourt({
+  tournamentRecord,
   drawDefinition,
   matchUpId,
   courtId,
-  courtDayDate,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  // TODO: check that 1) check that courtId is valid 2) that courtDayDate is valid
-  return assignCourt({ drawDefinition, matchUpId, courtId, courtDayDate });
+  if (courtId) {
+    const { error } = findCourt({ tournamentRecord, courtId });
+    if (error) return { error };
+  }
+
+  const timeItem = {
+    itemType: ASSIGN_COURT,
+
+    itemValue: courtId,
+  };
+
+  return addTimeItem({ drawDefinition, matchUpId, timeItem });
 }

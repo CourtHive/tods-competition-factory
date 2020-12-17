@@ -151,11 +151,11 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
     venueId,
     drawId,
-    venueDayDate: scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 
   result = tournamentEngine.assignMatchUpCourt({
+    tournamentRecord,
     matchUpId,
     courtId,
     drawId,

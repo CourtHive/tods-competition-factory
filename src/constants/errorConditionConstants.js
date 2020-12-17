@@ -160,6 +160,7 @@ export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 
 export const INVALID_CONFIGURATION = 'Invalid configuration';
 export const INVALID_OBJECT = 'Invalid object';
+export const INVALID_VALUES = 'Invalid values';
 
 export const TEAM_NOT_FOUND = 'Team not found';
 
@@ -214,6 +215,7 @@ export const errorConditionConstants = {
   INVALID_STOP_TIME,
   INVALID_TIME,
   INVALID_TIME_ITEM,
+  INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,
   MISSING_ASSIGNMENTS,

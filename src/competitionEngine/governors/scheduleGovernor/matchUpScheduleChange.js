@@ -1,5 +1,5 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { assignMatchUpCourt as assignCourt } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
