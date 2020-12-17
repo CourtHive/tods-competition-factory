@@ -38,6 +38,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   COMPASS_ATTRIBUTES,
   OLYMPIC_ATTRIBUTES,
+  MULTI_STRUCTURE_DRAWS,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -77,6 +78,10 @@ export function generateDrawType(props = {}) {
         !powerOf2(drawSize)));
 
   if (invalidDrawSize) {
+    return { error: INVALID_DRAW_SIZE };
+  }
+
+  if (drawSize < 4 && Object.keys(MULTI_STRUCTURE_DRAWS).includes[drawType]) {
     return { error: INVALID_DRAW_SIZE };
   }
 

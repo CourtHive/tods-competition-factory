@@ -48,6 +48,7 @@ export function generateDrawDefinition(props) {
 
   const validEntriesTest =
     event && participants && checkValidEntries({ event, participants });
+
   if (validEntriesTest?.error) {
     return validEntriesTest;
   }

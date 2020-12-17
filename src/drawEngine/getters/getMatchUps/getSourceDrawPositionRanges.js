@@ -62,9 +62,13 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     } = link.target;
     const sourceStructureProfile = sourceStructureProfiles[sourceStructureId];
     const firstRoundDrawPositions = sourceStructureProfile[1].drawPositions;
-    const sourceRoundMatchUpsCount =
-      sourceStructureProfile[sourceRoundNumber].matchUpsCount;
-    const chunkSize = firstRoundDrawPositions.length / sourceRoundMatchUpsCount;
+    const sourceRoundProfile = sourceStructureProfile[sourceRoundNumber];
+    const sourceRoundMatchUpsCount = sourceRoundProfile?.matchUpsCount;
+    if (!sourceRoundMatchUpsCount) return;
+
+    const chunkSize = sourceRoundMatchUpsCount
+      ? firstRoundDrawPositions.length / sourceRoundMatchUpsCount
+      : 0;
     let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
     if (feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
 

@@ -318,6 +318,17 @@ This is a convenience method which handles most use cases for draw generation.
 
 Gather attributes of events which come from other tournament elements, e.g. participants which have rankings/ratings/seedings for a given event.
 
+```js
+const {
+  entryScaleAttributes,
+  hasSeededParticipants,
+  hasRankedParticipants,
+  hasRatedParticipants,
+} = tournamentEngine.getEventProperties({ eventId });
+```
+
+... where **entryScaleAttributes** is an array of { prticipantId, participantName, seed, ranking, rating }
+
 ---
 
 ## getEventData
