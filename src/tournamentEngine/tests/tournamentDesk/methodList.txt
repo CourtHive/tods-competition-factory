@@ -5,6 +5,17 @@ competitionEngine
 * scheduleMatchUps
 - toggleParticipantCheckInState
 
+drawEngine
+* getSetComplement
+- checkSetIsComplete
+- calcTieMatchUpScore
+* getStructureSeedAssignments
+* isCompletedStructure
+* allPlayoffPositionsFilled
+* tallyParticipantResults
+- getNextUnfilledDrawPositions
+- getMatchUpContextIds
+
 tournamentEngine
 * addDrawDefinition
 * addEventEntryPairs
@@ -19,11 +30,16 @@ tournamentEngine
 - bulkMatchUpStatusUpdate
 - deleteDrawDefinitions
 - deleteParticipants
-- destroyPairEntry
+* destroyPairEntry
+* getEventTimeItem
 - modifyEntriesStatus
 * modifyVenue
 - participantSignInStatus
 - promoteAlternate
+* publishEvent
+  : getDrawData
+  : getEventData
+  : getTournamentIno
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
 - setEntryPositions
