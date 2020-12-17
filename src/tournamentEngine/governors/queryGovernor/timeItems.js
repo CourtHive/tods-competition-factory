@@ -52,7 +52,7 @@ export function getTournamentTimeItem({
 
 function getTimeItem({ element, itemType, itemSubTypes }) {
   if (element && Array.isArray(element.timeItems)) {
-    const timeItem = element.timeItems
+    const filteredSorted = element.timeItems
       .filter((timeItem) => timeItem.itemType === itemType)
       .filter(
         (timeItem) =>
@@ -62,13 +62,9 @@ function getTimeItem({ element, itemType, itemSubTypes }) {
         (a, b) =>
           new Date(a.createdAt || undefined) -
           new Date(b.createdAt || undefined)
-      )
-      .reduce((timeItem, candidate) => {
-        return candidate.itemType === itemType &&
-          (!itemSubTypes || candidate?.itemSubTypes?.includes(itemSubTypes))
-          ? candidate
-          : timeItem;
-      }, undefined);
+      );
+
+    const timeItem = filteredSorted.pop();
 
     if (timeItem) {
       return { timeItem, ...SUCCESS };

@@ -68,8 +68,8 @@ export function attachPolicy({ tournamentRecord, policies, policyDefinition }) {
 
 export function attachEventPolicy({
   tournamentRecord,
-  event,
   policyDefinition,
+  event,
 }) {
   if (!tournamentRecord) {
     return { error: MISSING_TOURNAMENT_RECORD };
