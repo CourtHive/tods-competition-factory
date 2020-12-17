@@ -103,19 +103,17 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     // when the number of drawPositions is greater than the number of drawPositionBlocks for a given roundNumber
     // then sourceDrawPositionRanges are being added to a feedRound
     // targetStructureProfile also has the boolean attribute .feedRound to flag this case
-    const increment = targetStructureProfile[targetRoundNumber].feedRound
-      ? 2
-      : 1;
+    const targetRoundProfile = targetStructureProfile[targetRoundNumber];
+    const increment = targetRoundProfile?.feedRound ? 2 : 1;
 
     drawPositionBlocks.forEach((block, index) => {
       // fed drawPositions are always sideNumber: 1, so when the increment is 2 the columnPosition is always an odd number
       // because sideNumber: 1 maps to index: 0 in matchUp.drawPositions
       const columnPosition = 1 + index * increment;
       if (!sourceDrawPositionRanges[targetRoundNumber][columnPosition]) {
-        const drawPositionRange = getRangeString(block);
         sourceDrawPositionRanges[targetRoundNumber][
           columnPosition
-        ] = drawPositionRange;
+        ] = getRangeString(block);
       }
     });
   });
