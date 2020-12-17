@@ -304,7 +304,7 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
-## getDrawData,
+## getDrawData
 
 ---
 
@@ -314,7 +314,13 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
-## getEventData,
+## getEventProperties
+
+Gather attributes of events which come from other tournament elements, e.g. participants which have rankings/ratings/seedings for a given event.
+
+---
+
+## getEventData
 
 ---
 

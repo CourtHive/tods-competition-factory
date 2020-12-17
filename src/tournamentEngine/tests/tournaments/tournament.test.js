@@ -1,16 +1,16 @@
-import { tournamentRecordWithParticipants } from './primitives/generateTournament';
-import { tournamentEngine } from '../../tournamentEngine';
-import { drawEngine } from '../../drawEngine';
+import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { tournamentEngine } from '../..';
+import { drawEngine } from '../../../drawEngine';
 
-import { eventConstants } from '../../constants/eventConstants';
-import { resultConstants } from '../../constants/resultConstants';
-import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { eventConstants } from '../../../constants/eventConstants';
+import { resultConstants } from '../../../constants/resultConstants';
+import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
-import { MISSING_ASSIGNMENTS } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
-import { COMPETITOR } from '../../constants/participantRoles';
+import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { COMPETITOR } from '../../../constants/participantRoles';
 
-import ITF_SEEDING_POLICY from '../../fixtures/seeding/SEEDING_ITF';
+import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;

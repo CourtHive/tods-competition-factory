@@ -21,11 +21,8 @@ export function participantScaleItem({
           new Date(a.createdAt || undefined) -
           new Date(b.createdAt || undefined)
       );
-    const timeItem = filteredTimeItems.reduce((scaleValue, candidate) => {
-      // this can be greatly simplified... we are just going to return the last matching item
-      // so sort such that popping will remove last
-      return candidate.itemType === filterType ? candidate : scaleValue;
-    }, undefined);
+
+    const timeItem = filteredTimeItems.pop();
 
     if (timeItem) {
       const [

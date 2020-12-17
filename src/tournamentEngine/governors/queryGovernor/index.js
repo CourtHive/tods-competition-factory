@@ -7,6 +7,7 @@ import {
 import { matchUpActions } from '../../getters/matchUpActions';
 
 import { getParticipantScaleItem } from './scaleValue';
+import { getEventProperties } from './getEventProperties';
 import { getParticipantSignInStatus } from './signInStatus';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
@@ -35,6 +36,8 @@ const queryGovernor = {
   eventMatchUps,
   getEvent,
   credits,
+
+  getEventProperties,
 
   getVenues,
   findVenue,
