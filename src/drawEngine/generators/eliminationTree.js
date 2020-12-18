@@ -321,8 +321,10 @@ export function feedInMatchUps({
   });
 
   const draw = roundNodes && roundNodes.length ? roundNodes[0] : roundNodes;
-  draw.roundNumber = roundNumber - 1;
-  draw.matchUps = matchUps;
+  if (draw) {
+    draw.roundNumber = roundNumber - 1;
+    draw.matchUps = matchUps;
+  }
 
   return { draw, matchUps, roundsCount };
 

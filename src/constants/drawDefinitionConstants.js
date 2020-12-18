@@ -74,12 +74,11 @@ export const OLYMPIC_ATTRIBUTES = {
 export const WIN_RATIO = 'WIN_RATIO';
 export const ROUND_OUTCOME = 'ROUND_OUTCOME';
 
-export const MULTI_STRUCTURE_DRAWS = {
+export const MULTI_STRUCTURE_DRAWS = [
   FEED_IN,
   COMPASS,
   PLAY_OFF,
   OLYMPIC,
-  SINGLE_ELIMINATION,
 
   FMLC,
   CURTIS,
@@ -97,7 +96,7 @@ export const MULTI_STRUCTURE_DRAWS = {
   FEED_IN_CHAMPIONSHIP,
 
   ROUND_ROBIN_WITH_PLAYOFF,
-};
+];
 
 export const drawDefinitionConstants = {
   MAIN,

@@ -81,7 +81,8 @@ export function generateDrawType(props = {}) {
     return { error: INVALID_DRAW_SIZE };
   }
 
-  if (drawSize < 4 && Object.keys(MULTI_STRUCTURE_DRAWS).includes[drawType]) {
+  const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
+  if (parseInt(drawSize) < 4 && multiStructure) {
     return { error: INVALID_DRAW_SIZE };
   }
 
