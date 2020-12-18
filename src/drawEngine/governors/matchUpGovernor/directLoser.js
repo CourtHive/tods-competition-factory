@@ -13,6 +13,7 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 */
 export function directLoser(props) {
   const {
+    devContext,
     loserMatchUp,
     drawDefinition,
     loserTargetLink,
@@ -128,6 +129,7 @@ export function directLoser(props) {
           })
         ) {
           const result = assignDrawPositionBye({
+            devContext,
             drawDefinition,
             structureId: targetStructureId,
             drawPosition: targetMatchUpDrawPosition,
@@ -148,6 +150,7 @@ export function directLoser(props) {
     ) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
+        devContext,
         drawDefinition,
         structureId: targetStructureId,
         drawPosition: targetMatchUpDrawPosition,

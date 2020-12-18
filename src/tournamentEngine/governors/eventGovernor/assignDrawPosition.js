@@ -8,6 +8,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function assignDrawPosition(props) {
   const {
     bye,
+    devContext,
     drawDefinition,
     drawPosition,
     participantId,
@@ -19,7 +20,12 @@ export function assignDrawPosition(props) {
 
   if (drawDefinition) {
     if (bye) {
-      assignPositionBye({ drawDefinition, structureId, drawPosition });
+      assignPositionBye({
+        drawDefinition,
+        drawPosition,
+        structureId,
+        devContext,
+      });
     } else if (qualifier) {
       console.log('assign qualifier');
     } else {

@@ -44,6 +44,7 @@ export function assignDrawPositionBye({
   drawDefinition,
   structureId,
   drawPosition,
+  devContext,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -155,7 +156,7 @@ export function assignDrawPositionBye({
             drawPosition: targetDrawPosition,
           });
           if (result.error) {
-            console.log('targetBye', { result });
+            if (devContext) console.log('targetBye', { result });
           }
         }
       }
