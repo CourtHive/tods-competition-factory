@@ -1,6 +1,6 @@
-import { chunkArray, generateRange, unique } from '../../../utilities';
+import { chunkArray, generateRange } from '../../../utilities';
 import { getStructureRoundProfile } from './getStructureRoundProfile';
-import { isNumeric } from '../../../utilities/math';
+import { getRangeString } from './getRangeString';
 import { findStructure } from '../findStructure';
 
 import {
@@ -125,6 +125,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
   return { sourceDrawPositionRanges };
 }
 
+/*
 function getRangeString(arr) {
   if (!Array.isArray(arr)) return '';
   const numericArray = arr.filter(isNumeric);
@@ -132,3 +133,4 @@ function getRangeString(arr) {
   const range = unique([Math.min(...numericArray), Math.max(...numericArray)]);
   return range.join('-');
 }
+*/

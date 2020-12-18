@@ -22,6 +22,7 @@ import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPol
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { getRoundContextProfile } from './getRoundContextProfile';
+import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { findParticipant } from '../participantGetter';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
@@ -151,6 +152,10 @@ export function getAllStructureMatchUps({
       drawDefinition,
       structureId,
     });
+    const { drawPositionsRanges } = getDrawPositionsRanges({
+      drawDefinition,
+      structureId,
+    });
 
     matchUps = matchUps.map((matchUp) =>
       addMatchUpContext({
@@ -159,6 +164,7 @@ export function getAllStructureMatchUps({
         roundProfile,
         appliedPolicies,
         roundNamingProfile,
+        drawPositionsRanges,
         sourceDrawPositionRanges,
       })
     );
@@ -188,6 +194,7 @@ export function getAllStructureMatchUps({
     appliedPolicies,
     isCollectionBye,
     roundNamingProfile,
+    drawPositionsRanges,
     sourceDrawPositionRanges,
   }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
@@ -197,12 +204,17 @@ export function getAllStructureMatchUps({
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
     const feedRound = roundProfile && roundProfile[roundNumber].feedRound;
 
+    const drawPositionsRoundRanges =
+      drawPositionsRanges && drawPositionsRanges[roundNumber];
+    const drawPositionsRange =
+      drawPositionsRoundRanges && drawPositionsRoundRanges[roundPosition];
     const sourceDrawPositionRoundRanges =
       sourceDrawPositionRanges && sourceDrawPositionRanges[roundNumber];
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
       {
+        stage,
         drawId,
         schedule,
         feedRound,
@@ -212,7 +224,7 @@ export function getAllStructureMatchUps({
         matchUpStatus,
         structureName,
         stageSequence,
-        stage,
+        drawPositionsRange,
       },
       makeDeepCopy(matchUp),
       context
@@ -231,6 +243,7 @@ export function getAllStructureMatchUps({
             appliedPolicies,
             isCollectionBye,
             roundNamingProfile,
+            drawPositionsRanges,
             sourceDrawPositionRanges,
           });
         }

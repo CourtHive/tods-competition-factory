@@ -116,6 +116,16 @@ export function chunkArray(arr, chunksize) {
     return all;
   }, []);
 }
+export function groupConsecutiveNumbers(arr) {
+  return arr.reduce((result, num) => {
+    const finalGroup = result[result.length - 1];
+    if (!finalGroup || finalGroup[finalGroup.length - 1] !== num - 1) {
+      result.push([]);
+    }
+    result[result.length - 1].push(num);
+    return result;
+  }, []);
+}
 
 export function allNumeric(arr) {
   return arr.reduce((numeric, item) => !isNaN(parseInt(item)) && numeric, true);
