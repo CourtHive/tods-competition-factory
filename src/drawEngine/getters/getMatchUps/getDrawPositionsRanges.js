@@ -17,6 +17,12 @@ export function getDrawPositionsRanges({ drawDefinition, structureId }) {
     structureId,
   });
 
+  const firstRoundFirstDrawPosition = Math.min(
+    ...roundProfile[1]?.drawPositions
+  );
+  const firstRoundFirstDrawPositionOffset =
+    (firstRoundFirstDrawPosition || 1) - 1;
+
   // drawPositionsRanges[roundNumber][roundPosition]
   const roundNumbers = Object.keys(roundProfile);
   const drawPositionsRanges = Object.assign(
@@ -31,6 +37,13 @@ export function getDrawPositionsRanges({ drawDefinition, structureId }) {
       const firstRoundDrawPositionsRanges = firstRoundDrawPositionsChunks.map(
         getRangeString
       );
+      const firstRoundOffsetDrawPositionsRanges = firstRoundDrawPositionsChunks
+        .map((drawPositions) => {
+          return drawPositions.map(
+            (drawPosition) => drawPosition - firstRoundFirstDrawPositionOffset
+          );
+        })
+        .map(getRangeString);
 
       const currentRoundDrawPositionChunks = roundNumbers
         .map((value) => {
@@ -65,6 +78,8 @@ export function getDrawPositionsRanges({ drawDefinition, structureId }) {
             [roundPosition]: {
               firstRoundDrawPositionsRange:
                 firstRoundDrawPositionsRanges[index],
+              firstRoundOffsetDrawPositionsRange:
+                firstRoundOffsetDrawPositionsRanges[index],
               possibleDrawPositions: possibleDrawPositions[index],
               drawPositionsRange: drawPositionsRanges[index],
             },
