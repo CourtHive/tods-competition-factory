@@ -12,6 +12,7 @@ import {
   LOSER,
   CURTIS,
   SINGLE_ELIMINATION,
+  COMPASS,
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
@@ -208,7 +209,7 @@ it('can generate a Curtis Consolation draw', () => {
 });
 
 it('reasonably handles Curtis Consolation draw sizes less than 64', () => {
-  const drawSizes = [32, 16, 8, 4, 2];
+  const drawSizes = [32, 16, 8, 4];
   const structures = [3, 3, 2, 2, 1];
   const links = [4, 3, 1, 1, 0];
 
@@ -217,8 +218,28 @@ it('reasonably handles Curtis Consolation draw sizes less than 64', () => {
     initialize();
     mainDrawPositions({ drawSize: drawSizes[i] });
     drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
-    const { drawDefinition: state } = drawEngine.getState();
-    expect(state.structures.length).toEqual(structures[i]);
-    expect(state.links.length).toEqual(links[i]);
+    const { drawDefinition } = drawEngine.getState();
+    expect(drawDefinition.structures.length).toEqual(structures[i]);
+    expect(drawDefinition.links.length).toEqual(links[i]);
   });
+});
+
+it('does not generate multi-structure draws with fewer than 4 participants', () => {
+  reset();
+  initialize();
+  mainDrawPositions({ drawSize: 2 });
+  drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+  let { drawDefinition } = drawEngine.getState();
+  expect(drawDefinition.structures.length).toEqual(0);
+  expect(drawDefinition.links.length).toEqual(0);
+
+  drawEngine.generateDrawType({ drawType: COMPASS, description: COMPASS });
+  ({ drawDefinition } = drawEngine.getState());
+  expect(drawDefinition.structures.length).toEqual(0);
+  expect(drawDefinition.links.length).toEqual(0);
+
+  drawEngine.generateDrawType({ drawType: SINGLE_ELIMINATION });
+  ({ drawDefinition } = drawEngine.getState());
+  expect(drawDefinition.structures.length).toEqual(1);
+  expect(drawDefinition.links.length).toEqual(0);
 });
