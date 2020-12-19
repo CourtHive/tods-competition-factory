@@ -176,6 +176,13 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 - @param {string[]} matchUpIds - array of matchUpIds to be scheduled
 - @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
 
+## bulkUpdatePublishedEventIds
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {object[]} outcomes - array of outcomes to be applied to matchUps, relevent attributes: { eventId: string; drawId: string; }
+
+Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate
+
 ---
 
 ## checkInParticipant

@@ -4,13 +4,14 @@ import {
   eventMatchUps,
   allEventMatchUps,
 } from '../../getters/matchUpsGetter';
-import { matchUpActions } from '../../getters/matchUpActions';
 
 import { getParticipantScaleItem } from './scaleValue';
 import { getEventProperties } from './getEventProperties';
 import { getParticipantSignInStatus } from './signInStatus';
-import { getCourts, publicFindCourt } from '../../getters/courtGetter';
+import { bulkUpdatePublishedEventIds } from './publishState';
+import { matchUpActions } from '../../getters/matchUpActions';
 import { getVenues, findVenue } from '../../getters/venueGetter';
+import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 import {
@@ -47,6 +48,8 @@ const queryGovernor = {
   getEventTimeItem,
   getTournamentTimeItem,
   getDrawDefinitionTimeItem,
+
+  bulkUpdatePublishedEventIds,
 
   matchUpActions,
   findMatchUp: publicFindMatchUp,
