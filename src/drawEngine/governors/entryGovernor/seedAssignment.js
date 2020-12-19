@@ -33,7 +33,11 @@ export function assignSeed({
     participantId,
   });
   if (participantId && !validParticipantId)
-    return { error: INVALID_PARTICIPANT_ID };
+    return {
+      error: INVALID_PARTICIPANT_ID,
+      participantId,
+      method: 'assignSeed',
+    };
 
   const assignedDrawPosition = positionAssignments.reduce(
     (drawPosition, assignment) => {

@@ -15,7 +15,11 @@ export function modifyEntriesStatus({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds || !Array.isArray(participantIds))
-    return { error: INVALID_PARTICIPANT_ID };
+    return {
+      error: INVALID_PARTICIPANT_ID,
+      participantIds,
+      method: 'modifyEntriesStatus',
+    };
   if (!event) return { error: MISSING_EVENT };
   if (!VALID_ENTERED_TYPES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
