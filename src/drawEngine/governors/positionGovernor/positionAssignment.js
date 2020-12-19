@@ -63,7 +63,8 @@ export function assignDrawPosition({
   if (!positionState) return { error: INVALID_DRAW_POSITION };
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
-  if (drawPositionFilled(positionState))
+  const { filled } = drawPositionFilled(positionState);
+  if (filled && positionState.participantId !== participantId)
     return { error: DRAW_POSITION_ASSIGNED };
 
   positionAssignments.forEach((assignment) => {
@@ -80,7 +81,8 @@ export function assignDrawPosition({
     const containsBye = positionState.bye;
     const containsQualifier = positionState.qualifier;
     const containsParticipant = positionState.participantId;
-    return containsBye || containsQualifier || containsParticipant;
+    const filled = containsBye || containsQualifier || containsParticipant;
+    return { containsBye, containsQualifier, containsParticipant, filled };
   }
 }
 

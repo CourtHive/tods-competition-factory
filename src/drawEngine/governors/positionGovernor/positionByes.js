@@ -63,8 +63,8 @@ export function assignDrawPositionBye({
 
   if (!positionsAvailable) return { error: NO_DRAW_POSITIONS_AVAILABLE };
   if (!positionState) return { error: INVALID_DRAW_POSITION };
-  if (drawPositionFilled(positionState)) {
-    console.log({ drawPosition, positionState });
+  const { filled, containsBye } = drawPositionFilled(positionState);
+  if (filled && !containsBye) {
     return { error: DRAW_POSITION_ASSIGNED };
   }
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
@@ -179,7 +179,8 @@ export function assignDrawPositionBye({
     const containsBye = positionState.bye;
     const containsQualifier = positionState.qualifier;
     const containsParticipant = positionState.participantId;
-    return containsBye || containsQualifier || containsParticipant;
+    const filled = containsBye || containsQualifier || containsParticipant;
+    return { containsBye, containsQualifier, containsParticipant, filled };
   }
 }
 
