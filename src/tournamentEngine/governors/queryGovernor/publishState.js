@@ -61,5 +61,5 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
     })
     .map((event) => event.eventId);
 
-  return { publishedEventIds };
+  return { publishedEventIds, eventIdPublishedDrawIdsMap: eventIdsMap };
 }
