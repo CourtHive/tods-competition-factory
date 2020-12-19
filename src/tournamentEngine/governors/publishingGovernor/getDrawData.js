@@ -10,8 +10,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getDrawData({
   tournamentRecord,
-  drawDefinition,
   policyDefinition,
+  drawDefinition,
+  context,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -30,7 +31,7 @@ export function getDrawData({
       const { structure } = findStructure({ drawDefinition, structureId });
 
       const { roundMatchUps } = getAllStructureMatchUps({
-        context: { drawId: drawInfo.drawId },
+        context: { drawId: drawInfo.drawId, ...context },
         tournamentParticipants,
         policyDefinition,
         inContext: true,

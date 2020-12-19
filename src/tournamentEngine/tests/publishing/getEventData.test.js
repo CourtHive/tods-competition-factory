@@ -174,6 +174,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     eventData.drawsData[0].structures[0].roundMatchUps[1][0].drawId
   ).toEqual(drawDefinition.drawId);
 
+  expect(
+    eventData.drawsData[0].structures[0].roundMatchUps[1][0].eventId
+  ).toEqual(eventId);
+
   // round naming policy test
   expect(
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
