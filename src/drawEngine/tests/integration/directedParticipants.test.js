@@ -120,11 +120,12 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 1,
   }));
   let { matchUpId } = matchUp;
-  let { errors } = drawEngine.setMatchUpStatus({
+  let { error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
     roundNumber: 1,
@@ -133,11 +134,11 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   let { matchUpStatus } = matchUp;
   expect(matchUpStatus).toEqual(BYE);
 
-  ({ errors } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BOGUS',
   }));
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -145,11 +146,11 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 2,
   }));
   ({ matchUpId } = matchUp);
-  ({ errors } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BYE',
   }));
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   drawEngine.assignDrawPosition({
     structureId,
@@ -174,7 +175,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   // add score
   let score, winningSide;
-  ({ errors, matchUpId } = completeMatchUp({
+  ({ error, matchUpId } = completeMatchUp({
     structureId,
     roundNumber: 1,
     roundPosition: 2,
@@ -335,12 +336,12 @@ it('can change a first round matchUp winner and update consolation', () => {
     participantsCount,
   });
 
-  let result, errors, success;
+  let result, error, success;
   let winningParticipantId, losingParticipantId;
   let matchUp, matchUpId, matchUpStatus, sides, score, winningSide;
 
   // complete the 2nd position matchUp, between drawPositions: [3, 4]; 3 advances;
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 2,
@@ -427,7 +428,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
 
   // advance main draw participant in drawPosition: 1 to third round
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 1,
@@ -438,20 +439,21 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(matchUp.drawPositions).toEqual([1, 4]);
 
   // attempt to complete 2nd position matchUp in first round of consolation draw
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  result = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
     score: '6-1 1-6 6-2',
-  }));
+  });
+  ({ error, matchUp, success, matchUpId } = result);
   expect(success).toEqual(undefined);
   // error because matchUp drawPositions are not assigned to participantIds
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   // complete matchUp between drawPositions: [5, 6] in mainStructure
   // ...to direct other participants to consolation draw
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, error, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 3,
@@ -461,7 +463,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(success).toEqual(true);
   expect(matchUp.drawPositions).toEqual([5, 6]);
 
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 1,
     roundPosition: 4,
@@ -472,7 +474,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(matchUp.drawPositions).toEqual([7, 8]);
 
   // complete 2nd position matchUp in first round of consolation draw
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 1,
     roundPosition: 2,
@@ -485,7 +487,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   // attempt to advance 1st position matchUp in second round of consolation structure
   // this should succeed because there is a BYE advanced participant in drawPosition: 2
   // drawPosition: 1 is a BYE because drawPosition: 1 participant in main structure did not lose second round
-  ({ matchUp, success, errors, matchUpId } = completeMatchUp({
+  ({ matchUp, success, matchUpId } = completeMatchUp({
     structureId: consolationStructureId,
     roundNumber: 2,
     roundPosition: 1,
@@ -504,12 +506,12 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundPosition: 2,
     inContext: true,
   }));
-  ({ errors } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: BYE,
     score: '6-1',
   }));
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   // Now attempt to change a 1st round matchUpStatus to TO_BE_PLAYED
   ({
@@ -520,11 +522,11 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundPosition: 2,
     inContext: true,
   }));
-  ({ errors } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: TO_BE_PLAYED,
   }));
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   // Now attempt to change a 1st round matchUpStatus, but not winner...
   result = drawEngine.setMatchUpStatus({
@@ -550,24 +552,16 @@ it('can change a first round matchUp winner and update consolation', () => {
     winningSide: 2,
     score: '6-1',
   });
-  expect(errors.length).toBeGreaterThanOrEqual(1);
-
-  // Now attempt a change which has no available actions...
-  result = drawEngine.setMatchUpStatus({
-    matchUpId,
-    winningSide: 2,
-    score: '6-1',
-  });
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(result.error.errors.length).toBeGreaterThanOrEqual(1);
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
-  ({ errors } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     winningSide: 1,
     matchUpStatus: COMPLETED,
     score: '6-0 6-0',
   }));
-  expect(errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.errors.length).toBeGreaterThanOrEqual(1);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,

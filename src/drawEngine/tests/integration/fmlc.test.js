@@ -264,21 +264,21 @@ it('can change matchUpStatus', () => {
     matchUpId,
     matchUpStatus: 'BOGUS',
   });
-  let hasErrors = Boolean(result?.errors?.length);
+  let hasErrors = Boolean(result?.error?.errors?.length);
   expect(hasErrors).toEqual(true);
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: BYE,
   });
-  hasErrors = Boolean(result.errors.length);
+  hasErrors = Boolean(result?.error?.errors?.length);
   expect(hasErrors).toEqual(true);
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  hasErrors = Boolean(result?.errors?.length);
+  hasErrors = Boolean(result?.error?.errors?.length);
   expect(hasErrors).toEqual(false);
 
   const { matchUp: fetchedMatchUp } = drawEngine.findMatchUp({ matchUpId });

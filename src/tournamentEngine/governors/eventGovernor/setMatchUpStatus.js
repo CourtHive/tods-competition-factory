@@ -26,7 +26,7 @@ export function setMatchUpStatus(props) {
     if (result.error) return { errors: [{ error: result.error }] };
   }
 
-  const { errors: setMatchUpStatusErrors } = drawEngine.setMatchUpStatus({
+  const { error: setMatchUpStatusError } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpTieId,
     matchUpStatus: outcome?.matchUpStatus,
@@ -35,7 +35,8 @@ export function setMatchUpStatus(props) {
     score: outcome?.score || '',
     sets: outcome?.sets,
   });
-  if (setMatchUpStatusErrors) errors = errors.concat(setMatchUpStatusErrors);
+  if (setMatchUpStatusError?.errors)
+    errors = errors.concat(setMatchUpStatusError.errors);
 
   if (event) {
     const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();

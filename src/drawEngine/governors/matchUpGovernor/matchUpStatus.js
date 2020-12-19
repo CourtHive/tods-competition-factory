@@ -85,7 +85,9 @@ export function setMatchUpStatus(props) {
     }
   }
 
-  return errors.length ? { errors } : Object.assign({}, SUCCESS, { matchUp });
+  return errors.length
+    ? { error: { errors } }
+    : Object.assign({}, SUCCESS, { matchUp });
 }
 
 function attemptStatusChange(props) {
