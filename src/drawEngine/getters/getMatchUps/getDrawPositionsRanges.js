@@ -47,7 +47,7 @@ export function getDrawPositionsRanges({ drawDefinition, structureId }) {
 
       const currentRoundDrawPositionChunks = roundNumbers
         .map((value) => {
-          if (value > roundNumber) return;
+          if (value > roundNumber) return undefined;
           const { drawPositions } = roundProfile[value];
           return chunkArray(
             drawPositions,

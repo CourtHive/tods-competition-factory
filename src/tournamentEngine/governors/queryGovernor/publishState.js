@@ -1,7 +1,16 @@
+import { getEventTimeItem } from './timeItems';
+
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
+
+import {
+  PUBLIC,
+  HIDDEN,
+  PUBLISH,
+  STATUS,
+} from '../../../constants/timeItemConstants';
 
 /**
  *
@@ -31,7 +40,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   );
   const publishedEventIds = relevantEvents
     .filter((event) => {
-      const { timeItem } = tournamentEngine.getEventTimeItem({
+      const { timeItem } = getEventTimeItem({
         event,
         itemType: `${PUBLISH}.${STATUS}`,
       });
