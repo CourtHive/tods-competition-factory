@@ -26,11 +26,12 @@ export function getDrawData({
   const tournamentParticipants = tournamentRecord.participants || [];
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
+  let activeDraw = false;
   const groupedStructures = structureGroups.map((structureIds) => {
     const structures = structureIds.map((structureId) => {
       const { structure } = findStructure({ drawDefinition, structureId });
 
-      const { roundMatchUps } = getAllStructureMatchUps({
+      const { matchUps, roundMatchUps } = getAllStructureMatchUps({
         context: { drawId: drawInfo.drawId, ...context },
         tournamentParticipants,
         policyDefinition,
@@ -53,6 +54,12 @@ export function getDrawData({
         matchUpFormat,
       }))(structure);
 
+      structure.activeStructure = matchUps.reduce((active, matchUp) => {
+        return active || matchUp.winningSide || matchUp.score; // TODO: when matchUp.score becomes object change logic
+      }, false);
+
+      if (structure.activeStructure) activeDraw = true;
+
       return {
         ...structureInfo,
         structureId,
@@ -68,6 +75,11 @@ export function getDrawData({
   }
 
   const structures = groupedStructures.flat();
+
+  drawInfo.activeDraw = activeDraw;
+  drawInfo.drawGenerated = structures?.reduce((generated, structure) => {
+    return generated || structure?.roundMatchUps;
+  }, false);
 
   return Object.assign({}, SUCCESS, { drawInfo, structures });
 }
