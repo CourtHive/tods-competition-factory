@@ -78,7 +78,7 @@ export function getDrawData({
 
   drawInfo.activeDraw = activeDraw;
   drawInfo.drawGenerated = structures?.reduce((generated, structure) => {
-    return generated || structure?.roundMatchUps;
+    return generated || !!structure?.roundMatchUps;
   }, false);
 
   return Object.assign({}, SUCCESS, { drawInfo, structures });
