@@ -106,7 +106,7 @@ export function modifyVenue({
         if (result.error.errors) {
           result.error.errors.forEach((error) => errors.push(error));
         } else {
-          errors.push(result.error);
+          errors.push(result);
         }
       }
     });

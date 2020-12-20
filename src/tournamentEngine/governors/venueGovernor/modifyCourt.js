@@ -57,7 +57,7 @@ export function modifyCourt({
       courtId,
       force,
     });
-    if (result.error) errors.push(result.error);
+    if (result.error) errors.push(result);
   }
 
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });

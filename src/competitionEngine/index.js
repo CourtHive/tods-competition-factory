@@ -49,7 +49,7 @@ export const competitionEngine = (function () {
   };
   fx.setState = (tournamentRecords) => {
     const result = setState(tournamentRecords);
-    if (result && result.error) errors.push(result.error);
+    if (result && result.error) errors.push(result);
     return fx;
   };
 

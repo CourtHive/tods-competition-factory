@@ -30,6 +30,10 @@ function getEvent({ event }) {
   return { event: makeDeepCopy(event) };
 }
 
+function getDrawDefinition({ drawDefinition }) {
+  return { drawDefinition: makeDeepCopy(drawDefinition) };
+}
+
 const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
@@ -38,6 +42,7 @@ const queryGovernor = {
   getEvent,
   credits,
 
+  getDrawDefinition,
   getEventProperties,
 
   getVenues,

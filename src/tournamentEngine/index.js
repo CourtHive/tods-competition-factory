@@ -81,7 +81,7 @@ export const tournamentEngine = (function () {
   };
   fx.setState = (tournament) => {
     const result = setState(tournament);
-    if (result && result.error) errors.push(result.error);
+    if (result && result.error) errors.push(result);
     return fx;
   };
   fx.devContext = (isDev) => {

@@ -128,6 +128,12 @@ export function generatePositioningCandidate(props) {
     }
   }
 
+  candidatePositionAssignments.forEach((assignment) => {
+    // TODO: Investigate this scenario
+    if (assignment.bye && assignment.participantId)
+      errors.push({ error: 'Invalid Assignment', assignment });
+  });
+
   return {
     positionAssignments: candidatePositionAssignments,
     conflicts: avoidanceConflicts.length,

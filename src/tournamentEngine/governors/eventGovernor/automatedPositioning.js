@@ -1,4 +1,6 @@
 import { getPlayoffStructures } from '../../getters/structureGetter';
+import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
+
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
@@ -12,7 +14,6 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function automatedPositioning({
   event,
-  drawEngine,
   structureId,
   drawDefinition,
   tournamentRecord,
@@ -21,30 +22,17 @@ export function automatedPositioning({
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   const participants = tournamentRecord?.participants;
 
-  const result = drawEngine
-    .setState(drawDefinition)
-    .automatedPositioning({ participants, structureId });
+  const result = drawEngineAutomatedPositioning({
+    drawDefinition,
+    participants,
+    structureId,
+  });
 
-  const errorsCount = result?.errors?.length;
-
-  if (!result?.errors?.length) {
-    const { drawId } = drawDefinition;
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
-
-  return errorsCount ? { error: result.errors } : SUCCESS;
+  return result?.errors?.length ? { error: result.errors } : SUCCESS;
 }
 
 export function automatedPlayoffPositioning({
   event,
-  deepCopy,
-  drawEngine,
   structureId,
   drawDefinition,
   tournamentRecord,
@@ -58,29 +46,17 @@ export function automatedPlayoffPositioning({
     structureId,
   });
 
-  drawEngine.setState(drawDefinition, deepCopy);
-
   const errors = [];
   playoffStructures &&
     playoffStructures.forEach((structure) => {
       const { structureId: playoffStructureId } = structure;
-      const result = drawEngine.automatedPositioning({
+      const result = drawEngineAutomatedPositioning({
+        drawDefinition,
         participants,
         structureId: playoffStructureId,
       });
       result.errors.forEach((error) => errors.push(error));
     });
-
-  if (!errors.length) {
-    const { drawId } = drawDefinition;
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
 
   return errors.length ? { error: errors } : SUCCESS;
 }

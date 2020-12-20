@@ -49,7 +49,7 @@ function participantCheckInAction({
           : drawDefinition;
       });
     } else {
-      errors.push(result.error);
+      errors.push(result);
     }
   } else {
     errors.push({ error: EVENT_NOT_FOUND });

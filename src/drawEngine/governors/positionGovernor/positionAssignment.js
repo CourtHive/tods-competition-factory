@@ -30,12 +30,13 @@ export function assignDrawPosition({
     drawDefinition,
     participantId,
   });
-  if (!validParticipantId)
+  if (!validParticipantId) {
     return {
       error: INVALID_PARTICIPANT_ID,
       participantId,
       method: 'assignDrawPosition',
     };
+  }
 
   const participantSeedNumber = seedAssignments.reduce(
     (seedNumber, assignment) => {

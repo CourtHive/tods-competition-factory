@@ -120,9 +120,10 @@ export function randomUnseededSeparation({
     })
   );
 
-  const candidates = noPairPriorityCandidates.concat(
-    ...pairedPriorityCandidates
-  );
+  const candidates = noPairPriorityCandidates
+    .concat(...pairedPriorityCandidates)
+    .filter((candidate) => !candidate.errors?.length);
+
   const candidate = candidates.reduce(
     (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
     undefined
@@ -138,14 +139,15 @@ export function randomUnseededSeparation({
         !alreadyAssignedParticipantIds.includes(assignment.participantId)
     )
     .forEach((assignment) => {
-      const result = assignDrawPosition({
-        drawDefinition,
-        structureId,
-        ...assignment,
-      });
-      if (!result?.success) {
-        // console.log('ERROR:', result.error, { assignment });
-        errors.push(result.error);
+      if (assignment.participantId && !assignment.bye) {
+        const result = assignDrawPosition({
+          drawDefinition,
+          structureId,
+          ...assignment,
+        });
+        if (!result?.success) {
+          errors.push(result);
+        }
       }
     });
 
