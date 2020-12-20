@@ -48,17 +48,17 @@ export function allPlayoffPositionsFilled(props) {
   });
 
   const enteredParticipantsCount =
-    drawDefinition.entries?.filter((entry) =>
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+    drawDefinition?.entries?.filter((entry) =>
+      STRUCTURE_ENTERED_TYPES.includes(entry?.entryStatus)
     )?.length || 0;
-  let participantIdsCount = 0;
 
+  let participantIdsCount = 0;
   const allPositionsFilled = (playoffStructures || []).reduce(
     (allFilled, structure) => {
-      const structurePositionsFilled = !structure.positionAssignments.filter(
+      const structurePositionsFilled = !structure?.positionAssignments?.filter(
         (assignment) => {
           if (assignment.participantId) participantIdsCount++;
-          return !assignment.bye && !assignment.participantId;
+          return !assignment?.bye && !assignment?.participantId;
         }
       ).length;
       return structurePositionsFilled && allFilled;
