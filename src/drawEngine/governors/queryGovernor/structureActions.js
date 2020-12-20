@@ -1,3 +1,4 @@
+import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps';
 
@@ -46,10 +47,17 @@ export function allPlayoffPositionsFilled(props) {
     structureId,
   });
 
+  const enteredParticipantsCount =
+    drawDefinition.entries?.filter((entry) =>
+      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+    )?.length || 0;
+  let participantIdsCount = 0;
+
   const allPositionsFilled = (playoffStructures || []).reduce(
     (allFilled, structure) => {
       const structurePositionsFilled = !structure.positionAssignments.filter(
         (assignment) => {
+          if (assignment.participantId) participantIdsCount++;
           return !assignment.bye && !assignment.participantId;
         }
       ).length;
@@ -58,5 +66,9 @@ export function allPlayoffPositionsFilled(props) {
     true
   );
 
-  return allPositionsFilled;
+  // account for playoffStructure with only one participant
+  const allParticipantIdsPlaced =
+    participantIdsCount === enteredParticipantsCount;
+
+  return allPositionsFilled || allParticipantIdsPlaced;
 }

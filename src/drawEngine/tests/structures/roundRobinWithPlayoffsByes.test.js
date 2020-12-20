@@ -97,6 +97,7 @@ it('can generate Playoffs for Round Robins when BYEs are present (3)', () => {
     finishingGroupSizes: [4, 4, 4, 4],
   });
 });
+
 it('can generate Playoffs for Round Robins when BYEs are present (4)', () => {
   const playoffGroups = [
     {
@@ -134,5 +135,84 @@ it('can generate Playoffs for Round Robins when BYEs are present (4)', () => {
     playoffGroups,
     participantsCount: 14,
     finishingGroupSizes: [4, 4, 4, 2],
+  });
+});
+
+it('can generate Playoffs for Round Robins when BYEs are present (5)', () => {
+  const playoffGroups = [
+    {
+      finishingPositions: [1],
+      structureName: 'Playoff 1',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 4,
+      byesCount: 0,
+    },
+    {
+      finishingPositions: [2],
+      structureName: 'Playoff 2',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 4,
+      byesCount: 0,
+    },
+    {
+      finishingPositions: [3],
+      structureName: 'Playoff 3',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 4,
+      byesCount: 0,
+    },
+    {
+      finishingPositions: [4],
+      structureName: 'Playoff 4',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 1,
+      byesCount: 2,
+    },
+  ];
+
+  // TODO: potentially introduce the concept of pruning playoff structures when there is only one possible participant
+
+  roundRobinWithPlayoffsTest({
+    drawSize: 16,
+    groupSize: 4,
+    playoffGroups,
+    participantsCount: 13,
+    finishingGroupSizes: [4, 4, 4, 1],
+  });
+});
+
+it('can generate Playoffs for Round Robins when BYEs are present (6)', () => {
+  const playoffGroups = [
+    {
+      finishingPositions: [1],
+      structureName: 'Playoff 1',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 4,
+      byesCount: 0,
+    },
+    {
+      finishingPositions: [2],
+      structureName: 'Playoff 2',
+      positionAssignmentsCount: 4,
+      participantIdsCount: 4,
+      byesCount: 0,
+    },
+    {
+      finishingPositions: [3, 4],
+      structureName: 'Playoff 3',
+      positionAssignmentsCount: 8,
+      participantIdsCount: 5,
+      byesCount: 3,
+    },
+  ];
+
+  // TODO: potentially introduce the concept of pruning playoff structures when there is only one possible participant
+
+  roundRobinWithPlayoffsTest({
+    drawSize: 16,
+    groupSize: 4,
+    playoffGroups,
+    participantsCount: 13,
+    finishingGroupSizes: [4, 4, 4, 1],
   });
 });

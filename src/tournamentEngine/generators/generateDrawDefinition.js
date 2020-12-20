@@ -9,7 +9,6 @@ import {
   MAIN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-  ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../constants/drawDefinitionConstants';
 
 import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
@@ -102,7 +101,6 @@ export function generateDrawDefinition(props) {
   const stage = MAIN;
   const entries = event?.entries || [];
   const eventType = event?.eventType;
-  const drawIsRRWP = drawType === ROUND_ROBIN_WITH_PLAYOFF;
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
@@ -110,16 +108,6 @@ export function generateDrawDefinition(props) {
   );
   if ([ROUND_ROBIN].includes(drawType)) {
     drawSize = stageEntries.length;
-  }
-
-  if (drawIsRRWP && !structureOptions) {
-    structureOptions = drawIsRRWP
-      ? {
-          playoffGroups: [
-            { finishingPositions: [1, 2], structureName: 'Playoffs' },
-          ],
-        }
-      : undefined;
   }
 
   drawEngine.reset();
