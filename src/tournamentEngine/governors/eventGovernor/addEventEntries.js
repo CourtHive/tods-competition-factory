@@ -61,6 +61,7 @@ export function addEventEntries(props) {
       if (event.eventType === TEAM && participant.participantType === TEAM) {
         return true;
       }
+      return false;
     })
     .map((participant) => participant.participantId);
 
