@@ -30,7 +30,6 @@ export function generateRoundRobin({
   structureOptions,
   seedingProfile,
   drawDefinition,
-  matchUpFormat,
 }) {
   const finishingPosition = WIN_RATIO;
   const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
@@ -41,7 +40,6 @@ export function generateRoundRobin({
 
   const structures = generateRange(1, groupCount + 1).map((structureIndex) =>
     structureTemplate({
-      matchUpFormat,
       structureIndex,
       finishingPosition,
       structureType: ITEM,
@@ -54,7 +52,6 @@ export function generateRoundRobin({
   const structure = structureTemplate({
     stage,
     structures,
-    matchUpFormat,
     structureName,
     stageSequence,
     seedingProfile,
@@ -75,7 +72,6 @@ export function generateRoundRobinWithPlayOff(props) {
   const {
     uuids,
     drawDefinition,
-    matchUpFormat,
     playoffMatchUpFormat,
     stageSequence = 1,
     structureOptions,
@@ -142,7 +138,7 @@ export function generateRoundRobinWithPlayOff(props) {
           stage: PLAY_OFF,
           structureId: uuids?.pop(),
           structureName: playoffGroup.structureName,
-          matchUpFormat: playoffMatchUpFormat || matchUpFormat,
+          matchUpFormat: playoffMatchUpFormat,
         });
 
         drawDefinition.structures.push(playoffStructure);
