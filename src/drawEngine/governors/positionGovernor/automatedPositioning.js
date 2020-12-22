@@ -14,6 +14,7 @@ import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 
 export function automatedPositioning({
   drawDefinition,
+  candidatesCount,
   participants,
   structureId,
 }) {
@@ -66,6 +67,7 @@ export function automatedPositioning({
     error: unseededPositionError,
     conflicts: unseededConflicts,
   } = positionUnseededParticipants({
+    candidatesCount,
     drawDefinition,
     participants,
     structure,

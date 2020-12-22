@@ -20,13 +20,14 @@ import { SINGLES } from '../../../constants/eventConstants';
 export function roundRobinWithPlayoffsTest({
   drawSize,
   groupSize,
+  groupsCount,
   playoffGroups,
   participantsCount,
   finishingGroupSizes,
 }) {
   reset();
   initialize();
-  const groupsCount = drawSize / groupSize;
+  groupsCount = groupsCount || drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
   const structureOptions = {
     groupSize,
@@ -118,17 +119,11 @@ export function roundRobinWithPlayoffsTest({
   });
 
   const { drawId } = drawDefinition;
-  const { matchUps: allStructureMatchUps } = drawEngine.allStructureMatchUps({
-    structureId: mainStructure.structureId,
-  });
-  const allStructureMatchUpsCount = allStructureMatchUps.length;
-  const matchUpsPerStructure =
-    allStructureMatchUpsCount / (drawSize / groupSize);
 
   // now complete all matchUps in the Round Robin (MAIN) structure
-  mainStructure.structures.forEach((structure, structureIndex) => {
+  mainStructure.structures.forEach((structure) => {
     const structureMatchUps = structure.matchUps;
-    structureMatchUps.forEach((matchUp, matchUpIndex) => {
+    structureMatchUps.forEach((matchUp) => {
       const { matchUpId } = matchUp;
       if (matchUp.matchUpStatus !== 'BYE') {
         const setValues = [
@@ -146,15 +141,6 @@ export function roundRobinWithPlayoffsTest({
         });
         expect(result).toEqual(SUCCESS);
       }
-
-      const matchUpInstance =
-        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
-      const mainStructureIsCompleted = drawEngine.isCompletedStructure({
-        structureId: mainStructure.structureId,
-      });
-      const expectCompletedStructure =
-        matchUpInstance === allStructureMatchUpsCount;
-      expect(mainStructureIsCompleted).toEqual(expectCompletedStructure);
     });
   });
 
@@ -165,7 +151,7 @@ export function roundRobinWithPlayoffsTest({
   const finishingPositionGroups = {};
   const structureParticipantGroupings = [];
 
-  const orderValues = generateRange(1, groupsCount + 1);
+  const orderValues = generateRange(1, groupSize + 1);
   mainStructure.structures.forEach((structure) => {
     const { structureId } = structure;
 
@@ -232,4 +218,6 @@ export function roundRobinWithPlayoffsTest({
     structureId: mainStructure.structureId,
   });
   expect(allPlayoffPositionsFilled).toEqual(true);
+
+  return { drawDefinition: updatedDrawDefinition };
 }
