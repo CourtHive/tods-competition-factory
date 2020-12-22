@@ -1,4 +1,4 @@
-import { UNPAIRED } from '../../../constants/entryStatusConstants';
+import { UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
 import {
   INVALID_ENTRIES,
   MISSING_EVENT,
@@ -36,7 +36,7 @@ export function checkValidEntries({ event, participants, ignoreGender }) {
     const unpairedDoublesParticipant =
       eventType === DOUBLES &&
       participant.participantType === INDIVIDUAL &&
-      entryStatusMap[participant.participantId] === UNPAIRED;
+      [UNPAIRED, WITHDRAWN].includes(entryStatusMap[participant.participantId]);
     const mismatch =
       participant.participantType !== participantType &&
       !unpairedDoublesParticipant;
