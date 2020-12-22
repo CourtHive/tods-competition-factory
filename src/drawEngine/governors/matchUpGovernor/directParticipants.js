@@ -6,6 +6,7 @@ import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchU
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+// import { generateScoreString } from '../scoreGovernor/generateScoreString';
 
 export function directParticipants(props) {
   const {
@@ -16,8 +17,7 @@ export function directParticipants(props) {
     matchUp,
     winningSide,
     targetData,
-    scoreString,
-    sets,
+    score,
   } = props;
   const errors = [];
 
@@ -36,8 +36,7 @@ export function directParticipants(props) {
   matchUp.matchUpStatusCodes =
     (matchUpStatusIsValid && matchUpStatusCodes) || [];
 
-  if (scoreString) matchUp.score = scoreString;
-  if (sets) matchUp.sets = sets;
+  if (score) matchUp.score = score;
 
   if (isCollectionMatchUp) {
     const { matchUpTieId } = props;

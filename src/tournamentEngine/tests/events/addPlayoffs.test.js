@@ -26,7 +26,7 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure', () => {
   expect(structures.length).toEqual(3);
 });
 
-it.only('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
+it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,
     playoffPositions: [3, 4],
