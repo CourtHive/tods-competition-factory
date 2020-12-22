@@ -1,14 +1,24 @@
 import { generateDrawType } from './generateDrawType';
+import { getSourceRounds } from './getSourceRounds';
+import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
+import { buildDrawHierarchy } from '../../generators/drawHierarchy';
+import { addPlayoffStructures } from './addPlayoffStructures';
+
 import {
   getDrawStructures,
   getStructureQualifiersCount,
 } from '../../getters/structureGetter';
-import { buildDrawHierarchy } from '../../generators/drawHierarchy';
 
 const structureGovernor = {
+  getSourceRounds,
   getDrawStructures,
-  generateDrawType,
+  getPositionsPlayedOff,
   getStructureQualifiersCount,
+  getAvailablePlayoffRounds,
+  addPlayoffStructures,
+
+  generateDrawType,
 
   buildDrawHierarchy,
 };

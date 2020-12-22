@@ -53,6 +53,18 @@ route: /drawEngine/api
 
 ---
 
+## addPlayoffStructures
+
+```js
+drawEngine.addPlayoffStructures({
+  structureId,
+  roundNumbers: [3],        // either target roundNumbers or playoffPositions
+  playoffPositions: [3, 4],
+});
+```
+
+---
+
 ## addTimeItem
 
 ---
@@ -118,6 +130,33 @@ The structure of an **_assignment object_** is as follows:
 ---
 
 ## automatedPositioning
+
+---
+
+## availablePlayoffRounds
+
+Returns rounds of a structure which are available for adding playoff structures.
+
+```js
+const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({
+  drawDefinition,
+  structureId,
+});
+```
+
+...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
+
+```js
+    {
+      playoffRounds: [ 1, 2, 3 ],
+      playoffRoundsRanges: [
+        { round: 1, range: '9-16' },
+        { round: 2, range: '5-8' },
+        { round: 3, range: '3-4' }
+      ]
+    }
+
+```
 
 ---
 
@@ -229,7 +268,36 @@ Returns the range of finishing positions for all participants
 
 ---
 
+## getPositionsPlayedOff
+
+Determines which finishing positions will be returned by a draw. For example, a First Match Loser Consolation with a draw size of 16 will playoff possitions 1, 2, 9 and 10.
+
+```js
+const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
+```
+
+---
+
 ## getRoundMatchUps
+
+---
+
+## getSourceRounds
+
+Returns the round numbers for desired playoff positions.
+
+```js
+const {
+  sourceRounds, // all source rounds for playedOff positions and specified playoffPositions
+  playoffSourceRounds,
+  playedOffSourceRounds,
+  playoffPositionsReturned,
+} = getSourceRounds({
+  drawDefinition,
+  structureId,
+  playoffPositions: [3, 4],
+});
+```
 
 ---
 

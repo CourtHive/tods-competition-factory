@@ -1,14 +1,8 @@
 import { tournamentEngine } from '../..';
 import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
-import { PARTICIPANT_PAIR_EXISTS } from '../../../constants/errorConditionConstants';
-import { chunkArray } from '../../../utilities';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 let result;
 

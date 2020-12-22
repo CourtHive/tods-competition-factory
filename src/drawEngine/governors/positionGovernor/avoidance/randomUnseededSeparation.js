@@ -43,7 +43,7 @@ export function randomUnseededSeparation({
   const {
     policyAttributes,
     roundsToSeparate,
-    candidatesCount = 10,
+    candidatesCount = 20,
   } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
@@ -128,6 +128,8 @@ export function randomUnseededSeparation({
     (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
     undefined
   );
+
+  if (!candidate) return { error: 'Could not produce candidate' };
 
   const alreadyAssignedParticipantIds = (structure.positionAssignments || [])
     .filter((assignment) => assignment.participantId)

@@ -1,5 +1,6 @@
 import {
   INVALID_SCALE_ITEM,
+  INVALID_VALUES,
   MISSING_PARTICIPANT,
   SCALE_ITEM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
@@ -9,6 +10,9 @@ export function participantScaleItem({
   scaleAttributes,
   requireTimeStamp,
 }) {
+  if (!participant) return { error: MISSING_PARTICIPANT };
+  if (typeof scaleAttributes !== 'object') return { error: INVALID_VALUES };
+
   if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
     const { scaleType, eventType, scaleName } = scaleAttributes;

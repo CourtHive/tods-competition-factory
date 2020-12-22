@@ -37,6 +37,7 @@ import { setEntryPosition, setEntryPositions } from './setEntryPositions';
 import { modifyEntriesStatus } from './modifyEntriesStatus';
 import { addEventTimeItem } from './addEventTimeItem';
 import { addDrawDefinitionTimeItem } from './addDrawDefinitionTimeItem';
+import { addPlayoffStructures } from './addPlayoffStructures';
 
 const eventGovernor = {
   addEvent,
@@ -46,6 +47,7 @@ const eventGovernor = {
   checkValidEntries,
 
   addDrawDefinition,
+  addPlayoffStructures,
   deleteDrawDefinitions,
 
   addEventEntries,
