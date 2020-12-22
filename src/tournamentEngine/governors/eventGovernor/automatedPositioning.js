@@ -51,8 +51,9 @@ export function automatedPlayoffPositioning({
     playoffStructures.forEach((structure) => {
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
-        drawDefinition,
         participants,
+        drawDefinition,
+        candidatesCount: 20,
         structureId: playoffStructureId,
       });
       result.errors.forEach((error) => errors.push(error));

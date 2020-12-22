@@ -10,6 +10,18 @@ export function playoff(props) {
   return Object.assign({ structure, childStructures }, SUCCESS);
 }
 
+/**
+ *
+ * @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+ * @param {string} exitProfile - rounds at which a participant exited each structure, e.g. 0-1-1-1 for losing EAST, WEST, SOUTH
+ * @param {number} finishingPositionOffset - amount by which to offset finishingPositions, e.g. 2 for playing off 3-4
+ * @param {number} finishingPositionLimit - highest value of possible finishing Positions to play off
+ * @param {number} roundOffsetLimit - how many rounds to play off (# of additional matchUps per participant)
+ * @param {number} roundOffset - used internally to track generated structures; saved in structure attributes;
+ * @param {number} stageSequence - what sequence within stage structures, e.g. WEST is stageSequence 2 in COMPASS
+ * @param {string} stage - [QUALIFYING, MAIN, CONSOLATION, PLAY-OFF]
+ *
+ */
 function playoffStructures({
   uuids,
   drawSize,

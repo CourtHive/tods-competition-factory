@@ -16,6 +16,7 @@ import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
+  candidatesCount,
   participants,
   structureId,
   structure,
@@ -85,6 +86,7 @@ export function positionUnseededParticipants({
       structureId,
       participants,
       drawDefinition,
+      candidatesCount,
       unseededParticipantIds,
     });
   } else {

@@ -82,6 +82,19 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 ---
 
+## addPlayoffStructures
+
+```js
+tournamentEngine.addPlayoffStructures({
+  drawId,
+  structureId,
+  roundNumbers: [3], // either target roundNumbers or playoffPositions
+  playoffPositions: [3, 4],
+});
+```
+
+---
+
 ## addVenue
 
 ---

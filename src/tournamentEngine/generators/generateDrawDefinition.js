@@ -21,6 +21,7 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, drawEngine, event } = props;
@@ -277,5 +278,10 @@ export function generateDrawDefinition(props) {
   if (matchUpFormatError) errors.push(matchUpFormat);
   const error = errors.length && errors;
 
-  return { structureId, drawDefinition, conflicts, error };
+  return Object.assign({}, SUCCESS, {
+    structureId,
+    drawDefinition,
+    conflicts,
+    error,
+  });
 }
