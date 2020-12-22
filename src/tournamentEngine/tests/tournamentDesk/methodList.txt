@@ -43,5 +43,6 @@ tournamentEngine
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
 - setEntryPositions
+- setMatchUpFormat
 * setMatchUpStatus
 * setParticipantScaleItem
