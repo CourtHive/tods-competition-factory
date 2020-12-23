@@ -10,6 +10,7 @@ import { getEventProperties } from './getEventProperties';
 import { getParticipantSignInStatus } from './signInStatus';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { matchUpActions } from '../../getters/matchUpActions';
+import { getEvent, getEvents } from '../../getters/eventGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
@@ -26,10 +27,6 @@ import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
 import { credits } from '../../../fixtures/credits';
 
-function getEvent({ event }) {
-  return { event: makeDeepCopy(event) };
-}
-
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
@@ -39,8 +36,10 @@ const queryGovernor = {
   tournamentMatchUps,
   allEventMatchUps,
   eventMatchUps,
-  getEvent,
   credits,
+
+  getEvent,
+  getEvents,
 
   getDrawDefinition,
   getEventProperties,

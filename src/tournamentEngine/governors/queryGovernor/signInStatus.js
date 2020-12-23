@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../getters/participantGetter';
+import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import {
   SIGNED_IN,
   SIGN_IN_STATUS,

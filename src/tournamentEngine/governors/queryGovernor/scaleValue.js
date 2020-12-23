@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../getters/participantGetter';
+import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import {
   MISSING_PARTICIPANT_ID,
