@@ -18,6 +18,8 @@ export function generateMockParticipants({
   addressProps,
   matchUpType,
   sex,
+
+  inContext,
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
@@ -83,8 +85,10 @@ export function generateMockParticipants({
         participantRole: COMPETITOR,
         name: doubles ? pairName : teamMocks().teams[0],
         individualParticipantIds,
-        individualParticipants, // TODO: remove
       };
+
+      if (inContext)
+        groupParticipant.individualParticipants = individualParticipants;
       return doubles || team
         ? [groupParticipant, ...individualParticipants]
         : individualParticipants;

@@ -1,10 +1,41 @@
+import { makeDeepCopy } from '../../utilities';
+
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_DRAW_ID,
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
+export function getEvent({ tournamentRecord, event, context }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!event) return { error: MISSING_EVENT };
+
+  const eventCopy = makeDeepCopy(event);
+  if (context) Object.assign(eventCopy, context);
+
+  return { event: eventCopy };
+}
+
+export function getEvents({ tournamentRecord, context, inContext }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
+  const eventCopies = (tournamentRecord.events || []).map((event) => {
+    const eventCopy = makeDeepCopy(event);
+    if (context) Object.assign(eventCopy, context);
+    return eventCopy;
+  });
+
+  if (inContext) {
+    console.log('TODO: add context');
+  }
+
+  return { events: eventCopies };
+}
+
 export function findEvent({ tournamentRecord, eventId, drawId }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const events = tournamentRecord?.events || [];
   if (eventId) {
     const event = events.reduce((event, candidate) => {
@@ -29,6 +60,7 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
 }
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
     return { error: MISSING_DRAW_ID };
   }

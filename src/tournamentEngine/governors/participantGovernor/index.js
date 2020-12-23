@@ -6,11 +6,9 @@ import { deleteParticipants } from './deleteParticipants';
 import { getPairedParticipant } from './getPairedParticipant';
 import { createGroupParticipant } from './createGroupParticipant';
 import { addParticipant, addParticipants } from './addParticipants';
-import {
-  findTournamentParticipant,
-  getTournamentParticipants,
-  getParticipantEventDetails,
-} from '../../getters/participantGetter';
+import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
 import { generateMockParticipants } from '../../generators/mockParticipants';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import {
@@ -32,14 +30,6 @@ const findTournamentParticipantCopy = (props) => {
   const { participant, error } = findTournamentParticipant(props);
   return { participant: makeDeepCopy(participant), error };
 };
-const getTournamentParticipantsCopy = (props) => {
-  const { tournamentParticipants, error } = getTournamentParticipants(props);
-  return {
-    tournamentParticipants: makeDeepCopy(tournamentParticipants),
-    error,
-  };
-};
-
 const participantGovernor = {
   addPenalty,
   modifyPenalty,
@@ -69,7 +59,7 @@ const participantGovernor = {
 
   getParticipantEventDetails,
   findParticipant: findTournamentParticipantCopy,
-  getTournamentParticipants: getTournamentParticipantsCopy,
+  getTournamentParticipants,
 };
 
 export default participantGovernor;

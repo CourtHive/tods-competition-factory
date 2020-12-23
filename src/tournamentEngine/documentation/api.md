@@ -330,7 +330,19 @@ This is a convenience method which handles most use cases for draw generation.
 
 ## getEvent
 
+Returns a deepCopy of a event object.
+
 - @param {string} eventId - id of the event to retreive
+- @param {object} context - attributes to be added into each event object.
+
+---
+
+## getEvents
+
+Return an array of deepCopies of all event objects.
+
+- @param {object} context - attributes to be added into each event object.
+- @param {boolean} inContext - whether or not to add tournament context into event (not yet implemented).
 
 ---
 
@@ -421,13 +433,15 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ## getTournamentParticipants
 
-Returns tournament participants filtered by participantFilters which are arrays of desired participant attribute values
+Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
 
 - @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
 - @param {object} participantFilters - attribute arrays with filter value strings
+- @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
+- @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
 
-  imlemented: eventIds, participantTypes, participantRoles,
-  to be implemented: drawIds, structureIds, signInStates, keyValues,
+imlemented: eventIds, participantTypes, participantRoles,
+to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ---
 
