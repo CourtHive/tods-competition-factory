@@ -181,7 +181,7 @@ it('can generate Playoffs for Round Robins when BYEs are present (5)', () => {
   });
 });
 
-it('can generate Playoffs for Round Robins when BYEs are present (6)', () => {
+it.skip('can generate Playoffs for Round Robins when BYEs are present (6)', () => {
   const playoffGroups = [
     {
       finishingPositions: [1],
