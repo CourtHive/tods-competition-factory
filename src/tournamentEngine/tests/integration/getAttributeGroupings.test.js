@@ -17,6 +17,7 @@ it('can generate groupings accurately', () => {
 
     participantsCount: 32,
     participantType: PAIR,
+    inContext: true,
   });
 
   const doublesParticipants = participants.filter(

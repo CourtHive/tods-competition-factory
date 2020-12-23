@@ -15,6 +15,7 @@ export function tournamentRecordWithParticipants({
   sex,
   participantsCount,
   participantType = INDIVIDUAL,
+  inContext,
 
   valuesInstanceLimit,
 }) {
@@ -27,6 +28,7 @@ export function tournamentRecordWithParticipants({
 
     participantsCount,
     participantType,
+    inContext,
     sex,
 
     valuesInstanceLimit,

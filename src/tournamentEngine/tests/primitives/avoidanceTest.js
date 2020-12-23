@@ -40,6 +40,7 @@ export function avoidanceTest(props) {
     sex,
     participantType,
     participantsCount,
+    inContext: true,
 
     valuesInstanceLimit,
     nationalityCodesCount: valuesCount,
