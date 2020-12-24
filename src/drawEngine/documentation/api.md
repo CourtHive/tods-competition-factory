@@ -58,14 +58,14 @@ route: /drawEngine/api
 ```js
 drawEngine.addPlayoffStructures({
   structureId,
-  roundNumbers: [3],        // either target roundNumbers or playoffPositions
+  roundNumbers: [3], // either target roundNumbers or playoffPositions
   playoffPositions: [3, 4],
 });
 ```
 
 ---
 
-## addTimeItem
+## addMatchUpTimeItem
 
 ---
 
@@ -415,7 +415,7 @@ Returns boolean whether all matchUps in a given structure have been completed
 
 ---
 
-## resetTimeItems
+## resetMatchUpTimeItems
 
 ---
 

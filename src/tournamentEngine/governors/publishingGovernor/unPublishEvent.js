@@ -1,4 +1,4 @@
-import { addEventTimeItem } from '../eventGovernor/addEventTimeItem';
+import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
 
 import {
   MISSING_EVENT,
