@@ -1,5 +1,5 @@
+import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
 import { tournamentEngine } from '../../../tournamentEngine';
-import { generateMockParticipants } from '../../generators/mockParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
@@ -21,7 +21,7 @@ export function tournamentRecordWithParticipants({
 }) {
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
-  const { participants } = generateMockParticipants({
+  const { participants } = generateParticipants({
     nationalityCodesCount,
     nationalityCodes,
     addressProps,
