@@ -1,5 +1,5 @@
 import tournamentEngine from '../..';
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -11,11 +11,13 @@ import { MODIFICATION } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
-  const { tournamentRecord, participants } = generateTournament({
-    startDate: '2021-01-01',
-    endDate: '2021-01-06',
-    participantsCount: 32,
-  });
+  const { tournamentRecord, participants } = generateTournamentWithParticipants(
+    {
+      startDate: '2021-01-01',
+      endDate: '2021-01-06',
+      participantsCount: 32,
+    }
+  );
 
   tournamentEngine.setState(tournamentRecord);
 

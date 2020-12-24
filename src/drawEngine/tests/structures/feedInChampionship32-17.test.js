@@ -1,7 +1,7 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 import { getDrawStructures } from '../../getters/findStructure';
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
@@ -13,9 +13,11 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
-  const { participants, tournamentRecord } = generateTournament({
-    participantsCount,
-  });
+  const { participants, tournamentRecord } = generateTournamentWithParticipants(
+    {
+      participantsCount,
+    }
+  );
   tournamentEngine.setState(tournamentRecord);
 
   const event = {

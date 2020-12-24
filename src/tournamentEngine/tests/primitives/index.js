@@ -1,1 +1,1 @@
-export { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+export { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';

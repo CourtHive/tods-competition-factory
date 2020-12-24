@@ -3,7 +3,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
@@ -13,9 +13,11 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
-  const { tournamentRecord, participants } = generateTournament({
-    participantsCount: 14,
-  });
+  const { tournamentRecord, participants } = generateTournamentWithParticipants(
+    {
+      participantsCount: 14,
+    }
+  );
 
   tournamentEngine.setState(tournamentRecord);
 

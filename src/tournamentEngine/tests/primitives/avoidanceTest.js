@@ -1,4 +1,4 @@
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
@@ -33,23 +33,25 @@ export function avoidanceTest(props) {
   let { seedsCount } = props;
   if (!seedsCount) seedsCount = participantsCount / 4;
 
-  const { tournamentRecord, participants } = generateTournament({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
+  const { tournamentRecord, participants } = generateTournamentWithParticipants(
+    {
+      startDate: '2020-01-01',
+      endDate: '2020-01-06',
 
-    sex,
-    participantType,
-    participantsCount,
-    inContext: true,
+      sex,
+      participantType,
+      participantsCount,
+      inContext: true,
 
-    valuesInstanceLimit,
-    nationalityCodesCount: valuesCount,
-    addressProps: {
-      citiesCount: valuesCount,
-      statesCount: valuesCount,
-      postalCodesCount: valuesCount,
-    },
-  });
+      valuesInstanceLimit,
+      nationalityCodesCount: valuesCount,
+      addressProps: {
+        citiesCount: valuesCount,
+        statesCount: valuesCount,
+        postalCodesCount: valuesCount,
+      },
+    }
+  );
 
   tournamentEngine.setState(tournamentRecord);
 

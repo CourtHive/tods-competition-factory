@@ -4,7 +4,7 @@ import { tournamentEngine } from '../../tournamentEngine';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 
-export function generateTournament({
+export function generateTournamentWithParticipants({
   endDate,
   startDate,
 

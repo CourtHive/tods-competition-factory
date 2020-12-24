@@ -3,10 +3,10 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 it('can retrieve tournament participants', () => {
-  const { tournamentRecord } = generateTournament({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: 100,
     participantType: PAIR,
   });

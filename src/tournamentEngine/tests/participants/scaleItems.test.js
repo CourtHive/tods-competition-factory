@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../..';
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RATING } from '../../../constants/scaleConstants';
@@ -8,9 +8,11 @@ import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can set participant scaleItems', () => {
-  const { tournamentRecord, participants } = generateTournament({
-    participantsCount: 100,
-  });
+  const { tournamentRecord, participants } = generateTournamentWithParticipants(
+    {
+      participantsCount: 100,
+    }
+  );
   tournamentEngine.setState(tournamentRecord);
 
   const { participantId } = participants[0];
@@ -110,9 +112,11 @@ it('can set participant scaleItems', () => {
 });
 
 it('can set participant scaleItems in bulk', () => {
-  const { tournamentRecord, participants } = generateTournament({
-    participantsCount: 100,
-  });
+  const { tournamentRecord, participants } = generateTournamentWithParticipants(
+    {
+      participantsCount: 100,
+    }
+  );
   tournamentEngine.setState(tournamentRecord);
 
   const scaleItemsWithParticipantIds = participants.map((participant) => {
