@@ -19,7 +19,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, scoreString, winningSide } = props;
+  const { matchUp, matchUpStatus, score, winningSide } = props;
   let errors = [];
 
   if (winningSide) {
@@ -28,12 +28,12 @@ export function noDownstreamDependencies(props) {
   } else if (matchUpStatus) {
     const { errors: matchUpStatusErrors } = attemptToSetMatchUpStatus(props);
     if (matchUpStatusErrors) errors = errors.concat(matchUpStatusErrors);
-  } else if (!winningSide && scoreString) {
+  } else if (!winningSide && score?.sets?.length) {
     const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
       props
     );
     if (incompleteScoreErrors) errors = errors.concat(incompleteScoreErrors);
-  } else if (!winningSide && matchUp.winningSide && !scoreString) {
+  } else if (!winningSide && matchUp.winningSide && !score?.sets?.length) {
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
     );
@@ -43,7 +43,6 @@ export function noDownstreamDependencies(props) {
     }
   } else {
     delete matchUp.score;
-    delete matchUp.sets;
     delete matchUp.matchUpStatus;
     delete matchUp.winningSide;
     const isCollectionMatchUp = Boolean(matchUp.collectionId);
@@ -57,11 +56,10 @@ export function noDownstreamDependencies(props) {
 }
 
 function attemptToSetIncompleteScore(props) {
-  const { matchUp, score, sets } = props;
+  const { matchUp, score } = props;
   const errors = [];
 
   if (score) matchUp.score = score;
-  if (sets) matchUp.sets = sets;
   delete matchUp.winningSide;
   matchUp.matchUpStatus = INCOMPLETE;
   matchUp.matchUpStatusCodes = [];

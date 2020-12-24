@@ -35,10 +35,7 @@ export function tallyParticipantResults({
   relevantMatchUps
     .filter((f) => f)
     .forEach((matchUp) => {
-      const scoreString =
-        typeof matchUp?.score === 'object'
-          ? matchUp.score.scoreStringSide1
-          : matchUp.score;
+      const scoreString = matchUp.score?.scoreStringSide1;
       const parsedMatchUpFormat =
         matchUpFormatCode.parse(matchUp.matchUpFormat || matchUpFormat) || {};
 
@@ -77,10 +74,7 @@ export function tallyParticipantResults({
           losingParticipantId
         );
 
-        const sets =
-          typeof matchUp?.score === 'object'
-            ? matchUp.score.sets
-            : matchUp.sets;
+        const sets = matchUp.score?.sets || [];
         const setsTally = countSets({
           winner: 0,
           parsedMatchUpFormat,

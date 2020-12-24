@@ -6,6 +6,7 @@ import {
   getRoundMatchUps,
   getAllStructureMatchUps,
 } from '../../getters/getMatchUps';
+import { parseStringScore } from './parseStringScore';
 
 export function completeMatchUp({
   structureId,
@@ -13,9 +14,10 @@ export function completeMatchUp({
   roundPosition,
   matchUpStatus,
   winningSide,
-  score,
-  sets,
+  stringScore,
 }) {
+  const sets = stringScore && parseStringScore({ stringScore });
+  const score = { sets };
   const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
     roundNumber,
@@ -27,7 +29,6 @@ export function completeMatchUp({
     matchUpStatus,
     winningSide,
     score,
-    sets,
   });
   return { success, error, matchUp, matchUpId };
 }
