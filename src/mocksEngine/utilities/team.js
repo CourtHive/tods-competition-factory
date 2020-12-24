@@ -1,5 +1,5 @@
-import { shuffleArray } from '../utilities';
-import teamsData from './teams.json';
+import { shuffleArray } from '../../utilities';
+import teamsData from '../data/teams.json';
 
 export function teamMocks({ count = 1 } = {}) {
   const shuffledCities = shuffleArray(teamsData);
