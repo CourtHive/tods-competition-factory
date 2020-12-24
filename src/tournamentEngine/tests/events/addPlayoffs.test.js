@@ -1,5 +1,5 @@
 import tournamentEngine from '../..';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -45,7 +45,7 @@ function tournamentEngineAddPlayoffsTest({
   roundNumbers,
 }) {
   let result;
-  const { tournamentRecord } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournament({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,

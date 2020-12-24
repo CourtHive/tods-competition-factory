@@ -1,7 +1,7 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
-import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
+import { generateTournament } from '../../../tournamentEngine/tests/primitives';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize } from '../primitives/primitives';
 import { generateRange } from '../../../utilities';
@@ -34,7 +34,7 @@ export function roundRobinWithPlayoffsTest({
     playoffGroups,
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount,
   });
   tournamentEngine.setState(tournamentRecord);

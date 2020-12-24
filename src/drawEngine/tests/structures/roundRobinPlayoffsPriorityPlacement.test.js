@@ -1,7 +1,7 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
-import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
+import { generateTournament } from '../../../tournamentEngine/tests/primitives';
 import { reset, initialize } from '../primitives/primitives';
 
 import { findStructure } from '../../getters/findStructure';
@@ -45,7 +45,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     playoffGroups,
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: drawSize,
   });
   tournamentEngine.setState(tournamentRecord);
@@ -265,7 +265,7 @@ it('can advance players in Round Robin with Playoffs', () => {
     playoffGroups,
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: drawSize,
   });
   tournamentEngine.setState(tournamentRecord);

@@ -1,11 +1,11 @@
 import { tournamentEngine } from '../..';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { penaltyConstants } from '../../../constants/penaltyConstants';
 const { BALL_ABUSE } = penaltyConstants;
 
 it('can add, remove, and edit penalties for participants', () => {
-  const { tournamentRecord } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournament({
     participantsCount: 100,
   });
   tournamentEngine.setState(tournamentRecord);

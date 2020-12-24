@@ -1,4 +1,4 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
@@ -33,7 +33,7 @@ export function avoidanceTest(props) {
   let { seedsCount } = props;
   if (!seedsCount) seedsCount = participantsCount / 4;
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
 

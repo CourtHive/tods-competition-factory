@@ -39,6 +39,7 @@ export const utilities = {
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { competitionEngine } from './competitionEngine';
 export { tournamentEngine } from './tournamentEngine';
+export { mocksEngine } from './mocksEngine';
 export { drawEngine } from './drawEngine';
 export { fixtures } from './fixtures';
 

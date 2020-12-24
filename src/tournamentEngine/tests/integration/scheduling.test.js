@@ -2,7 +2,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 import { competitionEngine } from '../../../competitionEngine';
 
 import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
-import { tournamentRecordWithParticipants } from '../primitives';
+import { generateTournament } from '../primitives';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -18,10 +18,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const endDate = '2020-01-06';
   const participantsCount = 32;
 
-  const {
-    tournamentRecord: record,
-    participants,
-  } = tournamentRecordWithParticipants({
+  const { tournamentRecord: record, participants } = generateTournament({
     startDate,
     endDate,
     participantsCount,

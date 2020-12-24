@@ -1,12 +1,12 @@
 import { tournamentEngine } from '../..';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { RATING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can get event properties to determine if there are seeded, ranked, or rated participants', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: 100,
   });
   tournamentEngine.setState(tournamentRecord);

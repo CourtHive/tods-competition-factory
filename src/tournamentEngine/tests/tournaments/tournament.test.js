@@ -1,4 +1,4 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { tournamentEngine } from '../..';
 import { drawEngine } from '../../../drawEngine';
 
@@ -17,7 +17,7 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,

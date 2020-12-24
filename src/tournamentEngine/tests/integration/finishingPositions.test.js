@@ -1,4 +1,4 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { tournamentEngine } from '../../../tournamentEngine';
 import { drawEngine } from '../../../drawEngine';
 
@@ -12,7 +12,7 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: 14,
   });
 

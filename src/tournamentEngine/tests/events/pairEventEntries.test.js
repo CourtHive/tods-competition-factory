@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../..';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { DOUBLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -14,7 +14,7 @@ import { findStructure } from '../../../drawEngine/getters/findStructure';
 let result;
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,

@@ -1,5 +1,5 @@
 import tournamentEngine from '../..';
-import { tournamentRecordWithParticipants } from '../primitives';
+import { generateTournament } from '../primitives';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -11,7 +11,7 @@ import { MODIFICATION } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     startDate: '2021-01-01',
     endDate: '2021-01-06',
     participantsCount: 32,

@@ -1,1 +1,1 @@
-export { tournamentRecordWithParticipants } from './generateTournament';
+export { generateTournament } from '../../../mocksEngine/generators/generateTournament';

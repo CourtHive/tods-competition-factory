@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
-import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
+import { generateTournament } from '../../../tournamentEngine/tests/primitives';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import tournamentEngine from '../../../tournamentEngine';
 import { intersection } from '../../../utilities';
@@ -9,7 +9,7 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add drawPositiionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,

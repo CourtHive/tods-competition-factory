@@ -1,6 +1,6 @@
 import fs from 'fs';
 import tournamentEngine from '../..';
-import { tournamentRecordWithParticipants } from '../primitives';
+import { generateTournament } from '../primitives';
 
 import {
   COMPASS,
@@ -33,7 +33,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: drawSize,
   });
   tournamentEngine.setState(tournamentRecord);
@@ -202,7 +202,7 @@ it('can generate payload for publishing a compass draw', () => {
   const drawSize = 16;
   const drawType = COMPASS;
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: drawSize,
   });
   tournamentEngine.setState(tournamentRecord);
@@ -339,7 +339,7 @@ it('can generate payload for publishing a FMLC draw', () => {
   const drawSize = 16;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord, participants } = generateTournament({
     participantsCount: drawSize,
   });
   tournamentEngine.setState(tournamentRecord);

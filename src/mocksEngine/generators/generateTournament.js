@@ -1,10 +1,10 @@
-import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
-import { tournamentEngine } from '../../../tournamentEngine';
+import { generateParticipants } from './generateParticipants';
+import { tournamentEngine } from '../../tournamentEngine';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 
-export function tournamentRecordWithParticipants({
+export function generateTournament({
   endDate,
   startDate,
 
