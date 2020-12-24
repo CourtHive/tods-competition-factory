@@ -33,25 +33,24 @@ export function avoidanceTest(props) {
   let { seedsCount } = props;
   if (!seedsCount) seedsCount = participantsCount / 4;
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
 
-      sex,
-      participantType,
-      participantsCount,
-      inContext: true,
+    sex,
+    participantType,
+    participantsCount,
+    inContext: true,
 
-      valuesInstanceLimit,
-      nationalityCodesCount: valuesCount,
-      addressProps: {
-        citiesCount: valuesCount,
-        statesCount: valuesCount,
-        postalCodesCount: valuesCount,
-      },
-    }
-  );
+    valuesInstanceLimit,
+    nationalityCodesCount: valuesCount,
+    addressProps: {
+      citiesCount: valuesCount,
+      statesCount: valuesCount,
+      postalCodesCount: valuesCount,
+    },
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

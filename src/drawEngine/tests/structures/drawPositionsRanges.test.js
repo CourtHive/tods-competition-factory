@@ -9,13 +9,13 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add drawPositiionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+  });
+
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

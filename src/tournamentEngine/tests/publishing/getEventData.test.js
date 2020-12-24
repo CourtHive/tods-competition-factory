@@ -33,11 +33,10 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: drawSize,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: drawSize,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const venueName = 'GrassHaven';
@@ -204,11 +203,10 @@ it('can generate payload for publishing a compass draw', () => {
   const drawSize = 16;
   const drawType = COMPASS;
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: drawSize,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: drawSize,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const venueName = 'GrassHaven';
@@ -343,11 +341,10 @@ it('can generate payload for publishing a FMLC draw', () => {
   const drawSize = 16;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: drawSize,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: drawSize,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const venueName = 'GrassHaven';

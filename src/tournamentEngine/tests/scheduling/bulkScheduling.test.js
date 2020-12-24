@@ -13,13 +13,12 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

@@ -13,14 +13,13 @@ import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 let result;
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-      participantType: PAIR,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: PAIR,
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -106,14 +105,13 @@ it('can add doubles events to a tournament record', () => {
 });
 
 it('can destroy pair entries in doubles events', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-      participantType: PAIR,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: PAIR,
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -182,14 +180,13 @@ it('can destroy pair entries in doubles events', () => {
 });
 
 it('can create pair entries in doubles events', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-      participantType: INDIVIDUAL,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: INDIVIDUAL,
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

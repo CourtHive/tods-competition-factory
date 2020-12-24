@@ -169,11 +169,10 @@ it('can advance players in Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: drawSize,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: drawSize,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {
@@ -369,11 +368,10 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     ],
   };
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: drawSize,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: drawSize,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {

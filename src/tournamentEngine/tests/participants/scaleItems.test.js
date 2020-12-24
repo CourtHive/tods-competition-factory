@@ -8,11 +8,10 @@ import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can set participant scaleItems', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: 100,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: 100,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const { participantId } = participants[0];
@@ -112,11 +111,10 @@ it('can set participant scaleItems', () => {
 });
 
 it('can set participant scaleItems in bulk', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: 100,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: 100,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const scaleItemsWithParticipantIds = participants.map((participant) => {

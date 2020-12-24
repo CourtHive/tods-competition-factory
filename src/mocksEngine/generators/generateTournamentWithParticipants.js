@@ -4,6 +4,7 @@ import { tournamentEngine } from '../../tournamentEngine';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 
+// this method is legacy, before participantProfile was added to generateTournament()
 export function generateTournamentWithParticipants({
   endDate,
   startDate,
@@ -44,5 +45,5 @@ export function generateTournamentWithParticipants({
   expect(result).toMatchObject(SUCCESS);
 
   const { tournamentRecord } = tournamentEngine.getState();
-  return { tournamentRecord, participants };
+  return { tournamentRecord };
 }

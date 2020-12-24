@@ -4,24 +4,21 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import { DOUBLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { /*INDIVIDUAL,*/ PAIR } from '../../../constants/participantTypes';
-import { findEvent } from '../../getters/eventGetter';
 import { UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
 import drawEngine from '../../../drawEngine';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
 // import { COMPETITOR } from '../../../constants/participantRoles';
 // import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
 
 let result;
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      startDate: '2020-01-01',
-      endDate: '2020-01-06',
-      participantsCount: 32,
-      participantType: PAIR,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsCount: 32,
+    participantType: PAIR,
+  });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

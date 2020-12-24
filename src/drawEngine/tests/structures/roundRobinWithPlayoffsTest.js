@@ -34,11 +34,10 @@ export function roundRobinWithPlayoffsTest({
     playoffGroups,
   };
 
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {

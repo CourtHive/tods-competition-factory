@@ -13,12 +13,11 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: 14,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: 14,
+  });
 
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {

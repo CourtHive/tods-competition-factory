@@ -9,14 +9,12 @@ it('can add events, venues, and schedule matchUps', () => {
   const endDate = '2020-01-06';
   const participantsCount = 32;
 
-  const {
-    tournamentRecord: record,
-    participants,
-  } = generateTournamentWithParticipants({
+  const { tournamentRecord: record } = generateTournamentWithParticipants({
     startDate,
     endDate,
     participantsCount,
   });
+  const { participants } = record;
   tournamentEngine.setState(record);
 
   const event = {

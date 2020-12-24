@@ -13,11 +13,10 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
-  const { participants, tournamentRecord } = generateTournamentWithParticipants(
-    {
-      participantsCount,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {

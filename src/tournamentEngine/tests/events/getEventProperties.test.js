@@ -6,11 +6,10 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can get event properties to determine if there are seeded, ranked, or rated participants', () => {
-  const { tournamentRecord, participants } = generateTournamentWithParticipants(
-    {
-      participantsCount: 100,
-    }
-  );
+  const { tournamentRecord } = generateTournamentWithParticipants({
+    participantsCount: 100,
+  });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const eventName = 'Test Event';
