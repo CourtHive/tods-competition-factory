@@ -1,4 +1,4 @@
-import { addTimeItem } from './timeItems';
+import { addMatchUpTimeItem } from './timeItems';
 
 import { findMatchUp } from '../../getters/getMatchUps';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
@@ -45,7 +45,7 @@ export function checkInParticipant({
     itemValue: participantId,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }
 
 export function checkOutParticipant({
@@ -83,7 +83,7 @@ export function checkOutParticipant({
             itemType: CHECK_OUT,
             itemValue: participantId,
           };
-          addTimeItem({ drawDefinition, matchUpId, timeItem });
+          addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
         }
       );
     }
@@ -94,5 +94,5 @@ export function checkOutParticipant({
     itemValue: participantId,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }

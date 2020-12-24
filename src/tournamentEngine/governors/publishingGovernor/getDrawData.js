@@ -55,7 +55,9 @@ export function getDrawData({
       }))(structure);
 
       structure.activeStructure = matchUps.reduce((active, matchUp) => {
-        return active || matchUp.winningSide || matchUp.score; // TODO: when matchUp.score becomes object change logic
+        // return active || matchUp.winningSide || matchUp.score;
+        // SCORE: when matchUp.score becomes object change logic
+        return active || matchUp.winningSide || matchUp.score?.sets?.length;
       }, false);
 
       if (structure.activeStructure) activeDraw = true;

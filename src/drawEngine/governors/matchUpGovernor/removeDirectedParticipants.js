@@ -23,7 +23,6 @@ export function removeDirectedParticipants(props) {
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
-    delete matchUp.sets;
     delete matchUp.score;
     delete matchUp.winningSide;
 
@@ -68,7 +67,6 @@ export function removeDirectedParticipants(props) {
       undefined
     );
 
-    delete matchUp.sets;
     delete matchUp.score;
     delete matchUp.winningSide;
 

@@ -40,7 +40,13 @@ import {
 export function keyValueMatchUpScore(props) {
   const { matchUp } = props;
   const { matchUpFormat } = matchUp;
+  // SCORE: matchUp will have changed
   const { score, sets, winningSide, matchUpStatus } = matchUp;
+  /*
+  const { score: scoreObject,  winningSide, matchUpStatus } = matchUp;
+  const { sets } = scoreObject;
+  const score = scoreObject.scoreStringSide1;
+  */
   const { auto, checkFormat, shiftFirst, lowSide, value } = props;
   const result = keyValueScore({
     score,

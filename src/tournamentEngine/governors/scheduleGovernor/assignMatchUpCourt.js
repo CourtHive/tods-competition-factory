@@ -1,4 +1,4 @@
-import { addTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
 import { findCourt } from '../../getters/courtGetter';
 
 import {
@@ -27,5 +27,5 @@ export function assignMatchUpCourt({
     itemValue: courtId,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }

@@ -1,4 +1,5 @@
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import { parseStringScore } from './parseStringScore';
 
 it('can reliably generate matchUp outcomes', () => {
   let setValues = [
@@ -21,14 +22,17 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(undefined);
+});
 
-  setValues = [
+it('can reliably generate matchUp outcomes', () => {
+  let setValues = [
     [0, 6],
     [6, 7, 3, 7],
   ];
-  outcome = generateMatchUpOutcome({ setValues });
+  let outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  expect(outcome.score).toEqual('6-0 7-6(3)');
+  let sets = parseStringScore({ stringScore: '0-6 6-7(3)' });
+  expect(outcome.score.sets).toEqual(sets);
 
   setValues = [
     [0, 6],
@@ -37,5 +41,6 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  expect(outcome.score).toEqual('6-0 0-6 7-6(3)');
+  sets = parseStringScore({ stringScore: '0-6 6-0 6-7(3)' });
+  expect(outcome.score.sets).toEqual(sets);
 });

@@ -16,6 +16,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });
 
   it('can enter retirement or default after second set if matchUp is incomplete', () => {
+    // SCORE: matchUp object needs to be updated along with all test access to value
     let matchUp = { score: undefined, sets: [], matchUpFormat };
 
     const values = [

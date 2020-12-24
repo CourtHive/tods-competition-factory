@@ -12,7 +12,21 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   const matchUp = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   const scoreString = calcTieMatchUpScore({ matchUp });
-  matchUp.score = scoreString;
+  const scoreObject = {};
+  const { winningSide } = matchUp;
+  const reverseScoreString = scoreString.split('-').reverse().join('-');
+  if (winningSide) {
+    const winnerPerspective = scoreString;
+    const loserPerspective = reverseScoreString;
+    scoreObject.scoreStringSide1 =
+      winningSide === 1 ? winnerPerspective : loserPerspective;
+    scoreObject.scoreStringSide2 =
+      winningSide === 2 ? winnerPerspective : loserPerspective;
+  } else {
+    scoreObject.scoreStringSide1 = scoreString;
+    scoreObject.scoreStringSide2 = reverseScoreString;
+  }
+  matchUp.score = scoreObject; // SCORE: check whether tests are written and whether sides have stringScores
   return SUCCESS;
 }
 

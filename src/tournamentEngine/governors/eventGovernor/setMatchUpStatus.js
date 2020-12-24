@@ -30,8 +30,9 @@ export function setMatchUpStatus(props) {
     matchUpStatus: outcome?.matchUpStatus,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     winningSide: outcome?.winningSide,
-    score: outcome?.score || '',
-    sets: outcome?.sets,
+    score: outcome?.score,
+    // score: outcome?.score || '', // SCORE: not a string if not an object
+    // sets: outcome?.sets, // SCORE: remove
   });
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);

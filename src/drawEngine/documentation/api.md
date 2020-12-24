@@ -58,14 +58,14 @@ route: /drawEngine/api
 ```js
 drawEngine.addPlayoffStructures({
   structureId,
-  roundNumbers: [3],        // either target roundNumbers or playoffPositions
+  roundNumbers: [3], // either target roundNumbers or playoffPositions
   playoffPositions: [3, 4],
 });
 ```
 
 ---
 
-## addTimeItem
+## addMatchUpTimeItem
 
 ---
 
@@ -217,7 +217,7 @@ tournamentEngine.devContext(true);
 | sets          | Required | object  | An array of TODS sets objects                                            |
 | matchUpStatus | Optional | string  | TODS matchUpStatus ENUM                                                  |
 | winningSide   | Optional | number  | TODS side indicator: 1 or 2 (can also be string)                         |
-| winnerFirst   | Optional | boolean | Whether or not to display the winning side on the left of each set score |
+| winnerFirst   | Optional | boolean | Whether or not to display the winning side on the left of each set-score |
 | autoComplete  | Optional | boolean | Whether or not to convert **undefined** to 0                             |
 
 ---
@@ -415,7 +415,7 @@ Returns boolean whether all matchUps in a given structure have been completed
 
 ---
 
-## resetTimeItems
+## resetMatchUpTimeItems
 
 ---
 

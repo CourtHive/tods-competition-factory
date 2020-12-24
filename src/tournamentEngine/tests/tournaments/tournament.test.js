@@ -11,6 +11,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 
 import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import { parseStringScore } from '../../../drawEngine/tests/primitives/parseStringScore';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -124,14 +125,13 @@ it('can generate a tournament with events and draws', () => {
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
 
   const secondMatchUpFormat = 'SET3-S:T10';
+  const sets = parseStringScore({ stringScore: '6-3' });
+  const score = { sets };
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     matchUpFormat: secondMatchUpFormat,
-    outcome: {
-      sets: [{ side1Score: 6, side2Score: 3 }],
-      score: '6-3',
-    },
+    outcome: { score },
   });
   expect(result).toEqual(SUCCESS);
 
@@ -140,7 +140,7 @@ it('can generate a tournament with events and draws', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
-  expect(targetMatchUp.score).toEqual('6-3');
+  expect(targetMatchUp.score).toEqual(score);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });
 
