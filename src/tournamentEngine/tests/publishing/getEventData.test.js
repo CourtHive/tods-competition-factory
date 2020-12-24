@@ -1,6 +1,6 @@
 import fs from 'fs';
 import tournamentEngine from '../..';
-import { generateTournament } from '../primitives';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import {
   COMPASS,

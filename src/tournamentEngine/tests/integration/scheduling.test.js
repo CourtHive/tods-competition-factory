@@ -2,7 +2,7 @@ import { tournamentEngine } from '../../../tournamentEngine';
 import { competitionEngine } from '../../../competitionEngine';
 
 import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
-import { generateTournament } from '../primitives';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

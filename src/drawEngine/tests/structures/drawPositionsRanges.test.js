@@ -1,5 +1,5 @@
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
-import { generateTournament } from '../../../tournamentEngine/tests/primitives';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import tournamentEngine from '../../../tournamentEngine';
 import { intersection } from '../../../utilities';

@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../..';
-import { generateTournament } from '../primitives';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

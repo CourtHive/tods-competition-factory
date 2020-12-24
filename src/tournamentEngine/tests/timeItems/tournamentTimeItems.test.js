@@ -1,5 +1,5 @@
 import tournamentEngine from '../..';
-import { generateTournament } from '../primitives';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 
 import {
   INVALID_TIME_ITEM,

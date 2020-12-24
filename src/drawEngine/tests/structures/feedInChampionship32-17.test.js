@@ -1,7 +1,7 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 import { getDrawStructures } from '../../getters/findStructure';
-import { generateTournament } from '../../../tournamentEngine/tests/primitives';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,

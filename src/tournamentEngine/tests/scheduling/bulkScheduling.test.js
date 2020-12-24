@@ -1,12 +1,13 @@
-import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { tournamentEngine } from '../../../tournamentEngine';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
 
-import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import { generateTournament } from '../../../mocksEngine/generators/generateTournament';
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
