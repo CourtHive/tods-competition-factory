@@ -16,7 +16,7 @@ export function setParticipantScaleItem({
   participantId,
   scaleItem,
 }) {
-  let modificationApplied, participantFound;
+  let modificationApplied, equivalentValue, participantFound;
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = [
@@ -40,13 +40,19 @@ export function setParticipantScaleItem({
     tournamentRecord.participants.forEach((participant) => {
       if (participant.participantId === participantId) {
         participantFound = true;
-        const result = addParticipantScaleItem({ participant, scaleItem });
-        modificationApplied = result.newValue;
+        const { success, newValue, error } = addParticipantScaleItem({
+          participant,
+          scaleItem,
+        });
+        if (error) return { error };
+
+        modificationApplied = success;
+        equivalentValue = scaleItem.scaleValue === newValue;
       }
     });
   }
 
-  return modificationApplied
+  return modificationApplied && equivalentValue
     ? { ...SUCCESS, value: scaleItem.scaleValue }
     : participantFound
     ? { ...SUCCESS, message: VALUE_UNCHANGED, value: scaleItem.scaleValue }
@@ -60,9 +66,10 @@ export function setParticipantScaleItems({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
-  let modificationApplied;
+  let modificationsApplied = 0;
   const participantScaleItemsMap = {};
 
+  const errors = [];
   scaleItemsWithParticipantIds.forEach((item) => {
     const participantId = item?.participantId;
     if (Array.isArray(item?.scaleItems)) {
@@ -72,6 +79,8 @@ export function setParticipantScaleItems({
             participantScaleItemsMap[participantId] = [];
           }
           participantScaleItemsMap[participantId].push(scaleItem);
+        } else {
+          errors.push({ error: INVALID_SCALE_ITEM });
         }
       });
     }
@@ -82,12 +91,16 @@ export function setParticipantScaleItems({
     if (Array.isArray(participantScaleItemsMap[participantId])) {
       participantScaleItemsMap[participantId].forEach((scaleItem) => {
         addParticipantScaleItem({ participant, scaleItem });
-        modificationApplied = true;
+        modificationsApplied++;
       });
     }
   });
 
-  return modificationApplied ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
+  const message = !modificationsApplied && NO_MODIFICATIONS_APPLIED;
+
+  return errors.length
+    ? { error: errors }
+    : Object.assign({}, SUCCESS, { modificationsApplied, message });
 }
 
 function isValidScaleItem({ scaleItem }) {

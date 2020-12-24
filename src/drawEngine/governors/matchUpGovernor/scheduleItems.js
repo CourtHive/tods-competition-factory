@@ -1,4 +1,4 @@
-import { addTimeItem } from './timeItems';
+import { addMatchUpTimeItem } from './timeItems';
 import { findMatchUp } from '../../getters/getMatchUps';
 
 import {
@@ -28,7 +28,7 @@ import {
 } from '../../../constants/timeItemConstants';
 
 /* 
-  local version of addTimeItem for functions in this module which
+  local version of addMatchUpTimeItem for functions in this module which
   access the matchUp WITHOUT CONTEXT, necessary to modify original
 */
 function newTimeItem({ matchUp, timeItem }) {
@@ -73,7 +73,7 @@ export function addMatchUpScheduledDayDate({
     itemValue: scheduledDayDate,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }
 
 export function addMatchUpScheduledTime({
@@ -95,7 +95,7 @@ export function addMatchUpScheduledTime({
     itemValue,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }
 
 export function addMatchUpOfficial({
@@ -114,7 +114,7 @@ export function addMatchUpOfficial({
     itemValue: participantId,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }
 
 export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {

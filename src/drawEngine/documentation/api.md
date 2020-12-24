@@ -65,7 +65,7 @@ drawEngine.addPlayoffStructures({
 
 ---
 
-## addTimeItem
+## addMatchUpTimeItem
 
 ---
 
@@ -415,7 +415,7 @@ Returns boolean whether all matchUps in a given structure have been completed
 
 ---
 
-## resetTimeItems
+## resetMatchUpTimeItems
 
 ---
 

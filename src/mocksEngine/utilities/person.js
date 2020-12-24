@@ -1,5 +1,5 @@
-import { shuffleArray } from '../utilities';
-import personData from './persons.json';
+import { shuffleArray } from '../../utilities';
+import personData from '../data/persons.json';
 
 export function personMocks({ count = 1, sex } = {}) {
   const shuffledPersons = shuffleArray(personData);
