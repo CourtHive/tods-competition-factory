@@ -16,7 +16,8 @@ export function getSourceRounds({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
-  if (!playoffPositions) return { error: MISSING_VALUE };
+  if (!playoffPositions)
+    return { error: MISSING_VALUE, message: 'missing playoffPositions' };
 
   const { positionsPlayedOff, error } = getPositionsPlayedOff({
     drawDefinition,
