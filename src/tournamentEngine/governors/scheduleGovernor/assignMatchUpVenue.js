@@ -1,11 +1,11 @@
-import { addTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { findVenue } from '../../getters/venueGetter';
 
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
-import { findVenue } from '../../getters/venueGetter';
 
 export function assignMatchUpVenue({
   tournamentRecord,
@@ -26,5 +26,5 @@ export function assignMatchUpVenue({
     itemValue: venueId,
   };
 
-  return addTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
 }

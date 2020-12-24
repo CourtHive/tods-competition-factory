@@ -67,7 +67,7 @@ it('can add schedule items', () => {
   expect(time).toEqual('01:00:00');
 
   // now test matchDuration with start, stop, resume, end times
-  result = drawEngine.resetTimeItems({ matchUpId });
+  result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result).toEqual(SUCCESS);
 
   startTime = '2020-01-01T08:05:00Z';
@@ -100,7 +100,7 @@ it('can add schedule items', () => {
   expect(schedule.startTime).toEqual(startTime);
 
   // now test expected behaviors
-  result = drawEngine.resetTimeItems({ matchUpId });
+  result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result).toEqual(SUCCESS);
 
   endTime = '2020-01-01T10:00:00Z';
@@ -136,7 +136,7 @@ it('can add schedule items', () => {
   expect(milliseconds).toEqual(5400000);
 
   // now test error conditions
-  result = drawEngine.resetTimeItems({ matchUpId });
+  result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result).toEqual(SUCCESS);
 
   stopTime = new Date('2020-01-01T08:15:00Z');
@@ -148,7 +148,7 @@ it('can add schedule items', () => {
   expect(result).toHaveProperty(ERROR);
 
   // test adding end time after stop time
-  result = drawEngine.resetTimeItems({ matchUpId });
+  result = drawEngine.resetMatchUpTimeItems({ matchUpId });
   expect(result).toEqual(SUCCESS);
 
   startTime = '2020-01-01T08:00:00Z';
