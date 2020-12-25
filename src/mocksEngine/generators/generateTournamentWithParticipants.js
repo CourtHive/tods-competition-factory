@@ -4,7 +4,7 @@ import { tournamentEngine } from '../../tournamentEngine';
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 
-// this method is legacy, before participantProfile was added to generateTournament()
+// this method is legacy, before participantProfile was added to generateTournamentRecord()
 export function generateTournamentWithParticipants({
   endDate,
   startDate,

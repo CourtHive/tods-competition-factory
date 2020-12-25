@@ -1,4 +1,5 @@
 import {
+  DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
@@ -23,7 +24,16 @@ export function addExtension({ element, extension }) {
   if (!element.extensions) element.extensions = [];
   const createdAt = new Date().toISOString();
   Object.assign(extension, { createdAt });
-  element.extension.push(extension);
+
+  let extensionExists;
+  element.extensions.forEach((existingExtension) => {
+    if (existingExtension.name === extension.name) {
+      existingExtension.value = extension.value;
+      extensionExists = true;
+    }
+  });
+
+  if (!extensionExists) element.extensions.push(extension);
 
   return SUCCESS;
 }
@@ -46,6 +56,11 @@ export function addTournamentExtension({ tournamentRecord, extension }) {
   return addExtension({ element: tournamentRecord, extension });
 }
 
+export function addDrawDefinitionExtension({ drawDefinition, extension }) {
+  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
+  return addExtension({ element: drawDefinition, extension });
+}
+
 export function addEventExtension({ event, extension }) {
   if (!event) return { error: EVENT_NOT_FOUND };
   return addExtension({ element: event, extension });
@@ -54,6 +69,11 @@ export function addEventExtension({ event, extension }) {
 export function removeTournamentExtension({ tournamentRecord, name }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return removeExtension({ element: tournamentRecord, name });
+}
+
+export function removeDrawDefinitionExtension({ drawDefinition, name }) {
+  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
+  return removeExtension({ element: drawDefinition, name });
 }
 
 export function removeEventExtension({ event, name }) {

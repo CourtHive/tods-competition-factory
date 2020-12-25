@@ -9,6 +9,8 @@ import {
 import { addEventTimeItem, addTournamentTimeItem } from './addTimeItem';
 
 import {
+  removeDrawDefinitionExtension,
+  addDrawDefinitionExtension,
   removeTournamentExtension,
   addTournamentExtension,
   removeEventExtension,
@@ -29,6 +31,8 @@ const tournamentGovernor = {
   removeEventExtension,
   addTournamentExtension,
   removeTournamentExtension,
+  addDrawDefinitionExtension,
+  removeDrawDefinitionExtension,
 };
 
 export default tournamentGovernor;
