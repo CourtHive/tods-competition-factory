@@ -1,3 +1,5 @@
+import mocksGovernor from './governors/mocksGovernor';
+
 export const mocksEngine = (function () {
   const fx = {
     version: () => {

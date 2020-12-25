@@ -15,10 +15,10 @@ import { getVenues, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import {
-  findDrawExtension,
   findEventExtension,
   findTournamentExtension,
   findParticipantExtension,
+  findDrawDefinitionExtension,
 } from './extensionQueries';
 
 import {
@@ -47,10 +47,10 @@ const queryGovernor = {
   getEvent,
   getEvents,
 
-  findDrawExtension,
   findEventExtension,
   findTournamentExtension,
   findParticipantExtension,
+  findDrawDefinitionExtension,
 
   getDrawDefinition,
   getEventProperties,

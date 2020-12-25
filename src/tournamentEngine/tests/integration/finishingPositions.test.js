@@ -1,10 +1,11 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
-import { tournamentEngine } from '../../../tournamentEngine';
 import { drawEngine } from '../../../drawEngine';
+import { tournamentEngine } from '../../../tournamentEngine';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
@@ -12,10 +13,11 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: 14,
   });
 
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {
