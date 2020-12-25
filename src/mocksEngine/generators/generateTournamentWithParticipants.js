@@ -1,10 +1,11 @@
-import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
-import { tournamentEngine } from '../../../tournamentEngine';
+import { generateParticipants } from './generateParticipants';
+import { tournamentEngine } from '../../tournamentEngine';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { SUCCESS } from '../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 
-export function tournamentRecordWithParticipants({
+// this method is legacy, before participantProfile was added to generateTournamentRecord()
+export function generateTournamentWithParticipants({
   endDate,
   startDate,
 
@@ -44,5 +45,5 @@ export function tournamentRecordWithParticipants({
   expect(result).toMatchObject(SUCCESS);
 
   const { tournamentRecord } = tournamentEngine.getState();
-  return { tournamentRecord, participants };
+  return { tournamentRecord };
 }

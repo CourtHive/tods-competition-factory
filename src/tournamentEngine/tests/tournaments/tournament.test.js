@@ -1,4 +1,4 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { tournamentEngine } from '../..';
 import { drawEngine } from '../../../drawEngine';
 
@@ -17,11 +17,12 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,
   });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -140,7 +141,11 @@ it('can generate a tournament with events and draws', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
-  expect(targetMatchUp.score).toEqual(score);
+  const expectedScore = Object.assign({}, score, {
+    scoreStringSide1: '6-3',
+    scoreStringSide2: '3-6',
+  });
+  expect(targetMatchUp.score).toEqual(expectedScore);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });
 
