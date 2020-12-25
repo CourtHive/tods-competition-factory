@@ -6,7 +6,6 @@ import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchU
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-// import { generateScoreString } from '../scoreGovernor/generateScoreString';
 
 export function directParticipants(props) {
   const {

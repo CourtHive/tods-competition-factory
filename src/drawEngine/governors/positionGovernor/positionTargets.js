@@ -1,7 +1,7 @@
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { nextRoundMatchUp } from '../../getters/getMatchUps';
-import { getTargetMatchUp } from '../../getters/getMatchUps';
+import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 
 import {
