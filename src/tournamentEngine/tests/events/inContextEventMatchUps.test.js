@@ -29,7 +29,6 @@ it('can return event matchUps with context and upcoming matchUps', () => {
   const {
     matchUps: tournamentMatchUps,
   } = tournamentEngine.allTournamentMatchUps({
-    drawId,
     nextMatchUps: true,
   });
 
