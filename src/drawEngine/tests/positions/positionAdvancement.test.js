@@ -1,5 +1,8 @@
 import { getDrawStructures } from '../../getters/findStructure';
-import { getStructureMatchUps } from '../../getters/getMatchUps';
+import {
+  getAllDrawMatchUps,
+  getStructureMatchUps,
+} from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import {
@@ -37,6 +40,12 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
     requireParticipants: false,
   });
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   // test first matchUp in roundNumber: 1
   let matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
@@ -47,7 +56,12 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
   let {
     matchUp,
     targetMatchUps: { winnerMatchUp, loserMatchUp },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp.roundNumber).toEqual(1);
   expect(matchUp.roundPosition).toEqual(1);
@@ -69,7 +83,12 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
   ({
     matchUp,
     targetMatchUps: { winnerMatchUp, loserMatchUp },
-  } = positionTargets({ drawDefinition, matchUpId }));
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  }));
 
   expect(matchUp.roundNumber).toEqual(1);
   expect(matchUp.roundPosition).toEqual(drawSize / 2);
@@ -88,7 +107,12 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
       winnerMatchUp: winnerMatchUp2ndRound,
       loserMatchUp: loserMatchUp2ndRound,
     },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp2ndRound.roundNumber).toEqual(2);
   expect(winnerMatchUp2ndRound.roundNumber).toEqual(3);
@@ -116,6 +140,12 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   });
   expect(upcomingMatchUps.length).toEqual(drawSize / 2);
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   // test first matchUp in roundNumber: 1
   let matchUpId = upcomingMatchUps.reduce((matchUpId, matchUp) => {
     return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
@@ -126,7 +156,12 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   let {
     matchUp,
     targetMatchUps: { winnerMatchUp, loserMatchUp },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
@@ -149,7 +184,12 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   ({
     matchUp,
     targetMatchUps: { winnerMatchUp, loserMatchUp },
-  } = positionTargets({ drawDefinition, matchUpId }));
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  }));
 
   expect(matchUp.structureId).toEqual(winnerMatchUp.structureId);
   expect(matchUp.structureId).not.toEqual(loserMatchUp.structureId);
@@ -169,7 +209,12 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
       winnerMatchUp: winnerMatchUp2ndRound,
       loserMatchUp: loserMatchUp2ndRound,
     },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp2ndRound.roundNumber).toEqual(2);
   expect(winnerMatchUp2ndRound.roundNumber).toEqual(3);
@@ -211,12 +256,23 @@ it('can direct participants in COMPASS', () => {
     requireParticipants: false,
   });
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   let { matchUpId } = upcomingMatchUps[0];
   const {
     matchUp,
     targetLinks: { loserTargetLink },
     targetMatchUps: { winnerMatchUp, loserMatchUp },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp.roundNumber).toEqual(1);
   expect(winnerMatchUp.roundNumber).toEqual(2);
@@ -240,7 +296,12 @@ it('can direct participants in COMPASS', () => {
       winnerMatchUp: winnerMatchUp2ndRound,
       loserMatchUp: loserMatchUp2ndRound,
     },
-  } = positionTargets({ drawDefinition, matchUpId });
+  } = positionTargets({
+    drawDefinition,
+    inContextDrawMatchUps,
+    structure,
+    matchUpId,
+  });
 
   expect(matchUp2ndRound.roundNumber).toEqual(2);
   expect(winnerMatchUp2ndRound.roundNumber).toEqual(3);

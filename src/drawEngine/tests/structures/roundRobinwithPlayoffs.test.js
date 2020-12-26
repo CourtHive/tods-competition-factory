@@ -1,7 +1,7 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
-import { tournamentRecordWithParticipants } from '../../../tournamentEngine/tests/primitives';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import { findStructure } from '../../getters/findStructure';
@@ -169,9 +169,10 @@ it('can advance players in Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: drawSize,
   });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {
@@ -282,6 +283,7 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
     eventId,
+    inContext: true,
   });
 
   const finishingPositionGroups = {};
@@ -367,9 +369,10 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     ],
   };
 
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: drawSize,
   });
+  const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   const event = {
@@ -503,6 +506,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
     eventId,
+    inContext: true,
   });
 
   const finishingPositionGroups = {};

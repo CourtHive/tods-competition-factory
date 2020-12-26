@@ -304,10 +304,6 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
-## generateMockParticipants
-
----
-
 ## generateTeamsFromParticipantAttribute
 
 ---

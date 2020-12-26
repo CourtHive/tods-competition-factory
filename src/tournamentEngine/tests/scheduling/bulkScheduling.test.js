@@ -1,22 +1,24 @@
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
 import { tournamentEngine } from '../../../tournamentEngine';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
 
-import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,
   });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

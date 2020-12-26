@@ -20,7 +20,8 @@ import {
  */
 export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!outcomes?.length) return { error: MISSING_VALUE };
+  if (!outcomes?.length)
+    return { error: MISSING_VALUE, message: 'Missing outcomes' };
 
   const eventIdsMap = outcomes.reduce((eventIdsMap, outcome) => {
     const { drawId, eventId } = outcome;
@@ -44,7 +45,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
         event,
         itemType: `${PUBLISH}.${STATUS}`,
       });
-      const pubState = timeItem.itemValue;
+      const pubState = timeItem?.itemValue;
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {

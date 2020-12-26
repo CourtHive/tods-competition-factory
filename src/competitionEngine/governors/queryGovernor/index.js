@@ -4,6 +4,7 @@ import {
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
 import { credits } from '../../../fixtures/credits';
+import { findExtensions } from './findExtensions';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 
 const queryGovernor = {
@@ -12,6 +13,7 @@ const queryGovernor = {
   competitionMatchUps,
 
   getVenuesAndCourts,
+  findExtensions,
   credits,
 };
 

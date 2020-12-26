@@ -11,6 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function getDrawData({
   tournamentRecord,
   policyDefinition,
+  inContext = true,
   drawDefinition,
   context,
 }) {
@@ -35,9 +36,9 @@ export function getDrawData({
         context: { drawId: drawInfo.drawId, ...context },
         tournamentParticipants,
         policyDefinition,
-        inContext: true,
         drawDefinition,
         structure,
+        inContext,
       });
 
       const structureInfo = (({
@@ -55,7 +56,9 @@ export function getDrawData({
       }))(structure);
 
       structure.activeStructure = matchUps.reduce((active, matchUp) => {
-        return active || matchUp.winningSide || matchUp.score; // TODO: when matchUp.score becomes object change logic
+        // return active || matchUp.winningSide || matchUp.score;
+        // SCORE: when matchUp.score becomes object change logic
+        return active || matchUp.winningSide || matchUp.score?.sets?.length;
       }, false);
 
       if (structure.activeStructure) activeDraw = true;
