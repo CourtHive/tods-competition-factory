@@ -17,7 +17,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
 
   it('can enter retirement or default after second set if matchUp is incomplete', () => {
     // SCORE: matchUp object needs to be updated along with all test access to value
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -26,13 +26,13 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`${setTo}-1 1-${setTo} RET`);
+    expect(matchUp?.scoreString.trim()).toEqual(`${setTo}-1 1-${setTo} RET`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
     expect(matchUp?.winningSide).toEqual(1);
   });
 
   it('retains spacing after side 1 outcome is removed', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -40,19 +40,19 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`RET ${setTo}-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`RET ${setTo}-1`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
     expect(matchUp?.winningSide).toEqual(2);
 
     ({ matchUp } = scoreMatchUp({ value: 'backspace', lowSide: 1, matchUp }));
-    expect(matchUp?.score).toEqual(`${setTo}-1 `);
+    expect(matchUp?.scoreString).toEqual(`${setTo}-1 `);
 
     ({ matchUp } = scoreMatchUp({ value: '2', lowSide: 1, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`${setTo}-1 2-${setTo}`);
+    expect(matchUp?.scoreString.trim()).toEqual(`${setTo}-1 2-${setTo}`);
   });
 
-  it('does not allow additional score entry after outcomes', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+  it('does not allow additional scoreString entry after outcomes', () => {
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: '1' },
@@ -62,13 +62,13 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`${setTo}-1 RET`);
+    expect(matchUp?.scoreString.trim()).toEqual(`${setTo}-1 RET`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
     expect(matchUp?.winningSide).toEqual(1);
   });
 
   it('appropriately handles abandoned status', () => {
-    const matchUp = { score: undefined, sets: [], matchUpFormat };
+    const matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const { matchUp: scoredMatchUp, updated } = scoreMatchUp({
       value: 'a',
@@ -76,7 +76,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
       matchUp,
     });
     expect(updated).toEqual(true);
-    expect(scoredMatchUp?.score.trim()).toEqual(OUTCOME_ABANDONED);
+    expect(scoredMatchUp?.scoreString.trim()).toEqual(OUTCOME_ABANDONED);
     expect(scoredMatchUp?.winningSide).toEqual(undefined);
     expect(scoredMatchUp?.matchUpStatus).toEqual(STATUS_ABANDONED);
 
@@ -90,30 +90,30 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
       values,
       matchUp: scoredMatchUp,
     });
-    expect(matchUpWithValues?.score.trim()).toEqual(`${setTo}-1 ABN`);
+    expect(matchUpWithValues?.scoreString.trim()).toEqual(`${setTo}-1 ABN`);
     expect(matchUpWithValues?.matchUpStatus).toEqual(STATUS_ABANDONED);
     expect(matchUpWithValues?.winningSide).toEqual(undefined);
   });
 
   it('can support second set matchUp status outcomes', () => {
     let updated;
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
-    // can't enter interrupted when no score has been entered
+    // can't enter interrupted when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 'i', lowSide: 1, matchUp }));
     expect(updated).toEqual(undefined);
-    expect(matchUp?.score || undefined).toEqual(undefined);
+    expect(matchUp?.scoreString || undefined).toEqual(undefined);
     expect(matchUp?.winningSide).toEqual(undefined);
 
-    // can't enter suspended when no score has been entered
+    // can't enter suspended when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 's', lowSide: 1, matchUp }));
     expect(updated).toEqual(undefined);
-    expect(matchUp?.score || undefined).toEqual(undefined);
+    expect(matchUp?.scoreString || undefined).toEqual(undefined);
     expect(matchUp?.winningSide).toEqual(undefined);
 
-    // can't enter retirement when no score has been entered
+    // can't enter retirement when no scoreString has been entered
     ({ matchUp } = scoreMatchUp({ value: 'r', lowSide: 1, matchUp }));
-    expect(matchUp?.score).toEqual('DEF ');
+    expect(matchUp?.scoreString).toEqual('DEF ');
     expect(matchUp?.winningSide).toEqual(2);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_DEFAULT);
 
@@ -124,48 +124,48 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score).toEqual(`${setTo}-1 RET`);
+    expect(matchUp?.scoreString).toEqual(`${setTo}-1 RET`);
     expect(matchUp?.winningSide).toEqual(1);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 'r' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`RET ${setTo}-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`RET ${setTo}-1`);
     expect(matchUp?.winningSide).toEqual(2);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 's' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`SUS ${setTo}-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`SUS ${setTo}-1`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_SUSPENDED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 2, value: 's' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`${setTo}-1 SUS`);
+    expect(matchUp?.scoreString.trim()).toEqual(`${setTo}-1 SUS`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_SUSPENDED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 'i' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`INT ${setTo}-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`INT ${setTo}-1`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_INTERRUPTED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 2, value: 'i' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score).toEqual(`${setTo}-1 INT`);
+    expect(matchUp?.scoreString).toEqual(`${setTo}-1 INT`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_INTERRUPTED);
     expect(matchUp?.winningSide).toEqual(undefined);
   });
 
   it('preserves space between set scores after outcome removal', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 1 },
@@ -175,7 +175,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp.score.trim()).toEqual(`${setTo}-1 ${setTo}-1`);
+    expect(matchUp.scoreString.trim()).toEqual(`${setTo}-1 ${setTo}-1`);
 
     if (games2Win === 2) {
       expect(matchUp?.sets?.length).toEqual(2);
@@ -186,7 +186,7 @@ export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
 
 export function singleSetStressTests({ matchUpFormat, setTo }) {
   it('entering - multiple times does nothing after first action', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 3 },
@@ -200,13 +200,13 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score?.trim()).toEqual(`${setTo}-1`);
+    expect(matchUp?.scoreString?.trim()).toEqual(`${setTo}-1`);
     expect(matchUp?.sets?.length).toEqual(1);
     expect(matchUp?.sets[0].winningSide).toEqual(1);
   });
 
-  it('supports use of - to modify side 2 score', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+  it('supports use of - to modify side 2 scoreString', () => {
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 2, value: 2 },
@@ -215,13 +215,13 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp.score.trim()).toEqual(`${setTo}-1`);
+    expect(matchUp.scoreString.trim()).toEqual(`${setTo}-1`);
     expect(matchUp?.sets?.length).toEqual(1);
     expect(matchUp?.sets[0].winningSide).toEqual(1);
   });
 
   it('can recover from randomly generated inputs', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const keyCount = 20;
 
@@ -254,11 +254,11 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     });
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp.score || undefined).toBeUndefined();
+    expect(matchUp.scoreString || undefined).toBeUndefined();
   });
 
   it('can enter retirement or default for incomplete first set', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 1, value: '1' },
@@ -268,17 +268,17 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`1-1 RET`);
+    expect(matchUp?.scoreString.trim()).toEqual(`1-1 RET`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
     expect(matchUp?.winningSide).toEqual(1);
 
     ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
     ({ matchUp } = scoreMatchUp({ value: 'd', matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`DEF 1-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`DEF 1-1`);
   });
 
-  it('does not allow additional 1st set score entry after outcomes', () => {
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+  it('does not allow additional 1st set scoreString entry after outcomes', () => {
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
       { lowSide: 1, value: '1' },
@@ -290,30 +290,30 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`1-1 RET`);
+    expect(matchUp?.scoreString.trim()).toEqual(`1-1 RET`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
     expect(matchUp?.winningSide).toEqual(1);
   });
 
   it('can support 1st set matchUp status outcomes', () => {
     let updated;
-    let matchUp = { score: undefined, sets: [], matchUpFormat };
+    let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
-    // can't enter interrupted when no score has been entered
+    // can't enter interrupted when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 'i', lowSide: 1, matchUp }));
     expect(updated).toEqual(undefined);
-    expect(matchUp?.score || undefined).toEqual(undefined);
+    expect(matchUp?.scoreString || undefined).toEqual(undefined);
     expect(matchUp?.winningSide).toEqual(undefined);
 
-    // can't enter suspended when no score has been entered
+    // can't enter suspended when no scoreString has been entered
     ({ matchUp, updated } = scoreMatchUp({ value: 's', lowSide: 1, matchUp }));
     expect(updated).toEqual(undefined);
-    expect(matchUp?.score || undefined).toEqual(undefined);
+    expect(matchUp?.scoreString || undefined).toEqual(undefined);
     expect(matchUp?.winningSide).toEqual(undefined);
 
-    // can't enter retirement when no score has been entered
+    // can't enter retirement when no scoreString has been entered
     ({ matchUp } = scoreMatchUp({ value: 'r', lowSide: 1, matchUp }));
-    expect(matchUp?.score).toEqual('DEF ');
+    expect(matchUp?.scoreString).toEqual('DEF ');
     expect(matchUp?.winningSide).toEqual(2);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_DEFAULT);
 
@@ -326,42 +326,42 @@ export function singleSetStressTests({ matchUpFormat, setTo }) {
     ];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score).toEqual(`1-1 RET`);
+    expect(matchUp?.scoreString).toEqual(`1-1 RET`);
     expect(matchUp?.winningSide).toEqual(1);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 'r' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`RET 1-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`RET 1-1`);
     expect(matchUp?.winningSide).toEqual(2);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_RETIREMENT);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 's' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`SUS 1-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`SUS 1-1`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_SUSPENDED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 2, value: 's' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`1-1 SUS`);
+    expect(matchUp?.scoreString.trim()).toEqual(`1-1 SUS`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_SUSPENDED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 1, value: 'i' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score.trim()).toEqual(`INT 1-1`);
+    expect(matchUp?.scoreString.trim()).toEqual(`INT 1-1`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_INTERRUPTED);
     expect(matchUp?.winningSide).toEqual(undefined);
 
     values = [{ value: 'backspace' }, { lowSide: 2, value: 'i' }];
 
     ({ matchUp } = enterValues({ values, matchUp }));
-    expect(matchUp?.score).toEqual(`1-1 INT`);
+    expect(matchUp?.scoreString).toEqual(`1-1 INT`);
     expect(matchUp?.matchUpStatus).toEqual(STATUS_INTERRUPTED);
     expect(matchUp?.winningSide).toEqual(undefined);
   });

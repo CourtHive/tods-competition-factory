@@ -2,7 +2,12 @@ import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';
 
 import { getWinningSide } from './winningSide';
 
-export function processIncompleteSetScore({ analysis, score, sets, value }) {
+export function processIncompleteSetScore({
+  analysis,
+  scoreString,
+  sets,
+  value,
+}) {
   let updated;
 
   if (!sets?.length) return { sets: [] };
@@ -17,7 +22,7 @@ export function processIncompleteSetScore({ analysis, score, sets, value }) {
 
   if (validSide2Score) {
     updated = true;
-    score = (score || '') + value;
+    scoreString = (scoreString || '') + value;
     set.side2Score = value;
 
     const winningSide = getWinningSide({
@@ -28,13 +33,13 @@ export function processIncompleteSetScore({ analysis, score, sets, value }) {
 
     if (requiresTiebreak) {
       const open = SET_TIEBREAK_BRACKETS.split('')[0];
-      score += open;
+      scoreString += open;
     } else if (!analysis.isDecidingSet) {
-      score += SPACE_CHARACTER;
+      scoreString += SPACE_CHARACTER;
     }
   }
 
-  return { sets, score, updated };
+  return { sets, scoreString, updated };
 }
 
 function checkValidSide2Score({ analysis, set = {}, value }) {

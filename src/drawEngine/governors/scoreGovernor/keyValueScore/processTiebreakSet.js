@@ -6,7 +6,7 @@ export function processTiebreakSet({
   analysis,
   auto,
   lowSide,
-  score = '',
+  scoreString = '',
   sets,
   value,
 }) {
@@ -17,7 +17,7 @@ export function processTiebreakSet({
 
   const [open] = MATCH_TIEBREAK_BRACKETS.split('');
   if (!analysis.isMatchTiebreakEntry) {
-    score += open;
+    scoreString += open;
   }
 
   const tiebreakSet = sets[analysis.setNumber - 1];
@@ -35,16 +35,16 @@ export function processTiebreakSet({
       setNumber: sets?.length + 1 || 1,
     };
     sets.push(set);
-    score += setScores.join(MATCH_TIEBREAK_JOINER);
+    scoreString += setScores.join(MATCH_TIEBREAK_JOINER);
     updated = true;
   } else {
     // if not auto-calculating high scores add new value at the end of string
     const { lastOpenBracketIndex } = testTiebreakEntry({
-      score,
+      scoreString,
       brackets: MATCH_TIEBREAK_BRACKETS,
     });
     const matchTiebreakScoreString =
-      score.slice(lastOpenBracketIndex + 1) + (auto ? '' : value);
+      scoreString.slice(lastOpenBracketIndex + 1) + (auto ? '' : value);
     const matchTiebreakScores = matchTiebreakScoreString.split(
       MATCH_TIEBREAK_JOINER
     );
@@ -70,8 +70,8 @@ export function processTiebreakSet({
       lastSet.side1TiebreakScore = setScores[0];
       lastSet.side2TiebreakScore = setScores[1];
 
-      score = score.slice(0, lastOpenBracketIndex + 1);
-      score += setScores.join(MATCH_TIEBREAK_JOINER);
+      scoreString = scoreString.slice(0, lastOpenBracketIndex + 1);
+      scoreString += setScores.join(MATCH_TIEBREAK_JOINER);
       updated = true;
     } else {
       const setScores = [
@@ -83,10 +83,10 @@ export function processTiebreakSet({
       lastSet.side1TiebreakScore = setScores[0];
       lastSet.side2TiebreakScore = setScores[1];
 
-      score += value;
+      scoreString += value;
       updated = true;
     }
   }
 
-  return { message, score, sets, updated };
+  return { message, scoreString, sets, updated };
 }

@@ -10,46 +10,50 @@ import {
   WINNING_STATUSES,
 } from './constants';
 
-export function addOutcome({ score, lowSide, outcome }) {
-  ({ score } = removeOutcome({ score }));
+export function addOutcome({ scoreString, lowSide, outcome }) {
+  ({ scoreString } = removeOutcome({ scoreString }));
 
   if (lowSide === 2) {
-    const lastScoreCharacter = score && score[score.length - 1];
+    const lastScoreCharacter =
+      scoreString && scoreString[scoreString.length - 1];
     const spacer =
       lastScoreCharacter !== SPACE_CHARACTER ? SPACE_CHARACTER : '';
-    return score + spacer + outcome;
+    return scoreString + spacer + outcome;
   } else {
-    return outcome + SPACE_CHARACTER + score;
+    return outcome + SPACE_CHARACTER + scoreString;
   }
 }
 
-function removeOutcome({ score }) {
-  if (!score) return { score: '' };
+function removeOutcome({ scoreString }) {
+  if (!scoreString) return { scoreString: '' };
 
   let removed = false;
 
   for (const outcome of OUTCOMES) {
-    const index = score?.indexOf(outcome);
+    const index = scoreString?.indexOf(outcome);
     if (index === 0) {
-      score = score.slice(outcome.length + 1).trim() + SPACE_CHARACTER;
+      scoreString =
+        scoreString.slice(outcome.length + 1).trim() + SPACE_CHARACTER;
     } else if (index > 0) {
-      score = score.slice(0, index);
+      scoreString = scoreString.slice(0, index);
     }
     if (index >= 0) removed = true;
   }
 
-  if (!score || !score.trim()) score = '';
+  if (!scoreString || !scoreString.trim()) scoreString = '';
 
-  return { score, removed };
+  return { scoreString, removed };
 }
 
-export function removeFromScore({ analysis, score, sets, lowSide }) {
+export function removeFromScore({ analysis, scoreString, sets, lowSide }) {
   let newScore, newSets;
-  if (!score) return { score, sets };
+  if (!scoreString) return { scoreString, sets };
 
-  const { score: outcomeRemoved, removed } = removeOutcome({ score });
-  score = outcomeRemoved;
-  if (removed) return { score, sets, outcomeRemoved: true };
+  const { scoreString: outcomeRemoved, removed } = removeOutcome({
+    scoreString,
+  });
+  scoreString = outcomeRemoved;
+  if (removed) return { scoreString, sets, outcomeRemoved: true };
 
   let lastSet = sets[sets.length - 1] || {};
   // Looking for the last set which has some values defined
@@ -64,22 +68,22 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
   const { tiebreakTo, NoAD } = tiebreakSet || {};
 
   const { isTiebreakEntry: isMatchTiebreak } = testTiebreakEntry({
-    score,
+    scoreString,
     brackets: MATCH_TIEBREAK_BRACKETS,
   });
 
-  const index = lastNumericIndex(score);
+  const index = lastNumericIndex(scoreString);
   if (index >= 0) {
-    newScore = score.slice(0, index);
+    newScore = scoreString.slice(0, index);
     const { isTiebreakEntry: openSetTiebreak } = testTiebreakEntry({
-      score: newScore,
+      scoreString: newScore,
       brackets: SET_TIEBREAK_BRACKETS,
     });
     const {
       lastOpenBracketIndex: lastMatchTiebreakOpenBracketIndex,
       isTiebreakEntry: openMatchTiebreak,
     } = testTiebreakEntry({
-      score: newScore,
+      scoreString: newScore,
       brackets: MATCH_TIEBREAK_BRACKETS,
     });
     const lastNewScoreChar = newScore && newScore[newScore.length - 1].trim();
@@ -114,13 +118,13 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
         if (matchTiebreakScores[highIndex] < tiebreakTo)
           matchTiebreakScores[highIndex] = tiebreakTo;
 
-        newScore = score.slice(0, lastMatchTiebreakOpenBracketIndex + 1);
+        newScore = scoreString.slice(0, lastMatchTiebreakOpenBracketIndex + 1);
         newScore += matchTiebreakScores.join(MATCH_TIEBREAK_JOINER);
       } else if (side1TiebreakScore !== undefined) {
-        newScore = score.slice(0, lastMatchTiebreakOpenBracketIndex + 1);
+        newScore = scoreString.slice(0, lastMatchTiebreakOpenBracketIndex + 1);
         newScore += side1TiebreakScore;
       } else {
-        newScore = score.slice(0, lastMatchTiebreakOpenBracketIndex);
+        newScore = scoreString.slice(0, lastMatchTiebreakOpenBracketIndex);
         isIncompleteScore = true;
       }
 
@@ -194,29 +198,33 @@ export function removeFromScore({ analysis, score, sets, lowSide }) {
       }
     }
 
-    return { score: newScore, sets: newSets };
+    return { scoreString: newScore, sets: newSets };
   }
 
-  return { score, sets };
+  return { scoreString, sets };
 }
 
-export function testTiebreakEntry({ score, brackets = SET_TIEBREAK_BRACKETS }) {
-  if (!score) return false;
+export function testTiebreakEntry({
+  scoreString,
+  brackets = SET_TIEBREAK_BRACKETS,
+}) {
+  if (!scoreString) return false;
   const [open, close] = brackets.split('');
-  const splitScore = score.split('');
+  const splitScore = scoreString.split('');
   const lastOpenBracketIndex = Math.max(...indices(open, splitScore));
   const lastCloseBracketIndex = Math.max(...indices(close, splitScore));
   const isTiebreakEntry = lastOpenBracketIndex > lastCloseBracketIndex;
   return { isTiebreakEntry, lastOpenBracketIndex };
 }
 
-export function checkValidMatchTiebreak({ score }) {
-  if (!score) return false;
-  const lastScoreChar = score && score[score.length - 1].trim();
-  const isNumericEnding = score && !isNaN(lastScoreChar);
+export function checkValidMatchTiebreak({ scoreString }) {
+  if (!scoreString) return false;
+  const lastScoreChar =
+    scoreString && scoreString[scoreString.length - 1].trim();
+  const isNumericEnding = scoreString && !isNaN(lastScoreChar);
 
   const [open, close] = MATCH_TIEBREAK_BRACKETS.split('');
-  const splitScore = score.split('');
+  const splitScore = scoreString.split('');
   const lastOpenBracketIndex = Math.max(...indices(open, splitScore));
   const lastCloseBracketIndex = Math.max(...indices(close, splitScore));
   const lastJoinerIndex = Math.max(

@@ -6,7 +6,7 @@ import { BACKSPACE, OUTCOMEKEYS, SCORE_JOINER, SPACE_KEY } from './constants';
 export function keyValueTimedSetScore({
   analysis,
   lowSide,
-  score,
+  scoreString,
   sets,
   winningSide,
   matchUpStatus,
@@ -25,27 +25,33 @@ export function keyValueTimedSetScore({
     } else if (analysis.finalSetIsComplete || winningSide) {
       message = 'final set is already complete';
     } else if (analysis.isIncompleteSetScore) {
-      message = 'incomplete set score';
+      message = 'incomplete set scoreString';
     } else if (!analysis.isIncompleteSetScore) {
-      ({ sets, score, winningSide, matchUpStatus, updated } = processOutcome({
+      ({
+        sets,
+        scoreString,
+        winningSide,
+        matchUpStatus,
+        updated,
+      } = processOutcome({
         lowSide,
         value,
         sets,
-        score,
+        scoreString,
         matchUpStatus,
         winningSide,
       }));
     }
   } else if (value === BACKSPACE) {
-    ({ score, sets, outcomeRemoved } = removeFromScore({
+    ({ scoreString, sets, outcomeRemoved } = removeFromScore({
       analysis,
-      score,
+      scoreString,
       sets,
     }));
-    if (score?.trim() === '') {
-      score = score.trim();
+    if (scoreString?.trim() === '') {
+      scoreString = scoreString.trim();
     }
-    if (!score) sets = [];
+    if (!scoreString) sets = [];
 
     if (outcomeRemoved) {
       const lastSet = sets[sets.length - 1] || {};
@@ -67,7 +73,7 @@ export function keyValueTimedSetScore({
   } else if (winningSide) {
     return {
       sets,
-      score,
+      scoreString,
       winningSide,
       matchUpStatus,
       updated: false,
@@ -84,7 +90,7 @@ export function keyValueTimedSetScore({
     if (setWinningSide && !winningSide && !analysis.isIncompleteSetScore) {
       sets[sets.length - 1].winningSide = setWinningSide;
       sets.push({ setNumber: sets.length + 1 });
-      score += ' ';
+      scoreString += ' ';
       updated = true;
     }
 
@@ -93,10 +99,10 @@ export function keyValueTimedSetScore({
     value === SCORE_JOINER &&
     sets[setIndex].side1Score !== undefined &&
     sets[setIndex].side2Score === undefined &&
-    score &&
+    scoreString &&
     analysis.isNumericEnding
   ) {
-    score += '-';
+    scoreString += '-';
     sets[setIndex].side2Score = 0;
 
     matchUpStatus = undefined;
@@ -136,12 +142,12 @@ export function keyValueTimedSetScore({
         })
         .join(' ');
       if (priorSetScores) {
-        score = priorSetScores + ' ' + currentSetScore;
+        scoreString = priorSetScores + ' ' + currentSetScore;
       } else {
-        score = currentSetScore;
+        scoreString = currentSetScore;
       }
     }
   }
 
-  return { sets, score, winningSide, matchUpStatus, message, updated };
+  return { sets, scoreString, winningSide, matchUpStatus, message, updated };
 }
