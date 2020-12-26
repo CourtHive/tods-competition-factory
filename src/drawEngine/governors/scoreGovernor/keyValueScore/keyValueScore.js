@@ -63,17 +63,14 @@ export function keyValueMatchUpScore(props) {
 
   let updatedMatchUp;
   if (result?.updated) {
-    const {
-      sets,
-      scoreString,
-      winningSide,
-      matchUpStatus: updatedMatchUpStatus,
-    } = result;
+    const { sets, scoreString, winningSide, matchUpStatus } = result;
     updatedMatchUp = Object.assign({}, matchUp, {
       sets,
       scoreString,
       winningSide,
-      matchUpStatus: updatedMatchUpStatus,
+      matchUpStatus,
+      // TODO: this should use the autocomplete function of matchUpScore
+      // and the expected behavior is therefore different than keyValueScore
       score: { sets, scoreStringSide1: scoreString },
     });
   }
