@@ -162,7 +162,7 @@ export function directLoser(props) {
 
     // get participant's drawPosition in source structure
     // insure that participant has not participated in any other matchUps other than:
-    // [WALKOVER, DEFAULT, BYE].includes(matchUp.matchUpStatus) && !score
+    // [WALKOVER, DEFAULT, BYE].includes(matchUp.matchUpStatus) && !matchUp.score?.sets?.length // SCORE: new object
   } else if (
     loserTargetLink.target.roundNumber === 1 &&
     targetDrawPositionIsUnfilled

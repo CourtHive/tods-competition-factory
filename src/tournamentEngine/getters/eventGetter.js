@@ -8,14 +8,16 @@ import {
 } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
-export function getEvent({ tournamentRecord, event, context }) {
+export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
   const eventCopy = makeDeepCopy(event);
   if (context) Object.assign(eventCopy, context);
 
-  return { event: eventCopy };
+  const drawDefinitionCopy = drawDefinition && makeDeepCopy(drawDefinition);
+
+  return { event: eventCopy, drawDefinition: drawDefinitionCopy };
 }
 
 export function getEvents({ tournamentRecord, context, inContext }) {

@@ -10,12 +10,15 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 
 export function findExtension({ element, name }) {
   if (!element || !name) return { error: MISSING_VALUE };
-  if (Array.isArray(element.extensions)) return { message: NOT_FOUND };
+  if (!Array.isArray(element.extensions)) return { message: NOT_FOUND };
 
   const extension = element.extensions.find(
     (extension) => extension?.name === name
   );
-  return { extension };
+
+  const message = !extension && NOT_FOUND;
+
+  return { extension, message };
 }
 
 export function findTournamentExtension({ tournamentRecord, name }) {
@@ -39,7 +42,7 @@ export function findEventExtension({ event, name }) {
  * @param {string} name
  *
  */
-export function findDrawExtension({ drawDefinition, name }) {
+export function findDrawDefinitionExtension({ drawDefinition, name }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   return findExtension({ element: drawDefinition, name });
 }
