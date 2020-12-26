@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp, getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '..//positionGovernor/positionTargets';
 
 import {
@@ -26,6 +26,12 @@ export function setMatchUpStatus(props) {
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
   const { matchUp, structure } = findMatchUp({
@@ -40,7 +46,9 @@ export function setMatchUpStatus(props) {
       winningSide && 1 - (2 - winningSide);
     const targetData = positionTargets({
       matchUpId,
+      structure,
       drawDefinition,
+      inContextDrawMatchUps,
       sourceMatchUpWinnerDrawPositionIndex,
     });
     Object.assign(props, { matchUp, structure, targetData });

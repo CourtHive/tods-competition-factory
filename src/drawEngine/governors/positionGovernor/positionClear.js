@@ -1,6 +1,9 @@
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import {
+  getAllDrawMatchUps,
+  getAllStructureMatchUps,
+} from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
@@ -71,6 +74,12 @@ export function clearDrawPosition({
     matchUpFilters,
     structure,
   });
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       const isByeMatchUp = matchUp.drawPositions?.reduce(
@@ -83,14 +92,18 @@ export function clearDrawPosition({
       );
 
       if (isByeMatchUp || matchUp.matchUpStatus === BYE) {
-        removeByeAndCleanUp({ matchUp, drawPosition });
+        removeByeAndCleanUp({ matchUp, drawPosition, inContextDrawMatchUps });
       }
     }
   });
 
   return drawPositionCleared ? SUCCESS : { error: DRAW_POSITION_NOT_CLEARED };
 
-  function removeByeAndCleanUp({ matchUp, drawPosition }) {
+  function removeByeAndCleanUp({
+    matchUp,
+    drawPosition,
+    inContextDrawMatchUps,
+  }) {
     const { matchUpId } = matchUp;
     setMatchUpStatus({
       drawDefinition,
@@ -119,7 +132,9 @@ export function clearDrawPosition({
       targetMatchUps: { loserMatchUp, winnerMatchUp },
     } = positionTargets({
       matchUpId,
+      structure,
       drawDefinition,
+      inContextDrawMatchUps,
       sourceMatchUpWinnerDrawPositionIndex,
     });
 

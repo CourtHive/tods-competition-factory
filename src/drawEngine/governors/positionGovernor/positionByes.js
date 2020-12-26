@@ -1,6 +1,9 @@
 import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import {
+  getAllDrawMatchUps,
+  getAllStructureMatchUps,
+} from '../../getters/getMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
 import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
@@ -82,6 +85,12 @@ export function assignDrawPositionBye({
     structure,
   });
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
       const { matchUpId } = matchUp;
@@ -111,7 +120,9 @@ export function assignDrawPositionBye({
         targetMatchUps: { loserMatchUp, winnerMatchUp },
       } = positionTargets({
         matchUpId,
+        structure,
         drawDefinition,
+        inContextDrawMatchUps,
         sourceMatchUpWinnerDrawPositionIndex,
       });
 

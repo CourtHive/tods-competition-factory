@@ -1,8 +1,10 @@
 import {
-  tournamentMatchUps,
   allTournamentMatchUps,
-  eventMatchUps,
+  tournamentMatchUps,
   allEventMatchUps,
+  allDrawMatchUps,
+  eventMatchUps,
+  drawMatchUps,
 } from '../../getters/matchUpsGetter';
 
 import { getParticipantScaleItem } from './scaleValue';
@@ -41,7 +43,9 @@ const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
+  allDrawMatchUps,
   eventMatchUps,
+  drawMatchUps,
   credits,
 
   getEvent,

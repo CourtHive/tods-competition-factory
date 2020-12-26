@@ -147,6 +147,7 @@ export function roundRobinWithPlayoffsTest({
 
   const { matchUps: eventMatchUps } = tournamentEngine.allEventMatchUps({
     eventId,
+    inContext: true,
   });
 
   const finishingPositionGroups = {};

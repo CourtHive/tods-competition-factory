@@ -1,13 +1,18 @@
+import {
+  findMatchUp as drawEngineFindMatchUp,
+  getAllDrawMatchUps,
+  getDrawMatchUps,
+} from '../../drawEngine/getters/getMatchUps';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
-import drawEngine from '../../drawEngine';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 export function allTournamentMatchUps({
   tournamentRecord,
 
+  inContext = true,
+  nextMatchUps,
   matchUpFilters,
   contextFilters,
 }) {
@@ -29,6 +34,8 @@ export function allTournamentMatchUps({
         allEventMatchUps({
           event,
           context,
+          inContext,
+          nextMatchUps,
           participants,
           matchUpFilters,
           contextFilters,
@@ -39,9 +46,38 @@ export function allTournamentMatchUps({
   return { matchUps };
 }
 
+export function allDrawMatchUps({
+  event,
+  context,
+  inContext,
+  nextMatchUps,
+  matchUpFilters,
+  contextFilters,
+  drawDefinition,
+  participants = [],
+  tournamentAppliedPolicies,
+}) {
+  const { eventId, eventName } = event;
+  const additionalContext = Object.assign({}, context, { eventId, eventName });
+  const { matchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    context: additionalContext,
+    inContext,
+    matchUpFilters,
+    contextFilters,
+    nextMatchUps,
+    tournamentAppliedPolicies,
+    tournamentParticipants: participants,
+  });
+
+  return { matchUps };
+}
+
 export function allEventMatchUps({
   event,
   context,
+  inContext,
+  nextMatchUps,
   matchUpFilters,
   contextFilters,
   participants = [],
@@ -52,15 +88,16 @@ export function allEventMatchUps({
   const drawDefinitions = event.drawDefinitions || [];
   const matchUps = drawDefinitions
     .map((drawDefinition) => {
-      const { matchUps } = drawEngine
-        .setState(drawDefinition)
-        .setParticipants(participants)
-        .allDrawMatchUps({
-          context: additionalContext,
-          matchUpFilters,
-          contextFilters,
-          tournamentAppliedPolicies,
-        });
+      const { matchUps } = getAllDrawMatchUps({
+        drawDefinition,
+        context: additionalContext,
+        inContext,
+        matchUpFilters,
+        contextFilters,
+        nextMatchUps,
+        tournamentAppliedPolicies,
+        tournamentParticipants: participants,
+      });
       return matchUps;
     })
     .flat(Infinity);
@@ -72,6 +109,8 @@ export function tournamentMatchUps({
   tournamentRecord,
   matchUpFilters,
   contextFilters,
+  inContext = true,
+  nextMatchUps,
 }) {
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
@@ -84,26 +123,25 @@ export function tournamentMatchUps({
   const filteredEventIds = (contextFilters && contextFilters.eventIds) || [];
   const eventsDrawsMatchUps = events
     .filter((event) => !filteredEventIds.includes(event.eventId))
-    .map(
-      (event) =>
-        eventMatchUps({
-          event,
-          participants,
-          tournamentId,
-          matchUpFilters,
-          contextFilters,
-          tournamentAppliedPolicies,
-        }).matchUps
+    .map((event) =>
+      eventMatchUps({
+        event,
+        inContext,
+        participants,
+        tournamentId,
+        matchUpFilters,
+        contextFilters,
+        nextMatchUps,
+        tournamentAppliedPolicies,
+      })
     );
 
   const matchUpGroupings = eventsDrawsMatchUps.reduce(
-    (matchUps, eventDraws) => {
-      eventDraws.forEach((eventDraw) => {
-        const keys = Object.keys(eventDraw);
-        keys.forEach((key) => {
-          if (!matchUps[key]) matchUps[key] = [];
-          matchUps[key] = matchUps[key].concat(eventDraw[key]);
-        });
+    (matchUps, eventMatchUps) => {
+      const keys = Object.keys(eventMatchUps);
+      keys.forEach((key) => {
+        if (!matchUps[key]) matchUps[key] = [];
+        matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
       });
 
       return matchUps;
@@ -116,6 +154,8 @@ export function tournamentMatchUps({
 
 export function eventMatchUps({
   event,
+  inContext,
+  nextMatchUps,
   participants,
   tournamentId,
   matchUpFilters,
@@ -125,21 +165,58 @@ export function eventMatchUps({
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
+
   const drawDefinitions = event.drawDefinitions || [];
-  const matchUps = drawDefinitions.map((drawDefinition) => {
-    const allDrawMatchUps = drawEngine
-      .setState(drawDefinition)
-      .setParticipants(participants)
-      .drawMatchUps({
+  const matchUpGroupings = drawDefinitions.reduce(
+    (matchUps, drawDefinition) => {
+      const drawMatchUps = getDrawMatchUps({
         context,
+        inContext,
+        nextMatchUps,
+        drawDefinition,
         matchUpFilters,
         contextFilters,
         tournamentAppliedPolicies,
+        tournamentParticipants: participants,
       });
-    return allDrawMatchUps;
-  });
+      const keys = Object.keys(drawMatchUps);
+      keys.forEach((key) => {
+        if (!matchUps[key]) matchUps[key] = [];
+        matchUps[key] = matchUps[key].concat(drawMatchUps[key]);
+      });
 
-  return { matchUps };
+      return matchUps;
+    },
+    {}
+  );
+
+  return matchUpGroupings;
+}
+
+export function drawMatchUps({
+  event,
+  inContext,
+  nextMatchUps,
+  participants,
+  tournamentId,
+  matchUpFilters,
+  contextFilters,
+  drawDefinition,
+  tournamentAppliedPolicies,
+}) {
+  const { eventId, eventName } = event;
+  const context = { eventId, eventName };
+  if (tournamentId) Object.assign(context, { tournamentId });
+  return getDrawMatchUps({
+    context,
+    inContext,
+    nextMatchUps,
+    drawDefinition,
+    matchUpFilters,
+    contextFilters,
+    tournamentAppliedPolicies,
+    tournamentParticipants: participants,
+  });
 }
 
 function getParticipants({ tournamentRecord }) {
@@ -156,9 +233,11 @@ export function publicFindMatchUp(props) {
 export function findMatchUp({
   tournamentRecord,
   drawDefinition,
-  matchUpId,
+
   drawId,
+  matchUpId,
   inContext,
+  nextMatchUps,
 }) {
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
@@ -176,6 +255,7 @@ export function findMatchUp({
     const { matchUp } = drawEngineFindMatchUp({
       drawDefinition,
       matchUpId,
+      nextMatchUps,
       tournamentParticipants,
       inContext,
     });
