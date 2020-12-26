@@ -1,6 +1,6 @@
 import { tournamentEngine } from '../..';
 import { chunkArray } from '../../../utilities';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { DOUBLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -13,12 +13,13 @@ import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 let result;
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,
     participantType: PAIR,
   });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -104,12 +105,13 @@ it('can add doubles events to a tournament record', () => {
 });
 
 it('can destroy pair entries in doubles events', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,
     participantType: PAIR,
   });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -178,12 +180,13 @@ it('can destroy pair entries in doubles events', () => {
 });
 
 it('can create pair entries in doubles events', () => {
-  const { tournamentRecord, participants } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,
     participantType: INDIVIDUAL,
   });
+  const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
 

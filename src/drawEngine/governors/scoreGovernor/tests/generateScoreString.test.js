@@ -39,8 +39,11 @@ test('can generate matchUp set scores with set tiebreak', () => {
     },
     { side1Score: 3 },
   ];
-  const result = generateScoreString({ sets, autoComplete: true });
+  let result = generateScoreString({ sets, autoComplete: true });
   expect(result).toEqual('6-7(3) 7-6(12) 3-0');
+
+  result = generateScoreString({ sets, autoComplete: true, reversed: true });
+  expect(result).toEqual('7-6(3) 6-7(12) 0-3');
 });
 
 test('can append a score outcome', () => {
@@ -61,13 +64,21 @@ test('can append a score outcome', () => {
     },
     { side1Score: 3 },
   ];
-  const result = generateScoreString({
+  let result = generateScoreString({
     sets,
     winningSide: 1,
     autoComplete: true,
     matchUpStatus: RETIRED,
   });
   expect(result).toEqual('6-7(3) 7-6(12) 3-0 RET');
+  result = generateScoreString({
+    sets,
+    winningSide: 1,
+    autoComplete: true,
+    matchUpStatus: RETIRED,
+    reversed: true,
+  });
+  expect(result).toEqual('7-6(3) 6-7(12) 0-3 RET');
 });
 
 test('can prepend a score outcome', () => {

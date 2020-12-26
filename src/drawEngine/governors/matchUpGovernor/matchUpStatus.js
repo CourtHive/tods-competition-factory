@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp, getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '..//positionGovernor/positionTargets';
 
 import {
@@ -26,10 +26,11 @@ export function setMatchUpStatus(props) {
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
 
-  // prep for score objects which may be added to TODS
-  if (props?.score && typeof props.score === 'string') {
-    props.scoreString = props.score;
-  }
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
@@ -45,7 +46,9 @@ export function setMatchUpStatus(props) {
       winningSide && 1 - (2 - winningSide);
     const targetData = positionTargets({
       matchUpId,
+      structure,
       drawDefinition,
+      inContextDrawMatchUps,
       sourceMatchUpWinnerDrawPositionIndex,
     });
     Object.assign(props, { matchUp, structure, targetData });
@@ -140,11 +143,8 @@ function winningSideWithDownstreamDependencies(props) {
         // TESTED
       }
     } else {
-      const { score, sets } = props;
-
+      const { score } = props;
       if (score) matchUp.score = score;
-      if (sets) matchUp.sets = sets;
-      // TESTED
     }
   } else {
     errors.push({ error: 'Cannot change winner with advanced participants' });
@@ -158,9 +158,8 @@ function winningSideWithDownstreamDependencies(props) {
 }
 
 function applyMatchUpValues(props) {
-  const { matchUp, matchUpStatus, matchUpStatusCodes, score, sets } = props;
+  const { matchUp, matchUpStatus, matchUpStatusCodes, score } = props;
   matchUp.matchUpStatus = matchUpStatus || COMPLETED;
   matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (score) matchUp.score = score;
-  if (sets) matchUp.sets = sets;
 }

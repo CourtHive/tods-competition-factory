@@ -1,4 +1,3 @@
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 
 import {
@@ -12,7 +11,7 @@ import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants'
 
 export function getTargetMatchUp({
   drawDefinition,
-  tournamentParticipants,
+  inContextDrawMatchUps,
 
   targetLink,
   sourceRoundPosition,
@@ -28,13 +27,11 @@ export function getTargetMatchUp({
     drawDefinition,
     structureId,
   });
-  const { matchUps } = getAllStructureMatchUps({
-    drawDefinition,
-    structure: targetStructure,
-    tournamentParticipants,
-    inContext: true,
-  });
-  const targetRoundMatchUps = matchUps.filter(
+
+  const structureMatchUps = inContextDrawMatchUps?.filter(
+    (matchUp) => matchUp.structureId === targetStructure.structureId
+  );
+  const targetRoundMatchUps = structureMatchUps.filter(
     (matchUp) => matchUp.roundNumber === roundNumber
   );
   const targetRoundMatchUpCount = targetRoundMatchUps.length;

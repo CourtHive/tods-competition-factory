@@ -1,6 +1,6 @@
 import { setMatchUpStatus } from './matchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
-import { addTimeItem, resetTimeItems } from './timeItems';
+import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { validDrawPositions } from './validDrawPositions';
@@ -24,8 +24,8 @@ const matchUpGovernor = {
   setMatchUpStatus,
   setMatchUpFormat,
 
-  addTimeItem,
-  resetTimeItems,
+  addMatchUpTimeItem,
+  resetMatchUpTimeItems,
   checkInParticipant,
   checkOutParticipant,
   getCheckedInParticipantIds,

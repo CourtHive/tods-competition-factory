@@ -301,7 +301,7 @@ export function getAllStructureMatchUps({
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
-      const sets = matchUpWithContext.sets;
+      const sets = matchUpWithContext.score?.sets || [];
       matchUpWithContext.sides
         .filter((f) => f)
         .forEach((side) => {
@@ -315,11 +315,16 @@ export function getAllStructureMatchUps({
               Object.assign(side, { participant });
             }
           }
+
+          // ##########################
+          // TODO: remove this block when client apps converted to new score object
           if (sets && side.sideNumber) {
             const reversed = side.sideNumber === 2;
             const scoreString = generateScoreString({ sets, reversed });
             Object.assign(side, { score: scoreString });
           }
+          // ##########################
+
           if (side.participant && side.participant.individualParticipantIds) {
             const individualParticipants = side.participant.individualParticipantIds.map(
               (participantId) => {

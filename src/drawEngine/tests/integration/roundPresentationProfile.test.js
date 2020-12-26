@@ -2,6 +2,7 @@ import { drawEngine } from '../../../drawEngine';
 import { findStructure } from '../../getters/findStructure';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { generateDrawStructure } from '../primitives/generateDrawStructure';
+import { parseStringScore } from '../primitives/parseStringScore';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 
 it('can reliably generate presentation profiles', () => {
@@ -15,7 +16,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
-    score: '6-1 6-2',
+    stringScore: '6-1 6-2',
   });
 
   completeMatchUp({
@@ -23,7 +24,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 1,
     roundPosition: 4,
     winningSide: 1,
-    score: '6-1 6-4',
+    stringScore: '6-1 6-4',
   });
 
   completeMatchUp({
@@ -31,7 +32,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 1,
     roundPosition: 5,
     winningSide: 2,
-    score: '6-1 7-5',
+    stringScore: '6-1 7-5',
   });
 
   completeMatchUp({
@@ -39,7 +40,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 1,
     roundPosition: 8,
     winningSide: 1,
-    score: '6-1 7-6(8)',
+    stringScore: '6-1 7-6(8)',
   });
 
   const { roundPresentationProfile } = getPresentationProfile({ structureId });
@@ -49,7 +50,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 2,
     roundPosition: 1,
     drawPosition: 3,
-    score: '6-1 6-2',
+    stringScore: '6-1 6-2',
   });
 
   checkSide({
@@ -57,7 +58,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 2,
     roundPosition: 2,
     drawPosition: 7,
-    score: '6-1 6-4',
+    stringScore: '6-1 6-4',
   });
 
   checkSide({
@@ -65,7 +66,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 2,
     roundPosition: 3,
     drawPosition: 10,
-    score: '6-1 7-5',
+    stringScore: '6-1 7-5',
   });
 
   checkSide({
@@ -73,7 +74,7 @@ it('can reliably generate presentation profiles', () => {
     roundNumber: 2,
     roundPosition: 4,
     drawPosition: 15,
-    score: '6-1 7-6(8)',
+    stringScore: '6-1 7-6(8)',
   });
 });
 
@@ -94,10 +95,11 @@ function checkSide({
   roundNumber,
   roundPosition,
   drawPosition,
-  score,
+  stringScore,
 }) {
   const side = profile[roundNumber - 1].matchUps[roundPosition - 1].sides.find(
     (side) => side?.drawPosition === drawPosition
   );
-  expect(side?.sourceMatchUp?.score).toEqual(score);
+  const sets = parseStringScore({ stringScore });
+  expect(side?.sourceMatchUp?.score?.sets).toEqual(sets);
 }

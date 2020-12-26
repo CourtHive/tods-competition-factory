@@ -1,15 +1,16 @@
 import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
-import { generateMockParticipants } from '../../../tournamentEngine/generators/mockParticipants';
+import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
 
 import { drawEngine } from '../../../drawEngine';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PAIR } from '../../../constants/participantConstants';
 
 it('can check-in and check-out matchUp participants', () => {
-  const { participants } = generateMockParticipants({
+  const { participants } = generateParticipants({
     participantsCount: 32,
     participantType: PAIR,
   });
+
   const doublesParticipants = participants.filter(
     (participant) => participant.participantType === PAIR
   );

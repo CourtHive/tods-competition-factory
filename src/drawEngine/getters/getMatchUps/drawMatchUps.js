@@ -1,6 +1,9 @@
 import { getDrawStructures } from '../findStructure';
 import { getStructureMatchUps } from './structureMatchUps';
+import { addUpcomingMatchUps } from '../../../tournamentEngine/getters/addUpcomingMatchUps';
+
 import { SUCCESS } from '../../../constants/resultConstants';
+
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
@@ -25,6 +28,7 @@ export function getDrawMatchUps({
   context,
   inContext,
   roundFilter,
+  nextMatchUps,
   drawDefinition,
   matchUpFilters,
   contextFilters,
@@ -49,10 +53,9 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = getStructureMatchUps({
-      structure,
-      inContext,
-      roundFilter,
       context,
+      structure,
+      roundFilter,
       drawDefinition,
       matchUpFilters,
       contextFilters,
@@ -60,6 +63,7 @@ export function getDrawMatchUps({
       requireParticipants,
       tournamentParticipants,
       tournamentAppliedPolicies,
+      inContext: inContext || nextMatchUps,
     });
 
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
@@ -67,6 +71,13 @@ export function getDrawMatchUps({
     allUpcomingMatchUps = allUpcomingMatchUps.concat(...upcomingMatchUps);
     allAbandonedMatchUps = allAbandonedMatchUps.concat(...abandonedMatchUps);
     allCompletedMatchUps = allCompletedMatchUps.concat(...completedMatchUps);
+    if (nextMatchUps) {
+      addUpcomingMatchUps({ drawDefinition, matchUps: allByeMatchUps });
+      addUpcomingMatchUps({ drawDefinition, matchUps: allPendingMatchUps });
+      addUpcomingMatchUps({ drawDefinition, matchUps: allUpcomingMatchUps });
+      addUpcomingMatchUps({ drawDefinition, matchUps: allAbandonedMatchUps });
+      addUpcomingMatchUps({ drawDefinition, matchUps: allCompletedMatchUps });
+    }
   });
 
   const matchUpGroups = {

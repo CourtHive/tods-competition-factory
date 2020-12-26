@@ -1,5 +1,5 @@
 import tournamentEngine from '../..';
-import { tournamentRecordWithParticipants } from '../primitives/generateTournament';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -26,7 +26,7 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure', () => {
   expect(structures.length).toEqual(3);
 });
 
-it.only('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
+it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,
     playoffPositions: [3, 4],
@@ -45,7 +45,7 @@ function tournamentEngineAddPlayoffsTest({
   roundNumbers,
 }) {
   let result;
-  const { tournamentRecord } = tournamentRecordWithParticipants({
+  const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsCount: 32,

@@ -2,8 +2,10 @@ import { findEvent } from '../../getters/eventGetter';
 
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
 
 export function setMatchUpStatus(props) {
+  let { outcome } = props;
   const {
     deepCopy,
     drawEngine,
@@ -13,7 +15,6 @@ export function setMatchUpStatus(props) {
     matchUpId,
     matchUpTieId,
     matchUpFormat,
-    outcome,
   } = props;
   let errors = [];
 
@@ -24,14 +25,17 @@ export function setMatchUpStatus(props) {
     if (result.error) return { errors: [{ error: result.error }] };
   }
 
+  if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
+    outcome.score = matchUpScore(outcome);
+  }
+
   const { error: setMatchUpStatusError } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpTieId,
     matchUpStatus: outcome?.matchUpStatus,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     winningSide: outcome?.winningSide,
-    score: outcome?.score || '',
-    sets: outcome?.sets,
+    score: outcome?.score,
   });
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);

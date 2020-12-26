@@ -28,7 +28,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
   if (structure.structureType === CONTAINER) {
     const relevantMatchUps = matchUps.filter(
-      (matchUp) => matchUp.score || matchUp.winningSide
+      (matchUp) => matchUp.score?.sets?.length || matchUp.winningSide
     );
     const activeDrawPositions = []
       .concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions || []))

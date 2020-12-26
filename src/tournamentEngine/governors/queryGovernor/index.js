@@ -1,8 +1,10 @@
 import {
-  tournamentMatchUps,
   allTournamentMatchUps,
-  eventMatchUps,
+  tournamentMatchUps,
   allEventMatchUps,
+  allDrawMatchUps,
+  eventMatchUps,
+  drawMatchUps,
 } from '../../getters/matchUpsGetter';
 
 import { getParticipantScaleItem } from './scaleValue';
@@ -14,6 +16,12 @@ import { getEvent, getEvents } from '../../getters/eventGetter';
 import { getVenues, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import {
+  findEventExtension,
+  findTournamentExtension,
+  findParticipantExtension,
+  findDrawDefinitionExtension,
+} from './extensionQueries';
 
 import {
   getEventTimeItem,
@@ -35,11 +43,18 @@ const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
+  allDrawMatchUps,
   eventMatchUps,
+  drawMatchUps,
   credits,
 
   getEvent,
   getEvents,
+
+  findEventExtension,
+  findTournamentExtension,
+  findParticipantExtension,
+  findDrawDefinitionExtension,
 
   getDrawDefinition,
   getEventProperties,
