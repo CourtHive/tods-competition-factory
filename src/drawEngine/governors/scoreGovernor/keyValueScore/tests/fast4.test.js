@@ -23,10 +23,10 @@ it('can enter a straight set win for side 1', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('4-2');
-  expect(matchUp?.sets).toMatchObject([
+  expect(matchUp?.score?.sets).toMatchObject([
     { side1Score: 4, side2Score: 2, winningSide: 1 },
   ]);
-  expect(matchUp?.sets[0].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(1);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -35,8 +35,8 @@ it('can enter a straight set win for side 1', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('4-2 4-2');
-  expect(matchUp?.sets.length).toEqual(2);
-  expect(matchUp?.sets[1].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets.length).toEqual(2);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(1);
   expect(matchUp?.winningSide).toEqual(1);
 
   // entering a value after winningSide is determined does nothing
@@ -62,10 +62,10 @@ it('can enter a straight set win for side 2', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('2-4');
-  expect(matchUp?.sets).toMatchObject([
+  expect(matchUp?.score?.sets).toMatchObject([
     { side1Score: 2, side2Score: 4, winningSide: 2 },
   ]);
-  expect(matchUp?.sets[0].winningSide).toEqual(2);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(2);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -74,8 +74,8 @@ it('can enter a straight set win for side 2', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4 2-4');
-  expect(matchUp?.sets.length).toEqual(2);
-  expect(matchUp?.sets[1].winningSide).toEqual(2);
+  expect(matchUp?.score?.sets.length).toEqual(2);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(2);
   expect(matchUp?.winningSide).toEqual(2);
 
   // entering a value after winningSide is determined does nothing
@@ -101,10 +101,10 @@ it('can enter a three set win for side 1', () => {
   }));
 
   expect(matchUp?.scoreString.trim()).toEqual('2-4');
-  expect(matchUp?.sets).toMatchObject([
+  expect(matchUp?.score?.sets).toMatchObject([
     { side1Score: 2, side2Score: 4, winningSide: 2 },
   ]);
-  expect(matchUp?.sets[0].winningSide).toEqual(2);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(2);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -113,8 +113,8 @@ it('can enter a three set win for side 1', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4 4-2');
-  expect(matchUp?.sets.length).toEqual(2);
-  expect(matchUp?.sets[1].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets.length).toEqual(2);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(1);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 1,
@@ -123,8 +123,8 @@ it('can enter a three set win for side 1', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4 4-2 1-4');
-  expect(matchUp?.sets.length).toEqual(3);
-  expect(matchUp?.sets[2].winningSide).toEqual(2);
+  expect(matchUp?.score?.sets.length).toEqual(3);
+  expect(matchUp?.score?.sets[2].winningSide).toEqual(2);
   expect(matchUp?.winningSide).toEqual(2);
 
   const { updated } = keyValueMatchUpScore({
@@ -147,7 +147,7 @@ it('can enter a three set win for side 2', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4');
-  expect(matchUp?.sets).toMatchObject([
+  expect(matchUp?.score?.sets).toMatchObject([
     { side1Score: 2, side2Score: 4, winningSide: 2 },
   ]);
 
@@ -158,7 +158,7 @@ it('can enter a three set win for side 2', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4 4-2');
-  expect(matchUp?.sets.length).toEqual(2);
+  expect(matchUp?.score?.sets.length).toEqual(2);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -167,7 +167,7 @@ it('can enter a three set win for side 2', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('2-4 4-2 4-1');
-  expect(matchUp?.sets.length).toEqual(3);
+  expect(matchUp?.score?.sets.length).toEqual(3);
   expect(matchUp?.winningSide).toEqual(1);
 
   const { updated } = keyValueMatchUpScore({
@@ -203,7 +203,7 @@ it('can enter a first set tiebreak scoreString', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('4-3(');
-  expect(matchUp?.sets).toMatchObject([
+  expect(matchUp?.score?.sets).toMatchObject([
     { side1Score: 4, side2Score: 3, winningSide: undefined },
   ]);
 
@@ -214,7 +214,7 @@ it('can enter a first set tiebreak scoreString', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('4-3(2');
-  expect(matchUp?.sets.length).toEqual(1);
+  expect(matchUp?.score?.sets.length).toEqual(1);
 
   ({ matchUp } = keyValueMatchUpScore({
     lowSide: 2,
@@ -223,9 +223,9 @@ it('can enter a first set tiebreak scoreString', () => {
     matchUpFormat,
   }));
   expect(matchUp?.scoreString.trim()).toEqual('4-3(2)');
-  expect(matchUp?.sets.length).toEqual(1);
+  expect(matchUp?.score?.sets.length).toEqual(1);
 
-  expect(matchUp?.sets[0].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(1);
   expect(matchUp?.winningSide).toEqual(undefined);
 });
 
@@ -242,8 +242,8 @@ it('can enter a second set tiebreak scoreString', () => {
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-1 4-3(2)');
-  expect(matchUp?.sets[0].winningSide).toEqual(1);
-  expect(matchUp?.sets[1].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(1);
   expect(matchUp.winningSide).toEqual(1);
 });
 
@@ -262,8 +262,8 @@ it('supports space for completing tiebreak scores', () => {
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-3(2) 4-3(2)');
-  expect(matchUp?.sets[0].winningSide).toEqual(1);
-  expect(matchUp?.sets[1].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(1);
   expect(matchUp.winningSide).toEqual(1);
 });
 
@@ -285,9 +285,9 @@ it('supports three tiebreak sets', () => {
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-3(2) 3-4(4) 4-3(2)');
-  expect(matchUp?.sets[0].winningSide).toEqual(1);
-  expect(matchUp?.sets[1].winningSide).toEqual(2);
-  expect(matchUp?.sets[2].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[0].winningSide).toEqual(1);
+  expect(matchUp?.score?.sets[1].winningSide).toEqual(2);
+  expect(matchUp?.score?.sets[2].winningSide).toEqual(1);
   expect(matchUp.winningSide).toEqual(1);
 });
 
@@ -321,7 +321,7 @@ it('does not allow leading zero in tiebreak scores', () => {
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-3(0');
-  expect(matchUp?.sets?.length).toEqual(1);
+  expect(matchUp?.score?.sets?.length).toEqual(1);
 
   const { matchUp: modifiedMatchUp, message } = scoreMatchUp({
     value: '1',
@@ -344,7 +344,7 @@ it('does not allow more than two digits for set tiebreaks', () => {
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('4-3(11');
-  expect(matchUp?.sets?.length).toEqual(1);
+  expect(matchUp?.score?.sets?.length).toEqual(1);
 
   const { matchUp: modifiedMatchUp, message } = scoreMatchUp({
     value: '1',

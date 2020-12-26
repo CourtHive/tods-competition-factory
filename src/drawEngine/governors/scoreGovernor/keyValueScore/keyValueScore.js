@@ -66,13 +66,13 @@ export function keyValueMatchUpScore(props) {
     const {
       sets,
       scoreString,
-      winningSide: updatedWinningSide,
+      winningSide,
       matchUpStatus: updatedMatchUpStatus,
     } = result;
     updatedMatchUp = Object.assign({}, matchUp, {
       sets,
       scoreString,
-      winningSide: updatedWinningSide,
+      winningSide,
       matchUpStatus: updatedMatchUpStatus,
       score: { sets, scoreStringSide1: scoreString },
     });
