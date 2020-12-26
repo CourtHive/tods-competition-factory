@@ -41,12 +41,12 @@ export function keyValueMatchUpScore(props) {
   const { matchUp } = props;
   const { matchUpFormat } = matchUp;
   // SCORE: matchUp will have changed
-  const { scoreString, sets, winningSide, matchUpStatus } = matchUp;
-  /*
-  const { scoreString: scoreObject,  winningSide, matchUpStatus } = matchUp;
-  const { sets } = scoreObject;
-  const scoreString = scoreObject.scoreStringSide1;
-  */
+  let { scoreString, sets } = matchUp;
+  const { score, winningSide, matchUpStatus } = matchUp;
+  if (score?.sets) {
+    sets = sets || score.sets;
+    scoreString = scoreString || score.scoreStringSide1;
+  }
   const { auto, checkFormat, shiftFirst, lowSide, value } = props;
   const result = keyValueScore({
     scoreString,
@@ -64,16 +64,17 @@ export function keyValueMatchUpScore(props) {
   let updatedMatchUp;
   if (result?.updated) {
     const {
-      sets: updatedSets,
-      scoreString: updatedScore,
+      sets,
+      scoreString,
       winningSide: updatedWinningSide,
       matchUpStatus: updatedMatchUpStatus,
     } = result;
     updatedMatchUp = Object.assign({}, matchUp, {
-      sets: updatedSets,
-      scoreString: updatedScore,
+      sets,
+      scoreString,
       winningSide: updatedWinningSide,
       matchUpStatus: updatedMatchUpStatus,
+      score: { sets, scoreStringSide1: scoreString },
     });
   }
   return {
