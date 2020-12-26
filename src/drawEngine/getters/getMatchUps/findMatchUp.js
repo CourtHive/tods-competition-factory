@@ -19,7 +19,11 @@ export function findMatchUp({
   tournamentParticipants,
   matchUpId,
   inContext,
+  // nextMatchUps,
 }) {
+  // TODO: remove requirement to return { structure }
+  // use allDrawMatchUps so that { nextMatchUps } option can be added;
+
   const { structures } = getDrawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {
     const { matchUps } = getAllStructureMatchUps({

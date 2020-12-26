@@ -11,6 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function getDrawData({
   tournamentRecord,
   policyDefinition,
+  inContext = true,
   drawDefinition,
   context,
 }) {
@@ -35,9 +36,9 @@ export function getDrawData({
         context: { drawId: drawInfo.drawId, ...context },
         tournamentParticipants,
         policyDefinition,
-        inContext: true,
         drawDefinition,
         structure,
+        inContext,
       });
 
       const structureInfo = (({

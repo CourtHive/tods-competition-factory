@@ -15,10 +15,12 @@ import {
 */
 export function positionTargets({
   matchUpId,
+  structure,
   drawDefinition,
+  inContextDrawMatchUps,
   sourceMatchUpWinnerDrawPositionIndex,
 }) {
-  const { matchUp, structure } = findMatchUp({
+  const { matchUp } = findMatchUp({
     drawDefinition,
     matchUpId,
     inContext: true,
@@ -28,8 +30,9 @@ export function positionTargets({
     return targetByRoundOutcome({
       sourceMatchUpWinnerDrawPositionIndex,
       drawDefinition,
-      matchUp,
+      inContextDrawMatchUps,
       structure,
+      matchUp,
     });
   } else {
     return targetByWinRatio({ drawDefinition, matchUp, structure });
@@ -40,6 +43,7 @@ function targetByRoundOutcome({
   matchUp,
   structure,
   drawDefinition,
+  inContextDrawMatchUps,
   sourceMatchUpWinnerDrawPositionIndex,
 }) {
   const {
@@ -49,12 +53,18 @@ function targetByRoundOutcome({
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
   });
-  const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
-  const sourceRoundMatchUpCount = matchUps.reduce((count, currentMatchUp) => {
-    return currentMatchUp.roundNumber === matchUp.roundNumber
-      ? count + 1
-      : count;
-  }, 0);
+  const { matchUps: structureMatchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    structure,
+  });
+  const sourceRoundMatchUpCount = structureMatchUps.reduce(
+    (count, currentMatchUp) => {
+      return currentMatchUp.roundNumber === matchUp.roundNumber
+        ? count + 1
+        : count;
+    },
+    0
+  );
 
   const { roundPosition: sourceRoundPosition } = matchUp;
   const loserTargetLink = getTargetLink({ source, subject: LOSER });
@@ -63,6 +73,7 @@ function targetByRoundOutcome({
     matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
   } = getTargetMatchUp({
     drawDefinition,
+    inContextDrawMatchUps,
     sourceRoundPosition,
     sourceRoundMatchUpCount,
     targetLink: loserTargetLink,
@@ -77,6 +88,7 @@ function targetByRoundOutcome({
       matchUpDrawPositionIndex: winnerMatchUpDrawPositionIndex,
     } = getTargetMatchUp({
       drawDefinition,
+      inContextDrawMatchUps,
       sourceRoundPosition,
       sourceRoundMatchUpCount,
       targetLink: winnerTargetLink,
