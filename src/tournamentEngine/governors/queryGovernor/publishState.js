@@ -45,7 +45,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
         event,
         itemType: `${PUBLISH}.${STATUS}`,
       });
-      const pubState = timeItem.itemValue;
+      const pubState = timeItem?.itemValue;
 
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
