@@ -8,7 +8,6 @@ import {
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
-// TODO: untested...
 export function assignDrawPosition({
   drawDefinition,
   drawPosition,
