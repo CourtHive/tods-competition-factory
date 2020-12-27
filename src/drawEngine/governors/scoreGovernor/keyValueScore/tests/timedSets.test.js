@@ -3,10 +3,10 @@ import { enterValues } from './primitives';
 
 it('can enter single timed set', () => {
   const matchUpFormat = 'SET1-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   ({ matchUp } = keyValueMatchUpScore({ value: 2, matchUp, matchUpFormat }));
-  expect(matchUp?.score.trim()).toEqual('2');
+  expect(matchUp?.scoreString.trim()).toEqual('2');
   expect(matchUp?.sets).toEqual([
     {
       setNumber: 1,
@@ -20,7 +20,7 @@ it('can enter single timed set', () => {
 
 it('can enter best of three timed sets', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -38,13 +38,13 @@ it('can enter best of three timed sets', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('3-2 2-3 3-2');
+  expect(matchUp?.scoreString.trim()).toEqual('3-2 2-3 3-2');
   expect(matchUp?.winningSide).toEqual(1);
 });
 
 it('supports adding outcomes', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -54,12 +54,12 @@ it('supports adding outcomes', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('3-2 RET');
+  expect(matchUp?.scoreString.trim()).toEqual('3-2 RET');
   expect(matchUp?.winningSide).toEqual(1);
 });
 it('can handle adding and removing outcome', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -79,13 +79,13 @@ it('can handle adding and removing outcome', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('3-2 2-3 3-2');
+  expect(matchUp?.scoreString.trim()).toEqual('3-2 2-3 3-2');
   expect(matchUp?.winningSide).toEqual(1);
 });
 
-it('does not consider tied score to be complete set', () => {
+it('does not consider tied scoreString to be complete set', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 3 },
@@ -103,13 +103,13 @@ it('does not consider tied score to be complete set', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('3-32 3-2');
+  expect(matchUp?.scoreString.trim()).toEqual('3-32 3-2');
   expect(matchUp?.winningSide).toEqual(undefined);
 });
 
 it('handles zeros properly', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 0 },
@@ -127,13 +127,13 @@ it('handles zeros properly', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('0-1 1-0 0-0');
+  expect(matchUp?.scoreString.trim()).toEqual('0-1 1-0 0-0');
   expect(matchUp?.winningSide).toEqual(undefined);
 });
 
 it('ignores leading zeroes', () => {
   const matchUpFormat = 'SET3-S:T10';
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { value: 0 },
@@ -155,6 +155,6 @@ it('ignores leading zeroes', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp?.score.trim()).toEqual('1-2 2-0 1-3');
+  expect(matchUp?.scoreString.trim()).toEqual('1-2 2-0 1-3');
   expect(matchUp?.winningSide).toEqual(2);
 });

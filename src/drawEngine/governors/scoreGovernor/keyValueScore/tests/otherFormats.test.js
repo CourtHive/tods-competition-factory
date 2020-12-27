@@ -9,7 +9,7 @@ singleSetStressTests({ matchUpFormat: FORMAT_NOAD_SET_TIEBREAK, setTo: 6 });
 
 it('handles set tiebreak with NoAD', () => {
   const matchUpFormat = FORMAT_NOAD_SET_TIEBREAK;
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '6' },
@@ -19,21 +19,21 @@ it('handles set tiebreak with NoAD', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp.score.trim()).toEqual(`7-6(6)`);
+  expect(matchUp.scoreString.trim()).toEqual(`7-6(6)`);
   expect(matchUp.sets.length).toEqual(1);
   expect(matchUp.winningSide).toEqual(1);
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
   ({ matchUp } = scoreMatchUp({ lowSide: 2, value: '6', matchUp }));
   ({ matchUp } = scoreMatchUp({ lowSide: 2, value: '9', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`7-6(6`);
+  expect(matchUp.scoreString.trim()).toEqual(`7-6(6`);
   expect(matchUp.sets.length).toEqual(1);
   expect(matchUp.winningSide).toBeUndefined();
 });
 
 it('handles best of 3 matchUp tiebreaks to 7', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB7;
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },
@@ -45,24 +45,24 @@ it('handles best of 3 matchUp tiebreaks to 7', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[7-3] [3-7] [7-3]`);
+  expect(matchUp.scoreString.trim()).toEqual(`[7-3] [3-7] [7-3]`);
   expect(matchUp.sets.length).toEqual(3);
   expect(matchUp.winningSide).toEqual(1);
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[7-3] [3-7] [7-`);
+  expect(matchUp.scoreString.trim()).toEqual(`[7-3] [3-7] [7-`);
   expect(matchUp.sets.length).toEqual(3);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[7-3] [3-7]`);
+  expect(matchUp.scoreString.trim()).toEqual(`[7-3] [3-7]`);
   expect(matchUp.sets.length).toEqual(2);
   expect(matchUp.winningSide).toBeUndefined();
 });
 
 it('handles best of 3 matchUp tiebreaks to 10', () => {
   const matchUpFormat = FORMAT_BEST_OF_3_MATCH_TB10;
-  let matchUp = { score: undefined, sets: [], matchUpFormat };
+  let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
   const values = [
     { lowSide: 2, value: '3' },
@@ -74,22 +74,22 @@ it('handles best of 3 matchUp tiebreaks to 10', () => {
   ];
 
   ({ matchUp } = enterValues({ values, matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[10-3] [3-10] [10-3]`);
+  expect(matchUp.scoreString.trim()).toEqual(`[10-3] [3-10] [10-3]`);
   expect(matchUp.sets.length).toEqual(3);
   expect(matchUp.winningSide).toEqual(1);
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[10-3] [3-10] [10-`);
+  expect(matchUp.scoreString.trim()).toEqual(`[10-3] [3-10] [10-`);
   expect(matchUp.sets.length).toEqual(3);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[10-3] [3-10] [1`);
+  expect(matchUp.scoreString.trim()).toEqual(`[10-3] [3-10] [1`);
   expect(matchUp.sets.length).toEqual(3);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
-  expect(matchUp.score.trim()).toEqual(`[10-3] [3-10]`);
+  expect(matchUp.scoreString.trim()).toEqual(`[10-3] [3-10]`);
   expect(matchUp.sets.length).toEqual(2);
   expect(matchUp.winningSide).toBeUndefined();
 });

@@ -20,8 +20,10 @@ export function matchUpScore({ score, winningSide, matchUpStatus } = {}) {
     scoreStringSide2 = loserPerspective;
   }
   return {
-    sets,
-    scoreStringSide1,
-    scoreStringSide2,
+    score: {
+      sets,
+      scoreStringSide1,
+      scoreStringSide2,
+    },
   };
 }

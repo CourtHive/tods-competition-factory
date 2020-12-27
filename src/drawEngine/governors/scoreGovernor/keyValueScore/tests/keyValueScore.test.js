@@ -8,7 +8,7 @@ import { FORMAT_STANDARD, TIMED20 } from './formatConstants';
 
 function enterKeyValues({
   sets,
-  score,
+  scoreString,
   matchUpFormat,
   matchUpStatus,
   shiftFirst,
@@ -18,28 +18,37 @@ function enterKeyValues({
 
   valuePairs.forEach((valuePair) => {
     const { value, lowSide = 2 } = valuePair;
-    ({ updated, sets, score, winningSide, matchUpStatus } = keyValueScore({
-      value,
-      lowSide,
+    ({ updated, sets, scoreString, winningSide, matchUpStatus } = keyValueScore(
+      {
+        value,
+        lowSide,
 
-      sets,
-      score,
-      matchUpStatus,
-      matchUpFormat,
-      shiftFirst,
-    }));
+        sets,
+        scoreString,
+        matchUpStatus,
+        matchUpFormat,
+        shiftFirst,
+      }
+    ));
   });
 
-  return { updated, sets, score, matchUpStatus, winningSide, matchUpFormat };
+  return {
+    updated,
+    sets,
+    scoreString,
+    matchUpStatus,
+    winningSide,
+    matchUpFormat,
+  };
 }
 
-it('can modify score string', () => {
-  const { updated, score: updatedScore } = keyValueScore({
+it('can modify scoreString string', () => {
+  const { updated, scoreString: updatedScore } = keyValueScore({
     value: '0',
     lowSide: 2,
 
     sets: [],
-    score: '',
+    scoreString: '',
     matchUpStatus: '',
     matchUpFormat: FORMAT_STANDARD,
   });
@@ -56,13 +65,13 @@ it('can use valuePairs', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: '',
+    scoreString: '',
     matchUpFormat: FORMAT_STANDARD,
     valuePairs,
     shiftFirst: false,
   });
 
-  expect(result.score).toEqual('0-6 0-6 ');
+  expect(result.scoreString).toEqual('0-6 0-6 ');
 });
 
 it('can shiftFirst', () => {
@@ -73,13 +82,13 @@ it('can shiftFirst', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: '',
+    scoreString: '',
     matchUpFormat: FORMAT_STANDARD,
     valuePairs,
     shiftFirst: true,
   });
 
-  expect(result.score).toEqual('0-6 0-6 ');
+  expect(result.scoreString).toEqual('0-6 0-6 ');
 });
 
 it('can delete values', () => {
@@ -91,13 +100,13 @@ it('can delete values', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: '',
+    scoreString: '',
     matchUpFormat: FORMAT_STANDARD,
     valuePairs,
     shiftFirst: false,
   });
 
-  expect(result.score).toEqual('0-6 0-');
+  expect(result.scoreString).toEqual('0-6 0-');
 
   const nextResult = enterKeyValues(
     Object.assign({}, result, {
@@ -106,10 +115,10 @@ it('can delete values', () => {
     })
   );
 
-  expect(nextResult.score.trim()).toEqual('0-6 0-6');
+  expect(nextResult.scoreString.trim()).toEqual('0-6 0-6');
 });
 
-it('can complete existing score', () => {
+it('can complete existing scoreString', () => {
   const valuePairs = [{ lowSide: 2, value: '0' }];
 
   const result = enterKeyValues({
@@ -123,7 +132,7 @@ it('can complete existing score', () => {
         winningSide: 1,
       },
     ],
-    score: '7-6(3)',
+    scoreString: '7-6(3)',
     matchUpFormat: FORMAT_STANDARD,
     matchUpStatus: INCOMPLETE,
     valuePairs,
@@ -142,14 +151,14 @@ it('can complete timed scores', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: undefined,
+    scoreString: undefined,
     matchUpFormat: TIMED20,
     matchUpStatus: TO_BE_PLAYED,
     valuePairs,
     shiftFirst: false,
   });
 
-  expect(result.score).toEqual('0-8');
+  expect(result.scoreString).toEqual('0-8');
 });
 
 it('can properly backspace in timed sets', () => {
@@ -161,14 +170,14 @@ it('can properly backspace in timed sets', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: undefined,
+    scoreString: undefined,
     matchUpFormat: TIMED20,
     matchUpStatus: TO_BE_PLAYED,
     valuePairs,
     shiftFirst: false,
   });
 
-  expect(result.score).toEqual('1-1');
+  expect(result.scoreString).toEqual('1-1');
 
   const nextResult = enterKeyValues(
     Object.assign({}, result, {
@@ -180,7 +189,7 @@ it('can properly backspace in timed sets', () => {
     })
   );
 
-  expect(nextResult.score.trim()).toEqual('1-8');
+  expect(nextResult.scoreString.trim()).toEqual('1-8');
 });
 
 it('can properly backspace in timed sets', () => {
@@ -192,14 +201,14 @@ it('can properly backspace in timed sets', () => {
 
   const result = enterKeyValues({
     sets: [],
-    score: undefined,
+    scoreString: undefined,
     matchUpFormat: TIMED20,
     matchUpStatus: TO_BE_PLAYED,
     valuePairs,
     shiftFirst: false,
   });
 
-  expect(result.score).toEqual('0-0');
+  expect(result.scoreString).toEqual('0-0');
 
   const nextResult = enterKeyValues(
     Object.assign({}, result, {
@@ -211,5 +220,5 @@ it('can properly backspace in timed sets', () => {
     })
   );
 
-  expect(nextResult.score.trim()).toEqual('0-8');
+  expect(nextResult.scoreString.trim()).toEqual('0-8');
 });

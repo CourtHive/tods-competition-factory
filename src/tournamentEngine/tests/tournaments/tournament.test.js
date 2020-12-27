@@ -1,17 +1,16 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { tournamentEngine } from '../..';
 import { drawEngine } from '../../../drawEngine';
 
-import { eventConstants } from '../../../constants/eventConstants';
-import { resultConstants } from '../../../constants/resultConstants';
+import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { parseStringScore } from '../../../drawEngine/tests/primitives/parseStringScore';
+
+import { resultConstants } from '../../../constants/resultConstants';
+import { eventConstants } from '../../../constants/eventConstants';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
 
 import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
-import { parseStringScore } from '../../../drawEngine/tests/primitives/parseStringScore';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -218,47 +217,4 @@ it('can set tournament categories', () => {
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.tournamentCategories.length).toEqual(3);
-});
-
-it('can add individual and pair participants', () => {
-  let result = tournamentEngine.newTournamentRecord();
-  expect(result?.success).toEqual(true);
-
-  const participant1 = {
-    participantType: INDIVIDUAL,
-    participantRole: COMPETITOR,
-    person: {
-      standardFamilyName: 'Family',
-      standardGivenName: 'Given',
-    },
-  };
-
-  const participant2 = {
-    participantType: INDIVIDUAL,
-    participantRole: COMPETITOR,
-    person: {
-      standardFamilyName: 'Family',
-      standardGivenName: 'Given',
-    },
-  };
-
-  const individualParticipantIds = [];
-  result = tournamentEngine.addParticipant({ participant: participant1 });
-  expect(result.success).toEqual(true);
-  individualParticipantIds.push(result.participant.participantId);
-
-  result = tournamentEngine.addParticipant({ participant: participant2 });
-  expect(result.success).toEqual(true);
-  individualParticipantIds.push(result.participant.participantId);
-
-  const pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds,
-  };
-  result = tournamentEngine.addParticipant({ participant: pairParticipant });
-  expect(result.success).toEqual(true);
-
-  const { tournamentRecord } = tournamentEngine.getState();
-  expect(tournamentRecord.participants.length).toEqual(3);
 });

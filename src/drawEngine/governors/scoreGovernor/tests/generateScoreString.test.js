@@ -46,7 +46,7 @@ test('can generate matchUp set scores with set tiebreak', () => {
   expect(result).toEqual('7-6(3) 6-7(12) 0-3');
 });
 
-test('can append a score outcome', () => {
+test('can append a scoreString outcome', () => {
   const sets = [
     {
       side1Score: 6,
@@ -81,7 +81,7 @@ test('can append a score outcome', () => {
   expect(result).toEqual('7-6(3) 6-7(12) 0-3 RET');
 });
 
-test('can prepend a score outcome', () => {
+test('can prepend a scoreString outcome', () => {
   const sets = [
     {
       side1Score: 6,
@@ -178,7 +178,7 @@ test('properly sorts set results', () => {
   expect(result).toEqual('7-6(12) 6-7(3) 3-0');
 });
 
-test('generate incomplete score string', () => {
+test('generate incomplete scoreString string', () => {
   const sets = [
     {
       setNumber: 2,

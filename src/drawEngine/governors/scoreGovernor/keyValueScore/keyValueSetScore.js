@@ -6,12 +6,13 @@ import {
 
 import { getWinningSide } from './winningSide';
 
-export function keyValueSetScore({ analysis, lowSide, score, value }) {
+export function keyValueSetScore({ analysis, lowSide, scoreString, value }) {
   const { setTo, tiebreakAt, NoAD } = analysis.setFormat;
   const needsTiebreak = value === parseInt(tiebreakAt || setTo);
 
-  if (tiebreakAt && tiebreakAt < setTo && value > tiebreakAt) return { score };
-  if ((NoAD && value === setTo) || value > setTo) return { score };
+  if (tiebreakAt && tiebreakAt < setTo && value > tiebreakAt)
+    return { scoreString };
+  if ((NoAD && value === setTo) || value > setTo) return { scoreString };
 
   const highValue = getHighSetValue();
   const setScores = [value, highValue];
@@ -21,7 +22,7 @@ export function keyValueSetScore({ analysis, lowSide, score, value }) {
   const open = brackets.split('')[0];
   const addition =
     setScores.join(SCORE_JOINER) + (needsTiebreak ? open : SPACE_CHARACTER);
-  score = (score || '') + addition;
+  scoreString = (scoreString || '') + addition;
 
   const set = {
     side1Score: setScores[0],
@@ -30,7 +31,7 @@ export function keyValueSetScore({ analysis, lowSide, score, value }) {
   const winningSide = getWinningSide({ analysis, set });
   set.winningSide = winningSide || undefined;
 
-  return { score, set };
+  return { scoreString, set };
 
   function getHighSetValue() {
     if (needsTiebreak) return value + 1;
