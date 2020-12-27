@@ -123,7 +123,7 @@ it('can add individual and pair participants', () => {
   expect(tournamentRecord.participants.length).toEqual(3);
 });
 
-it.only('will not add invalid PAIR participants', () => {
+it('will not add invalid PAIR participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     inContext: true,
   });
