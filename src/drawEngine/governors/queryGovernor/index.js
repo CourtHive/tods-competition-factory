@@ -14,7 +14,7 @@ import {
 import {
   positionActions,
   getNextUnfilledDrawPositions,
-} from './positionActions';
+} from './positionActions/positionActions';
 
 import {
   getRoundPresentationProfile,

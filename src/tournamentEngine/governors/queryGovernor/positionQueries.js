@@ -1,4 +1,4 @@
-import { positionActions as drawEnginePositionActions } from '../../../drawEngine/governors/queryGovernor/positionActions';
+import { positionActions as drawEnginePositionActions } from '../../../drawEngine/governors/queryGovernor/positionActions/positionActions';
 
 export function positionActions({
   drawId,

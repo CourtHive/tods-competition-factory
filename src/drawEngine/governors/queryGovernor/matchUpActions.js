@@ -1,7 +1,7 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
-import { positionActions } from './positionActions';
+import { positionActions } from './positionActions/positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
