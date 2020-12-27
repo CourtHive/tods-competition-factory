@@ -531,6 +531,12 @@ Returns all grouping participants which include participantId
 
 ## removeDrawPositionAssignment
 
+Clear draw position.
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number} drawPosition - number of drawPosition for which actions are to be returned
+
 ---
 
 ## removeParticipantIdsFromAllTeams

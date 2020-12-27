@@ -36,6 +36,7 @@ tournamentEngine
 * modifyVenue
 * modifyIndividualParticipantIds
 - participantSignInStatus
+- positionActions
 - promoteAlternate
 * publishEvent
   : getDrawData

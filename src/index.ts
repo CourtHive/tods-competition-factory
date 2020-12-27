@@ -54,7 +54,6 @@ export { eventConstants } from './constants/eventConstants';
 export { genderConstants } from './constants/genderConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
-export { optionConstants } from './constants/optionConstants';
 export {
   participantConstants,
   ParticipantTypeEnum,

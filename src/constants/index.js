@@ -5,7 +5,6 @@ import { entryStatusConstants } from './entryStatusConstants';
 import { errorConditionConstants } from './errorConditionConstants';
 import { matchUpStatusConstants } from './matchUpStatusConstants';
 import { matchUpTypes } from './matchUpTypes';
-import { optionConstants } from './optionConstants';
 import { participantConstants } from './participantConstants';
 import { participantRoles } from './participantRoles';
 import { participantTypes } from './participantTypes';
@@ -24,7 +23,6 @@ export const factoryConstants = {
   genderConstants,
   matchUpStatusConstants,
   matchUpTypes,
-  optionConstants,
   participantConstants,
   participantRoles,
   participantTypes,

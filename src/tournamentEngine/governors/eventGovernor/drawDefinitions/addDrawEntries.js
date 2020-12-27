@@ -1,10 +1,10 @@
-import { addDrawEntries as addEntries } from '../../../drawEngine/governors/entryGovernor/addingDrawEntries';
-import { getDrawDefinition } from '../../getters/eventGetter';
+import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
+import { getDrawDefinition } from '../../../getters/eventGetter';
 
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 
 export function addDrawEntries({
   tournamentRecord,

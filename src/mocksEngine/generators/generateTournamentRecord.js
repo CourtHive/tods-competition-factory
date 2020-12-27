@@ -84,6 +84,8 @@ function generateEventWithDraw({
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
   } = drawProfile;
+  let { participantsCount = 32 } = drawProfile;
+  if (participantsCount > drawSize) participantsCount = drawSize;
 
   const event = { eventName, eventType };
   let result = tournamentEngine.addEvent({ event });
@@ -100,6 +102,7 @@ function generateEventWithDraw({
     return false;
   };
   const participantIds = participants
+    .slice(0, participantsCount)
     .filter(isEventParticipantType)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
