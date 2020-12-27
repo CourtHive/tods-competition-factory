@@ -1,9 +1,9 @@
-import { getDrawDefinition } from '../../getters/eventGetter';
+import { getDrawDefinition } from '../../../getters/eventGetter';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function setDrawParticipantRepresentatives({
   tournamentRecord,

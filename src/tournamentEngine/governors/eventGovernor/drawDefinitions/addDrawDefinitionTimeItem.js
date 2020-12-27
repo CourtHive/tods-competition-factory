@@ -2,8 +2,8 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_TIME_ITEM,
   MISSING_TIME_ITEM,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function addDrawDefinitionTimeItem({ drawDefinition, timeItem }) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };

@@ -34,6 +34,7 @@ import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
 import { credits } from '../../../fixtures/credits';
+import { positionActions } from './positionQueries';
 
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
@@ -71,6 +72,7 @@ const queryGovernor = {
   bulkUpdatePublishedEventIds,
 
   matchUpActions,
+  positionActions,
   findMatchUp: publicFindMatchUp,
 
   participantScaleItem,

@@ -20,11 +20,19 @@ import {
   MISSING_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {object} drawDefinition - automatically added if drawEngine state has been set
+ * @param {number} drawPosition - number of drawPosition for which actions are to be returned
+ * @param {string} structureId - id of structure of drawPosition
+ * @param {string} participantId - id of participant to be removed
+ *
+ */
 export function clearDrawPosition({
   drawDefinition,
-  structureId,
-  participantId,
   drawPosition,
+  participantId,
+  structureId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({

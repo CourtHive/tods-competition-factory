@@ -1,10 +1,11 @@
 import tournamentEngine from '../..';
+import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
+
 import {
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
 
 it('can add and remove extensions from tournamentRecords', () => {
   const drawProfiles = [

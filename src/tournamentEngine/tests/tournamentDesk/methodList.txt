@@ -23,6 +23,7 @@ tournamentEngine
 * addMatchUpScheduledTime
 * addParticipants
 * addVenue
+* assignDrawPosition
 * assignMatchUpVenue
 - assignTieMatchUpParticipantId
 - attachEventPolicy
@@ -36,11 +37,13 @@ tournamentEngine
 * modifyVenue
 * modifyIndividualParticipantIds
 - participantSignInStatus
+- positionActions
 - promoteAlternate
 * publishEvent
   : getDrawData
   : getEventData
   : getTournamentIno
+* removeDrawPositionAssignment
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
 - setEntryPositions

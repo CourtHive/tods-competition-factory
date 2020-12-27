@@ -1,6 +1,6 @@
-import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_ID_EXISTS } from '../../../constants/errorConditionConstants';
+import { findEvent } from '../../../getters/eventGetter';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { DRAW_ID_EXISTS } from '../../../../constants/errorConditionConstants';
 
 export function addDrawDefinition({
   tournamentRecord,

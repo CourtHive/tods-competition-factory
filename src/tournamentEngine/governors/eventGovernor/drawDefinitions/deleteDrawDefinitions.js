@@ -1,6 +1,6 @@
-import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { findEvent } from '../../../getters/eventGetter';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
 
 export function deleteDrawDefinitions({
   tournamentRecord,
