@@ -1,16 +1,9 @@
 import {
-  addIndividualParticipantIds,
-  removeParticipantIdsFromAllTeams,
-} from './groupings/removeIndividualParticipantIds';
-import { addParticipants } from './addParticipants';
-
-import {
   SIGNED_IN,
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 export function participantsSignInStatus({
   tournamentRecord,

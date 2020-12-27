@@ -26,6 +26,7 @@ import {
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
+import { participantMembership } from '../../getters/participants/participantMembership';
 
 const findTournamentParticipantCopy = (props) => {
   const { participant, error } = findTournamentParticipant(props);
@@ -47,6 +48,7 @@ const participantGovernor = {
   removeIndividualParticipantIds,
   modifyIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
+  participantMembership,
 
   generateMockParticipants,
   generateTeamsFromParticipantAttribute,

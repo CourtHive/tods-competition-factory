@@ -500,6 +500,15 @@ Modify grouping participant [TEAM, GROUP] individualParticipantIds
 
 ---
 
+## participantMembership
+
+Returns all grouping participants which include participantId
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} participantId - id of individual participant
+
+---
+
 ## participantScaleItem
 
 ---

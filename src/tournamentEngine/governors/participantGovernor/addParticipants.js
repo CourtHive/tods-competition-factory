@@ -1,5 +1,3 @@
-import { addIndividualParticipantIds } from './groupings/removeIndividualParticipantIds';
-
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   GROUP,
@@ -55,8 +53,11 @@ export function addParticipant({ tournamentRecord, participant }) {
   if (participantType === PAIR) {
     if (!participant.individualParticipantIds) {
       return { error: MISSING_PARTICIPANT_IDS };
-    } else if (participant.individualParticipantIds.length > 2) {
-      return { error: INVALID_PARTICIPANT_IDS };
+    } else if (participant.individualParticipantIds.length !== 2) {
+      return {
+        error: INVALID_PARTICIPANT_IDS,
+        message: 'PAIR must be 2 individualParticipantIds',
+      };
     } else {
       const individualParticipantIds = tournamentParticipants
         .filter((participant) => participant.participantType === INDIVIDUAL)
@@ -145,13 +146,7 @@ export function addParticipant({ tournamentRecord, participant }) {
   return Object.assign({}, SUCCESS, { participant: makeDeepCopy(participant) });
 }
 
-export function addParticipants({
-  tournamentRecord,
-  participants = [],
-  source,
-  teamId,
-  groupId,
-}) {
+export function addParticipants({ tournamentRecord, participants = [] }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const tournamentParticipants = tournamentRecord.participants;
@@ -192,18 +187,6 @@ export function addParticipants({
       if (success) addedParticipants.push(addedParticipant);
       if (error) errors.push(error);
     });
-    if (source !== undefined) participantSource({ tournamentRecord, source });
-    if (teamId || groupId) {
-      const groupingType = teamId ? TEAM : GROUP;
-      const participantIds = participantsToAdd.map((np) => np.participantId);
-      addIndividualParticipantIds({
-        groupingType,
-        participantIds,
-        tournamentRecord,
-        groupingParticipantId: teamId || groupId,
-        removeFromOtherTeams: true,
-      });
-    }
 
     if (errors.length) {
       return { error: errors };
@@ -217,10 +200,4 @@ export function addParticipants({
       message: 'No new participants to add',
     });
   }
-}
-
-function participantSource({ tournamentRecord, source }) {
-  if (!tournamentRecord.tournamentProfile)
-    tournamentRecord.tournamentProfile = {};
-  tournamentRecord.tournamentProfile.participantSource = source;
 }
