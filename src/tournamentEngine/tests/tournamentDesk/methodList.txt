@@ -21,7 +21,7 @@ tournamentEngine
 * addEventEntryPairs
 * addMatchUpScheduledDayDate
 * addMatchUpScheduledTime
-- addParticipants
+* addParticipants
 * addVenue
 * assignMatchUpVenue
 - assignTieMatchUpParticipantId
@@ -34,6 +34,7 @@ tournamentEngine
 * getEventTimeItem
 - modifyEntriesStatus
 * modifyVenue
+* modifyIndividualParticipantIds
 - participantSignInStatus
 - promoteAlternate
 * publishEvent

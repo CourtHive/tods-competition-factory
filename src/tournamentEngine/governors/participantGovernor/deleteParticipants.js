@@ -1,4 +1,4 @@
-import { removeParticipantsFromAllTeams } from './participantGroupings';
+import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
 
 import {
   MISSING_PARTICIPANT_IDS,
@@ -19,7 +19,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   const participantsRemovedCount =
     participantsCount - tournamentRecord.participants.length;
 
-  removeParticipantsFromAllTeams({ tournamentRecord, participantIds });
+  removeParticipantIdsFromAllTeams({ tournamentRecord, participantIds });
   return participantsRemovedCount
     ? SUCCESS
     : { error: 'Not all participants deleted' };

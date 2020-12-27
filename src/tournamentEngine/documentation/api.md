@@ -74,7 +74,14 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 ---
 
-## addParticipantsToGrouping
+## addIndividualParticipantIds
+
+Adds individualParticipantIds to GROUP or TEAM partiicpants
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - individual participantIds to be added to grouping participant
+- @param {boolean} removeFromOtherTeams - whether or not to remove from other teams
 
 ---
 
@@ -439,6 +446,12 @@ Returns deepCopies of tournament participants filtered by participantFilters whi
 imlemented: eventIds, participantTypes, participantRoles,
 to be implemented: drawIds, structureIds, signInStates, keyValues,
 
+```js
+const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  participantFilters: { participantTypes: [INDIVIDUAL] },
+});
+```
+
 ---
 
 ## getTournamentPenalties
@@ -469,11 +482,30 @@ to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ---
 
+## modifyIndividualParticipantIds
+
+Modify grouping participant [TEAM, GROUP] individualParticipantIds
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - new value for individualParticipantIds array
+
+---
+
 ## modifyPenalty
 
 ---
 
 ## newTournamentRecord
+
+---
+
+## participantMembership
+
+Returns all grouping participants which include participantId
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} participantId - id of individual participant
 
 ---
 
@@ -501,11 +533,17 @@ to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ---
 
-## removeParticipantsFromAllTeams
+## removeParticipantIdsFromAllTeams
 
 ---
 
-## removeParticipantsFromGroup
+## removeIndividualParticipantIds
+
+Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
 
 ---
 
