@@ -29,24 +29,25 @@ it('can accurately determine available actions for drawPositions', () => {
 
   let drawPosition = 1;
   let result = drawEngine.positionActions({
+    drawId,
     structureId,
     drawPosition,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
-  console.log(result.validActions);
 
   drawPosition = 2;
   result = drawEngine.positionActions({
+    drawId,
     structureId,
     drawPosition,
   });
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(true);
-  console.log(result.validActions);
 
   drawPosition = 0;
   result = drawEngine.positionActions({
+    drawId,
     structureId,
     drawPosition,
   });
@@ -54,6 +55,7 @@ it('can accurately determine available actions for drawPositions', () => {
 
   drawPosition = 40;
   result = drawEngine.positionActions({
+    drawId,
     structureId,
     drawPosition,
   });
@@ -115,4 +117,36 @@ it('can remove drawPosition assignment and add it back', () => {
 
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
+});
+
+it.skip('can recognize valid SWAP positions', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      participantsCount: 30,
+    },
+  ];
+  const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  const drawId = drawIds[0];
+
+  let {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  const structureId = structures[0].structureId;
+
+  let drawPosition = 1;
+  let result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(false);
+  let options = result.validActions?.map((validAction) => validAction.type);
+  console.log(options);
 });

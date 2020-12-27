@@ -1,16 +1,13 @@
-import { getByesData } from '../../governors/positionGovernor/positionByes';
-import { getQualifiersData } from '../../governors/positionGovernor/positionQualifiers';
-
-import { stageEntries } from '../../getters/stageGetter';
-import { getNextSeedBlock } from '../../getters/seedGetter';
-import { findStructure } from '../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { stageEntries } from '../../../getters/stageGetter';
+import { getNextSeedBlock } from '../../../getters/seedGetter';
+import { findStructure } from '../../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
-} from '../../../constants/entryStatusConstants';
+} from '../../../../constants/entryStatusConstants';
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
@@ -18,16 +15,16 @@ import {
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 import {
-  ASSIGN_PARTICIPANT,
   REMOVE_PARTICIPANT,
-  ASSIGN_PARTICIPANT_METHOD,
   REMOVE_PARTICIPANT_METHOD,
   ADD_NICKNAME,
   ADD_PENALTY,
-} from '../../../constants/positionActionConstants';
-import { DRAW, LOSER } from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/positionActionConstants';
+import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
+import { getValidAssignmentAction } from './participantAssignments';
+import { getValidSwapAction } from './participantSwaps';
 
 /**
  *
@@ -112,100 +109,22 @@ export function positionActions({
     .map((entry) => entry.participantId);
 
   const isByePosition = !!(positionAssignment && positionAssignment.bye);
+  const {
+    activeDrawPositions,
+    inactiveDrawPositions,
+    byeDrawPositions,
+  } = structureActiveDrawPositions({ drawDefinition, structureId });
 
   if (!positionAssignment) {
-    const result = getNextSeedBlock({
+    const { validAssignmentAction } = getValidAssignmentAction({
       drawDefinition,
       structureId,
-      randomize: true,
+      drawPosition,
+      positionAssignments,
+      unassignedParticipantIds,
     });
-    const { unplacedSeedParticipantIds, unplacedSeedAssignments } = result;
-    let { unfilledPositions } = result;
-
-    if (!unfilledPositions.length) {
-      unfilledPositions = positionAssignments
-        .filter(
-          (assignment) =>
-            !assignment.participantId &&
-            !assignment.bye &&
-            !assignment.qualifier
-        )
-        .map((assignment) => assignment.drawPosition);
-    }
-    // add structureId and drawPosition to the payload so the client doesn't need to discover
-    if (unfilledPositions.includes(drawPosition)) {
-      const payload = { drawId, structureId, drawPosition };
-      if (unplacedSeedAssignments.length) {
-        // return any valid seedAssignments
-        const validToAssign = unplacedSeedAssignments.filter((seedAssignment) =>
-          unplacedSeedParticipantIds.includes(seedAssignment.participantId)
-        );
-
-        validToAssign.sort(validAssignmentsSort);
-        const availableParticipantIds = validToAssign.map(
-          (assignment) => assignment.participantId
-        );
-        validActions.push({
-          type: ASSIGN_PARTICIPANT,
-          method: ASSIGN_PARTICIPANT_METHOD,
-          availableParticipantIds,
-          payload,
-        });
-      } else {
-        // otherwise look for any unplaced entries
-        const availableParticipantIds = unassignedParticipantIds;
-        validActions.push({
-          type: ASSIGN_PARTICIPANT,
-          method: ASSIGN_PARTICIPANT_METHOD,
-          availableParticipantIds,
-          payload,
-        });
-      }
-    } else if (unfilledPositions.length === 0) {
-      // first add any unassigned participants
-      const validToAssign = entries
-        .filter(
-          (entry) => !assignedParticipantIds.includes(entry.participantId)
-        )
-        .map((valid) =>
-          Object.assign(valid, { drawId, structureId, drawPosition })
-        );
-
-      // discover how many byes are unplaced
-      const { byesCount, placedByes, validByePositions } = getByesData({
-        drawDefinition,
-        structure,
-      });
-      const validPositionForBye = validByePositions.includes(drawPosition);
-      const unassignedByes = byesCount - placedByes;
-      if (validPositionForBye && unassignedByes) {
-        validToAssign.push({
-          bye: true,
-          unassignedByes,
-          drawId,
-          structureId,
-          drawPosition,
-        });
-      }
-
-      // discover how many qualifiers are unplaced
-      const { unplacedQualifiersCount } = getQualifiersData({
-        drawDefinition,
-        structure,
-      });
-      console.log({ unplacedQualifiersCount });
-
-      validToAssign.sort(validAssignmentsSort);
-      validActions.push({
-        type: ASSIGN_PARTICIPANT,
-        payload: { validToAssign },
-      });
-    }
+    if (validAssignmentAction) validActions.push(validAssignmentAction);
   } else {
-    const {
-      activeDrawPositions,
-      byeDrawPositions,
-    } = structureActiveDrawPositions({ drawDefinition, structureId });
     if (!activeDrawPositions.includes(drawPosition)) {
       validActions.push({
         type: REMOVE_PARTICIPANT,
@@ -218,14 +137,18 @@ export function positionActions({
       validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: ADD_NICKNAME });
     }
+    const { validSwapAction } = getValidSwapAction({
+      drawDefinition,
+      structureId,
+      drawPosition,
+      positionAssignments,
+      activeDrawPositions,
+      inactiveDrawPositions,
+      byeDrawPositions,
+    });
+    if (validSwapAction) validActions.push(validSwapAction);
   }
   return { validActions, isDrawPosition: true, isByePosition };
-}
-
-function validAssignmentsSort(a, b) {
-  if (a.bye) return -1;
-  if (a.seedValue < b.seedValue || (a.seedValue && !b.seedValue)) return -1;
-  return (a.drawOrder || 0) - (b.drawOrder || 0);
 }
 
 export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {

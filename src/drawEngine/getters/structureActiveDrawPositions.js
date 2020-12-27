@@ -37,6 +37,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
     return {
       activeDrawPositions,
+      inactiveDrawPositions: [],
       advancedDrawPositions: [],
       pairedDrawPositions: [],
       byeDrawPositions,
@@ -73,8 +74,13 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .concat(...advancedDrawPositions, pairedDrawPositions)
       .filter((f) => f);
 
+    const inactiveDrawPostiions = drawPositions.filter(
+      (drawPosition) => !activeDrawPositions.includes(drawPosition)
+    );
+
     return {
       activeDrawPositions,
+      inactiveDrawPostiions,
       advancedDrawPositions,
       pairedDrawPositions,
       byeDrawPositions,
