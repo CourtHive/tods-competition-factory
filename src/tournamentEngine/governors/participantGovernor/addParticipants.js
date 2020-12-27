@@ -17,6 +17,7 @@ import {
   PARTICIPANT_PAIR_EXISTS,
   INVALID_VALUES,
   PARTICIPANT_NOT_FOUND,
+  EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
 import { makeDeepCopy, UUID } from '../../../utilities';
 import { intersection } from '../../../utilities/arrays';
@@ -51,6 +52,8 @@ export function addParticipant({ tournamentRecord, participant }) {
 
   const errors = [];
   if (participantType === PAIR) {
+    if (participant.person)
+      return { error: INVALID_VALUES, person: participant.person };
     if (!participant.individualParticipantIds) {
       return { error: MISSING_PARTICIPANT_IDS };
     } else if (participant.individualParticipantIds.length !== 2) {
@@ -117,6 +120,9 @@ export function addParticipant({ tournamentRecord, participant }) {
       participant.name = participantName; // backwards compatabilty
     }
   } else {
+    if (participant.person)
+      return { error: INVALID_VALUES, person: participant.person };
+
     const { individualParticipantIds } = participant;
     (individualParticipantIds || []).forEach((individualParticipantId) => {
       if (typeof individualParticipantId !== 'string') {
@@ -162,6 +168,10 @@ export function addParticipants({ tournamentRecord, participants = [] }) {
     (participant) => !existingParticipantIds.includes(participant.participantId)
   );
 
+  const notAdded = participants.filter((participant) =>
+    existingParticipantIds.includes(participant.participantId)
+  );
+
   const individualParticipants = newParticipants.filter(
     (participant) => participant.participantType === INDIVIDUAL
   );
@@ -191,9 +201,13 @@ export function addParticipants({ tournamentRecord, participants = [] }) {
     if (errors.length) {
       return { error: errors };
     } else {
-      return Object.assign({}, SUCCESS, {
+      const result = Object.assign({}, SUCCESS, {
         participants: makeDeepCopy(addedParticipants),
       });
+      if (notAdded.length) {
+        Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
+      }
+      return result;
     }
   } else {
     return Object.assign({}, SUCCESS, {

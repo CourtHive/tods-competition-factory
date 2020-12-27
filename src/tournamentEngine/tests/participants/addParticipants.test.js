@@ -1,21 +1,20 @@
-import { tournamentEngine } from '../..';
-import mocksEngine from '../../../mocksEngine';
-
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
+import tournamentEngine from '../..';
 import {
-  INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ROLE,
   MISSING_PERSON_DETAILS,
-  PARTICIPANT_PAIR_EXISTS,
 } from '../../../constants/errorConditionConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { UUID } from '../../../utilities';
 
-it('will not add invalid individual participants', () => {
+it('can add multiple participants at once', () => {
   let result = tournamentEngine.newTournamentRecord();
   expect(result?.success).toEqual(true);
+  const participantId = UUID();
 
   let participant = {
+    participantId,
     participantRole: COMPETITOR,
     person: {
       standardFamilyName: 'Family',
@@ -23,10 +22,14 @@ it('will not add invalid individual participants', () => {
     },
   };
 
-  result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(INVALID_PARTICIPANT_TYPE);
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
+  expect(result.error.length).toEqual(1);
+  expect(result.error[0]).toEqual(INVALID_PARTICIPANT_TYPE);
 
   participant = {
+    participantId,
     participantType: INDIVIDUAL,
     person: {
       standardFamilyName: 'Family',
@@ -34,18 +37,14 @@ it('will not add invalid individual participants', () => {
     },
   };
 
-  result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(MISSING_PARTICIPANT_ROLE);
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
+  expect(result.error.length).toEqual(1);
+  expect(result.error[0]).toEqual(MISSING_PARTICIPANT_ROLE);
 
   participant = {
-    participantType: INDIVIDUAL,
-    participantRole: COMPETITOR,
-  };
-
-  result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(MISSING_PERSON_DETAILS);
-
-  participant = {
+    participantId,
     participantType: INDIVIDUAL,
     participantRole: COMPETITOR,
     person: {
@@ -53,21 +52,14 @@ it('will not add invalid individual participants', () => {
     },
   };
 
-  result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(MISSING_PERSON_DETAILS);
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
+  expect(result.error.length).toEqual(1);
+  expect(result.error[0]).toEqual(MISSING_PERSON_DETAILS);
 
   participant = {
-    participantType: INDIVIDUAL,
-    participantRole: COMPETITOR,
-    person: {
-      standardFamilyName: 'Family',
-    },
-  };
-
-  result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(MISSING_PERSON_DETAILS);
-
-  participant = {
+    participantId,
     participantType: INDIVIDUAL,
     participantRole: COMPETITOR,
     person: {
@@ -76,15 +68,13 @@ it('will not add invalid individual participants', () => {
     },
   };
 
-  result = tournamentEngine.addParticipant({ participant });
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
   expect(result.success).toEqual(true);
-});
 
-it('can add individual and pair participants', () => {
-  let result = tournamentEngine.newTournamentRecord();
-  expect(result?.success).toEqual(true);
-
-  const participant1 = {
+  participant = {
+    participantId,
     participantType: INDIVIDUAL,
     participantRole: COMPETITOR,
     person: {
@@ -92,6 +82,12 @@ it('can add individual and pair participants', () => {
       standardGivenName: 'Given',
     },
   };
+
+  result = tournamentEngine.addParticipants({
+    participants: [participant],
+  });
+  expect(result.success).toEqual(true);
+  expect(result.message).not.toBeUndefined();
 
   const participant2 = {
     participantType: INDIVIDUAL,
@@ -102,126 +98,32 @@ it('can add individual and pair participants', () => {
     },
   };
 
-  const individualParticipantIds = [];
-  result = tournamentEngine.addParticipant({ participant: participant1 });
-  expect(result.success).toEqual(true);
-  individualParticipantIds.push(result.participant.participantId);
-
-  result = tournamentEngine.addParticipant({ participant: participant2 });
-  expect(result.success).toEqual(true);
-  individualParticipantIds.push(result.participant.participantId);
-
-  const pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds,
-  };
-  result = tournamentEngine.addParticipant({ participant: pairParticipant });
-  expect(result.success).toEqual(true);
-
-  const { tournamentRecord } = tournamentEngine.getState();
-  expect(tournamentRecord.participants.length).toEqual(3);
-});
-
-it('will not add invalid PAIR participants', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    inContext: true,
+  result = tournamentEngine.addParticipants({
+    participants: [participant, participant2],
   });
-  tournamentEngine.setState(tournamentRecord);
-
-  let pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds: ['abc'],
-  };
-  let result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  expect(result.success).toEqual(true);
+  expect(result.notAdded.length).toEqual(1);
   expect(result.message).not.toBeUndefined();
 
-  pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds: ['abc', 'def'],
-  };
-  result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.message).toBeUndefined();
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  expect(tournamentParticipants.length).toEqual(2);
 
-  const {
-    tournamentParticipants: individualParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-  });
-
-  // cannot add 3 individualParticipantIds for PAIR
-  const threePrticipantIds = individualParticipants
-    .slice(0, 3)
-    .map((participant) => participant.participantId);
-  pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds: threePrticipantIds,
-  };
-  result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.message).not.toBeUndefined();
-
-  // individualParticipants instead of individualParticipantIds
-  const participants = individualParticipants.slice(0, 2);
-  pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds: participants,
-  };
-  result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-
-  // expect success
-  let individualParticipantIds = individualParticipants
-    .slice(0, 2)
-    .map((participant) => participant.participantId);
-  pairParticipant = {
-    participantType: PAIR,
-    participantRole: COMPETITOR,
-    individualParticipantIds,
-  };
-  result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.success).toEqual(true);
-  const pairParticipantId = result.participant.participantId;
-
-  const {
-    tournamentParticipants: pairParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [PAIR] },
-  });
-  const pairParticipantIds = pairParticipants.map(
+  const individualParticipantIds = tournamentParticipants.map(
     (participant) => participant.participantId
   );
-  expect(pairParticipantIds.includes(pairParticipantId)).toEqual(true);
 
-  pairParticipant = {
+  const participant3 = {
     participantType: PAIR,
     participantRole: COMPETITOR,
     individualParticipantIds,
   };
-  result = tournamentEngine.addParticipant({
-    participant: pairParticipant,
-  });
-  expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
 
-  result = tournamentEngine.participantMembership({
-    participantId: individualParticipantIds[0],
+  result = tournamentEngine.addParticipants({
+    participants: [participant, participant2, participant3],
   });
-  expect(result[PAIR].length).toEqual(1);
-  expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
+  expect(result.success).toEqual(true);
+  expect(result.notAdded.length).toEqual(2);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  expect(tournamentParticipants.length).toEqual(3);
 });
