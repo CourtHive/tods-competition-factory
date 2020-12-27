@@ -60,7 +60,7 @@ it('can accurately determine available actions for drawPositions', () => {
   expect(result.error).toEqual(INVALID_DRAW_POSITION);
 });
 
-it.only('can remove drawPosition assignment and add it back', () => {
+it('can remove drawPosition assignment and add it back', () => {
   const drawProfiles = [
     {
       drawSize: 32,
