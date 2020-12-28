@@ -23,6 +23,7 @@ tournamentEngine
 * addMatchUpScheduledTime
 * addParticipants
 * addVenue
+* alternateDrawPositionAssignment
 * assignDrawPosition
 * assignMatchUpVenue
 - assignTieMatchUpParticipantId

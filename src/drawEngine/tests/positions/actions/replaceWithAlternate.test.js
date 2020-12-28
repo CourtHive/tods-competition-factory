@@ -1,7 +1,7 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
 
-import { SWAP_PARTICIPANTS } from '../../../../constants/positionActionConstants';
+import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('can recognize valid ALTERNATES', () => {
@@ -25,7 +25,7 @@ it('can recognize valid ALTERNATES', () => {
   const structureId = structures[0].structureId;
   const alternates = entries.filter((entry) => entry.entryStatus === ALTERNATE);
   expect(alternates.length).toEqual(2);
-  // const originalPositionAssignments = structures[0].positionAssignments;
+  const originalPositionAssignments = structures[0].positionAssignments;
 
   let drawPosition = 1;
   let result = tournamentEngine.positionActions({
@@ -36,9 +36,28 @@ it('can recognize valid ALTERNATES', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
+    (action) => action.type === ALTERNATE_PARTICIPANT
   );
-  expect(option.availableAssignments[0].drawPosition).toEqual(3);
+  expect(option.availableAlternates.length).toEqual(2);
+
+  const payload = option.payload;
+  payload.alternateParticipantId = option.availableAlternatesIds[0];
+
+  result = tournamentEngine[option.method](payload);
+  expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId }));
+  const modifiedPositionAssignments = structures[0].positionAssignments;
+
+  expect(originalPositionAssignments[0].participantId).not.toEqual(
+    modifiedPositionAssignments[0].participantId
+  );
+
+  expect(modifiedPositionAssignments[0].participantId).toEqual(
+    payload.alternateParticipantId
+  );
 });

@@ -21,19 +21,20 @@ export function getValidAlternatesAction({
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
-  const availableAlternatesIds = drawDefinition.entries?.filter(
-    (entry) =>
-      entry.stage === stage &&
-      entry.entryStatus === ALTERNATE &&
-      !assignedParticipantIds.includes(entry.participantId)
-  );
+  const availableAlternatesIds = drawDefinition.entries
+    ?.filter(
+      (entry) =>
+        entry.entryStage === stage &&
+        entry.entryStatus === ALTERNATE &&
+        !assignedParticipantIds.includes(entry.participantId)
+    )
+    .map((entry) => entry.participantId);
 
   const availableAlternates = tournamentParticipants.filter((participant) =>
     availableAlternatesIds.includes(participant.participantId)
   );
 
-  const condition = false;
-  if (condition) {
+  if (availableAlternatesIds.length) {
     const validAlternatesAction = {
       type: ALTERNATE_PARTICIPANT,
       method: ALTERNATE_PARTICIPANT_METHOD,
