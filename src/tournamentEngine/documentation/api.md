@@ -76,7 +76,7 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 ## addIndividualParticipantIds
 
-Adds individualParticipantIds to GROUP or TEAM partiicpants
+Adds individualParticipantIds to GROUP or TEAM participants
 
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
 - @param {string} groupingParticipantId - grouping participant to which participantIds are to be added

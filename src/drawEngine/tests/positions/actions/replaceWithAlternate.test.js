@@ -2,6 +2,7 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
 
 import { SWAP_PARTICIPANTS } from '../../../../constants/positionActionConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('can recognize valid ALTERNATES', () => {
   const drawProfiles = [
@@ -19,9 +20,11 @@ it('can recognize valid ALTERNATES', () => {
   const drawId = drawIds[0];
 
   let {
-    drawDefinition: { structures },
+    drawDefinition: { entries, structures },
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
+  const alternates = entries.filter((entry) => entry.entryStatus === ALTERNATE);
+  expect(alternates.length).toEqual(2);
   // const originalPositionAssignments = structures[0].positionAssignments;
 
   let drawPosition = 1;

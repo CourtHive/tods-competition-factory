@@ -58,12 +58,12 @@ export function addIndividualParticipantIds({
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
-  const existingIindividualParticipantIds =
+  const existingIndividualParticipantIds =
     groupingParticipant.individualParticipantIds;
 
   const participantIdsToAdd = individualParticipantIds.filter(
     (participantId) => {
-      const participantIsMember = existingIindividualParticipantIds.includes(
+      const participantIsMember = existingIndividualParticipantIds.includes(
         participantId
       );
       return !participantIsMember;

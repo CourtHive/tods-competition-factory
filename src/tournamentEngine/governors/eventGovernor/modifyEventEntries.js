@@ -54,7 +54,7 @@ export function modifyEventEntries({
   if (invalidParticipantIdPairs.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
-  // make an array of all existing PAIR partiicpantIds
+  // make an array of all existing PAIR participantIds
   const existingParticipantIdPairs = tournamentParticipants
     .filter((participant) => participant.participantType === PAIR)
     .map((participant) => participant.individualParticipantIds);

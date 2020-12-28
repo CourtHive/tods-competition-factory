@@ -8,7 +8,7 @@ import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../constants/drawDefinitionCon
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-it('can add drawPositiionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
+it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
   const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -86,7 +86,7 @@ it('can add drawPositiionsRange to inContext matchUps in a SINGLE_ELIMINATION st
   });
 });
 
-it('can add drawPositiionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_TO_SF', () => {
+it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_TO_SF', () => {
   const {
     links,
     drawDefinition,

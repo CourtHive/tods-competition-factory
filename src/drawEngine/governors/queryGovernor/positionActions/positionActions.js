@@ -4,6 +4,10 @@ import { findStructure } from '../../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 
+import { getValidAlternatesAction } from './participantAlternates';
+import { getValidAssignmentAction } from './participantAssignments';
+import { getValidSwapAction } from './participantSwaps';
+
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
@@ -23,8 +27,6 @@ import {
   ADD_PENALTY,
 } from '../../../../constants/positionActionConstants';
 import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
-import { getValidAssignmentAction } from './participantAssignments';
-import { getValidSwapAction } from './participantSwaps';
 
 /**
  *
@@ -150,7 +152,19 @@ export function positionActions({
       tournamentParticipants,
     });
     if (validSwapAction) validActions.push(validSwapAction);
+
+    const { validAlternatesAction } = getValidAlternatesAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      positionAssignments,
+      tournamentParticipants,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
+
   return { validActions, isDrawPosition: true, isByePosition };
 }
 
