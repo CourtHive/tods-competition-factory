@@ -1,11 +1,14 @@
-import { tournamentEngine } from '../..';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { tournamentEngine } from '../../..';
+import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
 
-import { DOUBLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { /*INDIVIDUAL,*/ PAIR } from '../../../constants/participantTypes';
-import { UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
-import drawEngine from '../../../drawEngine';
+import { DOUBLES } from '../../../../constants/eventConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { /*INDIVIDUAL,*/ PAIR } from '../../../../constants/participantTypes';
+import {
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../../constants/entryStatusConstants';
+import drawEngine from '../../../../drawEngine';
 // import { COMPETITOR } from '../../../constants/participantRoles';
 // import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
 

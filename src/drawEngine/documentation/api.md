@@ -307,7 +307,7 @@ Returns seedAssignments a specific structure based on structureId or structure
 
 | Parameters     | Required | Type   | Description                                     |
 | :------------- | :------- | :----- | :---------------------------------------------- |
-| drawDefiniiton | required | object | drawDefinition object                           |
+| drawDefinition | required | object | drawDefinition object                           |
 | structure      | Optional | object | Return seedAssignments for a specific structure |
 | structureId    | Optional | string | Return seedAssignments for a specific structure |
 

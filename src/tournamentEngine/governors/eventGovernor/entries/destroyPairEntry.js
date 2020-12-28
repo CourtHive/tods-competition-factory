@@ -1,4 +1,4 @@
-import { UNPAIRED } from '../../../constants/entryStatusConstants';
+import { UNPAIRED } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,
@@ -7,10 +7,10 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { PAIR } from '../../../constants/participantTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { DOUBLES } from '../../../../constants/matchUpTypes';
+import { PAIR } from '../../../../constants/participantTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import { addEventEntries } from './addEventEntries';
 import { removeEventEntries } from './removeEventEntries';
 

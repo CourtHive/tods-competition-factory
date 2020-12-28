@@ -1,22 +1,22 @@
-import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
-import { addParticipants } from '../participantGovernor/addParticipants';
-import { intersection } from '../../../utilities/arrays';
+import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
+import { addParticipants } from '../../participantGovernor/addParticipants';
+import { intersection } from '../../../../utilities/arrays';
 
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   INVALID_PARTICIPANT_IDS,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 
 import {
   DIRECT_ACCEPTANCE,
   UNPAIRED,
-} from '../../../constants/entryStatusConstants';
+} from '../../../../constants/entryStatusConstants';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 // TODO: untested
 export function modifyEventEntries({
@@ -54,7 +54,7 @@ export function modifyEventEntries({
   if (invalidParticipantIdPairs.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIdPairs };
 
-  // make an array of all existing PAIR partiicpantIds
+  // make an array of all existing PAIR participantIds
   const existingParticipantIdPairs = tournamentParticipants
     .filter((participant) => participant.participantType === PAIR)
     .map((participant) => participant.individualParticipantIds);

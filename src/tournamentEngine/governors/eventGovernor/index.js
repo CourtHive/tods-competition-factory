@@ -1,13 +1,13 @@
 import { addEvent } from './addEvent';
 import { deleteEvents } from './deleteEvent';
 import { addDrawEntries } from './drawDefinitions/addDrawEntries';
-import { addEventEntries } from './addEventEntries';
-import { destroyPairEntry } from './destroyPairEntry';
-import { promoteAlternate } from './promoteAlternate';
-import { addEventEntryPairs } from './addEventEntryPairs';
-import { checkValidEntries } from './checkValidEntries';
+import { addEventEntries } from './entries/addEventEntries';
+import { destroyPairEntry } from './entries/destroyPairEntry';
+import { promoteAlternate } from './entries/promoteAlternate';
+import { addEventEntryPairs } from './entries/addEventEntryPairs';
+import { checkValidEntries } from './entries/checkValidEntries';
 import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
-import { removeEventEntries } from './removeEventEntries';
+import { removeEventEntries } from './entries/removeEventEntries';
 import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { assignSeedPositions } from './assignSeedPositions';
 import {
@@ -33,11 +33,15 @@ import {
   setCollectionDefaultMatchUpFormat,
 } from './setDefaultmatchUpFormat';
 
-import { setEntryPosition, setEntryPositions } from './setEntryPositions';
-import { modifyEntriesStatus } from './modifyEntriesStatus';
+import {
+  setEntryPosition,
+  setEntryPositions,
+} from './entries/setEntryPositions';
+import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
+import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
 
 const eventGovernor = {
   addEvent,
@@ -73,6 +77,7 @@ const eventGovernor = {
   assignSeedPositions,
   swapDrawPositionAssignments,
   removeDrawPositionAssignment,
+  alternateDrawPositionAssignment,
   setDrawParticipantRepresentatives,
 
   automatedPositioning,

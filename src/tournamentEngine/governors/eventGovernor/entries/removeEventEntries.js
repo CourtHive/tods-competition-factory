@@ -2,8 +2,8 @@ import {
   MISSING_EVENT,
   EVENT_NOT_FOUND,
   MISSING_PARTICIPANT_IDS,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function removeEventEntries({ participantIds, event }) {
   if (!event) return { error: MISSING_EVENT };

@@ -1,14 +1,17 @@
-import { UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
+import {
+  UNPAIRED,
+  WITHDRAWN,
+} from '../../../../constants/entryStatusConstants';
 import {
   INVALID_ENTRIES,
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
   UNRECOGNIZED_EVENT_TYPE,
-} from '../../../constants/errorConditionConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { FEMALE, MALE } from '../../../../constants/genderConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function checkValidEntries({ event, participants, ignoreGender }) {
   if (!event) return { error: MISSING_EVENT };

@@ -6,7 +6,11 @@ import {
   setTournamentCategories,
 } from './tournamentDetails';
 
-import { addEventTimeItem, addTournamentTimeItem } from './addTimeItem';
+import {
+  addEventTimeItem,
+  addParticipantTimeItem,
+  addTournamentTimeItem,
+} from './addTimeItem';
 
 import {
   removeDrawDefinitionExtension,
@@ -26,6 +30,7 @@ const tournamentGovernor = {
 
   addEventTimeItem,
   addTournamentTimeItem,
+  addParticipantTimeItem,
 
   addEventExtension,
   removeEventExtension,

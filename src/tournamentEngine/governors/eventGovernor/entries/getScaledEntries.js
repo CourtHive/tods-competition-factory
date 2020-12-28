@@ -1,5 +1,5 @@
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
-import { getParticipantScaleItem } from '../queryGovernor/scaleValue';
+import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import { getParticipantScaleItem } from '../../queryGovernor/scaleValue';
 
 export function getScaledEntries({
   tournamentRecord,

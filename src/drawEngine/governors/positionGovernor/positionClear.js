@@ -19,6 +19,7 @@ import {
   DRAW_POSITION_NOT_CLEARED,
   MISSING_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
+import { exit } from 'process';
 
 /**
  *
@@ -45,21 +46,23 @@ export function clearDrawPosition({
     .map((assignment) => assignment.drawPosition)
     .filter((f) => f);
 
+  const existingAssignment = positionAssignments.reduce(
+    (value, assignment) =>
+      assignment.participantId === participantId ? assignment : value,
+    undefined
+  );
+
   if (participantId && !drawPosition) {
-    drawPosition = positionAssignments.reduce((drawPosition, assignment) => {
-      return assignment.participantId === participantId
-        ? assignment.drawPosition
-        : drawPosition;
-    }, undefined);
+    drawPosition = existingAssignment?.drawPosition;
   }
+  if (!drawPosition) return { error: MISSING_DRAW_POSITION };
+  if (!participantId) participantId = existingAssignment?.participantId;
 
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
     structureId,
   });
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
-
-  if (!drawPosition) return { error: MISSING_DRAW_POSITION };
 
   // drawPosition may not be cleared if:
   // 1. drawPosition has been advanced by winning a matchUp
@@ -105,7 +108,9 @@ export function clearDrawPosition({
     }
   });
 
-  return drawPositionCleared ? SUCCESS : { error: DRAW_POSITION_NOT_CLEARED };
+  if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
+
+  return Object.assign({}, SUCCESS, { participantId });
 
   function removeByeAndCleanUp({
     matchUp,

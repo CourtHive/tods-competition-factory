@@ -57,18 +57,18 @@ export function modifyIndividualParticipantIds({
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
-  const existingIindividualParticipantIds =
+  const existingIndividualParticipantIds =
     groupingParticipant.individualParticipantIds || [];
 
   const individualParticipantIdsToAdd = individualParticipantIds.filter(
     (participantId) => {
-      return !existingIindividualParticipantIds.includes(participantId);
+      return !existingIndividualParticipantIds.includes(participantId);
     }
   );
 
   const individualParticipantIdsToRemove = individualParticipantIds.filter(
     (participantId) => {
-      return existingIindividualParticipantIds.includes(participantId);
+      return existingIndividualParticipantIds.includes(participantId);
     }
   );
 

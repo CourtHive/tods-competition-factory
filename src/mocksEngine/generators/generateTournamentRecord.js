@@ -4,6 +4,7 @@ import { tournamentEngine } from '../../tournamentEngine';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 
 export function generateTournamentRecord({
   endDate,
@@ -102,11 +103,24 @@ function generateEventWithDraw({
     return false;
   };
   const participantIds = participants
-    .slice(0, participantsCount)
     .filter(isEventParticipantType)
+    .slice(0, participantsCount)
     .map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   if (result.error) return { error: result.error };
+
+  const alternatesParticipantIds = participants
+    .filter(isEventParticipantType)
+    .slice(participantsCount)
+    .map((p) => p.participantId);
+  if (alternatesParticipantIds.length) {
+    result = tournamentEngine.addEventEntries({
+      eventId,
+      entryStatus: ALTERNATE,
+      participantIds: alternatesParticipantIds,
+    });
+    if (result.error) return { error: result.error };
+  }
 
   const {
     drawDefinition,

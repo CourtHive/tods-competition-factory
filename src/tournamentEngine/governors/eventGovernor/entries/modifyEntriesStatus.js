@@ -3,9 +3,9 @@ import {
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import { VALID_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { VALID_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyEntriesStatus({
   tournamentRecord,

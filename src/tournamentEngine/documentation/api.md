@@ -76,7 +76,7 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 ## addIndividualParticipantIds
 
-Adds individualParticipantIds to GROUP or TEAM partiicpants
+Adds individualParticipantIds to GROUP or TEAM participants
 
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
 - @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
@@ -133,6 +133,15 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps();
 ```
+
+---
+
+## alternateDrawPositionAssignment
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number} drawPosition - drawPosition where alternate participantId will be assigned
+- @param {string} alternateParticipantId - id of participant
 
 ---
 
@@ -513,7 +522,7 @@ Returns all grouping participants which include participantId
 
 ---
 
-## participantsSignInStatus
+## modifyParticipantsSignInStatus
 
 ---
 

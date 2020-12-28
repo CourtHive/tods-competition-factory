@@ -1,4 +1,3 @@
-import { findEvent } from '../../../getters/eventGetter';
 import { swapDrawPositionAssignments as positionSwap } from '../../../../drawEngine/governors/positionGovernor/positionSwap';
 
 /**

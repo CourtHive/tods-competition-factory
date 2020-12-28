@@ -17,7 +17,7 @@ import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from './groupings/removeIndividualParticipantIds';
-import { participantsSignInStatus } from './modifyParticipants';
+import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
 import { setParticipantScaleItems } from './scaleItems';
 import { setParticipantScaleItem } from './scaleItems';
 import {
@@ -60,7 +60,8 @@ const participantGovernor = {
   getPairedParticipant,
   setParticipantScaleItem,
   setParticipantScaleItems,
-  participantsSignInStatus,
+  participantsSignInStatus: modifyParticipantsSignInStatus, // legacy until TD switchover
+  modifyParticipantsSignInStatus,
 
   getParticipantEventDetails,
   findParticipant: findTournamentParticipantCopy,

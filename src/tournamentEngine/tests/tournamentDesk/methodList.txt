@@ -23,6 +23,7 @@ tournamentEngine
 * addMatchUpScheduledTime
 * addParticipants
 * addVenue
+* alternateDrawPositionAssignment
 * assignDrawPosition
 * assignMatchUpVenue
 - assignTieMatchUpParticipantId
@@ -30,15 +31,14 @@ tournamentEngine
 * automatedPlayoffPositioning
 - bulkMatchUpStatusUpdate
 - deleteDrawDefinitions
-- deleteParticipants
 * destroyPairEntry
 * getEventTimeItem
-- modifyEntriesStatus
+* modifyEntriesStatus
 * modifyVenue
 * modifyIndividualParticipantIds
-- participantSignInStatus
-- positionActions
-- promoteAlternate
+* participantSignInStatus
+* positionActions
+* promoteAlternate
 * publishEvent
   : getDrawData
   : getEventData
@@ -46,7 +46,7 @@ tournamentEngine
 * removeDrawPositionAssignment
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
-- setEntryPositions
+* setEntryPositions
 - setMatchUpFormat
 * setMatchUpStatus
 * setParticipantScaleItem
