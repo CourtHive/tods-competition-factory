@@ -38,7 +38,7 @@ tournamentEngine
 * modifyIndividualParticipantIds
 * participantSignInStatus
 * positionActions
-- promoteAlternate
+* promoteAlternate
 * publishEvent
   : getDrawData
   : getEventData
@@ -46,7 +46,7 @@ tournamentEngine
 * removeDrawPositionAssignment
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
-- setEntryPositions
+* setEntryPositions
 - setMatchUpFormat
 * setMatchUpStatus
 * setParticipantScaleItem

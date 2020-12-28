@@ -22,15 +22,27 @@ export function promoteAlternate({
   participantId,
   stage = MAIN,
   stageSequence,
-  entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!event) return { error: MISSING_EVENT };
+  if (!event.entries) event.entries = [];
 
-  const participantEntry = event.entries.find(
-    (entry) => entry.participantId === participantId
+  const alternates = event.entries.filter(
+    (entry) => entry.entryStatus === ALTERNATE
   );
+
+  // if no participantId is provided, take the alternate with the lowest entryPosition
+  const participantEntry =
+    event.entries.find((entry) => entry.participantId === participantId) ||
+    alternates.reduce((participantEntry, entry) => {
+      const { entryPosition } = entry;
+      return !entryPosition
+        ? participantEntry
+        : !participantEntry || entryPosition < participantEntry.entryPosition
+        ? entry
+        : participantEntry;
+    }, undefined);
+
   if (!participantEntry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
   if (participantEntry.entryStatus !== ALTERNATE)
@@ -40,7 +52,25 @@ export function promoteAlternate({
   if (stageSequence && participantEntry.stageSequence !== stageSequence)
     return { error: PARTICIPANT_NOT_FOUND_IN_STAGE };
 
-  participantEntry.entryStatus = entryStatus;
+  participantEntry.entryStatus = DIRECT_ACCEPTANCE;
+
+  // QUESTION: should entryPosition be calculated based on entryPositions of existing DIRECT_ACCEPTANCE participants?
+
+  // cleanUp
+  const entryPosition = participantEntry?.entryPosition;
+  delete participantEntry.entryPosition;
+
+  if (entryPosition) {
+    // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
+    event.entries.forEach((entry) => {
+      if (
+        entry.entryStatus === ALTERNATE &&
+        entry.entryPosition > entryPosition
+      ) {
+        entry.entryPosition = entry.entryPosition - 1;
+      }
+    });
+  }
 
   return SUCCESS;
 }
