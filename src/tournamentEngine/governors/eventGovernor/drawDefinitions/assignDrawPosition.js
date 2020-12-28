@@ -17,8 +17,8 @@ export function assignDrawPosition({
   bye,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
+  if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const errors = [];
 
