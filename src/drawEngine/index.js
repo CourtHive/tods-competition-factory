@@ -33,6 +33,7 @@ function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
   return Object.assign({}, template, { drawId, drawType, drawProfile });
 }
 
+// TASK: add verify/validate structure as option in setState
 function setState(definition, deepCopyOption = true) {
   if (!definition) return { error: MISSING_DRAW_DEFINITION };
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };

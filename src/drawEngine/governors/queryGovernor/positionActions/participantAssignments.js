@@ -9,6 +9,7 @@ export function getValidAssignmentAction({
   structureId,
   drawPosition,
   positionAssignments,
+  tournamentParticipants,
   unassignedParticipantIds,
 }) {
   const { drawId } = drawDefinition;
@@ -89,10 +90,15 @@ export function getValidAssignmentAction({
       */
     }
     // add structureId and drawPosition to the payload so the client doesn't need to discover
+    const participantsAvailable = tournamentParticipants?.filter(
+      (participant) =>
+        availableParticipantIds.includes(participant.participantId)
+    );
     const validAssignmentAction = {
       type: ASSIGN_PARTICIPANT,
       method: ASSIGN_PARTICIPANT_METHOD,
       availableParticipantIds,
+      participantsAvailable,
       payload: { drawId, structureId, drawPosition },
     };
     return { validAssignmentAction };

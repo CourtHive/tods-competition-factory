@@ -37,6 +37,7 @@ import { setEntryPosition, setEntryPositions } from './setEntryPositions';
 import { modifyEntriesStatus } from './modifyEntriesStatus';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { addPlayoffStructures } from './addPlayoffStructures';
+import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 
 const eventGovernor = {
   addEvent,
@@ -70,6 +71,7 @@ const eventGovernor = {
 
   assignDrawPosition,
   assignSeedPositions,
+  swapDrawPositionAssignments,
   removeDrawPositionAssignment,
   setDrawParticipantRepresentatives,
 
