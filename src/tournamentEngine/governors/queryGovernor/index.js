@@ -26,6 +26,7 @@ import {
 import {
   getEventTimeItem,
   getTournamentTimeItem,
+  getParticipantTimeItem,
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
@@ -67,6 +68,7 @@ const queryGovernor = {
 
   getEventTimeItem,
   getTournamentTimeItem,
+  getParticipantTimeItem,
   getDrawDefinitionTimeItem,
 
   bulkUpdatePublishedEventIds,

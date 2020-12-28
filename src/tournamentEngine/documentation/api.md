@@ -522,7 +522,7 @@ Returns all grouping participants which include participantId
 
 ---
 
-## participantsSignInStatus
+## modifyParticipantsSignInStatus
 
 ---
 

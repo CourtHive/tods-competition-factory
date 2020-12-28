@@ -1,14 +1,17 @@
-import { tournamentEngine } from '../..';
-import { chunkArray } from '../../../utilities';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { tournamentEngine } from '../../..';
+import { chunkArray } from '../../../../utilities';
+import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
 
-import { DOUBLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
-import { PARTICIPANT_PAIR_EXISTS } from '../../../constants/errorConditionConstants';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES } from '../../../../constants/eventConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import {
+  ALTERNATE,
+  UNPAIRED,
+} from '../../../../constants/entryStatusConstants';
+import { PARTICIPANT_PAIR_EXISTS } from '../../../../constants/errorConditionConstants';
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 
 let result;
 

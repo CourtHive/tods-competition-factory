@@ -1,7 +1,7 @@
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
-import { getScaledEntries } from '../governors/eventGovernor/getScaledEntries';
-import { checkValidEntries } from '../governors/eventGovernor/checkValidEntries';
+import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 

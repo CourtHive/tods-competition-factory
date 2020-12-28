@@ -1,17 +1,17 @@
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import {
   DIRECT_ACCEPTANCE,
   UNPAIRED,
-} from '../../../constants/entryStatusConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
+} from '../../../../constants/entryStatusConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 import { removeEventEntries } from './removeEventEntries';
 
 /**

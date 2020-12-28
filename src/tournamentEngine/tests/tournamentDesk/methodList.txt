@@ -31,14 +31,13 @@ tournamentEngine
 * automatedPlayoffPositioning
 - bulkMatchUpStatusUpdate
 - deleteDrawDefinitions
-- deleteParticipants
 * destroyPairEntry
 * getEventTimeItem
-- modifyEntriesStatus
+* modifyEntriesStatus
 * modifyVenue
 * modifyIndividualParticipantIds
-- participantSignInStatus
-- positionActions
+* participantSignInStatus
+* positionActions
 - promoteAlternate
 * publishEvent
   : getDrawData

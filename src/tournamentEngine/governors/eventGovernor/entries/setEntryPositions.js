@@ -1,8 +1,8 @@
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function setEntryPosition({
   tournamentRecord,

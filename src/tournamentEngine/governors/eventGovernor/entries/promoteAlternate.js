@@ -1,7 +1,7 @@
 import {
   ALTERNATE,
   DIRECT_ACCEPTANCE,
-} from '../../../constants/entryStatusConstants';
+} from '../../../../constants/entryStatusConstants';
 import {
   MISSING_EVENT,
   INVALID_ENTRY_STATUS,
@@ -10,10 +10,10 @@ import {
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND_IN_STAGE,
   PARTICIPANT_NOT_ENTERED_IN_STAGE,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function promoteAlternate({
   tournamentRecord,

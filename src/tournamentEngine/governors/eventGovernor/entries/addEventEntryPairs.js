@@ -1,6 +1,6 @@
-import { intersection } from '../../../utilities/arrays';
-import { addParticipants } from '../participantGovernor/addParticipants';
-import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
+import { intersection } from '../../../../utilities/arrays';
+import { addParticipants } from '../../participantGovernor/addParticipants';
+import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
 import { addEventEntries } from './addEventEntries';
 
 import {
@@ -8,12 +8,12 @@ import {
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+} from '../../../../constants/errorConditionConstants';
+import { DOUBLES } from '../../../../constants/matchUpTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
