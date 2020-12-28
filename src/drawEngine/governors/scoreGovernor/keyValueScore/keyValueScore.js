@@ -134,8 +134,9 @@ export function keyValueScore(props) {
   }
 
   if (analysis.lastSetIsComplete) {
-    const finalCharacter = scoreString[scoreString.length - 1];
-    if (finalCharacter !== ' ') {
+    const finalCharacter =
+      scoreString?.length && scoreString[scoreString.length - 1];
+    if (scoreString && finalCharacter !== ' ') {
       scoreString += ' ';
     }
   }

@@ -19,6 +19,15 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     structure,
     drawDefinition,
   });
+  const drawPositions = positionAssignments.map(
+    (assignment) => assignment.drawPosition
+  );
+  /*
+  const drawPositions = []
+    .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
+    .filter((f) => f)
+    .sort(numericSort);
+  */
   const byeDrawPositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
@@ -35,19 +44,18 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .filter((f) => f)
       .sort(numericSort);
 
+    const inactiveDrawPositions = drawPositions.filter(
+      (drawPosition) => !activeDrawPositions.includes(drawPosition)
+    );
+
     return {
       activeDrawPositions,
-      inactiveDrawPositions: [],
+      inactiveDrawPositions,
       advancedDrawPositions: [],
       pairedDrawPositions: [],
       byeDrawPositions,
     };
   } else {
-    const drawPositions = []
-      .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
-      .filter((f) => f)
-      .sort(numericSort);
-
     // now remove ONE INSTANCE of byePairedPositions from drawPositions
     const instancesToRemove = [].concat(
       ...byePairedPositions,
@@ -74,13 +82,13 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .concat(...advancedDrawPositions, pairedDrawPositions)
       .filter((f) => f);
 
-    const inactiveDrawPostiions = drawPositions.filter(
+    const inactiveDrawPositions = drawPositions.filter(
       (drawPosition) => !activeDrawPositions.includes(drawPosition)
     );
 
     return {
       activeDrawPositions,
-      inactiveDrawPostiions,
+      inactiveDrawPositions,
       advancedDrawPositions,
       pairedDrawPositions,
       byeDrawPositions,

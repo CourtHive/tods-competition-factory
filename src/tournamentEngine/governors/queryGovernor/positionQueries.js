@@ -1,15 +1,18 @@
 import { positionActions as drawEnginePositionActions } from '../../../drawEngine/governors/queryGovernor/positionActions/positionActions';
 
 export function positionActions({
-  drawId,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   structureId,
+  drawId,
 }) {
+  const tournamentParticipants = tournamentRecord.participants || [];
   return drawEnginePositionActions({
-    drawId,
+    tournamentParticipants,
     drawDefinition,
     drawPosition,
     structureId,
+    drawId,
   });
 }

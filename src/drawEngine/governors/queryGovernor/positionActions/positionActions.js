@@ -36,6 +36,7 @@ import { getValidSwapAction } from './participantSwaps';
  *
  */
 export function positionActions({
+  tournamentParticipants,
   drawDefinition,
   drawPosition,
   structureId,
@@ -121,6 +122,7 @@ export function positionActions({
       structureId,
       drawPosition,
       positionAssignments,
+      tournamentParticipants,
       unassignedParticipantIds,
     });
     if (validAssignmentAction) validActions.push(validAssignmentAction);
@@ -138,13 +140,14 @@ export function positionActions({
       validActions.push({ type: ADD_NICKNAME });
     }
     const { validSwapAction } = getValidSwapAction({
-      drawDefinition,
-      structureId,
+      drawId,
       drawPosition,
+      structureId,
+      byeDrawPositions,
       positionAssignments,
       activeDrawPositions,
       inactiveDrawPositions,
-      byeDrawPositions,
+      tournamentParticipants,
     });
     if (validSwapAction) validActions.push(validSwapAction);
   }
