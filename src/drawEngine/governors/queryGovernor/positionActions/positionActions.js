@@ -24,6 +24,7 @@ import {
   REMOVE_ASSIGNMENT_METHOD,
   ADD_NICKNAME,
   ADD_PENALTY,
+  ASSIGN_BYE,
 } from '../../../../constants/positionActionConstants';
 import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
 
@@ -59,7 +60,7 @@ export function positionActions({
    * 1. Links are directing winners to this structure, and
    * 2. the feedProfile is not "DRAW"
    *
-   * Directions such as West in Compass or Playoff structures should not have an positionActions
+   * Directions such as West in Compass or Playoff structures should not have positionActions
    */
   if (structure.stageSequence > 1) {
     const asTargetLink = drawDefinition.links?.find(
@@ -110,33 +111,45 @@ export function positionActions({
     .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
     .map((entry) => entry.participantId);
 
-  const isByePosition = !!(positionAssignment && positionAssignment.bye);
   const {
     activeDrawPositions,
     inactiveDrawPositions,
     byeDrawPositions,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
+  const isByePosition = byeDrawPositions.includes(drawPosition);
 
-  if (!positionAssignment) {
+  if (!positionAssignment || isByePosition) {
     const { validAssignmentActions } = getValidAssignmentAction({
       drawDefinition,
       structureId,
       drawPosition,
+      isByePosition,
       positionAssignments,
       tournamentParticipants,
       unassignedParticipantIds,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
-  } else {
+  }
+
+  if (positionAssignment) {
     if (!activeDrawPositions.includes(drawPosition)) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
-        payload: { drawId, structureId, drawPosition, replaceWithBye: false },
+        payload: { drawId, structureId, drawPosition },
       });
+
+      // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
+      // option should not be available if exising assignment is a bye
+      if (!isByePosition) {
+        validActions.push({
+          type: ASSIGN_BYE,
+          method: REMOVE_ASSIGNMENT_METHOD,
+          payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+        });
+      }
     }
-    const isByeDrawPosition = byeDrawPositions.includes(drawPosition);
-    if (!isByeDrawPosition) {
+    if (!isByePosition) {
       validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: ADD_NICKNAME });
     }
