@@ -35,10 +35,8 @@ it('can replace positioned participant with a bye', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
-  let option = result.validActions.find(
-    (action) => action.type === REMOVE_ASSIGNMENT
-  );
+  expect(options.includes(ASSIGN_BYE)).toEqual(true);
+  let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
   let payload = Object.assign({}, option.payload, { replaceWithBye: true });
   result = tournamentEngine[option.method](payload);
