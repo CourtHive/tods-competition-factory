@@ -25,6 +25,8 @@ import {
   ADD_NICKNAME,
   ADD_PENALTY,
   ASSIGN_BYE,
+  ADD_PENALTY_METHOD,
+  ADD_NICKNAME_METHOD,
 } from '../../../../constants/positionActionConstants';
 import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
 
@@ -38,7 +40,7 @@ import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
  *
  */
 export function positionActions({
-  tournamentParticipants,
+  tournamentParticipants = [],
   drawDefinition,
   drawPosition,
   structureId,
@@ -104,6 +106,7 @@ export function positionActions({
     entryTypes,
     stage,
   });
+
   const assignedParticipantIds = assignedPositions.map(
     (assignment) => assignment.participantId
   );
@@ -149,9 +152,35 @@ export function positionActions({
         });
       }
     }
-    if (!isByePosition) {
-      validActions.push({ type: ADD_PENALTY });
-      validActions.push({ type: ADD_NICKNAME });
+
+    const { participantId } = positionAssignment;
+    if (!isByePosition && participantId) {
+      const participant = tournamentParticipants.find(
+        (participant) => (participant.participantId = participantId)
+      );
+      const addPenaltyAction = {
+        type: ADD_PENALTY,
+        method: ADD_PENALTY_METHOD,
+        participant,
+        payload: {
+          drawId,
+          penaltyCode: undefined,
+          penaltyType: undefined,
+          participantIds: [],
+          notes: undefined,
+        },
+      };
+      const addNicknameAction = {
+        type: ADD_NICKNAME,
+        method: ADD_NICKNAME_METHOD,
+        participant,
+        payload: {
+          participantId,
+          otherNames: [],
+        },
+      };
+      validActions.push(addPenaltyAction);
+      validActions.push(addNicknameAction);
     }
     const { validSwapAction } = getValidSwapAction({
       drawId,

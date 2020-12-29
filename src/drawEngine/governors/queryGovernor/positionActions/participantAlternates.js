@@ -13,7 +13,7 @@ export function getValidAlternatesAction({
   structure,
   drawDefinition,
   positionAssignments,
-  tournamentParticipants,
+  tournamentParticipants = [],
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID };
 
@@ -30,7 +30,7 @@ export function getValidAlternatesAction({
     )
     .map((entry) => entry.participantId);
 
-  const availableAlternates = tournamentParticipants.filter((participant) =>
+  const availableAlternates = tournamentParticipants?.filter((participant) =>
     availableAlternatesParticipantIds.includes(participant.participantId)
   );
 
