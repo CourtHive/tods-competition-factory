@@ -13,8 +13,8 @@ export function scheduledMatchUpDate({
     const laterScheduledTimeItem =
       scheduledDateCandidate &&
       (!scheduledDateItem ||
-        new Date(scheduledDateCandidate.itemValue) >
-          new Date(scheduledDateItem.itemValue));
+        new Date(scheduledDateCandidate.createdAt) >
+          new Date(scheduledDateItem.createdAt));
     return laterScheduledTimeItem ? scheduledDateCandidate : scheduledDateItem;
   }, undefined);
 
