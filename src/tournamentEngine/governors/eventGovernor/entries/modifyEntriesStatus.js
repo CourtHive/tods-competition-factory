@@ -22,19 +22,36 @@ export function modifyEntriesStatus({
     return { error: INVALID_ENTRY_STATUS };
 
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
-  // TODO: check that entries are not present in any drawDefinitions/structures
 
-  if (event) {
-    event.entries.forEach((entry) => {
+  // build up an array of participantIds to be modified which are present in drawDefinitions as well
+  const participantIdsPresentinDraws = [];
+  event.drawDefinitions?.forEach((drawDefinition) => {
+    drawDefinition.entries.forEach((entry) => {
+      if (participantIds.includes(entry.participantId)) {
+        participantIdsPresentinDraws.push(entry.participantId);
+      }
+    });
+  });
+
+  // if a drawDefinition is specified, modify entryStatus of participantIds
+  if (drawDefinition) {
+    drawDefinition.entries.forEach((entry) => {
       if (participantIds.includes(entry.participantId)) {
         entry.entryStatus = entryStatus;
       }
     });
   }
 
-  if (drawDefinition) {
-    drawDefinition.entries.forEach((entry) => {
-      if (participantIds.includes(entry.participantId)) {
+  if (event) {
+    event.entries.forEach((entry) => {
+      const presentInDraws =
+        !drawDefinition &&
+        participantIdsPresentinDraws.includes(entry.participantId);
+
+      // if a participantId is also present in a drawDefinition...
+      // ...and a specific drawDefinition is NOT being modified as well:
+      // prevent modifying status in event.
+      if (participantIds.includes(entry.participantId) && !presentInDraws) {
         entry.entryStatus = entryStatus;
       }
     });
