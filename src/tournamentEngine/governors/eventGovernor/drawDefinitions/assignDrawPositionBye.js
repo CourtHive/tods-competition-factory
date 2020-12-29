@@ -5,7 +5,5 @@ export function assignDrawPositionBye({
   structureId,
   drawPosition,
 }) {
-  const result = assignBye({ drawDefinition, structureId, drawPosition });
-  console.log({ result });
-  return result;
+  return assignBye({ drawDefinition, structureId, drawPosition });
 }
