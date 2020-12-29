@@ -66,9 +66,9 @@ export function modifyIndividualParticipantIds({
     }
   );
 
-  const individualParticipantIdsToRemove = individualParticipantIds.filter(
+  const individualParticipantIdsToRemove = existingIndividualParticipantIds.filter(
     (participantId) => {
-      return existingIndividualParticipantIds.includes(participantId);
+      return !individualParticipantIds.includes(participantId);
     }
   );
 
