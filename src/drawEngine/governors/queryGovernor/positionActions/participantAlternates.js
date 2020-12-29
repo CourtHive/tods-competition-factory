@@ -21,7 +21,7 @@ export function getValidAlternatesAction({
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
-  const availableAlternatesIds = drawDefinition.entries
+  const availableAlternatesParticipantIds = drawDefinition.entries
     ?.filter(
       (entry) =>
         entry.entryStage === stage &&
@@ -31,15 +31,15 @@ export function getValidAlternatesAction({
     .map((entry) => entry.participantId);
 
   const availableAlternates = tournamentParticipants.filter((participant) =>
-    availableAlternatesIds.includes(participant.participantId)
+    availableAlternatesParticipantIds.includes(participant.participantId)
   );
 
-  if (availableAlternatesIds.length) {
+  if (availableAlternatesParticipantIds.length) {
     const validAlternatesAction = {
       type: ALTERNATE_PARTICIPANT,
       method: ALTERNATE_PARTICIPANT_METHOD,
       availableAlternates,
-      availableAlternatesIds,
+      availableAlternatesParticipantIds,
       payload: { drawId, structureId, drawPosition },
     };
     return { validAlternatesAction };
