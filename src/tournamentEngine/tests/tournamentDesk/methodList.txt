@@ -30,6 +30,7 @@ tournamentEngine
 - attachEventPolicy
 * automatedPlayoffPositioning
 - bulkMatchUpStatusUpdate
+- createGroupParticipant
 - deleteDrawDefinitions
 * destroyPairEntry
 * getEventTimeItem

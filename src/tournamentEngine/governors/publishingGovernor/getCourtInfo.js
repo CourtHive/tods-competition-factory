@@ -1,4 +1,5 @@
 import { findCourt } from '../../getters/courtGetter';
+import { makeDeepCopy } from '../../../utilities';
 
 import {
   MISSING_COURT_ID,
@@ -39,5 +40,5 @@ export function getCourtInfo({ tournamentRecord, courtId }) {
     notes,
   }))(court);
 
-  return Object.assign({}, SUCCESS, { courtInfo });
+  return Object.assign({}, SUCCESS, { courtInfo: makeDeepCopy(courtInfo) });
 }

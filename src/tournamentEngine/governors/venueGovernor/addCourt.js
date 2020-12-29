@@ -95,8 +95,12 @@ export function addCourts({
   const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 
   if (courtRecords.length === courtsCount) {
-    return Object.assign({}, { courts: courtRecords }, SUCCESS);
+    return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
   } else {
-    return Object.assign({}, { courts: courtRecords }, { error: result });
+    return Object.assign(
+      {},
+      { courts: makeDeepCopy(courtRecords) },
+      { error: result }
+    );
   }
 }

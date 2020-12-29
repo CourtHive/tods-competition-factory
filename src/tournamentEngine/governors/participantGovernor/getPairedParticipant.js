@@ -1,4 +1,5 @@
 import { intersection } from '../../../utilities/arrays';
+import { makeDeepCopy } from '../../../utilities';
 
 import {
   INVALID_PARTICIPANT_IDS,
@@ -24,5 +25,7 @@ export function getPairedParticipant({ tournamentRecord, participantIds }) {
   );
   if (!existingPairedParticipant) return { error: PARTICIPANT_NOT_FOUND };
 
-  return Object.assign({}, SUCCESS, { participant: existingPairedParticipant });
+  return Object.assign({}, SUCCESS, {
+    participant: makeDeepCopy(existingPairedParticipant),
+  });
 }
