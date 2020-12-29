@@ -38,7 +38,7 @@ tournamentEngine
 * modifyVenue
 * modifyIndividualParticipantIds
 * modifyParticipantName
-- modifyParticipantOtherNames
+* modifyParticipantOtherName
 * participantSignInStatus
 * positionActions
 * promoteAlternate

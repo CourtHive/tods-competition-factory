@@ -176,7 +176,7 @@ export function positionActions({
         participant,
         payload: {
           participantId,
-          otherNames: [],
+          otherName: undefined,
         },
       };
       validActions.push(addPenaltyAction);

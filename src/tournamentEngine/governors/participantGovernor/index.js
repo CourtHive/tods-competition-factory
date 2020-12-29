@@ -28,7 +28,7 @@ import {
 } from './participantPenalties';
 import { participantMembership } from '../../getters/participants/participantMembership';
 import { modifyParticipantName } from './modifyParticipantName';
-import { modifyParticipantOtherNames } from './modifyParticipantOtherNames';
+import { modifyParticipantOtherName } from './modifyParticipantOtherName';
 
 const findTournamentParticipantCopy = (props) => {
   const { participant, error } = findTournamentParticipant(props);
@@ -59,7 +59,7 @@ const participantGovernor = {
   getParticipantIdFinishingPositions,
 
   modifyParticipantName,
-  modifyParticipantOtherNames,
+  modifyParticipantOtherName,
 
   mergeParticipants,
   getPairedParticipant,

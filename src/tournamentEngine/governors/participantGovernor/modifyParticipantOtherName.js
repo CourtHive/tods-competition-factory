@@ -2,30 +2,19 @@ import { findTournamentParticipant } from '../../getters/participants/participan
 import { makeDeepCopy } from '../../../utilities';
 
 import {
-  INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function modifyParticipantOtherNames({
+export function modifyParticipantOtherName({
   tournamentRecord,
   participantId,
-  otherNames,
+  participantOtherName,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-
-  if (!otherNames)
-    return { error: MISSING_VALUE, message: 'Missing otherNames' };
-
-  if (!Array.isArray(otherNames))
-    return {
-      error: INVALID_VALUES,
-      message: 'otherNames must be an array of strings',
-    };
 
   const { participant } = findTournamentParticipant({
     tournamentRecord,
@@ -33,7 +22,7 @@ export function modifyParticipantOtherNames({
   });
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
-  participant.otherNames = otherNames;
+  participant.participantOtherName = participantOtherName;
 
   return Object.assign({}, SUCCESS, { participant: makeDeepCopy(participant) });
 }

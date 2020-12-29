@@ -10,7 +10,7 @@ export const PARTICIPANT_PRIVACY_DEFAULT = {
       individualParticipantIds: true,
       onlineResources: false,
       participantName: true,
-      participantOtherName: false,
+      participantOtherName: true,
       participantId: true,
       participantRole: true,
       participantStatus: true,
