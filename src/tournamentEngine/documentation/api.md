@@ -74,7 +74,14 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 ---
 
-## addParticipantsToGrouping
+## addIndividualParticipantIds
+
+Adds individualParticipantIds to GROUP or TEAM participants
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - individual participantIds to be added to grouping participant
+- @param {boolean} removeFromOtherTeams - whether or not to remove from other teams
 
 ---
 
@@ -126,6 +133,15 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps();
 ```
+
+---
+
+## alternateDrawPositionAssignment
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number} drawPosition - drawPosition where alternate participantId will be assigned
+- @param {string} alternateParticipantId - id of participant
 
 ---
 
@@ -439,6 +455,12 @@ Returns deepCopies of tournament participants filtered by participantFilters whi
 imlemented: eventIds, participantTypes, participantRoles,
 to be implemented: drawIds, structureIds, signInStates, keyValues,
 
+```js
+const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  participantFilters: { participantTypes: [INDIVIDUAL] },
+});
+```
+
 ---
 
 ## getTournamentPenalties
@@ -469,6 +491,16 @@ to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ---
 
+## modifyIndividualParticipantIds
+
+Modify grouping participant [TEAM, GROUP] individualParticipantIds
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - new value for individualParticipantIds array
+
+---
+
 ## modifyPenalty
 
 ---
@@ -477,11 +509,20 @@ to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ---
 
+## participantMembership
+
+Returns all grouping participants which include participantId
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} participantId - id of individual participant
+
+---
+
 ## participantScaleItem
 
 ---
 
-## participantsSignInStatus
+## modifyParticipantsSignInStatus
 
 ---
 
@@ -499,13 +540,25 @@ to be implemented: drawIds, structureIds, signInStates, keyValues,
 
 ## removeDrawPositionAssignment
 
+Clear draw position.
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number} drawPosition - number of drawPosition for which actions are to be returned
+
 ---
 
-## removeParticipantsFromAllTeams
+## removeParticipantIdsFromAllTeams
 
 ---
 
-## removeParticipantsFromGroup
+## removeIndividualParticipantIds
+
+Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+- @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
 
 ---
 

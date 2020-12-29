@@ -307,7 +307,7 @@ Returns seedAssignments a specific structure based on structureId or structure
 
 | Parameters     | Required | Type   | Description                                     |
 | :------------- | :------- | :----- | :---------------------------------------------- |
-| drawDefiniiton | required | object | drawDefinition object                           |
+| drawDefinition | required | object | drawDefinition object                           |
 | structure      | Optional | object | Return seedAssignments for a specific structure |
 | structureId    | Optional | string | Return seedAssignments for a specific structure |
 
@@ -464,6 +464,14 @@ drawEngine.setsState(drawDefinition, deepCopy);
 ```
 
 By default a deep copy of the tournament record is made so that mutations made by drawEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+
+---
+
+## swapDrawPositionAssignments
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number[]} drawPositions - drawPositions for which particpants will be swapped
 
 ---
 

@@ -105,7 +105,7 @@ export function inPlaceSubSort(arr, i, n, sortFx) {
     ...arr.slice(i + n, arr.length)
   );
   arr.length = 0;
-  arr.push.apply(arr, newarray); // TODO: eslint use spread operator instead
+  arr.push.apply(arr, newarray); // use spread operator instead?
   return arr;
 }
 */

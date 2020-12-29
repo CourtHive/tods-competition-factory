@@ -1,28 +1,28 @@
 import { addEvent } from './addEvent';
 import { deleteEvents } from './deleteEvent';
-import { addDrawEntries } from './addDrawEntries';
-import { addEventEntries } from './addEventEntries';
-import { destroyPairEntry } from './destroyPairEntry';
-import { promoteAlternate } from './promoteAlternate';
-import { addEventEntryPairs } from './addEventEntryPairs';
-import { checkValidEntries } from './checkValidEntries';
-import { addDrawDefinition } from './addDrawDefinition';
-import { removeEventEntries } from './removeEventEntries';
-import { assignDrawPosition } from './assignDrawPosition';
+import { addDrawEntries } from './drawDefinitions/addDrawEntries';
+import { addEventEntries } from './entries/addEventEntries';
+import { destroyPairEntry } from './entries/destroyPairEntry';
+import { promoteAlternate } from './entries/promoteAlternate';
+import { addEventEntryPairs } from './entries/addEventEntryPairs';
+import { checkValidEntries } from './entries/checkValidEntries';
+import { addDrawDefinition } from './drawDefinitions/addDrawDefinition';
+import { removeEventEntries } from './entries/removeEventEntries';
+import { assignDrawPosition } from './drawDefinitions/assignDrawPosition';
 import { assignSeedPositions } from './assignSeedPositions';
 import {
   automatedPositioning,
   automatedPlayoffPositioning,
 } from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './tieMatchUps';
-import { deleteDrawDefinitions } from './deleteDrawDefinitions';
-import { removeDrawPositionAssignment } from './removeDrawPositionAssignment';
+import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
+import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
   checkInParticipant,
   checkOutParticipant,
 } from './participantCheckInState';
-import { setDrawParticipantRepresentatives } from './setDrawParticipantRepresentatives';
+import { setDrawParticipantRepresentatives } from './drawDefinitions/setDrawParticipantRepresentatives';
 
 import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
@@ -33,9 +33,15 @@ import {
   setCollectionDefaultMatchUpFormat,
 } from './setDefaultmatchUpFormat';
 
-import { setEntryPosition, setEntryPositions } from './setEntryPositions';
-import { modifyEntriesStatus } from './modifyEntriesStatus';
-import { addDrawDefinitionTimeItem } from './addDrawDefinitionTimeItem';
+import {
+  setEntryPosition,
+  setEntryPositions,
+} from './entries/setEntryPositions';
+import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
+import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
+import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
+import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
+import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 
 const eventGovernor = {
@@ -70,7 +76,10 @@ const eventGovernor = {
 
   assignDrawPosition,
   assignSeedPositions,
+  assignDrawPositionBye,
+  swapDrawPositionAssignments,
   removeDrawPositionAssignment,
+  alternateDrawPositionAssignment,
   setDrawParticipantRepresentatives,
 
   automatedPositioning,

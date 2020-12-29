@@ -25,51 +25,75 @@ export function processOutcome({
   lowSide,
   value,
   sets,
-  score,
+  scoreString,
   winningSide,
   matchUpStatus,
 }) {
   let updated;
 
   if (value === RETIRE) {
-    if (score) {
+    if (scoreString) {
       updated = true;
-      score = addOutcome({ score, lowSide, outcome: OUTCOME_RETIREMENT });
+      scoreString = addOutcome({
+        scoreString,
+        lowSide,
+        outcome: OUTCOME_RETIREMENT,
+      });
       winningSide = lowSide === 2 ? 1 : 2;
       matchUpStatus = STATUS_RETIREMENT;
     } else {
       updated = true;
-      score = addOutcome({ score, lowSide, outcome: OUTCOME_DEFAULT });
+      scoreString = addOutcome({
+        scoreString,
+        lowSide,
+        outcome: OUTCOME_DEFAULT,
+      });
       winningSide = lowSide === 2 ? 1 : 2;
       matchUpStatus = STATUS_DEFAULT;
     }
   } else if (value === DEFAULT) {
     updated = true;
-    score = addOutcome({ score, lowSide, outcome: OUTCOME_DEFAULT });
+    scoreString = addOutcome({
+      scoreString,
+      lowSide,
+      outcome: OUTCOME_DEFAULT,
+    });
     winningSide = lowSide === 2 ? 1 : 2;
     matchUpStatus = STATUS_DEFAULT;
   } else if (value === WALKOVER) {
     updated = true;
     sets = [];
-    score = OUTCOME_WALKOVER;
+    scoreString = OUTCOME_WALKOVER;
     winningSide = lowSide === 2 ? 1 : 2;
     matchUpStatus = STATUS_WALKOVER;
-  } else if (value === SUSPEND && score) {
+  } else if (value === SUSPEND && scoreString) {
     updated = true;
-    score = addOutcome({ score, lowSide, outcome: OUTCOME_SUSPENDED });
+    scoreString = addOutcome({
+      scoreString,
+      lowSide,
+      outcome: OUTCOME_SUSPENDED,
+    });
     matchUpStatus = STATUS_SUSPENDED;
     winningSide = undefined;
   } else if (value === ABANDON) {
     updated = true;
-    score = addOutcome({ score, lowSide, outcome: OUTCOME_ABANDONED });
+    scoreString = addOutcome({
+      scoreString,
+      lowSide,
+      outcome: OUTCOME_ABANDONED,
+    });
     matchUpStatus = STATUS_ABANDONED;
     winningSide = undefined;
-  } else if (value === INTERRUPT && score) {
+  } else if (value === INTERRUPT && scoreString) {
     updated = true;
-    score = addOutcome({ score, lowSide, outcome: OUTCOME_INTERRUPTED });
+    scoreString = addOutcome({
+      scoreString,
+      lowSide,
+      outcome: OUTCOME_INTERRUPTED,
+    });
     matchUpStatus = STATUS_INTERRUPTED;
     winningSide = undefined;
   }
 
-  return { updated, sets, score, matchUpStatus, winningSide };
+  return { updated, sets, scoreString, matchUpStatus, winningSide };
 }

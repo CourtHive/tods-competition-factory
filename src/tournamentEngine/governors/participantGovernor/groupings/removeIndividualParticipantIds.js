@@ -1,0 +1,107 @@
+import {
+  INVALID_PARTICIPANT_TYPE,
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VALUE,
+  NO_PARTICIPANT_REMOVED,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../../constants/errorConditionConstants';
+import { GROUP, TEAM } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { SUCCESS } from '../../../../constants/resultConstants';
+
+/**
+ *
+ * @param {object} tournamentRecord - passed in automatically by tournamentEngine
+ * @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+ * @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
+ *
+ */
+export function removeIndividualParticipantIds({
+  tournamentRecord,
+  groupingParticipantId,
+  individualParticipantIds,
+}) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!groupingParticipantId || !individualParticipantIds)
+    return { error: MISSING_VALUE };
+
+  const tournamentParticipants = tournamentRecord.participants || [];
+
+  const groupingParticipant = tournamentParticipants.find((participant) => {
+    return participant.participantId === groupingParticipantId;
+  });
+  if (!groupingParticipant) return { error: PARTICIPANT_NOT_FOUND };
+
+  if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
+    return {
+      error: INVALID_PARTICIPANT_TYPE,
+      participantType: groupingParticipant.participantType,
+    };
+  }
+
+  const { removed, error } = removeParticipantIdsFromGroupingParticipant({
+    groupingParticipant,
+    individualParticipantIds,
+  });
+
+  if (error) return { error };
+
+  return Object.assign({}, SUCCESS, { removed });
+}
+
+// TODO: consider situations where it would be invalid to remove an individualParticipantId
+// for instance in a team competition where an individual is part of a matchUp within a tieMatchUp
+function removeParticipantIdsFromGroupingParticipant({
+  groupingParticipant,
+  individualParticipantIds,
+}) {
+  let removed = 0;
+  let notRemoved = [];
+  if (!groupingParticipant) return { removed };
+  groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.filter(
+    (participantId) => {
+      const removeParticipant = individualParticipantIds.includes(
+        participantId
+      );
+      if (removeParticipant) removed++;
+      return !removeParticipant;
+    }
+  );
+  if (notRemoved.length)
+    return { error: 'Participants not removed', notRemoved };
+
+  return { groupingParticipant, removed };
+}
+
+export function removeParticipantIdsFromAllTeams({
+  groupingType = TEAM,
+  tournamentRecord,
+  individualParticipantIds,
+}) {
+  const tournamentParticipants = tournamentRecord.participants || [];
+
+  let modifications = 0;
+  tournamentParticipants
+    .filter((participant) => {
+      return (
+        (participant.participantRole === COMPETITOR ||
+          !participant.participantRole) &&
+        participant.participantType === groupingType
+      );
+    })
+    .forEach((team) => {
+      const {
+        groupingParticipant,
+        removed,
+      } = removeParticipantIdsFromGroupingParticipant({
+        groupingParticipant: team,
+        individualParticipantIds,
+      });
+      if (removed) {
+        team = groupingParticipant;
+        modifications++;
+      }
+    });
+
+  return modifications ? SUCCESS : { error: NO_PARTICIPANT_REMOVED };
+}

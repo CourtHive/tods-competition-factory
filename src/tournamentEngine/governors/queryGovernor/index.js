@@ -26,6 +26,7 @@ import {
 import {
   getEventTimeItem,
   getTournamentTimeItem,
+  getParticipantTimeItem,
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
@@ -34,6 +35,7 @@ import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
 import { credits } from '../../../fixtures/credits';
+import { positionActions } from './positionQueries';
 
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
@@ -66,11 +68,13 @@ const queryGovernor = {
 
   getEventTimeItem,
   getTournamentTimeItem,
+  getParticipantTimeItem,
   getDrawDefinitionTimeItem,
 
   bulkUpdatePublishedEventIds,
 
   matchUpActions,
+  positionActions,
   findMatchUp: publicFindMatchUp,
 
   participantScaleItem,

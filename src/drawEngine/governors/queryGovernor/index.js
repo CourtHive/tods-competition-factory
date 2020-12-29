@@ -11,10 +11,6 @@ import {
   isCompletedStructure,
   allPlayoffPositionsFilled,
 } from './structureActions';
-import {
-  positionActions,
-  getNextUnfilledDrawPositions,
-} from './positionActions';
 
 import {
   getRoundPresentationProfile,
@@ -27,9 +23,11 @@ import {
 import { credits } from '../../../fixtures/credits';
 import { findStructure } from '../../getters/findStructure';
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
+import { positionActions } from './positionActions/positionActions';
+import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getParticipantIdFinishingPositions } from './finishingPositions';
+import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
 
 /*
   return an array of all matchUps within a drawDefinition

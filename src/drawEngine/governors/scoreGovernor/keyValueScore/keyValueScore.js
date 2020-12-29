@@ -41,15 +41,15 @@ export function keyValueMatchUpScore(props) {
   const { matchUp } = props;
   const { matchUpFormat } = matchUp;
   // SCORE: matchUp will have changed
-  const { score, sets, winningSide, matchUpStatus } = matchUp;
-  /*
-  const { score: scoreObject,  winningSide, matchUpStatus } = matchUp;
-  const { sets } = scoreObject;
-  const score = scoreObject.scoreStringSide1;
-  */
+  let { scoreString, sets } = matchUp;
+  const { score, winningSide, matchUpStatus } = matchUp;
+  if (score?.sets) {
+    sets = sets || score.sets;
+    scoreString = scoreString || score.scoreStringSide1;
+  }
   const { auto, checkFormat, shiftFirst, lowSide, value } = props;
   const result = keyValueScore({
-    score,
+    scoreString,
     sets,
     winningSide,
     matchUpStatus,
@@ -63,17 +63,15 @@ export function keyValueMatchUpScore(props) {
 
   let updatedMatchUp;
   if (result?.updated) {
-    const {
-      sets: updatedSets,
-      score: updatedScore,
-      winningSide: updatedWinningSide,
-      matchUpStatus: updatedMatchUpStatus,
-    } = result;
+    const { sets, scoreString, winningSide, matchUpStatus } = result;
     updatedMatchUp = Object.assign({}, matchUp, {
-      sets: updatedSets,
-      score: updatedScore,
-      winningSide: updatedWinningSide,
-      matchUpStatus: updatedMatchUpStatus,
+      sets,
+      scoreString,
+      winningSide,
+      matchUpStatus,
+      // TODO: this should use the autocomplete function of matchUpScore
+      // and the expected behavior is therefore different than keyValueScore
+      score: { sets, scoreStringSide1: scoreString },
     });
   }
   return {
@@ -86,7 +84,7 @@ export function keyValueMatchUpScore(props) {
 /* shiftFirst indicates that SHIFT key refers to first opponent, rather than second */
 export function keyValueScore(props) {
   let { lowSide = 1, value } = props;
-  let { score, sets, winningSide, matchUpStatus } = props;
+  let { scoreString, sets, winningSide, matchUpStatus } = props;
   const { matchUpFormat, shiftFirst, auto = true } = props;
 
   let updated, message;
@@ -110,7 +108,7 @@ export function keyValueScore(props) {
   const analysis = getScoreAnalysis({
     value,
     winningSide,
-    score,
+    scoreString,
     sets,
     matchUpFormat,
   });
@@ -136,9 +134,10 @@ export function keyValueScore(props) {
   }
 
   if (analysis.lastSetIsComplete) {
-    const finalCharacter = score[score.length - 1];
-    if (finalCharacter !== ' ') {
-      score += ' ';
+    const finalCharacter =
+      scoreString?.length && scoreString[scoreString.length - 1];
+    if (scoreString && finalCharacter !== ' ') {
+      scoreString += ' ';
     }
   }
 
@@ -146,14 +145,14 @@ export function keyValueScore(props) {
     ({
       message,
       sets,
-      score,
+      scoreString,
       updated,
       matchUpStatus,
       winningSide,
     } = keyValueTimedSetScore({
       analysis,
       lowSide,
-      score,
+      scoreString,
       sets,
       matchUpStatus,
       winningSide,
@@ -163,29 +162,35 @@ export function keyValueScore(props) {
     if (analysis.finalSetIsComplete || winningSide) {
       message = 'final set is already complete';
     } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
-      ({ sets, score, matchUpStatus, winningSide, updated } = processOutcome({
+      ({
+        sets,
+        scoreString,
+        matchUpStatus,
+        winningSide,
+        updated,
+      } = processOutcome({
         lowSide,
         sets,
-        score,
+        scoreString,
         matchUpStatus,
         winningSide,
         value,
       }));
     } else if (analysis.isTiebreakEntry || analysis.isIncompleteSetScore) {
-      message = 'incomplete set score or tiebreak entry';
+      message = 'incomplete set scoreString or tiebreak entry';
     } else {
       console.log('handle case', { value });
     }
   } else if (value === BACKSPACE) {
     updated = true;
-    ({ score, sets } = removeFromScore({
+    ({ scoreString, sets } = removeFromScore({
       analysis,
-      score,
+      scoreString,
       sets,
       lowSide,
       auto,
     }));
-    if (!score) sets = [];
+    if (!scoreString) sets = [];
     matchUpStatus = undefined;
     winningSide = undefined;
   } else if (analysis.hasOutcome) {
@@ -196,9 +201,9 @@ export function keyValueScore(props) {
       (analysis.isSetTiebreakEntry && !analysis.isNumericEnding)
     ) {
       updated = true;
-      ({ score, sets } = removeFromScore({
+      ({ scoreString, sets } = removeFromScore({
         analysis,
-        score,
+        scoreString,
         sets,
         lowSide,
         auto,
@@ -214,7 +219,7 @@ export function keyValueScore(props) {
       message = 'existing joiner';
     } else if (analysis.isNumericEnding) {
       updated = true;
-      score += MATCH_TIEBREAK_JOINER;
+      scoreString += MATCH_TIEBREAK_JOINER;
     }
   } else if ([SCORE_JOINER, MATCH_TIEBREAK_JOINER].includes(value)) {
     message = 'invalid location for joiner';
@@ -222,9 +227,9 @@ export function keyValueScore(props) {
     return { updated: false, message: 'matchUp is complete' };
   } else if (analysis.isIncompleteSetScore) {
     if (analysis.isNumericValue) {
-      ({ sets, score, updated } = processIncompleteSetScore({
+      ({ sets, scoreString, updated } = processIncompleteSetScore({
         analysis,
-        score,
+        scoreString,
         sets,
         value,
       }));
@@ -246,7 +251,7 @@ export function keyValueScore(props) {
     const leadingSide = getLeadingSide({ set });
 
     if (!analysis.isTiebreakSet) {
-      const lowTiebreakScore = parseInt(score.split(open).reverse()[0]);
+      const lowTiebreakScore = parseInt(scoreString.split(open).reverse()[0]);
       const highTiebreakScore = getHighTiebreakValue({
         lowValue: lowTiebreakScore,
         tiebreakTo,
@@ -261,26 +266,28 @@ export function keyValueScore(props) {
       }
     }
 
-    score = (score || '') + close;
-    if (!analysis.isDecidingSet) score += SPACE_CHARACTER;
+    scoreString = (scoreString || '') + close;
+    if (!analysis.isDecidingSet) scoreString += SPACE_CHARACTER;
 
     const winningSide = getWinningSide({ analysis, set });
     set.winningSide = winningSide || undefined;
 
     updated = true;
   } else if (analysis.isTiebreakSetValue) {
-    ({ message, score, sets, updated } = processTiebreakSet({
+    ({ message, scoreString, sets, updated } = processTiebreakSet({
       analysis,
       auto,
       lowSide,
-      score,
+      scoreString,
       sets,
       value,
     }));
   } else if (analysis.isSetTiebreakEntry) {
     const [open] = SET_TIEBREAK_BRACKETS.split('');
-    const lastOpenBracketIndex = Math.max(...indices(open, score.split('')));
-    const tiebreakValue = score.slice(lastOpenBracketIndex + 1);
+    const lastOpenBracketIndex = Math.max(
+      ...indices(open, scoreString.split(''))
+    );
+    const tiebreakValue = scoreString.slice(lastOpenBracketIndex + 1);
     const hasZeroStart = tiebreakValue && parseInt(tiebreakValue) === ZERO;
     const newTiebreakValue = parseInt(
       tiebreakValue ? tiebreakValue + value : value
@@ -294,7 +301,7 @@ export function keyValueScore(props) {
         message = 'invalid low value for NoAD tiebreak';
       } else {
         updated = true;
-        score = (score || '') + value;
+        scoreString = (scoreString || '') + value;
       }
     } else {
       message = hasZeroStart
@@ -304,19 +311,19 @@ export function keyValueScore(props) {
   } else if (analysis.isCloser) {
     message = `invalid key: ${value}`;
   } else if (analysis.isGameScoreEntry) {
-    message = 'game score entry';
+    message = 'game scoreString entry';
   } else {
     if (analysis.lastSetIsComplete || !sets.length) {
       updated = true;
-      const { score: newScore, set } = keyValueSetScore({
+      const { scoreString: newScore, set } = keyValueSetScore({
         analysis,
         lowSide,
-        score,
+        scoreString,
         value: parseInt(value),
       });
       if (set) set.setNumber = sets?.length + 1 || 1;
       sets = sets?.concat(set).filter((f) => f) || [set];
-      score = newScore || undefined;
+      scoreString = newScore || undefined;
     } else {
       console.log('error: unknown outcome');
     }
@@ -348,7 +355,7 @@ export function keyValueScore(props) {
         );
       });
     } else if (
-      score &&
+      scoreString &&
       !winningSide &&
       ![STATUS_SUSPENDED, STATUS_ABANDONED, STATUS_INTERRUPTED].includes(
         matchUpStatus
@@ -356,8 +363,8 @@ export function keyValueScore(props) {
     ) {
       matchUpStatus = undefined;
     }
-    return { updated, score, sets, winningSide, matchUpStatus, message };
+    return { updated, scoreString, sets, winningSide, matchUpStatus, message };
   }
 
-  return { updated, score, sets, winningSide, matchUpStatus, message };
+  return { updated, scoreString, sets, winningSide, matchUpStatus, message };
 }

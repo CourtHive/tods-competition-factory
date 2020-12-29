@@ -1,14 +1,14 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
-import { positionActions } from './positionActions';
+import { positionActions } from './positionActions/positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
 import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
-import { PENALTY } from '../../../constants/positionActionConstants';
+import { ADD_PENALTY } from '../../../constants/positionActionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
@@ -51,7 +51,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
         return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
       }, false));
 
-  const matchDrawPositionsAreAssigned = drawPositions?.reduce(
+  const matchUpDrawPositionsAreAssigned = drawPositions?.reduce(
     (assignedBoolean, drawPosition) =>
       participantAssignedDrawPositions.includes(drawPosition) &&
       assignedBoolean,
@@ -124,18 +124,18 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       matchUp.sides &&
       matchUp.sides.filter((side) => side && side.participantId).length === 2;
 
-    const readyToScore = matchDrawPositionsAreAssigned || hasParticipants;
+    const readyToScore = matchUpDrawPositionsAreAssigned || hasParticipants;
 
     if (isInComplete && !isByeMatchUp) {
       validActions.push({ type: 'SCHEDULE' });
     }
     if (isInComplete && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: PENALTY });
+      validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: 'STATUS' });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
       validActions.push({ type: 'SCORE' });
-      validActions.push({ type: PENALTY });
+      validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: 'START' });
       validActions.push({ type: 'END' });
     }

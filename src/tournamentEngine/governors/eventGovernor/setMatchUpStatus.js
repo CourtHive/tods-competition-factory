@@ -26,7 +26,8 @@ export function setMatchUpStatus(props) {
   }
 
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
-    outcome.score = matchUpScore(outcome);
+    const { score: scoreObject } = matchUpScore(outcome);
+    outcome.score = scoreObject;
   }
 
   const { error: setMatchUpStatusError } = drawEngine.setMatchUpStatus({

@@ -16,7 +16,7 @@ import {
 
 export function getScoreAnalysis({
   sets,
-  score,
+  scoreString,
   winningSide,
   matchUpFormat,
   value,
@@ -36,18 +36,19 @@ export function getScoreAnalysis({
   const finalSetIsComplete = finalSet && finalSet.winningSide;
 
   const { isTiebreakEntry: isSetTiebreakEntry } = testTiebreakEntry({
-    score,
+    scoreString,
     brackets: SET_TIEBREAK_BRACKETS,
   });
   const { isTiebreakEntry: isMatchTiebreakEntry } = testTiebreakEntry({
-    score,
+    scoreString,
     brackets: MATCH_TIEBREAK_BRACKETS,
   });
   const isTiebreakEntry = isSetTiebreakEntry || isMatchTiebreakEntry;
 
   const isTiebreakSet = !!setFormat.tiebreakSet;
-  const lastScoreChar = score && score[score.length - 1].trim();
-  const isNumericEnding = score && !isNaN(lastScoreChar);
+  const lastScoreChar =
+    scoreString && scoreString[scoreString.length - 1].trim();
+  const isNumericEnding = scoreString && !isNaN(lastScoreChar);
 
   const isIncompleteSetScore =
     !isTiebreakEntry && lastScoreChar === SCORE_JOINER;
@@ -58,7 +59,7 @@ export function getScoreAnalysis({
   const isPartialMatchTiebreakValue =
     isMatchTiebreakEntry && lastScoreChar === MATCH_TIEBREAK_JOINER;
 
-  const splitScore = score && score.split('');
+  const splitScore = scoreString && scoreString.split('');
   const [open] = MATCH_TIEBREAK_BRACKETS.split('');
   const lastOpenBracketIndex =
     splitScore && Math.max(...indices(open, splitScore));
@@ -70,19 +71,23 @@ export function getScoreAnalysis({
   const lastSetIsComplete = sets[sets.length - 1]?.winningSide;
   const isGameScoreEntry = sets?.length && !lastSetIsComplete;
 
-  const hasOutcome = OUTCOMES.find((outcome) => score?.indexOf(outcome) >= 0);
+  const hasOutcome = OUTCOMES.find(
+    (outcome) => scoreString?.indexOf(outcome) >= 0
+  );
 
   const isNumericValue = !isNaN(value);
 
   const isSpace = value === SPACE_KEY;
   const isCloser = CLOSERS.includes(value);
-  const hasOpener = score?.split('').find((char) => OPENERS.includes(char));
+  const hasOpener = scoreString
+    ?.split('')
+    .find((char) => OPENERS.includes(char));
 
   const isInvalidMatchTiebreakValue =
     isCloser &&
     isMatchTiebreakEntry &&
     !isIncompleteMatchTiebreak &&
-    (isPartialMatchTiebreakValue || !checkValidMatchTiebreak({ score }));
+    (isPartialMatchTiebreakValue || !checkValidMatchTiebreak({ scoreString }));
 
   const isInvalidSetTiebreakValue =
     isSpace && isTiebreakEntry && isIncompleteSetTiebreak;

@@ -1,30 +1,37 @@
-import { numericSort } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
 import {
   getAllDrawMatchUps,
   getAllStructureMatchUps,
 } from '../../getters/getMatchUps';
+import { numericSort } from '../../../utilities';
+import { findStructure } from '../../getters/findStructure';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-
-import { SUCCESS } from '../../../constants/resultConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 import {
   DRAW_POSITION_ACTIVE,
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
   MISSING_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
+/**
+ *
+ * @param {object} drawDefinition - automatically added if drawEngine state has been set
+ * @param {number} drawPosition - number of drawPosition for which actions are to be returned
+ * @param {string} structureId - id of structure of drawPosition
+ * @param {string} participantId - id of participant to be removed
+ *
+ */
 export function clearDrawPosition({
   drawDefinition,
-  structureId,
-  participantId,
   drawPosition,
+  participantId,
+  structureId,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -37,21 +44,26 @@ export function clearDrawPosition({
     .map((assignment) => assignment.drawPosition)
     .filter((f) => f);
 
+  const existingAssignment = positionAssignments.reduce(
+    (value, assignment) =>
+      (participantId && assignment.participantId === participantId) ||
+      (drawPosition && assignment.drawPosition === drawPosition)
+        ? assignment
+        : value,
+    undefined
+  );
+
   if (participantId && !drawPosition) {
-    drawPosition = positionAssignments.reduce((drawPosition, assignment) => {
-      return assignment.participantId === participantId
-        ? assignment.drawPosition
-        : drawPosition;
-    }, undefined);
+    drawPosition = existingAssignment?.drawPosition;
   }
+  if (!drawPosition) return { error: MISSING_DRAW_POSITION };
+  if (!participantId) participantId = existingAssignment?.participantId;
 
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
     structureId,
   });
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
-
-  if (!drawPosition) return { error: MISSING_DRAW_POSITION };
 
   // drawPosition may not be cleared if:
   // 1. drawPosition has been advanced by winning a matchUp
@@ -97,7 +109,9 @@ export function clearDrawPosition({
     }
   });
 
-  return drawPositionCleared ? SUCCESS : { error: DRAW_POSITION_NOT_CLEARED };
+  if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
+
+  return Object.assign({}, SUCCESS, { participantId });
 
   function removeByeAndCleanUp({
     matchUp,

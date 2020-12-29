@@ -176,7 +176,7 @@ function checkValidStandardSetOutcome({
   const gamesDifference = winningSideGameScore - losingSideGameScore;
   const winningSideIsHighGameValue = winningSideGameScore > losingSideGameScore;
   if (!winningSideIsHighGameValue) {
-    return { result: false, error: 'winningSide game score is not high' };
+    return { result: false, error: 'winningSide game scoreString is not high' };
   }
 
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
@@ -196,7 +196,7 @@ function checkValidStandardSetOutcome({
 
     if (hasTiebreakCondition) {
       if (gamesDifference > 1) {
-        return { result: false, error: 'invalid winning game score (5)' };
+        return { result: false, error: 'invalid winning game scoreString (5)' };
       }
       if (!validTiebreakScores) {
         return { result: false, error: 'invalid tiebreak scores (1)' };
@@ -218,7 +218,7 @@ function checkValidStandardSetOutcome({
 
       const maxGameScore = tiebreakAt < setTo ? setTo : setTo + 1;
       if (winningSideGameScore > maxGameScore) {
-        return { result: false, error: 'invalid winning game score (1)' };
+        return { result: false, error: 'invalid winning game scoreString (1)' };
       }
 
       if (
@@ -252,7 +252,7 @@ function checkValidStandardSetOutcome({
       hasTiebreakGameScore &&
       (!setTiebreakDefined || !hasTiebreakCondition)
     ) {
-      return { result: false, error: 'invalid winning game score (2)' };
+      return { result: false, error: 'invalid winning game scoreString (2)' };
     }
   }
 
@@ -265,11 +265,11 @@ function checkValidStandardSetOutcome({
     gamesDifference < minimumGamesWinMargin;
 
   if (invalidWinningScore) {
-    return { result: false, error: 'invalid winning game score (3)' };
+    return { result: false, error: 'invalid winning game scoreString (3)' };
   }
 
   if (gamesDifference > minimumGamesWinMargin && winningSideGameScore > setTo) {
-    return { result: false, error: 'invalid winning game score (4)' };
+    return { result: false, error: 'invalid winning game scoreString (4)' };
   }
 
   return { result: true };
