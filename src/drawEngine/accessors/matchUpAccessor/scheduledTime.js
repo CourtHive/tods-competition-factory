@@ -8,7 +8,7 @@ export function scheduledMatchUpTime({
 }) {
   const timeItems = matchUp.timeItems || [];
   const getTimeStamp = (item) =>
-    !item ? 0 : new Date(item.createdAt).getTime();
+    !item.createdAt ? 0 : new Date(item.createdAt).getTime();
   const lastScheduledTimeItem = timeItems
     .filter((timeItem) => timeItem.itemType === SCHEDULED_TIME)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))

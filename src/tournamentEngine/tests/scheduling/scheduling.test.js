@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../../../tournamentEngine';
+import { tournamentEngine } from '../..';
 import { competitionEngine } from '../../../competitionEngine';
 
 import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
