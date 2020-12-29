@@ -144,12 +144,13 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     if (isInComplete && !isByeMatchUp) {
       validActions.push({ type: 'SCHEDULE' });
     }
-    if (isInComplete && readyToScore && !isByeMatchUp) {
+    if (readyToScore && !isByeMatchUp) {
       validActions.push(addPenaltyAction);
+    }
+    if (isInComplete && readyToScore && !isByeMatchUp) {
       validActions.push({ type: 'STATUS' });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      validActions.push(addPenaltyAction);
       validActions.push({ type: 'SCORE' });
       validActions.push({ type: 'START' });
       validActions.push({ type: 'END' });
