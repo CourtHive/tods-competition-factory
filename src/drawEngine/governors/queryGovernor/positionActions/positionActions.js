@@ -1,5 +1,4 @@
 import { stageEntries } from '../../../getters/stageGetter';
-import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { findStructure } from '../../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
@@ -21,10 +20,11 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  REMOVE_PARTICIPANT,
-  REMOVE_PARTICIPANT_METHOD,
+  REMOVE_ASSIGNMENT,
+  REMOVE_ASSIGNMENT_METHOD,
   ADD_NICKNAME,
   ADD_PENALTY,
+  ASSIGN_BYE,
 } from '../../../../constants/positionActionConstants';
 import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
 
@@ -60,7 +60,7 @@ export function positionActions({
    * 1. Links are directing winners to this structure, and
    * 2. the feedProfile is not "DRAW"
    *
-   * Directions such as West in Compass or Playoff structures should not have an positionActions
+   * Directions such as West in Compass or Playoff structures should not have positionActions
    */
   if (structure.stageSequence > 1) {
     const asTargetLink = drawDefinition.links?.find(
@@ -111,33 +111,45 @@ export function positionActions({
     .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
     .map((entry) => entry.participantId);
 
-  const isByePosition = !!(positionAssignment && positionAssignment.bye);
   const {
     activeDrawPositions,
     inactiveDrawPositions,
     byeDrawPositions,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
+  const isByePosition = byeDrawPositions.includes(drawPosition);
 
-  if (!positionAssignment) {
-    const { validAssignmentAction } = getValidAssignmentAction({
+  if (!positionAssignment || isByePosition) {
+    const { validAssignmentActions } = getValidAssignmentAction({
       drawDefinition,
       structureId,
       drawPosition,
+      isByePosition,
       positionAssignments,
       tournamentParticipants,
       unassignedParticipantIds,
     });
-    if (validAssignmentAction) validActions.push(validAssignmentAction);
-  } else {
+    validAssignmentActions?.forEach((action) => validActions.push(action));
+  }
+
+  if (positionAssignment) {
     if (!activeDrawPositions.includes(drawPosition)) {
       validActions.push({
-        type: REMOVE_PARTICIPANT,
-        method: REMOVE_PARTICIPANT_METHOD,
+        type: REMOVE_ASSIGNMENT,
+        method: REMOVE_ASSIGNMENT_METHOD,
         payload: { drawId, structureId, drawPosition },
       });
+
+      // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
+      // option should not be available if exising assignment is a bye
+      if (!isByePosition) {
+        validActions.push({
+          type: ASSIGN_BYE,
+          method: REMOVE_ASSIGNMENT_METHOD,
+          payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+        });
+      }
     }
-    const isByeDrawPosition = byeDrawPositions.includes(drawPosition);
-    if (!isByeDrawPosition) {
+    if (!isByePosition) {
       validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: ADD_NICKNAME });
     }
@@ -152,56 +164,18 @@ export function positionActions({
       tournamentParticipants,
     });
     if (validSwapAction) validActions.push(validSwapAction);
-
-    const { validAlternatesAction } = getValidAlternatesAction({
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      positionAssignments,
-      tournamentParticipants,
-    });
-    if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
+
+  const { validAlternatesAction } = getValidAlternatesAction({
+    drawId,
+    structure,
+    structureId,
+    drawPosition,
+    drawDefinition,
+    positionAssignments,
+    tournamentParticipants,
+  });
+  if (validAlternatesAction) validActions.push(validAlternatesAction);
 
   return { validActions, isDrawPosition: true, isByePosition };
-}
-
-export function getNextUnfilledDrawPositions({ drawDefinition, structureId }) {
-  if (!drawDefinition) {
-    const error = MISSING_DRAW_DEFINITION;
-    return { error, nextUnfilledDrawPositions: [] };
-  }
-  if (!structureId) {
-    const error = MISSING_STRUCTURE_ID;
-    return { error, nextUnfilledDrawPositions: [] };
-  }
-
-  const { structure, error } = findStructure({ drawDefinition, structureId });
-
-  if (error) return { error };
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
-  const result = structureAssignedDrawPositions({ structure });
-  const positionAssignments = result?.positionAssignments || [];
-  const { unfilledPositions } = getNextSeedBlock({
-    drawDefinition,
-    structureId,
-    randomize: true,
-  });
-
-  const unfilledDrawPositions = positionAssignments
-    .filter((assignment) => {
-      return (
-        !assignment.participantId && !assignment.bye && !assignment.qualifier
-      );
-    })
-    .map((assignment) => assignment.drawPosition);
-
-  if (unfilledPositions?.length) {
-    return { nextUnfilledDrawPositions: unfilledPositions };
-  } else {
-    return { nextUnfilledDrawPositions: unfilledDrawPositions };
-  }
 }

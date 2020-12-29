@@ -4,7 +4,7 @@ import tournamentEngine from '../../../../tournamentEngine';
 
 import { INVALID_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
 
-it('can position details when requesting positionActions', () => {
+it('can return accurate position details when requesting positionActions', () => {
   const drawProfiles = [
     {
       drawSize: 32,

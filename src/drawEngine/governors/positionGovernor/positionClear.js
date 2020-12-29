@@ -1,25 +1,23 @@
-import { numericSort } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
 import {
   getAllDrawMatchUps,
   getAllStructureMatchUps,
 } from '../../getters/getMatchUps';
+import { numericSort } from '../../../utilities';
+import { findStructure } from '../../getters/findStructure';
+import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-
-import { SUCCESS } from '../../../constants/resultConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
 import {
   DRAW_POSITION_ACTIVE,
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
   MISSING_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
-import { exit } from 'process';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
@@ -48,7 +46,10 @@ export function clearDrawPosition({
 
   const existingAssignment = positionAssignments.reduce(
     (value, assignment) =>
-      assignment.participantId === participantId ? assignment : value,
+      (participantId && assignment.participantId === participantId) ||
+      (drawPosition && assignment.drawPosition === drawPosition)
+        ? assignment
+        : value,
     undefined
   );
 

@@ -8,7 +8,7 @@ export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
-export const NO_DRAW_POSITIONS_AVAILABLE = 'No drawPositions available';
+export const BYES_LIMIT_REACHED = 'BYEs limit';
 export const DRAW_POSITION_ASSIGNED = 'drawPosition already assigned';
 export const DRAW_POSITION_NOT_CLEARED = 'drawPosition not cleared';
 export const DRAW_POSITION_NOT_FOUND = 'drawPosition not found';
@@ -271,7 +271,7 @@ export const errorConditionConstants = {
   MISSING_VALUE,
   MISSING_VENUE_ID,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
-  NO_DRAW_POSITIONS_AVAILABLE,
+  BYES_LIMIT_REACHED,
   NO_MODIFICATIONS_APPLIED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,

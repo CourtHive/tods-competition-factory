@@ -51,7 +51,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
         return byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp;
       }, false));
 
-  const matchDrawPositionsAreAssigned = drawPositions?.reduce(
+  const matchUpDrawPositionsAreAssigned = drawPositions?.reduce(
     (assignedBoolean, drawPosition) =>
       participantAssignedDrawPositions.includes(drawPosition) &&
       assignedBoolean,
@@ -124,7 +124,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       matchUp.sides &&
       matchUp.sides.filter((side) => side && side.participantId).length === 2;
 
-    const readyToScore = matchDrawPositionsAreAssigned || hasParticipants;
+    const readyToScore = matchUpDrawPositionsAreAssigned || hasParticipants;
 
     if (isInComplete && !isByeMatchUp) {
       validActions.push({ type: 'SCHEDULE' });

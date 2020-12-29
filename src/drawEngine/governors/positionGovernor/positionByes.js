@@ -39,7 +39,7 @@ import {
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITIONS,
-  NO_DRAW_POSITIONS_AVAILABLE,
+  BYES_LIMIT_REACHED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -50,21 +50,22 @@ export function assignDrawPositionBye({
   devContext,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
+  const unplacedByes = placedByes < byesCount;
+
+  const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
     structureId,
   });
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
 
-  const positionsAvailable = placedByes < byesCount;
   const positionState = positionAssignments.reduce(
     (p, c) => (c.drawPosition === drawPosition ? c : p),
     undefined
   );
 
-  if (!positionsAvailable) return { error: NO_DRAW_POSITIONS_AVAILABLE };
+  if (!unplacedByes) return { error: BYES_LIMIT_REACHED };
   if (!positionState) return { error: INVALID_DRAW_POSITION };
   const { filled, containsBye } = drawPositionFilled(positionState);
   if (filled && !containsBye) {
@@ -565,7 +566,7 @@ export function getByesData({ drawDefinition, structure }) {
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const validByePositions = relevantMatchUps
+  const positionsToAvoidDoubleBye = relevantMatchUps
     .map((matchUp) => matchUp.drawPositions)
     .filter((drawPositions) => {
       return (
@@ -598,6 +599,6 @@ export function getByesData({ drawDefinition, structure }) {
     relevantMatchUps,
     placedByePositions,
     roundMatchUps,
-    validByePositions,
+    positionsToAvoidDoubleBye,
   };
 }

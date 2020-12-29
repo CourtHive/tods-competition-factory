@@ -1,13 +1,20 @@
+import { findStructure } from '../../../getters/findStructure';
+import { getNextSeedBlock } from '../../../getters/seedGetter';
+import { getByesData } from '../../positionGovernor/positionByes';
+import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
+
 import {
+  ASSIGN_BYE,
+  ASSIGN_BYE_METHOD,
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { getNextSeedBlock } from '../../../getters/seedGetter';
 
 export function getValidAssignmentAction({
   drawDefinition,
   structureId,
   drawPosition,
+  isByePosition,
   positionAssignments,
   tournamentParticipants,
   unassignedParticipantIds,
@@ -31,6 +38,7 @@ export function getValidAssignmentAction({
   }
 
   if (unfilledPositions.includes(drawPosition)) {
+    const { structure } = findStructure({ drawDefinition, structureId });
     let availableParticipantIds;
     if (unplacedSeedAssignments.length) {
       // return any valid seedAssignments
@@ -44,64 +52,52 @@ export function getValidAssignmentAction({
       );
     } else {
       // otherwise look for any unplaced entries
-      availableParticipantIds = unassignedParticipantIds;
-      // look for:
       // 1) unassigned DIRECT_ACCEPTANCE or WILDCARD structure entries
+      availableParticipantIds = unassignedParticipantIds;
+
       // 2) unassigned qualifer entries
-      // 3) lucky losers from linked structures
-      // first add any unassigned participants
-      /*
-      const validToAssign = entries
-        .filter(
-          (entry) => !assignedParticipantIds.includes(entry.participantId)
-        )
-        .map((valid) =>
-          Object.assign(valid, { drawId, structureId, drawPosition })
-        );
-
-      // discover how many byes are unplaced
-      const { byesCount, placedByes, validByePositions } = getByesData({
-        drawDefinition,
-        structure,
-      });
-      const validPositionForBye = validByePositions.includes(drawPosition);
-      const unassignedByes = byesCount - placedByes;
-      if (validPositionForBye && unassignedByes) {
-        validToAssign.push({
-          bye: true,
-          unassignedByes,
-          drawId,
-          structureId,
-          drawPosition,
-        });
-      }
-
-      // discover how many qualifiers are unplaced
       const { unplacedQualifiersCount } = getQualifiersData({
         drawDefinition,
         structure,
       });
-      console.log({ unplacedQualifiersCount });
-      validToAssign.sort(validAssignmentsSort);
-      validActions.push({
-        type: ASSIGN_PARTICIPANT,
-        payload: { validToAssign },
-      });
-      */
+      if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
+
+      // 3) lucky losers from linked structures
     }
+
+    const validAssignmentActions = [];
+    const { byesCount, placedByes, positionsToAvoidDoubleBye } = getByesData({
+      drawDefinition,
+      structure,
+    });
+    const availableByes = byesCount - placedByes;
+    if (availableByes && !isByePosition) {
+      validAssignmentActions.push({
+        type: ASSIGN_BYE,
+        method: ASSIGN_BYE_METHOD,
+        positionsToAvoidDoubleBye,
+        availableByes,
+        payload: { drawId, structureId, drawPosition },
+      });
+    }
+
     // add structureId and drawPosition to the payload so the client doesn't need to discover
     const participantsAvailable = tournamentParticipants?.filter(
       (participant) =>
         availableParticipantIds.includes(participant.participantId)
     );
-    const validAssignmentAction = {
-      type: ASSIGN_PARTICIPANT,
-      method: ASSIGN_PARTICIPANT_METHOD,
-      availableParticipantIds,
-      participantsAvailable,
-      payload: { drawId, structureId, drawPosition },
-    };
-    return { validAssignmentAction };
+    if (participantsAvailable?.length) {
+      validAssignmentActions.push({
+        type: ASSIGN_PARTICIPANT,
+        method: ASSIGN_PARTICIPANT_METHOD,
+        availableParticipantIds,
+        participantsAvailable,
+        positionsToAvoidDoubleBye,
+        availableByes,
+        payload: { drawId, structureId, drawPosition },
+      });
+    }
+    return { validAssignmentActions };
   } else {
     return { message: 'No valid assignment actions' };
   }

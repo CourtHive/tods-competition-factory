@@ -43,7 +43,7 @@ it('can recognize valid ALTERNATES', () => {
   expect(option.availableAlternates.length).toEqual(2);
 
   const payload = option.payload;
-  payload.alternateParticipantId = option.availableAlternatesIds[0];
+  payload.alternateParticipantId = option.availableAlternatesParticipantIds[0];
 
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
