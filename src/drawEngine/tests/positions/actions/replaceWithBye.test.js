@@ -1,7 +1,10 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
 
-import { REMOVE_PARTICIPANT } from '../../../../constants/positionActionConstants';
+import {
+  ASSIGN_BYE,
+  REMOVE_ASSIGNMENT,
+} from '../../../../constants/positionActionConstants';
 
 it('can replace positioned participant with a bye', () => {
   const drawProfiles = [
@@ -23,7 +26,7 @@ it('can replace positioned participant with a bye', () => {
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
 
-  let drawPosition = 4;
+  let drawPosition = 1;
   let result = tournamentEngine.positionActions({
     drawId,
     structureId,
@@ -32,12 +35,69 @@ it('can replace positioned participant with a bye', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(REMOVE_PARTICIPANT)).toEqual(true);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   let option = result.validActions.find(
-    (action) => action.type === REMOVE_PARTICIPANT
+    (action) => action.type === REMOVE_ASSIGNMENT
   );
 
-  const payload = Object.assign({}, option.payload, { replaceWithBye: true });
+  let payload = Object.assign({}, option.payload, { replaceWithBye: true });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId }));
+
+  let { positionAssignments } = structures[0];
+  let assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  expect(assignment.bye).toEqual(true);
+
+  // Now test that a BYE can be removed
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+
+  option = result.validActions.find(
+    (action) => action.type === REMOVE_ASSIGNMENT
+  );
+
+  payload = Object.assign({}, option.payload);
+  result = tournamentEngine[option.method](payload);
+  expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId }));
+
+  ({ positionAssignments } = structures[0]);
+  assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  expect(assignment.bye).toBeUndefined();
+
+  // now check that BYE can be placed
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+
+  option = result.validActions.find((action) => action.type === ASSIGN_BYE);
+  payload = Object.assign({}, option.payload);
+  result = tournamentEngine[option.method](payload);
+  expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId }));
+
+  ({ positionAssignments } = structures[0]);
+  assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  expect(assignment.bye).toEqual(true);
 });

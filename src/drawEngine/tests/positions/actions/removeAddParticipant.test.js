@@ -3,7 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine';
 
 import {
   ASSIGN_PARTICIPANT,
-  REMOVE_PARTICIPANT,
+  REMOVE_ASSIGNMENT,
 } from '../../../../constants/positionActionConstants';
 
 it('can remove drawPosition assignment and add it back', () => {
@@ -35,9 +35,9 @@ it('can remove drawPosition assignment and add it back', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(REMOVE_PARTICIPANT)).toEqual(true);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   let option = result.validActions.find(
-    (action) => action.type === REMOVE_PARTICIPANT
+    (action) => action.type === REMOVE_ASSIGNMENT
   );
 
   result = tournamentEngine[option.method](option.payload);

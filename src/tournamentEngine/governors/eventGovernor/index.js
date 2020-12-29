@@ -37,11 +37,12 @@ import {
   setEntryPosition,
   setEntryPositions,
 } from './entries/setEntryPositions';
-import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
-import { addPlayoffStructures } from './addPlayoffStructures';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
+import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
+import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
+import { addPlayoffStructures } from './addPlayoffStructures';
 
 const eventGovernor = {
   addEvent,
@@ -75,6 +76,7 @@ const eventGovernor = {
 
   assignDrawPosition,
   assignSeedPositions,
+  assignDrawPositionBye,
   swapDrawPositionAssignments,
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,

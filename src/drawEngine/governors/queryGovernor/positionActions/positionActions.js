@@ -20,8 +20,8 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  REMOVE_PARTICIPANT,
-  REMOVE_PARTICIPANT_METHOD,
+  REMOVE_ASSIGNMENT,
+  REMOVE_ASSIGNMENT_METHOD,
   ADD_NICKNAME,
   ADD_PENALTY,
 } from '../../../../constants/positionActionConstants';
@@ -118,7 +118,7 @@ export function positionActions({
   } = structureActiveDrawPositions({ drawDefinition, structureId });
 
   if (!positionAssignment) {
-    const { validAssignmentAction } = getValidAssignmentAction({
+    const { validAssignmentActions } = getValidAssignmentAction({
       drawDefinition,
       structureId,
       drawPosition,
@@ -126,13 +126,13 @@ export function positionActions({
       tournamentParticipants,
       unassignedParticipantIds,
     });
-    if (validAssignmentAction) validActions.push(validAssignmentAction);
+    validAssignmentActions?.forEach((action) => validActions.push(action));
   } else {
     if (!activeDrawPositions.includes(drawPosition)) {
       validActions.push({
-        type: REMOVE_PARTICIPANT,
-        method: REMOVE_PARTICIPANT_METHOD,
-        payload: { drawId, structureId, drawPosition },
+        type: REMOVE_ASSIGNMENT,
+        method: REMOVE_ASSIGNMENT_METHOD,
+        payload: { drawId, structureId, drawPosition, replaceWithBye: false },
       });
     }
     const isByeDrawPosition = byeDrawPositions.includes(drawPosition);
@@ -151,18 +151,18 @@ export function positionActions({
       tournamentParticipants,
     });
     if (validSwapAction) validActions.push(validSwapAction);
-
-    const { validAlternatesAction } = getValidAlternatesAction({
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      positionAssignments,
-      tournamentParticipants,
-    });
-    if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
+
+  const { validAlternatesAction } = getValidAlternatesAction({
+    drawId,
+    structure,
+    structureId,
+    drawPosition,
+    drawDefinition,
+    positionAssignments,
+    tournamentParticipants,
+  });
+  if (validAlternatesAction) validActions.push(validAlternatesAction);
 
   return { validActions, isDrawPosition: true, isByePosition };
 }

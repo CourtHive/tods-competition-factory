@@ -566,7 +566,7 @@ export function getByesData({ drawDefinition, structure }) {
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const validByePositions = relevantMatchUps
+  const positionsToAvoidDoubleBye = relevantMatchUps
     .map((matchUp) => matchUp.drawPositions)
     .filter((drawPositions) => {
       return (
@@ -599,6 +599,6 @@ export function getByesData({ drawDefinition, structure }) {
     relevantMatchUps,
     placedByePositions,
     roundMatchUps,
-    validByePositions,
+    positionsToAvoidDoubleBye,
   };
 }
