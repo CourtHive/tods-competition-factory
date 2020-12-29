@@ -4,6 +4,7 @@ export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';
 export const ASSIGN_PARTICIPANT_METHOD = 'assignDrawPosition';
 export const ASSIGN_BYE_METHOD = 'assignDrawPositionBye';
+export const ADD_PENALTY_METHOD = 'addPenalty';
 
 export const ALTERNATE_PARTICIPANT = 'ALTERNATE';
 export const WITHDRAW_PARTICIPANT = 'WITHDRAW';

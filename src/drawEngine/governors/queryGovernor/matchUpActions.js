@@ -5,14 +5,16 @@ import { positionActions } from './positionActions/positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
-import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-
-import { ADD_PENALTY } from '../../../constants/positionActionConstants';
+import {
+  ADD_PENALTY,
+  ADD_PENALTY_METHOD,
+} from '../../../constants/positionActionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
+import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
 
 /*
   return an array of all possible validActions for a given matchUp
@@ -126,16 +128,29 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
 
     const readyToScore = matchUpDrawPositionsAreAssigned || hasParticipants;
 
+    const { drawId } = drawDefinition;
+    const addPenaltyAction = {
+      type: ADD_PENALTY,
+      method: ADD_PENALTY_METHOD,
+      payload: {
+        drawId,
+        matchUpId,
+        penaltyCode: undefined,
+        penaltyType: undefined,
+        participantIds: [],
+        notes: undefined,
+      },
+    };
     if (isInComplete && !isByeMatchUp) {
       validActions.push({ type: 'SCHEDULE' });
     }
     if (isInComplete && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: ADD_PENALTY });
+      validActions.push(addPenaltyAction);
       validActions.push({ type: 'STATUS' });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
+      validActions.push(addPenaltyAction);
       validActions.push({ type: 'SCORE' });
-      validActions.push({ type: ADD_PENALTY });
       validActions.push({ type: 'START' });
       validActions.push({ type: 'END' });
     }
