@@ -98,7 +98,7 @@ function attemptStatusChange(props) {
   const { matchUp, matchUpStatus } = props;
 
   if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
-    errors.push({ error: INVALID_MATCHUP_STATUS });
+    errors.push({ error: INVALID_MATCHUP_STATUS, matchUpStatus });
   }
 
   // if no winningSide is given and matchUp has winningSide
