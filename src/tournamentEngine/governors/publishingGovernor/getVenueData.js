@@ -1,5 +1,6 @@
-import { getCourtInfo } from './getCourtInfo';
 import { findVenue } from '../../getters/venueGetter';
+import { makeDeepCopy } from '../../../utilities';
+import { getCourtInfo } from './getCourtInfo';
 
 import {
   MISSING_TOURNAMENT_RECORD,
@@ -34,5 +35,5 @@ export function getVenueData({ tournamentRecord, venueId }) {
 
   const venueData = Object.assign({}, venueInfo, { courtsInfo });
 
-  return Object.assign({}, SUCCESS, { venueData });
+  return Object.assign({}, SUCCESS, { venueData: makeDeepCopy(venueData) });
 }

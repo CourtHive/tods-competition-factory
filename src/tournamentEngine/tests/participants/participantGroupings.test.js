@@ -10,6 +10,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { OTHER } from '../../../constants/participantRoles';
 import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
+import { intersection } from '../../../utilities';
 
 it('can add a GROUP participant and add individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -173,7 +174,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   );
 
   // first four individual participants belong to groupParticipant
-  let individualParticipantIds = tournamentParticipants
+  const individualParticipantIds = tournamentParticipants
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
@@ -189,7 +190,14 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   const groupingParticipant = result.participant;
   const { participantId: groupingParticipantId } = groupingParticipant;
 
-  individualParticipantIds = tournamentParticipants
+  let { participant } = tournamentEngine.findParticipant({
+    participantId: groupingParticipantId,
+  });
+  expect(individualParticipantIds).toEqual(
+    participant.individualParticipantIds
+  );
+
+  const newIndividualParticipantIds = tournamentParticipants
     .slice(2, 6)
     .map((participant) => participant.participantId);
 
@@ -200,9 +208,17 @@ it('can modify individualParticipantIds of a grouping participant', () => {
 
   result = tournamentEngine.modifyIndividualParticipantIds({
     groupingParticipantId,
-    individualParticipantIds,
+    individualParticipantIds: newIndividualParticipantIds,
   });
   expect(result.added).toEqual(2);
   expect(result.removed).toEqual(2);
   expect(result.success).toEqual(true);
+
+  ({ participant } = tournamentEngine.findParticipant({
+    participantId: groupingParticipantId,
+  }));
+
+  expect(newIndividualParticipantIds).toEqual(
+    participant.individualParticipantIds
+  );
 });

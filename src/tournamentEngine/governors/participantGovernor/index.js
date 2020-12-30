@@ -3,7 +3,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { getPairedParticipant } from './getPairedParticipant';
-import { createGroupParticipant } from './createGroupParticipant';
+import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { addParticipant, addParticipants } from './addParticipants';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { generateMockParticipants } from '../../generators/mockParticipants';
@@ -27,6 +27,8 @@ import {
   getTournamentPenalties,
 } from './participantPenalties';
 import { participantMembership } from '../../getters/participants/participantMembership';
+import { modifyParticipantName } from './modifyParticipantName';
+import { modifyParticipantOtherName } from './modifyParticipantOtherName';
 
 const findTournamentParticipantCopy = (props) => {
   const { participant, error } = findTournamentParticipant(props);
@@ -55,6 +57,9 @@ const participantGovernor = {
 
   rankByRatings,
   getParticipantIdFinishingPositions,
+
+  modifyParticipantName,
+  modifyParticipantOtherName,
 
   mergeParticipants,
   getPairedParticipant,

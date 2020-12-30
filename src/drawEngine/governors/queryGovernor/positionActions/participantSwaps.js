@@ -1,3 +1,5 @@
+import { makeDeepCopy } from '../../../../utilities';
+
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
   SWAP_PARTICIPANTS,
@@ -38,7 +40,9 @@ export function getValidSwapAction({
   const availableAssignments = filteredAssignments.map((assignment) => {
     const participant =
       participantsAvailable && participantsAvailable[assignment.participantId];
-    return Object.assign({}, assignment, { participant });
+    return Object.assign({}, assignment, {
+      participant: makeDeepCopy(participant),
+    });
   });
 
   if (inactiveDrawPositions) {

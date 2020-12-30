@@ -1,3 +1,5 @@
+import { makeDeepCopy } from '../../../utilities';
+
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -40,5 +42,7 @@ export function getTournamentInfo({ tournamentRecord }) {
     tournamaentOfficials,
   }))(tournamentRecord);
 
-  return Object.assign({}, SUCCESS, { tournamentInfo });
+  return Object.assign({}, SUCCESS, {
+    tournamentInfo: makeDeepCopy(tournamentInfo),
+  });
 }

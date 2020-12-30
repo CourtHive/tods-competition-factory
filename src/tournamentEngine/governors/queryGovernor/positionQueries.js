@@ -1,4 +1,5 @@
 import { positionActions as drawEnginePositionActions } from '../../../drawEngine/governors/queryGovernor/positionActions/positionActions';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 
 export function positionActions({
   tournamentRecord,
@@ -7,7 +8,10 @@ export function positionActions({
   structureId,
   drawId,
 }) {
-  const tournamentParticipants = tournamentRecord.participants || [];
+  const { tournamentParticipants } = getTournamentParticipants({
+    tournamentRecord,
+    inContext: true,
+  });
   return drawEnginePositionActions({
     tournamentParticipants,
     drawDefinition,

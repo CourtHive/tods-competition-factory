@@ -1,4 +1,5 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { makeDeepCopy } from '../../../../utilities';
 
 import {
   INVALID_PARTICIPANT_IDS,
@@ -83,7 +84,7 @@ export function addIndividualParticipantIds({
   }
 
   return Object.assign({}, SUCCESS, {
-    groupingParticipant,
+    groupingParticipant: makeDeepCopy(groupingParticipant),
     added: participantIdsToAdd.length,
   });
 }

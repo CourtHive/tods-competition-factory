@@ -1,5 +1,6 @@
 import { getEventTimeItem } from '../queryGovernor/timeItems';
 import { getTournamentInfo } from './getTournamentInfo';
+import { makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
@@ -89,5 +90,5 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     createdAt: timeItem?.createdAt,
   };
 
-  return Object.assign({}, SUCCESS, { eventData });
+  return Object.assign({}, SUCCESS, { eventData: makeDeepCopy(eventData) });
 }

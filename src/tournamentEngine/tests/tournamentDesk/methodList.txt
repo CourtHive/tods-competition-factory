@@ -30,12 +30,15 @@ tournamentEngine
 - attachEventPolicy
 * automatedPlayoffPositioning
 - bulkMatchUpStatusUpdate
+* createGroupParticipant
 - deleteDrawDefinitions
 * destroyPairEntry
 * getEventTimeItem
 * modifyEntriesStatus
 * modifyVenue
 * modifyIndividualParticipantIds
+* modifyParticipantName
+* modifyParticipantOtherName
 * participantSignInStatus
 * positionActions
 * promoteAlternate

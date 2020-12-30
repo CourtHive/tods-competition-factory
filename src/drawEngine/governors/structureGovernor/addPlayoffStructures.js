@@ -1,6 +1,7 @@
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { playoff } from '../../generators/playoffStructures';
 import { getSourceRounds } from './getSourceRounds';
+import { makeDeepCopy } from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -106,5 +107,7 @@ export function addPlayoffStructures(props) {
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
 
-  return Object.assign({}, SUCCESS, { drawDefinition });
+  return Object.assign({}, SUCCESS, {
+    drawDefinition: makeDeepCopy(drawDefinition),
+  });
 }

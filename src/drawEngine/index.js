@@ -65,7 +65,9 @@ function flushErrors() {
 
 export const drawEngine = (function () {
   const fx = {
-    getState: () => ({ drawDefinition: makeDeepCopy(drawDefinition) }),
+    getState: ({ convertExtensions } = {}) => ({
+      drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
+    }),
     version: () => '@VERSION@',
     reset: () => {
       drawDefinition = undefined;

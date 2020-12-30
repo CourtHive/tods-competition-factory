@@ -1,4 +1,9 @@
-import { generateRange, intersection, unique } from '../../../utilities';
+import {
+  generateRange,
+  intersection,
+  makeDeepCopy,
+  unique,
+} from '../../../utilities';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps';
 
@@ -84,7 +89,10 @@ export function getDrawData({
     return generated || !!structure?.roundMatchUps;
   }, false);
 
-  return Object.assign({}, SUCCESS, { drawInfo, structures });
+  return Object.assign({}, SUCCESS, {
+    drawInfo: makeDeepCopy(drawInfo),
+    structures: makeDeepCopy(structures),
+  });
 }
 
 /**
