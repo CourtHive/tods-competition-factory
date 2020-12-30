@@ -29,15 +29,15 @@ itemType is a string, while itemSubTypes is an array of strings. In Competition 
 #### Example itemTypes
 
 ```js
-  itemType: 'SCHEDULE.ASSIGNMENT.VENUE',
-  itemType: 'SCHEDULE.ASSIGNMENT.COURT',
-  itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
-  itemType: 'SCHEDULE.DATE',
-  itemType: 'SCHEDULE.TIME.SCHEDULED',
-  itemType: 'SCHEDULE.TIME.START',
-  itemType: 'SCHEDULE.TIME.STOP',
-  itemType: 'SCHEDULE.TIME.RESUME',
-  itemType: 'SCHEDULE.TIME.END,
+itemType: 'SCHEDULE.ASSIGNMENT.VENUE',
+itemType: 'SCHEDULE.ASSIGNMENT.COURT',
+itemType: 'SCHEDULE.ASSIGNMENT.OFFICIAL',
+itemType: 'SCHEDULE.DATE',
+itemType: 'SCHEDULE.TIME.SCHEDULED',
+itemType: 'SCHEDULE.TIME.START',
+itemType: 'SCHEDULE.TIME.STOP',
+itemType: 'SCHEDULE.TIME.RESUME',
+itemType: 'SCHEDULE.TIME.END,
 ```
 
 ## Internal usage

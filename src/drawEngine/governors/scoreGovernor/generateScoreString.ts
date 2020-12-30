@@ -31,7 +31,12 @@ export function generateScoreString(props: any) {
 
   const outcomeString = getOutcomeString({ matchUpStatus });
 
-  const setScores = sets?.sort(setSort).map(setString).join(' ') || '';
+  const setScores =
+    sets
+      ?.sort(setSort)
+      .map(setString)
+      .filter((f) => f) // handle situation where there are multiple empty set objects
+      .join(' ') || '';
 
   if (!outcomeString) return setScores;
   if (winningSide === 2) return `${outcomeString} ${setScores}`;
@@ -65,22 +70,18 @@ export function generateScoreString(props: any) {
       return `[${tiebreakScore.join('-')}]`;
     }
 
-    /*
-    const tiebreakScores = [side1TiebreakScore, side2TiebreakScore].filter(
-      tiebreakScore => {
-        return tiebreakScore !== undefined && tiebreakScore !== false;
-      }
-    );
-    */
     const lowTiebreakScore = Math.min(t1, t2);
     const tiebreak = lowTiebreakScore ? `(${lowTiebreakScore})` : '';
 
     const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
     const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    return reverseScores
+    let scoreString = reverseScores
       ? `${[s2, s1].join('-')}${tiebreak}`
       : `${[s1, s2].join('-')}${tiebreak}`;
+
+    if (['-', ' '].includes(scoreString)) scoreString = '';
+    return scoreString;
   }
 }
 

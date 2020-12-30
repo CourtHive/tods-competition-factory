@@ -1,26 +1,24 @@
 ---
-name: Utilities
+name: makeDeepCopy
 menu: Utilities
-route: /utilities
+route: /utilities/makedeepcopy
 ---
 
-# Utilities
-
-## makeDeepCopy
+# makeDeepCopy
 
 ```js
 makeDeepCopy(element, convertExtensions);
 ```
 
-Makes a deep copy of a JSON object. When **convertExtensions** is **true** then TODS extensions objects are converted as follows:
+Makes a deep copy of a JSON object.
+
+When **convertExtensions** is **true** then TODS extensions objects are converted as follows:
 
 ```js
+// original
 element.extensions: [ { name: 'extensionName', value: { a: 1 } }]
-```
 
-becomes
-
-```js
+// after conversion
 element._extensionName: { a: 1 }
 ```
 

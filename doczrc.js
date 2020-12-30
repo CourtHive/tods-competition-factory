@@ -44,5 +44,9 @@ export default {
     {
       name: 'Examples',
     },
+    {
+      name: 'Utilities',
+      menu: ['makeDeepCopy'],
+    },
   ],
 };
