@@ -1,14 +1,18 @@
 import tournamentEngine from '../..';
+import mocksEngine from '../../../mocksEngine';
+
 import { SINGLES } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 it('can retrieve tournament participants', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const participantsProfile = {
     participantsCount: 100,
     participantType: PAIR,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
   });
   tournamentEngine.setState(tournamentRecord);
 
