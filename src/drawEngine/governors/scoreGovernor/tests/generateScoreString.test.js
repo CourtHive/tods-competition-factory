@@ -201,3 +201,55 @@ test('generate incomplete scoreString string', () => {
   const result = generateScoreString({ sets, autoComplete: false });
   expect(result).toEqual('7-6(12) 6-7(3) 3-');
 });
+
+it('returns empty string when no sets', () => {
+  let sets = [];
+  let result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('');
+
+  sets = [
+    {
+      setNumber: 1,
+      side1Score: undefined,
+      side2Score: undefined,
+      side1TiebreakScore: undefined,
+      side2TiebreakScore: undefined,
+    },
+  ];
+
+  result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('');
+
+  sets = [
+    {
+      setNumber: 1,
+      side1Score: '',
+      side2Score: '',
+      side1TiebreakScore: '',
+      side2TiebreakScore: '',
+    },
+  ];
+
+  result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('');
+
+  sets = [
+    {
+      setNumber: 1,
+      side1Score: undefined,
+      side2Score: undefined,
+      side1TiebreakScore: undefined,
+      side2TiebreakScore: undefined,
+    },
+    {
+      setNumber: 2,
+      side1Score: undefined,
+      side2Score: undefined,
+      side1TiebreakScore: undefined,
+      side2TiebreakScore: undefined,
+    },
+  ];
+
+  result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('');
+});
