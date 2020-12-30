@@ -10,7 +10,6 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { OTHER } from '../../../constants/participantRoles';
 import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
-import { intersection } from '../../../utilities';
 
 it('can add a GROUP participant and add individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
