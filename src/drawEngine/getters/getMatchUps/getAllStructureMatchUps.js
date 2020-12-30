@@ -108,7 +108,7 @@ export function getAllStructureMatchUps({
         ...structure.structures.map((structure) => {
           const { structureId, structureName: groupStructureName } = structure;
           return structure.matchUps.map((matchUp) => {
-            return Object.assign(makeDeepCopy(matchUp), {
+            return Object.assign(makeDeepCopy(matchUp, true), {
               structureId,
               structureName: groupStructureName,
               stageSequence,
@@ -226,7 +226,7 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositionsRange,
       },
-      makeDeepCopy(matchUp),
+      makeDeepCopy(matchUp, true),
       context
     );
 
@@ -269,7 +269,7 @@ export function getAllStructureMatchUps({
 
         return Object.assign({}, side, { sourceDrawPositionRange });
       });
-      Object.assign(matchUpWithContext, makeDeepCopy({ sides }));
+      Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
 
       if (!matchUp.matchUpFormat) {
         const matchUpFormat =
