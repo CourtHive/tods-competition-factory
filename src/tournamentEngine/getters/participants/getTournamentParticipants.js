@@ -1,3 +1,4 @@
+import { addParticipantStatistics } from './addParticipantStatistics';
 import { makeDeepCopy } from '../../../utilities';
 
 import {
@@ -7,7 +8,6 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { PAIR, TEAM } from '../../../constants/participantTypes';
-import { addParticipantStatistics } from './addParticipantStatistics';
 
 /**
  * Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
@@ -24,13 +24,14 @@ export function getTournamentParticipants({
   participantFilters,
 
   inContext,
+  convertExtensions,
   withStatistics,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
   let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant)
+    (participant) => makeDeepCopy(participant, convertExtensions)
   );
 
   if (!participantFilters) return { tournamentParticipants };
@@ -97,7 +98,7 @@ export function getTournamentParticipants({
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
-            return makeDeepCopy(individualParticipant);
+            return makeDeepCopy(individualParticipant, convertExtensions);
           }
         );
       }

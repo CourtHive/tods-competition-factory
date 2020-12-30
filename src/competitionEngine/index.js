@@ -27,7 +27,9 @@ function flushErrors() {
 
 export const competitionEngine = (function () {
   const fx = {
-    getState: () => ({ tournamentRecords: makeDeepCopy(tournamentRecords) }),
+    getState: ({ convertExtensions } = {}) => ({
+      tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
+    }),
   };
 
   importGovernors([

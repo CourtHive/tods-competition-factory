@@ -50,7 +50,9 @@ function setState(tournament, deepCopyOption = true) {
 
 export const tournamentEngine = (function () {
   const fx = {
-    getState: () => ({ tournamentRecord: makeDeepCopy(tournamentRecord) }),
+    getState: ({ convertExtensions } = {}) => ({
+      tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
+    }),
     getAudit: () => {
       const auditTrail = auditEngine.getState();
       auditEngine.reset();

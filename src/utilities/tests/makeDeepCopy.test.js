@@ -1,0 +1,62 @@
+import { COMPETITOR } from '../../constants/participantRoles';
+import { INDIVIDUAL } from '../../constants/participantTypes';
+import mocksEngine from '../../mocksEngine';
+import tournamentEngine from '../../tournamentEngine';
+import { makeDeepCopy } from '../makeDeepCopy';
+import { UUID } from '../UUID';
+
+it('can convert extensions during deepCopy', () => {
+  let { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  tournamentEngine.setState(tournamentRecord);
+
+  const scoringPolicy = {
+    scoring: {
+      policyName: 'TEST',
+      allowedMatchUpFormats: ['SET3-S:6/TB7'],
+    },
+  };
+  let result = tournamentEngine.attachPolicy({
+    policyDefinition: scoringPolicy,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ tournamentRecord } = tournamentEngine.getState());
+  expect(tournamentRecord.extensions.length).toEqual(1);
+
+  ({ tournamentRecord } = tournamentEngine.getState({
+    convertExtensions: true,
+  }));
+  expect(tournamentRecord.extensions).toBeUndefined();
+  expect(tournamentRecord._appliedPolicies.scoring).not.toBeUndefined();
+
+  const participantId = UUID();
+  const participant = {
+    participantId,
+    participantRole: COMPETITOR,
+    participantType: INDIVIDUAL,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+      extensions: [{ name: 'someExtension', value: 'extensionValue' }],
+    },
+    extensions: [{ name: 'anotherExtension', value: 'anotherExtensionValue' }],
+  };
+
+  result = tournamentEngine.addParticipant({ participant });
+  expect(result.success).toEqual(true);
+
+  const participantCopy = makeDeepCopy(participant, true);
+  expect(participantCopy._anotherExtension).toEqual('anotherExtensionValue');
+  expect(participantCopy.person._someExtension).toEqual('extensionValue');
+
+  ({ tournamentRecord } = tournamentEngine.getState({
+    convertExtensions: true,
+  }));
+
+  const tournamentParticipants = tournamentRecord.participants;
+  const targetParticipant = tournamentParticipants.find(
+    (participant) => participant.participantId === participantId
+  );
+  expect(targetParticipant._anotherExtension).toEqual('anotherExtensionValue');
+  expect(targetParticipant.person._someExtension).toEqual('extensionValue');
+});
