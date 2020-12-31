@@ -1,5 +1,5 @@
 import { findMatchUp, getAllDrawMatchUps } from '../../getters/getMatchUps';
-import { positionTargets } from '..//positionGovernor/positionTargets';
+import { positionTargets } from '../positionGovernor/positionTargets';
 
 import {
   isDirectingMatchUpStatus,
@@ -18,6 +18,7 @@ import {
   matchUpStatusConstants,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { makeDeepCopy } from '../../../utilities';
 
 export function setMatchUpStatus(props) {
   let errors = [];
@@ -90,7 +91,7 @@ export function setMatchUpStatus(props) {
 
   return errors.length
     ? { error: { errors } }
-    : Object.assign({}, SUCCESS, { matchUp });
+    : Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) });
 }
 
 function attemptStatusChange(props) {

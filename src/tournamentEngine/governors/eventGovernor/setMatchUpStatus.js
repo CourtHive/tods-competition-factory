@@ -4,6 +4,17 @@ import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
 
+/**
+ *
+ * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+ *
+ * @param {string} drawId - id of draw within which matchUp is found
+ * @param {string} matchUpId - id of matchUp to be modified
+ * @param {string} matchUpTieId - id of matchUpTie, if relevant
+ * @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
+ * @param {object} outcome - { score, winningSide, matchUpStatus }
+ *
+ */
 export function setMatchUpStatus(props) {
   let { outcome } = props;
   const {
@@ -30,14 +41,16 @@ export function setMatchUpStatus(props) {
     outcome.score = scoreObject;
   }
 
-  const { error: setMatchUpStatusError } = drawEngine.setMatchUpStatus({
-    matchUpId,
-    matchUpTieId,
-    matchUpStatus: outcome?.matchUpStatus,
-    matchUpStatusCodes: outcome?.matchUpStatusCodes,
-    winningSide: outcome?.winningSide,
-    score: outcome?.score,
-  });
+  const { error: setMatchUpStatusError, matchUp } = drawEngine.setMatchUpStatus(
+    {
+      matchUpId,
+      matchUpTieId,
+      matchUpStatus: outcome?.matchUpStatus,
+      matchUpStatusCodes: outcome?.matchUpStatusCodes,
+      winningSide: outcome?.winningSide,
+      score: outcome?.score,
+    }
+  );
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);
 
@@ -52,7 +65,9 @@ export function setMatchUpStatus(props) {
     errors.push({ error: EVENT_NOT_FOUND });
   }
 
-  return errors && errors.length ? { errors } : SUCCESS;
+  return errors && errors.length
+    ? { errors }
+    : Object.assign({}, SUCCESS, { matchUp });
 }
 
 export function bulkMatchUpStatusUpdate(props) {

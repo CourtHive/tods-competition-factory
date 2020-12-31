@@ -6,6 +6,8 @@ import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import drawEngine from '../../drawEngine';
+import { parseScoreString } from '../utilities/parseScoreString';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 export function generateTournamentRecord({
   endDate,
@@ -139,16 +141,37 @@ function generateEventWithDraw({
   const { drawId } = drawDefinition;
 
   if (drawProfile.outcomes) {
-    const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+    const { matchUps } = tournamentEngine.allDrawMatchUps({
+      drawId,
+      inContext: true,
+    });
     const { roundMatchUps } = drawEngine.getRoundMatchUps({
       matchUps,
     });
     drawProfile.outcomes.forEach((outcome) => {
-      const [roundNumber, roundPosition, scoreString] = outcome;
-      const matchUp = roundMatchUps[roundNumber].find(
+      const [
+        roundNumber,
+        roundPosition,
+        scoreString,
+        winningSide,
+        matchUpStatus = COMPLETED,
+      ] = outcome;
+      const targetMatchUp = roundMatchUps[roundNumber].find(
         (matchUp) => matchUp.roundPosition === roundPosition
       );
-      console.log({ matchUp });
+      const { matchUpId } = targetMatchUp;
+      const sets = scoreString && parseScoreString({ scoreString });
+      const score = { sets };
+      const result = tournamentEngine.setMatchUpStatus({
+        drawId,
+        matchUpId,
+        matchUpStatus,
+        outcome: {
+          winningSide,
+          score,
+        },
+      });
+      if (!result.success) console.log({ result });
     });
   }
 

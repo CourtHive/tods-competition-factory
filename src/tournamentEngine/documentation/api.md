@@ -572,6 +572,14 @@ Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
 
 ## setMatchUpStatus
 
+- Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+
+- @param {string} drawId - id of draw within which matchUp is found
+- @param {string} matchUpId - id of matchUp to be modified
+- @param {string} matchUpTieId - id of matchUpTie, if relevant
+- @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
+- @param {object} outcome - { score, winningSide, matchUpStatus }
+
 ---
 
 ## setParticipantScaleItem
