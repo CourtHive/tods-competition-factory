@@ -21,7 +21,7 @@ import { PAIR, TEAM } from '../../../constants/participantTypes';
 export function getTournamentParticipants({
   tournamentRecord,
 
-  participantFilters,
+  participantFilters = {},
 
   inContext,
   convertExtensions,
@@ -34,9 +34,8 @@ export function getTournamentParticipants({
     (participant) => makeDeepCopy(participant, convertExtensions)
   );
 
-  if (!participantFilters) return { tournamentParticipants };
-  if (typeof participantFilters !== 'object') return { error: INVALID_OBJECT };
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (typeof participantFilters !== 'object')
+    return { error: INVALID_OBJECT, participantFilters };
 
   const {
     //    drawIds,
