@@ -41,45 +41,4 @@ it('can retrieve tournament participants', () => {
     participantFilters: { participantRoles: [COMPETITOR] },
   }));
   expect(tournamentParticipants.length).toEqual(300);
-
-  const eventName = 'Test Event';
-  const event = {
-    eventName,
-    eventType: SINGLES,
-  };
-
-  let result = tournamentEngine.addEvent({ event });
-  const { event: eventResult, success } = result;
-  const { eventId } = eventResult;
-  expect(success).toEqual(true);
-
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-  }));
-
-  const participantIds = tournamentParticipants
-    .map((p) => p.participantId)
-    .slice(0, 32);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
-
-  const values = {
-    automated: true,
-    drawSize: 32,
-    eventId,
-    event: eventResult,
-  };
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
-
-  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
-
-  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-    withStatistics: true,
-  }));
-  expect(tournamentParticipants.length).toEqual(200);
-
-  console.log(tournamentParticipants[0]);
-  // TODO: complete some matchUps and check statistics
 });

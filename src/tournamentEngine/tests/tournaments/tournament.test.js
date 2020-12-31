@@ -3,7 +3,7 @@ import { drawEngine } from '../../../drawEngine';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
-import { parseStringScore } from '../../../drawEngine/tests/primitives/parseStringScore';
+import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 
 import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
@@ -125,7 +125,7 @@ it('can generate a tournament with events and draws', () => {
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
 
   const secondMatchUpFormat = 'SET3-S:T10';
-  const sets = parseStringScore({ stringScore: '6-3' });
+  const sets = parseScoreString({ scoreString: '6-3' });
   const score = { sets };
   result = tournamentEngine.setMatchUpStatus({
     drawId,

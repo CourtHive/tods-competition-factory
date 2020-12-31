@@ -1,8 +1,8 @@
-import { getTiebreakComplement } from '../../governors/scoreGovernor/getComplement';
+import { getTiebreakComplement } from '../../drawEngine/governors/scoreGovernor/getComplement';
 
 // utility function just to allow testing with string score entry
-export function parseStringScore({ stringScore, tiebreakTo = 7 }) {
-  return stringScore
+export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
+  return scoreString
     .split(' ')
     .filter((f) => f)
     .map((set, index) => parseSet({ set, setNumber: index + 1 }));

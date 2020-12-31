@@ -31,17 +31,24 @@ export function addParticipantStatistics({
       );
     });
 
-    const { matchUps } = allEventMatchUps({ event });
+    const { matchUps } = allEventMatchUps({ event, inContext: true });
     matchUps.forEach((matchUp) => {
-      const { matchUpId, winningSide, score } = matchUp;
-      matchUp.sides?.forEach(({ participantId, sideNumber }) => {
+      const {
+        matchUpId,
+        winningSide,
+        score,
+        sides,
+        finishingPositionRange: { winner, loser },
+      } = matchUp;
+      sides?.forEach(({ participantId, sideNumber }) => {
         if (!participantId) return;
 
         const participantScore =
           sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
         const participantWon = winningSide && sideNumber === winningSide;
 
-        // TODO: for each event capture finishingPositionRange / finishingPosition
+        const finishingPositionRange =
+          winningSide && (participantWon ? winner : loser);
 
         // include all individual participants that are part of teams & pairs
         allRelevantParticipantIds({
@@ -50,6 +57,7 @@ export function addParticipantStatistics({
           participantIdMap[relevantParticipantId].matchUps[matchUpId] = {
             score: participantScore,
             winner: participantWon,
+            finishingPositionRange,
           };
 
           if (winningSide) {

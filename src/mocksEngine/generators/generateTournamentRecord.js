@@ -5,6 +5,7 @@ import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import drawEngine from '../../drawEngine';
 
 export function generateTournamentRecord({
   endDate,
@@ -135,8 +136,23 @@ function generateEventWithDraw({
   if (generationError) return { error: generationError };
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
 
+  const { drawId } = drawDefinition;
+
+  if (drawProfile.outcomes) {
+    const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+    const { roundMatchUps } = drawEngine.getRoundMatchUps({
+      matchUps,
+    });
+    drawProfile.outcomes.forEach((outcome) => {
+      const [roundNumber, roundPosition, scoreString] = outcome;
+      const matchUp = roundMatchUps[roundNumber].find(
+        (matchUp) => matchUp.roundPosition === roundPosition
+      );
+      console.log({ matchUp });
+    });
+  }
+
   if (result.error) return { error: result.error };
 
-  const { drawId } = drawDefinition;
   return { drawId, eventId };
 }
