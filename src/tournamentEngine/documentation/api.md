@@ -451,9 +451,10 @@ Returns deepCopies of tournament participants filtered by participantFilters whi
 - @param {object} participantFilters - attribute arrays with filter value strings
 - @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
 - @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
+- @param {boolean} withOpponents - include opponent participantIds
+- @param {boolean} withMatchUps - include all matchUps in which participant appears
 
-imlemented: eventIds, participantTypes, participantRoles,
-to be implemented: drawIds, structureIds, signInStates, keyValues,
+participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
 
 ```js
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
