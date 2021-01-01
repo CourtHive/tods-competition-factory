@@ -39,6 +39,13 @@ export function setMatchUpStatus(props) {
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
     const { score: scoreObject } = matchUpScore(outcome);
     outcome.score = scoreObject;
+    outcome.score.sets = outcome.score.sets.filter(
+      (set) =>
+        set.side1Score ||
+        set.side2Score ||
+        set.side1TiebreakScore ||
+        set.side2TiebreakScore
+    );
   }
 
   const { error: setMatchUpStatusError, matchUp } = drawEngine.setMatchUpStatus(
