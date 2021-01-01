@@ -47,17 +47,17 @@ it('can add statistics to tournament participants', () => {
     name: 'ustaSection',
     value: { code: 65 },
   };
-  tournamentEngine.addTournamentExtension({ tournamentEngine, extension });
+  tournamentEngine.addTournamentExtension({ extension });
   extension = {
     name: 'ustaDistrict',
     value: { code: 17 },
   };
-  tournamentEngine.addTournamentExtension({ tournamentEngine, extension });
+  tournamentEngine.addTournamentExtension({ extension });
   extension = {
     name: 'ustaDivision',
     value: { code: 'X(50,60,70-80)d,SE' },
   };
-  tournamentEngine.addTournamentExtension({ tournamentEngine, extension });
+  tournamentEngine.addTournamentExtension({ extension });
 
   ({ tournamentRecord } = tournamentEngine.getState({
     convertExtensions: true,
@@ -66,6 +66,23 @@ it('can add statistics to tournament participants', () => {
   expect(tournamentRecord._ustaDistrict.code).toEqual(17);
   expect(tournamentRecord._ustaDivision.code).toEqual('X(50,60,70-80)d,SE');
 
+  const eventId = eventIds[0];
+  const { event } = tournamentEngine.getEvent({ eventId });
+  extension = {
+    name: 'ustaLevel',
+    value: 1,
+  };
+  tournamentEngine.addEventExtension({ eventId, extension });
+
+  extension = {
+    name: 'ustaDivision',
+    value: { id: '' },
+  };
+  tournamentEngine.addEventExtension({ eventId, extension });
+
+  const positionAssignments =
+    event.drawDefinitions[0].structures[0].positionAssignments;
+
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     convertExtensions: true,
     withStatistics: true,
@@ -73,10 +90,6 @@ it('can add statistics to tournament participants', () => {
     withMatchUps: true,
   });
   expect(tournamentParticipants.length).toEqual(300);
-
-  const { event } = tournamentEngine.getEvent({ eventId: eventIds[0] });
-  const positionAssignments =
-    event.drawDefinitions[0].structures[0].positionAssignments;
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(
@@ -88,14 +101,16 @@ it('can add statistics to tournament participants', () => {
   };
 
   const targetParticipant = getParticipant({ drawPosition: 1 });
-  console.log({ targetParticipant });
   expect(targetParticipant.statistics[0].statValue).toEqual(1);
+  expect(targetParticipant.opponents.length).toEqual(2);
+  expect(targetParticipant.matchUps.length).toEqual(3);
+  expect(targetParticipant.events.length).toEqual(1);
+  expect(targetParticipant.draws.length).toEqual(1);
 
   const individualParticipantId = targetParticipant.individualParticipantIds[0];
   const individualParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === individualParticipantId
   );
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
-
-  console.log(individualParticipant.opponents);
+  console.log({ individualParticipant });
 });

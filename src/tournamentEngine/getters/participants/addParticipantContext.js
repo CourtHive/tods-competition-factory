@@ -1,3 +1,4 @@
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { allEventMatchUps } from '../matchUpsGetter';
 
 export function addParticipantContext({
@@ -12,14 +13,14 @@ export function addParticipantContext({
 
   // first loop through all filtered events and capture events played
   tournamentEvents.forEach((event) => {
-    const { eventId, eventName } = event;
+    const { eventId, eventName, eventType } = event;
     const entries = event.entries || [];
     entries.forEach((entry) => {
       const { participantId } = entry;
 
       // include all individual participants that are part of teams & pairs
       allRelevantParticipantIds({ participantId }).forEach(
-        (relevantParticipantId) => {
+        ({ relevantParticipantId }) => {
           if (!participantIdMap[relevantParticipantId])
             participantIdMap[relevantParticipantId] = {
               opponents: {},
@@ -31,6 +32,7 @@ export function addParticipantContext({
             };
           participantIdMap[relevantParticipantId].events[eventId] = {
             eventName,
+            eventType,
             eventId,
           };
         }
@@ -68,7 +70,7 @@ export function addParticipantContext({
           ({ sideNumber: otherSideNumber }) =>
             otherSideNumber === 3 - sideNumber
         );
-        const relevenantOpponentParticipantIds = opponent?.participantId
+        const relevantOpponents = opponent?.participantId
           ? allRelevantParticipantIds({
               participantId: opponent.participantId,
             })
@@ -79,38 +81,53 @@ export function addParticipantContext({
         // include all individual participants that are part of teams & pairs
         allRelevantParticipantIds({
           participantId,
-        }).forEach((relevantParticipantId) => {
+        }).forEach(({ relevantParticipantId, participantType }) => {
           participantIdMap[relevantParticipantId].draws[drawId] = {
             drawName,
+            eventId,
             drawId,
           };
-          relevenantOpponentParticipantIds.forEach((opponentParticipantId) => {
-            if (
-              participantIdMap[relevantParticipantId].opponents[
-                opponentParticipantId
-              ]
-            ) {
-              participantIdMap[relevantParticipantId].opponents[
-                opponentParticipantId
-              ].push({
-                eventId,
-                drawId,
-                matchUpId,
-                participantId: opponentParticipantId,
-              });
-            } else {
-              participantIdMap[relevantParticipantId].opponents[
-                opponentParticipantId
-              ] = [
-                {
-                  eventId,
-                  drawId,
-                  matchUpId,
-                  participantId: opponentParticipantId,
-                },
-              ];
-            }
-          });
+          relevantOpponents
+            // for PAIR participants only show PAIR opponenents
+            .filter(
+              (opponent) =>
+                participantType === INDIVIDUAL ||
+                opponent.participantType === participantType
+            )
+            .forEach(
+              ({
+                relevantParticipantId: opponentParticipantId,
+                participantType: opponentParticipantType,
+              }) => {
+                if (
+                  participantIdMap[relevantParticipantId].opponents[
+                    opponentParticipantId
+                  ]
+                ) {
+                  participantIdMap[relevantParticipantId].opponents[
+                    opponentParticipantId
+                  ].push({
+                    eventId,
+                    drawId,
+                    matchUpId,
+                    participantType: opponentParticipantType,
+                    participantId: opponentParticipantId,
+                  });
+                } else {
+                  participantIdMap[relevantParticipantId].opponents[
+                    opponentParticipantId
+                  ] = [
+                    {
+                      eventId,
+                      drawId,
+                      matchUpId,
+                      participantType: opponentParticipantType,
+                      participantId: opponentParticipantId,
+                    },
+                  ];
+                }
+              }
+            );
           participantIdMap[relevantParticipantId].matchUps[matchUpId] = {
             winningSide,
             score,
@@ -163,8 +180,38 @@ export function addParticipantContext({
 
       participant.draws = Object.values(draws);
       participant.events = Object.values(events);
-      if (withOpponents) participant.opponents = Object.values(opponents);
-      if (withMatchUps) participant.matchUps = Object.values(matchUps);
+      if (withOpponents) {
+        participant.opponents = Object.values(opponents).flat();
+        participant.draws.forEach((draw) => {
+          draw.opponents = Object.values(opponents)
+            .flat()
+            .filter((opponent) => opponent.drawId === draw.drawId);
+        });
+      }
+      if (withMatchUps) {
+        participant.matchUps = Object.values(matchUps);
+        participant.draws.forEach((draw) => {
+          const drawMatchUps =
+            Object.values(matchUps)?.filter(
+              (matchUp) => matchUp.drawId === draw.drawId
+            ) || [];
+          const diff = (range) => Math.abs(range[0] - range[1]);
+          const finishingPositionRange = drawMatchUps.reduce(
+            (finishingPositionRange, matchUp) => {
+              if (!finishingPositionRange)
+                return matchUp.finishingPositionRange;
+              return finishingPositionRange &&
+                matchUp.finishingPositionRange &&
+                diff(finishingPositionRange) >
+                  diff(matchUp.finishingPositionRange)
+                ? matchUp.finishingPositionRange
+                : finishingPositionRange;
+            },
+            undefined
+          );
+          draw.finishingPositionRange = finishingPositionRange;
+        });
+      }
       if (withStatistics) participant.statistics = [winRatioStat];
     });
   });
@@ -173,7 +220,20 @@ export function addParticipantContext({
     const participant = tournamentRecord.participants.find(
       (participant) => participant.participantId === participantId
     );
-    const individualParticipantIds = participant.individualParticipantIds || [];
-    return individualParticipantIds.concat(participantId);
+    const {
+      participantId: relevantParticipantId,
+      participantType,
+    } = participant;
+
+    const individualParticipantIdObjects = (
+      participant.individualParticipantIds || []
+    ).map((relevantParticipantId) => ({
+      relevantParticipantId,
+      participantType: INDIVIDUAL,
+    }));
+    return individualParticipantIdObjects.concat({
+      relevantParticipantId,
+      participantType,
+    });
   }
 }

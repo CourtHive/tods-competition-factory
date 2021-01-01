@@ -1,6 +1,7 @@
+import { getParticipantIdMatchUps } from './participantIdMatchUps';
+
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
 /**
  *
