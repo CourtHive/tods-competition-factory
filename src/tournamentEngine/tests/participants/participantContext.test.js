@@ -88,15 +88,14 @@ it('can add statistics to tournament participants', () => {
   };
 
   const targetParticipant = getParticipant({ drawPosition: 1 });
+  console.log({ targetParticipant });
   expect(targetParticipant.statistics[0].statValue).toEqual(1);
 
   const individualParticipantId = targetParticipant.individualParticipantIds[0];
   const individualParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === individualParticipantId
   );
-  expect(individualParticipant.statistics[0].statValue).toBeGreaterThanOrEqual(
-    1
-  );
+  expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
 
   console.log(individualParticipant.opponents);
 });
