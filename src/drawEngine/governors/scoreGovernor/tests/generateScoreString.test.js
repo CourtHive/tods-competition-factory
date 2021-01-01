@@ -253,3 +253,22 @@ it('returns empty string when no sets', () => {
   result = generateScoreString({ sets, autoComplete: false });
   expect(result).toEqual('');
 });
+
+it('handles zero', () => {
+  let sets = [];
+  let result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('');
+
+  sets = [
+    {
+      setNumber: 1,
+      side1Score: 0,
+      side2Score: 6,
+      side1TiebreakScore: undefined,
+      side2TiebreakScore: undefined,
+    },
+  ];
+
+  result = generateScoreString({ sets, autoComplete: false });
+  expect(result).toEqual('0-6');
+});
