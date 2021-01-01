@@ -140,7 +140,7 @@ export function roundRobinWithPlayoffsTest({
           matchUpId,
           outcome,
         });
-        expect(result).toEqual(SUCCESS);
+        expect(result.success).toEqual(true);
       }
     });
   });

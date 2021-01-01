@@ -8,11 +8,16 @@ import { SUCCESS } from '../../../constants/resultConstants';
   generic function to addMatchUpTimeItem
   must retrieve matchUp WITHOUT CONTEXT so original can be modified
 */
-export function addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem }) {
+export function addMatchUpTimeItem({
+  drawDefinition,
+  matchUpId,
+  timeItem,
+  duplicateValues,
+}) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  return addTimeItem({ element: matchUp, timeItem });
+  return addTimeItem({ element: matchUp, timeItem, duplicateValues });
 }
 
 export function resetMatchUpTimeItems({ drawDefinition, matchUpId }) {

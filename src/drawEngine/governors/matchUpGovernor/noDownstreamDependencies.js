@@ -117,7 +117,7 @@ function attemptToSetMatchUpStatus(props) {
 
   if (matchUp.winningSide) {
     if (matchUpStatus === BYE) {
-      errors.push({ error: INVALID_MATCHUP_STATUS });
+      errors.push({ error: INVALID_MATCHUP_STATUS, matchUpStatus });
       // TESTED
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       matchUp.matchUpStatus = matchUpStatus;
@@ -164,12 +164,12 @@ function attemptToSetMatchUpStatus(props) {
       matchUp.matchUpStatusCodes = [];
       // TESTED
     } else {
-      errors.push({ error: INVALID_MATCHUP_STATUS });
+      errors.push({ error: INVALID_MATCHUP_STATUS, matchUpStatus });
       // TESTED
     }
   } else {
     if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      errors.push({ error: INVALID_MATCHUP_STATUS });
+      errors.push({ error: INVALID_MATCHUP_STATUS, matchUpStatus });
       // TESTED
     } else {
       errors.push({ error: UNRECOGNIZED_MATCHUP_STATUS });

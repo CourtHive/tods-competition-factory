@@ -34,6 +34,7 @@ tournamentEngine
 - deleteDrawDefinitions
 * destroyPairEntry
 * getEventTimeItem
+* getParticipantSignInStatus
 * modifyEntriesStatus
 * modifyVenue
 * modifyIndividualParticipantIds

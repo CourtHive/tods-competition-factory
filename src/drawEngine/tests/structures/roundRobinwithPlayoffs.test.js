@@ -261,7 +261,7 @@ it('can advance players in Round Robin with Playoffs', () => {
         matchUpId,
         outcome,
       });
-      expect(result).toEqual(SUCCESS);
+      expect(result.success).toEqual(true);
 
       const thisStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: structure.structureId,
@@ -484,7 +484,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
         matchUpId,
         outcome,
       });
-      expect(result).toEqual(SUCCESS);
+      expect(result.success).toEqual(true);
 
       const thisStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: structure.structureId,

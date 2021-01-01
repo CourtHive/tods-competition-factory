@@ -1,4 +1,4 @@
-import { setMatchUpStatus } from './matchUpStatus';
+import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';

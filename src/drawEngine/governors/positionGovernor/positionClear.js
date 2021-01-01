@@ -4,7 +4,7 @@ import {
 } from '../../getters/getMatchUps';
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { setMatchUpStatus } from '../matchUpGovernor/setMatchUpStatus';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';

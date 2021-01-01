@@ -27,5 +27,10 @@ export function assignMatchUpCourt({
     itemValue: courtId,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    drawDefinition,
+    matchUpId,
+    timeItem,
+    duplicateValues: false,
+  });
 }

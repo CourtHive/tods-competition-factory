@@ -10,7 +10,7 @@ import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/match
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
-import { setMatchUpStatus } from '../matchUpGovernor/matchUpStatus';
+import { setMatchUpStatus } from '../matchUpGovernor/setMatchUpStatus';
 import { getStructureLinks } from '../../getters/linkGetter';
 
 import {

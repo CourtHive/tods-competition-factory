@@ -33,7 +33,7 @@ import {
 } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { parseStringScore } from '../primitives/parseStringScore';
+import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -181,7 +181,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
-    stringScore: '6-3 6-3',
+    scoreString: '6-3 6-3',
   }));
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -191,7 +191,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   ({ matchUpStatus, winningSide, score } = matchUp);
   expect(matchUpStatus).toEqual(COMPLETED);
   expect(winningSide).toEqual(1);
-  const sets = parseStringScore({ stringScore: '6-3 6-3' });
+  const sets = parseScoreString({ scoreString: '6-3 6-3' });
   expect(score?.sets).toEqual(sets);
 
   // check that winning player was advanced
@@ -348,7 +348,7 @@ it('can change a first round matchUp winner and update consolation', () => {
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
-    stringScore: '6-1 6-2',
+    scoreString: '6-1 6-2',
   }));
   expect(success).toEqual(true);
   expect(matchUp.drawPositions).toEqual([3, 4]);
@@ -361,7 +361,7 @@ it('can change a first round matchUp winner and update consolation', () => {
   }));
   ({ matchUpStatus, sides, score } = matchUp);
   expect(matchUpStatus).toEqual(COMPLETED);
-  const sets = parseStringScore({ stringScore: '6-1 6-2' });
+  const sets = parseScoreString({ scoreString: '6-1 6-2' });
   expect(score?.sets).toEqual(sets);
 
   let { drawDefinition } = drawEngine.getState();

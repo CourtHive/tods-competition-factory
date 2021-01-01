@@ -99,7 +99,7 @@ export function generateParticipants({
 
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
-    const { firstName, lastName } = person || {};
+    const { firstName, lastName, extensions } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const participantName = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
@@ -125,6 +125,7 @@ export function generateParticipants({
         standardFamilyName,
         standardGivenName,
         nationalityCode,
+        extensions,
         sex,
       },
     };

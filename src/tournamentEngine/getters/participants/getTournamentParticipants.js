@@ -1,4 +1,4 @@
-import { addParticipantStatistics } from './addParticipantStatistics';
+import { addParticipantContext } from './addParticipantContext';
 import { makeDeepCopy } from '../../../utilities';
 
 import {
@@ -8,6 +8,9 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { PAIR, TEAM } from '../../../constants/participantTypes';
+import { getTimeItem } from '../../governors/queryGovernor/timeItems';
+import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
+import { getAccessorValue } from '../../../utilities/getAccessorValue';
 
 /**
  * Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
@@ -16,16 +19,20 @@ import { PAIR, TEAM } from '../../../constants/participantTypes';
  * @param {object} participantFilters - attribute arrays with filter value strings
  * @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
  * @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
+ * @param {boolean} withOpponents - include opponent participantIds
+ * @param {boolean} withMatchUps - include all matchUps in which participant appears
  *
  */
 export function getTournamentParticipants({
   tournamentRecord,
 
-  participantFilters,
+  participantFilters = {},
 
   inContext,
   convertExtensions,
   withStatistics,
+  withOpponents,
+  withMatchUps,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -34,19 +41,46 @@ export function getTournamentParticipants({
     (participant) => makeDeepCopy(participant, convertExtensions)
   );
 
-  if (!participantFilters) return { tournamentParticipants };
-  if (typeof participantFilters !== 'object') return { error: INVALID_OBJECT };
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (typeof participantFilters !== 'object')
+    return { error: INVALID_OBJECT, participantFilters };
 
   const {
-    //    drawIds,
     eventIds,
-    //    structureIds,
-    //    signInStates,
+    signInStatus,
     participantTypes,
     participantRoles,
-    //    keyValues,
+    accessorValues,
   } = participantFilters;
+
+  const participantHasAccessorValues = (participant) => {
+    return accessorValues.reduce((hasValues, keyValue) => {
+      const { accessor, value } = keyValue;
+      const { values } = getAccessorValue({
+        element: participant,
+        accessor,
+      });
+      return hasValues && values.includes(value);
+    }, true);
+  };
+
+  tournamentParticipants = tournamentParticipants.filter((participant) => {
+    const participantSignInStatus = getTimeItem({
+      element: participant,
+      itemType: SIGN_IN_STATUS,
+    });
+    return (
+      (!signInStatus || participantSignInStatus === signInStatus) &&
+      (!participantTypes ||
+        (isValidFilterArray(participantTypes) &&
+          participantTypes.includes(participant.participantType))) &&
+      (!participantRoles ||
+        (isValidFilterArray(participantRoles) &&
+          participantRoles.includes(participant.participantRole))) &&
+      (!accessorValues ||
+        (isValidFilterArray(accessorValues) &&
+          participantHasAccessorValues(participant)))
+    );
+  });
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
@@ -55,18 +89,6 @@ export function getTournamentParticipants({
       )) ||
     tournamentRecord.events ||
     [];
-
-  if (isValidFilterArray(participantTypes)) {
-    tournamentParticipants = tournamentParticipants.filter((participant) =>
-      participantTypes.includes(participant.participantType)
-    );
-  }
-
-  if (isValidFilterArray(participantRoles)) {
-    tournamentParticipants = tournamentParticipants.filter((participant) =>
-      participantRoles.includes(participant.participantRole)
-    );
-  }
 
   if (tournamentEvents.length && eventIds) {
     const participantIds = tournamentEvents
@@ -105,11 +127,14 @@ export function getTournamentParticipants({
     });
   }
 
-  if (withStatistics) {
-    addParticipantStatistics({
+  if (withMatchUps || withStatistics || withOpponents) {
+    addParticipantContext({
       tournamentRecord,
       tournamentEvents,
       tournamentParticipants,
+      withStatistics,
+      withOpponents,
+      withMatchUps,
     });
   }
 

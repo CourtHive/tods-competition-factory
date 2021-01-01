@@ -1,5 +1,5 @@
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
-import { parseStringScore } from './parseStringScore';
+import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 
 it('can reliably generate matchUp outcomes', () => {
   let setValues = [
@@ -31,7 +31,7 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   let outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  let sets = parseStringScore({ stringScore: '0-6 6-7(3)' });
+  let sets = parseScoreString({ scoreString: '0-6 6-7(3)' });
   expect(outcome.score.sets).toEqual(sets);
 
   setValues = [
@@ -41,6 +41,6 @@ it('can reliably generate matchUp outcomes', () => {
   ];
   outcome = generateMatchUpOutcome({ setValues });
   expect(outcome.winningSide).toEqual(2);
-  sets = parseStringScore({ stringScore: '0-6 6-0 6-7(3)' });
+  sets = parseScoreString({ scoreString: '0-6 6-0 6-7(3)' });
   expect(outcome.score.sets).toEqual(sets);
 });

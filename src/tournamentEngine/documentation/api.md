@@ -451,9 +451,10 @@ Returns deepCopies of tournament participants filtered by participantFilters whi
 - @param {object} participantFilters - attribute arrays with filter value strings
 - @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
 - @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
+- @param {boolean} withOpponents - include opponent participantIds
+- @param {boolean} withMatchUps - include all matchUps in which participant appears
 
-imlemented: eventIds, participantTypes, participantRoles,
-to be implemented: drawIds, structureIds, signInStates, keyValues,
+participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
 
 ```js
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
@@ -571,6 +572,14 @@ Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
 ---
 
 ## setMatchUpStatus
+
+- Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+
+- @param {string} drawId - id of draw within which matchUp is found
+- @param {string} matchUpId - id of matchUp to be modified
+- @param {string} matchUpTieId - id of matchUpTie, if relevant
+- @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
+- @param {object} outcome - { score, winningSide, matchUpStatus }
 
 ---
 

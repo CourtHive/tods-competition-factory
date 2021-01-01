@@ -22,9 +22,9 @@ export function getRoundMatchUps({ matchUps = [] }) {
     .sort(numericSort)
     .map((roundNumber) => {
       return {
-        [roundNumber]: matchUps.filter(
-          (matchUp) => matchUp.roundNumber === roundNumber
-        ),
+        [roundNumber]: matchUps
+          .filter((matchUp) => matchUp.roundNumber === roundNumber)
+          .sort((a, b) => numericSort(a.roundPosition, b.roundPosition)),
       };
     });
 

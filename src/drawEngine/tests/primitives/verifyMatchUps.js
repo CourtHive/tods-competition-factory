@@ -6,7 +6,7 @@ import {
   getRoundMatchUps,
   getAllStructureMatchUps,
 } from '../../getters/getMatchUps';
-import { parseStringScore } from './parseStringScore';
+import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 
 export function completeMatchUp({
   structureId,
@@ -14,9 +14,9 @@ export function completeMatchUp({
   roundPosition,
   matchUpStatus,
   winningSide,
-  stringScore,
+  scoreString,
 }) {
-  const sets = stringScore && parseStringScore({ stringScore });
+  const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
   const { matchUp: targetMatchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,

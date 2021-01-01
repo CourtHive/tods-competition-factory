@@ -8,7 +8,7 @@ import {
 } from '../../../../constants/participantTypes';
 
 export function addParticipantContext({ participants = [] }) {
-  const participantsWithContext = makeDeepCopy(participants);
+  const participantsWithContext = makeDeepCopy(participants, true);
   const teamParticipants = participantsWithContext.filter(
     (participant) => participant.participantType === TEAM
   );

@@ -73,7 +73,12 @@ export function addMatchUpScheduledDayDate({
     itemValue: scheduledDayDate,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    drawDefinition,
+    matchUpId,
+    timeItem,
+    duplicateValues: false,
+  });
 }
 
 export function addMatchUpScheduledTime({
@@ -95,7 +100,12 @@ export function addMatchUpScheduledTime({
     itemValue,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    drawDefinition,
+    matchUpId,
+    timeItem,
+    duplicateValues: false,
+  });
 }
 
 export function addMatchUpOfficial({
@@ -114,7 +124,12 @@ export function addMatchUpOfficial({
     itemValue: participantId,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    drawDefinition,
+    matchUpId,
+    timeItem,
+    duplicateValues: false,
+  });
 }
 
 export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
