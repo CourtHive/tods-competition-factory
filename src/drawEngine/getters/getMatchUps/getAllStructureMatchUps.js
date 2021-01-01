@@ -91,7 +91,7 @@ export function getAllStructureMatchUps({
     structure,
   });
   const { structureId, structureName, stage, stageSequence } = structure;
-  const { drawId } = drawDefinition || {};
+  const { drawId, drawName } = drawDefinition || {};
 
   // a collectionDefinition can be found as a propery of tieFormat
   // which can be found as a property of either a structure or a drawDefinition
@@ -216,6 +216,7 @@ export function getAllStructureMatchUps({
       {
         stage,
         drawId,
+        drawName,
         schedule,
         feedRound,
         roundName,
