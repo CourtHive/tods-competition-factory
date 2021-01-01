@@ -26,5 +26,10 @@ export function assignMatchUpVenue({
     itemValue: venueId,
   };
 
-  return addMatchUpTimeItem({ drawDefinition, matchUpId, timeItem });
+  return addMatchUpTimeItem({
+    drawDefinition,
+    matchUpId,
+    timeItem,
+    duplicateValues: false,
+  });
 }
