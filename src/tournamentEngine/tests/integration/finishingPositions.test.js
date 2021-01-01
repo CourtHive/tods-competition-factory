@@ -124,5 +124,5 @@ function scoreMatchUp({
     matchUpId,
     outcome: { winningSide },
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 }

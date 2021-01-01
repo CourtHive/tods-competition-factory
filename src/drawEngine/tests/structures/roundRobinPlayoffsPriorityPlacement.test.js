@@ -1,5 +1,6 @@
 import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
+import { chunkArray, intersection } from '../../../utilities/arrays';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { reset, initialize } from '../primitives/primitives';
@@ -19,7 +20,6 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { chunkArray, intersection } from '../../../utilities/arrays';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   reset();
@@ -137,7 +137,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
         matchUpId,
         outcome,
       });
-      expect(result).toEqual(SUCCESS);
+      expect(result.success).toEqual(true);
 
       const thisStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: structure.structureId,
@@ -359,7 +359,7 @@ it('can advance players in Round Robin with Playoffs', () => {
         matchUpId,
         outcome,
       });
-      expect(result).toEqual(SUCCESS);
+      expect(result.success).toEqual(true);
 
       const thisStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: structure.structureId,

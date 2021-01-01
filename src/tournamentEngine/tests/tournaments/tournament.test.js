@@ -133,7 +133,7 @@ it('can generate a tournament with events and draws', () => {
     matchUpFormat: secondMatchUpFormat,
     outcome: { score },
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(
