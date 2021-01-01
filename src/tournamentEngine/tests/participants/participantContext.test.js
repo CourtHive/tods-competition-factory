@@ -76,7 +76,7 @@ it('can add statistics to tournament participants', () => {
 
   extension = {
     name: 'ustaDivision',
-    value: { id: '' },
+    value: { id: '123' },
   };
   tournamentEngine.addEventExtension({ eventId, extension });
 
@@ -112,5 +112,5 @@ it('can add statistics to tournament participants', () => {
     (participant) => participant.participantId === individualParticipantId
   );
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
-  console.log({ individualParticipant });
+  expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
 });

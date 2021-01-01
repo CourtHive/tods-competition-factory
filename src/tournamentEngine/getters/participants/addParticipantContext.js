@@ -1,5 +1,7 @@
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { makeDeepCopy } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
+
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 export function addParticipantContext({
   tournamentParticipants,
@@ -12,8 +14,14 @@ export function addParticipantContext({
   const participantIdMap = {};
 
   // first loop through all filtered events and capture events played
-  tournamentEvents.forEach((event) => {
+  tournamentEvents.forEach((rawEvent) => {
+    const event = makeDeepCopy(rawEvent, true);
     const { eventId, eventName, eventType } = event;
+    const eventInfo = { eventId, eventName, eventType };
+    const extensionKeys = Object.keys(event).filter((key) => key[0] === '_');
+    extensionKeys.forEach(
+      (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
+    );
     const entries = event.entries || [];
     entries.forEach((entry) => {
       const { participantId } = entry;
@@ -31,9 +39,7 @@ export function addParticipantContext({
               losses: 0,
             };
           participantIdMap[relevantParticipantId].events[eventId] = {
-            eventName,
-            eventType,
-            eventId,
+            ...eventInfo,
           };
         }
       );
