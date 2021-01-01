@@ -12769,10 +12769,10 @@ normalize.css@^8.0.1:
   resolved "https://registry.yarnpkg.com/normalize.css/-/normalize.css-8.0.1.tgz#9b98a208738b9cc2634caacbc42d131c97487bf3"
   integrity sha512-qizSNPO93t1YUuUhP22btGOo3chcvDFqFaj2TRybP0DMxkHOCTYwp3n34fel4a31ORXy4m1Xq0Gyqpb5m33qIg==
 
-np@7.1.0:
-  version "7.1.0"
-  resolved "https://registry.yarnpkg.com/np/-/np-7.1.0.tgz#02c5c29ba462c9a6f4c4269f127264aa688653e6"
-  integrity sha512-l4ewwYnOU7zh2w2Uu5M657AtTRtOMiIfDDKAbllCRV4fHQDmTYgHAfJrzFzAkdezsShFZ/xDPK/yJuM3BfDcfQ==
+np@7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/np/-/np-7.2.0.tgz#03f6dcc90b810357311f750608c9e86e2b85cdaa"
+  integrity sha512-jfMFJXAJlGkCowMPGzA8Ywbmywk7I9hT96DsOcWjDsjq/zP5h6m3VZDcZ1AWYoCBPg4E/lFrJxROmiQH3OWnzA==
   dependencies:
     "@samverschueren/stream-to-observable" "^0.3.1"
     any-observable "^0.5.1"
