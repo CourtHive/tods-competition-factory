@@ -16,8 +16,8 @@ export function addParticipantContext({
   // first loop through all filtered events and capture events played
   tournamentEvents.forEach((rawEvent) => {
     const event = makeDeepCopy(rawEvent, true);
-    const { eventId, eventName, eventType } = event;
-    const eventInfo = { eventId, eventName, eventType };
+    const { eventId, eventName, eventType, category } = event;
+    const eventInfo = { eventId, eventName, eventType, category };
     const extensionKeys = Object.keys(event).filter((key) => key[0] === '_');
     extensionKeys.forEach(
       (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
@@ -50,6 +50,12 @@ export function addParticipantContext({
       inContext: true,
       nextMatchUps: true,
     });
+    const drawTypes = Object.assign(
+      {},
+      ...event.drawDefinitions.map((drawDefinition) => ({
+        [drawDefinition.drawId]: drawDefinition.drawType,
+      }))
+    );
     matchUps.forEach((matchUp) => {
       const {
         drawId,
@@ -69,6 +75,7 @@ export function addParticipantContext({
       sides?.forEach(({ participantId, sideNumber }) => {
         if (!participantId) return;
 
+        const drawType = drawTypes[drawId];
         const participantScore =
           sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
         const participantWon = winningSide && sideNumber === winningSide;
@@ -90,6 +97,7 @@ export function addParticipantContext({
         }).forEach(({ relevantParticipantId, participantType }) => {
           participantIdMap[relevantParticipantId].draws[drawId] = {
             drawName,
+            drawType,
             eventId,
             drawId,
           };

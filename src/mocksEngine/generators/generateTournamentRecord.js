@@ -82,6 +82,7 @@ function generateEventWithDraw({
   tournamentEngine,
 }) {
   const {
+    category,
     eventName = 'Generated Event',
     eventType = SINGLES,
     matchUpFormat = 'SET3-S:6/TB7',
@@ -91,7 +92,7 @@ function generateEventWithDraw({
   let { participantsCount = 32 } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
 
-  const event = { eventName, eventType };
+  const event = { eventName, eventType, category };
   let result = tournamentEngine.addEvent({ event });
   if (result.error) return { error: result.error };
 

@@ -4,6 +4,7 @@ import mocksEngine from '../../../mocksEngine';
 import { PAIR } from '../../../constants/participantTypes';
 import { MALE } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { AGE } from '../../../constants/eventConstants';
 
 it('can add statistics to tournament participants', () => {
   const participantsProfile = {
@@ -16,6 +17,11 @@ it('can add statistics to tournament participants', () => {
       drawSize: 32,
       eventType: DOUBLES,
       participantsCount: 30,
+      category: {
+        ageCategoryCode: 'U18',
+        categoryName: 'U18',
+        type: AGE,
+      },
       outcomes: [
         [1, 2, '6-1 6-2', 1],
         [2, 1, '6-2 6-1', 1],
@@ -28,6 +34,11 @@ it('can add statistics to tournament participants', () => {
       drawSize: 32,
       eventType: SINGLES,
       participantsCount: 30,
+      category: {
+        ageCategoryCode: 'U18',
+        categoryName: 'U18',
+        type: AGE,
+      },
       outcomes: [
         [1, 2, '6-1 6-2', 1],
         [2, 1, '6-2 6-1', 1],
@@ -113,4 +124,7 @@ it('can add statistics to tournament participants', () => {
   );
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
   expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
+
+  expect(individualParticipant.draws[0].finishingPositionRange).toEqual([1, 8]);
+  expect(individualParticipant.events[0].eventType).toEqual(DOUBLES);
 });
