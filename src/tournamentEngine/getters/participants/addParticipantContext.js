@@ -70,8 +70,10 @@ export function addParticipantContext({
         roundName,
         winnerTo,
         loserTo,
-        finishingPositionRange: { winner, loser },
+        finishingPositionRange,
       } = matchUp;
+      const { winner, loser } = finishingPositionRange || {};
+
       sides?.forEach(({ participantId, sideNumber }) => {
         if (!participantId) return;
 
