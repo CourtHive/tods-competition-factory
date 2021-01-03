@@ -8,6 +8,7 @@ import { ALTERNATE } from '../../constants/entryStatusConstants';
 import drawEngine from '../../drawEngine';
 import { parseScoreString } from '../utilities/parseScoreString';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
 
 export function generateTournamentRecord({
   endDate,
@@ -163,6 +164,21 @@ function generateEventWithDraw({
       const { matchUpId } = targetMatchUp;
       const sets = scoreString && parseScoreString({ scoreString });
       const score = { sets };
+      const winningScoreString = generateScoreString({ sets, winningSide });
+      const losingScoreString = generateScoreString({
+        sets,
+        winningSide,
+        reversed: true,
+      });
+      if (winningSide === 1) {
+        score.scoreStringSide1 = winningScoreString;
+        score.scoreStringSide2 = losingScoreString;
+      } else if (winningSide === 2) {
+        score.scoreStringSide1 = losingScoreString;
+        score.scoreStringSide2 = winningScoreString;
+      } else {
+        score.scoreStringSide1 = scoreString;
+      }
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
         matchUpId,
