@@ -55,10 +55,13 @@ export function allDrawMatchUps({
   contextFilters,
   drawDefinition,
   participants = [],
+  tournamentRecord,
   tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const additionalContext = Object.assign({}, context, { eventId, eventName });
+  participants =
+    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const { matchUps } = getAllDrawMatchUps({
     drawDefinition,
     context: additionalContext,
@@ -81,10 +84,13 @@ export function allEventMatchUps({
   matchUpFilters,
   contextFilters,
   participants = [],
+  tournamentRecord,
   tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const additionalContext = Object.assign({}, context, { eventId, eventName });
+  participants =
+    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const drawDefinitions = event.drawDefinitions || [];
   const matchUps = drawDefinitions
     .map((drawDefinition) => {
@@ -160,11 +166,14 @@ export function eventMatchUps({
   tournamentId,
   matchUpFilters,
   contextFilters,
+  tournamentRecord,
   tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
+  participants =
+    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
 
   const drawDefinitions = event.drawDefinitions || [];
   const matchUpGroupings = drawDefinitions.reduce(

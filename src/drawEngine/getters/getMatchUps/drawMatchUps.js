@@ -32,6 +32,7 @@ export function getDrawMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
+  tournamentRecord,
   includeByeMatchUps,
   requireParticipants,
   tournamentParticipants,
@@ -43,6 +44,8 @@ export function getDrawMatchUps({
   let allAbandonedMatchUps = [];
   let allCompletedMatchUps = [];
 
+  tournamentParticipants =
+    tournamentParticipants || tournamentRecord?.prticipants;
   const { structures } = getDrawStructures({ drawDefinition });
 
   structures.forEach((structure) => {
