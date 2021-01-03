@@ -172,7 +172,7 @@ function generateEventWithDraw({
           score,
         },
       });
-      if (!result.success) console.log({ result });
+      if (!result.success) console.log(result);
     });
   }
 

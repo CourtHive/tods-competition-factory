@@ -7,6 +7,7 @@ import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { numericSort } from '../../../utilities';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -23,7 +24,6 @@ export function directLoser(props) {
 
   let error;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
-
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
     drawDefinition,
@@ -174,8 +174,10 @@ export function directLoser(props) {
       drawPosition: targetMatchUpDrawPosition,
     });
   } else if (unfilledTargetMatchUpDrawPositions.length) {
-    // if roundNumber !== 1 then it is a feed arm and any unfilled position in target matchUp will do
-    const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
+    // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
+    const drawPosition = unfilledTargetMatchUpDrawPositions.sort(
+      numericSort
+    )[0];
     assignDrawPosition({
       drawDefinition,
       structureId: targetStructureId,
