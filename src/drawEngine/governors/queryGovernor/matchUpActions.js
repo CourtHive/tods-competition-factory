@@ -71,7 +71,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   const winnerTargetLink = getTargetLink({ source, subject: WINNER });
 
   if (loserTargetLink || winnerTargetLink) {
-    console.log({ source, loserTargetLink, winnerTargetLink });
+    // console.log({ source, loserTargetLink, winnerTargetLink });
   }
 
   if (isByeMatchUp) {
