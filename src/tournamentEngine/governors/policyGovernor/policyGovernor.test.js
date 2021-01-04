@@ -24,8 +24,6 @@ it('can set and reset policy governor', () => {
   expect(result).toMatchObject({ error: MISSING_TOURNAMENT_RECORD });
 
   const newTournamentRecord = tournamentEngine.newTournamentRecord();
-  const errors = tournamentEngine.getErrors();
-  expect(errors).toMatchObject([]);
 
   tournamentEngine.setState(newTournamentRecord);
   result = tournamentEngine.attachPolicy({

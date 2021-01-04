@@ -172,7 +172,7 @@ export function eventMatchUps({
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
-  participants =
+  const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
 
   const drawDefinitions = event.drawDefinitions || [];
@@ -186,7 +186,7 @@ export function eventMatchUps({
         matchUpFilters,
         contextFilters,
         tournamentAppliedPolicies,
-        tournamentParticipants: participants,
+        tournamentParticipants,
       });
       const keys = Object.keys(drawMatchUps);
       keys.forEach((key) => {
@@ -211,11 +211,14 @@ export function drawMatchUps({
   matchUpFilters,
   contextFilters,
   drawDefinition,
+  tournamentRecord,
   tournamentAppliedPolicies,
 }) {
   const { eventId, eventName } = event;
   const context = { eventId, eventName };
   if (tournamentId) Object.assign(context, { tournamentId });
+  const tournamentParticipants =
+    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   return getDrawMatchUps({
     context,
     inContext,
@@ -224,7 +227,7 @@ export function drawMatchUps({
     matchUpFilters,
     contextFilters,
     tournamentAppliedPolicies,
-    tournamentParticipants: participants,
+    tournamentParticipants,
   });
 }
 

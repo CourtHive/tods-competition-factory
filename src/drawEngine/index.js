@@ -21,7 +21,6 @@ import {
 } from '../constants/errorConditionConstants';
 
 let devContext;
-let errors = [];
 let drawDefinition;
 let deepCopy = true;
 let tournamentParticipants = [];
@@ -59,10 +58,6 @@ function validDefinitionKeys(definition) {
   return valid;
 }
 
-function flushErrors() {
-  errors = [];
-}
-
 export const drawEngine = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
@@ -73,11 +68,7 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return SUCCESS;
     },
-    getErrors: () => {
-      return makeDeepCopy(errors);
-    },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
-      flushErrors();
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
@@ -102,10 +93,6 @@ export const drawEngine = (function () {
     structureGovernor,
   ]);
 
-  fx.flushErrors = () => {
-    flushErrors();
-    return fx;
-  };
   fx.devContext = (isDev) => {
     devContext = isDev;
     return fx;

@@ -1,6 +1,6 @@
+import { findStructure } from '../../drawEngine/getters/findStructure';
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { findStructure } from '../../drawEngine/getters/findStructure';
 
 export function getPlayoffStructures({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

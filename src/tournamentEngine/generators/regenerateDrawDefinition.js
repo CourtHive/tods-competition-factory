@@ -48,8 +48,6 @@ export function regenerateDrawDefinition({
       return SUCCESS;
     }
   } else {
-    const errors = drawEngine.getErrors();
-    console.log('%c ERRORS:', 'color: red', { errors });
     return { error: 'Draw cannot be regenerated' };
   }
 }

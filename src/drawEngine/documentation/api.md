@@ -202,10 +202,6 @@ tournamentEngine.devContext(true);
 
 ---
 
-## flushErrors
-
----
-
 ## generateDrawType
 
 ---
@@ -227,10 +223,6 @@ tournamentEngine.devContext(true);
 ---
 
 ## getDrawStructures
-
----
-
-## getErrors
 
 ---
 

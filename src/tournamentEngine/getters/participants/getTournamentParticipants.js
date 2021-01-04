@@ -1,3 +1,5 @@
+import { getAccessorValue } from '../../../utilities/getAccessorValue';
+import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { addParticipantContext } from './addParticipantContext';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -8,9 +10,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { PAIR, TEAM } from '../../../constants/participantTypes';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
-import { getAccessorValue } from '../../../utilities/getAccessorValue';
 
 /**
  * Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values

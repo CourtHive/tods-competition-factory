@@ -1,12 +1,8 @@
 import { countries } from '../../fixtures/countryData';
 import { generateRange, shuffleArray, UUID } from '../../utilities';
-import {
-  cityMocks,
-  stateMocks,
-  postalCodeMocks,
-} from '../../mocksEngine/utilities/address';
-import { teamMocks } from '../../mocksEngine/utilities/team';
-import { personMocks } from '../../mocksEngine/utilities/person';
+import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
+import { teamMocks } from '../utilities/team';
+import { personMocks } from '../utilities/person';
 
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';

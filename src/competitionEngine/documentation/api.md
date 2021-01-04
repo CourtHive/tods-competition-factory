@@ -28,10 +28,6 @@ tournamentEngine.devContext(true);
 
 ---
 
-## flushErrors
-
----
-
 ## getState
 
 No parameters.

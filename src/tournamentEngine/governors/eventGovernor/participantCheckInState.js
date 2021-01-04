@@ -1,25 +1,21 @@
+import {
+  checkInParticipant as drawEngineCheckInParticipant,
+  checkOutParticipant as drawEngineCheckOutParticipant,
+} from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
 import { findEvent } from '../../getters/eventGetter';
+
+import {
+  EVENT_NOT_FOUND,
+  PARTICIPANT_ALREADY_CHECKED_IN,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
-export function checkInParticipant(props) {
-  Object.assign(props, { method: 'checkInParticipant' });
-  return participantCheckInAction(props);
-}
-
-export function checkOutParticipant(props) {
-  Object.assign(props, { method: 'checkOutParticipant' });
-  return participantCheckInAction(props);
-}
-
-function participantCheckInAction({
+export function checkInParticipant({
   tournamentRecord,
-  drawEngine,
-  drawId,
-  matchUpId,
   participantId,
+  matchUpId,
   matchUp,
-  method,
+  drawId,
 }) {
   if (matchUp && !drawId) {
     ({ drawId } = matchUp);
@@ -30,30 +26,52 @@ function participantCheckInAction({
 
   const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
 
-  let errors = [];
-
-  const { errors: drawEngineErrors } = drawEngine
-    .setState(drawDefinition)
-    .setParticipants(tournamentRecord.participants);
-
-  if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
-
   if (event) {
-    const result = drawEngine[method]({ matchUpId, participantId });
-
-    if (result.success) {
-      const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-      event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-        return drawDefinition.drawId === drawId
-          ? updatedDrawDefinition
-          : drawDefinition;
-      });
-    } else {
-      errors.push(result);
-    }
+    const tournamentParticipants = tournamentRecord.participants;
+    const result = drawEngineCheckInParticipant({
+      tournamentParticipants,
+      drawDefinition,
+      participantId,
+      matchUpId,
+    });
+    // Don't consider it an error if participant is already checked in
+    if (result.error && result.error !== PARTICIPANT_ALREADY_CHECKED_IN)
+      return result;
   } else {
-    errors.push({ error: EVENT_NOT_FOUND });
+    return { error: EVENT_NOT_FOUND };
   }
 
-  return errors && errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
+}
+
+export function checkOutParticipant({
+  tournamentRecord,
+  drawId,
+  matchUpId,
+  participantId,
+  matchUp,
+}) {
+  if (matchUp && !drawId) {
+    ({ drawId } = matchUp);
+  }
+  if (matchUp && !matchUpId) {
+    ({ matchUpId } = matchUp);
+  }
+
+  const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
+
+  if (event) {
+    const tournamentParticipants = tournamentRecord.participants;
+    const result = drawEngineCheckOutParticipant({
+      drawDefinition,
+      tournamentParticipants,
+      matchUpId,
+      participantId,
+    });
+    if (result.error) return result;
+  } else {
+    return { error: EVENT_NOT_FOUND };
+  }
+
+  return SUCCESS;
 }

@@ -8,7 +8,6 @@ import { removeCourtAssignment } from './removeCourtAssignment';
 export function deleteCourt({
   tournamentRecord,
   drawDefinition,
-  drawEngine,
   courtId,
   force,
 }) {
@@ -17,7 +16,6 @@ export function deleteCourt({
 
   const { matchUps } = getScheduledCourtMatchUps({
     tournamentRecord,
-    drawEngine,
 
     courtId,
   });

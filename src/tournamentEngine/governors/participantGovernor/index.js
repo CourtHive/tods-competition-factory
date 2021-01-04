@@ -6,7 +6,6 @@ import { getPairedParticipant } from './getPairedParticipant';
 import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { addParticipant, addParticipants } from './addParticipants';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
-import { generateMockParticipants } from '../../generators/mockParticipants';
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
@@ -52,7 +51,6 @@ const participantGovernor = {
   removeParticipantIdsFromAllTeams,
   participantMembership,
 
-  generateMockParticipants,
   generateTeamsFromParticipantAttribute,
 
   rankByRatings,

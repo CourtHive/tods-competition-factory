@@ -1,3 +1,5 @@
+import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
@@ -6,7 +8,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NOT_IMPLEMENTED,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setEventDefaultMatchUpFormat({
   tournamentRecord,
@@ -22,30 +23,13 @@ export function setEventDefaultMatchUpFormat({
 export function setDrawDefaultMatchUpFormat({
   tournamentRecord,
   drawDefinition,
-  drawEngine,
-  event,
   matchUpFormat,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  const result = drawEngine
-    .setState(drawDefinition)
-    .setMatchUpFormat({ matchUpFormat });
-
-  if (result.success) {
-    const { drawId } = drawDefinition;
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-
-    return SUCCESS;
-  }
-  return result;
+  return setMatchUpFormat({ drawDefinition, matchUpFormat });
 }
 
 export function setStructureDefaultMatchUpFormat({
@@ -53,31 +37,17 @@ export function setStructureDefaultMatchUpFormat({
   drawDefinition,
   matchUpFormat,
   structureId,
-  drawEngine,
-  event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const result = drawEngine
-    .setState(drawDefinition)
-    .setMatchUpFormat({ matchUpFormat, structureId });
-
-  if (result.success) {
-    const { drawId } = drawDefinition;
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-
-    return SUCCESS;
-  }
-
-  return result;
+  return setMatchUpFormat({
+    drawDefinition,
+    matchUpFormat,
+    structureId,
+  });
 }
 
 export function setCollectionDefaultMatchUpFormat({

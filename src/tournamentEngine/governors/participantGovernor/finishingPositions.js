@@ -1,3 +1,5 @@
+import { getParticipantIdFinishingPositions as drawEngineGetParticipantIdFinishingPositions } from '../../../drawEngine/governors/queryGovernor/finishingPositions';
+
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 /**
@@ -8,15 +10,16 @@ import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionCons
  */
 export function getParticipantIdFinishingPositions({
   tournamentRecord,
-  drawEngine,
-
+  drawDefinition,
   byeAdvancements = false,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+
   const tournamentParticipants = tournamentRecord.participants;
 
-  return drawEngine.getParticipantIdFinishingPositions({
+  return drawEngineGetParticipantIdFinishingPositions({
     tournamentParticipants,
     byeAdvancements,
+    drawDefinition,
   });
 }

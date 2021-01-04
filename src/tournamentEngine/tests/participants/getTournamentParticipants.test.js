@@ -1,10 +1,8 @@
 import tournamentEngine from '../..';
 import mocksEngine from '../../../mocksEngine';
 
-import { SINGLES } from '../../../constants/eventConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can retrieve tournament participants', () => {
   const participantsProfile = {

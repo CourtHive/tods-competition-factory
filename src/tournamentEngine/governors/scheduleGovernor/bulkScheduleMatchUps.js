@@ -17,14 +17,12 @@ import { SUCCESS } from '../../../constants/resultConstants';
 /**
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {object} drawEngine - passed in automatically by tournamentEngine
  * @param {string[]} matchUpIds - array of matchUpIds to be scheduled
  * @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
  *
  */
 export function bulkScheduleMatchUps({
   tournamentRecord,
-  drawEngine,
   matchUpIds,
   schedule,
 }) {
@@ -37,7 +35,6 @@ export function bulkScheduleMatchUps({
 
   const { matchUps, error } = allTournamentMatchUps({
     tournamentRecord,
-    drawEngine,
   });
   if (error) return { error };
 
