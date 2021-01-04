@@ -33,9 +33,7 @@ export function bulkScheduleMatchUps({
   if (!schedule || typeof schedule !== 'object')
     return { error: MISSING_SCHEDULE };
 
-  const { matchUps, error } = allTournamentMatchUps({
-    tournamentRecord,
-  });
+  const { matchUps, error } = allTournamentMatchUps({ tournamentRecord });
   if (error) return { error };
 
   // first organize matchUpIds by drawId

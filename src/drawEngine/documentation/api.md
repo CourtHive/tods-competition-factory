@@ -391,6 +391,11 @@ Returns boolean whether all matchUps in a given structure have been completed
 
 ## matchUpActions
 
+Return an array of all validActions for a given matchUp
+
+- @param {object} drawDefinition
+- @param {string} matchUpId - id of matchUp for which validActions will be returned
+
 ---
 
 ## matchUpDuration

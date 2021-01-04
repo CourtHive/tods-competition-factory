@@ -15,10 +15,23 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
+import {
+  END,
+  REFEREE,
+  SCHEDULE,
+  SCORE,
+  START,
+  STATUS,
+} from '../../../constants/matchUpActionConstants';
 
-/*
-  return an array of all possible validActions for a given matchUp
-*/
+/**
+ *
+ * return an array of all validActions for a given matchUp
+ *
+ * @param {object} drawDefinition
+ * @param {string} matchUpId
+ *
+ */
 export function matchUpActions({ drawDefinition, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -104,7 +117,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       return { validActions, isByeMatchUp };
     }
   } else {
-    validActions.push({ type: 'REFEREE' });
+    validActions.push({ type: REFEREE });
     const isInComplete = !isDirectingMatchUpStatus({
       matchUpStatus: matchUp.matchUpStatus,
     });
@@ -142,18 +155,18 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       },
     };
     if (isInComplete && !isByeMatchUp) {
-      validActions.push({ type: 'SCHEDULE' });
+      validActions.push({ type: SCHEDULE });
     }
     if (readyToScore && !isByeMatchUp) {
       validActions.push(addPenaltyAction);
     }
     if (isInComplete && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: 'STATUS' });
+      validActions.push({ type: STATUS });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: 'SCORE' });
-      validActions.push({ type: 'START' });
-      validActions.push({ type: 'END' });
+      validActions.push({ type: SCORE });
+      validActions.push({ type: START });
+      validActions.push({ type: END });
     }
   }
   return { validActions, isByeMatchUp };
