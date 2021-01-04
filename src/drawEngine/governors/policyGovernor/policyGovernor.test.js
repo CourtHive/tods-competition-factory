@@ -14,8 +14,6 @@ it('can set and reset policy governor', () => {
   expect(result).toMatchObject({ error: MISSING_DRAW_DEFINITION });
 
   drawEngine.newDrawDefinition();
-  const errors = drawEngine.getErrors();
-  expect(errors).toMatchObject([]);
 
   result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
   expect(result).toMatchObject(SUCCESS);

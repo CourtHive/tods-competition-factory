@@ -1,5 +1,5 @@
-import { UUID } from '../../../utilities/UUID';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps';
+import { UUID } from '../../../utilities/UUID';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -17,8 +17,6 @@ import { deletionMessage } from './deletionMessage';
 
 export function modifyVenue({
   tournamentRecord,
-  drawEngine,
-
   modifications,
   venueId,
   force,
@@ -70,7 +68,6 @@ export function modifyVenue({
         // check whether deleting court would remove schedule from any matchUps
         const { matchUps } = getScheduledCourtMatchUps({
           tournamentRecord,
-          drawEngine,
 
           courtId: court.courtId,
         });

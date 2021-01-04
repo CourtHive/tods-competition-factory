@@ -21,7 +21,6 @@ import {
 import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
-let errors = [];
 let deepCopy = true;
 let tournamentRecord;
 
@@ -31,10 +30,6 @@ function newTournamentRecord(props) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
   const template = definitionTemplate(props);
   return Object.assign({}, template, props);
-}
-
-function flushErrors() {
-  errors = [];
 }
 
 function setState(tournament, deepCopyOption = true) {
@@ -60,7 +55,6 @@ export const tournamentEngine = (function () {
     },
 
     newTournamentRecord: (props = {}) => {
-      flushErrors();
       tournamentRecord = newTournamentRecord(props);
       const tournamentId = tournamentRecord.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
@@ -74,16 +68,15 @@ export const tournamentEngine = (function () {
     tournamentRecord = undefined;
     return SUCCESS;
   };
-  fx.getErrors = () => {
-    return makeDeepCopy(errors);
-  };
-  fx.flushErrors = () => {
-    flushErrors();
-    return fx;
-  };
   fx.setState = (tournament) => {
     const result = setState(tournament);
-    if (result && result.error) errors.push(result);
+    if (result?.error) {
+      fx.success = false;
+      fx.error = result.error;
+    } else {
+      fx.success = true;
+      fx.error = undefined;
+    }
     return fx;
   };
   fx.devContext = (isDev) => {
@@ -120,7 +113,9 @@ export const tournamentEngine = (function () {
           drawDefinition,
           false // deepCopy false when drawEngine invoked within tournamentEngine
         );
-        if (drawEngineErrors) errors = errors.concat(drawEngineErrors);
+        if (drawEngineErrors) {
+          return drawEngineErrors;
+        }
         params = Object.assign({}, params, { drawDefinition, event });
       } else if (params.eventId && !params.event) {
         const { event } = findEvent({

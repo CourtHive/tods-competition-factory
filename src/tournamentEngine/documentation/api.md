@@ -201,7 +201,6 @@ This allows seeds 5-8 to be visually represented as all having a seed value of '
 ## bulkScheduleMatchUps
 
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {object} drawEngine - passed in automatically by tournamentEngine
 - @param {string[]} matchUpIds - array of matchUpIds to be scheduled
 - @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
 
@@ -287,10 +286,6 @@ tournamentEngine.devContext(true);
 ---
 
 ## findVenue
-
----
-
-## flushErrors
 
 ---
 

@@ -1,6 +1,7 @@
-import { findEvent } from '../../getters/eventGetter';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
+
+import { findEvent } from '../../getters/eventGetter';
 
 export function checkInParticipant(props) {
   Object.assign(props, { method: 'checkInParticipant' });

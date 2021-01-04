@@ -3,6 +3,7 @@ import {
   getAppliedPolicies as getTournamentAppliedPolicies,
   getEventAppliedPolicies,
 } from '../policyGovernor/getAppliedPolicies';
+
 import {
   MISSING_POLICY_TYPE,
   POLICY_NOT_FOUND,

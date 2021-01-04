@@ -9,7 +9,6 @@ import { removeCourtAssignment } from './removeCourtAssignment';
 export function deleteVenue({
   tournamentRecord,
   drawDefinition,
-  drawEngine,
   venueId,
   force,
 }) {
@@ -20,7 +19,6 @@ export function deleteVenue({
   const contextFilters = { courtIds };
   const { matchUps: matchUpsToUnschedule } = allTournamentMatchUps({
     tournamentRecord,
-    drawEngine,
     contextFilters,
   });
 
@@ -43,14 +41,14 @@ export function deleteVenue({
   return SUCCESS;
 }
 
-export function deleteVenues({ tournamentRecord, drawEngine, venueIds }) {
+export function deleteVenues({ tournamentRecord, venueIds }) {
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   tournamentRecord.venues.forEach((venue) => {
     const { venueId } = venue;
     if (venueIds.includes(venueId)) {
       const { venueId } = venue;
-      deleteVenue({ tournamentRecord, drawEngine, venueId });
+      deleteVenue({ tournamentRecord, venueId });
     }
   });
 

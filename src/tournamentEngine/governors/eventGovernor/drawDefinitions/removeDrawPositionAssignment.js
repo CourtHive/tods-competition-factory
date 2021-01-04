@@ -4,9 +4,9 @@ import {
 } from '../../../../drawEngine/governors/positionGovernor/positionByes';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { findStructure } from '../../../../drawEngine/getters/findStructure';
 
 /**
  *

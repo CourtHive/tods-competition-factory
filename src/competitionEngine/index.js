@@ -10,7 +10,6 @@ import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let devContext;
-let errors = [];
 let deepCopy = true;
 let tournamentRecords;
 
@@ -19,10 +18,6 @@ function setState(records, deepCopyOption = true) {
   tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
   deepCopy = deepCopyOption;
   return SUCCESS;
-}
-
-function flushErrors() {
-  errors = [];
 }
 
 export const competitionEngine = (function () {
@@ -45,13 +40,15 @@ export const competitionEngine = (function () {
     devContext = isDev;
     return fx;
   };
-  fx.flushErrors = () => {
-    flushErrors();
-    return fx;
-  };
   fx.setState = (tournamentRecords) => {
     const result = setState(tournamentRecords);
-    if (result && result.error) errors.push(result);
+    if (result?.error) {
+      fx.error = result.error;
+      fx.success = false;
+    } else {
+      fx.error = undefined;
+      fx.success = true;
+    }
     return fx;
   };
 
