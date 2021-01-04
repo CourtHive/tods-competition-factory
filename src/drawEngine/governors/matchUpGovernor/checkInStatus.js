@@ -1,10 +1,8 @@
 import { addMatchUpTimeItem } from './timeItems';
-
 import { findMatchUp } from '../../getters/getMatchUps';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-
-import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
+
 import {
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
@@ -12,6 +10,7 @@ import {
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_NOT_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
+import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 
 /*
   function is only able to check whether participant is alredy checked in 
