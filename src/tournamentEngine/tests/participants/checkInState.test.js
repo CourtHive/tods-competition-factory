@@ -7,8 +7,6 @@ import { DOUBLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { PAIR } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PARTICIPANT_ALREADY_CHECKED_IN } from '../../../constants/errorConditionConstants';
-import { check } from 'prettier';
 
 it('can check participants in and out', () => {
   const participantsProfile = {

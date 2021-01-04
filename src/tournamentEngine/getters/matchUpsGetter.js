@@ -253,9 +253,7 @@ export function findMatchUp({
 }) {
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
-    const { matchUps } = allTournamentMatchUps({
-      tournamentRecord,
-    });
+    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
     drawId = matchUps.reduce((drawId, candidate) => {
       return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
     }, undefined);

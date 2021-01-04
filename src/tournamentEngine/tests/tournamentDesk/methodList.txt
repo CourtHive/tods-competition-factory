@@ -35,6 +35,7 @@ tournamentEngine
 * destroyPairEntry
 * getEventTimeItem
 * getParticipantSignInStatus
+* matchUpActions
 * modifyEntriesStatus
 * modifyVenue
 * modifyIndividualParticipantIds
