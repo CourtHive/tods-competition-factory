@@ -1,8 +1,9 @@
-import { findStructure } from './findStructure';
-import { getPositionAssignments } from './positionsGetter';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-
+import { getPairedDrawPosition } from './getPairedDrawPosition';
+import { getPositionAssignments } from './positionsGetter';
 import { countValues, numericSort } from '../../utilities';
+import { findStructure } from './findStructure';
+
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
 // active drawPositions occur more than once in the matchUps of a structure,
@@ -72,14 +73,12 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
     // pairedDrawPositions are those positions which are paired with a position which has advanced
     const pairedDrawPositions = [].concat(
-      ...advancedDrawPositions.map(getPairedDrawPosition)
+      ...advancedDrawPositions.map((drawPosition) =>
+        getPairedDrawPosition({ matchUps, drawPosition })
+      )
     );
     const activeDrawPositions = []
-      .concat(
-        ...advancedDrawPositions,
-        ...pairedDrawPositions
-        // ...activeByeDrawPositions
-      )
+      .concat(...advancedDrawPositions, ...pairedDrawPositions)
       .filter((f) => f);
 
     const inactiveDrawPositions = drawPositions.filter(
@@ -99,18 +98,6 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       byeDrawPositions,
       structure,
     };
-  }
-
-  function getPairedDrawPosition(drawPosition) {
-    return matchUps
-      .filter(({ roundNumber }) => roundNumber === 1)
-      .reduce((pairedDrawPosition, currentMatchup) => {
-        return currentMatchup.drawPositions?.includes(drawPosition)
-          ? currentMatchup.drawPositions.filter(
-              (dp) => dp && dp !== drawPosition
-            )
-          : pairedDrawPosition;
-      }, undefined);
   }
 
   function getByePairedPosition(drawPosition) {

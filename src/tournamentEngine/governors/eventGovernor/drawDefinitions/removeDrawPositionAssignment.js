@@ -1,10 +1,6 @@
-import {
-  assignDrawPositionBye,
-  // getByesData,
-} from '../../../../drawEngine/governors/positionGovernor/positionByes';
+import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/positionByes';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
-// import { findStructure } from '../../../../drawEngine/getters/findStructure';
 
 import {
   ALTERNATE,
@@ -27,17 +23,8 @@ export function removeDrawPositionAssignment(props) {
   if (result.error) return result;
 
   const { participantId } = result;
-
   const { drawDefinition, drawPosition, event, structureId } = props;
-  /*
-  const { structure } = findStructure({ drawDefinition, structureId });
-  const { byesCount, placedByes } = getByesData({
-    drawDefinition,
-    structure,
-  });
 
-  const unplacedByes = placedByes < byesCount;
-  */
   if ([ALTERNATE, WITHDRAWN].includes(entryStatus)) {
     if (participantId) {
       modifyEntriesStatus({

@@ -87,6 +87,7 @@ export function verifyStructure({
     });
   }
 
+  // TODO: replace with getters/getPairedDrawPosition
   const pairedDrawPositions = matchUps
     .filter((matchUp) => matchUp.roundNumber === 1)
     .map((matchUp) => matchUp.drawPositions);
