@@ -64,10 +64,10 @@ export function assignDrawPositionBye({
     (p, c) => (c.drawPosition === drawPosition ? c : p),
     undefined
   );
-
-  if (!unplacedByes) return { error: BYES_LIMIT_REACHED };
   if (!positionState) return { error: INVALID_DRAW_POSITION };
+
   const { filled, containsBye } = drawPositionFilled(positionState);
+  if (!unplacedByes && !containsBye) return { error: BYES_LIMIT_REACHED };
   if (filled && !containsBye) {
     return { error: DRAW_POSITION_ASSIGNED };
   }
