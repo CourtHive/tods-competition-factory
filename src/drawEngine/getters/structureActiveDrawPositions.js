@@ -5,7 +5,8 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { countValues, numericSort } from '../../utilities';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
-// active drawPositions occur more than once in the matchUps of a structure
+// active drawPositions occur more than once in the matchUps of a structure,
+// OR are paired with active drawPositions in the first round
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -51,6 +52,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     };
   } else {
     // now remove ONE INSTANCE of byePairedPositions from drawPositions
+    // so that BYE advanced participants are not seen as active
     const instancesToRemove = [].concat(
       ...byePairedPositions,
       ...byeDrawPositions
@@ -70,18 +72,27 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
     // pairedDrawPositions are those positions which are paired with a position which has advanced
     const pairedDrawPositions = [].concat(
-      ...advancedDrawPositions.map(getPairedDrawPositions)
+      ...advancedDrawPositions.map(getPairedDrawPosition)
     );
     const activeDrawPositions = []
-      .concat(...advancedDrawPositions, pairedDrawPositions)
+      .concat(
+        ...advancedDrawPositions,
+        ...pairedDrawPositions
+        // ...activeByeDrawPositions
+      )
       .filter((f) => f);
 
     const inactiveDrawPositions = drawPositions.filter(
       (drawPosition) => !activeDrawPositions.includes(drawPosition)
     );
 
+    const activeByeDrawPositions = byeDrawPositions.filter((drawPosition) =>
+      activeDrawPositions.includes(drawPosition)
+    );
+
     return {
       activeDrawPositions,
+      activeByeDrawPositions,
       inactiveDrawPositions,
       advancedDrawPositions,
       pairedDrawPositions,
@@ -90,14 +101,16 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     };
   }
 
-  function getPairedDrawPositions(drawPosition) {
+  function getPairedDrawPosition(drawPosition) {
     return matchUps
-      .reduce((drawPositions, currentMatchup) => {
+      .filter(({ roundNumber }) => roundNumber === 1)
+      .reduce((pairedDrawPosition, currentMatchup) => {
         return currentMatchup.drawPositions?.includes(drawPosition)
-          ? drawPositions.concat(...currentMatchup.drawPositions)
-          : drawPositions;
-      }, [])
-      .filter((dp) => dp && dp !== drawPosition);
+          ? currentMatchup.drawPositions.filter(
+              (dp) => dp && dp !== drawPosition
+            )
+          : pairedDrawPosition;
+      }, undefined);
   }
 
   function getByePairedPosition(drawPosition) {
