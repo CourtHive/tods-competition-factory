@@ -1,4 +1,5 @@
 export const END = 'END';
+export const NICKNAME = 'NICKNAME';
 export const PENALTY = 'PENALTY';
 export const REFEREE = 'REFEREE';
 export const SCHEDULE = 'SCHEDULE';
@@ -8,6 +9,7 @@ export const STATUS = 'STATUS';
 
 export const matchUpActionConstants = {
   END,
+  NICKNAME,
   PENALTY,
   REFEREE,
   SCHEDULE,

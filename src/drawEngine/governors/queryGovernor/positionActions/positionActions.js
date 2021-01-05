@@ -1,5 +1,4 @@
 import { stageEntries } from '../../../getters/stageGetter';
-import { findStructure } from '../../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 
@@ -52,7 +51,12 @@ export function positionActions({
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const { structure } = findStructure({ drawDefinition, structureId });
+  const {
+    activeDrawPositions,
+    byeDrawPositions,
+    inactiveDrawPositions,
+    structure,
+  } = structureActiveDrawPositions({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const validActions = [];
@@ -114,12 +118,8 @@ export function positionActions({
     .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
     .map((entry) => entry.participantId);
 
-  const {
-    activeDrawPositions,
-    inactiveDrawPositions,
-    byeDrawPositions,
-  } = structureActiveDrawPositions({ drawDefinition, structureId });
   const isByePosition = byeDrawPositions.includes(drawPosition);
+  const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (!positionAssignment || isByePosition) {
     const { validAssignmentActions } = getValidAssignmentAction({
@@ -206,5 +206,10 @@ export function positionActions({
   });
   if (validAlternatesAction) validActions.push(validAlternatesAction);
 
-  return { validActions, isDrawPosition: true, isByePosition };
+  return {
+    isByePosition,
+    isActiveDrawPosition,
+    isDrawPosition: true,
+    validActions,
+  };
 }
