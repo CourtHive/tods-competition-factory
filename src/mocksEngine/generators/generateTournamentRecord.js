@@ -35,8 +35,10 @@ export function generateTournamentRecord({
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
   const maxDrawSize =
-    drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
-  // Math.max(...drawProfiles?.map((drawProfile) => drawProfile.drawSize)) || 32;
+    // drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
+    Math.max(
+      ...(drawProfiles || []).map((drawProfile) => drawProfile.drawSize)
+    ) || 32;
   const doublesEvents = drawProfiles?.find(
     (drawProfile) => drawProfile.eventType === DOUBLES
   );
