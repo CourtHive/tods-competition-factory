@@ -3,6 +3,9 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { assignDrawPositionBye } from './positionByes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -12,6 +15,7 @@ import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_DRAW_POSITION_FOR_SEEDING,
 } from '../../../constants/errorConditionConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
   drawDefinition,
@@ -80,6 +84,32 @@ export function assignDrawPosition({
       delete assignment.bye;
     }
   });
+
+  if (structure.structureType !== CONTAINER) {
+    const matchUpFilters = { isCollectionMatchUp: false };
+    const { matchUps } = getAllStructureMatchUps({
+      drawDefinition,
+      matchUpFilters,
+      structure,
+    });
+
+    const pairedDrawPosition = getPairedDrawPosition({
+      matchUps,
+      drawPosition,
+    });
+    const pairedDrawPositionIsBye = positionAssignments.find(
+      ({ drawPosition }) => drawPosition === pairedDrawPosition
+    )?.bye;
+    if (pairedDrawPositionIsBye) {
+      // re-assign the BYE to benefit from propagation
+      const result = assignDrawPositionBye({
+        drawDefinition,
+        structureId,
+        drawPosition: pairedDrawPosition,
+      });
+      console.log({ result });
+    }
+  }
 
   return Object.assign({ positionAssignments }, SUCCESS);
 
