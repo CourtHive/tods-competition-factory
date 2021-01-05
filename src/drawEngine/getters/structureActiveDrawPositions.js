@@ -5,7 +5,6 @@ import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { countValues, numericSort } from '../../utilities';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
-// TODO: write unit test for this method
 // active drawPositions occur more than once in the matchUps of a structure
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -19,15 +18,10 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     structure,
     drawDefinition,
   });
-  const drawPositions = positionAssignments.map(
-    (assignment) => assignment.drawPosition
-  );
-  /*
   const drawPositions = []
     .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
     .filter((f) => f)
     .sort(numericSort);
-  */
   const byeDrawPositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
@@ -92,6 +86,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       advancedDrawPositions,
       pairedDrawPositions,
       byeDrawPositions,
+      structure,
     };
   }
 
