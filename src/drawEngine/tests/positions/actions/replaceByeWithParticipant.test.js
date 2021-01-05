@@ -6,6 +6,7 @@ import {
   ASSIGN_BYE,
 } from '../../../../constants/positionActionConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('supports replacing a BYE with a participant (DA or ALT)', () => {
   const drawProfiles = [
@@ -40,7 +41,10 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
-  let payload = Object.assign({}, option.payload, { replaceWithBye: true });
+  let payload = Object.assign({}, option.payload, {
+    replaceWithBye: true,
+    entryStatus: ALTERNATE,
+  });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 

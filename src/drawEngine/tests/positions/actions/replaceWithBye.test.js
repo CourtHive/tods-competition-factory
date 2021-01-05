@@ -5,6 +5,7 @@ import {
   ASSIGN_BYE,
   REMOVE_ASSIGNMENT,
 } from '../../../../constants/positionActionConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('can replace positioned participant with a bye', () => {
   const drawProfiles = [
@@ -38,7 +39,10 @@ it('can replace positioned participant with a bye', () => {
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
-  let payload = Object.assign({}, option.payload, { replaceWithBye: true });
+  let payload = Object.assign({}, option.payload, {
+    replaceWithBye: true,
+    entryStatus: ALTERNATE,
+  });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
