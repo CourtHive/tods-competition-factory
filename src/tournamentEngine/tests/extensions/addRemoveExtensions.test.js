@@ -47,7 +47,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(event.extensions.length).toEqual(1);
 
   // drawDefinition has 2 because of a policy applied during generation
-  expect(drawDefinition.extensions.length).toEqual(2);
+  expect(drawDefinition.extensions.length).toEqual(4);
 
   // Retrieve extensions from elements
   let {
@@ -95,8 +95,8 @@ it('can add and remove extensions from tournamentRecords', () => {
 
   ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
   expect(event.extensions.length).toEqual(1);
-  // drawDefinition has 2 because of a policy applied during generation
-  expect(drawDefinition.extensions.length).toEqual(2);
+  // drawDefinition has 4 because of a policy applied during generation
+  expect(drawDefinition.extensions.length).toEqual(4);
 
   ({ extension: eventExtension } = tournamentEngine.findEventExtension({
     name: extensionName,

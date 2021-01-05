@@ -56,7 +56,7 @@ it('can generate a tournament with events and draws', () => {
   drawEngine.setState(drawDefinition);
 
   const { extensions } = drawDefinition;
-  expect(extensions.length).toEqual(1);
+  expect(extensions.length).toEqual(3);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   expect(appliedPolicies.seeding.policyName).toEqual('ITF');
 

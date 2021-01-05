@@ -1,14 +1,15 @@
 import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
 
+import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
+import { parseScoreString } from '../utilities/parseScoreString';
+import drawEngine from '../../drawEngine';
+
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
-import drawEngine from '../../drawEngine';
-import { parseScoreString } from '../utilities/parseScoreString';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
 
 export function generateTournamentRecord({
   endDate,
@@ -34,7 +35,10 @@ export function generateTournamentRecord({
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
   const maxDrawSize =
-    drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
+    // drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
+    Math.max(
+      ...(drawProfiles || []).map((drawProfile) => drawProfile.drawSize)
+    ) || 32;
   const doublesEvents = drawProfiles?.find(
     (drawProfile) => drawProfile.eventType === DOUBLES
   );
