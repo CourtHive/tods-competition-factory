@@ -102,12 +102,11 @@ export function assignDrawPosition({
     )?.bye;
     if (pairedDrawPositionIsBye) {
       // re-assign the BYE to benefit from propagation
-      const result = assignDrawPositionBye({
+      assignDrawPositionBye({
         drawDefinition,
         structureId,
         drawPosition: pairedDrawPosition,
       });
-      console.log({ result });
     }
   }
 
