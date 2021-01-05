@@ -14,11 +14,11 @@ export function getValidSwapAction({
   positionAssignments,
   tournamentParticipants,
 
-  // byeDrawPositions,
-  // activeDrawPositions,
+  activeDrawPositions,
   inactiveDrawPositions,
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID };
+  if (activeDrawPositions.includes(drawPosition)) return {};
 
   const availableDrawPositions = inactiveDrawPositions?.filter(
     (position) => position !== drawPosition
