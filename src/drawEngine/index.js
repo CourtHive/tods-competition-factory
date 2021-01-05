@@ -19,6 +19,7 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 let devContext;
 let drawDefinition;
@@ -28,8 +29,17 @@ let tournamentParticipants = [];
 const policies = {};
 
 function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
-  const template = definitionTemplate();
-  return Object.assign({}, template, { drawId, drawType, drawProfile });
+  const drawDefinition = definitionTemplate();
+  if (drawProfile) {
+    const extension = {
+      name: 'drawProfile',
+      value: drawProfile,
+    };
+    addDrawDefinitionExtension({ drawDefinition, extension });
+  }
+
+  // TODO: remove assignment of drawProfile below after extension is used
+  return Object.assign(drawDefinition, { drawId, drawType, drawProfile });
 }
 
 // TASK: add verify/validate structure as option in setState

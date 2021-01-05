@@ -25,6 +25,32 @@ export const definitionTemplate = () => ({
   entries: [],
   links: [],
   structures: [],
+  extensions: [
+    {
+      name: 'drawProfile',
+      value: {
+        automated: undefined,
+        drawType: undefined,
+      },
+    },
+    {
+      name: 'entryProfile',
+      value: {
+        [QUALIFYING]: {
+          drawSize: undefined,
+          sequenceMap: undefined,
+          alternates: true,
+          wildcardsCount: undefined,
+        },
+        [MAIN]: {
+          drawSize: undefined,
+          qualifiersCount: undefined,
+          alternates: true,
+          wildcardsCount: undefined,
+        },
+      },
+    },
+  ],
 });
 
 export const keyValidation = ['drawId', 'structures'];
