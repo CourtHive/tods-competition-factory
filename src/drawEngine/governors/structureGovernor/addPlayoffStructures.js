@@ -31,7 +31,6 @@ export function addPlayoffStructures(props) {
 
   const {
     playoffAttributes,
-    playoffStructureNameBase,
     playoffSourceRounds,
     playoffRoundsRanges,
     playoffPositionsReturned,
@@ -43,6 +42,7 @@ export function addPlayoffStructures(props) {
     roundNumbers,
     drawDefinition,
     playoffPositions,
+    playoffStructureNameBase,
     structureId: sourceStructureId,
   } = props;
 
