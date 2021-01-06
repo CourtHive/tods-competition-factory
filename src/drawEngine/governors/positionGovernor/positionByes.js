@@ -174,13 +174,22 @@ export function assignDrawPositionBye({
       }
 
       if (winnerMatchUp && pairedDrawPosition) {
+        const drawPositionIsBye = positionAssignments.find(
+          (assignment) => assignment.drawPosition === drawPosition
+        )?.bye;
+        const pairedDrawPositionIsBye = positionAssignments.find(
+          (assignment) => assignment.drawPosition === pairedDrawPosition
+        )?.bye;
         // TODO: is it possible that a WINNER could be directed to a different structure?
         // winner participantId would then need to be added to positionAssignments
-        assignMatchUpDrawPosition({
-          drawDefinition,
-          matchUpId: winnerMatchUp.matchUpId,
-          drawPosition: pairedDrawPosition,
-        });
+        const isDoubleBye = drawPositionIsBye && pairedDrawPositionIsBye;
+        if (!isDoubleBye) {
+          assignMatchUpDrawPosition({
+            drawDefinition,
+            matchUpId: winnerMatchUp.matchUpId,
+            drawPosition: pairedDrawPosition,
+          });
+        }
       }
     }
   });

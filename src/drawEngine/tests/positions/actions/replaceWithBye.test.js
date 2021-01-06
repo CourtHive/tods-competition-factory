@@ -108,7 +108,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   expect(assignment.bye).toEqual(true);
 });
 
-it.only('can withdraw and replace positioned participant with a bye', () => {
+it('can withdraw and replace positioned participant with a bye', () => {
   const drawProfiles = [
     {
       drawSize: 32,
@@ -187,5 +187,5 @@ it.only('can withdraw and replace positioned participant with a bye', () => {
   expect(byeAssignments.length).toEqual(3);
 
   ({ byeMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
-  console.log(byeMatchUps);
+  expect(byeMatchUps.length).toEqual(3);
 });
