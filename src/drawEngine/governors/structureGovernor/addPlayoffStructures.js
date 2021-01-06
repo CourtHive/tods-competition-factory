@@ -17,6 +17,8 @@ import {
  * @param {string} structureId - id of structure to which playoff structures are to be added
  * @param {number[]} roundNumbers - source roundNumbers which will feed target structures
  * @param {number[]} playoffPositions - positions to be played off
+ * @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+ * @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
  *
  */
 export function addPlayoffStructures(props) {
@@ -28,6 +30,8 @@ export function addPlayoffStructures(props) {
   if (playoffRoundsError) return { error: playoffRoundsError };
 
   const {
+    playoffAttributes,
+    playoffStructureNameBase,
     playoffSourceRounds,
     playoffRoundsRanges,
     playoffPositionsReturned,
@@ -78,6 +82,8 @@ export function addPlayoffStructures(props) {
       roundOffset: 0,
       drawDefinition,
       stageSequence: 2,
+      playoffAttributes,
+      playoffStructureNameBase,
       finishingPositionOffset,
     });
 

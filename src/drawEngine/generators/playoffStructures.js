@@ -13,6 +13,7 @@ export function playoff(props) {
 /**
  *
  * @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+ * @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
  * @param {string} exitProfile - rounds at which a participant exited each structure, e.g. 0-1-1-1 for losing EAST, WEST, SOUTH
  * @param {number} finishingPositionOffset - amount by which to offset finishingPositions, e.g. 2 for playing off 3-4
  * @param {number} finishingPositionLimit - highest value of possible finishing Positions to play off
@@ -31,6 +32,7 @@ function playoffStructures({
   stageSequence = 1,
   roundOffsetLimit,
   playoffAttributes,
+  playoffStructureNameBase,
   finishingPositionLimit,
   finishingPositionOffset = 0,
   exitProfile = '0', // rounds at which participant exited
@@ -42,7 +44,10 @@ function playoffStructures({
   const finishingPositionsTo = finishingPositionOffset + drawSize;
   const finishingPositionRange = `${finishingPositionsFrom}-${finishingPositionsTo}`;
   const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
-  const structureName = attributeProfile?.name || finishingPositionRange;
+  const base =
+    (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
+  const structureName =
+    attributeProfile?.name || `${base}${finishingPositionRange}`;
   const structureAbbreviation = attributeProfile?.abbreviation;
   const structure = structureTemplate({
     stage,
