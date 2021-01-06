@@ -32,8 +32,8 @@ function playoffStructures({
   stageSequence = 1,
   roundOffsetLimit,
   playoffAttributes,
-  playoffStructureNameBase,
   finishingPositionLimit,
+  playoffStructureNameBase,
   finishingPositionOffset = 0,
   exitProfile = '0', // rounds at which participant exited
 }) {
@@ -92,6 +92,7 @@ function playoffStructures({
       drawDefinition,
       roundOffsetLimit,
       finishingPositionLimit,
+      playoffStructureNameBase,
       stageSequence: stageSequence + 1,
       drawSize: playoffDrawPositions,
       roundOffset: roundOffset + roundNumber,
