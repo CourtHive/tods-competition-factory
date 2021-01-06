@@ -17,7 +17,7 @@ export function getValidSwapAction({
   activeDrawPositions,
   inactiveDrawPositions,
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID };
+  if (!drawId) return { error: MISSING_DRAW_ID, method: 'getValidSwapAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const availableDrawPositions = inactiveDrawPositions?.filter(

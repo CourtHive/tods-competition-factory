@@ -16,7 +16,8 @@ export function getValidAlternatesAction({
   positionAssignments,
   tournamentParticipants = [],
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID };
+  if (!drawId)
+    return { error: MISSING_DRAW_ID, method: 'getValidAlternatesAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const { stage } = structure;

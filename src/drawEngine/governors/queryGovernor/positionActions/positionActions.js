@@ -44,9 +44,7 @@ export function positionActions({
   drawPosition,
   structureId,
   devContext,
-  drawId,
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -60,6 +58,7 @@ export function positionActions({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const validActions = [];
+  const { drawId } = drawDefinition;
 
   /**
    * If structure is > stageSequence 1 then it will only have valid position actions if:
