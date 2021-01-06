@@ -2,11 +2,19 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
 
 import { INVALID_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import {
-  PENALTY,
-  NICKNAME,
-} from '../../../../constants/matchUpActionConstants';
+  BYE,
+  COMPLETED,
+  TO_BE_PLAYED,
+} from '../../../../constants/matchUpStatusConstants';
+import {
+  SWAP_PARTICIPANTS,
+  ADD_PENALTY,
+  ADD_NICKNAME,
+  REMOVE_ASSIGNMENT,
+  ALTERNATE_PARTICIPANT,
+  ASSIGN_BYE,
+} from '../../../../constants/positionActionConstants';
 
 it('can return accurate position details when requesting positionActions', () => {
   const drawProfiles = [
@@ -91,8 +99,8 @@ it('returns correct positionActions for participants in completed matchUps', () 
 
   const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
 
-  const drawPosition = 1;
-  const targetMatchUp = matchUps.find((matchUp) =>
+  let drawPosition = 1;
+  let targetMatchUp = matchUps.find((matchUp) =>
     matchUp.drawPositions.includes(drawPosition)
   );
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
@@ -106,7 +114,183 @@ it('returns correct positionActions for participants in completed matchUps', () 
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(false);
 
-  const options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(PENALTY)).toEqual(true);
-  expect(options.includes(NICKNAME)).toEqual(true);
+  let options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(true);
+  expect(options.includes(ADD_NICKNAME)).toEqual(true);
+  expect(options.includes(ASSIGN_BYE)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(false);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+
+  // now check that loser position is considered active
+  drawPosition = 2;
+  targetMatchUp = matchUps.find((matchUp) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(true);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(false);
+
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(true);
+  expect(options.includes(ADD_NICKNAME)).toEqual(true);
+  expect(options.includes(ASSIGN_BYE)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(false);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+
+  // now check inactive drawPosition
+  drawPosition = 3;
+  targetMatchUp = matchUps.find((matchUp) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(false);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(false);
+
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(true);
+  expect(options.includes(ADD_NICKNAME)).toEqual(true);
+  expect(options.includes(ASSIGN_BYE)).toEqual(true);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(false); // there are no participants with entryStatus: ALTERNATE
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
+});
+
+it('returns correct positionActions for BYE positions where paired participants are in completed matchUps', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      participantsCount: 30,
+      outcomes: [
+        [1, 2, '6-2 6-1', 1],
+        [2, 1, '6-2 6-1', 1],
+      ],
+    },
+  ];
+  const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  const drawId = drawIds[0];
+
+  const {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  const structureId = structures[0].structureId;
+
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+
+  let drawPosition = 1;
+  let targetMatchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
+
+  let result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(true);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(false);
+
+  let options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(true);
+  expect(options.includes(ADD_NICKNAME)).toEqual(true);
+  expect(options.includes(ASSIGN_BYE)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(false);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+
+  // now check that BYE position is considered active
+  drawPosition = 2;
+  targetMatchUp = matchUps.find((matchUp) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(true);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(true);
+
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(false);
+  expect(options.includes(ADD_NICKNAME)).toEqual(false);
+  expect(options.includes(ASSIGN_BYE)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(false);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+
+  // now check inactive BYE position
+  drawPosition = 31;
+  targetMatchUp = matchUps.find((matchUp) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(false);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(true);
+
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(false);
+  expect(options.includes(ADD_NICKNAME)).toEqual(false);
+  expect(options.includes(ASSIGN_BYE)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true); // in this case there are 2 alternates
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
+
+  // now check inactive position paired with BYE
+  drawPosition = 32;
+  targetMatchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === 1 && matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isActiveDrawPosition).toEqual(false);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.isByePosition).toEqual(false);
+
+  options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(ADD_PENALTY)).toEqual(true);
+  expect(options.includes(ADD_NICKNAME)).toEqual(true);
+  expect(options.includes(ASSIGN_BYE)).toEqual(true); // TODO: policy setting whether to allow double byes
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+  expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true); // in this case there are 2 alternates
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
 });

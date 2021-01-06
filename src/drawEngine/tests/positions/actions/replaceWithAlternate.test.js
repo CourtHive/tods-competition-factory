@@ -3,6 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine';
 
 import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('can recognize valid ALTERNATES', () => {
   // Create mock tournament record
@@ -32,8 +33,17 @@ it('can recognize valid ALTERNATES', () => {
   // save original position assignments
   const originalPositionAssignments = structures[0].positionAssignments;
 
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+
   // get valid actions for drawPosition 1
   let drawPosition = 1;
+  let targetMatchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
+
   let result = tournamentEngine.positionActions({
     drawId,
     structureId,
@@ -68,4 +78,12 @@ it('can recognize valid ALTERNATES', () => {
   expect(modifiedPositionAssignments[0].participantId).toEqual(
     payload.alternateParticipantId
   );
+
+  // insure that drawPosition is still advanced to the second round
+  targetMatchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
+  );
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
 });

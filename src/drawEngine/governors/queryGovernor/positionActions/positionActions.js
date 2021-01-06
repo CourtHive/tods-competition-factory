@@ -201,6 +201,7 @@ export function positionActions({
     structureId,
     drawPosition,
     drawDefinition,
+    activeDrawPositions,
     positionAssignments,
     tournamentParticipants,
   });
