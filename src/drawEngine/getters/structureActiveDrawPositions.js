@@ -58,6 +58,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       advancedDrawPositions: [],
       drawPositionsPairedWithAdvanced: [],
       byeDrawPositions,
+      structure,
     };
   } else {
     const activeDrawPositions = drawPositionsInScoredMatchUps

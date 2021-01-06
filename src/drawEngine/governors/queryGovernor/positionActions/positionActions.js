@@ -54,6 +54,7 @@ export function positionActions({
     inactiveDrawPositions,
     structure,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
+
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const validActions = [];
