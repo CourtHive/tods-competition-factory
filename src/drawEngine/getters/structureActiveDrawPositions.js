@@ -1,13 +1,13 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getPairedDrawPosition } from './getPairedDrawPosition';
 import { getPositionAssignments } from './positionsGetter';
-import { countValues, numericSort } from '../../utilities';
+import { countValues, numericSort, unique } from '../../utilities';
 import { findStructure } from './findStructure';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
 // active drawPositions occur more than once in the matchUps of a structure,
-// OR are paired with active drawPositions in the first round
+// OR are paired with active drawPositions
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -20,73 +20,66 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     structure,
     drawDefinition,
   });
+
+  // first collect all drawPositions for the structure
   const drawPositions = []
     .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
     .filter((f) => f)
     .sort(numericSort);
+
+  // determine which positions are BYEs
   const byeDrawPositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
-  const byePairedPositions = byeDrawPositions
-    .map(getByePairedPosition)
-    .flat(Infinity);
+
+  const scoredMatchUps = matchUps.filter(
+    (matchUp) => matchUp.score?.sets?.length || matchUp.winningSide
+  );
+  const drawPositionsInScoredMatchUps = unique(
+    []
+      .concat(...scoredMatchUps.map((matchUp) => matchUp.drawPositions || []))
+      .filter((f) => f)
+      .sort(numericSort)
+  );
+  const activeByeDrawPositions = byeDrawPositions.filter((drawPosition) => {
+    const pairedPosition = getPairedDrawPosition({ matchUps, drawPosition });
+    return drawPositionsInScoredMatchUps.includes(pairedPosition);
+  });
 
   if (structure.structureType === CONTAINER) {
-    const relevantMatchUps = matchUps.filter(
-      (matchUp) => matchUp.score?.sets?.length || matchUp.winningSide
+    // BYEs are never considered ACTIVE in a Round Robin group
+    const inactiveDrawPositions = drawPositions.filter(
+      (drawPosition) => !drawPositionsInScoredMatchUps.includes(drawPosition)
     );
-    const activeDrawPositions = []
-      .concat(...relevantMatchUps.map((matchUp) => matchUp.drawPositions || []))
-      .filter((f) => f)
-      .sort(numericSort);
 
+    return {
+      activeDrawPositions: drawPositionsInScoredMatchUps,
+      inactiveDrawPositions,
+      advancedDrawPositions: [],
+      drawPositionsPairedWithAdvanced: [],
+      byeDrawPositions,
+    };
+  } else {
+    const activeDrawPositions = drawPositionsInScoredMatchUps
+      .concat(...activeByeDrawPositions)
+      .sort(numericSort);
     const inactiveDrawPositions = drawPositions.filter(
       (drawPosition) => !activeDrawPositions.includes(drawPosition)
     );
 
-    return {
-      activeDrawPositions,
-      inactiveDrawPositions,
-      advancedDrawPositions: [],
-      pairedDrawPositions: [],
-      byeDrawPositions,
-    };
-  } else {
-    // now remove ONE INSTANCE of byePairedPositions from drawPositions
-    // so that BYE advanced participants are not seen as active
-    const instancesToRemove = [].concat(
-      ...byePairedPositions,
-      ...byeDrawPositions
-    );
-    instancesToRemove.forEach((drawPosition) => {
-      const index = drawPositions.indexOf(drawPosition);
-      drawPositions.splice(index, 1);
-    });
-
     const positionCounts = countValues(drawPositions);
-
     const advancedDrawPositions = Object.keys(positionCounts)
       .reduce((active, key) => {
         return +key > 1 ? active.concat(...positionCounts[key]) : active;
       }, [])
-      .map((p) => parseInt(p));
+      .map((p) => parseInt(p))
+      .sort(numericSort);
 
-    // pairedDrawPositions are those positions which are paired with a position which has advanced
-    const pairedDrawPositions = [].concat(
+    // drawPositionsPairedWithAdvanced are those positions which are paired with a position which has advanced
+    const drawPositionsPairedWithAdvanced = [].concat(
       ...advancedDrawPositions.map((drawPosition) =>
         getPairedDrawPosition({ matchUps, drawPosition })
       )
-    );
-    const activeDrawPositions = []
-      .concat(...advancedDrawPositions, ...pairedDrawPositions)
-      .filter((f) => f);
-
-    const inactiveDrawPositions = drawPositions.filter(
-      (drawPosition) => !activeDrawPositions.includes(drawPosition)
-    );
-
-    const activeByeDrawPositions = byeDrawPositions.filter((drawPosition) =>
-      activeDrawPositions.includes(drawPosition)
     );
 
     return {
@@ -94,19 +87,9 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       activeByeDrawPositions,
       inactiveDrawPositions,
       advancedDrawPositions,
-      pairedDrawPositions,
+      drawPositionsPairedWithAdvanced,
       byeDrawPositions,
       structure,
     };
-  }
-
-  function getByePairedPosition(drawPosition) {
-    return matchUps
-      .reduce((drawPositions, currentMatchup) => {
-        return currentMatchup.drawPositions?.includes(drawPosition)
-          ? drawPositions.concat(...currentMatchup.drawPositions)
-          : drawPositions;
-      }, [])
-      .filter((dp) => dp && dp !== drawPosition);
   }
 }
