@@ -53,6 +53,7 @@ export function generateEliminationWithQualifying({
     structure: qualifyingStructure,
   });
 
+  console.log('###### 5');
   drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
   drawEngine.setStageQualifiersCount({ stage: MAIN, qualifiersCount });
   drawEngine.generateDrawType({ stage: MAIN, drawType: SINGLE_ELIMINATION });

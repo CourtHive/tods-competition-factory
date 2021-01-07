@@ -222,6 +222,7 @@ export function feedInMatchUps({
     // Given the above, feedsFromFinal trumps skipRounds
     // and skipRounds >= baseRoundsCount negates feedRounds
     feedRoundsProfile = baseDrawRounds.filter((feedSize, i) => {
+      if (!feedRounds) return 0;
       if (feedRounds && i >= skipRounds + feedRounds) return 0;
       if (i < skipRounds) return 0;
       return feedSize;
