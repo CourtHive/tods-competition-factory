@@ -27,7 +27,7 @@ export function initialize({ drawId = 'uuid-default' } = {}) {
   return result;
 }
 
-export function qualifyingDrawPositions({ drawSize = 2 } = {}) {
+export function qualifyingDrawPositions({ drawSize = 4 } = {}) {
   result = drawEngine.setStageDrawSize({ stage: QUALIFYING, drawSize });
   expect(result).toMatchObject(SUCCESS);
 }

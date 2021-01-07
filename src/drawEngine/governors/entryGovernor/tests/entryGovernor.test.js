@@ -111,16 +111,6 @@ it('adds partitipants to stage until stage drawPositions filled', () => {
     participant: { participantId: 'uuid8' },
     entryStage: MAIN,
   });
-  expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid9' },
-    entryStage: MAIN,
-  });
-  expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.addDrawEntry({
-    participant: { participantId: 'uuid10' },
-    entryStage: MAIN,
-  });
   expect(result).toHaveProperty(ERROR);
 });
 
