@@ -93,6 +93,6 @@
   },
   "resolutions": {
     "axios": "^0.21.1",
-    "marked": "^0.7.0 "
+    "marked": "^1.0.0"
   }
 }
