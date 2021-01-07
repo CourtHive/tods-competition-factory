@@ -54,7 +54,7 @@ Add PAIR participant to an event. Creates new participantType: PAIR participants
 
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
 - @param {string} eventId - tournamentEngine automatically retrieves event
-- @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
+- @param {string[][]} participantIdPairs - array of paired id arrays for all participants to add to event
 - @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
 - @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
 
