@@ -1,9 +1,8 @@
+import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
+import { getRoundMatchUps } from '../../drawEngine/getters/getMatchUps';
+import { parseScoreString } from '../utilities/parseScoreString';
 import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
-
-import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
-import { parseScoreString } from '../utilities/parseScoreString';
-import drawEngine from '../../drawEngine';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
@@ -151,7 +150,7 @@ function generateEventWithDraw({
       drawId,
       inContext: true,
     });
-    const { roundMatchUps } = drawEngine.getRoundMatchUps({
+    const { roundMatchUps } = getRoundMatchUps({
       matchUps,
     });
     drawProfile.outcomes.forEach((outcome) => {
