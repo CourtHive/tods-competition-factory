@@ -68,5 +68,5 @@ it('can return accurate position details when requesting positionActions', () =>
   expect(options.includes(ASSIGN_BYE)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(false);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 });
