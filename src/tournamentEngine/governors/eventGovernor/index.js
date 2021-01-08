@@ -16,7 +16,6 @@ import {
 } from './automatedPositioning';
 import { assignTieMatchUpParticipantId } from './tieMatchUps';
 import { deleteDrawDefinitions } from './drawDefinitions/deleteDrawDefinitions';
-import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { setMatchUpStatus, bulkMatchUpStatusUpdate } from './setMatchUpStatus';
 import {
   checkInParticipant,
@@ -39,7 +38,9 @@ import {
 } from './entries/setEntryPositions';
 import { addDrawDefinitionTimeItem } from './drawDefinitions/addDrawDefinitionTimeItem';
 import { swapDrawPositionAssignments } from './drawDefinitions/swapDrawPositionAssignments';
+import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawParticipantAtDrawPosition';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
+import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
@@ -80,6 +81,7 @@ const eventGovernor = {
   swapDrawPositionAssignments,
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,
+  withdrawParticipantAtDrawPosition,
   setDrawParticipantRepresentatives,
 
   automatedPositioning,

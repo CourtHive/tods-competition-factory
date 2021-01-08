@@ -33,6 +33,7 @@ tournamentEngine
 - getTournamentParticipants
 - setMatchUpFormat
 - version
+- withdrawParticipantAtDrawPosition
 * addDrawDefinition
 * addEventEntryPairs
 * addMatchUpScheduledDayDate

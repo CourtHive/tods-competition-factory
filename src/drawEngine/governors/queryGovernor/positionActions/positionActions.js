@@ -25,6 +25,8 @@ import {
   ASSIGN_BYE,
   ADD_PENALTY_METHOD,
   ADD_NICKNAME_METHOD,
+  WITHDRAW_PARTICIPANT,
+  WITHDRAW_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
 import {
   DRAW,
@@ -144,6 +146,12 @@ export function positionActions({
       validActions.push({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
+        payload: { drawId, structureId, drawPosition },
+      });
+
+      validActions.push({
+        type: WITHDRAW_PARTICIPANT,
+        method: WITHDRAW_PARTICIPANT_METHOD,
         payload: { drawId, structureId, drawPosition },
       });
 
