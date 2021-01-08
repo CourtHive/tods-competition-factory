@@ -3,7 +3,7 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 
 import { getValidAlternatesAction } from './participantAlternates';
-import { getValidAssignmentAction } from './participantAssignments';
+import { getValidAssignmentActions } from './participantAssignments';
 import { getValidSwapAction } from './participantSwaps';
 
 import {
@@ -129,7 +129,7 @@ export function positionActions({
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
-    const { validAssignmentActions } = getValidAssignmentAction({
+    const { validAssignmentActions } = getValidAssignmentActions({
       drawDefinition,
       structureId,
       drawPosition,
