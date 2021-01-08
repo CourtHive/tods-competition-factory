@@ -39,7 +39,7 @@ import {
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITIONS,
-  BYES_LIMIT_REACHED,
+  //  BYES_LIMIT_REACHED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -50,8 +50,10 @@ export function assignDrawPositionBye({
   devContext,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
-  const unplacedByes = placedByes < byesCount;
+
+  // NOTE: BYEs limit is being disabled; perhaps policy option later
+  // const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
+  // const unplacedByes = placedByes < byesCount;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -67,7 +69,7 @@ export function assignDrawPositionBye({
   if (!positionState) return { error: INVALID_DRAW_POSITION };
 
   const { filled, containsBye } = drawPositionFilled(positionState);
-  if (!unplacedByes && !containsBye) return { error: BYES_LIMIT_REACHED };
+  // if (!unplacedByes && !containsBye) return { error: BYES_LIMIT_REACHED };
   if (filled && !containsBye) {
     return { error: DRAW_POSITION_ASSIGNED };
   }

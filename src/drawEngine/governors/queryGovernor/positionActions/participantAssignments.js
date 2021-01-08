@@ -71,7 +71,8 @@ export function getValidAssignmentAction({
       structure,
     });
     const availableByes = byesCount - placedByes;
-    if (availableByes && !isByePosition) {
+    // BYEs limit is being disabled
+    if (/*availableByes &&*/ !isByePosition) {
       validAssignmentActions.push({
         type: ASSIGN_BYE,
         method: ASSIGN_BYE_METHOD,
