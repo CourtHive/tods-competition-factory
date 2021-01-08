@@ -10,7 +10,7 @@ import {
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
 
-export function getValidAssignmentAction({
+export function getValidAssignmentActions({
   drawDefinition,
   structureId,
   drawPosition,
