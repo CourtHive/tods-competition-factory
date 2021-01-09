@@ -1,5 +1,8 @@
 import { keyValueMatchUpScore } from '../index';
-import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from './formatConstants';
+import {
+  FORMAT_STANDARD,
+  FORMAT_ATP_DOUBLES,
+} from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
 
 function scoreMatchUp({ lowSide, value, matchUp }) {
   let message;

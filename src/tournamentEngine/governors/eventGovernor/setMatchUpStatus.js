@@ -33,7 +33,7 @@ export function setMatchUpStatus(props) {
 
   if (matchUpFormat) {
     const result = drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });
-    if (result.error) return { errors: [{ error: result.error }] };
+    if (result.error) return result;
   }
 
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
@@ -73,7 +73,7 @@ export function setMatchUpStatus(props) {
   }
 
   return errors && errors.length
-    ? { errors }
+    ? { error: errors }
     : Object.assign({}, SUCCESS, { matchUp });
 }
 

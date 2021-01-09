@@ -381,6 +381,20 @@ const {
 
 ---
 
+## getMatchUpFormat
+
+Returns the matchUpFormat code for a given matchUp, along with any
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} drawId - optional - avoid brute force search for matchUp
+- @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
+- @param {string} eventId - optional - if only the default matchUpFormat for an event is required
+- @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
+- @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
+- @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
+
+---
+
 ## getMatchUpScheduleDetails
 
 ---
@@ -575,11 +589,27 @@ Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
 
 ---
 
+## removePenalty
+
+---
+
+## setDrawDefinitionDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} drawId - id of the draw for which matchUpFormat is being set
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+
+---
+
 ## setDrawParticipantRepresentatives
 
 ---
 
-## removePenalty
+## setEventDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} eventId - id of the event for which matchUpFormat is being set
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
 
 ---
 
@@ -633,6 +663,16 @@ const scaleItemsWithParticipantIds = [
 ];
 tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
 ```
+
+---
+
+## setStructureDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} drawId - id of the draw within which structure is found
+- @param {object} drawDefinition - passed automatically by tournamentEngine when drawId is provided
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+- @param {string} structureId - id of the structure for which the matchUpFormat is being set
 
 ---
 

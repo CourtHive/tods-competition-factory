@@ -1,9 +1,9 @@
 import mocksEngine from '../../../mocksEngine';
+import { numericSort } from '../../../utilities';
 import tournamentEngine from '../../../tournamentEngine';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { numericSort } from '../../../utilities';
 
 it('correctly identifies active drawPositions', () => {
   const drawProfiles = [

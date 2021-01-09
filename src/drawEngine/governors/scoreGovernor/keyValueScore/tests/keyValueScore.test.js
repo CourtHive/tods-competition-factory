@@ -4,7 +4,10 @@ import {
 } from '../../../../../constants/matchUpStatusConstants';
 import { OUTCOME_COMPLETE } from '../constants';
 import { keyValueScore } from '../index';
-import { FORMAT_STANDARD, TIMED20 } from './formatConstants';
+import {
+  FORMAT_STANDARD,
+  TIMED20,
+} from '../../../../../fixtures/scoring/matchUpFormats/formatConstants';
 
 function enterKeyValues({
   sets,

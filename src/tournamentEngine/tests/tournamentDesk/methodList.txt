@@ -31,7 +31,6 @@ tournamentEngine
 - getPolicyDefinition
 - getSeedsCount
 - getTournamentParticipants
-- setMatchUpFormat
 - version
 - withdrawParticipantAtDrawPosition
 * addDrawDefinition
@@ -67,6 +66,8 @@ tournamentEngine
 * removeEventPolicy
 * setDrawDefaultMatchUpFormat
 * setEntryPositions
+* setEventDefaultMatchUpFormat,
+* setStructureDefaultMatchUpFormat
 * setMatchUpStatus
 * setParticipantScaleItem
 * swapDrawPositionAssignments
