@@ -6,7 +6,11 @@ import { generateFMLC } from '../../tests/primitives/fmlc';
 import tournamentEngine from '../../../tournamentEngine';
 import mocksEngine from '../../../mocksEngine';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  CONSOLATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
+} from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can generate FMLC with double-byes in consolation', () => {
@@ -115,7 +119,7 @@ it('can generate FMLC with double-byes in consolation', () => {
   });
 });
 
-it.only('can remove 3rd round MAIN draw result when no participant went to consolation from 2nd round', () => {
+it('can remove 2nd round MAIN draw result when no participant went to consolation from 2nd round', () => {
   const participantsProfile = {
     participantsCount: 16,
   };
@@ -129,37 +133,37 @@ it.only('can remove 3rd round MAIN draw result when no participant went to conso
         {
           roundNumber: 1,
           roundPosition: 2,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 6-2',
           winningSide: 1,
         },
         {
           roundNumber: 1,
           roundPosition: 3,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 6-3',
           winningSide: 1,
         },
         {
           roundNumber: 1,
           roundPosition: 4,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 6-4',
           winningSide: 1,
         },
         {
           roundNumber: 1,
           roundPosition: 5,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 6-5',
           winningSide: 1,
         },
         {
           roundNumber: 1,
           roundPosition: 6,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 7-6(3)',
           winningSide: 1,
         },
         {
           roundNumber: 1,
           roundPosition: 7,
-          scoreString: '6-2 6-1',
+          scoreString: '6-1 7-5',
           winningSide: 1,
         },
         {
@@ -171,24 +175,50 @@ it.only('can remove 3rd round MAIN draw result when no participant went to conso
         {
           roundNumber: 2,
           roundPosition: 2,
-          scoreString: '6-2 6-1',
+          scoreString: '6-2 6-2',
           winningSide: 1,
         },
         {
           roundNumber: 2,
           roundPosition: 3,
-          scoreString: '6-2 6-1',
+          scoreString: '6-2 6-3',
           winningSide: 1,
         },
         {
           roundNumber: 2,
           roundPosition: 4,
-          scoreString: '6-2 6-1',
+          scoreString: '6-2 6-4',
           winningSide: 1,
+        },
+        // now add consolation results
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+          stage: CONSOLATION,
+          stageSequence: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-1 6-3',
+          winningSide: 1,
+          stage: CONSOLATION,
+          stageSequence: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-1 6-4',
+          winningSide: 1,
+          stage: CONSOLATION,
+          stageSequence: 1,
         },
       ],
     },
   ];
+
   let {
     tournamentRecord,
     drawIds: [drawId],
@@ -198,13 +228,25 @@ it.only('can remove 3rd round MAIN draw result when no participant went to conso
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { completedMatchUps } = tournamentEngine.drawMatchUps({ drawId });
-  expect(completedMatchUps.length).toEqual(10);
+  // there should be 13 completed matchUps
+  let { completedMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  });
+  expect(completedMatchUps.length).toEqual(13);
 
-  const matchUpId = completedMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 2
-  ).matchUpId;
+  // target specific matchUp
+  const targetMatchUp = completedMatchUps.find(
+    ({ roundNumber, roundPosition, stage, stageSequence }) =>
+      roundNumber === 2 &&
+      roundPosition === 2 &&
+      stage === MAIN &&
+      stageSequence === 1
+  );
+  const { matchUpId, score, winningSide } = targetMatchUp;
+  expect(score.scoreStringSide1).toEqual('6-2 6-2');
 
+  // remove outcome
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
@@ -212,4 +254,23 @@ it.only('can remove 3rd round MAIN draw result when no participant went to conso
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();
+
+  // outcome removal should be succesful => now expecting 9 completed matchUps
+  ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
+  expect(completedMatchUps.length).toEqual(12);
+
+  // complete matchUp
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: {
+      score,
+      winningSide,
+    },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUp.score).not.toBeUndefined();
+
+  ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
+  expect(completedMatchUps.length).toEqual(13);
 });
