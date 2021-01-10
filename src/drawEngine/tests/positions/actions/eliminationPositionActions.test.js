@@ -21,7 +21,14 @@ it('can return accurate position details when requesting positionActions', () =>
     {
       drawSize: 32,
       participantsCount: 30,
-      outcomes: [[1, 3, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   const {
@@ -81,7 +88,14 @@ it('returns correct positionActions for participants in completed matchUps', () 
     {
       drawSize: 32,
       participantsCount: 32,
-      outcomes: [[1, 1, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -177,8 +191,18 @@ it('returns correct positionActions for BYE positions where paired participants 
       drawSize: 32,
       participantsCount: 30,
       outcomes: [
-        [1, 2, '6-2 6-1', 1],
-        [2, 1, '6-2 6-1', 1],
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
       ],
     },
   ];

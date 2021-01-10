@@ -10,7 +10,14 @@ it('correctly identifies active drawPositions', () => {
     {
       drawSize: 32,
       participantsCount: 30,
-      outcomes: [[1, 2, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   const {
@@ -64,8 +71,18 @@ it('correctly identifies active BYE drawPositions', () => {
       drawSize: 32,
       participantsCount: 30,
       outcomes: [
-        [1, 2, '6-2 6-1', 1],
-        [2, 1, '6-2 6-1', 1],
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
       ],
     },
   ];

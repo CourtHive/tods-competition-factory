@@ -5,7 +5,10 @@ import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
-import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
+import {
+  MAIN,
+  SINGLE_ELIMINATION,
+} from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
@@ -154,15 +157,20 @@ function generateEventWithDraw({
       matchUps,
     });
     drawProfile.outcomes.forEach((outcome) => {
-      const [
+      const {
         roundNumber,
         roundPosition,
         scoreString,
         winningSide,
         matchUpStatus = COMPLETED,
-      ] = outcome;
+        stage = MAIN,
+        stageSequence = 1,
+      } = outcome;
       const targetMatchUp = roundMatchUps[roundNumber].find(
-        (matchUp) => matchUp.roundPosition === roundPosition
+        (matchUp) =>
+          matchUp.stage === stage &&
+          matchUp.stageSequence === stageSequence &&
+          matchUp.roundPosition === roundPosition
       );
       const { matchUpId } = targetMatchUp;
       const sets = scoreString && parseScoreString({ scoreString });

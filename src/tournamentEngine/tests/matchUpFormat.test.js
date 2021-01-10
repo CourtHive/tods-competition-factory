@@ -20,7 +20,14 @@ it('can set and return matchUpFormat codes', () => {
       drawSize: 32,
       matchUpFormat,
       participantsCount: 30,
-      outcomes: [[1, 2, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   const {

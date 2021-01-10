@@ -23,11 +23,36 @@ it('can add statistics to tournament participants', () => {
         type: AGE,
       },
       outcomes: [
-        [1, 2, '6-1 6-2', 1],
-        [2, 1, '6-2 6-1', 1],
-        [1, 3, '6-1 6-3', 1],
-        [1, 4, '6-1 6-4', 1],
-        [2, 2, '6-2 6-2', 1], // participant who won this match won 2 matches in this draw
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-1 6-3',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-1 6-4',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 2,
+          scoreString: '6-2 6-2',
+          winningSide: 1, // participant who won this match won 2 matches in this draw
+        },
       ],
     },
     {
@@ -40,11 +65,36 @@ it('can add statistics to tournament participants', () => {
         type: AGE,
       },
       outcomes: [
-        [1, 2, '6-1 6-2', 1],
-        [2, 1, '6-2 6-1', 1],
-        [1, 3, '6-1 6-3', 1],
-        [1, 4, '6-1 6-4', 1],
-        [2, 2, '6-2 6-2', 1], // participant who won this match won 2 matches in this draw
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-1 6-3',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-1 6-4',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 2,
+          scoreString: '6-2 6-2',
+          winningSide: 1, // participant who won this match won 2 matches in this draw
+        },
       ],
     },
   ];

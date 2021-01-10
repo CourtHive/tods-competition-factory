@@ -7,12 +7,42 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
       drawSize: 8,
       participantsCount: 8,
       outcomes: [
-        [1, 1, '6-2 6-1', 1],
-        [1, 2, '6-2 6-1', 1],
-        [1, 3, '6-2 6-1', 1],
-        [1, 4, '6-2 6-1', 1],
-        [2, 1, '6-2 6-1', 1],
-        [2, 2, '6-2 6-1', 1],
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
       ],
     },
   ];

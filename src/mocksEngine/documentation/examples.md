@@ -22,7 +22,14 @@ const drawProfiles = [
     drawSize: 32,
     participantsCount: 30,
     participantType: PAIR,
-    outcomes: [[1, 2, '6-2 6-1', 1]],
+    outcomes: [
+      {
+        roundNumber: 1,
+        roundPosition: 2,
+        scoreString: '6-1 6-2',
+        winningSide: 1,
+      },
+    ],
   },
 ];
 
