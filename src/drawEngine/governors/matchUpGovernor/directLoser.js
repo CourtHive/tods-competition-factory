@@ -1,3 +1,4 @@
+import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { checkIfWinnerHadBye } from './checkIfWinnerHadBye';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
@@ -7,7 +8,7 @@ import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { numericSort } from '../../../utilities';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -71,6 +72,13 @@ export function directLoser(props) {
     drawDefinition,
     structureId: targetStructureId,
   });
+
+  const loserAlreadyDirected = targetPositionAssignments.find(
+    ({ participantId }) => participantId === loserParticipantId
+  );
+  if (loserAlreadyDirected) {
+    return SUCCESS;
+  }
 
   const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
     .filter((assignment) => {

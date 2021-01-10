@@ -180,7 +180,7 @@ function generateEventWithDraw({
           matchUp.roundPosition === roundPosition
       );
       const { matchUpId } = targetMatchUp;
-      const outcome = generateOutcomeFromScoreString({
+      const { outcome } = generateOutcomeFromScoreString({
         scoreString,
         winningSide,
       });

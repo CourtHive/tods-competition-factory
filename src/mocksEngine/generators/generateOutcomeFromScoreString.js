@@ -34,7 +34,9 @@ export function generateOutcomeFromScoreString({ scoreString, winningSide }) {
     score.scoreStringSide1 = scoreString;
   }
   return {
-    winningSide,
-    score,
+    outcome: {
+      winningSide,
+      score,
+    },
   };
 }
