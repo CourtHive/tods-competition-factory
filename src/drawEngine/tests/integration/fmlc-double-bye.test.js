@@ -255,7 +255,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();
 
-  // outcome removal should be succesful => now expecting 9 completed matchUps
+  // outcome removal should be succesful => now expecting 12 completed matchUps
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
   expect(completedMatchUps.length).toEqual(12);
 
