@@ -8,6 +8,21 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/matchUpTypes';
 
+/**
+ *
+ * Generate mock participants
+ *
+ * @param {string[]} nationalityCodes - an array of ISO codes to randomly assign to participants
+ * @param {number} nationalityCodesCount - number of nationality codes to use when generating participants
+ * @param {number} participantsCount - number of participants to generate
+ * @param {string} participantType - [INDIVIDUAL, PAIR, TEAM]
+ * @param {string} matchUpType - optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
+ * @param {string} sex - optional - [MALE, FEMALE]
+ * @param {number} valuesInstanceLimit - maximum number of values which can be the same
+ * @param {number} valuesCount - number of values to generate
+ * @param {boolean} inContext - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
+ *
+ */
 export function generateParticipants({
   nationalityCodes,
   nationalityCodesCount,
