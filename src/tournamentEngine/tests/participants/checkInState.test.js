@@ -20,7 +20,14 @@ it('can check participants in and out', () => {
       eventType: DOUBLES,
       participantsCount: 14,
       drawType: ELIMINATION,
-      outcomes: [[1, 2, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   let {

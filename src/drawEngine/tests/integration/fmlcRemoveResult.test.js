@@ -1,7 +1,8 @@
-import { drawEngine } from '../../../drawEngine';
-import mocksEngine from '../../../mocksEngine';
+import { noScoreOutcome } from '../../../fixtures/scoring/outcomes/noScoreOutcome';
 import tournamentEngine from '../../../tournamentEngine';
 import { generateFMLC } from '../../tests/primitives/fmlc';
+import { drawEngine } from '../../../drawEngine';
+import mocksEngine from '../../../mocksEngine';
 import {
   completeMatchUp,
   verifyMatchUps,
@@ -202,7 +203,14 @@ it('can remove matchUps properly in FMLC', () => {
       eventType: SINGLES,
       participantsCount: 14,
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
-      outcomes: [[1, 2, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   let { tournamentRecord, drawIds } = mocksEngine.generateTournamentRecord({
@@ -232,44 +240,10 @@ it('can remove matchUps properly in FMLC', () => {
     consolationStructure.positionAssignments[1].participantId
   ).not.toBeUndefined();
 
-  const outcome = {
-    matchUpFormat: 'SET3-S:6/TB7',
-    matchUpStatus: undefined,
-    matchUpStatusCodes: [],
-    score: {
-      scoreStringSide1: '',
-      scoreStringSide2: '',
-      sets: [
-        {
-          setNumber: 1,
-          side1Score: undefined,
-          side1TiebreakScore: undefined,
-          side2Score: undefined,
-          side2TiebreakScore: undefined,
-          winningSide: undefined,
-        },
-      ],
-    },
-    status: {
-      side1: {
-        categoryName: 'None',
-        matchUpStatusCode: '',
-        matchUpStatusCodeDisplay: 'None',
-        subCategoryName: 'None',
-      },
-      side2: {
-        categoryName: 'None',
-        matchUpStatusCode: '',
-        matchUpStatusCodeDisplay: 'None',
-        subCategoryName: 'None',
-      },
-    },
-    winningSide: undefined,
-  };
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
-    outcome,
+    outcome: noScoreOutcome,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();

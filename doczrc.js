@@ -23,7 +23,7 @@ export default {
     },
     {
       name: 'Mocks Engine',
-      menu: ['Generating Tournaments'],
+      menu: ['Generating Tournaments', 'API'],
     },
     {
       name: 'Tournament Engine',

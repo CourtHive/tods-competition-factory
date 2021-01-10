@@ -14,7 +14,9 @@ With no parameters the `generateTournamentRecord()` method will generate a tourn
 const { tournamentRecord } = mocksEngine.generateTournamentRecord({});
 ```
 
-In testing very specific scenarios are required. Any number of draws can be added to a generated tournament, and scores for specific `matchUps` within the generated draw structures can be added as well. In the following example a Doubles draw with 32 positions is generated with 30 PAIR participants, leaving two positions to be filled with BYEs. The score is completed for the matchUp in `{ roundNumber: 1, roundPosition: 2 }`
+In testing, very specific scenarios are required. Any number of draws can be added to a generated tournament, and scores for specific `matchUps` within the generated draw structures can be added as well. In the following example a Doubles draw with 32 positions is generated with 30 PAIR participants, leaving two positions to be filled with BYEs. The score is completed for the matchUp found using `{ roundNumber: 1, roundPosition: 2 }`.
+
+`mocksEngine.generateOutcomeFromScoreString()` is used internally to generate a valid TODS score object.
 
 ```js
 const drawProfiles = [
@@ -22,15 +24,28 @@ const drawProfiles = [
     drawSize: 32,
     participantsCount: 30,
     participantType: PAIR,
-    outcomes: [[1, 2, '6-2 6-1', 1]],
+    outcomes: [
+      {
+        roundNumber: 1,
+        roundPosition: 2,
+        scoreString: '6-1 6-2',
+        winningSide: 1,
+      },
+    ],
   },
 ];
 
 const {
-  drawIds,
   eventIds,
+  drawIds: [drawId],
   tournamentRecord,
 } = mocksEngine.generateTournamentRecord({ drawProfiles });
 ```
 
-The `generateTournamentRecord()` method returns an array of the `drawIds` and `eventIds` present in the generated `tournamentRecord`.
+The `generateTournamentRecord()` method returns an array of the `drawIds` and `eventIds` present in the generated `tournamentRecord` to aid in calling subsequent `tournamentEngine` methods:
+
+```js
+tournamentEngine.setState(tournamentRecord);
+
+const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+```
