@@ -25,12 +25,12 @@ export function generateOutcomeFromScoreString({
 
   const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
-  const winningScoreString = generateScoreString({ sets, winningSide });
+  const winningScoreString = generateScoreString({ sets });
   const losingScoreString = generateScoreString({
     sets,
-    winningSide,
     reversed: true,
   });
+  console.log({ winningSide, winningScoreString, losingScoreString });
   if (winningSide === 1) {
     score.scoreStringSide1 = winningScoreString;
     score.scoreStringSide2 = losingScoreString;
