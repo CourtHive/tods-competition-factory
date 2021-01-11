@@ -68,4 +68,19 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     matchUpId,
   }));
   expect(schedule.scheduledDate).toEqual(scheduledDayDate);
+
+  result = tournamentEngine.addMatchUpScheduledDayDate({
+    drawId,
+    matchUpId,
+    scheduledDayDate: undefined,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  ({
+    matchUp: { schedule },
+  } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  }));
+  expect(schedule.scheduledDate).toBeUndefined();
 });

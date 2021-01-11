@@ -66,7 +66,7 @@ export function addMatchUpScheduledDayDate({
   // this must be done in tournamentEngine wrapper
 
   const validDate = dateValidation.test(scheduledDayDate);
-  if (!validDate) return { error: INVALID_DATE };
+  if (scheduledDayDate && !validDate) return { error: INVALID_DATE };
 
   const timeItem = {
     itemType: SCHEDULED_DATE,
