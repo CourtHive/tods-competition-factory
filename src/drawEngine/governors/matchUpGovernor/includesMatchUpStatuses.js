@@ -40,5 +40,11 @@ export function includesMatchUpStatuses({
     matchUpStatuses
   ).length;
 
-  return { sourceMatchUp, winnerHadMatchUpStatus, loserHadMatchUpStatus };
+  return {
+    sourceMatchUp,
+    winnerHadMatchUpStatus,
+    winnerMatchUpStatuses,
+    loserHadMatchUpStatus,
+    loserMatchUpStatuses,
+  };
 }

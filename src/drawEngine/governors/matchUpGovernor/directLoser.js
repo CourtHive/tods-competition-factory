@@ -9,7 +9,11 @@ import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  DEFAULTED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -41,11 +45,19 @@ export function directLoser(props) {
     matchUp.drawPositions.includes(loserDrawPosition)
   );
 
+  // in this calculation BYEs and WALKOVERs are not counted as wins
+  // as well as DEFAULTED when there is no score component
   const loserDrawPositionWins = drawPositionMatchUps.filter((matchUp) => {
     const drawPositionSide = matchUp.sides.find(
       (side) => side.drawPosition === loserDrawPosition
     );
-    return drawPositionSide?.sideNumber === matchUp.winningSide;
+    const noScoreOutcome =
+      matchUp.matchUpStatus === WALKOVER ||
+      (matchUp.matchUpStatus === DEFAULTED &&
+        !!matchUp.score?.scoreStringSide1);
+    return (
+      drawPositionSide?.sideNumber === matchUp.winningSide && !noScoreOutcome
+    );
   });
 
   const targetMatchUpDrawPosition =
@@ -108,6 +120,7 @@ export function directLoser(props) {
     sourceMatchUps,
     loserDrawPosition,
     drawPositionMatchUps,
+    matchUpStatuses: [BYE, WALKOVER, DEFAULTED],
   });
   if (loserLinkCondition) {
     if (firstMatchUpLoss) {
@@ -170,22 +183,14 @@ export function directLoser(props) {
     targetDrawPositionIsUnfilled
   ) {
     const {
-      winnerHadMatchUpStatus: defaultOrWalkover,
+      loserHadMatchUpStatus: defaultOrWalkover,
     } = includesMatchUpStatuses({
       sourceMatchUps,
       loserDrawPosition,
       drawPositionMatchUps,
-      // matchUpStatuses: [WALKOVER, DEFAULTED],
-      matchUpStatuses: [],
+      matchUpStatuses: [WALKOVER, DEFAULTED],
     });
-    if (!defaultOrWalkover) {
-      assignDrawPosition({
-        drawDefinition,
-        structureId: targetStructureId,
-        participantId: loserParticipantId,
-        drawPosition: targetMatchUpDrawPosition,
-      });
-    } else {
+    if (defaultOrWalkover) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
         devContext,
@@ -196,6 +201,13 @@ export function directLoser(props) {
       if (result.error) {
         error = result.error;
       }
+    } else {
+      assignDrawPosition({
+        drawDefinition,
+        structureId: targetStructureId,
+        participantId: loserParticipantId,
+        drawPosition: targetMatchUpDrawPosition,
+      });
     }
   } else if (unfilledTargetMatchUpDrawPositions.length) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
