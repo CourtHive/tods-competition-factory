@@ -1,7 +1,7 @@
 import { instanceCount } from '../../../utilities';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
-import { checkIfWinnerHadBye } from './checkIfWinnerHadBye';
+import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
@@ -94,7 +94,7 @@ export function removeDirectedParticipants(props) {
       if (error) errors.push(error);
     }
     if (loserMatchUp) {
-      const winnerHadBye = checkIfWinnerHadBye({
+      const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
         sourceMatchUps,
         loserDrawPosition,
         drawPositionMatchUps,

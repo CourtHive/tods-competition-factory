@@ -46,7 +46,6 @@ export function generateTournamentRecord({
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
   const maxDrawSize =
-    // drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
     Math.max(
       ...(drawProfiles || []).map((drawProfile) => drawProfile.drawSize)
     ) || 32;
@@ -183,11 +182,12 @@ function generateEventWithDraw({
       const { outcome } = generateOutcomeFromScoreString({
         scoreString,
         winningSide,
+        matchUpStatus,
       });
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
         matchUpId,
-        matchUpStatus,
+        // matchUpStatus,
         outcome,
       });
       if (!result.success) console.log(result);

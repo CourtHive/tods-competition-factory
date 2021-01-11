@@ -15,6 +15,7 @@ export const noScoreOutcome = {
       },
     ],
   },
+  /*
   status: {
     side1: {
       categoryName: 'None',
@@ -29,5 +30,6 @@ export const noScoreOutcome = {
       subCategoryName: 'None',
     },
   },
+  */
   winningSide: undefined,
 };

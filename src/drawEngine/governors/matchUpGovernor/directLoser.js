@@ -1,6 +1,6 @@
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { checkIfWinnerHadBye } from './checkIfWinnerHadBye';
+import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
@@ -9,6 +9,7 @@ import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 /*
   FMLC linkCondition... check whether it is a participant's first 
@@ -103,6 +104,11 @@ export function directLoser(props) {
   const firstMatchUpLoss =
     loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
 
+  const { winnerHadMatchUpStatus } = includesMatchUpStatuses({
+    sourceMatchUps,
+    loserDrawPosition,
+    drawPositionMatchUps,
+  });
   if (loserLinkCondition) {
     if (firstMatchUpLoss) {
       const drawPosition =
@@ -129,13 +135,7 @@ export function directLoser(props) {
           participantId: loserParticipantId,
         });
 
-        if (
-          checkIfWinnerHadBye({
-            sourceMatchUps,
-            loserDrawPosition,
-            drawPositionMatchUps,
-          })
-        ) {
+        if (winnerHadMatchUpStatus) {
           const result = assignDrawPositionBye({
             devContext,
             drawDefinition,
@@ -149,13 +149,7 @@ export function directLoser(props) {
       } else {
         error = result.error;
       }
-    } else if (
-      checkIfWinnerHadBye({
-        sourceMatchUps,
-        drawPositionMatchUps,
-        loserDrawPosition,
-      })
-    ) {
+    } else if (winnerHadMatchUpStatus) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
         devContext,
@@ -175,12 +169,34 @@ export function directLoser(props) {
     loserTargetLink.target.roundNumber === 1 &&
     targetDrawPositionIsUnfilled
   ) {
-    assignDrawPosition({
-      drawDefinition,
-      structureId: targetStructureId,
-      participantId: loserParticipantId,
-      drawPosition: targetMatchUpDrawPosition,
+    const {
+      winnerHadMatchUpStatus: defaultOrWalkover,
+    } = includesMatchUpStatuses({
+      sourceMatchUps,
+      loserDrawPosition,
+      drawPositionMatchUps,
+      // matchUpStatuses: [WALKOVER, DEFAULTED],
+      matchUpStatuses: [],
     });
+    if (!defaultOrWalkover) {
+      assignDrawPosition({
+        drawDefinition,
+        structureId: targetStructureId,
+        participantId: loserParticipantId,
+        drawPosition: targetMatchUpDrawPosition,
+      });
+    } else {
+      // if participant won't be placed in targetStructure, place a BYE
+      const result = assignDrawPositionBye({
+        devContext,
+        drawDefinition,
+        structureId: targetStructureId,
+        drawPosition: targetMatchUpDrawPosition,
+      });
+      if (result.error) {
+        error = result.error;
+      }
+    }
   } else if (unfilledTargetMatchUpDrawPositions.length) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
     const drawPosition = unfilledTargetMatchUpDrawPositions.sort(
