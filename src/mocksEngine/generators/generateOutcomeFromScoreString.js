@@ -30,7 +30,6 @@ export function generateOutcomeFromScoreString({
     sets,
     reversed: true,
   });
-  console.log({ winningSide, winningScoreString, losingScoreString });
   if (winningSide === 1) {
     score.scoreStringSide1 = winningScoreString;
     score.scoreStringSide2 = losingScoreString;
