@@ -11,8 +11,15 @@ import { parseScoreString } from '../utilities/parseScoreString';
  * @param {number} winningSide - optional - valid values are [1, 2, undefined]
  *
  */
-export function generateOutcomeFromScoreString({ scoreString, winningSide }) {
-  if (!scoreString) return noScoreOutcome;
+export function generateOutcomeFromScoreString({
+  scoreString,
+  winningSide,
+  matchUpStatus,
+}) {
+  if (!scoreString)
+    return {
+      outcome: Object.assign(noScoreOutcome, { winningSide, matchUpStatus }),
+    };
   if (winningSide && ![1, 2, undefined].includes(winningSide))
     return { error: INVALID_VALUES, winningSide };
 
