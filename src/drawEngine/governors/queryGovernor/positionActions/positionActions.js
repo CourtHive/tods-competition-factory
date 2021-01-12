@@ -1,10 +1,9 @@
 import { stageEntries } from '../../../getters/stageGetter';
-import { findStructure } from '../../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 
 import { getValidAlternatesAction } from './participantAlternates';
-import { getValidAssignmentAction } from './participantAssignments';
+import { getValidAssignmentActions } from './participantAssignments';
 import { getValidSwapAction } from './participantSwaps';
 
 import {
@@ -14,7 +13,6 @@ import {
 import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
-  MISSING_DRAW_ID,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
@@ -27,8 +25,14 @@ import {
   ASSIGN_BYE,
   ADD_PENALTY_METHOD,
   ADD_NICKNAME_METHOD,
+  WITHDRAW_PARTICIPANT,
+  WITHDRAW_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { DRAW, LOSER } from '../../../../constants/drawDefinitionConstants';
+import {
+  DRAW,
+  LOSER,
+  MAIN,
+} from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -45,17 +49,24 @@ export function positionActions({
   drawPosition,
   structureId,
   devContext,
-  drawId,
 }) {
-  if (!drawId) return { error: MISSING_DRAW_ID };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const { structure } = findStructure({ drawDefinition, structureId });
+  const {
+    activeDrawPositions,
+    byeDrawPositions,
+    inactiveDrawPositions,
+    structure,
+  } = structureActiveDrawPositions({ drawDefinition, structureId });
+
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+  const isMainStageSequence1 =
+    structure.stage === MAIN && structure.stageSequence === 1;
 
   const validActions = [];
+  const { drawId } = drawDefinition;
 
   /**
    * If structure is > stageSequence 1 then it will only have valid position actions if:
@@ -114,15 +125,11 @@ export function positionActions({
     .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
     .map((entry) => entry.participantId);
 
-  const {
-    activeDrawPositions,
-    inactiveDrawPositions,
-    byeDrawPositions,
-  } = structureActiveDrawPositions({ drawDefinition, structureId });
   const isByePosition = byeDrawPositions.includes(drawPosition);
+  const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
-  if (!positionAssignment || isByePosition) {
-    const { validAssignmentActions } = getValidAssignmentAction({
+  if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
+    const { validAssignmentActions } = getValidAssignmentActions({
       drawDefinition,
       structureId,
       drawPosition,
@@ -135,16 +142,22 @@ export function positionActions({
   }
 
   if (positionAssignment) {
-    if (!activeDrawPositions.includes(drawPosition)) {
+    if (isMainStageSequence1 && !activeDrawPositions.includes(drawPosition)) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
         payload: { drawId, structureId, drawPosition },
       });
 
+      validActions.push({
+        type: WITHDRAW_PARTICIPANT,
+        method: WITHDRAW_PARTICIPANT_METHOD,
+        payload: { drawId, structureId, drawPosition },
+      });
+
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
-      if (!isByePosition) {
+      if (isMainStageSequence1 && !isByePosition) {
         validActions.push({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
@@ -192,7 +205,8 @@ export function positionActions({
       inactiveDrawPositions,
       tournamentParticipants,
     });
-    if (validSwapAction) validActions.push(validSwapAction);
+    if (isMainStageSequence1 && validSwapAction)
+      validActions.push(validSwapAction);
   }
 
   const { validAlternatesAction } = getValidAlternatesAction({
@@ -201,10 +215,17 @@ export function positionActions({
     structureId,
     drawPosition,
     drawDefinition,
+    activeDrawPositions,
     positionAssignments,
     tournamentParticipants,
   });
-  if (validAlternatesAction) validActions.push(validAlternatesAction);
+  if (isMainStageSequence1 && validAlternatesAction)
+    validActions.push(validAlternatesAction);
 
-  return { validActions, isDrawPosition: true, isByePosition };
+  return {
+    isByePosition,
+    isActiveDrawPosition,
+    isDrawPosition: true,
+    validActions,
+  };
 }

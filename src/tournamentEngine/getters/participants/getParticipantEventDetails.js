@@ -1,9 +1,10 @@
+import { intersection } from '../../../utilities/arrays';
+
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { PAIR, TEAM } from '../../../constants/participantTypes';
-import { intersection } from '../../../utilities/arrays';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
@@ -11,6 +12,7 @@ import { intersection } from '../../../utilities/arrays';
  * @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
  * @param {string} participantId - id of participant for which events (eventName, eventId) are desired
  */
+// TODO: this method may be replaceable by { withStatistics: true } in getTournamentParticipants();
 export function getParticipantEventDetails({
   tournamentRecord,
   participantId,

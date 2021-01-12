@@ -1,3 +1,4 @@
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
@@ -14,8 +15,12 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
+  // TODO: should this be valid for Round Robins?
+  if (structure.structureType === CONTAINER)
+    return { playoffSourceRounds: [], playoffRoundsRanges: [] };
+
   const { positionAssignments } = structure;
-  const drawPositions = positionAssignments.map(
+  const drawPositions = positionAssignments?.map(
     (assignment) => assignment.drawPosition
   );
 

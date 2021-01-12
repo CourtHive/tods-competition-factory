@@ -10,7 +10,7 @@ import {
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
 
-export function getValidAssignmentAction({
+export function getValidAssignmentActions({
   drawDefinition,
   structureId,
   drawPosition,
@@ -71,7 +71,8 @@ export function getValidAssignmentAction({
       structure,
     });
     const availableByes = byesCount - placedByes;
-    if (availableByes && !isByePosition) {
+    // BYEs limit is being disabled
+    if (/*availableByes &&*/ !isByePosition) {
       validAssignmentActions.push({
         type: ASSIGN_BYE,
         method: ASSIGN_BYE_METHOD,

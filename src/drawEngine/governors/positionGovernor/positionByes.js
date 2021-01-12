@@ -39,7 +39,7 @@ import {
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITIONS,
-  BYES_LIMIT_REACHED,
+  //  BYES_LIMIT_REACHED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -50,8 +50,10 @@ export function assignDrawPositionBye({
   devContext,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
-  const unplacedByes = placedByes < byesCount;
+
+  // NOTE: BYEs limit is being disabled; perhaps policy option later
+  // const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
+  // const unplacedByes = placedByes < byesCount;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -64,10 +66,10 @@ export function assignDrawPositionBye({
     (p, c) => (c.drawPosition === drawPosition ? c : p),
     undefined
   );
-
-  if (!unplacedByes) return { error: BYES_LIMIT_REACHED };
   if (!positionState) return { error: INVALID_DRAW_POSITION };
+
   const { filled, containsBye } = drawPositionFilled(positionState);
+  // if (!unplacedByes && !containsBye) return { error: BYES_LIMIT_REACHED };
   if (filled && !containsBye) {
     return { error: DRAW_POSITION_ASSIGNED };
   }
@@ -174,13 +176,22 @@ export function assignDrawPositionBye({
       }
 
       if (winnerMatchUp && pairedDrawPosition) {
+        const drawPositionIsBye = positionAssignments.find(
+          (assignment) => assignment.drawPosition === drawPosition
+        )?.bye;
+        const pairedDrawPositionIsBye = positionAssignments.find(
+          (assignment) => assignment.drawPosition === pairedDrawPosition
+        )?.bye;
         // TODO: is it possible that a WINNER could be directed to a different structure?
         // winner participantId would then need to be added to positionAssignments
-        assignMatchUpDrawPosition({
-          drawDefinition,
-          matchUpId: winnerMatchUp.matchUpId,
-          drawPosition: pairedDrawPosition,
-        });
+        const isDoubleBye = drawPositionIsBye && pairedDrawPositionIsBye;
+        if (!isDoubleBye) {
+          assignMatchUpDrawPosition({
+            drawDefinition,
+            matchUpId: winnerMatchUp.matchUpId,
+            drawPosition: pairedDrawPosition,
+          });
+        }
       }
     }
   });

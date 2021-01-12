@@ -1,15 +1,14 @@
-import {
-  assignDrawPositionBye,
-  // getByesData,
-} from '../../../../drawEngine/governors/positionGovernor/positionByes';
+import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/positionByes';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
+import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
-// import { findStructure } from '../../../../drawEngine/getters/findStructure';
 
 import {
   ALTERNATE,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
+import { PAIR } from '../../../../constants/participantTypes';
+import { destroyPairEntry } from '../entries/destroyPairEntry';
 
 /**
  *
@@ -17,35 +16,49 @@ import {
  * @param {string} structureId - id of structure of drawPosition
  * @param {number} drawPosition - number of drawPosition for which actions are to be returned
  * @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
+ * @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
  * @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
  *
  */
 export function removeDrawPositionAssignment(props) {
-  const { replaceWithBye, entryStatus } = props;
+  const { replaceWithBye, destroyPair, entryStatus } = props;
 
   const result = clearDrawPosition(props);
   if (result.error) return result;
 
   const { participantId } = result;
-
   const { drawDefinition, drawPosition, event, structureId } = props;
-  /*
-  const { structure } = findStructure({ drawDefinition, structureId });
-  const { byesCount, placedByes } = getByesData({
-    drawDefinition,
-    structure,
-  });
 
-  const unplacedByes = placedByes < byesCount;
-  */
   if ([ALTERNATE, WITHDRAWN].includes(entryStatus)) {
     if (participantId) {
-      modifyEntriesStatus({
-        participantIds: [participantId],
-        entryStatus,
-        drawDefinition,
-        event,
+      const { tournamentRecord } = props;
+      const { participant } = findTournamentParticipant({
+        tournamentRecord,
+        participantId,
       });
+      const { participantType, individualParticipantIds } = participant || {};
+
+      if (destroyPair && participantType === PAIR) {
+        const result = destroyPairEntry({
+          tournamentRecord,
+          event,
+          participantId,
+        });
+        if (result.error) return result;
+        modifyEntriesStatus({
+          participantIds: [individualParticipantIds],
+          entryStatus,
+          drawDefinition,
+          event,
+        });
+      } else {
+        modifyEntriesStatus({
+          participantIds: [participantId],
+          entryStatus,
+          drawDefinition,
+          event,
+        });
+      }
     }
   }
 

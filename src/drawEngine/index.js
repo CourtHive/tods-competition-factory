@@ -46,7 +46,7 @@ function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
 function setState(definition, deepCopyOption = true) {
   if (!definition) return { error: MISSING_DRAW_DEFINITION };
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
-  if (!definition.drawId) return { error: MISSING_DRAW_ID };
+  if (!definition.drawId) return { error: MISSING_DRAW_ID, method: 'setState' };
 
   if (!definition.links) definition.links = [];
   if (!definition.entries) definition.entries = [];

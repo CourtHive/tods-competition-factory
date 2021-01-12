@@ -11,7 +11,7 @@ import {
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 
-it('can replace positioned participant with a bye and more to ALTERNATEs', () => {
+it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [
     {
       drawSize: 32,
@@ -129,8 +129,20 @@ it('can withdraw and replace positioned participant with a bye', () => {
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
 
+  let { byeMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  expect(byeMatchUps.length).toEqual(2);
+
   let drawPosition = 1;
-  const participantId = structures[0].positionAssignments.find(
+  let { positionAssignments } = structures[0];
+  let assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  expect(!!assignment.bye).toEqual(false);
+  let byeAssignments = positionAssignments.filter(({ bye }) => bye);
+  expect(byeAssignments.length).toEqual(2);
+
+  expect(byeAssignments.length).toEqual(2);
+  const participantId = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   ).participantId;
   const entryStatus = event.entries.find(
@@ -166,9 +178,14 @@ it('can withdraw and replace positioned participant with a bye', () => {
   ).entryStatus;
   expect(updatedEntryStatus).toEqual(WITHDRAWN);
 
-  let { positionAssignments } = structures[0];
-  let assignment = positionAssignments.find(
+  ({ positionAssignments } = structures[0]);
+  assignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
   expect(assignment.bye).toEqual(true);
+  byeAssignments = positionAssignments.filter(({ bye }) => bye);
+  expect(byeAssignments.length).toEqual(3);
+
+  ({ byeMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
+  expect(byeMatchUps.length).toEqual(3);
 });

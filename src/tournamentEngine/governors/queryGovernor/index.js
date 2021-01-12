@@ -36,6 +36,7 @@ import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
 import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
+import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
@@ -58,6 +59,7 @@ const queryGovernor = {
   findParticipantExtension,
   findDrawDefinitionExtension,
 
+  getMatchUpFormat,
   getDrawDefinition,
   getEventProperties,
 

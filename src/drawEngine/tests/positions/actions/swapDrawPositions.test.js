@@ -37,7 +37,8 @@ it('can recognize valid SWAP positions', () => {
   const option = result.validActions.find(
     (action) => action.type === SWAP_PARTICIPANTS
   );
-  expect(option.availableAssignments[0].drawPosition).toEqual(3);
+  expect(option.availableAssignments[0].drawPosition).toEqual(2);
+  expect(option.availableAssignments.length).toEqual(31);
 
   const payload = option.payload;
   payload.drawPositions.push(option.availableAssignments[0].drawPosition);

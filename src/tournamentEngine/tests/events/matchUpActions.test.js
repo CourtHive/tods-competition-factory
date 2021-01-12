@@ -32,7 +32,14 @@ it('can return valid actions for matchUps', () => {
       eventType: SINGLES,
       participantsCount: 14,
       drawType: ELIMINATION,
-      outcomes: [[1, 2, '6-2 6-1', 1]],
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   let {

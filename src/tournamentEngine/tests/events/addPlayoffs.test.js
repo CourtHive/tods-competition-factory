@@ -8,11 +8,13 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,
     playoffPositions: [3, 4],
+    playoffStructureNameBase: 'Playoff',
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
   expect(links.length).toEqual(1);
   expect(structures.length).toEqual(2);
+  expect(structures[1].structureName).toEqual('Playoff 3-4');
 });
 
 it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure', () => {
@@ -43,6 +45,7 @@ function tournamentEngineAddPlayoffsTest({
   drawType,
   playoffPositions,
   roundNumbers,
+  playoffStructureNameBase,
 }) {
   let result;
   const { tournamentRecord } = generateTournamentWithParticipants({
@@ -83,5 +86,6 @@ function tournamentEngineAddPlayoffsTest({
     structureId,
     roundNumbers,
     playoffPositions,
+    playoffStructureNameBase,
   });
 }

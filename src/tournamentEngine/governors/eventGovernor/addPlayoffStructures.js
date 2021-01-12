@@ -6,6 +6,7 @@ export function addPlayoffStructures({
   tournamentRecord,
   drawDefinition,
 
+  playoffStructureNameBase,
   playoffPositions,
   roundNumbers,
   structureId,
@@ -17,5 +18,6 @@ export function addPlayoffStructures({
     structureId,
     roundNumbers,
     playoffPositions,
+    playoffStructureNameBase,
   });
 }

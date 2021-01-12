@@ -54,7 +54,7 @@ Add PAIR participant to an event. Creates new participantType: PAIR participants
 
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
 - @param {string} eventId - tournamentEngine automatically retrieves event
-- @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
+- @param {string[][]} participantIdPairs - array of paired id arrays for all participants to add to event
 - @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
 - @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
 
@@ -90,6 +90,13 @@ Adds individualParticipantIds to GROUP or TEAM participants
 ---
 
 ## addPlayoffStructures
+
+- @param {object} drawDefinition - passed in automatically by drawEngine
+- @param {string} structureId - id of structure to which playoff structures are to be added
+- @param {number[]} roundNumbers - source roundNumbers which will feed target structures
+- @param {number[]} playoffPositions - positions to be played off
+- @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+- @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
 
 ```js
 tournamentEngine.addPlayoffStructures({
@@ -374,6 +381,20 @@ const {
 
 ---
 
+## getMatchUpFormat
+
+Returns the matchUpFormat code for a given matchUp, along with any
+
+- @param {object} tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} drawId - optional - avoid brute force search for matchUp
+- @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
+- @param {string} eventId - optional - if only the default matchUpFormat for an event is required
+- @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
+- @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
+- @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
+
+---
+
 ## getMatchUpScheduleDetails
 
 ---
@@ -549,6 +570,7 @@ Clear draw position.
 - @param {string} structureId - id of structure of drawPosition
 - @param {number} drawPosition - number of drawPosition for which actions are to be returned
 - @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
+- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
 - @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
 
 ---
@@ -567,11 +589,27 @@ Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
 
 ---
 
+## removePenalty
+
+---
+
+## setDrawDefinitionDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} drawId - id of the draw for which matchUpFormat is being set
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+
+---
+
 ## setDrawParticipantRepresentatives
 
 ---
 
-## removePenalty
+## setEventDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} eventId - id of the event for which matchUpFormat is being set
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
 
 ---
 
@@ -625,6 +663,16 @@ const scaleItemsWithParticipantIds = [
 ];
 tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
 ```
+
+---
+
+## setStructureDefaultMatchUpFormat
+
+- @param {object} tournamentRecord - passed automatically by tournamentEngine
+- @param {string} drawId - id of the draw within which structure is found
+- @param {object} drawDefinition - passed automatically by tournamentEngine when drawId is provided
+- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+- @param {string} structureId - id of the structure for which the matchUpFormat is being set
 
 ---
 
@@ -686,6 +734,16 @@ const {
 ---
 
 ## unPublishEvent
+
+---
+
+## withdrawParticipantAtDrawPosition
+
+- @param {string} drawId - id of drawDefinition within which structure is found
+- @param {string} structureId - id of structure of drawPosition
+- @param {number} drawPosition - number of drawPosition for which actions are to be returned
+- @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
+- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
 
 ---
 

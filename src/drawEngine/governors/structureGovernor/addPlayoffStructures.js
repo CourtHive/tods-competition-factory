@@ -3,6 +3,11 @@ import { playoff } from '../../generators/playoffStructures';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 
+import { getAllDrawMatchUps } from '../../getters/getMatchUps';
+import { findStructure } from '../../getters/findStructure';
+import { positionTargets } from '../positionGovernor/positionTargets';
+import { directParticipants } from '../matchUpGovernor/directParticipants';
+
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -17,6 +22,8 @@ import {
  * @param {string} structureId - id of structure to which playoff structures are to be added
  * @param {number[]} roundNumbers - source roundNumbers which will feed target structures
  * @param {number[]} playoffPositions - positions to be played off
+ * @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+ * @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
  *
  */
 export function addPlayoffStructures(props) {
@@ -28,6 +35,7 @@ export function addPlayoffStructures(props) {
   if (playoffRoundsError) return { error: playoffRoundsError };
 
   const {
+    playoffAttributes,
     playoffSourceRounds,
     playoffRoundsRanges,
     playoffPositionsReturned,
@@ -39,6 +47,7 @@ export function addPlayoffStructures(props) {
     roundNumbers,
     drawDefinition,
     playoffPositions,
+    playoffStructureNameBase,
     structureId: sourceStructureId,
   } = props;
 
@@ -78,6 +87,8 @@ export function addPlayoffStructures(props) {
       roundOffset: 0,
       drawDefinition,
       stageSequence: 2,
+      playoffAttributes,
+      playoffStructureNameBase,
       finishingPositionOffset,
     });
 
@@ -106,6 +117,42 @@ export function addPlayoffStructures(props) {
   });
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
+
+  const { structure } = findStructure({
+    drawDefinition,
+    structureId: sourceStructureId,
+  });
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
+  const completedMatchUps = inContextDrawMatchUps.filter(
+    ({ winningSide, structureId }) =>
+      winningSide && structureId === sourceStructureId
+  );
+  completedMatchUps.forEach((matchUp) => {
+    const { matchUpId, score, winningSide } = matchUp;
+    const sourceMatchUpWinnerDrawPositionIndex =
+      winningSide && 1 - (2 - winningSide);
+    const targetData = positionTargets({
+      matchUpId,
+      structure,
+      drawDefinition,
+      inContextDrawMatchUps,
+      sourceMatchUpWinnerDrawPositionIndex,
+    });
+    const result = directParticipants({
+      drawDefinition,
+      structure,
+      targetData,
+      winningSide,
+      matchUp,
+      score,
+    });
+    if (result.error) console.log(result.error);
+  });
 
   return Object.assign({}, SUCCESS, {
     drawDefinition: makeDeepCopy(drawDefinition),

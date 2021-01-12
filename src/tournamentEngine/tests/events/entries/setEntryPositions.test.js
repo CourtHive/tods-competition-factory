@@ -90,4 +90,14 @@ it('can set entryPositions', () => {
     entryPositions,
   });
   expect(result.success).toEqual(true);
+
+  entryPositions = [
+    { participantId: alternates[0].participantId, entryPosition: 0 },
+  ];
+  result = tournamentEngine.setEntryPositions({
+    tournamentEngine,
+    eventId,
+    entryPositions,
+  });
+  expect(result.success).toEqual(true);
 });

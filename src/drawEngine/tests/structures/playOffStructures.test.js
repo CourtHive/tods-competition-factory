@@ -13,6 +13,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
+import { instanceCount, numericSort } from '../../../utilities';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playoffDraw({
@@ -340,6 +341,13 @@ it('can generate draw which plays off all drawPositions', () => {
   const structureNames = drawDefinition.structures.map(
     (structure) => structure.structureName
   );
+  const stageSequences = drawDefinition.structures
+    .map(({ stageSequence }) => stageSequence)
+    .sort(numericSort);
+
+  const stageSequenceCount = instanceCount(stageSequences);
+  expect(stageSequenceCount).toEqual({ 1: 1, 2: 5, 3: 10, 4: 10, 5: 5, 6: 1 });
+
   [
     '1-64',
     '33-64',

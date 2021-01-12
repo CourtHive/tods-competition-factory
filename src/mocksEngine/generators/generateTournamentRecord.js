@@ -1,16 +1,28 @@
-import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
-
-import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
-import { parseScoreString } from '../utilities/parseScoreString';
-import drawEngine from '../../drawEngine';
+import { generateParticipants } from './generateParticipants';
+import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
-import { SINGLE_ELIMINATION } from '../../constants/drawDefinitionConstants';
+import {
+  MAIN,
+  SINGLE_ELIMINATION,
+} from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 
+/**
+ *
+ * Generate a complete tournamentRecord from the following attributes
+ *
+ * @param {string} startDate - optional - ISO string date
+ * @param {string} endDate - optional - ISO string date
+ * @param {object} participantsProfile - { participantsCount, participantType }
+ * @param {object[]} drawProfiles - [{ category, drawSize, drawType, eventType, matchUpFormat }]
+ * @param {object[]} outcomes - [{ roundNumber, roundPosition, scoreString, winningSide, ... }]
+ *
+ */
 export function generateTournamentRecord({
   endDate,
   startDate,
@@ -35,7 +47,6 @@ export function generateTournamentRecord({
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
   const maxDrawSize =
-    // drawProfiles?.map((drawProfile) => drawProfile.drawSize) || 32;
     Math.max(
       ...(drawProfiles || []).map((drawProfile) => drawProfile.drawSize)
     ) || 32;
@@ -90,7 +101,7 @@ function generateEventWithDraw({
     category,
     eventName = 'Generated Event',
     eventType = SINGLES,
-    matchUpFormat = 'SET3-S:6/TB7',
+    matchUpFormat = FORMAT_STANDARD,
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
   } = drawProfile;
@@ -151,46 +162,39 @@ function generateEventWithDraw({
       drawId,
       inContext: true,
     });
-    const { roundMatchUps } = drawEngine.getRoundMatchUps({
-      matchUps,
-    });
-    drawProfile.outcomes.forEach((outcome) => {
-      const [
+    drawProfile.outcomes.forEach((outcomeDef) => {
+      const {
         roundNumber,
         roundPosition,
         scoreString,
         winningSide,
+        stage = MAIN,
+        matchUpFormat = FORMAT_STANDARD,
+        stageSequence = 1,
         matchUpStatus = COMPLETED,
-      ] = outcome;
-      const targetMatchUp = roundMatchUps[roundNumber].find(
-        (matchUp) => matchUp.roundPosition === roundPosition
+        matchUpIndex = 0,
+        structureIndex, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
+      } = outcomeDef;
+      const targetMatchUps = matchUps.filter(
+        (matchUp) =>
+          matchUp.stage === stage &&
+          matchUp.stageSequence === stageSequence &&
+          matchUp.roundNumber === roundNumber &&
+          (!roundPosition || matchUp.roundPosition === roundPosition) &&
+          (!structureIndex || matchUp.structureIndex === structureIndex)
       );
-      const { matchUpId } = targetMatchUp;
-      const sets = scoreString && parseScoreString({ scoreString });
-      const score = { sets };
-      const winningScoreString = generateScoreString({ sets, winningSide });
-      const losingScoreString = generateScoreString({
-        sets,
+      const targetMatchUp = targetMatchUps[matchUpIndex];
+      const { matchUpId } = targetMatchUp || {};
+      const { outcome } = generateOutcomeFromScoreString({
+        scoreString,
         winningSide,
-        reversed: true,
+        matchUpStatus,
       });
-      if (winningSide === 1) {
-        score.scoreStringSide1 = winningScoreString;
-        score.scoreStringSide2 = losingScoreString;
-      } else if (winningSide === 2) {
-        score.scoreStringSide1 = losingScoreString;
-        score.scoreStringSide2 = winningScoreString;
-      } else {
-        score.scoreStringSide1 = scoreString;
-      }
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
         matchUpId,
-        matchUpStatus,
-        outcome: {
-          winningSide,
-          score,
-        },
+        outcome,
+        matchUpFormat,
       });
       if (!result.success) console.log(result);
     });

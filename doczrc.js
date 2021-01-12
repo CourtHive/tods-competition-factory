@@ -19,11 +19,11 @@ export default {
     'Readme',
     {
       name: 'General Concepts',
-      menu: ['Context', 'Policies', 'Time Items'],
+      menu: ['Context', 'MatchUp Formats', 'Policies', 'Time Items'],
     },
     {
-      name: 'Competition Engine',
-      menu: ['Garman Scheduling', 'API'],
+      name: 'Mocks Engine',
+      menu: ['Generating Tournaments', 'API'],
     },
     {
       name: 'Tournament Engine',
@@ -40,6 +40,10 @@ export default {
         'Attributes',
         'API',
       ],
+    },
+    {
+      name: 'Competition Engine',
+      menu: ['Garman Scheduling', 'API'],
     },
     {
       name: 'Examples',

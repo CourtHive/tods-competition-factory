@@ -6,7 +6,10 @@ import {
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../constants/errorConditionConstants';
 
 export function allTournamentMatchUps({
   tournamentRecord,
@@ -257,18 +260,26 @@ export function findMatchUp({
     drawId = matchUps.reduce((drawId, candidate) => {
       return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
     }, undefined);
+    const drawDefinitions = (tournamentRecord.events || [])
+      .map((event) => event.drawDefinitions || [])
+      .flat(Infinity);
+    drawDefinition = drawDefinitions.find(
+      (drawDefinition) => drawDefinition.drawId === drawId
+    );
   }
 
   // tournamentEngine middleware should have already found drawDefinition
   if (drawId) {
     const tournamentParticipants = tournamentRecord.participants || [];
-    const { matchUp } = drawEngineFindMatchUp({
+    const { matchUp, structure } = drawEngineFindMatchUp({
       drawDefinition,
       matchUpId,
       nextMatchUps,
       tournamentParticipants,
       inContext,
     });
-    return { matchUp };
+    return { matchUp, structure, drawDefinition };
   }
+
+  return { error: MATCHUP_NOT_FOUND };
 }

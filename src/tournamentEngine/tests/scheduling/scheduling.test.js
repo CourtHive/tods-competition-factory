@@ -119,7 +119,7 @@ it('can add events, venues, and schedule matchUps', () => {
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
-  const scheduledDate = '2020-01-01';
+  const scheduledDate = '2020-01-01T00:00';
   let contextFilters = {
     eventIds: [],
     drawIds: [drawId],
@@ -132,7 +132,7 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(upcomingMatchUps.length).toEqual(16);
 
-  contextFilters = { scheduledDate: '2020-01-02' };
+  contextFilters = { scheduledDate: '2020-01-02T00:00' };
   ({ upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
     contextFilters,
   }));
@@ -151,6 +151,52 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
   });
   expect(result).toEqual(SUCCESS);
+
+  result = tournamentEngine.assignMatchUpVenue({
+    matchUpId,
+    venueId: undefined,
+    drawId,
+  });
+  expect(result).toEqual(SUCCESS);
+  let {
+    matchUp: { schedule },
+  } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  });
+  expect(schedule.venueId).toBeUndefined();
+
+  result = tournamentEngine.assignMatchUpVenue({
+    matchUpId,
+    venueId,
+    drawId,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  result = tournamentEngine.assignMatchUpCourt({
+    tournamentRecord,
+    matchUpId,
+    courtId,
+    drawId,
+    courtDayDate: scheduledDate,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  result = tournamentEngine.assignMatchUpCourt({
+    tournamentRecord,
+    matchUpId,
+    courtId: undefined,
+    drawId,
+    courtDayDate: scheduledDate,
+  });
+  expect(result).toEqual(SUCCESS);
+  ({
+    matchUp: { schedule },
+  } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  }));
+  expect(schedule.courtId).toBeUndefined();
 
   result = tournamentEngine.assignMatchUpCourt({
     tournamentRecord,
@@ -184,15 +230,19 @@ it('can add events, venues, and schedule matchUps', () => {
   // TODO: add startTime, stopTime, resumeTime, official
 
   matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp.timeItems.length).toEqual(5);
+  expect(matchUp.timeItems.length).toEqual(9);
 
   expect(matchUp.timeItems[0].itemType).toEqual(SCHEDULED_TIME);
   expect(matchUp.timeItems[1].itemType).toEqual(ASSIGN_VENUE);
-  expect(matchUp.timeItems[2].itemType).toEqual(ASSIGN_COURT);
-  expect(matchUp.timeItems[3].itemType).toEqual(SCHEDULED_DATE);
-  expect(matchUp.timeItems[4].itemType).toEqual(SCHEDULED_TIME);
+  expect(matchUp.timeItems[2].itemType).toEqual(ASSIGN_VENUE);
+  expect(matchUp.timeItems[3].itemType).toEqual(ASSIGN_VENUE);
+  expect(matchUp.timeItems[4].itemType).toEqual(ASSIGN_COURT);
+  expect(matchUp.timeItems[5].itemType).toEqual(ASSIGN_COURT);
+  expect(matchUp.timeItems[6].itemType).toEqual(ASSIGN_COURT);
+  expect(matchUp.timeItems[7].itemType).toEqual(SCHEDULED_DATE);
+  expect(matchUp.timeItems[8].itemType).toEqual(SCHEDULED_TIME);
 
-  const { schedule } = matchUp;
+  ({ schedule } = matchUp);
   expect(schedule.courtId).toEqual(courtId);
   expect(schedule.venueId).toEqual(venueId);
   expect(schedule.scheduledTime).toEqual(scheduledTime);
@@ -209,4 +259,19 @@ it('can add events, venues, and schedule matchUps', () => {
 
   ({ venues } = tournamentEngine.getVenues());
   expect(venues.length).toEqual(0);
+
+  result = tournamentEngine.addMatchUpScheduledTime({
+    drawId,
+    matchUpId,
+    scheduledTime: undefined,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  ({
+    matchUp: { schedule },
+  } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  }));
+  expect(schedule.scheduledTime).toBeUndefined();
 });

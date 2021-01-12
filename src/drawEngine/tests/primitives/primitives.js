@@ -32,7 +32,7 @@ export function qualifyingDrawPositions({ drawSize = 4 } = {}) {
   expect(result).toMatchObject(SUCCESS);
 }
 
-export function mainDrawPositions({ drawSize = 4 } = {}) {
+export function mainDrawPositions({ drawSize = 2 } = {}) {
   result = drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
   expect(result).toMatchObject(SUCCESS);
 }

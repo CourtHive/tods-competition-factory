@@ -1,5 +1,6 @@
 import { findMatchUp, getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { intersection, makeDeepCopy } from '../../../utilities';
 
 import {
   isDirectingMatchUpStatus,
@@ -18,7 +19,6 @@ import {
   matchUpStatusConstants,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { makeDeepCopy } from '../../../utilities';
 
 export function setMatchUpStatus(props) {
   let errors = [];
@@ -59,10 +59,34 @@ export function setMatchUpStatus(props) {
 
     // if neither loserMatchUp or winnerMatchUp have winningSide
     // => score matchUp and advance participants along links
+    const inContextMatchUp = inContextDrawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === matchUpId
+    );
+    const matchUpParticipantIds =
+      inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
     const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
+    const loserMatchUpParticipantIds =
+      loserMatchUp?.sides?.map(({ participantId }) => participantId) || [];
+    const loserMatchUpParticipantIntersection = !!intersection(
+      matchUpParticipantIds,
+      loserMatchUpParticipantIds
+    ).length;
     const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
+    const winnerMatchUpParticipantIds =
+      winnerMatchUp?.sides?.map(({ participantId }) => participantId) || [];
+    const winnerMatchUpParticipantIntersection = !!intersection(
+      matchUpParticipantIds,
+      winnerMatchUpParticipantIds
+    ).length;
+
     const activeDownstream =
-      loserMatchUpHasWinningSide || winnerMatchUpHasWinningSide;
+      (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
+      (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
+
+    // TODO: This activeDownstream boolean works in every case EXCEPT 2nd round of MAIN structure in FMLC…
+    // need to expand the check to see if the participants in the matchUp in question are actually participants
+    // in the loserMatchUp that has a winningSide because ONLY in FMLC 2nd round there is the possibility that
+    // a player who lost did not go to the loserMatchUp
 
     // if either lowerMatchUp or winnerMatchUp have winningSide
     // => see if either matchUp has active players
@@ -84,7 +108,11 @@ export function setMatchUpStatus(props) {
       const { errors: statusChangeErrors } = attemptStatusChange(props);
       if (statusChangeErrors) errors = errors.concat(statusChangeErrors);
     } else {
-      console.log('no valid actions', { props });
+      console.log('no valid actions', {
+        props,
+        loserMatchUpParticipantIds,
+        winnerMatchUpParticipantIds,
+      });
       errors.push({ error: NO_VALID_ACTIONS });
     }
   }

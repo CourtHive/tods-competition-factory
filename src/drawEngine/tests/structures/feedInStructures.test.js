@@ -214,17 +214,6 @@ it('can generate FEED_IN_CHAMPIONSHIP_TO_R16', () => {
   expect(links.length).toEqual(2);
 });
 
-it('can generate FEED_IN_CHAMPIONSHIP to RQF', () => {
-  const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
-    drawSize: 32,
-    drawType: FICQF,
-  });
-
-  expect(mainDrawMatchUps.length).toEqual(31);
-  expect(consolationMatchUps.length).toEqual(27);
-  expect(links.length).toEqual(3);
-});
-
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,

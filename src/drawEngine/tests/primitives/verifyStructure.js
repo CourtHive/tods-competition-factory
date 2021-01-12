@@ -7,6 +7,7 @@ import { getStructurePositionedSeeds } from '../../governors/positionGovernor/po
 
 import { drawEngine } from '../../../drawEngine';
 import { chunkArray, generateRange } from '../../../utilities';
+import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 
 export function verifyStructure({
   structureId,
@@ -90,15 +91,9 @@ export function verifyStructure({
   const pairedDrawPositions = matchUps
     .filter((matchUp) => matchUp.roundNumber === 1)
     .map((matchUp) => matchUp.drawPositions);
-  const getPairedDrawPosition = (drawPosition) =>
-    pairedDrawPositions.reduce((pairedDrawPosition, candidate) => {
-      return candidate.includes(drawPosition)
-        ? candidate.reduce((p, c) => (c !== drawPosition ? c : p), undefined)
-        : pairedDrawPosition;
-    }, undefined);
 
   const seedPairedDrawPositions = seedAssignedDrawPositions
-    .map(getPairedDrawPosition)
+    .map((drawPosition) => getPairedDrawPosition({ matchUps, drawPosition }))
     .filter((f) => f);
   const seedPairedDrawPositionsWithBye = seedPairedDrawPositions.filter(
     (drawPosition) => byeAssignedDrawPositions.includes(drawPosition)
@@ -114,7 +109,7 @@ export function verifyStructure({
     structure,
   });
   const seedDrawPositionsWithBye = seedPairedDrawPositionsWithBye.map(
-    getPairedDrawPosition
+    (drawPosition) => getPairedDrawPosition({ matchUps, drawPosition })
   );
   const seedValuesOfSeedsWithBye = positionedSeeds
     .filter((assignment) =>
