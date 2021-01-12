@@ -68,7 +68,6 @@ it('properly orders round robin participants', () => {
       matchUps: structureMatchUps,
       matchUpFormat,
     });
-    console.log(participantResults);
 
     Object.values(participantResults).forEach((result) => {
       expect(isNaN(result.gamesWon)).toEqual(false);
