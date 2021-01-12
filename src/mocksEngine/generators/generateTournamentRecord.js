@@ -1,5 +1,6 @@
-import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
+import { generateParticipants } from './generateParticipants';
+import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import {
@@ -9,7 +10,7 @@ import {
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 
 /**
  *
@@ -100,7 +101,7 @@ function generateEventWithDraw({
     category,
     eventName = 'Generated Event',
     eventType = SINGLES,
-    matchUpFormat = 'SET3-S:6/TB7',
+    matchUpFormat = FORMAT_STANDARD,
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
   } = drawProfile;
@@ -167,18 +168,23 @@ function generateEventWithDraw({
         roundPosition,
         scoreString,
         winningSide,
-        matchUpStatus = COMPLETED,
         stage = MAIN,
+        matchUpFormat = FORMAT_STANDARD,
         stageSequence = 1,
+        matchUpStatus = COMPLETED,
+        matchUpIndex = 0,
+        structureIndex, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
       } = outcomeDef;
-      const targetMatchUp = matchUps.find(
+      const targetMatchUps = matchUps.filter(
         (matchUp) =>
           matchUp.stage === stage &&
           matchUp.stageSequence === stageSequence &&
           matchUp.roundNumber === roundNumber &&
-          matchUp.roundPosition === roundPosition
+          (!roundPosition || matchUp.roundPosition === roundPosition) &&
+          (!structureIndex || matchUp.structureIndex === structureIndex)
       );
-      const { matchUpId } = targetMatchUp;
+      const targetMatchUp = targetMatchUps[matchUpIndex];
+      const { matchUpId } = targetMatchUp || {};
       const { outcome } = generateOutcomeFromScoreString({
         scoreString,
         winningSide,
@@ -187,8 +193,8 @@ function generateEventWithDraw({
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
         matchUpId,
-        // matchUpStatus,
         outcome,
+        matchUpFormat,
       });
       if (!result.success) console.log(result);
     });
