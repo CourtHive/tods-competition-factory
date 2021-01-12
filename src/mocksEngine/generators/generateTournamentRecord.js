@@ -173,15 +173,31 @@ function generateEventWithDraw({
         stageSequence = 1,
         matchUpStatus = COMPLETED,
         matchUpIndex = 0,
-        structureOrder, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
+        structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
       } = outcomeDef;
+      const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
+        const { structureId, matchUpId } = matchUp;
+        if (sm[structureId]) {
+          sm[structureId].push(matchUpId);
+        } else {
+          sm[structureId] = [matchUpId];
+        }
+        return sm;
+      }, {});
+      const orderedStructures = Object.assign(
+        {},
+        ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
+          [structureId]: index + 1,
+        }))
+      );
       const targetMatchUps = matchUps.filter(
         (matchUp) =>
           matchUp.stage === stage &&
           matchUp.stageSequence === stageSequence &&
           matchUp.roundNumber === roundNumber &&
           (!roundPosition || matchUp.roundPosition === roundPosition) &&
-          (!structureOrder || matchUp.structureOrder === structureOrder)
+          (!structureOrder ||
+            orderedStructures[matchUp.structureId] === structureOrder)
       );
       const targetMatchUp = targetMatchUps[matchUpIndex];
       const { matchUpId } = targetMatchUp || {};

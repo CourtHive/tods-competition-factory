@@ -57,42 +57,36 @@
             {
               "roundNumber": 1,
               "drawPositions": [1, 2],
-              "structureOrder": 1,
               "matchUpId": "11357d40-cd80-40f9-8810-64fd94f8bc4e",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 1,
               "drawPositions": [3, 4],
-              "structureOrder": 1,
               "matchUpId": "d47a6f0c-d2c9-4c0b-802c-cb07cf36ca6b",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [2, 3],
-              "structureOrder": 1,
               "matchUpId": "187bd452-65fd-43f3-a830-a7d53915ebbb",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [1, 4],
-              "structureOrder": 1,
               "matchUpId": "4b2b71c8-dbf2-481e-b545-b04cb972040e",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [1, 3],
-              "structureOrder": 1,
               "matchUpId": "65456f01-bfea-4f10-b901-64cc9d178512",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [2, 4],
-              "structureOrder": 1,
               "matchUpId": "5b76766f-13a6-4768-9e3b-ac881cdabdee",
               "matchUpStatus": "TO_BE_PLAYED"
             }
@@ -110,8 +104,7 @@
             {
               "drawPosition": 4
             }
-          ],
-          "structureOrder": 1
+          ]
         },
         {
           "structureName": "Group 2",
@@ -124,42 +117,36 @@
             {
               "roundNumber": 1,
               "drawPositions": [5, 6],
-              "structureOrder": 2,
               "matchUpId": "a7ce6612-b7b2-4999-96b9-0440e7943cad",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 1,
               "drawPositions": [7, 8],
-              "structureOrder": 2,
               "matchUpId": "9a2ee72f-9e51-42f5-a887-784eb43fe861",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [6, 7],
-              "structureOrder": 2,
               "matchUpId": "8e55e285-f24c-4aad-bf4b-bf97d09563d2",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [5, 8],
-              "structureOrder": 2,
               "matchUpId": "c91a4221-48bc-49d7-b5f4-9ded4a1d779f",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [5, 7],
-              "structureOrder": 2,
               "matchUpId": "6848a4d9-d631-419f-ab94-9813bb3bc051",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [6, 8],
-              "structureOrder": 2,
               "matchUpId": "d159a69b-9079-45cc-80b2-50775c572415",
               "matchUpStatus": "TO_BE_PLAYED"
             }
@@ -177,8 +164,7 @@
             {
               "drawPosition": 8
             }
-          ],
-          "structureOrder": 2
+          ]
         },
         {
           "structureName": "Group 3",
@@ -191,42 +177,36 @@
             {
               "roundNumber": 1,
               "drawPositions": [9, 10],
-              "structureOrder": 3,
               "matchUpId": "e64f7b30-995f-42d4-8f7d-7a03dc9869b9",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 1,
               "drawPositions": [11, 12],
-              "structureOrder": 3,
               "matchUpId": "df78fcfb-4449-41fb-8e9d-98c7939586f6",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [10, 11],
-              "structureOrder": 3,
               "matchUpId": "5e605f0f-ce58-4ffd-bbf3-964f4a69b417",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [9, 12],
-              "structureOrder": 3,
               "matchUpId": "071b6fdc-6024-49fb-81a7-1ce63abdeb80",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [9, 11],
-              "structureOrder": 3,
               "matchUpId": "c84863de-fd42-4419-bebb-d9b501fef795",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [10, 12],
-              "structureOrder": 3,
               "matchUpId": "e01d4f96-2b67-4883-b9de-c22910521aa2",
               "matchUpStatus": "TO_BE_PLAYED"
             }
@@ -244,8 +224,7 @@
             {
               "drawPosition": 12
             }
-          ],
-          "structureOrder": 3
+          ]
         },
         {
           "structureName": "Group 4",
@@ -258,42 +237,36 @@
             {
               "roundNumber": 1,
               "drawPositions": [13, 14],
-              "structureOrder": 4,
               "matchUpId": "0b1637d0-9cff-4a5f-935d-5d667f093586",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 1,
               "drawPositions": [15, 16],
-              "structureOrder": 4,
               "matchUpId": "165b2cbf-ed19-45aa-bc91-4cab28ecbb15",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [14, 15],
-              "structureOrder": 4,
               "matchUpId": "844e9258-b189-4cd8-abcd-6835911d9b25",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 2,
               "drawPositions": [13, 16],
-              "structureOrder": 4,
               "matchUpId": "4d7c2736-4c4f-43b5-b56b-c0187e7abb92",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [13, 15],
-              "structureOrder": 4,
               "matchUpId": "bf2f9a3f-3505-4923-be4c-654372a28759",
               "matchUpStatus": "TO_BE_PLAYED"
             },
             {
               "roundNumber": 3,
               "drawPositions": [14, 16],
-              "structureOrder": 4,
               "matchUpId": "7a7e24b7-6302-4114-a712-2ad73f9077e3",
               "matchUpStatus": "TO_BE_PLAYED"
             }
@@ -311,8 +284,7 @@
             {
               "drawPosition": 16
             }
-          ],
-          "structureOrder": 4
+          ]
         }
       ]
     },

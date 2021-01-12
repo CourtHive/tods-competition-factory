@@ -273,7 +273,6 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
     const matchUp = {
       roundNumber,
       drawPositions,
-      structureOrder,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: TO_BE_PLAYED,
     };
