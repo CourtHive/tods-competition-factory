@@ -17,6 +17,7 @@ export function feedInChampionship(props = {}) {
     drawDefinition,
     feedsFromFinal,
     stageSequence = 1,
+    feedPolicy,
     finishingPositionOffset,
   } = props;
 
@@ -55,6 +56,7 @@ export function feedInChampionship(props = {}) {
     mainStructure,
     consolationStructure,
     roundsCount,
+    feedPolicy,
   });
 
   drawDefinition.links = drawDefinition.links.concat(...links);

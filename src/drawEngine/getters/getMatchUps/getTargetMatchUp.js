@@ -8,6 +8,7 @@ import {
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
+import { chunkArray, generateRange } from '../../../utilities';
 
 export function getTargetMatchUp({
   drawDefinition,
@@ -21,7 +22,13 @@ export function getTargetMatchUp({
   if (!targetLink) return { error: MISSING_TARGET_LINK };
 
   const {
-    target: { structureId, feedProfile, roundNumber, positionInterleave },
+    target: {
+      structureId,
+      feedProfile,
+      groupedOrder,
+      roundNumber,
+      positionInterleave,
+    },
   } = targetLink;
   const { structure: targetStructure } = findStructure({
     drawDefinition,
@@ -35,12 +42,15 @@ export function getTargetMatchUp({
     (matchUp) => matchUp.roundNumber === roundNumber
   );
   const targetRoundMatchUpCount = targetRoundMatchUps.length;
+  const roundPositions = generateRange(1, targetRoundMatchUpCount + 1);
 
   const matchUpCountFactor = targetRoundMatchUpCount / sourceRoundMatchUpCount;
 
   // usually target structures are half the size of source structures
-  // which means the targetRoundPosition for target matchUps is sourceRoundPosition * 0.5
-  let targetRoundPosition = Math.ceil(matchUpCountFactor * sourceRoundPosition);
+  // which means the calculatedRoundPosition for target matchUps is sourceRoundPosition * 0.5
+  let calculatedRoundPosition = Math.ceil(
+    matchUpCountFactor * sourceRoundPosition
+  );
   // the index in the target matchUp.drawPositions[] array is as follows, for ITF_SEEDING policy only!
   let matchUpDrawPositionIndex = 1 - (sourceRoundPosition % 2);
 
@@ -54,10 +64,27 @@ export function getTargetMatchUp({
       positionInterleave.offset +
       (sourceRoundPosition - 1) * positionInterleave.interleave;
     // the target drawPosition is relative because the actual drawPosition value is based on the number of subseqent round feed-in matchUps
-    const targetRelativeDrawPosition = sourceRoundPosition + offset;
-    targetRoundPosition = Math.ceil(targetRelativeDrawPosition / 2);
+    const relativeRoundPosition = sourceRoundPosition + offset;
+    calculatedRoundPosition = Math.ceil(relativeRoundPosition / 2);
     // the index in the target matchUp.drawPositions[] is recalculated based on calculated relative drawPosition
-    matchUpDrawPositionIndex = 1 - (targetRelativeDrawPosition % 2);
+    matchUpDrawPositionIndex = 1 - (relativeRoundPosition % 2);
+  }
+  if (groupedOrder?.length > 1) {
+    const groupsCount = groupedOrder.length;
+    if (groupsCount >= roundPositions.length) {
+      const groupSize = targetRoundMatchUpCount / groupsCount;
+      const groups = chunkArray(roundPositions, groupSize);
+      const orderedPositions = groupedOrder
+        .map((order) => groups[order - 1])
+        .flat();
+      console.log({
+        feedProfile,
+        groupedOrder,
+        groups,
+        orderedPositions,
+        roundPositions,
+      });
+    }
   }
 
   if (feedProfile === TOP_DOWN) {
@@ -70,12 +97,13 @@ export function getTargetMatchUp({
       BOTTOM_UP feed profile implies that the roundPosition in the
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
-    targetRoundPosition = targetRoundMatchUps.length + 1 - targetRoundPosition;
+    calculatedRoundPosition =
+      targetRoundMatchUps.length + 1 - calculatedRoundPosition;
   } else if (feedProfile === LOSS_POSITION) {
     /*
       LOSS_POSITION is possible when a loss occurs in a second round to which a participant has advanced via BYE or DEFAULT/WALKOVER
     */
-    targetRoundPosition = sourceRoundPosition;
+    calculatedRoundPosition = sourceRoundPosition;
 
     // always return sourceMatchUpWinnerDrawPositionIndex for FirstMatchLoss / LOSS_POSITION
     if (sourceMatchUpWinnerDrawPositionIndex !== undefined) {
@@ -88,14 +116,16 @@ export function getTargetMatchUp({
     console.log('not implemented:', { feedProfile });
   } else if (feedProfile === DRAW) {
     /*
-      targetRoundPosition is undetermined for DRAW feedProfile
+      calculatedRoundPosition is undetermined for DRAW feedProfile
     */
   }
 
   const matchUp =
-    targetRoundPosition &&
+    calculatedRoundPosition &&
     targetRoundMatchUps.reduce((matchUp, current) => {
-      return current.roundPosition === targetRoundPosition ? current : matchUp;
+      return current.roundPosition === calculatedRoundPosition
+        ? current
+        : matchUp;
     }, undefined);
 
   return { matchUp, matchUpDrawPositionIndex };

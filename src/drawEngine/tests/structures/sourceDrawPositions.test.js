@@ -13,6 +13,7 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   } = feedInChampionship({
     drawSize: 32,
     drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
+    feedPolicy: { oscillation: true },
   });
 
   expect(mainDrawMatchUps.length).toEqual(31);

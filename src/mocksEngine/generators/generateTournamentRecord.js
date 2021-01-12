@@ -104,6 +104,7 @@ function generateEventWithDraw({
     matchUpFormat = FORMAT_STANDARD,
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
+    feedPolicy,
   } = drawProfile;
   let { participantsCount = 32 } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -150,6 +151,7 @@ function generateEventWithDraw({
     drawSize,
     matchUpFormat,
     drawType,
+    feedPolicy,
   });
 
   if (generationError) return { error: generationError };
