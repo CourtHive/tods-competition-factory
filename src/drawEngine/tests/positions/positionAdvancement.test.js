@@ -129,7 +129,6 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   feedInChampionship({
     drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
-    feedPolicy: { oscillation: true },
   });
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(4);

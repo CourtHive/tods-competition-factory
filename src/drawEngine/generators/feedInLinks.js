@@ -20,7 +20,7 @@ export function feedInLinks({
       : p;
   }, []);
 
-  const roundGroupedOrder = [
+  const roundGroupedOrder = feedPolicy?.roundGroupOrder || [
     undefined, // complete round TOP_DOWN
     undefined, // complete round BOTTOM_UP
     [2, 1], // 2nd half TOP_DOWN, 1st half TOP_DOWN
@@ -29,16 +29,17 @@ export function feedInLinks({
     [1], // same as undefined, complete round BOTTOM_UP
   ];
 
+  const roundFeedProfiles = feedPolicy?.roundFeedProfiles;
+
   // range excludes final round which is final matchUp
   const links = generateRange(1 + roundOffset, roundsCount + 1 + roundOffset)
     .map((roundNumber) => {
-      const feedProfile = feedPolicy?.oscillation
-        ? roundNumber % 2
+      const feedProfile =
+        roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
+          ? roundFeedProfiles[roundNumber - 1]
+          : roundNumber % 2
           ? TOP_DOWN
-          : BOTTOM_UP
-        : roundNumber === 1
-        ? TOP_DOWN
-        : BOTTOM_UP;
+          : BOTTOM_UP;
 
       // after first two rounds of target feed, matchUps are every other round
       const targetRound =

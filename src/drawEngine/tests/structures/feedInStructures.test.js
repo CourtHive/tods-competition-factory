@@ -105,7 +105,6 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 16', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
-    feedPolicy: { oscillation: true },
   });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
@@ -136,7 +135,6 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 32', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
-    feedPolicy: { oscillation: true },
   });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
@@ -171,7 +169,6 @@ it('can generate FEED_IN_CHAMPIONSHIP with drawSize: 64', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
-    feedPolicy: { oscillation: true },
   });
 
   expect(mainDrawMatchUps.length).toEqual(drawSize - 1);
@@ -231,7 +228,6 @@ it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: MFIC,
-    feedPolicy: { oscillation: true },
   });
   expect(mainDrawMatchUps.length).toEqual(31);
   expect(consolationMatchUps.length).toEqual(23);

@@ -1,12 +1,26 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
-import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
+import {
+  BOTTOM_UP,
+  FEED_IN_CHAMPIONSHIP,
+  TOP_DOWN,
+} from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can properly generate feed in championship links', () => {
   const participantsProfile = {
     participantsCount: 256,
+  };
+  const feedPolicy = {
+    roundFeedProfiles: [
+      TOP_DOWN,
+      BOTTOM_UP,
+      BOTTOM_UP,
+      BOTTOM_UP,
+      BOTTOM_UP,
+      BOTTOM_UP,
+    ],
   };
   const drawProfiles = [
     {
@@ -14,6 +28,7 @@ it('can properly generate feed in championship links', () => {
       eventType: SINGLES,
       participantsCount: 256,
       drawType: FEED_IN_CHAMPIONSHIP,
+      feedPolicy,
       outcomes: [
         {
           roundNumber: 1,
@@ -116,7 +131,9 @@ it('can properly generate feed in championship links', () => {
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.links.length).toEqual(8);
-  // drawDefinition.links.forEach((link) => console.log(link));
+  drawDefinition.links.forEach((link) => {
+    expect(link.target.feedProfile).not.toBeUndefined();
+  });
 
   // let [mainStructure, consolationStructure] = drawDefinition.structures;
 });

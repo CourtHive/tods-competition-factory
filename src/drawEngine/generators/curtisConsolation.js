@@ -55,7 +55,6 @@ export function generateCurtisConsolation({
       consolationStructure,
       roundsCount: 2,
       roundOffset,
-      feedPolicy: { oscillation: true },
     });
 
     return { consolationStructure, links };

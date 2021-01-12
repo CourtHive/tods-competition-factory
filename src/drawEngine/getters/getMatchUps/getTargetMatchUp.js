@@ -69,21 +69,16 @@ export function getTargetMatchUp({
     // the index in the target matchUp.drawPositions[] is recalculated based on calculated relative drawPosition
     matchUpDrawPositionIndex = 1 - (relativeRoundPosition % 2);
   }
+
+  let orderedPositions = roundPositions;
+  let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
+
   if (groupedOrder?.length > 1) {
     const groupsCount = groupedOrder.length;
-    if (groupsCount >= roundPositions.length) {
+    if (groupsCount <= roundPositions.length) {
       const groupSize = targetRoundMatchUpCount / groupsCount;
       const groups = chunkArray(roundPositions, groupSize);
-      const orderedPositions = groupedOrder
-        .map((order) => groups[order - 1])
-        .flat();
-      console.log({
-        feedProfile,
-        groupedOrder,
-        groups,
-        orderedPositions,
-        roundPositions,
-      });
+      orderedPositions = groupedOrder.map((order) => groups[order - 1]).flat();
     }
   }
 
@@ -92,6 +87,7 @@ export function getTargetMatchUp({
       TOP_DOWN feed profile implies that the roundPosition in the
       target is equivalent to the roundPosition in the source
     */
+    targetedRoundPosition = orderedPositions[calculatedRoundPosition - 1];
   } else if (feedProfile === BOTTOM_UP) {
     /*
       BOTTOM_UP feed profile implies that the roundPosition in the
@@ -99,6 +95,7 @@ export function getTargetMatchUp({
     */
     calculatedRoundPosition =
       targetRoundMatchUps.length + 1 - calculatedRoundPosition;
+    targetedRoundPosition = orderedPositions[calculatedRoundPosition - 1];
   } else if (feedProfile === LOSS_POSITION) {
     /*
       LOSS_POSITION is possible when a loss occurs in a second round to which a participant has advanced via BYE or DEFAULT/WALKOVER
@@ -121,9 +118,9 @@ export function getTargetMatchUp({
   }
 
   const matchUp =
-    calculatedRoundPosition &&
+    targetedRoundPosition &&
     targetRoundMatchUps.reduce((matchUp, current) => {
-      return current.roundPosition === calculatedRoundPosition
+      return current.roundPosition === targetedRoundPosition
         ? current
         : matchUp;
     }, undefined);
