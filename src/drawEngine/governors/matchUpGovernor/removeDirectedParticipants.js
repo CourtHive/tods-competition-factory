@@ -4,11 +4,11 @@ import { findStructure } from '../../getters/findStructure';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
+import { clearDrawPosition } from '../positionGovernor/positionClear';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { clearDrawPosition } from '../positionGovernor/positionClear';
 
 export function removeDirectedParticipants(props) {
   const {

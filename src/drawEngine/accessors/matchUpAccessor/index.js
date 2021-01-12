@@ -10,5 +10,5 @@ export {
 
 export { scheduledMatchUpTime } from './scheduledTime';
 export { scheduledMatchUpDate } from './scheduledDate';
-export { calcTieMatchUpScore } from './tieMatchUpScore';
+export { calcTieMatchUpScore } from './calcTieMatchUpScore';
 export { getMatchUpType } from './getMatchUpType';

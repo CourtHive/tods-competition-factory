@@ -1,11 +1,12 @@
-import { directParticipants } from './directParticipants';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { directParticipants } from './directParticipants';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
-import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
 import {
   BYE,
@@ -56,17 +57,21 @@ export function noDownstreamDependencies(props) {
 }
 
 function attemptToSetIncompleteScore(props) {
-  const { matchUp, score } = props;
+  const { drawDefinition, matchUp, score } = props;
   const errors = [];
 
-  if (score) matchUp.score = score;
+  modifyMatchUpScore({
+    drawDefinition,
+    matchUp,
+    matchUpStatus: INCOMPLETE,
+    matchUpStatusCodes: [],
+    score,
+  });
   delete matchUp.winningSide;
-  matchUp.matchUpStatus = INCOMPLETE;
-  matchUp.matchUpStatusCodes = [];
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
-    const { drawDefinition, matchUpTieId } = props;
+    const { matchUpTieId } = props;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
   }
 
