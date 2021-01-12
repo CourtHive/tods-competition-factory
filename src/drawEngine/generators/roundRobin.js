@@ -38,14 +38,14 @@ export function generateRoundRobin({
     drawSize,
   });
 
-  const structures = generateRange(1, groupCount + 1).map((structureIndex) =>
+  const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
     structureTemplate({
-      structureIndex,
+      structureOrder,
       finishingPosition,
       structureType: ITEM,
       structureId: uuids?.pop(),
-      structureName: `Group ${structureIndex}`,
-      matchUps: roundRobinMatchUps({ groupSize: groupSize, structureIndex }),
+      structureName: `Group ${structureOrder}`,
+      matchUps: roundRobinMatchUps({ groupSize: groupSize, structureOrder }),
     })
   );
 
@@ -242,8 +242,8 @@ function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
   });
 }
 
-function roundRobinMatchUps({ groupSize, structureIndex, uuids }) {
-  const drawPositionOffset = (structureIndex - 1) * groupSize;
+function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
+  const drawPositionOffset = (structureOrder - 1) * groupSize;
   const drawPositions = generateRange(
     1 + drawPositionOffset,
     groupSize + 1 + drawPositionOffset
@@ -273,7 +273,7 @@ function roundRobinMatchUps({ groupSize, structureIndex, uuids }) {
     const matchUp = {
       roundNumber,
       drawPositions,
-      structureIndex,
+      structureOrder,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: TO_BE_PLAYED,
     };

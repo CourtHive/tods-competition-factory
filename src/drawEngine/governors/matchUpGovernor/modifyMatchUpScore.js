@@ -21,6 +21,7 @@ export function modifyMatchUpScore({
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
   if (drawDefinition) {
+    console.log({ matchUp, score });
     // middleware methods
   }
 }

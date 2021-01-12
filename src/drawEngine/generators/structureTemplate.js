@@ -14,7 +14,7 @@ export const structureTemplate = ({
   structureAbbreviation,
   structureName,
   seedingProfile,
-  structureIndex,
+  structureOrder,
   qualifyingRound,
   stageSequence = 1,
   seedAssignments = [],
@@ -49,7 +49,7 @@ export const structureTemplate = ({
     structure.positionAssignments = unique(positionAssignments)
       .sort((a, b) => a - b)
       .map((drawPosition) => ({ drawPosition }));
-    if (structureIndex) structure.structureIndex = structureIndex;
+    if (structureOrder) structure.structureOrder = structureOrder;
   }
 
   return structure;

@@ -173,7 +173,7 @@ function generateEventWithDraw({
         stageSequence = 1,
         matchUpStatus = COMPLETED,
         matchUpIndex = 0,
-        structureIndex, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
+        structureOrder, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
       } = outcomeDef;
       const targetMatchUps = matchUps.filter(
         (matchUp) =>
@@ -181,7 +181,7 @@ function generateEventWithDraw({
           matchUp.stageSequence === stageSequence &&
           matchUp.roundNumber === roundNumber &&
           (!roundPosition || matchUp.roundPosition === roundPosition) &&
-          (!structureIndex || matchUp.structureIndex === structureIndex)
+          (!structureOrder || matchUp.structureOrder === structureOrder)
       );
       const targetMatchUp = targetMatchUps[matchUpIndex];
       const { matchUpId } = targetMatchUp || {};
