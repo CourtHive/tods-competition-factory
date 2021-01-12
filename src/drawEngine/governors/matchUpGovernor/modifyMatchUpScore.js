@@ -1,19 +1,25 @@
-/**
- *
- * Single place where matchUp.score can be modified.
- * Moving forward this will be used for integrity checks and any middleware that needs to execute
- *
- * @param {*} param0
- */
-
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import {
   findMatchUp,
   getAllStructureMatchUps,
 } from '../../getters/getMatchUps';
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+
+/**
+ *
+ * Single place where matchUp.score can be modified.
+ *
+ * Mutates passed matchUp object.
+ * Moving forward this will be used for integrity checks and any middleware that needs to execute
+ *
+ * @param {object} drawDefinition
+ * @param {object} matchUp
+ * @param {object} score
+ * @param {string} matchUpStatus - e.g. COMPLETED, BYE, TO_BE_PLAYED, WALKOVER, DEFAULTED
+ * @param {string[]} matchUpStatusCodes - optional - organization specific
+ * @param {number} winningSide - optional - 1 or 2
+ */
 
 export function modifyMatchUpScore({
   drawDefinition,
