@@ -25,10 +25,9 @@ export function generateOutcomeFromScoreString({
 
   const sets = scoreString && parseScoreString({ scoreString });
   const score = { sets };
-  const winningScoreString = generateScoreString({ sets, winningSide });
+  const winningScoreString = generateScoreString({ sets });
   const losingScoreString = generateScoreString({
     sets,
-    winningSide,
     reversed: true,
   });
   if (winningSide === 1) {

@@ -273,6 +273,7 @@ export function tallyParticipantResults({
     const gamesForSet = parsedMatchUpFormat?.setFormat?.setTo || 6;
     const tiebreakAt = parsedMatchUpFormat?.setFormat?.tiebreakAt || 6;
     if (!scoreString) return [side1Score, side2Score];
+
     const minimumGameWins = setsToWin * gamesForSet;
     const gamesTally = [[], []];
     if (disqualifyingScore(scoreString)) {
@@ -283,23 +284,8 @@ export function tallyParticipantResults({
       if (sets) {
         sets.forEach((set) => {
           ({ side1Score, side2Score } = set);
-          gamesTally[0].push(parseInt(side1Score));
-          gamesTally[1].push(parseInt(side2Score));
-        });
-      } else {
-        // TODO: Remove
-        const setScores = scoreString.split(' ');
-        setScores.forEach((setScore) => {
-          const scores =
-            // eslint-disable-next-line no-useless-escape
-            /\d+[\(\)\-\/]*/.test(setScore) && setScore.indexOf('-') > 0
-              ? setScore.split('-').map((s) => /\d+/.exec(s)[0])
-              : undefined;
-          if (scores) {
-            [side1Score, side2Score] = scores;
-            gamesTally[0].push(parseInt(side1Score));
-            gamesTally[1].push(parseInt(side2Score));
-          }
+          gamesTally[0].push(parseInt(side1Score || 0));
+          gamesTally[1].push(parseInt(side2Score || 0));
         });
       }
     }

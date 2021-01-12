@@ -15,21 +15,5 @@ export const noScoreOutcome = {
       },
     ],
   },
-  /*
-  status: {
-    side1: {
-      categoryName: 'None',
-      matchUpStatusCode: '',
-      matchUpStatusCodeDisplay: 'None',
-      subCategoryName: 'None',
-    },
-    side2: {
-      categoryName: 'None',
-      matchUpStatusCode: '',
-      matchUpStatusCodeDisplay: 'None',
-      subCategoryName: 'None',
-    },
-  },
-  */
   winningSide: undefined,
 };
