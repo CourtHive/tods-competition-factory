@@ -73,13 +73,14 @@ export function getTargetMatchUp({
   let orderedPositions = roundPositions;
   let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
 
-  if (groupedOrder?.length > 1) {
-    const groupsCount = groupedOrder.length;
-    if (groupsCount <= roundPositions.length) {
-      const groupSize = targetRoundMatchUpCount / groupsCount;
-      const groups = chunkArray(roundPositions, groupSize);
-      orderedPositions = groupedOrder.map((order) => groups[order - 1]).flat();
-    }
+  const groupsCount = groupedOrder?.length || 1;
+  if (groupsCount <= roundPositions.length) {
+    const groupSize = targetRoundMatchUpCount / groupsCount;
+    const groups = chunkArray(roundPositions, groupSize);
+    if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
+    orderedPositions =
+      groupedOrder?.map((order) => groups[order - 1]).flat() ||
+      orderedPositions;
   }
 
   if (feedProfile === TOP_DOWN) {
@@ -93,8 +94,10 @@ export function getTargetMatchUp({
       BOTTOM_UP feed profile implies that the roundPosition in the
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
-    calculatedRoundPosition =
-      targetRoundMatchUps.length + 1 - calculatedRoundPosition;
+    if (!groupedOrder || groupsCount > roundPositions.length) {
+      calculatedRoundPosition =
+        targetRoundMatchUps.length + 1 - calculatedRoundPosition;
+    }
     targetedRoundPosition = orderedPositions[calculatedRoundPosition - 1];
   } else if (feedProfile === LOSS_POSITION) {
     /*
@@ -124,6 +127,23 @@ export function getTargetMatchUp({
         ? current
         : matchUp;
     }, undefined);
+
+  /*
+  if (groupsCount) {
+    const {
+      drawPositionsRange: { firstRoundOffsetDrawPositionsRange },
+    } = matchUp;
+    console.log('target', {
+      feedProfile,
+      groupedOrder,
+      // orderedPositions,
+      sourceRoundPosition,
+      targetedRoundPosition,
+      targetRoundNumber: roundNumber,
+      firstRoundOffsetDrawPositionsRange,
+    });
+  }
+  */
 
   return { matchUp, matchUpDrawPositionIndex };
 }
