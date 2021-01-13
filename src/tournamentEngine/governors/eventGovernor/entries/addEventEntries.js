@@ -26,6 +26,7 @@ import { removeEventEntries } from './removeEventEntries';
 export function addEventEntries(props) {
   const {
     tournamentRecord,
+    drawDefinition,
     event,
 
     participantIds = [],
@@ -81,6 +82,14 @@ export function addEventEntries(props) {
         entryStatus,
         entryStage,
       });
+      if (drawDefinition) {
+        // TODO: this is a gray area until we support multiple draws in an event
+        drawDefinition.entries.push({
+          participantId,
+          entryStatus,
+          entryStage,
+        });
+      }
     }
   });
 

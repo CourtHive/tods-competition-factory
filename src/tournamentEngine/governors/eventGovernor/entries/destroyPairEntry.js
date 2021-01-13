@@ -21,7 +21,12 @@ import { removeEventEntries } from './removeEventEntries';
  * @param {string} participantId - id of PAIR participant to remove; individualParticipantIds will be added as UNPAIRED participant entries
  *
  */
-export function destroyPairEntry({ tournamentRecord, event, participantId }) {
+export function destroyPairEntry({
+  tournamentRecord,
+  drawDefinition,
+  participantId,
+  event,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
   if (!event) return { error: MISSING_EVENT };
@@ -42,8 +47,11 @@ export function destroyPairEntry({ tournamentRecord, event, participantId }) {
   );
   if (!entry) return { error: PARTICIPANT_ENTRY_NOT_FOUND };
 
+  // TODO: this is currently duplicating action for drawDefinition
+  // needs to be revisited when splitting draws and supporting multiple draws in the same event
   let result = removeEventEntries({
     event,
+    drawDefinition,
     tournamentRecord,
     participantIds: [participantId],
   });
@@ -52,8 +60,11 @@ export function destroyPairEntry({ tournamentRecord, event, participantId }) {
 
   const individualParticipantIds = participant.individualParticipantIds;
 
+  // TODO: this is currently duplicating action for drawDefinition
+  // needs to be revisited when splitting draws and supporting multiple draws in the same event
   result = addEventEntries({
     event,
+    drawDefinition,
     tournamentRecord,
     entryStatus: UNPAIRED,
     entryStage: entry.entryStage,
