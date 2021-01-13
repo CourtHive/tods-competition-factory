@@ -129,6 +129,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   feedInChampionship({
     drawSize,
     drawType: FEED_IN_CHAMPIONSHIP,
+    feedPolicy: { roundGroupedOrder: [] },
   });
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(4);

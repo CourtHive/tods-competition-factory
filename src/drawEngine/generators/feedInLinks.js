@@ -20,15 +20,7 @@ export function feedInLinks({
       : p;
   }, []);
 
-  const roundGroupedOrder = feedPolicy?.roundGroupOrder || [
-    undefined, // complete round TOP_DOWN
-    undefined, // complete round BOTTOM_UP
-    [2, 1], // 2nd half TOP_DOWN, 1st half TOP_DOWN
-    [3, 4, 1, 2], // 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP, 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP
-    [4, 3, 2, 1], // 4th Qtr TOP_DOWN, 3rd Qtr TOP_DOWN, 2nd Qtr TOP_DOWN, 1st Qtr TOP_DOWN
-    [1], // same as undefined, complete round BOTTOM_UP
-  ];
-
+  const roundGroupedOrder = feedPolicy?.roundGroupedOrder || [];
   const roundFeedProfiles = feedPolicy?.roundFeedProfiles;
 
   // range excludes final round which is final matchUp

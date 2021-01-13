@@ -3,6 +3,7 @@ import tournamentEngine from '../../../tournamentEngine';
 
 import {
   BOTTOM_UP,
+  CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
@@ -13,6 +14,14 @@ it('can properly generate feed in championship links', () => {
     participantsCount: 256,
   };
   const feedPolicy = {
+    roundGroupedOrder: [
+      [1], // complete round TOP_DOWN
+      [1], // complete round BOTTOM_UP
+      [1, 2], // 1st half BOTTOM_UP, 2nd half BOTTOM_UP
+      [2, 1, 4, 3], // 2nd Qtr BOTTOM_UP, 1st Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP
+      [1, 2, 3, 4], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
+      [1], // complete round BOTTOM_UP
+    ],
     roundFeedProfiles: [
       TOP_DOWN,
       BOTTOM_UP,
@@ -29,6 +38,7 @@ it('can properly generate feed in championship links', () => {
       participantsCount: 256,
       drawType: FEED_IN_CHAMPIONSHIP,
       feedPolicy,
+      /*
       outcomes: [
         {
           roundNumber: 1,
@@ -117,6 +127,7 @@ it('can properly generate feed in championship links', () => {
           winningSide: 1,
         },
       ],
+      */
     },
   ];
   let {
@@ -135,5 +146,21 @@ it('can properly generate feed in championship links', () => {
     expect(link.target.feedProfile).not.toBeUndefined();
   });
 
-  // let [mainStructure, consolationStructure] = drawDefinition.structures;
+  const { matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    inContext: true,
+  });
+  const consolationMatchUps = matchUps.filter(
+    (matchUp) => matchUp.stage === CONSOLATION
+  );
+
+  const check = consolationMatchUps.map(
+    ({
+      roundNumber,
+      roundPosition,
+      drawPositionsRange: { firstRoundOffsetDrawPositionsRange },
+    }) => ({ roundNumber, roundPosition, firstRoundOffsetDrawPositionsRange })
+  );
+  console.log(check[0]);
+  console.log(check[127]);
 });
