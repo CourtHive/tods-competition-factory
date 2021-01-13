@@ -122,7 +122,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
-  mainStructure.structures.forEach((structure, structureIndex) => {
+  mainStructure.structures.forEach((structure, structureOrder) => {
     const values = setsValues[0];
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpIndex) => {
@@ -147,7 +147,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
       );
 
       const matchUpInstance =
-        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
+        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: mainStructure.structureId,
       });
@@ -344,7 +344,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
-  mainStructure.structures.forEach((structure, structureIndex) => {
+  mainStructure.structures.forEach((structure, structureOrder) => {
     const values = setsValues[0];
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpIndex) => {
@@ -369,7 +369,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       );
 
       const matchUpInstance =
-        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
+        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: mainStructure.structureId,
       });

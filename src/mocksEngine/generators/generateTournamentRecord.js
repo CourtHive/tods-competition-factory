@@ -104,6 +104,7 @@ function generateEventWithDraw({
     matchUpFormat = FORMAT_STANDARD,
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
+    feedPolicy,
   } = drawProfile;
   let { participantsCount = 32 } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -150,6 +151,7 @@ function generateEventWithDraw({
     drawSize,
     matchUpFormat,
     drawType,
+    feedPolicy,
   });
 
   if (generationError) return { error: generationError };
@@ -173,15 +175,31 @@ function generateEventWithDraw({
         stageSequence = 1,
         matchUpStatus = COMPLETED,
         matchUpIndex = 0,
-        structureIndex, // like a group number; the index of the structureType: ITEM within structureType: CONTAINER
+        structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
       } = outcomeDef;
+      const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
+        const { structureId, matchUpId } = matchUp;
+        if (sm[structureId]) {
+          sm[structureId].push(matchUpId);
+        } else {
+          sm[structureId] = [matchUpId];
+        }
+        return sm;
+      }, {});
+      const orderedStructures = Object.assign(
+        {},
+        ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
+          [structureId]: index + 1,
+        }))
+      );
       const targetMatchUps = matchUps.filter(
         (matchUp) =>
           matchUp.stage === stage &&
           matchUp.stageSequence === stageSequence &&
           matchUp.roundNumber === roundNumber &&
           (!roundPosition || matchUp.roundPosition === roundPosition) &&
-          (!structureIndex || matchUp.structureIndex === structureIndex)
+          (!structureOrder ||
+            orderedStructures[matchUp.structureId] === structureOrder)
       );
       const targetMatchUp = targetMatchUps[matchUpIndex];
       const { matchUpId } = targetMatchUp || {};

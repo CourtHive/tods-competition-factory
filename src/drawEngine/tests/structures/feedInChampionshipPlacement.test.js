@@ -20,6 +20,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
       eventType: SINGLES,
       participantsCount: 5,
       drawType: FEED_IN_CHAMPIONSHIP,
+      feedPolicy: { roundGroupedOrder: [] },
     },
   ];
   let {

@@ -246,8 +246,8 @@ it('can advance players in Round Robin with Playoffs', () => {
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
-  mainStructure.structures.forEach((structure, structureIndex) => {
-    const values = setsValues[structureIndex];
+  mainStructure.structures.forEach((structure, structureOrder) => {
+    const values = setsValues[structureOrder];
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpIndex) => {
       const { matchUpId } = matchUp;
@@ -271,7 +271,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       );
 
       const matchUpInstance =
-        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
+        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: mainStructure.structureId,
       });
@@ -469,8 +469,8 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
-  mainStructure.structures.forEach((structure, structureIndex) => {
-    const values = setsValues[structureIndex];
+  mainStructure.structures.forEach((structure, structureOrder) => {
+    const values = setsValues[structureOrder];
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpIndex) => {
       const { matchUpId } = matchUp;
@@ -494,7 +494,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       );
 
       const matchUpInstance =
-        structureIndex * matchUpsPerStructure + (matchUpIndex + 1);
+        structureOrder * matchUpsPerStructure + (matchUpIndex + 1);
       const mainStructureIsCompleted = drawEngine.isCompletedStructure({
         structureId: mainStructure.structureId,
       });

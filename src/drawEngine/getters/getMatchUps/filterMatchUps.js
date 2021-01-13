@@ -4,6 +4,7 @@ import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledD
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 
 export function filterMatchUps({
+  stages,
   drawIds,
   courtIds,
   matchUps,
@@ -27,6 +28,9 @@ export function filterMatchUps({
       if (!isCollectionMatchUp && matchUp.collectionId) return false;
     }
     if (drawIds && drawIds.length && !drawIds.includes(matchUp.drawId)) {
+      return false;
+    }
+    if (stages && stages.length && !stages.includes(matchUp.stage)) {
       return false;
     }
     if (

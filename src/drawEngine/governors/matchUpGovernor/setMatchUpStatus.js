@@ -1,12 +1,12 @@
 import { findMatchUp, getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { intersection, makeDeepCopy } from '../../../utilities';
-
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
-import { noDownstreamDependencies } from './noDownstreamDependencies';
 
 import {
   INVALID_MATCHUP_STATUS,
@@ -172,8 +172,8 @@ function winningSideWithDownstreamDependencies(props) {
         // TESTED
       }
     } else {
-      const { score } = props;
-      if (score) matchUp.score = score;
+      const { drawDefinition, score } = props;
+      modifyMatchUpScore({ drawDefinition, matchUp, score });
     }
   } else {
     errors.push({ error: 'Cannot change winner with advanced participants' });
@@ -187,8 +187,18 @@ function winningSideWithDownstreamDependencies(props) {
 }
 
 function applyMatchUpValues(props) {
-  const { matchUp, matchUpStatus, matchUpStatusCodes, score } = props;
-  matchUp.matchUpStatus = matchUpStatus || COMPLETED;
-  matchUp.matchUpStatusCodes = matchUpStatusCodes;
-  if (score) matchUp.score = score;
+  const {
+    drawDefinition,
+    matchUp,
+    matchUpStatus,
+    matchUpStatusCodes,
+    score,
+  } = props;
+  modifyMatchUpScore({
+    drawDefinition,
+    matchUp,
+    matchUpStatus: matchUpStatus || COMPLETED,
+    matchUpStatusCodes,
+    score,
+  });
 }

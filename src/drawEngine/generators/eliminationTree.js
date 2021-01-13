@@ -3,16 +3,18 @@ import {
   generateRange,
   instanceCount,
   powerOf2,
-  randomPop,
+  // randomPop,
   UUID,
 } from '../../utilities';
 
+/*
 import {
   RANDOM,
   TOP_DOWN,
   BOTTOM_UP,
   WATERFALL,
 } from '../../constants/drawDefinitionConstants';
+*/
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
@@ -175,7 +177,6 @@ function roundMatchCounts({ drawSize }) {
 
 export function feedInMatchUps({
   drawSize,
-  feedMode,
   feedRounds = 0,
   skipRounds = 0,
   baseDrawSize,
@@ -295,7 +296,6 @@ export function feedInMatchUps({
           roundIteration, // meaningless; avoids eslint value never used
           roundNumber,
           matchUps,
-          feedMode,
           fed,
         }));
         roundNumber++;
@@ -335,14 +335,7 @@ export function feedInMatchUps({
   }
 }
 
-function buildFeedRound({
-  nodes,
-  feedMode,
-  drawPosition,
-  fed,
-  matchUps,
-  roundNumber,
-}) {
+function buildFeedRound({ nodes, drawPosition, fed, matchUps, roundNumber }) {
   const feedRoundMatchUpsCount = nodes.length;
   const initialGroupDrawPosition = drawPosition
     ? drawPosition - feedRoundMatchUpsCount
@@ -356,7 +349,7 @@ function buildFeedRound({
 
   const roundNodes = [];
   for (let nodeIndex = 0; nodeIndex < feedRoundMatchUpsCount; nodeIndex++) {
-    const feedDrawPosition = getPosition();
+    const feedDrawPosition = drawPositionGroup.shift();
 
     const feedArm = {
       feed: true,
@@ -383,7 +376,10 @@ function buildFeedRound({
 
   return { roundNodes, matchUps, drawPosition: nextDrawPosition };
 
+  // NOTE: this logic is currently unused
+  /*
   function getPosition() {
+    if (feedMode) console.log({ feedMode });
     switch (feedMode) {
       case TOP_DOWN:
         return drawPositionGroup.shift();
@@ -401,4 +397,5 @@ function buildFeedRound({
         return drawPositionGroup.shift();
     }
   }
+  */
 }

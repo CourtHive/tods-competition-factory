@@ -1,5 +1,6 @@
 import { chunkArray, generateRange } from '../../../utilities';
 import { getStructureRoundProfile } from './getStructureRoundProfile';
+import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { getRangeString } from './getRangeString';
 import { findStructure } from '../findStructure';
 
@@ -57,6 +58,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     } = link.source;
     const {
       feedProfile,
+      groupedOrder,
       positionInterleave,
       roundNumber: targetRoundNumber,
     } = link.target;
@@ -69,8 +71,29 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     const chunkSize = sourceRoundMatchUpsCount
       ? firstRoundDrawPositions.length / sourceRoundMatchUpsCount
       : 0;
-    let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
-    if (feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
+    const targetRoundMatchUpsCount = firstRoundDrawPositions.length / chunkSize;
+    let orderedPositions = firstRoundDrawPositions.slice();
+
+    const sizedGroupOrder = reduceGroupedOrder({
+      groupedOrder,
+      roundPositionsCount: orderedPositions.length,
+    });
+    const groupsCount = sizedGroupOrder?.length || 1;
+    if (groupsCount <= targetRoundMatchUpsCount) {
+      const groupSize = firstRoundDrawPositions.length / groupsCount;
+      const groups = chunkArray(orderedPositions, groupSize);
+      if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
+      orderedPositions =
+        sizedGroupOrder?.map((order) => groups[order - 1]).flat() ||
+        orderedPositions;
+    }
+
+    // let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
+    let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
+
+    if (!sizedGroupOrder) {
+      if (feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
+    }
 
     // positionInterleave describes how positions are fed from source to target
     // In double elimination, for instance:

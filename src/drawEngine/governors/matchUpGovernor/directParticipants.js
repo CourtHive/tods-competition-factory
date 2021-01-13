@@ -1,8 +1,9 @@
-import { isDirectingMatchUpStatus } from './checkStatusType';
-import { directLoser } from './directLoser';
-import { directWinner } from './directWinner';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { updateTieMatchUpScore } from '../../accessors/matchUpAccessor/tieMatchUpScore';
+import { isDirectingMatchUpStatus } from './checkStatusType';
+import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { directWinner } from './directWinner';
+import { directLoser } from './directLoser';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -35,7 +36,7 @@ export function directParticipants(props) {
   matchUp.matchUpStatusCodes =
     (matchUpStatusIsValid && matchUpStatusCodes) || [];
 
-  if (score) matchUp.score = score;
+  modifyMatchUpScore({ drawDefinition, matchUp, score });
 
   if (isCollectionMatchUp) {
     const { matchUpTieId } = props;
