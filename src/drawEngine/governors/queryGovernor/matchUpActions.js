@@ -1,7 +1,6 @@
 import { findMatchUp } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
-import { positionActions } from './positionActions/positionActions';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 
@@ -88,34 +87,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   }
 
   if (isByeMatchUp) {
-    const nonByeDrawPosition = matchUp.drawPositions?.reduce(
-      (nonByeDrawPosition, drawPosition) => {
-        return !byeAssignedDrawPositions.includes(drawPosition)
-          ? drawPosition
-          : nonByeDrawPosition;
-      },
-      undefined
-    );
-
-    const participantId = assignedPositions.reduce(
-      (participantId, assignment) => {
-        return assignment.drawPosition === nonByeDrawPosition
-          ? assignment.participantId
-          : participantId;
-      },
-      undefined
-    );
-
-    if (participantId) {
-      return positionActions({
-        drawDefinition,
-        participantId,
-        structureId,
-        drawPosition: nonByeDrawPosition,
-      });
-    } else {
-      return { validActions, isByeMatchUp };
-    }
+    return { validActions, isByeMatchUp };
   } else {
     validActions.push({ type: REFEREE });
     const isInComplete = !isDirectingMatchUpStatus({
