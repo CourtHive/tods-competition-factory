@@ -194,19 +194,19 @@ export function positionActions({
       };
       validActions.push(addPenaltyAction);
       validActions.push(addNicknameAction);
+      const { validSwapAction } = getValidSwapAction({
+        drawId,
+        drawPosition,
+        structureId,
+        byeDrawPositions,
+        positionAssignments,
+        activeDrawPositions,
+        inactiveDrawPositions,
+        tournamentParticipants,
+      });
+      if (isMainStageSequence1 && validSwapAction)
+        validActions.push(validSwapAction);
     }
-    const { validSwapAction } = getValidSwapAction({
-      drawId,
-      drawPosition,
-      structureId,
-      byeDrawPositions,
-      positionAssignments,
-      activeDrawPositions,
-      inactiveDrawPositions,
-      tournamentParticipants,
-    });
-    if (isMainStageSequence1 && validSwapAction)
-      validActions.push(validSwapAction);
   }
 
   const { validAlternatesAction } = getValidAlternatesAction({
