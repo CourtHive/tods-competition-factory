@@ -1,5 +1,6 @@
 import { chunkArray, generateRange } from '../../../utilities';
 import { getStructureRoundProfile } from './getStructureRoundProfile';
+import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { getRangeString } from './getRangeString';
 import { findStructure } from '../findStructure';
 
@@ -73,20 +74,24 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     const targetRoundMatchUpsCount = firstRoundDrawPositions.length / chunkSize;
     let orderedPositions = firstRoundDrawPositions.slice();
 
-    const groupsCount = groupedOrder?.length || 1;
+    const sizedGroupOrder = reduceGroupedOrder({
+      groupedOrder,
+      roundPositionsCount: orderedPositions.length,
+    });
+    const groupsCount = sizedGroupOrder?.length || 1;
     if (groupsCount <= targetRoundMatchUpsCount) {
       const groupSize = firstRoundDrawPositions.length / groupsCount;
       const groups = chunkArray(orderedPositions, groupSize);
       if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
       orderedPositions =
-        groupedOrder?.map((order) => groups[order - 1]).flat() ||
+        sizedGroupOrder?.map((order) => groups[order - 1]).flat() ||
         orderedPositions;
     }
 
     // let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
-    if (!groupedOrder) {
+    if (!sizedGroupOrder) {
       if (feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
     }
 

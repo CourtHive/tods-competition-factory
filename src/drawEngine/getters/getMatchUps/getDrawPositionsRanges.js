@@ -1,12 +1,12 @@
-import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { getRangeString } from './getRangeString';
+import { groupConsecutiveNumbers } from '../../../utilities/arrays';
+import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
-import { groupConsecutiveNumbers } from '../../../utilities/arrays';
 
 export function getDrawPositionsRanges({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -1,3 +1,4 @@
+import drawEngine from '../..';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
@@ -5,6 +6,7 @@ import {
   BOTTOM_UP,
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
+  MAIN,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -19,11 +21,13 @@ it('can properly generate feed in championship links', () => {
       [1], // complete round BOTTOM_UP
       [1, 2], // 1st half BOTTOM_UP, 2nd half BOTTOM_UP
       [2, 1, 4, 3], // 2nd Qtr BOTTOM_UP, 1st Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP
-      [1, 2, 3, 4], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
+      [2, 1, 4, 3, 6, 5, 8, 7], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
       [1], // complete round BOTTOM_UP
     ],
     roundFeedProfiles: [
       TOP_DOWN,
+      BOTTOM_UP,
+      BOTTOM_UP,
       BOTTOM_UP,
       BOTTOM_UP,
       BOTTOM_UP,
@@ -38,7 +42,6 @@ it('can properly generate feed in championship links', () => {
       participantsCount: 256,
       drawType: FEED_IN_CHAMPIONSHIP,
       feedPolicy,
-      /*
       outcomes: [
         {
           roundNumber: 1,
@@ -127,7 +130,6 @@ it('can properly generate feed in championship links', () => {
           winningSide: 1,
         },
       ],
-      */
     },
   ];
   let {
@@ -146,21 +148,91 @@ it('can properly generate feed in championship links', () => {
     expect(link.target.feedProfile).not.toBeUndefined();
   });
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
+  const { matchUps: mainDrawMatchUps } = tournamentEngine.allDrawMatchUps({
     drawId,
     inContext: true,
+    contextFilters: { stages: [MAIN] },
   });
-  const consolationMatchUps = matchUps.filter(
-    (matchUp) => matchUp.stage === CONSOLATION
+
+  const { roundMatchUps: mainDrawRoundMatchUps } = drawEngine.getRoundMatchUps({
+    matchUps: mainDrawMatchUps,
+  });
+
+  const { matchUps: consolationMatchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    inContext: true,
+    contextFilters: { stages: [CONSOLATION] },
+  });
+
+  const {
+    roundMatchUps: consolationRoundMatchUps,
+  } = drawEngine.getRoundMatchUps({
+    matchUps: consolationMatchUps,
+  });
+
+  const sourceRangeExpectations = [
+    [1, 1, '1-2', '3-4'],
+    [2, 64, '1-4'],
+    [2, 64, '1-4'],
+    [4, 1, '121-128'],
+    [4, 16, '1-8'],
+    [4, 17, '249-256'],
+    [4, 32, '129-136'],
+  ];
+  sourceRangeExpectations.forEach(
+    ([roundNumber, roundPosition, side1Range, side2Range]) => {
+      const matchUp = consolationRoundMatchUps[roundNumber].find((matchUp) => {
+        return matchUp.roundPosition === roundPosition;
+      });
+      if (side1Range) {
+        expect(matchUp.sides[0].sourceDrawPositionRange).toEqual(side1Range);
+      }
+      if (side2Range) {
+        expect(matchUp.sides[1].sourceDrawPositionRange).toEqual(side2Range);
+      }
+    }
   );
 
-  const check = consolationMatchUps.map(
-    ({
-      roundNumber,
-      roundPosition,
-      drawPositionsRange: { firstRoundOffsetDrawPositionsRange },
-    }) => ({ roundNumber, roundPosition, firstRoundOffsetDrawPositionsRange })
+  const directedLoserParticipantIdExpectations = [[3, 1, 4, 16]];
+
+  directedLoserParticipantIdExpectations.forEach(
+    ([
+      sourceRoundNumber,
+      sourceRoundPosition,
+      targetRoundNumber,
+      targetRoundPosition,
+    ]) => {
+      const sourceMatchUp = mainDrawRoundMatchUps[sourceRoundNumber].find(
+        (matchUp) => matchUp.roundPosition === sourceRoundPosition
+      );
+      const sourceLosingParticipantId = sourceMatchUp.sides.find(
+        ({ sideNumber }) => sideNumber !== sourceMatchUp.winningSide
+      ).participantId;
+      const targetMatchUp = consolationRoundMatchUps[targetRoundNumber].find(
+        (matchUp) => matchUp.roundPosition === targetRoundPosition
+      );
+      const targetFedParticipantId = targetMatchUp.sides.find(
+        ({ sideNumber }) => sideNumber === 1
+      ).participantId;
+
+      expect(sourceLosingParticipantId).toEqual(targetFedParticipantId);
+    }
   );
-  console.log(check[0]);
-  console.log(check[127]);
+
+  /*
+  // NOTE: visual check can be turned into further tests...
+  const checkRounds = [8, 10];
+  const visualCheck = [];
+  Object.keys(consolationRoundMatchUps).forEach((roundNumber) => {
+    if (!checkRounds.includes(parseInt(roundNumber))) return;
+    consolationRoundMatchUps[roundNumber].forEach((matchUp) => {
+      const side1Range = matchUp.sides[0].sourceDrawPositionRange;
+      if (roundNumber > 1 && side1Range)
+        visualCheck.push([
+          { roundNumber, roundPosition: matchUp.roundPosition, side1Range },
+        ]);
+    });
+  });
+  console.log(visualCheck);
+  */
 });

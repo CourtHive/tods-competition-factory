@@ -9,6 +9,7 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
 import { chunkArray, generateRange } from '../../../utilities';
+import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 export function getTargetMatchUp({
   drawDefinition,
@@ -73,13 +74,17 @@ export function getTargetMatchUp({
   let orderedPositions = roundPositions;
   let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
 
-  const groupsCount = groupedOrder?.length || 1;
+  const sizedGroupOrder = reduceGroupedOrder({
+    groupedOrder,
+    roundPositionsCount: roundPositions.length,
+  });
+  const groupsCount = sizedGroupOrder?.length || 1;
   if (groupsCount <= roundPositions.length) {
     const groupSize = targetRoundMatchUpCount / groupsCount;
     const groups = chunkArray(roundPositions, groupSize);
     if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
     orderedPositions =
-      groupedOrder?.map((order) => groups[order - 1]).flat() ||
+      sizedGroupOrder?.map((order) => groups[order - 1]).flat() ||
       orderedPositions;
   }
 
@@ -94,7 +99,7 @@ export function getTargetMatchUp({
       BOTTOM_UP feed profile implies that the roundPosition in the
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
-    if (!groupedOrder || groupsCount > roundPositions.length) {
+    if (!sizedGroupOrder || groupsCount > roundPositions.length) {
       calculatedRoundPosition =
         targetRoundMatchUps.length + 1 - calculatedRoundPosition;
     }
@@ -127,23 +132,6 @@ export function getTargetMatchUp({
         ? current
         : matchUp;
     }, undefined);
-
-  /*
-  if (groupsCount) {
-    const {
-      drawPositionsRange: { firstRoundOffsetDrawPositionsRange },
-    } = matchUp;
-    console.log('target', {
-      feedProfile,
-      groupedOrder,
-      // orderedPositions,
-      sourceRoundPosition,
-      targetedRoundPosition,
-      targetRoundNumber: roundNumber,
-      firstRoundOffsetDrawPositionsRange,
-    });
-  }
-  */
 
   return { matchUp, matchUpDrawPositionIndex };
 }
