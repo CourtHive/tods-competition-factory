@@ -199,7 +199,7 @@ export function positionActions({
 
     if (!isByePosition && participantId) {
       const participant = tournamentParticipants.find(
-        (participant) => (participant.participantId = participantId)
+        (participant) => participant.participantId === participantId
       );
       const addPenaltyAction = {
         type: ADD_PENALTY,
@@ -224,6 +224,7 @@ export function positionActions({
       };
       validActions.push(addPenaltyAction);
       validActions.push(addNicknameAction);
+
       const { validSwapAction } = getValidSwapAction({
         drawId,
         drawPosition,
