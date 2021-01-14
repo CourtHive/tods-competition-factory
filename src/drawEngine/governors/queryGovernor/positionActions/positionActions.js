@@ -146,6 +146,12 @@ export function positionActions({
   }
 
   const { participantId } = positionAssignment || {};
+  const participant =
+    participantId &&
+    tournamentParticipants.find(
+      (participant) => participant.participantId === participantId
+    );
+
   if (positionAssignment) {
     if (isMainStageSequence1 && !activeDrawPositions.includes(drawPosition)) {
       validActions.push({
@@ -186,6 +192,7 @@ export function positionActions({
         validActions.push({
           type: SEED_VALUE,
           method: SEED_VALUE_METHOD,
+          participant,
           payload: {
             drawId,
             structureId,
@@ -198,9 +205,6 @@ export function positionActions({
     }
 
     if (!isByePosition && participantId) {
-      const participant = tournamentParticipants.find(
-        (participant) => participant.participantId === participantId
-      );
       const addPenaltyAction = {
         type: ADD_PENALTY,
         method: ADD_PENALTY_METHOD,
