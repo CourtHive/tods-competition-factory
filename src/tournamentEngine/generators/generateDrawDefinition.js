@@ -39,6 +39,7 @@ export function generateDrawDefinition(props) {
     drawType = SINGLE_ELIMINATION,
     playoffMatchUpFormat,
     ignoreAllowedDrawTypes,
+    feedPolicy,
 
     seededParticipants,
     seedByRanking = true,
@@ -133,6 +134,8 @@ export function generateDrawDefinition(props) {
     uuids,
     matchUpFormat,
     playoffMatchUpFormat,
+
+    feedPolicy,
   });
 
   const { structures } = drawEngine.getDrawStructures({

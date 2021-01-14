@@ -17,7 +17,6 @@ import {
   FEED_IN,
   FEED_IN_CHAMPIONSHIP,
   FICR16,
-  FICQF,
   FICSF,
 } from '../../../constants/drawDefinitionConstants';
 
@@ -229,6 +228,7 @@ it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({
     drawSize: 32,
     drawType: MFIC,
+    feedPolicy: { roundGroupedOrder: [] },
   });
   expect(mainDrawMatchUps.length).toEqual(31);
   expect(consolationMatchUps.length).toEqual(23);

@@ -37,8 +37,8 @@ it('can recognize valid SWAP positions', () => {
   const option = result.validActions.find(
     (action) => action.type === SWAP_PARTICIPANTS
   );
-  expect(option.availableAssignments[0].drawPosition).toEqual(2);
-  expect(option.availableAssignments.length).toEqual(31);
+  expect(option.availableAssignments[0].drawPosition).toEqual(3); // because byes are not currently valid
+  expect(option.availableAssignments.length).toEqual(29); // because byes are not currently valid
 
   const payload = option.payload;
   payload.drawPositions.push(option.availableAssignments[0].drawPosition);

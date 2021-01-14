@@ -17,21 +17,21 @@ it('properly orders round robin participants', () => {
       outcomes: [
         {
           roundNumber: 1,
-          structureIndex: 1,
+          structureOrder: 1,
           scoreString: '6-2 6-2',
           matchUpFormat: FORMAT_STANDARD,
           winningSide: 1,
         },
         {
           roundNumber: 2,
-          structureIndex: 1,
+          structureOrder: 1,
           scoreString: '6-2 6-2',
           matchUpFormat: FORMAT_STANDARD,
           winningSide: 2,
         },
         {
           roundNumber: 3,
-          structureIndex: 1,
+          structureOrder: 1,
           scoreString: '6-2 3-6 [10-3]',
           matchUpFormat: FORMAT_STANDARD,
           winningSide: 2,

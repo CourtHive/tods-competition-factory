@@ -1,7 +1,11 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 
-import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../constants/drawDefinitionConstants';
+import {
+  BOTTOM_UP,
+  FEED_IN_CHAMPIONSHIP_TO_SF,
+  TOP_DOWN,
+} from '../../../constants/drawDefinitionConstants';
 
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const {
@@ -13,6 +17,24 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   } = feedInChampionship({
     drawSize: 32,
     drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
+    feedPolicy: {
+      roundGroupedOrder: [
+        [1], // complete round TOP_DOWN
+        [1], // complete round BOTTOM_UP
+        [1, 2], // 1st half BOTTOM_UP, 2nd half BOTTOM_UP
+        [2, 1, 4, 3], // 2nd Qtr BOTTOM_UP, 1st Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP
+        [1, 2, 3, 4], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
+        [1], // complete round BOTTOM_UP
+      ],
+      roundFeedProfiles: [
+        TOP_DOWN,
+        BOTTOM_UP,
+        BOTTOM_UP,
+        BOTTOM_UP,
+        BOTTOM_UP,
+        BOTTOM_UP,
+      ],
+    },
   });
 
   expect(mainDrawMatchUps.length).toEqual(31);
@@ -52,13 +74,13 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
     [2, 7, 1, '5-8', 'C-R16'],
     [2, 8, 1, '1-4', 'C-R16'],
 
-    [4, 1, 1, '1-8', 'C-QF'],
-    [4, 2, 1, '9-16', 'C-QF'],
-    [4, 3, 1, '17-24', 'C-QF'],
-    [4, 4, 1, '25-32', 'C-QF'],
+    [4, 1, 1, '9-16', 'C-QF'],
+    [4, 2, 1, '1-8', 'C-QF'],
+    [4, 3, 1, '25-32', 'C-QF'],
+    [4, 4, 1, '17-24', 'C-QF'],
 
-    [6, 1, 1, '17-32', 'C-SF'],
-    [6, 2, 1, '1-16', 'C-SF'],
+    [6, 1, 1, '1-16', 'C-SF'],
+    [6, 2, 1, '17-32', 'C-SF'],
   ];
 
   validateSourceDrawPositionRanges({
@@ -84,7 +106,7 @@ function validateSourceDrawPositionRanges({ matchUps, validations }) {
     const side = matchUp.sides.find((side) => side.sideNumber === sideNumber);
 
     if (side?.sourceDrawPositionRange !== range) {
-      console.log(validation);
+      console.log({ validation });
       console.log(matchUp);
     }
     expect(side.sourceDrawPositionRange).toEqual(range);

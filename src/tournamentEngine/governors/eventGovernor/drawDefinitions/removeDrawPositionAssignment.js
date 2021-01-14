@@ -41,8 +41,9 @@ export function removeDrawPositionAssignment(props) {
       if (destroyPair && participantType === PAIR) {
         const result = destroyPairEntry({
           tournamentRecord,
-          event,
+          drawDefinition,
           participantId,
+          event,
         });
         if (result.error) return result;
         modifyEntriesStatus({

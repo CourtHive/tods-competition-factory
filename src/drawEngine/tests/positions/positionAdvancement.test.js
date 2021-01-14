@@ -126,7 +126,11 @@ it('can direct participants in First Match Consolation (FMLC)', () => {
 
 it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   const drawSize = 16;
-  feedInChampionship({ drawSize, drawType: FEED_IN_CHAMPIONSHIP });
+  feedInChampionship({
+    drawSize,
+    drawType: FEED_IN_CHAMPIONSHIP,
+    feedPolicy: { roundGroupedOrder: [] },
+  });
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(4);
   const {

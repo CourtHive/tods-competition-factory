@@ -150,7 +150,10 @@ it('can generate a Curtis Consolation draw', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 64 });
-  drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+  drawEngine.generateDrawType({
+    drawType: CURTIS,
+    description: CURTIS,
+  });
 
   const { drawDefinition: state } = drawEngine.getState();
   expect(state.structures.length).toEqual(4);

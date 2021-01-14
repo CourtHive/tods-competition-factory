@@ -23,8 +23,10 @@ export function getValidSwapAction({
   const availableDrawPositions = inactiveDrawPositions?.filter(
     (position) => position !== drawPosition
   );
-  const filteredAssignments = positionAssignments.filter((assignment) =>
-    availableDrawPositions?.includes(assignment.drawPosition)
+  const filteredAssignments = positionAssignments.filter(
+    (assignment) =>
+      availableDrawPositions?.includes(assignment.drawPosition) &&
+      !assignment.bye
   );
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
