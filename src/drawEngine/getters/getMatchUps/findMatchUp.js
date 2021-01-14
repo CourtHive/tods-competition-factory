@@ -23,12 +23,9 @@ export function findMatchUp({
   tournamentParticipants,
   matchUpId,
   inContext,
-  // nextMatchUps,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  // TODO: use allDrawMatchUps so that { nextMatchUps } option can be added;
-  // it is necessary to return structure so that getMatchUpFormat can traverse the hierarchy
 
   const { structures } = getDrawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {

@@ -1,3 +1,7 @@
+import { modifyEntriesStatus } from './modifyEntriesStatus';
+import { removeEventEntries } from './removeEventEntries';
+import { addEventEntries } from './addEventEntries';
+
 import { UNPAIRED } from '../../../../constants/entryStatusConstants';
 import {
   INVALID_EVENT_TYPE,
@@ -11,8 +15,6 @@ import {
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { PAIR } from '../../../../constants/participantTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { addEventEntries } from './addEventEntries';
-import { removeEventEntries } from './removeEventEntries';
 
 /**
  *
@@ -25,6 +27,7 @@ export function destroyPairEntry({
   tournamentRecord,
   drawDefinition,
   participantId,
+  entryStatus,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -71,7 +74,16 @@ export function destroyPairEntry({
     participantIds: individualParticipantIds,
   });
 
-  if (result.error) console.log('addEventEntries:', { error: result.error });
+  if (result.error) return result;
+
+  if (entryStatus) {
+    return modifyEntriesStatus({
+      drawDefinition,
+      participantIds: individualParticipantIds,
+      event,
+      entryStatus,
+    });
+  }
 
   return SUCCESS;
 }
