@@ -550,6 +550,18 @@ Returns all grouping participants which include participantId
 
 ---
 
+## modifySeedAssignment
+
+Change the display representation of a seedNumber
+
+- @param {string} drawId - id of drawDefinition within which structure occurs
+- @param {object} drawDefinition - added automatically by tournamentEngine
+- @param {string} participantId - id of participant which will receive the seedValue
+- @param {string} structureId - id of structure within drawDefinition
+- @param {string} seedValue - supports value of e.g. '5-8'
+
+---
+
 ## publishEvent
 
 ---

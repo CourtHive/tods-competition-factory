@@ -37,7 +37,7 @@ export function buildDrawHierarchy({ matchUps }) {
 
   const maxRound = Math.max(...Object.keys(roundMatchUps));
 
-  const maxRoundMatchUpsCount = roundMatchUps[maxRound].length;
+  const maxRoundMatchUpsCount = roundMatchUps[maxRound]?.length || 0;
   const additionalRounds = Math.ceil(
     Math.log(maxRoundMatchUpsCount) / Math.log(2)
   );
@@ -96,8 +96,8 @@ export function buildDrawHierarchy({ matchUps }) {
     });
 
   if (
-    missingDrawPositions.length &&
-    secondRoundEntries.length === missingDrawPositions.length
+    missingDrawPositions?.length &&
+    secondRoundEntries?.length === missingDrawPositions?.length
   ) {
     const missingPairs = secondRoundEntries.map((drawPosition, index) => {
       return [drawPosition, missingDrawPositions[index]].sort(drawPositionSort);
@@ -147,8 +147,8 @@ export function buildDrawHierarchy({ matchUps }) {
       .map(getAdvancingParticipantId)
       .filter((f) => f);
 
-    const feedRound = roundMatchUps.length === previousRound.length;
-    const matchRound = roundMatchUps.length === previousRound.length / 2;
+    const feedRound = roundMatchUps?.length === previousRound?.length;
+    const matchRound = roundMatchUps?.length === previousRound?.length / 2;
     if (roundNumber === 1) {
       roundMatchUps.forEach((matchUp) => {
         const drawPositions = matchUp.drawPositions || [];

@@ -44,6 +44,7 @@ import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositi
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
+import { modifySeedAssignment } from './modifySeedAssignment';
 
 const eventGovernor = {
   addEvent,
@@ -64,6 +65,7 @@ const eventGovernor = {
   addEventEntryPairs,
   removeEventEntries,
   modifyEntriesStatus,
+  modifySeedAssignment,
 
   addDrawDefinitionTimeItem,
 

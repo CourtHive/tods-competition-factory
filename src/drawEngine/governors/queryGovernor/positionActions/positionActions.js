@@ -1,10 +1,11 @@
-import { stageEntries } from '../../../getters/stageGetter';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { stageEntries } from '../../../getters/stageGetter';
 
-import { getValidAlternatesAction } from './participantAlternates';
 import { getValidAssignmentActions } from './participantAssignments';
+import { getValidAlternatesAction } from './participantAlternates';
 import { getValidSwapAction } from './participantSwaps';
+import { isValidSeedPosition } from '../../../getters/seedGetter';
 
 import {
   WILDCARD,
@@ -23,6 +24,8 @@ import {
   ADD_NICKNAME,
   ADD_PENALTY,
   ASSIGN_BYE,
+  SEED_VALUE,
+  SEED_VALUE_METHOD,
   ADD_PENALTY_METHOD,
   ADD_NICKNAME_METHOD,
   WITHDRAW_PARTICIPANT,
@@ -33,6 +36,7 @@ import {
   LOSER,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
+import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 
 /**
  *
@@ -76,12 +80,12 @@ export function positionActions({
    * Directions such as West in Compass or Playoff structures should not have positionActions
    */
   if (structure.stageSequence > 1) {
-    const asTargetLink = drawDefinition.links?.find(
+    const hasTargetLink = drawDefinition.links?.find(
       (link) => link.target.structureId === structureId
     );
     if (
-      asTargetLink?.linkType === LOSER &&
-      asTargetLink?.feedProfile !== DRAW
+      hasTargetLink?.linkType === LOSER &&
+      hasTargetLink?.feedProfile !== DRAW
     ) {
       if (devContext) console.log('ss2 no valid actions');
       return { validActions };
@@ -141,6 +145,7 @@ export function positionActions({
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }
 
+  const { participantId } = positionAssignment || {};
   if (positionAssignment) {
     if (isMainStageSequence1 && !activeDrawPositions.includes(drawPosition)) {
       validActions.push({
@@ -164,9 +169,34 @@ export function positionActions({
           payload: { drawId, structureId, drawPosition, replaceWithBye: true },
         });
       }
+
+      if (
+        !isByePosition &&
+        isValidSeedPosition({ drawDefinition, structureId, drawPosition })
+      ) {
+        const { seedAssignments } = getStructureSeedAssignments({
+          drawDefinition,
+          structure,
+        });
+        const { seedNumber, seedValue } =
+          seedAssignments.find(
+            (assignment) => assignment.participantId === participantId
+          ) || {};
+
+        validActions.push({
+          type: SEED_VALUE,
+          method: SEED_VALUE_METHOD,
+          payload: {
+            drawId,
+            structureId,
+            participantId,
+            seedNumber,
+            seedValue,
+          },
+        });
+      }
     }
 
-    const { participantId } = positionAssignment;
     if (!isByePosition && participantId) {
       const participant = tournamentParticipants.find(
         (participant) => (participant.participantId = participantId)

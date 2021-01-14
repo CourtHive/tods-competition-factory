@@ -5,16 +5,16 @@
   Insures entries may not be removed if draw stage is active
 */
 
-import { assignSeed } from './seedAssignment';
-
-import {
-  setStageDrawSize,
-  setStageAlternates,
-  setStageWildcardsCount,
-  setStageQualifiersCount,
-} from './stageEntryCounts';
 import { addDrawEntry, addDrawEntries } from './addingDrawEntries';
+import { modifySeedAssignment } from './modifySeedAssignment';
 import { removeEntry } from './removingDrawEntries';
+import { assignSeed } from './seedAssignment';
+import {
+  setStageQualifiersCount,
+  setStageWildcardsCount,
+  setStageAlternates,
+  setStageDrawSize,
+} from './stageEntryCounts';
 
 const entryGovernor = {
   addDrawEntry,
@@ -26,6 +26,7 @@ const entryGovernor = {
   setStageAlternates,
   setStageWildcardsCount,
   setStageQualifiersCount,
+  modifySeedAssignment,
 };
 
 export default entryGovernor;

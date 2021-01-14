@@ -48,7 +48,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
   const roundProfile = Object.assign(
     {},
     ...Object.keys(roundMatchUps).map((round) => {
-      return { [round]: { matchUpsCount: roundMatchUps[round].length } };
+      return { [round]: { matchUpsCount: roundMatchUps[round]?.length } };
     })
   );
 

@@ -52,6 +52,7 @@ export {
 export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { genderConstants } from './constants/genderConstants';
+export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
 export {
