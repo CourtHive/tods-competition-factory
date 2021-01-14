@@ -5,7 +5,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function reorderUpcomingMatchUps(params) {
   const { drawEngine, tournamentRecords, deepCopy } = params;
   const { matchUpsContextIds, firstToLast } = params;
-  const matchUpsCount = matchUpsContextIds.length;
+  const matchUpsCount = matchUpsContextIds?.length;
+  if (!matchUpsCount) return SUCCESS;
 
   let matchUpsModified = 0;
   matchUpsContextIds.forEach((context, index) => {

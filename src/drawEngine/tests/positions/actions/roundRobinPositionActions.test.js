@@ -9,6 +9,7 @@ import {
   REMOVE_ASSIGNMENT,
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
+  WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
 
 it('can return accurate position details when requesting positionActions', () => {
@@ -50,6 +51,7 @@ it('can return accurate position details when requesting positionActions', () =>
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
+  expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(true);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
 
   drawPosition = 2;
@@ -69,4 +71,5 @@ it('can return accurate position details when requesting positionActions', () =>
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   // expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true); temporarily disabled
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+  expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(true);
 });

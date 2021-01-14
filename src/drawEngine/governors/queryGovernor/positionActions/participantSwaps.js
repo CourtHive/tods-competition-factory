@@ -31,17 +31,21 @@ export function getValidSwapAction({
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
-  const participantsAvailable = Object.assign(
+  const participantsAvailable = (
+    tournamentParticipants || []
+  ).filter((participant) =>
+    availableParticipantIds.includes(participant.participantId)
+  );
+  const availableParticpantsMap = Object.assign(
     {},
-    ...tournamentParticipants
-      ?.filter((participant) =>
-        availableParticipantIds.includes(participant.participantId)
-      )
-      .map((participant) => ({ [participant.participantId]: participant }))
+    ...participantsAvailable.map((participant) => ({
+      [participant.participantId]: participant,
+    }))
   );
   const availableAssignments = filteredAssignments.map((assignment) => {
     const participant =
-      participantsAvailable && participantsAvailable[assignment.participantId];
+      availableParticpantsMap &&
+      availableParticpantsMap[assignment.participantId];
     return Object.assign({}, assignment, {
       participant: makeDeepCopy(participant),
     });

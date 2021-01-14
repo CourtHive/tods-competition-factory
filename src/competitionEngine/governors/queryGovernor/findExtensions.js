@@ -24,7 +24,7 @@ export function findExtensions({ tournamentRecords, name }) {
     })
     .filter((f) => f && !f.message);
 
-  if (!extensions.length) return { message: NOT_FOUND };
+  if (!extensions?.length) return { message: NOT_FOUND };
 
   return { extensions, error: errors.length && errors };
 }
