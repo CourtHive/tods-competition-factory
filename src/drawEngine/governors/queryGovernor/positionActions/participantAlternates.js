@@ -31,11 +31,18 @@ export function getValidAlternatesAction({
         entry.entryStatus === ALTERNATE &&
         !assignedParticipantIds.includes(entry.participantId)
     )
+    .sort((a, b) => (a.entryPosition || 0) - (b.entryPosition || 0))
     .map((entry) => entry.participantId);
 
   const availableAlternates = tournamentParticipants?.filter((participant) =>
     availableAlternatesParticipantIds.includes(participant.participantId)
   );
+  availableAlternates.forEach((alternate) => {
+    const entry = (drawDefinition.entries || []).find(
+      (entry) => entry.participantId === alternate.participantId
+    );
+    alternate.entryPosition = entry?.entryPosition;
+  });
 
   if (availableAlternatesParticipantIds.length) {
     const validAlternatesAction = {

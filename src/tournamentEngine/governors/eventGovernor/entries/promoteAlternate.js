@@ -5,7 +5,6 @@ import {
 import {
   MISSING_EVENT,
   INVALID_ENTRY_STATUS,
-  MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND_IN_STAGE,
@@ -17,6 +16,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function promoteAlternate({
   tournamentRecord,
+  drawDefinition,
   event,
 
   participantId,
@@ -27,13 +27,43 @@ export function promoteAlternate({
   if (!event) return { error: MISSING_EVENT };
   if (!event.entries) event.entries = [];
 
-  const alternates = event.entries.filter(
+  if (event) {
+    const result = promoteWithinElement({
+      element: event,
+      participantId,
+      stage,
+      stageSequence,
+    });
+    if (result.error) return result;
+  }
+  if (drawDefinition) {
+    const result = promoteWithinElement({
+      element: drawDefinition,
+      participantId,
+      stage,
+      stageSequence,
+    });
+    if (result.error) return result;
+  }
+
+  return SUCCESS;
+}
+
+function promoteWithinElement({
+  element,
+  participantId,
+  stage,
+  stageSequence,
+}) {
+  const alternates = element.entries.filter(
     (entry) => entry.entryStatus === ALTERNATE
   );
 
   // if no participantId is provided, take the alternate with the lowest entryPosition
   const participantEntry =
-    event.entries.find((entry) => entry.participantId === participantId) ||
+    (element.entries || []).find(
+      (entry) => entry.participantId === participantId
+    ) ||
     alternates.reduce((participantEntry, entry) => {
       const { entryPosition } = entry;
       return !entryPosition
@@ -62,7 +92,7 @@ export function promoteAlternate({
 
   if (entryPosition) {
     // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
-    event.entries.forEach((entry) => {
+    element.entries.forEach((entry) => {
       if (
         entry.entryStatus === ALTERNATE &&
         entry.entryPosition > entryPosition
