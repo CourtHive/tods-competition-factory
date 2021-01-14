@@ -6,6 +6,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
 import {
   HIDDEN,
+  PUBLIC,
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
@@ -50,7 +51,11 @@ export function deleteDrawDefinitions({
         ) || [];
       const timeItem = {
         itemType: `${PUBLISH}.${STATUS}`,
-        itemValue: { [status]: { ...publishStatus, drawIds: updatedDrawIds } },
+        itemValue: {
+          [PUBLIC]: {
+            drawIds: updatedDrawIds,
+          },
+        },
       };
       const result = addEventTimeItem({ event, timeItem });
       if (result.error) return { error: result.error };
