@@ -1,6 +1,5 @@
 import { UUID } from '../utilities';
 import { makeDeepCopy } from '../utilities';
-import { drawEngine } from '../drawEngine';
 import { auditEngine } from '../auditEngine';
 
 import { findEvent } from './getters/eventGetter';
@@ -81,7 +80,6 @@ export const tournamentEngine = (function () {
   };
   fx.devContext = (isDev) => {
     devContext = isDev;
-    drawEngine.devContext(isDev);
     auditEngine.devContext(isDev);
     return fx;
   };
@@ -109,13 +107,6 @@ export const tournamentEngine = (function () {
           tournamentRecord,
           drawId,
         });
-        const { errors: drawEngineErrors } = drawEngine.setState(
-          drawDefinition,
-          false // deepCopy false when drawEngine invoked within tournamentEngine
-        );
-        if (drawEngineErrors) {
-          return drawEngineErrors;
-        }
         params = Object.assign({}, params, { drawDefinition, event });
       } else if (params.eventId && !params.event) {
         const { event } = findEvent({
@@ -134,7 +125,6 @@ export const tournamentEngine = (function () {
       deepCopy,
       policies,
       devContext,
-      drawEngine,
       auditEngine,
       tournamentRecord,
     });

@@ -16,6 +16,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';
 
 export function roundRobinWithPlayoffsTest({
   drawSize,
@@ -190,7 +191,7 @@ export function roundRobinWithPlayoffsTest({
   });
   expect(result).toEqual(SUCCESS);
 
-  const {
+  let {
     drawDefinition: updatedDrawDefinition,
   } = tournamentEngine.getDrawDefinition({ drawId });
 
@@ -216,10 +217,14 @@ export function roundRobinWithPlayoffsTest({
     expect(byes.length).toEqual(playoffGroups[index].byesCount);
   });
 
-  const allPlayoffPositionsFilled = drawEngine.allPlayoffPositionsFilled({
+  ({ drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent({
+    drawId,
+  }));
+  const allPositionsFilled = allPlayoffPositionsFilled({
+    drawDefinition: updatedDrawDefinition,
     structureId: mainStructure.structureId,
   });
-  expect(allPlayoffPositionsFilled).toEqual(true);
+  expect(allPositionsFilled).toEqual(true);
 
   return { drawDefinition: updatedDrawDefinition };
 }

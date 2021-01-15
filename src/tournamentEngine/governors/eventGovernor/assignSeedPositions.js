@@ -1,42 +1,23 @@
-import { findEvent } from '../../getters/eventGetter';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { uniqueValues } from '../../../utilities/arrays';
+import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
+import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
   MISSING_ASSIGNMENTS,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
-
-interface Assignment {
-  seedValue?: string;
-  seedNumber: number;
-  participantId: string;
-}
-
-interface SeedAssignmentProps {
-  tournamentRecord: any;
-  deepCopy: boolean;
-  drawEngine: any;
-  drawId: string;
-  eventId?: string;
-  structureId?: string;
-  stage?: string;
-  stageSequence?: number;
-  assignments: Assignment[];
-  useExistingSeedLimit: boolean /* option to restrict assignments to existing seedNumbers */;
-}
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated
  * To be used *before* participants are positioned
  */
-export function assignSeedPositions(props: SeedAssignmentProps) {
+export function assignSeedPositions(props) {
   const {
     tournamentRecord,
-    deepCopy,
-    drawEngine,
-    eventId,
+    drawDefinition,
     drawId,
     structureId,
     assignments,
@@ -49,23 +30,12 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
 
-  const { event, drawDefinition } = findEvent({
-    tournamentRecord,
-    eventId,
-    drawId,
-  });
-
-  drawEngine.setState(drawDefinition, deepCopy);
-  const {
-    seedAssignments,
-    seedLimit,
-    error,
-  } = drawEngine.getStructureSeedAssignments({
+  const { seedAssignments, seedLimit, error } = getStructureSeedAssignments({
     drawDefinition,
     structureId,
   });
 
-  const errors: string[] = [];
+  const errors = [];
   if (error) errors.push(error);
 
   /**
@@ -93,7 +63,7 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
    */
   const updatedAssignments = Object.values(mergeObject);
   const participantIds = updatedAssignments
-    .map((assignment: any) => assignment?.participantId)
+    .map((assignment) => assignment?.participantId)
     .filter((f) => f);
 
   if (participantIds.length !== uniqueValues(participantIds).length) {
@@ -102,8 +72,8 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
     };
   }
 
-  updatedAssignments.forEach((assignment: any) => {
-    const result = drawEngine.assignSeed({
+  updatedAssignments.forEach((assignment) => {
+    const result = assignSeed({
       ...assignment,
       drawDefinition,
       structureId,
@@ -115,15 +85,6 @@ export function assignSeedPositions(props: SeedAssignmentProps) {
       modifications++;
     }
   });
-
-  if (modifications && event) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  }
 
   return modifications
     ? SUCCESS

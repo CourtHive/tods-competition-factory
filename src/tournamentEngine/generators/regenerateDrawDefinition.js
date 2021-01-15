@@ -6,6 +6,7 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
+import { findDrawDefinitionExtension } from '../governors/queryGovernor/extensionQueries';
 
 export function regenerateDrawDefinition({
   tournamentRecord,
@@ -25,7 +26,14 @@ export function regenerateDrawDefinition({
     drawDefinition,
   });
 
-  if (drawDefinition.drawProfile) {
+  const { extension } = findDrawDefinitionExtension({
+    drawDefinition,
+    name: 'drawProfile',
+  });
+
+  const drawProfile = extension?.value;
+
+  if (drawProfile) {
     const { drawDefinition: newDrawDefinition } = generateDrawDefinition({
       event,
       drawEngine,
@@ -33,7 +41,7 @@ export function regenerateDrawDefinition({
       policyDefinitions,
       drawName: drawDefinition.drawName,
       drawType: drawDefinition.drawType,
-      ...drawDefinition.drawProfile,
+      ...drawProfile,
     });
 
     // TODO: write test to insure that appliedPolicies are copied faithfully

@@ -1,14 +1,10 @@
-import { makeDeepCopy, numericSort } from '../../../utilities';
+import { numericSort } from '../../../utilities';
 
 export function getMatchUp({ matchUps, matchUpId }) {
   const matchUp = (matchUps || []).reduce((matchUp, current) => {
     return current.matchUpId === matchUpId ? current : matchUp;
   }, undefined);
   return { matchUp };
-}
-
-export function publicGetRoundMatchUps(props) {
-  return makeDeepCopy(getRoundMatchUps(props));
 }
 
 export function getRoundMatchUps({ matchUps = [] }) {

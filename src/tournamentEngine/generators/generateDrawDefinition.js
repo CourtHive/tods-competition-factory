@@ -1,3 +1,4 @@
+import drawEngine from '../../drawEngine';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
@@ -24,7 +25,7 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateDrawDefinition(props) {
-  const { tournamentRecord, drawEngine, event } = props;
+  const { tournamentRecord, event } = props;
   let { structureOptions } = props;
 
   const {

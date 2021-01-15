@@ -30,13 +30,14 @@ import {
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
-import { drawEngine } from '../../../drawEngine';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getPolicyDefinition } from './getPolicyDefinition';
 import { makeDeepCopy } from '../../../utilities';
 import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
+
+import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
 
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
@@ -86,7 +87,7 @@ const queryGovernor = {
   getPolicyDefinition,
 
   // pass through accessors
-  getMatchUpScheduleDetails: drawEngine.getMatchUpScheduleDetails,
+  getMatchUpScheduleDetails: drawEngineGetMatchUpScheduleDetails,
 };
 
 export default queryGovernor;
