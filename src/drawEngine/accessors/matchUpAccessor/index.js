@@ -5,7 +5,6 @@ export {
   getMatchUp,
   getRoundMatchUps,
   getCollectionPositionMatchUps,
-  publicGetRoundMatchUps,
 } from './matchUps';
 
 export { scheduledMatchUpTime } from './scheduledTime';

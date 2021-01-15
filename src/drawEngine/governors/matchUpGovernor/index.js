@@ -1,14 +1,10 @@
-import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
+import { setMatchUpStatus } from './setMatchUpStatus';
+import { validDrawPositions } from './validDrawPositions';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-import { validDrawPositions } from './validDrawPositions';
-
-import {
-  publicFindMatchUp,
-  publicGetRoundMatchUps,
-} from '../../getters/getMatchUps';
+import { publicFindMatchUp, getRoundMatchUps } from '../../getters/getMatchUps';
 
 import {
   addMatchUpScheduledDayDate,
@@ -40,7 +36,7 @@ const matchUpGovernor = {
   addMatchUpOfficial,
 
   findMatchUp: publicFindMatchUp,
-  getRoundMatchUps: publicGetRoundMatchUps,
+  getRoundMatchUps,
 
   validDrawPositions,
 };

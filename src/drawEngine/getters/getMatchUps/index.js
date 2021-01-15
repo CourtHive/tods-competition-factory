@@ -6,6 +6,5 @@ export { getRoundPresentationProfile } from './getRoundPresentationProfile';
 export { getDrawMatchUps, getAllDrawMatchUps } from './drawMatchUps';
 export {
   getRoundMatchUps,
-  publicGetRoundMatchUps,
   getCollectionPositionMatchUps,
 } from '../../accessors/matchUpAccessor';
