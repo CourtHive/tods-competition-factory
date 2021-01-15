@@ -1,6 +1,7 @@
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { makeDeepCopy, unique } from '../../../utilities';
+
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 
 export function getParticipantIdMatchUps({
   tournamentParticipants,

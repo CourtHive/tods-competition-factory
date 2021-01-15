@@ -63,7 +63,6 @@ const participantGovernor = {
   getPairedParticipant,
   setParticipantScaleItem,
   setParticipantScaleItems,
-  participantsSignInStatus: modifyParticipantsSignInStatus, // legacy until TD switchover
   modifyParticipantsSignInStatus,
 
   getParticipantEventDetails,

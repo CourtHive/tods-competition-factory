@@ -15,7 +15,11 @@ export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
   const eventCopy = makeDeepCopy(event);
   if (context) Object.assign(eventCopy, context);
 
-  const drawDefinitionCopy = drawDefinition && makeDeepCopy(drawDefinition);
+  const drawDefinitionCopy =
+    drawDefinition &&
+    eventCopy.drawDefinitions?.find(
+      ({ drawId }) => drawDefinition.drawId === drawId
+    );
 
   return { event: eventCopy, drawDefinition: drawDefinitionCopy };
 }
