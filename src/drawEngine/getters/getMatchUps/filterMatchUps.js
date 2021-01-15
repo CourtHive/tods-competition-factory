@@ -5,16 +5,17 @@ import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAss
 
 export function filterMatchUps({
   stages,
-  drawIds,
   courtIds,
   matchUps,
-  structureIds,
+  matchUpTypes,
   roundNumbers,
   matchUpFormat,
   collectionIds,
   scheduledDate,
   isMatchUpTie,
   localTimeZone,
+  matchUpFormats,
+  matchUpStatuses,
   localPerspective,
   isCollectionMatchUp,
 }) {
@@ -27,30 +28,30 @@ export function filterMatchUps({
       if (isCollectionMatchUp && !matchUp.collectionId) return false;
       if (!isCollectionMatchUp && matchUp.collectionId) return false;
     }
-    if (drawIds && drawIds.length && !drawIds.includes(matchUp.drawId)) {
-      return false;
-    }
     if (stages && stages.length && !stages.includes(matchUp.stage)) {
       return false;
     }
     if (
-      collectionIds &&
-      collectionIds.length &&
+      collectionIds?.length &&
       !collectionIds.includes(matchUp.collectionId)
     ) {
       return false;
     }
-    if (
-      structureIds &&
-      structureIds.length &&
-      !structureIds.includes(matchUp.structureId)
-    ) {
+    if (roundNumbers?.length && !roundNumbers.includes(matchUp.roundNumber)) {
       return false;
     }
     if (
-      roundNumbers &&
-      roundNumbers.length &&
-      !roundNumbers.includes(matchUp.roundNumber)
+      matchUpStatuses?.length &&
+      !matchUpStatuses.includes(matchUp.matchUpStatus)
+    ) {
+      return false;
+    }
+    if (matchUpTypes?.length && !matchUpTypes.includes(matchUp.matchUpType)) {
+      return false;
+    }
+    if (
+      matchUpFormats?.length &&
+      !matchUpFormats.includes(matchUp.matchUpFormat)
     ) {
       return false;
     }
