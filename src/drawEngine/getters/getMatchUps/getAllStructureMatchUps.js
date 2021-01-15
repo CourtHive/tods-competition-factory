@@ -48,12 +48,35 @@ export function getAllStructureMatchUps({
   let matchUps = [],
     collectionPositionMatchUps = {},
     roundMatchUps = {};
+
   if (!structure) {
     return {
       matchUps,
       collectionPositionMatchUps,
       roundMatchUps,
       error: MISSING_STRUCTURE,
+    };
+  }
+
+  const thisEvent =
+    !context?.eventId ||
+    (!matchUpFilters?.eventIds?.length && !contextFilters?.eventIds?.length) ||
+    matchUpFilters?.eventIds?.includes(context.eventId) ||
+    contextFilters?.eventIds?.includes(context.eventId);
+  const thisStructure =
+    !matchUpFilters?.structureIds?.length ||
+    matchUpFilters.structureIds.includes(structure.structureId);
+  const thisDraw =
+    !drawDefinition ||
+    !matchUpFilters?.drawIds?.length ||
+    matchUpFilters.drawIds.includes(drawDefinition.drawId);
+
+  // don't process this structure if filters and filters don't include eventId, drawId or structureId
+  if (!thisEvent || !thisStructure || !thisDraw) {
+    return {
+      matchUps,
+      collectionPositionMatchUps,
+      roundMatchUps,
     };
   }
 
