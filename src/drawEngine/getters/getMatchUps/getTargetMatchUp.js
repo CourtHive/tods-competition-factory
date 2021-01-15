@@ -1,4 +1,6 @@
 import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { chunkArray, generateRange } from '../../../utilities';
+import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import {
   DRAW,
@@ -8,8 +10,6 @@ import {
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
-import { chunkArray, generateRange } from '../../../utilities';
-import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 export function getTargetMatchUp({
   drawDefinition,

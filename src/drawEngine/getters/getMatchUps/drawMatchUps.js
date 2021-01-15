@@ -75,11 +75,20 @@ export function getDrawMatchUps({
     allAbandonedMatchUps = allAbandonedMatchUps.concat(...abandonedMatchUps);
     allCompletedMatchUps = allCompletedMatchUps.concat(...completedMatchUps);
     if (nextMatchUps) {
-      addUpcomingMatchUps({ drawDefinition, matchUps: allByeMatchUps });
-      addUpcomingMatchUps({ drawDefinition, matchUps: allPendingMatchUps });
-      addUpcomingMatchUps({ drawDefinition, matchUps: allUpcomingMatchUps });
-      addUpcomingMatchUps({ drawDefinition, matchUps: allAbandonedMatchUps });
-      addUpcomingMatchUps({ drawDefinition, matchUps: allCompletedMatchUps });
+      const nextFilter = (typeof nextMatchUps === 'object' && nextMatchUps) || {
+        completed: true,
+        upcoming: true,
+        pending: true,
+        bye: true,
+      };
+      const { completed, upcoming, pending, bye } = nextFilter;
+      const matchUps = [].concat(
+        ...((completed && completedMatchUps) || []),
+        ...((upcoming && upcomingMatchUps) || []),
+        ...((pending && pendingMatchUps) || []),
+        ...((bye && byeMatchUps) || [])
+      );
+      addUpcomingMatchUps({ drawDefinition, matchUps });
     }
   });
 

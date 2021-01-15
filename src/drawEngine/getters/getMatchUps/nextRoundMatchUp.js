@@ -1,23 +1,12 @@
-import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-
 /*
   returns the next round matchUp for winner of given matchUp
 */
-export function nextRoundMatchUp({
-  structure,
-  tournamentParticipants,
-  matchUp,
-}) {
+export function nextRoundMatchUp({ structureMatchUps, matchUp }) {
   const { roundNumber, roundPosition } = matchUp;
-  const { matchUps } = getAllStructureMatchUps({
-    structure,
-    tournamentParticipants,
-    inContext: true,
-  });
-  const currentRoundMatchUps = matchUps.filter(
+  const currentRoundMatchUps = structureMatchUps.filter(
     (matchUp) => matchUp.roundNumber === roundNumber
   );
-  const nextRoundMatchUps = matchUps.filter(
+  const nextRoundMatchUps = structureMatchUps.filter(
     (matchUp) => matchUp.roundNumber === roundNumber + 1
   );
 

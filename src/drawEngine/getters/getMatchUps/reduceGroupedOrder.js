@@ -1,7 +1,8 @@
 import { chunkArray, numericSort } from '../../../utilities';
 
 export function reduceGroupedOrder({ groupedOrder, roundPositionsCount }) {
-  if (!groupedOrder?.length <= roundPositionsCount) return groupedOrder;
+  if (!groupedOrder || !groupedOrder?.length <= roundPositionsCount)
+    return groupedOrder;
   const groupChunks = chunkArray(
     groupedOrder,
     groupedOrder.length / roundPositionsCount

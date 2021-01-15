@@ -1,8 +1,7 @@
-import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { findMatchUp } from '../../getters/getMatchUps';
 import { nextRoundMatchUp } from '../../getters/getMatchUps';
+import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 
 import {
   LOSER,
@@ -53,10 +52,9 @@ function targetByRoundOutcome({
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
   });
-  const { matchUps: structureMatchUps } = getAllStructureMatchUps({
-    drawDefinition,
-    structure,
-  });
+  const structureMatchUps = inContextDrawMatchUps.filter(
+    (matchUp) => matchUp.structureId === structure.structureId
+  );
   const sourceRoundMatchUpCount = structureMatchUps.reduce(
     (count, currentMatchUp) => {
       return currentMatchUp.roundNumber === matchUp.roundNumber
@@ -96,7 +94,7 @@ function targetByRoundOutcome({
     }));
   } else {
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
-      structure,
+      structureMatchUps,
       matchUp,
     }));
   }
