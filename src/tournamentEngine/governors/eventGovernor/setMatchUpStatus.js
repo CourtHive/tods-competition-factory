@@ -4,7 +4,6 @@ import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matc
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 
-// import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
@@ -20,22 +19,10 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function setMatchUpStatus(props) {
   let { outcome } = props;
-  const {
-    // deepCopy,
-    // drawEngine,
-    drawDefinition,
-    // event,
-    // drawId,
-    matchUpId,
-    matchUpTieId,
-    matchUpFormat,
-  } = props;
+  const { drawDefinition, matchUpId, matchUpTieId, matchUpFormat } = props;
   let errors = [];
 
-  // drawEngine.setState(drawDefinition, deepCopy);
-
   if (matchUpFormat) {
-    // const result = drawEngine.setMatchUpFormat({ matchUpFormat, matchUpId });
     const result = setMatchUpFormat({
       drawDefinition,
       matchUpFormat,
@@ -56,7 +43,6 @@ export function setMatchUpStatus(props) {
     );
   }
 
-  // const { error: setMatchUpStatusError, matchUp } = drawEngine.setMatchUpStatus(
   const { error: setMatchUpStatusError, matchUp } = drawEngineSetMatchUpStatus({
     drawDefinition,
     matchUpId,
@@ -69,26 +55,13 @@ export function setMatchUpStatus(props) {
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);
 
-  /*
-  if (event) {
-    const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-    event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-      return drawDefinition.drawId === drawId
-        ? updatedDrawDefinition
-        : drawDefinition;
-    });
-  } else {
-    errors.push({ error: EVENT_NOT_FOUND });
-  }
-  */
-
   return errors && errors.length
     ? { error: errors }
     : Object.assign({}, SUCCESS, { matchUp });
 }
 
 export function bulkMatchUpStatusUpdate(props) {
-  const { tournamentRecord, /*drawEngine,*/ outcomes, devContext } = props;
+  const { tournamentRecord, outcomes, devContext } = props;
   let errors = [];
   let modified = 0;
   const events = {};
@@ -108,7 +81,6 @@ export function bulkMatchUpStatusUpdate(props) {
       if (drawDefinition) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
-          // drawEngine,
           drawDefinition,
           event,
           drawId,
