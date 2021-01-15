@@ -95,7 +95,6 @@ it('can generate a tournament with events and draws', () => {
   expect(result?.success).toEqual(true);
 
   // drawPositions are already assigned, so drawPosition 2 is not valid for 1st seed
-
   assignments = [
     { seedNumber: 1, seedValue: 1, participantId: getPositionParticipantId(2) },
   ];
