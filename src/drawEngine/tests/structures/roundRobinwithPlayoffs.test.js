@@ -2,10 +2,10 @@ import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
-import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-
-import { findStructure } from '../../getters/findStructure';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { chunkArray, intersection } from '../../../utilities/arrays';
+import { findStructure } from '../../getters/findStructure';
 import { setsValues } from './roundRobinSetsValues.js';
 
 import {
@@ -24,7 +24,7 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { chunkArray, intersection } from '../../../utilities/arrays';
+import { isCompletedStructure } from '../../governors/queryGovernor/structureActions';
 
 it('can generate Round Robins 32 with playoffs', () => {
   reset();
@@ -190,7 +190,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   expect(result).toEqual(SUCCESS);
 
   const matchUpFormat = 'SET3-S:6/TB7';
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,
     drawSize,
@@ -261,9 +261,13 @@ it('can advance players in Round Robin with Playoffs', () => {
         matchUpId,
         outcome,
       });
+      console.log({ result });
       expect(result.success).toEqual(true);
 
-      const thisStructureIsCompleted = drawEngine.isCompletedStructure({
+      // const thisStructureIsCompleted = drawEngine.isCompletedStructure({
+      ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+      const thisStructureIsCompleted = isCompletedStructure({
+        drawDefinition,
         structureId: structure.structureId,
       });
       expect(thisStructureIsCompleted).toEqual(
@@ -390,7 +394,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   expect(result).toEqual(SUCCESS);
 
   const matchUpFormat = 'SET3-S:6/TB7';
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
     drawType,
     drawSize,
@@ -486,7 +490,9 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       });
       expect(result.success).toEqual(true);
 
-      const thisStructureIsCompleted = drawEngine.isCompletedStructure({
+      ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+      const thisStructureIsCompleted = isCompletedStructure({
+        drawDefinition,
         structureId: structure.structureId,
       });
       expect(thisStructureIsCompleted).toEqual(
