@@ -1,7 +1,7 @@
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { assignDrawPositionBye } from '../positionGovernor/positionByes';

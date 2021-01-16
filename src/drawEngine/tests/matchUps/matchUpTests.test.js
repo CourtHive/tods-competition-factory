@@ -4,8 +4,8 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
 
-import { getStructureMatchUps } from '../../getters/getMatchUps';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
 import {
   reset,

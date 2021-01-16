@@ -1,9 +1,9 @@
 import { assignDrawPosition } from '../positionAssignment';
 import { findStructure } from '../../../getters/findStructure';
 import { addParticipantContext } from './addParticipantContext';
-import { getAllStructureMatchUps } from '../../../getters/getMatchUps';
-import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 

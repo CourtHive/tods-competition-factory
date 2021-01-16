@@ -1,5 +1,5 @@
 import { tallyParticipantResults } from '../governors/scoreGovernor/roundRobinTally';
-import { getAllStructureMatchUps } from './getMatchUps';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { findStructure } from './findStructure';
 
 import {

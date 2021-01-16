@@ -1,9 +1,7 @@
 import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
-import {
-  getAllDrawMatchUps,
-  getAllStructureMatchUps,
-} from '../../getters/getMatchUps';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
 import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';

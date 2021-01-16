@@ -5,7 +5,7 @@ import {
   unique,
 } from '../../../utilities';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps';
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 
 import {
   MISSING_DRAW_DEFINITION,

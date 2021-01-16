@@ -1,9 +1,9 @@
 import { findStructure } from '../../getters/findStructure';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
 import { drawEngine } from '../../../drawEngine';
 import { chunkArray, generateRange } from '../../../utilities';

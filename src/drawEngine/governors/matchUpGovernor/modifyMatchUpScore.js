@@ -1,9 +1,8 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import {
-  findMatchUp,
-  getAllStructureMatchUps,
-} from '../../getters/getMatchUps';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 /**

@@ -1,8 +1,8 @@
 import { drawEngine } from '../../../drawEngine';
 import { findStructure } from '../../getters/findStructure';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
-import { generateDrawStructure } from '../primitives/generateDrawStructure';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
+import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 
 it('can reliably generate presentation profiles', () => {
