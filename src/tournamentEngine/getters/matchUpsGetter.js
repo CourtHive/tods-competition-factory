@@ -1,7 +1,7 @@
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,
-} from '../../drawEngine/getters/getMatchUps';
+} from '../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';

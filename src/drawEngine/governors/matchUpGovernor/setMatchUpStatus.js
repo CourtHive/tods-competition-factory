@@ -1,4 +1,4 @@
-import { getAllDrawMatchUps } from '../../getters/getMatchUps';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';

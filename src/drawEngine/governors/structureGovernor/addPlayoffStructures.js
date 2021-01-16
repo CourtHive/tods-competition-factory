@@ -3,10 +3,10 @@ import { playoff } from '../../generators/playoffStructures';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
 
-import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

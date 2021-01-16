@@ -1,5 +1,5 @@
 import { BYE } from '../../constants/matchUpStatusConstants';
-import { getRoundMatchUps } from '../../drawEngine/getters/getMatchUps';
+import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 
 /*

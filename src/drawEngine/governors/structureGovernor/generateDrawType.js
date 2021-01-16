@@ -3,10 +3,10 @@ import structureTemplate from '../../generators/structureTemplate';
 
 import { powerOf2, makeDeepCopy } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';

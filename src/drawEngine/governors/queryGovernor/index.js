@@ -12,13 +12,13 @@ import {
   allPlayoffPositionsFilled,
 } from './structureActions';
 
-import {
-  getRoundPresentationProfile,
-  getAllDrawMatchUps,
-  getDrawMatchUps,
-} from '../../getters/getMatchUps';
 import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import {
+  getAllDrawMatchUps,
+  getDrawMatchUps,
+} from '../../getters/getMatchUps/drawMatchUps';
+import { getRoundPresentationProfile } from '../../getters/getMatchUps/getRoundPresentationProfile';
 
 import { credits } from '../../../fixtures/credits';
 import { findStructure } from '../../getters/findStructure';

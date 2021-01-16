@@ -1,6 +1,6 @@
 import { getDrawStructures } from '../../getters/findStructure';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
 import {
