@@ -122,7 +122,13 @@ export function directLoser(props) {
     drawPositionMatchUps,
     matchUpStatuses: [BYE, WALKOVER, DEFAULTED],
   });
-  if (loserLinkCondition) {
+  const { loserHadMatchUpStatus: defaultOrWalkover } = includesMatchUpStatuses({
+    sourceMatchUps,
+    loserDrawPosition,
+    drawPositionMatchUps,
+    matchUpStatuses: [WALKOVER, DEFAULTED],
+  });
+  if (loserLinkCondition && !defaultOrWalkover) {
     if (firstMatchUpLoss) {
       const drawPosition =
         targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
@@ -182,14 +188,6 @@ export function directLoser(props) {
     loserTargetLink.target.roundNumber === 1 &&
     targetDrawPositionIsUnfilled
   ) {
-    const {
-      loserHadMatchUpStatus: defaultOrWalkover,
-    } = includesMatchUpStatuses({
-      sourceMatchUps,
-      loserDrawPosition,
-      drawPositionMatchUps,
-      matchUpStatuses: [WALKOVER, DEFAULTED],
-    });
     if (defaultOrWalkover) {
       // if participant won't be placed in targetStructure, place a BYE
       const result = assignDrawPositionBye({
