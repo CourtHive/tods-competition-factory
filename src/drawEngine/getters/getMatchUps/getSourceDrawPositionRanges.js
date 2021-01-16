@@ -84,7 +84,8 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
       const groups = chunkArray(orderedPositions, groupSize);
       if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
       orderedPositions =
-        sizedGroupOrder?.map((order) => groups[order - 1]).flat() ||
+        (sizedGroupOrder?.length &&
+          sizedGroupOrder?.map((order) => groups[order - 1]).flat()) ||
         orderedPositions;
     }
 
