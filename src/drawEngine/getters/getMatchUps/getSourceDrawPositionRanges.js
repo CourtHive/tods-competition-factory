@@ -92,7 +92,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
     // let drawPositionBlocks = chunkArray(firstRoundDrawPositions, chunkSize);
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
-    if (!sizedGroupOrder) {
+    if (!sizedGroupOrder?.length) {
       if (feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
     }
 

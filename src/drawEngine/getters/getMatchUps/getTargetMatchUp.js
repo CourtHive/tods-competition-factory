@@ -84,7 +84,8 @@ export function getTargetMatchUp({
     const groups = chunkArray(roundPositions, groupSize);
     if (feedProfile === BOTTOM_UP) groups.forEach((group) => group.reverse());
     orderedPositions =
-      sizedGroupOrder?.map((order) => groups[order - 1]).flat() ||
+      (sizedGroupOrder?.length &&
+        sizedGroupOrder?.map((order) => groups[order - 1]).flat()) ||
       orderedPositions;
   }
 
@@ -99,7 +100,7 @@ export function getTargetMatchUp({
       BOTTOM_UP feed profile implies that the roundPosition in the
       target is (# of matchUps in source/target round + 1) - roundPosition in the source
     */
-    if (!sizedGroupOrder || groupsCount > roundPositions.length) {
+    if (!sizedGroupOrder?.length || groupsCount > roundPositions.length) {
       calculatedRoundPosition =
         targetRoundMatchUps.length + 1 - calculatedRoundPosition;
     }
