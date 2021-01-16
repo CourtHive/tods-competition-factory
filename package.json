@@ -76,7 +76,7 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.22.0",
     "highlight.js": "10.5.0",
-    "husky": "4.3.7",
+    "husky": "4.3.8",
     "jest-environment-jsdom": "26.6.2",
     "np": "7.2.0",
     "prettier": "2.2.1",
