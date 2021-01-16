@@ -1,9 +1,7 @@
 import fs from 'fs';
 import drawEngine from '../drawEngine';
-import {
-  getDrawMatchUps,
-  getStructureMatchUps,
-} from '../drawEngine/getters/getMatchUps';
+import { getDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getStructureMatchUps } from '../drawEngine/getters/getMatchUps/structureMatchUps';
 import tournamentEngine from '../tournamentEngine';
 const tournamentRecordJSON = fs.readFileSync(
   './src/tests/demoTournament.json',

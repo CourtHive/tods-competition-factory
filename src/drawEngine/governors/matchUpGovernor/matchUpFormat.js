@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 

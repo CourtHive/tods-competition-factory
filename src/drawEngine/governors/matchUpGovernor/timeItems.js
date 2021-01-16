@@ -1,5 +1,5 @@
 import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -1,8 +1,8 @@
 import { instanceCount } from '../../../utilities';
-import { findMatchUp } from '../../getters/getMatchUps';
 import { findStructure } from '../../getters/findStructure';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { updateTieMatchUpScore } from './tieMatchUpScore';

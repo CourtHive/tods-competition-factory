@@ -1,6 +1,5 @@
-import { tallyParticipantResults } from '../governors/scoreGovernor/roundRobinTally';
-import { getAllStructureMatchUps } from './getMatchUps';
 import { findStructure } from './findStructure';
+import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 import {
   ALTERNATE,
@@ -147,31 +146,30 @@ export function playoffEntries({ drawDefinition, structureId }) {
     if (sourceStructure.structureType === CONTAINER) {
       const playoffStructures = sourceStructure.structures || [];
       playoffStructures.forEach((structure) => {
+        const { positionAssignments } = structure;
         const { structureId: playoffStructureId } = structure;
-
-        // context is required so that matchUp.sides are present
-        // TODO: creates circular dependency... use structure.stats attribute for participantResults?
-        const { matchUps } = getAllStructureMatchUps({
-          structure,
-          drawDefinition,
-          inContext: true,
-        });
-        const matchUpFormat =
-          sourceStructure.matchUpFormat ||
-          (matchUps?.length && matchUps[0].matchUpFormat);
-        const { participantResults } = tallyParticipantResults({
-          matchUpFormat,
-          matchUps,
-        });
-
         const groupingValue = playoffStructureId;
-        Object.keys(participantResults)
+
+        const results = Object.assign(
+          {},
+          ...positionAssignments
+            .map((assignment) => {
+              const { participantId } = assignment;
+              const results = findExtension({
+                element: assignment,
+                name: 'tally',
+              }).extension?.value;
+              return results ? { [participantId]: results } : undefined;
+            })
+            .filter((f) => f)
+        );
+        Object.keys(results)
           .filter((key) => {
-            const result = participantResults[key];
+            const result = results[key];
             return finishingPositions.includes(result.groupOrder);
           })
           .forEach((participantId) => {
-            const participantResult = participantResults[participantId];
+            const participantResult = results[participantId];
             const { groupOrder, GEMscore } = participantResult;
             const placementGroup =
               finishingPositions.sort().indexOf(groupOrder) + 1;

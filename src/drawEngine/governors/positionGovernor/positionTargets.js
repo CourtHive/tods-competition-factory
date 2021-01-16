@@ -1,6 +1,6 @@
-import { findMatchUp } from '../../getters/getMatchUps';
-import { nextRoundMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
+import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
 
 import {

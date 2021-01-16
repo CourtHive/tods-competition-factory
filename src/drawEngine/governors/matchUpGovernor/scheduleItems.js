@@ -1,5 +1,5 @@
 import { addMatchUpTimeItem } from './timeItems';
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import {
   MISSING_MATCHUP_ID,

@@ -1,13 +1,11 @@
-import {
-  getAllDrawMatchUps,
-  getAllStructureMatchUps,
-} from '../../getters/getMatchUps';
 import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { setMatchUpStatus } from '../matchUpGovernor/setMatchUpStatus';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 
 import {

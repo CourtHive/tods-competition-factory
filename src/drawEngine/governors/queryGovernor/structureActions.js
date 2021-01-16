@@ -1,6 +1,7 @@
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
-import { getStructureMatchUps } from '../../getters/getMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+
+import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 
 /**
  *

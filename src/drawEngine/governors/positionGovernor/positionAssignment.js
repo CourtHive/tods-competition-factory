@@ -3,8 +3,8 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps';
 import { assignDrawPositionBye } from './positionByes';
 
 import { SUCCESS } from '../../../constants/resultConstants';

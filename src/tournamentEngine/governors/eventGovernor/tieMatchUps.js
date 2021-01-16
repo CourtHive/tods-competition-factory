@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { UUID } from '../../../utilities/UUID';
 
 import { COMPETITOR } from '../../../constants/participantRoles';

@@ -4,7 +4,8 @@ import { validDrawPositions } from './validDrawPositions';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-import { publicFindMatchUp, getRoundMatchUps } from '../../getters/getMatchUps';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
+import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import {
   addMatchUpScheduledDayDate,
