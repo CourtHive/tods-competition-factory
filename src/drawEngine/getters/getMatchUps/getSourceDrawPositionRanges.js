@@ -1,5 +1,4 @@
 import { chunkArray, generateRange } from '../../../utilities';
-import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { getRangeString } from './getRangeString';
 import { findStructure } from '../findStructure';
@@ -12,8 +11,14 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
+import { getMappedStructureMatchUps } from './getMatchUpsMap';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 
-export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
+export function getSourceDrawPositionRanges({
+  drawDefinition,
+  structureId,
+  mappedMatchUps,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
@@ -37,17 +42,24 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId }) {
   const sourceStructureProfiles = Object.assign(
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
-      const { roundProfile } = getStructureRoundProfile({
-        drawDefinition,
+      const structureMatchUps = getMappedStructureMatchUps({
+        mappedMatchUps,
         structureId: sourceStructureId,
       });
+      const { roundProfile } = getRoundMatchUps({
+        matchUps: structureMatchUps,
+      });
+
       return { [sourceStructureId]: roundProfile };
     })
   );
 
-  const { roundProfile: targetStructureProfile } = getStructureRoundProfile({
-    drawDefinition,
+  const structureMatchUps = getMappedStructureMatchUps({
+    mappedMatchUps,
     structureId,
+  });
+  const { roundProfile: targetStructureProfile } = getRoundMatchUps({
+    matchUps: structureMatchUps,
   });
 
   const sourceDrawPositionRanges = {};

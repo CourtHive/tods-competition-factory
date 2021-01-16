@@ -1,6 +1,7 @@
 import { getRangeString } from './getRangeString';
+import { getMappedStructureMatchUps } from './getMatchUpsMap';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
 import { groupConsecutiveNumbers } from '../../../utilities/arrays';
-import { getStructureRoundProfile } from './getStructureRoundProfile';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 
 import {
@@ -8,13 +9,20 @@ import {
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
 
-export function getDrawPositionsRanges({ drawDefinition, structureId }) {
+export function getDrawPositionsRanges({
+  drawDefinition,
+  structureId,
+  mappedMatchUps,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const { roundProfile } = getStructureRoundProfile({
-    drawDefinition,
+  const structureMatchUps = getMappedStructureMatchUps({
+    mappedMatchUps,
     structureId,
+  });
+  const { roundProfile } = getRoundMatchUps({
+    matchUps: structureMatchUps,
   });
 
   const firstRoundFirstDrawPosition = Math.min(
@@ -23,7 +31,6 @@ export function getDrawPositionsRanges({ drawDefinition, structureId }) {
   const firstRoundFirstDrawPositionOffset =
     (firstRoundFirstDrawPosition || 1) - 1;
 
-  // drawPositionsRanges[roundNumber][roundPosition]
   const roundNumbers = Object.keys(roundProfile);
   const drawPositionsRanges = Object.assign(
     {},

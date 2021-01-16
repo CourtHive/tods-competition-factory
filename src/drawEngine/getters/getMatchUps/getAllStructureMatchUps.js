@@ -1,5 +1,3 @@
-import { filterMatchUps } from './filterMatchUps';
-
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
@@ -7,8 +5,10 @@ import {
   getRoundMatchUps,
   getCollectionPositionMatchUps,
 } from '../../accessors/matchUpAccessor/matchUps';
-import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
+import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
+import { filterMatchUps } from './filterMatchUps';
 
 import {
   makeDeepCopy,
@@ -44,14 +44,15 @@ export function getAllStructureMatchUps({
   policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
+
+  _mappedMatchUps,
 }) {
-  let matchUps = [],
-    collectionPositionMatchUps = {},
+  let collectionPositionMatchUps = {},
     roundMatchUps = {};
 
   if (!structure) {
     return {
-      matchUps,
+      matchUps: [],
       collectionPositionMatchUps,
       roundMatchUps,
       error: MISSING_STRUCTURE,
@@ -74,7 +75,7 @@ export function getAllStructureMatchUps({
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
   if (!thisEvent || !thisStructure || !thisDraw) {
     return {
-      matchUps,
+      matchUps: [],
       collectionPositionMatchUps,
       roundMatchUps,
     };
@@ -104,6 +105,9 @@ export function getAllStructureMatchUps({
     stageSpecificPolicies?.requireAllPositionsAssigned ||
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
+  const mappedMatchUps =
+    _mappedMatchUps || getMatchUpsMap({ drawDefinition, structure, context });
+
   const {
     positionAssignments,
     allPositionsAssigned,
@@ -111,6 +115,7 @@ export function getAllStructureMatchUps({
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
   const { seedAssignments } = getStructureSeedAssignments({
     drawDefinition,
+    mappedMatchUps,
     structure,
   });
   const { structureId, structureName, stage, stageSequence } = structure;
@@ -122,32 +127,11 @@ export function getAllStructureMatchUps({
   const collectionDefinitions = tieFormat && tieFormat.collectionDefinitions;
   const isRoundRobin = structure.structures;
 
-  if (structure.matchUps) {
-    matchUps = structure.matchUps;
-  } else if (isRoundRobin) {
-    if (inContext) {
-      // Round Robin structures are nested so the accurate structureId when in context must be assigned here
-      matchUps = [].concat(
-        ...structure.structures.map((structure) => {
-          const { structureId, structureName: groupStructureName } = structure;
-          return structure.matchUps.map((matchUp) => {
-            return Object.assign(makeDeepCopy(matchUp, true), {
-              structureId,
-              structureName: groupStructureName,
-              stageSequence,
-              stage,
-            });
-          });
-        })
-      );
-    } else {
-      matchUps = [].concat(
-        ...structure.structures.map((structure) => {
-          return structure.matchUps;
-        })
-      );
-    }
-  }
+  let matchUps = getMappedStructureMatchUps({
+    mappedMatchUps,
+    structureId,
+    inContext,
+  });
 
   const roundNamingPolicy =
     appliedPolicies && appliedPolicies[POLICY_TYPE_ROUND_NAMING];
@@ -172,10 +156,12 @@ export function getAllStructureMatchUps({
 
   if (inContext) {
     const { sourceDrawPositionRanges } = getSourceDrawPositionRanges({
+      mappedMatchUps,
       drawDefinition,
       structureId,
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
+      mappedMatchUps,
       drawDefinition,
       structureId,
     });
