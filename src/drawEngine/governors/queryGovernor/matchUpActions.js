@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';

@@ -1,5 +1,5 @@
 import { numericSort } from '../../../utilities';
-import { findMatchUp } from '../../getters/getMatchUps';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
 

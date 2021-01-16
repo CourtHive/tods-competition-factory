@@ -1,4 +1,4 @@
-import { findMatchUp } from '../../../drawEngine/getters/getMatchUps';
+import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 
 import {
   DRAW_DEFINITION_NOT_FOUND,
