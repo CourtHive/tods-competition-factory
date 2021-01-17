@@ -176,5 +176,4 @@ it('can generate timeSlots from dateAvailability', () => {
   expect(timeSlots.length).toEqual(2);
   expect(timeSlots[0]).toEqual({ startTime: '09:10', endTime: '12:00' });
   expect(timeSlots[1]).toEqual({ startTime: '13:30', endTime: '14:00' });
-  console.log({ timeSlots });
 });
