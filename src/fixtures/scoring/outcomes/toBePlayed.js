@@ -1,5 +1,7 @@
-export const noScoreOutcome = {
-  matchUpStatus: undefined,
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+
+export const toBePlayed = {
+  matchUpStatus: TO_BE_PLAYED,
   matchUpStatusCodes: [],
   score: {
     scoreStringSide1: '',

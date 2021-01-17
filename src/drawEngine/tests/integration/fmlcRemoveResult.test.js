@@ -1,4 +1,4 @@
-import { noScoreOutcome } from '../../../fixtures/scoring/outcomes/noScoreOutcome';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine';
 import { generateFMLC } from '../../tests/primitives/fmlc';
 import { drawEngine } from '../../../drawEngine';
@@ -243,7 +243,7 @@ it('can remove matchUps properly in FMLC', () => {
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
-    outcome: noScoreOutcome,
+    outcome: toBePlayed,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();

@@ -9,6 +9,7 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -105,14 +106,43 @@ export function removeDirectedParticipants(props) {
         targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
       const loserLinkCondition = loserTargetLink.linkCondition;
       const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
+      // in this calculation BYEs and WALKOVERs are not counted as wins
+      // as well as DEFAULTED when there is no score component
+      const loserDrawPositionWins = drawPositionMatchUps.filter((matchUp) => {
+        const drawPositionSide = matchUp.sides.find(
+          (side) => side.drawPosition === loserDrawPosition
+        );
+        const unscoredOutcome =
+          matchUp.matchUpStatus === WALKOVER ||
+          (matchUp.matchUpStatus === DEFAULTED &&
+            !!matchUp.score?.scoreStringSide1);
+        return (
+          drawPositionSide?.sideNumber === matchUp.winningSide &&
+          !unscoredOutcome
+        );
+      });
+      const {
+        loserHadMatchUpStatus: defaultOrWalkover,
+      } = includesMatchUpStatuses({
+        sourceMatchUps,
+        loserDrawPosition,
+        drawPositionMatchUps,
+        matchUpStatuses: [WALKOVER, DEFAULTED],
+      });
+
+      const firstMatchUpLossNotDefWO =
+        loserLinkCondition === FIRST_MATCHUP &&
+        loserDrawPositionWins.length === 0 &&
+        !defaultOrWalkover;
 
       if (winnerHadBye && firstMatchUpLoss) {
+        const drawPosition = firstMatchUpLossNotDefWO
+          ? targetMatchUpDrawPosition
+          : loserMatchUp.drawPositions[winningIndex];
         const { error } = removeDirectedBye({
-          winningIndex,
-          loserMatchUp,
           drawDefinition,
+          drawPosition,
           targetLink: loserTargetLink,
-          targetMatchUpDrawPosition,
         });
         if (error) errors.push(error);
       }
@@ -219,15 +249,9 @@ function removeDirectedLoser({
   return { error };
 }
 
-function removeDirectedBye({
-  targetLink,
-  loserMatchUp,
-  winningIndex,
-  drawDefinition,
-}) {
+function removeDirectedBye({ targetLink, drawPosition, drawDefinition }) {
   let error;
 
-  const drawPosition = loserMatchUp.drawPositions[winningIndex];
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({

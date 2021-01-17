@@ -77,6 +77,7 @@ export function directParticipants(props) {
         loserDrawPosition,
         loserMatchUp,
         loserMatchUpDrawPositionIndex,
+        matchUpStatus,
       });
       if (error) errors.push(error);
     }

@@ -16,7 +16,12 @@ export function isDirectingMatchUpStatus({ matchUpStatus }) {
 }
 
 export function isNonDirectingMatchUpStatus({ matchUpStatus }) {
-  return [TO_BE_PLAYED, NOT_PLAYED, ABANDONED, IN_PROGRESS, SUSPENDED].includes(
-    matchUpStatus
-  );
+  return [
+    TO_BE_PLAYED,
+    NOT_PLAYED,
+    ABANDONED,
+    IN_PROGRESS,
+    SUSPENDED,
+    undefined,
+  ].includes(matchUpStatus);
 }

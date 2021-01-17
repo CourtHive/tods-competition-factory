@@ -1,4 +1,4 @@
-import { noScoreOutcome } from '../../../fixtures/scoring/outcomes/noScoreOutcome';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
 
@@ -250,7 +250,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
-    outcome: noScoreOutcome,
+    outcome: toBePlayed,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();

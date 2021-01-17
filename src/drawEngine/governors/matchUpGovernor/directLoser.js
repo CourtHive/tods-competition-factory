@@ -26,6 +26,7 @@ export function directLoser(props) {
     loserTargetLink,
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
+    matchUpStatus,
   } = props;
 
   let error;
@@ -51,12 +52,12 @@ export function directLoser(props) {
     const drawPositionSide = matchUp.sides.find(
       (side) => side.drawPosition === loserDrawPosition
     );
-    const noScoreOutcome =
+    const unscoredOutcome =
       matchUp.matchUpStatus === WALKOVER ||
       (matchUp.matchUpStatus === DEFAULTED &&
         !!matchUp.score?.scoreStringSide1);
     return (
-      drawPositionSide?.sideNumber === matchUp.winningSide && !noScoreOutcome
+      drawPositionSide?.sideNumber === matchUp.winningSide && !unscoredOutcome
     );
   });
 
@@ -113,10 +114,9 @@ export function directLoser(props) {
   );
 
   const loserLinkCondition = loserTargetLink.linkCondition;
-  const firstMatchUpLoss =
-    loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
+  const isDefaultOrWalkover = [WALKOVER, DEFAULTED].includes(matchUpStatus);
 
-  const { winnerHadMatchUpStatus } = includesMatchUpStatuses({
+  const { winnerHadMatchUpStatus: winnerByeDefWO } = includesMatchUpStatuses({
     sourceMatchUps,
     loserDrawPosition,
     drawPositionMatchUps,
@@ -128,11 +128,21 @@ export function directLoser(props) {
     drawPositionMatchUps,
     matchUpStatuses: [WALKOVER, DEFAULTED],
   });
-  if (loserLinkCondition && !defaultOrWalkover) {
-    if (firstMatchUpLoss) {
-      const drawPosition =
-        targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
+  const { loserHadMatchUpStatus: loserHadBye } = includesMatchUpStatuses({
+    sourceMatchUps,
+    loserDrawPosition,
+    drawPositionMatchUps,
+    matchUpStatuses: [BYE],
+  });
+  const firstMatchUpLossNotDefWO =
+    loserLinkCondition === FIRST_MATCHUP &&
+    loserDrawPositionWins.length === 0 &&
+    !defaultOrWalkover;
 
+  if (loserLinkCondition) {
+    const drawPosition =
+      targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
+    if (firstMatchUpLossNotDefWO) {
       const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
         drawPosition
       );
@@ -147,14 +157,17 @@ export function directLoser(props) {
 
       // drawPosition would not clear if player advanced by BYE had progressed
       if (result.success || targetDrawPositionIsUnfilled) {
-        assignDrawPosition({
+        const result = assignDrawPosition({
           drawPosition,
           drawDefinition,
           structureId: targetStructureId,
           participantId: loserParticipantId,
         });
+        if (result.error) {
+          error = result.error;
+        }
 
-        if (winnerHadMatchUpStatus) {
+        if (winnerByeDefWO) {
           const result = assignDrawPositionBye({
             devContext,
             drawDefinition,
@@ -168,16 +181,43 @@ export function directLoser(props) {
       } else {
         error = result.error;
       }
-    } else if (winnerHadMatchUpStatus) {
-      // if participant won't be placed in targetStructure, place a BYE
-      const result = assignDrawPositionBye({
-        devContext,
-        drawDefinition,
-        structureId: targetStructureId,
-        drawPosition: targetMatchUpDrawPosition,
-      });
-      if (result.error) {
-        error = result.error;
+    } else {
+      if (winnerByeDefWO && !isDefaultOrWalkover) {
+        // if participant won't be placed in targetStructure, place a BYE
+        // if winner had [BYE, WALKOVER, or DEFAULT] and current matchUp is not [WALKOVER or DEFAULT]
+        // this is the tricky bit of logic in FMLC... and perhaps why it should be refactored with 2nd round FEED
+        const result = assignDrawPositionBye({
+          devContext,
+          drawDefinition,
+          structureId: targetStructureId,
+          drawPosition: targetMatchUpDrawPosition,
+        });
+        if (result.error) {
+          error = result.error;
+        }
+      }
+
+      if (loserHadBye) {
+        const result = assignDrawPositionBye({
+          devContext,
+          drawDefinition,
+          structureId: targetStructureId,
+          drawPosition,
+        });
+        if (result.error) {
+          error = result.error;
+        }
+      }
+      if (isDefaultOrWalkover && !loserHadBye) {
+        const result = assignDrawPositionBye({
+          devContext,
+          drawDefinition,
+          structureId: targetStructureId,
+          drawPosition: targetMatchUpDrawPosition,
+        });
+        if (result.error) {
+          error = result.error;
+        }
       }
     }
 

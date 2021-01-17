@@ -12,6 +12,7 @@ import {
   BYE,
   COMPLETED,
   INCOMPLETE,
+  TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -138,13 +139,15 @@ function attemptToSetMatchUpStatus(props) {
       if (participantDirectionErrors) {
         errors = errors.concat(participantDirectionErrors);
       }
+      matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
+      matchUp.matchUpStatusCodes = matchUpStatusCodes;
       // TESTED
     } else {
       errors.push({ error: UNRECOGNIZED_MATCHUP_STATUS });
       // TESTED
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
     // TESTED
   } else if (matchUpStatus === BYE) {

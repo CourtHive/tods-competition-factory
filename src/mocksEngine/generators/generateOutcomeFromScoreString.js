@@ -1,7 +1,8 @@
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { generateScoreString } from '../../drawEngine/governors/scoreGovernor/generateScoreString';
-import { noScoreOutcome } from '../../fixtures/scoring/outcomes/noScoreOutcome';
+import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
 import { parseScoreString } from '../utilities/parseScoreString';
+
+import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -18,7 +19,10 @@ export function generateOutcomeFromScoreString({
 }) {
   if (!scoreString)
     return {
-      outcome: Object.assign(noScoreOutcome, { winningSide, matchUpStatus }),
+      outcome: Object.assign({}, toBePlayed, {
+        winningSide,
+        matchUpStatus,
+      }),
     };
   if (winningSide && ![1, 2, undefined].includes(winningSide))
     return { error: INVALID_VALUES, winningSide };
