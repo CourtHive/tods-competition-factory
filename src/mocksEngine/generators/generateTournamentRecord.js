@@ -9,8 +9,9 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
+import { intersection } from '../../utilities';
 
 /**
  *
@@ -105,6 +106,7 @@ function generateEventWithDraw({
     drawSize = 32,
     drawType = SINGLE_ELIMINATION,
     feedPolicy,
+    structureOptions,
   } = drawProfile;
   let { participantsCount = 32 } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -152,6 +154,7 @@ function generateEventWithDraw({
     matchUpFormat,
     drawType,
     feedPolicy,
+    structureOptions,
   });
 
   if (generationError) return { error: generationError };
@@ -167,11 +170,12 @@ function generateEventWithDraw({
     drawProfile.outcomes.forEach((outcomeDef) => {
       const {
         roundNumber,
+        drawPositions,
         roundPosition,
         scoreString,
         winningSide,
         stage = MAIN,
-        matchUpFormat = FORMAT_STANDARD,
+        matchUpFormat,
         stageSequence = 1,
         matchUpStatus = COMPLETED,
         matchUpIndex = 0,
@@ -192,15 +196,18 @@ function generateEventWithDraw({
           [structureId]: index + 1,
         }))
       );
-      const targetMatchUps = matchUps.filter(
-        (matchUp) =>
-          matchUp.stage === stage &&
-          matchUp.stageSequence === stageSequence &&
-          matchUp.roundNumber === roundNumber &&
+      const targetMatchUps = matchUps.filter((matchUp) => {
+        return (
+          (!stage || matchUp.stage === stage) &&
+          (!stageSequence || matchUp.stageSequence === stageSequence) &&
+          (!roundNumber || matchUp.roundNumber === roundNumber) &&
           (!roundPosition || matchUp.roundPosition === roundPosition) &&
           (!structureOrder ||
-            orderedStructures[matchUp.structureId] === structureOrder)
-      );
+            orderedStructures[matchUp.structureId] === structureOrder) &&
+          (!drawPositions ||
+            intersection(drawPositions, matchUp.drawPositions).length === 2)
+        );
+      });
       const targetMatchUp = targetMatchUps[matchUpIndex];
       const { matchUpId } = targetMatchUp || {};
       const { outcome } = generateOutcomeFromScoreString({
@@ -208,13 +215,21 @@ function generateEventWithDraw({
         winningSide,
         matchUpStatus,
       });
+      if (!targetMatchUp) {
+        console.log({ outcomeDef });
+        return;
+      }
+      if (targetMatchUp.matchUpStatus === BYE) {
+        console.log('targeted BYE matchUp', { outcomeDef });
+        return;
+      }
       const result = tournamentEngine.setMatchUpStatus({
         drawId,
         matchUpId,
         outcome,
         matchUpFormat,
       });
-      if (!result.success) console.log(result);
+      if (!result.success) console.log(result, targetMatchUp);
     });
   }
 
