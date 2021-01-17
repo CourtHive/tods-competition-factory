@@ -1,5 +1,8 @@
 import fs from 'fs';
-import { getStructureGroups } from '../../governors/publishingGovernor/getDrawData';
+import {
+  getDrawData,
+  getStructureGroups,
+} from '../../governors/publishingGovernor/getDrawData';
 
 const elimination = fs.readFileSync(
   './src/tournamentEngine/tests/publishing/eliminationMock.json'
@@ -28,6 +31,9 @@ it('can extract round robin structures', () => {
   });
   expect(allStructuresLinked).toEqual(true);
   expect(structureGroups.length).toEqual(1);
+
+  const result = getDrawData({ drawDefinition });
+  expect(result.structures.length).toEqual(1);
 });
 
 /*

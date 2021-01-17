@@ -7,20 +7,18 @@ import {
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 
-import {
-  MISSING_DRAW_DEFINITION,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { findExtension } from '../queryGovernor/extensionQueries';
 
 export function getDrawData({
-  tournamentRecord,
+  tournamentParticipants = [],
   policyDefinition,
   inContext = true,
   drawDefinition,
   context,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
@@ -29,7 +27,6 @@ export function getDrawData({
     matchUpFormat,
   }))(drawDefinition);
 
-  const tournamentParticipants = tournamentRecord.participants || [];
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
   let activeDraw = false;
@@ -45,6 +42,28 @@ export function getDrawData({
         structure,
         inContext,
       });
+
+      const { positionAssignments } = getPositionAssignments({
+        structure,
+      });
+
+      const participantResults = positionAssignments
+        .filter(({ participantId }) => participantId)
+        .map((assignment) => {
+          const { drawPosition, participantId } = assignment;
+          const { extension } = findExtension({
+            element: assignment,
+            name: 'tally',
+          });
+          return (
+            extension && {
+              drawPosition,
+              participantId,
+              participantResult: extension.value,
+            }
+          );
+        })
+        .filter((f) => f?.participantResult);
 
       const structureInfo = (({
         stage,
@@ -72,6 +91,7 @@ export function getDrawData({
         ...structureInfo,
         structureId,
         roundMatchUps,
+        participantResults,
       };
     });
 

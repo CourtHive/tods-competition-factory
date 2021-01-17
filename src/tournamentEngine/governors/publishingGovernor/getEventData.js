@@ -17,6 +17,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
   if (!event) return { error: MISSING_EVENT };
 
   const { eventId } = event;
+  const tournamentParticipants = tournamentRecord?.participants || [];
   const drawDefinitions = event.drawDefinitions || [];
   const drawsData = drawDefinitions.map((drawDefinition) =>
     (({ drawInfo, structures }) => ({
@@ -24,7 +25,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
       structures,
     }))(
       getDrawData({
-        tournamentRecord,
+        tournamentParticipants,
         policyDefinition,
         drawDefinition,
         context: { eventId },

@@ -181,11 +181,6 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       }))
   );
   */
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const mainStructure = drawDefinition.structures[0];
-  const { positionAssignments } = getPositionAssignments({
-    structure: mainStructure,
-  });
 
   const expectations = [
     {
@@ -240,18 +235,34 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
     },
   ];
 
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const mainStructure = drawDefinition.structures[0];
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const { eventData } = tournamentEngine.getEventData({ drawId });
+  const participantResults =
+    eventData.drawsData[0].structures[0].participantResults;
+
+  // check the expectations against both the positionAssignments for the structure
+  // and the eventData payload that is intended for presentation
   expectations.forEach(({ drawPosition, expectation }) => {
     const assignment = positionAssignments.find(
       (assignment) => assignment.drawPosition === drawPosition
     );
     const {
-      extension: { value: participantResults },
+      extension: { value: participantResult },
     } = findExtension({
       element: assignment,
       name: 'tally',
     });
+    const eventParticipantResult = participantResults.find(
+      (result) => result.drawPosition === drawPosition
+    ).participantResult;
     Object.keys(expectation).forEach((key) => {
-      expect(participantResults[key]).toEqual(expectation[key]);
+      expect(participantResult[key]).toEqual(expectation[key]);
+      expect(eventParticipantResult[key]).toEqual(expectation[key]);
     });
   });
 });
