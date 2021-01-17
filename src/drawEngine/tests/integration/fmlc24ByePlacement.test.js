@@ -93,7 +93,7 @@ it('can support USTA Consolation BYE placement', () => {
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
 
-it.only('can remove BYEs when matchUps are cleared', () => {
+it('can remove BYEs when matchUps are cleared', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 24;
