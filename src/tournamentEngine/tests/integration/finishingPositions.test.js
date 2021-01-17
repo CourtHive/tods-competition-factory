@@ -70,7 +70,7 @@ it('can aggrgate participant finishingPositions', () => {
   });
   expect(result?.error).toEqual(MISSING_ASSIGNMENTS);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   const outcomes = [
     [1, 2, 1],
@@ -99,12 +99,40 @@ it('can aggrgate participant finishingPositions', () => {
     });
   });
 
-  result = tournamentEngine.getParticipantIdFinishingPositions({
+  let idMap = tournamentEngine.getParticipantIdFinishingPositions({
     drawId,
   });
 
-  console.log(result);
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+
+  const expectations = [
+    { roundNumber: 1, finishingPositionRange: [9, 16] },
+    { roundNumber: 2, finishingPositionRange: [5, 8] },
+    { roundNumber: 3, finishingPositionRange: [3, 4] },
+    { roundNumber: 4, finishingPositionRange: [2, 2] },
+  ];
+
+  expectations.forEach(({ roundNumber, finishingPositionRange }) => {
+    const losingParticipantIds = getRoundLosingParticipantIds({
+      matchUps,
+      roundNumber,
+    });
+    losingParticipantIds.forEach((id) => {
+      expect(idMap[id].finishingPositionRange).toEqual(finishingPositionRange);
+    });
+  });
 });
+
+function getRoundLosingParticipantIds({ matchUps, roundNumber }) {
+  return matchUps
+    .filter(
+      (matchUp) => matchUp.roundNumber === roundNumber && matchUp.winningSide
+    )
+    .map(
+      ({ winningSide, sides }) =>
+        sides.find(({ sideNumber }) => sideNumber !== winningSide).participantId
+    );
+}
 
 function scoreMatchUp({
   roundNumber,
