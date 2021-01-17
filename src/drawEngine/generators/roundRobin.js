@@ -211,8 +211,8 @@ function generatePlayoffLink({
 }
 
 function deriveGroups({ structureOptions, drawSize }) {
-  let groupSize = structureOptions && structureOptions.groupSize;
-  const groupSizeLimit = structureOptions && structureOptions.groupSizeLimit;
+  let groupSize = structureOptions?.groupSize;
+  const groupSizeLimit = structureOptions?.groupSizeLimit || 8;
   const validGroupSizes = calculateValidGroupSizes({
     drawSize,
     groupSizeLimit,
