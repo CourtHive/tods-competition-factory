@@ -18,6 +18,7 @@ export function getStructureMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
+  mappedMatchUps,
   tournamentParticipants,
   tournamentAppliedPolicies,
   requireParticipants = true,
@@ -32,6 +33,7 @@ export function getStructureMatchUps({
     drawDefinition,
     matchUpFilters,
     contextFilters,
+    mappedMatchUps,
     tournamentParticipants,
     tournamentAppliedPolicies,
   });
