@@ -3,7 +3,7 @@ import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
-import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
+import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
 import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';

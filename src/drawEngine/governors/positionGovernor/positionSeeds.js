@@ -1,38 +1,11 @@
 import { generateRange } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { assignDrawPosition } from './positionAssignment';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
-
-export function getStructurePositionedSeeds({ drawDefinition, structure }) {
-  const { positionAssignments } = structureAssignedDrawPositions({ structure });
-  const { seedAssignments } = getStructureSeedAssignments({
-    drawDefinition,
-    structure,
-  });
-  const seedMap = Object.assign(
-    {},
-    ...seedAssignments
-      .filter((assignment) => assignment.participantId)
-      .map((assignment) => ({ [assignment.participantId]: assignment }))
-  );
-  const positionedSeeds = positionAssignments
-    .map((assignment) => {
-      return !seedMap[assignment.participantId]
-        ? ''
-        : Object.assign(assignment, {
-            seedNumber: seedMap[assignment.participantId].seedNumber,
-            seedValue: seedMap[assignment.participantId].seedValue,
-          });
-    })
-    .filter((f) => f);
-  return positionedSeeds;
-}
 
 export function positionSeedBlocks({
   drawDefinition,
