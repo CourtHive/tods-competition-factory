@@ -78,22 +78,6 @@ export function getDrawMatchUps({
     allUpcomingMatchUps = allUpcomingMatchUps.concat(...upcomingMatchUps);
     allAbandonedMatchUps = allAbandonedMatchUps.concat(...abandonedMatchUps);
     allCompletedMatchUps = allCompletedMatchUps.concat(...completedMatchUps);
-    if (nextMatchUps) {
-      const nextFilter = (typeof nextMatchUps === 'object' && nextMatchUps) || {
-        completed: true,
-        upcoming: true,
-        pending: true,
-        bye: true,
-      };
-      const { completed, upcoming, pending, bye } = nextFilter;
-      const matchUps = [].concat(
-        ...((completed && completedMatchUps) || []),
-        ...((upcoming && upcomingMatchUps) || []),
-        ...((pending && pendingMatchUps) || []),
-        ...((bye && byeMatchUps) || [])
-      );
-      addUpcomingMatchUps({ drawDefinition, matchUps });
-    }
   });
 
   const matchUpGroups = {
@@ -104,6 +88,23 @@ export function getDrawMatchUps({
     completedMatchUps: allCompletedMatchUps,
     ...SUCCESS,
   };
+
+  if (nextMatchUps) {
+    const nextFilter = (typeof nextMatchUps === 'object' && nextMatchUps) || {
+      completed: true,
+      upcoming: true,
+      pending: true,
+      bye: true,
+    };
+    const { completed, upcoming, pending, bye } = nextFilter;
+    const matchUps = [].concat(
+      ...((completed && matchUpGroups.completedMatchUps) || []),
+      ...((upcoming && matchUpGroups.upcomingMatchUps) || []),
+      ...((pending && matchUpGroups.pendingMatchUps) || []),
+      ...((bye && matchUpGroups.byeMatchUps) || [])
+    );
+    addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps: matchUps });
+  }
 
   return matchUpGroups;
 }

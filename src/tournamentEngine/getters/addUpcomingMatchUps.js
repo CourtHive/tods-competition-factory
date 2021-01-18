@@ -1,15 +1,15 @@
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { positionTargets } from '../../drawEngine/governors/positionGovernor/positionTargets';
 
-export function addUpcomingMatchUps({ drawDefinition, matchUps }) {
-  matchUps.forEach((matchUp) => {
+export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
+  inContextDrawMatchUps.forEach((matchUp) => {
     const { matchUpId, structureId } = matchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
     const targetData = positionTargets({
       matchUpId,
       structure,
       drawDefinition,
-      inContextDrawMatchUps: matchUps,
+      inContextDrawMatchUps,
     });
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
     const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
