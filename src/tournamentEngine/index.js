@@ -31,12 +31,13 @@ function newTournamentRecord(props) {
   return Object.assign({}, template, props);
 }
 
-function setState(tournament, deepCopyOption = true) {
+function setState(tournament, deepCopyOption) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord = deepCopyOption ? makeDeepCopy(tournament) : tournament;
+  tournamentRecord =
+    deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
   deepCopy = deepCopyOption;
 
   return Object.assign({ tournamentId }, SUCCESS);
