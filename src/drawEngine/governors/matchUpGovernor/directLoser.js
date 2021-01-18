@@ -1,11 +1,11 @@
-import { numericSort } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
-import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { assignDrawPositionBye } from '../positionGovernor/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { assignDrawPositionBye } from '../positionGovernor/positionByes';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
+import { includesMatchUpStatuses } from './includesMatchUpStatuses';
+import { findStructure } from '../../getters/findStructure';
+import { numericSort } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

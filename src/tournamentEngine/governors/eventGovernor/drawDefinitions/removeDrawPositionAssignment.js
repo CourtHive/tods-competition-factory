@@ -1,4 +1,4 @@
-import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/positionByes';
+import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/assignDrawPositionBye';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';

@@ -5,7 +5,7 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
-import { assignDrawPositionBye } from './positionByes';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
