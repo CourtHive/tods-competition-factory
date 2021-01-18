@@ -68,8 +68,8 @@ export const tournamentEngine = (function () {
     tournamentRecord = undefined;
     return SUCCESS;
   };
-  fx.setState = (tournament) => {
-    const result = setState(tournament);
+  fx.setState = (tournament, deepCopyOption) => {
+    const result = setState(tournament, deepCopyOption);
     if (result?.error) {
       fx.success = false;
       fx.error = result.error;
