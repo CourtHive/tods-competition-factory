@@ -16,7 +16,6 @@ import {
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITIONS,
-  //  BYES_LIMIT_REACHED,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -24,13 +23,8 @@ export function assignDrawPositionBye({
   drawDefinition,
   structureId,
   drawPosition,
-  devContext,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-
-  // NOTE: BYEs limit is being disabled; perhaps policy option later
-  // const { byesCount, placedByes } = getByesData({ drawDefinition, structure });
-  // const unplacedByes = placedByes < byesCount;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -46,7 +40,6 @@ export function assignDrawPositionBye({
   if (!positionState) return { error: INVALID_DRAW_POSITION };
 
   const { filled, containsBye } = drawPositionFilled(positionState);
-  // if (!unplacedByes && !containsBye) return { error: BYES_LIMIT_REACHED };
   if (filled && !containsBye) {
     return { error: DRAW_POSITION_ASSIGNED };
   }
@@ -73,103 +66,14 @@ export function assignDrawPositionBye({
 
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions?.includes(drawPosition)) {
-      const { matchUpId } = matchUp;
-      setMatchUpStatus({
-        drawDefinition,
-        matchUpId,
-        matchUpStatus: BYE,
-      });
-
-      const pairedDrawPosition = matchUp.drawPositions?.reduce(
-        (pairedDrawPosition, currentDrawPosition) => {
-          return currentDrawPosition !== drawPosition
-            ? currentDrawPosition
-            : pairedDrawPosition;
-        },
-        undefined
-      );
-
-      const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
-        drawPosition
-      );
-
-      // if there is a linked draw then BYE must also be placed there
-      // This must be propagated through compass draw, for instance
-      const {
-        targetLinks: { loserTargetLink },
-        targetMatchUps: { loserMatchUp, winnerMatchUp },
-      } = positionTargets({
-        matchUpId,
+      assignBye({
+        matchUp,
         structure,
+        drawPosition,
         drawDefinition,
+        positionAssignments,
         inContextDrawMatchUps,
-        sourceMatchUpWinnerDrawPositionIndex,
       });
-
-      if (loserMatchUp) {
-        // find all links which target the same roundNumber of structure within which loserMatchUp occurs
-        const {
-          links: { target: linksTargetingStructure },
-        } = getStructureLinks({
-          drawDefinition,
-          roundNumber: loserMatchUp.roundNumber,
-          structureId: loserTargetLink.target.structureId,
-        });
-
-        const linkCondition = linksTargetingStructure.find(
-          (link) => link.linkCondition
-        );
-
-        // loserMatchUp must have both drawPositions defined
-        const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
-          (f) => f
-        ).length;
-        if (loserMatchUpDrawPositionsCount !== 2)
-          return { error: MISSING_DRAW_POSITIONS };
-        // drawPositions must be in numerical order
-        loserMatchUp.drawPositions = (loserMatchUp.drawPositions || []).sort(
-          numericSort
-        );
-        // loser drawPosition in target structure is determined bye even/odd
-        const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
-
-        const targetDrawPosition =
-          loserMatchUp.drawPositions[targetDrawPositionIndex];
-
-        // don't assign BYE for FMLC
-        // TODO: make this more explicit
-        const targetBye = !linkCondition;
-
-        if (targetBye) {
-          const result = assignDrawPositionBye({
-            drawDefinition,
-            structureId: loserTargetLink.target.structureId,
-            drawPosition: targetDrawPosition,
-          });
-          if (result.error) {
-            if (devContext) console.log('targetBye', { result });
-          }
-        }
-      }
-
-      if (winnerMatchUp && pairedDrawPosition) {
-        const drawPositionIsBye = positionAssignments.find(
-          (assignment) => assignment.drawPosition === drawPosition
-        )?.bye;
-        const pairedDrawPositionIsBye = positionAssignments.find(
-          (assignment) => assignment.drawPosition === pairedDrawPosition
-        )?.bye;
-        // TODO: is it possible that a WINNER could be directed to a different structure?
-        // winner participantId would then need to be added to positionAssignments
-        const isDoubleBye = drawPositionIsBye && pairedDrawPositionIsBye;
-        if (!isDoubleBye) {
-          assignMatchUpDrawPosition({
-            drawDefinition,
-            matchUpId: winnerMatchUp.matchUpId,
-            drawPosition: pairedDrawPosition,
-          });
-        }
-      }
     }
   });
 
@@ -181,5 +85,113 @@ export function assignDrawPositionBye({
     const containsParticipant = positionState.participantId;
     const filled = containsBye || containsQualifier || containsParticipant;
     return { containsBye, containsQualifier, containsParticipant, filled };
+  }
+}
+
+function assignBye({
+  matchUp,
+  structure,
+  drawPosition,
+  drawDefinition,
+  positionAssignments,
+  inContextDrawMatchUps,
+}) {
+  const { matchUpId } = matchUp;
+
+  setMatchUpStatus({
+    drawDefinition,
+    matchUpId,
+    matchUpStatus: BYE,
+  });
+
+  const pairedDrawPosition = matchUp.drawPositions?.reduce(
+    (pairedDrawPosition, currentDrawPosition) => {
+      return currentDrawPosition !== drawPosition
+        ? currentDrawPosition
+        : pairedDrawPosition;
+    },
+    undefined
+  );
+
+  const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
+    drawPosition
+  );
+
+  // if there is a linked draw then BYE must also be placed there
+  // This must be propagated through compass draw, for instance
+  const {
+    targetLinks: { loserTargetLink },
+    targetMatchUps: { loserMatchUp, winnerMatchUp },
+  } = positionTargets({
+    matchUpId,
+    structure,
+    drawDefinition,
+    inContextDrawMatchUps,
+    sourceMatchUpWinnerDrawPositionIndex,
+  });
+
+  if (loserMatchUp) {
+    // find all links which target the same roundNumber of structure within which loserMatchUp occurs
+    const {
+      links: { target: linksTargetingStructure },
+    } = getStructureLinks({
+      drawDefinition,
+      roundNumber: loserMatchUp.roundNumber,
+      structureId: loserTargetLink.target.structureId,
+    });
+
+    const linkCondition = linksTargetingStructure.find(
+      (link) => link.linkCondition
+    );
+
+    // loserMatchUp must have both drawPositions defined
+    const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
+      (f) => f
+    ).length;
+    if (loserMatchUpDrawPositionsCount !== 2)
+      return { error: MISSING_DRAW_POSITIONS };
+    // drawPositions must be in numerical order
+    loserMatchUp.drawPositions = (loserMatchUp.drawPositions || []).sort(
+      numericSort
+    );
+    // loser drawPosition in target structure is determined bye even/odd
+    const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
+
+    const targetDrawPosition =
+      loserMatchUp.drawPositions[targetDrawPositionIndex];
+
+    // don't assign BYE for FMLC
+    // TODO: make this more explicit
+    const targetBye = !linkCondition;
+
+    if (targetBye) {
+      const result = assignDrawPositionBye({
+        drawDefinition,
+        structureId: loserTargetLink.target.structureId,
+        drawPosition: targetDrawPosition,
+      });
+      if (result.error) {
+        console.log('targetBye', { result });
+      }
+    }
+  }
+
+  if (winnerMatchUp && pairedDrawPosition) {
+    const drawPositionIsBye = positionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    )?.bye;
+    const pairedDrawPositionIsBye = positionAssignments.find(
+      (assignment) => assignment.drawPosition === pairedDrawPosition
+    )?.bye;
+    // TODO: is it possible that a WINNER could be directed to a different structure?
+    // winner participantId would then need to be added to positionAssignments
+    const isDoubleBye = drawPositionIsBye && pairedDrawPositionIsBye;
+    if (!isDoubleBye) {
+      assignMatchUpDrawPosition({
+        drawDefinition,
+        matchUpId: winnerMatchUp.matchUpId,
+        drawPosition: pairedDrawPosition,
+      });
+    }
   }
 }
