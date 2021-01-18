@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { assignDrawPositionBye } from '../positionGovernor/assignDrawPositionBye';
+import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { clearDrawPosition } from '../positionGovernor/positionClear';

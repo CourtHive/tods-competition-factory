@@ -4,7 +4,7 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { getStructurePositionedSeeds } from '../../../getters/getStructurePositionedSeeds';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getAppliedPolicies } from '../../policyGovernor/getAppliedPolicies';
-import { assignDrawPositionBye } from '../assignDrawPositionBye';
+import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { getByesData } from '../../../getters/getByesData';
 
 import {

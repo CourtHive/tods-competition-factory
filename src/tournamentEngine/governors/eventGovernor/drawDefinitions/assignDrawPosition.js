@@ -1,5 +1,5 @@
 import { assignDrawPosition as assignPosition } from '../../../../drawEngine/governors/positionGovernor/positionAssignment';
-import { assignDrawPositionBye as assignPositionBye } from '../../../../drawEngine/governors/positionGovernor/assignDrawPositionBye';
+import { assignDrawPositionBye as assignPositionBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
 
 import {
   MISSING_DRAW_DEFINITION,

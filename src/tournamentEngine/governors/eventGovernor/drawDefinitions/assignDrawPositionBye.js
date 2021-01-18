@@ -1,4 +1,4 @@
-import { assignDrawPositionBye as assignBye } from '../../../../drawEngine/governors/positionGovernor/assignDrawPositionBye';
+import { assignDrawPositionBye as assignBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
 
 export function assignDrawPositionBye({
   drawDefinition,

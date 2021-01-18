@@ -1,24 +1,24 @@
-import { findStructure } from '../../getters/findStructure';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { positionTargets } from '../../governors/positionGovernor/positionTargets';
-import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { assignMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { setMatchUpStatus } from '../matchUpGovernor/setMatchUpStatus';
-import { getStructureLinks } from '../../getters/linkGetter';
+import { findStructure } from '../../../getters/findStructure';
+import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { positionTargets } from '../positionTargets';
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
+import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { setMatchUpStatus } from '../../matchUpGovernor/setMatchUpStatus';
+import { getStructureLinks } from '../../../getters/linkGetter';
 
-import { numericSort } from '../../../utilities';
+import { numericSort } from '../../../../utilities';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITIONS,
   //  BYES_LIMIT_REACHED,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
