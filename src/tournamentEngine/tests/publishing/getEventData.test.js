@@ -41,7 +41,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   const venueName = 'GrassHaven';
   const myCourts = { venueName };
-  let result = tournamentEngine.addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   expect(result.success).toEqual(true);
   const { venueId } = result.venue;
 
@@ -211,7 +211,7 @@ it('can generate payload for publishing a compass draw', () => {
 
   const venueName = 'GrassHaven';
   const myCourts = { venueName };
-  let result = tournamentEngine.addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   expect(result.success).toEqual(true);
   const { venueId } = result.venue;
 
@@ -349,7 +349,7 @@ it('can generate payload for publishing a FMLC draw', () => {
 
   const venueName = 'GrassHaven';
   const myCourts = { venueName };
-  let result = tournamentEngine.addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   expect(result.success).toEqual(true);
   const { venueId } = result.venue;
 

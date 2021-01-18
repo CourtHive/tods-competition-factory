@@ -9,7 +9,7 @@ it('can define and modify a venue', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.addVenue({ venue: myCourts });
+  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

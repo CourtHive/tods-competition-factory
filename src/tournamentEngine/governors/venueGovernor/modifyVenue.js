@@ -20,6 +20,7 @@ export function modifyVenue({
   modifications,
   venueId,
   force,
+  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!modifications || typeof modifications !== 'object')
@@ -95,9 +96,10 @@ export function modifyVenue({
         modifications: court,
         courtId,
         force,
+        devContext,
       });
       if (result.error === COURT_NOT_FOUND) {
-        result = addCourt({ tournamentRecord, venueId, court });
+        result = addCourt({ tournamentRecord, venueId, court, devContext });
       }
       if (result.error) {
         if (result.error.errors) {
@@ -110,5 +112,7 @@ export function modifyVenue({
 
   if (errors.length) return { error: { errors } };
 
-  return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
+  return devContext
+    ? Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) })
+    : SUCCESS;
 }

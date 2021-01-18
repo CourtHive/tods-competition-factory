@@ -17,7 +17,7 @@ import { validDateAvailability } from './dateAvailability';
  * @param {object} court - court object
  * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
  */
-export function addCourt({ tournamentRecord, venueId, court }) {
+export function addCourt({ tournamentRecord, venueId, court, devContext }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
@@ -58,8 +58,12 @@ export function addCourt({ tournamentRecord, venueId, court }) {
     if (errors.length) {
       return { error: { errors } };
     } else {
-      const result = Object.assign({}, makeDeepCopy(courtRecord), { venueId });
-      return Object.assign({}, { court: result }, SUCCESS);
+      return devContext
+        ? Object.assign({}, SUCCESS, {
+            court: makeDeepCopy(courtRecord),
+            venueId,
+          })
+        : SUCCESS;
     }
   }
 }
@@ -76,6 +80,7 @@ export function addCourts({
   courtsCount,
   courtNames = [],
   dateAvailability = [],
+  devContext,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
   if (!courtsCount || !courtNames) return { error: MISSING_COURTS_INFO };
@@ -90,12 +95,14 @@ export function addCourts({
   });
 
   const result = courts.map((court) =>
-    addCourt({ tournamentRecord, venueId, court })
+    addCourt({ tournamentRecord, venueId, court, devContext })
   );
   const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 
   if (courtRecords.length === courtsCount) {
-    return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
+    return devContext
+      ? Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS)
+      : SUCCESS;
   } else {
     return Object.assign(
       {},
