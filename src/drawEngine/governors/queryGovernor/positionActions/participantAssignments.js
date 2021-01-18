@@ -1,6 +1,6 @@
 import { findStructure } from '../../../getters/findStructure';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
-import { getByesData } from '../../positionGovernor/positionByes';
+import { getByesData } from '../../../getters/getByesData';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 
 import {

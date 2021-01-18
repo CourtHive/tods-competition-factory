@@ -5,6 +5,7 @@ import { getStructurePositionedSeeds } from '../../getters/getStructurePositione
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
+import { getByesData } from '../../getters/getByesData';
 
 import {
   chunkArray,
@@ -13,19 +14,7 @@ import {
   unique,
 } from '../../../utilities';
 
-import {
-  stageEntries,
-  getStageQualifiersCount,
-} from '../../getters/stageGetter';
-
-import {
-  DIRECT_ACCEPTANCE,
-  WILDCARD,
-} from '../../../constants/entryStatusConstants';
-import {
-  CONSOLATION,
-  CONTAINER,
-} from '../../../constants/drawDefinitionConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYES_LIMIT_REACHED } from '../../../constants/errorConditionConstants';
 
@@ -352,90 +341,4 @@ function getOrderedByePositions({
     .filter((f) => f);
 
   return orderedByePositions;
-}
-
-export function getByesData({ drawDefinition, structure }) {
-  const matchUpFilters = { isCollectionMatchUp: false };
-  const { matchUps, roundMatchUps } = getAllStructureMatchUps({
-    drawDefinition,
-    matchUpFilters,
-    structure,
-  });
-  const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
-
-  // firstRoundMatchUps don't work for CONTAINER / ROUND_ROBIN structures
-
-  const isRoundRobin = structure?.structureType === CONTAINER;
-  const relevantMatchUps = isRoundRobin ? matchUps : firstRoundMatchUps;
-  const relevantMatchUpsCount = relevantMatchUps.length;
-
-  // maxByes for RR can only be the number of structures... no more than one bye per structure
-  const maxByes = isRoundRobin
-    ? structure?.structures?.length || 0
-    : relevantMatchUpsCount;
-
-  // get stage/stageSequence Entries and qualifiers
-  const { structureId, stage, stageSequence } = structure;
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const entries = stageEntries({
-    drawDefinition,
-    stageSequence,
-    structureId,
-    entryTypes,
-    stage,
-  });
-  const qualifiersCount = getStageQualifiersCount({ drawDefinition, stage });
-  const entriesCount = entries.length + qualifiersCount;
-
-  // # Byes = drawSize (positionAssignments) - total entries
-  // const { positionAssignments } = structureAssignedDrawPositions({structure});
-  // const { positionAssignments, qualifierPositions, byePositions, unassignedPositions } = structureAssignedDrawPositions({structure});
-  const {
-    positionAssignments,
-    unassignedPositions,
-  } = structureAssignedDrawPositions({ structure });
-  const unassignedDrawPositions = unassignedPositions.map(
-    (position) => position.drawPosition
-  );
-  const placedByes = positionAssignments.filter((assignment) => assignment.bye)
-    .length;
-  const placedByePositions = positionAssignments
-    .filter((assignment) => assignment.bye)
-    .map((assignment) => assignment.drawPosition);
-
-  const positionsToAvoidDoubleBye = relevantMatchUps
-    .map((matchUp) => matchUp.drawPositions)
-    .filter((drawPositions) => {
-      return (
-        drawPositions &&
-        drawPositions?.reduce(
-          (noBye, drawPosition) =>
-            !placedByePositions.includes(drawPosition) && noBye,
-          true
-        )
-      );
-    })
-    .flat(Infinity)
-    .filter((drawPosition) => unassignedDrawPositions.includes(drawPosition));
-
-  // maxByes limitation applies only to stageSequence #1
-  // when doubleByes are supported may do away with maxByes
-  const drawSize = positionAssignments.length;
-  let byesCount = drawSize - entriesCount;
-  if (
-    byesCount > maxByes &&
-    structure.stageSequence === 1 &&
-    structure.stage !== CONSOLATION
-  ) {
-    byesCount = maxByes;
-  }
-
-  return {
-    placedByes,
-    byesCount,
-    relevantMatchUps,
-    placedByePositions,
-    roundMatchUps,
-    positionsToAvoidDoubleBye,
-  };
 }
