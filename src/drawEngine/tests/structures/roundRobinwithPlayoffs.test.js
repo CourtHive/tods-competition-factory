@@ -41,7 +41,7 @@ it('can generate Round Robins 32 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const result = drawEngine.generateDrawType({
+  const result = drawEngine.devContext(true).generateDrawType({
     drawType,
     structureOptions,
   });
@@ -82,14 +82,12 @@ it('can generate Round Robins 16 with playoffs', () => {
       { finishingPositions: [2], structureName: 'Silver Flight' },
     ],
   };
-  const {
-    mainStructure,
-    playoffStructures,
-    links,
-  } = drawEngine.generateDrawType({
-    drawType,
-    structureOptions,
-  });
+  const { mainStructure, playoffStructures, links } = drawEngine
+    .devContext(true)
+    .generateDrawType({
+      drawType,
+      structureOptions,
+    });
 
   expect(mainStructure.stage).toEqual(MAIN);
   expect(mainStructure.structures.length).toEqual(4);
@@ -269,7 +267,6 @@ it('can advance players in Round Robin with Playoffs', () => {
       });
       expect(result.success).toEqual(true);
 
-      // const thisStructureIsCompleted = drawEngine.isCompletedStructure({
       ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
       const thisStructureIsCompleted = isCompletedStructure({
         drawDefinition,

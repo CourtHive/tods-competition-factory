@@ -49,6 +49,13 @@ import {
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+/**
+ *
+ * Generates matchUps and pushes structures into drawDefiniton.structures
+ *
+ * @param {object} drawDefinition
+ */
+// TODO: consider refactoring to return structures rather than pushing them into drawDefinition
 export function generateDrawType(props = {}) {
   const {
     uuids,
@@ -181,13 +188,8 @@ export function generateDrawType(props = {}) {
     Object.assign(matchUp, additionalParams);
   });
 
-  /*
-    the result returned by generateDrawType is for convenience
-    primariliy utilized by the testing suite..
-    the result is a deepCopy so that drawDefinition may not be modified
-  */
-  if (result && result.success) {
-    return makeDeepCopy(result);
+  if (result?.success) {
+    return props.devContext ? result : SUCCESS;
   } else {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }

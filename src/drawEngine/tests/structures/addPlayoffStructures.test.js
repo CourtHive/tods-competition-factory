@@ -93,14 +93,14 @@ function drawEngineAddStructuresTest({
   reset();
   initialize();
   mainDrawPositions({ drawSize, drawType });
-  let result = drawEngine.generateDrawType({ drawType });
+  let result = drawEngine.devContext(true).generateDrawType({ drawType });
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = drawEngine.getState();
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
   );
-  result = drawEngine.addPlayoffStructures({
+  result = drawEngine.devContext(true).addPlayoffStructures({
     structureId: mainStructure.structureId,
     roundNumbers,
     playoffPositions,

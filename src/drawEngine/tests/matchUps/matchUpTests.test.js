@@ -23,7 +23,7 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const { structure } = drawEngine.devContext(true).generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
   const { matchUps } = getAllStructureMatchUps({ structure });
@@ -39,7 +39,9 @@ it('matchUps returned with context cannot modify original', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  drawEngine.generateDrawType({ drawType: SINGLE_ELIMINATION });
+  drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: SINGLE_ELIMINATION });
   let { drawDefinition } = drawEngine.getState();
   const { drawId } = drawDefinition;
   const {
@@ -101,7 +103,9 @@ it('can return matchUps from a ROUND_ROBIN structure', () => {
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({ drawType });
+  const { structure } = drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType });
   const { matchUps } = getAllStructureMatchUps({ structure });
   expect(matchUps.length).toEqual(24);
   const { upcomingMatchUps } = getStructureMatchUps({
@@ -128,7 +132,7 @@ it('can set matchUpFormat', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const { structure } = drawEngine.devContext(true).generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
   const { matchUps } = getAllStructureMatchUps({ structure });

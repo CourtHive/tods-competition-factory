@@ -164,7 +164,9 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure: elimination } = drawEngine.generateDrawType();
+  const { structure: elimination } = drawEngine
+    .devContext(true)
+    .generateDrawType();
   const {
     positionAssignments: eliminationAssignments,
   } = structureAssignedDrawPositions({ structure: elimination });
@@ -174,7 +176,9 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  const { structure: roundRobin } = drawEngine.generateDrawType({ drawType });
+  const { structure: roundRobin } = drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType });
   const {
     positionAssignments: roundRobinAssignments,
   } = structureAssignedDrawPositions({ structure: roundRobin });

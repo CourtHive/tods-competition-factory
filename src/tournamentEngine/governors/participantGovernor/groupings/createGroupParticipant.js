@@ -1,5 +1,6 @@
 import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
 import { makeDeepCopy, UUID } from '../../../../utilities';
+import { addParticipant } from '../addParticipants';
 
 import { OTHER } from '../../../../constants/participantRoles';
 import { GROUP, INDIVIDUAL } from '../../../../constants/participantTypes';
@@ -10,7 +11,6 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { addParticipant } from '../addParticipants';
 
 // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
 // would require that tournamentRecord be loaded in tournamentEngine
@@ -21,6 +21,7 @@ export function createGroupParticipant({
   participantId,
   individualParticipantIds = [],
   participantRole = OTHER,
+  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupName) return { error: MISSING_VALUE, message: 'Missing groupName' };
@@ -59,10 +60,15 @@ export function createGroupParticipant({
   const result = addParticipant({
     tournamentRecord,
     participant: groupParticipant,
+    devContext,
   });
   if (result.error) return result;
 
-  return Object.assign({}, SUCCESS, {
-    participant: makeDeepCopy(groupParticipant),
-  });
+  if (devContext) {
+    return Object.assign({}, SUCCESS, {
+      participant: makeDeepCopy(groupParticipant),
+    });
+  } else {
+    return SUCCESS;
+  }
 }

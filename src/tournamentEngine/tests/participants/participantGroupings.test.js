@@ -49,7 +49,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
     .slice(0, 3)
     .map((participant) => participant.participantId);
 
-  result = tournamentEngine.addParticipant({
+  result = tournamentEngine.devContext(true).addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -124,7 +124,7 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
-  let result = tournamentEngine.addParticipant({
+  let result = tournamentEngine.devContext(true).addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -177,7 +177,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
-  let result = tournamentEngine.addParticipant({
+  let result = tournamentEngine.devContext(true).addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,

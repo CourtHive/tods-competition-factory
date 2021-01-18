@@ -127,11 +127,15 @@ it('can add individual and pair participants', () => {
   };
 
   const individualParticipantIds = [];
-  result = tournamentEngine.addParticipant({ participant: participant1 });
+  result = tournamentEngine
+    .devContext(true)
+    .addParticipant({ participant: participant1 });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
-  result = tournamentEngine.addParticipant({ participant: participant2 });
+  result = tournamentEngine
+    .devContext(true)
+    .addParticipant({ participant: participant2 });
   expect(result.success).toEqual(true);
   individualParticipantIds.push(result.participant.participantId);
 
@@ -217,7 +221,7 @@ it('will not add invalid PAIR participants', () => {
     participantRole: COMPETITOR,
     individualParticipantIds,
   };
-  result = tournamentEngine.addParticipant({
+  result = tournamentEngine.devContext(true).addParticipant({
     participant: pairParticipant,
   });
   expect(result.success).toEqual(true);
