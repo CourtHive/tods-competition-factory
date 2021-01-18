@@ -21,6 +21,7 @@ export function publicFindMatchUp(props) {
 export function findMatchUp({
   drawDefinition,
   tournamentParticipants,
+  mappedMatchUps,
   matchUpId,
   inContext,
 }) {
@@ -32,6 +33,7 @@ export function findMatchUp({
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
+      mappedMatchUps,
       inContext,
       structure,
     });

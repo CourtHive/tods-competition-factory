@@ -1,7 +1,8 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
@@ -27,10 +28,13 @@ export function setMatchUpStatus(props) {
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+  Object.assign(props, { mappedMatchUps });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
+    mappedMatchUps,
     includeByeMatchUps: true,
   });
 
@@ -38,6 +42,7 @@ export function setMatchUpStatus(props) {
   // cannot take winningSide from existing matchUp records
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
+    mappedMatchUps,
     matchUpId,
   });
 
@@ -50,6 +55,7 @@ export function setMatchUpStatus(props) {
       matchUpId,
       structure,
       drawDefinition,
+      mappedMatchUps,
       inContextDrawMatchUps,
       sourceMatchUpWinnerDrawPositionIndex,
     });
