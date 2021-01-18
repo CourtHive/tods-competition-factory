@@ -1,3 +1,4 @@
+import { getMatchUpsMap } from './getMatchUpsMap';
 import { getDrawStructures } from '../findStructure';
 import { getStructureMatchUps } from './structureMatchUps';
 import { addUpcomingMatchUps } from '../../../tournamentEngine/getters/addUpcomingMatchUps';
@@ -32,6 +33,7 @@ export function getDrawMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
+  mappedMatchUps,
   tournamentRecord,
   includeByeMatchUps,
   requireParticipants,
@@ -47,6 +49,7 @@ export function getDrawMatchUps({
   tournamentParticipants =
     tournamentParticipants || tournamentRecord?.prticipants;
   const { structures } = getDrawStructures({ drawDefinition });
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
 
   structures.forEach((structure) => {
     const {
@@ -59,6 +62,7 @@ export function getDrawMatchUps({
       context,
       structure,
       roundFilter,
+      mappedMatchUps,
       drawDefinition,
       matchUpFilters,
       contextFilters,

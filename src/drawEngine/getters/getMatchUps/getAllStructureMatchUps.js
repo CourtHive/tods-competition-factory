@@ -45,7 +45,7 @@ export function getAllStructureMatchUps({
   tournamentParticipants,
   tournamentAppliedPolicies,
 
-  _mappedMatchUps,
+  mappedMatchUps,
 }) {
   let collectionPositionMatchUps = {},
     roundMatchUps = {};
@@ -105,8 +105,8 @@ export function getAllStructureMatchUps({
     stageSpecificPolicies?.requireAllPositionsAssigned ||
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
-  const mappedMatchUps =
-    _mappedMatchUps || getMatchUpsMap({ drawDefinition, structure, context });
+  mappedMatchUps =
+    mappedMatchUps || getMatchUpsMap({ drawDefinition, structure });
 
   const {
     positionAssignments,

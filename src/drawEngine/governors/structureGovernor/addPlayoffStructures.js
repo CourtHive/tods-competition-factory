@@ -154,7 +154,9 @@ export function addPlayoffStructures(props) {
     if (result.error) console.log(result.error);
   });
 
-  return Object.assign({}, SUCCESS, {
-    drawDefinition: makeDeepCopy(drawDefinition),
-  });
+  return props.devContext
+    ? Object.assign({}, SUCCESS, {
+        drawDefinition: makeDeepCopy(drawDefinition),
+      })
+    : SUCCESS;
 }

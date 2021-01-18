@@ -22,7 +22,7 @@ it('can generate main draw', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const { structure } = drawEngine.devContext(true).generateDrawType();
   const { matchUps } = structure;
   const matchUpsCount = matchUps && matchUps.length;
   expect(matchUpsCount).toEqual(15);
@@ -62,7 +62,7 @@ it('generates main draw with expected finishing drawPositions', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType();
+  const { structure } = drawEngine.devContext(true).generateDrawType();
   const { matchUps } = structure;
   const matchesCount = matchUps && matchUps.length;
   expect(matchesCount).toEqual(15);
@@ -109,7 +109,7 @@ it('can generate qualifying draw based on drawType and qualifyingPositions', () 
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const { structure } = drawEngine.devContext(true).generateDrawType({
     drawType: SINGLE_ELIMINATION,
     qualifyingPositions: 8,
   });
@@ -122,7 +122,7 @@ it('can generate qualifying draw based drawType and qualifyingRound', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure } = drawEngine.generateDrawType({
+  const { structure } = drawEngine.devContext(true).generateDrawType({
     drawType: SINGLE_ELIMINATION,
     qualifyingRound: 1,
   });
@@ -135,7 +135,9 @@ it('can generate first matchUp loser consolation', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 32 });
-  const result = drawEngine.generateDrawType({ drawType: FMLC });
+  const result = drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: FMLC });
   expect(result).not.toHaveProperty(ERROR);
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(2);
@@ -150,7 +152,7 @@ it('can generate a Curtis Consolation draw', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 64 });
-  drawEngine.generateDrawType({
+  drawEngine.devContext(true).generateDrawType({
     drawType: CURTIS,
     description: CURTIS,
   });
@@ -220,7 +222,9 @@ it('reasonably handles Curtis Consolation draw sizes less than 64', () => {
     reset();
     initialize();
     mainDrawPositions({ drawSize: drawSizes[i] });
-    drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+    drawEngine
+      .devContext(true)
+      .generateDrawType({ drawType: CURTIS, description: CURTIS });
     const { drawDefinition } = drawEngine.getState();
     expect(drawDefinition.structures.length).toEqual(structures[i]);
     expect(drawDefinition.links.length).toEqual(links[i]);
@@ -231,17 +235,23 @@ it('does not generate multi-structure draws with fewer than 4 participants', () 
   reset();
   initialize();
   mainDrawPositions({ drawSize: 2 });
-  drawEngine.generateDrawType({ drawType: CURTIS, description: CURTIS });
+  drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: CURTIS, description: CURTIS });
   let { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
 
-  drawEngine.generateDrawType({ drawType: COMPASS, description: COMPASS });
+  drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: COMPASS, description: COMPASS });
   ({ drawDefinition } = drawEngine.getState());
   expect(drawDefinition.structures.length).toEqual(0);
   expect(drawDefinition.links.length).toEqual(0);
 
-  drawEngine.generateDrawType({ drawType: SINGLE_ELIMINATION });
+  drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: SINGLE_ELIMINATION });
   ({ drawDefinition } = drawEngine.getState());
   expect(drawDefinition.structures.length).toEqual(1);
   expect(drawDefinition.links.length).toEqual(0);

@@ -4,7 +4,7 @@ import { venueTemplate } from '../../generators/venueTemplate';
 import { VENUE_EXISTS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addVenue({ tournamentRecord, venue }) {
+export function addVenue({ tournamentRecord, venue, devContext }) {
   if (!tournamentRecord.venues) tournamentRecord.venues = [];
 
   const venueRecord = Object.assign({}, venueTemplate(), venue);
@@ -16,7 +16,9 @@ export function addVenue({ tournamentRecord, venue }) {
 
   if (!venueExists) {
     tournamentRecord.venues.push(venueRecord);
-    return Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS);
+    return devContext
+      ? Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS)
+      : SUCCESS;
   } else {
     return { error: VENUE_EXISTS };
   }

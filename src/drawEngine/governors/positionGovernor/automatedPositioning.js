@@ -1,4 +1,4 @@
-import { positionByes } from './positionByes';
+import { positionByes } from './byePositioning/positionByes';
 import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionParticipants';

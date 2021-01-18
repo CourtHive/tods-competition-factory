@@ -31,12 +31,13 @@ function newTournamentRecord(props) {
   return Object.assign({}, template, props);
 }
 
-function setState(tournament, deepCopyOption = true) {
+function setState(tournament, deepCopyOption) {
   if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord = deepCopyOption ? makeDeepCopy(tournament) : tournament;
+  tournamentRecord =
+    deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
   deepCopy = deepCopyOption;
 
   return Object.assign({ tournamentId }, SUCCESS);
@@ -67,8 +68,8 @@ export const tournamentEngine = (function () {
     tournamentRecord = undefined;
     return SUCCESS;
   };
-  fx.setState = (tournament) => {
-    const result = setState(tournament);
+  fx.setState = (tournament, deepCopyOption) => {
+    const result = setState(tournament, deepCopyOption);
     if (result?.error) {
       fx.success = false;
       fx.error = result.error;
@@ -98,7 +99,7 @@ export const tournamentEngine = (function () {
   return fx;
 
   // enable Middleware
-  function engineInvoke(fx, params) {
+  function engineInvoke(fx, params /*, method*/) {
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
@@ -107,7 +108,7 @@ export const tournamentEngine = (function () {
           tournamentRecord,
           drawId,
         });
-        params = Object.assign({}, params, { drawDefinition, event });
+        params = Object.assign({}, params, { event, drawDefinition });
       } else if (params.eventId && !params.event) {
         const { event } = findEvent({
           tournamentRecord,
@@ -119,7 +120,7 @@ export const tournamentEngine = (function () {
       }
     }
 
-    return fx({
+    const result = fx({
       ...params,
 
       deepCopy,
@@ -128,17 +129,22 @@ export const tournamentEngine = (function () {
       auditEngine,
       tournamentRecord,
     });
+
+    // TODO: allow middleware to check whether method is on watch list
+    // AND if so... pass the result to subscribed function
+
+    return result;
   }
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+      Object.keys(governor).forEach((method) => {
+        fx[method] = (params) => {
           if (devContext) {
-            return engineInvoke(governor[key], params);
+            return engineInvoke(governor[method], params, method);
           } else {
             try {
-              return engineInvoke(governor[key], params);
+              return engineInvoke(governor[method], params, method);
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }

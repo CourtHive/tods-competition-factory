@@ -22,7 +22,7 @@ import {
 import { makeDeepCopy, UUID } from '../../../utilities';
 import { intersection } from '../../../utilities/arrays';
 
-export function addParticipant({ tournamentRecord, participant }) {
+export function addParticipant({ tournamentRecord, participant, devContext }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (!participant.participantId) participant.participantId = UUID();
@@ -149,10 +149,17 @@ export function addParticipant({ tournamentRecord, participant }) {
   }
 
   tournamentRecord.participants.push(participant);
-  return Object.assign({}, SUCCESS, { participant: makeDeepCopy(participant) });
+  const result = Object.assign({}, SUCCESS);
+  if (devContext)
+    Object.assign(result, { participant: makeDeepCopy(participant) });
+  return result;
 }
 
-export function addParticipants({ tournamentRecord, participants = [] }) {
+export function addParticipants({
+  tournamentRecord,
+  participants = [],
+  devContext,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const tournamentParticipants = tournamentRecord.participants;
@@ -192,6 +199,7 @@ export function addParticipants({ tournamentRecord, participants = [] }) {
       const result = addParticipant({
         tournamentRecord,
         participant,
+        devContext,
       });
       const { success, error, participant: addedParticipant } = result;
       if (success) addedParticipants.push(addedParticipant);
@@ -201,9 +209,11 @@ export function addParticipants({ tournamentRecord, participants = [] }) {
     if (errors.length) {
       return { error: errors };
     } else {
-      const result = Object.assign({}, SUCCESS, {
-        participants: makeDeepCopy(addedParticipants),
-      });
+      const result = Object.assign({}, SUCCESS);
+      if (devContext)
+        Object.assign(result, {
+          participants: makeDeepCopy(addedParticipants),
+        });
       if (notAdded.length) {
         Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
       }

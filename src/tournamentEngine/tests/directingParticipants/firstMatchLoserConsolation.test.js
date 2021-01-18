@@ -428,7 +428,7 @@ it('correctly places consolation bye for WALKOVER loser of 2nd round match who h
   expect(matchUp.matchUpStatus).toEqual(WALKOVER);
 
   // remove outcome
-  result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,

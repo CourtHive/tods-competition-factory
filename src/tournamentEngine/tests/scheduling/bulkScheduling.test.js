@@ -23,7 +23,7 @@ it('can generate a tournament with events and draws', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine.addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

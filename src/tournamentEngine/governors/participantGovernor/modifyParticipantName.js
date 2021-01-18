@@ -1,5 +1,4 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
-import { makeDeepCopy } from '../../../utilities';
 
 import {
   MISSING_PARTICIPANT_ID,
@@ -29,5 +28,5 @@ export function modifyParticipantName({
   participant.participantName = participantName;
   if (participant.name) participant.name = participantName; // legacy support
 
-  return Object.assign({}, SUCCESS, { participant: makeDeepCopy(participant) });
+  return SUCCESS;
 }

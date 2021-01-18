@@ -81,7 +81,7 @@ function tournamentEngineAddPlayoffsTest({
   const { drawId } = drawDefinition;
   const structureId = drawDefinition.structures[0].structureId;
 
-  return tournamentEngine.addPlayoffStructures({
+  return tournamentEngine.devContext(true).addPlayoffStructures({
     drawId,
     structureId,
     roundNumbers,

@@ -31,13 +31,17 @@ tournamentEngine
 - getPolicyDefinition
 - getSeedsCount
 - getTournamentParticipants
+- modifyParticipantName
+- modifyParticipantOtherName
 - version
 - withdrawParticipantAtDrawPosition
 * addDrawDefinition
 * addEventEntryPairs
+* addIndividualParticipantIds
 * addMatchUpScheduledDayDate
 * addMatchUpScheduledTime
 * addParticipants
+* addPlayoffStructures
 * addVenue
 * allTournamentMatchUps
 * alternateDrawPositionAssignment
@@ -52,8 +56,6 @@ tournamentEngine
 * matchUpActions
 * modifyEntriesStatus
 * modifyIndividualParticipantIds
-* modifyParticipantName
-* modifyParticipantOtherName
 * modifyVenue
 * participantSignInStatus
 * positionActions

@@ -16,11 +16,13 @@ export function positionTargets({
   matchUpId,
   structure,
   drawDefinition,
+  mappedMatchUps,
   inContextDrawMatchUps,
   sourceMatchUpWinnerDrawPositionIndex,
 }) {
   const { matchUp } = findMatchUp({
     drawDefinition,
+    mappedMatchUps,
     matchUpId,
     inContext: true,
   });

@@ -1,7 +1,8 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
@@ -22,15 +23,19 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(props) {
-  let errors = [];
+  let errors = [],
+    messages = [];
 
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+  Object.assign(props, { mappedMatchUps });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
+    mappedMatchUps,
     includeByeMatchUps: true,
   });
 
@@ -38,6 +43,7 @@ export function setMatchUpStatus(props) {
   // cannot take winningSide from existing matchUp records
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
+    mappedMatchUps,
     matchUpId,
   });
 
@@ -50,6 +56,7 @@ export function setMatchUpStatus(props) {
       matchUpId,
       structure,
       drawDefinition,
+      mappedMatchUps,
       inContextDrawMatchUps,
       sourceMatchUpWinnerDrawPositionIndex,
     });
@@ -97,7 +104,11 @@ export function setMatchUpStatus(props) {
     if (!activeDownstream) {
       // not activeDownstream also handles changing the winner of a finalRound
       // as long as the matchUp is not the finalRound of a qualifying structure
-      const { errors: noDependenciesErrors } = noDownstreamDependencies(props);
+      const {
+        errors: noDependenciesErrors,
+        message,
+      } = noDownstreamDependencies(props);
+      if (message) messages.push(message);
       if (noDependenciesErrors) errors = errors.concat(noDependenciesErrors);
     } else if (winningSide) {
       const {
@@ -106,7 +117,10 @@ export function setMatchUpStatus(props) {
       if (winnerWithDependencyErrors)
         errors = errors.concat(winnerWithDependencyErrors);
     } else if (matchUpStatus) {
-      const { errors: statusChangeErrors } = attemptStatusChange(props);
+      const { errors: statusChangeErrors, message } = attemptStatusChange(
+        props
+      );
+      if (message) messages.push(message);
       if (statusChangeErrors) errors = errors.concat(statusChangeErrors);
     } else {
       console.log('no valid actions', {
@@ -118,9 +132,18 @@ export function setMatchUpStatus(props) {
     }
   }
 
-  return errors.length
-    ? { error: { errors } }
-    : Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) });
+  if (errors.length) {
+    return { error: { errors } };
+  } else {
+    if (props.devContext) {
+      const result = {};
+      if (messages.length) Object.assign(result, { messages });
+      return Object.assign(result, SUCCESS, {
+        matchUp: makeDeepCopy(matchUp),
+      });
+    }
+    return SUCCESS;
+  }
 }
 
 function attemptStatusChange(props) {
@@ -149,7 +172,8 @@ function attemptStatusChange(props) {
     });
     // TESTED
   }
-  return errors.length ? { errors } : SUCCESS;
+  const message = props.devContext && 'attemptStatusChange';
+  return errors.length ? { errors } : Object.assign({ message }, SUCCESS);
 }
 
 function winningSideWithDownstreamDependencies(props) {
