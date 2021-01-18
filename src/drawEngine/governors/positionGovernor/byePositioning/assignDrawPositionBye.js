@@ -98,11 +98,13 @@ function assignBye({
 }) {
   const { matchUpId } = matchUp;
 
-  setMatchUpStatus({
+  const result = setMatchUpStatus({
     drawDefinition,
-    matchUpId,
     matchUpStatus: BYE,
+    devContext: true,
+    matchUpId,
   });
+  if (result.messages) console.log('######', result);
 
   const pairedDrawPosition = matchUp.drawPositions?.reduce(
     (pairedDrawPosition, currentDrawPosition) => {

@@ -18,7 +18,6 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 
 let devContext;
 let deepCopy = true;

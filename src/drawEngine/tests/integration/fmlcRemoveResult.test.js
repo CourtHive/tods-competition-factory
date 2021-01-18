@@ -67,7 +67,7 @@ it('can direct winners and losers', () => {
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
   });
 
-  result = drawEngine.setMatchUpStatus({
+  result = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'TO_BE_PLAYED',
     score: { sets: [] },
@@ -150,7 +150,7 @@ it('can direct winners and losers', () => {
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
   });
 
-  result = drawEngine.setMatchUpStatus({
+  result = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'TO_BE_PLAYED',
     score: {
@@ -240,7 +240,7 @@ it('can remove matchUps properly in FMLC', () => {
     consolationStructure.positionAssignments[1].participantId
   ).not.toBeUndefined();
 
-  let result = tournamentEngine.setMatchUpStatus({
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,

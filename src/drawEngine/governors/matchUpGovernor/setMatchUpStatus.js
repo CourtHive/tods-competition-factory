@@ -23,7 +23,8 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(props) {
-  let errors = [];
+  let errors = [],
+    messages = [];
 
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
@@ -112,7 +113,10 @@ export function setMatchUpStatus(props) {
       if (winnerWithDependencyErrors)
         errors = errors.concat(winnerWithDependencyErrors);
     } else if (matchUpStatus) {
-      const { errors: statusChangeErrors } = attemptStatusChange(props);
+      const { errors: statusChangeErrors, message } = attemptStatusChange(
+        props
+      );
+      if (message) messages.push(message);
       if (statusChangeErrors) errors = errors.concat(statusChangeErrors);
     } else {
       console.log('no valid actions', {
@@ -124,9 +128,18 @@ export function setMatchUpStatus(props) {
     }
   }
 
-  return errors.length
-    ? { error: { errors } }
-    : Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) });
+  if (errors.length) {
+    return { error: { errors } };
+  } else {
+    if (props.devContext) {
+      const result = {};
+      if (messages.length) Object.assign(result, { messages });
+      return Object.assign(result, SUCCESS, {
+        matchUp: makeDeepCopy(matchUp),
+      });
+    }
+    return SUCCESS;
+  }
 }
 
 function attemptStatusChange(props) {
@@ -155,7 +168,9 @@ function attemptStatusChange(props) {
     });
     // TESTED
   }
-  return errors.length ? { errors } : SUCCESS;
+  let message;
+  if (props.devContext) message = 'attemptStatusChange';
+  return errors.length ? { errors } : Object.assign({ message }, SUCCESS);
 }
 
 function winningSideWithDownstreamDependencies(props) {

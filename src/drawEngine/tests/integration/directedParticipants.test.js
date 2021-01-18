@@ -2,7 +2,7 @@ import fs from 'fs';
 
 import { drawEngine } from '../../../drawEngine';
 import { stageEntries } from '../../getters/stageGetter';
-import { findStructure, getDrawStructures } from '../../getters/findStructure';
+import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 
@@ -121,7 +121,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 1,
   }));
   let { matchUpId } = matchUp;
-  let { error } = drawEngine.setMatchUpStatus({
+  let { error } = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
@@ -135,7 +135,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   let { matchUpStatus } = matchUp;
   expect(matchUpStatus).toEqual(BYE);
 
-  ({ error } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BOGUS',
   }));
@@ -147,7 +147,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 2,
   }));
   ({ matchUpId } = matchUp);
-  ({ error } = drawEngine.setMatchUpStatus({
+  ({ error } = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BYE',
   }));
@@ -203,7 +203,10 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   const { drawPositions } = matchUp;
   expect(drawPositions).toMatchObject([1, 3]);
 
-  drawEngine.setMatchUpStatus({ matchUpId, matchUpStatus: RETIRED });
+  drawEngine.setMatchUpStatus({
+    matchUpId,
+    matchUpStatus: RETIRED,
+  });
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
     roundNumber: 1,
@@ -327,7 +330,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
 });
 
-it('can change a first round matchUp winner and update consolation', () => {
+it.only('can change a first round matchUp winner and update consolation', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 30;

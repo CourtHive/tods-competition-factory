@@ -247,10 +247,11 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(score.scoreStringSide1).toEqual('6-2 6-2');
 
   // remove outcome
-  let result = tournamentEngine.setMatchUpStatus({
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,
+    devContext: true,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).toBeUndefined();
@@ -260,13 +261,14 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(completedMatchUps.length).toEqual(12);
 
   // complete matchUp
-  result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
       score,
       winningSide,
     },
+    devContext: true,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).not.toBeUndefined();
