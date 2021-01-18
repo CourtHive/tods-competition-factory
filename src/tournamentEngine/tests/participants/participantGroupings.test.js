@@ -205,7 +205,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   });
   expect(result.error).toEqual(MISSING_VALUE);
 
-  result = tournamentEngine.modifyIndividualParticipantIds({
+  result = tournamentEngine.devContext(true).modifyIndividualParticipantIds({
     groupingParticipantId,
     individualParticipantIds: newIndividualParticipantIds,
   });

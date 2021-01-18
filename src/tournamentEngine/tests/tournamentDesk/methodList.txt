@@ -37,6 +37,7 @@ tournamentEngine
 - withdrawParticipantAtDrawPosition
 * addDrawDefinition
 * addEventEntryPairs
+* addIndividualParticipantIds
 * addMatchUpScheduledDayDate
 * addMatchUpScheduledTime
 * addParticipants
