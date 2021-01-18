@@ -5,12 +5,10 @@ import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStru
 import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import { setMatchUpStatus } from '../../matchUpGovernor/setMatchUpStatus';
 import { getStructureLinks } from '../../../getters/linkGetter';
 
 import { numericSort } from '../../../../utilities';
 
-import { BYE } from '../../../../constants/matchUpStatusConstants';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
@@ -18,6 +16,8 @@ import {
   MISSING_DRAW_POSITIONS,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { attemptToSetMatchUpStatusBYE } from '../../matchUpGovernor/attemptToSetMatchUpStatusBYE';
+import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 
 export function assignDrawPositionBye({
   drawDefinition,
@@ -98,13 +98,16 @@ function assignBye({
 }) {
   const { matchUpId } = matchUp;
 
-  const result = setMatchUpStatus({
+  const { matchUp: noContextMatchUp } = findMatchUp({
     drawDefinition,
-    matchUpStatus: BYE,
-    devContext: true,
+    // mappedMatchUps,
     matchUpId,
   });
-  if (result.messages) console.log('######', result);
+  const result = attemptToSetMatchUpStatusBYE({
+    matchUp: noContextMatchUp,
+    structure,
+  });
+  if (result.error) return result;
 
   const pairedDrawPosition = matchUp.drawPositions?.reduce(
     (pairedDrawPosition, currentDrawPosition) => {

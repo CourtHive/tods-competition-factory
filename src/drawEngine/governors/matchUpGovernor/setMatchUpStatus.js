@@ -104,7 +104,11 @@ export function setMatchUpStatus(props) {
     if (!activeDownstream) {
       // not activeDownstream also handles changing the winner of a finalRound
       // as long as the matchUp is not the finalRound of a qualifying structure
-      const { errors: noDependenciesErrors } = noDownstreamDependencies(props);
+      const {
+        errors: noDependenciesErrors,
+        message,
+      } = noDownstreamDependencies(props);
+      if (message) messages.push(message);
       if (noDependenciesErrors) errors = errors.concat(noDependenciesErrors);
     } else if (winningSide) {
       const {
@@ -168,8 +172,7 @@ function attemptStatusChange(props) {
     });
     // TESTED
   }
-  let message;
-  if (props.devContext) message = 'attemptStatusChange';
+  const message = props.devContext && 'attemptStatusChange';
   return errors.length ? { errors } : Object.assign({ message }, SUCCESS);
 }
 
