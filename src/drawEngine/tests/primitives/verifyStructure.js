@@ -2,7 +2,7 @@ import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getStructurePositionedSeeds } from '../../governors/positionGovernor/positionSeeds';
+import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
 import { drawEngine } from '../../../drawEngine';
