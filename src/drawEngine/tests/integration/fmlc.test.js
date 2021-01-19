@@ -243,14 +243,12 @@ it('can direct winners and losers', () => {
   )?.participantId;
 
   expect(targetMatchUp.drawPositions.includes(16)).toEqual(true);
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   expect(sourceDrawPositionParticipantId).not.toEqual(
     targetDrawPositionParticipantId
   );
-  expect(
-    consolationStructure.positionAssignments[15].participantId
-  ).not.toBeUndefined();
+  expect(consolationStructure.positionAssignments[15].bye).toEqual(true);
 });
 
 it('can change matchUpStatus', () => {

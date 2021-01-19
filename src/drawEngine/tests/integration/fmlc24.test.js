@@ -6,7 +6,7 @@ import {
 
 import { generateFMLC } from '../../tests/primitives/fmlc';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
@@ -123,14 +123,14 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
-  expect(positionAssignmentParticipantidsCount).toEqual(16);
+  expect(positionAssignmentByesCount).toEqual(8);
+  expect(positionAssignmentParticipantidsCount).toEqual(8);
 
   // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: BYE
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
 
@@ -368,14 +368,14 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
-  expect(positionAssignmentParticipantidsCount).toEqual(16);
+  expect(positionAssignmentByesCount).toEqual(8);
+  expect(positionAssignmentParticipantidsCount).toEqual(8);
 
   // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
   // matchUps in the first round of the consolation structure should have matchUpStatus: BYE
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
 
