@@ -68,16 +68,6 @@ export function clearDrawPosition({
   // 2. drawPosition is paired with another drawPosition which has been advanced by winning a matchUp
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
-  let drawPositionCleared;
-  positionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === drawPosition) {
-      assignment.participantId = undefined;
-      delete assignment.qualifier;
-      delete assignment.bye;
-      drawPositionCleared = true;
-    }
-  });
-
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -101,7 +91,7 @@ export function clearDrawPosition({
         false
       );
 
-      if (isByeMatchUp || matchUp.matchUpStatus === BYE) {
+      if (isByeMatchUp) {
         removeByeAndCleanUp({
           drawDefinition,
           matchUp,
@@ -112,6 +102,19 @@ export function clearDrawPosition({
       }
     }
   });
+
+  const drawPositionCleared = positionAssignments.reduce(
+    (cleared, assignment) => {
+      if (assignment.drawPosition === drawPosition) {
+        assignment.participantId = undefined;
+        delete assignment.qualifier;
+        delete assignment.bye;
+        return true;
+      }
+      return cleared;
+    },
+    false
+  );
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
