@@ -41,6 +41,7 @@ export function assignDrawPositionBye({
 
   const { filled, containsBye } = drawPositionFilled(positionState);
   if (filled && !containsBye) {
+    console.log('boo');
     return { error: DRAW_POSITION_ASSIGNED };
   }
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };

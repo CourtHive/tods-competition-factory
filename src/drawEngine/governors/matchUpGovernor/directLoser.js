@@ -200,11 +200,14 @@ export function directLoser(props) {
         return { error: INVALID_DRAW_POSITION };
       }
     } else {
-      if (winnerByeDefWO && !isDefaultOrWalkover) {
+      // if (winnerByeDefWO && !isDefaultOrWalkover) {
+      if (winnerByeDefWO) {
         // if participant won't be placed in targetStructure, place a BYE
         // if winner had [BYE, WALKOVER, or DEFAULT] and current matchUp is not [WALKOVER or DEFAULT]
         // this is the tricky bit of logic in FMLC... and perhaps why it should be refactored with 2nd round FEED
-        return assignLoserPositionBye();
+        // const result = assignLoserPositionBye();
+        const result = asssignLoserDrawPosition();
+        if (result.error) return result;
       }
 
       if (loserHadBye) {

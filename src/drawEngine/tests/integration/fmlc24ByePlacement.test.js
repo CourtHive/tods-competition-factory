@@ -45,8 +45,8 @@ it('can support ITF Consolation BYE placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(2);
-  expect(positionAssignmentParticipantidsCount).toEqual(2);
+  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
 
 it('can support USTA Consolation BYE placement', () => {
@@ -89,8 +89,8 @@ it('can support USTA Consolation BYE placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(2);
-  expect(positionAssignmentParticipantidsCount).toEqual(2);
+  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
 
 it('can remove BYEs when matchUps are cleared', () => {
@@ -115,8 +115,8 @@ it('can remove BYEs when matchUps are cleared', () => {
   checkAssignments({
     completionValues,
     structureId: mainStructureId,
-    participantsCount: 2,
-    byesCount: 2,
+    participantsCount: 4,
+    byesCount: 0,
   });
 
   completionValues = [[2, 1, undefined, true]];
@@ -124,8 +124,8 @@ it('can remove BYEs when matchUps are cleared', () => {
   checkAssignments({
     completionValues,
     structureId: mainStructureId,
-    participantsCount: 2,
-    byesCount: 1,
+    participantsCount: 3,
+    byesCount: 0,
   });
 
   completionValues = [[2, 2, undefined, true]];
@@ -169,8 +169,8 @@ it('can remove BYEs when matchUps are cleared', () => {
   checkAssignments({
     completionValues,
     structureId: mainStructureId,
-    participantsCount: 2,
-    byesCount: 2,
+    participantsCount: 4,
+    byesCount: 0,
   });
 });
 
