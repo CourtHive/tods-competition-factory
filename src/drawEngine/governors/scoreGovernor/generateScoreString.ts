@@ -25,11 +25,14 @@ export function generateScoreString(props: any) {
     matchUpStatus,
     reversed = false,
     winnerFirst = true,
+    addOutcomeString,
   } = props;
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;
 
-  const outcomeString = getOutcomeString({ matchUpStatus });
+  const outcomeString = addOutcomeString
+    ? getOutcomeString({ matchUpStatus })
+    : '';
 
   const setScores =
     sets

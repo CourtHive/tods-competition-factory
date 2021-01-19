@@ -69,6 +69,7 @@ test('can append a scoreString outcome', () => {
     winningSide: 1,
     autoComplete: true,
     matchUpStatus: RETIRED,
+    addOutcomeString: true,
   });
   expect(result).toEqual('6-7(3) 7-6(12) 3-0 RET');
   result = generateScoreString({
@@ -77,6 +78,7 @@ test('can append a scoreString outcome', () => {
     autoComplete: true,
     matchUpStatus: RETIRED,
     reversed: true,
+    addOutcomeString: true,
   });
   expect(result).toEqual('7-6(3) 6-7(12) 0-3 RET');
 });
@@ -104,6 +106,7 @@ test('can prepend a scoreString outcome', () => {
     winningSide: 2,
     autoComplete: true,
     matchUpStatus: RETIRED,
+    addOutcomeString: true,
   });
   expect(result).toEqual('RET 7-6(3) 6-7(12) 0-3');
 });
