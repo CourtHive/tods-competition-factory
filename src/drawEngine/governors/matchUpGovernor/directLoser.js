@@ -112,11 +112,11 @@ export function directLoser(props) {
   );
 
   const loserLinkCondition = loserTargetLink.linkCondition;
-  const includesDefaultOrWalkover = [WALKOVER, DEFAULTED].includes(
-    matchUpStatus
-  );
+  const isDefaultOrWalkover = [WALKOVER, DEFAULTED].includes(matchUpStatus);
 
-  const { loserHadMatchUpStatus: defaultOrWalkover } = includesMatchUpStatuses({
+  const {
+    loserHadMatchUpStatus: includesDefaultOrWalkover,
+  } = includesMatchUpStatuses({
     sourceMatchUps,
     loserDrawPosition,
     drawPositionMatchUps,
@@ -152,7 +152,7 @@ export function directLoser(props) {
     const firstMatchUpLossNotDefWO =
       loserLinkCondition === FIRST_MATCHUP &&
       loserDrawPositionWins.length === 0 &&
-      !defaultOrWalkover;
+      !includesDefaultOrWalkover;
 
     const { winnerHadMatchUpStatus: winnerByeDefWO } = includesMatchUpStatuses({
       sourceMatchUps,
@@ -200,7 +200,7 @@ export function directLoser(props) {
         return { error: INVALID_DRAW_POSITION };
       }
     } else {
-      if (winnerByeDefWO && !includesDefaultOrWalkover) {
+      if (winnerByeDefWO && !isDefaultOrWalkover) {
         // if participant won't be placed in targetStructure, place a BYE
         // if winner had [BYE, WALKOVER, or DEFAULT] and current matchUp is not [WALKOVER or DEFAULT]
         // this is the tricky bit of logic in FMLC... and perhaps why it should be refactored with 2nd round FEED
@@ -216,7 +216,7 @@ export function directLoser(props) {
         });
         if (result.error) return result;
       }
-      if (includesDefaultOrWalkover && !loserHadBye) {
+      if (isDefaultOrWalkover && !loserHadBye) {
         const result = assignLoserPositionBye();
         if (result.error) return result;
       }
