@@ -1,11 +1,13 @@
-import { findStructure } from '../../../getters/findStructure';
-import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
-import { positionTargets } from '../positionTargets';
+import { attemptToSetMatchUpStatusBYE } from '../../matchUpGovernor/attemptToSetMatchUpStatusBYE';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { getStructureLinks } from '../../../getters/linkGetter';
+import { findStructure } from '../../../getters/findStructure';
+import { positionTargets } from '../positionTargets';
 
 import { numericSort } from '../../../../utilities';
 
@@ -16,8 +18,6 @@ import {
   MISSING_DRAW_POSITIONS,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { attemptToSetMatchUpStatusBYE } from '../../matchUpGovernor/attemptToSetMatchUpStatusBYE';
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 
 export function assignDrawPositionBye({
   drawDefinition,

@@ -112,7 +112,5 @@ export function modifyVenue({
 
   if (errors.length) return { error: { errors } };
 
-  return devContext
-    ? Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) })
-    : SUCCESS;
+  return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
 }

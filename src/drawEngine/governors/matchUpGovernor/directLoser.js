@@ -21,7 +21,6 @@ import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstant
 */
 export function directLoser(props) {
   const {
-    devContext,
     loserMatchUp,
     drawDefinition,
     loserTargetLink,
@@ -193,7 +192,6 @@ export function directLoser(props) {
 
   function assignWinnerPositionBye() {
     return assignDrawPositionBye({
-      devContext,
       drawDefinition,
       structureId: targetStructureId,
       drawPosition: winnerBackdrawPosition,

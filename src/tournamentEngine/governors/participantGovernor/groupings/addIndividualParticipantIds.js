@@ -28,7 +28,6 @@ export function addIndividualParticipantIds({
   groupingParticipantId,
   individualParticipantIds,
   removeFromOtherTeams,
-  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupingParticipantId || !individualParticipantIds)
@@ -84,10 +83,8 @@ export function addIndividualParticipantIds({
     );
   }
 
-  return devContext
-    ? Object.assign({}, SUCCESS, {
-        groupingParticipant: makeDeepCopy(groupingParticipant),
-        added: participantIdsToAdd.length,
-      })
-    : SUCCESS;
+  return Object.assign({}, SUCCESS, {
+    groupingParticipant: makeDeepCopy(groupingParticipant),
+    added: participantIdsToAdd.length,
+  });
 }

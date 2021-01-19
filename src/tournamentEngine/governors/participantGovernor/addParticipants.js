@@ -209,11 +209,9 @@ export function addParticipants({
     if (errors.length) {
       return { error: errors };
     } else {
-      const result = Object.assign({}, SUCCESS);
-      if (devContext)
-        Object.assign(result, {
-          participants: makeDeepCopy(addedParticipants),
-        });
+      const result = Object.assign({}, SUCCESS, {
+        participants: makeDeepCopy(addedParticipants),
+      });
       if (notAdded.length) {
         Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
       }
