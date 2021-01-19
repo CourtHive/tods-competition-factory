@@ -12,6 +12,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
+import { setDeepCopy, setDevContext } from '../globalState';
 
 import {
   INVALID_OBJECT,
@@ -69,6 +70,7 @@ export const tournamentEngine = (function () {
     return SUCCESS;
   };
   fx.setState = (tournament, deepCopyOption) => {
+    setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
     if (result?.error) {
       fx.success = false;
@@ -81,6 +83,7 @@ export const tournamentEngine = (function () {
   };
   fx.devContext = (isDev) => {
     devContext = isDev;
+    setDevContext(isDev);
     auditEngine.devContext(isDev);
     return fx;
   };
