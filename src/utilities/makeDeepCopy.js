@@ -1,7 +1,9 @@
+import { getGlobalState } from '../globalState';
 import { isDateObject } from './dateTime';
 
 export function makeDeepCopy(sourceObject, convertExtensions) {
-  if (typeof sourceObject !== 'object' || sourceObject === null) {
+  const deepCopy = getGlobalState().deepCopy;
+  if (!deepCopy || typeof sourceObject !== 'object' || sourceObject === null) {
     return sourceObject;
   }
 
