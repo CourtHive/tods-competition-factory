@@ -175,33 +175,33 @@ export function positionActions({
           payload: { drawId, structureId, drawPosition, replaceWithBye: true },
         });
       }
+    }
 
-      if (
-        !isByePosition &&
-        isValidSeedPosition({ drawDefinition, structureId, drawPosition })
-      ) {
-        const { seedAssignments } = getStructureSeedAssignments({
-          drawDefinition,
-          structure,
-        });
-        const { seedNumber, seedValue } =
-          seedAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          ) || {};
+    if (
+      !isByePosition &&
+      isValidSeedPosition({ drawDefinition, structureId, drawPosition })
+    ) {
+      const { seedAssignments } = getStructureSeedAssignments({
+        drawDefinition,
+        structure,
+      });
+      const { seedNumber, seedValue } =
+        seedAssignments.find(
+          (assignment) => assignment.participantId === participantId
+        ) || {};
 
-        validActions.push({
-          type: SEED_VALUE,
-          method: SEED_VALUE_METHOD,
-          participant,
-          payload: {
-            drawId,
-            structureId,
-            participantId,
-            seedNumber,
-            seedValue,
-          },
-        });
-      }
+      validActions.push({
+        type: SEED_VALUE,
+        method: SEED_VALUE_METHOD,
+        participant,
+        payload: {
+          drawId,
+          structureId,
+          participantId,
+          seedNumber,
+          seedValue,
+        },
+      });
     }
 
     if (!isByePosition && participantId) {
