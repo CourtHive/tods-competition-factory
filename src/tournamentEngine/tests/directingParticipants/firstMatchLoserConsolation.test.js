@@ -80,7 +80,7 @@ it('does not direct participant to FMLC consolation when walkover', () => {
   );
 
   expect(mainDrawPosition.participantId).not.toBeUndefined();
-  expect(consolationDrawPosition.bye).toEqual(true);
+  expect(consolationDrawPosition.participantId).not.toBeUndefined();
 });
 
 it('correctly places consolation bye for winner of 2nd round match who had bye', () => {
@@ -441,5 +441,7 @@ it('correctly places consolation bye for WALKOVER loser of 2nd round match who h
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   consolationStructure = drawDefinition.structures[1];
   expect(consolationStructure.positionAssignments[0].bye).not.toEqual(true);
-  expect(consolationStructure.positionAssignments[1].bye).toEqual(true);
+  expect(
+    consolationStructure.positionAssignments[1].participantId
+  ).not.toBeUndefined();
 });
