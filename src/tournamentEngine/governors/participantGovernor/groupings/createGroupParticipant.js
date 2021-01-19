@@ -64,11 +64,7 @@ export function createGroupParticipant({
   });
   if (result.error) return result;
 
-  if (devContext) {
-    return Object.assign({}, SUCCESS, {
-      participant: makeDeepCopy(groupParticipant),
-    });
-  } else {
-    return SUCCESS;
-  }
+  return Object.assign({}, SUCCESS, {
+    participant: makeDeepCopy(groupParticipant),
+  });
 }
