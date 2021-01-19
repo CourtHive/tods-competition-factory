@@ -6,6 +6,9 @@ import policyGovernor from './governors/policyGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
 import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
+
+import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { setDeepCopy, setDevContext } from '../globalState';
 import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
@@ -19,7 +22,6 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
-import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 let devContext;
 let drawDefinition;
@@ -104,6 +106,7 @@ export const drawEngine = (function () {
   ]);
 
   fx.devContext = (isDev) => {
+    setDevContext(isDev);
     devContext = isDev;
     return fx;
   };
@@ -111,7 +114,8 @@ export const drawEngine = (function () {
     tournamentParticipants = participants;
     return fx;
   };
-  fx.setState = (definition) => {
+  fx.setState = (definition, deepCopyOption) => {
+    setDeepCopy(deepCopyOption);
     const result = setState(definition);
     if (result.error) return result;
     return fx;

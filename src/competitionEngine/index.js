@@ -1,10 +1,11 @@
 import { makeDeepCopy } from '../utilities';
 import { auditEngine } from '../auditEngine';
 import { drawEngine } from '../drawEngine';
-import { tournamentEngine } from '../tournamentEngine';
 
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
+import { tournamentEngine } from '../tournamentEngine';
+import { setDeepCopy, setDevContext } from '../globalState';
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
@@ -37,10 +38,12 @@ export const competitionEngine = (function () {
     return '@VERSION@';
   };
   fx.devContext = (isDev) => {
+    setDevContext(isDev);
     devContext = isDev;
     return fx;
   };
-  fx.setState = (tournamentRecords) => {
+  fx.setState = (tournamentRecords, deepCopyOption) => {
+    setDeepCopy(deepCopyOption);
     const result = setState(tournamentRecords);
     if (result?.error) {
       fx.error = result.error;
