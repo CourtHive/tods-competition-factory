@@ -1,20 +1,20 @@
-import { numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { setMatchUpStatus } from '../matchUpGovernor/setMatchUpStatus';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { positionTargets } from '../../governors/positionGovernor/positionTargets';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { removeMatchUpDrawPosition } from '../../governors/matchUpGovernor/matchUpDrawPosition';
+import { removeMatchUpDrawPosition } from '../matchUpGovernor/matchUpDrawPosition';
+import { positionTargets } from './positionTargets';
+import { numericSort } from '../../../utilities';
+
+import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 import {
   DRAW_POSITION_ACTIVE,
   MISSING_DRAW_POSITION,
   DRAW_POSITION_NOT_CLEARED,
-  MISSING_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
@@ -68,16 +68,6 @@ export function clearDrawPosition({
   // 2. drawPosition is paired with another drawPosition which has been advanced by winning a matchUp
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
-  let drawPositionCleared;
-  positionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === drawPosition) {
-      assignment.participantId = undefined;
-      delete assignment.qualifier;
-      delete assignment.bye;
-      drawPositionCleared = true;
-    }
-  });
-
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -101,98 +91,116 @@ export function clearDrawPosition({
         false
       );
 
-      if (isByeMatchUp || matchUp.matchUpStatus === BYE) {
-        removeByeAndCleanUp({ matchUp, drawPosition, inContextDrawMatchUps });
+      if (isByeMatchUp) {
+        removeByeAndCleanUp({
+          drawDefinition,
+          matchUp,
+          structure,
+          drawPosition,
+          inContextDrawMatchUps,
+        });
       }
     }
   });
 
+  const drawPositionCleared = positionAssignments.reduce(
+    (cleared, assignment) => {
+      if (assignment.drawPosition === drawPosition) {
+        assignment.participantId = undefined;
+        delete assignment.qualifier;
+        delete assignment.bye;
+        return true;
+      }
+      return cleared;
+    },
+    false
+  );
+
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
   return Object.assign({}, SUCCESS, { participantId });
+}
 
-  function removeByeAndCleanUp({
-    matchUp,
-    drawPosition,
+function removeByeAndCleanUp({
+  drawDefinition,
+  matchUp,
+  structure,
+  drawPosition,
+  inContextDrawMatchUps,
+}) {
+  const { matchUpId } = matchUp;
+
+  matchUp.matchUpStatus = TO_BE_PLAYED;
+  matchUp.matchUpStatusCodes = [];
+
+  // if there is a linked draw then BYE must also be placed there
+  // This must be propagated through compass draw, for instance
+  const pairedDrawPosition = matchUp.drawPositions?.reduce(
+    (pairedDrawPosition, currentDrawPosition) => {
+      return currentDrawPosition !== drawPosition
+        ? currentDrawPosition
+        : pairedDrawPosition;
+    },
+    undefined
+  );
+
+  const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
+    drawPosition
+  );
+
+  const {
+    targetLinks: { loserTargetLink, winnerTargetLink },
+    targetMatchUps: { loserMatchUp, winnerMatchUp },
+  } = positionTargets({
+    matchUpId,
+    structure,
+    drawDefinition,
     inContextDrawMatchUps,
-  }) {
-    const { matchUpId } = matchUp;
-    setMatchUpStatus({
-      drawDefinition,
-      matchUpId,
-      matchUpStatus: TO_BE_PLAYED,
-      matchUpStatusCodes: [],
-    });
+    sourceMatchUpWinnerDrawPositionIndex,
+  });
 
-    // if there is a linked draw then BYE must also be placed there
-    // This must be propagated through compass draw, for instance
-    const pairedDrawPosition = matchUp.drawPositions?.reduce(
-      (pairedDrawPosition, currentDrawPosition) => {
-        return currentDrawPosition !== drawPosition
-          ? currentDrawPosition
-          : pairedDrawPosition;
-      },
-      undefined
+  // clear Directed Byes
+  if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {
+    // loserMatchUp must have both drawPositions defined
+    const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
+      (f) => f
+    ).length;
+    if (loserMatchUpDrawPositionsCount !== 2)
+      return { error: MISSING_DRAW_POSITIONS };
+    // drawPositions must be in numerical order
+    loserMatchUp.drawPositions = (loserMatchUp.drawPositions || []).sort(
+      numericSort
     );
+    // loser drawPosition in target structure is determined bye even/odd
+    const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
 
-    const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
-      drawPosition
-    );
-
-    const {
-      targetLinks: { loserTargetLink, winnerTargetLink },
-      targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = positionTargets({
-      matchUpId,
-      structure,
+    const structureId = loserTargetLink.target.structureId;
+    const targetDrawPosition =
+      loserMatchUp.drawPositions[targetDrawPositionIndex];
+    clearDrawPosition({
       drawDefinition,
-      inContextDrawMatchUps,
-      sourceMatchUpWinnerDrawPositionIndex,
+      structureId,
+      drawPosition: targetDrawPosition,
     });
+  }
 
-    // clear Directed Byes
-    if (loserMatchUp && loserMatchUp.matchUpStatus === BYE) {
-      // loserMatchUp must have both drawPositions defined
-      const loserMatchUpDrawPositionsCount = loserMatchUp.drawPositions?.filter(
-        (f) => f
-      ).length;
-      if (loserMatchUpDrawPositionsCount !== 2)
-        return { error: MISSING_DRAW_POSITIONS };
-      // drawPositions must be in numerical order
-      loserMatchUp.drawPositions = (loserMatchUp.drawPositions || []).sort(
-        numericSort
+  if (winnerMatchUp) {
+    if (
+      winnerTargetLink &&
+      matchUp.structureId !== winnerTargetLink.target.structureId
+    ) {
+      // TODO: if the winnerMatchUp structureId is different than the matchUp structureId
+      // => the winner participantId should be removed from the positionAssignments of target structure
+      console.log(
+        '%c ALERT: remove winner participantId from target structure positionAssignments',
+        'color: red'
       );
-      // loser drawPosition in target structure is determined bye even/odd
-      const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
-
-      const structureId = loserTargetLink.target.structureId;
-      const targetDrawPosition =
-        loserMatchUp.drawPositions[targetDrawPositionIndex];
-      clearDrawPosition({
-        drawDefinition,
-        structureId,
-        drawPosition: targetDrawPosition,
-      });
     }
 
-    if (winnerMatchUp) {
-      if (
-        winnerTargetLink &&
-        matchUp.structureId !== winnerTargetLink.target.structureId
-      ) {
-        // TODO: if the winnerMatchUp structureId is different than the matchUp structureId
-        // => the winner participantId should be removed from the positionAssignments of target structure
-        console.log(
-          '%c ALERT: remove winner participantId from target structure positionAssignments',
-          'color: red'
-        );
-      }
-
-      removeMatchUpDrawPosition({
-        drawDefinition,
-        matchUpId: winnerMatchUp.matchUpId,
-        drawPosition: pairedDrawPosition,
-      });
-    }
+    removeMatchUpDrawPosition({
+      drawDefinition,
+      matchUpId: winnerMatchUp.matchUpId,
+      drawPosition: pairedDrawPosition,
+    });
   }
 }
