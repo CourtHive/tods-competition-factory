@@ -23,7 +23,7 @@ it('can add, remove, and edit penalties for participants', () => {
     participantIds: [participantId],
     penaltyType: BALL_ABUSE,
     penaltyCode: 'ORGCODE',
-    matchUpId: 'boo',
+    matchUpId: 'fakeMatchUpId',
     createdAt,
     notes: 'Hit ball into sea',
   };

@@ -75,6 +75,7 @@ export function assignDrawPosition({
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
   const { filled } = drawPositionFilled(positionState);
   if (filled && positionState.participantId !== participantId) {
+    console.log('positionAssignment ##');
     return { error: DRAW_POSITION_ASSIGNED };
   }
 
