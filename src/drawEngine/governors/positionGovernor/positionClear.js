@@ -3,7 +3,7 @@ import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { removeByeAndCleanUp } from './byePositioning/removeByeAndCleanUp';
+import { removeByeAndCleanUp } from './byePositioning/checkByeAndCleanUp';
 
 import {
   DRAW_POSITION_ACTIVE,
