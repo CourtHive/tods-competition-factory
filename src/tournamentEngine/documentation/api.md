@@ -436,6 +436,10 @@ Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
 
 ---
 
+## getPositionAssignments
+
+---
+
 ## getSeedsCount
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize

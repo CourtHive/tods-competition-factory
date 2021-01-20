@@ -38,6 +38,7 @@ import { positionActions } from './positionQueries';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getPositionAssignments } from '../../getters/getPositionAssignments';
 
 function getDrawDefinition({ drawDefinition }) {
   return { drawDefinition: makeDeepCopy(drawDefinition) };
@@ -63,6 +64,7 @@ const queryGovernor = {
   getMatchUpFormat,
   getDrawDefinition,
   getEventProperties,
+  getPositionAssignments,
 
   getVenues,
   findVenue,
