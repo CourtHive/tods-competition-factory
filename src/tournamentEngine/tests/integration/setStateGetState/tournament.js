@@ -1772,5 +1772,4 @@ export const tournament = {
   createdAt: '2020-12-11T12:51:56.152Z',
   updatedAt: '2020-12-11T13:37:23.949Z',
   __v: 0,
-  tournamaentOfficials: [],
 };

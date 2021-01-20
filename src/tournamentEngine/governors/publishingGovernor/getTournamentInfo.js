@@ -22,7 +22,6 @@ export function getTournamentInfo({ tournamentRecord }) {
     hostCountryCode,
     tournamentContacts,
     tournamentAddresses,
-    tournamaentOfficials,
   }) => ({
     tournamentId,
     tournamentRank,
@@ -39,7 +38,6 @@ export function getTournamentInfo({ tournamentRecord }) {
     hostCountryCode,
     tournamentContacts,
     tournamentAddresses,
-    tournamaentOfficials,
   }))(tournamentRecord);
 
   return Object.assign({}, SUCCESS, {
