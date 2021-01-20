@@ -98,7 +98,7 @@ export function generateParticipants({
         participantId: UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
-        name: doubles ? pairName : teamMocks().teams[0],
+        participantName: doubles ? pairName : teamMocks().teams[0],
         individualParticipantIds,
       };
 

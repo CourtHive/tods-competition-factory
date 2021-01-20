@@ -25,7 +25,7 @@ export function generateTeamsFromParticipantAttribute(props) {
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
         teams[attributeValue] = {
-          name: attributeValue,
+          participantName: attributeValue,
           participantId: uuids?.pop() || UUID(),
           participantType: TEAM,
           participantRole: COMPETITOR,

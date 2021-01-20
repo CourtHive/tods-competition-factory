@@ -75,7 +75,7 @@ export function assignTieMatchUpParticipantId(props) {
           participantId: side.participantId,
           participantType: PAIR,
           participantRole: COMPETITOR,
-          name: side.participant.individualParticipants
+          participantName: side.participant.individualParticipants
             .map(personFamilyName)
             .join('/'),
           individualParticipants,

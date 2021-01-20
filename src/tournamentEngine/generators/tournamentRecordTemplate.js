@@ -15,7 +15,6 @@ export const tournamentRecordTemplate = ({ tournamentId }) => ({
   hostCountryCode: undefined,
   tournamentContacts: [],
   tournamentAddresses: [],
-  tournamaentOfficials: [],
 
   venues: [],
   events: [],
