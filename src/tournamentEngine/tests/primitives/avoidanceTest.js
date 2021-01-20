@@ -123,7 +123,7 @@ export function avoidanceTest(props) {
     drawPositions: m.drawPositions,
     seeds: m.sides.map((s) => s.seedValue || ''),
     names: m.sides.map(
-      (s) => s.participant.name || s.particpant.participantName
+      (s) => s.participant.name || s.participant.participantName
     ),
     ioc: m.sides.map((s) => {
       if (eventType === DOUBLES) {

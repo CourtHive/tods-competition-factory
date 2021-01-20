@@ -76,4 +76,4 @@ const pairAvoidancePolicy = {
 
 To restrict the participantIds to be considered, add **_includeIds_** as an attribute containing an array of desired participantIds.
 
-Other desired avoidance attributes may exist on participant objects as extensions. Any such extensions will be added as attributes to the particpant object prior to processing.
+Other desired avoidance attributes may exist on participant objects as extensions. Any such extensions will be added as attributes to the participant object prior to processing.

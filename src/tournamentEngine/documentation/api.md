@@ -63,7 +63,7 @@ Add PAIR participant to an event. Creates new participantType: PAIR participants
 ## addParticipant
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants
-Generates particpant.participantId if none is provided
+Generates participant.participantId if none is provided
 Includes integrity checks for PAIR participants to insure participant.individualParticipantIds are valid
 
 - @param {object} participant - participant object
