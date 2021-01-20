@@ -6,11 +6,12 @@ import {
 } from '../../../utilities';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { findExtension } from '../queryGovernor/extensionQueries';
+import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { findExtension } from '../queryGovernor/extensionQueries';
 
 export function getDrawData({
   tournamentParticipants = [],
@@ -87,10 +88,16 @@ export function getDrawData({
 
       if (structure.activeStructure) activeDraw = true;
 
+      const { seedAssignments } = getStructureSeedAssignments({
+        drawDefinition,
+        structure,
+      });
+
       return {
         ...structureInfo,
         structureId,
         roundMatchUps,
+        seedAssignments,
         participantResults,
       };
     });
