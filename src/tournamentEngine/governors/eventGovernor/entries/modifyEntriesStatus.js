@@ -23,11 +23,11 @@ export function modifyEntriesStatus({
 
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
 
-  // build up an array of participantIds to be modified which are present in drawDefinitions as well
+  // build up an array of participantIds which are present in drawDefinitions as well
   const participantIdsPresentinDraws = [];
   event.drawDefinitions?.forEach((drawDefinition) => {
     drawDefinition.entries.forEach((entry) => {
-      if (participantIds.includes(entry.participantId)) {
+      if (participantIdsPresentinDraws.includes(entry.participantId)) {
         participantIdsPresentinDraws.push(entry.participantId);
       }
     });
@@ -44,9 +44,9 @@ export function modifyEntriesStatus({
 
   if (event) {
     event.entries.forEach((entry) => {
-      const presentInDraws =
-        !drawDefinition &&
-        participantIdsPresentinDraws.includes(entry.participantId);
+      const presentInDraws = participantIdsPresentinDraws.includes(
+        entry.participantId
+      );
 
       // if a participantId is also present in a drawDefinition...
       // ...and a specific drawDefinition is NOT being modified as well:
