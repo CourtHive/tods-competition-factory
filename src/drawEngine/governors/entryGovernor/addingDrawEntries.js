@@ -29,6 +29,7 @@ export function addDrawEntry({
   participant,
   entryStage,
   entryStatus = DIRECT_ACCEPTANCE,
+  entryPosition,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!entryStage) return { error: MISSING_STAGE };
@@ -50,6 +51,7 @@ export function addDrawEntry({
     participantId,
     entryStage,
     entryStatus,
+    entryPosition,
   });
   drawDefinition.entries.push(entry);
   return SUCCESS;
