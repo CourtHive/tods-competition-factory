@@ -3,6 +3,7 @@ import {
   BOTTOM_UP,
   TOP_DOWN,
   LOSER,
+  FIRST_MATCHUP,
 } from '../../constants/drawDefinitionConstants';
 
 export function feedInLinks({
@@ -11,6 +12,7 @@ export function feedInLinks({
   roundsCount,
   roundOffset = 0,
   feedPolicy,
+  fmlc,
 }) {
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
@@ -52,6 +54,7 @@ export function feedInLinks({
           structureId: consolationStructure.structureId,
         },
       };
+      if (roundNumber === 2 && fmlc) link.target.linkCondition = FIRST_MATCHUP;
       return roundsFed.includes(targetRound) ? link : undefined;
     })
     .filter((f) => f);

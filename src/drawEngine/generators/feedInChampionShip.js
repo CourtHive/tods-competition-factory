@@ -19,6 +19,7 @@ export function feedInChampionship(props = {}) {
     stageSequence = 1,
     feedPolicy,
     finishingPositionOffset,
+    fmlc,
   } = props;
 
   const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
@@ -57,6 +58,7 @@ export function feedInChampionship(props = {}) {
     consolationStructure,
     roundsCount,
     feedPolicy,
+    fmlc,
   });
 
   drawDefinition.links = drawDefinition.links.concat(...links);
