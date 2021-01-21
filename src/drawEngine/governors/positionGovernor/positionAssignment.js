@@ -9,13 +9,14 @@ import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  DRAW_POSITION_ASSIGNED,
   INVALID_DRAW_POSITION,
   INVALID_PARTICIPANT_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_DRAW_POSITION_FOR_SEEDING,
+  DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 export function assignDrawPosition({
   drawDefinition,
@@ -75,8 +76,14 @@ export function assignDrawPosition({
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
   const { filled } = drawPositionFilled(positionState);
   if (filled && positionState.participantId !== participantId) {
-    console.log('positionAssignment ##');
-    return { error: DRAW_POSITION_ASSIGNED };
+    const { activeDrawPositions } = structureActiveDrawPositions({
+      drawDefinition,
+      structureId,
+    });
+    const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
+    if (drawPositionIsActive) {
+      return { error: DRAW_POSITION_ACTIVE };
+    }
   }
 
   positionAssignments.forEach((assignment) => {
