@@ -94,7 +94,7 @@ it('properly orders round robin participants; drawSize: 3, FORMAT_STANDARD', () 
   });
 });
 
-it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
+it.only('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
   const drawProfiles = [
     {
       drawSize: 5,
@@ -245,6 +245,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
   const participantResults =
     eventData.drawsData[0].structures[0].participantResults;
 
+  console.log(eventData.drawsData[0].structures[0].participantResults[0]);
   // check the expectations against both the positionAssignments for the structure
   // and the eventData payload that is intended for presentation
   expectations.forEach(({ drawPosition, expectation }) => {
