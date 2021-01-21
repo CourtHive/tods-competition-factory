@@ -57,7 +57,7 @@ tournamentEngine
 * modifyEntriesStatus
 * modifyIndividualParticipantIds
 * modifyVenue
-* participantSignInStatus
+* modifyParticipantSignInStatus
 * positionActions
 * promoteAlternate
 * publishEvent
