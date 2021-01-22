@@ -1,6 +1,6 @@
 import { analyzeSet } from './analyzeSet';
 import { analyzeMatchUp } from './analyzeMatchUp';
-import { tallyParticipantResults } from './roundRobinTally';
+import { tallyParticipantResults } from './roundRobinTally/roundRobinTally';
 import {
   keyValueScore,
   keyValueConstants,

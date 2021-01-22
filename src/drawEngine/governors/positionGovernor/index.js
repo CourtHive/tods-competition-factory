@@ -7,8 +7,10 @@ import { swapDrawPositionAssignments } from './positionSwap';
 import { getNextSeedBlock } from '../../getters/seedGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
+import { addSubOrder } from './addSubOrder';
 
 const positionGovernor = {
+  addSubOrder,
   clearDrawPosition,
   assignDrawPosition,
   //  assignCollectionPosition,

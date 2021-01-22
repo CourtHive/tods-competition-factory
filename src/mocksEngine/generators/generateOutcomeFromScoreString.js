@@ -27,11 +27,11 @@ export function generateOutcomeFromScoreString({
   if (winningSide && ![1, 2, undefined].includes(winningSide))
     return { error: INVALID_VALUES, winningSide };
 
-  const sets = scoreString && parseScoreString({ scoreString });
-  const score = { sets };
-  const winningScoreString = generateScoreString({ sets });
+  const neutralParsedSets = scoreString && parseScoreString({ scoreString });
+  const score = {};
+  const winningScoreString = generateScoreString({ sets: neutralParsedSets });
   const losingScoreString = generateScoreString({
-    sets,
+    sets: neutralParsedSets,
     reversed: true,
   });
   if (winningSide === 1) {
@@ -43,6 +43,8 @@ export function generateOutcomeFromScoreString({
   } else {
     score.scoreStringSide1 = scoreString;
   }
+  score.sets = parseScoreString({ scoreString: score.scoreStringSide1 });
+
   return {
     outcome: {
       winningSide,
