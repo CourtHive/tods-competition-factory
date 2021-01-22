@@ -45,6 +45,7 @@ import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
+import { addSubOrder } from '../../../drawEngine/governors/positionGovernor/addSubOrder';
 
 const eventGovernor = {
   addEvent,
@@ -57,6 +58,7 @@ const eventGovernor = {
   addPlayoffStructures,
   deleteDrawDefinitions,
 
+  addSubOrder,
   addEventEntries,
   promoteAlternate,
   destroyPairEntry,
