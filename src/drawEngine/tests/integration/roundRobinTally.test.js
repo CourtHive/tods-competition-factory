@@ -7,9 +7,12 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import {
+  FORMAT_SHORT_SETS,
+  FORMAT_STANDARD,
+} from '../../../fixtures/scoring/matchUpFormats/formatConstants';
 
-it('properly orders round robin participants; drawSize: 3, FORMAT_STANDARD', () => {
+it('calculate participantResult values are present for all drawPositions', () => {
   const drawProfiles = [
     {
       drawSize: 3,
@@ -92,6 +95,49 @@ it('properly orders round robin participants; drawSize: 3, FORMAT_STANDARD', () 
       expect(isNaN(result.pointsOrder)).toEqual(false);
     });
   });
+});
+
+it('properly calculates short sets', () => {
+  const drawProfiles = [
+    {
+      drawSize: 5,
+      eventType: SINGLES,
+      participantsCount: 5,
+      matchUpFormat: FORMAT_SHORT_SETS,
+      drawType: ROUND_ROBIN,
+      structureOptions: { groupSize: 5 },
+      outcomes: [
+        {
+          drawPositions: [1, 2],
+          scoreString: '4-0 4-1',
+          winningSide: 2,
+        },
+      ],
+    },
+  ];
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const mainStructure = drawDefinition.structures[0];
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const dp1 = getDrawPositionTally({ positionAssignments, drawPosition: 1 });
+  expect(dp1.setsWon).toEqual(0);
+  expect(dp1.setsLost).toEqual(2);
+  expect(dp1.gamesWon).toEqual(1);
+  expect(dp1.gamesLost).toEqual(8);
+  expect(dp1.matchUpsWon).toEqual(0);
+  expect(dp1.matchUpsLost).toEqual(1);
+  expect(dp1.result).toEqual('0/1');
+  expect(dp1.games).toEqual('1/8');
 });
 
 it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', () => {
@@ -199,7 +245,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
         groupOrder: 2,
         setsWon: 5,
         setsLost: 3,
-        gamesWon: 26,
+        gamesWon: 24,
         gamesLost: 17,
       },
     },
@@ -210,7 +256,7 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
         setsWon: 5,
         setsLost: 3,
         gamesWon: 24,
-        gamesLost: 23,
+        gamesLost: 21,
       },
     },
     {
@@ -264,5 +310,213 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
       expect(participantResult[key]).toEqual(expectation[key]);
       expect(eventParticipantResult[key]).toEqual(expectation[key]);
     });
+  });
+});
+
+it('RR Format Standard tally test', () => {
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      eventType: SINGLES,
+      participantsCount: 4,
+      matchUpFormat: FORMAT_STANDARD,
+      drawType: ROUND_ROBIN,
+      outcomes: [
+        {
+          drawPositions: [1, 2],
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [1, 3],
+          scoreString: '6-1 6-1',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [1, 4],
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { structureId } = drawDefinition.structures[0];
+  const { positionAssignments } = tournamentEngine.getPositionAssignments({
+    drawId,
+    structureId,
+  });
+  const dp1 = getDrawPositionTally({
+    positionAssignments,
+    drawPosition: 1,
+  });
+  expect(dp1.setsWon).toEqual(4);
+  expect(dp1.setsLost).toEqual(2);
+  expect(dp1.gamesWon).toEqual(26);
+  expect(dp1.gamesLost).toEqual(16);
+  expect(dp1.matchUpsWon).toEqual(2);
+  expect(dp1.matchUpsLost).toEqual(1);
+  expect(dp1.result).toEqual('2/1');
+  expect(dp1.games).toEqual('26/16');
+
+  const dp2 = getDrawPositionTally({
+    positionAssignments,
+    drawPosition: 2,
+  });
+  expect(dp2.setsWon).toEqual(0);
+  expect(dp2.setsLost).toEqual(2);
+  expect(dp2.gamesWon).toEqual(2);
+  expect(dp2.gamesLost).toEqual(12);
+  expect(dp2.matchUpsWon).toEqual(0);
+  expect(dp2.matchUpsLost).toEqual(1);
+  expect(dp2.result).toEqual('0/1');
+  expect(dp2.games).toEqual('2/12');
+
+  const dp3 = getDrawPositionTally({
+    positionAssignments,
+    drawPosition: 3,
+  });
+  expect(dp3.setsWon).toEqual(2);
+  expect(dp3.setsLost).toEqual(0);
+  expect(dp3.gamesWon).toEqual(12);
+  expect(dp3.gamesLost).toEqual(2);
+  expect(dp3.matchUpsWon).toEqual(1);
+  expect(dp3.matchUpsLost).toEqual(0);
+  expect(dp3.result).toEqual('1/0');
+  expect(dp3.games).toEqual('12/2');
+});
+
+function getDrawPositionTally({ positionAssignments, drawPosition }) {
+  return positionAssignments
+    .find((assignment) => assignment.drawPosition === drawPosition)
+    .extensions.find(({ name }) => name === 'tally').value;
+}
+
+it('recognize when participants are tied with position order', () => {
+  const drawProfiles = [
+    {
+      drawSize: 5,
+      eventType: SINGLES,
+      participantsCount: 5,
+      matchUpFormat: FORMAT_STANDARD,
+      drawType: ROUND_ROBIN,
+      structureOptions: { groupSize: 5 },
+      outcomes: [
+        {
+          drawPositions: [1, 2],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [1, 3],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [1, 4],
+          scoreString: '6-0 6-0',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [1, 5],
+          scoreString: '6-0 6-0',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [2, 3],
+          scoreString: '6-0 6-0',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [2, 4],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [2, 5],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [3, 4],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [3, 5],
+          scoreString: '6-0 6-0',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [4, 5],
+          scoreString: '6-0 6-0',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const mainStructure = drawDefinition.structures[0];
+  const { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+
+  const { eventData } = tournamentEngine.getEventData({ drawId });
+  const participantResults =
+    eventData.drawsData[0].structures[0].participantResults;
+
+  // check the expectations against both the positionAssignments for the structure
+  // and the eventData payload that is intended for presentation
+  positionAssignments.forEach((assignment) => {
+    const { drawPosition } = assignment;
+    const result = participantResults.find(
+      (result) => result.drawPosition === drawPosition
+    ).participantResult;
+    const {
+      extension: { value: participantResult },
+    } = findExtension({
+      element: assignment,
+      name: 'tally',
+    });
+
+    const {
+      matchUpsWon,
+      matchUpsLost,
+      setsWon,
+      setsLost,
+      gamesWon,
+      gamesLost,
+    } = participantResult;
+
+    const check = [
+      matchUpsWon,
+      matchUpsLost,
+      setsWon,
+      setsLost,
+      gamesWon,
+      gamesLost,
+    ];
+
+    expect(check).toEqual([2, 2, 4, 4, 24, 24]);
+
+    // check that the results in eventData are equivalent
+    expect(result).toEqual(participantResult);
   });
 });
