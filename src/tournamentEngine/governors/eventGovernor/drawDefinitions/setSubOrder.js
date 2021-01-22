@@ -1,4 +1,4 @@
-import { addSubOrder as drawEngineAddSubOrder } from '../../../../drawEngine/governors/positionGovernor/addSubOrder';
+import { setSubOrder as drawEngineSetSubOrder } from '../../../../drawEngine/governors/positionGovernor/setSubOrder';
 
 /**
  *
@@ -11,6 +11,6 @@ import { addSubOrder as drawEngineAddSubOrder } from '../../../../drawEngine/gov
  * @param {number} subOrder - order in which tied participant should receive finishing position
  *
  */
-export function addSubOrder(props) {
-  return drawEngineAddSubOrder(props);
+export function setSubOrder(props) {
+  return drawEngineSetSubOrder(props);
 }

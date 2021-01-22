@@ -18,7 +18,7 @@ import {
  * @param {number} subOrder - order in which tied participant should receive finishing position
  *
  */
-export function addSubOrder({
+export function setSubOrder({
   drawDefinition,
   structureId,
   drawPosition,

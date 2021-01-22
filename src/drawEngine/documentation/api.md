@@ -76,7 +76,7 @@ drawEngine.addPlayoffStructures({
 
 ---
 
-## addSubOrder
+## setSubOrder
 
 Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
 
