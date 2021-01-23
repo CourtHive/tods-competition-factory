@@ -1,6 +1,7 @@
-import tournamentEngine from '../..';
-import mocksEngine from '../../../mocksEngine';
+import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { intersection } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../..';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -82,4 +83,54 @@ it('can return valid actions for matchUps', () => {
   expect(actionTypes.includes(SCHEDULE)).toEqual(true);
   expect(actionTypes.includes(REFEREE)).toEqual(true);
   expect(actionTypes.includes(STATUS)).toEqual(false);
+});
+
+it.only('can score a matchUp using params provided in validActions', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      participantsCount: 30,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-2 6-1',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+
+  let drawPosition = 3;
+  let targetMatchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.drawPositions.includes(drawPosition) && matchUp.roundNumber === 1
+  );
+  let { validActions } = tournamentEngine.matchUpActions(targetMatchUp);
+  let scoreAction = validActions.find(({ type }) => type === SCORE);
+  const { method, params } = scoreAction;
+
+  const { outcome } = generateOutcomeFromScoreString({
+    scoreString: '6-1 6-1',
+    winningSide: 2,
+  });
+
+  Object.assign(params, { outcome });
+
+  tournamentEngine.devContext(true);
+  let result = tournamentEngine[method](params);
+  expect(result.success).toEqual(true);
+  expect(result.matchUp.winningSide).toEqual(2);
+  console.log(scoreAction);
 });

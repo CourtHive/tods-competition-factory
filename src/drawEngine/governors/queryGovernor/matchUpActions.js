@@ -133,10 +133,17 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
         matchUpId,
         matchUpTieId,
         matchUpFormat,
+        outcome: {
+          scoreStringSide1: undefined,
+          scoreStringSide2: undefined,
+          sets: [],
+        },
+        winningSide: undefined,
       };
       validActions.push({
         type: SCORE,
         method: 'setMatchUpStatus',
+        message: 'set outcome and winningSide',
         params,
       });
       validActions.push({ type: START });
