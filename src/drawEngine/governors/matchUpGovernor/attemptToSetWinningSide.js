@@ -2,7 +2,7 @@ import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { isCompletedStructure } from '../queryGovernor/structureActions';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { directParticipants } from './directParticipants';
-import { getAffectedTarget } from './getAffectedTarget';
+import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
@@ -27,7 +27,14 @@ export function attemptToSetWinningSide(props) {
       });
       if (structureIsComplete) {
         // if structure is complete then a changed outcome will have downstream effects
-        getAffectedTarget({ drawDefinition, structure, matchUp });
+        const { structureIds } = getAffectedTargetStructureIds({
+          drawDefinition,
+          structure,
+          matchUp,
+        });
+        if (structureIds?.length) {
+          console.log('affects:', { structureIds });
+        }
       }
     }
 
