@@ -18,24 +18,23 @@ export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const { links } = getStructureLinks({ drawDefinition, structureId });
-  if (!roundNumber) return { links };
 
   const source = links.source.reduce((source, link) => {
-    return link.source.roundNumber === roundNumber
+    return !link.source.roundNumber || link.source.roundNumber === roundNumber
       ? source.concat(link)
       : source;
   }, []);
   const target = links.target.reduce((target, link) => {
-    return link.target.roundNumber === roundNumber
+    return !link.target.roundNumber || link.target.roundNumber === roundNumber
       ? target.concat(link)
       : target;
   }, []);
   return { links: { source, target } };
 }
 
-export function getTargetLink({ source, subject }) {
+export function getTargetLink({ source, linkType }) {
   const target = source.reduce((target, link) => {
-    return link.linkType === subject ? link : target;
+    return link.linkType === linkType ? link : target;
   }, undefined);
   return target;
 }
