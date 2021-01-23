@@ -34,6 +34,7 @@ it('can extract round robin structures', () => {
 
   const result = getDrawData({ drawDefinition });
   expect(result.structures.length).toEqual(1);
+  console.log(result);
 });
 
 /*

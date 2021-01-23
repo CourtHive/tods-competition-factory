@@ -330,7 +330,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
 });
 
-it.only('can change a first round matchUp winner and update consolation', () => {
+it('can change a first round matchUp winner and update consolation', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 30;

@@ -1,5 +1,4 @@
 import {
-  MISSING_ROUND_NUMBER,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
@@ -11,14 +10,16 @@ import {
  * @param {object} drawDefinition - passed automatically by drawEngine
  * @param {object} matchUp - matchUp for which links are sought
  * @param {string} structureId - optional - structureId within which matchUp occurs
+ * @param {number} roundNumber - optional - filter for only links that apply to roundNumber
  *
  */
 export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
-  if (!roundNumber) return { error: MISSING_ROUND_NUMBER };
 
   const { links } = getStructureLinks({ drawDefinition, structureId });
+  if (!roundNumber) return { links };
+
   const source = links.source.reduce((source, link) => {
     return link.source.roundNumber === roundNumber
       ? source.concat(link)

@@ -28,7 +28,7 @@ it('can generate outcomes for either winningSide', () => {
   expect(outcome.winningSide).toEqual(2);
 });
 
-it.only('can generate outcomes for short sets', () => {
+it('can generate outcomes for short sets', () => {
   let values = {
     scoreString: '4-1 4-1',
     winningSide: 1,

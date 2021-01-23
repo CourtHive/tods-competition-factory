@@ -8,7 +8,7 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { setDeepCopy, setDevContext } from '../globalState';
+import { setDeepCopy, setDevContext } from '../global/globalState';
 import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
