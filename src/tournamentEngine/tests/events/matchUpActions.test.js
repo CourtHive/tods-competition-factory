@@ -132,5 +132,4 @@ it.only('can score a matchUp using params provided in validActions', () => {
   let result = tournamentEngine[method](params);
   expect(result.success).toEqual(true);
   expect(result.matchUp.winningSide).toEqual(2);
-  console.log(scoreAction);
 });
