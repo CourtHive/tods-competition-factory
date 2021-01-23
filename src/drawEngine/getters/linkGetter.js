@@ -2,6 +2,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
+import { intersection } from '../../utilities';
 
 /**
  *
@@ -32,9 +33,13 @@ export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
   return { links: { source, target } };
 }
 
-export function getTargetLink({ source, linkType }) {
+export function getTargetLink({ source, linkType, finishingPositions }) {
   const target = source.reduce((target, link) => {
-    return link.linkType === linkType ? link : target;
+    const positionCondition =
+      !link.finishingPositions ||
+      !finishingPositions ||
+      intersection(finishingPositions, link.finishingPositions).length;
+    return positionCondition && link.linkType === linkType ? link : target;
   }, undefined);
   return target;
 }
