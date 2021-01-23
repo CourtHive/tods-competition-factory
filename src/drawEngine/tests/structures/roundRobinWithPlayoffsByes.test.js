@@ -214,7 +214,7 @@ it.skip('can generate Playoffs for Round Robins when BYEs are present (6)', () =
   });
 });
 
-it.only('can generate Playoffs for Round Robins when BYEs are present (7)', () => {
+it('can generate Playoffs for Round Robins when BYEs are present (7)', () => {
   const playoffGroups = [
     {
       finishingPositions: [1],
@@ -246,11 +246,13 @@ it.only('can generate Playoffs for Round Robins when BYEs are present (7)', () =
     },
   ];
 
-  roundRobinWithPlayoffsTest({
+  const { drawDefinition } = roundRobinWithPlayoffsTest({
     drawSize: 8,
     groupSize: 4,
     playoffGroups,
     participantsCount: 7,
     finishingGroupSizes: [2, 2, 2, 1],
   });
+  const byeMatchUp = drawDefinition.structures[4].matchUps[0];
+  expect(byeMatchUp.finishingPositionRange.winner).toEqual([7, 7]);
 });
