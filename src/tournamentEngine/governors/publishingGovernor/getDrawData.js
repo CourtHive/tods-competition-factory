@@ -91,7 +91,7 @@ export function getDrawData({
       structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
         // return active || matchUp.winningSide || matchUp.score;
         // SCORE: when matchUp.score becomes object change logic
-        return active || matchUp.winningSide || matchUp.score?.sets?.length;
+        return active || !!matchUp.winningSide || !!matchUp.score?.sets?.length;
       }, false);
 
       structureInfo.structureCompleted = matchUps.reduce(
