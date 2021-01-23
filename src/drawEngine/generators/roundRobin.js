@@ -267,14 +267,25 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
     );
   }
 
+  // returns a range for array of possible finishing drawPositions
+  function finishingRange(drawPositions) {
+    return [Math.min(...drawPositions), Math.max(...drawPositions)];
+  }
+
   function positionMatchUp(drawPositions) {
     const hash = drawPositionsHash(drawPositions);
     const roundNumber = determineRoundNumber(hash);
+    const loser = finishingRange(drawPositions.slice(1));
+    const winner = finishingRange(
+      drawPositions.slice(0, drawPositions.length - 1)
+    );
     const matchUp = {
       roundNumber,
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: TO_BE_PLAYED,
+      // finishingPositionRange in RR is not very useful, but provided for consistency
+      finishingPositionRange: { winner, loser },
     };
     return matchUp;
   }

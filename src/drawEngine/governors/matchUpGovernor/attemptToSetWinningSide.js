@@ -1,14 +1,25 @@
 import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { checkConnectedStructures } from './checkConnectedStructures';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { directParticipants } from './directParticipants';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetWinningSide(props) {
-  const { matchUp, matchUpStatus, matchUpStatusCodes, winningSide } = props;
+  const {
+    drawDefinition,
+    matchUpStatus,
+    matchUpStatusCodes,
+    winningSide,
+    structure,
+    matchUp,
+  } = props;
   let errors = [];
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
+    // TODO: return a message if there are effects in connected structures
+    checkConnectedStructures({ drawDefinition, structure, matchUp });
+
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
     );

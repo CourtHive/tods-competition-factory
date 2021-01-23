@@ -12,6 +12,14 @@ import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStru
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  ABANDONED,
+  BYE,
+  COMPLETED,
+  DEFAULTED,
+  RETIRED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 export function getDrawData({
   tournamentParticipants = [],
@@ -30,7 +38,7 @@ export function getDrawData({
 
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
-  let activeDraw = false;
+  let drawActive = false;
   const groupedStructures = structureGroups.map((structureIds) => {
     const structures = structureIds.map((structureId) => {
       const { structure } = findStructure({ drawDefinition, structureId });
@@ -80,13 +88,25 @@ export function getDrawData({
         matchUpFormat,
       }))(structure);
 
-      structure.activeStructure = matchUps.reduce((active, matchUp) => {
+      structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
         // return active || matchUp.winningSide || matchUp.score;
         // SCORE: when matchUp.score becomes object change logic
-        return active || matchUp.winningSide || matchUp.score?.sets?.length;
+        return active || !!matchUp.winningSide || !!matchUp.score?.sets?.length;
       }, false);
 
-      if (structure.activeStructure) activeDraw = true;
+      structureInfo.structureCompleted = matchUps.reduce(
+        (completed, matchUp) => {
+          return (
+            completed &&
+            [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(
+              matchUp.matchUpStatus
+            )
+          );
+        },
+        true
+      );
+
+      if (structureInfo.structureActive) drawActive = true;
 
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
@@ -111,10 +131,14 @@ export function getDrawData({
 
   const structures = groupedStructures.flat();
 
-  drawInfo.activeDraw = activeDraw;
+  drawInfo.drawActive = drawActive;
   drawInfo.drawGenerated = structures?.reduce((generated, structure) => {
     return generated || !!structure?.roundMatchUps;
   }, false);
+  drawInfo.drawCompleted = structures?.reduce(
+    (completed, structure) => completed && structure.structureCompleted,
+    true
+  );
 
   return Object.assign({}, SUCCESS, {
     drawInfo: makeDeepCopy(drawInfo),

@@ -55,7 +55,7 @@ export function positionIsInRange({ position, rangeDefinition }) {
 // extracts winner and loser rangeDefinitions
 export function roundValues(values) {
   return [
-    unique(values.finishingPositionRange.loser),
-    unique(values.finishingPositionRange.winner),
+    unique(values?.finishingPositionRange?.loser || []),
+    unique(values?.finishingPositionRange?.winner || []),
   ];
 }

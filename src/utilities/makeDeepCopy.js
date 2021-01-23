@@ -1,4 +1,4 @@
-import { getGlobalState } from '../globalState';
+import { getGlobalState } from '../global/globalState';
 import { isDateObject } from './dateTime';
 
 export function makeDeepCopy(sourceObject, convertExtensions) {
