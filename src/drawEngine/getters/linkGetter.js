@@ -36,9 +36,9 @@ export function getRoundLinks({ drawDefinition, roundNumber, structureId }) {
 export function getTargetLink({ source, linkType, finishingPositions }) {
   const target = source.reduce((target, link) => {
     const positionCondition =
-      !link.finishingPositions ||
+      !link.source?.finishingPositions ||
       !finishingPositions ||
-      intersection(finishingPositions, link.finishingPositions).length;
+      intersection(finishingPositions, link.source?.finishingPositions).length;
     return positionCondition && link.linkType === linkType ? link : target;
   }, undefined);
   return target;
