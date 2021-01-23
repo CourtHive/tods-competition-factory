@@ -1,8 +1,9 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { isCompletedStructure } from './structureActions';
 
 import {
   ADD_PENALTY,
@@ -13,7 +14,11 @@ import {
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
+import {
+  CONTAINER,
+  LOSER,
+  WINNER,
+} from '../../../constants/drawDefinitionConstants';
 import {
   END,
   REFEREE,
@@ -39,6 +44,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     drawDefinition,
     matchUpId,
   });
+
   const {
     assignedPositions,
     allPositionsAssigned,
@@ -48,6 +54,13 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
 
   const validActions = [];
   if (!structureId) return { validActions };
+
+  const structureIsComplete = isCompletedStructure({
+    drawDefinition,
+    structure,
+  });
+  const completedRoundRobinGroup =
+    structure.structureType === CONTAINER && structureIsComplete;
 
   const participantAssignedDrawPositions = assignedPositions
     .filter((assignment) => assignment.participantId)
@@ -72,6 +85,11 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     true
   );
 
+  /*
+  const {
+    links: { source },
+  } = getStructureLinks({ drawDefinition, structureId });
+  */
   const {
     links: { source },
   } = getRoundLinks({
@@ -85,6 +103,13 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
   if (loserTargetLink || winnerTargetLink) {
     // console.log({ source, loserTargetLink, winnerTargetLink });
   }
+  console.log({
+    completedRoundRobinGroup,
+    structureIsComplete,
+    loserTargetLink,
+    winnerTargetLink,
+    source,
+  });
 
   if (isByeMatchUp) {
     return { validActions, isByeMatchUp };
@@ -136,7 +161,20 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       validActions.push({ type: STATUS });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: SCORE });
+      const { matchUpId, matchUpTieId, matchUpFormat } = matchUp;
+      const params = {
+        drawId,
+        matchUpId,
+        matchUpTieId,
+        matchUpFormat,
+        completedRoundRobinGroup,
+      };
+      validActions.push({
+        type: SCORE,
+        completedRoundRobinGroup,
+        method: 'setMatchUpStatus',
+        params,
+      });
       validActions.push({ type: START });
       validActions.push({ type: END });
     }
