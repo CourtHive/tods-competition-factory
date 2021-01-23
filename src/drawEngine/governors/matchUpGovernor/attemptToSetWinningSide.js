@@ -1,11 +1,9 @@
 import { removeDirectedParticipants } from './removeDirectedParticipants';
-import { isCompletedStructure } from '../queryGovernor/structureActions';
+import { checkConnectedStructures } from './checkConnectedStructures';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { directParticipants } from './directParticipants';
-import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
 
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function attemptToSetWinningSide(props) {
   const {
@@ -19,24 +17,8 @@ export function attemptToSetWinningSide(props) {
   let errors = [];
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
-    // check whether player movement is dependent on win ratio
-    if (structure.finishingPosition === WIN_RATIO) {
-      const structureIsComplete = isCompletedStructure({
-        drawDefinition,
-        structure,
-      });
-      if (structureIsComplete) {
-        // if structure is complete then a changed outcome will have downstream effects
-        const { structureIds } = getAffectedTargetStructureIds({
-          drawDefinition,
-          structure,
-          matchUp,
-        });
-        if (structureIds?.length) {
-          console.log('affects:', { structureIds });
-        }
-      }
-    }
+    // TODO: return a message if there are effects in connected structures
+    checkConnectedStructures({ drawDefinition, structure, matchUp });
 
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
