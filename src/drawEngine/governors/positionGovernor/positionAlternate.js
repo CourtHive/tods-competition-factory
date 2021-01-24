@@ -33,7 +33,6 @@ export function alternateDrawPositionAssignment({
       removedParticipantId: positionAssignment.participantId,
     });
   }
-  if (isByeReplacement) console.log({ isByeReplacement });
   let result = clearDrawPosition({
     drawDefinition,
     drawPosition,
