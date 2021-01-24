@@ -1,6 +1,7 @@
 export const BYE = 'BYE';
 export const RETIRED = 'RETIRED';
 export const WALKOVER = 'WALKOVER';
+export const DOUBLE_WALKOVER = 'DOUBLE_WALKOVER';
 export const SUSPENDED = 'SUSPENDED';
 export const ABANDONED = 'ABANDONED';
 export const DEFAULTED = 'DEFAULTED';
@@ -17,6 +18,7 @@ export const matchUpStatusConstants = {
   COMPLETED,
   DEAD_RUBBER,
   DEFAULTED,
+  DOUBLE_WALKOVER,
   IN_PROGRESS,
   INCOMPLETE,
   NOT_PLAYED,
