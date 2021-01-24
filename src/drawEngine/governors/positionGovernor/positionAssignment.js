@@ -4,6 +4,7 @@ import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 
@@ -16,7 +17,6 @@ import {
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 export function assignDrawPosition({
   drawDefinition,
