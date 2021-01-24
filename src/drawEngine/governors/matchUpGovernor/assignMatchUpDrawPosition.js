@@ -1,5 +1,6 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { numericSort } from '../../../utilities';
@@ -14,7 +15,6 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { getPositionAssignments } from '../../getters/positionsGetter';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
