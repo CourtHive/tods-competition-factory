@@ -42,8 +42,11 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       .sort(numericSort)
   );
   const activeByeDrawPositions = byeDrawPositions.filter((drawPosition) => {
-    const pairedPosition = getPairedDrawPosition({ matchUps, drawPosition });
-    return drawPositionsInScoredMatchUps.includes(pairedPosition);
+    const { pairedDrawPosition } = getPairedDrawPosition({
+      matchUps,
+      drawPosition,
+    });
+    return drawPositionsInScoredMatchUps.includes(pairedDrawPosition);
   });
 
   if (structure.structureType === CONTAINER) {
@@ -78,9 +81,13 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
 
     // drawPositionsPairedWithAdvanced are those positions which are paired with a position which has advanced
     const drawPositionsPairedWithAdvanced = [].concat(
-      ...advancedDrawPositions.map((drawPosition) =>
-        getPairedDrawPosition({ matchUps, drawPosition })
-      )
+      ...advancedDrawPositions.map((drawPosition) => {
+        const { pairedDrawPosition } = getPairedDrawPosition({
+          matchUps,
+          drawPosition,
+        });
+        return pairedDrawPosition;
+      })
     );
 
     return {

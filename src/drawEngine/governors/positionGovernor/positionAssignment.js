@@ -102,7 +102,7 @@ export function assignDrawPosition({
       structure,
     });
 
-    const pairedDrawPosition = getPairedDrawPosition({
+    const { pairedDrawPosition } = getPairedDrawPosition({
       matchUps,
       drawPosition,
     });
