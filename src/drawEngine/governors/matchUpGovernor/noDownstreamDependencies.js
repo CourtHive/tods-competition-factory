@@ -6,6 +6,7 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { checkConnectedStructures } from './checkConnectedStructures';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, score, winningSide } = props;
@@ -36,8 +37,8 @@ export function noDownstreamDependencies(props) {
     }
   } else if (matchUp) {
     delete matchUp.score;
-    delete matchUp.matchUpStatus;
     delete matchUp.winningSide;
+    matchUp.matchUpStatus = TO_BE_PLAYED;
     const isCollectionMatchUp = Boolean(matchUp.collectionId);
     if (isCollectionMatchUp) {
       const { drawDefinition, matchUpTieId } = props;

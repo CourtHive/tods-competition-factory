@@ -2,7 +2,11 @@ import tournamentEngine from '../..';
 import mocksEngine from '../../../mocksEngine';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  COMPLETED,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SCORE } from '../../../constants/matchUpActionConstants';
 
@@ -151,19 +155,7 @@ function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
   let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
 
-  const {
-    completedMatchUps,
-    upcomingMatchUps,
-    byeMatchUps,
-    pendingMatchUps,
-  } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
-  expect(byeMatchUps.length).toEqual(expectations.bye);
-  expect(completedMatchUps.length).toEqual(expectations.complete);
-  expect(pendingMatchUps.length).toEqual(expectations.pending);
-  expect(upcomingMatchUps.length).toEqual(expectations.upcoming);
+  checkExpectations({ drawId, expectations });
 }
 
 function replaceWithAlternate({
@@ -183,7 +175,10 @@ function replaceWithAlternate({
   Object.assign(payload, { alternateParticipantId });
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+  checkExpectations({ drawId, expectations });
+}
 
+function checkExpectations({ drawId, expectations }) {
   const {
     completedMatchUps,
     upcomingMatchUps,
@@ -197,4 +192,16 @@ function replaceWithAlternate({
   expect(completedMatchUps.length).toEqual(expectations.complete);
   expect(pendingMatchUps.length).toEqual(expectations.pending);
   expect(upcomingMatchUps.length).toEqual(expectations.upcoming);
+  byeMatchUps.forEach(({ matchUpStatus }) =>
+    expect(matchUpStatus).toEqual(BYE)
+  );
+  completedMatchUps.forEach(({ matchUpStatus }) =>
+    expect(matchUpStatus).toEqual(COMPLETED)
+  );
+  pendingMatchUps.forEach(({ matchUpStatus }) =>
+    expect(matchUpStatus).toEqual(TO_BE_PLAYED)
+  );
+  upcomingMatchUps.forEach(({ matchUpStatus }) =>
+    expect(matchUpStatus).toEqual(TO_BE_PLAYED)
+  );
 }

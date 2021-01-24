@@ -9,7 +9,11 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  DEFAULTED,
+  TO_BE_PLAYED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -27,7 +31,7 @@ export function removeDirectedParticipants(props) {
     delete matchUp.score;
     delete matchUp.winningSide;
 
-    matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     const { matchUpTieId } = props;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
 
@@ -71,7 +75,7 @@ export function removeDirectedParticipants(props) {
     delete matchUp.score;
     delete matchUp.winningSide;
 
-    matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
