@@ -62,10 +62,11 @@ export function assignMatchUpDrawPosition({
     matchUp.drawPositions.includes(assignment.drawPosition)
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  console.log({ matchUpAssignments, isByeMatchUp });
+  // console.log({ matchUpAssignments, isByeMatchUp });
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 
   const { matchUpStatus, roundPosition, roundNumber } = matchUp;
+  /*
   console.log({
     matchUpStatus,
     positionAssigned,
@@ -76,6 +77,7 @@ export function assignMatchUpDrawPosition({
     placementScenario,
     byeReplacement,
   });
+  */
   if (
     positionAssigned &&
     !byeReplacement &&
@@ -84,12 +86,12 @@ export function assignMatchUpDrawPosition({
     const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions.indexOf(
       drawPosition
     );
-    console.log('positionAssigned', {
-      matchUpStatus,
-      roundPosition,
-      roundNumber,
-    });
     if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
+      console.log('positionAssigned', {
+        matchUpStatus,
+        roundPosition,
+        roundNumber,
+      });
       const targetData = positionTargets({
         matchUpId,
         structure,

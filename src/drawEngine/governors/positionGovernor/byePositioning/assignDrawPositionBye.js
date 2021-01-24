@@ -1,7 +1,7 @@
 import { attemptToSetMatchUpStatusBYE } from '../../matchUpGovernor/attemptToSetMatchUpStatusBYE';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
-import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
+import { assignMatchUpDrawPosition } from '../../matchUpGovernor/assignMatchUpDrawPosition';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
