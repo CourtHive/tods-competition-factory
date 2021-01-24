@@ -10,6 +10,7 @@ export const NOT_PLAYED = 'NOT_PLAYED';
 export const IN_PROGRESS = 'IN_PROGRESS';
 export const TO_BE_PLAYED = 'TO_BE_PLAYED';
 export const DEAD_RUBBER = 'DEAD_RUBBER';
+export const DOUBLE_WALKOVER = 'DOUBLE_WALKOVER';
 
 export const matchUpStatusConstants = {
   ABANDONED,
@@ -17,6 +18,7 @@ export const matchUpStatusConstants = {
   COMPLETED,
   DEAD_RUBBER,
   DEFAULTED,
+  DOUBLE_WALKOVER,
   IN_PROGRESS,
   INCOMPLETE,
   NOT_PLAYED,
