@@ -23,6 +23,7 @@ export function assignDrawPosition({
   structureId,
   drawPosition,
   participantId,
+  isByeReplacement,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -102,14 +103,15 @@ export function assignDrawPosition({
       structure,
     });
 
-    const { pairedDrawPosition } = getPairedDrawPosition({
+    const { matchUp, pairedDrawPosition } = getPairedDrawPosition({
       matchUps,
       drawPosition,
     });
     const pairedDrawPositionIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === pairedDrawPosition
     )?.bye;
-    if (pairedDrawPositionIsBye) {
+    if (pairedDrawPositionIsBye || isByeReplacement) {
+      console.log({ isByeReplacement, pairedDrawPosition, matchUp });
       // re-assign the BYE to benefit from propagation
       assignDrawPositionBye({
         drawDefinition,
