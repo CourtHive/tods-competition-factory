@@ -54,7 +54,7 @@ export function feedInLinks({
           structureId: consolationStructure.structureId,
         },
       };
-      if (roundNumber === 2 && fmlc) link.target.linkCondition = FIRST_MATCHUP;
+      if (roundNumber === 2 && fmlc) link.linkCondition = FIRST_MATCHUP;
       return roundsFed.includes(targetRound) ? link : undefined;
     })
     .filter((f) => f);
