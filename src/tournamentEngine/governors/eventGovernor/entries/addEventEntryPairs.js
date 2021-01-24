@@ -30,6 +30,7 @@ import { MAIN } from '../../../../constants/drawDefinitionConstants';
 export function addEventEntryPairs({
   event,
   uuids,
+  drawDefinition,
   tournamentRecord,
   entryStage = MAIN,
   entryStatus = ALTERNATE,
@@ -107,6 +108,7 @@ export function addEventEntryPairs({
     event,
     entryStage,
     entryStatus,
+    drawDefinition,
     tournamentRecord,
     participantIds: pairParticipantIds,
   });

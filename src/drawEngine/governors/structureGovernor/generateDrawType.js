@@ -1,7 +1,7 @@
 import { stageDrawPositionsCount } from '../../getters/stageGetter';
 import structureTemplate from '../../generators/structureTemplate';
 
-import { powerOf2, makeDeepCopy } from '../../../utilities';
+import { powerOf2 } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';

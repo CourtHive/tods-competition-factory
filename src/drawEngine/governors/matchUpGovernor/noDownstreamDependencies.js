@@ -5,6 +5,7 @@ import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { checkConnectedStructures } from './checkConnectedStructures';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, score, winningSide } = props;
@@ -23,6 +24,9 @@ export function noDownstreamDependencies(props) {
     );
     if (incompleteScoreErrors) errors = errors.concat(incompleteScoreErrors);
   } else if (!winningSide && matchUp.winningSide && !score?.sets?.length) {
+    const { structure, drawDefinition } = props;
+    // TODO: return a message if there are effects in connected structures
+    checkConnectedStructures({ drawDefinition, structure, matchUp });
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
     );

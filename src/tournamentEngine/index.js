@@ -12,7 +12,7 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
-import { setDeepCopy, setDevContext } from '../globalState';
+import { setDeepCopy, setDevContext } from '../global/globalState';
 
 import {
   INVALID_OBJECT,

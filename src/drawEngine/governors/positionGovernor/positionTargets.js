@@ -67,7 +67,7 @@ function targetByRoundOutcome({
   );
 
   const { roundPosition: sourceRoundPosition } = matchUp;
-  const loserTargetLink = getTargetLink({ source, subject: LOSER });
+  const loserTargetLink = getTargetLink({ source, linkType: LOSER });
   const {
     matchUp: loserMatchUp,
     matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
@@ -81,7 +81,7 @@ function targetByRoundOutcome({
   });
 
   let winnerMatchUp, winnerMatchUpDrawPositionIndex;
-  const winnerTargetLink = getTargetLink({ source, subject: WINNER });
+  const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
   if (winnerTargetLink) {
     ({
       matchUp: winnerMatchUp,
