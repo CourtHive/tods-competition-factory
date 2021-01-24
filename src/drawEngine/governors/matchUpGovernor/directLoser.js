@@ -32,13 +32,18 @@ export function directLoser(props) {
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
 
+  const fedDrawPositionFMLC =
+    loserLinkCondition === FIRST_MATCHUP &&
+    loserMatchUp.roundNumber === 2 &&
+    Math.min(...targetMatchUpDrawPositions.filter((f) => f));
+
   const drawPositionIndex = loserLinkCondition
     ? originMatchUpLosingIndex
     : loserMatchUpDrawPositionIndex;
   const targetMatchUpDrawPosition =
-    targetMatchUpDrawPositions[drawPositionIndex];
+    fedDrawPositionFMLC || targetMatchUpDrawPositions[drawPositionIndex];
   const winnerBackdrawPosition =
-    targetMatchUpDrawPositions[1 - drawPositionIndex];
+    fedDrawPositionFMLC || targetMatchUpDrawPositions[1 - drawPositionIndex];
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
@@ -69,6 +74,18 @@ export function directLoser(props) {
       drawPositionSide?.sideNumber === matchUp.winningSide && !unscoredOutcome
     );
   });
+
+  const {
+    loserHadMatchUpStatus: includesDefaultOrWalkover,
+  } = includesMatchUpStatuses({
+    sourceMatchUps,
+    loserDrawPosition,
+    drawPositionMatchUps,
+    matchUpStatuses: [WALKOVER, DEFAULTED],
+  });
+  const validForConsolation =
+    loserLinkCondition === FIRST_MATCHUP &&
+    (includesDefaultOrWalkover || loserDrawPositionWins.length === 0);
 
   const {
     positionAssignments: sourcePositionAssignments,
@@ -122,14 +139,6 @@ export function directLoser(props) {
     targetMatchUpDrawPosition
   );
 
-  const {
-    loserHadMatchUpStatus: includesDefaultOrWalkover,
-  } = includesMatchUpStatuses({
-    sourceMatchUps,
-    loserDrawPosition,
-    drawPositionMatchUps,
-    matchUpStatuses: [WALKOVER, DEFAULTED],
-  });
   const isFeedRound =
     loserTargetLink.target.roundNumber > 1 &&
     unfilledTargetMatchUpDrawPositions.length;
@@ -138,7 +147,7 @@ export function directLoser(props) {
     loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
 
   if (loserLinkCondition) {
-    return loserLinkConditionLogic();
+    return fedDrawPositionFMLC ? loserLinkFedFMLC() : loserLinkConditionLogic();
   } else if (isFirstRoundValidDrawPosition) {
     return asssignLoserDrawPosition();
   } else if (isFeedRound) {
@@ -156,11 +165,15 @@ export function directLoser(props) {
     return { error: INVALID_DRAW_POSITION };
   }
 
-  function loserLinkConditionLogic() {
-    const validForConsolation =
-      loserLinkCondition === FIRST_MATCHUP &&
-      (includesDefaultOrWalkover || loserDrawPositionWins.length === 0);
+  function loserLinkFedFMLC() {
+    if (validForConsolation) {
+      return asssignLoserDrawPosition();
+    } else {
+      return assignWinnerPositionBye();
+    }
+  }
 
+  function loserLinkConditionLogic() {
     const { winnerHadMatchUpStatus: winnerByeDefWO } = includesMatchUpStatuses({
       sourceMatchUps,
       loserDrawPosition,
