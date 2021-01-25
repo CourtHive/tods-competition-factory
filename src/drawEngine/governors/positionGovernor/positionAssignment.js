@@ -113,9 +113,6 @@ export function assignDrawPosition({
       ({ drawPosition }) => drawPosition === pairedDrawPosition
     )?.bye;
     if (pairedDrawPositionIsBye || isByeReplacement) {
-      // console.log({ isByeReplacement, pairedDrawPosition, matchUp });
-      // re-assign the BYE to benefit from propagation
-
       assignMatchUpDrawPosition({
         drawDefinition,
         drawPosition,
@@ -123,13 +120,6 @@ export function assignDrawPosition({
         placementScenario,
         matchUpId: matchUp.matchUpId,
       });
-      /*
-      assignDrawPositionBye({
-        drawDefinition,
-        structureId,
-        drawPosition: pairedDrawPosition,
-      });
-      */
     }
   }
 
