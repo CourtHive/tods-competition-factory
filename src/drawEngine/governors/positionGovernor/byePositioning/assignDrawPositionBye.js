@@ -104,8 +104,8 @@ function assignBye({
     // mappedMatchUps,
     matchUpId,
   });
-  const { roundNumber } = noContextMatchUp;
-  console.log('assignBYE', { roundNumber, drawPosition });
+  // const { roundNumber } = noContextMatchUp;
+  // console.log('assignBYE', { roundNumber, drawPosition });
   const result = attemptToSetMatchUpStatusBYE({
     matchUp: noContextMatchUp,
     structure,

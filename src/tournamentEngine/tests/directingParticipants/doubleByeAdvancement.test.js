@@ -11,6 +11,92 @@ import {
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SCORE } from '../../../constants/matchUpActionConstants';
 
+it.only('can create double bye and remove advanced participant when outcome is reset', () => {
+  tournamentEngine.devContext(true);
+  const participantsProfile = {
+    participantsCount: 16,
+  };
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      participantsCount: 7,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-1 6-3',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-1 6-4',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    completedMatchUps,
+    upcomingMatchUps,
+    byeMatchUps,
+    pendingMatchUps,
+  } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  });
+  expect(byeMatchUps.length).toEqual(1);
+  expect(completedMatchUps.length).toEqual(3);
+  expect(pendingMatchUps.length).toEqual(1);
+  expect(upcomingMatchUps.length).toEqual(2);
+
+  let matchUp = byeMatchUps[0];
+  let { structureId } = matchUp;
+
+  // now replace the participant in { drawPosition; 1 } with a BYE
+  replaceWithBye({
+    drawId,
+    structureId,
+    drawPosition: 1,
+    expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
+  });
+
+  // now remove the result for matchUp: { roundNumber: 1, roundPosition: 2 }
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  matchUp = matchUps.find(
+    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2
+  );
+  let { validActions } = tournamentEngine.matchUpActions(matchUp);
+  let scoreAction = validActions.find(({ type }) => type === SCORE);
+  let { method, params } = scoreAction;
+
+  Object.assign(params, { outcome: toBePlayed });
+  let result = tournamentEngine[method](params);
+  expect(result.success).toEqual(true);
+  checkExpectations({
+    drawId,
+    expectations: { bye: 2, complete: 2, pending: 1, upcoming: 2 },
+  });
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+  console.log(matchUps.map((m) => m.drawPositions));
+});
+
 it('can create double bye and replace bye with alternate', () => {
   tournamentEngine.devContext(true);
   const participantsProfile = {
