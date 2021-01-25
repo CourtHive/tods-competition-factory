@@ -66,7 +66,6 @@ export function assignMatchUpDrawPosition({
   const byeAdvancedPosition =
     isByeReplacement &&
     drawPositions.find((position) => position !== drawPosition);
-  // if (isByeReplacement) console.log({ isByeReplacement, byeAdvancedPosition });
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 

@@ -224,21 +224,6 @@ function removeDirectedWinner({
     roundNumber,
     targetDrawPosition: winningDrawPosition,
   });
-  /*
-  const relevantMatchUps = mappedMatchUps[structureId].matchUps.filter(
-    (matchUp) => matchUp.roundNumber >= roundNumber
-  );
-  relevantMatchUps.forEach(
-    (matchUp) =>
-      (matchUp.drawPositions = (matchUp.drawPositions || []).map(
-        (drawPosition) => {
-          return drawPosition === winningDrawPosition
-            ? undefined
-            : drawPosition;
-        }
-      ))
-  );
-  */
 
   return { error };
 }
