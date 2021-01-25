@@ -168,8 +168,6 @@ function assignBye({
     const targetDrawPosition =
       loserMatchUp.drawPositions[targetDrawPositionIndex];
 
-    // don't assign BYE for FMLC
-    // TODO: make this more explicit
     const targetBye = !linkCondition;
 
     if (targetBye) {

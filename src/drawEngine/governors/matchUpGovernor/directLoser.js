@@ -17,7 +17,7 @@ import {
 import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 
 /*
-  FMLC linkCondition... check whether it is a participant's first 
+  FEED_FMLC linkCondition... check whether it is a participant's first 
 */
 export function directLoser(props) {
   const {

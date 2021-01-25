@@ -5,7 +5,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import {
   COMPASS,
   CONTAINER,
-  FIRST_MATCH_LOSER_CONSOLATION,
+  FEED_FMLC,
   MAIN,
   PLAY_OFF,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -337,9 +337,9 @@ it('can generate payload for publishing a compass draw', () => {
     fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
 });
 
-it('can generate payload for publishing a FMLC draw', () => {
+it('can generate payload for publishing a FEED_FMLC draw', () => {
   const drawSize = 16;
-  const drawType = FIRST_MATCH_LOSER_CONSOLATION;
+  const drawType = FEED_FMLC;
 
   const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: drawSize,
@@ -465,7 +465,7 @@ it('can generate payload for publishing a FMLC draw', () => {
   // round naming policy test
   expect(
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
-  ).toEqual('C-Quarterfinals');
+  ).toEqual('C-Quarterfinals-Q');
 
   expect(
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0]
