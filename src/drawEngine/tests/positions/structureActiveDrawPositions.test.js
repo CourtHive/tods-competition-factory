@@ -46,15 +46,9 @@ it('correctly identifies active drawPositions', () => {
 
   const {
     activeDrawPositions,
-    activeByeDrawPositions,
-    advancedDrawPositions,
-    drawPositionsPairedWithAdvanced,
     byeDrawPositions,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
-  expect(advancedDrawPositions).toEqual([1, 3, 32]);
-  expect(drawPositionsPairedWithAdvanced).toEqual([2, 4, 31]);
   expect(activeDrawPositions).toEqual([3, 4]);
-  expect(activeByeDrawPositions).toEqual([]);
   expect(byeDrawPositions).toEqual([2, 31]);
 
   drawPosition = 1;
@@ -112,15 +106,9 @@ it('correctly identifies active BYE drawPositions', () => {
 
   const {
     activeDrawPositions,
-    activeByeDrawPositions,
-    advancedDrawPositions,
-    drawPositionsPairedWithAdvanced,
     byeDrawPositions,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
-  expect(advancedDrawPositions).toEqual([1, 3, 32]);
-  expect(drawPositionsPairedWithAdvanced).toEqual([2, 4, 31]);
   expect(activeDrawPositions.sort(numericSort)).toEqual([1, 2, 3, 4]);
-  expect(activeByeDrawPositions).toEqual([2]);
   expect(byeDrawPositions).toEqual([2, 31]);
 
   drawPosition = 1;

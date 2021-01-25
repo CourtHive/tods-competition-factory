@@ -8,11 +8,31 @@ import {
   COMPLETED,
   RETIRED,
   WALKOVER,
-  DEFAULTED, // advancement
+  DEFAULTED,
+  DOUBLE_WALKOVER, // advancement
 } from '../../../constants/matchUpStatusConstants';
 
 export function isDirectingMatchUpStatus({ matchUpStatus }) {
-  return [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED].includes(matchUpStatus);
+  return [
+    BYE,
+    COMPLETED,
+    RETIRED,
+    WALKOVER,
+    DOUBLE_WALKOVER,
+    DEFAULTED,
+  ].includes(matchUpStatus);
+}
+
+export function isActiveMatchUpStatus({ matchUpStatus }) {
+  return [
+    COMPLETED,
+    RETIRED,
+    WALKOVER,
+    DOUBLE_WALKOVER,
+    IN_PROGRESS,
+    ABANDONED,
+    DEFAULTED,
+  ].includes(matchUpStatus);
 }
 
 export function isNonDirectingMatchUpStatus({ matchUpStatus }) {
