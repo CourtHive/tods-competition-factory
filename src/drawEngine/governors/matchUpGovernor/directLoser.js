@@ -21,7 +21,6 @@ export function directLoser(props) {
     loserTargetLink,
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
-    // originMatchUpLosingIndex,
   } = props;
 
   const loserLinkCondition = loserTargetLink.linkCondition;
