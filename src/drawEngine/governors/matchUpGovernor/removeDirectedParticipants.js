@@ -13,6 +13,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundParticipant';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -217,6 +218,13 @@ function removeDirectedWinner({
   }
 
   // Remove participant's drawPosition from current and subsequent round matchUps
+  removeSubsequentRoundsParticipant({
+    mappedMatchUps,
+    structureId,
+    roundNumber,
+    targetDrawPosition: winningDrawPosition,
+  });
+  /*
   const relevantMatchUps = mappedMatchUps[structureId].matchUps.filter(
     (matchUp) => matchUp.roundNumber >= roundNumber
   );
@@ -230,6 +238,7 @@ function removeDirectedWinner({
         }
       ))
   );
+  */
 
   return { error };
 }

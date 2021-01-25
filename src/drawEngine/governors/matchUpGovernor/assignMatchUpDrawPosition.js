@@ -1,3 +1,4 @@
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -65,7 +66,7 @@ export function assignMatchUpDrawPosition({
   const byeAdvancedPosition =
     isByeReplacement &&
     drawPositions.find((position) => position !== drawPosition);
-  if (isByeReplacement) console.log({ isByeReplacement, byeAdvancedPosition });
+  // if (isByeReplacement) console.log({ isByeReplacement, byeAdvancedPosition });
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 
@@ -96,16 +97,13 @@ export function assignMatchUpDrawPosition({
         });
       }
     } else if (isByeReplacement) {
-      console.log('removing advanced player');
-      const { matchUp: targetMatchUp } = findMatchUp({
-        matchUpId: winnerMatchUp.matchUpId,
-        drawDefinition,
+      const { roundNumber, structureId } = winnerMatchUp;
+      removeSubsequentRoundsParticipant({
         mappedMatchUps,
+        structureId,
+        roundNumber,
+        targetDrawPosition: byeAdvancedPosition,
       });
-      targetMatchUp.drawPositions = targetMatchUp.drawPositions.map(
-        (drawPosition) =>
-          (drawPosition !== byeAdvancedPosition && drawPosition) || undefined
-      );
     }
   }
 
