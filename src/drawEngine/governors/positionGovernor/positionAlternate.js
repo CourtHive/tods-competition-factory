@@ -1,8 +1,8 @@
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getPositionAssignments } from '../../getters/positionsGetter';
 
 export function alternateDrawPositionAssignment({
   alternateParticipantId,
@@ -17,7 +17,7 @@ export function alternateDrawPositionAssignment({
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
-  const isByeReplacement = positionAssignment.bye;
+  const isByeReplacement = positionAssignment.bye && drawPosition;
 
   if (positionAssignment.participantId) {
     let result = assignDrawPosition({

@@ -21,7 +21,7 @@ export function assignMatchUpDrawPosition({
   matchUpId,
   drawPosition,
   placementScenario,
-  byeReplacement,
+  isByeReplacement,
 }) {
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -38,7 +38,6 @@ export function assignMatchUpDrawPosition({
   });
 
   let positionAssigned = false;
-  let alreadyAssigned = false;
   matchUp.drawPositions = (matchUp.drawPositions || [])
     ?.map((position) => {
       if (!position && !positionAssigned) {
@@ -46,7 +45,6 @@ export function assignMatchUpDrawPosition({
         return drawPosition;
       } else if (position === drawPosition) {
         positionAssigned = true;
-        alreadyAssigned = true;
         return drawPosition;
       } else {
         return position;
@@ -61,62 +59,51 @@ export function assignMatchUpDrawPosition({
   const matchUpAssignments = positionAssignments.filter((assignment) =>
     matchUp.drawPositions.includes(assignment.drawPosition)
   );
+  const drawPositions = matchUpAssignments.map(
+    ({ drawPosition }) => drawPosition
+  );
+  const byeAdvancedPosition =
+    isByeReplacement &&
+    drawPositions.find((position) => position !== drawPosition);
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  console.log({ matchUpAssignments, isByeMatchUp });
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 
-  const { matchUpStatus, roundPosition, roundNumber } = matchUp;
-  /*
-  console.log({
-    matchUpStatus,
-    positionAssigned,
-    alreadyAssigned,
-    drawPosition,
-    roundNumber,
-    roundPosition,
-    placementScenario,
-    byeReplacement,
-  });
-  */
-  if (
-    positionAssigned &&
-    !byeReplacement &&
-    (!alreadyAssigned || placementScenario)
-  ) {
+  const { matchUpStatus } = matchUp;
+  if (positionAssigned && !placementScenario) {
     const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions.indexOf(
       drawPosition
     );
-    if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
-      console.log('positionAssigned', {
-        matchUpStatus,
-        roundPosition,
-        roundNumber,
-      });
-      const targetData = positionTargets({
-        matchUpId,
-        structure,
-        drawDefinition,
-        mappedMatchUps,
-        inContextDrawMatchUps,
-        sourceMatchUpWinnerDrawPositionIndex,
-      });
+    const targetData = positionTargets({
+      matchUpId,
+      structure,
+      drawDefinition,
+      mappedMatchUps,
+      inContextDrawMatchUps,
+      sourceMatchUpWinnerDrawPositionIndex,
+    });
+    const {
+      targetMatchUps: { winnerMatchUp },
+    } = targetData;
 
-      const {
-        targetMatchUps: { winnerMatchUp },
-      } = targetData;
+    if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
       if (winnerMatchUp) {
-        const { roundNumber } = winnerMatchUp;
-        console.log('winnerMatchUp', {
-          roundNumber,
-        });
-        /*
         return assignMatchUpDrawPosition({
           drawDefinition,
           drawPosition,
+          isByeReplacement,
           matchUpId: winnerMatchUp.matchUpId,
         });
-        */
       }
+    } else if (isByeReplacement) {
+      const { matchUp: targetMatchUp } = findMatchUp({
+        matchUpId: winnerMatchUp.matchUpId,
+        drawDefinition,
+        mappedMatchUps,
+      });
+      targetMatchUp.drawPositions = targetMatchUp.drawPositions.map(
+        (drawPosition) =>
+          (drawPosition !== byeAdvancedPosition && drawPosition) || undefined
+      );
     }
   }
 
