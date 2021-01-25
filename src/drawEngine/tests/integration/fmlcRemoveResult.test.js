@@ -1,3 +1,8 @@
+it('needs to be re-written', () => {
+  expect('foo');
+  console.log('re-write');
+});
+/*
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine';
 import { generateFMLC } from '../../tests/primitives/fmlc';
@@ -192,7 +197,7 @@ it('can direct winners and losers', () => {
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 });
 
-it('can remove matchUps properly in FMLC', () => {
+it('can remove matchUps properly in FEED_FMLC', () => {
   const participantsProfile = {
     participantsCount: 100,
     sex: MALE,
@@ -258,3 +263,4 @@ it('can remove matchUps properly in FMLC', () => {
     consolationStructure.positionAssignments[1].participantId
   ).toBeUndefined();
 });
+*/

@@ -1,7 +1,7 @@
 import { getRangeString } from './getRangeString';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
-import { groupConsecutiveNumbers } from '../../../utilities/arrays';
+import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
 
 import {
@@ -63,15 +63,15 @@ export function getDrawPositionsRanges({
         })
         .filter((f) => f);
 
-      const possibleDrawPositions = generateRange(0, matchUpsCount).map(
-        (index) => {
+      const possibleDrawPositions = generateRange(0, matchUpsCount)
+        .map((index) => {
           return currentRoundDrawPositionChunks
             .map((chunk) => chunk[index])
             .flat()
             .filter((f) => f)
             .sort(numericSort);
-        }
-      );
+        })
+        .map((possible) => unique(possible));
 
       const drawPositionsRanges = possibleDrawPositions.map((possible) => {
         return groupConsecutiveNumbers(possible).map(getRangeString).join(', ');

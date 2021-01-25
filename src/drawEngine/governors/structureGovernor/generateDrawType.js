@@ -1,16 +1,14 @@
-import { stageDrawPositionsCount } from '../../getters/stageGetter';
-import structureTemplate from '../../generators/structureTemplate';
-
 import { powerOf2 } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { stageDrawPositionsCount } from '../../getters/stageGetter';
+import structureTemplate from '../../generators/structureTemplate';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
-import { firstMatchLoserConsolation } from '../../generators/firstMatchLoserConsolation';
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import {
   generateRoundRobin,
@@ -22,7 +20,6 @@ import {
   FICQF,
   FICSF,
   MFIC,
-  FMLC,
   CURTIS,
   FICR16,
   COMPASS,
@@ -39,6 +36,7 @@ import {
   COMPASS_ATTRIBUTES,
   OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
+  FEED_FMLC,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -152,8 +150,9 @@ export function generateDrawType(props = {}) {
       return Object.assign({ structure }, SUCCESS);
     },
 
-    [FMLC]: () => firstMatchLoserConsolation(props),
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(props),
+    [FEED_FMLC]: () =>
+      feedInChampionship(Object.assign(props, { feedRounds: 1, fmlc: true })),
     [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
     [FICQF]: () =>
       feedInChampionship(Object.assign(props, { feedsFromFinal: 2 })),

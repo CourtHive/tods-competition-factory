@@ -1,7 +1,7 @@
 import { attemptToSetMatchUpStatusBYE } from '../../matchUpGovernor/attemptToSetMatchUpStatusBYE';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
-import { assignMatchUpDrawPosition } from '../../matchUpGovernor/matchUpDrawPosition';
+import { assignMatchUpDrawPosition } from '../../matchUpGovernor/assignMatchUpDrawPosition';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
@@ -104,6 +104,8 @@ function assignBye({
     // mappedMatchUps,
     matchUpId,
   });
+  // const { roundNumber } = noContextMatchUp;
+  // console.log('assignBYE', { roundNumber, drawPosition });
   const result = attemptToSetMatchUpStatusBYE({
     matchUp: noContextMatchUp,
     structure,
@@ -166,8 +168,6 @@ function assignBye({
     const targetDrawPosition =
       loserMatchUp.drawPositions[targetDrawPositionIndex];
 
-    // don't assign BYE for FMLC
-    // TODO: make this more explicit
     const targetBye = !linkCondition;
 
     if (targetBye) {

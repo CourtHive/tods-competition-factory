@@ -1,14 +1,15 @@
-import drawEngine from '../../../drawEngine';
-import tournamentEngine from '../../../tournamentEngine';
-import { getDrawStructures } from '../../getters/findStructure';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { getDrawStructures } from '../../getters/findStructure';
+import tournamentEngine from '../../../tournamentEngine';
+import drawEngine from '../../../drawEngine';
+import { unique } from '../../../utilities';
+
 import {
   CONSOLATION,
   FIRST_ROUND_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { unique } from '../../../utilities';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('correctly assigns BYE positions in consolation structure', () => {
