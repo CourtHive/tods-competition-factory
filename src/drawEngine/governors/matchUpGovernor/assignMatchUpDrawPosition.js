@@ -1,4 +1,4 @@
-import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundParticipant';
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';

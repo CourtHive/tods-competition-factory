@@ -13,7 +13,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundParticipant';
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 
 export function removeDirectedParticipants(props) {
   const {
