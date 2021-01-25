@@ -2,18 +2,13 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
 import { numericSort } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  BYE,
-  DEFAULTED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 
 /*
@@ -26,7 +21,7 @@ export function directLoser(props) {
     loserTargetLink,
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
-    originMatchUpLosingIndex,
+    // originMatchUpLosingIndex,
   } = props;
 
   const loserLinkCondition = loserTargetLink.linkCondition;
@@ -37,13 +32,12 @@ export function directLoser(props) {
     loserMatchUp.roundNumber === 2 &&
     Math.min(...targetMatchUpDrawPositions.filter((f) => f));
 
-  const drawPositionIndex = loserLinkCondition
-    ? originMatchUpLosingIndex
-    : loserMatchUpDrawPositionIndex;
   const targetMatchUpDrawPosition =
-    fedDrawPositionFMLC || targetMatchUpDrawPositions[drawPositionIndex];
+    fedDrawPositionFMLC ||
+    targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
   const winnerBackdrawPosition =
-    fedDrawPositionFMLC || targetMatchUpDrawPositions[1 - drawPositionIndex];
+    fedDrawPositionFMLC ||
+    targetMatchUpDrawPositions[1 - loserMatchUpDrawPositionIndex];
 
   const sourceStructureId = loserTargetLink.source.structureId;
   const { structure } = findStructure({
@@ -146,8 +140,8 @@ export function directLoser(props) {
   const isFirstRoundValidDrawPosition =
     loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
 
-  if (loserLinkCondition) {
-    return fedDrawPositionFMLC ? loserLinkFedFMLC() : loserLinkConditionLogic();
+  if (fedDrawPositionFMLC) {
+    return loserLinkFedFMLC();
   } else if (isFirstRoundValidDrawPosition) {
     return asssignLoserDrawPosition();
   } else if (isFeedRound) {
@@ -173,6 +167,7 @@ export function directLoser(props) {
     }
   }
 
+  /*
   function loserLinkConditionLogic() {
     const { winnerHadMatchUpStatus: winnerByeDefWO } = includesMatchUpStatuses({
       sourceMatchUps,
@@ -202,6 +197,7 @@ export function directLoser(props) {
 
     return SUCCESS;
   }
+  */
 
   function assignWinnerPositionBye() {
     return assignDrawPositionBye({
