@@ -62,7 +62,7 @@ export function assignMatchUpDrawPosition({
     matchUp.drawPositions.includes(assignment.drawPosition)
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  // console.log({ matchUpAssignments, isByeMatchUp });
+  console.log({ matchUpAssignments, isByeMatchUp });
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 
   const { matchUpStatus, roundPosition, roundNumber } = matchUp;

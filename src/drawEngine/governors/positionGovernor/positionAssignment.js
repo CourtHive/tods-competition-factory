@@ -6,6 +6,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+// import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -23,7 +24,8 @@ export function assignDrawPosition({
   structureId,
   drawPosition,
   participantId,
-  isByeReplacement,
+  byeReplacement,
+  placementScenario,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -110,9 +112,19 @@ export function assignDrawPosition({
     const pairedDrawPositionIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === pairedDrawPosition
     )?.bye;
-    if (pairedDrawPositionIsBye || isByeReplacement) {
-      // console.log({ isByeReplacement, pairedDrawPosition, matchUp });
+    if (pairedDrawPositionIsBye || byeReplacement) {
+      // console.log({ byeReplacement, pairedDrawPosition, matchUp });
       // re-assign the BYE to benefit from propagation
+
+      /*
+      assignMatchUpDrawPosition({
+        drawDefinition,
+        drawPosition,
+        byeReplacement,
+        placementScenario,
+        matchUpId: matchUp.matchUpId,
+      });
+      */
       assignDrawPositionBye({
         drawDefinition,
         structureId,

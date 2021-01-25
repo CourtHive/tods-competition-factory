@@ -113,6 +113,7 @@ function randomUnseededDistribution({
       drawPosition,
       participantId,
       drawDefinition,
+      placementScenario: true,
     });
     if (result && result.error) return result;
   }

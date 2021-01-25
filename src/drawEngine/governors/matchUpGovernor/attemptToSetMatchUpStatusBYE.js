@@ -30,6 +30,7 @@ export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   );
 
   if (matchUpIncludesBye) {
+    console.log('setting BYE');
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
     return SUCCESS;

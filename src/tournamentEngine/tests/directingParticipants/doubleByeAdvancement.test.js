@@ -1,6 +1,7 @@
-import tournamentEngine from '../..';
-import mocksEngine from '../../../mocksEngine';
+import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../..';
 
 import {
   BYE,
@@ -115,34 +116,60 @@ it('can create double bye and replace bye with alternate', () => {
   );
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
-  const { method, params } = scoreAction;
+  let { method, params } = scoreAction;
 
   Object.assign(params, { outcome: toBePlayed });
   let result = tournamentEngine[method](params);
-  console.log(result);
   expect(result.success).toEqual(true);
-  expect(result.matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-
-  ({
-    completedMatchUps,
-    upcomingMatchUps,
-    byeMatchUps,
-    pendingMatchUps,
-  } = tournamentEngine.drawMatchUps({
+  checkExpectations({
     drawId,
-    inContext: true,
-  }));
-  expect(byeMatchUps.length).toEqual(2);
-  expect(completedMatchUps.length).toEqual(2);
-  expect(pendingMatchUps.length).toEqual(1);
-  expect(upcomingMatchUps.length).toEqual(2);
+    expectations: { bye: 2, complete: 2, pending: 1, upcoming: 2 },
+  });
 
-  /*
+  // now set winningSide again
   const { outcome } = generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
     winningSide: 2,
   });
-  */
+  ({ validActions } = tournamentEngine.matchUpActions(matchUp));
+  scoreAction = validActions.find(({ type }) => type === SCORE);
+  ({ method, params } = scoreAction);
+
+  Object.assign(params, { outcome });
+  result = tournamentEngine[method](params);
+  expect(result.success).toEqual(true);
+  checkExpectations({
+    drawId,
+    expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
+  });
+
+  ({ validActions } = tournamentEngine.matchUpActions(matchUp));
+  scoreAction = validActions.find(({ type }) => type === SCORE);
+  ({ method, params } = scoreAction);
+
+  Object.assign(params, { outcome: toBePlayed });
+  result = tournamentEngine[method](params);
+  expect(result.success).toEqual(true);
+  checkExpectations({
+    drawId,
+    expectations: { bye: 2, complete: 2, pending: 1, upcoming: 2 },
+  });
+
+  // now replace the participant in { drawPosition; 3 } with a BYE
+  replaceWithBye({
+    drawId,
+    structureId,
+    drawPosition: 3,
+    expectations: { bye: 3, complete: 2, pending: 0, upcoming: 1 },
+  });
+
+  // now replace the participant in { drawPosition; 4 } with a BYE
+  replaceWithBye({
+    drawId,
+    structureId,
+    drawPosition: 4,
+    expectations: { bye: 4, complete: 2, pending: 0, upcoming: 1 },
+  });
 });
 
 function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
