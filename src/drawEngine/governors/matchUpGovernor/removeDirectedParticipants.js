@@ -1,6 +1,5 @@
 import { instanceCount } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -178,7 +177,8 @@ function removeDirectedWinner({
 }) {
   let error;
 
-  const { matchUpId } = winnerMatchUp;
+  const { structureId, roundNumber } = winnerMatchUp;
+
   if (winnerTargetLink) {
     const structureId = winnerTargetLink.target.structureId;
     const { structure } = findStructure({ drawDefinition, structureId });
@@ -214,18 +214,22 @@ function removeDirectedWinner({
     } else {
       console.log('not removing from position assignments since instances > 1');
     }
-  } else {
-    console.log('ooh', { winningDrawPosition });
   }
-  const { matchUp } = findMatchUp({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpId,
-  });
-  matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) => {
-    return drawPosition === winningDrawPosition ? undefined : drawPosition;
-  });
-  console.log(matchUp.drawPositions);
+
+  // Remove participant's drawPosition from current and subsequent round matchUps
+  const relevantMatchUps = mappedMatchUps[structureId].matchUps.filter(
+    (matchUp) => matchUp.roundNumber >= roundNumber
+  );
+  relevantMatchUps.forEach(
+    (matchUp) =>
+      (matchUp.drawPositions = (matchUp.drawPositions || []).map(
+        (drawPosition) => {
+          return drawPosition === winningDrawPosition
+            ? undefined
+            : drawPosition;
+        }
+      ))
+  );
 
   return { error };
 }
