@@ -22,6 +22,7 @@ export function removeDirectedParticipants(props) {
     matchUp,
     matchUpStatus,
     matchUpStatusCodes,
+    mappedMatchUps,
     targetData,
   } = props;
   const errors = [];
@@ -91,6 +92,7 @@ export function removeDirectedParticipants(props) {
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({
         winnerMatchUp,
+        mappedMatchUps,
         drawDefinition,
         winnerTargetLink,
         winnerParticipantId,
@@ -168,6 +170,7 @@ export function removeDirectedParticipants(props) {
 
 function removeDirectedWinner({
   winnerMatchUp,
+  mappedMatchUps,
   drawDefinition,
   winnerTargetLink,
   winnerParticipantId,
@@ -175,6 +178,7 @@ function removeDirectedWinner({
 }) {
   let error;
 
+  const { matchUpId } = winnerMatchUp;
   if (winnerTargetLink) {
     const structureId = winnerTargetLink.target.structureId;
     const { structure } = findStructure({ drawDefinition, structureId });
@@ -208,28 +212,20 @@ function removeDirectedWinner({
         }
       });
     } else {
-      // console.log('not removing from position assignments since instances > 1')
+      console.log('not removing from position assignments since instances > 1');
     }
-    const { matchUp } = findMatchUp({
-      drawDefinition,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(
-      (drawPosition) => {
-        return drawPosition === winnerDrawPosition ? undefined : drawPosition;
-      }
-    );
   } else {
-    const { matchUp } = findMatchUp({
-      drawDefinition,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(
-      (drawPosition) => {
-        return drawPosition === winningDrawPosition ? undefined : drawPosition;
-      }
-    );
+    console.log('ooh', { winningDrawPosition });
   }
+  const { matchUp } = findMatchUp({
+    drawDefinition,
+    mappedMatchUps,
+    matchUpId,
+  });
+  matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) => {
+    return drawPosition === winningDrawPosition ? undefined : drawPosition;
+  });
+  console.log(matchUp.drawPositions);
 
   return { error };
 }
