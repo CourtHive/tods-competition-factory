@@ -1,29 +1,21 @@
-import { getCheckedInParticipantIds } from '../matchUpTimeItems';
-import { structureAssignedDrawPositions } from '../positionsGetter';
-import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
-import {
-  getRoundMatchUps,
-  getCollectionPositionMatchUps,
-} from '../../accessors/matchUpAccessor/matchUps';
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
-import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
-import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
-import { filterMatchUps } from './filterMatchUps';
-
-import {
-  makeDeepCopy,
-  allNumeric,
-  noNumeric,
-  numericSort,
-  chunkArray,
-  isOdd,
-} from '../../../utilities';
+import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
+import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
+import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
+import { structureAssignedDrawPositions } from '../positionsGetter';
+import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
+import { getCheckedInParticipantIds } from '../matchUpTimeItems';
 import { findParticipant } from '../participantGetter';
+import { makeDeepCopy } from '../../../utilities';
+import { filterMatchUps } from './filterMatchUps';
+import { getSide } from './getSide';
 
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
@@ -264,11 +256,19 @@ export function getAllStructureMatchUps({
       const orderedDrawPositions = getOrderedDrawPositions({
         drawPositions,
         roundProfile,
+        roundPosition,
         roundNumber,
       });
+      const isFeedRound = roundProfile[roundNumber].feedRound;
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
-        const side = getSide({ drawPosition, sideNumber });
+        const side = getSide({
+          seedAssignments,
+          positionAssignments,
+          drawPosition,
+          sideNumber,
+          isFeedRound,
+        });
 
         // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
         // columnPosition gives an ordered position value relative to a single column
@@ -377,80 +377,4 @@ export function getAllStructureMatchUps({
 
     return matchUpWithContext;
   }
-
-  function getSide({ drawPosition, sideNumber }) {
-    return positionAssignments.reduce((side, assignment) => {
-      const participantId = assignment.participantId;
-      const sideValue =
-        assignment.drawPosition === drawPosition
-          ? getSideValue({ assignment, sideNumber, participantId })
-          : side;
-      return sideValue;
-    }, undefined);
-  }
-
-  function getSideValue({ assignment, participantId, sideNumber }) {
-    const side = { sideNumber, drawPosition: assignment.drawPosition };
-    if (participantId) {
-      const seeding = getSeeding({ participantId });
-      Object.assign(side, seeding, { participantId });
-    } else if (assignment.bye) {
-      Object.assign(side, { bye: true });
-    } else if (assignment.qualifier) {
-      Object.assign(side, { qualifier: true });
-    }
-    return side;
-  }
-
-  function getSeeding({ participantId }) {
-    return seedAssignments.reduce((seeding, assignment) => {
-      // seedProxy is used for playoff positioning only and should not be displayed as seeding
-      return !assignment.seedProxy && assignment.participantId === participantId
-        ? assignment
-        : seeding;
-    }, undefined);
-  }
-}
-
-function getOrderedDrawPositions({ drawPositions, roundProfile, roundNumber }) {
-  // drawPositions are always sorted numerically, if present
-  // sideNumber 1 always goes to the lower drawPosition
-  if (allNumeric(drawPositions)) return drawPositions.sort(numericSort);
-
-  // if no drawPositions are present, no sideNumbers will be generated, order unimportant
-  if (noNumeric(drawPositions)) return drawPositions;
-
-  const firstRoundMatchUpsCount = roundProfile[1].matchUpsCount;
-  const currentRoundMatchUpsCount = roundProfile[roundNumber].matchUpsCount;
-  const positionsChunkSize =
-    firstRoundMatchUpsCount / currentRoundMatchUpsCount;
-
-  const drawPosition = drawPositions.find(
-    (drawPosition) => !isNaN(parseInt(drawPosition))
-  );
-
-  const isFeedRound = roundProfile[roundNumber].feedRound;
-  if (isFeedRound) {
-    // for feedRound matchUps, fed drawPosition always produces { sideNumber: 1 }
-    return [drawPosition, undefined];
-  } else if (positionsChunkSize > 1) {
-    // for normal rounds the first round drawPositions are chunked
-    // the order of a drawPositions is determined by the index of the chunk where it appears
-    const firstRoundDrawPositions = roundProfile[1].drawPositions;
-    const drawPositionsChunks = chunkArray(
-      firstRoundDrawPositions,
-      positionsChunkSize
-    );
-    const drawPositionChunkIndex = drawPositionsChunks.reduce(
-      (index, chunk, i) => (chunk.includes(drawPosition) ? i : index),
-      undefined
-    );
-
-    // this is counter-intuitive because the chunkPositionIndex returns an odd number for an even position
-    // e.g. the first drawPosition count is odd, but the index is 0 (even)
-    return isOdd(drawPositionChunkIndex)
-      ? [undefined, drawPosition]
-      : [drawPosition, undefined];
-  }
-  return drawPositions;
 }

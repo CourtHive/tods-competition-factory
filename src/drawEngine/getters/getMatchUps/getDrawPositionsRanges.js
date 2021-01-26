@@ -1,8 +1,8 @@
-import { getRangeString } from './getRangeString';
-import { getMappedStructureMatchUps } from './getMatchUpsMap';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { groupConsecutiveNumbers, unique } from '../../../utilities/arrays';
 import { chunkArray, generateRange, numericSort } from '../../../utilities';
+import { getMappedStructureMatchUps } from './getMatchUpsMap';
+import { getRangeString } from './getRangeString';
 
 import {
   MISSING_DRAW_DEFINITION,

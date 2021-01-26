@@ -1,11 +1,11 @@
-import { setMatchUpFormat } from './matchUpFormat';
-import { setMatchUpStatus } from './setMatchUpStatus';
-import { validDrawPositions } from './validDrawPositions';
-import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
-import { checkInParticipant, checkOutParticipant } from './checkInStatus';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
+import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
+import { validDrawPositions } from './validDrawPositions';
+import { setMatchUpStatus } from './setMatchUpStatus';
+import { setMatchUpFormat } from './matchUpFormat';
 
 import {
   addMatchUpScheduledDayDate,

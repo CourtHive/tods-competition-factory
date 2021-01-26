@@ -1,6 +1,6 @@
 import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../accessors/matchUpAccessor';
+import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
 import { findStructure } from './findStructure';
 import {

@@ -7,6 +7,26 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
+it.only('scratch', () => {
+  const participantsProfile = {
+    participantsCount: 8,
+    sex: MALE,
+  };
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      eventType: SINGLES,
+      participantsCount: 6,
+      drawType: FEED_IN_CHAMPIONSHIP,
+      feedPolicy: { roundGroupedOrder: [] },
+    },
+  ];
+  mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile,
+  });
+});
+
 // The scenario here is that a second round matchUp completes before a first round matchUp
 // When the first round matchUps complete they should not find that drawPositions have already been filled by second round losers
 it('can properly place participants in backdraw when rounds advance unevenly', () => {
