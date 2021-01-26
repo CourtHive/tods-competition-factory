@@ -32,7 +32,7 @@ it.skip('scratch', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  let [mainStructure, consolationStructure] = drawDefinition.structures;
+  let [consolationStructure] = drawDefinition.structures[1];
 
   const { structureId } = consolationStructure;
   const { matchUps } = tournamentEngine.allDrawMatchUps({
