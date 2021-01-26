@@ -1,4 +1,6 @@
+import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
 import { findStructure } from '../../getters/findStructure';
+import { assignDrawPosition } from './positionAssignment';
 
 import {
   INVALID_VALUES,
@@ -24,51 +26,107 @@ export function swapDrawPositionAssignments({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (structure.structureType === CONTAINER) {
-    const assignments = structure.structures?.reduce(
-      (assignments, structure) => {
-        const structureAssignments = structure?.positionAssignments.filter(
-          (assignment) => drawPositions.includes(assignment.drawPosition)
-        );
-        if (structureAssignments) assignments.push(...structureAssignments);
-        return assignments;
-      },
-      []
-    );
-
-    const participantIds = assignments.map(
-      ({ participantId }) => participantId
-    );
-    assignments.forEach(
-      (assignment, index) =>
-        (assignment.participantId = participantIds[1 - index])
-    );
+    // { structureType: CONTAINER } indicates that the swap is within a ROUND ROBIN structure
+    return roundRobinSwap({ structure, drawPositions });
   } else {
-    const assignments = structure?.positionAssignments.filter((assignment) =>
-      drawPositions.includes(assignment.drawPosition)
-    );
-    if (!assignments) {
-      return {
-        error: INVALID_VALUES,
-        structure,
-        message: 'Missing positionAssignments',
-      };
-    }
-    // preserves order of drawPositions in original positionAssignments array
-    // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
-    const newAssignments = Object.assign(
-      {},
-      ...assignments.map((assignment, index) => {
-        const { drawPosition } = assignment;
-        const newAssignment = Object.assign({}, assignments[1 - index], {
-          drawPosition,
-        });
-        return { [drawPosition]: newAssignment };
-      })
-    );
-    structure.positionAssignments = structure.positionAssignments.map(
-      (assignment) => newAssignments[assignment.drawPosition] || assignment
-    );
+    // if not a CONTAINER then swap occurs within elimination structure
+    return eliminationSwap({ drawDefinition, structure, drawPositions });
   }
+}
+
+function eliminationSwap({ drawDefinition, structure, drawPositions }) {
+  // if not a CONTAINER then swap occurs within elimination structure
+  const assignments = structure?.positionAssignments.filter((assignment) =>
+    drawPositions.includes(assignment.drawPosition)
+  );
+
+  if (!assignments) {
+    return {
+      error: INVALID_VALUES,
+      structure,
+      message: 'Missing positionAssignments',
+    };
+  }
+
+  // if both positions are BYE no need to do anything
+  if (assignments.filter(({ bye }) => bye).length === 2) return;
+
+  const isByeSwap = assignments.some(({ bye }) => bye);
+
+  if (isByeSwap) {
+    return eliminationByeSwap({ drawDefinition, structure, assignments });
+  } else {
+    return eliminationParticpantSwap({ structure, assignments });
+  }
+}
+
+function eliminationByeSwap({ drawDefinition, structure, assignments }) {
+  // remove the assignment that has a participantId
+  const originalByeAssignment = assignments.find(({ bye }) => bye);
+  const originalParticipantIdAssignment = assignments.find(
+    ({ participantId }) => participantId
+  );
+  const originalByeDrawPosition = originalByeAssignment.drawPosition;
+  const {
+    participantId,
+    drawPosition: originalParticipantIdDrawPosition,
+  } = originalParticipantIdAssignment;
+  const { structureId } = structure;
+
+  // replace the original participantIdAssignment with a BYE
+  let result = removeDrawPositionAssignment({
+    drawDefinition,
+    structureId,
+    replaceWithBye: true,
+    drawPosition: originalParticipantIdDrawPosition,
+  });
+  if (result.error) return result;
+
+  // replace the original byeAssignment with participantId
+  result = assignDrawPosition({
+    drawDefinition,
+    structureId,
+    drawPosition: originalByeDrawPosition,
+    participantId,
+  });
+
+  return result.error ? result : SUCCESS;
+}
+
+function eliminationParticpantSwap({ structure, assignments }) {
+  // preserves order of drawPositions in original positionAssignments array
+  // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
+  const newAssignments = Object.assign(
+    {},
+    ...assignments.map((assignment, index) => {
+      const { drawPosition } = assignment;
+      const newAssignment = Object.assign({}, assignments[1 - index], {
+        drawPosition,
+      });
+      return { [drawPosition]: newAssignment };
+    })
+  );
+  structure.positionAssignments = structure.positionAssignments.map(
+    (assignment) => newAssignments[assignment.drawPosition] || assignment
+  );
+
+  return SUCCESS;
+}
+
+function roundRobinSwap({ structure, drawPositions }) {
+  const assignments = structure.structures?.reduce((assignments, structure) => {
+    const structureAssignments = structure?.positionAssignments.filter(
+      (assignment) => drawPositions.includes(assignment.drawPosition)
+    );
+    if (structureAssignments) assignments.push(...structureAssignments);
+    return assignments;
+  }, []);
+
+  const participantIds = assignments.map(({ participantId }) => participantId);
+  assignments.forEach(
+    (assignment, index) =>
+      (assignment.participantId = participantIds[1 - index])
+  );
 
   return SUCCESS;
 }
