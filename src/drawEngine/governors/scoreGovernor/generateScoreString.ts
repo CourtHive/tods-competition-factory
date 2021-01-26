@@ -2,6 +2,7 @@ import {
   ABANDONED,
   DEAD_RUBBER,
   DEFAULTED,
+  DOUBLE_WALKOVER,
   RETIRED,
   SUSPENDED,
   WALKOVER,
@@ -92,6 +93,7 @@ function getOutcomeString({ matchUpStatus }) {
   const outcomeStrings = {
     [RETIRED]: 'RET',
     [WALKOVER]: 'WO',
+    [DOUBLE_WALKOVER]: 'WO/WO',
     [SUSPENDED]: 'SUS',
     [ABANDONED]: 'ABN',
     [DEFAULTED]: 'DEF',

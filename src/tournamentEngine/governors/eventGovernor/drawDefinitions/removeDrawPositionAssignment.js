@@ -2,13 +2,13 @@ import { assignDrawPositionBye } from '../../../../drawEngine/governors/position
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
+import { destroyPairEntry } from '../entries/destroyPairEntry';
 
 import {
   ALTERNATE,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 import { PAIR } from '../../../../constants/participantTypes';
-import { destroyPairEntry } from '../entries/destroyPairEntry';
 
 /**
  *

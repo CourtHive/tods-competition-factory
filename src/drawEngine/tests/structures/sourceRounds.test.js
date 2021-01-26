@@ -2,7 +2,7 @@ import { getSourceRounds } from '../../governors/structureGovernor/getSourceRoun
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { drawEngine } from '../..';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
 
 it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION', () => {
   reset();
@@ -77,12 +77,12 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   expect(playoffPositionsReturned).toEqual([9, 10, 11, 12, 13, 14, 15, 16]);
 });
 
-it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_CONSOLATION', () => {
+it('can correctly derive source rounds for final positions in FEED_FMLC', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const result = drawEngine.devContext(true).generateDrawType({
-    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawType: FEED_FMLC,
   });
   expect(result.success).toEqual(true);
 

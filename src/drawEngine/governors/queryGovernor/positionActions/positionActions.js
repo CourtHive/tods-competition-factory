@@ -4,7 +4,7 @@ import { stageEntries } from '../../../getters/stageGetter';
 
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
-import { getValidSwapAction } from './participantSwaps';
+import { getValidSwapAction } from './getValidSwapAction';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 
 import {
@@ -160,11 +160,13 @@ export function positionActions({
         payload: { drawId, structureId, drawPosition },
       });
 
-      validActions.push({
-        type: WITHDRAW_PARTICIPANT,
-        method: WITHDRAW_PARTICIPANT_METHOD,
-        payload: { drawId, structureId, drawPosition },
-      });
+      if (!isByePosition) {
+        validActions.push({
+          type: WITHDRAW_PARTICIPANT,
+          method: WITHDRAW_PARTICIPANT_METHOD,
+          payload: { drawId, structureId, drawPosition },
+        });
+      }
 
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye

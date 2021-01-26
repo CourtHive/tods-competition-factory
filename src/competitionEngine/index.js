@@ -5,7 +5,7 @@ import { drawEngine } from '../drawEngine';
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { tournamentEngine } from '../tournamentEngine';
-import { setDeepCopy, setDevContext } from '../globalState';
+import { setDeepCopy, setDevContext } from '../global/globalState';
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';

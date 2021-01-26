@@ -1,4 +1,4 @@
-import { numericSort } from '../../../utilities';
+// import { numericSort } from '../../../utilities';
 
 export function getMatchUp({ matchUps, matchUpId }) {
   const matchUp = (matchUps || []).reduce((matchUp, current) => {
@@ -7,6 +7,7 @@ export function getMatchUp({ matchUps, matchUpId }) {
   return { matchUp };
 }
 
+/*
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
   const roundMatchUpsArray = matchUps
@@ -75,6 +76,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
   });
   return { roundMatchUps, roundProfile };
 }
+*/
 
 export function getCollectionPositionMatchUps({ matchUps }) {
   const collectionPositionMatchUpsArray = matchUps

@@ -40,6 +40,7 @@ export function attemptToSetMatchUpStatus(props) {
     matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
   } else if (matchUpStatus === BYE) {
+    console.log('attemptToSetMatchUpStatusBYE ...');
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
     if (result.error) return result;
   } else {
