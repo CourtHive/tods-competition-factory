@@ -7,24 +7,40 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
-it.only('scratch', () => {
+it.skip('scratch', () => {
   const participantsProfile = {
     participantsCount: 8,
     sex: MALE,
   };
   const drawProfiles = [
     {
-      drawSize: 8,
+      drawSize: 32,
       eventType: SINGLES,
-      participantsCount: 6,
+      participantsCount: 17,
       drawType: FEED_IN_CHAMPIONSHIP,
       feedPolicy: { roundGroupedOrder: [] },
     },
   ];
-  mocksEngine.generateTournamentRecord({
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     participantsProfile,
   });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let [mainStructure, consolationStructure] = drawDefinition.structures;
+
+  const { structureId } = consolationStructure;
+  const { matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    matchUpFilters: { structureIds: [structureId] },
+  });
+  const { roundProfile } = drawEngine.getRoundMatchUps({ matchUps });
+  console.log(roundProfile);
 });
 
 // The scenario here is that a second round matchUp completes before a first round matchUp
