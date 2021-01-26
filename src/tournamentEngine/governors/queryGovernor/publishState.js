@@ -52,8 +52,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
         return (
           pubState &&
           pubState[PUBLIC] &&
-          (!pubState[PUBLIC].drawIds?.length ||
-            pubState[PUBLIC].drawIds.includes(drawId)) &&
+          pubState[PUBLIC].drawIds?.includes(drawId) &&
           pubState !== HIDDEN
         );
       });
