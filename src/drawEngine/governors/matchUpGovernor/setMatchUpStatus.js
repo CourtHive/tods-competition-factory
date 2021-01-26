@@ -91,11 +91,6 @@ export function setMatchUpStatus(props) {
       (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
       (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
 
-    // TODO: This activeDownstream boolean works in every case EXCEPT 2nd round of MAIN structure in FMLC…
-    // need to expand the check to see if the participants in the matchUp in question are actually participants
-    // in the loserMatchUp that has a winningSide because ONLY in FMLC 2nd round there is the possibility that
-    // a player who lost did not go to the loserMatchUp
-
     // if either lowerMatchUp or winnerMatchUp have winningSide
     // => see if either matchUp has active players
     // => if active players are present then outcome cannot change

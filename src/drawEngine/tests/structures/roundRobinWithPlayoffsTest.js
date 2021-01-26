@@ -2,6 +2,7 @@ import drawEngine from '../../../drawEngine';
 import tournamentEngine from '../../../tournamentEngine';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize } from '../primitives/primitives';
 import { generateRange } from '../../../utilities';
@@ -16,7 +17,6 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';
 
 export function roundRobinWithPlayoffsTest({
   drawSize,

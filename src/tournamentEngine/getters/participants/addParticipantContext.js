@@ -2,6 +2,7 @@ import { makeDeepCopy } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 
 export function addParticipantContext({
   tournamentParticipants,
@@ -99,7 +100,7 @@ export function addParticipantContext({
         const relevantParticipantInfo = relevantParticipantIds.find(
           (participantInfo) => {
             return (
-              participantInfo.participantId !== participantId &&
+              participantInfo.relevantParticipantId !== participantId &&
               participantInfo.participantType !== PAIR
             );
           }
@@ -182,6 +183,12 @@ export function addParticipantContext({
               winnerTo,
               loserTo,
             };
+
+            if (partnerParticipantId && eventType === DOUBLES) {
+              participantIdMap[relevantParticipantId].events[
+                eventId
+              ].partnerParticipantId = partnerParticipantId;
+            }
 
             if (winningSide) {
               if (participantWon) {

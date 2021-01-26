@@ -8,7 +8,7 @@ import {
   CONSOLATION,
   TOP_DOWN,
   BOTTOM_UP,
-  FMLC,
+  FEED_FMLC,
   LOSER,
   CURTIS,
   SINGLE_ELIMINATION,
@@ -137,7 +137,7 @@ it('can generate first matchUp loser consolation', () => {
   mainDrawPositions({ drawSize: 32 });
   const result = drawEngine
     .devContext(true)
-    .generateDrawType({ drawType: FMLC });
+    .generateDrawType({ drawType: FEED_FMLC });
   expect(result).not.toHaveProperty(ERROR);
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(2);
@@ -145,7 +145,7 @@ it('can generate first matchUp loser consolation', () => {
   const mainDraw = drawDefinition.structures[0];
   const consolationDraw = drawDefinition.structures[1];
   expect(mainDraw.matchUps.length).toEqual(31);
-  expect(consolationDraw.matchUps.length).toEqual(15);
+  expect(consolationDraw.matchUps.length).toEqual(23);
 });
 
 it('can generate a Curtis Consolation draw', () => {

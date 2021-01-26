@@ -1,5 +1,5 @@
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { makeDeepCopy } from '../../../utilities';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
 
 /**
  *

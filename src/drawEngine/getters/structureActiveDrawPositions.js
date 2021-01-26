@@ -1,8 +1,14 @@
+import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-import { getPairedDrawPosition } from './getPairedDrawPosition';
+import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
-import { countValues, numericSort, unique } from '../../utilities';
 import { findStructure } from './findStructure';
+import {
+  generateRange,
+  intersection,
+  numericSort,
+  unique,
+} from '../../utilities';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
@@ -16,6 +22,13 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     structure,
     matchUpFilters,
   });
+  const activeMatchUps = matchUps.filter(
+    ({ score, winningSide, matchUpStatus }) =>
+      score?.sets?.length ||
+      winningSide ||
+      isActiveMatchUpStatus({ matchUpStatus })
+  );
+
   const { positionAssignments } = getPositionAssignments({
     structure,
     drawDefinition,
@@ -32,63 +45,57 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const scoredMatchUps = matchUps.filter(
-    (matchUp) => matchUp.score?.sets?.length || matchUp.winningSide
-  );
-  const drawPositionsInScoredMatchUps = unique(
+  const drawPositionsInActiveMatchUps = unique(
     []
-      .concat(...scoredMatchUps.map((matchUp) => matchUp.drawPositions || []))
+      .concat(...activeMatchUps.map((matchUp) => matchUp.drawPositions || []))
       .filter((f) => f)
       .sort(numericSort)
   );
-  const activeByeDrawPositions = byeDrawPositions.filter((drawPosition) => {
-    const pairedPosition = getPairedDrawPosition({ matchUps, drawPosition });
-    return drawPositionsInScoredMatchUps.includes(pairedPosition);
-  });
 
   if (structure.structureType === CONTAINER) {
     // BYEs are never considered ACTIVE in a Round Robin group
     const inactiveDrawPositions = drawPositions.filter(
-      (drawPosition) => !drawPositionsInScoredMatchUps.includes(drawPosition)
+      (drawPosition) => !drawPositionsInActiveMatchUps.includes(drawPosition)
     );
 
     return {
-      activeDrawPositions: drawPositionsInScoredMatchUps,
+      activeDrawPositions: drawPositionsInActiveMatchUps,
       inactiveDrawPositions,
-      advancedDrawPositions: [],
-      drawPositionsPairedWithAdvanced: [],
       byeDrawPositions,
       structure,
     };
   } else {
-    const activeDrawPositions = drawPositionsInScoredMatchUps
-      .concat(...activeByeDrawPositions)
-      .sort(numericSort);
+    const dependentDrawPositions = [];
+    const { roundMatchUps } = getRoundMatchUps({ matchUps });
+    activeMatchUps.forEach((matchUp) => {
+      const { roundNumber, drawPositions } = matchUp;
+      dependentDrawPositions.push(...drawPositions);
+      const previousRoundNumbers = generateRange(1, roundNumber).reverse();
+      previousRoundNumbers.forEach((targetRoundNumber) => {
+        roundMatchUps[targetRoundNumber].forEach((targetRoundMatchUp) => {
+          if (
+            intersection(
+              dependentDrawPositions,
+              targetRoundMatchUp.drawPositions
+            ).length
+          ) {
+            dependentDrawPositions.push(...targetRoundMatchUp.drawPositions);
+          }
+        });
+      });
+    });
+
+    const activeDrawPositions = unique(dependentDrawPositions).sort(
+      numericSort
+    );
+
     const inactiveDrawPositions = drawPositions.filter(
       (drawPosition) => !activeDrawPositions.includes(drawPosition)
     );
 
-    const positionCounts = countValues(drawPositions);
-    const advancedDrawPositions = Object.keys(positionCounts)
-      .reduce((active, key) => {
-        return +key > 1 ? active.concat(...positionCounts[key]) : active;
-      }, [])
-      .map((p) => parseInt(p))
-      .sort(numericSort);
-
-    // drawPositionsPairedWithAdvanced are those positions which are paired with a position which has advanced
-    const drawPositionsPairedWithAdvanced = [].concat(
-      ...advancedDrawPositions.map((drawPosition) =>
-        getPairedDrawPosition({ matchUps, drawPosition })
-      )
-    );
-
     return {
       activeDrawPositions,
-      activeByeDrawPositions,
       inactiveDrawPositions,
-      advancedDrawPositions,
-      drawPositionsPairedWithAdvanced,
       byeDrawPositions,
       structure,
     };

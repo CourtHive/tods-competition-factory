@@ -68,6 +68,7 @@ function positionSeedBlock({ drawDefinition, structureId, participants }) {
       structureId,
       drawPosition,
       participantId,
+      placementScenario: true,
     });
     if (!result.success) return result;
   }

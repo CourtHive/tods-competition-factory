@@ -1,8 +1,8 @@
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { feedInChampionship } from '../../tests/primitives/feedIn';
+import { feedInMatchUps } from '../../generators/eliminationTree';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
-import { feedInMatchUps } from '../../generators/eliminationTree';
-import { feedInChampionship } from '../../tests/primitives/feedIn';
 import {
   reset,
   initialize,

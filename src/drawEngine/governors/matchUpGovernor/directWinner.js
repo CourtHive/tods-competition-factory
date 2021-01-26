@@ -1,6 +1,6 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { assignMatchUpDrawPosition } from './matchUpDrawPosition';
+import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 
 export function directWinner({
   drawDefinition,

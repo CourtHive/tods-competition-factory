@@ -4,8 +4,10 @@ import { participantInEntries } from '../../getters/entryGetter';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
-import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
+import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
+// import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -16,13 +18,14 @@ import {
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 export function assignDrawPosition({
   drawDefinition,
   structureId,
   drawPosition,
   participantId,
+  isByeReplacement,
+  placementScenario,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -102,19 +105,20 @@ export function assignDrawPosition({
       structure,
     });
 
-    const pairedDrawPosition = getPairedDrawPosition({
+    const { matchUp, pairedDrawPosition } = getPairedDrawPosition({
       matchUps,
       drawPosition,
     });
     const pairedDrawPositionIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === pairedDrawPosition
     )?.bye;
-    if (pairedDrawPositionIsBye) {
-      // re-assign the BYE to benefit from propagation
-      assignDrawPositionBye({
+    if (pairedDrawPositionIsBye || isByeReplacement) {
+      assignMatchUpDrawPosition({
         drawDefinition,
-        structureId,
-        drawPosition: pairedDrawPosition,
+        drawPosition,
+        isByeReplacement,
+        placementScenario,
+        matchUpId: matchUp.matchUpId,
       });
     }
   }

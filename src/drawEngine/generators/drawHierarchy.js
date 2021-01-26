@@ -1,6 +1,7 @@
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor';
+import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
+
+import { BYE } from '../../constants/matchUpStatusConstants';
 
 /*
     matchUps should contain sufficient information for a draw hierarchy to be reconstructed

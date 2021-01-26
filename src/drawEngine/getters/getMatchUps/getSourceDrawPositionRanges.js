@@ -1,4 +1,6 @@
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { chunkArray, generateRange } from '../../../utilities';
+import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { getRangeString } from './getRangeString';
 import { findStructure } from '../findStructure';
@@ -11,8 +13,6 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
-import { getMappedStructureMatchUps } from './getMatchUpsMap';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 
 export function getSourceDrawPositionRanges({
   drawDefinition,
