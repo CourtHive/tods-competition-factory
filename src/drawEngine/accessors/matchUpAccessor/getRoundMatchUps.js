@@ -1,4 +1,4 @@
-import { numericSort } from '../../../utilities';
+import { chunkArray, numericSort } from '../../../utilities';
 
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
@@ -36,33 +36,78 @@ export function getRoundMatchUps({ matchUps = [] }) {
   //  - finishingRound: reverse count of rounds. Final is finishingRound #1
   const roundProfile = Object.assign(
     {},
-    ...Object.keys(roundMatchUps).map((round) => {
-      return { [round]: { matchUpsCount: roundMatchUps[round]?.length } };
+    ...Object.keys(roundMatchUps).map((roundNumber) => {
+      return {
+        [roundNumber]: { matchUpsCount: roundMatchUps[roundNumber]?.length },
+      };
     })
   );
 
   let roundIndex = 0;
   let feedRoundIndex = 0;
-  Object.keys(roundMatchUps).forEach((key) => {
-    const round = parseInt(key);
-    roundProfile[round].drawPositions = roundMatchUps[round]
+  const roundNumbers = Object.keys(roundMatchUps).map((key) => parseInt(key));
+  roundNumbers.forEach((roundNumber) => {
+    const currentRoundMatchUps = roundMatchUps[roundNumber].sort(
+      (a, b) => a.roundPosition - b.roundPosition
+    );
+    const currentRoundDrawPositions = currentRoundMatchUps
       .map((matchUp) => matchUp.drawPositions)
       .flat();
-    roundProfile[round].finishingRound = finishingRoundMap[round];
-    roundProfile[round].finishingPositionRange =
-      roundMatchUps[round][0].finishingPositionRange;
+    if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
+      roundProfile[roundNumber].drawPositions = currentRoundDrawPositions.sort(
+        numericSort
+      );
+    } else {
+      const priorRoundDrawPositions =
+        roundProfile[roundNumber - 1].drawPositions;
+      const chunkFactor =
+        priorRoundDrawPositions.length / currentRoundDrawPositions.length;
+      const priorRoundDrawPositionChunks = chunkArray(
+        priorRoundDrawPositions,
+        chunkFactor
+      );
+      // insures that drawPositions are returned in top to bottom order
+      const roundDrawPositions = currentRoundMatchUps
+        .map((matchUp) => {
+          const { roundPosition, drawPositions } = matchUp;
+          if (!roundPosition) return drawPositions;
+          const filteredDrawPositions = drawPositions.filter((f) => f);
+          if (!filteredDrawPositions.length) return [undefined, undefined];
+          if (filteredDrawPositions.length === 2)
+            return drawPositions.sort(numericSort);
+          if (!priorRoundDrawPositions.includes(filteredDrawPositions[0]))
+            return [filteredDrawPositions[0], undefined];
+          const targetChunkIndex = (roundPosition - 1) * 2;
+          const targetChunks = priorRoundDrawPositionChunks.slice(
+            targetChunkIndex,
+            targetChunkIndex + 2
+          );
+          const orderedPositions = targetChunks.map((chunk) => {
+            const drawPositionInChunk = drawPositions.find((drawPosition) =>
+              chunk.includes(drawPosition)
+            );
+            return drawPositionInChunk;
+          });
+          return orderedPositions;
+        })
+        .flat();
+      roundProfile[roundNumber].drawPositions = roundDrawPositions;
+    }
+    roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
+    roundProfile[roundNumber].finishingPositionRange =
+      roundMatchUps[roundNumber][0].finishingPositionRange;
     if (
-      roundProfile[round + 1] &&
-      roundProfile[round + 1].matchUpsCount ===
-        roundProfile[round].matchUpsCount
+      roundProfile[roundNumber + 1] &&
+      roundProfile[roundNumber + 1].matchUpsCount ===
+        roundProfile[roundNumber].matchUpsCount
     ) {
-      roundProfile[round + 1].feedRound = true;
-      roundProfile[round + 1].feedRoundIndex = feedRoundIndex;
-      roundProfile[round].preFeedRound = true;
+      roundProfile[roundNumber + 1].feedRound = true;
+      roundProfile[roundNumber + 1].feedRoundIndex = feedRoundIndex;
+      roundProfile[roundNumber].preFeedRound = true;
       feedRoundIndex += 1;
     }
-    if (!roundProfile[round].feedRound) {
-      roundProfile[round].roundIndex = roundIndex;
+    if (!roundProfile[roundNumber].feedRound) {
+      roundProfile[roundNumber].roundIndex = roundIndex;
       roundIndex += 1;
     }
   });
