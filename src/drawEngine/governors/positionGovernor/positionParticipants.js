@@ -16,6 +16,7 @@ import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
+  mappedMatchUps,
   candidatesCount,
   participants,
   structureId,
@@ -85,6 +86,7 @@ export function positionUnseededParticipants({
       avoidance,
       structureId,
       participants,
+      mappedMatchUps,
       drawDefinition,
       candidatesCount,
       unseededParticipantIds,
@@ -93,6 +95,7 @@ export function positionUnseededParticipants({
     return randomUnseededDistribution({
       structureId,
       drawDefinition,
+      mappedMatchUps,
       unseededParticipantIds,
       unfilledDrawPositions,
     });
@@ -102,6 +105,7 @@ export function positionUnseededParticipants({
 function randomUnseededDistribution({
   structureId,
   drawDefinition,
+  mappedMatchUps,
   unseededParticipantIds,
   unfilledDrawPositions,
 }) {
@@ -111,6 +115,7 @@ function randomUnseededDistribution({
     const result = assignDrawPosition({
       structureId,
       drawPosition,
+      mappedMatchUps,
       participantId,
       drawDefinition,
       placementScenario: true,
