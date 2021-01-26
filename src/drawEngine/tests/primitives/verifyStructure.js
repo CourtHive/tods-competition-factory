@@ -93,7 +93,14 @@ export function verifyStructure({
     .map((matchUp) => matchUp.drawPositions);
 
   const seedPairedDrawPositions = seedAssignedDrawPositions
-    .map((drawPosition) => getPairedDrawPosition({ matchUps, drawPosition }))
+    .map((drawPosition) => {
+      const { pairedDrawPosition } = getPairedDrawPosition({
+        matchUps,
+        drawPosition,
+      });
+      return pairedDrawPosition;
+    })
+
     .filter((f) => f);
   const seedPairedDrawPositionsWithBye = seedPairedDrawPositions.filter(
     (drawPosition) => byeAssignedDrawPositions.includes(drawPosition)
@@ -109,7 +116,13 @@ export function verifyStructure({
     structure,
   });
   const seedDrawPositionsWithBye = seedPairedDrawPositionsWithBye.map(
-    (drawPosition) => getPairedDrawPosition({ matchUps, drawPosition })
+    (drawPosition) => {
+      const { pairedDrawPosition } = getPairedDrawPosition({
+        matchUps,
+        drawPosition,
+      });
+      return pairedDrawPosition;
+    }
   );
   const seedValuesOfSeedsWithBye = positionedSeeds
     .filter((assignment) =>

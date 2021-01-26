@@ -1,8 +1,8 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { isDirectingMatchUpStatus } from '../matchUpGovernor/checkStatusType';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { isCompletedStructure } from './structureActions';
 
 import {
   ADD_PENALTY,
@@ -13,7 +13,6 @@ import {
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { LOSER, WINNER } from '../../../constants/drawDefinitionConstants';
 import {
   END,
   REFEREE,
@@ -39,6 +38,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     drawDefinition,
     matchUpId,
   });
+
   const {
     assignedPositions,
     allPositionsAssigned,
@@ -48,6 +48,11 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
 
   const validActions = [];
   if (!structureId) return { validActions };
+
+  const structureIsComplete = isCompletedStructure({
+    drawDefinition,
+    structure,
+  });
 
   const participantAssignedDrawPositions = assignedPositions
     .filter((assignment) => assignment.participantId)
@@ -71,20 +76,6 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       assignedBoolean,
     true
   );
-
-  const {
-    links: { source },
-  } = getRoundLinks({
-    drawDefinition,
-    roundNumber: matchUp.roundNumber,
-    structureId,
-  });
-  const loserTargetLink = getTargetLink({ source, subject: LOSER });
-  const winnerTargetLink = getTargetLink({ source, subject: WINNER });
-
-  if (loserTargetLink || winnerTargetLink) {
-    // console.log({ source, loserTargetLink, winnerTargetLink });
-  }
 
   if (isByeMatchUp) {
     return { validActions, isByeMatchUp };
@@ -136,10 +127,34 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       validActions.push({ type: STATUS });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      validActions.push({ type: SCORE });
+      const { matchUpId, matchUpTieId, matchUpFormat } = matchUp;
+      const params = {
+        drawId,
+        matchUpId,
+        matchUpTieId,
+        matchUpFormat,
+        outcome: {
+          scoreStringSide1: undefined,
+          scoreStringSide2: undefined,
+          sets: [],
+        },
+        winningSide: undefined,
+      };
+      validActions.push({
+        type: SCORE,
+        method: 'setMatchUpStatus',
+        message: 'set outcome and winningSide',
+        params,
+      });
       validActions.push({ type: START });
       validActions.push({ type: END });
     }
   }
-  return { validActions, isByeMatchUp };
+
+  const result = {
+    isByeMatchUp,
+    validActions,
+    structureIsComplete,
+  };
+  return result;
 }

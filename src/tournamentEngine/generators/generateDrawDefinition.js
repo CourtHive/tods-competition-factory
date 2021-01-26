@@ -124,7 +124,10 @@ export function generateDrawDefinition(props) {
   });
   if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
 
-  const { errors: generatedDrawErrors } = drawEngine.generateDrawType({
+  const {
+    mappedMatchUps,
+    errors: generatedDrawErrors,
+  } = drawEngine.generateDrawType({
     stage,
     drawType,
     seedingProfile,
@@ -268,6 +271,7 @@ export function generateDrawDefinition(props) {
   let conflicts = [];
   if (automated !== false) {
     ({ conflicts } = drawEngine.automatedPositioning({
+      mappedMatchUps,
       structureId,
       participants,
     }));

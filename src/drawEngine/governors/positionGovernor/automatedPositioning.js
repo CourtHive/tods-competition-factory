@@ -14,6 +14,7 @@ import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 
 export function automatedPositioning({
   drawDefinition,
+  mappedMatchUps,
   candidatesCount,
   participants,
   structureId,
@@ -42,10 +43,12 @@ export function automatedPositioning({
     // BYEs must be placed first to insure lower seeds get BYEs
     ({ error: byePositionError } = positionByes({
       drawDefinition,
+      mappedMatchUps,
       structure,
     }));
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
+      mappedMatchUps,
       participants,
       structure,
     }));
@@ -54,11 +57,13 @@ export function automatedPositioning({
     // can follow the seedValues of placed seeds
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
+      mappedMatchUps,
       participants,
       structure,
     }));
     ({ error: byePositionError } = positionByes({
       drawDefinition,
+      mappedMatchUps,
       structure,
     }));
   }
@@ -69,6 +74,7 @@ export function automatedPositioning({
   } = positionUnseededParticipants({
     candidatesCount,
     drawDefinition,
+    mappedMatchUps,
     participants,
     structure,
   });
@@ -77,6 +83,7 @@ export function automatedPositioning({
     conflicts: qualifierConflicts,
   } = positionQualifiers({
     drawDefinition,
+    mappedMatchUps,
     participants,
     structure,
   });

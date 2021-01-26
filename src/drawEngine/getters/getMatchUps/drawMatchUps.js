@@ -15,6 +15,7 @@ export function getAllDrawMatchUps(props) {
     upcomingMatchUps,
     pendingMatchUps,
     byeMatchUps,
+    mappedMatchUps,
   } = getDrawMatchUps(props);
   const matchUps = [].concat(
     ...completedMatchUps,
@@ -22,7 +23,7 @@ export function getAllDrawMatchUps(props) {
     ...pendingMatchUps,
     ...byeMatchUps
   );
-  return { matchUps };
+  return { matchUps, mappedMatchUps };
 }
 
 export function getDrawMatchUps({
@@ -81,6 +82,7 @@ export function getDrawMatchUps({
   });
 
   const matchUpGroups = {
+    mappedMatchUps,
     byeMatchUps: allByeMatchUps,
     pendingMatchUps: allPendingMatchUps,
     upcomingMatchUps: allUpcomingMatchUps,

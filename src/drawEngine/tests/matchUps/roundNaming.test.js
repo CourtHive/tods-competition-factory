@@ -9,7 +9,7 @@ import {
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
-  FMLC,
+  FEED_FMLC,
   MAIN,
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
@@ -60,11 +60,13 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   });
 });
 
-it('can return matchUps with roundNames from a FMLC structure', () => {
+it('can return matchUps with roundNames from a FEED_FMLC structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  let result = drawEngine.devContext(true).generateDrawType({ drawType: FMLC });
+  let result = drawEngine
+    .devContext(true)
+    .generateDrawType({ drawType: FEED_FMLC });
   const { mainStructure, consolationStructure } = result;
   expect(mainStructure.structureName).toEqual(MAIN);
   result = drawEngine.attachPolicy({
@@ -110,9 +112,10 @@ it('can return matchUps with roundNames from a FMLC structure', () => {
     if (finishingRound === 2) expect(roundName).toEqual('C-SF');
     if (finishingRound === 3) expect(roundName).toEqual('C-QF');
 
-    if (roundNumber === 1) expect(roundName).toEqual('C-QF');
-    if (roundNumber === 2) expect(roundName).toEqual('C-SF');
-    if (roundNumber === 3) expect(roundName).toEqual('C-F');
+    if (roundNumber === 1) expect(roundName).toEqual('C-QF-Q');
+    if (roundNumber === 2) expect(roundName).toEqual('C-QF');
+    if (roundNumber === 3) expect(roundName).toEqual('C-SF');
+    if (roundNumber === 4) expect(roundName).toEqual('C-F');
   });
 });
 

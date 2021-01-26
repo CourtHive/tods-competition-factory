@@ -25,15 +25,14 @@ export function addExtension({ element, extension }) {
   const createdAt = new Date().toISOString();
   Object.assign(extension, { createdAt });
 
-  let extensionExists;
-  element.extensions.forEach((existingExtension) => {
-    if (existingExtension.name === extension.name) {
-      existingExtension.value = extension.value;
-      extensionExists = true;
-    }
-  });
-
-  if (!extensionExists) element.extensions.push(extension);
+  const existingExtension = element.extensions.find(
+    ({ name }) => name === extension.name
+  );
+  if (existingExtension) {
+    existingExtension.value = extension.value;
+  } else if (extension.value) {
+    element.extensions.push(extension);
+  }
 
   return SUCCESS;
 }

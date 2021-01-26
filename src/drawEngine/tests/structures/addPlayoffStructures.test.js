@@ -1,10 +1,7 @@
 import { drawEngine } from '../..';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
+import { FEED_FMLC, MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
@@ -72,11 +69,11 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure by roundNumb
   expect(structures.length).toEqual(3);
 });
 
-it('can add 3-4 playoff structure to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
+it('can add 3-4 playoff structure to a FEED_FMLC structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
     drawSize: 16,
     playoffPositions: [3, 4],
-    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawType: FEED_FMLC,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;

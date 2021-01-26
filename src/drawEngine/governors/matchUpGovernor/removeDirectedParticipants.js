@@ -1,6 +1,5 @@
 import { instanceCount } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -9,7 +8,12 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import {
+  DEFAULTED,
+  TO_BE_PLAYED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -18,6 +22,7 @@ export function removeDirectedParticipants(props) {
     matchUp,
     matchUpStatus,
     matchUpStatusCodes,
+    mappedMatchUps,
     targetData,
   } = props;
   const errors = [];
@@ -27,7 +32,7 @@ export function removeDirectedParticipants(props) {
     delete matchUp.score;
     delete matchUp.winningSide;
 
-    matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     const { matchUpTieId } = props;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
 
@@ -71,7 +76,7 @@ export function removeDirectedParticipants(props) {
     delete matchUp.score;
     delete matchUp.winningSide;
 
-    matchUp.matchUpStatus = matchUpStatus;
+    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
@@ -87,6 +92,7 @@ export function removeDirectedParticipants(props) {
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({
         winnerMatchUp,
+        mappedMatchUps,
         drawDefinition,
         winnerTargetLink,
         winnerParticipantId,
@@ -164,12 +170,15 @@ export function removeDirectedParticipants(props) {
 
 function removeDirectedWinner({
   winnerMatchUp,
+  mappedMatchUps,
   drawDefinition,
   winnerTargetLink,
   winnerParticipantId,
   winningDrawPosition,
 }) {
   let error;
+
+  const { structureId, roundNumber } = winnerMatchUp;
 
   if (winnerTargetLink) {
     const structureId = winnerTargetLink.target.structureId;
@@ -204,28 +213,17 @@ function removeDirectedWinner({
         }
       });
     } else {
-      // console.log('not removing from position assignments since instances > 1')
+      console.log('not removing from position assignments since instances > 1');
     }
-    const { matchUp } = findMatchUp({
-      drawDefinition,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(
-      (drawPosition) => {
-        return drawPosition === winnerDrawPosition ? undefined : drawPosition;
-      }
-    );
-  } else {
-    const { matchUp } = findMatchUp({
-      drawDefinition,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(
-      (drawPosition) => {
-        return drawPosition === winningDrawPosition ? undefined : drawPosition;
-      }
-    );
   }
+
+  // Remove participant's drawPosition from current and subsequent round matchUps
+  removeSubsequentRoundsParticipant({
+    mappedMatchUps,
+    structureId,
+    roundNumber,
+    targetDrawPosition: winningDrawPosition,
+  });
 
   return { error };
 }

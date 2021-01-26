@@ -1,16 +1,14 @@
-import { stageDrawPositionsCount } from '../../getters/stageGetter';
-import structureTemplate from '../../generators/structureTemplate';
-
-import { powerOf2, makeDeepCopy } from '../../../utilities';
+import { powerOf2 } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
+import { stageDrawPositionsCount } from '../../getters/stageGetter';
+import structureTemplate from '../../generators/structureTemplate';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
-import { firstMatchLoserConsolation } from '../../generators/firstMatchLoserConsolation';
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
 import {
   generateRoundRobin,
@@ -22,7 +20,6 @@ import {
   FICQF,
   FICSF,
   MFIC,
-  FMLC,
   CURTIS,
   FICR16,
   COMPASS,
@@ -39,6 +36,7 @@ import {
   COMPASS_ATTRIBUTES,
   OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
+  FEED_FMLC,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -152,8 +150,9 @@ export function generateDrawType(props = {}) {
       return Object.assign({ structure }, SUCCESS);
     },
 
-    [FMLC]: () => firstMatchLoserConsolation(props),
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(props),
+    [FEED_FMLC]: () =>
+      feedInChampionship(Object.assign(props, { feedRounds: 1, fmlc: true })),
     [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
     [FICQF]: () =>
       feedInChampionship(Object.assign(props, { feedsFromFinal: 2 })),
@@ -170,14 +169,14 @@ export function generateDrawType(props = {}) {
   };
 
   const generator = generators[drawType];
-  const result = generator && generator();
+  const generatorResult = generator && generator();
 
   // where applicable add tieFormat to all generated matchUps; generate tieMatchUps where needed
   // CONSIDER: should tieFormat be included here? individual Tie MatchUps can get tieFormat from drawDefinition
   const { tieFormat, matchUpType } = drawDefinition || {};
   const additionalParams = { matchUpType };
 
-  const { matchUps } = getAllDrawMatchUps({ drawDefinition });
+  const { matchUps, mappedMatchUps } = getAllDrawMatchUps({ drawDefinition });
 
   matchUps.forEach((matchUp) => {
     if (tieFormat) {
@@ -188,9 +187,11 @@ export function generateDrawType(props = {}) {
     Object.assign(matchUp, additionalParams);
   });
 
-  if (result?.success) {
-    return props.devContext ? result : SUCCESS;
-  } else {
+  if (!generatorResult?.success) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
+
+  const result = Object.assign({}, SUCCESS, { matchUps, mappedMatchUps });
+  if (props.devContext) Object.assign(result, generatorResult);
+  return result;
 }

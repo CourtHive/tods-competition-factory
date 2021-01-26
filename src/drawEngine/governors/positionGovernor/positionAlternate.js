@@ -1,8 +1,8 @@
+import { getPositionAssignments } from '../../getters/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getPositionAssignments } from '../../getters/positionsGetter';
 
 export function alternateDrawPositionAssignment({
   alternateParticipantId,
@@ -17,6 +17,8 @@ export function alternateDrawPositionAssignment({
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
+  const isByeReplacement = positionAssignment.bye && drawPosition;
+
   if (positionAssignment.participantId) {
     let result = assignDrawPosition({
       drawDefinition,
@@ -30,8 +32,6 @@ export function alternateDrawPositionAssignment({
     return Object.assign({}, SUCCESS, {
       removedParticipantId: positionAssignment.participantId,
     });
-  } else {
-    console.log('deal with bye replacement');
   }
   let result = clearDrawPosition({
     drawDefinition,
@@ -42,6 +42,7 @@ export function alternateDrawPositionAssignment({
   const removedParticipantId = result.participantId;
 
   result = assignDrawPosition({
+    isByeReplacement,
     drawDefinition,
     structureId,
     drawPosition,

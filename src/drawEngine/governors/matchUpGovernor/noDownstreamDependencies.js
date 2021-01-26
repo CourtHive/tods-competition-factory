@@ -1,10 +1,12 @@
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { attemptToSetIncompleteScore } from './attemptToSetIncompleteScore';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
+import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, score, winningSide } = props;
@@ -14,7 +16,7 @@ export function noDownstreamDependencies(props) {
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
     if (winningSideErrors) errors = errors.concat(winningSideErrors);
-  } else if (matchUpStatus) {
+  } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
     const { error } = attemptToSetMatchUpStatus(props);
     if (error) errors = errors.concat(error);
   } else if (!winningSide && score?.sets?.length) {
@@ -23,6 +25,10 @@ export function noDownstreamDependencies(props) {
     );
     if (incompleteScoreErrors) errors = errors.concat(incompleteScoreErrors);
   } else if (!winningSide && matchUp.winningSide && !score?.sets?.length) {
+    const { structure, drawDefinition } = props;
+    // TODO: return a message if there are effects in connected structures
+    checkConnectedStructures({ drawDefinition, structure, matchUp });
+
     const { errors: participantDirectionErrors } = removeDirectedParticipants(
       props
     );
@@ -32,8 +38,8 @@ export function noDownstreamDependencies(props) {
     }
   } else if (matchUp) {
     delete matchUp.score;
-    delete matchUp.matchUpStatus;
     delete matchUp.winningSide;
+    matchUp.matchUpStatus = TO_BE_PLAYED;
     const isCollectionMatchUp = Boolean(matchUp.collectionId);
     if (isCollectionMatchUp) {
       const { drawDefinition, matchUpTieId } = props;

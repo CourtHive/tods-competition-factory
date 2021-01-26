@@ -1,7 +1,6 @@
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
 import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
-import { firstMatchLoserConsolation } from './firstMatchLoserConsolation';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
 import { drawPositionsHash } from './roundRobinGroups';
@@ -15,12 +14,13 @@ import {
   WIN_RATIO,
   CONTAINER,
   SINGLE_ELIMINATION,
-  FMLC,
+  FEED_FMLC,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
+import { feedInChampionship } from './feedInChampionShip';
 
 export function generateRoundRobin({
   uuids,
@@ -152,14 +152,18 @@ export function generateRoundRobinWithPlayOff(props) {
         finishingPositionOffset += participantsInDraw;
 
         return playoffStructure;
-      } else if (playoffDrawType === FMLC) {
+      } else if (playoffDrawType === FEED_FMLC) {
+        // TODO: test this
+        console.log('RRw/PO FEED_FMLC');
         const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
         const {
           mainStructure: playoffStructure,
           consolationStructure,
           link: consolationLink,
-        } = firstMatchLoserConsolation({
+        } = feedInChampionship({
           drawSize,
+          fmlc: true,
+          feedRounds: 1,
           stage: PLAY_OFF,
           uuids: uuidsFMLC,
           finishingPositionOffset,
@@ -267,14 +271,25 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
     );
   }
 
+  // returns a range for array of possible finishing drawPositions
+  function finishingRange(drawPositions) {
+    return [Math.min(...drawPositions), Math.max(...drawPositions)];
+  }
+
   function positionMatchUp(drawPositions) {
     const hash = drawPositionsHash(drawPositions);
     const roundNumber = determineRoundNumber(hash);
+    const loser = finishingRange(drawPositions.slice(1));
+    const winner = finishingRange(
+      drawPositions.slice(0, drawPositions.length - 1)
+    );
     const matchUp = {
       roundNumber,
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: TO_BE_PLAYED,
+      // finishingPositionRange in RR is not very useful, but provided for consistency
+      finishingPositionRange: { winner, loser },
     };
     return matchUp;
   }

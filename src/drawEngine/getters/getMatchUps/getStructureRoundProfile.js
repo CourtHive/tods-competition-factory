@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor/matchUps';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { findStructure } from '../findStructure';
 

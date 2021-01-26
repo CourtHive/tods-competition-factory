@@ -1,10 +1,10 @@
-import { drawEngine } from '../../../drawEngine';
-import { findStructure } from '../../getters/findStructure';
-import { getRoundMatchUps } from '../../accessors/matchUpAccessor';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { findStructure } from '../../getters/findStructure';
+import { drawEngine } from '../../../drawEngine';
 
 export function completeMatchUp({
   structureId,
