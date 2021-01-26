@@ -19,12 +19,13 @@ import {
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
+  mappedMatchUps,
   matchUpId,
   drawPosition,
   placementScenario,
   isByeReplacement,
 }) {
-  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,

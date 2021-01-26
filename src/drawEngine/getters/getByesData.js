@@ -11,10 +11,11 @@ import {
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
 
-export function getByesData({ drawDefinition, structure }) {
+export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     drawDefinition,
+    mappedMatchUps,
     matchUpFilters,
     structure,
   });

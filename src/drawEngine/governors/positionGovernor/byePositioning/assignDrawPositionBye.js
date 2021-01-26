@@ -21,6 +21,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
+  mappedMatchUps,
   structureId,
   drawPosition,
 }) {
@@ -55,12 +56,14 @@ export function assignDrawPositionBye({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
+    mappedMatchUps,
     matchUpFilters,
     structure,
   });
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
+    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
   });
@@ -71,6 +74,7 @@ export function assignDrawPositionBye({
         matchUp,
         structure,
         drawPosition,
+        mappedMatchUps,
         drawDefinition,
         positionAssignments,
         inContextDrawMatchUps,
@@ -93,6 +97,7 @@ function assignBye({
   matchUp,
   structure,
   drawPosition,
+  mappedMatchUps,
   drawDefinition,
   positionAssignments,
   inContextDrawMatchUps,
@@ -101,7 +106,7 @@ function assignBye({
 
   const { matchUp: noContextMatchUp } = findMatchUp({
     drawDefinition,
-    // mappedMatchUps,
+    mappedMatchUps,
     matchUpId,
   });
   // const { roundNumber } = noContextMatchUp;
@@ -133,6 +138,7 @@ function assignBye({
   } = positionTargets({
     matchUpId,
     structure,
+    mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
     sourceMatchUpWinnerDrawPositionIndex,
