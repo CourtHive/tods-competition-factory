@@ -169,14 +169,14 @@ export function generateDrawType(props = {}) {
   };
 
   const generator = generators[drawType];
-  const result = generator && generator();
+  const generatorResult = generator && generator();
 
   // where applicable add tieFormat to all generated matchUps; generate tieMatchUps where needed
   // CONSIDER: should tieFormat be included here? individual Tie MatchUps can get tieFormat from drawDefinition
   const { tieFormat, matchUpType } = drawDefinition || {};
   const additionalParams = { matchUpType };
 
-  const { matchUps } = getAllDrawMatchUps({ drawDefinition });
+  const { matchUps, mappedMatchUps } = getAllDrawMatchUps({ drawDefinition });
 
   matchUps.forEach((matchUp) => {
     if (tieFormat) {
@@ -187,9 +187,11 @@ export function generateDrawType(props = {}) {
     Object.assign(matchUp, additionalParams);
   });
 
-  if (result?.success) {
-    return props.devContext ? result : SUCCESS;
-  } else {
+  if (!generatorResult?.success) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
+
+  const result = Object.assign({}, SUCCESS, { matchUps, mappedMatchUps });
+  if (props.devContext) Object.assign(result, generatorResult);
+  return result;
 }
