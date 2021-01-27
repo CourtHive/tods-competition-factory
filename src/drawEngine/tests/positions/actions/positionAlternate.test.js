@@ -1,6 +1,7 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
+import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
+import drawEngine from '../../..';
 
 import {
   BYE,
@@ -10,7 +11,6 @@ import {
   ALTERNATE,
   DIRECT_ACCEPTANCE,
 } from '../../../../constants/entryStatusConstants';
-import drawEngine from '../../..';
 
 it('can generate drawSize: 8 with 6 participants', () => {
   const drawProfiles = [
@@ -109,7 +109,7 @@ it('can generate drawSize: 8 with only 4 participants', () => {
   expect(directAcceptanceEntries.length).toEqual(4);
 });
 
-it('can generate drawSize: 8 with only 2 participants', () => {
+it('can drawSize: 8 with only 2 participants', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -134,19 +134,21 @@ it('can generate drawSize: 8 with only 2 participants', () => {
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  console.log(drawDefinition.structures[0].matchUps.length);
   const directAcceptanceEntries = drawDefinition.entries.filter(
     (e) => e.entryStatus === DIRECT_ACCEPTANCE
   );
   expect(directAcceptanceEntries.length).toEqual(2);
 
-  /*
   const secondRoundMatchUpStatuses = unique(
     roundMatchUps[2].map((m) => m.matchUpStatus)
   );
-  expect(secondRoundMatchUpStatuses).toEqual([BYE]);
-  const {
-    upcomingMatchUps,
-  } = tournamentEngine.tournamentMatchUps();
-  expect(upcomingMatchUps.length).toEqual(1);
-  */
+  expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
+  const tournamentMatchUps = tournamentEngine.tournamentMatchUps();
+  console.log(tournamentMatchUps.byeMatchUps.map((m) => m.drawPositions));
+  console.log(tournamentMatchUps.pendingMatchUps.map((m) => m.drawPositions));
+  console.log(tournamentMatchUps.upcomingMatchUps.map((m) => m.drawPositions));
+  const result = tournamentEngine.drawMatchUps({ drawId });
+  console.log(result);
+  // expect(upcomingMatchUps.length).toEqual(1);
 });
