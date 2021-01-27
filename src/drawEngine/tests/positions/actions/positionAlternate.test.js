@@ -12,7 +12,7 @@ import {
 } from '../../../../constants/entryStatusConstants';
 import drawEngine from '../../..';
 
-it.only('can generate drawSize: 8 with 6 participants', () => {
+it('can generate drawSize: 8 with 6 participants', () => {
   const drawProfiles = [
     {
       drawSize: 8,
