@@ -91,12 +91,10 @@ it('can generate drawSize: 8 with only 4 participants', () => {
     roundMatchUps[1].map((m) => m.matchUpStatus)
   );
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
-  /*
   const secondRoundMatchUpStatuses = unique(
     roundMatchUps[2].map((m) => m.matchUpStatus)
   );
-  expect(secondRoundMatchUpStatuses).toEqual([BYE]);
-  */
+  expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
   const thirdRoundMatchUpStatuses = unique(
     roundMatchUps[3].map((m) => m.matchUpStatus)
   );
@@ -109,7 +107,8 @@ it('can generate drawSize: 8 with only 4 participants', () => {
   expect(directAcceptanceEntries.length).toEqual(4);
 });
 
-it('can drawSize: 8 with only 2 participants', () => {
+it('can generate drawSize: 8 with only 2 participants', () => {
+  // NOTE: at present BYEs will not be automatically positioned with another BYE
   const drawProfiles = [
     {
       drawSize: 8,
@@ -134,7 +133,6 @@ it('can drawSize: 8 with only 2 participants', () => {
   expect(firstRoundMatchUpStatuses).toEqual([BYE]);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  console.log(drawDefinition.structures[0].matchUps.length);
   const directAcceptanceEntries = drawDefinition.entries.filter(
     (e) => e.entryStatus === DIRECT_ACCEPTANCE
   );
@@ -144,11 +142,4 @@ it('can drawSize: 8 with only 2 participants', () => {
     roundMatchUps[2].map((m) => m.matchUpStatus)
   );
   expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
-  const tournamentMatchUps = tournamentEngine.tournamentMatchUps();
-  console.log(tournamentMatchUps.byeMatchUps.map((m) => m.drawPositions));
-  console.log(tournamentMatchUps.pendingMatchUps.map((m) => m.drawPositions));
-  console.log(tournamentMatchUps.upcomingMatchUps.map((m) => m.drawPositions));
-  const result = tournamentEngine.drawMatchUps({ drawId });
-  console.log(result);
-  // expect(upcomingMatchUps.length).toEqual(1);
 });
