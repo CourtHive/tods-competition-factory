@@ -204,7 +204,7 @@ it('can create double bye and replace bye with alternate', () => {
   });
 
   // now remove the result for matchUp: { roundNumber: 1, roundPosition: 2 }
-  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
   matchUp = matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2
   );
@@ -262,7 +262,7 @@ it('can create double bye and replace bye with alternate', () => {
     drawId,
     structureId,
     drawPosition: 4,
-    expectations: { bye: 4, complete: 2, pending: 0, upcoming: 1 },
+    expectations: { bye: 3, complete: 2, pending: 1, upcoming: 1 },
   });
 });
 

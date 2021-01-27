@@ -5,10 +5,11 @@ import { PAIR } from '../../../constants/participantTypes';
 import { MALE } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { AGE } from '../../../constants/eventConstants';
+import { intersection } from '../../../utilities';
 
 it('can add statistics to tournament participants', () => {
   const participantsProfile = {
-    participantsCount: 100,
+    participantsCount: 200,
     participantType: PAIR,
     sex: MALE,
   };
@@ -161,14 +162,15 @@ it('can add statistics to tournament participants', () => {
     );
   };
 
-  const targetParticipant = getParticipant({ drawPosition: 1 });
-  expect(targetParticipant.statistics[0].statValue).toEqual(1);
-  expect(targetParticipant.opponents.length).toEqual(2);
-  expect(targetParticipant.matchUps.length).toEqual(3);
-  expect(targetParticipant.events.length).toEqual(1);
-  expect(targetParticipant.draws.length).toEqual(1);
+  const doublesParticipant = getParticipant({ drawPosition: 1 });
+  expect(doublesParticipant.statistics[0].statValue).toEqual(1);
+  expect(doublesParticipant.opponents.length).toEqual(2);
+  expect(doublesParticipant.matchUps.length).toEqual(3);
+  expect(doublesParticipant.events.length).toEqual(1);
+  expect(doublesParticipant.draws.length).toEqual(1);
 
-  const individualParticipantId = targetParticipant.individualParticipantIds[0];
+  const individualParticipantId =
+    doublesParticipant.individualParticipantIds[0];
   const individualParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === individualParticipantId
   );
@@ -177,4 +179,82 @@ it('can add statistics to tournament participants', () => {
 
   expect(individualParticipant.draws[0].finishingPositionRange).toEqual([1, 8]);
   expect(individualParticipant.events[0].eventType).toEqual(DOUBLES);
+});
+
+it('can add statistics to tournament participants', () => {
+  const participantsProfile = {
+    participantsCount: 4,
+    participantType: PAIR,
+  };
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      eventType: DOUBLES,
+      participantsCount: 4,
+      category: {
+        ageCategoryCode: 'U18',
+        categoryName: 'U18',
+        type: AGE,
+      },
+    },
+  ];
+  let { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  ({ tournamentRecord } = tournamentEngine.getState({
+    convertExtensions: true,
+  }));
+
+  const eventId = eventIds[0];
+  const { event } = tournamentEngine.getEvent({ eventId });
+
+  const positionAssignments =
+    event.drawDefinitions[0].structures[0].positionAssignments;
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    convertExtensions: true,
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+  });
+  expect(tournamentParticipants.length).toEqual(12);
+
+  const getParticipant = ({ drawPosition }) => {
+    const participantId = positionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    ).participantId;
+    return tournamentParticipants.find(
+      (participant) => participant.participantId === participantId
+    );
+  };
+
+  const doublesParticipant = getParticipant({ drawPosition: 1 });
+
+  const {
+    individualParticipantIds,
+    events: [{ partnerParticipantId: pairPartnerId }],
+  } = doublesParticipant;
+
+  expect(pairPartnerId).toBeUndefined();
+
+  const individualParticipantId =
+    doublesParticipant.individualParticipantIds[0];
+  const individualParticipant = tournamentParticipants.find(
+    (participant) => participant.participantId === individualParticipantId
+  );
+
+  const {
+    events: [{ partnerParticipantId }],
+  } = individualParticipant;
+
+  // check that the individual and partner equal individualParticipantIds for the PAIR
+  expect(
+    intersection(
+      [individualParticipantId, partnerParticipantId],
+      individualParticipantIds
+    ).length
+  ).toEqual(2);
 });

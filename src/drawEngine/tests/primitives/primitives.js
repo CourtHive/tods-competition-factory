@@ -3,7 +3,7 @@ import { generateRange } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {

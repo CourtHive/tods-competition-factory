@@ -1,11 +1,15 @@
 import mocksEngine from '../../../../mocksEngine';
+import { generateRange } from '../../../../utilities';
 import tournamentEngine from '../../../../tournamentEngine';
 
 import {
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
 } from '../../../../constants/positionActionConstants';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  TO_BE_PLAYED,
+} from '../../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('supports replacing a BYE with a participant (DA or ALT)', () => {
@@ -77,3 +81,96 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 });
+
+it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      participantsCount: 8,
+    },
+  ];
+  const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+  const drawId = drawIds[0];
+
+  let {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  const structureId = structures[0].structureId;
+
+  const targetByeDrawPositions = generateRange(2, 9);
+  targetByeDrawPositions.forEach((drawPosition) => {
+    const result = replaceWithBye({
+      drawId,
+      structureId,
+      drawPosition,
+    });
+    if (result.error) console.log('replaceWithBye', { drawPosition }, result);
+  });
+
+  ({
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId }));
+  let { positionAssignments } = structures[0];
+  const byeDrawPositions = positionAssignments
+    .filter(({ bye }) => bye)
+    .map(({ drawPosition }) => drawPosition);
+
+  expect(byeDrawPositions).toEqual(targetByeDrawPositions);
+
+  replaceWithAlternate({ drawId, structureId, drawPosition: 8 });
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  let finalMatchUp = matchUps.find(
+    ({ finishingRound }) => finishingRound === 1
+  );
+  expect(finalMatchUp.drawPositions).toEqual([1, 8]);
+  expect(finalMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+
+  replaceWithBye({
+    drawId,
+    structureId,
+    drawPosition: 8,
+  });
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+  finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
+  expect(finalMatchUp.matchUpStatus).toEqual(BYE);
+  expect(finalMatchUp.drawPositions).toEqual([1, 8]);
+
+  let result = replaceWithAlternate({ drawId, structureId, drawPosition: 7 });
+  expect(result.success).toEqual(true);
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+  finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
+  expect(finalMatchUp.drawPositions).toEqual([1, 7]);
+  expect(finalMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+});
+
+function replaceWithBye({ drawId, structureId, drawPosition }) {
+  let { validActions } = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  let { method, payload } = validActions.find(({ type }) => type === BYE);
+  let result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+  return result;
+}
+
+function replaceWithAlternate({ drawId, structureId, drawPosition }) {
+  const { validActions } = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  let result = validActions.find(({ type }) => type === ALTERNATE);
+  let { method, payload, availableAlternatesParticipantIds } = result;
+  let alternateParticipantId = availableAlternatesParticipantIds[0];
+  Object.assign(payload, { alternateParticipantId });
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+  return result;
+}
