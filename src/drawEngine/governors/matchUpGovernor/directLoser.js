@@ -166,38 +166,6 @@ export function directLoser(props) {
     }
   }
 
-  /*
-  function loserLinkConditionLogic() {
-    const { winnerHadMatchUpStatus: winnerByeDefWO } = includesMatchUpStatuses({
-      sourceMatchUps,
-      loserDrawPosition,
-      drawPositionMatchUps,
-      matchUpStatuses: [BYE, WALKOVER, DEFAULTED],
-    });
-    const winnerBackdrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
-      winnerBackdrawPosition
-    );
-
-    if (validForConsolation && targetDrawPositionIsUnfilled) {
-      const result = asssignLoserDrawPosition();
-      if (result.error) return result;
-    }
-
-    if (winnerByeDefWO && winnerBackdrawPositionIsUnfilled) {
-      let result = clearDrawPosition({
-        drawDefinition,
-        structureId: targetStructureId,
-        drawPosition: winnerBackdrawPosition,
-      });
-      if (result.error) return result;
-
-      return assignWinnerPositionBye();
-    }
-
-    return SUCCESS;
-  }
-  */
-
   function assignWinnerPositionBye() {
     return assignDrawPositionBye({
       drawDefinition,
