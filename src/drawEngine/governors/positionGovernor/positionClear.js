@@ -27,6 +27,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function clearDrawPosition({
   drawDefinition,
+  mappedMatchUps,
   drawPosition,
   participantId,
   structureId,
@@ -71,11 +72,13 @@ export function clearDrawPosition({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
+    mappedMatchUps,
     matchUpFilters,
     structure,
   });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
+    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
   });
@@ -94,6 +97,7 @@ export function clearDrawPosition({
       if (isByeMatchUp) {
         removeByeAndCleanUp({
           drawDefinition,
+          mappedMatchUps,
           matchUp,
           structure,
           drawPosition,
@@ -123,6 +127,7 @@ export function clearDrawPosition({
 
 function removeByeAndCleanUp({
   drawDefinition,
+  mappedMatchUps,
   matchUp,
   structure,
   drawPosition,
@@ -154,6 +159,7 @@ function removeByeAndCleanUp({
   } = positionTargets({
     matchUpId,
     structure,
+    mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
     sourceMatchUpWinnerDrawPositionIndex,
@@ -179,12 +185,13 @@ function removeByeAndCleanUp({
       loserMatchUp.drawPositions[targetDrawPositionIndex];
     clearDrawPosition({
       drawDefinition,
+      mappedMatchUps,
       structureId,
       drawPosition: targetDrawPosition,
     });
   }
 
-  if (winnerMatchUp) {
+  if (winnerMatchUp?.drawPositions.includes(pairedDrawPosition)) {
     if (
       winnerTargetLink &&
       matchUp.structureId !== winnerTargetLink.target.structureId
@@ -197,10 +204,14 @@ function removeByeAndCleanUp({
       );
     }
 
-    removeMatchUpDrawPosition({
+    const result = removeMatchUpDrawPosition({
       drawDefinition,
+      mappedMatchUps,
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: pairedDrawPosition,
     });
+    if (result.error) return result;
   }
+
+  return SUCCESS;
 }

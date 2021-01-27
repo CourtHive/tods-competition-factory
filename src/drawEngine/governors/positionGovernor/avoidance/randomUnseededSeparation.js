@@ -34,6 +34,7 @@ export function randomUnseededSeparation({
   avoidance,
   structureId,
   participants,
+  mappedMatchUps,
   drawDefinition,
   unseededParticipantIds,
 }) {
@@ -51,7 +52,7 @@ export function randomUnseededSeparation({
 
   const participantsWithContext = addParticipantContext({ participants });
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { matchUps } = getAllStructureMatchUps({ structure });
+  const { matchUps } = getAllStructureMatchUps({ structure, mappedMatchUps });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
   const unassignedPositions = positionAssignments.filter(
@@ -145,6 +146,7 @@ export function randomUnseededSeparation({
         const result = assignDrawPosition({
           placementScenario: true,
           drawDefinition,
+          mappedMatchUps,
           structureId,
           ...assignment,
         });

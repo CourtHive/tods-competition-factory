@@ -81,6 +81,7 @@ export function removeDirectedParticipants(props) {
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
       inContext: true,
+      mappedMatchUps,
       drawDefinition,
       structure,
     });
@@ -147,6 +148,7 @@ export function removeDirectedParticipants(props) {
           : loserMatchUp.drawPositions[winningIndex];
         const { error } = removeDirectedBye({
           drawDefinition,
+          mappedMatchUps,
           drawPosition,
           targetLink: loserTargetLink,
         });
@@ -155,6 +157,7 @@ export function removeDirectedParticipants(props) {
 
       const { error } = removeDirectedLoser({
         loserMatchUp,
+        mappedMatchUps,
         drawDefinition,
         loserTargetLink,
         loserParticipantId,
@@ -247,13 +250,19 @@ function removeDirectedLoser({
   return { error };
 }
 
-function removeDirectedBye({ targetLink, drawPosition, drawDefinition }) {
+function removeDirectedBye({
+  targetLink,
+  drawPosition,
+  drawDefinition,
+  mappedMatchUps,
+}) {
   let error;
 
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({
     drawDefinition,
+    mappedMatchUps,
     structureId,
     drawPosition,
   });

@@ -26,7 +26,7 @@ export function getDrawPositionsRanges({
   });
 
   const firstRoundFirstDrawPosition = Math.min(
-    ...roundProfile[1]?.drawPositions
+    ...(roundProfile[1]?.drawPositions || [])
   );
   const firstRoundFirstDrawPositionOffset =
     (firstRoundFirstDrawPosition || 1) - 1;
@@ -34,7 +34,7 @@ export function getDrawPositionsRanges({
   const roundNumbers = Object.keys(roundProfile);
   const drawPositionsRanges = Object.assign(
     {},
-    ...roundNumbers.map((roundNumber) => {
+    ...(roundNumbers || []).map((roundNumber) => {
       const { matchUpsCount } = roundProfile[roundNumber];
       const { drawPositions: firstRoundDrawPositions } = roundProfile[1];
       const firstRoundDrawPositionsChunks = chunkArray(

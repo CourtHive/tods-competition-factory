@@ -1,5 +1,5 @@
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
-import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 
 import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 
