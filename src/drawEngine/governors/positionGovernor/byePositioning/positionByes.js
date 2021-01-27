@@ -10,6 +10,7 @@ import { BYES_LIMIT_REACHED } from '../../../../constants/errorConditionConstant
 
 export function positionByes({
   drawDefinition,
+  mappedMatchUps,
   structure,
   structureId,
   blockOrdered = false,
@@ -20,6 +21,7 @@ export function positionByes({
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
     drawDefinition,
+    mappedMatchUps,
     structure,
   });
 
@@ -65,6 +67,7 @@ export function positionByes({
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
       drawDefinition,
+      mappedMatchUps,
       structureId,
       drawPosition,
     });

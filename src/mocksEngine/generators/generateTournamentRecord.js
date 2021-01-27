@@ -1,6 +1,7 @@
-import { tournamentEngine } from '../../tournamentEngine';
-import { generateParticipants } from './generateParticipants';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
+import { generateParticipants } from './generateParticipants';
+import { tournamentEngine } from '../../tournamentEngine';
+import { intersection } from '../../utilities';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import {
@@ -11,7 +12,6 @@ import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
-import { intersection } from '../../utilities';
 
 /**
  *
@@ -60,6 +60,7 @@ export function generateTournamentRecord({
   if (doublesEvents) participantType = PAIR;
   if (participantsCount < minPartcipantsCount)
     participantsCount = minPartcipantsCount;
+  if (participantType === PAIR) participantsCount = participantsCount / 2;
 
   const { participants } = generateParticipants({
     nationalityCodesCount,
