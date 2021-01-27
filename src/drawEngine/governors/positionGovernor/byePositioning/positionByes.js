@@ -24,6 +24,7 @@ export function positionByes({
     mappedMatchUps,
     structure,
   });
+  // console.log({ byesCount, placedByes, relevantMatchUps });
 
   const byesToPlace = byesCount - placedByes;
   if (byesToPlace < 0) {
