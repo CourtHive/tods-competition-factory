@@ -12,7 +12,7 @@ import {
   allPlayoffPositionsFilled,
 } from './structureActions';
 
-import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import {
   getAllDrawMatchUps,

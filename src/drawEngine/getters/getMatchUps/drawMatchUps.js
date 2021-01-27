@@ -1,6 +1,6 @@
 import { getMatchUpsMap } from './getMatchUpsMap';
 import { getDrawStructures } from '../findStructure';
-import { getStructureMatchUps } from './structureMatchUps';
+import { getStructureMatchUps } from './getStructureMatchUps';
 import { addUpcomingMatchUps } from '../../../tournamentEngine/getters/addUpcomingMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';

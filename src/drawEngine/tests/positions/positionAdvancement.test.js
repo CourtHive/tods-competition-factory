@@ -2,7 +2,7 @@ import { getDrawStructures } from '../../getters/findStructure';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { positionTargets } from '../../governors/positionGovernor/positionTargets';
-import { getStructureMatchUps } from '../../getters/getMatchUps/structureMatchUps';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import {
   reset,
   initialize,

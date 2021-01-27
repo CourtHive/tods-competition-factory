@@ -96,7 +96,7 @@ export function assignMatchUpDrawPosition({
           matchUpId: winnerMatchUp.matchUpId,
         });
       }
-    } else if (isByeReplacement) {
+    } else if (isByeReplacement && winnerMatchUp) {
       const { roundNumber, structureId } = winnerMatchUp;
       removeSubsequentRoundsParticipant({
         mappedMatchUps,
