@@ -28,6 +28,7 @@ export function addParticipantContext({
       const { participantId } = entry;
 
       // include all individual participants that are part of teams & pairs
+      // relevantParticipantId is a reference to an individual
       allRelevantParticipantIds({ participantId }).forEach(
         ({ relevantParticipantId }) => {
           if (!participantIdMap[relevantParticipantId])
@@ -97,16 +98,6 @@ export function addParticipantContext({
         const relevantParticipantIds = allRelevantParticipantIds({
           participantId,
         });
-        const relevantParticipantInfo = relevantParticipantIds.find(
-          (participantInfo) => {
-            return (
-              participantInfo.relevantParticipantId !== participantId &&
-              participantInfo.participantType !== PAIR
-            );
-          }
-        );
-        const partnerParticipantId =
-          relevantParticipantInfo?.relevantParticipantId;
 
         // include all individual participants that are part of teams & pairs
         relevantParticipantIds.forEach(
@@ -117,6 +108,21 @@ export function addParticipantContext({
               eventId,
               drawId,
             };
+
+            let partnerParticipantId;
+            if (participantType === INDIVIDUAL) {
+              const relevantParticipantInfo = relevantParticipantIds.find(
+                (participantInfo) => {
+                  return (
+                    participantInfo.relevantParticipantId !==
+                      relevantParticipantId &&
+                    participantInfo.participantType !== PAIR
+                  );
+                }
+              );
+              partnerParticipantId =
+                relevantParticipantInfo?.relevantParticipantId;
+            }
 
             relevantOpponents
               // for PAIR participants only show PAIR opponenents
