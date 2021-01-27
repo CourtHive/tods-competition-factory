@@ -72,6 +72,11 @@ export const SCORING_USTA = {
         format: 'SET1-S:5NOAD/TB9@4',
       },
       {
+        key: 'standardNOAD',
+        name: 'One set to 6 with deciding game at 5 games all',
+        format: 'SET1-S:6NOAD',
+      },
+      {
         key: 'short7',
         name: 'One short set to 4, deciding game is played at 3 games all',
         format: 'SET1-S:4NOAD',
