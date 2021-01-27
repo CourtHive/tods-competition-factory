@@ -22,8 +22,8 @@ export function checkSetIsComplete({
     matchUpScoringFormat.setFormat;
   const { side1Score, side2Score } = set;
 
-  const { setTo, tiebreakAt, tiebreakFormat } = setFormat;
-  const NoAD = tiebreakFormat?.NoAd;
+  const { NoAD, setTo, tiebreakAt, tiebreakFormat } = setFormat;
+  const tiebreakNoAd = tiebreakFormat?.NoAd;
 
   const leadingSide = getLeadingSide({ set });
   const scoreDiff = Math.abs(side1Score - side2Score);
@@ -44,8 +44,9 @@ export function checkSetIsComplete({
           set.side2TiebreakScore > set.side1TiebreakScore)));
 
   const winMargin =
-    requiresTiebreak &&
-    ((tiebreakAt && !isTiebreakSet) || (isTiebreakSet && NoAD))
+    NoAD ||
+    (requiresTiebreak &&
+      ((tiebreakAt && !isTiebreakSet) || (isTiebreakSet && tiebreakNoAd)))
       ? 1
       : 2;
   const hasWinMargin = scoreDiff >= winMargin;
