@@ -269,36 +269,6 @@
       "drawId": "f11f94df-e4ce-4663-b206-dac5bff20cc6",
       "drawName": "SINGLE_ELIMINATION",
       "drawType": "SINGLE_ELIMINATION",
-      "drawProfile": {
-        "drawType": "SINGLE_ELIMINATION",
-        "drawSize": 16,
-        "automated": "automated",
-        "seedsCount": 4,
-        "structureOptions": {
-          "groupSize": ""
-        },
-        "category": {
-          "_id": {
-            "$oid": "5f631bc328e3f86774f6d0de"
-          },
-          "ageCategory": "U18",
-          "categoryName": "U18",
-          "type": "AGE",
-          "extensions": [],
-          "createdAt": "2020-09-17T08:18:11.418Z",
-          "updatedAt": "2020-09-17T08:18:11.418Z"
-        },
-        "matchUpFormat": "SET3-S:6/TB7"
-      },
-      "entryProfile": {
-        "QUALIFYING": {
-          "alternates": true
-        },
-        "MAIN": {
-          "drawSize": 16,
-          "alternates": true
-        }
-      },
       "entries": [
         {
           "participantId": "caa5e35e-3fba-427c-a3eb-04d0f2e66bd5",

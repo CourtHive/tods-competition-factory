@@ -1,10 +1,11 @@
-import drawEngine from '../../drawEngine';
-import { tieFormatDefaults } from './tieFormatDefaults';
-import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
-import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
-import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
+import { addDrawDefinitionExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
+import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
+import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
+import { tieFormatDefaults } from './tieFormatDefaults';
+import drawEngine from '../../drawEngine';
 
 import {
   MAIN,
@@ -85,6 +86,28 @@ export function generateDrawDefinition(props) {
     matchUpFormat = 'SET3-S:6/TB7';
   }
 
+  const stage = MAIN;
+  const entries = event?.entries || [];
+  const eventType = event?.eventType;
+  const stageEntries = entries.filter(
+    (entry) =>
+      (!entry.entryStage || entry.entryStage === stage) &&
+      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+  );
+  if ([ROUND_ROBIN].includes(drawType)) {
+    drawSize = stageEntries.length;
+  }
+
+  drawEngine.reset();
+  drawEngine.newDrawDefinition({ drawType });
+
+  drawEngine.setStageDrawSize({ stage, drawSize });
+  const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({
+    matchUpFormat,
+    tieFormat,
+    matchUpType,
+  });
+
   const drawProfile = {
     drawSize,
     automated,
@@ -101,28 +124,13 @@ export function generateDrawDefinition(props) {
     category: event?.category,
   };
 
-  const stage = MAIN;
-  const entries = event?.entries || [];
-  const eventType = event?.eventType;
-  const stageEntries = entries.filter(
-    (entry) =>
-      (!entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
-  );
-  if ([ROUND_ROBIN].includes(drawType)) {
-    drawSize = stageEntries.length;
-  }
-
-  drawEngine.reset();
-  drawEngine.newDrawDefinition({ drawType, drawProfile });
-
-  drawEngine.setStageDrawSize({ stage, drawSize });
-  const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({
-    matchUpFormat,
-    tieFormat,
-    matchUpType,
-  });
   if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
+
+  const extension = {
+    name: 'drawProfile',
+    value: drawProfile,
+  };
+  addDrawDefinitionExtension({ drawDefinition, extension });
 
   const {
     mappedMatchUps,

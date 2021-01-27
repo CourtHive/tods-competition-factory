@@ -1,5 +1,8 @@
 import { findStructure } from './findStructure';
-import { findExtension } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import {
+  findDrawDefinitionExtension,
+  findExtension,
+} from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 import {
   ALTERNATE,
@@ -15,6 +18,15 @@ import {
 
 import { SUCCESS } from '../../constants/resultConstants';
 
+function getEntryProfile({ drawDefinition }) {
+  let { extension } = findDrawDefinitionExtension({
+    drawDefinition,
+    name: 'entryProfile',
+  });
+  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
+  return { entryProfile };
+}
+
 export function validStage({ stage, drawDefinition }) {
   return Boolean(
     stageExists({ stage, drawDefinition }) &&
@@ -22,11 +34,9 @@ export function validStage({ stage, drawDefinition }) {
   );
 }
 export function stageExists({ stage, drawDefinition }) {
-  return (
-    drawDefinition &&
-    stage &&
-    Object.keys(drawDefinition.entryProfile).includes(stage)
-  );
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+
+  return drawDefinition && stage && Object.keys(entryProfile).includes(stage);
 }
 export function stageStructures({ stage, drawDefinition, stageSequence }) {
   return (
@@ -41,15 +51,16 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
   );
 }
 export function getStageDrawPositions({ stage, drawDefinition }) {
-  const entryProfile = drawDefinition.entryProfile[stage];
-  return (entryProfile && entryProfile.drawSize) || 0;
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  return (entryProfile && entryProfile[stage].drawSize) || 0;
 }
 export function stageDrawPositionsCount({ stage, drawDefinition }) {
-  return drawDefinition && stage && drawDefinition.entryProfile[stage].drawSize;
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  return entryProfile[stage].drawSize;
 }
 export function getStageQualifiersCount({ stage, drawDefinition }) {
-  const entryProfile = drawDefinition.entryProfile[stage];
-  return (entryProfile && entryProfile.qualifiersCount) || 0;
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  return (entryProfile && entryProfile[stage].qualifiersCount) || 0;
 }
 
 // drawSize - qualifyingPositions
@@ -62,10 +73,12 @@ export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
   return drawSize && drawSize - qualifyingPositions;
 }
 export function stageAlternates({ stage, drawDefinition }) {
-  return drawDefinition.entryProfile[stage].alternates;
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  return entryProfile[stage].alternates;
 }
 export function getStageWildcardsCount({ stage, drawDefinition }) {
-  return drawDefinition.entryProfile[stage].wildcardsCount || 0;
+  const { entryProfile } = getEntryProfile({ drawDefinition });
+  return entryProfile[stage].wildcardsCount || 0;
 }
 export function getStageEntryTypeCount({ stage, drawDefinition, entryStatus }) {
   return drawDefinition.entries.reduce(

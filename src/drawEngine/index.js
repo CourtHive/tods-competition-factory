@@ -40,8 +40,7 @@ function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
     addDrawDefinitionExtension({ drawDefinition, extension });
   }
 
-  // TODO: remove assignment of drawProfile below after extension is used
-  return Object.assign(drawDefinition, { drawId, drawType, drawProfile });
+  return Object.assign(drawDefinition, { drawId, drawType });
 }
 
 // TASK: add verify/validate structure as option in setState

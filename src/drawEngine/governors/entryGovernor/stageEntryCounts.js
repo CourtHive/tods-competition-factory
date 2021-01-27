@@ -1,3 +1,6 @@
+import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findDrawDefinitionExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+
 import {
   stageExists,
   getStageDrawPositions,
@@ -13,6 +16,22 @@ import {
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+
+function modifyEntryProfile({ drawDefinition, attributes }) {
+  let { extension } = findDrawDefinitionExtension({
+    drawDefinition,
+    name: 'entryProfile',
+  });
+  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
+
+  Object.assign(entryProfile, ...attributes);
+
+  extension = {
+    name: 'entryProfile',
+    value: entryProfile,
+  };
+  addDrawDefinitionExtension({ drawDefinition, extension });
+}
 
 export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -32,7 +51,12 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
     return {
       error: 'Cannot set drawSize to be less than existing entries',
     };
-  drawDefinition.entryProfile[stage].drawSize = drawSize;
+
+  modifyEntryProfile({
+    drawDefinition,
+    attributes: [{ [stage]: { drawSize } }],
+  });
+
   return SUCCESS;
 }
 
@@ -40,7 +64,11 @@ export function setStageAlternates({ drawDefinition, stage, alternates }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
 
-  drawDefinition.entryProfile[stage].alternates = alternates;
+  modifyEntryProfile({
+    drawDefinition,
+    attributes: [{ [stage]: { alternates } }],
+  });
+
   if (!alternates) {
     drawDefinition.entries =
       drawDefinition.entries?.filter((entry) => {
@@ -86,7 +114,11 @@ export function setStageWildcardsCount({
     };
   }
 
-  drawDefinition.entryProfile[stage].wildcardsCount = wildcardsCount;
+  modifyEntryProfile({
+    drawDefinition,
+    attributes: [{ [stage]: { wildcardsCount } }],
+  });
+
   return SUCCESS;
 }
 
@@ -116,6 +148,11 @@ export function setStageQualifiersCount({
     return {
       error: 'Total stage Entries cannot be greater than drawPositions',
     };
-  drawDefinition.entryProfile[stage].qualifiersCount = qualifiersCount;
+
+  modifyEntryProfile({
+    drawDefinition,
+    attributes: [{ [stage]: { qualifiersCount } }],
+  });
+
   return SUCCESS;
 }
