@@ -64,8 +64,10 @@ export function removeDrawPositionAssignment(props) {
   }
 
   if (replaceWithBye) {
+    const { mappedMatchUps } = props;
     const result = assignDrawPositionBye({
       drawDefinition,
+      mappedMatchUps,
       structureId,
       drawPosition,
     });
