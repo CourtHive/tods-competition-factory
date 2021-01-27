@@ -46,7 +46,7 @@ function checkValidSide2Score({ analysis, set = {}, value }) {
   const setFormat =
     (analysis.isDecidingSet && analysis.matchUpScoringFormat.finalSetFormat) ||
     analysis.matchUpScoringFormat.setFormat;
-  const { tiebreakAt, setTo } = setFormat;
+  const { tiebreakAt, setTo, NoAD } = setFormat;
   const { side1Score } = set;
 
   let validSide2Score, requiresTiebreak;
@@ -58,9 +58,17 @@ function checkValidSide2Score({ analysis, set = {}, value }) {
       validSide2Score = value <= tiebreakAt;
     }
   } else if (side1Score === setTo) {
-    validSide2Score = value <= setTo + 1;
+    if (NoAD) {
+      validSide2Score = value < setTo;
+    } else {
+      validSide2Score = value <= setTo + 1;
+    }
   } else if (side1Score === setTo - 1) {
-    validSide2Score = value <= setTo + 1;
+    if (NoAD) {
+      validSide2Score = value <= setTo;
+    } else {
+      validSide2Score = value <= setTo + 1;
+    }
   } else if (side1Score === setTo + 1) {
     validSide2Score = value === setTo || value === setTo - 1;
   } else {
