@@ -1,14 +1,5 @@
 {
   "drawId": "uuid-default",
-  "entryProfile": {
-    "QUALIFYING": {
-      "drawSize": 16,
-      "alternates": true
-    },
-    "MAIN": {
-      "alternates": true
-    }
-  },
   "entries": [],
   "links": [
     {

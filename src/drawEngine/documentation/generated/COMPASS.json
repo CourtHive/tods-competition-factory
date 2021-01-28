@@ -1,14 +1,5 @@
 {
   "drawId": "12a4d074-b6d2-4573-acba-131185ca0720",
-  "entryProfile": {
-    "QUALIFYING": {
-      "alternates": true
-    },
-    "MAIN": {
-      "drawSize": 32,
-      "alternates": true
-    }
-  },
   "entries": [
     {
       "participantId": "ko-uuid1",

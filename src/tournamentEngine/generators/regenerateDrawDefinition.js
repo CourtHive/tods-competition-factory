@@ -1,12 +1,13 @@
-import { getDrawDefinition } from '../getters/eventGetter';
-import { generateDrawDefinition } from './generateDrawDefinition';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { findDrawDefinitionExtension } from '../governors/queryGovernor/extensionQueries';
+import { generateDrawDefinition } from './generateDrawDefinition';
+import { getDrawDefinition } from '../getters/eventGetter';
+
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
-import { findDrawDefinitionExtension } from '../governors/queryGovernor/extensionQueries';
 
 export function regenerateDrawDefinition({
   tournamentRecord,
@@ -30,7 +31,6 @@ export function regenerateDrawDefinition({
     drawDefinition,
     name: 'drawProfile',
   });
-
   const drawProfile = extension?.value;
 
   if (drawProfile) {

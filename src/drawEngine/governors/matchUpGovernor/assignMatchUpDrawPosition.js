@@ -6,6 +6,8 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { numericSort } from '../../../utilities';
 
+import { getGlobalState } from '../../../global/globalState';
+
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_POSITION_ASSIGNED,
@@ -19,12 +21,13 @@ import {
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
+  mappedMatchUps,
   matchUpId,
   drawPosition,
   placementScenario,
   isByeReplacement,
 }) {
-  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
@@ -34,8 +37,13 @@ export function assignMatchUpDrawPosition({
 
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
-    matchUpId,
     mappedMatchUps,
+    matchUpId,
+  });
+
+  const { positionAssignments } = getPositionAssignments({
+    drawDefinition,
+    structure,
   });
 
   let positionAssigned = false;
@@ -53,10 +61,6 @@ export function assignMatchUpDrawPosition({
     })
     .sort(numericSort);
 
-  const { positionAssignments } = getPositionAssignments({
-    drawDefinition,
-    structure,
-  });
   const matchUpAssignments = positionAssignments.filter((assignment) =>
     matchUp.drawPositions.includes(assignment.drawPosition)
   );
@@ -70,7 +74,7 @@ export function assignMatchUpDrawPosition({
   matchUp.matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
 
   const { matchUpStatus } = matchUp;
-  if (positionAssigned && !placementScenario) {
+  if (positionAssigned && (!placementScenario || isByeReplacement)) {
     const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions.indexOf(
       drawPosition
     );
@@ -86,35 +90,69 @@ export function assignMatchUpDrawPosition({
       targetMatchUps: { winnerMatchUp },
     } = targetData;
 
-    if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
-      if (winnerMatchUp) {
-        return assignMatchUpDrawPosition({
+    if (isByeReplacement && winnerMatchUp)
+      if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
+        const existingDrawPositions =
+          winnerMatchUp.drawPositions?.filter((f) => f) || [];
+        const existingByePositions = positionAssignments
+          ?.filter(({ drawPosition }) =>
+            winnerMatchUp.drawPositions.includes(drawPosition)
+          )
+          .filter(({ bye }) => bye)
+          .map(({ drawPosition }) => drawPosition);
+
+        // Handle situation where BYE replacement encounters matchUp which has only a BYE
+        const targetDrawPosition =
+          existingDrawPositions.includes(drawPosition) ||
+          existingDrawPositions.length < 2
+            ? drawPosition
+            : existingByePositions.pop();
+        if (targetDrawPosition !== drawPosition) {
+          const result = removeMatchUpDrawPosition({
+            drawDefinition,
+            mappedMatchUps,
+            drawPosition: targetDrawPosition,
+            matchUpId: winnerMatchUp.matchUpId,
+          });
+          if (result.error) return result;
+        }
+
+        const result = assignMatchUpDrawPosition({
           drawDefinition,
-          drawPosition,
           isByeReplacement,
+          drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
         });
+        if (result.error) return result;
+      } else {
+        const { roundNumber, structureId } = winnerMatchUp;
+        removeSubsequentRoundsParticipant({
+          mappedMatchUps,
+          structureId,
+          roundNumber,
+          targetDrawPosition: byeAdvancedPosition,
+        });
       }
-    } else if (isByeReplacement) {
-      const { roundNumber, structureId } = winnerMatchUp;
-      removeSubsequentRoundsParticipant({
-        mappedMatchUps,
-        structureId,
-        roundNumber,
-        targetDrawPosition: byeAdvancedPosition,
-      });
-    }
   }
 
-  return positionAssigned ? SUCCESS : { error: DRAW_POSITION_ASSIGNED };
+  if (positionAssigned) {
+    return SUCCESS;
+  } else {
+    return { error: DRAW_POSITION_ASSIGNED, drawPosition };
+  }
 }
 
 export function removeMatchUpDrawPosition({
   drawDefinition,
+  mappedMatchUps,
   matchUpId,
   drawPosition,
 }) {
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp } = findMatchUp({
+    mappedMatchUps,
+    drawDefinition,
+    matchUpId,
+  });
 
   let positionRemoved = false;
   matchUp.drawPositions = (matchUp.drawPositions || []).map(

@@ -1,14 +1,5 @@
 {
   "drawId": "0e9c01d2-96e5-4ece-bf9e-7e235d46cfc2",
-  "entryProfile": {
-    "QUALIFYING": {
-      "alternates": true
-    },
-    "MAIN": {
-      "drawSize": 64,
-      "alternates": false
-    }
-  },
   "positionAssignments": [],
   "links": [
     {

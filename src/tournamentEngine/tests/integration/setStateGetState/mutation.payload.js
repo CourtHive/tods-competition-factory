@@ -9,37 +9,6 @@ export const mutation = {
         drawDefinition: {
           drawId: '31ffccbb-be42-4f57-8b98-cf89e96adaaa',
           drawName: 'SINGLE_ELIMINATION',
-          drawProfile: {
-            drawType: 'SINGLE_ELIMINATION',
-            drawSize: 32,
-            automated: 'automated',
-            seedsCount: 8,
-            structureOptions: {
-              groupSize: '',
-            },
-            category: {
-              ageCategoryCode: 'U18',
-              type: 'AGE',
-              subType: 'JUNIOR',
-              createdAt: '2020-12-11T12:51:56.141Z',
-              updatedAt: '2020-12-11T12:51:56.141Z',
-            },
-            matchUpFormat: 'SET3-S:6/TB7',
-          },
-          entryProfile: {
-            QUALIFYING: {
-              drawSize: null,
-              sequenceMap: null,
-              alternates: true,
-              wildcardsCount: null,
-            },
-            MAIN: {
-              drawSize: 32,
-              qualifiersCount: null,
-              alternates: true,
-              wildcardsCount: null,
-            },
-          },
           entries: [
             {
               participantId: '69D53E88-8921-4135-BE08-7D3955E9D905',

@@ -1,5 +1,5 @@
 import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
-import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
@@ -32,7 +32,7 @@ export function generateRoundRobin({
   drawDefinition,
 }) {
   const finishingPosition = WIN_RATIO;
-  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
+  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const { groupCount, groupSize } = deriveGroups({
     structureOptions,
     drawSize,

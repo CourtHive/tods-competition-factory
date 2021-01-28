@@ -7,7 +7,6 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
-// import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -21,6 +20,7 @@ import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
   drawDefinition,
+  mappedMatchUps,
   structureId,
   drawPosition,
   participantId,
@@ -101,6 +101,7 @@ export function assignDrawPosition({
     const matchUpFilters = { isCollectionMatchUp: false };
     const { matchUps } = getAllStructureMatchUps({
       drawDefinition,
+      mappedMatchUps,
       matchUpFilters,
       structure,
     });
@@ -115,6 +116,7 @@ export function assignDrawPosition({
     if (pairedDrawPositionIsBye || isByeReplacement) {
       assignMatchUpDrawPosition({
         drawDefinition,
+        mappedMatchUps,
         drawPosition,
         isByeReplacement,
         placementScenario,

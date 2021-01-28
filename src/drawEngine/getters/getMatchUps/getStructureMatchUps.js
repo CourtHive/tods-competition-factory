@@ -1,6 +1,6 @@
 import { findStructure } from '../findStructure';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { structureAssignedDrawPositions } from '../positionsGetter';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -108,6 +108,7 @@ export function getStructureMatchUps({
       if (isByeMatchUp) return byeMatchUps.push(matchUp);
       if (matchUp.winningSide) return completedMatchUps.push(matchUp);
       if (isUpcomingMatchUp) return upcomingMatchUps.push(matchUp);
+
       return pendingMatchUps.push(matchUp);
     });
 
