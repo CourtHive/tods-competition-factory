@@ -7,7 +7,7 @@ import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
-it.skip('scratch', () => {
+it('returns properly ordered drawPositions for consolation structure feed rounds', () => {
   const participantsProfile = {
     participantsCount: 8,
     sex: MALE,
@@ -27,12 +27,13 @@ it.skip('scratch', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     participantsProfile,
+    goesTo: true,
   });
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  let [consolationStructure] = drawDefinition.structures[1];
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const consolationStructure = drawDefinition.structures[1];
 
   const { structureId } = consolationStructure;
   const { matchUps } = tournamentEngine.allDrawMatchUps({
@@ -40,7 +41,43 @@ it.skip('scratch', () => {
     matchUpFilters: { structureIds: [structureId] },
   });
   const { roundProfile } = drawEngine.getRoundMatchUps({ matchUps });
-  console.log(roundProfile);
+  expect(roundProfile[1].drawPositions).toEqual([
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+  ]);
+  expect(roundProfile[2].drawPositions).toEqual([
+    8,
+    17,
+    9,
+    19,
+    10,
+    21,
+    11,
+    23,
+    12,
+    24,
+    13,
+    26,
+    14,
+    28,
+    15,
+    30,
+  ]);
+  // order of subsequent rounds has randomized undefined due to bye placements
 });
 
 // The scenario here is that a second round matchUp completes before a first round matchUp

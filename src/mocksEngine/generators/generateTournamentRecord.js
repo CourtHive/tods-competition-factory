@@ -32,6 +32,7 @@ export function generateTournamentRecord({
   drawProfiles,
 
   inContext,
+  goesTo,
 }) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
@@ -84,6 +85,7 @@ export function generateTournamentRecord({
         drawProfile,
         participants,
         tournamentEngine,
+        goesTo,
       });
       drawIds.push(drawId);
       eventIds.push(eventId);
@@ -98,6 +100,7 @@ function generateEventWithDraw({
   drawProfile,
   participants,
   tournamentEngine,
+  goesTo,
 }) {
   const {
     category,
@@ -156,6 +159,7 @@ function generateEventWithDraw({
     drawType,
     feedPolicy,
     structureOptions,
+    goesTo,
   });
 
   if (generationError) return { error: generationError };

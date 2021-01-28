@@ -46,6 +46,7 @@ import {
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 
 /**
  *
@@ -57,6 +58,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function generateDrawType(props = {}) {
   const {
     uuids,
+    goesTo,
     stage = MAIN,
     structureName,
     stageSequence = 1,
@@ -186,6 +188,8 @@ export function generateDrawType(props = {}) {
     }
     Object.assign(matchUp, additionalParams);
   });
+
+  if (goesTo) addGoesTo({ drawDefinition, mappedMatchUps });
 
   if (!generatorResult?.success) {
     return { error: UNRECOGNIZED_DRAW_TYPE };

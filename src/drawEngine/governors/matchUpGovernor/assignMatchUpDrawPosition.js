@@ -6,8 +6,6 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { numericSort } from '../../../utilities';
 
-import { getGlobalState } from '../../../global/globalState';
-
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_POSITION_ASSIGNED,
