@@ -14,9 +14,13 @@ import {
   POSITION,
   CONTAINER,
   PLAY_OFF,
+  MAIN,
+  QUALIFYING,
+  CONSOLATION,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
+import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
@@ -30,13 +34,25 @@ function getEntryProfile({ drawDefinition }) {
 export function validStage({ stage, drawDefinition }) {
   return Boolean(
     stageExists({ stage, drawDefinition }) &&
-      stageDrawPositionsCount({ stage, drawDefinition })
+      getStageDrawPositionsCount({ stage, drawDefinition })
   );
 }
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-
-  return drawDefinition && stage && Object.keys(entryProfile).includes(stage);
+  const exists = Object.keys(entryProfile).includes(stage);
+  if (!exists && [MAIN, QUALIFYING, PLAY_OFF, CONSOLATION].includes(stage)) {
+    const attributes = [
+      {
+        [stage]: {
+          drawSize: undefined,
+          alternates: true,
+        },
+      },
+    ];
+    modifyEntryProfile({ drawDefinition, attributes });
+    return true;
+  }
+  return exists;
 }
 export function stageStructures({ stage, drawDefinition, stageSequence }) {
   return (
@@ -50,22 +66,20 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
     })
   );
 }
-export function getStageDrawPositions({ stage, drawDefinition }) {
+
+export function getStageDrawPositionsCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage].drawSize) || 0;
+  return (entryProfile && entryProfile[stage]?.drawSize) || 0;
 }
-export function stageDrawPositionsCount({ stage, drawDefinition }) {
-  const { entryProfile } = getEntryProfile({ drawDefinition });
-  return entryProfile[stage].drawSize;
-}
+
 export function getStageQualifiersCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return (entryProfile && entryProfile[stage].qualifiersCount) || 0;
+  return (entryProfile && entryProfile[stage]?.qualifiersCount) || 0;
 }
 
 // drawSize - qualifyingPositions
 export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
-  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
+  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const qualifyingPositions = getStageQualifiersCount({
     stage,
     drawDefinition,
@@ -74,7 +88,7 @@ export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
 }
 export function stageAlternates({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
-  return entryProfile[stage].alternates;
+  return entryProfile[stage]?.alternates || 0;
 }
 export function getStageWildcardsCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });

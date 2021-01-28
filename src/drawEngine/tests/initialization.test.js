@@ -37,6 +37,8 @@ it('can configure drawSize for all stages', () => {
   result = drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 8 });
   expect(result).toMatchObject(SUCCESS);
   result = drawEngine.setStageDrawSize({ stage: CONSOLATION, drawSize: 8 });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageDrawSize({ stage: 'INVALID', drawSize: 8 });
   expect(result).toHaveProperty(ERROR);
 });
 

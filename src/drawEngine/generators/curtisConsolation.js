@@ -1,5 +1,5 @@
 import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
-import { stageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import {
   treeMatchUps,
   feedInMatchUps,
@@ -21,7 +21,7 @@ export function generateCurtisConsolation({
   structureName = MAIN,
   finishingPositionOffset,
 }) {
-  const drawSize = stageDrawPositionsCount({ stage: MAIN, drawDefinition });
+  const drawSize = getStageDrawPositionsCount({ stage: MAIN, drawDefinition });
 
   const { matchUps, roundsCount: mainDrawRoundsCount } = treeMatchUps({
     drawSize,

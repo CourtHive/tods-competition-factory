@@ -1,9 +1,7 @@
-import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findDrawDefinitionExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-
+import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
-  getStageDrawPositions,
+  getStageDrawPositionsCount,
   getStageQualifiersCount,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
@@ -16,22 +14,6 @@ import {
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-
-function modifyEntryProfile({ drawDefinition, attributes }) {
-  let { extension } = findDrawDefinitionExtension({
-    drawDefinition,
-    name: 'entryProfile',
-  });
-  const entryProfile = extension?.value || drawDefinition.entryProfile || {};
-
-  Object.assign(entryProfile, ...attributes);
-
-  extension = {
-    name: 'entryProfile',
-    value: entryProfile,
-  };
-  addDrawDefinitionExtension({ drawDefinition, extension });
-}
 
 export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -85,7 +67,10 @@ export function setStageWildcardsCount({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
 
-  const stageDrawPositions = getStageDrawPositions({ drawDefinition, stage });
+  const stageDrawPositions = getStageDrawPositionsCount({
+    drawDefinition,
+    stage,
+  });
   const qualifyingPositions = getStageQualifiersCount({
     drawDefinition,
     stage,
@@ -132,7 +117,10 @@ export function setStageQualifiersCount({
   if (stage !== MAIN)
     return { error: 'qualifiersCount can only be set for main stage' };
 
-  const stageDrawPositions = getStageDrawPositions({ drawDefinition, stage });
+  const stageDrawPositions = getStageDrawPositionsCount({
+    drawDefinition,
+    stage,
+  });
   const wildcardEntriesCount = getStageWildcardEntriesCount({
     drawDefinition,
     stage,

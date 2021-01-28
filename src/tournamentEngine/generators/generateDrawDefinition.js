@@ -126,12 +126,6 @@ export function generateDrawDefinition(props) {
 
   if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
 
-  const extension = {
-    name: 'drawProfile',
-    value: drawProfile,
-  };
-  addDrawDefinitionExtension({ drawDefinition, extension });
-
   const {
     mappedMatchUps,
     errors: generatedDrawErrors,
@@ -286,6 +280,12 @@ export function generateDrawDefinition(props) {
   }
 
   const { drawDefinition } = drawEngine.getState();
+
+  const extension = {
+    name: 'drawProfile',
+    value: drawProfile,
+  };
+  addDrawDefinitionExtension({ drawDefinition, extension });
 
   const drawName = customName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
