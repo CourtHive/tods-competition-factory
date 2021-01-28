@@ -95,34 +95,21 @@ it('can return event matchUps with context and upcoming matchUps for FEED_IN_CHA
   });
 });
 
-it.only('can return generate upcoming matchUps for FEED_IN_CHAMPIONSHIP with BYEs in CONSOLATION', () => {
+it('can return enerate upcoming matchUps for FEED_IN_CHAMPIONSHIP with BYEs in CONSOLATION', () => {
   const drawProfiles = [
     {
       drawSize: 16,
       participantsCount: 12,
       drawType: FEED_IN_CHAMPIONSHIP,
-      outcomes: [
-        {
-          roundNumber: 1,
-          roundPosition: 2,
-          scoreString: '6-1 6-2',
-          winningSide: 1,
-        },
-        {
-          roundNumber: 1,
-          roundPosition: 4,
-          scoreString: '6-1 6-4',
-          winningSide: 2,
-        },
-      ],
     },
   ];
-  const { drawIds, tournamentRecord } = generateTournamentRecord({
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = generateTournamentRecord({
     drawProfiles,
     inContext: true,
   });
-
-  const drawId = drawIds[0];
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -133,8 +120,14 @@ it.only('can return generate upcoming matchUps for FEED_IN_CHAMPIONSHIP with BYE
 
   // convenience function for testing, expectation:
   // [roundNumber, roundPosition, [winnerToRoundNumber, winnerToRoundPosition], [loserToRoundNumber, loserToRoundPosition]]
-  checkExpectation({ matchUps, expectation: [1, 1, [2, 1]] });
-  checkExpectation({ matchUps, expectation: [1, 3, [2, 2]] });
+  checkExpectation({ matchUps, expectation: [1, 1, [2, 1], [1, 1]] });
+  checkExpectation({ matchUps, expectation: [1, 2, [2, 1], [2, 1]] }); // loser has a first round BYE in consolation and progresses to round 2
+  checkExpectation({ matchUps, expectation: [1, 3, [2, 2], [1, 2]] });
+  checkExpectation({ matchUps, expectation: [1, 4, [2, 2], [2, 2]] });
+  checkExpectation({ matchUps, expectation: [1, 5, [2, 3], [2, 3]] });
+  checkExpectation({ matchUps, expectation: [1, 6, [2, 3], [1, 3]] });
+  checkExpectation({ matchUps, expectation: [1, 7, [2, 4], [2, 4]] });
+  checkExpectation({ matchUps, expectation: [1, 8, [2, 4], [1, 4]] });
 });
 
 function checkExpectation({ matchUps, expectation }) {
