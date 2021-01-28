@@ -228,7 +228,8 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   ({ matchUpStatus, winningSide, score } = matchUp);
   expect(matchUpStatus).toEqual(DEFAULTED);
   expect(winningSide).toEqual(2);
-  expect(score).toEqual(undefined);
+  expect(score.scoreStringSide1).toEqual('');
+  expect(score.scoreStringSide2).toEqual('');
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,

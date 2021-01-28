@@ -1,9 +1,9 @@
-import drawEngine from '../..';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine';
-
-import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { getPositionAssignments } from '../../getters/positionsGetter';
+import tournamentEngine from '../../../tournamentEngine';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../..';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
@@ -11,6 +11,78 @@ import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { intersection } from '../../../utilities';
+import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
+
+it('can recalculate particpantResults when outcomes are removed', () => {
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      participantsCount: 4,
+      drawType: ROUND_ROBIN,
+      outcomes: [
+        {
+          drawPositions: [1, 2],
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let mainStructure = drawDefinition.structures[0];
+
+  let { matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    inContext: true,
+  });
+  let { participantResults } = tallyParticipantResults({
+    matchUps,
+  });
+  expect(Object.keys(participantResults).length).toEqual(2);
+
+  let { positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  });
+  let dp1 = getDrawPositionTally({ positionAssignments, drawPosition: 1 });
+  expect(dp1.result).toEqual('1/0');
+
+  // now remove the one matchUp outcome
+  const { matchUpId } = matchUps.find(
+    ({ drawPositions }) => intersection(drawPositions, [1, 2]).length === 2
+  );
+  let result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: toBePlayed,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    inContext: true,
+  }));
+  ({ participantResults } = tallyParticipantResults({
+    matchUps,
+  }));
+
+  expect(Object.keys(participantResults).length).toEqual(0);
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  mainStructure = drawDefinition.structures[0];
+  ({ positionAssignments } = getPositionAssignments({
+    structure: mainStructure,
+  }));
+  dp1 = getDrawPositionTally({ positionAssignments, drawPosition: 1 });
+  expect(dp1).toBeUndefined();
+});
 
 it('calculate participantResult values are present for all drawPositions', () => {
   const drawProfiles = [
@@ -398,7 +470,7 @@ it('RR Format Standard tally test', () => {
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
   return positionAssignments
     .find((assignment) => assignment.drawPosition === drawPosition)
-    .extensions.find(({ name }) => name === 'tally').value;
+    .extensions.find(({ name }) => name === 'tally')?.value;
 }
 
 it('recognize when participants are tied with position order', () => {

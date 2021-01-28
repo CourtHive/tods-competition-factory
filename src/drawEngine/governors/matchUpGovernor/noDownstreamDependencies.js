@@ -4,6 +4,7 @@ import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -37,9 +38,11 @@ export function noDownstreamDependencies(props) {
       return { errors };
     }
   } else if (matchUp) {
-    delete matchUp.score;
-    delete matchUp.winningSide;
-    matchUp.matchUpStatus = TO_BE_PLAYED;
+    modifyMatchUpScore({
+      drawDefinition: props.drawDefinition,
+      removeScore: true,
+      matchUp,
+    });
     const isCollectionMatchUp = Boolean(matchUp.collectionId);
     if (isCollectionMatchUp) {
       const { drawDefinition, matchUpTieId } = props;
@@ -57,27 +60,3 @@ export function noDownstreamDependencies(props) {
     return result;
   }
 }
-
-/*
-function attemptToSetIncompleteScore(props) {
-  const { drawDefinition, matchUp, score } = props;
-  const errors = [];
-
-  modifyMatchUpScore({
-    drawDefinition,
-    matchUp,
-    matchUpStatus: INCOMPLETE,
-    matchUpStatusCodes: [],
-    score,
-  });
-  delete matchUp.winningSide;
-
-  const isCollectionMatchUp = Boolean(matchUp.collectionId);
-  if (isCollectionMatchUp) {
-    const { matchUpTieId } = props;
-    updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-  }
-
-  return { errors };
-}
-*/

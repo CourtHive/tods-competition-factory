@@ -1,10 +1,12 @@
-import { instanceCount } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
-import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { clearDrawPosition } from '../positionGovernor/positionClear';
+import { includesMatchUpStatuses } from './includesMatchUpStatuses';
+import { findStructure } from '../../getters/findStructure';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
+import { instanceCount } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -13,7 +15,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -29,10 +30,14 @@ export function removeDirectedParticipants(props) {
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
-    delete matchUp.score;
-    delete matchUp.winningSide;
+    modifyMatchUpScore({
+      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+      drawDefinition: props.drawDefinition,
+      matchUpStatusCodes,
+      removeScore: true,
+      matchUp,
+    });
 
-    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     const { matchUpTieId } = props;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
 
@@ -73,11 +78,13 @@ export function removeDirectedParticipants(props) {
       undefined
     );
 
-    delete matchUp.score;
-    delete matchUp.winningSide;
-
-    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
-    matchUp.matchUpStatusCodes = matchUpStatusCodes;
+    modifyMatchUpScore({
+      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+      drawDefinition: props.drawDefinition,
+      matchUpStatusCodes,
+      removeScore: true,
+      matchUp,
+    });
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
       inContext: true,

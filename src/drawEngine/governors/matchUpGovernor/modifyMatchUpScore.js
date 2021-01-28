@@ -1,11 +1,15 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import {
+  addExtension,
+  removeExtension,
+} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { instanceCount } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { instanceCount } from '../../../utilities';
 
 /**
  *
@@ -24,13 +28,18 @@ import { instanceCount } from '../../../utilities';
 
 export function modifyMatchUpScore({
   drawDefinition,
-  matchUp,
-  score,
   matchUpStatus,
   matchUpStatusCodes,
   matchUpFormat,
   winningSide,
+  matchUp,
+  score,
+
+  removeScore,
 }) {
+  if (removeScore) {
+    Object.assign(matchUp, toBePlayed);
+  }
   if (score) matchUp.score = score;
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
@@ -94,20 +103,32 @@ export function modifyMatchUpScore({
         subOrderMap,
         matchUps,
       });
-      Object.keys(participantResults).forEach((participantId) => {
-        const assignment = itemStructure.positionAssignments.find(
-          (assignment) => assignment.participantId === participantId
-        );
-        let extension = {
-          name: 'tally',
-          value: participantResults[participantId],
-        };
-        addExtension({ element: assignment, extension });
-        extension = {
-          name: 'subOrder',
-          value: participantResults[participantId].subOrder,
-        };
-        addExtension({ element: assignment, extension });
+
+      const participantIds = Object.keys(participantResults);
+
+      itemStructure.positionAssignments.forEach((assignment) => {
+        const { participantId } = assignment;
+        if (!participantIds.includes(participantId)) {
+          removeExtension({
+            element: assignment,
+            name: 'tally',
+          });
+          removeExtension({
+            element: assignment,
+            name: 'subOrder',
+          });
+        } else {
+          let extension = {
+            name: 'tally',
+            value: participantResults[participantId],
+          };
+          addExtension({ element: assignment, extension });
+          extension = {
+            name: 'subOrder',
+            value: participantResults[participantId].subOrder,
+          };
+          addExtension({ element: assignment, extension });
+        }
       });
     }
   }
