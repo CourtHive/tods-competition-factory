@@ -2,7 +2,7 @@ import { powerOf2 } from '../../../utilities';
 import { playoff } from '../../generators/playoffStructures';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
-import { stageDrawPositionsCount } from '../../getters/stageGetter';
+import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import structureTemplate from '../../generators/structureTemplate';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
@@ -66,7 +66,7 @@ export function generateDrawType(props = {}) {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const drawSize = stageDrawPositionsCount({ stage, drawDefinition });
+  const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   Object.assign(props, { drawSize });
 
   const validDoubleEliminationSize = powerOf2((drawSize * 2) / 3);

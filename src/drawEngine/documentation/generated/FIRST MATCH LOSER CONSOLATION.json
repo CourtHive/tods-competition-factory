@@ -1,14 +1,5 @@
 {
   "drawId": "b3e2327a-7a15-480b-89fb-d3f403a58a7e",
-  "entryProfile": {
-    "QUALIFYING": {
-      "alternates": true
-    },
-    "MAIN": {
-      "drawSize": 32,
-      "alternates": true
-    }
-  },
   "entries": [
     {
       "participantId": "fmlc-uuid1",

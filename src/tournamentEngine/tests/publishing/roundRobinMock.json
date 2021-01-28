@@ -269,46 +269,6 @@
       "drawId": "32709bb1-8513-4449-8dba-3a9e19b236da",
       "drawName": "ROUND_ROBIN",
       "drawType": "ROUND_ROBIN",
-      "drawProfile": {
-        "drawType": "ROUND_ROBIN",
-        "drawSize": 16,
-        "automated": "automated",
-        "seedsCount": 8,
-        "structureOptions": {
-          "groupSize": 4,
-          "playoffGroups": [
-            {
-              "finishingPositions": [1, 2],
-              "structureName": "Gold Flight"
-            },
-            {
-              "finishingPositions": [3, 4],
-              "structureName": "Silver Flight"
-            }
-          ]
-        },
-        "category": {
-          "_id": {
-            "$oid": "5f631bc328e3f86774f6d0de"
-          },
-          "ageCategory": "U18",
-          "categoryName": "U18",
-          "type": "AGE",
-          "extensions": [],
-          "createdAt": "2020-09-17T08:18:11.418Z",
-          "updatedAt": "2020-09-17T08:18:11.418Z"
-        },
-        "matchUpFormat": "SET3-S:6/TB7"
-      },
-      "entryProfile": {
-        "QUALIFYING": {
-          "alternates": true
-        },
-        "MAIN": {
-          "drawSize": 16,
-          "alternates": true
-        }
-      },
       "entries": [
         {
           "participantId": "caa5e35e-3fba-427c-a3eb-04d0f2e66bd5",

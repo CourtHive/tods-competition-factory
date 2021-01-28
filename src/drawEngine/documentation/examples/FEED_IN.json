@@ -1,14 +1,5 @@
 {
   "drawId": "uuid",
-  "entryProfile": {
-    "QUALIFYING": {
-      "alternates": true
-    },
-    "MAIN": {
-      "drawSize": 32,
-      "alternates": false
-    }
-  },
   "positionAssignments": [],
   "links": [],
   "structures": [
