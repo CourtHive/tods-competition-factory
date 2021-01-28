@@ -1,7 +1,7 @@
 import { getMatchUpsMap } from './getMatchUpsMap';
 import { getDrawStructures } from '../findStructure';
 import { getStructureMatchUps } from './getStructureMatchUps';
-import { addUpcomingMatchUps } from '../../../tournamentEngine/getters/addUpcomingMatchUps';
+import { addUpcomingMatchUps } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addUpcomingMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 

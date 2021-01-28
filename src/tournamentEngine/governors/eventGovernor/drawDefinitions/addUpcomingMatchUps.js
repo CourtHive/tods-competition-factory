@@ -1,7 +1,10 @@
-import { findStructure } from '../../drawEngine/getters/findStructure';
-import { positionTargets } from '../../drawEngine/governors/positionGovernor/positionTargets';
+import { findStructure } from '../../../../drawEngine/getters/findStructure';
+import { positionTargets } from '../../../../drawEngine/governors/positionGovernor/positionTargets';
 
-import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  TO_BE_PLAYED,
+} from '../../../../constants/matchUpStatusConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   inContextDrawMatchUps.forEach((matchUp) => {
