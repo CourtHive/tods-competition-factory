@@ -9,16 +9,19 @@ export const getSetComplement = (props) => {
     valueAsNumber = tiebreakAt;
   }
 
-  const calculatedValue =
-    valueAsNumber + 1 < setTo
-      ? setTo
-      : tiebreakAt && tiebreakAt < setTo && valueAsNumber === tiebreakAt
-      ? setTo
-      : !tiebreakAt && !NoAD
-      ? valueAsNumber + 2
-      : NoAD && valueAsNumber === setTo
-      ? setTo - 1
-      : setTo + 1;
+  let calculatedValue;
+  if (NoAD && !tiebreakAt) {
+    calculatedValue = valueAsNumber < setTo ? setTo : setTo - 1;
+  } else {
+    calculatedValue =
+      valueAsNumber + 1 < setTo
+        ? setTo
+        : tiebreakAt && tiebreakAt < setTo && valueAsNumber === tiebreakAt
+        ? setTo
+        : !tiebreakAt
+        ? valueAsNumber + 2
+        : setTo + 1;
+  }
 
   const side1Result = isSide1 ? valueAsNumber : calculatedValue;
   const side2Result = !isSide1 ? valueAsNumber : calculatedValue;

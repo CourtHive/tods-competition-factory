@@ -69,7 +69,7 @@ export const SCORING_USTA = {
       {
         key: 'short6',
         name: 'One no advantage set to 5, tiebreak to 9 at 4-4',
-        format: 'SET1-S:5NOAD/TB9@4',
+        format: 'SET1-S:5/TB9@4',
       },
       {
         key: 'standardNOAD',
