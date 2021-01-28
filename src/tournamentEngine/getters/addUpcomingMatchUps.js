@@ -1,7 +1,7 @@
 import { findStructure } from '../../drawEngine/getters/findStructure';
 import { positionTargets } from '../../drawEngine/governors/positionGovernor/positionTargets';
 
-import { BYE } from '../../constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   inContextDrawMatchUps.forEach((matchUp) => {
@@ -15,12 +15,43 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     });
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
     const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
-    const loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
+    let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
     if (matchUp.matchUpStatus !== BYE && loserMatchUp?.matchUpStatus === BYE) {
-      console.log({ loserTo });
+      const { matchUp: nextMatchUp } = getNextToBePlayedMatchUp({
+        matchUp: loserMatchUp,
+        drawDefinition,
+        structure,
+        inContextDrawMatchUps,
+      });
+      loserTo =
+        nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp });
     }
     Object.assign(matchUp, { winnerTo, loserTo });
   });
+}
+
+function getNextToBePlayedMatchUp({
+  matchUp,
+  drawDefinition,
+  inContextDrawMatchUps,
+}) {
+  const { matchUpId, matchUpStatus, structureId } = matchUp || {};
+  if (!matchUp || matchUp?.matchUpStatus === TO_BE_PLAYED) return { matchUp };
+  if (matchUpStatus === BYE) {
+    const { structure } = findStructure({ drawDefinition, structureId });
+    const targetData = positionTargets({
+      matchUpId,
+      structure,
+      drawDefinition,
+      inContextDrawMatchUps,
+    });
+    const { winnerMatchUp } = targetData.targetMatchUps;
+    return getNextToBePlayedMatchUp({
+      matchUp: winnerMatchUp,
+      drawDefinition,
+      inContextDrawMatchUps,
+    });
+  }
 }
 
 function getUpcomingInfo({ upcomingMatchUp } = {}) {
