@@ -3,18 +3,8 @@ import {
   generateRange,
   instanceCount,
   powerOf2,
-  // randomPop,
   UUID,
 } from '../../utilities';
-
-/*
-import {
-  RANDOM,
-  TOP_DOWN,
-  BOTTOM_UP,
-  WATERFALL,
-} from '../../constants/drawDefinitionConstants';
-*/
 
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
@@ -375,27 +365,4 @@ function buildFeedRound({ nodes, drawPosition, fed, matchUps, roundNumber }) {
     : undefined;
 
   return { roundNodes, matchUps, drawPosition: nextDrawPosition };
-
-  // NOTE: this logic is currently unused
-  /*
-  function getPosition() {
-    if (feedMode) console.log({ feedMode });
-    switch (feedMode) {
-      case TOP_DOWN:
-        return drawPositionGroup.shift();
-      case BOTTOM_UP:
-        return drawPositionGroup.pop();
-      case WATERFALL:
-        if (fed % 2 === 0) {
-          return drawPositionGroup.shift();
-        } else {
-          return drawPositionGroup.pop();
-        }
-      case RANDOM:
-        return randomPop(drawPositionGroup);
-      default:
-        return drawPositionGroup.shift();
-    }
-  }
-  */
 }

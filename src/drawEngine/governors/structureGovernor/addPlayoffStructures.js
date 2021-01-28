@@ -1,12 +1,12 @@
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
+import { positionTargets } from '../positionGovernor/positionTargets';
 import { playoff } from '../../generators/playoffStructures';
+import { findStructure } from '../../getters/findStructure';
+import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
-
-import { findStructure } from '../../getters/findStructure';
-import { positionTargets } from '../positionGovernor/positionTargets';
-import { directParticipants } from '../matchUpGovernor/directParticipants';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -122,12 +122,16 @@ export function addPlayoffStructures(props) {
     drawDefinition,
     structureId: sourceStructureId,
   });
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+  const {
+    matchUps: inContextDrawMatchUps,
+    mappedMatchUps,
+  } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
     includeByeMatchUps: true,
   });
 
+  // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps.filter(
     ({ winningSide, structureId }) =>
       winningSide && structureId === sourceStructureId
@@ -153,6 +157,9 @@ export function addPlayoffStructures(props) {
     });
     if (result.error) console.log(result.error);
   });
+
+  if (props.goesTo)
+    addGoesTo({ drawDefinition, mappedMatchUps, inContextDrawMatchUps });
 
   return props.devContext
     ? Object.assign({}, SUCCESS, {

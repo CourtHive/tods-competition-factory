@@ -142,6 +142,7 @@ export function generateDrawDefinition(props) {
     playoffMatchUpFormat,
 
     feedPolicy,
+    goesTo: props.goesTo,
   });
 
   const { structures } = drawEngine.getDrawStructures({

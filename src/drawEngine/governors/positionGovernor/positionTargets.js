@@ -17,7 +17,7 @@ export function positionTargets({
   structure,
   drawDefinition,
   mappedMatchUps,
-  inContextDrawMatchUps,
+  inContextDrawMatchUps = [],
   sourceMatchUpWinnerDrawPositionIndex,
 }) {
   const { matchUp } = findMatchUp({
