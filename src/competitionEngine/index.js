@@ -1,5 +1,4 @@
 import { makeDeepCopy } from '../utilities';
-import { auditEngine } from '../auditEngine';
 import { drawEngine } from '../drawEngine';
 
 import queryGovernor from './governors/queryGovernor';
@@ -63,7 +62,6 @@ export const competitionEngine = (function () {
       ...params,
       tournamentRecords,
       tournamentEngine,
-      auditEngine,
       drawEngine,
       deepCopy,
     });

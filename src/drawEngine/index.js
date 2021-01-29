@@ -13,7 +13,6 @@ import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
 
-import { auditEngine } from '../auditEngine';
 import { UUID, makeDeepCopy } from '../utilities';
 import { SUCCESS } from '../constants/resultConstants';
 import {
@@ -148,7 +147,6 @@ export const drawEngine = (function () {
       devContext,
       drawDefinition,
       tournamentParticipants,
-      auditEngine,
     });
   }
 })();

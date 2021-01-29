@@ -14,7 +14,6 @@ import {
 export function deleteDrawDefinitions({
   tournamentRecord,
   auditData = {}, // TODO: auditData can be picked off by Engines and ignored in methods
-  auditEngine,
   eventId,
   drawIds,
 }) {
@@ -32,7 +31,7 @@ export function deleteDrawDefinitions({
           action: 'deleteDrawDefinitions',
           deletedDrawDefinition: drawDefinition,
         });
-        auditEngine.addAuditItem({ auditData });
+        // auditEngine.addAuditItem({ auditData });
       }
       return !drawIds.includes(drawDefinition.drawId);
     });

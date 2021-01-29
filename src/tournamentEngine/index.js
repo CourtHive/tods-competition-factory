@@ -1,6 +1,5 @@
 import { UUID } from '../utilities';
 import { makeDeepCopy } from '../utilities';
-import { auditEngine } from '../auditEngine';
 
 import { findEvent } from './getters/eventGetter';
 import eventGovernor from './governors/eventGovernor';
@@ -49,11 +48,6 @@ export const tournamentEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
     }),
-    getAudit: () => {
-      const auditTrail = auditEngine.getState();
-      auditEngine.reset();
-      return auditTrail;
-    },
 
     newTournamentRecord: (props = {}) => {
       tournamentRecord = newTournamentRecord(props);
@@ -84,7 +78,6 @@ export const tournamentEngine = (function () {
   fx.devContext = (isDev) => {
     devContext = isDev;
     setDevContext(isDev);
-    auditEngine.devContext(isDev);
     return fx;
   };
 
@@ -129,7 +122,6 @@ export const tournamentEngine = (function () {
       deepCopy,
       policies,
       devContext,
-      auditEngine,
       tournamentRecord,
     });
 
