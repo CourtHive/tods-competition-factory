@@ -4,6 +4,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
+import { getDevContext } from '../../../global/globalState';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
@@ -23,8 +24,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(props) {
-  let errors = [],
-    messages = [];
+  let messages = [];
 
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
@@ -48,7 +48,7 @@ export function setMatchUpStatus(props) {
   });
 
   if (!matchUp) {
-    errors.push({ error: MATCHUP_NOT_FOUND });
+    return { errors: [{ error: MATCHUP_NOT_FOUND }] };
   } else {
     const sourceMatchUpWinnerDrawPositionIndex =
       winningSide && 1 - (2 - winningSide);
@@ -104,49 +104,45 @@ export function setMatchUpStatus(props) {
         message,
       } = noDownstreamDependencies(props);
       if (message) messages.push(message);
-      if (noDependenciesErrors) errors = errors.concat(noDependenciesErrors);
+      if (noDependenciesErrors)
+        return { error: { errors: noDependenciesErrors } };
     } else if (winningSide) {
       const {
         errors: winnerWithDependencyErrors,
       } = winningSideWithDownstreamDependencies(props);
       if (winnerWithDependencyErrors)
-        errors = errors.concat(winnerWithDependencyErrors);
+        return { error: { errors: winnerWithDependencyErrors } };
     } else if (matchUpStatus) {
       const { errors: statusChangeErrors, message } = attemptStatusChange(
         props
       );
       if (message) messages.push(message);
-      if (statusChangeErrors) errors = errors.concat(statusChangeErrors);
+      if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
     } else {
       console.log('no valid actions', {
         props,
         loserMatchUpParticipantIds,
         winnerMatchUpParticipantIds,
       });
-      errors.push({ error: NO_VALID_ACTIONS });
+      return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
     }
   }
 
-  if (errors.length) {
-    return { error: { errors } };
-  } else {
-    if (props.devContext) {
-      const result = {};
-      if (messages.length) Object.assign(result, { messages });
-      return Object.assign(result, SUCCESS, {
-        matchUp: makeDeepCopy(matchUp),
-      });
-    }
-    return SUCCESS;
+  if (getDevContext()) {
+    const result = {};
+    if (messages.length) Object.assign(result, { messages });
+    return Object.assign(result, SUCCESS, {
+      matchUp: makeDeepCopy(matchUp),
+    });
   }
+  return SUCCESS;
 }
 
 function attemptStatusChange(props) {
-  const errors = [];
   const { matchUp, matchUpStatus } = props;
 
   if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
-    errors.push({ error: INVALID_MATCHUP_STATUS, matchUpStatus });
+    return { errors: [{ error: INVALID_MATCHUP_STATUS, matchUpStatus }] };
   }
 
   // if no winningSide is given and matchUp has winningSide
@@ -156,23 +152,29 @@ function attemptStatusChange(props) {
       applyMatchUpValues(props);
       // TESTED
     } else {
-      errors.push({
-        error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
-      });
+      return {
+        errors: [
+          {
+            error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
+          },
+        ],
+      };
       // TESTED
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    errors.push({
-      error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
-    });
+    return {
+      errors: [
+        {
+          error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
+        },
+      ],
+    };
     // TESTED
   }
-  const message = props.devContext && 'attemptStatusChange';
-  return errors.length ? { errors } : Object.assign({ message }, SUCCESS);
+  return SUCCESS;
 }
 
 function winningSideWithDownstreamDependencies(props) {
-  const errors = [];
   const { matchUp, matchUpStatus, winningSide } = props;
 
   if (winningSide === matchUp.winningSide) {
@@ -185,10 +187,14 @@ function winningSideWithDownstreamDependencies(props) {
         // TESTED
       } else {
         // matchUpStatus can't be changed to something non-directing
-        errors.push({
-          error:
-            'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
-        });
+        return {
+          errors: [
+            {
+              error:
+                'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
+            },
+          ],
+        };
         // TESTED
       }
     } else {
@@ -196,14 +202,16 @@ function winningSideWithDownstreamDependencies(props) {
       modifyMatchUpScore({ drawDefinition, matchUp, score });
     }
   } else {
-    errors.push({ error: 'Cannot change winner with advanced participants' });
+    return {
+      errors: [{ error: 'Cannot change winner with advanced participants' }],
+    };
     // TODO POLICY:
     // check whether winningSide can be changed
     // or change winning side with rippple effect to all downstream matchUps
     // TESTED
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
 }
 
 function applyMatchUpValues(props) {

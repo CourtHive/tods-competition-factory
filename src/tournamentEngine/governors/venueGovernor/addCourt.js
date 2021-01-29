@@ -1,6 +1,8 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
-import { findVenue } from '../../getters/venueGetter';
 import { courtTemplate } from '../../generators/courtTemplate';
+import { getDevContext } from '../../../global/globalState';
+import { validDateAvailability } from './dateAvailability';
+import { findVenue } from '../../getters/venueGetter';
 
 import {
   MISSING_VENUE_ID,
@@ -9,7 +11,6 @@ import {
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { validDateAvailability } from './dateAvailability';
 
 /**
  *
@@ -17,7 +18,7 @@ import { validDateAvailability } from './dateAvailability';
  * @param {object} court - court object
  * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
  */
-export function addCourt({ tournamentRecord, venueId, court, devContext }) {
+export function addCourt({ tournamentRecord, venueId, court }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
@@ -58,7 +59,7 @@ export function addCourt({ tournamentRecord, venueId, court, devContext }) {
     if (errors.length) {
       return { error: { errors } };
     } else {
-      return devContext
+      return getDevContext()
         ? Object.assign({}, SUCCESS, {
             court: makeDeepCopy(courtRecord),
             venueId,
@@ -80,7 +81,6 @@ export function addCourts({
   courtsCount,
   courtNames = [],
   dateAvailability = [],
-  devContext,
 }) {
   if (!venueId) return { error: MISSING_VENUE_ID };
   if (!courtsCount || !courtNames) return { error: MISSING_COURTS_INFO };
@@ -95,7 +95,7 @@ export function addCourts({
   });
 
   const result = courts.map((court) =>
-    addCourt({ tournamentRecord, venueId, court, devContext })
+    addCourt({ tournamentRecord, venueId, court })
   );
   const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 

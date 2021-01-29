@@ -10,14 +10,11 @@ export function addPlayoffStructures({
   playoffPositions,
   roundNumbers,
   structureId,
-
-  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   return addPlayoffs({
     drawDefinition,
-    devContext,
     structureId,
     roundNumbers,
     playoffPositions,

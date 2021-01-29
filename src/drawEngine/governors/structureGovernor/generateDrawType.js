@@ -10,6 +10,8 @@ import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateDoubleElimination } from '../../generators/doubleEliminattion';
 import { firstRoundLoserConsolation } from '../../generators/firstRoundLoserConsolation';
+import { addGoesTo } from '../matchUpGovernor/addGoesTo';
+import { getDevContext } from '../../../global/globalState';
 import {
   generateRoundRobin,
   generateRoundRobinWithPlayOff,
@@ -46,7 +48,6 @@ import {
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 
 /**
  *
@@ -196,6 +197,6 @@ export function generateDrawType(props = {}) {
   }
 
   const result = Object.assign({}, SUCCESS, { matchUps, mappedMatchUps });
-  if (props.devContext) Object.assign(result, generatorResult);
+  if (getDevContext()) Object.assign(result, generatorResult);
   return result;
 }

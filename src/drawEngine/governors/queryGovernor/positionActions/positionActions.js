@@ -1,11 +1,12 @@
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
+import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import { stageEntries } from '../../../getters/stageGetter';
-
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
-import { getValidSwapAction } from './getValidSwapAction';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
+import { getDevContext } from '../../../../global/globalState';
+import { stageEntries } from '../../../getters/stageGetter';
+import { getValidSwapAction } from './getValidSwapAction';
 
 import {
   WILDCARD,
@@ -36,7 +37,6 @@ import {
   LOSER,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 
 /**
  *
@@ -52,7 +52,6 @@ export function positionActions({
   drawDefinition,
   drawPosition,
   structureId,
-  devContext,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
@@ -87,7 +86,7 @@ export function positionActions({
       hasTargetLink?.linkType === LOSER &&
       hasTargetLink?.feedProfile !== DRAW
     ) {
-      if (devContext) console.log('ss2 no valid actions');
+      if (getDevContext()) console.log('ss2 no valid actions');
       return { validActions };
     }
   }

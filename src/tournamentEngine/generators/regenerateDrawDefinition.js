@@ -12,7 +12,6 @@ import {
 export function regenerateDrawDefinition({
   tournamentRecord,
   auditData = {},
-  auditEngine,
   drawEngine,
   drawId,
 }) {
@@ -52,7 +51,7 @@ export function regenerateDrawDefinition({
         rejectedDrawDefinition: drawDefinition,
       });
 
-      auditEngine.addAuditItem({ auditData });
+      // auditEngine.addAuditItem({ auditData });
       return SUCCESS;
     }
   } else {

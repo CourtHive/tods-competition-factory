@@ -26,7 +26,6 @@ export function removeDirectedParticipants(props) {
     mappedMatchUps,
     targetData,
   } = props;
-  const errors = [];
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
@@ -106,7 +105,7 @@ export function removeDirectedParticipants(props) {
         winnerParticipantId,
         winningDrawPosition,
       });
-      if (error) errors.push(error);
+      if (error) return { errors: [error] };
     }
     if (loserMatchUp) {
       const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
@@ -159,7 +158,7 @@ export function removeDirectedParticipants(props) {
           drawPosition,
           targetLink: loserTargetLink,
         });
-        if (error) errors.push(error);
+        if (error) return { errors: [error] };
       }
 
       const { error } = removeDirectedLoser({
@@ -169,13 +168,13 @@ export function removeDirectedParticipants(props) {
         loserTargetLink,
         loserParticipantId,
       });
-      if (error) errors.push(error);
+      if (error) return { errors: [error] };
     }
   } else {
-    errors.push({ error: 'matchUp missing drawPositions ' });
+    return { errors: [{ error: 'matchUp missing drawPositions' }] };
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
 }
 
 function removeDirectedWinner({

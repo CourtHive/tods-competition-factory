@@ -338,10 +338,6 @@ This is a convenience method which handles most use cases for draw generation.
 
 ---
 
-## getAudit
-
----
-
 ## getCourtInfo
 
 ---
@@ -713,6 +709,12 @@ tournamentEngine.setsState(tournamentRecord, deepCopy);
 ```
 
 By default a deep copy of the tournament record is made so that mutations made by tournamentEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+
+---
+
+## setSubscriptions
+
+Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
 
 ---
 

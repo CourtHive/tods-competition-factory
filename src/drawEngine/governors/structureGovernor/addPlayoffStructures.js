@@ -4,6 +4,7 @@ import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { playoff } from '../../generators/playoffStructures';
 import { findStructure } from '../../getters/findStructure';
+import { getDevContext } from '../../../global/globalState';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
 import { makeDeepCopy } from '../../../utilities';
@@ -161,7 +162,7 @@ export function addPlayoffStructures(props) {
   if (props.goesTo)
     addGoesTo({ drawDefinition, mappedMatchUps, inContextDrawMatchUps });
 
-  return props.devContext
+  return getDevContext()
     ? Object.assign({}, SUCCESS, {
         drawDefinition: makeDeepCopy(drawDefinition),
       })

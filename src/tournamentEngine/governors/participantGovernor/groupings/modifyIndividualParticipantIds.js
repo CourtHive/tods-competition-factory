@@ -25,7 +25,6 @@ export function modifyIndividualParticipantIds({
   tournamentRecord,
   groupingParticipantId,
   individualParticipantIds,
-  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupingParticipantId || !individualParticipantIds)
@@ -77,7 +76,6 @@ export function modifyIndividualParticipantIds({
     tournamentRecord,
     groupingParticipantId,
     individualParticipantIds: individualParticipantIdsToAdd,
-    devContext,
   });
   if (addResult.error) return addResult;
 

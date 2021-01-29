@@ -8,12 +8,18 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { setDeepCopy, setDevContext } from '../global/globalState';
+import { notifySubscribers } from '../global/notifySubscribers';
+import {
+  setSubscriptions,
+  setDeepCopy,
+  setDevContext,
+  getDevContext,
+  deleteNotices,
+} from '../global/globalState';
 import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
 
-import { auditEngine } from '../auditEngine';
 import { UUID, makeDeepCopy } from '../utilities';
 import { SUCCESS } from '../constants/resultConstants';
 import {
@@ -23,7 +29,6 @@ import {
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
 
-let devContext;
 let drawDefinition;
 let deepCopy = true;
 let tournamentParticipants = [];
@@ -79,6 +84,11 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return SUCCESS;
     },
+    setSubscriptions: (subscriptions) => {
+      if (typeof subscriptions === 'object')
+        setSubscriptions({ subscriptions });
+      return fx;
+    },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
@@ -106,7 +116,6 @@ export const drawEngine = (function () {
 
   fx.devContext = (isDev) => {
     setDevContext(isDev);
-    devContext = isDev;
     return fx;
   };
   fx.setParticipants = (participants) => {
@@ -126,7 +135,7 @@ export const drawEngine = (function () {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((key) => {
         fx[key] = (params) => {
-          if (devContext) {
+          if (getDevContext()) {
             return invoke({ params, governor, key });
           } else {
             try {
@@ -141,15 +150,21 @@ export const drawEngine = (function () {
   }
 
   function invoke({ params, governor, key }) {
-    return governor[key]({
+    const result = governor[key]({
       ...params,
       policies,
       deepCopy,
-      devContext,
       drawDefinition,
       tournamentParticipants,
-      auditEngine,
     });
+
+    if (result?.success) {
+      notifySubscribers();
+    } else {
+      deleteNotices();
+    }
+
+    return result;
   }
 })();
 

@@ -1,6 +1,5 @@
 import { UUID } from '../utilities';
 import { makeDeepCopy } from '../utilities';
-import { auditEngine } from '../auditEngine';
 
 import { findEvent } from './getters/eventGetter';
 import eventGovernor from './governors/eventGovernor';
@@ -12,15 +11,21 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
-import { setDeepCopy, setDevContext } from '../global/globalState';
+import {
+  setSubscriptions,
+  setDeepCopy,
+  setDevContext,
+  getDevContext,
+  deleteNotices,
+} from '../global/globalState';
 
 import {
   INVALID_OBJECT,
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
+import { notifySubscribers } from '../global/notifySubscribers';
 
-let devContext;
 let deepCopy = true;
 let tournamentRecord;
 
@@ -49,12 +54,11 @@ export const tournamentEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
     }),
-    getAudit: () => {
-      const auditTrail = auditEngine.getState();
-      auditEngine.reset();
-      return auditTrail;
+    setSubscriptions: (subscriptions) => {
+      if (typeof subscriptions === 'object')
+        setSubscriptions({ subscriptions });
+      return fx;
     },
-
     newTournamentRecord: (props = {}) => {
       tournamentRecord = newTournamentRecord(props);
       const tournamentId = tournamentRecord.tournamentId;
@@ -82,9 +86,7 @@ export const tournamentEngine = (function () {
     return fx;
   };
   fx.devContext = (isDev) => {
-    devContext = isDev;
     setDevContext(isDev);
-    auditEngine.devContext(isDev);
     return fx;
   };
 
@@ -128,13 +130,14 @@ export const tournamentEngine = (function () {
 
       deepCopy,
       policies,
-      devContext,
-      auditEngine,
       tournamentRecord,
     });
 
-    // TODO: allow middleware to check whether method is on watch list
-    // AND if so... pass the result to subscribed function
+    if (result?.success) {
+      notifySubscribers();
+    } else {
+      deleteNotices();
+    }
 
     return result;
   }
@@ -143,7 +146,7 @@ export const tournamentEngine = (function () {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((method) => {
         fx[method] = (params) => {
-          if (devContext) {
+          if (getDevContext()) {
             return engineInvoke(governor[method], params, method);
           } else {
             try {
