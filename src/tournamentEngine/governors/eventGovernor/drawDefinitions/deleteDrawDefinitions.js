@@ -27,8 +27,8 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
         const auditData = {
-          action: 'deleteDrawDefinitions',
-          deletedDrawDefinition: drawDefinition,
+          action: 'deleteDrawDefinition',
+          payload: { drawDefinition },
         };
         auditTrail.push(auditData);
         const { matchUps } = allDrawMatchUps({ event, drawDefinition });
