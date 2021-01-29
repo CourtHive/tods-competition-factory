@@ -16,6 +16,7 @@ import {
   setDeepCopy,
   setDevContext,
   getDevContext,
+  deleteNotices,
 } from '../global/globalState';
 
 import {
@@ -132,7 +133,11 @@ export const tournamentEngine = (function () {
       tournamentRecord,
     });
 
-    if (result?.success) notifySubscribers();
+    if (result?.success) {
+      notifySubscribers();
+    } else {
+      deleteNotices();
+    }
 
     return result;
   }

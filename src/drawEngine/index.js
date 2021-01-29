@@ -14,6 +14,7 @@ import {
   setDeepCopy,
   setDevContext,
   getDevContext,
+  deleteNotices,
 } from '../global/globalState';
 import definitionTemplate, {
   keyValidation,
@@ -157,7 +158,11 @@ export const drawEngine = (function () {
       tournamentParticipants,
     });
 
-    if (result?.success) notifySubscribers();
+    if (result?.success) {
+      notifySubscribers();
+    } else {
+      deleteNotices();
+    }
 
     return result;
   }

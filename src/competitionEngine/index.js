@@ -9,6 +9,7 @@ import {
   setDeepCopy,
   setDevContext,
   getDevContext,
+  deleteNotices,
 } from '../global/globalState';
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
@@ -75,7 +76,11 @@ export const competitionEngine = (function () {
       deepCopy,
     });
 
-    if (result?.success) notifySubscribers();
+    if (result?.success) {
+      notifySubscribers();
+    } else {
+      deleteNotices();
+    }
 
     return result;
   }

@@ -52,6 +52,10 @@ export function getNotices({ topic }) {
   return { notices };
 }
 
+export function deleteNotices() {
+  globalState.notices = [];
+}
+
 export function getTopics() {
   const topics = Object.keys(globalState.subscriptions);
   return { topics };
