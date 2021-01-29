@@ -1,6 +1,10 @@
 import { findStructure } from '../findStructure';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
+import {
+  ABANDONED,
+  upcomingMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -52,6 +56,9 @@ export function getStructureMatchUps({
   matchUps
     .filter((matchUp) => !matchUp.collectionId) // filter out collection matchUps
     .forEach((matchUp) => {
+      if (matchUp.matchUpStatus === ABANDONED)
+        return abandonedMatchUps.push(matchUp);
+
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
         isCollectionMatchUp &&
@@ -84,11 +91,15 @@ export function getStructureMatchUps({
           );
         }, false);
 
+      const validUpcomingMatchUpStatus = upcomingMatchUpStatuses.includes(
+        matchUp.matchUpStatus
+      );
       const isUpcomingMatchUp =
-        collectionSidesAssigned ||
-        (drawPositionsFilled &&
-          (!roundFilter || roundFilterEquality) &&
-          (!requireParticipants || drawPositionsAssigned));
+        validUpcomingMatchUpStatus &&
+        (collectionSidesAssigned ||
+          (drawPositionsFilled &&
+            (!roundFilter || roundFilterEquality) &&
+            (!requireParticipants || drawPositionsAssigned)));
 
       const isTieMatchUp = Array.isArray(matchUp.tieMatchUps);
 

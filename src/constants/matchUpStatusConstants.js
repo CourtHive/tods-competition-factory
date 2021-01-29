@@ -12,6 +12,13 @@ export const IN_PROGRESS = 'IN_PROGRESS';
 export const TO_BE_PLAYED = 'TO_BE_PLAYED';
 export const DEAD_RUBBER = 'DEAD_RUBBER';
 
+export const upcomingMatchUpStatuses = [
+  TO_BE_PLAYED,
+  INCOMPLETE,
+  IN_PROGRESS,
+  SUSPENDED,
+];
+
 export const matchUpStatusConstants = {
   ABANDONED,
   BYE,

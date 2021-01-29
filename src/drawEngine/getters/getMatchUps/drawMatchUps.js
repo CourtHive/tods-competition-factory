@@ -93,13 +93,15 @@ export function getDrawMatchUps({
 
   if (nextMatchUps) {
     const nextFilter = (typeof nextMatchUps === 'object' && nextMatchUps) || {
+      abandoned: true,
       completed: true,
       upcoming: true,
       pending: true,
       bye: true,
     };
-    const { completed, upcoming, pending, bye } = nextFilter;
+    const { abandoned, completed, upcoming, pending, bye } = nextFilter;
     const matchUps = [].concat(
+      ...((abandoned && matchUpGroups.abandonedMatchUps) || []),
       ...((completed && matchUpGroups.completedMatchUps) || []),
       ...((upcoming && matchUpGroups.upcomingMatchUps) || []),
       ...((pending && matchUpGroups.pendingMatchUps) || []),
