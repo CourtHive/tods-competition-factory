@@ -134,5 +134,5 @@ export function modifyMatchUpScore({
     }
   }
 
-  addNotice({ topic: 'modifiedMatchUp', payload: { matchUp } });
+  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
 }

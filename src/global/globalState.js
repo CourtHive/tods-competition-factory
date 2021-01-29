@@ -39,9 +39,11 @@ export function setSubscriptions({ subscriptions = {} } = {}) {
 }
 
 export function addNotice({ topic, payload }) {
-  if (typeof topic !== 'string' || typeof payload !== 'object') return;
-  if (!globalState.subscriptions.topic) return;
-  globalState.notices.push((topic, payload));
+  if (typeof topic !== 'string' || typeof payload !== 'object') {
+    return;
+  }
+  if (!globalState.subscriptions[topic]) return;
+  globalState.notices.push({ topic, payload });
 }
 
 export function getNotices({ topic }) {
@@ -49,7 +51,7 @@ export function getNotices({ topic }) {
   const notices = globalState.notices.filter(
     (notice) => notice.topic === topic
   );
-  return { notices };
+  return notices.length && { notices };
 }
 
 export function deleteNotices() {

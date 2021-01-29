@@ -4,6 +4,6 @@ export function notifySubscribers() {
   const { topics } = getTopics();
   topics.forEach((topic) => {
     const payload = getNotices({ topic });
-    callListener({ topic, payload });
+    if (payload) callListener({ topic, payload });
   });
 }
