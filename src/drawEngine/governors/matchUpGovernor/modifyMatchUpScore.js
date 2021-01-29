@@ -10,6 +10,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { instanceCount } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { addNotice } from '../../../global/globalState';
 
 /**
  *
@@ -132,4 +133,6 @@ export function modifyMatchUpScore({
       });
     }
   }
+
+  addNotice({ topic: 'modifiedMatchUp', payload: { matchUp } });
 }

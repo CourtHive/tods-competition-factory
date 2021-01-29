@@ -19,13 +19,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function setMatchUpStatus(props) {
   let { outcome } = props;
-  const {
-    devContext,
-    drawDefinition,
-    matchUpId,
-    matchUpTieId,
-    matchUpFormat,
-  } = props;
+  const { drawDefinition, matchUpId, matchUpTieId, matchUpFormat } = props;
   let errors = [];
 
   if (matchUpFormat) {
@@ -57,7 +51,6 @@ export function setMatchUpStatus(props) {
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     winningSide: outcome?.winningSide,
     score: outcome?.score,
-    devContext,
   });
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);
@@ -68,7 +61,7 @@ export function setMatchUpStatus(props) {
 }
 
 export function bulkMatchUpStatusUpdate(props) {
-  const { tournamentRecord, outcomes, devContext } = props;
+  const { tournamentRecord, outcomes } = props;
   let errors = [];
   let modified = 0;
   const events = {};
@@ -94,11 +87,9 @@ export function bulkMatchUpStatusUpdate(props) {
           matchUpFormat,
           matchUpId,
           outcome,
-          devContext,
         });
         if (result.errors) {
           errors = errors.concat(...result.errors);
-          if (devContext) console.log('error:', result);
         } else {
           modified++;
         }

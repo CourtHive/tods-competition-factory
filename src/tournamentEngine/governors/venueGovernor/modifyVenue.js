@@ -20,7 +20,6 @@ export function modifyVenue({
   modifications,
   venueId,
   force,
-  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!modifications || typeof modifications !== 'object')
@@ -96,10 +95,9 @@ export function modifyVenue({
         modifications: court,
         courtId,
         force,
-        devContext,
       });
       if (result.error === COURT_NOT_FOUND) {
-        result = addCourt({ tournamentRecord, venueId, court, devContext });
+        result = addCourt({ tournamentRecord, venueId, court });
       }
       if (result.error) {
         if (result.error.errors) {

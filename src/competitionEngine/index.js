@@ -8,12 +8,13 @@ import {
   setSubscriptions,
   setDeepCopy,
   setDevContext,
+  getDevContext,
 } from '../global/globalState';
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
+import { notifySubscribers } from '../global/notifySubscribers';
 
-let devContext;
 let deepCopy = true;
 let tournamentRecords;
 
@@ -47,7 +48,6 @@ export const competitionEngine = (function () {
   };
   fx.devContext = (isDev) => {
     setDevContext(isDev);
-    devContext = isDev;
     return fx;
   };
   fx.setState = (tournamentRecords, deepCopyOption) => {
@@ -67,20 +67,24 @@ export const competitionEngine = (function () {
 
   // enable Middleware
   function engineInvoke(fx, params) {
-    return fx({
+    const result = fx({
       ...params,
       tournamentRecords,
       tournamentEngine,
       drawEngine,
       deepCopy,
     });
+
+    if (result?.success) notifySubscribers();
+
+    return result;
   }
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((key) => {
         fx[key] = (params) => {
-          if (devContext) {
+          if (getDevContext()) {
             return engineInvoke(governor[key], params);
           } else {
             try {

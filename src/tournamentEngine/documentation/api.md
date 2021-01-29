@@ -712,6 +712,12 @@ By default a deep copy of the tournament record is made so that mutations made b
 
 ---
 
+## setSubscriptions
+
+Please refer to the [Subscriptions](/concepts/subscriptions) topic.
+
+---
+
 ## setTournamentCategories
 
 ---

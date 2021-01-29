@@ -1,3 +1,6 @@
+import { makeDeepCopy, UUID } from '../../../utilities';
+import { intersection } from '../../../utilities/arrays';
+
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   GROUP,
@@ -19,10 +22,9 @@ import {
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
-import { makeDeepCopy, UUID } from '../../../utilities';
-import { intersection } from '../../../utilities/arrays';
+import { getDevContext } from '../../../global/globalState';
 
-export function addParticipant({ tournamentRecord, participant, devContext }) {
+export function addParticipant({ tournamentRecord, participant }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (!participant.participantId) participant.participantId = UUID();
@@ -150,16 +152,12 @@ export function addParticipant({ tournamentRecord, participant, devContext }) {
 
   tournamentRecord.participants.push(participant);
   const result = Object.assign({}, SUCCESS);
-  if (devContext)
+  if (getDevContext())
     Object.assign(result, { participant: makeDeepCopy(participant) });
   return result;
 }
 
-export function addParticipants({
-  tournamentRecord,
-  participants = [],
-  devContext,
-}) {
+export function addParticipants({ tournamentRecord, participants = [] }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const tournamentParticipants = tournamentRecord.participants;
@@ -199,7 +197,6 @@ export function addParticipants({
       const result = addParticipant({
         tournamentRecord,
         participant,
-        devContext,
       });
       const { success, error, participant: addedParticipant } = result;
       if (success) addedParticipants.push(addedParticipant);

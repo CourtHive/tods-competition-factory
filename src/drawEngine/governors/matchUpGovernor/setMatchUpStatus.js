@@ -4,6 +4,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
+import { getDevContext } from '../../../global/globalState';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
@@ -130,7 +131,7 @@ export function setMatchUpStatus(props) {
   if (errors.length) {
     return { error: { errors } };
   } else {
-    if (props.devContext) {
+    if (getDevContext()) {
       const result = {};
       if (messages.length) Object.assign(result, { messages });
       return Object.assign(result, SUCCESS, {
@@ -167,8 +168,7 @@ function attemptStatusChange(props) {
     });
     // TESTED
   }
-  const message = props.devContext && 'attemptStatusChange';
-  return errors.length ? { errors } : Object.assign({ message }, SUCCESS);
+  return errors.length ? { errors } : SUCCESS;
 }
 
 function winningSideWithDownstreamDependencies(props) {

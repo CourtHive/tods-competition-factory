@@ -1,7 +1,9 @@
-export function validDrawPositions({ matchUps, devContext }) {
+import { getDevContext } from '../../../global/globalState';
+
+export function validDrawPositions({ matchUps }) {
   const drawPositions = matchUps.map((matchUp) => matchUp.drawPositions).flat();
 
-  if (devContext) {
+  if (getDevContext()) {
     matchUps.forEach((matchUp) => {
       if (!Array.isArray(matchUp.drawPositions)) {
         console.log('drawPositions not an array', matchUp);

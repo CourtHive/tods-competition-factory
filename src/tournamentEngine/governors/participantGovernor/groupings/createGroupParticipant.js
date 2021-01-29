@@ -21,7 +21,6 @@ export function createGroupParticipant({
   participantId,
   individualParticipantIds = [],
   participantRole = OTHER,
-  devContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!groupName) return { error: MISSING_VALUE, message: 'Missing groupName' };
@@ -60,7 +59,6 @@ export function createGroupParticipant({
   const result = addParticipant({
     tournamentRecord,
     participant: groupParticipant,
-    devContext,
   });
   if (result.error) return result;
 

@@ -15,6 +15,7 @@ import {
   setSubscriptions,
   setDeepCopy,
   setDevContext,
+  getDevContext,
 } from '../global/globalState';
 
 import {
@@ -22,8 +23,8 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
+import { notifySubscribers } from '../global/notifySubscribers';
 
-let devContext;
 let deepCopy = true;
 let tournamentRecord;
 
@@ -84,7 +85,6 @@ export const tournamentEngine = (function () {
     return fx;
   };
   fx.devContext = (isDev) => {
-    devContext = isDev;
     setDevContext(isDev);
     return fx;
   };
@@ -129,12 +129,10 @@ export const tournamentEngine = (function () {
 
       deepCopy,
       policies,
-      devContext,
       tournamentRecord,
     });
 
-    // TODO: allow middleware to check whether method is on watch list
-    // AND if so... pass the result to subscribed function
+    if (result?.success) notifySubscribers();
 
     return result;
   }
@@ -143,7 +141,7 @@ export const tournamentEngine = (function () {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((method) => {
         fx[method] = (params) => {
-          if (devContext) {
+          if (getDevContext()) {
             return engineInvoke(governor[method], params, method);
           } else {
             try {
