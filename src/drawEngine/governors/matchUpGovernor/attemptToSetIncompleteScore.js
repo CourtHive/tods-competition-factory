@@ -2,10 +2,10 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetIncompleteScore(props) {
   const { drawDefinition, matchUp, score } = props;
-  const errors = [];
 
   modifyMatchUpScore({
     drawDefinition,
@@ -22,5 +22,5 @@ export function attemptToSetIncompleteScore(props) {
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
   }
 
-  return { errors };
+  return SUCCESS;
 }
