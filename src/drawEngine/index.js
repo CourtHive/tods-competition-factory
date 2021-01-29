@@ -8,7 +8,11 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { setDeepCopy, setDevContext } from '../global/globalState';
+import {
+  addSubscriptions,
+  setDeepCopy,
+  setDevContext,
+} from '../global/globalState';
 import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
@@ -77,6 +81,11 @@ export const drawEngine = (function () {
     reset: () => {
       drawDefinition = undefined;
       return SUCCESS;
+    },
+    addSubscriptions: (subscriptions) => {
+      if (typeof subscriptions === 'object')
+        addSubscriptions({ subscriptions });
+      return fx;
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });

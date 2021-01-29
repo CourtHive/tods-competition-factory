@@ -11,7 +11,11 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
-import { setDeepCopy, setDevContext } from '../global/globalState';
+import {
+  addSubscriptions,
+  setDeepCopy,
+  setDevContext,
+} from '../global/globalState';
 
 import {
   INVALID_OBJECT,
@@ -48,7 +52,11 @@ export const tournamentEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
     }),
-
+    addSubscriptions: (subscriptions) => {
+      if (typeof subscriptions === 'object')
+        addSubscriptions({ subscriptions });
+      return fx;
+    },
     newTournamentRecord: (props = {}) => {
       tournamentRecord = newTournamentRecord(props);
       const tournamentId = tournamentRecord.tournamentId;

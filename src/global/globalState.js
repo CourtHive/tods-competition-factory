@@ -1,6 +1,9 @@
+import { INVALID_VALUES } from '../constants/errorConditionConstants';
+
 const globalState = {
   devContext: false,
   deepCopy: true,
+  subscriptions: {},
 };
 
 export function getGlobalState() {
@@ -17,4 +20,11 @@ export function setDeepCopy(value) {
   if (typeof value === 'boolean') {
     globalState.deepCopy = value;
   }
+}
+
+export function addSubscriptions({ subscriptions = {} } = {}) {
+  if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
+  Object.keys(subscriptions).forEach((subscription) => {
+    globalState.subscriptions[subscription] = subscriptions[subscription];
+  });
 }

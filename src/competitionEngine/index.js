@@ -4,7 +4,11 @@ import { drawEngine } from '../drawEngine';
 import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { tournamentEngine } from '../tournamentEngine';
-import { setDeepCopy, setDevContext } from '../global/globalState';
+import {
+  addSubscriptions,
+  setDeepCopy,
+  setDevContext,
+} from '../global/globalState';
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
@@ -25,6 +29,11 @@ export const competitionEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
     }),
+    addSubscriptions: (subscriptions) => {
+      if (typeof subscriptions === 'object')
+        addSubscriptions({ subscriptions });
+      return fx;
+    },
   };
 
   importGovernors([
