@@ -7,10 +7,10 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { addNotice } from '../../../global/globalState';
 import { instanceCount } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { addNotice } from '../../../global/globalState';
 
 /**
  *
