@@ -22,7 +22,7 @@ export function setDeepCopy(value) {
   }
 }
 
-export function addSubscriptions({ subscriptions = {} } = {}) {
+export function setSubscriptions({ subscriptions = {} } = {}) {
   if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
   Object.keys(subscriptions).forEach((subscription) => {
     globalState.subscriptions[subscription] = subscriptions[subscription];

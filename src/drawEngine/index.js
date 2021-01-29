@@ -9,7 +9,7 @@ import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import {
-  addSubscriptions,
+  setSubscriptions,
   setDeepCopy,
   setDevContext,
 } from '../global/globalState';
@@ -82,9 +82,9 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return SUCCESS;
     },
-    addSubscriptions: (subscriptions) => {
+    setSubscriptions: (subscriptions) => {
       if (typeof subscriptions === 'object')
-        addSubscriptions({ subscriptions });
+        setSubscriptions({ subscriptions });
       return fx;
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {

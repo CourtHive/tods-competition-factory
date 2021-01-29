@@ -5,7 +5,7 @@ import queryGovernor from './governors/queryGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import { tournamentEngine } from '../tournamentEngine';
 import {
-  addSubscriptions,
+  setSubscriptions,
   setDeepCopy,
   setDevContext,
 } from '../global/globalState';
@@ -29,9 +29,9 @@ export const competitionEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
     }),
-    addSubscriptions: (subscriptions) => {
+    setSubscriptions: (subscriptions) => {
       if (typeof subscriptions === 'object')
-        addSubscriptions({ subscriptions });
+        setSubscriptions({ subscriptions });
       return fx;
     },
   };

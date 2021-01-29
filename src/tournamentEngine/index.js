@@ -12,7 +12,7 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 import {
-  addSubscriptions,
+  setSubscriptions,
   setDeepCopy,
   setDevContext,
 } from '../global/globalState';
@@ -52,9 +52,9 @@ export const tournamentEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
     }),
-    addSubscriptions: (subscriptions) => {
+    setSubscriptions: (subscriptions) => {
       if (typeof subscriptions === 'object')
-        addSubscriptions({ subscriptions });
+        setSubscriptions({ subscriptions });
       return fx;
     },
     newTournamentRecord: (props = {}) => {
