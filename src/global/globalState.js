@@ -60,6 +60,6 @@ export function getTopics() {
 export function callListener({ topic, payload }) {
   const method = globalState.subscriptions[topic];
   if (method && typeof method === 'function') {
-    method({ topic, payload });
+    method({ payload });
   }
 }

@@ -78,7 +78,7 @@ By default a deep copy of each tournament record is made so that mutations made 
 
 ## setSubscriptions
 
-Please refer to the [Subscriptions](/concepts/subscriptions) topic.
+Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
 
 ---
 
