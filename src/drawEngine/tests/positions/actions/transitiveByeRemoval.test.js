@@ -11,7 +11,6 @@ import { MAIN } from '../../../../constants/drawDefinitionConstants';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });
-  console.log('####');
   swapTest({ swapPosition: 3 });
 });
 
@@ -86,7 +85,6 @@ function swapTest({ swapPosition }) {
     [8, undefined],
     [1, undefined], // drawPosition 4 is now a BYE, advancing 1
   ]);
-  console.log({ orderedPairs });
 
   ({
     drawDefinition: { structures },
@@ -111,26 +109,18 @@ function swapTest({ swapPosition }) {
   expect(matchUp.drawPositions).toEqual([1, 4]);
 
   tournamentEngine.devContext(true);
-  removeAssignment({
-    drawId,
-    structureId,
-    drawPosition: swapPosition,
-  });
-  // swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
+  swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
   ({ orderedPairs } = getOrderedDrawPositionPairs());
-  /*
   expect(orderedPairs).toEqual([
     [1, 2],
-    [3, 4],
+    [3, 4], // should be drawPosition 5's previous participantId and a bye
     [5, 6],
     [7, 8],
-    [1, swapPosition],
+    [1, swapPosition], // should be drawPosition 5's previousy participantId paired with drawPosition: 1
     [6, 8],
     [undefined, undefined],
   ]);
-  */
-  console.log({ orderedPairs });
 }
 
 function swapPositions({ drawPosition, swapPosition, drawId, structureId }) {

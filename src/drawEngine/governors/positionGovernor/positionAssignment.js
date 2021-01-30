@@ -92,37 +92,20 @@ export function assignDrawPosition({
   positionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.participantId = participantId;
-      delete assignment.qualifier;
       delete assignment.bye;
     }
   });
 
   if (structure.structureType !== CONTAINER) {
-    const matchUpFilters = { isCollectionMatchUp: false };
-    const { matchUps } = getAllStructureMatchUps({
+    addDrawPositionToMatchUps({
       drawDefinition,
       mappedMatchUps,
-      matchUpFilters,
       structure,
-    });
-
-    const { matchUp, pairedDrawPosition } = getPairedDrawPosition({
-      matchUps,
       drawPosition,
+      positionAssignments,
+      isByeReplacement,
+      placementScenario,
     });
-    const pairedDrawPositionIsBye = positionAssignments.find(
-      ({ drawPosition }) => drawPosition === pairedDrawPosition
-    )?.bye;
-    if (pairedDrawPositionIsBye || isByeReplacement) {
-      assignMatchUpDrawPosition({
-        drawDefinition,
-        mappedMatchUps,
-        drawPosition,
-        isByeReplacement,
-        placementScenario,
-        matchUpId: matchUp.matchUpId,
-      });
-    }
   }
 
   return Object.assign({ positionAssignments }, SUCCESS);
@@ -136,20 +119,48 @@ export function assignDrawPosition({
   }
 }
 
-/*
-export function assignCollectionPosition({
+function addDrawPositionToMatchUps({
   drawDefinition,
-  structureId,
-  participantId,
-  collectionPosition,
+  mappedMatchUps,
+  structure,
+  drawPosition,
+  positionAssignments,
+  isByeReplacement,
+  placementScenario,
 }) {
-  const { structure } = findStructure({ drawDefinition, structureId });
-  
-  const validParticipantId = participantInEntries({drawDefinition, participantId});
-  if (!validParticipantId) return { error: INVALID_PARTICIPANT_ID };
+  const matchUpFilters = { isCollectionMatchUp: false };
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    mappedMatchUps,
+    matchUpFilters,
+    structure,
+  });
 
-  console.log({structure, validParticipantId})
-  
-  return SUCCESS;
+  const { matchUp, pairedDrawPosition } = getPairedDrawPosition({
+    matchUps,
+    drawPosition,
+  });
+  const pairedDrawPositionIsBye = positionAssignments.find(
+    ({ drawPosition }) => drawPosition === pairedDrawPosition
+  )?.bye;
+  if (isByeReplacement) {
+    const result = assignMatchUpDrawPosition({
+      drawDefinition,
+      mappedMatchUps,
+      drawPosition,
+      isByeReplacement,
+      placementScenario,
+      matchUpId: matchUp.matchUpId,
+    });
+    if (result.error) return result;
+  } else if (pairedDrawPositionIsBye) {
+    const result = assignMatchUpDrawPosition({
+      drawDefinition,
+      mappedMatchUps,
+      drawPosition,
+      isByeReplacement: true,
+      matchUpId: matchUp.matchUpId,
+    });
+    if (result.error) return result;
+  }
 }
-*/

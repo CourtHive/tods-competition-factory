@@ -262,6 +262,7 @@ function removeDirectedBye({
   drawPosition,
   drawDefinition,
   mappedMatchUps,
+  inContextDrawMatchUps,
 }) {
   let error;
 
@@ -269,6 +270,7 @@ function removeDirectedBye({
 
   clearDrawPosition({
     drawDefinition,
+    inContextDrawMatchUps,
     mappedMatchUps,
     structureId,
     drawPosition,

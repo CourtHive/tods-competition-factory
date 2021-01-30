@@ -118,6 +118,13 @@ function eliminationByeSwap({
   });
   if (result.error) return result;
 
+  result = assignDrawPositionBye({
+    drawDefinition,
+    mappedMatchUps,
+    structureId,
+    drawPosition: originalParticipantIdDrawPosition,
+  });
+
   // replace the original byeAssignment with participantId
   result = assignDrawPosition({
     drawDefinition,
@@ -126,13 +133,6 @@ function eliminationByeSwap({
     participantId,
   });
   if (result.error) return result;
-
-  result = assignDrawPositionBye({
-    drawDefinition,
-    mappedMatchUps,
-    structureId,
-    drawPosition: originalParticipantIdDrawPosition,
-  });
 
   return result.error ? result : SUCCESS;
 }
