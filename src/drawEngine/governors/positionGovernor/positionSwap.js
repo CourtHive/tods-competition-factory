@@ -1,4 +1,6 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
+import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 
@@ -22,19 +24,31 @@ export function swapDrawPositionAssignments({
     return { error: INVALID_VALUES, drawPositions };
   }
 
+  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (structure.structureType === CONTAINER) {
     // { structureType: CONTAINER } indicates that the swap is within a ROUND ROBIN structure
-    return roundRobinSwap({ structure, drawPositions });
+    return roundRobinSwap({ structure, drawPositions, mappedMatchUps });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
-    return eliminationSwap({ drawDefinition, structure, drawPositions });
+    return eliminationSwap({
+      drawDefinition,
+      structure,
+      drawPositions,
+      mappedMatchUps,
+    });
   }
 }
 
-function eliminationSwap({ drawDefinition, structure, drawPositions }) {
+function eliminationSwap({
+  drawDefinition,
+  structure,
+  drawPositions,
+  mappedMatchUps,
+}) {
   // if not a CONTAINER then swap occurs within elimination structure
   const assignments = structure?.positionAssignments.filter((assignment) =>
     drawPositions.includes(assignment.drawPosition)
@@ -54,13 +68,27 @@ function eliminationSwap({ drawDefinition, structure, drawPositions }) {
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
-    return eliminationByeSwap({ drawDefinition, structure, assignments });
+    return eliminationByeSwap({
+      drawDefinition,
+      structure,
+      assignments,
+      mappedMatchUps,
+    });
   } else {
-    return eliminationParticpantSwap({ structure, assignments });
+    return eliminationParticpantSwap({
+      structure,
+      assignments,
+      mappedMatchUps,
+    });
   }
 }
 
-function eliminationByeSwap({ drawDefinition, structure, assignments }) {
+function eliminationByeSwap({
+  drawDefinition,
+  structure,
+  assignments,
+  mappedMatchUps,
+}) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
   const originalParticipantIdAssignment = assignments.find(
@@ -73,11 +101,17 @@ function eliminationByeSwap({ drawDefinition, structure, assignments }) {
   } = originalParticipantIdAssignment;
   const { structureId } = structure;
 
-  // replace the original participantIdAssignment with a BYE
+  // remove both drawPosition assignments
   let result = removeDrawPositionAssignment({
     drawDefinition,
     structureId,
-    replaceWithBye: true,
+    drawPosition: originalByeDrawPosition,
+  });
+  if (result.error) return result;
+
+  result = removeDrawPositionAssignment({
+    drawDefinition,
+    structureId,
     drawPosition: originalParticipantIdDrawPosition,
   });
   if (result.error) return result;
@@ -88,6 +122,14 @@ function eliminationByeSwap({ drawDefinition, structure, assignments }) {
     structureId,
     drawPosition: originalByeDrawPosition,
     participantId,
+  });
+  if (result.error) return result;
+
+  result = assignDrawPositionBye({
+    drawDefinition,
+    mappedMatchUps,
+    structureId,
+    drawPosition: originalParticipantIdDrawPosition,
   });
 
   return result.error ? result : SUCCESS;
