@@ -7,6 +7,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function alternateDrawPositionAssignment({
   alternateParticipantId,
   drawDefinition,
+  mappedMatchUps, // not currently passed
   drawPosition,
   structureId,
 }) {
@@ -35,6 +36,7 @@ export function alternateDrawPositionAssignment({
   }
   let result = clearDrawPosition({
     drawDefinition,
+    mappedMatchUps,
     drawPosition,
     structureId,
   });

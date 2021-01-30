@@ -104,6 +104,7 @@ function eliminationByeSwap({
   // remove both drawPosition assignments
   let result = removeDrawPositionAssignment({
     drawDefinition,
+    mappedMatchUps,
     structureId,
     drawPosition: originalByeDrawPosition,
   });
@@ -111,6 +112,7 @@ function eliminationByeSwap({
 
   result = removeDrawPositionAssignment({
     drawDefinition,
+    mappedMatchUps,
     structureId,
     drawPosition: originalParticipantIdDrawPosition,
   });

@@ -228,6 +228,7 @@ function removeDirectedWinner({
 
   // Remove participant's drawPosition from current and subsequent round matchUps
   removeSubsequentRoundsParticipant({
+    drawDefinition,
     mappedMatchUps,
     structureId,
     roundNumber,

@@ -207,6 +207,7 @@ function removeByeAndCleanUp({
     const result = removeMatchUpDrawPosition({
       drawDefinition,
       mappedMatchUps,
+      inContextDrawMatchUps,
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: pairedDrawPosition,
     });

@@ -243,20 +243,20 @@ export function positionActions({
       if (isMainStageSequence1 && validSwapAction)
         validActions.push(validSwapAction);
     }
-  }
 
-  const { validAlternatesAction } = getValidAlternatesAction({
-    drawId,
-    structure,
-    structureId,
-    drawPosition,
-    drawDefinition,
-    activeDrawPositions,
-    positionAssignments,
-    tournamentParticipants,
-  });
-  if (isMainStageSequence1 && validAlternatesAction)
-    validActions.push(validAlternatesAction);
+    const { validAlternatesAction } = getValidAlternatesAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      activeDrawPositions,
+      positionAssignments,
+      tournamentParticipants,
+    });
+    if (isMainStageSequence1 && validAlternatesAction)
+      validActions.push(validAlternatesAction);
+  }
 
   return {
     isByePosition,
