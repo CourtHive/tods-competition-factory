@@ -84,7 +84,7 @@ export function clearDrawPosition({
   });
 
   matchUps.forEach((matchUp) => {
-    if (matchUp.drawPositions?.includes(drawPosition)) {
+    if (matchUp.drawPositions.includes(drawPosition)) {
       const isByeMatchUp = matchUp.drawPositions?.reduce(
         (isByeMatchUp, drawPosition) => {
           return (
