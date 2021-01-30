@@ -16,6 +16,8 @@ import {
   DRAW_POSITION_NOT_CLEARED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getDevContext } from '../../../global/globalState';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
 /**
  *
@@ -52,6 +54,8 @@ export function clearDrawPosition({
     undefined
   );
 
+  const isByeRemoval = byeAssignedDrawPositions.includes(drawPosition);
+
   if (participantId && !drawPosition) {
     drawPosition = existingAssignment?.drawPosition;
   }
@@ -76,6 +80,19 @@ export function clearDrawPosition({
     matchUpFilters,
     structure,
   });
+
+  if (isByeRemoval && getDevContext()) {
+    console.log({
+      isByeRemoval,
+      drawPosition,
+      byeAssignedDrawPositions,
+      activeDrawPositions,
+      drawPositionIsActive,
+      existingAssignment,
+      participantId,
+    });
+    getPositionDeletions({ matchUps, positionAssignments, drawPosition });
+  }
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     mappedMatchUps,
@@ -84,6 +101,7 @@ export function clearDrawPosition({
   });
 
   matchUps.forEach((matchUp) => {
+    // for all matchUps which include the drawPosition being cleared...
     if (matchUp.drawPositions.includes(drawPosition)) {
       const isByeMatchUp = matchUp.drawPositions?.reduce(
         (isByeMatchUp, drawPosition) => {
@@ -94,6 +112,7 @@ export function clearDrawPosition({
         false
       );
 
+      // ... if the matchUp contains a { bye: true } drawPosition
       if (isByeMatchUp) {
         removeByeAndCleanUp({
           drawDefinition,
@@ -123,6 +142,56 @@ export function clearDrawPosition({
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
   return Object.assign({}, SUCCESS, { participantId });
+}
+
+function getPositionDeletions({ matchUps, positionAssignments, drawPosition }) {
+  const { roundProfile } = getRoundMatchUps({ matchUps });
+  const roundNumbers = Object.keys(roundProfile).map((roundNumber) =>
+    parseInt(roundNumber)
+  );
+
+  let targetDrawPosition = drawPosition;
+
+  const roundPairings = roundNumbers
+    .map((roundNumber) => {
+      const relevantPair = roundProfile[
+        roundNumber
+      ].pairedDrawPositions.find((drawPositions) =>
+        drawPositions.includes(targetDrawPosition)
+      );
+      const pairedDrawPosition = relevantPair?.find(
+        (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
+      );
+      const pairedDrawPositionAssignment = positionAssignments.find(
+        (assignment) => assignment.drawPosition === pairedDrawPosition
+      );
+      const nextRoundProfile = roundProfile[roundNumber + 1];
+      const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
+      const pairedDrawPositionInNextRound =
+        nextRoundProfile &&
+        nextRoundProfile.drawPositions.includes(pairedDrawPosition);
+      const isTransitiveBye =
+        pairedDrawPositionIsBye && pairedDrawPositionInNextRound;
+      nextRoundProfile &&
+        nextRoundProfile.drawPositions.includes(pairedDrawPosition);
+      const pairedDrawPositionIsByeAdvanced =
+        !isTransitiveBye && pairedDrawPositionInNextRound;
+      if (pairedDrawPositionAssignment) {
+        const result = {
+          roundNumber,
+          relevantPair,
+          pairedDrawPosition,
+          pairedDrawPositionIsBye,
+          pairedDrawPositionIsByeAdvanced,
+          targetDrawPosition,
+          isTransitiveBye,
+        };
+        if (isTransitiveBye) targetDrawPosition = pairedDrawPosition;
+        return result;
+      }
+    })
+    .filter((f) => f);
+  console.log(roundPairings);
 }
 
 function removeByeAndCleanUp({

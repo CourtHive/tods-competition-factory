@@ -109,6 +109,7 @@ export function assignMatchUpDrawPosition({
           const result = removeMatchUpDrawPosition({
             drawDefinition,
             mappedMatchUps,
+            inContextDrawMatchUps,
             drawPosition: targetDrawPosition,
             matchUpId: winnerMatchUp.matchUpId,
           });
@@ -123,13 +124,20 @@ export function assignMatchUpDrawPosition({
         });
         if (result.error) return result;
       } else {
-        const { roundNumber, structureId } = winnerMatchUp;
-        removeSubsequentRoundsParticipant({
-          mappedMatchUps,
-          structureId,
-          roundNumber,
-          targetDrawPosition: byeAdvancedPosition,
-        });
+        const { structureId } = winnerMatchUp;
+        if (structureId !== structure.structureId) {
+          console.log(
+            'winnerMatchUp in different structure... participant is in different targetDrawPosition'
+          );
+        } else {
+          removeSubsequentRoundsParticipant({
+            drawDefinition,
+            mappedMatchUps,
+            structureId,
+            roundNumber: winnerMatchUp.roundNumber,
+            targetDrawPosition: byeAdvancedPosition,
+          });
+        }
       }
   }
 
@@ -143,14 +151,70 @@ export function assignMatchUpDrawPosition({
 export function removeMatchUpDrawPosition({
   drawDefinition,
   mappedMatchUps,
-  matchUpId,
+  inContextDrawMatchUps,
   drawPosition,
+  matchUpId,
 }) {
-  const { matchUp } = findMatchUp({
+  const { matchUp, structure } = findMatchUp({
     mappedMatchUps,
     drawDefinition,
     matchUpId,
   });
+
+  const { positionAssignments } = getPositionAssignments({
+    drawDefinition,
+    structure,
+  });
+  const assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  const isByeRemoval = assignment?.bye;
+  const byeAdvancedPosition =
+    isByeRemoval &&
+    matchUp.drawPositions.find((position) => position !== drawPosition);
+
+  if (byeAdvancedPosition) {
+    const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions.indexOf(
+      drawPosition
+    );
+    const targetData = positionTargets({
+      matchUpId,
+      structure,
+      drawDefinition,
+      mappedMatchUps,
+      inContextDrawMatchUps,
+      sourceMatchUpWinnerDrawPositionIndex,
+    });
+    const {
+      targetMatchUps: { winnerMatchUp },
+    } = targetData;
+    if (winnerMatchUp) {
+      if (winnerMatchUp.structureId !== structure.structureId) {
+        console.log(
+          'winnerMatchUp in different structure... participant is in different targetDrawPosition'
+        );
+        // find partiicpantId in connected structure and derive drawPosition
+        /*
+      const { roundNumber, structureId } = winnerMatchUp;
+      const result = removeSubsequentRoundsParticipant({
+        mappedMatchUps,
+        structureId,
+        roundNumber,
+        targetDrawPosition: derivedDrawPostion,
+      });
+      console.log({ result });
+      */
+      } else {
+        removeSubsequentRoundsParticipant({
+          drawDefinition,
+          mappedMatchUps,
+          structureId: structure.structureId,
+          roundNumber: winnerMatchUp.roundNumber,
+          targetDrawPosition: byeAdvancedPosition,
+        });
+      }
+    }
+  }
 
   let positionRemoved = false;
   matchUp.drawPositions = (matchUp.drawPositions || []).map(
@@ -163,6 +227,11 @@ export function removeMatchUpDrawPosition({
       }
     }
   );
+  console.log({
+    positionRemoved,
+    drawPosition,
+    roundNumber: matchUp.roundNumber,
+  });
 
   return positionRemoved ? SUCCESS : { error: DRAW_POSITION_NOT_FOUND };
 }

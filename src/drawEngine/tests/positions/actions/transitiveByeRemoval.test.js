@@ -110,7 +110,13 @@ function swapTest({ swapPosition }) {
   });
   expect(matchUp.drawPositions).toEqual([1, 4]);
 
-  swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
+  tournamentEngine.devContext(true);
+  removeAssignment({
+    drawId,
+    structureId,
+    drawPosition: swapPosition,
+  });
+  // swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
   ({ orderedPairs } = getOrderedDrawPositionPairs());
   /*
@@ -201,7 +207,6 @@ function removeAssignment({
     drawPosition,
   });
   expect(result.isDrawPosition).toEqual(true);
-  expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   let option = result.validActions.find(
