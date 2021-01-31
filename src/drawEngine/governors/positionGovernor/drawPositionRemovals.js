@@ -134,7 +134,7 @@ export function drawPositionRemovals({
       sourceMatchUpWinnerDrawPositionIndex,
     });
     const {
-      targetLinks: { loserTargetLink, winnerTargetLink },
+      targetLinks: { winnerTargetLink },
       targetMatchUps: {
         loserMatchUp,
         winnerMatchUp,
