@@ -19,7 +19,7 @@ import {
 
 import { ERROR } from '../../../constants/resultConstants';
 
-it.skip('can direct participants in First Match Consolation (FEED_FMLC)', () => {
+it('can direct participants in First Match Consolation (FEED_FMLC)', () => {
   reset();
   initialize();
   const drawSize = 32;
@@ -118,7 +118,7 @@ it.skip('can direct participants in First Match Consolation (FEED_FMLC)', () => 
   expect(matchUp2ndRound.structureId).toEqual(
     winnerMatchUp2ndRound.structureId
   );
-  expect(loserMatchUp2ndRound.roundNumber).toEqual(1);
+  expect(loserMatchUp2ndRound.roundNumber).toEqual(2);
   expect(loserMatchUp2ndRound.roundPosition).toEqual(1);
 });
 
