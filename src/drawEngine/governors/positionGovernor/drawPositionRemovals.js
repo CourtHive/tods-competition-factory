@@ -30,6 +30,7 @@ export function drawPositionRemovals({
     structure,
   });
 
+  // TODO: don't clear a BYE if the soure matchUp is a bye-pair
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
       if (assignment.drawPosition === drawPosition) {
@@ -143,6 +144,7 @@ export function drawPositionRemovals({
       },
     } = targetData;
 
+    // TODO: don't remove a drawPosition for a fed position...
     if (roundNumber !== 1) {
       targetMatchUp.drawPositions = targetMatchUp.drawPositions.map(
         (drawPosition) =>
@@ -164,7 +166,7 @@ export function drawPositionRemovals({
 
     if (
       loserMatchUp &&
-      loserMatchUp.matchUpStatus === BYE &&
+      // loserMatchUp.matchUpStatus === BYE &&
       loserMatchUp.structureId !== targetData.matchUp.structureId
     ) {
       const { drawPositions } = loserMatchUp;
