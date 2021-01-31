@@ -2,7 +2,6 @@ import tournamentEngine from '../../tournamentEngine';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { REMOVE_ASSIGNMENT } from '../../constants/positionActionConstants';
-import { getDevContext } from '../../global/globalState';
 
 export function getOrderedDrawPositionPairs({ structureId } = {}) {
   const matchUpFilters = { structureIds: [structureId] };
