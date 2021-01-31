@@ -1,5 +1,9 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine';
+import {
+  getOrderedDrawPositionPairs,
+  getContextMatchUp,
+} from '../../testingUtilities';
 
 import {
   ALTERNATE_PARTICIPANT,
@@ -7,7 +11,6 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });
@@ -101,7 +104,7 @@ function swapTest({ swapPosition }) {
   expect(modifiedByeAssignments).toEqual([2, 3, 4, 7]);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  let { matchUp } = getTargetMatchUp({
+  let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 2,
     roundPosition: 1,
@@ -151,6 +154,7 @@ function swapPositions({ drawPosition, swapPosition, drawId, structureId }) {
   expect(result.success).toEqual(true);
 }
 
+/*
 function getOrderedDrawPositionPairs() {
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const orderedPairs = matchUps
@@ -168,7 +172,7 @@ function matchUpSort(a, b) {
   return a.roundNumber - b.roundNumber || a.roundPosition - b.roundPosition;
 }
 
-function getTargetMatchUp({
+function getContextMatchUp({
   matchUps,
   roundNumber,
   roundPosition,
@@ -184,6 +188,7 @@ function getTargetMatchUp({
   );
   return { matchUp };
 }
+*/
 
 function removeAssignment({
   drawId,
