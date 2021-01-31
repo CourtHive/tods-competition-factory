@@ -94,6 +94,8 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     );
 
     return {
+      allDrawPositions: drawPositions,
+      positionAssignments,
       activeDrawPositions,
       inactiveDrawPositions,
       byeDrawPositions,
