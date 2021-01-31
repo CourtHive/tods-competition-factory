@@ -73,10 +73,20 @@ export function getRoundMatchUps({ matchUps = [] }) {
         if (!roundPosition) return drawPositions;
         const filteredDrawPositions = drawPositions.filter((f) => f);
         if (!filteredDrawPositions.length) return [undefined, undefined];
-        if (filteredDrawPositions.length === 2)
+
+        // { roundNumber: 2 } is the first possible feed round and the last time that a numeric sort is guaranteed to work
+        if (roundNumber < 3 && filteredDrawPositions.length === 2)
           return drawPositions.sort(numericSort);
+
+        // if the prior round does NOT include the one existingg drawPosition then it is a feed round
+        // ... and fed positions are always { sideNumber: 1 }
         if (!priorRoundDrawPositions.includes(filteredDrawPositions[0]))
           return [filteredDrawPositions[0], undefined];
+
+        // otherwise determine the order of the drawPositions by looking at the prior round
+        // this accounts for ADVANCED fed positions which are NOT guaranteed to be in numeric order
+        // ... because a lower number fed position may be in { sideNumber: 2 } while an drawPosition advanced
+        // from the first round may be in { sideNumber: 1 }
         const targetChunkIndex = (roundPosition - 1) * 2;
         const targetChunks = priorRoundDrawPositionChunks.slice(
           targetChunkIndex,
