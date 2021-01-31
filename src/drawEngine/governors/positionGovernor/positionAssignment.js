@@ -66,7 +66,7 @@ export function assignDrawPosition({
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
-  const positionState = positionAssignments.reduce(
+  const positionAssignment = positionAssignments.reduce(
     (p, c) => (c.drawPosition === drawPosition ? c : p),
     undefined
   );
@@ -74,11 +74,11 @@ export function assignDrawPosition({
     .map((d) => d.participantId)
     .includes(participantId);
 
-  if (!positionState) return { error: INVALID_DRAW_POSITION };
+  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
-  const { filled } = drawPositionFilled(positionState);
-  if (filled && positionState.participantId !== participantId) {
+  const { filled } = drawPositionFilled(positionAssignment);
+  if (filled && positionAssignment.participantId !== participantId) {
     const { activeDrawPositions } = structureActiveDrawPositions({
       drawDefinition,
       structureId,
@@ -110,10 +110,10 @@ export function assignDrawPosition({
 
   return Object.assign({ positionAssignments }, SUCCESS);
 
-  function drawPositionFilled(positionState) {
-    const containsBye = positionState.bye;
-    const containsQualifier = positionState.qualifier;
-    const containsParticipant = positionState.participantId;
+  function drawPositionFilled(positionAssignment) {
+    const containsBye = positionAssignment.bye;
+    const containsQualifier = positionAssignment.qualifier;
+    const containsParticipant = positionAssignment.participantId;
     const filled = containsBye || containsQualifier || containsParticipant;
     return { containsBye, containsQualifier, containsParticipant, filled };
   }

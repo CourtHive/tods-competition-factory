@@ -25,15 +25,15 @@ it('can advance participants when double BYEs are created', () => {
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId });
   let structureMatchUps = matchUps.filter(
     (matchUp) => matchUp.structureId === structureId
   );
   let finalMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  let { orderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
+  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
+  ({ orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId }));
   expect(orderedPairs).toEqual([
     [1, 2],
     [3, 4],
@@ -74,7 +74,7 @@ it('can advance participants when double BYEs are created', () => {
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, 4],
+    [1, 3],
     [8, undefined],
     [1, undefined], // drawPosition 4 is now a BYE, advancing 1
   ]);

@@ -79,14 +79,15 @@ export function clearDrawPosition({
     includeByeMatchUps: true,
   });
 
-  if (isByeRemoval) {
-    drawPositionRemovals({
-      inContextDrawMatchUps,
-      drawDefinition,
-      mappedMatchUps,
-      structureId,
-      drawPosition,
-    });
+  // if (isByeRemoval) {
+  drawPositionRemovals({
+    inContextDrawMatchUps,
+    drawDefinition,
+    mappedMatchUps,
+    structureId,
+    drawPosition,
+  });
+  /*
   } else {
     const matchUpFilters = { isCollectionMatchUp: false };
     const { matchUps } = getAllStructureMatchUps({
@@ -122,6 +123,7 @@ export function clearDrawPosition({
       }
     });
   }
+  */
 
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
