@@ -155,18 +155,7 @@ export function drawPositionRemovals({
       loserMatchUp.matchUpStatus === BYE &&
       loserMatchUp.structureId !== targetData.matchUp.structureId
     ) {
-      const { drawPositions /*, roundNumber, roundPosition*/ } = loserMatchUp;
-      // const targetDrawPosition = drawPositions[loserMatchUpDrawPositionIndex];
-      /*
-      console.log({
-        roundNumber,
-        roundPosition,
-        drawPositions,
-        loserTargetLink,
-        targetDrawPosition,
-        loserMatchUpDrawPositionIndex,
-      });
-      */
+      const { drawPositions } = loserMatchUp;
       drawPositionRemovals({
         inContextDrawMatchUps,
         drawDefinition,
