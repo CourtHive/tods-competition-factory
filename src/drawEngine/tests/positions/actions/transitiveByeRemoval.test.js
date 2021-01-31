@@ -72,6 +72,7 @@ function swapTest({ swapPosition }) {
     [8, undefined], // drawPosition 8 is BYE-advanced
     [undefined, undefined],
   ]);
+
   removeAssignment({
     drawId,
     structureId,
@@ -112,7 +113,6 @@ function swapTest({ swapPosition }) {
   });
   expect(matchUp.drawPositions).toEqual([1, 4]);
 
-  tournamentEngine.devContext(true);
   swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
   ({ orderedPairs } = getOrderedDrawPositionPairs());
