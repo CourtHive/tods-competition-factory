@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
+import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
 
@@ -121,7 +122,6 @@ export function drawPositionRemovals({
       (matchUp) =>
         intersection(matchUp.drawPositions, relevantPair).length === 2
     );
-    targetMatchUp.matchUpStatus = TO_BE_PLAYED;
     const sourceMatchUpWinnerDrawPositionIndex = targetMatchUp.drawPositions.indexOf(
       drawPosition
     );
@@ -149,6 +149,18 @@ export function drawPositionRemovals({
           drawPosition !== targetDrawPosition ? drawPosition : undefined
       );
     }
+
+    const matchUpContainsBye = positionAssignments
+      .filter(({ drawPosition }) =>
+        targetMatchUp.drawPositions.includes(drawPosition)
+      )
+      .find(({ bye }) => bye);
+
+    targetMatchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+    addNotice({
+      topic: 'modifyMatchUp',
+      payload: { matchUp: targetMatchUp },
+    });
 
     if (
       loserMatchUp &&
