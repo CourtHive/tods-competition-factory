@@ -3,6 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine';
 import {
   getOrderedDrawPositionPairs,
   getContextMatchUp,
+  removeAssignment,
 } from '../../testingUtilities';
 
 import {
@@ -150,65 +151,6 @@ function swapPositions({ drawPosition, swapPosition, drawId, structureId }) {
 
   const payload = option.payload;
   payload.drawPositions.push(swapPosition);
-  result = tournamentEngine[option.method](payload);
-  expect(result.success).toEqual(true);
-}
-
-/*
-function getOrderedDrawPositionPairs() {
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const orderedPairs = matchUps
-    .map(({ roundNumber, roundPosition, drawPositions }) => ({
-      roundNumber,
-      roundPosition,
-      drawPositions,
-    }))
-    .sort(matchUpSort)
-    .map(({ drawPositions }) => drawPositions);
-  return { orderedPairs, matchUps };
-}
-
-function matchUpSort(a, b) {
-  return a.roundNumber - b.roundNumber || a.roundPosition - b.roundPosition;
-}
-
-function getContextMatchUp({
-  matchUps,
-  roundNumber,
-  roundPosition,
-  stage = MAIN,
-  stageSequence = 1,
-}) {
-  const matchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition &&
-      matchUp.stage === stage &&
-      matchUp.stageSequence === stageSequence
-  );
-  return { matchUp };
-}
-*/
-
-function removeAssignment({
-  drawId,
-  structureId,
-  drawPosition,
-  replaceWithBye,
-}) {
-  let result = tournamentEngine.positionActions({
-    drawId,
-    structureId,
-    drawPosition,
-  });
-  expect(result.isDrawPosition).toEqual(true);
-  let options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
-  let option = result.validActions.find(
-    (action) => action.type === REMOVE_ASSIGNMENT
-  );
-  const payload = option.payload;
-  Object.assign(payload, { replaceWithBye });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 }

@@ -1,6 +1,7 @@
 import tournamentEngine from '../../tournamentEngine';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
+import { REMOVE_ASSIGNMENT } from '../../constants/positionActionConstants';
 
 export function getOrderedDrawPositionPairs() {
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
@@ -34,4 +35,27 @@ export function getContextMatchUp({
       matchUp.stageSequence === stageSequence
   );
   return { matchUp };
+}
+
+export function removeAssignment({
+  drawId,
+  structureId,
+  drawPosition,
+  replaceWithBye,
+}) {
+  let result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isDrawPosition).toEqual(true);
+  let options = result.validActions?.map((validAction) => validAction.type);
+  expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+  let option = result.validActions.find(
+    (action) => action.type === REMOVE_ASSIGNMENT
+  );
+  const payload = option.payload;
+  Object.assign(payload, { replaceWithBye });
+  result = tournamentEngine[option.method](payload);
+  expect(result.success).toEqual(true);
 }
