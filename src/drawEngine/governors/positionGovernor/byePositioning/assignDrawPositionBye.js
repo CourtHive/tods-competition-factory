@@ -109,8 +109,6 @@ function assignBye({
     mappedMatchUps,
     matchUpId,
   });
-  // const { roundNumber } = noContextMatchUp;
-  // console.log('assignBYE', { roundNumber, drawPosition });
   const result = attemptToSetMatchUpStatusBYE({
     matchUp: noContextMatchUp,
     structure,
@@ -188,6 +186,7 @@ function assignBye({
     }
   }
 
+  // if (winnerMatchUp) console.log({ winnerMatchUp, pairedDrawPosition });
   if (winnerMatchUp && pairedDrawPosition) {
     const drawPositionIsBye = positionAssignments.find(
       (assignment) => assignment.drawPosition === drawPosition
