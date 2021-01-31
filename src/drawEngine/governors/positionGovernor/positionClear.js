@@ -79,51 +79,49 @@ export function clearDrawPosition({
     includeByeMatchUps: true,
   });
 
-  // if (isByeRemoval) {
-  drawPositionRemovals({
-    inContextDrawMatchUps,
-    drawDefinition,
-    mappedMatchUps,
-    structureId,
-    drawPosition,
-  });
-  //}
-  /*
-  const matchUpFilters = { isCollectionMatchUp: false };
-  const { matchUps } = getAllStructureMatchUps({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpFilters,
-    structure,
-  });
+  if (isByeRemoval) {
+    drawPositionRemovals({
+      inContextDrawMatchUps,
+      drawDefinition,
+      mappedMatchUps,
+      structureId,
+      drawPosition,
+    });
+  } else {
+    const matchUpFilters = { isCollectionMatchUp: false };
+    const { matchUps } = getAllStructureMatchUps({
+      drawDefinition,
+      mappedMatchUps,
+      matchUpFilters,
+      structure,
+    });
 
-  matchUps.forEach((matchUp) => {
-    // for all matchUps which include the drawPosition being cleared...
-    if (matchUp.drawPositions.includes(drawPosition)) {
-      const isByeMatchUp = matchUp.drawPositions?.reduce(
-        (isByeMatchUp, drawPosition) => {
-          return (
-            byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp
-          );
-        },
-        false
-      );
+    matchUps.forEach((matchUp) => {
+      // for all matchUps which include the drawPosition being cleared...
+      if (matchUp.drawPositions.includes(drawPosition)) {
+        const isByeMatchUp = matchUp.drawPositions?.reduce(
+          (isByeMatchUp, drawPosition) => {
+            return (
+              byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp
+            );
+          },
+          false
+        );
 
-      // ... if the matchUp contains a { bye: true } drawPosition
-      if (isByeMatchUp) {
-        removeByeAndCleanUp({
-          drawDefinition,
-          mappedMatchUps,
-          matchUp,
-          structure,
-          drawPosition,
-          inContextDrawMatchUps,
-        });
+        // ... if the matchUp contains a { bye: true } drawPosition
+        if (isByeMatchUp) {
+          removeByeAndCleanUp({
+            drawDefinition,
+            mappedMatchUps,
+            matchUp,
+            structure,
+            drawPosition,
+            inContextDrawMatchUps,
+          });
+        }
       }
-    }
-  });
-  // }
-  */
+    });
+  }
 
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
