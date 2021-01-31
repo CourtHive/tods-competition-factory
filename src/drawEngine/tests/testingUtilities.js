@@ -2,9 +2,13 @@ import tournamentEngine from '../../tournamentEngine';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { REMOVE_ASSIGNMENT } from '../../constants/positionActionConstants';
+import { getDevContext } from '../../global/globalState';
 
-export function getOrderedDrawPositionPairs() {
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+export function getOrderedDrawPositionPairs({ structureId } = {}) {
+  const matchUpFilters = { structureIds: [structureId] };
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters,
+  });
   const orderedPairs = matchUps
     .map(({ roundNumber, roundPosition, drawPositions }) => ({
       roundNumber,
