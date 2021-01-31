@@ -1,4 +1,3 @@
-import fs from 'fs';
 import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../../drawEngine';
 
@@ -77,15 +76,15 @@ it('can generate COMPASS and fill all drawPositions', () => {
       pendingAdvancedRoundPosition: undefined,
       pendingAdvancedDrawPositions: undefined,
       unadvancedFiltered: 0,
-      unadvancedPending: 1,
+      unadvancedPending: 2,
     },
   };
   expectedByeRemoval = {
     initialByeMatchUpCount: 15,
     clearExpect: [
       [0, 12],
-      [1, 9],
-      [2, 5],
+      [1, 8],
+      [2, 4],
     ],
   };
 
@@ -269,20 +268,12 @@ function generateCompass({
     expectedByeDrawPositions,
   });
 
-  const { drawDefinition: snapshot } = drawEngine.getState();
-
   testByeRemoval({ stage, expectedByeRemoval });
   checkByeAdvancedDrawPositions({
     stage,
     advanced: false,
     expectedByeDrawPositions,
   });
-
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/documentation/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(snapshot, undefined, 2));
 }
 
 function assignedByes(assignments) {
