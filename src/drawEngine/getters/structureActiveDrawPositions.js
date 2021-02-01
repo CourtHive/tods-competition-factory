@@ -1,4 +1,3 @@
-import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
@@ -11,6 +10,7 @@ import {
 } from '../../utilities';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
+import { isActiveMatchUp } from './activeMatchUp';
 
 // active drawPositions occur more than once in the matchUps of a structure,
 // OR are paired with active drawPositions
@@ -22,11 +22,9 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     structure,
     matchUpFilters,
   });
-  const activeMatchUps = matchUps.filter(
-    ({ score, winningSide, matchUpStatus }) =>
-      score?.scoreStringSide1 ||
-      winningSide ||
-      isActiveMatchUpStatus({ matchUpStatus })
+
+  const activeMatchUps = matchUps.filter((matchUp) =>
+    isActiveMatchUp({ matchUp })
   );
 
   const { positionAssignments } = getPositionAssignments({
