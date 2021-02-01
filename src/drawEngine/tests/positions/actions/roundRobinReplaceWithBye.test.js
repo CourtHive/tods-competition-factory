@@ -1,22 +1,13 @@
 import mocksEngine from '../../../../mocksEngine';
+import { instanceCount } from '../../../../utilities';
 import tournamentEngine from '../../../../tournamentEngine';
 
-import {
-  ASSIGN_BYE,
-  // REMOVE_ASSIGNMENT,
-} from '../../../../constants/positionActionConstants';
-import {
-  // ALTERNATE,
-  DIRECT_ACCEPTANCE,
-  WITHDRAWN,
-} from '../../../../constants/entryStatusConstants';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
 import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
-import { instanceCount } from '../../../../utilities';
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [
