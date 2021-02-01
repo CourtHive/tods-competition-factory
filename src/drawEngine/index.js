@@ -160,9 +160,8 @@ export const drawEngine = (function () {
 
     if (result?.success) {
       notifySubscribers();
-    } else {
-      deleteNotices();
     }
+    deleteNotices();
 
     return result;
   }

@@ -135,9 +135,8 @@ export const tournamentEngine = (function () {
 
     if (result?.success) {
       notifySubscribers();
-    } else {
-      deleteNotices();
     }
+    deleteNotices();
 
     return result;
   }
