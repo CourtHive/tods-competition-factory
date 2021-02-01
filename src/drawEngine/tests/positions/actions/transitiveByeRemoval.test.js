@@ -86,7 +86,7 @@ function swapTest({ swapPosition }) {
     [3, 4],
     [5, 6],
     [7, 8],
-    [1, 4],
+    [1, 3],
     [8, undefined],
     [1, undefined], // drawPosition 4 is now a BYE, advancing 1
   ]);
@@ -111,7 +111,7 @@ function swapTest({ swapPosition }) {
     roundNumber: 2,
     roundPosition: 1,
   });
-  expect(matchUp.drawPositions).toEqual([1, 4]);
+  expect(matchUp.drawPositions).toEqual([1, 3]);
 
   swapPositions({ drawPosition: 5, swapPosition, drawId, structureId });
 
