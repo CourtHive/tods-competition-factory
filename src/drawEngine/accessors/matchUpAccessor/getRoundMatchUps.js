@@ -54,9 +54,10 @@ export function getRoundMatchUps({ matchUps = [] }) {
       .map((matchUp) => matchUp.drawPositions)
       .flat();
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
-      roundProfile[roundNumber].drawPositions = currentRoundDrawPositions.sort(
-        numericSort
-      );
+      const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
+      const pairedDrawPositions = chunkArray(orderedDrawPositions, 2);
+      roundProfile[roundNumber].drawPositions = orderedDrawPositions;
+      roundProfile[roundNumber].pairedDrawPositions = pairedDrawPositions;
     } else {
       const priorRoundDrawPositions =
         roundProfile[roundNumber - 1].drawPositions;
@@ -67,31 +68,30 @@ export function getRoundMatchUps({ matchUps = [] }) {
         chunkFactor
       );
       // insures that drawPositions are returned in top to bottom order
-      const roundDrawPositions = currentRoundMatchUps
-        .map((matchUp) => {
-          const { roundPosition, drawPositions } = matchUp;
-          if (!roundPosition) return drawPositions;
-          const filteredDrawPositions = drawPositions.filter((f) => f);
-          if (!filteredDrawPositions.length) return [undefined, undefined];
-          if (filteredDrawPositions.length === 2)
-            return drawPositions.sort(numericSort);
-          if (!priorRoundDrawPositions.includes(filteredDrawPositions[0]))
-            return [filteredDrawPositions[0], undefined];
-          const targetChunkIndex = (roundPosition - 1) * 2;
-          const targetChunks = priorRoundDrawPositionChunks.slice(
-            targetChunkIndex,
-            targetChunkIndex + 2
+      const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
+        const { roundPosition, drawPositions } = matchUp;
+        if (!roundPosition) return drawPositions;
+        const filteredDrawPositions = drawPositions.filter((f) => f);
+        if (!filteredDrawPositions.length) return [undefined, undefined];
+        if (filteredDrawPositions.length === 2)
+          return drawPositions.sort(numericSort);
+        if (!priorRoundDrawPositions.includes(filteredDrawPositions[0]))
+          return [filteredDrawPositions[0], undefined];
+        const targetChunkIndex = (roundPosition - 1) * 2;
+        const targetChunks = priorRoundDrawPositionChunks.slice(
+          targetChunkIndex,
+          targetChunkIndex + 2
+        );
+        const orderedPositions = targetChunks.map((chunk) => {
+          const drawPositionInChunk = drawPositions.find((drawPosition) =>
+            chunk.includes(drawPosition)
           );
-          const orderedPositions = targetChunks.map((chunk) => {
-            const drawPositionInChunk = drawPositions.find((drawPosition) =>
-              chunk.includes(drawPosition)
-            );
-            return drawPositionInChunk;
-          });
-          return orderedPositions;
-        })
-        .flat();
-      roundProfile[roundNumber].drawPositions = roundDrawPositions;
+          return drawPositionInChunk;
+        });
+        return orderedPositions;
+      });
+      roundProfile[roundNumber].drawPositions = roundDrawPositions.flat();
+      roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
     roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
     roundProfile[roundNumber].finishingPositionRange =
