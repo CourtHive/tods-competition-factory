@@ -33,11 +33,13 @@ export function attemptToSetMatchUpStatus(props) {
       }
       matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
       matchUp.matchUpStatusCodes = matchUpStatusCodes;
+      console.log('addNotice');
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
     matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
+    console.log('addNotice');
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
   } else if (matchUpStatus === BYE) {
     console.log('attemptToSetMatchUpStatusBYE ...');

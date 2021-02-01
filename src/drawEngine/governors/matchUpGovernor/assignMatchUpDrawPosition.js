@@ -72,6 +72,7 @@ export function assignMatchUpDrawPosition({
 
   matchUp.drawPositions = updatedDrawPositions;
   const matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
+  console.log('addNotice');
 
   Object.assign(matchUp, {
     drawPositions: updatedDrawPositions,
@@ -135,7 +136,7 @@ export function assignMatchUpDrawPosition({
             'winnerMatchUp in different structure... participant is in different targetDrawPosition'
           );
         } else {
-          console.log('boo');
+          console.log('boo @#%#@$@$^$%^@$#%');
           /*
           removeSubsequentRoundsParticipant({
             drawDefinition,

@@ -11,6 +11,7 @@ import {
 } from '../../getters/positionsGetter';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -34,7 +35,6 @@ export function drawPositionRemovals({
     structure,
   });
 
-  // TODO: don't clear a BYE if the soure matchUp is a bye-pair
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
       if (assignment.drawPosition === drawPosition) {
@@ -47,6 +47,15 @@ export function drawPositionRemovals({
     },
     false
   );
+
+  if (structure.structureType === CONTAINER) {
+    return modifyRoundRobinMatchUps({
+      drawPositionCleared,
+      positionAssignments,
+      drawDefinition,
+      structure,
+    });
+  }
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps: structureMatchUps } = getAllStructureMatchUps({
@@ -198,13 +207,15 @@ function removeDrawPosition({
   } = targetData;
 
   const { positionAssignments } = getPositionAssignments({ structure });
-  const matchUpContainsBye = positionAssignments
-    .filter(({ drawPosition }) =>
-      targetMatchUp.drawPositions.includes(drawPosition)
-    )
-    .find(({ bye }) => bye);
+  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+    targetMatchUp.drawPositions.includes(drawPosition)
+  );
+  const matchUpContainsBye = matchUpAssignments.filter(
+    (assignment) => assignment.bye
+  ).length;
 
-  targetMatchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+  const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+  Object.assign(targetMatchUp, { matchUpStatus });
   addNotice({
     topic: 'modifyMatchUp',
     payload: { matchUp: targetMatchUp },
@@ -252,6 +263,8 @@ export function removeSubsequentRoundsParticipant({
     console.log('ERROR: missing params');
     return;
   }
+  const { structure } = findStructure({ drawDefinition, structureId });
+  if (structure.structureType === CONTAINER) return;
 
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
   const matchUps = mappedMatchUps[structureId].matchUps;
@@ -261,16 +274,14 @@ export function removeSubsequentRoundsParticipant({
     matchUps,
   });
 
-  const relevantMatchUps = matchUps.filter(
+  const relevantMatchUps = matchUps?.filter(
     (matchUp) =>
-      // matchUp.roundNumber > 1 &&
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
       matchUp.drawPositions.includes(targetDrawPosition)
   );
 
-  const { structure } = findStructure({ drawDefinition, structureId });
-  relevantMatchUps.forEach((matchUp) => {
+  relevantMatchUps?.forEach((matchUp) => {
     removeDrawPosition({
       drawDefinition,
       structure,
@@ -282,7 +293,7 @@ export function removeSubsequentRoundsParticipant({
   });
 }
 
-function getInitialRoundNumber({ drawPosition, matchUps }) {
+function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
   // determine the initial round where drawPosition appears
   // drawPosition cannot be removed from its initial round
   const initialRoundNumber = matchUps
@@ -293,4 +304,32 @@ function getInitialRoundNumber({ drawPosition, matchUps }) {
     .map(({ roundNumber }) => parseInt(roundNumber))
     .sort(numericSort)[0];
   return { initialRoundNumber };
+}
+
+function modifyRoundRobinMatchUps({
+  drawPositionCleared,
+  positionAssignments,
+  drawDefinition,
+  structure,
+}) {
+  const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
+
+  matchUps.forEach((matchUp) => {
+    const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+      matchUp.drawPositions.includes(drawPosition)
+    );
+    const matchUpContainsBye = matchUpAssignments.filter(
+      (assignment) => assignment.bye
+    ).length;
+
+    const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+
+    Object.assign(matchUp, { matchUpStatus });
+    addNotice({
+      topic: 'modifyMatchUp',
+      payload: { matchUp },
+    });
+  });
+
+  return { drawPositionCleared };
 }

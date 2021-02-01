@@ -2,6 +2,8 @@ import tournamentEngine from '../../tournamentEngine';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { REMOVE_ASSIGNMENT } from '../../constants/positionActionConstants';
+import { BYE } from '../../constants/matchUpStatusConstants';
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 
 export function getOrderedDrawPositionPairs({ structureId } = {}) {
   const matchUpFilters = { structureIds: [structureId] };
@@ -61,4 +63,31 @@ export function removeAssignment({
   Object.assign(payload, { replaceWithBye });
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
+}
+
+export function replaceWithBye({ drawId, structureId, drawPosition }) {
+  let { validActions } = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  let { method, payload } = validActions.find(({ type }) => type === BYE);
+  let result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+  return result;
+}
+
+export function replaceWithAlternate({ drawId, structureId, drawPosition }) {
+  const { validActions } = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  let result = validActions.find(({ type }) => type === ALTERNATE);
+  let { method, payload, availableAlternatesParticipantIds } = result;
+  let alternateParticipantId = availableAlternatesParticipantIds[0];
+  Object.assign(payload, { alternateParticipantId });
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+  return result;
 }
