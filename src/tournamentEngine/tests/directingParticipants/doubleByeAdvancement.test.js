@@ -105,7 +105,7 @@ it('can create double bye and remove advanced participant when outcome is reset'
   expect(finalMatchUp.drawPositions.filter((f) => f)).toEqual([]);
 });
 
-it.only('can create double bye and replace bye with alternate', () => {
+it('can create double bye and replace bye with alternate', () => {
   tournamentEngine.devContext(true);
   const participantsProfile = {
     participantsCount: 16,
@@ -240,8 +240,7 @@ it.only('can create double bye and replace bye with alternate', () => {
   const finalMatchUp = matchUps.find(
     (matchUp) => matchUp.roundNumber === 3 && matchUp.roundPosition === 1
   );
-  console.log({ finalMatchUp });
-  /*
+  expect(finalMatchUp.drawPositions).toEqual([4, undefined]);
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
   scoreAction = validActions.find(({ type }) => type === SCORE);
   ({ method, params } = scoreAction);
@@ -269,7 +268,7 @@ it.only('can create double bye and replace bye with alternate', () => {
     drawPosition: 4,
     expectations: { bye: 4, complete: 2, pending: 0, upcoming: 1 },
   });
-  */
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
 });
 
 function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
