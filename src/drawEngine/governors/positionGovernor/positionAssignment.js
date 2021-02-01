@@ -1,12 +1,13 @@
-import { findStructure } from '../../getters/findStructure';
-import { isValidSeedPosition } from '../../getters/seedGetter';
-import { participantInEntries } from '../../getters/entryGetter';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { participantInEntries } from '../../getters/entryGetter';
+import { isValidSeedPosition } from '../../getters/seedGetter';
+import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -105,6 +106,12 @@ export function assignDrawPosition({
       positionAssignments,
       isByeReplacement,
       placementScenario,
+    });
+  } else {
+    modifyRoundRobinMatchUpsStatus({
+      positionAssignments,
+      drawDefinition,
+      structure,
     });
   }
 

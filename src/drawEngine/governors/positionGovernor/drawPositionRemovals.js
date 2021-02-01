@@ -1,3 +1,4 @@
+import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
@@ -49,12 +50,12 @@ export function drawPositionRemovals({
   );
 
   if (structure.structureType === CONTAINER) {
-    return modifyRoundRobinMatchUps({
-      drawPositionCleared,
+    modifyRoundRobinMatchUpsStatus({
       positionAssignments,
       drawDefinition,
       structure,
     });
+    return { drawPositionCleared };
   }
 
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -304,32 +305,4 @@ function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
     .map(({ roundNumber }) => parseInt(roundNumber))
     .sort(numericSort)[0];
   return { initialRoundNumber };
-}
-
-function modifyRoundRobinMatchUps({
-  drawPositionCleared,
-  positionAssignments,
-  drawDefinition,
-  structure,
-}) {
-  const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
-
-  matchUps.forEach((matchUp) => {
-    const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-      matchUp.drawPositions.includes(drawPosition)
-    );
-    const matchUpContainsBye = matchUpAssignments.filter(
-      (assignment) => assignment.bye
-    ).length;
-
-    const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
-
-    Object.assign(matchUp, { matchUpStatus });
-    addNotice({
-      topic: 'modifyMatchUp',
-      payload: { matchUp },
-    });
-  });
-
-  return { drawPositionCleared };
 }
