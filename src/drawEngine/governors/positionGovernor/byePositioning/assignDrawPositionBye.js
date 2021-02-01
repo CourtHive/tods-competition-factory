@@ -26,6 +26,8 @@ export function assignDrawPositionBye({
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (structure.stage === 'CONSOLATION')
+    console.log('assignDrawPositionBye', { drawPosition });
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
