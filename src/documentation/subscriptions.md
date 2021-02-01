@@ -12,7 +12,7 @@ Subscriptions enable external methods to be called when certain events occur whi
 const subscriptions = {
   modifyMatchUp: ({ payload }) => {}, // payload = { matchUp }
   addMatchUps: ({ payload }) => {}, // payload = { matchUps }
-  deleteMatchUps: ({ payload }) => {}, // payload = { matchUpIds}
+  deletedMatchUpIds: ({ payload }) => {}, // payload = { matchUpIds}
 };
 ```
 
