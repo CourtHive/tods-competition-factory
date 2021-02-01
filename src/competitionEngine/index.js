@@ -78,9 +78,8 @@ export const competitionEngine = (function () {
 
     if (result?.success) {
       notifySubscribers();
-    } else {
-      deleteNotices();
     }
+    deleteNotices();
 
     return result;
   }

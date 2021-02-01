@@ -72,7 +72,7 @@ export function positionByes({
       structureId,
       drawPosition,
     });
-    if (result && result.error) return result;
+    if (result?.error) return result;
   }
 
   return SUCCESS;

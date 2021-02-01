@@ -1,10 +1,14 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { intersection, numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
-import { intersection } from '../../../utilities';
+import {
+  getPositionAssignments,
+  structureAssignedDrawPositions,
+} from '../../getters/positionsGetter';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 
@@ -30,6 +34,7 @@ export function drawPositionRemovals({
     structure,
   });
 
+  // TODO: don't clear a BYE if the soure matchUp is a bye-pair
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
       if (assignment.drawPosition === drawPosition) {
@@ -99,6 +104,7 @@ export function drawPositionRemovals({
       }
     })
     .filter((f) => f);
+
   const tasks = pairingDetails.reduce((tasks, pairingDetail) => {
     const {
       roundNumber,
@@ -112,6 +118,7 @@ export function drawPositionRemovals({
       roundNumber: roundNumber + 1,
       targetDrawPosition: pairedDrawPosition,
       relevantPair: pairedDrawPositionByeAdvancedPair,
+      subsequentRoundRemoval: true,
     };
     const newTasks = [roundRemoval, byeAdvancedRemoval].filter((f) => f);
     return tasks.concat(...newTasks);
@@ -122,69 +129,168 @@ export function drawPositionRemovals({
       (matchUp) =>
         intersection(matchUp.drawPositions, relevantPair).length === 2
     );
-    const sourceMatchUpWinnerDrawPositionIndex = targetMatchUp.drawPositions.indexOf(
-      drawPosition
-    );
-    const targetData = positionTargets({
-      matchUpId: targetMatchUp.matchUpId,
-      structure,
+    if (!targetMatchUp) {
+      return;
+    }
+    removeSubsequentRoundsParticipant({
       drawDefinition,
       mappedMatchUps,
       inContextDrawMatchUps,
-      sourceMatchUpWinnerDrawPositionIndex,
+      structureId,
+      roundNumber,
+      targetDrawPosition,
     });
-    const {
-      targetLinks: { winnerTargetLink },
-      targetMatchUps: {
-        loserMatchUp,
-        winnerMatchUp,
-        loserMatchUpDrawPositionIndex,
-        winnerMatchUpDrawPositionIndex,
-      },
-    } = targetData;
-
-    if (roundNumber !== 1) {
-      targetMatchUp.drawPositions = targetMatchUp.drawPositions.map(
-        (drawPosition) =>
-          drawPosition !== targetDrawPosition ? drawPosition : undefined
-      );
-    }
-
-    const matchUpContainsBye = positionAssignments
-      .filter(({ drawPosition }) =>
-        targetMatchUp.drawPositions.includes(drawPosition)
-      )
-      .find(({ bye }) => bye);
-
-    targetMatchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
-    addNotice({
-      topic: 'modifyMatchUp',
-      payload: { matchUp: targetMatchUp },
+    removeDrawPosition({
+      drawDefinition,
+      structure,
+      mappedMatchUps,
+      inContextDrawMatchUps,
+      targetMatchUp,
+      drawPosition,
     });
+  });
 
-    if (
-      loserMatchUp &&
-      loserMatchUp.matchUpStatus === BYE &&
-      loserMatchUp.structureId !== targetData.matchUp.structureId
-    ) {
-      const { drawPositions } = loserMatchUp;
+  return { tasks, drawPositionCleared };
+}
+
+function removeDrawPosition({
+  drawDefinition,
+  structure,
+  mappedMatchUps,
+  inContextDrawMatchUps,
+  targetMatchUp,
+  drawPosition,
+}) {
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  const matchUps = mappedMatchUps[structure.structureId].matchUps;
+  const { initialRoundNumber } = getInitialRoundNumber({
+    drawPosition,
+    matchUps,
+  });
+  if (targetMatchUp.roundNumber > initialRoundNumber) {
+    targetMatchUp.drawPositions = (targetMatchUp.drawPositions || []).map(
+      (currentDrawPosition) => {
+        return currentDrawPosition === drawPosition
+          ? undefined
+          : currentDrawPosition;
+      }
+    );
+  }
+  const sourceMatchUpWinnerDrawPositionIndex = targetMatchUp.drawPositions.indexOf(
+    drawPosition
+  );
+  const targetData = positionTargets({
+    matchUpId: targetMatchUp.matchUpId,
+    structure,
+    drawDefinition,
+    mappedMatchUps,
+    inContextDrawMatchUps,
+    sourceMatchUpWinnerDrawPositionIndex,
+  });
+  const {
+    targetLinks: { winnerTargetLink },
+    targetMatchUps: {
+      loserMatchUp,
+      winnerMatchUp,
+      loserMatchUpDrawPositionIndex,
+      winnerMatchUpDrawPositionIndex,
+    },
+  } = targetData;
+
+  const { positionAssignments } = getPositionAssignments({ structure });
+  const matchUpContainsBye = positionAssignments
+    .filter(({ drawPosition }) =>
+      targetMatchUp.drawPositions.includes(drawPosition)
+    )
+    .find(({ bye }) => bye);
+
+  targetMatchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+  addNotice({
+    topic: 'modifyMatchUp',
+    payload: { matchUp: targetMatchUp },
+  });
+
+  if (
+    loserMatchUp &&
+    loserMatchUp.structureId !== targetData.matchUp.structureId
+  ) {
+    const { drawPositions } = loserMatchUp;
+    const loserMatchUpDrawPosition =
+      drawPositions[loserMatchUpDrawPositionIndex];
+
+    // if source matchUp contains BYE don't removed directed BYE
+    if (!matchUpContainsBye) {
       drawPositionRemovals({
         inContextDrawMatchUps,
         drawDefinition,
         mappedMatchUps,
         structureId: loserMatchUp.structureId,
-        drawPosition: drawPositions[loserMatchUpDrawPositionIndex],
+        drawPosition: loserMatchUpDrawPosition,
       });
     }
-    if (
-      winnerMatchUp &&
-      winnerMatchUp.structureId !== targetData.matchUp.structureId
-    ) {
-      console.log('linked structure winnerMatchUp removal', {
-        winnerTargetLink,
-        winnerMatchUpDrawPositionIndex,
-      });
-    }
+  }
+  if (
+    winnerMatchUp &&
+    winnerMatchUp.structureId !== targetData.matchUp.structureId
+  ) {
+    console.log('linked structure winnerMatchUp removal', {
+      winnerTargetLink,
+      winnerMatchUpDrawPositionIndex,
+    });
+  }
+}
+
+export function removeSubsequentRoundsParticipant({
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
+  roundNumber,
+  inContextDrawMatchUps,
+  targetDrawPosition,
+}) {
+  if (!mappedMatchUps && !drawDefinition) {
+    console.log('ERROR: missing params');
+    return;
+  }
+
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  const matchUps = mappedMatchUps[structureId].matchUps;
+
+  const { initialRoundNumber } = getInitialRoundNumber({
+    drawPosition: targetDrawPosition,
+    matchUps,
   });
-  return { tasks, drawPositionCleared };
+
+  const relevantMatchUps = matchUps.filter(
+    (matchUp) =>
+      // matchUp.roundNumber > 1 &&
+      matchUp.roundNumber >= roundNumber &&
+      matchUp.roundNumber !== initialRoundNumber &&
+      matchUp.drawPositions.includes(targetDrawPosition)
+  );
+
+  const { structure } = findStructure({ drawDefinition, structureId });
+  relevantMatchUps.forEach((matchUp) => {
+    removeDrawPosition({
+      drawDefinition,
+      structure,
+      mappedMatchUps,
+      inContextDrawMatchUps,
+      targetMatchUp: matchUp,
+      drawPosition: targetDrawPosition,
+    });
+  });
+}
+
+function getInitialRoundNumber({ drawPosition, matchUps }) {
+  // determine the initial round where drawPosition appears
+  // drawPosition cannot be removed from its initial round
+  const initialRoundNumber = matchUps
+    .filter(
+      ({ drawPositions }) =>
+        drawPosition && drawPositions.includes(drawPosition)
+    )
+    .map(({ roundNumber }) => parseInt(roundNumber))
+    .sort(numericSort)[0];
+  return { initialRoundNumber };
 }
