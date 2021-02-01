@@ -18,11 +18,9 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   });
 
   const subscriptions = {
-    deletedMatchUpIds: ({ payload }) => {
-      const noticesCount = payload.notices.length;
-      expect(noticesCount).toEqual(1);
-      expect(payload.notices[0].topic).toEqual('deletedMatchUpIds');
-      expect(payload.notices[0].payload.matchUpIds).not.toBeUndefined();
+    deletedMatchUpIds: (notices) => {
+      expect(notices.length).toEqual(1);
+      expect(notices[0].matchUpIds.length).toEqual(31);
     },
   };
   tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);

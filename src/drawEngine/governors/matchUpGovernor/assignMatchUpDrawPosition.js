@@ -16,6 +16,7 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { addNotice } from '../../../global/globalState';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -72,11 +73,15 @@ export function assignMatchUpDrawPosition({
 
   matchUp.drawPositions = updatedDrawPositions;
   const matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
-  console.log('addNotice');
 
   Object.assign(matchUp, {
     drawPositions: updatedDrawPositions,
     matchUpStatus,
+  });
+
+  addNotice({
+    topic: 'modifyMatchUp',
+    payload: { matchUp },
   });
 
   if (positionAssigned && isByeMatchUp) {

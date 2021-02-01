@@ -18,17 +18,10 @@ it('can notify subscriber when audit information is added', () => {
   });
 
   const subscriptions = {
-    audit: ({ payload }) => {
-      const noticesCount = payload.notices.length;
-      expect(noticesCount).toEqual(1);
-      expect(payload.notices[0].topic).toEqual('audit');
-      expect(payload.notices[0].payload.length).toEqual(1);
-      expect(payload.notices[0].payload[0].action).toEqual(
-        'deleteDrawDefinition'
-      );
-      expect(
-        payload.notices[0].payload[0].payload.drawDefinition
-      ).not.toBeUndefined();
+    audit: (notices) => {
+      expect(notices.length).toEqual(1);
+      expect(notices[0][0].action).toEqual('deleteDrawDefinition');
+      expect(notices[0][0].payload.drawDefinition).not.toBeUndefined();
     },
   };
   tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);

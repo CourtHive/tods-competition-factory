@@ -17,11 +17,8 @@ it('can notify subscriber when matchUps are modified', () => {
   });
 
   const subscriptions = {
-    modifyMatchUp: ({ payload }) => {
-      const noticesCount = payload.notices.length;
-      expect(noticesCount).toEqual(1);
-      expect(payload.notices[0].topic).toEqual('modifyMatchUp');
-      expect(payload.notices[0].payload.matchUp).not.toBeUndefined();
+    modifyMatchUp: (results) => {
+      expect(results.length).toEqual(2);
     },
   };
   tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);

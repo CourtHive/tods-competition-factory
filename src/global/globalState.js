@@ -48,10 +48,10 @@ export function addNotice({ topic, payload }) {
 
 export function getNotices({ topic }) {
   if (typeof topic !== 'string') return [];
-  const notices = globalState.notices.filter(
-    (notice) => notice.topic === topic
-  );
-  return notices.length && { notices };
+  const notices = globalState.notices
+    .filter((notice) => notice.topic === topic)
+    .map((notice) => notice.payload);
+  return notices.length && notices;
 }
 
 export function deleteNotices() {
@@ -63,9 +63,9 @@ export function getTopics() {
   return { topics };
 }
 
-export function callListener({ topic, payload }) {
+export function callListener({ topic, notices }) {
   const method = globalState.subscriptions[topic];
   if (method && typeof method === 'function') {
-    method({ payload });
+    method(notices);
   }
 }

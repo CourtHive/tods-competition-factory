@@ -1,4 +1,7 @@
+import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
+import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
+
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DRAW_ID_EXISTS } from '../../../../constants/errorConditionConstants';
 
@@ -24,5 +27,9 @@ export function addDrawDefinition({
       event.drawDefinitions.push(drawDefinition);
     }
   }
+
+  const { matchUps } = allDrawMatchUps({ drawDefinition, event });
+  addNotice({ topic: 'addMatchUps', payload: { matchUps } });
+
   return SUCCESS;
 }
