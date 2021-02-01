@@ -24,7 +24,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   });
   const activeMatchUps = matchUps.filter(
     ({ score, winningSide, matchUpStatus }) =>
-      score?.sets?.length ||
+      score?.scoreStringSide1 ||
       winningSide ||
       isActiveMatchUpStatus({ matchUpStatus })
   );
