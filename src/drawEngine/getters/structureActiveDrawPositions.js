@@ -1,7 +1,7 @@
+import { isActiveMatchUpStatus } from '../governors/matchUpGovernor/checkStatusType';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
-import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
 import {
   generateRange,
@@ -23,8 +23,11 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     matchUpFilters,
   });
 
-  const activeMatchUps = matchUps.filter((matchUp) =>
-    isActiveMatchUp({ matchUp })
+  const activeMatchUps = matchUps.filter(
+    ({ score, winningSide, matchUpStatus }) =>
+      score?.scoreStringSide1 ||
+      winningSide ||
+      isActiveMatchUpStatus({ matchUpStatus })
   );
 
   const { positionAssignments } = getPositionAssignments({
