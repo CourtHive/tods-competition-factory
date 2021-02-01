@@ -31,7 +31,7 @@ export function feedInLinks({
       const feedProfile =
         roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
           ? roundFeedProfiles[roundNumber - 1]
-          : roundNumber % 2
+          : roundNumber % 2 || fmlc
           ? TOP_DOWN
           : BOTTOM_UP;
 
