@@ -26,8 +26,6 @@ export function assignDrawPositionBye({
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure.stage === 'CONSOLATION')
-    console.log('assignDrawPositionBye', { drawPosition });
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
@@ -200,9 +198,6 @@ function advanceDrawPosition({
     const pairedDrawPosition = existingDrawPositions.find(
       (drawPosition) => drawPosition !== drawPositionToAdvance
     );
-
-    // This should work but does NOT because apparently order is still important... why?
-    // const drawPositions = [pairedDrawPosition, drawPositionToAdvance];
 
     const unfilledDrawPosition = unfilledAssignment?.drawPosition;
 
