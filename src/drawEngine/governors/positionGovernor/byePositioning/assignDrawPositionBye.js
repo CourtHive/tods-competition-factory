@@ -169,14 +169,32 @@ function advanceDrawPosition({
 
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
-    const { matchUp } = findMatchUp({
+    const { matchUp, structure } = findMatchUp({
       drawDefinition,
       mappedMatchUps,
       matchUpId: winnerMatchUp.matchUpId,
     });
+    const { positionAssignments } = getPositionAssignments({ structure });
     const existingDrawPositions = winnerMatchUp.drawPositions.filter((f) => f);
-    if (existingDrawPositions.length > 1)
-      return { error: DRAW_POSITION_ASSIGNED };
+    const unfilledAssignment = positionAssignments.find(
+      (assignment) => !drawPositionFilled(assignment).filled
+    );
+    const existingByeAssignments = positionAssignments
+      .filter(({ drawPosition }) =>
+        existingDrawPositions.includes(drawPosition)
+      )
+      .filter(({ bye }) => bye);
+    const advancingAssignmentIsBye = positionAssignments.find(
+      ({ drawPosition }) => drawPosition === drawPositionToAdvance
+    );
+    const isByeAdvancedBye =
+      existingByeAssignments.length === 2 && advancingAssignmentIsBye;
+    if (!isByeAdvancedBye && existingDrawPositions.length > 1) {
+      if (!unfilledAssignment) {
+        console.log('####');
+        return { error: DRAW_POSITION_ASSIGNED };
+      }
+    }
     const pairedDrawPosition = existingDrawPositions.find(
       (drawPosition) => drawPosition !== drawPositionToAdvance
     );
@@ -184,7 +202,9 @@ function advanceDrawPosition({
     // This should work but does NOT because apparently order is still important... why?
     // const drawPositions = [pairedDrawPosition, drawPositionToAdvance];
 
-    let drawPositionAssigned;
+    const unfilledDrawPosition = unfilledAssignment?.drawPosition;
+
+    let drawPositionAssigned = isByeAdvancedBye;
     const drawPositions = (matchUp.drawPositions || [])?.map((position) => {
       if (!position && !drawPositionAssigned) {
         drawPositionAssigned = true;
@@ -192,11 +212,17 @@ function advanceDrawPosition({
       } else if (position === drawPositionToAdvance) {
         drawPositionAssigned = true;
         return drawPositionToAdvance;
+      } else if (unfilledDrawPosition && position === unfilledDrawPosition) {
+        drawPositionAssigned = true;
+        return drawPositionToAdvance;
       } else {
         return position;
       }
     });
-    if (!drawPositionAssigned) return { error: DRAW_POSITION_ASSIGNED };
+    if (!drawPositionAssigned) {
+      console.log('@@@@@@@');
+      return { error: DRAW_POSITION_ASSIGNED };
+    }
     const pairedDrawPositionIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === pairedDrawPosition
     )?.bye;
