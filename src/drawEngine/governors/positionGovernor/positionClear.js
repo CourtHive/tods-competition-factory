@@ -65,26 +65,14 @@ export function clearDrawPosition({
     includeByeMatchUps: true,
   });
 
-  drawPositionRemovals({
+  const { drawPositionCleared, error } = drawPositionRemovals({
     inContextDrawMatchUps,
     drawDefinition,
     mappedMatchUps,
     structureId,
     drawPosition,
   });
-
-  const drawPositionCleared = positionAssignments.reduce(
-    (cleared, assignment) => {
-      if (assignment.drawPosition === drawPosition) {
-        assignment.participantId = undefined;
-        delete assignment.qualifier;
-        delete assignment.bye;
-        return true;
-      }
-      return cleared;
-    },
-    false
-  );
+  if (error) return { error };
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 

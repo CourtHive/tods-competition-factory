@@ -26,11 +26,8 @@ export function assignDrawPositionBye({
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
-
-  const {
-    activeDrawPositions,
-    positionAssignments,
-  } = structureActiveDrawPositions({
+  const { positionAssignments } = getPositionAssignments({ structure });
+  const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
     structureId,
   });
@@ -43,7 +40,7 @@ export function assignDrawPositionBye({
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
 
   const { filled, containsBye } = drawPositionFilled(positionAssignment);
-  // if (containsBye) return SUCCESS; // nothing to be done
+  if (containsBye) return SUCCESS; // nothing to be done
 
   if (filled && !containsBye) {
     console.log('assignDrawPositionBye ##');
@@ -172,7 +169,7 @@ function advanceDrawPosition({
 
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
-    const { matchUp, structure } = findMatchUp({
+    const { matchUp } = findMatchUp({
       drawDefinition,
       mappedMatchUps,
       matchUpId: winnerMatchUp.matchUpId,
@@ -252,10 +249,7 @@ function advanceDrawPosition({
       structureId: loserTargetLink.target.structureId,
       drawPosition: targetDrawPosition,
     });
-    if (result.error) {
-      console.log({ result });
-      return result;
-    }
+    if (result.error) return result;
   }
 
   return SUCCESS;
