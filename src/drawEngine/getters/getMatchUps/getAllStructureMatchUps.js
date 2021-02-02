@@ -254,7 +254,7 @@ export function getAllStructureMatchUps({
     }
 
     if (Array.isArray(drawPositions)) {
-      const orderedDrawPositions = getOrderedDrawPositions({
+      const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
         drawPositions,
         roundProfile,
         roundPosition,
@@ -264,6 +264,7 @@ export function getAllStructureMatchUps({
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
         const side = getSide({
+          displaySideNumber: displayOrder[index],
           seedAssignments,
           positionAssignments,
           drawPosition,
