@@ -1,6 +1,7 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
 import { getPositionAssignments } from './positionsGetter';
+import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
 import {
   generateRange,
@@ -10,7 +11,6 @@ import {
 } from '../../utilities';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
-import { isActiveMatchUp } from './activeMatchUp';
 
 // active drawPositions occur more than once in the matchUps of a structure,
 // OR are paired with active drawPositions
@@ -23,9 +23,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
     matchUpFilters,
   });
 
-  const activeMatchUps = matchUps.filter((matchUp) =>
-    isActiveMatchUp({ matchUp })
-  );
+  const activeMatchUps = matchUps.filter(isActiveMatchUp);
 
   const { positionAssignments } = getPositionAssignments({
     structure,

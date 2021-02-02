@@ -123,7 +123,6 @@ it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
 
   expect(byeDrawPositions).toEqual(targetByeDrawPositions);
 
-  // replaceWithAlternate({ drawId, structureId, drawPosition: 8 });
   replaceWithAlternate({ drawId, structureId, drawPosition: 8 });
   let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
   let finalMatchUp = matchUps.find(
@@ -140,7 +139,8 @@ it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
   ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
   finalMatchUp = matchUps.find(({ finishingRound }) => finishingRound === 1);
   expect(finalMatchUp.matchUpStatus).toEqual(BYE);
-  expect(finalMatchUp.drawPositions).toEqual([1, 8]);
+
+  expect(finalMatchUp.drawPositions).toEqual([1, 7]);
 
   let result = replaceWithAlternate({ drawId, structureId, drawPosition: 7 });
   expect(result.success).toEqual(true);

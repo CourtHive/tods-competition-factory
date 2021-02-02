@@ -86,7 +86,10 @@ export function positionActions({
       hasTargetLink?.linkType === LOSER &&
       hasTargetLink?.feedProfile !== DRAW
     ) {
-      if (getDevContext()) console.log('ss2 no valid actions');
+      if (getDevContext())
+        console.log('stageSequence actions disabled', {
+          stageSequence: structure.stageSequence,
+        });
       return { validActions };
     }
   }

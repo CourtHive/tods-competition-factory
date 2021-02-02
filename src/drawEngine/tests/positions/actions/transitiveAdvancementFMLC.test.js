@@ -40,7 +40,7 @@ it('can generate FMLC and properly place BYEs in consolation structure', () => {
   expect(consolationStructureAssignments.byePositions.length).toEqual(2);
 });
 
-it.only('can advance participants when double BYEs are created', () => {
+it('can advance participants when double BYEs are created', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -109,7 +109,6 @@ it.only('can advance participants when double BYEs are created', () => {
   let consolationStructureAssignments = structureAssignedDrawPositions({
     structure: consolationStructure,
   });
-  console.log(consolationStructureAssignments);
   removeAssignment({
     drawId,
     structureId: mainStructure.structureId,
@@ -139,13 +138,6 @@ it.only('can advance participants when double BYEs are created', () => {
       structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId }));
-  consolationStructureAssignments = structureAssignedDrawPositions({
-    structure: consolationStructure,
-  });
-  console.log(
-    { orderedPairs },
-    consolationStructureAssignments.positionAssignments
-  );
   expect(orderedPairs).toEqual([
     [3, 4], // 3 and 4 are BYEs
     [5, 6], // 6 is a BYE

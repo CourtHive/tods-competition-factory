@@ -148,7 +148,6 @@ function advanceDrawPosition({
     matchUpId,
   });
 
-  const stage = structure.stage;
   const { positionAssignments } = getPositionAssignments({
     structure,
   });
@@ -180,17 +179,6 @@ function advanceDrawPosition({
     sourceMatchUpWinnerDrawPositionIndex,
   });
 
-  const { roundNumber, roundPosition, drawPositions } = matchUp;
-  if (stage === 'CONSOLATION' && roundNumber === 3) {
-    console.log('advancing drawPosition', {
-      stage,
-      roundNumber,
-      roundPosition,
-      drawPositions,
-      winnerRoundName: winnerMatchUp.roundName,
-    });
-  }
-
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
     const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
@@ -214,6 +202,8 @@ function advanceDrawPosition({
       ({ drawPosition }) => drawPosition === drawPositionToAdvance
     );
 
+    /// ????????????????????????????????????????
+    // This may be unnecessary....
     const priorPair = sourceDrawPositions?.find(
       (drawPosition) => drawPosition !== drawPositionToAdvance
     );
@@ -224,6 +214,7 @@ function advanceDrawPosition({
       );
     const priorPairIsBye = priorPairAssignment?.bye;
     const isByeAdvancedBye = drawPositionToAdvanceIsBye && priorPairIsBye;
+    /// ????????????????????????????????????????
 
     if (
       existingDrawPositions.length > 1 &&
@@ -286,20 +277,7 @@ function advanceDrawPosition({
         ? drawPositionToAdvance
         : pairedDrawPosition;
 
-      const stage = structure.stage;
-      const { roundPosition, roundNumber } = winnerMatchUp;
       if (advancingDrawPosition) {
-        if (roundNumber === 3) {
-          console.log('advance further because of bye', {
-            advancingDrawPosition,
-            drawPositionToAdvance,
-            drawPositions,
-            pairedDrawPosition,
-            stage,
-            roundNumber,
-            roundPosition,
-          });
-        }
         advanceDrawPosition({
           drawPositionToAdvance: advancingDrawPosition,
           matchUpId: winnerMatchUp.matchUpId,

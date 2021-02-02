@@ -54,7 +54,7 @@ it('correctly assigns positions for Elimination structure', () => {
   expect(result.byePositions.length).toEqual(15);
 });
 
-it.only('correctly assigns BYE positions in consolation structure', () => {
+it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
   const { tournamentRecord } = generateTournamentWithParticipants({
@@ -112,26 +112,11 @@ it.only('correctly assigns BYE positions in consolation structure', () => {
   const finalMatchUp = matchUps.find(
     ({ finishingRound }) => finishingRound === 1
   );
-  console.log(finalMatchUp.drawPositions);
   expect(finalMatchUp.matchUpStatus).toEqual(BYE);
 
   let matchUpStatuses = matchUps.map(({ matchUpStatus }) => matchUpStatus);
-  console.log(instanceCount(matchUpStatuses));
-  // expect(instanceCount(matchUpStatuses)[BYE]).toEqual(3);
-  // expect(matchUps.length).toEqual(3);
-  /*
-  const { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-
-  // in this case there is only one participant going to the consolation structure
-  // ... so all consolation matchUps have matchUpStatus: BYE
-  Object.keys(roundMatchUps).forEach((roundNumber) => {
-    const uniqueMatchUpStatuses = unique(
-      roundMatchUps[roundNumber].map((matchUp) => matchUp.matchUpStatus)
-    );
-    expect(uniqueMatchUpStatuses.length).toEqual(1);
-    expect(uniqueMatchUpStatuses[0]).toEqual(BYE);
-  });
-  */
+  expect(instanceCount(matchUpStatuses)[BYE]).toEqual(15);
+  expect(matchUps.length).toEqual(15);
 });
 
 it('correctly assigns BYE positions in consolation structure', () => {
