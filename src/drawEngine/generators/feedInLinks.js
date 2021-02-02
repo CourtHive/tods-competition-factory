@@ -31,7 +31,7 @@ export function feedInLinks({
       const feedProfile =
         roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
           ? roundFeedProfiles[roundNumber - 1]
-          : roundNumber % 2 || fmlc
+          : roundNumber % 2
           ? TOP_DOWN
           : BOTTOM_UP;
 
@@ -54,7 +54,10 @@ export function feedInLinks({
           structureId: consolationStructure.structureId,
         },
       };
-      if (roundNumber === 2 && fmlc) link.linkCondition = FIRST_MATCHUP;
+      if (roundNumber === 2 && fmlc) {
+        link.linkCondition = FIRST_MATCHUP;
+        link.target.feedProfile = TOP_DOWN;
+      }
       return roundsFed.includes(targetRound) ? link : undefined;
     })
     .filter((f) => f);
