@@ -53,15 +53,16 @@ export function getAllStructureMatchUps({
 
   const thisEvent =
     !context?.eventId ||
-    (!matchUpFilters?.eventIds?.length && !contextFilters?.eventIds?.length) ||
+    (!matchUpFilters?.eventIds?.filter((f) => f).length &&
+      !contextFilters?.eventIds?.filter((f) => f).length) ||
     matchUpFilters?.eventIds?.includes(context.eventId) ||
     contextFilters?.eventIds?.includes(context.eventId);
   const thisStructure =
-    !matchUpFilters?.structureIds?.length ||
+    !matchUpFilters?.structureIds?.filter((f) => f).length ||
     matchUpFilters.structureIds.includes(structure.structureId);
   const thisDraw =
     !drawDefinition ||
-    !matchUpFilters?.drawIds?.length ||
+    !matchUpFilters?.drawIds?.filter((f) => f).length ||
     matchUpFilters.drawIds.includes(drawDefinition.drawId);
 
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
@@ -253,7 +254,7 @@ export function getAllStructureMatchUps({
     }
 
     if (Array.isArray(drawPositions)) {
-      const orderedDrawPositions = getOrderedDrawPositions({
+      const { orderedDrawPositions, displayOrder } = getOrderedDrawPositions({
         drawPositions,
         roundProfile,
         roundPosition,
@@ -263,6 +264,7 @@ export function getAllStructureMatchUps({
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
         const side = getSide({
+          displaySideNumber: displayOrder[index],
           seedAssignments,
           positionAssignments,
           drawPosition,
