@@ -261,10 +261,12 @@ export function getAllStructureMatchUps({
         roundNumber,
       });
       const isFeedRound = roundProfile[roundNumber].feedRound;
+      const reversedDisplayOrder = displayOrder[0] !== orderedDrawPositions[0];
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
-        const displaySideNumber =
-          displayOrder[index] === drawPosition ? sideNumber : 3 - sideNumber;
+        const displaySideNumber = reversedDisplayOrder
+          ? 3 - sideNumber
+          : sideNumber;
         const side = getSide({
           positionAssignments,
           displaySideNumber,
