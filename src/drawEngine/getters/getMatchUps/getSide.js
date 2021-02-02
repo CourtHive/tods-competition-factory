@@ -1,5 +1,6 @@
 export function getSide({
   positionAssignments,
+  displaySideNumber,
   seedAssignments,
   drawPosition,
   isFeedRound,
@@ -10,10 +11,11 @@ export function getSide({
     const sideValue =
       assignment.drawPosition === drawPosition
         ? getSideValue({
+            displaySideNumber,
             seedAssignments,
+            participantId,
             assignment,
             sideNumber,
-            participantId,
           })
         : side;
     return sideValue;
@@ -30,12 +32,17 @@ export function getSide({
 }
 
 function getSideValue({
+  displaySideNumber,
   seedAssignments,
-  assignment,
   participantId,
+  assignment,
   sideNumber,
 }) {
-  const side = { sideNumber, drawPosition: assignment.drawPosition };
+  const side = {
+    drawPosition: assignment.drawPosition,
+    displaySideNumber,
+    sideNumber,
+  };
   if (participantId) {
     const seeding = getSeeding({ seedAssignments, participantId });
     Object.assign(side, seeding, { participantId });
