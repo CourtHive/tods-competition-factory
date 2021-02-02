@@ -179,14 +179,19 @@ function advanceDrawPosition({
     const unfilledAssignment = positionAssignments.find(
       (assignment) => !drawPositionFilled(assignment).filled
     );
+    const existingAssignments = positionAssignments.filter(({ drawPosition }) =>
+      existingDrawPositions.includes(drawPosition)
+    );
     const existingByeAssignments = positionAssignments
       .filter(({ drawPosition }) =>
         existingDrawPositions.includes(drawPosition)
       )
       .filter(({ bye }) => bye);
+
     const advancingAssignmentIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === drawPositionToAdvance
     );
+
     const isByeAdvancedBye =
       existingByeAssignments.length === 2 && advancingAssignmentIsBye;
     if (!isByeAdvancedBye && existingDrawPositions.length > 1) {
@@ -217,7 +222,11 @@ function advanceDrawPosition({
       }
     });
     if (!drawPositionAssigned) {
-      console.log('@@@@@@@');
+      console.log('@@@@@@@', {
+        advancingAssignmentIsBye,
+        existingAssignments,
+        unfilledDrawPosition,
+      });
       return { error: DRAW_POSITION_ASSIGNED };
     }
     const pairedDrawPositionIsBye = positionAssignments.find(
