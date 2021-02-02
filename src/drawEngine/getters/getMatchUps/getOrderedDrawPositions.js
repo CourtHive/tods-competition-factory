@@ -10,21 +10,23 @@ export function getOrderedDrawPositions({
   roundProfile,
   roundNumber,
 }) {
+  const unassignedDrawPositions = [undefined, undefined];
+
   if (noNumeric(drawPositions)) {
-    const orderedDrawPositions = [undefined, undefined];
     return {
-      orderedDrawPositions,
-      displayOrder: orderedDrawPositions,
+      orderedDrawPositions: unassignedDrawPositions,
+      displayOrder: unassignedDrawPositions,
     };
   }
 
-  const displayOrder = roundProfile[roundNumber].pairedDrawPositions.find(
-    (pair) =>
-      intersection(
-        pair,
-        drawPositions.filter((f) => f)
-      ).length
-  );
+  const displayOrder =
+    roundProfile[roundNumber].pairedDrawPositions.find(
+      (pair) =>
+        intersection(
+          pair,
+          drawPositions.filter((f) => f)
+        ).length
+    ) || unassignedDrawPositions;
 
   // ############# IMPORTANT DO NOT CHANGE #################
   // when both present, drawPositions are always sorted numerically
