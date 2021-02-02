@@ -4,6 +4,7 @@ import { numericSort } from '../../../utilities';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 
+// TODO: Consolidate with duplicated version of this function
 export function removeSubsequentRoundsParticipant({
   drawDefinition,
   mappedMatchUps,

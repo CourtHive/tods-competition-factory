@@ -19,13 +19,14 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
+// NOTE: see TODO below for manual positioning of participants in feed arms
+
 export function assignDrawPosition({
   drawDefinition,
   mappedMatchUps,
   structureId,
   drawPosition,
   participantId,
-  isByeReplacement,
   placementScenario,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -104,7 +105,6 @@ export function assignDrawPosition({
       structure,
       drawPosition,
       positionAssignments,
-      isByeReplacement,
       placementScenario,
     });
   } else {
@@ -131,8 +131,6 @@ function addDrawPositionToMatchUps({
   mappedMatchUps,
   structure,
   drawPosition,
-  positionAssignments,
-  isByeReplacement,
   placementScenario,
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
@@ -143,29 +141,20 @@ function addDrawPositionToMatchUps({
     structure,
   });
 
-  const { matchUp, pairedDrawPosition } = getPairedDrawPosition({
+  // This function was developed for testing harness and is used here for convenience
+  // paired position can be found in roundProfile...
+  // TODO: This will probably have to be changed to use roundProfile and to find the first roundNumber
+  // where the drawPosition occurrs... this will be for manual placement in feed arm positions...
+  const { matchUp } = getPairedDrawPosition({
     matchUps,
     drawPosition,
   });
-  const pairedDrawPositionIsBye = positionAssignments.find(
-    ({ drawPosition }) => drawPosition === pairedDrawPosition
-  )?.bye;
-  if (isByeReplacement) {
+  if (matchUp) {
     const result = assignMatchUpDrawPosition({
       drawDefinition,
       mappedMatchUps,
       drawPosition,
-      isByeReplacement,
       placementScenario,
-      matchUpId: matchUp.matchUpId,
-    });
-    if (result.error) return result;
-  } else if (pairedDrawPositionIsBye) {
-    const result = assignMatchUpDrawPosition({
-      drawDefinition,
-      mappedMatchUps,
-      drawPosition,
-      isByeReplacement: true,
       matchUpId: matchUp.matchUpId,
     });
     if (result.error) return result;

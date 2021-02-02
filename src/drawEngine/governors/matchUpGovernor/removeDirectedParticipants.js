@@ -17,6 +17,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function removeDirectedParticipants(props) {
+  console.log('addNotice !!!!!!!!!!!!!!!!!!!!');
   const {
     drawDefinition,
     structure,

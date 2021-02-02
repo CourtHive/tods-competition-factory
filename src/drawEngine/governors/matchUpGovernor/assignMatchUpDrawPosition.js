@@ -62,14 +62,6 @@ export function assignMatchUpDrawPosition({
     updatedDrawPositions.includes(assignment.drawPosition)
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  /*
-  const drawPositions = matchUpAssignments.map(
-    ({ drawPosition }) => drawPosition
-  );
-  const byeAdvancedPosition =
-    isByeMatchUp &&
-    drawPositions.find((position) => position !== drawPosition);
-    */
 
   matchUp.drawPositions = updatedDrawPositions;
   const matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
@@ -102,6 +94,8 @@ export function assignMatchUpDrawPosition({
 
     if (winnerMatchUp)
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
+        /*
+        // NOTE: probably unnecessary now
         const existingDrawPositions =
           winnerMatchUp.drawPositions?.filter((f) => f) || [];
         const existingByePositions = positionAssignments
@@ -118,7 +112,6 @@ export function assignMatchUpDrawPosition({
             ? drawPosition
             : existingByePositions.pop();
         if (targetDrawPosition !== drawPosition) {
-          /*
           const result = removeMatchUpDrawPosition({
             drawDefinition,
             mappedMatchUps,
@@ -127,8 +120,8 @@ export function assignMatchUpDrawPosition({
             matchUpId: winnerMatchUp.matchUpId,
           });
           if (result.error) return result;
-          */
         }
+          */
 
         const result = assignMatchUpDrawPosition({
           drawDefinition,
@@ -221,6 +214,9 @@ export function removeMatchUpDrawPosition({
       console.log({ result });
       */
       } else {
+        console.log(
+          '########################### UNNECESSARY ????????????????????? '
+        );
         removeSubsequentRoundsParticipant({
           drawDefinition,
           mappedMatchUps,
