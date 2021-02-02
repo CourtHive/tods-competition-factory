@@ -26,6 +26,7 @@ export function assignDrawPositionBye({
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
+
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
     drawDefinition,
@@ -169,13 +170,15 @@ function advanceDrawPosition({
 
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
-    const { matchUp, structure } = findMatchUp({
+    const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
       drawDefinition,
       mappedMatchUps,
       matchUpId: winnerMatchUp.matchUpId,
     });
     const { positionAssignments } = getPositionAssignments({ structure });
-    const existingDrawPositions = winnerMatchUp.drawPositions.filter((f) => f);
+    const existingDrawPositions = noContextWinnerMatchUp.drawPositions.filter(
+      (f) => f
+    );
     const unfilledAssignment = positionAssignments.find(
       (assignment) => !drawPositionFilled(assignment).filled
     );
@@ -203,6 +206,11 @@ function advanceDrawPosition({
     const pairedDrawPosition = existingDrawPositions.find(
       (drawPosition) => drawPosition !== drawPositionToAdvance
     );
+    console.log({
+      existingDrawPositions,
+      drawPositionToAdvance,
+      pairedDrawPosition,
+    });
 
     const unfilledDrawPosition = unfilledAssignment?.drawPosition;
 
@@ -238,7 +246,7 @@ function advanceDrawPosition({
 
     const matchUpStatus =
       drawPositionIsBye || pairedDrawPositionIsBye ? BYE : TO_BE_PLAYED;
-    Object.assign(matchUp, {
+    Object.assign(noContextWinnerMatchUp, {
       matchUpStatus,
       score: undefined,
       winningSide: undefined,
@@ -246,7 +254,7 @@ function advanceDrawPosition({
     });
     addNotice({
       topic: 'modifyMatchUp',
-      payload: { matchUp },
+      payload: { matchUp: noContextWinnerMatchUp },
     });
 
     if (pairedDrawPositionIsBye || drawPositionIsBye) {
@@ -255,7 +263,7 @@ function advanceDrawPosition({
         : pairedDrawPosition;
       advanceDrawPosition({
         drawPositionToAdvance: advancingDrawPosition,
-        matchUpId: matchUp.matchUpId,
+        matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawDefinition,
         mappedMatchUps,
