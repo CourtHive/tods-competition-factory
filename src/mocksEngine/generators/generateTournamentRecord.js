@@ -31,6 +31,7 @@ export function generateTournamentRecord({
   participantsProfile,
   drawProfiles,
 
+  completeAllMatchUps,
   inContext,
   goesTo,
 }) {
@@ -85,6 +86,7 @@ export function generateTournamentRecord({
         drawProfile,
         participants,
         tournamentEngine,
+        completeAllMatchUps,
         goesTo,
       });
       drawIds.push(drawId);
@@ -100,6 +102,7 @@ function generateEventWithDraw({
   drawProfile,
   participants,
   tournamentEngine,
+  completeAllMatchUps,
   goesTo,
 }) {
   const {
@@ -167,11 +170,24 @@ function generateEventWithDraw({
 
   const { drawId } = drawDefinition;
 
-  if (drawProfile.outcomes) {
-    const { matchUps } = tournamentEngine.allDrawMatchUps({
-      drawId,
-      inContext: true,
+  const { matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    inContext: true,
+  });
+  if (completeAllMatchUps) {
+    matchUps.sort(matchUpSort).forEach((targetMatchUp) => {
+      if (targetMatchUp.readyToScore) {
+        completeMatchUp({
+          targetMatchUp,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+          matchUpStatus: COMPLETED,
+          matchUpFormat,
+          drawId,
+        });
+      }
     });
+  } else if (drawProfile.outcomes) {
     drawProfile.outcomes.forEach((outcomeDef) => {
       const {
         roundNumber,
@@ -241,4 +257,40 @@ function generateEventWithDraw({
   if (result.error) return { error: result.error };
 
   return { drawId, eventId };
+}
+
+function matchUpSort(a, b) {
+  return a.roundNumber - b.roundNumber || a.roundPosition - b.roundPosition;
+}
+
+function completeMatchUp({
+  targetMatchUp,
+  scoreString,
+  winningSide,
+  matchUpStatus,
+  matchUpFormat,
+  outcomeDef,
+  drawId,
+}) {
+  const { outcome } = generateOutcomeFromScoreString({
+    scoreString,
+    winningSide,
+    matchUpStatus,
+  });
+  if (!targetMatchUp) {
+    console.log({ outcomeDef });
+    return;
+  }
+  if (targetMatchUp.matchUpStatus === BYE) {
+    console.log('targeted BYE matchUp', { outcomeDef });
+    return;
+  }
+  const { matchUpId } = targetMatchUp || {};
+  const result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome,
+    matchUpFormat,
+  });
+  if (!result.success) console.log(result, targetMatchUp);
 }
