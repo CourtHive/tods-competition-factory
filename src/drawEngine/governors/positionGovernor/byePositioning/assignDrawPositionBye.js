@@ -32,6 +32,8 @@ export function assignDrawPositionBye({
     drawDefinition,
     structureId,
   });
+
+  // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
   if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
 
@@ -48,6 +50,15 @@ export function assignDrawPositionBye({
     return { error: DRAW_POSITION_ASSIGNED };
   }
 
+  // ########## gather reusable data for performance optimization ###########
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    mappedMatchUps,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
+  // ############ Get furthest advancement of drawPosition ############
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -56,35 +67,23 @@ export function assignDrawPositionBye({
     structure,
   });
   const { roundProfile, roundMatchUps } = getRoundMatchUps({ matchUps });
-  const roundNumbers = Object.keys(roundProfile).map((roundNumber) =>
-    parseInt(roundNumber)
-  );
 
+  // search from final rounds towards first rounds to find furthest advancement
+  const roundNumbers = Object.keys(roundProfile)
+    .map((roundNumber) => parseInt(roundNumber))
+    .reverse();
   const roundNumber = roundNumbers.find((roundNumber) => {
     return roundProfile[roundNumber].drawPositions.includes(drawPosition);
   });
+
+  // matchUp where BYE-advancement needs to occur
   const matchUp = roundMatchUps[roundNumber].find(({ drawPositions }) =>
     drawPositions.includes(drawPosition)
   );
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    mappedMatchUps,
-    inContext: true,
-    includeByeMatchUps: true,
-  });
 
-  const positionPair = roundProfile[
-    roundNumber
-  ].pairedDrawPositions.find((pair) => pair.includes(drawPosition));
-
-  const drawPositionToAdvance = positionPair?.find(
-    (position) => position !== drawPosition
+  const existingBye = positionAssignments.filter((assignment) =>
+    matchUp.drawPositions.includes(assignment.drawPosition)
   );
-
-  if (!drawPositionToAdvance) {
-    console.log('TODO:', { drawPosition, positionPair });
-    return { message: 'drawPosition: 3 should be a BYE' };
-  }
 
   // modifies the structure's positionAssignments
   positionAssignments.forEach((assignment) => {
@@ -93,25 +92,34 @@ export function assignDrawPositionBye({
     }
   });
 
-  Object.assign(matchUp, {
-    matchUpStatus: BYE,
-    score: undefined,
-    winningSide: undefined,
-  });
+  if (existingBye) {
+    Object.assign(matchUp, {
+      matchUpStatus: BYE,
+      score: undefined,
+      winningSide: undefined,
+    });
 
-  addNotice({
-    topic: 'modifyMatchUp',
-    payload: { matchUp },
-  });
+    addNotice({
+      topic: 'modifyMatchUp',
+      payload: { matchUp },
+    });
+  }
 
-  const result = advanceDrawPosition({
-    matchUpId: matchUp.matchUpId,
-    inContextDrawMatchUps,
-    drawPositionToAdvance,
-    drawDefinition,
-    mappedMatchUps,
-  });
-  if (result.error) return result;
+  const drawPositionToAdvance = matchUp.drawPositions.find(
+    (position) => position !== drawPosition
+  );
+
+  if (drawPositionToAdvance) {
+    const result = advanceDrawPosition({
+      sourceDrawPositions: matchUp.drawPositions,
+      matchUpId: matchUp.matchUpId,
+      inContextDrawMatchUps,
+      drawPositionToAdvance,
+      drawDefinition,
+      mappedMatchUps,
+    });
+    if (result.error) return result;
+  }
 
   return SUCCESS;
 }
@@ -124,7 +132,10 @@ function drawPositionFilled(positionAssignment) {
   return { containsBye, containsQualifier, containsParticipant, filled };
 }
 
+// Looks to see whether a given matchUp has a winnerMatchup or a loserMatchUp
+// and if so advances the appropriate drawPosition into the targetMatchUp
 function advanceDrawPosition({
+  sourceDrawPositions,
   drawPositionToAdvance,
   inContextDrawMatchUps,
   drawDefinition,
@@ -137,6 +148,7 @@ function advanceDrawPosition({
     matchUpId,
   });
 
+  const stage = structure.stage;
   const { positionAssignments } = getPositionAssignments({
     structure,
   });
@@ -168,6 +180,17 @@ function advanceDrawPosition({
     sourceMatchUpWinnerDrawPositionIndex,
   });
 
+  const { roundNumber, roundPosition, drawPositions } = matchUp;
+  if (stage === 'CONSOLATION' && roundNumber === 3) {
+    console.log('advancing drawPosition', {
+      stage,
+      roundNumber,
+      roundPosition,
+      drawPositions,
+      winnerRoundName: winnerMatchUp.roundName,
+    });
+  }
+
   // only handling situation where winningMatchUp is in same structure
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
     const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
@@ -176,64 +199,62 @@ function advanceDrawPosition({
       matchUpId: winnerMatchUp.matchUpId,
     });
     const { positionAssignments } = getPositionAssignments({ structure });
+    const drawPositionToAdvanceAssigment = positionAssignments.find(
+      ({ drawPosition }) => drawPosition === drawPositionToAdvance
+    );
+    const drawPositionToAdvanceIsBye = drawPositionToAdvanceAssigment.bye;
     const existingDrawPositions = noContextWinnerMatchUp.drawPositions.filter(
       (f) => f
     );
-    const unfilledAssignment = positionAssignments.find(
-      (assignment) => !drawPositionFilled(assignment).filled
+    const existingAssignments = positionAssignments.filter((assignment) =>
+      existingDrawPositions.includes(assignment.drawPosition)
     );
-    const existingAssignments = positionAssignments.filter(({ drawPosition }) =>
-      existingDrawPositions.includes(drawPosition)
-    );
-    const existingByeAssignments = positionAssignments
-      .filter(({ drawPosition }) =>
-        existingDrawPositions.includes(drawPosition)
-      )
-      .filter(({ bye }) => bye);
 
     const advancingAssignmentIsBye = positionAssignments.find(
       ({ drawPosition }) => drawPosition === drawPositionToAdvance
     );
 
-    const isByeAdvancedBye =
-      existingByeAssignments.length === 2 && advancingAssignmentIsBye;
-    if (!isByeAdvancedBye && existingDrawPositions.length > 1) {
-      if (!unfilledAssignment) {
-        console.log('####');
-        return { error: DRAW_POSITION_ASSIGNED };
-      }
+    const priorPair = sourceDrawPositions?.find(
+      (drawPosition) => drawPosition !== drawPositionToAdvance
+    );
+    const priorPairAssignment =
+      priorPair &&
+      existingAssignments.find(
+        ({ drawPosition }) => drawPosition === priorPair
+      );
+    const priorPairIsBye = priorPairAssignment?.bye;
+    const isByeAdvancedBye = drawPositionToAdvanceIsBye && priorPairIsBye;
+
+    if (
+      existingDrawPositions.length > 1 &&
+      drawPositionToAdvanceIsBye &&
+      !priorPairIsBye
+    ) {
+      return { error: DRAW_POSITION_ASSIGNED };
     }
     const pairedDrawPosition = existingDrawPositions.find(
       (drawPosition) => drawPosition !== drawPositionToAdvance
     );
-    console.log({
-      existingDrawPositions,
-      drawPositionToAdvance,
-      pairedDrawPosition,
-    });
-
-    const unfilledDrawPosition = unfilledAssignment?.drawPosition;
 
     let drawPositionAssigned = isByeAdvancedBye;
-    const drawPositions = (matchUp.drawPositions || [])?.map((position) => {
-      if (!position && !drawPositionAssigned) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else if (position === drawPositionToAdvance) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else if (unfilledDrawPosition && position === unfilledDrawPosition) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else {
-        return position;
+    const drawPositions = (noContextWinnerMatchUp.drawPositions || [])?.map(
+      (position) => {
+        if (!position && !drawPositionAssigned) {
+          drawPositionAssigned = true;
+          return drawPositionToAdvance;
+        } else if (position === drawPositionToAdvance) {
+          drawPositionAssigned = true;
+          return drawPositionToAdvance;
+        } else {
+          return position;
+        }
       }
-    });
+    );
     if (!drawPositionAssigned) {
       console.log('@@@@@@@', {
         advancingAssignmentIsBye,
+        drawPositionToAdvance,
         existingAssignments,
-        unfilledDrawPosition,
       });
       return { error: DRAW_POSITION_ASSIGNED };
     }
@@ -257,17 +278,36 @@ function advanceDrawPosition({
       payload: { matchUp: noContextWinnerMatchUp },
     });
 
-    if (pairedDrawPositionIsBye || drawPositionIsBye) {
+    if (
+      drawPositions.filter((f) => f).length === 2 &&
+      (pairedDrawPositionIsBye || drawPositionIsBye)
+    ) {
       const advancingDrawPosition = pairedDrawPositionIsBye
         ? drawPositionToAdvance
         : pairedDrawPosition;
-      advanceDrawPosition({
-        drawPositionToAdvance: advancingDrawPosition,
-        matchUpId: winnerMatchUp.matchUpId,
-        inContextDrawMatchUps,
-        drawDefinition,
-        mappedMatchUps,
-      });
+
+      const stage = structure.stage;
+      const { roundPosition, roundNumber } = winnerMatchUp;
+      if (advancingDrawPosition) {
+        if (roundNumber === 3) {
+          console.log('advance further because of bye', {
+            advancingDrawPosition,
+            drawPositionToAdvance,
+            drawPositions,
+            pairedDrawPosition,
+            stage,
+            roundNumber,
+            roundPosition,
+          });
+        }
+        advanceDrawPosition({
+          drawPositionToAdvance: advancingDrawPosition,
+          matchUpId: winnerMatchUp.matchUpId,
+          inContextDrawMatchUps,
+          drawDefinition,
+          mappedMatchUps,
+        });
+      }
     }
   }
 
@@ -278,11 +318,13 @@ function advanceDrawPosition({
     losingDrawPosiitonIsBye &&
     loserMatchUp.structureId !== structure.structureId
   ) {
+    const sourceStructureRoundPosition = matchUp.roundPosition;
     // loser drawPosition in target structure is determined bye even/odd
-    const targetDrawPositionIndex = 1 - (matchUp.roundPosition % 2);
+    const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
 
+    const targetMatchUpDrawPositions = loserMatchUp.drawPositions;
     const targetDrawPosition =
-      loserMatchUp.drawPositions[targetDrawPositionIndex];
+      targetMatchUpDrawPositions[targetDrawPositionIndex];
 
     const result = assignDrawPositionBye({
       drawDefinition,

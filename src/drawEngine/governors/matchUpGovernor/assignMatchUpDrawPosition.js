@@ -118,6 +118,7 @@ export function assignMatchUpDrawPosition({
             ? drawPosition
             : existingByePositions.pop();
         if (targetDrawPosition !== drawPosition) {
+          /*
           const result = removeMatchUpDrawPosition({
             drawDefinition,
             mappedMatchUps,
@@ -126,6 +127,7 @@ export function assignMatchUpDrawPosition({
             matchUpId: winnerMatchUp.matchUpId,
           });
           if (result.error) return result;
+          */
         }
 
         const result = assignMatchUpDrawPosition({
