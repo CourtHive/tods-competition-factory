@@ -175,7 +175,11 @@ function generateEventWithDraw({
     inContext: true,
   });
   if (completeAllMatchUps) {
-    matchUps.sort(matchUpSort).forEach((targetMatchUp) => {
+    matchUps.sort(matchUpSort).forEach(({ matchUpId }) => {
+      const { matchUp: targetMatchUp } = tournamentEngine.findMatchUp({
+        drawId,
+        matchUpId,
+      });
       if (targetMatchUp.readyToScore) {
         completeMatchUp({
           targetMatchUp,
