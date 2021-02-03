@@ -1,11 +1,11 @@
 import { callListener, getNotices, getTopics } from './globalState';
 
-export function notifySubscribers() {
+export async function notifySubscribers() {
   const { topics } = getTopics();
-  topics.forEach((topic) => {
+  for (const topic of topics) {
     const notices = getNotices({ topic });
     if (notices) {
-      callListener({ topic, notices });
+      await callListener({ topic, notices });
     }
-  });
+  }
 }
