@@ -52,6 +52,7 @@ function getNextToBePlayedMatchUp({
       inContextDrawMatchUps,
     });
   }
+  return { matchUp: undefined };
 }
 
 function getUpcomingInfo({ upcomingMatchUp } = {}) {
