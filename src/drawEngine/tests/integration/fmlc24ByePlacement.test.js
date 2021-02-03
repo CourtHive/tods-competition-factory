@@ -1,8 +1,3 @@
-it('needs to be rewritten', () => {
-  expect('foo');
-  console.log('rewrite');
-});
-/*
 import { drawEngine } from '../..';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/fmlc';
@@ -50,7 +45,7 @@ it('can support ITF Consolation BYE placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(2);
+  expect(positionAssignmentByesCount).toEqual(10);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
 
@@ -94,7 +89,7 @@ it('can support USTA Consolation BYE placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(2);
+  expect(positionAssignmentByesCount).toEqual(10);
   expect(positionAssignmentParticipantidsCount).toEqual(2);
 });
 
@@ -121,7 +116,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 2,
+    byesCount: 10,
   });
 
   completionValues = [[2, 1, undefined, true]];
@@ -130,7 +125,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 1,
+    byesCount: 9,
   });
 
   completionValues = [[2, 2, undefined, true]];
@@ -139,7 +134,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 0,
+    byesCount: 8,
   });
 
   completionValues = [
@@ -151,7 +146,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 4,
-    byesCount: 0,
+    byesCount: 8,
   });
 
   completionValues = [
@@ -163,7 +158,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 0,
+    byesCount: 8,
   });
 
   completionValues = [
@@ -175,7 +170,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 2,
+    byesCount: 10,
   });
 });
 
@@ -209,4 +204,3 @@ function checkAssignments({
   expect(positionAssignmentByesCount).toEqual(byesCount);
   expect(positionAssignmentParticipantidsCount).toEqual(participantsCount);
 }
-*/
