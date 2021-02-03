@@ -55,6 +55,7 @@ export const MISSING_POSITION_ASSIGNMENTS = 'Missing positionAssignments';
 
 export const UNRECOGNIZED_MATCHUP_STATUS = 'Unrecognized matchUpStatus';
 export const UNRECOGNIZED_MATCHUP_FORMAT = 'Unrecognized matchUpFormat';
+export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
@@ -186,6 +187,7 @@ export const errorConditionConstants = {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,
+  INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,
   INVALID_DATE_AVAILABILITY,

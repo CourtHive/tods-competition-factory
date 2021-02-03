@@ -14,7 +14,7 @@ export function noDownstreamDependencies(props) {
 
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
-    if (winningSideErrors) return winningSideErrors;
+    if (winningSideErrors) return { errors: winningSideErrors };
   } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
     const { error } = attemptToSetMatchUpStatus(props);
     if (error) return { errors: [error] };

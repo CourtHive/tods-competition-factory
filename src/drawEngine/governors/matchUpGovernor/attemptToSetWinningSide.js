@@ -3,7 +3,11 @@ import { checkConnectedStructures } from './checkConnectedStructures';
 import { isDirectingMatchUpStatus } from './checkStatusType';
 import { directParticipants } from './directParticipants';
 
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  COMPLETED,
+  DOUBLE_WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetWinningSide(props) {
   const {
@@ -15,6 +19,12 @@ export function attemptToSetWinningSide(props) {
     matchUp,
   } = props;
   let errors = [];
+
+  if ([BYE, DOUBLE_WALKOVER].includes(matchUp.matchUpStatus)) {
+    return {
+      errors: [{ error: 'Cannot set winningSide for BYE matchUpStatus' }],
+    };
+  }
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // TODO: return a message if there are effects in connected structures
