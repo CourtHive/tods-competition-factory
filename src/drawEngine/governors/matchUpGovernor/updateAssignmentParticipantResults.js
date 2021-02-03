@@ -28,26 +28,27 @@ export function updateAssignmentParticipantResults({
 
   positionAssignments.forEach((assignment) => {
     const { participantId } = assignment;
-    if (!participantIds.includes(participantId)) {
-      removeExtension({
-        element: assignment,
-        name: 'tally',
-      });
-      removeExtension({
-        element: assignment,
-        name: 'subOrder',
-      });
-    } else {
+    if (participantIds.includes(participantId)) {
       let extension = {
         name: 'tally',
         value: participantResults[participantId],
       };
       addExtension({ element: assignment, extension });
-      extension = {
+      if (!participantResults[participantId].ties) {
+        removeExtension({
+          element: assignment,
+          name: 'subOrder',
+        });
+      }
+    } else {
+      removeExtension({
+        element: assignment,
+        name: 'tally',
+      });
+      removeExtension({
+        element: assignment,
         name: 'subOrder',
-        value: participantResults[participantId].subOrder,
-      };
-      addExtension({ element: assignment, extension });
+      });
     }
   });
 

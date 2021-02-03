@@ -4,6 +4,7 @@ import { determineTeamOrder } from './determineOrder';
 import { getBaseCounts } from './getBaseCounts';
 
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 export function tallyParticipantResults({
   headToHeadPriority,
@@ -18,7 +19,7 @@ export function tallyParticipantResults({
 
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   const relevantMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== 'BYE'
+    (matchUp) => matchUp.matchUpStatus !== BYE
   );
   const bracketComplete =
     relevantMatchUps.filter((m) => m.winningSide !== undefined).length ===

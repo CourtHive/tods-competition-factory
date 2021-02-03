@@ -9,7 +9,8 @@ export function createSubOrderMap({ positionAssignments }) {
         element: assignment,
         name: 'subOrder',
       });
-      const subOrder = extension?.value;
+      const value = parseInt(extension?.value);
+      const subOrder = !isNaN(value) && value;
       return subOrder && { participantId: assignment.participantId, subOrder };
     })
     .filter((f) => f);
@@ -22,9 +23,8 @@ export function createSubOrderMap({ positionAssignments }) {
     {},
     ...subOrderArray
       .filter(({ subOrder }) => subOrdersCount[subOrder] === 1)
-      .sort((a, b) => (a?.sortOrder || 0) - (b?.sortOrder || 0))
-      .map(({ participantId }, index) => ({
-        [participantId]: index + 1,
+      .map(({ participantId, subOrder }) => ({
+        [participantId]: subOrder,
       }))
   );
 

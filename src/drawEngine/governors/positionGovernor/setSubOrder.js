@@ -56,7 +56,7 @@ export function setSubOrder({
   if (result.error) return result;
 
   const { matchUps } = getAllStructureMatchUps({
-    structure,
+    structure: targetStructure,
     inContext: true,
   });
   const matchUpFormat =
