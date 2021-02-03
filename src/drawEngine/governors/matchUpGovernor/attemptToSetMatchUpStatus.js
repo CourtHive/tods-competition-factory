@@ -11,6 +11,7 @@ import {
   UNRECOGNIZED_MATCHUP_STATUS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice } from '../../../global/globalState';
 
 export function attemptToSetMatchUpStatus(props) {
   const { matchUp, structure, matchUpStatus, matchUpStatusCodes } = props;
@@ -33,16 +34,15 @@ export function attemptToSetMatchUpStatus(props) {
       }
       matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
       matchUp.matchUpStatusCodes = matchUpStatusCodes;
-      console.log('addNotice');
+      addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
     matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
-    console.log('addNotice');
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
+    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
   } else if (matchUpStatus === BYE) {
-    console.log('attemptToSetMatchUpStatusBYE ...');
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
     if (result.error) return result;
   } else {

@@ -1,11 +1,13 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { addNotice } from '../../../global/globalState';
+
 import {
   INVALID_MATCHUP_STATUS,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (!structure) return { error: MISSING_STRUCTURE };
@@ -32,6 +34,7 @@ export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (matchUpIncludesBye) {
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
+    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
     return SUCCESS;
   } else {
     return {
