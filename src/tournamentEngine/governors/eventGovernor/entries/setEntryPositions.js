@@ -43,6 +43,7 @@ export function setEntryPositions({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Array.isArray(entryPositions)) return { error: INVALID_VALUES };
 
   const errors = [];
   entryPositions.forEach((positioning) => {
