@@ -1,4 +1,3 @@
-/*
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
@@ -13,13 +12,7 @@ import {
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-*/
 
-it('needs to be rewritten', () => {
-  expect('foo');
-  console.log('re-write');
-});
-/*
 it('can generate FEED_FMLC with double-byes in consolation', () => {
   const drawSize = 32;
   const seedsCount = 8;
@@ -51,22 +44,22 @@ it('can generate FEED_FMLC with double-byes in consolation', () => {
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 0,
-    expectedPositionsAssignedCount: 0,
+    expectedByeAssignments: 15,
+    expectedPositionsAssignedCount: 15,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 4, 2, 1],
-    expectedRoundUpcoming: [8, 0],
+    expectedRoundPending: [0, 0, 1, 2, 1],
+    expectedRoundUpcoming: [0, 1],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 1, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -104,22 +97,22 @@ it('can generate FEED_FMLC with double-byes in consolation', () => {
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 0,
-    expectedPositionsAssignedCount: 0,
+    expectedByeAssignments: 14,
+    expectedPositionsAssignedCount: 14,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 4, 2, 1],
-    expectedRoundUpcoming: [8, 0],
+    expectedRoundPending: [0, 0, 2, 2, 1],
+    expectedRoundUpcoming: [0, 2],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 2, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -215,7 +208,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
           stageSequence: 1,
         },
         {
-          roundNumber: 1,
+          roundNumber: 2,
           roundPosition: 4,
           scoreString: '6-1 6-4',
           winningSide: 1,
@@ -261,7 +254,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     devContext: true,
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.score).toBeUndefined();
+  expect(result.matchUp.score.scoreStringSide1).toEqual('');
 
   // outcome removal should be succesful => now expecting 12 completed matchUps
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
@@ -283,4 +276,3 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
   expect(completedMatchUps.length).toEqual(13);
 });
-*/
