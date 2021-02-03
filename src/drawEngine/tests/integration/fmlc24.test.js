@@ -1,14 +1,9 @@
-it('needs to be re-written', () => {
-  expect('foo');
-  console.log('re-write');
-});
-/*
 import { drawEngine } from '../../../drawEngine';
+import { instanceCount } from '../../../utilities';
 import {
   completeMatchUp,
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
-
 import { generateFMLC } from '../../tests/primitives/fmlc';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
@@ -41,11 +36,12 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
-  // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  });
+  const matchUpStatuses = instanceCount(
+    roundMatchUps[1].map(({ matchUpStatus }) => matchUpStatus)
+  );
+  // all first round consolation matchUps are BYEs
+  expect(matchUpStatuses.BYE).toEqual(8);
 
   verifyMatchUps({
     structureId: mainStructureId,
@@ -93,7 +89,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -128,11 +124,10 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(8);
+
+  expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
 
-  // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
-  // matchUps in the first round of the consolation structure should have matchUpStatus: BYE
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
   roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpStatus).toEqual(BYE);
@@ -164,11 +159,12 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
-  // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
-  roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  });
+  const matchUpStatuses = instanceCount(
+    roundMatchUps[1].map(({ matchUpStatus }) => matchUpStatus)
+  );
+  // all first round consolation matchUps are BYEs
+  expect(matchUpStatuses.BYE).toEqual(8);
 
   verifyMatchUps({
     structureId: mainStructureId,
@@ -216,7 +212,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -251,14 +247,12 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 
-  // wne participants who advanced in the first-round of the main structure with a BYE lose their second-round main structure matchUps,
-  // matchUps in the first round of the consolation structure should have matchUpStatus: TO_BE_PLAYED
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
 
@@ -287,10 +281,9 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
-  // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 
   verifyMatchUps({
@@ -339,7 +332,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -373,7 +366,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(8);
+  expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
 
   // wne participants who advanced in the first-round of the main structure with a BYE win their second-round main structure matchUps,
@@ -409,10 +402,9 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 
-  // Whne the draw structure are initially generated all first-round consolation matchUps should have matchUpStatus: TO_BE_PLAYED
   let { roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure);
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 
   verifyMatchUps({
@@ -461,7 +453,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [0, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -495,14 +487,11 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 
-  // wne participants who advanced in the first-round of the main structure with a BYE lose their second-round main structure matchUps,
-  // matchUps in the first round of the consolation structure should have matchUpStatus: TO_BE_PLAYED
   ({ roundMatchUps } = drawEngine.getRoundMatchUps(consolationStructure));
   roundMatchUps[1].forEach((matchUp) => {
-    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.matchUpStatus).toEqual(BYE);
   });
 });
-*/
