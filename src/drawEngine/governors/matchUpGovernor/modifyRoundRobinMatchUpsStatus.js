@@ -17,12 +17,14 @@ export function modifyRoundRobinMatchUpsStatus({
       (assignment) => assignment.bye
     ).length;
 
-    const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
+    if (!matchUp.winningSide) {
+      const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
 
-    Object.assign(matchUp, { matchUpStatus });
-    addNotice({
-      topic: 'modifyMatchUp',
-      payload: { matchUp },
-    });
+      Object.assign(matchUp, { matchUpStatus });
+      addNotice({
+        topic: 'modifyMatchUp',
+        payload: { matchUp },
+      });
+    }
   });
 }
