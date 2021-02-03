@@ -473,7 +473,7 @@ function getDrawPositionTally({ positionAssignments, drawPosition }) {
     .extensions.find(({ name }) => name === 'tally')?.value;
 }
 
-it.only('recognize when participants are tied with position order', () => {
+it('recognize when participants are tied with position order', () => {
   const drawProfiles = [
     {
       drawSize: 5,
