@@ -7,13 +7,13 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import {
   completeMatchUp,
   verifyMatchUps,
-  //  getMatchUpWinnerLoserIds,
+  getMatchUpWinnerLoserIds,
   findMatchUpByRoundNumberAndPosition,
 } from '../../tests/primitives/verifyMatchUps';
 
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
-// import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../../tests/primitives/fmlc';
 
 import {
   BYE,
@@ -21,7 +21,7 @@ import {
   COMPLETED,
   TO_BE_PLAYED,
   DEFAULTED,
-  //  SUSPENDED,
+  SUSPENDED,
 } from '../../../constants/matchUpStatusConstants';
 
 import {
@@ -327,9 +327,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   expect(matchUp.drawPositions).toMatchObject([8, undefined]);
 });
 
-it('can change a first round matchUp winner and update consolation', () => {
-  console.log('re-write');
-  /*
+it('can change a FMLC first round matchUp winner and update consolation', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 30;
@@ -462,20 +460,17 @@ it('can change a first round matchUp winner and update consolation', () => {
     score: '6-1 1-6 6-2',
   }));
   expect(success).toEqual(true);
-  expect(matchUp.drawPositions).toEqual([3, 4]);
+  expect(matchUp.drawPositions).toEqual([11, 12]);
 
-  // attempt to advance 1st position matchUp in second round of consolation structure
-  // this should succeed because there is a BYE advanced participant in drawPosition: 2
-  // drawPosition: 1 is a BYE because drawPosition: 1 participant in main structure did not lose second round
-  ({ matchUp, error, success, matchUpId } = completeMatchUp({
+  ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: consolationStructureId,
-    roundNumber: 2,
+    roundNumber: 3,
     roundPosition: 1,
-    winningSide: 1,
-    score: '6-2 1-6 6-1',
+    inContext: true,
   }));
-  expect(success).toEqual(true);
-  expect(matchUp.drawPositions).toEqual([2, 3]);
+  ({ matchUpStatus, sides } = matchUp);
+  // { drawPosition: 10 } is bye- advanced to the third round
+  expect(sides[0].drawPosition).toEqual(10);
 
   // Now attempt to change a 1st round matchUpStatus to BYE
   ({
@@ -544,5 +539,4 @@ it('can change a first round matchUp winner and update consolation', () => {
   expect(matchUpStatus).toEqual(RETIRED);
   expect(score).toEqual('6-1');
   expect(winningSide).toEqual(1);
-  */
 });
