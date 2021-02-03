@@ -1,14 +1,8 @@
-import {
-  addExtension,
-  removeExtension,
-} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
+import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addNotice } from '../../../global/globalState';
-import { instanceCount } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
@@ -72,64 +66,10 @@ export function modifyMatchUpScore({
         inContext: true,
       });
 
-      const subOrderArray = (itemStructure.positionAssignments || [])
-        .filter(({ participantId }) => participantId)
-        .map((assignment) => {
-          const { extension } = findExtension({
-            element: assignment,
-            name: 'subOrder',
-          });
-          const subOrder = extension?.value;
-          return (
-            subOrder && { particpantId: assignment.participantId, subOrder }
-          );
-        })
-        .filter((f) => f);
-
-      // we only want subOrders that are unique, and we want them sorted and re-assigned to ordered values
-      const subOrders = subOrderArray.map(({ subOrder }) => subOrder);
-      const subOrdersCount = instanceCount(subOrders);
-      const subOrderMap = Object.assign(
-        {},
-        ...subOrderArray
-          .filter(({ subOrder }) => subOrdersCount[subOrder] === 1)
-          .sort((a, b) => a.sortOrder - b.sortOrder)
-          .map(({ participantId }, index) => ({
-            [participantId]: index + 1,
-          }))
-      );
-
-      const { participantResults } = tallyParticipantResults({
+      updateAssignmentParticipantResults({
+        positionAssignments: itemStructure.positionAssignments,
         matchUpFormat,
-        subOrderMap,
         matchUps,
-      });
-
-      const participantIds = Object.keys(participantResults);
-
-      itemStructure.positionAssignments.forEach((assignment) => {
-        const { participantId } = assignment;
-        if (!participantIds.includes(participantId)) {
-          removeExtension({
-            element: assignment,
-            name: 'tally',
-          });
-          removeExtension({
-            element: assignment,
-            name: 'subOrder',
-          });
-        } else {
-          let extension = {
-            name: 'tally',
-            value: participantResults[participantId],
-          };
-          addExtension({ element: assignment, extension });
-          extension = {
-            name: 'subOrder',
-            value: participantResults[participantId].subOrder,
-          };
-          addExtension({ element: assignment, extension });
-        }
       });
     }
   }

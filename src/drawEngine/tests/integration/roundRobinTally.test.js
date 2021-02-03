@@ -473,7 +473,7 @@ function getDrawPositionTally({ positionAssignments, drawPosition }) {
     .extensions.find(({ name }) => name === 'tally')?.value;
 }
 
-it('recognize when participants are tied with position order', () => {
+it.only('recognize when participants are tied with position order', () => {
   const drawProfiles = [
     {
       drawSize: 5,
@@ -544,14 +544,14 @@ it('recognize when participants are tied with position order', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const mainStructure = drawDefinition.structures[0];
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const group1structure = drawDefinition.structures[0];
   const { positionAssignments } = getPositionAssignments({
-    structure: mainStructure,
+    structure: group1structure,
   });
 
-  const { eventData } = tournamentEngine.getEventData({ drawId });
-  const participantResults =
+  let { eventData } = tournamentEngine.getEventData({ drawId });
+  let participantResults =
     eventData.drawsData[0].structures[0].participantResults;
 
   // check the expectations against both the positionAssignments for the structure
@@ -575,6 +575,7 @@ it('recognize when participants are tied with position order', () => {
       setsLost,
       gamesWon,
       gamesLost,
+      groupOrder,
     } = participantResult;
 
     const check = [
@@ -584,11 +585,31 @@ it('recognize when participants are tied with position order', () => {
       setsLost,
       gamesWon,
       gamesLost,
+      groupOrder,
     ];
 
-    expect(check).toEqual([2, 2, 4, 4, 24, 24]);
+    expect(check).toEqual([2, 2, 4, 4, 24, 24, 1]);
 
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);
   });
+
+  const { structureId } = group1structure;
+  tournamentEngine.setSubOrder({
+    drawDefinition,
+    structureId,
+    drawPosition: 1,
+    subOrder: 1,
+  });
+
+  /*
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  console.log(
+    drawDefinition.structures[0].structures[0].positionAssignments[0]
+  );
+  console.log(drawDefinition.structures[0]);
+  ({ eventData } = tournamentEngine.getEventData({ drawId }));
+  participantResults = eventData.drawsData[0].structures[0].participantResults;
+  console.log(participantResults[0]);
+  */
 });

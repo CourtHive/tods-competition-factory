@@ -1,11 +1,14 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { getPositionAssignments } from '../../getters/positionsGetter';
+import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
+import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { findStructure } from '../../getters/findStructure';
 
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -28,10 +31,18 @@ export function setSubOrder({
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
 
-  const { positionAssignments } = getPositionAssignments({
-    drawDefinition,
-    structureId,
-  });
+  const { structure } = findStructure({ drawDefinition, structureId });
+  let targetStructure = structure;
+
+  if (structure.structureType === CONTAINER) {
+    targetStructure = structure.structures.find((currentStructure) =>
+      currentStructure.positionAssignments.find(
+        (assignment) => assignment.drawPosition === drawPosition
+      )
+    );
+  }
+
+  const positionAssignments = targetStructure.positionAssignments;
 
   const assignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
@@ -41,5 +52,22 @@ export function setSubOrder({
     name: 'subOrder',
     value: subOrder,
   };
-  return addExtension({ element: assignment, extension });
+  let result = addExtension({ element: assignment, extension });
+  if (result.error) return result;
+
+  const { matchUps } = getAllStructureMatchUps({
+    structure,
+    inContext: true,
+  });
+  const matchUpFormat =
+    structure?.matchUpFormat || drawDefinition.matchUpFormat;
+
+  result = updateAssignmentParticipantResults({
+    positionAssignments,
+    matchUps,
+    matchUpFormat,
+  });
+  // console.log(positionAssignments[0], result);
+
+  return result;
 }
