@@ -1,7 +1,9 @@
+import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import tournamentEngine from '../../../tournamentEngine';
+import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../..';
 
@@ -11,8 +13,6 @@ import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
-import { intersection } from '../../../utilities';
-import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobinTally/roundRobinTally';
 
 it('can recalculate particpantResults when outcomes are removed', () => {
   const drawProfiles = [
@@ -593,23 +593,4 @@ it('recognize when participants are tied with position order', () => {
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);
   });
-
-  const { structureId } = group1structure;
-  tournamentEngine.setSubOrder({
-    drawDefinition,
-    structureId,
-    drawPosition: 1,
-    subOrder: 1,
-  });
-
-  /*
-  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  console.log(
-    drawDefinition.structures[0].structures[0].positionAssignments[0]
-  );
-  console.log(drawDefinition.structures[0]);
-  ({ eventData } = tournamentEngine.getEventData({ drawId }));
-  participantResults = eventData.drawsData[0].structures[0].participantResults;
-  console.log(participantResults[0]);
-  */
 });

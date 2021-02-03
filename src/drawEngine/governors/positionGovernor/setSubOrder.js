@@ -67,7 +67,6 @@ export function setSubOrder({
     matchUps,
     matchUpFormat,
   });
-  // console.log(positionAssignments[0], result);
 
   return result;
 }
