@@ -31,7 +31,12 @@ export function swapDrawPositionAssignments({
 
   if (structure.structureType === CONTAINER) {
     // { structureType: CONTAINER } indicates that the swap is within a ROUND ROBIN structure
-    return roundRobinSwap({ structure, drawPositions, mappedMatchUps });
+    return roundRobinSwap({
+      drawDefinition,
+      structure,
+      drawPositions,
+      mappedMatchUps,
+    });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
     return eliminationSwap({
@@ -63,12 +68,11 @@ function eliminationSwap({
   }
 
   // if both positions are BYE no need to do anything
-  if (assignments.filter(({ bye }) => bye).length === 2) return;
-
+  if (assignments.filter(({ bye }) => bye).length === 2) return SUCCESS;
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
-    return eliminationByeSwap({
+    return swapParticipantIdWithBYE({
       drawDefinition,
       structure,
       assignments,
@@ -83,7 +87,7 @@ function eliminationSwap({
   }
 }
 
-function eliminationByeSwap({
+function swapParticipantIdWithBYE({
   drawDefinition,
   structure,
   assignments,
@@ -157,7 +161,12 @@ function eliminationParticpantSwap({ structure, assignments }) {
   return SUCCESS;
 }
 
-function roundRobinSwap({ structure, drawPositions }) {
+function roundRobinSwap({
+  drawDefinition,
+  mappedMatchUps,
+  drawPositions,
+  structure,
+}) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
       (assignment) => drawPositions.includes(assignment.drawPosition)
@@ -166,11 +175,26 @@ function roundRobinSwap({ structure, drawPositions }) {
     return assignments;
   }, []);
 
-  const participantIds = assignments.map(({ participantId }) => participantId);
-  assignments.forEach(
-    (assignment, index) =>
-      (assignment.participantId = participantIds[1 - index])
-  );
+  // if both positions are BYE no need to do anything
+  if (assignments.filter(({ bye }) => bye).length === 2) return SUCCESS;
+  const isByeSwap = assignments.some(({ bye }) => bye);
+
+  if (isByeSwap) {
+    swapParticipantIdWithBYE({
+      drawDefinition,
+      mappedMatchUps,
+      assignments,
+      structure,
+    });
+  } else {
+    const participantIds = assignments.map(
+      ({ participantId }) => participantId
+    );
+    assignments.forEach(
+      (assignment, index) =>
+        (assignment.participantId = participantIds[1 - index])
+    );
+  }
 
   return SUCCESS;
 }

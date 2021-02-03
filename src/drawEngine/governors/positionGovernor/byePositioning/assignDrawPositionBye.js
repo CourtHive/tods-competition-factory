@@ -18,6 +18,7 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
@@ -58,7 +59,6 @@ export function assignDrawPositionBye({
     includeByeMatchUps: true,
   });
 
-  // ############ Get furthest advancement of drawPosition ############
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -66,6 +66,21 @@ export function assignDrawPositionBye({
     matchUpFilters,
     structure,
   });
+
+  // modifies the structure's positionAssignments
+  // applies to both ELIMINATION and ROUND_ROBIN structures
+  positionAssignments.forEach((assignment) => {
+    if (assignment.drawPosition === drawPosition) {
+      assignment.bye = true;
+    }
+  });
+
+  if (structure.structureType === CONTAINER) {
+    assignRoundRobinBye({ matchUps, drawPosition });
+    return SUCCESS;
+  }
+
+  // ############ Get furthest advancement of drawPosition ############
   const { roundProfile, roundMatchUps } = getRoundMatchUps({ matchUps });
 
   // search from final rounds towards first rounds to find furthest advancement
@@ -81,29 +96,7 @@ export function assignDrawPositionBye({
     drawPositions.includes(drawPosition)
   );
 
-  const existingBye = positionAssignments.filter((assignment) =>
-    matchUp.drawPositions.includes(assignment.drawPosition)
-  );
-
-  // modifies the structure's positionAssignments
-  positionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === drawPosition) {
-      assignment.bye = true;
-    }
-  });
-
-  if (existingBye) {
-    Object.assign(matchUp, {
-      matchUpStatus: BYE,
-      score: undefined,
-      winningSide: undefined,
-    });
-
-    addNotice({
-      topic: 'modifyMatchUp',
-      payload: { matchUp },
-    });
-  }
+  setMatchUpStatusBYE({ matchUp });
 
   const drawPositionToAdvance = matchUp.drawPositions.find(
     (position) => position !== drawPosition
@@ -130,6 +123,27 @@ function drawPositionFilled(positionAssignment) {
   const containsParticipant = positionAssignment.participantId;
   const filled = containsBye || containsQualifier || containsParticipant;
   return { containsBye, containsQualifier, containsParticipant, filled };
+}
+
+function setMatchUpStatusBYE({ matchUp }) {
+  Object.assign(matchUp, {
+    matchUpStatus: BYE,
+    score: undefined,
+    winningSide: undefined,
+  });
+
+  addNotice({
+    topic: 'modifyMatchUp',
+    payload: { matchUp },
+  });
+}
+
+function assignRoundRobinBye({ matchUps, drawPosition }) {
+  matchUps.forEach((matchUp) => {
+    if (matchUp.drawPositions.includes(drawPosition)) {
+      setMatchUpStatusBYE({ matchUp });
+    }
+  });
 }
 
 // Looks to see whether a given matchUp has a winnerMatchup or a loserMatchUp
