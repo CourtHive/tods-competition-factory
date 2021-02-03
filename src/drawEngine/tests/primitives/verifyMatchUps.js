@@ -85,18 +85,21 @@ export function verifyMatchUps({
   });
 
   if (expectedRoundPending) {
+    // console.log({ pendingRoundMatchUps, expectedRoundPending });
     verifyRoundCounts({
       roundMatchUps: pendingRoundMatchUps,
       expectedRounds: expectedRoundPending,
     });
   }
   if (expectedRoundUpcoming) {
+    // console.log(upcomingRoundMatchUps, { expectedRoundUpcoming });
     verifyRoundCounts({
       roundMatchUps: upcomingRoundMatchUps,
       expectedRounds: expectedRoundUpcoming,
     });
   }
   if (expectedRoundCompleted) {
+    // console.log({ completedRoundMatchUps, expectedRoundCompleted });
     verifyRoundCounts({
       roundMatchUps: completedRoundMatchUps,
       expectedRounds: expectedRoundCompleted,

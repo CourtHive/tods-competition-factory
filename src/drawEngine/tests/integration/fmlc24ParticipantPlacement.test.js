@@ -1,8 +1,3 @@
-it('needs to be re-written', () => {
-  expect('foo');
-  console.log('rewrite');
-});
-/*
 import { drawEngine } from '../..';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/fmlc';
@@ -51,7 +46,7 @@ it('can support ITF Consolation participant placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
 
@@ -95,7 +90,6 @@ it('can support USTA Consolation participant placement', () => {
   const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
     (assignment) => !!assignment.participantId
   ).length;
-  expect(positionAssignmentByesCount).toEqual(0);
+  expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
-*/

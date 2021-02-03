@@ -1,4 +1,3 @@
-/*
 import { drawEngine } from '../../../drawEngine';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import {
@@ -14,14 +13,7 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-*/
 
-it('needs to be rewritten', () => {
-  expect('foo');
-  console.log('rewrite');
-});
-
-/*
 it('can generate FEED_FMLC', () => {
   const drawSize = 32;
   const seedsCount = 8;
@@ -55,22 +47,22 @@ it('can generate FEED_FMLC', () => {
     structureId: consolationStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
-    expectedByeAssignments: 0,
-    expectedPositionsAssignedCount: 0,
+    expectedByeAssignments: 2,
+    expectedPositionsAssignedCount: 2,
     expectedSeedValuesWithBye: [],
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [0, 4, 2, 1],
-    expectedRoundUpcoming: [8, 0],
+    expectedRoundPending: [0, 6, 4, 2, 1],
+    expectedRoundUpcoming: [6, 2],
     expectedRoundCompleted: [0, 0],
     requireParticipants: false,
   });
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [6, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -123,7 +115,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [7, 4, 2, 1],
+    expectedRoundPending: [5, 8, 4, 2, 1],
     expectedRoundUpcoming: [1, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -169,8 +161,8 @@ it('can direct winners and losers', () => {
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
-  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.drawPositions).toEqual([9, 10]);
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   expect(sourceDrawPositionParticipantId).toEqual(
     targetDrawPositionParticipantId
@@ -205,8 +197,8 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [5, 4, 2, 1],
-    expectedRoundUpcoming: [3, 0],
+    expectedRoundPending: [4, 7, 4, 2, 1],
+    expectedRoundUpcoming: [2, 1],
     expectedRoundCompleted: [0, 0],
   });
 
@@ -244,13 +236,14 @@ it('can direct winners and losers', () => {
     (assignment) => assignment.drawPosition === 16
   )?.participantId;
 
-  expect(targetMatchUp.drawPositions.includes(16)).toEqual(true);
+  expect(targetMatchUp.drawPositions).toEqual([23, 24]);
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   expect(sourceDrawPositionParticipantId).not.toEqual(
     targetDrawPositionParticipantId
   );
-  expect(consolationStructure.positionAssignments[15].bye).toEqual(true);
+  // fed position should be a bye
+  expect(consolationStructure.positionAssignments[8].bye).toEqual(true);
 });
 
 it('can change matchUpStatus', () => {
@@ -364,54 +357,11 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
   );
-  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
+  expect(targetMatchUp.drawPositions).toEqual([2, 3]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 
   expect(sourceDrawPositionParticipantId).not.toEqual(
     targetDrawPositionParticipantId
   );
-  expect(consolationStructure.positionAssignments[0].bye).toEqual(undefined);
-
-  // now advance drawPosition 32 in main structure which had a BYE in first round
-  // the loser from drawPositions 29-30 should NOT go into the consolation structure
-  completeMatchUp({
-    structureId: mainStructureId,
-    roundNumber: 2,
-    roundPosition: 1,
-    winningSide: 2,
-  });
-
-  ({
-    structures: [mainStructure],
-  } = drawEngine.getDrawStructures({ stage: MAIN, stageSequence: 1 }));
-
-  ({
-    structures: [consolationStructure],
-  } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 }));
-
-  sourceMatchUp = mainStructure.matchUps.find(
-    (matchUp) => matchUp.roundNumber === 2 && matchUp.roundPosition === 1
-  );
-
-  sourceDrawPositionParticipantId = mainStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 1
-  )?.participantId;
-  expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
-
-  targetMatchUp = consolationStructure.matchUps.find(
-    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
-  );
-
-  targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 1
-  )?.participantId;
-
-  expect(targetMatchUp.drawPositions.includes(1)).toEqual(true);
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-
-  expect(sourceDrawPositionParticipantId).not.toEqual(
-    targetDrawPositionParticipantId
-  );
-  expect(consolationStructure.positionAssignments[1].bye).toEqual(undefined);
+  expect(consolationStructure.positionAssignments[0].bye).toEqual(true);
 });
-*/
