@@ -42,3 +42,12 @@ Generate a complete tournamentRecord from the following attributes
 - @param {object[]} outcomes - [{ roundNumber, roundPosition, scoreString, winningSide, ... }]
 
 ---
+
+## matchUpSort
+
+Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
+
+Useful for automatically scoring all matchUps in connected draw structures
+
+- @param {object} a - matchUp object
+- @param {object} b - matchUp object

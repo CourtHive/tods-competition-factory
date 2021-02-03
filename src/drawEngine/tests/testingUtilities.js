@@ -1,3 +1,4 @@
+import { matchUpSort } from '../../mocksEngine/utilities/matchUpSort';
 import tournamentEngine from '../../tournamentEngine';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
@@ -19,10 +20,6 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions);
   return { orderedPairs, matchUps };
-}
-
-function matchUpSort(a, b) {
-  return a.roundNumber - b.roundNumber || a.roundPosition - b.roundPosition;
 }
 
 export function getContextMatchUp({

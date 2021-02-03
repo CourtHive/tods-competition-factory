@@ -1,6 +1,7 @@
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { generateParticipants } from './generateParticipants';
 import { tournamentEngine } from '../../tournamentEngine';
+import { matchUpSort } from '../utilities/matchUpSort';
 import { intersection } from '../../utilities';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -234,37 +235,21 @@ function generateEventWithDraw({
         );
       });
       const targetMatchUp = targetMatchUps[matchUpIndex];
-      const { matchUpId } = targetMatchUp || {};
-      const { outcome } = generateOutcomeFromScoreString({
+      completeMatchUp({
+        targetMatchUp,
         scoreString,
         winningSide,
         matchUpStatus,
-      });
-      if (!targetMatchUp) {
-        console.log({ outcomeDef });
-        return;
-      }
-      if (targetMatchUp.matchUpStatus === BYE) {
-        console.log('targeted BYE matchUp', { outcomeDef });
-        return;
-      }
-      const result = tournamentEngine.setMatchUpStatus({
-        drawId,
-        matchUpId,
-        outcome,
+        outcomeDef,
         matchUpFormat,
+        drawId,
       });
-      if (!result.success) console.log(result, targetMatchUp);
     });
   }
 
   if (result.error) return { error: result.error };
 
   return { drawId, eventId };
-}
-
-function matchUpSort(a, b) {
-  return a.roundNumber - b.roundNumber || a.roundPosition - b.roundPosition;
 }
 
 function completeMatchUp({
