@@ -23,6 +23,7 @@
   "rules": {
     "react/prop-types": 0,
     "react/display-name": 0,
+    "no-unused-expressions": "off",
     "@typescript-eslint/no-useless-escape": "off",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-empty-function": "off",

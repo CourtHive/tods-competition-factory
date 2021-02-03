@@ -149,7 +149,7 @@ export const drawEngine = (function () {
     });
   }
 
-  function invoke({ params, governor, key }) {
+  async function invoke({ params, governor, key }) {
     const result = governor[key]({
       ...params,
       policies,
@@ -159,8 +159,9 @@ export const drawEngine = (function () {
     });
 
     if (result?.success) {
-      notifySubscribers();
+      await notifySubscribers();
     }
+
     deleteNotices();
 
     return result;

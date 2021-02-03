@@ -104,7 +104,7 @@ export const tournamentEngine = (function () {
   return fx;
 
   // enable Middleware
-  function engineInvoke(fx, params /*, method*/) {
+  async function engineInvoke(fx, params /*, method*/) {
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
@@ -134,7 +134,7 @@ export const tournamentEngine = (function () {
     });
 
     if (result?.success) {
-      notifySubscribers();
+      await notifySubscribers();
     }
     deleteNotices();
 

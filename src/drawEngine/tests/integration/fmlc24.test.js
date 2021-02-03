@@ -6,7 +6,7 @@ import {
 } from '../../tests/primitives/verifyMatchUps';
 import { generateFMLC } from '../../tests/primitives/fmlc';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';

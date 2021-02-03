@@ -282,7 +282,7 @@ export function removeSubsequentRoundsParticipant({
       matchUp.drawPositions.includes(targetDrawPosition)
   );
 
-  relevantMatchUps?.forEach((matchUp) => {
+  relevantMatchUps?.forEach((matchUp) =>
     removeDrawPosition({
       drawDefinition,
       structure,
@@ -290,8 +290,8 @@ export function removeSubsequentRoundsParticipant({
       inContextDrawMatchUps,
       targetMatchUp: matchUp,
       drawPosition: targetDrawPosition,
-    });
-  });
+    })
+  );
 }
 
 function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
