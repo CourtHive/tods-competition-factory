@@ -1,8 +1,3 @@
-it('needs to be re-written', () => {
-  expect('foo');
-  console.log('re-write');
-});
-/*
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine';
 import { generateFMLC } from '../../tests/primitives/fmlc';
@@ -60,13 +55,10 @@ it('can direct winners and losers', () => {
   let {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
-  expect(
-    consolationStructure.positionAssignments[1].participantId
-  ).not.toBeUndefined();
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [8, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -145,11 +137,11 @@ it('can direct winners and losers', () => {
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   expect(
     consolationStructure.positionAssignments[1].participantId
-  ).not.toBeUndefined();
+  ).toBeUndefined();
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [8, 4, 2, 1],
+    expectedRoundPending: [6, 8, 4, 2, 1],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -157,26 +149,13 @@ it('can direct winners and losers', () => {
 
   result = drawEngine.devContext(true).setMatchUpStatus({
     matchUpId,
-    matchUpStatus: 'TO_BE_PLAYED',
-    score: {
-      sets: [
-        {
-          setNumber: 1,
-          side1Score: undefined,
-          side1TiebreakScore: undefined,
-          side2Score: undefined,
-          side2TiebreakScore: undefined,
-          winningSide: undefined,
-        },
-      ],
-    },
-    winningSide: undefined,
+    ...toBePlayed,
   });
 
   verifyMatchUps({
     structureId: mainStructureId,
-    expectedRoundPending: [0, 8],
-    expectedRoundUpcoming: [14, 0],
+    expectedRoundPending: [0, 7],
+    expectedRoundUpcoming: [14, 1],
     expectedRoundCompleted: [0, 0],
   });
 
@@ -243,7 +222,7 @@ it('can remove matchUps properly in FEED_FMLC', () => {
 
   expect(
     consolationStructure.positionAssignments[1].participantId
-  ).not.toBeUndefined();
+  ).toBeUndefined();
 
   let result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
@@ -251,7 +230,7 @@ it('can remove matchUps properly in FEED_FMLC', () => {
     outcome: toBePlayed,
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.score).toBeUndefined();
+  expect(result.matchUp.score.scoreStringSide1).toEqual('');
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 
@@ -263,4 +242,3 @@ it('can remove matchUps properly in FEED_FMLC', () => {
     consolationStructure.positionAssignments[1].participantId
   ).toBeUndefined();
 });
-*/
