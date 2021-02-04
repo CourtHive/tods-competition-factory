@@ -68,7 +68,7 @@ export const competitionEngine = (async function () {
 
   // enable Middleware
   async function engineInvoke(fx, params) {
-    const result = fx({
+    const result = await fx({
       ...params,
       tournamentRecords,
       tournamentEngine,
