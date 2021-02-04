@@ -125,7 +125,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 9,
+    byesCount: 10,
   });
 
   completionValues = [[2, 2, undefined, true]];
@@ -134,7 +134,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 8,
+    byesCount: 10,
   });
 
   completionValues = [
