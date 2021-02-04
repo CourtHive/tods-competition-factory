@@ -116,7 +116,7 @@ function generateEventWithDraw({
     feedPolicy,
     structureOptions,
   } = drawProfile;
-  let { participantsCount = 32 } = drawProfile;
+  let { participantsCount = 32, seedsCount } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
 
   const event = { eventName, eventType, category };
@@ -161,6 +161,7 @@ function generateEventWithDraw({
     drawSize,
     matchUpFormat,
     drawType,
+    seedsCount,
     feedPolicy,
     structureOptions,
     goesTo,
