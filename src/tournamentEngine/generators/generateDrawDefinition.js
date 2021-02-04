@@ -110,6 +110,7 @@ export function generateDrawDefinition(props) {
 
   const drawProfile = {
     drawSize,
+    drawType,
     automated,
     customName,
     seedsCount,
