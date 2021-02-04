@@ -127,7 +127,6 @@ export const tournamentEngine = (async function () {
 
     const result = fx({
       ...params,
-
       deepCopy,
       policies,
       tournamentRecord,
