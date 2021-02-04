@@ -1,11 +1,14 @@
 import tournamentEngine from '../..';
 import mocksEngine from '../../../mocksEngine';
 
+import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [
     {
       drawSize: 32,
       participantsCount: 30,
+      drawType: SINGLE_ELIMINATION,
     },
   ];
   const {
@@ -31,9 +34,15 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { timeItem } = tournamentEngine.getTournamentTimeItem({
-    itemType: 'deleteDrawDefinitions',
+  let { timeItem } = tournamentEngine.getTournamentTimeItem({
+    itemType: 'generateDrawDefinition',
   });
+  expect(timeItem.itemValue.drawId).toEqual(drawId);
+  expect(timeItem.itemValue.drawType).toEqual(SINGLE_ELIMINATION);
+
+  ({ timeItem } = tournamentEngine.getTournamentTimeItem({
+    itemType: 'deleteDrawDefinitions',
+  }));
   expect(timeItem.itemValue.length).toEqual(1);
   expect(timeItem.itemValue[0].drawId).toEqual(drawId);
 });

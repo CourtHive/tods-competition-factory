@@ -24,6 +24,7 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -296,6 +297,24 @@ export function generateDrawDefinition(props) {
   const errors = generatedDrawErrors || [];
   if (matchUpFormatError) errors.push(matchUpFormat);
   const error = errors.length && errors;
+
+  const drawDetails = {
+    drawSize,
+    drawType,
+    automated,
+    customName,
+    seedsCount,
+    tieFormat,
+    matchUpType,
+    drawId: drawDefinition.drawId,
+    category: event?.category,
+  };
+
+  const timeItem = {
+    itemType: 'generateDrawDefinition',
+    itemValue: drawDetails,
+  };
+  addTournamentTimeItem({ tournamentRecord, timeItem });
 
   return Object.assign({}, SUCCESS, {
     structureId,
