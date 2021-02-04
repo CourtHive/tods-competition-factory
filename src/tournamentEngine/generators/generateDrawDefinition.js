@@ -32,6 +32,7 @@ export function generateDrawDefinition(props) {
   const {
     uuids,
     customName,
+    drawEntries,
     matchUpType,
     seedingProfile,
     qualifyingRound,
@@ -87,7 +88,7 @@ export function generateDrawDefinition(props) {
   }
 
   const stage = MAIN;
-  const entries = event?.entries || [];
+  const entries = event?.entries || drawEntries;
   const eventType = event?.eventType;
   const stageEntries = entries.filter(
     (entry) =>
