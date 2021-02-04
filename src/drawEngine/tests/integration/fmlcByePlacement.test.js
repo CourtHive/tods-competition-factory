@@ -2,9 +2,16 @@ import { drawEngine } from '../..';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/fmlc';
 
-import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  CONSOLATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
+} from '../../../constants/drawDefinitionConstants';
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../../tournamentEngine';
+import { instanceCount } from '../../../utilities';
 
 it('can support ITF Consolation BYE placement', () => {
   const drawSize = 32;
@@ -125,7 +132,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 10,
+    byesCount: 9,
   });
 
   completionValues = [[2, 2, undefined, true]];
@@ -134,7 +141,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     completionValues,
     structureId: mainStructureId,
     participantsCount: 2,
-    byesCount: 10,
+    byesCount: 8,
   });
 
   completionValues = [
@@ -172,6 +179,97 @@ it('can remove BYEs when matchUps are cleared', () => {
     participantsCount: 2,
     byesCount: 10,
   });
+});
+
+it('can remove BYEs when matchUps are cleared', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      participantsCount: 17,
+      seedsCount: 8,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+  let { upcomingMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+    constextFilters: { stages: [MAIN] },
+  });
+  expect(upcomingMatchUps.length).toEqual(8);
+  const secondRoundUpcoming = upcomingMatchUps.filter(
+    ({ roundNumber }) => roundNumber === 2
+  );
+  expect(secondRoundUpcoming.length).toEqual(7);
+
+  let { byeMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+    contextFilters: { stages: [CONSOLATION] },
+  });
+  expect(byeMatchUps.length).toEqual(15);
+  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(
+    15
+  );
+
+  let {
+    drawDefinition: {
+      structures: [mainStructure, consolationStructure],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+  let mainByePositionAssignments = mainStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(mainByePositionAssignments.length).toEqual(15);
+  let consolationByePositionAssignments = consolationStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(consolationByePositionAssignments.length).toEqual(15);
+
+  secondRoundUpcoming.forEach(({ matchUpId }) => {
+    let result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome: { winningSide: 1 },
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+    result = tournamentEngine.setMatchUpStatus({
+      matchUpId,
+      outcome: { winningSide: 2 },
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  ({ byeMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+    contextFilters: { stages: [CONSOLATION] },
+  }));
+  expect(byeMatchUps.length).toEqual(15);
+  expect(instanceCount(byeMatchUps.map((m) => m.matchUpStatus)).BYE).toEqual(
+    15
+  );
+
+  ({
+    drawDefinition: {
+      structures: [mainStructure, consolationStructure],
+    },
+  } = tournamentEngine.getEvent({ drawId }));
+  mainByePositionAssignments = mainStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(mainByePositionAssignments.length).toEqual(15);
+  consolationByePositionAssignments = consolationStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(consolationByePositionAssignments.length).toEqual(15);
 });
 
 function checkAssignments({

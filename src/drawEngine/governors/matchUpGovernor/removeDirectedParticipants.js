@@ -1,13 +1,16 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { clearDrawPosition } from '../positionGovernor/positionClear';
+import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -74,6 +77,17 @@ export function removeDirectedParticipants(props) {
       matchUp,
     });
 
+    const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+      inContext: true,
+      mappedMatchUps,
+      drawDefinition,
+      structure,
+    });
+
+    const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
+      matchUp.drawPositions.includes(loserDrawPosition)
+    );
+
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({
         winnerMatchUp,
@@ -86,6 +100,27 @@ export function removeDirectedParticipants(props) {
       if (error) return { errors: [error] };
     }
     if (loserMatchUp) {
+      const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
+        sourceMatchUps,
+        loserDrawPosition,
+        drawPositionMatchUps,
+      });
+
+      const loserLinkCondition = loserTargetLink.linkCondition;
+      const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
+
+      if (winnerHadBye && firstMatchUpLoss) {
+        // The fed drawPosition is always the lowest number
+        const drawPosition = Math.min(...loserMatchUp.drawPositions);
+        const { error } = removeDirectedBye({
+          drawDefinition,
+          mappedMatchUps,
+          drawPosition,
+          targetLink: loserTargetLink,
+        });
+        if (error) return { errors: [error] };
+      }
+
       const { error } = removeDirectedLoser({
         loserMatchUp,
         mappedMatchUps,
@@ -177,6 +212,28 @@ function removeDirectedLoser({
     if (assignment.participantId === loserParticipantId) {
       delete assignment.participantId;
     }
+  });
+
+  return { error };
+}
+
+function removeDirectedBye({
+  targetLink,
+  drawPosition,
+  drawDefinition,
+  mappedMatchUps,
+  inContextDrawMatchUps,
+}) {
+  let error;
+
+  const structureId = targetLink.target.structureId;
+
+  clearDrawPosition({
+    drawDefinition,
+    inContextDrawMatchUps,
+    mappedMatchUps,
+    structureId,
+    drawPosition,
   });
 
   return { error };
