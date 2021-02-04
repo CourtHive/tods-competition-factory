@@ -17,7 +17,7 @@ const timeItem = {
   itemType: 'SCALE.RANKING.SINGLES.WTN',
   itemSubTypes; [], // optional
   itemValue: 13.20,
-  itemDate: '2020-01-01T00:00'
+  itemDate: '2020-01-01T00:00',
   createdAt: '2020-01-03T06:21'
 }
 ```

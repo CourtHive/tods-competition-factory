@@ -30,4 +30,10 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
     drawIds: [drawId],
   });
   expect(result.success).toEqual(true);
+
+  const { timeItem } = tournamentEngine.getTournamentTimeItem({
+    itemType: 'deleteDrawDefinitions',
+  });
+  expect(timeItem.itemValue.length).toEqual(1);
+  expect(timeItem.itemValue[0].drawId).toEqual(drawId);
 });

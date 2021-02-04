@@ -90,7 +90,7 @@ it('can generate an FMLC draw with all results completed', () => {
 
   // The expected # of COMPLETED and BYE matchUps varies depending on where the COMPLETED first round matchUp occurs
   // this is because of the grouping of BYEs in the consolation draw
-  const case24 = [9, 11, 13].includes(completedRoundPosition);
+  const case24 = [9, 11, 13, 15].includes(completedRoundPosition);
   const completed = case24 ? 24 : 23;
   const bye = case24 ? 30 : 31;
 

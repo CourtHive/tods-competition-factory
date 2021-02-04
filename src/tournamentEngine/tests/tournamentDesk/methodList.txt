@@ -22,7 +22,6 @@ tournamentEngine
 - attachPolicy
 - bulkMatchUpStatusUpdate
 - bulkUpdatePublishedEventIds
-- deleteDrawDefinitions
 - findMatchUp
 - getCourts
 - getEventData
@@ -49,6 +48,7 @@ tournamentEngine
 * assignMatchUpVenue
 * automatedPlayoffPositioning
 * createGroupParticipant
+* deleteDrawDefinitions
 * destroyPairEntry
 * generateDrawDefinition
 * getEventTimeItem
