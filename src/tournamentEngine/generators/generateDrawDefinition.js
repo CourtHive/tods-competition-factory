@@ -88,7 +88,7 @@ export function generateDrawDefinition(props) {
   }
 
   const stage = MAIN;
-  const entries = event?.entries || drawEntries;
+  const entries = event?.entries || drawEntries || [];
   const eventType = event?.eventType;
   const stageEntries = entries.filter(
     (entry) =>
