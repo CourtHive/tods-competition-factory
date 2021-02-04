@@ -49,7 +49,7 @@ function setState(tournament, deepCopyOption) {
   return Object.assign({ tournamentId }, SUCCESS);
 }
 
-export const tournamentEngine = (function () {
+export const tournamentEngine = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
@@ -90,7 +90,7 @@ export const tournamentEngine = (function () {
     return fx;
   };
 
-  importGovernors([
+  await importGovernors([
     queryGovernor,
     eventGovernor,
     venueGovernor,
@@ -141,22 +141,36 @@ export const tournamentEngine = (function () {
     return result;
   }
 
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((method) => {
-        fx[method] = (params) => {
+  async function importGovernors(governors) {
+    for (const governor of governors) {
+      const governorMethods = Object.keys(governor);
+
+      for (const governorMethod of governorMethods) {
+        fx[governorMethod] = async (params) => {
           if (getDevContext()) {
-            return engineInvoke(governor[method], params, method);
+            const result = await engineInvoke(
+              governor[governorMethod],
+              params,
+              governorMethod
+            );
+
+            return result;
           } else {
             try {
-              return engineInvoke(governor[method], params, method);
+              const result = await engineInvoke(
+                governor[governorMethod],
+                params,
+                governorMethod
+              );
+
+              return result;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
           }
         };
-      });
-    });
+      }
+    }
   }
 })();
 

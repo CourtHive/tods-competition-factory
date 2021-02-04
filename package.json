@@ -84,9 +84,11 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "source-map-resolve": "0.6.0",
-    "tsdx": "0.14.1",
+    "tsdx": "^0.14.1",
     "tslib": "2.0.3",
-    "typescript": "4.1.3"
+    "typescript": "4.1.3",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.13",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.13"
   },
   "dependencies": {
     "tods-matchup-format-code": "^1.0.7"

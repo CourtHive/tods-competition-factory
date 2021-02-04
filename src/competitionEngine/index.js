@@ -26,7 +26,7 @@ function setState(records, deepCopyOption = true) {
   return SUCCESS;
 }
 
-export const competitionEngine = (function () {
+export const competitionEngine = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
@@ -38,7 +38,7 @@ export const competitionEngine = (function () {
     },
   };
 
-  importGovernors([
+  await importGovernors([
     // locationGovernor,
     queryGovernor,
     scheduleGovernor,
