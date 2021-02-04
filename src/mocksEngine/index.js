@@ -20,9 +20,12 @@ export const mocksEngine = (async function () {
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
       for (const governorMethod of governorMethods) {
-        fx[governorMethods] = (params) => {
+        fx[governorMethods] = async (params) => {
           try {
-            const engineResult = await engineInvoke(governor[governorMethods], params);
+            const engineResult = await engineInvoke(
+              governor[governorMethods],
+              params
+            );
             return engineResult;
           } catch (err) {
             console.log('%c ERROR', 'color: orange', { err });
