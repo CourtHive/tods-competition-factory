@@ -106,9 +106,11 @@ it('can advance participants when double BYEs are created', () => {
       structures: [mainStructure, consolationStructure],
     },
   } = tournamentEngine.getEvent({ drawId }));
+  /*
   let consolationStructureAssignments = structureAssignedDrawPositions({
     structure: consolationStructure,
   });
+  */
   removeAssignment({
     drawId,
     structureId: mainStructure.structureId,
