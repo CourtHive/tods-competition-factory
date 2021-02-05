@@ -545,9 +545,10 @@ it('recognize when participants are tied with position order', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const group1structure = drawDefinition.structures[0];
-  const { positionAssignments } = getPositionAssignments({
-    structure: group1structure,
+  let structure = drawDefinition.structures[0];
+  const { structureId } = structure.structures[0];
+  let { positionAssignments } = getPositionAssignments({
+    structure,
   });
 
   let { eventData } = tournamentEngine.getEventData({ drawId });
@@ -593,4 +594,45 @@ it('recognize when participants are tied with position order', () => {
     // check that the results in eventData are equivalent
     expect(result).toEqual(participantResult);
   });
+
+  let result = tournamentEngine.setSubOrder({
+    drawId,
+    structureId,
+    drawPosition: 1,
+    subOrder: 2,
+  });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.setSubOrder({
+    drawId,
+    structureId,
+    drawPosition: 2,
+    subOrder: 3,
+  });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.setSubOrder({
+    drawId,
+    structureId,
+    drawPosition: 3,
+    subOrder: 1,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ eventData } = tournamentEngine.getEventData({ drawId }));
+  participantResults = eventData.drawsData[0].structures[0].participantResults;
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  structure = drawDefinition.structures[0];
+  ({ positionAssignments } = getPositionAssignments({
+    structure,
+  }));
+
+  const {
+    extension: { value: tally },
+  } = findExtension({
+    element: positionAssignments[0],
+    name: 'tally',
+  });
+  expect(tally.subOrder).toEqual(
+    participantResults[0].participantResult.subOrder
+  );
 });
