@@ -23,7 +23,7 @@ route: /competitionEngine/api
 Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging
 
 ```js
-tournamentEngine.devContext(true);
+competitionEngine.devContext(true);
 ```
 
 ---
@@ -69,7 +69,7 @@ Where **tournamentRecords** is an Array of **tournamentRecord** objects.
 Loads tournament records into competitionEngine.
 
 ```js
-drawEngine.setsState(tournamentRecords, deepCopy);
+competitionEngine.setsState(tournamentRecords, deepCopy);
 ```
 
 By default a deep copy of each tournament record is made so that mutations made by competitionEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.

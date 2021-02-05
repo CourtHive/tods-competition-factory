@@ -1,9 +1,10 @@
+import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function reorderUpcomingMatchUps(params) {
-  const { drawEngine, tournamentRecords, deepCopy } = params;
+  const { tournamentRecords } = params;
   const { matchUpsContextIds, firstToLast } = params;
   const matchUpsCount = matchUpsContextIds?.length;
   if (!matchUpsCount) return SUCCESS;
@@ -34,23 +35,15 @@ export function reorderUpcomingMatchUps(params) {
     scheduledTime,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition, event } = getDrawDefinition({
+    const { drawDefinition /*, event*/ } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    const result = drawEngine
-      .setState(drawDefinition, deepCopy)
-      .addMatchUpScheduledTime({ matchUpId, scheduledTime });
 
-    if (result.success) {
-      const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
-      event.drawDefinitions = event.drawDefinitions.map((drawDefinition) => {
-        return drawDefinition.drawId === drawId
-          ? updatedDrawDefinition
-          : drawDefinition;
-      });
-
-      return SUCCESS;
-    }
+    return addMatchUpScheduledTime({
+      drawDefinition,
+      matchUpId,
+      scheduledTime,
+    });
   }
 }

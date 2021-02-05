@@ -1,9 +1,13 @@
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
+import {
+  allTournamentMatchUps,
+  tournamentMatchUps,
+} from '../../tournamentEngine/getters/matchUpsGetter';
+
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function allCompetitionMatchUps({
   tournamentRecords,
-  tournamentEngine,
   matchUpFilters,
   contextFilters,
 }) {
@@ -13,9 +17,11 @@ export function allCompetitionMatchUps({
   const competitionMatchUps = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      return tournamentEngine
-        .setState(tournamentRecord)
-        .allTournamentMatchUps({ matchUpFilters, contextFilters });
+      return allTournamentMatchUps({
+        tournamentRecord,
+        matchUpFilters,
+        contextFilters,
+      });
     })
     .flat();
 
@@ -71,7 +77,6 @@ export function competitionScheduleMatchUps(props) {
 
 export function competitionMatchUps({
   tournamentRecords,
-  tournamentEngine,
   matchUpFilters,
   contextFilters,
 }) {
@@ -80,9 +85,11 @@ export function competitionMatchUps({
   const tournamentIds = Object.keys(tournamentRecords);
   const tournamentsMatchUps = tournamentIds.map((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    return tournamentEngine
-      .setState(tournamentRecord)
-      .tournamentMatchUps({ matchUpFilters, contextFilters });
+    return tournamentMatchUps({
+      tournamentRecord,
+      matchUpFilters,
+      contextFilters,
+    });
   });
 
   const matchUpGroupings = tournamentsMatchUps.reduce(

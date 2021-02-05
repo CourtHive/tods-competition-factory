@@ -24,7 +24,6 @@ it('can define seedAssignments', () => {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize, seedsCount });
 
-  // returns deepCopy of drawDefinition
   const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({
