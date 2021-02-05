@@ -1,10 +1,11 @@
+import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
+import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import {
   timeToDate,
   matchUpTiming,
 } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
-import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
-import { SUCCESS } from '../../../constants/resultConstants';
+
 import {
   BYE,
   ABANDONED,
@@ -14,12 +15,11 @@ import {
   COMPLETED,
 } from '../../../constants/matchUpStatusConstants';
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function scheduleMatchUps(props) {
   const {
     tournamentRecords,
-    drawEngine,
-    deepCopy,
 
     venueIds,
     matchUps,
@@ -80,7 +80,7 @@ export function scheduleMatchUps(props) {
       const { drawId, matchUpId, tournamentId } = targetMatchUp;
       const tournamentRecord = tournamentRecords[tournamentId];
       if (tournamentRecord) {
-        const { drawDefinition, event } = getDrawDefinition({
+        const { drawDefinition } = getDrawDefinition({
           tournamentRecord,
           drawId,
         });
@@ -93,21 +93,7 @@ export function scheduleMatchUps(props) {
             timeToDate(scheduleTime, date)
           ).toISOString();
 
-          drawEngine
-            .setState(drawDefinition, deepCopy)
-            .addMatchUpScheduledTime({ matchUpId, scheduledTime });
-
-          const {
-            drawDefinition: updatedDrawDefinition,
-          } = drawEngine.getState();
-
-          event.drawDefinitions = event.drawDefinitions.map(
-            (drawDefinition) => {
-              return drawDefinition.drawId === drawId
-                ? updatedDrawDefinition
-                : drawDefinition;
-            }
-          );
+          addMatchUpScheduledTime({ drawDefinition, matchUpId, scheduledTime });
         }
       } else {
         console.log(MISSING_TOURNAMENT_ID);

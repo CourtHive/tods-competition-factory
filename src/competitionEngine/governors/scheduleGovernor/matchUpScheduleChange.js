@@ -4,7 +4,7 @@ import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/gov
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
-  const { tournamentRecords, deepCopy } = params;
+  const { tournamentRecords } = params;
   const {
     sourceMatchUpContextIds,
     targetMatchUpContextIds,
@@ -46,7 +46,6 @@ export function matchUpScheduleChange(params) {
       drawId: sourceDrawId,
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
-      deepCopy,
     });
     if (sourceResult.success) matchUpsModified++;
 
@@ -55,7 +54,6 @@ export function matchUpScheduleChange(params) {
       drawId: targetDrawId,
       matchUpId: targetMatchUpId,
       courtId: sourceCourtId,
-      deepCopy,
     });
     if (targetResult.success) matchUpsModified++;
   } else {
