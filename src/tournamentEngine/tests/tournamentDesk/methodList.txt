@@ -32,7 +32,6 @@ tournamentEngine
 - getTournamentParticipants
 - modifyParticipantName
 - modifyParticipantOtherName
-- version
 - withdrawParticipantAtDrawPosition
 * addDrawDefinition
 * addEventEntryPairs
@@ -73,3 +72,4 @@ tournamentEngine
 * setMatchUpStatus
 * setParticipantScaleItem
 * swapDrawPositionAssignments
+* version
