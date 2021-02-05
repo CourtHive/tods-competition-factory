@@ -2,7 +2,7 @@ import { tallyParticipantResults } from '../../governors/scoreGovernor/roundRobi
 import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';

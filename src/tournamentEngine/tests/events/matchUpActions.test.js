@@ -1,7 +1,7 @@
 import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { intersection } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';

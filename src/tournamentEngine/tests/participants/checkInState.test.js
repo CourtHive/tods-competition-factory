@@ -1,6 +1,6 @@
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 
 import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../constants/eventConstants';

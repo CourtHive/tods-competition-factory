@@ -1,6 +1,6 @@
 import drawEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 
 import {
   BOTTOM_UP,

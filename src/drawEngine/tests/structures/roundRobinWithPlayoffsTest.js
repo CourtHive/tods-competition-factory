@@ -1,5 +1,5 @@
 import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';

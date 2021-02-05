@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../..';
+import { tournamentEngine } from '../../sync';
 import { drawEngine } from '../../../drawEngine/sync';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';

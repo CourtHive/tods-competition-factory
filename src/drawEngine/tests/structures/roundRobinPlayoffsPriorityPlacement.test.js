@@ -1,5 +1,5 @@
 import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { chunkArray, intersection } from '../../../utilities/arrays';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';

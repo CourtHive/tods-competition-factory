@@ -1,6 +1,6 @@
 import drawEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';

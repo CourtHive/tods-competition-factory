@@ -10,7 +10,7 @@ import {
 import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
 import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
 
 it('can support ITF Consolation BYE placement', () => {

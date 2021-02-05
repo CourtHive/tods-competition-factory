@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 it('can notify subscriber when audit information is added', () => {

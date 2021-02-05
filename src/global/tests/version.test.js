@@ -1,7 +1,7 @@
-import competitionEngine from '../../competitionEngine';
+import competitionEngine from '../../competitionEngine/sync';
 import drawEngine from '../../drawEngine/sync';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../../tournamentEngine';
+import tournamentEngine from '../../tournamentEngine/sync';
 
 it('can return version from all engines', () => {
   let result = drawEngine.version();

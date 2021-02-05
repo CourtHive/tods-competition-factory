@@ -1,5 +1,5 @@
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 
 import {
   FIRST_MATCH_LOSER_CONSOLATION,

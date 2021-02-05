@@ -1,5 +1,5 @@
 import fs from 'fs';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import {

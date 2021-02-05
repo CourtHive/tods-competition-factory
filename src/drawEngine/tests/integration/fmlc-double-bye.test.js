@@ -3,7 +3,7 @@ import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
 
 import { generateFMLC } from '../../tests/primitives/fmlc';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
 import {
