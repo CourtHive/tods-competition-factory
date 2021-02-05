@@ -1,5 +1,5 @@
 import { generateParticipants } from './generateParticipants';
-import { tournamentEngine } from '../../tournamentEngine';
+import { tournamentEngine } from '../../tournamentEngine/sync';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';

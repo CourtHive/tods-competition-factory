@@ -1,8 +1,8 @@
 import fs from 'fs';
-import drawEngine from '../../drawEngine';
+import drawEngine from '../../drawEngine/sync';
 import { getDrawMatchUps } from '../../drawEngine/getters/getMatchUps/drawMatchUps';
 import { getStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getStructureMatchUps';
-import tournamentEngine from '../../tournamentEngine';
+import tournamentEngine from '../../tournamentEngine/sync';
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/demoTournament.json',
   'utf-8'

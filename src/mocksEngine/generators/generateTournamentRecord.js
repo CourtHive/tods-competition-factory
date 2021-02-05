@@ -1,6 +1,6 @@
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { generateParticipants } from './generateParticipants';
-import { tournamentEngine } from '../../tournamentEngine';
+import { tournamentEngine } from '../../tournamentEngine/sync';
 import { matchUpSort } from '../utilities/matchUpSort';
 import { intersection } from '../../utilities';
 

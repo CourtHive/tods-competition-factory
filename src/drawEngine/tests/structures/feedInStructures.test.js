@@ -2,7 +2,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import { feedInMatchUps } from '../../generators/eliminationTree';
 import { generateRange } from '../../../utilities';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import {
   reset,
   initialize,

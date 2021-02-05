@@ -1,5 +1,5 @@
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 

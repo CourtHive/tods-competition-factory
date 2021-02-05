@@ -1,5 +1,5 @@
 import { generateRange } from '../../../utilities';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';

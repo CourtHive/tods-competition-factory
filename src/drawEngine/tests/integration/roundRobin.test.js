@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { generateRange } from '../../../utilities';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 

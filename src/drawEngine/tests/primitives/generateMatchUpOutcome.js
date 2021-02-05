@@ -1,4 +1,4 @@
-import drawEngine from '../../../drawEngine';
+import drawEngine from '../../sync';
 
 function generateSetScores(setValues) {
   return setValues.map(

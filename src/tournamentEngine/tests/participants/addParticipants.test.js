@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ROLE,

@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 import { ALTERNATE_PARTICIPANT } from '../../../../constants/positionActionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';

@@ -1,9 +1,9 @@
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
-import drawEngine from '../../../drawEngine';
+import drawEngine from '../../sync';
 
 import {
   ELIMINATION,

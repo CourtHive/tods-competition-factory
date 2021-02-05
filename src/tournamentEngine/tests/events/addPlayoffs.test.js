@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';

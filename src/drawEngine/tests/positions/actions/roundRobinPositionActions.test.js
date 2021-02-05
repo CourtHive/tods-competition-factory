@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import {

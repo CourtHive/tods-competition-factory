@@ -1,5 +1,5 @@
-import tournamentEngine from '../../..';
-import drawEngine from '../../../../drawEngine';
+import tournamentEngine from '../../../sync';
+import drawEngine from '../../../../drawEngine/sync';
 import { validDrawPositions } from '../../../../drawEngine/governors/matchUpGovernor/validDrawPositions';
 
 import { tournament } from './tournament';

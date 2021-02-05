@@ -1,4 +1,4 @@
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 
 import { FEED_FMLC, MAIN } from '../../../constants/drawDefinitionConstants';

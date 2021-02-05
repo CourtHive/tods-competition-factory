@@ -1,5 +1,5 @@
-import { drawEngine } from '../../../drawEngine';
-import { tournamentEngine } from '../../../tournamentEngine';
+import { drawEngine } from '../../../drawEngine/sync';
+import { tournamentEngine } from '../../sync';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';

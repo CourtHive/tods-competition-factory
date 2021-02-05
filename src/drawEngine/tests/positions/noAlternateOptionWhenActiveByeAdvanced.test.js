@@ -1,6 +1,6 @@
 import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
 import {

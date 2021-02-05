@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../..';
 
 import { matchUpSort } from '../../utilities/matchUpSort';

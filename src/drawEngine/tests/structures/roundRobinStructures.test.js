@@ -1,4 +1,4 @@
-import drawEngine from '../../../drawEngine';
+import drawEngine from '../../sync';
 
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 

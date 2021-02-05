@@ -5,7 +5,7 @@ import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEn
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
-import drawEngine from '../../drawEngine';
+import drawEngine from '../../drawEngine/sync';
 
 import {
   MAIN,

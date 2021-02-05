@@ -1,6 +1,6 @@
 import { getSourceRounds } from '../../governors/structureGovernor/getSourceRounds';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 
 import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
 

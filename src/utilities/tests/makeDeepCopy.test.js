@@ -1,7 +1,7 @@
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL } from '../../constants/participantTypes';
 import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../../tournamentEngine';
+import tournamentEngine from '../../tournamentEngine/sync';
 import { makeDeepCopy } from '../makeDeepCopy';
 import { UUID } from '../UUID';
 

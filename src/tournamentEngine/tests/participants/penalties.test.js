@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../..';
+import { tournamentEngine } from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { penaltyConstants } from '../../../constants/penaltyConstants';

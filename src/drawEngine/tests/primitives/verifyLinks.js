@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 
 export function verifyLinks({ linksProfiles = [] }) {
   const { drawDefinition } = drawEngine.getState();

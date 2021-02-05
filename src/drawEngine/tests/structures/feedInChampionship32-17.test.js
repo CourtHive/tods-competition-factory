@@ -1,5 +1,5 @@
-import drawEngine from '../../../drawEngine';
-import tournamentEngine from '../../../tournamentEngine';
+import drawEngine from '../../sync';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { getDrawStructures } from '../../getters/findStructure';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import {

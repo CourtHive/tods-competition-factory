@@ -4,7 +4,7 @@ import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatc
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 
 export function completeMatchUp({
   structureId,

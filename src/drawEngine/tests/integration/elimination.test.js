@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateDrawStructure } from '../primitives/generateDrawStructure';

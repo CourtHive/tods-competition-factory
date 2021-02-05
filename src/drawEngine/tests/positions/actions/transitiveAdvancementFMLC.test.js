@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../mocksEngine';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import {
   getOrderedDrawPositionPairs,
   removeAssignment,

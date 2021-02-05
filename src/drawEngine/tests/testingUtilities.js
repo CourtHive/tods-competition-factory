@@ -1,5 +1,5 @@
 import { matchUpSort } from '../../mocksEngine/utilities/matchUpSort';
-import tournamentEngine from '../../tournamentEngine';
+import tournamentEngine from '../../tournamentEngine/sync';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { REMOVE_ASSIGNMENT } from '../../constants/positionActionConstants';
