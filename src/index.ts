@@ -36,19 +36,23 @@ export const utilities = {
   unique,
 };
 
-export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
+// Synchronous exports
 export { competitionEngine } from './competitionEngine/sync';
 export { tournamentEngine } from './tournamentEngine/sync';
-export { mocksEngine } from './mocksEngine';
 export { drawEngine } from './drawEngine/sync';
+
+// asynchronous exports
+
+export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
+export { mocksEngine } from './mocksEngine';
 export { fixtures } from './fixtures';
 
-export { factoryConstants } from './constants';
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export {
   entryStatusConstants,
   EntryStatusEnum,
 } from './constants/entryStatusConstants';
+export { factoryConstants } from './constants';
 export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { genderConstants } from './constants/genderConstants';
