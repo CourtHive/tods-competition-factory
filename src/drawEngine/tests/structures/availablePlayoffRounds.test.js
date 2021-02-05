@@ -1,6 +1,6 @@
 import { getAvailablePlayoffRounds } from '../../governors/structureGovernor/getAvailablePlayoffRounds';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 
 import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
 

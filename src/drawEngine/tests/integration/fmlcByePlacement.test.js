@@ -1,4 +1,4 @@
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/fmlc';
 

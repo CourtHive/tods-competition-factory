@@ -1,5 +1,5 @@
 import { numericSort } from '../../../utilities';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { stageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';

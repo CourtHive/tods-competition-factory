@@ -1,4 +1,4 @@
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 import { treeMatchUps } from '../../generators/eliminationTree';
 
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';

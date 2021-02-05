@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine';
 import mocksEngine from '../../../../mocksEngine';
 import { unique } from '../../../../utilities';
-import drawEngine from '../../..';
+import drawEngine from '../../../sync';
 
 import {
   BYE,

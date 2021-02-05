@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { stageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';

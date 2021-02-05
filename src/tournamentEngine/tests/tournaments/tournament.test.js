@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../..';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine/sync';
 
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';

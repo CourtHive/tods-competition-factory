@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../../drawEngine/sync';
 import { tournamentEngine } from '../../../tournamentEngine';
 
 import { eventConstants } from '../../../constants/eventConstants';

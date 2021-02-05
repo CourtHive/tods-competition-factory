@@ -1,7 +1,7 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine';
 import { generateFMLC } from '../../tests/primitives/fmlc';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import {
   completeMatchUp,

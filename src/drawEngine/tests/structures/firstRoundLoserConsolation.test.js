@@ -3,7 +3,7 @@ import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import tournamentEngine from '../../../tournamentEngine';
 import { instanceCount } from '../../../utilities';
-import drawEngine from '../../../drawEngine';
+import drawEngine from '../../sync';
 
 import {
   ELIMINATION,

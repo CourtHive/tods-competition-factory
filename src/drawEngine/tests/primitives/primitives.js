@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { generateRange } from '../../../utilities';
 import { stageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';

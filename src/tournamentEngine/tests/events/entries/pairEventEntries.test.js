@@ -8,7 +8,7 @@ import {
   UNPAIRED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import drawEngine from '../../../../drawEngine';
+import drawEngine from '../../../../drawEngine/sync';
 // import { COMPETITOR } from '../../../constants/participantRoles';
 // import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
 

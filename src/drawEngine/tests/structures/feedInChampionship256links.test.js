@@ -1,4 +1,4 @@
-import drawEngine from '../..';
+import drawEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine';
 

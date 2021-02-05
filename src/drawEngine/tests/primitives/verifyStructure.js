@@ -5,7 +5,7 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { chunkArray, generateRange } from '../../../utilities';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 

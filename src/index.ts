@@ -40,7 +40,7 @@ export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { competitionEngine } from './competitionEngine';
 export { tournamentEngine } from './tournamentEngine';
 export { mocksEngine } from './mocksEngine';
-export { drawEngine } from './drawEngine';
+export { drawEngine } from './drawEngine/sync';
 export { fixtures } from './fixtures';
 
 export { factoryConstants } from './constants';
