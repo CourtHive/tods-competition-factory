@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { intersection, numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import {
   getPositionAssignments,
