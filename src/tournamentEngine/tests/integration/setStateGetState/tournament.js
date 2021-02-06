@@ -80,7 +80,6 @@ export const tournament = {
   events: [
     {
       allowedDrawTypes: ['COMPASS'],
-      tennisOfficialIds: [],
       _id: '5fd36b6c6b5f8f65c777650a',
       gender: 'MALE',
       endDate: '2021-01-04T00:00:00.000Z',
@@ -103,7 +102,6 @@ export const tournament = {
     },
     {
       allowedDrawTypes: ['COMPASS'],
-      tennisOfficialIds: [],
       _id: '5fd36b6c6b5f8f65c777650c',
       gender: 'MALE',
       endDate: '2021-01-04T00:00:00.000Z',
