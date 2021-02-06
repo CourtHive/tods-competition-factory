@@ -31,10 +31,11 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   });
 
   // first collect all drawPositions for the structure
-  const drawPositions = []
-    .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
-    .filter((f) => f)
-    .sort(numericSort);
+  const drawPositions = unique(
+    []
+      .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
+      .filter((f) => f)
+  ).sort(numericSort);
 
   // determine which positions are BYEs
   const byeDrawPositions = positionAssignments
