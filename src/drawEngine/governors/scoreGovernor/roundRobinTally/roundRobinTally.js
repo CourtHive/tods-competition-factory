@@ -105,14 +105,14 @@ export function tallyParticipantResults({
 
       result.GEMscore = o.GEMscore;
       if (o !== undefined && o.rankOrder !== undefined) {
-        result.groupOrder = o.rankOrder;
-
         // subOrder is only assigned if there are ties
         if (rankOrderInstances > 1) {
           const subOrder = subOrderMap[o.participantId];
           result.ties = rankOrderInstances;
           result.subOrder = subOrder;
         }
+
+        result.groupOrder = o.rankOrder + (result.subOrder || 1) - 1;
       }
 
       // calculate order for awarding points

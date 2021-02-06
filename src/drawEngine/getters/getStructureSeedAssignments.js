@@ -40,7 +40,7 @@ export function getStructureSeedAssignments({
           return {
             participantId: entry.participantId,
             seedNumber: index + 1,
-            seedValue: 1,
+            seedValue: index + 1,
             seedProxy: true, // flag so that proxy seeding information doesn't get used externally
           };
         });
