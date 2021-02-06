@@ -150,7 +150,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(true);
   options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
   expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
@@ -232,7 +232,7 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   expect(result.isDrawPosition).toEqual(true);
   expect(result.isByePosition).toEqual(true);
   options = result.validActions?.map((validAction) => validAction.type);
-  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(false);
+  expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
   expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
