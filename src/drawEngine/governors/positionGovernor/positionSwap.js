@@ -1,4 +1,6 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
@@ -23,6 +25,25 @@ export function swapDrawPositionAssignments({
   if (drawPositions?.length !== 2) {
     return { error: INVALID_VALUES, drawPositions };
   }
+
+  // START: ############## telemetry ##############
+  const { extension } = findExtension({
+    element: drawDefinition,
+    name: 'positionActions',
+  });
+  const action = {
+    name: 'swapDrawPositionAssignments',
+    drawPositions,
+    structureId,
+  };
+  const updatedExtension = {
+    name: 'positionActions',
+    value: Array.isArray(extension?.value)
+      ? extension.value.concat(action)
+      : [action],
+  };
+  addExtension({ element: drawDefinition, extension: updatedExtension });
+  // END: ############## telemetry ##############
 
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
 

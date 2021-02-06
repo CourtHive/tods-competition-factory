@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { intersection, numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import {
   getPositionAssignments,
@@ -73,47 +73,54 @@ export function drawPositionRemovals({
   );
 
   let targetDrawPosition = drawPosition;
-
   const pairingDetails = roundNumbers
     .map((roundNumber) => {
+      // find the pair of drawPositions which includes the targetDrawPosition
       const relevantPair = roundProfile[
         roundNumber
       ].pairedDrawPositions.find((drawPositions) =>
         drawPositions.includes(targetDrawPosition)
       );
+      // find the drawPosition which is paired with the targetDrawPosition
       const pairedDrawPosition = relevantPair?.find(
         (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
       );
+      // find the assignment for the paired drawPosition
       const pairedDrawPositionAssignment = positionAssignments.find(
         (assignment) => assignment.drawPosition === pairedDrawPosition
       );
       const nextRoundProfile = roundProfile[roundNumber + 1];
+      // whether or not the pairedDrawPosition is a BYE
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
+      // whether or not the pairedDrawPosition is present in the next round
       const pairedDrawPositionInNextRound =
         nextRoundProfile &&
         nextRoundProfile.pairedDrawPositions.find((pairedPositions) =>
           pairedPositions.includes(pairedDrawPosition)
         );
+      // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
       const isTransitiveBye =
-        pairedDrawPositionIsBye && pairedDrawPositionInNextRound;
-      nextRoundProfile &&
+        pairedDrawPositionIsBye &&
+        pairedDrawPositionInNextRound &&
+        nextRoundProfile &&
         nextRoundProfile.drawPositions.includes(pairedDrawPosition);
       const pairedDrawPositionByeAdvancedPair =
         !isTransitiveBye && pairedDrawPositionInNextRound;
-      if (pairedDrawPositionAssignment) {
-        const result = {
-          roundNumber,
-          relevantPair,
-          pairedDrawPosition,
-          pairedDrawPositionByeAdvancedPair,
-          targetDrawPosition,
-        };
-        // if the pairedDrawPosition is a BYE, continue search with pairedDrawPoaition as targetDrawPosition
-        if (isTransitiveBye) targetDrawPosition = pairedDrawPosition;
-        return result;
-      }
+
+      const result = relevantPair && {
+        roundNumber,
+        relevantPair,
+        pairedDrawPosition,
+        pairedDrawPositionByeAdvancedPair,
+        targetDrawPosition,
+      };
+
+      // if the pairedDrawPosition is a BYE, continue search with pairedDrawPoaition as targetDrawPosition
+      if (isTransitiveBye) targetDrawPosition = pairedDrawPosition;
+
+      return result;
     })
-    .filter((f) => f);
+    .filter((f) => f?.targetDrawPosition);
 
   const tasks = pairingDetails.reduce((tasks, pairingDetail) => {
     const {

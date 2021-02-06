@@ -1,6 +1,8 @@
 import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
+import { addExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../queryGovernor/extensionQueries';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
 
@@ -73,6 +75,27 @@ export function removeDrawPositionAssignment(props) {
     });
     if (result.error) return result;
   }
+
+  // START: ############## telemetry ##############
+  const { extension } = findExtension({
+    element: drawDefinition,
+    name: 'positionActions',
+  });
+  const action = {
+    name: 'removeDrawPositionAssignment',
+    replaceWithBye,
+    drawPosition,
+    entryStatus,
+    structureId,
+  };
+  const updatedExtension = {
+    name: 'positionActions',
+    value: Array.isArray(extension?.value)
+      ? extension.value.concat(action)
+      : [action],
+  };
+  addExtension({ element: drawDefinition, extension: updatedExtension });
+  // END: ############## telemetry ##############
 
   return result;
 }
