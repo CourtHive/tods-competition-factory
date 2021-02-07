@@ -310,14 +310,17 @@ function advanceDrawPosition({
     losingDrawPosiitonIsBye &&
     loserMatchUp.structureId !== structure.structureId
   ) {
-    const sourceStructureRoundPosition = matchUp.roundPosition;
-    // loser drawPosition in target structure is determined bye even/odd
-    const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
+    const { drawPositions, roundNumber } = loserMatchUp;
 
-    const targetMatchUpDrawPositions = loserMatchUp.drawPositions;
-    const targetDrawPosition =
-      targetMatchUpDrawPositions[targetDrawPositionIndex];
-
+    let targetDrawPosition;
+    if (roundNumber === 1) {
+      const sourceStructureRoundPosition = matchUp.roundPosition;
+      // loser drawPosition in target structure is determined bye even/odd
+      const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
+      targetDrawPosition = drawPositions[targetDrawPositionIndex];
+    } else {
+      targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
+    }
     const result = assignDrawPositionBye({
       drawDefinition,
       structureId: loserTargetLink.target.structureId,
