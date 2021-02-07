@@ -1,9 +1,4 @@
-import {
-  CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../constants/drawDefinitionConstants';
+import { stageOrder } from '../../constants/drawDefinitionConstants';
 
 /**
  * Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
@@ -24,11 +19,5 @@ export function matchUpSort(a, b) {
 }
 
 function stageDifference(a, b) {
-  const stageOrder = {
-    [QUALIFYING]: 1,
-    [MAIN]: 2,
-    [PLAY_OFF]: 3,
-    [CONSOLATION]: 4,
-  };
   return (stageOrder[a.stage] || 0) - (stageOrder[b.stage] || 0);
 }

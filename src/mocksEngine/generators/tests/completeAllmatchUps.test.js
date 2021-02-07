@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../..';
 
-import { matchUpSort } from '../../utilities/matchUpSort';
+import { matchUpSort } from '../../../drawEngine/getters/matchUpSort';
 import { instanceCount } from '../../../utilities';
 import { fmlc32profile } from './fmlc32';
 

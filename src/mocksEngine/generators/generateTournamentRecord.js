@@ -1,7 +1,7 @@
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
-import { generateParticipants } from './generateParticipants';
+import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 import { tournamentEngine } from '../../tournamentEngine/sync';
-import { matchUpSort } from '../utilities/matchUpSort';
+import { generateParticipants } from './generateParticipants';
 import { intersection } from '../../utilities';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';

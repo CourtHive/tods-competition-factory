@@ -1,4 +1,4 @@
-import { matchUpSort } from '../../mocksEngine/utilities/matchUpSort';
+import { matchUpSort } from '../getters/matchUpSort';
 import tournamentEngine from '../../tournamentEngine/sync';
 
 import { MAIN } from '../../constants/drawDefinitionConstants';

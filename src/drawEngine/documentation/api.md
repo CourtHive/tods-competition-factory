@@ -421,6 +421,17 @@ Return an array of all validActions for a given matchUp
 
 ---
 
+## matchUpSort
+
+Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
+
+Useful for automatically scoring all matchUps in connected draw structures
+
+- @param {object} a - matchUp object
+- @param {object} b - matchUp object
+
+---
+
 ## newDrawDefinition
 
 ---
@@ -492,6 +503,16 @@ By default a deep copy of the tournament record is made so that mutations made b
 ## setSubscriptions
 
 Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
+
+---
+
+## structureSort
+
+Sorting function to arrange structures by positionAssignments count (size) then stageSequence
+Used internally to order Compass structures
+
+- @param {object} a - matchUp object
+- @param {object} b - matchUp object
 
 ---
 
