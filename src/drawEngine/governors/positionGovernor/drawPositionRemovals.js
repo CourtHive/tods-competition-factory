@@ -233,21 +233,44 @@ function removeDrawPosition({
     loserMatchUp &&
     loserMatchUp.structureId !== targetData.matchUp.structureId
   ) {
-    const { drawPositions } = loserMatchUp;
-    const loserMatchUpDrawPosition =
-      drawPositions[loserMatchUpDrawPositionIndex];
-
     // if source matchUp contains BYE don't removed directed BYE
     if (!matchUpContainsBye) {
-      drawPositionRemovals({
-        inContextDrawMatchUps,
-        drawDefinition,
-        mappedMatchUps,
-        structureId: loserMatchUp.structureId,
-        drawPosition: loserMatchUpDrawPosition,
-      });
+      const { drawPositions, roundNumber } = loserMatchUp;
+      if (roundNumber === 1) {
+        const loserMatchUpDrawPosition =
+          drawPositions[loserMatchUpDrawPositionIndex];
+        drawPositionRemovals({
+          inContextDrawMatchUps,
+          drawDefinition,
+          mappedMatchUps,
+          structureId: loserMatchUp.structureId,
+          drawPosition: loserMatchUpDrawPosition,
+        });
+      } else {
+        // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
+        // which is always the lowest numerical drawPosition
+        const loserMatchUpDrawPosition = Math.min(
+          ...drawPositions.filter((f) => f)
+        );
+        const matchUps = mappedMatchUps[structure.structureId].matchUps;
+        const { initialRoundNumber } = getInitialRoundNumber({
+          drawPosition: loserMatchUpDrawPosition,
+          matchUps,
+        });
+        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
+        if (initialRoundNumber === roundNumber) {
+          drawPositionRemovals({
+            inContextDrawMatchUps,
+            drawDefinition,
+            mappedMatchUps,
+            structureId: loserMatchUp.structureId,
+            drawPosition: loserMatchUpDrawPosition,
+          });
+        }
+      }
     }
   }
+
   if (
     winnerMatchUp &&
     winnerMatchUp.structureId !== targetData.matchUp.structureId
