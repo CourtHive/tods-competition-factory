@@ -1,14 +1,15 @@
+import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
+import { findStructure } from '../../../drawEngine/getters/findStructure';
+import { structureSort } from '../../../drawEngine/getters/structureSort';
+import { findExtension } from '../queryGovernor/extensionQueries';
 import {
   generateRange,
   intersection,
   makeDeepCopy,
   unique,
 } from '../../../utilities';
-import { findStructure } from '../../../drawEngine/getters/findStructure';
-import { getAllStructureMatchUps } from '../../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
-import { findExtension } from '../queryGovernor/extensionQueries';
-import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -40,87 +41,101 @@ export function getDrawData({
 
   let drawActive = false;
   const groupedStructures = structureGroups.map((structureIds) => {
-    const structures = structureIds.map((structureId) => {
-      const { structure } = findStructure({ drawDefinition, structureId });
+    const structures = structureIds
+      .map((structureId) => {
+        const { structure } = findStructure({ drawDefinition, structureId });
 
-      const { matchUps, roundMatchUps } = getAllStructureMatchUps({
-        context: { drawId: drawInfo.drawId, ...context },
-        tournamentParticipants,
-        policyDefinition,
-        drawDefinition,
-        structure,
-        inContext,
-      });
+        const { matchUps, roundMatchUps } = getAllStructureMatchUps({
+          context: { drawId: drawInfo.drawId, ...context },
+          tournamentParticipants,
+          policyDefinition,
+          drawDefinition,
+          structure,
+          inContext,
+        });
 
-      const { positionAssignments } = getPositionAssignments({
-        structure,
-      });
+        const { positionAssignments } = getPositionAssignments({
+          structure,
+        });
 
-      const participantResults = positionAssignments
-        .filter(({ participantId }) => participantId)
-        .map((assignment) => {
-          const { drawPosition, participantId } = assignment;
-          const { extension } = findExtension({
-            element: assignment,
-            name: 'tally',
-          });
+        const participantResults = positionAssignments
+          .filter(({ participantId }) => participantId)
+          .map((assignment) => {
+            const { drawPosition, participantId } = assignment;
+            const { extension } = findExtension({
+              element: assignment,
+              name: 'tally',
+            });
+            return (
+              extension && {
+                drawPosition,
+                participantId,
+                participantResult: extension.value,
+              }
+            );
+          })
+          .filter((f) => f?.participantResult);
+
+        const structureInfo = (({
+          stage,
+          stageSequence,
+          structureName,
+          structureType,
+          matchUpFormat,
+          positionAssignments,
+        }) => ({
+          stage,
+          stageSequence,
+          structureName,
+          structureType,
+          matchUpFormat,
+          positionAssignments,
+        }))(structure);
+
+        structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
+          // return active || matchUp.winningSide || matchUp.score;
+          // SCORE: when matchUp.score becomes object change logic
           return (
-            extension && {
-              drawPosition,
-              participantId,
-              participantResult: extension.value,
-            }
+            active || !!matchUp.winningSide || !!matchUp.score?.sets?.length
           );
-        })
-        .filter((f) => f?.participantResult);
+        }, false);
 
-      const structureInfo = (({
-        stage,
-        stageSequence,
-        structureName,
-        structureType,
-        matchUpFormat,
-      }) => ({
-        stage,
-        stageSequence,
-        structureName,
-        structureType,
-        matchUpFormat,
-      }))(structure);
+        structureInfo.structureCompleted = matchUps.reduce(
+          (completed, matchUp) => {
+            return (
+              completed &&
+              [
+                BYE,
+                COMPLETED,
+                RETIRED,
+                WALKOVER,
+                DEFAULTED,
+                ABANDONED,
+              ].includes(matchUp.matchUpStatus)
+            );
+          },
+          true
+        );
 
-      structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
-        // return active || matchUp.winningSide || matchUp.score;
-        // SCORE: when matchUp.score becomes object change logic
-        return active || !!matchUp.winningSide || !!matchUp.score?.sets?.length;
-      }, false);
+        if (structureInfo.structureActive) drawActive = true;
 
-      structureInfo.structureCompleted = matchUps.reduce(
-        (completed, matchUp) => {
-          return (
-            completed &&
-            [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(
-              matchUp.matchUpStatus
-            )
-          );
-        },
-        true
-      );
+        const { seedAssignments } = getStructureSeedAssignments({
+          drawDefinition,
+          structure,
+        });
 
-      if (structureInfo.structureActive) drawActive = true;
+        return {
+          ...structureInfo,
+          structureId,
+          roundMatchUps,
+          seedAssignments,
+          participantResults,
+        };
+      })
+      .sort(structureSort);
 
-      const { seedAssignments } = getStructureSeedAssignments({
-        drawDefinition,
-        structure,
-      });
-
-      return {
-        ...structureInfo,
-        structureId,
-        roundMatchUps,
-        seedAssignments,
-        participantResults,
-      };
-    });
+    // cleanup attribute used for sorting
+    structures.forEach((structure) => delete structure.positionAssignments);
 
     return structures;
   });
