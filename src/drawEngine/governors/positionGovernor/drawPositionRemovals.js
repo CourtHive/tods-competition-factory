@@ -1,11 +1,12 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { intersection, numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
+import { intersection } from '../../../utilities';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
@@ -322,17 +323,4 @@ export function removeSubsequentRoundsParticipant({
       drawPosition: targetDrawPosition,
     });
   });
-}
-
-function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
-  // determine the initial round where drawPosition appears
-  // drawPosition cannot be removed from its initial round
-  const initialRoundNumber = matchUps
-    .filter(
-      ({ drawPositions }) =>
-        drawPosition && drawPositions.includes(drawPosition)
-    )
-    .map(({ roundNumber }) => parseInt(roundNumber))
-    .sort(numericSort)[0];
-  return { initialRoundNumber };
 }
