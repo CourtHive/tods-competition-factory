@@ -1,7 +1,9 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
@@ -27,6 +29,7 @@ export function assignDrawPositionBye({
   drawPosition,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
+  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -312,21 +315,34 @@ function advanceDrawPosition({
   ) {
     const { drawPositions, roundNumber } = loserMatchUp;
 
-    let targetDrawPosition;
     if (roundNumber === 1) {
       const sourceStructureRoundPosition = matchUp.roundPosition;
       // loser drawPosition in target structure is determined bye even/odd
       const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
-      targetDrawPosition = drawPositions[targetDrawPositionIndex];
+      const targetDrawPosition = drawPositions[targetDrawPositionIndex];
+      const result = assignDrawPositionBye({
+        drawDefinition,
+        structureId: loserTargetLink.target.structureId,
+        drawPosition: targetDrawPosition,
+      });
+      if (result.error) return result;
     } else {
-      targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
+      const targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
+      const loserStructureMatchUps =
+        mappedMatchUps[loserMatchUp.structureId].matchUps;
+      const { initialRoundNumber } = getInitialRoundNumber({
+        drawPosition: targetDrawPosition,
+        matchUps: loserStructureMatchUps,
+      });
+      if (initialRoundNumber === roundNumber) {
+        const result = assignDrawPositionBye({
+          drawDefinition,
+          structureId: loserTargetLink.target.structureId,
+          drawPosition: targetDrawPosition,
+        });
+        if (result.error) return result;
+      }
     }
-    const result = assignDrawPositionBye({
-      drawDefinition,
-      structureId: loserTargetLink.target.structureId,
-      drawPosition: targetDrawPosition,
-    });
-    if (result.error) return result;
   }
 
   return SUCCESS;

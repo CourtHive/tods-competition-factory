@@ -237,6 +237,7 @@ function removeDrawPosition({
     // if source matchUp contains BYE don't removed directed BYE
     if (!matchUpContainsBye) {
       const { drawPositions, roundNumber } = loserMatchUp;
+
       if (roundNumber === 1) {
         const loserMatchUpDrawPosition =
           drawPositions[loserMatchUpDrawPositionIndex];
@@ -253,10 +254,12 @@ function removeDrawPosition({
         const loserMatchUpDrawPosition = Math.min(
           ...drawPositions.filter((f) => f)
         );
-        const matchUps = mappedMatchUps[structure.structureId].matchUps;
+        const loserStructureMatchUps =
+          // mappedMatchUps[loserMatchUp.structureId].matchUps;
+          mappedMatchUps[loserMatchUp.structureId].matchUps;
         const { initialRoundNumber } = getInitialRoundNumber({
           drawPosition: loserMatchUpDrawPosition,
-          matchUps,
+          matchUps: loserStructureMatchUps,
         });
         // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
         if (initialRoundNumber === roundNumber) {
