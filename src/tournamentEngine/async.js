@@ -24,10 +24,7 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import {
-  notifySubscribers,
-  notifySubscribersAsync,
-} from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/notifySubscribers';
 
 let tournamentRecord;
 
@@ -172,4 +169,4 @@ export const tournamentEngineAsync = (async function () {
   }
 })();
 
-export default tournamentEngine;
+export default tournamentEngineAsync;

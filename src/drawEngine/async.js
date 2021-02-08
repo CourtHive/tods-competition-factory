@@ -8,10 +8,7 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import {
-  notifySubscribers,
-  notifySubscribersAsync,
-} from '../global/notifySubscribers';
+import { notifySubscribersAsync } from '../global/notifySubscribers';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -174,4 +171,4 @@ export const drawEngineAsync = (async function () {
   }
 })();
 
-export default drawEngine;
+export default drawEngineAsync;
