@@ -112,6 +112,7 @@ export function tallyParticipantResults({
           result.subOrder = subOrder;
         }
 
+        result.rankOrder = o.rankOrder;
         result.groupOrder = o.rankOrder + (result.subOrder || 1) - 1;
       }
 
