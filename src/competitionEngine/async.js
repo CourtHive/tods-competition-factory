@@ -1,4 +1,7 @@
-import { notifySubscribers } from '../global/notifySubscribers';
+import {
+  notifySubscribers,
+  notifySubscribersAsync,
+} from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
@@ -65,7 +68,7 @@ export const competitionEngineAsync = (async function () {
     });
 
     if (result?.success) {
-      await notifySubscribers();
+      await notifySubscribersAsync();
     }
 
     deleteNotices();

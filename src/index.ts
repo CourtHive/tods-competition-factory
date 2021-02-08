@@ -36,15 +36,14 @@ export const utilities = {
   unique,
 };
 
-// Synchronous exports
+// Asynchronous and Synchronous engine exports
 export { competitionEngine } from './competitionEngine/sync';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { tournamentEngine } from './tournamentEngine/sync';
 export { tournamentEngineAsync } from './tournamentEngine/async';
 export { drawEngine } from './drawEngine/sync';
 export { drawEngineAsync } from './drawEngine/async';
-
-// asynchronous exports
+//**********************************************
 
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { mocksEngine } from './mocksEngine';

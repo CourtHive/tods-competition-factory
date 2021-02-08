@@ -8,7 +8,10 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { notifySubscribers } from '../global/notifySubscribers';
+import {
+  notifySubscribers,
+  notifySubscribersAsync,
+} from '../global/notifySubscribers';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -72,7 +75,7 @@ function validDefinitionKeys(definition) {
   return valid;
 }
 
-export const drawEngineAsync = (function () {
+export const drawEngineAsync = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
@@ -101,7 +104,7 @@ export const drawEngineAsync = (function () {
     },
   };
 
-  importGovernors([
+  await importGovernors([
     linkGovernor,
     queryGovernor,
     scoreGovernor,
@@ -129,22 +132,28 @@ export const drawEngineAsync = (function () {
 
   return fx;
 
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+  async function importGovernors(governors) {
+    for (const governor of governors) {
+      const governorMethods = Object.keys(governor);
+
+      for (const governorMethod of governorMethods) {
+        fx[governorMethod] = async (params) => {
           if (getDevContext()) {
-            return invoke({ params, governor, key });
+            const result = await invoke({ params, governor, governorMethod });
+
+            return result;
           } else {
             try {
-              return invoke({ params, governor, key });
+              const result = await invoke({ params, governor, governorMethod });
+
+              return result;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
           }
         };
-      });
-    });
+      }
+    }
   }
 
   async function invoke({ params, governor, key }) {
@@ -156,7 +165,7 @@ export const drawEngineAsync = (function () {
     });
 
     if (result?.success) {
-      await notifySubscribers();
+      await notifySubscribersAsync();
     }
 
     deleteNotices();
