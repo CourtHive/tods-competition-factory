@@ -40,7 +40,7 @@ export function drawPositionRemovals({
   const drawPositionCleared = positionAssignments.reduce(
     (cleared, assignment) => {
       if (assignment.drawPosition === drawPosition) {
-        assignment.participantId = undefined;
+        delete assignment.participantId;
         delete assignment.qualifier;
         delete assignment.bye;
         return true;
