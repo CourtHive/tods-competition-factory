@@ -9,6 +9,7 @@ import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
+import { getDevContext } from '../../../global/globalState';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -117,7 +118,7 @@ export function assignDrawPosition({
   }
 
   if (!placementScenario) {
-    if (structure.stageSequence !== 1) {
+    if (getDevContext() && structure.stageSequence !== 1) {
       console.log('disable inbound links');
     }
     const positionAction = {

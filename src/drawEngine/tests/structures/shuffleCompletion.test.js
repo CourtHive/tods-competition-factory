@@ -26,6 +26,10 @@ import { SUCCESS } from '../../../constants/resultConstants';
 // 6. Complete all draw matchUps
 // 7. All matchUps should be either byeMatchUps or completedMatchUps
 
+/*
+PASSED: COMPASS 32 * 200
+*/
+
 it('can randomize drawPositions, randomize replacements, and complete COMPASS draw', () => {
   // successfully run with 100 iterations
   const iterations = 1;
@@ -35,21 +39,21 @@ it('can randomize drawPositions, randomize replacements, and complete COMPASS dr
       drawSize: 32,
     });
   });
+  if (iterations > 1) console.log(`Ran ${iterations} iterations`);
 });
 
 it.skip('can randomize drawPositions, randomize replacements, and complete FIRST_MATCH_LOSER_CONSOLATION draw', () => {
   const iterations = 10;
   const positionActionErrorScenarios = [];
+  const drawType = FIRST_MATCH_LOSER_CONSOLATION;
+  const drawSize = 8;
   generateRange(0, iterations).forEach(() => {
-    const drawType = FIRST_MATCH_LOSER_CONSOLATION;
-    const drawSize = 16;
     const result = replacementTest({
       drawType,
       drawSize,
       devMode: true,
     });
     if (!result.success) {
-      console.log('positionAction errors');
       const { tournamentRecord } = tournamentEngine.getState();
       const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
       const {
@@ -65,14 +69,21 @@ it.skip('can randomize drawPositions, randomize replacements, and complete FIRST
       });
     }
   });
+
   if (positionActionErrorScenarios.length) {
-    const fileName = `positionActions.json`;
-    const dirPath = './src/global/tests/';
-    const output = `${dirPath}${fileName}`;
-    fs.writeFileSync(
-      output,
-      JSON.stringify(positionActionErrorScenarios, undefined, 1)
+    console.log(`#### ERRORS ####`);
+    console.log(
+      `${positionActionErrorScenarios.length} of ${iterations} failed`
     );
+    const fileName = `positionActions_${drawSize}_${drawType}.json`;
+    const dirPath = './scratch/';
+    if (fs.existsSync(dirPath)) {
+      const output = `${dirPath}${fileName}`;
+      fs.writeFileSync(
+        output,
+        JSON.stringify(positionActionErrorScenarios, undefined, 1)
+      );
+    }
   }
 });
 
@@ -125,6 +136,7 @@ function replacementTest({ drawType, drawSize, participantsCount, devMode }) {
 
   // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds
   drawPositionsToAssign.forEach((drawPosition) => {
+    // replaceWithAlternate({ drawId, structureId, drawPosition });
     removeAssignment({ drawId, structureId, drawPosition });
     assignDrawPosition({ drawId, structureId, drawPosition });
   });
