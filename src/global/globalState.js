@@ -63,9 +63,16 @@ export function getTopics() {
   return { topics };
 }
 
-export async function callListener({ topic, notices }) {
+export function callListener({ topic, notices }) {
   const method = globalState.subscriptions[topic];
   if (method && typeof method === 'function') {
     method(notices);
+  }
+}
+
+export async function callListenerAsync({ topic, notices }) {
+  const method = globalState.subscriptions[topic];
+  if (method && typeof method === 'function') {
+    await method(notices);
   }
 }
