@@ -39,7 +39,9 @@ export const utilities = {
 // Synchronous exports
 export { competitionEngine } from './competitionEngine/sync';
 export { tournamentEngine } from './tournamentEngine/sync';
+export { tournamentEngineAsync } from './tournamentEngine/async';
 export { drawEngine } from './drawEngine/sync';
+export { drawEngineAsync } from './drawEngine/async';
 
 // asynchronous exports
 

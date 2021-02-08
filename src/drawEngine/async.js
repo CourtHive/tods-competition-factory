@@ -72,7 +72,7 @@ function validDefinitionKeys(definition) {
   return valid;
 }
 
-export const drawEngine = (function () {
+export const drawEngineAsync = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
@@ -147,7 +147,7 @@ export const drawEngine = (function () {
     });
   }
 
-  function invoke({ params, governor, key }) {
+  async function invoke({ params, governor, key }) {
     const result = governor[key]({
       ...params,
       policies,
@@ -156,8 +156,9 @@ export const drawEngine = (function () {
     });
 
     if (result?.success) {
-      notifySubscribers();
+      await notifySubscribers();
     }
+
     deleteNotices();
 
     return result;
