@@ -92,7 +92,6 @@ export function assignMatchUpDrawPosition({
     } = targetData;
 
     if (winnerMatchUp) {
-      console.log('winnerMatchUp');
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         console.log({ matchUpStatus });
         const result = assignMatchUpDrawPosition({
