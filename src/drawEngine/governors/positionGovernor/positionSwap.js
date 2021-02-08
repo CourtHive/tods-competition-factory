@@ -1,6 +1,5 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
@@ -26,33 +25,15 @@ export function swapDrawPositionAssignments({
     return { error: INVALID_VALUES, drawPositions };
   }
 
-  // START: ############## telemetry ##############
-  const { extension } = findExtension({
-    element: drawDefinition,
-    name: 'positionActions',
-  });
-  const action = {
-    name: 'swapDrawPositionAssignments',
-    drawPositions,
-    structureId,
-  };
-  const updatedExtension = {
-    name: 'positionActions',
-    value: Array.isArray(extension?.value)
-      ? extension.value.concat(action)
-      : [action],
-  };
-  addExtension({ element: drawDefinition, extension: updatedExtension });
-  // END: ############## telemetry ##############
-
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
+  let result;
   if (structure.structureType === CONTAINER) {
     // { structureType: CONTAINER } indicates that the swap is within a ROUND ROBIN structure
-    return roundRobinSwap({
+    result = roundRobinSwap({
       drawDefinition,
       structure,
       drawPositions,
@@ -60,13 +41,27 @@ export function swapDrawPositionAssignments({
     });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
-    return eliminationSwap({
+    result = eliminationSwap({
       drawDefinition,
       structure,
       drawPositions,
       mappedMatchUps,
     });
   }
+
+  if (!result?.error) {
+    if (structure.stageSequence !== 1) {
+      console.log('disable inbound links');
+    }
+    const positionAction = {
+      name: 'swapDrawPositionAssignments',
+      drawPositions,
+      structureId,
+    };
+    addPositionActionTelemetry({ drawDefinition, positionAction });
+  }
+
+  return result;
 }
 
 function eliminationSwap({

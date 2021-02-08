@@ -33,8 +33,8 @@ import {
   WITHDRAW_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
 import {
-  DRAW,
-  LOSER,
+  // DRAW,
+  // LOSER,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
 
@@ -78,6 +78,7 @@ export function positionActions({
    *
    * Directions such as West in Compass or Playoff structures should not have positionActions
    */
+  /*
   if (structure.stageSequence > 1) {
     const hasTargetLink = drawDefinition.links?.find(
       (link) => link.target.structureId === structureId
@@ -93,6 +94,7 @@ export function positionActions({
       return { validActions };
     }
   }
+  */
 
   const {
     assignedPositions,
@@ -134,7 +136,8 @@ export function positionActions({
   const isByePosition = byeDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
-  if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
+  // if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
+  if (!positionAssignment || isByePosition) {
     const { validAssignmentActions } = getValidAssignmentActions({
       drawDefinition,
       structureId,
@@ -155,7 +158,10 @@ export function positionActions({
     );
 
   if (positionAssignment) {
-    if (isMainStageSequence1 && !activeDrawPositions.includes(drawPosition)) {
+    if (
+      (getDevContext() || isMainStageSequence1) &&
+      !activeDrawPositions.includes(drawPosition)
+    ) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
@@ -169,16 +175,16 @@ export function positionActions({
           payload: { drawId, structureId, drawPosition },
         });
       }
+    }
 
-      // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
-      // option should not be available if exising assignment is a bye
-      if (isMainStageSequence1 && !isByePosition) {
-        validActions.push({
-          type: ASSIGN_BYE,
-          method: REMOVE_ASSIGNMENT_METHOD,
-          payload: { drawId, structureId, drawPosition, replaceWithBye: true },
-        });
-      }
+    // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
+    // option should not be available if exising assignment is a bye
+    if ((getDevContext() || isMainStageSequence1) && !isByePosition) {
+      validActions.push({
+        type: ASSIGN_BYE,
+        method: REMOVE_ASSIGNMENT_METHOD,
+        payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+      });
     }
 
     if (
@@ -245,7 +251,7 @@ export function positionActions({
       inactiveDrawPositions,
       tournamentParticipants,
     });
-    if (isMainStageSequence1 && validSwapAction)
+    if ((getDevContext() || isMainStageSequence1) && validSwapAction)
       validActions.push(validSwapAction);
 
     const { validAlternatesAction } = getValidAlternatesAction({
@@ -258,7 +264,7 @@ export function positionActions({
       positionAssignments,
       tournamentParticipants,
     });
-    if (isMainStageSequence1 && validAlternatesAction)
+    if ((getDevContext() || isMainStageSequence1) && validAlternatesAction)
       validActions.push(validAlternatesAction);
   }
 

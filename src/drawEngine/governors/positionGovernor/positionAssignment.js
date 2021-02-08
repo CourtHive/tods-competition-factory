@@ -1,5 +1,3 @@
-import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
@@ -7,6 +5,7 @@ import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawP
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -118,25 +117,16 @@ export function assignDrawPosition({
   }
 
   if (!placementScenario) {
-    // START: ############## telemetry ##############
-    const { extension } = findExtension({
-      element: drawDefinition,
-      name: 'positionActions',
-    });
-    const action = {
+    if (structure.stageSequence !== 1) {
+      console.log('disable inbound links');
+    }
+    const positionAction = {
       name: 'positionAssignment',
       drawPosition,
       structureId,
       participantId,
     };
-    const updatedExtension = {
-      name: 'positionActions',
-      value: Array.isArray(extension?.value)
-        ? extension.value.concat(action)
-        : [action],
-    };
-    addExtension({ element: drawDefinition, extension: updatedExtension });
-    // END: ############## telemetry ##############
+    addPositionActionTelemetry({ drawDefinition, positionAction });
   }
   return Object.assign({ positionAssignments }, SUCCESS);
 
