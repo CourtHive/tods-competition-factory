@@ -13,7 +13,7 @@ import {
   ASSIGN_VENUE,
 } from '../../../constants/timeItemConstants';
 
-it('can add events, venues, and schedule matchUps', async () => {
+it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
   const endDate = '2020-01-06';
   const participantsCount = 32;
@@ -110,7 +110,7 @@ it('can add events, venues, and schedule matchUps', async () => {
     tournamentRecord.tournamentId;
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
-  result = await competitionEngine
+  result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ date, matchUps: upcoming });
   expect(result).toEqual(SUCCESS);
