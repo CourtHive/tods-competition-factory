@@ -1,3 +1,5 @@
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
@@ -115,6 +117,27 @@ export function assignDrawPosition({
     });
   }
 
+  if (!placementScenario) {
+    // START: ############## telemetry ##############
+    const { extension } = findExtension({
+      element: drawDefinition,
+      name: 'positionActions',
+    });
+    const action = {
+      name: 'positionAssignment',
+      drawPosition,
+      structureId,
+      participantId,
+    };
+    const updatedExtension = {
+      name: 'positionActions',
+      value: Array.isArray(extension?.value)
+        ? extension.value.concat(action)
+        : [action],
+    };
+    addExtension({ element: drawDefinition, extension: updatedExtension });
+    // END: ############## telemetry ##############
+  }
   return Object.assign({ positionAssignments }, SUCCESS);
 
   function drawPositionFilled(positionAssignment) {
