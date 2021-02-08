@@ -133,7 +133,7 @@ function replacementTest({ drawType, drawSize, participantsCount, devMode }) {
   const { matchUps: allMatchUps } = tournamentEngine.allTournamentMatchUps();
   const totalMatchUpsCount = allMatchUps.length;
 
-  // compplete all matchUps in the target draw
+  // complete all matchUps in the target draw
   completeDrawMatchUps({ tournamentEngine, drawId });
 
   const result = tournamentEngine.tournamentMatchUps();
