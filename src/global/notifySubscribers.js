@@ -1,12 +1,26 @@
-import { callListener, getNotices, getTopics } from './globalState';
+import {
+  callListener,
+  callListenerAsync,
+  getNotices,
+  getTopics,
+} from './globalState';
 
-export async function notifySubscribers() {
+export function notifySubscribers() {
+  const { topics } = getTopics();
+
+  for (const topic of topics) {
+    const notices = getNotices({ topic });
+    if (notices) callListener({ topic, notices });
+  }
+}
+
+export async function notifySubscribersAsync() {
   const { topics } = getTopics();
   const promises = [];
 
   for (const topic of topics) {
     const notices = getNotices({ topic });
-    if (notices) promises.push(callListener({ topic, notices }));
+    if (notices) promises.push(callListenerAsync({ topic, notices }));
   }
 
   //Lets run all subscribers
