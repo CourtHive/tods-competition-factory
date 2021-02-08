@@ -4,7 +4,6 @@ import {
   MISSING_POSITION_ASSIGNMENTS,
 } from '../../constants/errorConditionConstants';
 
-// TODO: write unit test for this method
 export function getDrawPositions({ structure }) {
   if (structure && structure.structures) {
     return [].concat(
@@ -17,7 +16,6 @@ export function getDrawPositions({ structure }) {
   }
 }
 
-// TESTED: positionsAssignment.test.js
 export function getPositionAssignments({
   structure,
   drawDefinition,
@@ -46,7 +44,6 @@ export function getPositionAssignments({
   return { positionAssignments, error };
 }
 
-// TESTED: positionsAssignment.test.js
 export function structureAssignedDrawPositions({
   structure,
   drawDefinition,
