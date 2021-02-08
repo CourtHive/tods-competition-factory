@@ -34,20 +34,16 @@ it('can randomize drawPositions, randomize replacements, and complete COMPASS dr
       drawType: COMPASS,
       drawSize: 32,
     });
-    replacementTest({
-      drawType: FIRST_MATCH_LOSER_CONSOLATION,
-      drawSize: 16,
-    });
   });
 });
 
 it.skip('can randomize drawPositions, randomize replacements, and complete FIRST_MATCH_LOSER_CONSOLATION draw', () => {
-  const iterations = 1;
+  const iterations = 10;
   const positionActionErrorScenarios = [];
   generateRange(0, iterations).forEach(() => {
     const result = replacementTest({
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
-      drawSize: 32,
+      drawSize: 16,
       devMode: true,
     });
     if (!result.success) {
