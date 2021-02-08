@@ -1,38 +1,33 @@
 import mocksGovernor from './governors/mocksGovernor';
 
-export const mocksEngine = (async function () {
+export const mocksEngine = (function () {
   const fx = {
     version: () => {
       return '@VERSION@';
     },
   };
 
-  await importGovernors([mocksGovernor]);
+  importGovernors([mocksGovernor]);
 
   return fx;
 
   // enable Middleware
-  async function engineInvoke(fx, params) {
-    return await fx({ ...params });
+  function engineInvoke(fx, params) {
+    return fx({ ...params });
   }
 
-  async function importGovernors(governors) {
-    for (const governor of governors) {
-      const governorMethods = Object.keys(governor);
-      for (const governorMethod of governorMethods) {
-        fx[governorMethods] = async (params) => {
+  function importGovernors(governors) {
+    governors.forEach((governor) => {
+      Object.keys(governor).forEach((key) => {
+        fx[key] = (params) => {
           try {
-            const engineResult = await engineInvoke(
-              governor[governorMethods],
-              params
-            );
-            return engineResult;
+            return engineInvoke(governor[key], params);
           } catch (err) {
             console.log('%c ERROR', 'color: orange', { err });
           }
         };
-      }
-    }
+      });
+    });
   }
 })();
 
