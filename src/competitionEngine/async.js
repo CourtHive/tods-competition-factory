@@ -21,7 +21,7 @@ function setState(records, deepCopyOption = true) {
   return SUCCESS;
 }
 
-export const competitionEngine = (function () {
+export const competitionEngineAsync = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
@@ -58,36 +58,41 @@ export const competitionEngine = (function () {
   return fx;
 
   // enable Middleware
-  function engineInvoke(fx, params) {
-    const result = fx({
+  async function engineInvoke(fx, params) {
+    const result = await fx({
       ...params,
       tournamentRecords,
     });
 
     if (result?.success) {
-      notifySubscribers();
+      await notifySubscribers();
     }
+
     deleteNotices();
 
     return result;
   }
 
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+  async function importGovernors(governors) {
+    for (const governor of governors) {
+      const govKeys = Object.keys(governor);
+      for (const govKey of govKeys) {
+        fx[govKey] = async function (params) {
+          //If and else are doing same thing! Do we need this
           if (getDevContext()) {
-            return engineInvoke(governor[key], params);
+            const engineResult = await engineInvoke(governor[govKey], params);
+            return engineResult;
           } else {
             try {
-              return engineInvoke(governor[key], params);
+              const engineResult = await engineInvoke(governor[govKey], params);
+              return engineResult;
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
           }
         };
-      });
-    });
+      }
+    }
   }
 })();
 
