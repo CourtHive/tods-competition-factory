@@ -41,9 +41,11 @@ it.skip('can randomize drawPositions, randomize replacements, and complete FIRST
   const iterations = 10;
   const positionActionErrorScenarios = [];
   generateRange(0, iterations).forEach(() => {
+    const drawType = FIRST_MATCH_LOSER_CONSOLATION;
+    const drawSize = 16;
     const result = replacementTest({
-      drawType: FIRST_MATCH_LOSER_CONSOLATION,
-      drawSize: 16,
+      drawType,
+      drawSize,
       devMode: true,
     });
     if (!result.success) {
@@ -56,7 +58,11 @@ it.skip('can randomize drawPositions, randomize replacements, and complete FIRST
         drawId,
         name: 'positionActions',
       });
-      positionActionErrorScenarios.push({ positionActions });
+      positionActionErrorScenarios.push({
+        positionActions,
+        drawType,
+        drawSize,
+      });
     }
   });
   if (positionActionErrorScenarios.length) {
