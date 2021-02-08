@@ -17,8 +17,6 @@ import {
   ROUND_OUTCOME,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-  CONSOLATION,
-  LOSER,
 } from '../../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -365,7 +363,6 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const groupSize = 4;
   const groupsCount = drawSize / groupSize;
   const drawType = ROUND_ROBIN_WITH_PLAYOFF;
-  const playoffStructuresCount = 5; // 3 x SINGLE_ELIMINATION + 1 FEED_FMLC (SINGLE_ELIMINATION + CONSOLATION)
   const structureOptions = {
     groupSize,
     playoffGroups: [
@@ -445,10 +442,6 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
 
   const positioningLinks = drawDefinition.links.filter(
     (link) => link.linkType === POSITION
-  );
-
-  const loserLinks = drawDefinition.links.filter(
-    (link) => link.linkType === LOSER
   );
 
   // if FEDD_FMLC
