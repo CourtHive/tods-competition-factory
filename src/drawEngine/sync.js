@@ -30,7 +30,6 @@ import {
 } from '../constants/errorConditionConstants';
 
 let drawDefinition;
-let deepCopy = true;
 let tournamentParticipants = [];
 
 const policies = {};
@@ -60,7 +59,6 @@ function setState(definition, deepCopyOption = true) {
     return { error: INVALID_DRAW_DEFINITION };
 
   drawDefinition = deepCopyOption ? makeDeepCopy(definition) : definition;
-  deepCopy = deepCopyOption;
 
   return Object.assign({ drawId: definition.drawId }, SUCCESS);
 }
@@ -153,7 +151,6 @@ export const drawEngine = (function () {
     const result = governor[key]({
       ...params,
       policies,
-      deepCopy,
       drawDefinition,
       tournamentParticipants,
     });

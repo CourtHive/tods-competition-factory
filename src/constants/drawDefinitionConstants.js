@@ -2,6 +2,14 @@
 export const MAIN = 'MAIN';
 export const QUALIFYING = 'QUALIFYING';
 export const CONSOLATION = 'CONSOLATION';
+export const PLAY_OFF = 'PLAY_OFF';
+
+export const stageOrder = {
+  [QUALIFYING]: 1,
+  [MAIN]: 2,
+  [PLAY_OFF]: 3,
+  [CONSOLATION]: 4,
+};
 
 // structureType
 export const ITEM = 'ITEM';
@@ -22,9 +30,9 @@ export const LOSER = 'LOSER'; // partticipant advances based on losing a matchUp
 export const FIRST_MATCHUP = 'FIRST_MATCHUP'; // condition for valididty of link
 
 // draw types
+// PLAY_OFF is also a stage type
 export const FEED_IN = 'FEED IN';
 export const COMPASS = 'COMPASS';
-export const PLAY_OFF = 'PLAY_OFF';
 export const OLYMPIC = 'OLYMPIC';
 export const KNOCKOUT = 'SINGLE_ELIMINATION';
 export const ELIMINATION = 'SINGLE_ELIMINATION';

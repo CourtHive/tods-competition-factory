@@ -11,6 +11,8 @@ export function getValidSwapAction({
   structureId,
   drawId,
 
+  isByePosition,
+  byeDrawPositions,
   positionAssignments,
   tournamentParticipants,
 
@@ -21,12 +23,12 @@ export function getValidSwapAction({
   if (activeDrawPositions.includes(drawPosition)) return {};
 
   const availableDrawPositions = inactiveDrawPositions?.filter(
-    (position) => position !== drawPosition
+    (position) =>
+      position !== drawPosition &&
+      !(isByePosition && byeDrawPositions.includes(position))
   );
-  const filteredAssignments = positionAssignments.filter(
-    (assignment) => availableDrawPositions?.includes(assignment.drawPosition)
-    // availableDrawPositions?.includes(assignment.drawPosition) &&
-    // !assignment.bye
+  const filteredAssignments = positionAssignments.filter((assignment) =>
+    availableDrawPositions?.includes(assignment.drawPosition)
   );
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)

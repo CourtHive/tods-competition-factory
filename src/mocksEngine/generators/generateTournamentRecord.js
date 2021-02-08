@@ -1,9 +1,9 @@
-import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
+import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
+import { tournamentEngine } from '../../tournamentEngine/sync';
 import { generateParticipants } from './generateParticipants';
-import { tournamentEngine } from '../../tournamentEngine';
-import { matchUpSort } from '../utilities/matchUpSort';
 import { intersection } from '../../utilities';
 
+import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import {
   MAIN,
@@ -11,8 +11,7 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
-import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 /**
  *
@@ -116,7 +115,7 @@ function generateEventWithDraw({
     feedPolicy,
     structureOptions,
   } = drawProfile;
-  let { participantsCount = 32 } = drawProfile;
+  let { participantsCount = 32, seedsCount } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
 
   const event = { eventName, eventType, category };
@@ -161,6 +160,7 @@ function generateEventWithDraw({
     drawSize,
     matchUpFormat,
     drawType,
+    seedsCount,
     feedPolicy,
     structureOptions,
     goesTo,
@@ -171,28 +171,13 @@ function generateEventWithDraw({
 
   const { drawId } = drawDefinition;
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
-    inContext: true,
-  });
   if (completeAllMatchUps) {
-    matchUps.sort(matchUpSort).forEach(({ matchUpId }) => {
-      const { matchUp: targetMatchUp } = tournamentEngine.findMatchUp({
-        drawId,
-        matchUpId,
-      });
-      if (targetMatchUp.readyToScore) {
-        completeMatchUp({
-          targetMatchUp,
-          scoreString: '6-1 6-1',
-          winningSide: 1,
-          matchUpStatus: COMPLETED,
-          matchUpFormat,
-          drawId,
-        });
-      }
-    });
+    completeDrawMatchUps({ tournamentEngine, drawId, matchUpFormat });
   } else if (drawProfile.outcomes) {
+    const { matchUps } = tournamentEngine.allDrawMatchUps({
+      drawId,
+      inContext: true,
+    });
     drawProfile.outcomes.forEach((outcomeDef) => {
       const {
         roundNumber,
@@ -236,6 +221,7 @@ function generateEventWithDraw({
       });
       const targetMatchUp = targetMatchUps[matchUpIndex];
       completeMatchUp({
+        tournamentEngine,
         targetMatchUp,
         scoreString,
         winningSide,
@@ -250,36 +236,4 @@ function generateEventWithDraw({
   if (result.error) return { error: result.error };
 
   return { drawId, eventId };
-}
-
-function completeMatchUp({
-  targetMatchUp,
-  scoreString,
-  winningSide,
-  matchUpStatus,
-  matchUpFormat,
-  outcomeDef,
-  drawId,
-}) {
-  const { outcome } = generateOutcomeFromScoreString({
-    scoreString,
-    winningSide,
-    matchUpStatus,
-  });
-  if (!targetMatchUp) {
-    console.log({ outcomeDef });
-    return;
-  }
-  if (targetMatchUp.matchUpStatus === BYE) {
-    console.log('targeted BYE matchUp', { outcomeDef });
-    return;
-  }
-  const { matchUpId } = targetMatchUp || {};
-  const result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
-    outcome,
-    matchUpFormat,
-  });
-  if (!result.success) console.log(result, targetMatchUp);
 }

@@ -352,8 +352,6 @@ This is a convenience method which handles most use cases for draw generation.
 
 ## getEvent
 
-Returns a deepCopy of a event object.
-
 - @param {string} eventId - id of the event to retreive
 - @param {object} context - attributes to be added into each event object.
 

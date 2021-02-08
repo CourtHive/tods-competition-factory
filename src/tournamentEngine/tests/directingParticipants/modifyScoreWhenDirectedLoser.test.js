@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import { FICR16, MAIN } from '../../../constants/drawDefinitionConstants';
 import { PAIR } from '../../../constants/participantTypes';

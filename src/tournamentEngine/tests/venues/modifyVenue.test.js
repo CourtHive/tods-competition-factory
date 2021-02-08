@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../..';
+import { tournamentEngine } from '../../sync';
 import {
   INVALID_DATE,
   INVALID_TIME,

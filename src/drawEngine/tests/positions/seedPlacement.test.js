@@ -1,5 +1,5 @@
 import { numericSort } from '../../../utilities';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { stageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
@@ -24,7 +24,6 @@ it('can define seedAssignments', () => {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize, seedsCount });
 
-  // returns deepCopy of drawDefinition
   const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({

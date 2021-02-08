@@ -1,3 +1,5 @@
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
@@ -28,7 +30,7 @@ export function alternateDrawPositionAssignment({
     if (!result.success) {
       console.log({ result });
     }
-    return Object.assign({}, SUCCESS, {
+    return successNotice({
       removedParticipantId: positionAssignment.participantId,
     });
   }
@@ -48,5 +50,29 @@ export function alternateDrawPositionAssignment({
   });
   if (!result.success) return result;
 
-  return Object.assign({}, SUCCESS, { removedParticipantId });
+  return successNotice({ removedParticipantId });
+
+  function successNotice({ removedParticipantId }) {
+    // START: ############## telemetry ##############
+    const { extension } = findExtension({
+      element: drawDefinition,
+      name: 'positionActions',
+    });
+    const action = {
+      name: 'alternateDrawPositionAssignment',
+      drawPosition,
+      structureId,
+      alternateParticipantId,
+    };
+    const updatedExtension = {
+      name: 'positionActions',
+      value: Array.isArray(extension?.value)
+        ? extension.value.concat(action)
+        : [action],
+    };
+    addExtension({ element: drawDefinition, extension: updatedExtension });
+    // END: ############## telemetry ##############
+
+    return Object.assign({}, SUCCESS, { removedParticipantId });
+  }
 }

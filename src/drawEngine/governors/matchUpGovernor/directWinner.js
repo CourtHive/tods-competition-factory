@@ -93,6 +93,7 @@ export function directWinner({
       }));
     } else {
       error = 'winner target position unavaiallble';
+      console.log(error);
     }
   } else {
     ({ error } = assignMatchUpDrawPosition({

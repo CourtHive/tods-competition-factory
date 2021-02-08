@@ -1,6 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import { numericSort } from '../../../utilities';
-import tournamentEngine from '../../../tournamentEngine';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';

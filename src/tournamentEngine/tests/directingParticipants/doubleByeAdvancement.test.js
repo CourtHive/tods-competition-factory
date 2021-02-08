@@ -1,7 +1,7 @@
 import { generateOutcomeFromScoreString } from '../../../mocksEngine/generators/generateOutcomeFromScoreString';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 
 import {
   BYE,

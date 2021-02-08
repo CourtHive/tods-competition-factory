@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../..';
+import { tournamentEngine } from '../../sync';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import AVOIDANCE_COUNTRY from '../../../fixtures/avoidance/AVOIDANCE_COUNTRY';

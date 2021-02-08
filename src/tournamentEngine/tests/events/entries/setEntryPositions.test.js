@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../sync';
 
 import {
   ALTERNATE,

@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import {
   completeMatchUp,

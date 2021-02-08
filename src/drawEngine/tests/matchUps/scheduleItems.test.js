@@ -1,6 +1,6 @@
 import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
 import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 
 import { SUCCESS, ERROR } from '../../../constants/resultConstants';
 import { PAIR } from '../../../constants/participantTypes';

@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../mocksEngine';
 import { instanceCount } from '../../../../utilities';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
 import {

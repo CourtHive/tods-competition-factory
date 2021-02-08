@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {

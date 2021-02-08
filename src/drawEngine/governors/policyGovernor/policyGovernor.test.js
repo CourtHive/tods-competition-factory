@@ -1,4 +1,4 @@
-import { drawEngine } from '../..';
+import { drawEngine } from '../../sync';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { SUCCESS } from '../../../constants/resultConstants';

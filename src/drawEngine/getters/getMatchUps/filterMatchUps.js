@@ -28,7 +28,7 @@ export function filterMatchUps({
       if (isCollectionMatchUp && !matchUp.collectionId) return false;
       if (!isCollectionMatchUp && matchUp.collectionId) return false;
     }
-    if (stages && stages.length && !stages.includes(matchUp.stage)) {
+    if (stages?.length && !stages.includes(matchUp.stage)) {
       return false;
     }
     if (

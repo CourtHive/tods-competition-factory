@@ -1,5 +1,5 @@
 import fs from 'fs';
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import {
@@ -327,7 +327,7 @@ it('can generate payload for publishing a compass draw', () => {
   // round naming policy test
   expect(
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
-  ).toEqual('S-Semifinals');
+  ).toEqual('W-Quarterfinals');
 
   const writeFile = process.env.TMX_TEST_FILES;
   const fileName = `eventData.json`;

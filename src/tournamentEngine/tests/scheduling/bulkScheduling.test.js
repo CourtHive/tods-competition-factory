@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../../../tournamentEngine';
+import { tournamentEngine } from '../../sync';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';

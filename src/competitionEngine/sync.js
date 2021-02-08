@@ -1,9 +1,7 @@
-import { makeDeepCopy } from '../utilities';
-import { drawEngine } from '../drawEngine';
-
-import queryGovernor from './governors/queryGovernor';
+import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
-import { tournamentEngine } from '../tournamentEngine';
+import queryGovernor from './governors/queryGovernor';
+import { makeDeepCopy } from '../utilities';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -14,15 +12,12 @@ import {
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import { notifySubscribers } from '../global/notifySubscribers';
 
-let deepCopy = true;
 let tournamentRecords;
 
 function setState(records, deepCopyOption = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
   tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-  deepCopy = deepCopyOption;
   return SUCCESS;
 }
 
@@ -38,11 +33,7 @@ export const competitionEngine = (async function () {
     },
   };
 
-  await importGovernors([
-    // locationGovernor,
-    queryGovernor,
-    scheduleGovernor,
-  ]);
+  importGovernors([queryGovernor, scheduleGovernor]);
 
   fx.version = () => {
     return '@VERSION@';
@@ -71,9 +62,6 @@ export const competitionEngine = (async function () {
     const result = await fx({
       ...params,
       tournamentRecords,
-      tournamentEngine,
-      drawEngine,
-      deepCopy,
     });
 
     if (result?.success) {

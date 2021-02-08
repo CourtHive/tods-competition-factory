@@ -1,4 +1,4 @@
-import { tournamentEngine } from '../../..';
+import { tournamentEngine } from '../../../sync';
 import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { DOUBLES } from '../../../../constants/eventConstants';
@@ -8,7 +8,7 @@ import {
   UNPAIRED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import drawEngine from '../../../../drawEngine';
+import drawEngine from '../../../../drawEngine/sync';
 // import { COMPETITOR } from '../../../constants/participantRoles';
 // import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
 

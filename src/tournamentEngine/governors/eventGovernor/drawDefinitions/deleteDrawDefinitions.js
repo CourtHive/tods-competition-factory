@@ -1,6 +1,9 @@
 import { findEvent } from '../../../getters/eventGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
-import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
+import {
+  addEventTimeItem,
+  addTournamentTimeItem,
+} from '../../tournamentGovernor/addTimeItem';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
@@ -18,6 +21,7 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
   const auditTrail = [];
   const matchUpIds = [];
+  const deletedDrawDetails = [];
 
   if (event) {
     if (!event.drawDefinitions) {
@@ -31,6 +35,8 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
           payload: { drawDefinition },
         };
         auditTrail.push(auditData);
+        const { drawId, drawType, drawName } = drawDefinition;
+        deletedDrawDetails.push({ drawId, drawType, drawName });
         const { matchUps } = allDrawMatchUps({ event, drawDefinition });
         matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
       }
@@ -62,7 +68,14 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     }
   }
 
-  if (auditTrail.length) addNotice({ topic: 'audit', payload: auditTrail });
+  if (auditTrail.length) {
+    addNotice({ topic: 'audit', payload: auditTrail });
+    const timeItem = {
+      itemType: 'deleteDrawDefinitions',
+      itemValue: deletedDrawDetails,
+    };
+    addTournamentTimeItem({ tournamentRecord, timeItem });
+  }
   if (matchUpIds.length)
     addNotice({ topic: 'deletedMatchUpIds', payload: { matchUpIds } });
   return SUCCESS;

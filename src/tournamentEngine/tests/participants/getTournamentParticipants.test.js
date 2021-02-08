@@ -1,4 +1,4 @@
-import tournamentEngine from '../..';
+import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { COMPETITOR } from '../../../constants/participantRoles';

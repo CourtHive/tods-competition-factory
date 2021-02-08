@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { instanceCount } from '../../../utilities';
 import {
   completeMatchUp,

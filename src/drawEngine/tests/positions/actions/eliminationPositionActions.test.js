@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 import { INVALID_DRAW_POSITION } from '../../../../constants/errorConditionConstants';
 import {

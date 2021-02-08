@@ -1,11 +1,12 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
+import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { intersection, numericSort } from '../../../utilities';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
+import { intersection } from '../../../utilities';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
@@ -73,47 +74,54 @@ export function drawPositionRemovals({
   );
 
   let targetDrawPosition = drawPosition;
-
   const pairingDetails = roundNumbers
     .map((roundNumber) => {
+      // find the pair of drawPositions which includes the targetDrawPosition
       const relevantPair = roundProfile[
         roundNumber
       ].pairedDrawPositions.find((drawPositions) =>
         drawPositions.includes(targetDrawPosition)
       );
+      // find the drawPosition which is paired with the targetDrawPosition
       const pairedDrawPosition = relevantPair?.find(
         (currentDrawPosition) => currentDrawPosition !== targetDrawPosition
       );
+      // find the assignment for the paired drawPosition
       const pairedDrawPositionAssignment = positionAssignments.find(
         (assignment) => assignment.drawPosition === pairedDrawPosition
       );
       const nextRoundProfile = roundProfile[roundNumber + 1];
+      // whether or not the pairedDrawPosition is a BYE
       const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
+      // whether or not the pairedDrawPosition is present in the next round
       const pairedDrawPositionInNextRound =
         nextRoundProfile &&
         nextRoundProfile.pairedDrawPositions.find((pairedPositions) =>
           pairedPositions.includes(pairedDrawPosition)
         );
+      // pairedDrawPosition is a transitiveBye if it is a BYE and if it is present in next round
       const isTransitiveBye =
-        pairedDrawPositionIsBye && pairedDrawPositionInNextRound;
-      nextRoundProfile &&
+        pairedDrawPositionIsBye &&
+        pairedDrawPositionInNextRound &&
+        nextRoundProfile &&
         nextRoundProfile.drawPositions.includes(pairedDrawPosition);
       const pairedDrawPositionByeAdvancedPair =
         !isTransitiveBye && pairedDrawPositionInNextRound;
-      if (pairedDrawPositionAssignment) {
-        const result = {
-          roundNumber,
-          relevantPair,
-          pairedDrawPosition,
-          pairedDrawPositionByeAdvancedPair,
-          targetDrawPosition,
-        };
-        // if the pairedDrawPosition is a BYE, continue search with pairedDrawPoaition as targetDrawPosition
-        if (isTransitiveBye) targetDrawPosition = pairedDrawPosition;
-        return result;
-      }
+
+      const result = relevantPair && {
+        roundNumber,
+        relevantPair,
+        pairedDrawPosition,
+        pairedDrawPositionByeAdvancedPair,
+        targetDrawPosition,
+      };
+
+      // if the pairedDrawPosition is a BYE, continue search with pairedDrawPoaition as targetDrawPosition
+      if (isTransitiveBye) targetDrawPosition = pairedDrawPosition;
+
+      return result;
     })
-    .filter((f) => f);
+    .filter((f) => f?.targetDrawPosition);
 
   const tasks = pairingDetails.reduce((tasks, pairingDetail) => {
     const {
@@ -226,21 +234,47 @@ function removeDrawPosition({
     loserMatchUp &&
     loserMatchUp.structureId !== targetData.matchUp.structureId
   ) {
-    const { drawPositions } = loserMatchUp;
-    const loserMatchUpDrawPosition =
-      drawPositions[loserMatchUpDrawPositionIndex];
-
     // if source matchUp contains BYE don't removed directed BYE
     if (!matchUpContainsBye) {
-      drawPositionRemovals({
-        inContextDrawMatchUps,
-        drawDefinition,
-        mappedMatchUps,
-        structureId: loserMatchUp.structureId,
-        drawPosition: loserMatchUpDrawPosition,
-      });
+      const { drawPositions, roundNumber } = loserMatchUp;
+
+      if (roundNumber === 1) {
+        const loserMatchUpDrawPosition =
+          drawPositions[loserMatchUpDrawPositionIndex];
+        drawPositionRemovals({
+          inContextDrawMatchUps,
+          drawDefinition,
+          mappedMatchUps,
+          structureId: loserMatchUp.structureId,
+          drawPosition: loserMatchUpDrawPosition,
+        });
+      } else {
+        // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
+        // which is always the lowest numerical drawPosition
+        const loserMatchUpDrawPosition = Math.min(
+          ...drawPositions.filter((f) => f)
+        );
+        const loserStructureMatchUps =
+          // mappedMatchUps[loserMatchUp.structureId].matchUps;
+          mappedMatchUps[loserMatchUp.structureId].matchUps;
+        const { initialRoundNumber } = getInitialRoundNumber({
+          drawPosition: loserMatchUpDrawPosition,
+          matchUps: loserStructureMatchUps,
+        });
+        // if clearing a drawPosition from a feed round the initialRoundNumber for the drawPosition must equal the roundNumber
+        if (initialRoundNumber === roundNumber) {
+          drawPositionRemovals({
+            inContextDrawMatchUps,
+            drawDefinition,
+            mappedMatchUps,
+            structureId: loserMatchUp.structureId,
+            drawPosition: loserMatchUpDrawPosition,
+          });
+        }
+      }
     }
   }
+
   if (
     winnerMatchUp &&
     winnerMatchUp.structureId !== targetData.matchUp.structureId
@@ -292,17 +326,4 @@ export function removeSubsequentRoundsParticipant({
       drawPosition: targetDrawPosition,
     })
   );
-}
-
-function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
-  // determine the initial round where drawPosition appears
-  // drawPosition cannot be removed from its initial round
-  const initialRoundNumber = matchUps
-    .filter(
-      ({ drawPositions }) =>
-        drawPosition && drawPositions.includes(drawPosition)
-    )
-    .map(({ roundNumber }) => parseInt(roundNumber))
-    .sort(numericSort)[0];
-  return { initialRoundNumber };
 }

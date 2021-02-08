@@ -1,4 +1,4 @@
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { getDrawStructures } from '../../getters/findStructure';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';

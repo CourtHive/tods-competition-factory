@@ -1,5 +1,5 @@
 import mocksEngine from '../../../../mocksEngine';
-import tournamentEngine from '../../../../tournamentEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import {
   getOrderedDrawPositionPairs,
   getContextMatchUp,
@@ -12,10 +12,125 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
+import { generateRange } from '../../../../utilities';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });
   swapTest({ swapPosition: 3 });
+});
+
+it('supports transitive BYE removal in large structures', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      participantsCount: 6,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  const structureId = structures[0].structureId;
+  const originalPositionAssignments = structures[0].positionAssignments;
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let finalMatchUp = matchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+  );
+  expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
+  let { orderedPairs } = getOrderedDrawPositionPairs();
+  expect(orderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, undefined], // drawPosition 1 is BYE-advanced
+    [8, undefined], // drawPosition 8 is BYE-advanced
+    [undefined, undefined],
+  ]);
+
+  generateRange(5, 9).forEach((drawPosition) => {
+    const participantId = originalPositionAssignments.find(
+      (assignment) => assignment.drawPosition === drawPosition
+    ).participantId;
+    if (participantId) {
+      removeAssignment({
+        drawId,
+        structureId,
+        drawPosition,
+        replaceWithBye: true,
+      });
+    }
+  });
+
+  ({ orderedPairs } = getOrderedDrawPositionPairs());
+  expect(orderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, undefined], // drawPosition 1 is BYE-advanced
+    [5, 7], // drawPositions 5, 6, 7, 8 are BYEs and 5, 7 are BYE-advanced
+    [7, undefined], // drawPosition 7 is BYE-advanced
+  ]);
+
+  removeAssignment({
+    drawId,
+    structureId,
+    drawPosition: 8,
+  });
+  ({ orderedPairs } = getOrderedDrawPositionPairs());
+  expect(orderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, undefined], // drawPosition 1 is BYE-advanced
+    [5, undefined], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
+    [undefined, undefined],
+  ]);
+
+  const participantId = originalPositionAssignments.find(
+    ({ drawPosition }) => drawPosition === 8
+  ).participantId;
+
+  const result = tournamentEngine.assignDrawPosition({
+    drawId,
+    drawPosition: 8,
+    structureId,
+    participantId,
+  });
+  expect(result.success).toEqual(true);
+  ({ orderedPairs } = getOrderedDrawPositionPairs());
+  expect(orderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, undefined], // drawPosition 1 is BYE-advanced
+    [5, 8], // drawPositions 5, 6 are BYEs and 5 is BYE-advanced
+    [8, undefined],
+  ]);
+
+  const {
+    drawDefinition: {
+      structures: [updatedStructure],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  const byeDrawPositions = updatedStructure.positionAssignments.filter(
+    ({ bye }) => bye
+  );
+  expect(byeDrawPositions.length).toEqual(4);
 });
 
 // valid swapPositions for the expectations logic are 3 and 4

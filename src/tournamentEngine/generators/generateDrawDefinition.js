@@ -5,7 +5,7 @@ import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEn
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
-import drawEngine from '../../drawEngine';
+import drawEngine from '../../drawEngine/sync';
 
 import {
   MAIN,
@@ -24,6 +24,7 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -32,6 +33,7 @@ export function generateDrawDefinition(props) {
   const {
     uuids,
     customName,
+    drawEntries,
     matchUpType,
     seedingProfile,
     qualifyingRound,
@@ -87,7 +89,7 @@ export function generateDrawDefinition(props) {
   }
 
   const stage = MAIN;
-  const entries = event?.entries || [];
+  const entries = event?.entries || drawEntries || [];
   const eventType = event?.eventType;
   const stageEntries = entries.filter(
     (entry) =>
@@ -110,6 +112,7 @@ export function generateDrawDefinition(props) {
 
   const drawProfile = {
     drawSize,
+    drawType,
     automated,
     customName,
     seedsCount,
@@ -294,6 +297,24 @@ export function generateDrawDefinition(props) {
   const errors = generatedDrawErrors || [];
   if (matchUpFormatError) errors.push(matchUpFormat);
   const error = errors.length && errors;
+
+  const drawDetails = {
+    drawSize,
+    drawType,
+    automated,
+    customName,
+    seedsCount,
+    tieFormat,
+    matchUpType,
+    drawId: drawDefinition.drawId,
+    category: event?.category,
+  };
+
+  const timeItem = {
+    itemType: 'generateDrawDefinition',
+    itemValue: drawDetails,
+  };
+  addTournamentTimeItem({ tournamentRecord, timeItem });
 
   return Object.assign({}, SUCCESS, {
     structureId,

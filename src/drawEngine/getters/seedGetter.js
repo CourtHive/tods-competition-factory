@@ -1,11 +1,11 @@
-import { findStructure } from './findStructure';
-import { structureAssignedDrawPositions } from './positionsGetter';
-import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
-
-import { generateRange, powerOf2, shuffleArray } from '../../utilities';
-import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getStructureSeedAssignments } from './getStructureSeedAssignments';
+import { generateRange, powerOf2, shuffleArray } from '../../utilities';
+import { structureAssignedDrawPositions } from './positionsGetter';
+import { findStructure } from './findStructure';
+
+import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 import {
   MISSING_SEEDING_POLICY,
   MISSING_SEED_BLOCKS,

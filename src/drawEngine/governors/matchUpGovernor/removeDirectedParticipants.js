@@ -9,12 +9,8 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DEFAULTED,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
 
 export function removeDirectedParticipants(props) {
   const {
@@ -45,11 +41,7 @@ export function removeDirectedParticipants(props) {
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
-    targetMatchUps: {
-      loserMatchUp,
-      winnerMatchUp,
-      loserMatchUpDrawPositionIndex,
-    },
+    targetMatchUps: { loserMatchUp, winnerMatchUp },
   } = targetData;
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -114,44 +106,12 @@ export function removeDirectedParticipants(props) {
         drawPositionMatchUps,
       });
 
-      const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
-      const targetMatchUpDrawPosition =
-        targetMatchUpDrawPositions[loserMatchUpDrawPositionIndex];
       const loserLinkCondition = loserTargetLink.linkCondition;
       const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
-      // in this calculation BYEs and WALKOVERs are not counted as wins
-      // as well as DEFAULTED when there is no score component
-      const loserDrawPositionWins = drawPositionMatchUps.filter((matchUp) => {
-        const drawPositionSide = matchUp.sides.find(
-          (side) => side.drawPosition === loserDrawPosition
-        );
-        const unscoredOutcome =
-          matchUp.matchUpStatus === WALKOVER ||
-          (matchUp.matchUpStatus === DEFAULTED &&
-            !!matchUp.score?.scoreStringSide1);
-        return (
-          drawPositionSide?.sideNumber === matchUp.winningSide &&
-          !unscoredOutcome
-        );
-      });
-      const {
-        loserHadMatchUpStatus: defaultOrWalkover,
-      } = includesMatchUpStatuses({
-        sourceMatchUps,
-        loserDrawPosition,
-        drawPositionMatchUps,
-        matchUpStatuses: [WALKOVER, DEFAULTED],
-      });
-
-      const firstMatchUpLossNotDefWO =
-        loserLinkCondition === FIRST_MATCHUP &&
-        loserDrawPositionWins.length === 0 &&
-        !defaultOrWalkover;
 
       if (winnerHadBye && firstMatchUpLoss) {
-        const drawPosition = firstMatchUpLossNotDefWO
-          ? targetMatchUpDrawPosition
-          : loserMatchUp.drawPositions[winningIndex];
+        // The fed drawPosition is always the lowest number
+        const drawPosition = Math.min(...loserMatchUp.drawPositions);
         const { error } = removeDirectedBye({
           drawDefinition,
           mappedMatchUps,

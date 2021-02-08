@@ -8,7 +8,7 @@ import {
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 
 import {
   MAIN,

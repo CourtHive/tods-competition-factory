@@ -1,7 +1,7 @@
 import { reset, initialize, mainDrawPositions } from './primitives';
 import { getDrawStructures } from '../../getters/findStructure';
 
-import { drawEngine } from '../../../drawEngine';
+import { drawEngine } from '../../sync';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 export function feedInChampionship({ drawSize, drawType, feedPolicy }) {

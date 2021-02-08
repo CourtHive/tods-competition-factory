@@ -26,7 +26,6 @@ import {
 import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribers } from '../global/notifySubscribers';
 
-let deepCopy = true;
 let tournamentRecord;
 
 const policies = {};
@@ -44,7 +43,6 @@ function setState(tournament, deepCopyOption) {
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
   tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
-  deepCopy = deepCopyOption;
 
   return Object.assign({ tournamentId }, SUCCESS);
 }
@@ -127,7 +125,6 @@ export const tournamentEngine = (async function () {
 
     const result = await fx({
       ...params,
-      deepCopy,
       policies,
       tournamentRecord,
     });

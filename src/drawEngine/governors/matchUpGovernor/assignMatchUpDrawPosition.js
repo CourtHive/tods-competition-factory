@@ -1,9 +1,9 @@
-import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { addNotice } from '../../../global/globalState';
 import { numericSort } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -16,7 +16,6 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { addNotice } from '../../../global/globalState';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -94,35 +93,6 @@ export function assignMatchUpDrawPosition({
 
     if (winnerMatchUp)
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
-        /*
-        // NOTE: probably unnecessary now
-        const existingDrawPositions =
-          winnerMatchUp.drawPositions?.filter((f) => f) || [];
-        const existingByePositions = positionAssignments
-          ?.filter(({ drawPosition }) =>
-            winnerMatchUp.drawPositions.includes(drawPosition)
-          )
-          .filter(({ bye }) => bye)
-          .map(({ drawPosition }) => drawPosition);
-
-        // Handle situation where BYE replacement encounters matchUp which has only a BYE
-        const targetDrawPosition =
-          existingDrawPositions.includes(drawPosition) ||
-          existingDrawPositions.length < 2
-            ? drawPosition
-            : existingByePositions.pop();
-        if (targetDrawPosition !== drawPosition) {
-          const result = removeMatchUpDrawPosition({
-            drawDefinition,
-            mappedMatchUps,
-            inContextDrawMatchUps,
-            drawPosition: targetDrawPosition,
-            matchUpId: winnerMatchUp.matchUpId,
-          });
-          if (result.error) return result;
-        }
-          */
-
         const result = assignMatchUpDrawPosition({
           drawDefinition,
           drawPosition,
@@ -135,17 +105,6 @@ export function assignMatchUpDrawPosition({
           console.log(
             'winnerMatchUp in different structure... participant is in different targetDrawPosition'
           );
-        } else {
-          console.log('boo @#%#@$@$^$%^@$#%');
-          /*
-          removeSubsequentRoundsParticipant({
-            drawDefinition,
-            mappedMatchUps,
-            structureId,
-            roundNumber: winnerMatchUp.roundNumber,
-            targetDrawPosition: byeAdvancedPosition,
-          });
-          */
         }
       }
   }
@@ -202,21 +161,11 @@ export function removeMatchUpDrawPosition({
         console.log(
           'winnerMatchUp in different structure... participant is in different targetDrawPosition'
         );
-        // find partiicpantId in connected structure and derive drawPosition
-        /*
-      const { roundNumber, structureId } = winnerMatchUp;
-      const result = removeSubsequentRoundsParticipant({
-        mappedMatchUps,
-        structureId,
-        roundNumber,
-        targetDrawPosition: derivedDrawPostion,
-      });
-      console.log({ result });
-      */
       } else {
         console.log(
           '########################### UNNECESSARY ????????????????????? '
         );
+        /*
         removeSubsequentRoundsParticipant({
           drawDefinition,
           mappedMatchUps,
@@ -224,6 +173,7 @@ export function removeMatchUpDrawPosition({
           roundNumber: winnerMatchUp.roundNumber,
           targetDrawPosition: byeAdvancedPosition,
         });
+        */
       }
     }
   }

@@ -1,5 +1,6 @@
-import drawEngine from '../../../drawEngine';
-import tournamentEngine from '../../../tournamentEngine';
+import drawEngine from '../../sync';
+import tournamentEngine from '../../../tournamentEngine/sync';
+
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
