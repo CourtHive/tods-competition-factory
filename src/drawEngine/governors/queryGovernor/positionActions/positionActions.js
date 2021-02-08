@@ -175,16 +175,16 @@ export function positionActions({
           payload: { drawId, structureId, drawPosition },
         });
       }
-    }
 
-    // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
-    // option should not be available if exising assignment is a bye
-    if ((getDevContext() || isMainStageSequence1) && !isByePosition) {
-      validActions.push({
-        type: ASSIGN_BYE,
-        method: REMOVE_ASSIGNMENT_METHOD,
-        payload: { drawId, structureId, drawPosition, replaceWithBye: true },
-      });
+      // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
+      // option should not be available if exising assignment is a bye
+      if ((getDevContext() || isMainStageSequence1) && !isByePosition) {
+        validActions.push({
+          type: ASSIGN_BYE,
+          method: REMOVE_ASSIGNMENT_METHOD,
+          payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+        });
+      }
     }
 
     if (
