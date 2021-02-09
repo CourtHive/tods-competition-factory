@@ -8,7 +8,7 @@
     "competition",
     "tennis"
   ],
-  "version": "0.4.13",
+  "version": "0.4.14",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -40,16 +40,19 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
+    "lint": "tsdx eslint src",
     "prepare": "tsdx build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
     "docz:serve": "docz build && docz serve",
-    "prepublishOnly": "./addVersion $npm_package_version"
+    "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
+    "postinstall": "husky install",
+    "postpublish": "pinst --enable"
   },
   "peerDependencies": {},
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "yarn eslint src"
     }
   },
   "prettier": {
@@ -78,9 +81,10 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.22.0",
     "highlight.js": "10.6.0",
-    "husky": "5.0.9",
+    "husky": "5",
     "jest-environment-jsdom": "26.6.2",
     "np": "7.3.0",
+    "pinst": "^2.1.4",
     "prettier": "2.2.1",
     "prettier-eslint": "12.0.0",
     "react": "16.13.1",

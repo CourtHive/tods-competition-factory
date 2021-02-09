@@ -1,5 +1,4 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getCheckedInParticipantIds } from '../../../drawEngine/getters/matchUpTimeItems';
 import {
