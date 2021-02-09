@@ -119,11 +119,13 @@ export function setMatchUpStatus(props) {
       if (message) messages.push(message);
       if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
     } else {
-      console.log('no valid actions', {
-        props,
-        loserMatchUpParticipantIds,
-        winnerMatchUpParticipantIds,
-      });
+      if (getDevContext()) {
+        console.log('no valid actions', {
+          props,
+          loserMatchUpParticipantIds,
+          winnerMatchUpParticipantIds,
+        });
+      }
       return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
     }
   }
