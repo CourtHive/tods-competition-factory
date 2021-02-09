@@ -97,11 +97,12 @@ export function verifyStructure({
       const { pairedDrawPosition } = getPairedDrawPosition({
         matchUps,
         drawPosition,
+        roundNumber: 1,
       });
       return pairedDrawPosition;
     })
-
     .filter((f) => f);
+
   const seedPairedDrawPositionsWithBye = seedPairedDrawPositions.filter(
     (drawPosition) => byeAssignedDrawPositions.includes(drawPosition)
   );
@@ -120,6 +121,7 @@ export function verifyStructure({
       const { pairedDrawPosition } = getPairedDrawPosition({
         matchUps,
         drawPosition,
+        roundNumber: 1,
       });
       return pairedDrawPosition;
     }

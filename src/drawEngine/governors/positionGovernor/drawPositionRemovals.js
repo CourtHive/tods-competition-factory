@@ -294,10 +294,6 @@ export function removeSubsequentRoundsParticipant({
   inContextDrawMatchUps,
   targetDrawPosition,
 }) {
-  if (!mappedMatchUps && !drawDefinition) {
-    console.log('ERROR: missing params');
-    return;
-  }
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.structureType === CONTAINER) return;
 

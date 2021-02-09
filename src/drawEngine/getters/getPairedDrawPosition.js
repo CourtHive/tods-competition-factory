@@ -1,17 +1,22 @@
-export function getPairedDrawPosition({ matchUps, drawPosition }) {
-  let targetMatchUp;
-  const pairedDrawPosition = matchUps
-    .filter(({ roundNumber }) => roundNumber === 1)
-    .reduce((pairedDrawPosition, matchUp) => {
-      const { drawPositions } = matchUp;
-      const includesDrawPosition = drawPositions?.includes(drawPosition);
-      if (includesDrawPosition) targetMatchUp = matchUp;
-      return includesDrawPosition
-        ? drawPositions.reduce(
-            (p, c) => (c !== drawPosition ? c : p),
-            undefined
-          )
-        : pairedDrawPosition;
-    }, undefined);
-  return { matchUp: targetMatchUp, pairedDrawPosition };
+import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps';
+import { getInitialRoundNumber } from './getInitialRoundNumber';
+
+// defaults to finding the paired drawPosition in the initial roundNumber in which the drawPosition occurs
+// for feed-in rounds fed drawPositions will not initially have a paired drawPosition
+export function getPairedDrawPosition({ matchUps, drawPosition, roundNumber }) {
+  const { roundProfile } = getRoundMatchUps({ matchUps });
+  if (!roundProfile[roundNumber]) return {};
+  const { initialRoundNumber } = getInitialRoundNumber({
+    matchUps,
+    drawPosition,
+  });
+
+  const pairedDrawPositions = roundProfile[
+    roundNumber || initialRoundNumber
+  ].pairedDrawPositions.find((pair) => pair.includes(drawPosition));
+  const pairedDrawPosition = pairedDrawPositions?.find(
+    (currentPosition) => currentPosition !== drawPosition
+  );
+
+  return { pairedDrawPosition };
 }
