@@ -4,12 +4,14 @@ import { structureSort } from '../../drawEngine/getters/structureSort';
 import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
 
 import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function completeDrawMatchUps({
   tournamentEngine,
   matchUpFormat,
   drawId,
 }) {
+  const errors = [];
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const sortedStructures = drawDefinition.structures
     .slice()
@@ -26,7 +28,7 @@ export function completeDrawMatchUps({
         matchUpId,
       });
       if (targetMatchUp.readyToScore) {
-        completeMatchUp({
+        const result = completeMatchUp({
           tournamentEngine,
           targetMatchUp,
           scoreString: '6-1 6-1',
@@ -35,9 +37,15 @@ export function completeDrawMatchUps({
           matchUpFormat,
           drawId,
         });
+        if (result.error) {
+          console.log({ result });
+          errors.push(result.error);
+          return result;
+        }
       }
     });
   });
+  return errors.length ? { error: errors } : SUCCESS;
 }
 
 export function completeMatchUp({
@@ -70,5 +78,5 @@ export function completeMatchUp({
     outcome,
     matchUpFormat,
   });
-  if (!result.success) console.log(result, targetMatchUp);
+  return result;
 }
