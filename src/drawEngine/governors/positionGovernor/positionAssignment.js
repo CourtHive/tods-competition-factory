@@ -164,17 +164,6 @@ function addDrawPositionToMatchUps({
     matchUp.drawPositions.includes(drawPosition)
   );
 
-  /*
-  const positionAssignments = structure.positionAssignments;
-  const pairedDrawPoaition = matchUp.drawPositions.find(
-    (currentDrawPosition) => currentDrawPosition !== drawPosition
-  );
-  const pairedDrawPositionAssignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === pairedDrawPoaition
-  );
-  const pairedDrawPositionIsBye = pairedDrawPositionAssignment?.bye;
-  */
-
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       drawDefinition,
