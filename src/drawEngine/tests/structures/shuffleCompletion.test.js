@@ -13,7 +13,11 @@ import {
 
 import {
   COMPASS,
+  CURTIS_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
+  MODIFIED_FEED_IN_CHAMPIONSHIP,
+  ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -25,31 +29,83 @@ import { SUCCESS } from '../../../constants/resultConstants';
 // 5. Replace Y BYEs in shuffled order with Alternates
 // 6. Complete all draw matchUps
 // 7. All matchUps should be either byeMatchUps or completedMatchUps
+// 8. number of byeMatchUps + number of completedMatchUps should equal totalMatchUps
 
-it('can randomize drawPositions, randomize replacements, and complete COMPASS draw', () => {
+/*
+PASSED: FEED_IN_CHAMPIONSHIP 16 * 100
+PASSED: FEED_IN_CHAMPIONSHIP 32 * 100
+PASSED: MODIFIED_FEED_IN_CHAMPIONSHIP 32 * 100
+PASSED: CURTIS_CONSOLATION 32 * 100
+PASSED: ROUND_ROBIN 32 * 100
+PASSED: COMPASS 32 * 100
+PASSED: COMPASS 64 * 10
+PASSED: FMLC 8 * 100
+PASSED: FMLC 16 * 100
+PASSED: FMLC 32 * 100
+PASSED: FMLC 64 * 10
+
+*/
+
+it('can randomize drawPositions, randomize replacements, and complete various drawTypes', () => {
+  let result = replacementTest({
+    drawType: COMPASS,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: CURTIS_CONSOLATION,
+    drawSize: 32,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: MODIFIED_FEED_IN_CHAMPIONSHIP,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: ROUND_ROBIN,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: FEED_IN_CHAMPIONSHIP,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+});
+
+// only to be run when stress testing
+it.skip('can perform iterations of specified draw type (dev harness)', () => {
   // successfully run with 100 iterations
-  const iterations = 1;
-  generateRange(0, iterations).forEach(() => {
-    replacementTest({
-      drawType: COMPASS,
-      drawSize: 32,
-    });
+  const iterations = 100;
+  const drawType = FEED_IN_CHAMPIONSHIP;
+  const drawSize = 32;
+  generateRange(0, iterations).forEach((index) => {
+    const result = replacementTest({ drawType, drawSize });
+    if (iterations > 1)
+      console.log(`${drawType} iteration: ${index + 1}`, { result });
+    expect(result.success).toEqual(true);
   });
 });
 
-it.skip('can randomize drawPositions, randomize replacements, and complete FIRST_MATCH_LOSER_CONSOLATION draw', () => {
-  const iterations = 10;
+// OBSOLETE: test used in development utilizing positionActions extension to identify problem areas
+it.skip('can randomize drawPositions, randomize replacements, and complete drawType', () => {
+  const iterations = 100;
   const positionActionErrorScenarios = [];
+  const drawType = FEED_IN_CHAMPIONSHIP;
+  const drawSize = 8;
   generateRange(0, iterations).forEach(() => {
-    const drawType = FIRST_MATCH_LOSER_CONSOLATION;
-    const drawSize = 16;
     const result = replacementTest({
       drawType,
       drawSize,
       devMode: true,
     });
     if (!result.success) {
-      console.log('positionAction errors');
       const { tournamentRecord } = tournamentEngine.getState();
       const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
       const {
@@ -65,14 +121,21 @@ it.skip('can randomize drawPositions, randomize replacements, and complete FIRST
       });
     }
   });
+
   if (positionActionErrorScenarios.length) {
-    const fileName = `positionActions.json`;
-    const dirPath = './src/global/tests/';
-    const output = `${dirPath}${fileName}`;
-    fs.writeFileSync(
-      output,
-      JSON.stringify(positionActionErrorScenarios, undefined, 1)
+    console.log(`#### ERRORS ####`);
+    console.log(
+      `${positionActionErrorScenarios.length} of ${iterations} failed`
     );
+    const fileName = `positionActions_${drawSize}_${drawType}.json`;
+    const dirPath = './scratch/';
+    if (fs.existsSync(dirPath)) {
+      const output = `${dirPath}${fileName}`;
+      fs.writeFileSync(
+        output,
+        JSON.stringify(positionActionErrorScenarios, undefined, 1)
+      );
+    }
   }
 });
 
@@ -125,6 +188,7 @@ function replacementTest({ drawType, drawSize, participantsCount, devMode }) {
 
   // for each targeted drawPosition remove the BYE and assign participantId from availableParticipantIds
   drawPositionsToAssign.forEach((drawPosition) => {
+    // replaceWithAlternate({ drawId, structureId, drawPosition });
     removeAssignment({ drawId, structureId, drawPosition });
     assignDrawPosition({ drawId, structureId, drawPosition });
   });
@@ -133,10 +197,11 @@ function replacementTest({ drawType, drawSize, participantsCount, devMode }) {
   const { matchUps: allMatchUps } = tournamentEngine.allTournamentMatchUps();
   const totalMatchUpsCount = allMatchUps.length;
 
-  // compplete all matchUps in the target draw
-  completeDrawMatchUps({ tournamentEngine, drawId });
+  // complete all matchUps in the target draw
+  let result = completeDrawMatchUps({ tournamentEngine, drawId });
+  if (result.error) return result;
 
-  const result = tournamentEngine.tournamentMatchUps();
+  result = tournamentEngine.tournamentMatchUps();
   const { byeMatchUps, completedMatchUps } = result;
 
   if (

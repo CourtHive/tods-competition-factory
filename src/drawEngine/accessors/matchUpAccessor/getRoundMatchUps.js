@@ -1,4 +1,4 @@
-import { chunkArray, numericSort } from '../../../utilities';
+import { chunkArray, intersection, numericSort } from '../../../utilities';
 
 export function getRoundMatchUps({ matchUps = [] }) {
   // create an array of arrays of matchUps grouped by roundNumber
@@ -78,10 +78,18 @@ export function getRoundMatchUps({ matchUps = [] }) {
         if (roundNumber < 3 && filteredDrawPositions.length === 2)
           return drawPositions.sort(numericSort);
 
-        // if the prior round does NOT include the one existingg drawPosition then it is a feed round
+        // if the prior round does NOT include the one existing drawPosition then it is a feed round
         // ... and fed positions are always { sideNumber: 1 }
-        if (!priorRoundDrawPositions.includes(filteredDrawPositions[0]))
-          return [filteredDrawPositions[0], undefined];
+        if (
+          intersection(priorRoundDrawPositions, filteredDrawPositions)
+            .length !== filteredDrawPositions.length
+        ) {
+          if (filteredDrawPositions.length === 1) {
+            return [filteredDrawPositions[0], undefined];
+          } else {
+            return drawPositions.sort(numericSort);
+          }
+        }
 
         // otherwise determine the order of the drawPositions by looking at the prior round
         // this accounts for ADVANCED fed positions which are NOT guaranteed to be in numeric order

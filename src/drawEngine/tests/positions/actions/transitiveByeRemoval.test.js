@@ -44,9 +44,9 @@ it('supports transitive BYE removal in large structures', () => {
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   let finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
+  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
   let { orderedPairs } = getOrderedDrawPositionPairs();
   expect(orderedPairs).toEqual([
     [1, 2],
