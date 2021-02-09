@@ -34,22 +34,22 @@ export function assignMatchUpDrawPosition({
     matchUpId,
   });
 
+  const drawPositions = matchUp.drawPositions || [];
   let positionAdded = false;
-  let positionAssigned = false;
-  const updatedDrawPositions = (matchUp.drawPositions || [])
-    ?.map((position) => {
-      if (!position && !positionAssigned) {
-        positionAssigned = true;
-        positionAdded = true;
-        return drawPosition;
-      } else if (position === drawPosition) {
-        positionAssigned = true;
-        return drawPosition;
-      } else {
-        return position;
-      }
-    })
-    .sort(numericSort);
+  let positionAssigned = drawPositions.includes(drawPosition);
+  const updatedDrawPositions = positionAssigned
+    ? drawPositions
+    : drawPositions
+        .map((position) => {
+          if (!position && !positionAssigned) {
+            positionAssigned = true;
+            positionAdded = true;
+            return drawPosition;
+          } else {
+            return position;
+          }
+        })
+        .sort(numericSort);
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
