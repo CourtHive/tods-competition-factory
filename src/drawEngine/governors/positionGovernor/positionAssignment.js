@@ -3,8 +3,9 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
@@ -20,8 +21,6 @@ import {
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-
-// NOTE: see TODO below for manual positioning of participants in feed arms
 
 export function assignDrawPosition({
   drawDefinition,
@@ -155,15 +154,17 @@ function addDrawPositionToMatchUps({
     structure,
   });
 
-  // This function was developed for testing harness and is used here for convenience
-  // paired position can be found in roundProfile...
-  // TODO: This will probably have to be changed to use roundProfile and to find the first roundNumber
-  // where the drawPosition occurrs... this will be for manual placement in feed arm positions...
-  const { matchUp } = getPairedDrawPosition({
-    matchUps,
+  const { roundMatchUps } = getRoundMatchUps({ matchUps });
+  const { initialRoundNumber } = getInitialRoundNumber({
     drawPosition,
+    matchUps,
   });
-  if (matchUp) {
+
+  const matchUp = roundMatchUps[initialRoundNumber].find((matchUp) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+
+  if (matchUp && initialRoundNumber === 1) {
     const result = assignMatchUpDrawPosition({
       drawDefinition,
       mappedMatchUps,
