@@ -13,7 +13,11 @@ import {
 
 import {
   COMPASS,
+  CURTIS_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
+  MODIFIED_FEED_IN_CHAMPIONSHIP,
+  ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -27,25 +31,63 @@ import { SUCCESS } from '../../../constants/resultConstants';
 // 7. All matchUps should be either byeMatchUps or completedMatchUps
 
 /*
-PASSED: COMPASS 32 * 200
+PASSED: MODIFIED_FEED_IN_CHAMPIONSHIP 32 * 100
+PASSED: CURTIS_CONSOLATION 32 * 100
+PASSED: ROUND_ROBIN 32 * 100
+PASSED: COMPASS 32 * 100
+PASSED: COMPASS 64 * 10
+PASSED: FMLC 8 * 100
+PASSED: FMLC 16 * 100
+PASSED: FMLC 32 * 100
+PASSED: FMLC 64 * 10
+
+FEED_IN_CHAMPIONSHIP 16 * 10 // with caveat placement conflict
 */
 
-it('can randomize drawPositions, randomize replacements, and complete COMPASS draw', () => {
+it.skip('can perform iterations of specified draw type (dev harness)', () => {
   // successfully run with 100 iterations
-  const iterations = 1;
-  generateRange(0, iterations).forEach(() => {
-    replacementTest({
-      drawType: COMPASS,
-      drawSize: 32,
+  const iterations = 10;
+  generateRange(0, iterations).forEach((index) => {
+    const result = replacementTest({
+      drawType: FEED_IN_CHAMPIONSHIP,
+      drawSize: 16,
     });
+    if (iterations > 1) console.log(`iteration: ${index + 1}`, { result });
   });
-  if (iterations > 1) console.log(`Ran ${iterations} iterations`);
 });
 
-it.skip('can randomize drawPositions, randomize replacements, and complete FIRST_MATCH_LOSER_CONSOLATION draw', () => {
-  const iterations = 10;
+it.skip('can randomize drawPositions, randomize replacements, and complete COMPASS draw', () => {
+  let result = replacementTest({
+    drawType: COMPASS,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: CURTIS_CONSOLATION,
+    drawSize: 32,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: MODIFIED_FEED_IN_CHAMPIONSHIP,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+  result = replacementTest({
+    drawType: ROUND_ROBIN,
+    drawSize: 16,
+  });
+  expect(result.success).toEqual(true);
+});
+
+it.only('can randomize drawPositions, randomize replacements, and complete FIRST_MATCH_LOSER_CONSOLATION draw', () => {
+  const iterations = 100;
   const positionActionErrorScenarios = [];
-  const drawType = FIRST_MATCH_LOSER_CONSOLATION;
+  const drawType = FEED_IN_CHAMPIONSHIP;
   const drawSize = 8;
   generateRange(0, iterations).forEach(() => {
     const result = replacementTest({
@@ -146,9 +188,10 @@ function replacementTest({ drawType, drawSize, participantsCount, devMode }) {
   const totalMatchUpsCount = allMatchUps.length;
 
   // complete all matchUps in the target draw
-  completeDrawMatchUps({ tournamentEngine, drawId });
+  let result = completeDrawMatchUps({ tournamentEngine, drawId });
+  if (result.error) return result;
 
-  const result = tournamentEngine.tournamentMatchUps();
+  result = tournamentEngine.tournamentMatchUps();
   const { byeMatchUps, completedMatchUps } = result;
 
   if (
