@@ -40,6 +40,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test",
+    "lint": "tsdx eslint src",
     "prepare": "tsdx build",
     "docz:dev": "docz dev",
     "docz:build": "docz build",
@@ -51,7 +52,7 @@
   "peerDependencies": {},
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "yarn eslint src"
     }
   },
   "prettier": {
