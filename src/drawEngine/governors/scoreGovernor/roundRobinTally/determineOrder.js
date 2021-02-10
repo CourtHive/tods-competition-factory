@@ -3,11 +3,16 @@ import { indices, subSort } from '../../../../utilities/arrays';
 
 export function determineTeamOrder({
   participantResults,
-  headToHeadPriority,
+  policyDefinition,
   disqualified,
 }) {
   const participantIds = Object.keys(participantResults);
   const participantsCount = participantIds.length;
+
+  let headToHeadPriority;
+  if (policyDefinition) {
+    //
+  }
 
   // order is an array of objects formatted for processing by ties()
   const order = participantIds.reduce((arr, participantId, i) => {

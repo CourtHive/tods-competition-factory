@@ -22,7 +22,10 @@ import { CONTAINER } from '../../../constants/drawDefinitionConstants';
  *
  */
 export function setSubOrder({
+  tournamentRecord,
   drawDefinition,
+  event,
+
   structureId,
   drawPosition,
   subOrder,
@@ -63,6 +66,10 @@ export function setSubOrder({
     structure?.matchUpFormat || drawDefinition.matchUpFormat;
 
   result = updateAssignmentParticipantResults({
+    tournamentRecord,
+    drawDefinition,
+    event,
+
     positionAssignments,
     matchUps,
     matchUpFormat,
