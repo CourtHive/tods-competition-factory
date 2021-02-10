@@ -148,13 +148,13 @@ export function getTargetMatchUp({
     })
     .map(({ drawPosition }) => drawPosition);
 
-  if (disabledDrawPositions?.length)
+  if (disabledDrawPositions?.length) {
     console.log({
-      matchUp,
       disabledDrawPositions,
       relevantPositionAssignments,
-      targetStructure,
     });
+    return { disabledDrawPositions };
+  }
 
   return { matchUp, matchUpDrawPositionIndex, disabledDrawPositions };
 }
