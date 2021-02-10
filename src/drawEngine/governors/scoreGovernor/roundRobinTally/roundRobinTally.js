@@ -7,7 +7,8 @@ import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants'
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 export function tallyParticipantResults({
-  headToHeadPriority,
+  policyDefinition,
+
   matchUpFormat,
   matchUps = [],
   subOrderMap,
@@ -91,8 +92,8 @@ export function tallyParticipantResults({
 
   const order = determineTeamOrder({
     participantResults,
+    policyDefinition,
     disqualified,
-    headToHeadPriority,
   });
 
   // do not calculate order if bracket is not complete
