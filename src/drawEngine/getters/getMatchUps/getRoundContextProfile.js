@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
-import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
+import { ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 

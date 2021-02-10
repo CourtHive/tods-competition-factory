@@ -10,7 +10,7 @@ import { eventConstants } from '../../../constants/eventConstants';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 
-import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import ITF_SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;

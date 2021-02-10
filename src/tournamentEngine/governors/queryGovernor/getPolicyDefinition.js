@@ -22,18 +22,14 @@ export function getPolicyDefinition({
       getDrawAppliedPolicies({ drawDefinition }) || {};
     const policy = appliedPolicies[policyType];
     const policyDefinition = policy && { [policyType]: policy };
-    return policyDefinition
-      ? { policyDefinition }
-      : { error: POLICY_NOT_FOUND };
+    if (policyDefinition) return { policyDefinition };
   }
 
   if (event) {
     const { appliedPolicies } = getEventAppliedPolicies({ event }) || {};
     const policy = appliedPolicies[policyType];
     const policyDefinition = policy && { [policyType]: policy };
-    return policyDefinition
-      ? { policyDefinition }
-      : { error: POLICY_NOT_FOUND };
+    if (policyDefinition) return { policyDefinition };
   }
 
   if (tournamentRecord) {
@@ -41,9 +37,7 @@ export function getPolicyDefinition({
       getTournamentAppliedPolicies({ tournamentRecord }) || {};
     const policy = appliedPolicies[policyType];
     const policyDefinition = policy && { [policyType]: policy };
-    return policyDefinition
-      ? { policyDefinition }
-      : { error: POLICY_NOT_FOUND };
+    if (policyDefinition) return { policyDefinition };
   }
 
   return { error: POLICY_NOT_FOUND };

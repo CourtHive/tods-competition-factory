@@ -8,7 +8,7 @@ import {
   CONSOLATION,
   CURTIS,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId,

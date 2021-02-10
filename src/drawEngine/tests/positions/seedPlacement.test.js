@@ -15,8 +15,8 @@ import {
 } from '../../../constants/entryStatusConstants';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
-import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
-import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
+import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;

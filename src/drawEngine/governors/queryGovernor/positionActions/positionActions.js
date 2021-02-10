@@ -1,3 +1,4 @@
+import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
@@ -32,6 +33,7 @@ import {
   WITHDRAW_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 
 /**
  *
@@ -44,9 +46,12 @@ import { MAIN } from '../../../../constants/drawDefinitionConstants';
  */
 export function positionActions({
   tournamentParticipants = [],
+  policyDefinition,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   structureId,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
@@ -60,6 +65,19 @@ export function positionActions({
   } = structureActiveDrawPositions({ drawDefinition, structureId });
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
+    policyType: POLICY_TYPE_POSITION_ACTIONS,
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const positionActionsPolicy = policyDefinition || attachedPolicy;
+  if (positionActionsPolicy) {
+    console.log({ positionActionsPolicy });
+  }
+
   const isMainStageSequence1 =
     structure.stage === MAIN && structure.stageSequence === 1;
 
