@@ -21,7 +21,6 @@ export const RANDOM = 'RANDOM';
 export const TOP_DOWN = 'TOP_DOWN';
 export const BOTTOM_UP = 'BOTTOM_UP';
 export const WATERFALL = 'WATERFALL';
-export const LOSS_POSITION = 'LOSS_POSITION'; // For First Match Consolation this refers to the losing round position
 
 // Match and Link types
 export const POSITION = 'POSITION'; // participant advances based on their finishing position
