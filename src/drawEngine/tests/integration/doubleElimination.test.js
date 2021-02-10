@@ -14,7 +14,7 @@ import {
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyLinks } from '../../tests/primitives/verifyLinks';
 
-import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 
 it('can generate and verify double elimination', () => {

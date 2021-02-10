@@ -1,11 +1,11 @@
 import { countries, countryToFlag, flagIOC } from './countryData';
 
-import SCORING_POLICY from './scoring/DEFAULT_SCORING_POLICY';
+import SCORING_POLICY from './policies/POLICY_SCORING_DEFAULT';
 
-import SEEDING_USTA from './seeding/SEEDING_USTA';
-import SEEDING_ITF from './seeding/SEEDING_ITF';
+import SEEDING_USTA from './policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from './policies/POLICY_SEEDING_ITF';
 
-import AVOIDANCE_COUNTRY from './avoidance/AVOIDANCE_COUNTRY';
+import AVOIDANCE_COUNTRY from './policies/POLICY_AVOIDANCE_COUNTRY';
 
 const avoidance = {
   AVOIDANCE_COUNTRY,

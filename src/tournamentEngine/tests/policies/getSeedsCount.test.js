@@ -3,7 +3,7 @@ import {
   MISSING_PARTICIPANT_COUNT,
   MISSING_POLICY_DEFINITION,
 } from '../../../constants/errorConditionConstants';
-import SEEDING_USTA from '../../../fixtures/seeding/SEEDING_USTA';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { getSeedsCount } from '../../governors/policyGovernor/getSeedsCount';
 
 it('can accurately determine seedsCount from drawSize and participantCount', () => {

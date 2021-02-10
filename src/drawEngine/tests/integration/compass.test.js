@@ -3,7 +3,7 @@ import { drawEngine } from '../../sync';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   let drawSize, seedsCount, participantsCount;
