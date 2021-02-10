@@ -298,10 +298,10 @@ function getEnabledStructures({
     event,
   });
 
-  const positionActionsPolicy =
-    policyDefinition ||
-    attachedPolicy ||
-    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
+  policyDefinition =
+    policyDefinition || attachedPolicy || POLICY_POSITION_ACTIONS_DEFAULT;
+
+  const positionActionsPolicy = policyDefinition[POLICY_TYPE_POSITION_ACTIONS];
 
   const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
   const actionsDisabled = disabledStructures?.find(
