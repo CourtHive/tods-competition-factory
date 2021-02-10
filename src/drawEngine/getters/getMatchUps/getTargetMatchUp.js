@@ -139,18 +139,22 @@ export function getTargetMatchUp({
       matchUp.drawPositions.includes(drawPosition)
     );
   const disabledDrawPositions = relevantPositionAssignments
-    ?.map((assignment) => {
+    ?.filter((assignment) => {
       const { extension } = findExtension({
         element: assignment,
         name: DISABLE_LINKS,
       });
       return extension?.value;
     })
-    .filter((f) => f)
     .map(({ drawPosition }) => drawPosition);
 
-  if (disabledDrawPositions?.length)
-    console.log({ matchUp, disabledDrawPositions });
+  if (disabledDrawPositions?.length) {
+    console.log({
+      disabledDrawPositions,
+      relevantPositionAssignments,
+    });
+    return { disabledDrawPositions };
+  }
 
   return { matchUp, matchUpDrawPositionIndex, disabledDrawPositions };
 }
