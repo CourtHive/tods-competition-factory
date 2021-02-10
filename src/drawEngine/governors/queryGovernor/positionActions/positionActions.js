@@ -34,6 +34,7 @@ import {
 } from '../../../../constants/positionActionConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 
 /**
  *
@@ -73,9 +74,40 @@ export function positionActions({
     event,
   });
 
-  const positionActionsPolicy = policyDefinition || attachedPolicy;
-  if (positionActionsPolicy) {
-    console.log({ positionActionsPolicy });
+  const positionActionsPolicy =
+    policyDefinition ||
+    attachedPolicy ||
+    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
+
+  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
+  const actionsDisabled = disabledStructures?.find(
+    (structurePolicy) =>
+      structurePolicy.stages?.includes(structure.stage) &&
+      (!structurePolicy.stageSequences?.length ||
+        structurePolicy.stageSequences.includes(structure.stageSequence))
+  );
+
+  if (actionsDisabled) return { message: 'Actions Disabled for structure' };
+
+  const policyActions =
+    !enabledStructures?.length ||
+    enabledStructures.reduce(
+      (policyActions, structurePolicy) => {
+        if (
+          !structurePolicy ||
+          policyActions ||
+          !structurePolicy.stages?.includes(structure.stage) ||
+          !structurePolicy.stageSequences?.includes(structure.stageSequence)
+        ) {
+          return policyActions;
+        }
+        Object.assign(policyActions, structurePolicy);
+      },
+      { enabledActions: [], disabledActions: [] }
+    );
+
+  if (policyActions) {
+    // console.log({ policyActions });
   }
 
   const isMainStageSequence1 =
