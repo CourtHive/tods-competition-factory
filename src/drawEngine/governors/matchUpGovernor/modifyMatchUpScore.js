@@ -22,7 +22,10 @@ import { CONTAINER } from '../../../constants/drawDefinitionConstants';
  */
 
 export function modifyMatchUpScore({
+  tournamentRecord,
   drawDefinition,
+  event,
+
   matchUpStatus,
   matchUpStatusCodes,
   matchUpFormat,
@@ -67,6 +70,10 @@ export function modifyMatchUpScore({
       });
 
       updateAssignmentParticipantResults({
+        tournamentRecord,
+        drawDefinition,
+        event,
+
         positionAssignments: itemStructure.positionAssignments,
         matchUpFormat,
         matchUps,
