@@ -32,6 +32,7 @@ export function generateDrawDefinition(props) {
 
   const {
     uuids,
+    drawId,
     customName,
     drawEntries,
     matchUpType,
@@ -101,7 +102,7 @@ export function generateDrawDefinition(props) {
   }
 
   drawEngine.reset();
-  drawEngine.newDrawDefinition({ drawType });
+  drawEngine.newDrawDefinition({ drawType, drawId });
 
   drawEngine.setStageDrawSize({ stage, drawSize });
   const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({
@@ -111,6 +112,7 @@ export function generateDrawDefinition(props) {
   });
 
   const drawProfile = {
+    drawId,
     drawSize,
     drawType,
     automated,
