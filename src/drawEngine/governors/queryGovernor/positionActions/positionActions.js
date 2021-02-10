@@ -31,6 +31,8 @@ import {
   ADD_NICKNAME_METHOD,
   WITHDRAW_PARTICIPANT,
   WITHDRAW_PARTICIPANT_METHOD,
+  SWAP_PARTICIPANTS,
+  ALTERNATE_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
@@ -67,48 +69,17 @@ export function positionActions({
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
-    policyType: POLICY_TYPE_POSITION_ACTIONS,
+  const { enabledStructures, actionsDisabled } = getEnabledStructures({
+    policyDefinition,
     tournamentRecord,
     drawDefinition,
+    structure,
     event,
   });
 
-  const positionActionsPolicy =
-    policyDefinition ||
-    attachedPolicy ||
-    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
-
-  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
-  const actionsDisabled = disabledStructures?.find(
-    (structurePolicy) =>
-      structurePolicy.stages?.includes(structure.stage) &&
-      (!structurePolicy.stageSequences?.length ||
-        structurePolicy.stageSequences.includes(structure.stageSequence))
-  );
-
   if (actionsDisabled) return { message: 'Actions Disabled for structure' };
 
-  const policyActions =
-    !enabledStructures?.length ||
-    enabledStructures.reduce(
-      (policyActions, structurePolicy) => {
-        if (
-          !structurePolicy ||
-          policyActions ||
-          !structurePolicy.stages?.includes(structure.stage) ||
-          !structurePolicy.stageSequences?.includes(structure.stageSequence)
-        ) {
-          return policyActions;
-        }
-        Object.assign(policyActions, structurePolicy);
-      },
-      { enabledActions: [], disabledActions: [] }
-    );
-
-  if (policyActions) {
-    // console.log({ policyActions });
-  }
+  const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
   const isMainStageSequence1 =
     structure.stage === MAIN && structure.stageSequence === 1;
@@ -184,7 +155,8 @@ export function positionActions({
 
   if (positionAssignment) {
     if (
-      (allowConsolationMovementActions || isMainStageSequence1) &&
+      // (allowConsolationMovementActions || isMainStageSequence1) &&
+      isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
       !activeDrawPositions.includes(drawPosition)
     ) {
       validActions.push({
@@ -204,7 +176,8 @@ export function positionActions({
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
       if (
-        (allowConsolationMovementActions || isMainStageSequence1) &&
+        // (allowConsolationMovementActions || isMainStageSequence1) &&
+        isAvailableAction({ policyActions, action: ASSIGN_BYE }) &&
         !isByePosition
       ) {
         validActions.push({
@@ -217,6 +190,7 @@ export function positionActions({
 
     if (
       !isByePosition &&
+      isAvailableAction({ policyActions, action: SEED_VALUE }) &&
       isValidSeedPosition({ drawDefinition, structureId, drawPosition })
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
@@ -243,64 +217,62 @@ export function positionActions({
     }
 
     if (!isByePosition && participantId) {
-      const addPenaltyAction = {
-        type: ADD_PENALTY,
-        method: ADD_PENALTY_METHOD,
-        participant,
-        payload: {
-          drawId,
-          penaltyCode: undefined,
-          penaltyType: undefined,
-          participantIds: [],
-          notes: undefined,
-        },
-      };
-      const addNicknameAction = {
-        type: ADD_NICKNAME,
-        method: ADD_NICKNAME_METHOD,
-        participant,
-        payload: {
-          participantId,
-          otherName: undefined,
-        },
-      };
-      validActions.push(addPenaltyAction);
-      validActions.push(addNicknameAction);
+      if (isAvailableAction({ policyActions, action: SEED_VALUE })) {
+        const addPenaltyAction = {
+          type: ADD_PENALTY,
+          method: ADD_PENALTY_METHOD,
+          participant,
+          payload: {
+            drawId,
+            penaltyCode: undefined,
+            penaltyType: undefined,
+            participantIds: [],
+            notes: undefined,
+          },
+        };
+        validActions.push(addPenaltyAction);
+      }
+      if (isAvailableAction({ policyActions, action: ADD_NICKNAME })) {
+        const addNicknameAction = {
+          type: ADD_NICKNAME,
+          method: ADD_NICKNAME_METHOD,
+          participant,
+          payload: {
+            participantId,
+            otherName: undefined,
+          },
+        };
+        validActions.push(addNicknameAction);
+      }
     }
 
-    const { validSwapAction } = getValidSwapAction({
-      drawId,
-      drawPosition,
-      structureId,
-      isByePosition,
-      byeDrawPositions,
-      positionAssignments,
-      activeDrawPositions,
-      inactiveDrawPositions,
-      tournamentParticipants,
-    });
-    if (
-      (allowConsolationMovementActions || isMainStageSequence1) &&
-      validSwapAction
-    ) {
-      validActions.push(validSwapAction);
+    if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
+      const { validSwapAction } = getValidSwapAction({
+        drawId,
+        drawPosition,
+        structureId,
+        isByePosition,
+        byeDrawPositions,
+        positionAssignments,
+        activeDrawPositions,
+        inactiveDrawPositions,
+        tournamentParticipants,
+      });
+      if (validSwapAction) validActions.push(validSwapAction);
     }
 
-    const { validAlternatesAction } = getValidAlternatesAction({
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      activeDrawPositions,
-      positionAssignments,
-      tournamentParticipants,
-    });
-    if (
-      (allowConsolationMovementActions || isMainStageSequence1) &&
-      validAlternatesAction
-    ) {
-      validActions.push(validAlternatesAction);
+    if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+      const { validAlternatesAction } = getValidAlternatesAction({
+        drawId,
+        structure,
+        structureId,
+        drawPosition,
+        drawDefinition,
+        activeDrawPositions,
+        positionAssignments,
+        tournamentParticipants,
+      });
+      if (validAlternatesAction) validActions.push(validAlternatesAction);
     }
   }
 
@@ -310,4 +282,74 @@ export function positionActions({
     isDrawPosition: true,
     validActions,
   };
+}
+
+function getEnabledStructures({
+  policyDefinition,
+  tournamentRecord,
+  drawDefinition,
+  structure,
+  event,
+}) {
+  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
+    policyType: POLICY_TYPE_POSITION_ACTIONS,
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const positionActionsPolicy =
+    policyDefinition ||
+    attachedPolicy ||
+    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
+
+  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
+  const actionsDisabled = disabledStructures?.find(
+    (structurePolicy) =>
+      structurePolicy.stages?.includes(structure.stage) &&
+      (!structurePolicy.stageSequences?.length ||
+        structurePolicy.stageSequences.includes(structure.stageSequence))
+  );
+
+  return { enabledStructures, actionsDisabled };
+}
+
+function getPolicyActions({ enabledStructures, structure }) {
+  if (!enabledStructures?.length)
+    return { enabledActions: [], disabledActions: [] };
+
+  const policyActions = enabledStructures.reduce(
+    (policyActions, structurePolicy) => {
+      if (
+        !structurePolicy ||
+        policyActions ||
+        (structurePolicy.stages?.length &&
+          !structurePolicy.stages?.includes(structure.stage)) ||
+        (structurePolicy.stageSequences?.length &&
+          !structurePolicy.stageSequences?.includes(structure.stageSequence))
+      ) {
+        return policyActions;
+      }
+      return structurePolicy;
+    }
+  );
+
+  return { policyActions };
+}
+
+function isAvailableAction({ action, policyActions }) {
+  if (
+    !policyActions?.enabledActions ||
+    (policyActions?.disabledActions?.length &&
+      policyActions.disabledActions.includes(action))
+  ) {
+    return false;
+  }
+  if (
+    policyActions?.enabledActions.length === 0 ||
+    policyActions?.enabledActions.includes(action)
+  ) {
+    return true;
+  }
+  return false;
 }

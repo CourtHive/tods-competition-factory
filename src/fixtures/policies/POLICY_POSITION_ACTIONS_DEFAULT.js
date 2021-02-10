@@ -1,5 +1,10 @@
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import {
+  ADD_NICKNAME,
+  ADD_PENALTY,
+  SEED_VALUE,
+} from '../../constants/positionActionConstants';
 
 export const POLICY_POSITION_ACTIONS_DEFAULT = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
@@ -12,6 +17,12 @@ export const POLICY_POSITION_ACTIONS_DEFAULT = {
         stages: [QUALIFYING, MAIN], // stages to which this policy applies
         stageSequences: [1], // stageSequences to which this policy applies
         enabledActions: [], // enabledActions: [] => all actions are enabled
+        disabledActions: [], // disabledActions: [] => no actions are disabled
+      },
+      {
+        stages: [], // stages: [] => applies to all stages
+        stageSequences: [], // stageSequences: [] => applies to all stageSequences
+        enabledActions: [SEED_VALUE, ADD_NICKNAME, ADD_PENALTY],
         disabledActions: [], // disabledActions: [] => no actions are disabled
       },
     ],
