@@ -1,15 +1,17 @@
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { chunkArray, generateRange } from '../../../utilities';
+import { getPositionAssignments } from '../positionsGetter';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import {
   DRAW,
   BOTTOM_UP,
-  LOSS_POSITION,
   RANDOM,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
+import { DISABLE_LINKS } from '../../../constants/extensionConstants';
 
 export function getTargetMatchUp({
   drawDefinition,
@@ -18,7 +20,7 @@ export function getTargetMatchUp({
   targetLink,
   sourceRoundPosition,
   sourceRoundMatchUpCount,
-  sourceMatchUpWinnerDrawPositionIndex,
+  // sourceMatchUpWinnerDrawPositionIndex,
 }) {
   if (!targetLink) return { error: MISSING_TARGET_LINK };
 
@@ -34,6 +36,10 @@ export function getTargetMatchUp({
   const { structure: targetStructure } = findStructure({
     drawDefinition,
     structureId,
+  });
+
+  const { positionAssignments } = getPositionAssignments({
+    structure: targetStructure,
   });
 
   const structureMatchUps = inContextDrawMatchUps?.filter(
@@ -52,7 +58,6 @@ export function getTargetMatchUp({
   let calculatedRoundPosition = Math.ceil(
     matchUpCountFactor * sourceRoundPosition
   );
-  // the index in the target matchUp.drawPositions[] array is as follows, for ITF_SEEDING policy only!
   let matchUpDrawPositionIndex = 1 - (sourceRoundPosition % 2);
 
   // when more than one source structure or more than one source structure round feed the same round in the target structure
@@ -70,6 +75,10 @@ export function getTargetMatchUp({
     // the index in the target matchUp.drawPositions[] is recalculated based on calculated relative drawPosition
     matchUpDrawPositionIndex = 1 - (relativeRoundPosition % 2);
   }
+
+  // TODO: for fedDrawPositions in linked elimination structures...
+  /// ...when roundNumber > 1 matchUpDrawPositionIndex should always be 0
+  // ...because fed drawPositions are always numerically smaller than advanced drawPositions
 
   let orderedPositions = roundPositions;
   let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
@@ -105,16 +114,6 @@ export function getTargetMatchUp({
         targetRoundMatchUps.length + 1 - calculatedRoundPosition;
     }
     targetedRoundPosition = orderedPositions[calculatedRoundPosition - 1];
-  } else if (feedProfile === LOSS_POSITION) {
-    /*
-      LOSS_POSITION is possible when a loss occurs in a second round to which a participant has advanced via BYE or DEFAULT/WALKOVER
-    */
-    calculatedRoundPosition = sourceRoundPosition;
-
-    // always return sourceMatchUpWinnerDrawPositionIndex for FirstMatchLoss / LOSS_POSITION
-    if (sourceMatchUpWinnerDrawPositionIndex !== undefined) {
-      matchUpDrawPositionIndex = sourceMatchUpWinnerDrawPositionIndex;
-    }
   } else if (feedProfile === RANDOM) {
     /*
       RANDOM feed profile selects a random position from available
@@ -134,5 +133,24 @@ export function getTargetMatchUp({
         : matchUp;
     }, undefined);
 
-  return { matchUp, matchUpDrawPositionIndex };
+  const relevantPositionAssignments =
+    matchUp &&
+    positionAssignments.filter(({ drawPosition }) =>
+      matchUp.drawPositions.includes(drawPosition)
+    );
+  const disabledDrawPositions = relevantPositionAssignments
+    ?.map((assignment) => {
+      const { extension } = findExtension({
+        element: assignment,
+        name: DISABLE_LINKS,
+      });
+      return extension?.value;
+    })
+    .filter((f) => f)
+    .map(({ drawPosition }) => drawPosition);
+
+  if (disabledDrawPositions?.length)
+    console.log({ matchUp, disabledDrawPositions });
+
+  return { matchUp, matchUpDrawPositionIndex, disabledDrawPositions };
 }
