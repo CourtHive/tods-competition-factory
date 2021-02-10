@@ -16,20 +16,36 @@ export function getValidSwapAction({
   positionAssignments,
   tournamentParticipants,
 
+  onlyAssignedPositions = true,
   activeDrawPositions,
   inactiveDrawPositions,
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID, method: 'getValidSwapAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
+  // assignmentCheck is used to filter out unassigned drawPositions
+  const assignmentCheck = (assignment) =>
+    !onlyAssignedPositions ||
+    assignment.participantId ||
+    assignment.qualifier ||
+    assignment.bye;
+
+  // availableDrawPositions filters out selectedDrawPosition
+  // and if selectedDrawPosition is a BYE it filters out other drawPositions which are assigned BYEs
   const availableDrawPositions = inactiveDrawPositions?.filter(
     (position) =>
       position !== drawPosition &&
       !(isByePosition && byeDrawPositions.includes(position))
   );
-  const filteredAssignments = positionAssignments.filter((assignment) =>
-    availableDrawPositions?.includes(assignment.drawPosition)
+  // filteredAssignments are all assignements which are availble and pass assignmentCheck
+  const filteredAssignments = positionAssignments.filter(
+    (assignment) =>
+      assignmentCheck(assignment) &&
+      availableDrawPositions?.includes(assignment.drawPosition)
   );
+
+  // availableAssignmentsMap is used to attach participant object to all filteredAssignments
+  // which have a participant assginment so the client/UI has all relevant drawPosition details
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
@@ -44,6 +60,7 @@ export function getValidSwapAction({
       [participant.participantId]: participant,
     }))
   );
+
   const availableAssignments = filteredAssignments.map((assignment) => {
     const participant =
       availableParticpantsMap &&

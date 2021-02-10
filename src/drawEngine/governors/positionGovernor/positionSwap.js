@@ -1,7 +1,8 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
-import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { addPositionActionTelemetry } from './addPositionActionTelemetry';
+import { disableDrawPositionLinks } from './disableDrawPositionLinks';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 
@@ -51,7 +52,7 @@ export function swapDrawPositionAssignments({
 
   if (!result?.error) {
     if (structure.stageSequence !== 1) {
-      console.log('disable inbound links');
+      disableDrawPositionLinks({ structure, drawPositions });
     }
     const positionAction = {
       name: 'swapDrawPositionAssignments',
