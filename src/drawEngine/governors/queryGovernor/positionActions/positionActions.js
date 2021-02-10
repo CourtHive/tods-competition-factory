@@ -4,7 +4,6 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
-import { getDevContext } from '../../../../global/globalState';
 import { stageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
 
@@ -32,11 +31,7 @@ import {
   WITHDRAW_PARTICIPANT,
   WITHDRAW_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import {
-  // DRAW,
-  // LOSER,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -68,33 +63,10 @@ export function positionActions({
   const isMainStageSequence1 =
     structure.stage === MAIN && structure.stageSequence === 1;
 
+  let allowConsolationMovementActions = false;
+
   const validActions = [];
   const { drawId } = drawDefinition;
-
-  /**
-   * If structure is > stageSequence 1 then it will only have valid position actions if:
-   * 1. Links are directing winners to this structure, and
-   * 2. the feedProfile is not "DRAW"
-   *
-   * Directions such as West in Compass or Playoff structures should not have positionActions
-   */
-  /*
-  if (structure.stageSequence > 1) {
-    const hasTargetLink = drawDefinition.links?.find(
-      (link) => link.target.structureId === structureId
-    );
-    if (
-      hasTargetLink?.linkType === LOSER &&
-      hasTargetLink?.feedProfile !== DRAW
-    ) {
-      if (getDevContext())
-        console.log('stageSequence actions disabled', {
-          stageSequence: structure.stageSequence,
-        });
-      return { validActions };
-    }
-  }
-  */
 
   const {
     assignedPositions,
@@ -137,7 +109,10 @@ export function positionActions({
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   // if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
-  if (!positionAssignment || isByePosition) {
+  if (
+    (isMainStageSequence1 || allowConsolationMovementActions) &&
+    (!positionAssignment || isByePosition)
+  ) {
     const { validAssignmentActions } = getValidAssignmentActions({
       drawDefinition,
       structureId,
@@ -159,7 +134,7 @@ export function positionActions({
 
   if (positionAssignment) {
     if (
-      (getDevContext() || isMainStageSequence1) &&
+      (allowConsolationMovementActions || isMainStageSequence1) &&
       !activeDrawPositions.includes(drawPosition)
     ) {
       validActions.push({
@@ -178,7 +153,10 @@ export function positionActions({
 
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
-      if ((getDevContext() || isMainStageSequence1) && !isByePosition) {
+      if (
+        (allowConsolationMovementActions || isMainStageSequence1) &&
+        !isByePosition
+      ) {
         validActions.push({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
@@ -251,8 +229,12 @@ export function positionActions({
       inactiveDrawPositions,
       tournamentParticipants,
     });
-    if ((getDevContext() || isMainStageSequence1) && validSwapAction)
+    if (
+      (allowConsolationMovementActions || isMainStageSequence1) &&
+      validSwapAction
+    ) {
       validActions.push(validSwapAction);
+    }
 
     const { validAlternatesAction } = getValidAlternatesAction({
       drawId,
@@ -264,8 +246,12 @@ export function positionActions({
       positionAssignments,
       tournamentParticipants,
     });
-    if ((getDevContext() || isMainStageSequence1) && validAlternatesAction)
+    if (
+      (allowConsolationMovementActions || isMainStageSequence1) &&
+      validAlternatesAction
+    ) {
       validActions.push(validAlternatesAction);
+    }
   }
 
   return {
