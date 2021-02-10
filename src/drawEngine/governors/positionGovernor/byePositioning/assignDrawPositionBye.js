@@ -180,9 +180,11 @@ function advanceDrawPosition({
     losingDrawPosition
   );
 
+  /*
   const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions?.indexOf(
     drawPositionToAdvance
   );
+  */
 
   const {
     targetLinks: { loserTargetLink },
@@ -193,7 +195,7 @@ function advanceDrawPosition({
     mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
-    sourceMatchUpWinnerDrawPositionIndex,
+    // sourceMatchUpWinnerDrawPositionIndex,
   });
 
   // only handling situation where winningMatchUp is in same structure
