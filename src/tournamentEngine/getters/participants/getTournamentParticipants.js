@@ -59,7 +59,7 @@ export function getTournamentParticipants({
         element: participant,
         accessor,
       });
-      return hasValues && values.includes(value);
+      return hasValues && values?.includes(value);
     }, true);
   };
 

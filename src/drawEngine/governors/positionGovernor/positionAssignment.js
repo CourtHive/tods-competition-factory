@@ -7,10 +7,10 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
+import { disableDrawPositionLinks } from './disableDrawPositionLinks';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
-import { getDevContext } from '../../../global/globalState';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -117,8 +117,8 @@ export function assignDrawPosition({
   }
 
   if (!placementScenario) {
-    if (getDevContext() && structure.stageSequence !== 1) {
-      console.log('disable inbound links');
+    if (structure.stageSequence !== 1) {
+      disableDrawPositionLinks({ structure, drawPositions: [drawPosition] });
     }
     const positionAction = {
       name: 'positionAssignment',

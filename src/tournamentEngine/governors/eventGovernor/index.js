@@ -45,7 +45,10 @@ import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
+
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { getFlightProfile } from '../../getters/getFlightProfile';
 
 const eventGovernor = {
   addEvent,
@@ -69,6 +72,8 @@ const eventGovernor = {
   modifyEntriesStatus,
   modifySeedAssignment,
 
+  getFlightProfile,
+  generateFlightProfile,
   addDrawDefinitionTimeItem,
 
   setMatchUpStatus,
