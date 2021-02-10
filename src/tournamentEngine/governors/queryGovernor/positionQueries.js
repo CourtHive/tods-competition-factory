@@ -3,10 +3,12 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 
 export function positionActions({
   tournamentRecord,
+  policyDefinition,
   drawDefinition,
   drawPosition,
   structureId,
   drawId,
+  event,
 }) {
   const { tournamentParticipants } = getTournamentParticipants({
     tournamentRecord,
@@ -14,9 +16,12 @@ export function positionActions({
   });
   return drawEnginePositionActions({
     tournamentParticipants,
+    tournamentRecord,
+    policyDefinition,
     drawDefinition,
     drawPosition,
     structureId,
     drawId,
+    event,
   });
 }

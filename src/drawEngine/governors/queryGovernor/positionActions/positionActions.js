@@ -1,10 +1,10 @@
+import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
-import { getDevContext } from '../../../../global/globalState';
 import { stageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
 
@@ -31,12 +31,12 @@ import {
   ADD_NICKNAME_METHOD,
   WITHDRAW_PARTICIPANT,
   WITHDRAW_PARTICIPANT_METHOD,
+  SWAP_PARTICIPANTS,
+  ALTERNATE_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import {
-  // DRAW,
-  // LOSER,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 
 /**
  *
@@ -49,9 +49,12 @@ import {
  */
 export function positionActions({
   tournamentParticipants = [],
+  policyDefinition,
+  tournamentRecord,
   drawDefinition,
   drawPosition,
   structureId,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
@@ -65,36 +68,26 @@ export function positionActions({
   } = structureActiveDrawPositions({ drawDefinition, structureId });
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  const { enabledStructures, actionsDisabled } = getEnabledStructures({
+    policyDefinition,
+    tournamentRecord,
+    drawDefinition,
+    structure,
+    event,
+  });
+
+  if (actionsDisabled) return { message: 'Actions Disabled for structure' };
+
+  const { policyActions } = getPolicyActions({ enabledStructures, structure });
+
   const isMainStageSequence1 =
     structure.stage === MAIN && structure.stageSequence === 1;
 
+  let allowConsolationMovementActions = false;
+
   const validActions = [];
   const { drawId } = drawDefinition;
-
-  /**
-   * If structure is > stageSequence 1 then it will only have valid position actions if:
-   * 1. Links are directing winners to this structure, and
-   * 2. the feedProfile is not "DRAW"
-   *
-   * Directions such as West in Compass or Playoff structures should not have positionActions
-   */
-  /*
-  if (structure.stageSequence > 1) {
-    const hasTargetLink = drawDefinition.links?.find(
-      (link) => link.target.structureId === structureId
-    );
-    if (
-      hasTargetLink?.linkType === LOSER &&
-      hasTargetLink?.feedProfile !== DRAW
-    ) {
-      if (getDevContext())
-        console.log('stageSequence actions disabled', {
-          stageSequence: structure.stageSequence,
-        });
-      return { validActions };
-    }
-  }
-  */
 
   const {
     assignedPositions,
@@ -137,7 +130,10 @@ export function positionActions({
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
   // if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
-  if (!positionAssignment || isByePosition) {
+  if (
+    (isMainStageSequence1 || allowConsolationMovementActions) &&
+    (!positionAssignment || isByePosition)
+  ) {
     const { validAssignmentActions } = getValidAssignmentActions({
       drawDefinition,
       structureId,
@@ -159,7 +155,8 @@ export function positionActions({
 
   if (positionAssignment) {
     if (
-      (getDevContext() || isMainStageSequence1) &&
+      // (allowConsolationMovementActions || isMainStageSequence1) &&
+      isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
       !activeDrawPositions.includes(drawPosition)
     ) {
       validActions.push({
@@ -178,7 +175,11 @@ export function positionActions({
 
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
-      if ((getDevContext() || isMainStageSequence1) && !isByePosition) {
+      if (
+        // (allowConsolationMovementActions || isMainStageSequence1) &&
+        isAvailableAction({ policyActions, action: ASSIGN_BYE }) &&
+        !isByePosition
+      ) {
         validActions.push({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
@@ -189,6 +190,7 @@ export function positionActions({
 
     if (
       !isByePosition &&
+      isAvailableAction({ policyActions, action: SEED_VALUE }) &&
       isValidSeedPosition({ drawDefinition, structureId, drawPosition })
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
@@ -215,57 +217,63 @@ export function positionActions({
     }
 
     if (!isByePosition && participantId) {
-      const addPenaltyAction = {
-        type: ADD_PENALTY,
-        method: ADD_PENALTY_METHOD,
-        participant,
-        payload: {
-          drawId,
-          penaltyCode: undefined,
-          penaltyType: undefined,
-          participantIds: [],
-          notes: undefined,
-        },
-      };
-      const addNicknameAction = {
-        type: ADD_NICKNAME,
-        method: ADD_NICKNAME_METHOD,
-        participant,
-        payload: {
-          participantId,
-          otherName: undefined,
-        },
-      };
-      validActions.push(addPenaltyAction);
-      validActions.push(addNicknameAction);
+      if (isAvailableAction({ policyActions, action: SEED_VALUE })) {
+        const addPenaltyAction = {
+          type: ADD_PENALTY,
+          method: ADD_PENALTY_METHOD,
+          participant,
+          payload: {
+            drawId,
+            penaltyCode: undefined,
+            penaltyType: undefined,
+            participantIds: [],
+            notes: undefined,
+          },
+        };
+        validActions.push(addPenaltyAction);
+      }
+      if (isAvailableAction({ policyActions, action: ADD_NICKNAME })) {
+        const addNicknameAction = {
+          type: ADD_NICKNAME,
+          method: ADD_NICKNAME_METHOD,
+          participant,
+          payload: {
+            participantId,
+            otherName: undefined,
+          },
+        };
+        validActions.push(addNicknameAction);
+      }
     }
 
-    const { validSwapAction } = getValidSwapAction({
-      drawId,
-      drawPosition,
-      structureId,
-      isByePosition,
-      byeDrawPositions,
-      positionAssignments,
-      activeDrawPositions,
-      inactiveDrawPositions,
-      tournamentParticipants,
-    });
-    if ((getDevContext() || isMainStageSequence1) && validSwapAction)
-      validActions.push(validSwapAction);
+    if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
+      const { validSwapAction } = getValidSwapAction({
+        drawId,
+        drawPosition,
+        structureId,
+        isByePosition,
+        byeDrawPositions,
+        positionAssignments,
+        activeDrawPositions,
+        inactiveDrawPositions,
+        tournamentParticipants,
+      });
+      if (validSwapAction) validActions.push(validSwapAction);
+    }
 
-    const { validAlternatesAction } = getValidAlternatesAction({
-      drawId,
-      structure,
-      structureId,
-      drawPosition,
-      drawDefinition,
-      activeDrawPositions,
-      positionAssignments,
-      tournamentParticipants,
-    });
-    if ((getDevContext() || isMainStageSequence1) && validAlternatesAction)
-      validActions.push(validAlternatesAction);
+    if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+      const { validAlternatesAction } = getValidAlternatesAction({
+        drawId,
+        structure,
+        structureId,
+        drawPosition,
+        drawDefinition,
+        activeDrawPositions,
+        positionAssignments,
+        tournamentParticipants,
+      });
+      if (validAlternatesAction) validActions.push(validAlternatesAction);
+    }
   }
 
   return {
@@ -274,4 +282,74 @@ export function positionActions({
     isDrawPosition: true,
     validActions,
   };
+}
+
+function getEnabledStructures({
+  policyDefinition,
+  tournamentRecord,
+  drawDefinition,
+  structure,
+  event,
+}) {
+  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
+    policyType: POLICY_TYPE_POSITION_ACTIONS,
+    tournamentRecord,
+    drawDefinition,
+    event,
+  });
+
+  const positionActionsPolicy =
+    policyDefinition ||
+    attachedPolicy ||
+    POLICY_POSITION_ACTIONS_DEFAULT[POLICY_TYPE_POSITION_ACTIONS];
+
+  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
+  const actionsDisabled = disabledStructures?.find(
+    (structurePolicy) =>
+      structurePolicy.stages?.includes(structure.stage) &&
+      (!structurePolicy.stageSequences?.length ||
+        structurePolicy.stageSequences.includes(structure.stageSequence))
+  );
+
+  return { enabledStructures, actionsDisabled };
+}
+
+function getPolicyActions({ enabledStructures, structure }) {
+  if (!enabledStructures?.length)
+    return { enabledActions: [], disabledActions: [] };
+
+  const policyActions = enabledStructures.reduce(
+    (policyActions, structurePolicy) => {
+      if (
+        !structurePolicy ||
+        policyActions ||
+        (structurePolicy.stages?.length &&
+          !structurePolicy.stages?.includes(structure.stage)) ||
+        (structurePolicy.stageSequences?.length &&
+          !structurePolicy.stageSequences?.includes(structure.stageSequence))
+      ) {
+        return policyActions;
+      }
+      return structurePolicy;
+    }
+  );
+
+  return { policyActions };
+}
+
+function isAvailableAction({ action, policyActions }) {
+  if (
+    !policyActions?.enabledActions ||
+    (policyActions?.disabledActions?.length &&
+      policyActions.disabledActions.includes(action))
+  ) {
+    return false;
+  }
+  if (
+    policyActions?.enabledActions.length === 0 ||
+    policyActions?.enabledActions.includes(action)
+  ) {
+    return true;
+  }
+  return false;
 }

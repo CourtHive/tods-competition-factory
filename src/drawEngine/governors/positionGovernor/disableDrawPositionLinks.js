@@ -1,6 +1,8 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 
+import { DISABLE_LINKS } from '../../../constants/extensionConstants';
+
 export function disableDrawPositionLinks({ drawPositions, structure }) {
   const { positionAssignments } = getPositionAssignments({ structure });
   const relevantAssignments = positionAssignments.filter(({ drawPosition }) =>
@@ -8,7 +10,7 @@ export function disableDrawPositionLinks({ drawPositions, structure }) {
   );
   relevantAssignments.forEach((assignment) => {
     const extension = {
-      name: 'disableLinks',
+      name: DISABLE_LINKS,
       value: true,
     };
     addExtension({ element: assignment, extension });

@@ -7,8 +7,8 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';

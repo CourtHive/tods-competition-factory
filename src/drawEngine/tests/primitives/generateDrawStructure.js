@@ -7,7 +7,7 @@ import {
   SINGLE_ELIMINATION,
   FEED_IN,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 export function generateDrawStructure({
   automated,
