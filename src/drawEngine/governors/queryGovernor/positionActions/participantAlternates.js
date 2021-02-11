@@ -1,3 +1,7 @@
+import {
+  CONSOLATION,
+  MAIN,
+} from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
@@ -20,15 +24,14 @@ export function getValidAlternatesAction({
     return { error: MISSING_DRAW_ID, method: 'getValidAlternatesAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
 
-  const { stage } = structure;
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
   const availableAlternatesParticipantIds = drawDefinition.entries
     ?.filter(
       (entry) =>
-        entry.entryStage === stage &&
         entry.entryStatus === ALTERNATE &&
+        eligibleEntryStage({ structure, entry }) &&
         !assignedParticipantIds.includes(entry.participantId)
     )
     .sort((a, b) => (a.entryPosition || 0) - (b.entryPosition || 0))
@@ -56,4 +59,13 @@ export function getValidAlternatesAction({
   }
 
   return {};
+}
+
+function eligibleEntryStage({ structure, entry }) {
+  const { stage } = structure;
+  if (
+    entry.entryStage === stage ||
+    (entry.entryStage === MAIN && stage === CONSOLATION)
+  )
+    return true;
 }

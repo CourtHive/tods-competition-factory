@@ -144,7 +144,7 @@ export function randomUnseededSeparation({
     .forEach((assignment) => {
       if (assignment.participantId && !assignment.bye) {
         const result = assignDrawPosition({
-          placementScenario: true,
+          automaticPlacement: true,
           drawDefinition,
           mappedMatchUps,
           structureId,
