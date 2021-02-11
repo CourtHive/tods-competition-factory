@@ -3,16 +3,11 @@ import { indices, subSort } from '../../../../utilities/arrays';
 
 export function determineTeamOrder({
   participantResults,
-  policyDefinition,
   disqualified,
+  tallyPolicy,
 }) {
   const participantIds = Object.keys(participantResults);
   const participantsCount = participantIds.length;
-
-  let headToHeadPriority;
-  if (policyDefinition) {
-    //
-  }
 
   // order is an array of objects formatted for processing by ties()
   const order = participantIds.reduce((arr, participantId, i) => {
@@ -36,7 +31,7 @@ export function determineTeamOrder({
   complete.forEach((p) => (p.GEMscore = getRatioHash(p)));
 
   // START ORDER HASH
-  if (headToHeadPriority) {
+  if (tallyPolicy?.headToHeadPriority) {
     complete.sort(
       (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
     );
@@ -75,7 +70,7 @@ export function determineTeamOrder({
   // END ORDER HASH
 
   // START RATIO HASH
-  if (headToHeadPriority) {
+  if (tallyPolicy?.headToHeadPriority) {
     complete.sort(
       (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
     );
@@ -146,7 +141,7 @@ export function determineTeamOrder({
   }
   function getRatioHash(p) {
     let rh;
-    if (headToHeadPriority) {
+    if (tallyPolicy?.headToHeadPriority) {
       rh =
         p.results.matchUpsRatio * Math.pow(10, 16) +
         p.results.setsRatio * Math.pow(10, 12) +
