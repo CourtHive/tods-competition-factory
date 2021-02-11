@@ -19,7 +19,13 @@ export default {
     'Readme',
     {
       name: 'General Concepts',
-      menu: ['Context', 'MatchUp Formats', 'Policies', 'Time Items'],
+      menu: [
+        'Context',
+        'MatchUp Formats',
+        'Policies',
+        'Position Actions',
+        'Time Items',
+      ],
     },
     {
       name: 'Mocks Engine',

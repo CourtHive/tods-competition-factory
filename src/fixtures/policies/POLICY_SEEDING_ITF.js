@@ -1,6 +1,6 @@
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 
-export const SEEDING_ITF = {
+export const POLICY_SEEDING_ITF = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF',
     duplicateSeedNumbers: true,
@@ -84,4 +84,4 @@ export const SEEDING_ITF = {
   },
 };
 
-export default SEEDING_ITF;
+export default POLICY_SEEDING_ITF;

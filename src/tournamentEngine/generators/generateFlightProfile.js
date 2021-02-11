@@ -1,7 +1,8 @@
-import { chunkArray, generateRange, UUID } from '../../utilities';
+import { chunkArray, generateRange, makeDeepCopy, UUID } from '../../utilities';
 import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 /**
  *
@@ -18,21 +19,19 @@ export function generateFlightProfile({
   event,
   splitMethod = 'evenSplit',
   scaleAttributes,
-  flightNames,
+  flightNames = [],
   flightsCount,
   flightNameRoot = 'Flight',
 }) {
   if (!event) return { error: MISSING_EVENT };
 
-  const entriesTypeMap = (event.entries || []).reduce(
-    (entriesTypesMap, entry) => {
-      const { entryType } = entry;
-      if (!entriesTypeMap[entryType]) entriesTypeMap[entryType] = [];
-      entriesTypeMap[entryType].push(entry);
-      return entriesTypeMap;
-    },
-    {}
-  );
+  const eventEntries = event.entries || [];
+  const entriesTypeMap = eventEntries.reduce((entriesTypeMap, entry) => {
+    const { entryType } = entry;
+    if (!entriesTypeMap[entryType]) entriesTypeMap[entryType] = [];
+    entriesTypeMap[entryType].push(entry);
+    return entriesTypeMap;
+  }, {});
 
   if (scaleAttributes) {
     // sort entries by scaleAttributes
@@ -40,9 +39,11 @@ export function generateFlightProfile({
 
   let splitEntryTypes = [];
 
-  if (splitMethod === 'eventSplit') {
+  if (splitMethod === 'evenSplit') {
+    const entriesCount = eventEntries.length;
+    const chunkSize = Math.ceil(entriesCount / flightsCount);
     splitEntryTypes = Object.keys(entriesTypeMap).map((entryType) => {
-      return chunkArray(entriesTypeMap[entryType], flightsCount);
+      return chunkArray(entriesTypeMap[entryType], chunkSize);
     });
   }
 
@@ -53,7 +54,9 @@ export function generateFlightProfile({
     const flight = {
       entries,
       drawId: UUID(),
-      flightName: flightNames[index] || `${flightNameRoot} ${index + 1}`,
+      flightName:
+        (flightNames?.length && flightNames[index]) ||
+        `${flightNameRoot} ${index + 1}`,
     };
     return flight;
   });
@@ -67,5 +70,5 @@ export function generateFlightProfile({
 
   addEventExtension({ event, extension });
 
-  return;
+  return Object.assign(SUCCESS, { flightProfile: makeDeepCopy({ flights }) });
 }

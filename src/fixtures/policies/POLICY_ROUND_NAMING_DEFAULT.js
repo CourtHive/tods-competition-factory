@@ -6,7 +6,7 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
 
-export const ROUND_NAMING_DEFAULT = {
+export const POLICY_ROUND_NAMING_DEFAULT = {
   [POLICY_TYPE_ROUND_NAMING]: {
     policyName: 'Round Naming Default',
     roundNamingMap: {
@@ -27,4 +27,4 @@ export const ROUND_NAMING_DEFAULT = {
   },
 };
 
-export default ROUND_NAMING_DEFAULT;
+export default POLICY_ROUND_NAMING_DEFAULT;
