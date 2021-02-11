@@ -1,16 +1,16 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 
-/*
 import {
-  SWAP_PARTICIPANTS,
-  ADD_PENALTY,
   ADD_NICKNAME,
-  REMOVE_ASSIGNMENT,
+  ADD_PENALTY,
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
+  REMOVE_ASSIGNMENT,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-*/
 import {
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -26,6 +26,7 @@ it('supports policyDefinitions in positionActions', () => {
     {
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
       drawSize: 32,
+      participantsCount: 30,
     },
   ];
   const {
@@ -41,9 +42,21 @@ it('supports policyDefinitions in positionActions', () => {
     },
   } = tournamentEngine.getEvent({ drawId });
 
+  const allActions = [
+    REMOVE_ASSIGNMENT,
+    WITHDRAW_PARTICIPANT,
+    ASSIGN_BYE,
+    SEED_VALUE,
+    ADD_PENALTY,
+    ADD_NICKNAME,
+    SWAP_PARTICIPANTS,
+    ALTERNATE_PARTICIPANT,
+  ];
+  const noMovementActions = [SEED_VALUE, ADD_PENALTY, ADD_NICKNAME];
+
   // will be testing the available positionActions for { drawPosition: 1 }
   // initially in mainStructure followed by consolationStructure
-  let drawPosition = 1;
+  let drawPosition = 3;
 
   // default configuration should return all validActions
   let result = tournamentEngine.positionActions({
@@ -52,7 +65,7 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
   });
   expect(result.isActiveDrawPosition).toEqual(false);
-  expect(result.validActions.length).toBeGreaterThan(3);
+  expect(result.validActions.map((a) => a.type)).toEqual(allActions);
 
   // policyDefinition to disable all actions
   let policyDefinition = POLICY_POSITION_ACTIONS_DISABLED;
@@ -73,11 +86,9 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
     drawId,
   });
-  expect(result.validActions.map(({ type }) => type)).toEqual([
-    'SEED_VALUE',
-    'PENALTY',
-    'NICKNAME',
-  ]);
+  expect(result.validActions.map(({ type }) => type)).toEqual(
+    noMovementActions
+  );
 
   // now check the available positionActions for the consolation structure
   result = tournamentEngine.positionActions({
@@ -88,11 +99,11 @@ it('supports policyDefinitions in positionActions', () => {
   expect(result.validActions.length).toEqual(0);
 
   let contextFilters = { stages: [MAIN] };
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({
+  let { upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
     contextFilters,
   });
 
-  const firstRoundMain = matchUps.filter(
+  const firstRoundMain = upcomingMatchUps.filter(
     ({ roundNumber }) => roundNumber === 1
   );
 
@@ -113,17 +124,15 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual([
-    'SEED_VALUE',
-    'PENALTY',
-    'NICKNAME',
-  ]);
+  expect(result.validActions.map(({ type }) => type)).toEqual(
+    noMovementActions
+  );
 
   contextFilters = { stages: [CONSOLATION] };
-  ({ matchUps } = tournamentEngine.allTournamentMatchUps({
+  ({ upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
     contextFilters,
   }));
-  let firstRoundConsolation = matchUps.filter(
+  let firstRoundConsolation = upcomingMatchUps.filter(
     ({ roundNumber }) => roundNumber === 1
   );
   // every firstRoundConsolation matchUp should be readyToScore...
@@ -143,11 +152,9 @@ it('supports policyDefinitions in positionActions', () => {
     drawId,
   });
   expect(result.hasPositionAssigned).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual([
-    'SEED_VALUE',
-    'PENALTY',
-    'NICKNAME',
-  ]);
+  expect(result.validActions.map(({ type }) => type)).toEqual(
+    noMovementActions
+  );
 
   // now check the available positionActions for the consolation structure when participants are present
   // ...when an unrestricted policyDefinition is applied
@@ -157,5 +164,13 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition: firstRoundConsolationDrawPositions[0],
     drawId,
   });
-  console.log(result);
+  expect(result.validActions.map((a) => a.type)).toEqual([
+    REMOVE_ASSIGNMENT,
+    WITHDRAW_PARTICIPANT,
+    ASSIGN_BYE,
+    SEED_VALUE,
+    ADD_PENALTY,
+    ADD_NICKNAME,
+    SWAP_PARTICIPANTS,
+  ]);
 });

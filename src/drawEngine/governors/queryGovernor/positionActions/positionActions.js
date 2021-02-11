@@ -311,8 +311,10 @@ function getEnabledStructures({
 }
 
 function getPolicyActions({ enabledStructures, structure }) {
-  if (!enabledStructures?.length)
-    return { enabledActions: [], disabledActions: [] };
+  if (!enabledStructures) return {};
+
+  if (!enabledStructures.length)
+    return { policyActions: { enabledActions: [], disabledActions: [] } };
 
   const policyActions = enabledStructures.find((structurePolicy) => {
     const matchesStage =
