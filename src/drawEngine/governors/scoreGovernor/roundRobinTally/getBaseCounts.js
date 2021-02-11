@@ -4,16 +4,14 @@ import {
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function getBaseCounts({ matchUps, matchUpFormat }) {
+export function getBaseCounts({ matchUps, matchUpFormat, tallyPolicy }) {
   const disqualified = [];
   const participantResults = {};
 
   matchUps
     .filter((matchUp) => matchUp?.winningSide)
     .forEach((matchUp) => {
-      const { matchUpStatus, winningSide } = matchUp;
-      // insure that if there is no matchUpFormat on matchUps use supplied value
-      const calcMatchUp = Object.assign({}, { matchUpFormat }, matchUp);
+      const { matchUpStatus, score, winningSide } = matchUp;
 
       const winningParticipantId = getWinningSideId(matchUp);
       const losingParticipantId = getLosingSideId(matchUp);
@@ -41,7 +39,12 @@ export function getBaseCounts({ matchUps, matchUpFormat }) {
       checkInitializeParticipant(losingParticipantId);
 
       if ([WALKOVER, DEFAULTED].includes(matchUpStatus)) {
-        disqualified.push(losingParticipantId);
+        if (tallyPolicy?.disqualifyDefaults) {
+          disqualified.push(losingParticipantId);
+        }
+        if (tallyPolicy?.disqualifyWalkovers) {
+          disqualified.push(losingParticipantId);
+        }
       }
 
       participantResults[winningParticipantId].matchUpsWon += 1;
@@ -53,7 +56,13 @@ export function getBaseCounts({ matchUps, matchUpFormat }) {
         losingParticipantId
       );
 
-      const setsTally = countSets(calcMatchUp);
+      const setsTally = countSets({
+        score,
+        matchUpStatus,
+        matchUpFormat,
+        tallyPolicy,
+        winningSide,
+      });
       participantResults[winningParticipantId].setsWon +=
         setsTally[winningSideIndex];
       participantResults[winningParticipantId].setsLost +=
@@ -63,7 +72,13 @@ export function getBaseCounts({ matchUps, matchUpFormat }) {
       participantResults[losingParticipantId].setsLost +=
         setsTally[winningSideIndex];
 
-      const gamesTally = countGames(calcMatchUp);
+      const gamesTally = countGames({
+        score,
+        matchUpStatus,
+        matchUpFormat,
+        tallyPolicy,
+        winningSide,
+      });
       participantResults[winningParticipantId].gamesWon +=
         gamesTally[winningSideIndex];
       participantResults[winningParticipantId].gamesLost +=
@@ -73,7 +88,7 @@ export function getBaseCounts({ matchUps, matchUpFormat }) {
       participantResults[losingParticipantId].gamesLost +=
         gamesTally[winningSideIndex];
 
-      const pointsTally = countPoints(calcMatchUp);
+      const pointsTally = countPoints({ score });
       participantResults[winningParticipantId].pointsWon +=
         pointsTally[winningSideIndex];
       participantResults[winningParticipantId].pointsLost +=

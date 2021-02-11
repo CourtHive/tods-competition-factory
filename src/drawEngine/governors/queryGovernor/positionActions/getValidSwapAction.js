@@ -70,7 +70,7 @@ export function getValidSwapAction({
     });
   });
 
-  if (inactiveDrawPositions) {
+  if (availableAssignments.length) {
     const validSwapAction = {
       type: SWAP_PARTICIPANTS,
       method: SWAP_PARTICIPANT_METHOD,

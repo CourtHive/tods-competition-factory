@@ -2,6 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
   mocksEngine.generateTournamentRecord({});
@@ -29,7 +30,46 @@ it('can create and return flighProfiles', () => {
     flightsCount: 3,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(flightProfile.flights[0].entries.length).toEqual(11);
-  expect(flightProfile.flights[1].entries.length).toEqual(11);
-  expect(flightProfile.flights[2].entries.length).toEqual(10);
+  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
+    11,
+    11,
+    10,
+  ]);
+  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+    'Flight 1',
+    'Flight 2',
+    'Flight 3',
+  ]);
+  expect(flightProfile.flights.every(({ drawId }) => drawId));
+
+  result = tournamentEngine.generateFlightProfile({
+    eventId,
+    flightsCount: 4,
+  });
+
+  expect(result.error).toEqual(EXISTING_PROFILE);
+
+  const { success } = tournamentEngine.generateFlightProfile({
+    eventId,
+    flightsCount: 4,
+    deleteExisting: true,
+  });
+  expect(success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+
+  expect(flightProfile.flights.length).toEqual(4);
+  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
+    8,
+    8,
+    8,
+    8,
+  ]);
+  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+    'Flight 1',
+    'Flight 2',
+    'Flight 3',
+    'Flight 4',
+  ]);
+  expect(flightProfile.flights.every(({ drawId }) => drawId));
 });
