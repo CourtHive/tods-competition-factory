@@ -1,4 +1,5 @@
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
+import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
@@ -7,7 +8,6 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { disableDrawPositionLinks } from './disableDrawPositionLinks';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -28,7 +28,7 @@ export function assignDrawPosition({
   structureId,
   drawPosition,
   participantId,
-  placementScenario,
+  automaticPlacement,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -106,7 +106,7 @@ export function assignDrawPosition({
       structure,
       drawPosition,
       positionAssignments,
-      placementScenario,
+      automaticPlacement,
     });
   } else {
     modifyRoundRobinMatchUpsStatus({
@@ -116,10 +116,11 @@ export function assignDrawPosition({
     });
   }
 
-  if (!placementScenario) {
-    if (structure.stageSequence !== 1) {
-      disableDrawPositionLinks({ structure, drawPositions: [drawPosition] });
-    }
+  if (!automaticPlacement) {
+    conditionallyDisableLinkPositioning({
+      structure,
+      drawPositions: [drawPosition],
+    });
     const positionAction = {
       name: 'positionAssignment',
       drawPosition,
@@ -144,7 +145,7 @@ function addDrawPositionToMatchUps({
   mappedMatchUps,
   structure,
   drawPosition,
-  placementScenario,
+  automaticPlacement,
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
@@ -169,7 +170,7 @@ function addDrawPositionToMatchUps({
       drawDefinition,
       mappedMatchUps,
       drawPosition,
-      placementScenario,
+      automaticPlacement,
       matchUpId: matchUp.matchUpId,
     });
     if (result.error) return result;

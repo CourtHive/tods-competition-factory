@@ -1,6 +1,6 @@
+import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { disableDrawPositionLinks } from './disableDrawPositionLinks';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
@@ -55,9 +55,10 @@ export function alternateDrawPositionAssignment({
 
   function successNotice({ removedParticipantId }) {
     const { structure } = findStructure({ drawDefinition, structureId });
-    if (structure.stageSequence !== 1) {
-      disableDrawPositionLinks({ structure, drawPositions: [drawPosition] });
-    }
+    conditionallyDisableLinkPositioning({
+      structure,
+      drawPositions: [drawPosition],
+    });
     const positionAction = {
       name: 'alternateDrawPositionAssignment',
       drawPosition,
