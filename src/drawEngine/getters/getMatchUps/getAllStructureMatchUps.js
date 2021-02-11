@@ -204,7 +204,10 @@ export function getAllStructureMatchUps({
     const { drawPositions, roundNumber, roundPosition } = matchUp;
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
-    const feedRound = roundProfile && roundProfile[roundNumber].feedRound;
+    const feedRound =
+      roundProfile &&
+      roundProfile[roundNumber] &&
+      roundProfile[roundNumber].feedRound;
 
     const drawPositionsRoundRanges =
       drawPositionsRanges && drawPositionsRanges[roundNumber];
@@ -260,7 +263,8 @@ export function getAllStructureMatchUps({
         roundPosition,
         roundNumber,
       });
-      const isFeedRound = roundProfile[roundNumber].feedRound;
+      const isFeedRound =
+        roundProfile[roundNumber] && roundProfile[roundNumber].feedRound;
       const reversedDisplayOrder = displayOrder[0] !== orderedDrawPositions[0];
       const sides = orderedDrawPositions.map((drawPosition, index) => {
         const sideNumber = index + 1;
