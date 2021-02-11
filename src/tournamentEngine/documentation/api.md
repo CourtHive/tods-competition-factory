@@ -341,8 +341,8 @@ This is a convenience method which handles most use cases for draw generation.
 - @param {string} splitMethod - one of the supported methods for splitting entries
 - @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
 - @param {number} flightsCount - number of flights to create from existing entries
-- @param {string[]} flightNames - array of names to be used when generating flights
-- @param {string} flightNameRoot - root word for generating flight names
+- @param {string[]} drawNames - array of names to be used when generating flights
+- @param {string} drawNameRoot - root word for generating flight names
 
 ---
 

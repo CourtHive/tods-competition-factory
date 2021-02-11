@@ -45,7 +45,9 @@ export function getRoundMatchUps({ matchUps = [] }) {
 
   let roundIndex = 0;
   let feedRoundIndex = 0;
-  const roundNumbers = Object.keys(roundMatchUps).map((key) => parseInt(key));
+  const roundNumbers = Object.keys(roundMatchUps)
+    .map((key) => parseInt(key))
+    .filter((f) => !isNaN(f));
   roundNumbers.forEach((roundNumber) => {
     const currentRoundMatchUps = roundMatchUps[roundNumber].sort(
       (a, b) => a.roundPosition - b.roundPosition
@@ -124,7 +126,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
       roundProfile[roundNumber].preFeedRound = true;
       feedRoundIndex += 1;
     }
-    if (!roundProfile[roundNumber].feedRound) {
+    if (roundProfile[roundNumber] && !roundProfile[roundNumber].feedRound) {
       roundProfile[roundNumber].roundIndex = roundIndex;
       roundIndex += 1;
     }

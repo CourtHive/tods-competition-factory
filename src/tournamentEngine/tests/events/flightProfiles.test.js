@@ -30,12 +30,10 @@ it('can create and return flighProfiles', () => {
     flightsCount: 3,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
-    11,
-    11,
-    10,
-  ]);
-  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+  expect(
+    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
+  ).toEqual([11, 11, 10]);
+  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
     'Flight 3',
@@ -59,17 +57,56 @@ it('can create and return flighProfiles', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
 
   expect(flightProfile.flights.length).toEqual(4);
-  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
-    8,
-    8,
-    8,
-    8,
-  ]);
-  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+  expect(
+    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
+  ).toEqual([8, 8, 8, 8]);
+  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
     'Flight 3',
     'Flight 4',
   ]);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
+});
+
+it('can create and return flighProfiles with drawDefinitions', () => {
+  mocksEngine.generateTournamentRecord({});
+  const eventName = 'Test Event';
+  const event = { eventName };
+  let result = tournamentEngine.addEvent({ event });
+  let { event: eventResult } = result;
+  const { eventId } = eventResult;
+  expect(result.success).toEqual(true);
+
+  let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  expect(flightProfile).toBeUndefined();
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  ({ flightProfile } = tournamentEngine.generateFlightProfile({
+    eventId,
+    flightsCount: 3,
+  }));
+
+  flightProfile.flights?.forEach((flight) => {
+    const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+      eventId,
+      drawId: flight.drawId,
+      drawEntries: flight.drawEntries,
+    });
+    result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+    expect(result.success).toEqual(true);
+  });
+
+  ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
+  expect(
+    flightProfile.flights.every(({ drawDefinition }) => drawDefinition)
+  ).toEqual(true);
 });
