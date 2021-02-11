@@ -15,18 +15,18 @@ import { SUCCESS } from '../../constants/resultConstants';
  * @param {string} splitMethod - one of the supported methods for splitting entries
  * @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
  * @param {number} flightsCount - number of flights to create from existing entries
- * @param {string[]} flightNames - array of names to be used when generating flights
- * @param {string} flightNameRoot - root word for generating flight names
+ * @param {string[]} drawNames - array of names to be used when generating flights
+ * @param {string} drawNameRoot - root word for generating flight names
  * @param {boolean} deleteExisting - if flightProfile exists then delete
  *
  */
 export function generateFlightProfile({
   event,
-  splitMethod = 'evenSplit',
-  scaleAttributes,
-  flightNames = [],
+  drawNames = [],
+  drawNameRoot = 'Flight',
   flightsCount,
-  flightNameRoot = 'Flight',
+  scaleAttributes,
+  splitMethod = 'evenSplit',
   deleteExisting,
 }) {
   if (!event) return { error: MISSING_EVENT };
@@ -57,15 +57,15 @@ export function generateFlightProfile({
   }
 
   const flights = generateRange(0, flightsCount).map((index) => {
-    const entries = [].concat(
+    const drawEntries = [].concat(
       ...splitEntryTypes.map((entryType) => entryType[index])
     );
     const flight = {
-      entries,
+      drawEntries,
       drawId: UUID(),
-      flightName:
-        (flightNames?.length && flightNames[index]) ||
-        `${flightNameRoot} ${index + 1}`,
+      drawName:
+        (drawNames?.length && drawNames[index]) ||
+        `${drawNameRoot} ${index + 1}`,
     };
     return flight;
   });

@@ -35,7 +35,7 @@ it('can create and return flighProfiles', () => {
     11,
     10,
   ]);
-  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
     'Flight 3',
@@ -65,7 +65,7 @@ it('can create and return flighProfiles', () => {
     8,
     8,
   ]);
-  expect(flightProfile.flights.map(({ flightName }) => flightName)).toEqual([
+  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
     'Flight 3',
