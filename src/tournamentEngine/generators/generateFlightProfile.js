@@ -1,7 +1,11 @@
-import { chunkArray, generateRange, makeDeepCopy, UUID } from '../../utilities';
 import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
+import { chunkArray, generateRange, makeDeepCopy, UUID } from '../../utilities';
+import { getFlightProfile } from '../getters/getFlightProfile';
 
-import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import {
+  EXISTING_PROFILE,
+  MISSING_EVENT,
+} from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 /**
@@ -13,6 +17,7 @@ import { SUCCESS } from '../../constants/resultConstants';
  * @param {number} flightsCount - number of flights to create from existing entries
  * @param {string[]} flightNames - array of names to be used when generating flights
  * @param {string} flightNameRoot - root word for generating flight names
+ * @param {boolean} deleteExisting - if flightProfile exists then delete
  *
  */
 export function generateFlightProfile({
@@ -22,8 +27,12 @@ export function generateFlightProfile({
   flightNames = [],
   flightsCount,
   flightNameRoot = 'Flight',
+  deleteExisting,
 }) {
   if (!event) return { error: MISSING_EVENT };
+
+  const { flightProfile } = getFlightProfile({ event });
+  if (flightProfile && !deleteExisting) return { error: EXISTING_PROFILE };
 
   const eventEntries = event.entries || [];
   const entriesTypeMap = eventEntries.reduce((entriesTypeMap, entry) => {

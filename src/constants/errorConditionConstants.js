@@ -172,6 +172,8 @@ export const VALUE_UNCHANGED = 'Value unchanged';
 export const NOT_FOUND = 'Not found';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
+export const EXISTING_PROFILE = 'Existing Profile';
+
 export const errorConditionConstants = {
   COURT_EXISTS,
   COURT_NOT_FOUND,
@@ -187,6 +189,7 @@ export const errorConditionConstants = {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,
+  EXISTING_PROFILE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,
