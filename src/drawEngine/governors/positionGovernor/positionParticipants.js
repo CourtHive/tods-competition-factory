@@ -118,7 +118,7 @@ function randomUnseededDistribution({
       mappedMatchUps,
       participantId,
       drawDefinition,
-      placementScenario: true,
+      automaticPlacement: true,
     });
     if (result && result.error) return result;
   }

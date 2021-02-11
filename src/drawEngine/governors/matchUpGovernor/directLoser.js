@@ -153,7 +153,7 @@ export function directLoser(props) {
       structureId: targetStructureId,
       participantId: loserParticipantId,
       drawPosition: fedDrawPosition,
-      placementScenario: true,
+      automaticPlacement: true,
     });
   } else {
     return { error: INVALID_DRAW_POSITION };
@@ -181,7 +181,7 @@ export function directLoser(props) {
       participantId: loserParticipantId,
       structureId: targetStructureId,
       drawPosition: targetMatchUpDrawPosition,
-      placementScenario: true,
+      automaticPlacement: true,
     });
   }
 }
