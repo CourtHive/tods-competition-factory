@@ -172,5 +172,6 @@ it('supports policyDefinitions in positionActions', () => {
     ADD_PENALTY,
     ADD_NICKNAME,
     SWAP_PARTICIPANTS,
+    ALTERNATE_PARTICIPANT,
   ]);
 });
