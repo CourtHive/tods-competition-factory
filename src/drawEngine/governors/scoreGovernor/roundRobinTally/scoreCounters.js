@@ -9,6 +9,7 @@ import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats/for
 
 export function countSets({
   score,
+  tallyPolicy,
   matchUpStatus,
   matchUpFormat = FORMAT_STANDARD,
   winningSide: matchUpWinningSide,
@@ -19,7 +20,10 @@ export function countSets({
   const parsedMatchUpFormat = matchUpFormatCode.parse(matchUpFormat);
   const setsToWin = getSetsToWin(parsedMatchUpFormat?.bestOf || 3);
 
-  if (disqualifyingStatus({ matchUpStatus })) {
+  if (
+    (matchUpStatus === DEFAULTED && tallyPolicy?.setsCreditForDefaults) ||
+    (matchUpStatus === WALKOVER && tallyPolicy?.setsCreditForWalkovers)
+  ) {
     // in the case of WALKOVER or DEFAULT, matchUp winner gets full sets to win value
     setsTally[matchUpWinnerIndex] = setsToWin;
   } else {
@@ -41,9 +45,10 @@ export function countSets({
 
 export function countGames({
   score,
-  winningSide: matchUpWinningSide,
-  matchUpFormat = FORMAT_STANDARD,
+  tallyPolicy,
   matchUpStatus,
+  matchUpFormat = FORMAT_STANDARD,
+  winningSide: matchUpWinningSide,
 }) {
   const { sets } = score || {};
   const matchUpWinnerIndex = matchUpWinningSide - 1;
@@ -57,7 +62,10 @@ export function countGames({
 
   const minimumGameWins = setsToWin * gamesForSet;
   const gamesTally = [[], []];
-  if (disqualifyingStatus({ matchUpStatus })) {
+  if (
+    (matchUpStatus === DEFAULTED && tallyPolicy?.gamesCreditForDefaults) ||
+    (matchUpStatus === WALKOVER && tallyPolicy?.gamesCreditForWalkovers)
+  ) {
     gamesTally[matchUpWinnerIndex].push(minimumGameWins);
   } else {
     if (sets) {
@@ -125,8 +133,4 @@ export function countPoints({ score }) {
 }
 function getSetsToWin(bestOfGames) {
   return (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
-}
-
-function disqualifyingStatus({ matchUpStatus }) {
-  return [WALKOVER, DEFAULTED].includes(matchUpStatus);
 }
