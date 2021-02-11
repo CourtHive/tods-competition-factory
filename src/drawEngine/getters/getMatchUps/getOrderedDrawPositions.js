@@ -35,7 +35,8 @@ export function getOrderedDrawPositions({
   // displayOrder for feedRounds follows this rule...
   // ...but displayOrder for non-fed rounds must look back to the previous round
   // previous round lookback is provided by the roundProfile
-  const isFeedRound = roundProfile[roundNumber].feedRound;
+  const isFeedRound =
+    roundProfile[roundNumber] && roundProfile[roundNumber].feedRound;
   if (allNumeric(drawPositions)) {
     const orderedDrawPositions = drawPositions.sort(numericSort);
     return {

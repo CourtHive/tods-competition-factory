@@ -30,11 +30,9 @@ it('can create and return flighProfiles', () => {
     flightsCount: 3,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
-    11,
-    11,
-    10,
-  ]);
+  expect(
+    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
+  ).toEqual([11, 11, 10]);
   expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
@@ -59,12 +57,9 @@ it('can create and return flighProfiles', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
 
   expect(flightProfile.flights.length).toEqual(4);
-  expect(flightProfile.flights.map(({ entries }) => entries.length)).toEqual([
-    8,
-    8,
-    8,
-    8,
-  ]);
+  expect(
+    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
+  ).toEqual([8, 8, 8, 8]);
   expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
@@ -74,7 +69,7 @@ it('can create and return flighProfiles', () => {
   expect(flightProfile.flights.every(({ drawId }) => drawId));
 });
 
-it.only('can create and return flighProfiles with drawDefinitions', () => {
+it('can create and return flighProfiles with drawDefinitions', () => {
   mocksEngine.generateTournamentRecord({});
   const eventName = 'Test Event';
   const event = { eventName };
@@ -114,5 +109,4 @@ it.only('can create and return flighProfiles with drawDefinitions', () => {
   expect(
     flightProfile.flights.every(({ drawDefinition }) => drawDefinition)
   ).toEqual(true);
-  console.log(flightProfile.flights);
 });
