@@ -1,6 +1,7 @@
-import { INDIVIDUAL } from '../../../constants/participantTypes';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 it('can create and return flighProfiles', () => {
   mocksEngine.generateTournamentRecord({});
