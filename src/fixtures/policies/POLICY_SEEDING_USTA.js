@@ -1,6 +1,6 @@
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 
-export const SEEDING_USTA = {
+export const POLICY_SEEDING_USTA = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'USTA',
     duplicateSeedNumbers: true,
@@ -94,4 +94,4 @@ export const SEEDING_USTA = {
   },
 };
 
-export default SEEDING_USTA;
+export default POLICY_SEEDING_USTA;

@@ -4,18 +4,18 @@ import { MISSING_EVENT } from '../../constants/errorConditionConstants';
 
 export function getFlightProfile({ event }) {
   if (!event) return { error: MISSING_EVENT };
-  const { extension: flightProfile } = findEventExtension({
+  const { extension } = findEventExtension({
     event,
     name: 'flightProfile',
   });
-  const flights = flightProfile?.value;
+  const flightProfile = extension?.value;
 
   event.drawDefinitions?.forEach((drawDefinition) => {
-    const flight = flights.find(
+    const flight = flightProfile?.find(
       ({ drawId }) => drawDefinition.drawId === drawId
     );
     if (flight) flight.drawDefinition = drawDefinition;
   });
 
-  return { flights };
+  return { flightProfile };
 }

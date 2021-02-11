@@ -9,7 +9,7 @@ const WHEELCHAIR = 'WHEELCHAIR';
 /**
  *
  */
-export const SCHEDULING_POLICY = {
+export const POLICY_SCHEDULING_USTA = {
   [POLICY_TYPE_SCHEDULING]: {
     defaultTimes: {
       averageMatchUpTime: { minutes: { [ALL]: 90 } },
@@ -111,4 +111,4 @@ export const SCHEDULING_POLICY = {
   },
 };
 
-export default SCHEDULING_POLICY;
+export default POLICY_SCHEDULING_USTA;

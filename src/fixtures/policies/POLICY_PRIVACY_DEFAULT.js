@@ -1,6 +1,6 @@
 import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
 
-export const PARTICIPANT_PRIVACY_DEFAULT = {
+export const POLICY_PRIVACY_DEFAULT = {
   [POLICY_TYPE_PARTICIPANT]: {
     policyName: 'Participant Privacy Policy',
     participant: {
@@ -46,4 +46,4 @@ export const PARTICIPANT_PRIVACY_DEFAULT = {
   },
 };
 
-export default PARTICIPANT_PRIVACY_DEFAULT;
+export default POLICY_PRIVACY_DEFAULT;

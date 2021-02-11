@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 
-import { ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 
@@ -15,7 +15,7 @@ export function getRoundContextProfile({
   const { structureAbbreviation, stage } = structure;
 
   const defaultRoundNamingPolicy =
-    ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
+    POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
 
   const roundNamingMap =
     roundNamingPolicy?.roundNamingMap ||
