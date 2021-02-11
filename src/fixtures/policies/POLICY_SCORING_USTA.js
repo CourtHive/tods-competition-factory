@@ -1,7 +1,7 @@
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 
-export const SCORING_USTA = {
+export const POLICY_SCORING_USTA = {
   [POLICY_TYPE_SCORING]: {
     requireAllPositionsAssigned: false,
     stage: {
@@ -116,4 +116,4 @@ export const SCORING_USTA = {
   },
 };
 
-export default SCORING_USTA;
+export default POLICY_SCORING_USTA;

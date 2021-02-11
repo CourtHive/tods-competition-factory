@@ -1,6 +1,6 @@
 import { POLICY_TYPE_AVOIDANCE } from '../../constants/policyConstants';
 
-export const AVOIDANCE_COUNTRY = {
+export const POLICY_AVOIDANCE_COUNTRY = {
   [POLICY_TYPE_AVOIDANCE]: {
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
@@ -11,4 +11,4 @@ export const AVOIDANCE_COUNTRY = {
   },
 };
 
-export default AVOIDANCE_COUNTRY;
+export default POLICY_AVOIDANCE_COUNTRY;
