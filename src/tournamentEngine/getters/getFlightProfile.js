@@ -11,7 +11,7 @@ export function getFlightProfile({ event }) {
   const flightProfile = extension?.value;
 
   event.drawDefinitions?.forEach((drawDefinition) => {
-    const flight = flightProfile?.find(
+    const flight = flightProfile?.flights?.find(
       ({ drawId }) => drawDefinition.drawId === drawId
     );
     if (flight) flight.drawDefinition = drawDefinition;
