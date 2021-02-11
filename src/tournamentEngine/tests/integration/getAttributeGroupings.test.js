@@ -2,8 +2,6 @@ import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeG
 import { fixtures, participantTypes } from '../../..';
 import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
 
-const { avoidance } = fixtures;
-const { AVOIDANCE_COUNTRY } = avoidance;
 const { PAIR } = participantTypes;
 
 it('can generate groupings accurately', () => {
@@ -42,7 +40,8 @@ it('can generate groupings accurately', () => {
 
   expect(Object.keys(doublesParticipantsNationalityCodes).length).toEqual(32);
 
-  const policyAttributes = AVOIDANCE_COUNTRY.avoidance.policyAttributes;
+  const policyAttributes =
+    fixtures.policies.POLICY_AVOIDANCE_COUNTRY.avoidance.policyAttributes;
   const groupings = getAttributeGroupings({
     participants,
     policyAttributes,

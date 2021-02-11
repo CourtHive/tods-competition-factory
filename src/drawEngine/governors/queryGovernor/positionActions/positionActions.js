@@ -93,13 +93,8 @@ export function positionActions({
     assignedPositions,
     positionAssignments,
   } = structureAssignedDrawPositions({ structure });
-  const positionAssignment = assignedPositions.reduce(
-    (positionAssignment, assignment) => {
-      return assignment.drawPosition === drawPosition
-        ? assignment
-        : positionAssignment;
-    },
-    undefined
+  const positionAssignment = assignedPositions.find(
+    (assignment) => assignment.drawPosition === drawPosition
   );
 
   const drawPositions = positionAssignments.map(
@@ -280,6 +275,7 @@ export function positionActions({
     isByePosition,
     isActiveDrawPosition,
     isDrawPosition: true,
+    hasPositionAssigned: !!positionAssignment,
     validActions,
   };
 }
@@ -318,21 +314,17 @@ function getPolicyActions({ enabledStructures, structure }) {
   if (!enabledStructures?.length)
     return { enabledActions: [], disabledActions: [] };
 
-  const policyActions = enabledStructures.reduce(
-    (policyActions, structurePolicy) => {
-      if (
-        !structurePolicy ||
-        policyActions ||
-        (structurePolicy.stages?.length &&
-          !structurePolicy.stages?.includes(structure.stage)) ||
-        (structurePolicy.stageSequences?.length &&
-          !structurePolicy.stageSequences?.includes(structure.stageSequence))
-      ) {
-        return policyActions;
-      }
-      return structurePolicy;
+  const policyActions = enabledStructures.find((structurePolicy) => {
+    const matchesStage =
+      !structurePolicy.stages?.length ||
+      structurePolicy.stages.includes(structure.stage);
+    const matchesStageSequence =
+      !structurePolicy.stageSequences?.length ||
+      structurePolicy.stageSequences.includes(structure.stageSequence);
+    if (structurePolicy && matchesStage && matchesStageSequence) {
+      return true;
     }
-  );
+  });
 
   return { policyActions };
 }

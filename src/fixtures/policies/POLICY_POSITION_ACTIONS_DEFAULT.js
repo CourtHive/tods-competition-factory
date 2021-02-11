@@ -8,7 +8,7 @@ import {
 
 export const POLICY_POSITION_ACTIONS_DEFAULT = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
-    policyName: POLICY_TYPE_POSITION_ACTIONS,
+    policyName: 'positionActionsDefault',
 
     // positionActions will be selectively enabled for structures matching { stages: [], stageSequences: [] }
     // enabledStructures: [] => all structures are enabled
