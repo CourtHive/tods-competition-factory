@@ -1,14 +1,20 @@
+import { getPolicyDefinition } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
+import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
+import { createSubOrderMap } from './createSubOrderMap';
 import {
   addExtension,
   removeExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
-import { createSubOrderMap } from './createSubOrderMap';
 
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateAssignmentParticipantResults({
+  tournamentRecord,
+  drawDefinition,
+  event,
+
   positionAssignments,
   matchUpFormat,
   matchUps,
@@ -16,9 +22,16 @@ export function updateAssignmentParticipantResults({
   if (!Array.isArray(matchUps)) return { error: INVALID_VALUES };
   if (!positionAssignments) return { error: INVALID_VALUES };
 
+  const { policyDefinition } = getPolicyDefinition({
+    tournamentRecord,
+    drawDefinition,
+    event,
+    policyType: POLICY_TYPE_ROUND_ROBIN_TALLY,
+  });
   const { subOrderMap } = createSubOrderMap({ positionAssignments });
 
   const { participantResults } = tallyParticipantResults({
+    policyDefinition,
     matchUpFormat,
     subOrderMap,
     matchUps,

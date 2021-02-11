@@ -14,7 +14,7 @@ import {
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
 
-import { ROUND_NAMING_DEFAULT } from '../../../fixtures/roundNaming/ROUND_NAMING_DEFAULT';
+import { ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {

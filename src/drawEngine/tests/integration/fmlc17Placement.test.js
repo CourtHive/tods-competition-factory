@@ -4,8 +4,8 @@ import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/fmlc';
 
 import { CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can support ITF Consolation BYE placement', () => {
   const drawSize = 32;

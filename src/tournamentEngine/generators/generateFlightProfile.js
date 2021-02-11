@@ -25,7 +25,7 @@ export function generateFlightProfile({
   if (!event) return { error: MISSING_EVENT };
 
   const entriesTypeMap = (event.entries || []).reduce(
-    (entriesTypesMap, entry) => {
+    (entriesTypeMap, entry) => {
       const { entryType } = entry;
       if (!entriesTypeMap[entryType]) entriesTypeMap[entryType] = [];
       entriesTypeMap[entryType].push(entry);

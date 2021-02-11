@@ -8,8 +8,8 @@ import { generateFMLC } from '../../tests/primitives/fmlc';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/seeding/SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/seeding/SEEDING_ITF';
+import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const drawSize = 32;

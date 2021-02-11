@@ -9,7 +9,7 @@ import {
   ROUND_ROBIN,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_USTA';
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can generate and verify round robin structures', () => {
   let structureId;

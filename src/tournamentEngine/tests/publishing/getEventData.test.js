@@ -14,7 +14,7 @@ import {
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
-import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/participants/PARTICIPANT_POLICY_DEFAULT';
+import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {

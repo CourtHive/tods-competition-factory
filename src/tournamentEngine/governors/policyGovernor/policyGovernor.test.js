@@ -1,7 +1,7 @@
 import { tournamentEngine } from '../../sync';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
-import AVOIDANCE_COUNTRY from '../../../fixtures/avoidance/AVOIDANCE_COUNTRY';
+import AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';

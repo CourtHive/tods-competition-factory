@@ -3,6 +3,7 @@ import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/ge
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
+import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import drawEngine from '../../drawEngine/sync';
@@ -13,7 +14,7 @@ import {
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from '../../fixtures/seeding/SEEDING_USTA';
+import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
 
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
@@ -24,7 +25,6 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;

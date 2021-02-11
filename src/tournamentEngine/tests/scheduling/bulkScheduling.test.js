@@ -7,7 +7,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import ITF_SEEDING_POLICY from '../../../fixtures/seeding/SEEDING_ITF';
+import ITF_SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
