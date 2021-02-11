@@ -1,5 +1,9 @@
 import { makeDeepCopy } from '../../../utilities';
 
+function isValidMatchUp(matchUp) {
+  return typeof matchUp === 'object';
+}
+
 export function getMatchUpsMap({ drawDefinition, structure }) {
   const matchUpsMap = {};
   (drawDefinition?.structures || [structure])
@@ -8,12 +12,14 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
       const { structureId, matchUps, structures } = structure;
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
-        matchUpsMap[structureId] = { matchUps };
+        matchUpsMap[structureId] = {
+          matchUps: matchUps.filter(isValidMatchUp),
+        };
       } else if (isRoundRobin) {
         structures.forEach((itemStructure) => {
           const { structureName } = itemStructure;
           matchUpsMap[itemStructure.structureId] = {
-            matchUps: itemStructure.matchUps,
+            matchUps: itemStructure.matchUps.filter(isValidMatchUp),
             structureName,
           };
           if (!matchUpsMap[structureId]) matchUpsMap[structureId] = {};

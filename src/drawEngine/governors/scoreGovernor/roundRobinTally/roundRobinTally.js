@@ -27,9 +27,12 @@ export function tallyParticipantResults({
     relevantMatchUps.length;
   if (!bracketComplete) perPlayer = 0;
 
+  const tallyPolicy = policyDefinition?.POLICY_TYPE_ROUND_ROBIN_TALLY;
+
   const { participantResults, disqualified } = getBaseCounts({
     matchUps: relevantMatchUps,
     matchUpFormat,
+    tallyPolicy,
   });
 
   // the difference here is totals must be calcuulated using the expected
@@ -94,6 +97,7 @@ export function tallyParticipantResults({
     participantResults,
     policyDefinition,
     disqualified,
+    tallyPolicy,
   });
 
   // do not calculate order if bracket is not complete

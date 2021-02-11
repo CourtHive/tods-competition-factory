@@ -59,7 +59,8 @@ function generateEliminationPresentationProfile({
       roundNumber,
     };
 
-    const feedRound = roundProfile[roundNumber].feedRound;
+    const feedRound =
+      roundProfile[roundNumber] && roundProfile[roundNumber].feedRound;
     if (feedRound) {
       if (feedTop) {
         profile.feedTop = true;
