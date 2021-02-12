@@ -14,12 +14,14 @@ import { positionActionConstants } from './positionActionConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
 import { timeItemConstants } from './timeItemConstants';
+import { flightConstants } from './flightConstants';
 
 export const factoryConstants = {
   drawDefinitionConstants,
   entryStatusConstants,
   errorConditionConstants,
   eventConstants,
+  flightConstants,
   genderConstants,
   matchUpStatusConstants,
   matchUpTypes,
