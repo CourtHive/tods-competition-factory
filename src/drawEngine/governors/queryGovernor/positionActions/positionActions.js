@@ -1,15 +1,16 @@
-import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
+// import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
-import {
-  getStageAssignedParticipantIds,
-  structureAssignedDrawPositions,
-} from '../../../getters/positionsGetter';
 import { getValidAssignmentActions } from './participantAssignments';
+import { getValidLuckyLosersAction } from './participantLuckyLoser';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
+import {
+  getStageAssignedParticipantIds,
+  structureAssignedDrawPositions,
+} from '../../../getters/positionsGetter';
 
 import {
   WILDCARD,
@@ -23,27 +24,33 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  REMOVE_ASSIGNMENT,
-  REMOVE_ASSIGNMENT_METHOD,
-  ADD_NICKNAME,
-  ADD_PENALTY,
-  ASSIGN_BYE,
-  SEED_VALUE,
-  SEED_VALUE_METHOD,
-  ADD_PENALTY_METHOD,
   ADD_NICKNAME_METHOD,
-  WITHDRAW_PARTICIPANT,
-  WITHDRAW_PARTICIPANT_METHOD,
-  SWAP_PARTICIPANTS,
+  ADD_NICKNAME,
+  ADD_PENALTY_METHOD,
+  ADD_PENALTY,
   ALTERNATE_PARTICIPANT,
+  ASSIGN_BYE,
   ASSIGN_PARTICIPANT,
+  LUCKY_PARTICIPANT,
+  REMOVE_ASSIGNMENT_METHOD,
+  REMOVE_ASSIGNMENT,
+  SEED_VALUE_METHOD,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT_METHOD,
+  WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
+// import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
+// import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 import {
   CONSOLATION,
   MAIN,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  getEnabledStructures,
+  getPolicyActions,
+  isAvailableAction,
+} from './actionPolicyUtils';
 
 /**
  *
@@ -284,6 +291,20 @@ export function positionActions({
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
+  if (isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT })) {
+    const { validAlternatesAction } = getValidLuckyLosersAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      activeDrawPositions,
+      positionAssignments,
+      tournamentParticipants,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
+  }
+
   return {
     isByePosition,
     isActiveDrawPosition,
@@ -293,6 +314,7 @@ export function positionActions({
   };
 }
 
+/*
 function getEnabledStructures({
   policyDefinition,
   tournamentRecord,
@@ -360,3 +382,4 @@ function isAvailableAction({ action, policyActions }) {
   }
   return false;
 }
+*/
