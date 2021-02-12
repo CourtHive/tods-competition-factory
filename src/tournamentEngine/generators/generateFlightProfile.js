@@ -1,5 +1,7 @@
 import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
+import { getFlightProfile } from '../getters/getFlightProfile';
+import { getDevContext } from '../../global/globalState';
 import {
   chunkArray,
   generateRange,
@@ -7,7 +9,6 @@ import {
   chunkByNth,
   UUID,
 } from '../../utilities';
-import { getFlightProfile } from '../getters/getFlightProfile';
 
 import {
   EXISTING_PROFILE,
@@ -45,6 +46,7 @@ export function generateFlightProfile({
   deleteExisting,
 }) {
   if (!event) return { error: MISSING_EVENT };
+  const eventEntries = event.entries || [];
 
   const { flightProfile } = getFlightProfile({ event });
   if (flightProfile && !deleteExisting) return { error: EXISTING_PROFILE };
@@ -59,7 +61,7 @@ export function generateFlightProfile({
   const scaledEntryParticipantIds = scaledEntries.map(
     ({ participantId }) => participantId
   );
-  const unscaledEntries = (event.entries || [])
+  const unscaledEntries = eventEntries
     .filter(
       ({ participantId }) => !scaledEntryParticipantIds.includes(participantId)
     )
@@ -82,10 +84,16 @@ export function generateFlightProfile({
     splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
 
+  function getDrawEntries(entriesChunk) {
+    return (entriesChunk || []).map(({ participantId }) =>
+      eventEntries.find((entry) => entry.participantId === participantId)
+    );
+  }
+
   const flights = generateRange(0, flightsCount).map((index) => {
     const flight = {
       drawId: UUID(),
-      drawEntries: splitEntries[index] || [],
+      drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
         (drawNames?.length && drawNames[index]) ||
         `${drawNameRoot} ${index + 1}`,
@@ -102,5 +110,8 @@ export function generateFlightProfile({
 
   addEventExtension({ event, extension });
 
-  return Object.assign(SUCCESS, { flightProfile: makeDeepCopy({ flights }) });
+  return Object.assign(SUCCESS, {
+    flightProfile: makeDeepCopy({ flights }),
+    splitEntries: (getDevContext() && splitEntries) || undefined,
+  });
 }

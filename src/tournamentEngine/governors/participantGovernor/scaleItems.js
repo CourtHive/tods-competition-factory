@@ -16,7 +16,7 @@ export function setParticipantScaleItem({
   participantId,
   scaleItem,
 }) {
-  let modificationApplied, equivalentValue, participantFound;
+  let equivalentValue, participantFound;
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = [
@@ -40,22 +40,21 @@ export function setParticipantScaleItem({
     tournamentRecord.participants.forEach((participant) => {
       if (participant.participantId === participantId) {
         participantFound = true;
-        const { success, newValue, error } = addParticipantScaleItem({
+        const { newValue, error } = addParticipantScaleItem({
           participant,
           scaleItem,
         });
         if (error) return { error };
 
-        modificationApplied = success;
         equivalentValue = scaleItem.scaleValue === newValue;
       }
     });
   }
 
-  return modificationApplied && equivalentValue
-    ? { ...SUCCESS, value: scaleItem.scaleValue }
-    : participantFound
+  return equivalentValue
     ? { ...SUCCESS, message: VALUE_UNCHANGED, value: scaleItem.scaleValue }
+    : participantFound
+    ? { ...SUCCESS, value: scaleItem.scaleValue }
     : { error: PARTICIPANT_NOT_FOUND };
 }
 
@@ -144,12 +143,11 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     participant,
     scaleAttributes: scaleItem,
   });
-  const noChange =
-    (!existingScaleItem && !scaleItem.scaleValue) ||
-    existingScaleItem?.scaleValue === scaleItem.scaleValue;
-  const newValue = !noChange;
+  const valueChanged =
+    (!existingScaleItem && scaleItem.scaleValue) ||
+    existingScaleItem?.scaleValue !== scaleItem.scaleValue;
 
-  if (newValue) {
+  if (valueChanged) {
     const { scaleType, eventType, scaleName } = scaleItem;
     const itemType = [SCALE, scaleType, eventType, scaleName].join('.');
 
@@ -165,5 +163,5 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
     participant.timeItems.push(timeItem);
   }
 
-  return Object.assign({ newValue }, SUCCESS);
+  return Object.assign({ newValue: scaleItem.scaleValue }, SUCCESS);
 }
