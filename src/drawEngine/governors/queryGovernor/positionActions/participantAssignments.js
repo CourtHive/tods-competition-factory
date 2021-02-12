@@ -18,6 +18,7 @@ export function getValidAssignmentActions({
   positionAssignments,
   tournamentParticipants,
   unassignedParticipantIds,
+  possiblyDisablingAction,
 }) {
   const { drawId } = drawDefinition;
   const result = getNextSeedBlock({
@@ -66,18 +67,21 @@ export function getValidAssignmentActions({
     }
 
     const validAssignmentActions = [];
-    const { byesCount, placedByes, positionsToAvoidDoubleBye } = getByesData({
+    const {
+      /*byesCount, placedByes,*/ positionsToAvoidDoubleBye,
+    } = getByesData({
       drawDefinition,
       structure,
     });
-    const availableByes = byesCount - placedByes;
+    // const availableByes = byesCount - placedByes;
     // BYEs limit is being disabled
     if (/*availableByes &&*/ !isByePosition) {
       validAssignmentActions.push({
         type: ASSIGN_BYE,
         method: ASSIGN_BYE_METHOD,
         positionsToAvoidDoubleBye,
-        availableByes,
+        // availableByes,
+        willDisableLinks: possiblyDisablingAction,
         payload: { drawId, structureId, drawPosition },
       });
     }
@@ -94,7 +98,8 @@ export function getValidAssignmentActions({
         availableParticipantIds,
         participantsAvailable,
         positionsToAvoidDoubleBye,
-        availableByes,
+        // availableByes,
+        willDisableLinks: possiblyDisablingAction,
         payload: { drawId, structureId, drawPosition },
       });
     }

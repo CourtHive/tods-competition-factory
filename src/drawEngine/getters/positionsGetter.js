@@ -84,7 +84,7 @@ export function structureAssignedDrawPositions({
   };
 }
 
-export function stageAssignedParticipantIds({ drawDefinition, stages }) {
+export function getStageAssignedParticipantIds({ drawDefinition, stages }) {
   const stageStructures = drawDefinition.structures.filter((structure) =>
     stages.includes(structure.stage)
   );
@@ -93,7 +93,9 @@ export function stageAssignedParticipantIds({ drawDefinition, stages }) {
       const { positionAssignments } = getPositionAssignments({
         structure,
       });
-      return positionAssignments.map(({ participantId }) => participantId);
+      return positionAssignments
+        .map(({ participantId }) => participantId)
+        .filter((f) => f);
     })
     .flat();
 }
