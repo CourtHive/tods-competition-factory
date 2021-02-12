@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from './positionsGetter';
-import { stageEntries, getStageQualifiersCount } from './stageGetter';
+import { getStageEntries, getStageQualifiersCount } from './stageGetter';
 
 import {
   DIRECT_ACCEPTANCE,
@@ -35,7 +35,7 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
   // get stage/stageSequence Entries and qualifiers
   const { structureId, stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const entries = stageEntries({
+  const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,
