@@ -50,14 +50,18 @@ export { mocksEngine } from './mocksEngine';
 // END: Asynchronous and Synchronous engine exports
 
 // START: constants ---------------------------------------------------------------
+export { participantRoles } from './constants/participantRoles';
+export { participantTypes } from './constants/participantTypes';
+export { factoryConstants } from './constants';
+
 export { drawDefinitionConstants } from './constants/drawDefinitionConstants';
 export {
   entryStatusConstants,
   EntryStatusEnum,
 } from './constants/entryStatusConstants';
-export { factoryConstants } from './constants';
 export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
+export { flightConstants } from './constants/flightConstants';
 export { genderConstants } from './constants/genderConstants';
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
@@ -67,8 +71,6 @@ export {
   ParticipantTypeEnum,
   SignedInStatusEnum,
 } from './constants/participantConstants';
-export { participantRoles } from './constants/participantRoles';
-export { participantTypes } from './constants/participantTypes';
 export { penaltyConstants } from './constants/penaltyConstants';
 export { policyConstants } from './constants/policyConstants';
 export { positionActionConstants } from './constants/positionActionConstants';
