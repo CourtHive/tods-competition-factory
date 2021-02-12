@@ -1,6 +1,10 @@
+import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+
 import {
   CONSOLATION,
   MAIN,
+  PLAY_OFF,
+  QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
@@ -16,33 +20,35 @@ export function getValidLuckyLosersAction({
   structure,
   drawDefinition,
   activeDrawPositions,
-  positionAssignments,
   tournamentParticipants = [],
 }) {
   if (!drawId)
     return { error: MISSING_DRAW_ID, method: 'getValidLuckyLosersAction' };
-  if (activeDrawPositions.includes(drawPosition)) return {};
-
-  const assignedParticipantIds = positionAssignments
-    .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+  if (
+    activeDrawPositions.includes(drawPosition) ||
+    structure.stage === PLAY_OFF
+  )
+    return {};
 
   /*
   Available Lucky Losers are those participants who are assigned drawPositions
   in previous draw structures and have already lost
   */
 
+  const stages = structure.stage === CONSOLATION ? [MAIN] : [QUALIFYING];
+  const contextFilters = { stages };
+  const { completedMatchUps } = getDrawMatchUps({
+    drawDefinition,
+    contextFilters,
+    inContext: true,
+  });
+
+  const availableLuckyLoserParticipantIds = completedMatchUps
+    .map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
+    .map(({ participantId }) => participantId);
+
   // WIP: logic beyond this is in development
   if (drawDefinition) return {};
-
-  const availableLuckyLoserParticipantIds = drawDefinition.entries
-    ?.filter(
-      (entry) =>
-        eligibleEntryStage({ structure, entry }) &&
-        !assignedParticipantIds.includes(entry.participantId)
-    )
-    .sort((a, b) => (a.entryPosition || 0) - (b.entryPosition || 0))
-    .map((entry) => entry.participantId);
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds.includes(participant.participantId)
@@ -66,13 +72,4 @@ export function getValidLuckyLosersAction({
   }
 
   return {};
-}
-
-function eligibleEntryStage({ structure, entry }) {
-  const { stage } = structure;
-  if (
-    entry.entryStage === stage ||
-    (entry.entryStage === MAIN && stage === CONSOLATION)
-  )
-    return true;
 }

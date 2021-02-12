@@ -1,8 +1,8 @@
 export const WITHDRAW_PARTICIPANT_METHOD = 'withdrawParticipantAtDrawPosition';
 export const ALTERNATE_PARTICIPANT_METHOD = 'alternateDrawPositionAssignment';
+export const LUCKY_PARTICIPANT_METHOD = 'luckyLoserDrawPositionAssignment';
 export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';
-export const LUCKY_LOSER_METHOD = 'luckyLoserDrawPositionAssignment';
 export const ADD_NICKNAME_METHOD = 'modifyParticipantOtherName';
 export const ASSIGN_PARTICIPANT_METHOD = 'assignDrawPosition';
 export const ASSIGN_BYE_METHOD = 'assignDrawPositionBye';

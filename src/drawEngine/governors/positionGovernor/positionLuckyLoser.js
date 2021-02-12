@@ -9,6 +9,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 // NOTE: alternateDrawPositionAssignmetn is nearly identical
 // can create wrapper functions which reuse shared code
+// TODO: Add participant to drawDefinition.entries as a Lucky Loser
 export function luckyLoserDrawPositionAssignment({
   luckyLoserParticipantId,
   drawDefinition,
