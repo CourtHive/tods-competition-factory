@@ -1,7 +1,10 @@
 import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
+import {
+  getStageAssignedParticipantIds,
+  structureAssignedDrawPositions,
+} from '../../../getters/positionsGetter';
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
@@ -110,8 +113,9 @@ export function positionActions({
 
   // allow unassigneParticipantIds from MAIN in positionActions for consolation
   if (stage === CONSOLATION) stages.push(MAIN);
+  if (stage === MAIN) stages.push(CONSOLATION);
 
-  const entries = getStageEntries({
+  const stageEntries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,
@@ -119,11 +123,19 @@ export function positionActions({
     stages,
   });
 
+  const stageAssignedParticipantIds = getStageAssignedParticipantIds({
+    drawDefinition,
+    stages,
+  });
+  /*
   const assignedParticipantIds = assignedPositions.map(
     (assignment) => assignment.participantId
   );
-  const unassignedParticipantIds = entries
-    .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
+  */
+  const unassignedParticipantIds = stageEntries
+    .filter(
+      (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
+    )
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
@@ -257,22 +269,21 @@ export function positionActions({
       });
       if (validSwapAction) validActions.push(validSwapAction);
     }
-
-    if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
-      const { validAlternatesAction } = getValidAlternatesAction({
-        drawId,
-        structure,
-        structureId,
-        drawPosition,
-        drawDefinition,
-        activeDrawPositions,
-        positionAssignments,
-        tournamentParticipants,
-      });
-      if (validAlternatesAction) validActions.push(validAlternatesAction);
-    }
   }
 
+  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+    const { validAlternatesAction } = getValidAlternatesAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      activeDrawPositions,
+      positionAssignments,
+      tournamentParticipants,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
+  }
   return {
     isByePosition,
     isActiveDrawPosition,
