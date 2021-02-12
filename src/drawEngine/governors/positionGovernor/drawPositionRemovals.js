@@ -194,18 +194,12 @@ function removeDrawPosition({
       }
     );
   }
-  /*
-  const sourceMatchUpWinnerDrawPositionIndex = targetMatchUp.drawPositions.indexOf(
-    drawPosition
-  );
-  */
   const targetData = positionTargets({
     matchUpId: targetMatchUp.matchUpId,
     structure,
     drawDefinition,
     mappedMatchUps,
     inContextDrawMatchUps,
-    // sourceMatchUpWinnerDrawPositionIndex,
   });
   const {
     targetLinks: { winnerTargetLink },

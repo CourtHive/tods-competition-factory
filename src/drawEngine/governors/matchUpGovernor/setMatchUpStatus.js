@@ -50,17 +50,12 @@ export function setMatchUpStatus(props) {
   if (!matchUp) {
     return { errors: [{ error: MATCHUP_NOT_FOUND }] };
   } else {
-    /*
-    const sourceMatchUpWinnerDrawPositionIndex =
-      winningSide && 1 - (2 - winningSide);
-      */
     const targetData = positionTargets({
       matchUpId,
       structure,
       drawDefinition,
       mappedMatchUps,
       inContextDrawMatchUps,
-      // sourceMatchUpWinnerDrawPositionIndex,
     });
     Object.assign(props, { matchUp, structure, targetData });
     const {
