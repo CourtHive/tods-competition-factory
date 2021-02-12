@@ -118,7 +118,7 @@ export function stageSeededEntries({ stage, drawDefinition }) {
  * @param {string} structureId - optional; used for round robin participant results
  *
  */
-export function stageEntries({
+export function getStageEntries({
   drawDefinition,
   stageSequence,
   structureId,

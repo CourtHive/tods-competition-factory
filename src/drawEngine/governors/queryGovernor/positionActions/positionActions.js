@@ -5,7 +5,7 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
-import { stageEntries } from '../../../getters/stageGetter';
+import { getStageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
 
 import {
@@ -111,7 +111,7 @@ export function positionActions({
   // allow unassigneParticipantIds from MAIN in positionActions for consolation
   if (stage === CONSOLATION) stages.push(MAIN);
 
-  const entries = stageEntries({
+  const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,

@@ -1,6 +1,6 @@
 import { drawEngine } from '../../sync';
 import { generateRange } from '../../../utilities';
-import { stageEntries } from '../../getters/stageGetter';
+import { getStageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
@@ -72,7 +72,11 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
-  const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
+  const mainDrawEntries = getStageEntries({
+    stage,
+    drawDefinition,
+    entryTypes,
+  });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { unassignedPositions } = structureAssignedDrawPositions({
