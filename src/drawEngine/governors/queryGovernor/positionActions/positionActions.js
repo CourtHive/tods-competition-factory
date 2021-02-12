@@ -37,6 +37,10 @@ import {
 } from '../../../../constants/positionActionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
+import {
+  CONSOLATION,
+  MAIN,
+} from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -101,12 +105,18 @@ export function positionActions({
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+
+  const stages = [stage];
+
+  // allow unassigneParticipantIds from MAIN in positionActions for consolation
+  if (stage === CONSOLATION) stages.push(MAIN);
+
   const entries = stageEntries({
     drawDefinition,
     stageSequence,
     structureId,
     entryTypes,
-    stage,
+    stages,
   });
 
   const assignedParticipantIds = assignedPositions.map(

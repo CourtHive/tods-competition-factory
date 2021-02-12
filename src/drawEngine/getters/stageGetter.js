@@ -113,28 +113,30 @@ export function stageSeededEntries({ stage, drawDefinition }) {
  * @param {string[]} entryTypes - ENUM - entry status, e.g. DIRECT_ACCEPTANCE, WILDCARD
  * @param {object} drawDefinition
  * @param {string} stage - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
+ * @param {string[]} stages - ENUM - QUALIFYING, MAIN, PLAY_OFF, CONSOLATION
  * @param {number} stageSequence - sequence within a stage
- *
  * @param {string} structureId - optional; used for round robin participant results
  *
  */
 export function stageEntries({
-  entryTypes,
   drawDefinition,
   stageSequence,
-  stage,
-
   structureId,
+  entryTypes,
+  stages,
+  stage,
 }) {
   const entries =
     drawDefinition.entries?.reduce((p, c) => {
-      const sameStage = c.entryStage === stage;
+      const stageTarget =
+        (stage && c.entryStage === stage) ||
+        (stages?.length && stages.includes(c.entryStage));
       const matchesEntryType =
         !entryTypes || entryTypes.includes(c.entryStatus);
       const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;
-      return sameStage && sameStageSequence && matchesEntryType
+      return stageTarget && sameStageSequence && matchesEntryType
         ? p.concat(c)
         : p;
     }, []) || [];
