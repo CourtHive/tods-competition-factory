@@ -20,6 +20,8 @@ export function getValidLuckyLosersAction({
   structure,
   drawDefinition,
   activeDrawPositions,
+  positionAssignments,
+  possiblyDisablingAction,
   tournamentParticipants = [],
 }) {
   if (!drawId)
@@ -43,12 +45,14 @@ export function getValidLuckyLosersAction({
     inContext: true,
   });
 
+  const assignedParticipantIds = positionAssignments
+    .map((assignment) => assignment.participantId)
+    .filter((f) => f);
+
   const availableLuckyLoserParticipantIds = completedMatchUps
     .map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])
-    .map(({ participantId }) => participantId);
-
-  // WIP: logic beyond this is in development
-  if (drawDefinition) return {};
+    .map(({ participantId }) => participantId)
+    .filter((participantId) => !assignedParticipantIds.includes(participantId));
 
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds.includes(participant.participantId)
@@ -66,6 +70,7 @@ export function getValidLuckyLosersAction({
       method: LUCKY_PARTICIPANT_METHOD,
       availableLuckyLosers,
       availableLuckyLoserParticipantIds,
+      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
     };
     return { validAlternatesAction };

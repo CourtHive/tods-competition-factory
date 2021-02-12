@@ -42,6 +42,7 @@ import {
 import {
   CONSOLATION,
   MAIN,
+  QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
 import {
   getEnabledStructures,
@@ -91,6 +92,10 @@ export function positionActions({
   if (actionsDisabled) return { message: 'Actions Disabled for structure' };
 
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
+
+  const possiblyDisablingAction =
+    ![QUALIFYING, MAIN].includes(structure.stage) ||
+    structure.stageSequence !== 1;
 
   const validActions = [];
   const { drawId } = drawDefinition;
@@ -156,6 +161,7 @@ export function positionActions({
       isByePosition,
       positionAssignments,
       tournamentParticipants,
+      possiblyDisablingAction,
       unassignedParticipantIds,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
@@ -177,6 +183,7 @@ export function positionActions({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
         payload: { drawId, structureId, drawPosition },
+        willDisableLinks: possiblyDisablingAction,
       });
 
       if (!isByePosition) {
@@ -184,6 +191,7 @@ export function positionActions({
           type: WITHDRAW_PARTICIPANT,
           method: WITHDRAW_PARTICIPANT_METHOD,
           payload: { drawId, structureId, drawPosition },
+          willDisableLinks: possiblyDisablingAction,
         });
       }
 
@@ -197,6 +205,7 @@ export function positionActions({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
           payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+          willDisableLinks: possiblyDisablingAction,
         });
       }
     }
@@ -270,6 +279,7 @@ export function positionActions({
         activeDrawPositions,
         inactiveDrawPositions,
         tournamentParticipants,
+        possiblyDisablingAction,
       });
       if (validSwapAction) validActions.push(validSwapAction);
     }
@@ -285,6 +295,7 @@ export function positionActions({
       activeDrawPositions,
       positionAssignments,
       tournamentParticipants,
+      possiblyDisablingAction,
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
@@ -298,6 +309,7 @@ export function positionActions({
       activeDrawPositions,
       positionAssignments,
       tournamentParticipants,
+      possiblyDisablingAction,
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }

@@ -11,9 +11,9 @@ export const ADD_PENALTY_METHOD = 'addPenalty';
 
 export const ALTERNATE_PARTICIPANT = 'ALTERNATE';
 export const WITHDRAW_PARTICIPANT = 'WITHDRAW';
-export const LUCKY_PARTICIPANT = 'ALTERNATE';
 export const ASSIGN_PARTICIPANT = 'ASSIGN';
 export const REMOVE_ASSIGNMENT = 'REMOVE';
+export const LUCKY_PARTICIPANT = 'LUCKY';
 export const SWAP_PARTICIPANTS = 'SWAP';
 export const ADD_NICKNAME = 'NICKNAME';
 export const SEED_VALUE = 'SEED_VALUE';
