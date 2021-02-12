@@ -133,3 +133,48 @@ export function allNumeric(arr) {
 export function noNumeric(arr) {
   return arr.reduce((numeric, item) => isNaN(parseInt(item)) && numeric, true);
 }
+
+/**
+ * chunk an arbitrary array of elements by adding every Nth instance to chunksCount chunks
+ *
+ * e.g. given arr=[1,2,3,4,5,6,7,8,9,10,11,12]:
+ *
+ * chunkByNth(arr, 3)
+ * [1, 4, 7, 10]
+ * [2, 5, 8, 11]
+ * [3, 6, 9, 12]
+ * chunkByNth(arr, 4)
+ * [1, 5, 9]
+ * [2, 6, 10]
+ * [3, 7, 11]
+ * [4, 8, 12]
+ *
+ * When shuttle = true:
+ * chunkByNth(arr, 3, true)
+ * [1, 6, 7, 12]
+ * [2, 5, 8, 11]
+ * [3, 4, 9, 10]
+ * chunkByNth(arr, 4, true)
+ * [1, 8, 9]
+ * [2, 7, 10]
+ * [3, 6, 11]
+ * [4, 5, 12]
+ *
+ * @param {any[]} arr - an array
+ * @param {number} chunksCount - number of chunks to create
+ * @param {boolean} shuttle - whether or not to "shuttle" as in the movment of a shuttle in a loom
+ */
+export function chunkByNth(arr, chunksCount, shuttle) {
+  return arr.reduce((chunks, entry, index) => {
+    const reverseDirection = shuttle
+      ? !!(Math.floor(index / chunksCount) % 2)
+      : false;
+    const chunkIndex = index % chunksCount;
+    const directionIndex = reverseDirection
+      ? chunksCount - 1 - chunkIndex
+      : chunkIndex;
+    if (!chunks[directionIndex]) chunks[directionIndex] = [];
+    chunks[directionIndex].push(entry);
+    return chunks;
+  }, []);
+}

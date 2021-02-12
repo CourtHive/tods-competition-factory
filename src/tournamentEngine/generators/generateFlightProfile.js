@@ -1,12 +1,25 @@
 import { addEventExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
-import { chunkArray, generateRange, makeDeepCopy, UUID } from '../../utilities';
+import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getFlightProfile } from '../getters/getFlightProfile';
+import { getDevContext } from '../../global/globalState';
+import {
+  chunkArray,
+  generateRange,
+  makeDeepCopy,
+  chunkByNth,
+  UUID,
+} from '../../utilities';
 
 import {
   EXISTING_PROFILE,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import {
+  SPLIT_SHUTTLE,
+  SPLIT_WATERFALL,
+} from '../../constants/flightConstants';
 
 /**
  *
@@ -18,51 +31,69 @@ import { SUCCESS } from '../../constants/resultConstants';
  * @param {string[]} drawNames - array of names to be used when generating flights
  * @param {string} drawNameRoot - root word for generating flight names
  * @param {boolean} deleteExisting - if flightProfile exists then delete
+ * @param {string} stage - OPTIONAL - only consider event entries matching stage
  *
  */
 export function generateFlightProfile({
+  tournamentRecord,
   event,
   drawNames = [],
   drawNameRoot = 'Flight',
   flightsCount,
   scaleAttributes,
-  splitMethod = 'evenSplit',
+  splitMethod,
+  stage,
   deleteExisting,
 }) {
   if (!event) return { error: MISSING_EVENT };
+  const eventEntries = event.entries || [];
 
   const { flightProfile } = getFlightProfile({ event });
   if (flightProfile && !deleteExisting) return { error: EXISTING_PROFILE };
 
-  const eventEntries = event.entries || [];
-  const entriesTypeMap = eventEntries.reduce((entriesTypeMap, entry) => {
-    const { entryType } = entry;
-    if (!entriesTypeMap[entryType]) entriesTypeMap[entryType] = [];
-    entriesTypeMap[entryType].push(entry);
-    return entriesTypeMap;
-  }, {});
+  const { scaledEntries } = getScaledEntries({
+    scaleAttributes,
+    tournamentRecord,
+    event,
+    stage,
+  });
 
-  if (scaleAttributes) {
-    // sort entries by scaleAttributes
+  const scaledEntryParticipantIds = scaledEntries.map(
+    ({ participantId }) => participantId
+  );
+  const unscaledEntries = eventEntries
+    .filter(
+      ({ participantId }) => !scaledEntryParticipantIds.includes(participantId)
+    )
+    .filter(
+      (entry) =>
+        (!stage || !entry.entryStage || entry.entryStage === stage) &&
+        STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+    );
+
+  const flightEntries = scaledEntries.concat(...unscaledEntries);
+  const entriesCount = flightEntries.length;
+
+  // default is SPLIT_LEVEL_BASED
+  const chunkSize = Math.ceil(entriesCount / flightsCount);
+  let splitEntries = chunkArray(flightEntries, chunkSize);
+
+  if (splitMethod === SPLIT_WATERFALL) {
+    splitEntries = chunkByNth(flightEntries, flightsCount);
+  } else if (splitMethod === SPLIT_SHUTTLE) {
+    splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
 
-  let splitEntryTypes = [];
-
-  if (splitMethod === 'evenSplit') {
-    const entriesCount = eventEntries.length;
-    const chunkSize = Math.ceil(entriesCount / flightsCount);
-    splitEntryTypes = Object.keys(entriesTypeMap).map((entryType) => {
-      return chunkArray(entriesTypeMap[entryType], chunkSize);
-    });
+  function getDrawEntries(entriesChunk) {
+    return (entriesChunk || []).map(({ participantId }) =>
+      eventEntries.find((entry) => entry.participantId === participantId)
+    );
   }
 
   const flights = generateRange(0, flightsCount).map((index) => {
-    const drawEntries = [].concat(
-      ...splitEntryTypes.map((entryType) => entryType[index])
-    );
     const flight = {
-      drawEntries,
       drawId: UUID(),
+      drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
         (drawNames?.length && drawNames[index]) ||
         `${drawNameRoot} ${index + 1}`,
@@ -79,5 +110,8 @@ export function generateFlightProfile({
 
   addEventExtension({ event, extension });
 
-  return Object.assign(SUCCESS, { flightProfile: makeDeepCopy({ flights }) });
+  return Object.assign(SUCCESS, {
+    flightProfile: makeDeepCopy({ flights }),
+    splitEntries: (getDevContext() && splitEntries) || undefined,
+  });
 }
