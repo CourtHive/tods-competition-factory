@@ -139,16 +139,11 @@ export function addPlayoffStructures(props) {
   );
   completedMatchUps.forEach((matchUp) => {
     const { matchUpId, score, winningSide } = matchUp;
-    /*
-    const sourceMatchUpWinnerDrawPositionIndex =
-      winningSide && 1 - (2 - winningSide);
-      */
     const targetData = positionTargets({
       matchUpId,
       structure,
       drawDefinition,
       inContextDrawMatchUps,
-      // sourceMatchUpWinnerDrawPositionIndex,
     });
     const result = directParticipants({
       drawDefinition,

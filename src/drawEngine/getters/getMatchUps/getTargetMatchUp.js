@@ -20,7 +20,6 @@ export function getTargetMatchUp({
   targetLink,
   sourceRoundPosition,
   sourceRoundMatchUpCount,
-  // sourceMatchUpWinnerDrawPositionIndex,
 }) {
   if (!targetLink) return { error: MISSING_TARGET_LINK };
 

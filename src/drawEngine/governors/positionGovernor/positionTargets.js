@@ -18,7 +18,6 @@ export function positionTargets({
   drawDefinition,
   mappedMatchUps,
   inContextDrawMatchUps = [],
-  // sourceMatchUpWinnerDrawPositionIndex,
 }) {
   const { matchUp } = findMatchUp({
     drawDefinition,
@@ -29,7 +28,6 @@ export function positionTargets({
   const { finishingPosition } = structure;
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({
-      // sourceMatchUpWinnerDrawPositionIndex,
       drawDefinition,
       inContextDrawMatchUps,
       structure,
@@ -45,7 +43,6 @@ function targetByRoundOutcome({
   structure,
   drawDefinition,
   inContextDrawMatchUps,
-  // sourceMatchUpWinnerDrawPositionIndex,
 }) {
   const {
     links: { source },
@@ -77,7 +74,6 @@ function targetByRoundOutcome({
     sourceRoundPosition,
     sourceRoundMatchUpCount,
     targetLink: loserTargetLink,
-    // sourceMatchUpWinnerDrawPositionIndex,
   });
 
   let winnerMatchUp, winnerMatchUpDrawPositionIndex;
@@ -92,7 +88,6 @@ function targetByRoundOutcome({
       sourceRoundPosition,
       sourceRoundMatchUpCount,
       targetLink: winnerTargetLink,
-      // sourceMatchUpWinnerDrawPositionIndex,
     }));
   } else {
     // if there is no winnerTargetLink then find targetMatchUp in next round

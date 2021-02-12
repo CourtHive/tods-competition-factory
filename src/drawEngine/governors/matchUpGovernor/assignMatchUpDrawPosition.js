@@ -77,18 +77,12 @@ export function assignMatchUpDrawPosition({
   }
 
   if (positionAssigned && isByeMatchUp) {
-    /*
-    const sourceMatchUpWinnerDrawPositionIndex = matchUp.drawPositions.indexOf(
-      drawPosition
-    );
-    */
     const targetData = positionTargets({
       matchUpId,
       structure,
       drawDefinition,
       mappedMatchUps,
       inContextDrawMatchUps,
-      // sourceMatchUpWinnerDrawPositionIndex,
     });
     const {
       targetMatchUps: { winnerMatchUp },
