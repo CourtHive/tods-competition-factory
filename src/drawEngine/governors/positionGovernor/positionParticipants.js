@@ -1,5 +1,5 @@
 import { shuffleArray } from '../../../utilities';
-import { stageEntries } from '../../getters/stageGetter';
+import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
@@ -38,7 +38,7 @@ export function positionUnseededParticipants({
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const entries = stageEntries({
+  const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,

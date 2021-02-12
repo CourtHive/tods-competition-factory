@@ -5,7 +5,7 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
-import { stageEntries } from '../../../getters/stageGetter';
+import { getStageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
 
 import {
@@ -33,10 +33,14 @@ import {
   WITHDRAW_PARTICIPANT_METHOD,
   SWAP_PARTICIPANTS,
   ALTERNATE_PARTICIPANT,
+  ASSIGN_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
+import {
+  CONSOLATION,
+  MAIN,
+} from '../../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -81,11 +85,6 @@ export function positionActions({
 
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
-  const isMainStageSequence1 =
-    structure.stage === MAIN && structure.stageSequence === 1;
-
-  let allowConsolationMovementActions = false;
-
   const validActions = [];
   const { drawId } = drawDefinition;
 
@@ -106,12 +105,18 @@ export function positionActions({
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const entries = stageEntries({
+
+  const stages = [stage];
+
+  // allow unassigneParticipantIds from MAIN in positionActions for consolation
+  if (stage === CONSOLATION) stages.push(MAIN);
+
+  const entries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,
     entryTypes,
-    stage,
+    stages,
   });
 
   const assignedParticipantIds = assignedPositions.map(
@@ -124,9 +129,8 @@ export function positionActions({
   const isByePosition = byeDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
 
-  // if (isMainStageSequence1 && (!positionAssignment || isByePosition)) {
   if (
-    (isMainStageSequence1 || allowConsolationMovementActions) &&
+    isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
     (!positionAssignment || isByePosition)
   ) {
     const { validAssignmentActions } = getValidAssignmentActions({
@@ -150,7 +154,6 @@ export function positionActions({
 
   if (positionAssignment) {
     if (
-      // (allowConsolationMovementActions || isMainStageSequence1) &&
       isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
       !activeDrawPositions.includes(drawPosition)
     ) {
@@ -171,7 +174,6 @@ export function positionActions({
       // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
       // option should not be available if exising assignment is a bye
       if (
-        // (allowConsolationMovementActions || isMainStageSequence1) &&
         isAvailableAction({ policyActions, action: ASSIGN_BYE }) &&
         !isByePosition
       ) {

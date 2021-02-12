@@ -1,5 +1,5 @@
 import { findStructure } from './findStructure';
-import { stageEntries } from './stageGetter';
+import { getStageEntries } from './stageGetter';
 
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
 import {
@@ -25,7 +25,7 @@ export function getStructureSeedAssignments({
   if (!error) {
     const isPlayoffStructure = stage === PLAY_OFF;
     if (isPlayoffStructure && drawDefinition) {
-      const entries = stageEntries({
+      const entries = getStageEntries({
         drawDefinition,
         stageSequence,
         structureId,

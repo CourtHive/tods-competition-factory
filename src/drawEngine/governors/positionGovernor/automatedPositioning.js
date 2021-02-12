@@ -3,7 +3,7 @@ import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionParticipants';
 import { findStructure } from '../../getters/findStructure';
-import { stageEntries } from '../../getters/stageGetter';
+import { getStageEntries } from '../../getters/stageGetter';
 
 import {
   WILDCARD,
@@ -23,7 +23,7 @@ export function automatedPositioning({
   if (error) return { errors: [error] };
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const entries = stageEntries({
+  const entries = getStageEntries({
     drawDefinition,
     stage: structure.stage,
     stageSequence: structure.stageSequence,

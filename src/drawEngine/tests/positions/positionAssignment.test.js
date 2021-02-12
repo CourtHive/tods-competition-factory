@@ -1,5 +1,5 @@
 import { drawEngine } from '../../sync';
-import { stageEntries } from '../../getters/stageGetter';
+import { getStageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import {
@@ -34,7 +34,11 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
+  const mainDrawEntries = getStageEntries({
+    stage,
+    drawDefinition,
+    entryTypes,
+  });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { structureId } = structure;
@@ -107,7 +111,11 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
-  const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
+  const mainDrawEntries = getStageEntries({
+    stage,
+    drawDefinition,
+    entryTypes,
+  });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { unassignedPositions } = structureAssignedDrawPositions({

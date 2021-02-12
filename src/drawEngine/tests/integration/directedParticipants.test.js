@@ -1,5 +1,5 @@
 import { drawEngine } from '../../sync';
-import { stageEntries } from '../../getters/stageGetter';
+import { getStageEntries } from '../../getters/stageGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
@@ -45,7 +45,11 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
+  const mainDrawEntries = getStageEntries({
+    stage,
+    drawDefinition,
+    entryTypes,
+  });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
   const { structureId } = structure;
@@ -259,7 +263,11 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   } = getDrawStructures({ drawDefinition, stage });
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const mainDrawEntries = stageEntries({ stage, drawDefinition, entryTypes });
+  const mainDrawEntries = getStageEntries({
+    stage,
+    drawDefinition,
+    entryTypes,
+  });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
   const [participantId1, participantId2] = participantIds;
 
