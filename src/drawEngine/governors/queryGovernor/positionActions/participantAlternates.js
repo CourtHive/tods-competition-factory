@@ -18,6 +18,7 @@ export function getValidAlternatesAction({
   drawDefinition,
   activeDrawPositions,
   positionAssignments,
+  possiblyDisablingAction,
   tournamentParticipants = [],
 }) {
   if (!drawId)
@@ -53,6 +54,7 @@ export function getValidAlternatesAction({
       method: ALTERNATE_PARTICIPANT_METHOD,
       availableAlternates,
       availableAlternatesParticipantIds,
+      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
     };
     return { validAlternatesAction };

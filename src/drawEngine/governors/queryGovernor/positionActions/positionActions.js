@@ -1,12 +1,15 @@
-import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidAssignmentActions } from './participantAssignments';
+import { getValidLuckyLosersAction } from './participantLuckyLoser';
 import { getValidAlternatesAction } from './participantAlternates';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
+import {
+  getStageAssignedParticipantIds,
+  structureAssignedDrawPositions,
+} from '../../../getters/positionsGetter';
 
 import {
   WILDCARD,
@@ -20,27 +23,32 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
-  REMOVE_ASSIGNMENT,
-  REMOVE_ASSIGNMENT_METHOD,
-  ADD_NICKNAME,
-  ADD_PENALTY,
-  ASSIGN_BYE,
-  SEED_VALUE,
-  SEED_VALUE_METHOD,
-  ADD_PENALTY_METHOD,
   ADD_NICKNAME_METHOD,
-  WITHDRAW_PARTICIPANT,
-  WITHDRAW_PARTICIPANT_METHOD,
-  SWAP_PARTICIPANTS,
+  ADD_NICKNAME,
+  ADD_PENALTY_METHOD,
+  ADD_PENALTY,
   ALTERNATE_PARTICIPANT,
+  ASSIGN_BYE,
   ASSIGN_PARTICIPANT,
+  LUCKY_PARTICIPANT,
+  REMOVE_ASSIGNMENT_METHOD,
+  REMOVE_ASSIGNMENT,
+  SEED_VALUE_METHOD,
+  SEED_VALUE,
+  SWAP_PARTICIPANTS,
+  WITHDRAW_PARTICIPANT_METHOD,
+  WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 import {
   CONSOLATION,
   MAIN,
+  QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
+import {
+  getEnabledStructures,
+  getPolicyActions,
+  isAvailableAction,
+} from './actionPolicyUtils';
 
 /**
  *
@@ -85,6 +93,10 @@ export function positionActions({
 
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
+  const possiblyDisablingAction =
+    ![QUALIFYING, MAIN].includes(structure.stage) ||
+    structure.stageSequence !== 1;
+
   const validActions = [];
   const { drawId } = drawDefinition;
 
@@ -110,8 +122,9 @@ export function positionActions({
 
   // allow unassigneParticipantIds from MAIN in positionActions for consolation
   if (stage === CONSOLATION) stages.push(MAIN);
+  if (stage === MAIN) stages.push(CONSOLATION);
 
-  const entries = getStageEntries({
+  const stageEntries = getStageEntries({
     drawDefinition,
     stageSequence,
     structureId,
@@ -119,11 +132,19 @@ export function positionActions({
     stages,
   });
 
+  const stageAssignedParticipantIds = getStageAssignedParticipantIds({
+    drawDefinition,
+    stages,
+  });
+  /*
   const assignedParticipantIds = assignedPositions.map(
     (assignment) => assignment.participantId
   );
-  const unassignedParticipantIds = entries
-    .filter((entry) => !assignedParticipantIds.includes(entry.participantId))
+  */
+  const unassignedParticipantIds = stageEntries
+    .filter(
+      (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
+    )
     .map((entry) => entry.participantId);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
@@ -140,6 +161,7 @@ export function positionActions({
       isByePosition,
       positionAssignments,
       tournamentParticipants,
+      possiblyDisablingAction,
       unassignedParticipantIds,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
@@ -161,6 +183,7 @@ export function positionActions({
         type: REMOVE_ASSIGNMENT,
         method: REMOVE_ASSIGNMENT_METHOD,
         payload: { drawId, structureId, drawPosition },
+        willDisableLinks: possiblyDisablingAction,
       });
 
       if (!isByePosition) {
@@ -168,6 +191,7 @@ export function positionActions({
           type: WITHDRAW_PARTICIPANT,
           method: WITHDRAW_PARTICIPANT_METHOD,
           payload: { drawId, structureId, drawPosition },
+          willDisableLinks: possiblyDisablingAction,
         });
       }
 
@@ -181,6 +205,7 @@ export function positionActions({
           type: ASSIGN_BYE,
           method: REMOVE_ASSIGNMENT_METHOD,
           payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+          willDisableLinks: possiblyDisablingAction,
         });
       }
     }
@@ -254,23 +279,39 @@ export function positionActions({
         activeDrawPositions,
         inactiveDrawPositions,
         tournamentParticipants,
+        possiblyDisablingAction,
       });
       if (validSwapAction) validActions.push(validSwapAction);
     }
+  }
 
-    if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
-      const { validAlternatesAction } = getValidAlternatesAction({
-        drawId,
-        structure,
-        structureId,
-        drawPosition,
-        drawDefinition,
-        activeDrawPositions,
-        positionAssignments,
-        tournamentParticipants,
-      });
-      if (validAlternatesAction) validActions.push(validAlternatesAction);
-    }
+  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+    const { validAlternatesAction } = getValidAlternatesAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      activeDrawPositions,
+      positionAssignments,
+      tournamentParticipants,
+      possiblyDisablingAction,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
+  }
+  if (isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT })) {
+    const { validAlternatesAction } = getValidLuckyLosersAction({
+      drawId,
+      structure,
+      structureId,
+      drawPosition,
+      drawDefinition,
+      activeDrawPositions,
+      positionAssignments,
+      tournamentParticipants,
+      possiblyDisablingAction,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
 
   return {
@@ -280,72 +321,4 @@ export function positionActions({
     hasPositionAssigned: !!positionAssignment,
     validActions,
   };
-}
-
-function getEnabledStructures({
-  policyDefinition,
-  tournamentRecord,
-  drawDefinition,
-  structure,
-  event,
-}) {
-  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
-    policyType: POLICY_TYPE_POSITION_ACTIONS,
-    tournamentRecord,
-    drawDefinition,
-    event,
-  });
-
-  policyDefinition =
-    policyDefinition || attachedPolicy || POLICY_POSITION_ACTIONS_DEFAULT;
-
-  const positionActionsPolicy = policyDefinition[POLICY_TYPE_POSITION_ACTIONS];
-
-  const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
-  const actionsDisabled = disabledStructures?.find(
-    (structurePolicy) =>
-      structurePolicy.stages?.includes(structure.stage) &&
-      (!structurePolicy.stageSequences?.length ||
-        structurePolicy.stageSequences.includes(structure.stageSequence))
-  );
-
-  return { enabledStructures, actionsDisabled };
-}
-
-function getPolicyActions({ enabledStructures, structure }) {
-  if (!enabledStructures) return {};
-
-  if (!enabledStructures.length)
-    return { policyActions: { enabledActions: [], disabledActions: [] } };
-
-  const policyActions = enabledStructures.find((structurePolicy) => {
-    const matchesStage =
-      !structurePolicy.stages?.length ||
-      structurePolicy.stages.includes(structure.stage);
-    const matchesStageSequence =
-      !structurePolicy.stageSequences?.length ||
-      structurePolicy.stageSequences.includes(structure.stageSequence);
-    if (structurePolicy && matchesStage && matchesStageSequence) {
-      return true;
-    }
-  });
-
-  return { policyActions };
-}
-
-function isAvailableAction({ action, policyActions }) {
-  if (
-    !policyActions?.enabledActions ||
-    (policyActions?.disabledActions?.length &&
-      policyActions.disabledActions.includes(action))
-  ) {
-    return false;
-  }
-  if (
-    policyActions?.enabledActions.length === 0 ||
-    policyActions?.enabledActions.includes(action)
-  ) {
-    return true;
-  }
-  return false;
 }

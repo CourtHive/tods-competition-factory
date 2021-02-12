@@ -19,6 +19,7 @@ export function getValidSwapAction({
   onlyAssignedPositions = true,
   activeDrawPositions,
   inactiveDrawPositions,
+  possiblyDisablingAction,
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID, method: 'getValidSwapAction' };
   if (activeDrawPositions.includes(drawPosition)) return {};
@@ -75,6 +76,7 @@ export function getValidSwapAction({
       type: SWAP_PARTICIPANTS,
       method: SWAP_PARTICIPANT_METHOD,
       availableAssignments,
+      willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPositions: [drawPosition] },
     };
     return { validSwapAction };
