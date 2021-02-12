@@ -15,4 +15,5 @@ export {
   randomMember,
   shuffleArray,
   unique,
+  chunkByNth,
 } from './arrays';
