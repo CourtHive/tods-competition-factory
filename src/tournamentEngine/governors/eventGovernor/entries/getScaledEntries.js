@@ -1,18 +1,27 @@
-import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { getParticipantScaleItem } from '../../queryGovernor/scaleValue';
+import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 
+/**
+ *
+ * @param {object} tournamentRecord - passed in automatically by tournamentEngine
+ * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
+ * @param {object} event - will be passed in automatically if tournamentEngine is passed drawId or eventId
+ * @param {string} stage - OPTIONAL - filters entries matching stage, if present
+ */
 export function getScaledEntries({
   tournamentRecord,
+  scaleAttributes,
   event,
   stage,
-  scaleAttributes,
 }) {
   const entries = event?.entries || [];
+
   const stageEntries = entries.filter(
     (entry) =>
-      (!entry.entryStage || entry.entryStage === stage) &&
+      (!stage || !entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
+
   const scaledEntries = stageEntries
     .map((entry) => {
       const { participantId } = entry;
@@ -21,6 +30,7 @@ export function getScaledEntries({
         participantId,
         scaleAttributes,
       });
+      // return a new object so original entry is untouched
       return Object.assign({}, entry, scaleItem);
     })
     .filter((scaledEntry) => {

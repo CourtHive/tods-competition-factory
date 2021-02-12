@@ -1,6 +1,6 @@
+import { conditionallyDisableLinkPositioning } from '../../../../drawEngine/governors/positionGovernor/conditionallyDisableLinkPositioning';
 import { assignDrawPositionBye } from '../../../../drawEngine/governors/positionGovernor/byePositioning/assignDrawPositionBye';
 import { addPositionActionTelemetry } from '../../../../drawEngine/governors/positionGovernor/addPositionActionTelemetry';
-import { disableDrawPositionLinks } from '../../../../drawEngine/governors/positionGovernor/disableDrawPositionLinks';
 import { clearDrawPosition } from '../../../../drawEngine/governors/positionGovernor/positionClear';
 import { findTournamentParticipant } from '../../../getters/participants/participantGetter';
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
@@ -78,9 +78,10 @@ export function removeDrawPositionAssignment(props) {
   }
 
   const { structure } = findStructure({ drawDefinition, structureId });
-  if (structure.stageSequence !== 1) {
-    disableDrawPositionLinks({ structure, drawPositions: [drawPosition] });
-  }
+  conditionallyDisableLinkPositioning({
+    structure,
+    drawPositions: [drawPosition],
+  });
   const positionAction = {
     name: 'removeDrawPositionAssignment',
     replaceWithBye,

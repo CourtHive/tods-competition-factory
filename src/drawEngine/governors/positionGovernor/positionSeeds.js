@@ -76,7 +76,7 @@ function positionSeedBlock({
       structureId,
       drawPosition,
       participantId,
-      placementScenario: true,
+      automaticPlacement: true,
     });
     if (!result.success) return result;
   }
