@@ -112,7 +112,9 @@ export const tournamentEngine = (function () {
           drawId,
         });
         params = Object.assign({}, params, { event, drawDefinition });
-      } else if (params.eventId && !params.event) {
+      }
+
+      if (params.eventId && !params.event) {
         const { event } = findEvent({
           tournamentRecord,
           eventId: params.eventId,
