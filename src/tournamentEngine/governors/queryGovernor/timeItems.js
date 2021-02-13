@@ -1,3 +1,5 @@
+import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+
 import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
@@ -8,7 +10,6 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
 export function getTimeItem({
   element,
