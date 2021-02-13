@@ -1,8 +1,8 @@
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
 import { getValidAssignmentActions } from './participantAssignments';
-import { getValidLuckyLosersAction } from './participantLuckyLoser';
-import { getValidAlternatesAction } from './participantAlternates';
+import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
+import { getValidAlternatesAction } from './getValidAlternatesAction';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { getValidSwapAction } from './getValidSwapAction';
@@ -19,6 +19,7 @@ import {
   INVALID_DRAW_POSITION,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
+  MISSING_EVENT,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
@@ -68,6 +69,7 @@ export function positionActions({
   structureId,
   event,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (drawPosition === undefined) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -287,6 +289,7 @@ export function positionActions({
 
   if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
     const { validAlternatesAction } = getValidAlternatesAction({
+      event,
       drawId,
       structure,
       structureId,
