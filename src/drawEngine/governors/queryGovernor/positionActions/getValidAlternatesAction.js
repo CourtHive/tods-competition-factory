@@ -13,6 +13,7 @@ export function getValidAlternatesAction({
   drawPosition,
   structureId,
   drawId,
+  event,
 
   structure,
   drawDefinition,
@@ -28,8 +29,9 @@ export function getValidAlternatesAction({
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
-  const availableAlternatesParticipantIds = drawDefinition.entries
-    ?.filter(
+  const eventEntries = event.entries || [];
+  const availableAlternatesParticipantIds = eventEntries
+    .filter(
       (entry) =>
         entry.entryStatus === ALTERNATE &&
         eligibleEntryStage({ structure, entry }) &&
