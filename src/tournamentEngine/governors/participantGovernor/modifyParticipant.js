@@ -1,19 +1,16 @@
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+import { tournament } from '../../tests/integration/setStateGetState/tournament';
 
 import {
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { participantTypes } from '../../../constants/participantTypes';
+import { participantRoles } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { addParticipant } from './addParticipants';
-import {
-  INDIVIDUAL,
-  participantTypes,
-} from '../../../constants/participantTypes';
-import { participantRoles } from '../../../constants/participantRoles';
-import { tournament } from '../../tests/integration/setStateGetState/tournament';
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 
 export function modifyParticipant({ tournamentRecord, participant }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -44,7 +41,7 @@ export function modifyParticipant({ tournamentRecord, participant }) {
   if (Array.isArray(individualParticipantIds)) {
     const { participants } = getTournamentParticipants({
       tournament,
-      participantFilters: { participantTypes: [INDIVIDUAL] },
+      participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
     });
     const allIndividualParticipantIds = participants.map(
       ({ participantId }) => participantId
