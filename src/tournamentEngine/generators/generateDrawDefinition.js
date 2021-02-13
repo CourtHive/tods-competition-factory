@@ -194,6 +194,9 @@ export function generateDrawDefinition(props) {
     });
     drawEngine.addDrawEntry(entryData);
   });
+  const enteredParticipantIds = entries.map(
+    ({ participantId }) => participantId
+  );
 
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
@@ -201,6 +204,9 @@ export function generateDrawDefinition(props) {
 
   if (seededParticipants) {
     seededParticipants
+      .filter(({ participantId }) =>
+        enteredParticipantIds.includes(participantId)
+      )
       .filter(
         (seededParticipant) =>
           !seededParticipant.seedNumber ||
@@ -219,7 +225,10 @@ export function generateDrawDefinition(props) {
           seedValue,
           participantId,
         });
-        if (!result.success) console.log(`%c ${result.error}`, 'color: red');
+        if (!result.success) {
+          console.log('generateDrawDefinition seededParticpants');
+          console.log(`%c ${result.error}`, 'color: red');
+        }
       });
   } else if (event?.category) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
@@ -261,19 +270,27 @@ export function generateDrawDefinition(props) {
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
     scaledEntries &&
-      scaledEntries.slice(0, seedsCount).forEach((scaledEntry, index) => {
-        const seedNumber = index + 1;
-        const seedValue = seedNumber;
-        // TODO: attach basis of seeding information to seedAssignment
-        const { participantId } = scaledEntry;
-        const result = drawEngine.assignSeed({
-          structureId,
-          seedNumber,
-          seedValue,
-          participantId,
+      scaledEntries
+        .filter(({ participantId }) =>
+          enteredParticipantIds.includes(participantId)
+        )
+        .slice(0, seedsCount)
+        .forEach((scaledEntry, index) => {
+          const seedNumber = index + 1;
+          const seedValue = seedNumber;
+          // TODO: attach basis of seeding information to seedAssignment
+          const { participantId } = scaledEntry;
+          const result = drawEngine.assignSeed({
+            structureId,
+            seedNumber,
+            seedValue,
+            participantId,
+          });
+          if (!result.success) {
+            console.log('generateDrawDefinition scaledEntries');
+            console.log(`%c ${result.error}`, 'color: red');
+          }
         });
-        if (!result.success) console.log(`%c ${result.error}`, 'color: red');
-      });
   }
 
   let conflicts = [];
