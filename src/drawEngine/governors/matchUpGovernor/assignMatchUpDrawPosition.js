@@ -53,13 +53,6 @@ export function assignMatchUpDrawPosition({
         })
         .sort(numericSort);
 
-  console.log({
-    matchUp,
-    drawPositions,
-    positionAssigned,
-    updatedDrawPositions,
-  });
-
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structure,
