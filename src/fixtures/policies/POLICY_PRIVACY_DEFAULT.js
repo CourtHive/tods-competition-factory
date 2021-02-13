@@ -17,7 +17,6 @@ export const POLICY_PRIVACY_DEFAULT = {
       penalties: false,
       representing: true,
       participantRoleResponsabilities: false,
-      teamId: false,
       participantType: true,
       person: {
         addresses: false,

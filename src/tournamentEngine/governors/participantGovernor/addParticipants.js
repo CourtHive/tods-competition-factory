@@ -3,10 +3,9 @@ import { intersection } from '../../../utilities/arrays';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  GROUP,
   INDIVIDUAL,
   PAIR,
-  TEAM,
+  participantTypes,
 } from '../../../constants/participantTypes';
 import {
   INVALID_PARTICIPANT_IDS,
@@ -39,7 +38,7 @@ export function addParticipant({ tournamentRecord, participant }) {
   if (idExists) return { error: PARTICIPANT_ID_EXISTS };
 
   const { participantType, participantRole } = participant;
-  if (![PAIR, TEAM, INDIVIDUAL, GROUP].includes(participantType))
+  if (!Object.keys(participantTypes).includes(participantType))
     return { error: INVALID_PARTICIPANT_TYPE, participantType };
 
   if (!participantRole) return { error: MISSING_PARTICIPANT_ROLE };
