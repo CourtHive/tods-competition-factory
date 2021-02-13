@@ -547,6 +547,10 @@ Modify grouping participant [TEAM, GROUP] individualParticipantIds
 
 ---
 
+## modifyParticipant
+
+---
+
 ## modifyPenalty
 
 ---
