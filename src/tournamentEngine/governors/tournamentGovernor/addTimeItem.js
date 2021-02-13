@@ -34,9 +34,17 @@ export function addTimeItem({ element, timeItem, duplicateValues = true }) {
       itemType,
       itemSubTypes,
     });
-    if (existingTimeItem?.itemValue === itemValue && !duplicateValues) {
+    if (
+      JSON.stringify(existingTimeItem?.itemValue) ===
+        JSON.stringify(itemValue) &&
+      !duplicateValues
+    ) {
       return SUCCESS;
     }
+  }
+
+  if (timeItem.itemSubTypes && !timeItem.itemSubTypes.length) {
+    delete timeItem.itemSubTypes;
   }
 
   const createdAt = new Date().toISOString();

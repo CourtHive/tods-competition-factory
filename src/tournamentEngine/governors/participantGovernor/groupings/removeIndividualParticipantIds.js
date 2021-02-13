@@ -53,14 +53,16 @@ export function removeIndividualParticipantIds({
 // for instance in a team competition where an individual is part of a matchUp within a tieMatchUp
 function removeParticipantIdsFromGroupingParticipant({
   groupingParticipant,
-  individualParticipantIds,
+  individualParticipantIds = [],
 }) {
   let removed = 0;
   let notRemoved = [];
   if (!groupingParticipant) return { removed };
+  if (!groupingParticipant.individualParticipantIds)
+    groupingParticipant.individualParticipantIds = [];
   groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.filter(
     (participantId) => {
-      const removeParticipant = individualParticipantIds.includes(
+      const removeParticipant = individualParticipantIds?.includes(
         participantId
       );
       if (removeParticipant) removed++;
@@ -76,7 +78,7 @@ function removeParticipantIdsFromGroupingParticipant({
 export function removeParticipantIdsFromAllTeams({
   groupingType = TEAM,
   tournamentRecord,
-  individualParticipantIds,
+  individualParticipantIds = [],
 }) {
   const tournamentParticipants = tournamentRecord.participants || [];
 

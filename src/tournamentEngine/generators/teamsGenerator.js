@@ -3,6 +3,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
 
+// TODO: participantProfile => extension
 export function generateTeamsFromParticipantAttribute(props) {
   const {
     tournamentRecord,

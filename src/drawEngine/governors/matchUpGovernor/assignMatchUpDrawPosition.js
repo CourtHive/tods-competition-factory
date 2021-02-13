@@ -34,12 +34,14 @@ export function assignMatchUpDrawPosition({
     matchUpId,
   });
 
-  const drawPositions = matchUp.drawPositions || [];
   let positionAdded = false;
+  const drawPositions = matchUp.drawPositions || [];
   let positionAssigned = drawPositions.includes(drawPosition);
   const updatedDrawPositions = positionAssigned
     ? drawPositions
-    : drawPositions
+    : []
+        .concat(...drawPositions, undefined, undefined)
+        .slice(0, 2) // accounts for empty array, should always have length 2
         .map((position) => {
           if (!position && !positionAssigned) {
             positionAssigned = true;
