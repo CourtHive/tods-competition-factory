@@ -302,7 +302,7 @@ export function getAllStructureMatchUps({
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
     } else if (matchUp.collectionId && !matchUp.matchUpFormat) {
-      // the default matchUpFormat for atchUps that are part of Dual Matches / Ties
+      // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
       const collectionDefinition = collectionDefinitions.reduce(
         (definition, candidate) => {
