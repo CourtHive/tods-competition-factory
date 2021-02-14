@@ -2,14 +2,32 @@ import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/get
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 
 import { BYE } from '../../constants/matchUpStatusConstants';
+import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
 
 /*
     matchUps should contain sufficient information for a draw hierarchy to be reconstructed
 */
-export function buildDrawHierarchy({ matchUps }) {
+export function buildDrawHierarchy({ matchUps, matchUpType }) {
   let feedRoundNumber = 0;
   let previousRound = [];
   let missingMatchUps = [];
+
+  if (matchUpType)
+    matchUps = matchUps.filter(
+      (matchUp) => matchUp.matchUpType === matchUpType
+    );
+  const matchUpTypes = unique(matchUps.map(({ matchUpType }) => matchUpType));
+  if (matchUpTypes.length > 1) {
+    if (matchUpTypes.includes(TEAM)) {
+      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === TEAM);
+    } else if (matchUpTypes.includes(SINGLES)) {
+      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === SINGLES);
+    } else if (matchUpTypes.includes(DOUBLES)) {
+      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === DOUBLES);
+    } else {
+      return {};
+    }
+  }
 
   if (!Array.isArray(matchUps) || !matchUps.length) return {};
 
