@@ -238,7 +238,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
   });
 
   const hierarchy = previousRound[0];
-  return { hierarchy, missingMatchUps, maxRound, finalRound };
+  return { hierarchy, missingMatchUps, maxRound, finalRound, matchUps };
 
   function filterRoundMatchUps({ matchUps, roundNumber }) {
     return matchUps
