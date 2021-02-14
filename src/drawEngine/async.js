@@ -53,8 +53,6 @@ function setState(definition, deepCopyOption = true) {
   if (typeof definition !== 'object') return { error: INVALID_OBJECT };
   if (!definition.drawId) return { error: MISSING_DRAW_ID, method: 'setState' };
 
-  if (!definition.links) definition.links = [];
-  if (!definition.entries) definition.entries = [];
   if (!validDefinitionKeys(definition))
     return { error: INVALID_DRAW_DEFINITION };
 
