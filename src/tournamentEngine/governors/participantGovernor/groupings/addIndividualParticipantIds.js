@@ -77,7 +77,7 @@ export function addIndividualParticipantIds({
     if (removeFromOtherTeams) {
       removeParticipantIdsFromAllTeams({
         tournamentRecord,
-        participantIds: participantIdsToAdd,
+        individualParticipantIds: participantIdsToAdd,
       });
     }
     groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.concat(
