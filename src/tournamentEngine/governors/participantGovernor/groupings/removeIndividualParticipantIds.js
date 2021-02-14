@@ -60,6 +60,7 @@ function removeParticipantIdsFromGroupingParticipant({
   if (!groupingParticipant) return { removed };
   if (!groupingParticipant.individualParticipantIds)
     groupingParticipant.individualParticipantIds = [];
+
   groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.filter(
     (participantId) => {
       const removeParticipant = individualParticipantIds?.includes(
@@ -92,17 +93,11 @@ export function removeParticipantIdsFromAllTeams({
       );
     })
     .forEach((team) => {
-      const {
-        groupingParticipant,
-        removed,
-      } = removeParticipantIdsFromGroupingParticipant({
+      const { removed } = removeParticipantIdsFromGroupingParticipant({
         groupingParticipant: team,
         individualParticipantIds,
       });
-      if (removed) {
-        team = groupingParticipant;
-        modifications++;
-      }
+      if (removed) modifications++;
     });
 
   return modifications ? SUCCESS : { error: NO_PARTICIPANT_REMOVED };

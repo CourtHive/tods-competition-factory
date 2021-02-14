@@ -1,7 +1,6 @@
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
-import { generateScoreString } from '../../governors/scoreGovernor/generateScoreString';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
@@ -290,19 +289,10 @@ export function getAllStructureMatchUps({
         return Object.assign({}, side, { sourceDrawPositionRange });
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
+    }
 
-      if (!matchUp.matchUpFormat) {
-        const matchUpFormat =
-          structure.matchUpFormat || drawDefinition?.matchUpFormat;
-        if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
-      }
-      if (!matchUp.matchUpType) {
-        const matchUpType =
-          structure.matchUpType || drawDefinition?.matchUpType;
-        if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
-      }
-    } else if (matchUp.collectionId && !matchUp.matchUpFormat) {
-      // the default matchUpFormat for atchUps that are part of Dual Matches / Ties
+    if (matchUp.collectionId) {
+      // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
       const collectionDefinition = collectionDefinitions.reduce(
         (definition, candidate) => {
@@ -314,14 +304,29 @@ export function getAllStructureMatchUps({
       );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
+      if (!matchUp.matchUpFormat && matchUpFormat) {
+        Object.assign(matchUpWithContext, { matchUpFormat });
+      }
+
       const matchUpType =
         collectionDefinition && collectionDefinition.matchUpType;
-      if (matchUpFormat)
-        Object.assign(matchUpWithContext, { matchUpFormat, matchUpType });
+      if (matchUpType) {
+        Object.assign(matchUpWithContext, { matchUpType });
+      }
+    } else {
+      if (!matchUp.matchUpFormat) {
+        const matchUpFormat =
+          structure.matchUpFormat || drawDefinition?.matchUpFormat;
+        if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
+      }
+      if (!matchUp.matchUpType) {
+        const matchUpType =
+          structure.matchUpType || drawDefinition?.matchUpType;
+        if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
+      }
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
-      const sets = matchUpWithContext.score?.sets || [];
       matchUpWithContext.sides
         .filter((f) => f)
         .forEach((side) => {
@@ -335,15 +340,6 @@ export function getAllStructureMatchUps({
               Object.assign(side, { participant });
             }
           }
-
-          // ##########################
-          // TODO: remove this block when client apps converted to new score object
-          if (sets && side.sideNumber) {
-            const reversed = side.sideNumber === 2;
-            const scoreString = generateScoreString({ sets, reversed });
-            Object.assign(side, { score: scoreString });
-          }
-          // ##########################
 
           if (side.participant && side.participant.individualParticipantIds) {
             const individualParticipants = side.participant.individualParticipantIds.map(

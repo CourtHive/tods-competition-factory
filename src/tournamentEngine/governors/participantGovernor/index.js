@@ -1,39 +1,33 @@
 import { rankByRatings } from './rankByRatings';
-import { makeDeepCopy } from '../../../utilities';
 import { mergeParticipants } from './mergeParticipants';
 import { deleteParticipants } from './deleteParticipants';
 import { getPairedParticipant } from './getPairedParticipant';
-import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { addParticipant, addParticipants } from './addParticipants';
 import { getParticipantIdFinishingPositions } from './finishingPositions';
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
+import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
+import { participantMembership } from '../../getters/participants/participantMembership';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
-import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
+import { publicFindParticipant } from '../../getters/participants/participantGetter';
+import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
+import { createGroupParticipant } from './groupings/createGroupParticipant';
+import { modifyParticipantOtherName } from './modifyParticipantOtherName';
+import { modifyParticipantName } from './modifyParticipantName';
+import { setParticipantScaleItems } from './scaleItems';
+import { setParticipantScaleItem } from './scaleItems';
+import { modifyParticipant } from './modifyParticipant';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
 } from './groupings/removeIndividualParticipantIds';
-import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus';
-import { setParticipantScaleItems } from './scaleItems';
-import { setParticipantScaleItem } from './scaleItems';
 import {
   addPenalty,
   modifyPenalty,
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
-import { participantMembership } from '../../getters/participants/participantMembership';
-import { modifyParticipantName } from './modifyParticipantName';
-import { modifyParticipantOtherName } from './modifyParticipantOtherName';
-import { modifyParticipant } from './modifyParticipant';
-
-const findTournamentParticipantCopy = (props) => {
-  const { participant, error } = findTournamentParticipant(props);
-  return { participant: makeDeepCopy(participant), error };
-};
 
 const participantGovernor = {
   addPenalty,
@@ -68,7 +62,7 @@ const participantGovernor = {
   modifyParticipantsSignInStatus,
 
   getParticipantEventDetails,
-  findParticipant: findTournamentParticipantCopy,
+  findParticipant: publicFindParticipant,
   getTournamentParticipants,
 };
 

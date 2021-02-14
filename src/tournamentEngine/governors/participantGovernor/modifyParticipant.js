@@ -1,23 +1,30 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
-import { tournament } from '../../tests/integration/setStateGetState/tournament';
+import {
+  GROUP,
+  PAIR,
+  participantTypes,
+} from '../../../constants/participantTypes';
+import { participantRoles } from '../../../constants/participantRoles';
+import { genderConstants } from '../../../constants/genderConstants';
+import { getDevContext } from '../../../global/globalState';
 import { addParticipant } from './addParticipants';
+import { makeDeepCopy } from '../../../utilities';
 
 import {
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { participantTypes } from '../../../constants/participantTypes';
-import { participantRoles } from '../../../constants/participantRoles';
-import { genderConstants } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 export function modifyParticipant({
   tournamentRecord,
-  participant,
   groupingParticipantId,
   removeFromOtherTeams,
+  updateParticipantName = true,
+  participant,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
@@ -48,18 +55,42 @@ export function modifyParticipant({
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
   if (Array.isArray(individualParticipantIds)) {
-    const { participants } = getTournamentParticipants({
-      tournament,
+    const {
+      tournamentParticipants: individualParticipants,
+    } = getTournamentParticipants({
+      tournamentRecord,
       participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
     });
-    const allIndividualParticipantIds = participants.map(
+    const allIndividualParticipantIds = individualParticipants?.map(
       ({ participantId }) => participantId
     );
-    newValues.individualParticipantIds = individualParticipantIds.filter(
-      (participantId) =>
-        typeof participantId === 'string' &&
-        allIndividualParticipantIds.includes(participantId)
-    );
+    if (allIndividualParticipantIds) {
+      // check that all new individualParticipantIds exist and are { participantType: INDIVIDUAL }
+      const updatedIndividualParticipantIds = individualParticipantIds.filter(
+        (participantId) =>
+          typeof participantId === 'string' &&
+          allIndividualParticipantIds.includes(participantId)
+      );
+
+      if (
+        [GROUP, TEAM].includes(participantType) ||
+        (participantType === PAIR &&
+          updatedIndividualParticipantIds.length === 2)
+      ) {
+        newValues.individualParticipantIds = updatedIndividualParticipantIds;
+      }
+
+      // check whether to update PAIR participantName
+      if (
+        existingParticipant.participantType === participantTypes.PAIR &&
+        updateParticipantName
+      ) {
+        newValues.participantName = generatePairParticipantName({
+          individualParticipants,
+          newValues,
+        });
+      }
+    }
   }
   if (Object.keys(participantRoles).includes(participantRole))
     newValues.participantRole = participantRole;
@@ -70,47 +101,91 @@ export function modifyParticipant({
     existingParticipant.participantType === participantTypes.INDIVIDUAL &&
     person
   ) {
-    const newPersonValues = {};
-    const {
-      sex,
-      nationalityCode,
-      standardFamilyName,
-      standardGivenName,
-    } = person;
-    if (sex && Object.keys(genderConstants).includes(sex))
-      newPersonValues.sex = sex;
-    if (
-      nationalityCode &&
-      typeof nationalityCode === 'string' &&
-      nationalityCode.length < 4
-    )
-      newPersonValues.nationalityCode = nationalityCode;
-    if (
-      standardFamilyName &&
-      typeof standardFamilyName === 'string' &&
-      standardFamilyName.length > 1
-    )
-      newPersonValues.standardFamilyName = standardFamilyName;
-    if (
-      standardGivenName &&
-      typeof standardGivenName === 'string' &&
-      standardGivenName.length > 1
-    )
-      newPersonValues.standardGivenName = standardGivenName;
-    Object.assign(existingParticipant.person, newPersonValues);
+    updatePerson({
+      updateParticipantName,
+      existingParticipant,
+      newValues,
+      person,
+    });
   }
 
   Object.assign(existingParticipant, newValues);
 
   if (groupingParticipantId) {
-    const result = addIndividualParticipantIds({
+    addIndividualParticipantIds({
       tournamentRecord,
       groupingParticipantId,
       individualParticipantIds: [existingParticipant.participantId],
       removeFromOtherTeams,
     });
-    console.log({ result });
+  }
+
+  if (getDevContext()) {
+    return Object.assign({}, SUCCESS, {
+      participant: makeDeepCopy(existingParticipant),
+    });
   }
 
   return SUCCESS;
+}
+
+function generatePairParticipantName({ individualParticipants, newValues }) {
+  const individualParticipantIds = newValues.individualParticipantIds;
+  return individualParticipants
+    .filter(({ participantId }) =>
+      individualParticipantIds.includes(participantId)
+    )
+    .map(({ person }) => person?.standardFamilyName)
+    .filter((f) => f)
+    .sort()
+    .join('/');
+}
+
+function updatePerson({
+  updateParticipantName,
+  existingParticipant,
+  newValues,
+  person,
+}) {
+  const newPersonValues = {};
+  const {
+    sex,
+    nationalityCode,
+    standardFamilyName,
+    standardGivenName,
+  } = person;
+  if (sex && Object.keys(genderConstants).includes(sex))
+    newPersonValues.sex = sex;
+
+  let personNameModified;
+  if (
+    nationalityCode &&
+    typeof nationalityCode === 'string' &&
+    nationalityCode.length < 4
+  ) {
+    newPersonValues.nationalityCode = nationalityCode;
+  }
+  if (
+    standardFamilyName &&
+    typeof standardFamilyName === 'string' &&
+    standardFamilyName.length > 1
+  ) {
+    newPersonValues.standardFamilyName = standardFamilyName;
+    personNameModified = true;
+  }
+
+  if (
+    standardGivenName &&
+    typeof standardGivenName === 'string' &&
+    standardGivenName.length > 1
+  ) {
+    newPersonValues.standardGivenName = standardGivenName;
+    personNameModified = true;
+  }
+
+  if (personNameModified && updateParticipantName) {
+    const participantName = `${newPersonValues.standardGivenName} ${newPersonValues.standardFamilyName}`;
+    newValues.participantName = participantName;
+  }
+  Object.assign(existingParticipant.person, newPersonValues);
 }
