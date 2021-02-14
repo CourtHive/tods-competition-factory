@@ -53,7 +53,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
       (a, b) => a.roundPosition - b.roundPosition
     );
     const currentRoundDrawPositions = currentRoundMatchUps
-      .map((matchUp) => matchUp.drawPositions)
+      .map((matchUp) => matchUp?.drawPositions || [])
       .flat();
     if (roundNumber === 1 || !roundProfile[roundNumber - 1]) {
       const orderedDrawPositions = currentRoundDrawPositions.sort(numericSort);
@@ -73,23 +73,23 @@ export function getRoundMatchUps({ matchUps = [] }) {
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
         const { roundPosition, drawPositions } = matchUp;
         if (!roundPosition) return drawPositions;
-        const filteredDrawPositions = drawPositions.filter((f) => f);
-        if (!filteredDrawPositions.length) return [undefined, undefined];
+        const filteredDrawPositions = drawPositions?.filter((f) => f);
+        if (!filteredDrawPositions?.length) return [undefined, undefined];
 
         // { roundNumber: 2 } is the first possible feed round and the last time that a numeric sort is guaranteed to work
-        if (roundNumber < 3 && filteredDrawPositions.length === 2)
-          return drawPositions.sort(numericSort);
+        if (roundNumber < 3 && filteredDrawPositions?.length === 2)
+          return drawPositions?.sort(numericSort);
 
         // if the prior round does NOT include the one existing drawPosition then it is a feed round
         // ... and fed positions are always { sideNumber: 1 }
         if (
           intersection(priorRoundDrawPositions, filteredDrawPositions)
-            .length !== filteredDrawPositions.length
+            .length !== filteredDrawPositions?.length
         ) {
-          if (filteredDrawPositions.length === 1) {
+          if (filteredDrawPositions?.length === 1) {
             return [filteredDrawPositions[0], undefined];
           } else {
-            return drawPositions.sort(numericSort);
+            return drawPositions?.sort(numericSort);
           }
         }
 
@@ -103,14 +103,14 @@ export function getRoundMatchUps({ matchUps = [] }) {
           targetChunkIndex + 2
         );
         const orderedPositions = targetChunks.map((chunk) => {
-          const drawPositionInChunk = drawPositions.find((drawPosition) =>
+          const drawPositionInChunk = drawPositions?.find((drawPosition) =>
             chunk.includes(drawPosition)
           );
           return drawPositionInChunk;
         });
         return orderedPositions;
       });
-      roundProfile[roundNumber].drawPositions = roundDrawPositions.flat();
+      roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();
       roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
     roundProfile[roundNumber].finishingRound = finishingRoundMap[roundNumber];
