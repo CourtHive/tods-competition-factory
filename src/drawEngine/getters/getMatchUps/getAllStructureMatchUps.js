@@ -290,18 +290,9 @@ export function getAllStructureMatchUps({
         return Object.assign({}, side, { sourceDrawPositionRange });
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
+    }
 
-      if (!matchUp.matchUpFormat) {
-        const matchUpFormat =
-          structure.matchUpFormat || drawDefinition?.matchUpFormat;
-        if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
-      }
-      if (!matchUp.matchUpType) {
-        const matchUpType =
-          structure.matchUpType || drawDefinition?.matchUpType;
-        if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
-      }
-    } else if (matchUp.collectionId && !matchUp.matchUpFormat) {
+    if (matchUp.collectionId) {
       // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
       const collectionDefinition = collectionDefinitions.reduce(
@@ -314,10 +305,26 @@ export function getAllStructureMatchUps({
       );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
+      if (!matchUp.matchUpFormat && matchUpFormat) {
+        Object.assign(matchUpWithContext, { matchUpFormat });
+      }
+
       const matchUpType =
         collectionDefinition && collectionDefinition.matchUpType;
-      if (matchUpFormat)
-        Object.assign(matchUpWithContext, { matchUpFormat, matchUpType });
+      if (matchUpType) {
+        Object.assign(matchUpWithContext, { matchUpType });
+      }
+    } else {
+      if (!matchUp.matchUpFormat) {
+        const matchUpFormat =
+          structure.matchUpFormat || drawDefinition?.matchUpFormat;
+        if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
+      }
+      if (!matchUp.matchUpType) {
+        const matchUpType =
+          structure.matchUpType || drawDefinition?.matchUpType;
+        if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
+      }
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
