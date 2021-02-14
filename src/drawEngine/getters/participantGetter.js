@@ -4,14 +4,14 @@ export function findParticipant({
   tournamentParticipants = [],
   policyDefinition = {},
   participantId,
+  personId,
 }) {
-  const participant = tournamentParticipants.reduce(
-    (participant, candidate) => {
-      return candidate.participantId === participantId
-        ? candidate
-        : participant;
-    },
-    undefined
+  const participant = tournamentParticipants.find(
+    (candidate) =>
+      (participantId && candidate.participantId === participantId) ||
+      (personId &&
+        participant.person &&
+        participant.person.personId === personId)
   );
   const participantAttributes = policyDefinition.participant;
   if (participantAttributes) {
