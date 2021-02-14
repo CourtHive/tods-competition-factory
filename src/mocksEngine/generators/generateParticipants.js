@@ -70,7 +70,7 @@ export function generateParticipants({
     : isoCountries;
 
   const countriesList = shuffleArray(
-    generateRange(0, Math.ceil(individualParticipantsCount / isoMin))
+    generateRange(0, Math.ceil(individualParticipantsCount / (isoMin || 1)))
       .map(() => isoList)
       .flat(Infinity)
   );
@@ -117,7 +117,7 @@ export function generateParticipants({
     const { firstName, lastName, extensions } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
-    const participantName = `${standardFamilyName.toUpperCase()}, ${standardGivenName}`;
+    const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
     const nationalityCode = country && (country.ioc || country.iso);
     if (countriesList?.length && !nationalityCode) {
@@ -133,7 +133,6 @@ export function generateParticipants({
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
       participantName,
-      name: participantName, // for backwards compatability
       person: {
         addresses: [address],
         personId: UUID(),
