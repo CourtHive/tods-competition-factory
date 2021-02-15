@@ -6,6 +6,7 @@ import { findTournamentParticipant } from '../../../getters/participants/partici
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
+import { pushGlobalLog } from '../../../../global/globalLog';
 
 import {
   ALTERNATE,
@@ -67,6 +68,12 @@ export function removeDrawPositionAssignment(props) {
   }
 
   if (replaceWithBye) {
+    pushGlobalLog({
+      newline: true,
+      color: 'green',
+      method: 'replaceWithBye',
+      drawPosition,
+    });
     const { mappedMatchUps } = props;
     const result = assignDrawPositionBye({
       drawDefinition,
