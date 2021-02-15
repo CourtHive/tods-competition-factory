@@ -10,6 +10,7 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { pushGlobalLog } from '../../../global/globalLog';
 
 /*
   FEED_FMLC linkCondition... check whether it is a participant's first 
@@ -22,6 +23,12 @@ export function directLoser(props) {
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
   } = props;
+
+  pushGlobalLog({
+    color: 'brightyellow',
+    method: 'directLoser',
+    loserDrawPosition,
+  });
 
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];

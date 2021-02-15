@@ -1,8 +1,12 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
-
 import { generateFMLC } from '../../tests/primitives/fmlc';
+import {
+  getOrderedDrawPositionPairs,
+  replaceWithBye,
+} from '../testingUtilities';
+
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
@@ -13,7 +17,9 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
-it('can generate FEED_FMLC with double-byes in consolation', () => {
+// import { printGlobalLog, pushGlobalLog } from '../../../global/globalLog';
+
+it('can generate FEED_FMLC with double-byes in consolation 17/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 17;
@@ -66,7 +72,7 @@ it('can generate FEED_FMLC with double-byes in consolation', () => {
   });
 });
 
-it('can generate FEED_FMLC with double-byes in consolation', () => {
+it('can generate FEED_FMLC with double-byes in consolation 18/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 18;
@@ -251,7 +257,6 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     drawId,
     matchUpId,
     outcome: toBePlayed,
-    devContext: true,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score.scoreStringSide1).toEqual('');
@@ -268,7 +273,6 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
       score,
       winningSide,
     },
-    devContext: true,
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.score).not.toBeUndefined();
@@ -276,3 +280,168 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
   expect(completedMatchUps.length).toEqual(13);
 });
+
+it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with completed matchUp', () => {
+  /*
+  pushGlobalLog(
+    {
+      color: 'brightyellow',
+      method: 'complete matchUp *before* replacing positions with BYE',
+    },
+    true
+  );
+  */
+  tournamentEngine.devContext(false);
+
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      eventType: SINGLES,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    },
+  ];
+
+  let {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[1].matchUpId;
+
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+
+  const result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  const {
+    drawDefinition: {
+      structures: [{ structureId: mainStructureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { orderedPairs, positionAssignments } = getConsolationDetails({
+    drawId,
+  });
+  expect(orderedPairs).toEqual([
+    [2, 3],
+    [undefined, 1],
+  ]);
+  expect(
+    positionAssignments.map(({ participantId }) => !!participantId)
+  ).toEqual([false, false, true]);
+
+  replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
+  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
+    false,
+    true,
+    false,
+  ]);
+
+  // tournamentEngine.devContext(true);
+  replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
+  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
+    true,
+    true,
+    false,
+  ]);
+  // printGlobalLog(true);
+});
+
+it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with incomplete matchUp', () => {
+  /*
+  pushGlobalLog(
+    {
+      color: 'brightyellow',
+      method: 'replace positions with BYE *before* completing matchUp',
+    },
+    true
+  );
+  tournamentEngine.devContext(false);
+  */
+  const drawProfiles = [
+    {
+      drawSize: 4,
+      eventType: SINGLES,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+    },
+  ];
+
+  let {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  const {
+    drawDefinition: {
+      structures: [{ structureId: mainStructureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { orderedPairs, positionAssignments } = getConsolationDetails({
+    drawId,
+  });
+  expect(orderedPairs).toEqual([
+    [2, 3],
+    [undefined, 1],
+  ]);
+
+  replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
+  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
+    false,
+    true,
+    false,
+  ]);
+
+  // tournamentEngine.devContext(true);
+  replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
+  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+
+  // tournamentEngine.devContext(false);
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+
+  const result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
+    true,
+    true,
+    false,
+  ]);
+
+  // printGlobalLog(true);
+});
+
+function getConsolationDetails({ drawId }) {
+  let {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  let positionAssignments = structures[1].positionAssignments;
+  let { orderedPairs, matchUps } = getOrderedDrawPositionPairs({
+    structureId: structures[1].structureId,
+  });
+  return { matchUps, orderedPairs, positionAssignments };
+}
