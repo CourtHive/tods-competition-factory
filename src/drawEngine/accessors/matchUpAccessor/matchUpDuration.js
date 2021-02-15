@@ -1,4 +1,5 @@
 import { validTimeString } from '../../../fixtures/validations/regex';
+import { getDevContext } from '../../../global/globalState';
 
 import {
   MISSING_MATCHUP,
@@ -77,7 +78,7 @@ export function matchUpDuration({ matchUp }) {
   );
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
-    console.log('START or RESUME');
+    if (getDevContext()) console.log('START or RESUME');
     // TODO: test this... matchUp has not clompleted and is active
     const interval = new Date() - timeDate(elapsed.lastValue);
     elapsed.milliseconds += interval;
