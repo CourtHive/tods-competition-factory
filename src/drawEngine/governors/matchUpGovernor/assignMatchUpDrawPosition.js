@@ -13,12 +13,14 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { pushGlobalLog } from '../../../global/globalLog';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
   mappedMatchUps,
   matchUpId,
   drawPosition,
+  iterative,
 }) {
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -32,6 +34,13 @@ export function assignMatchUpDrawPosition({
     drawDefinition,
     mappedMatchUps,
     matchUpId,
+  });
+
+  pushGlobalLog({
+    color: iterative || 'white',
+    method: 'assignMatchUpDrawPosition',
+    stage: structure.stage,
+    drawPosition,
   });
 
   let positionAdded = false;
@@ -96,6 +105,7 @@ export function assignMatchUpDrawPosition({
           drawDefinition,
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
+          iterative: 'brightblue',
         });
         if (result.error) return result;
       } else {

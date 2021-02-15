@@ -134,7 +134,7 @@ export function getAllStructureMatchUps({
     matchUps,
   });
 
-  const matchUpTies = matchUps.filter((matchUp) =>
+  const matchUpTies = matchUps?.filter((matchUp) =>
     Array.isArray(matchUp.tieMatchUps)
   );
   matchUpTies.forEach((matchUpTie) => {
@@ -180,7 +180,7 @@ export function getAllStructureMatchUps({
   }));
 
   if (roundFilter)
-    matchUps = matchUps.filter(
+    matchUps = matchUps?.filter(
       (matchUp) => matchUp.roundNumber === roundFilter
     );
 

@@ -10,6 +10,8 @@ import { findStructure } from '../../../getters/findStructure';
 import { addNotice } from '../../../../global/globalState';
 import { positionTargets } from '../positionTargets';
 
+import { pushGlobalLog } from '../../../../global/globalLog';
+
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
@@ -20,16 +22,47 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import {
+  CONSOLATION,
+  CONTAINER,
+  FIRST_MATCHUP,
+} from '../../../../constants/drawDefinitionConstants';
+
+/*
+  assignDrawPositionBye
+
+  supporting functions:
+  - drawPositionFilled
+  - setMatchUpStatusBYE
+  - assignRoundRobinBYE
+  - advanceDrawPosition
+
+  PSEUDOCODE:
+  *. Requires allDrawMatchUps inContext
+  *. Requires structureMatchUps
+  
+  1. Modifies structure positionAssignments to assign BYE to position
+     - if structure is part of ROUND ROBIN then return SUCCESS
+  2. Finds the furthest advancement of the drawPosition to determine the matchUp where BYE-advancement needs to occur
+ */
 
 export function assignDrawPositionBye({
   drawDefinition,
   mappedMatchUps,
   structureId,
   drawPosition,
+  iterative,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+
+  pushGlobalLog({
+    color: iterative || 'cyan',
+    keyColors: { stage: structure.stage === CONSOLATION && 'brightcyan' },
+    method: 'assignDrawPositionBye',
+    stage: structure.stage,
+    drawPosition,
+  });
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -79,7 +112,7 @@ export function assignDrawPositionBye({
   });
 
   if (structure.structureType === CONTAINER) {
-    assignRoundRobinBye({ matchUps, drawPosition });
+    assignRoundRobinBYE({ matchUps, drawPosition });
     return SUCCESS;
   }
 
@@ -104,6 +137,14 @@ export function assignDrawPositionBye({
   const drawPositionToAdvance = matchUp.drawPositions.find(
     (position) => position !== drawPosition
   );
+
+  pushGlobalLog({
+    method: `furthest advancement`,
+    keyColors: { drawPositionToAdvance: 'brightyellow' },
+    drawPosition,
+    roundNumber,
+    drawPositionToAdvance,
+  });
 
   if (drawPositionToAdvance) {
     const result = advanceDrawPosition({
@@ -141,7 +182,7 @@ function setMatchUpStatusBYE({ matchUp }) {
   });
 }
 
-function assignRoundRobinBye({ matchUps, drawPosition }) {
+function assignRoundRobinBYE({ matchUps, drawPosition }) {
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions.includes(drawPosition)) {
       setMatchUpStatusBYE({ matchUp });
@@ -158,6 +199,7 @@ function advanceDrawPosition({
   drawDefinition,
   mappedMatchUps,
   matchUpId,
+  iterative,
 }) {
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
@@ -189,6 +231,16 @@ function advanceDrawPosition({
     mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
+  });
+
+  pushGlobalLog({
+    method: `advanceDrawPosition`,
+    color: iterative,
+    keyColors: { drawPositionToAdvance: 'brightyellow' },
+    stage: structure.stage,
+    drawPositionToAdvance,
+    losingDrawPosition,
+    losingDrawPosiitonIsBye,
   });
 
   // only handling situation where winningMatchUp is in same structure
@@ -282,12 +334,23 @@ function advanceDrawPosition({
     });
 
     if (
-      drawPositions.filter((f) => f).length === 2 &&
-      (pairedDrawPositionIsBye || drawPositionIsBye)
+      // drawPositions.filter((f) => f).length === 2 &&
+      pairedDrawPositionIsBye ||
+      drawPositionIsBye
     ) {
       const advancingDrawPosition = pairedDrawPositionIsBye
         ? drawPositionToAdvance
         : pairedDrawPosition;
+
+      pushGlobalLog({
+        method: `advancingDrawPosition`,
+        color: 'brightcyan',
+        keyColors: { advancingDrawPosition: 'brightyellow' },
+        drawPositionIsBye,
+        advancingDrawPosition,
+        drawPositionToAdvance,
+        pairedDrawPositionIsBye,
+      });
 
       if (advancingDrawPosition) {
         advanceDrawPosition({
@@ -296,7 +359,30 @@ function advanceDrawPosition({
           inContextDrawMatchUps,
           drawDefinition,
           mappedMatchUps,
+          iterative: 'brightmagenta',
         });
+      } else if (drawPositionIsBye) {
+        const {
+          targetLinks: { loserTargetLink },
+          targetMatchUps: { loserMatchUp },
+        } = positionTargets({
+          matchUpId: winnerMatchUp.matchUpId,
+          structure,
+          mappedMatchUps,
+          drawDefinition,
+          inContextDrawMatchUps,
+        });
+        if (
+          loserTargetLink?.linkCondition === FIRST_MATCHUP &&
+          loserMatchUp.roundNumber === 2
+        ) {
+          assignFedDrawPositionBye({
+            drawDefinition,
+            loserMatchUp,
+            loserTargetLink,
+            mappedMatchUps,
+          });
+        }
       }
     }
   }
@@ -319,26 +405,43 @@ function advanceDrawPosition({
         drawDefinition,
         structureId: loserTargetLink.target.structureId,
         drawPosition: targetDrawPosition,
+        iterative: 'yellow',
       });
       if (result.error) return result;
     } else {
-      const targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
-      const loserStructureMatchUps =
-        mappedMatchUps[loserMatchUp.structureId].matchUps;
-      const { initialRoundNumber } = getInitialRoundNumber({
-        drawPosition: targetDrawPosition,
-        matchUps: loserStructureMatchUps,
+      assignFedDrawPositionBye({
+        drawDefinition,
+        loserMatchUp,
+        loserTargetLink,
+        mappedMatchUps,
       });
-      if (initialRoundNumber === roundNumber) {
-        const result = assignDrawPositionBye({
-          drawDefinition,
-          structureId: loserTargetLink.target.structureId,
-          drawPosition: targetDrawPosition,
-        });
-        if (result.error) return result;
-      }
     }
   }
 
   return SUCCESS;
+}
+
+function assignFedDrawPositionBye({
+  drawDefinition,
+  loserMatchUp,
+  loserTargetLink,
+  mappedMatchUps,
+}) {
+  const { drawPositions, roundNumber } = loserMatchUp;
+  const targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
+  const loserStructureMatchUps =
+    mappedMatchUps[loserMatchUp.structureId].matchUps;
+  const { initialRoundNumber } = getInitialRoundNumber({
+    drawPosition: targetDrawPosition,
+    matchUps: loserStructureMatchUps,
+  });
+  if (initialRoundNumber === roundNumber) {
+    const result = assignDrawPositionBye({
+      drawDefinition,
+      structureId: loserTargetLink.target.structureId,
+      drawPosition: targetDrawPosition,
+      iterative: 'red',
+    });
+    if (result.error) return result;
+  }
 }
