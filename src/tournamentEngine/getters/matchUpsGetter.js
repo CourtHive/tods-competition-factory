@@ -61,11 +61,12 @@ export function allDrawMatchUps({
   tournamentRecord,
   tournamentAppliedPolicies,
 }) {
-  const { eventId, eventName, category, matchUpFormat } = event;
+  const { eventId, eventName, category, gender, matchUpFormat } = event;
   const additionalContext = Object.assign({}, context, {
     eventId,
     eventName,
     category,
+    gender,
     matchUpFormat,
   });
   participants =
@@ -95,11 +96,12 @@ export function allEventMatchUps({
   tournamentRecord,
   tournamentAppliedPolicies,
 }) {
-  const { eventId, eventName, category, matchUpFormat } = event;
+  const { eventId, eventName, category, gender, matchUpFormat } = event;
   const additionalContext = Object.assign({}, context, {
     eventId,
     eventName,
     category,
+    gender,
     matchUpFormat,
   });
   participants =
