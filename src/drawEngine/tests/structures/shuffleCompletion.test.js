@@ -151,13 +151,13 @@ it.skip('can randomize drawPositions, randomize replacements, and complete drawT
   const iterations = 100;
   const positionActionErrorScenarios = [];
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
-  const drawSize = 16;
+  const drawSize = 32;
   generateRange(0, iterations).forEach(() => {
     const result = replacementTest({
       drawType,
       drawSize,
       devMode: true,
-      byeLimit: 8,
+      byeLimit: 16,
     });
     if (!result.success) {
       const { tournamentRecord } = tournamentEngine.getState();
