@@ -2,15 +2,19 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../utilities';
 import fs from 'fs';
+import {
+  printGlobalLog,
+  purgeGlobalLog,
+  pushGlobalLog,
+} from '../../../global/globalLog';
 
 import {
-  // COMPASS,
+  COMPASS,
   // CURTIS_CONSOLATION,
   // FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
-  ROUND_ROBIN,
   // MODIFIED_FEED_IN_CHAMPIONSHIP,
-  // ROUND_ROBIN,
+  ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
 
 /*
@@ -33,8 +37,36 @@ it('can run stress tests when JEST_STRESS=true', () => {
   }
 });
 
-// test used in development utilizing positionActions extension to identify problem areas
 test.each([
+  // [8, COMPASS, [5, 6, 3, 1]],
+  [8, COMPASS, [5, 6]],
+])(
+  'pass specific bye replaceent scenarios',
+  (drawSize, drawType, positionsToReplaceWithBye) => {
+    pushGlobalLog(
+      {
+        color: 'brightyellow',
+        method: 'Begin replacementTest',
+      },
+      true
+    );
+    tournamentEngine.devContext(true);
+    let result = replacementTest({
+      drawType,
+      drawSize,
+      positionsToReplaceWithBye,
+      devMode: true,
+    });
+    if (!result.success) {
+      printGlobalLog(true);
+    } else {
+      purgeGlobalLog();
+    }
+  }
+);
+
+// test used in development utilizing positionActions extension to identify problem areas
+test.skip.each([
   [16, 8, FIRST_MATCH_LOSER_CONSOLATION, 20],
   [16, 8, ROUND_ROBIN, 20],
 ])(
