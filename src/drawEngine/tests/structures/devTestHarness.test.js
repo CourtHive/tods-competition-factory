@@ -79,7 +79,7 @@ PASSED ...
 */
 
 // test used in development utilizing positionActions extension to identify problem areas
-test.skip.each([
+test.each([
   [8, 4, FEED_IN_CHAMPIONSHIP, 50],
   [16, 8, FEED_IN_CHAMPIONSHIP, 50],
 ])(
