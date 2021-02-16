@@ -27,18 +27,15 @@ export function getSourceDrawPositionRanges({
     return { message: 'Structure is not CONSOLATION stage' };
 
   const { links } = drawDefinition;
-  const relevantLinks = links.filter(
-    (link) => link.target.structureId === structureId
-  );
-  const sourceStructureIds = relevantLinks.reduce(
-    (sourceStructureIds, link) => {
+  const relevantLinks =
+    links?.filter((link) => link.target.structureId === structureId) || [];
+  const sourceStructureIds =
+    relevantLinks?.reduce((sourceStructureIds, link) => {
       const { structureId: sourceStructureId } = link.source;
       return sourceStructureIds.includes(sourceStructureId)
         ? sourceStructureIds
         : sourceStructureIds.concat(sourceStructureId);
-    },
-    []
-  );
+    }, []) || [];
   const sourceStructureProfiles = Object.assign(
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
@@ -63,7 +60,7 @@ export function getSourceDrawPositionRanges({
   });
 
   const sourceDrawPositionRanges = {};
-  relevantLinks.forEach((link) => {
+  relevantLinks?.forEach((link) => {
     const {
       structureId: sourceStructureId,
       roundNumber: sourceRoundNumber,

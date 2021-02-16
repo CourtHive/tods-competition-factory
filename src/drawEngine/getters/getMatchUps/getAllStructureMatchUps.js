@@ -231,8 +231,8 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositionsRange,
       },
-      makeDeepCopy(matchUp, true),
-      context
+      context,
+      makeDeepCopy(matchUp, true)
     );
 
     if (matchUpWithContext.tieMatchUps) {

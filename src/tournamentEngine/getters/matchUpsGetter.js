@@ -61,8 +61,14 @@ export function allDrawMatchUps({
   tournamentRecord,
   tournamentAppliedPolicies,
 }) {
-  const { eventId, eventName } = event;
-  const additionalContext = Object.assign({}, context, { eventId, eventName });
+  const { eventId, eventName, category, gender, matchUpFormat } = event;
+  const additionalContext = Object.assign({}, context, {
+    eventId,
+    eventName,
+    category,
+    gender,
+    matchUpFormat,
+  });
   participants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const { matchUps } = getAllDrawMatchUps({
@@ -90,8 +96,14 @@ export function allEventMatchUps({
   tournamentRecord,
   tournamentAppliedPolicies,
 }) {
-  const { eventId, eventName } = event;
-  const additionalContext = Object.assign({}, context, { eventId, eventName });
+  const { eventId, eventName, category, gender, matchUpFormat } = event;
+  const additionalContext = Object.assign({}, context, {
+    eventId,
+    eventName,
+    category,
+    gender,
+    matchUpFormat,
+  });
   participants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const drawDefinitions = event.drawDefinitions || [];
