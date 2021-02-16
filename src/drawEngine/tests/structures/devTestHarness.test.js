@@ -38,7 +38,7 @@ it('can run stress tests when JEST_STRESS=true', () => {
 });
 
 test.each([
-  // [8, COMPASS, [5, 6, 3, 1]],
+  [8, COMPASS, [5, 6, 3, 1]],
   [8, COMPASS, [5, 6]],
 ])(
   'pass specific bye replaceent scenarios',

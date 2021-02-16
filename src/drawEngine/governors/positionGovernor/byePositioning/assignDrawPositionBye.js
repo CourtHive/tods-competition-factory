@@ -444,15 +444,19 @@ function advanceWinner({
             mappedMatchUps,
           });
         } else {
-          pushGlobalLog({
-            method: `assignLoserTargetDrawPositionBye`,
-            color: 'brightred',
-          });
-          const sourceStructureRoundPosition = loserMatchUp.roundPosition;
+          const sourceStructureRoundPosition = winnerMatchUp.roundPosition;
           // loser drawPosition in target structure is determined bye even/odd
           const targetDrawPositionIndex =
             1 - (sourceStructureRoundPosition % 2);
-          const targetDrawPosition = drawPositions[targetDrawPositionIndex];
+          const targetDrawPosition =
+            loserMatchUp.drawPositions[targetDrawPositionIndex];
+          pushGlobalLog({
+            method: `assignLoserTargetDrawPositionBye`,
+            color: 'brightred',
+            targetDrawPositionIndex,
+            targetDrawPosition,
+            sourceStructureRoundPosition,
+          });
           const result = assignDrawPositionBye({
             drawDefinition,
             structureId: loserTargetLink.target.structureId,
