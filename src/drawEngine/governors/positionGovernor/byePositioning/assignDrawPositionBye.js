@@ -25,7 +25,6 @@ import {
 import {
   CONSOLATION,
   CONTAINER,
-  FIRST_MATCHUP,
 } from '../../../../constants/drawDefinitionConstants';
 
 /*
@@ -460,10 +459,7 @@ function advanceWinner({
         drawDefinition,
         inContextDrawMatchUps,
       });
-      if (
-        loserTargetLink?.linkCondition === FIRST_MATCHUP &&
-        loserMatchUp.roundNumber === 2
-      ) {
+      if (loserTargetLink && loserMatchUp) {
         assignFedDrawPositionBye({
           drawDefinition,
           loserMatchUp,
