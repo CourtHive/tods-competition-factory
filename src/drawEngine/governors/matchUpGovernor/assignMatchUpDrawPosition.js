@@ -37,7 +37,7 @@ export function assignMatchUpDrawPosition({
   });
 
   pushGlobalLog({
-    color: iterative || 'white',
+    color: iterative || 'magenta',
     method: 'assignMatchUpDrawPosition',
     stage: structure.stage,
     drawPosition,
@@ -105,7 +105,7 @@ export function assignMatchUpDrawPosition({
           drawDefinition,
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
-          iterative: 'brightblue',
+          iterative: 'brightmagenta',
         });
         if (result.error) return result;
       } else {

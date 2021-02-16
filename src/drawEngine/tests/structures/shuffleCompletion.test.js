@@ -16,7 +16,7 @@ test.each([
   [16, MODIFIED_FEED_IN_CHAMPIONSHIP],
   [16, ROUND_ROBIN],
   [16, FEED_IN_CHAMPIONSHIP],
-])('passes byeLimit tests for various values', (drawSize, drawType) => {
+])('passes bye replacement tests for various values', (drawSize, drawType) => {
   let result = replacementTest({
     drawSize,
     drawType,
@@ -28,11 +28,11 @@ test.each([
 });
 
 test.each([
-  // [16, 8, COMPASS],
+  [16, 8, COMPASS],
+  [16, 8, ROUND_ROBIN],
   [16, 8, FIRST_MATCH_LOSER_CONSOLATION],
   [16, 8, CURTIS_CONSOLATION],
   [16, 8, MODIFIED_FEED_IN_CHAMPIONSHIP],
-  [16, 8, ROUND_ROBIN],
   [16, 8, FEED_IN_CHAMPIONSHIP],
 ])(
   'passes byeLimit tests for various values',
@@ -41,6 +41,7 @@ test.each([
       drawSize,
       byeLimit,
       drawType,
+      devMode: true,
     });
     if (!result.success) {
       console.log('FAILED', { drawSize, byeLimit, drawType });

@@ -1,3 +1,4 @@
+import { addExtension } from '../tournamentGovernor/addRemoveExtensions';
 import penaltyTemplate from '../../generators/penaltyTemplate';
 
 import {
@@ -23,9 +24,11 @@ export function addPenalty({
   participantIds,
   penaltyCode,
   penaltyType,
+  penaltyId,
   matchUpId,
   notes,
 
+  extensions,
   createdAt,
 
   refereeParticipantId,
@@ -42,7 +45,7 @@ export function addPenalty({
   );
   if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
 
-  const penaltyItem = Object.assign(penaltyTemplate(), {
+  const penaltyItem = Object.assign(penaltyTemplate({ penaltyId }), {
     refereeParticipantId,
     penaltyCode,
     penaltyType,
@@ -52,14 +55,18 @@ export function addPenalty({
     createdAt,
   });
 
-  const { penaltyId } = penaltyItem;
+  if (Array.isArray(extensions)) {
+    extensions.forEach((extension) =>
+      addExtension({ element: penaltyItem, extension })
+    );
+  }
 
   relevantParticipants.forEach((participant) => {
     if (!participant.penalties) participant.penalties = [];
     participant.penalties.push(penaltyItem);
   });
 
-  return Object.assign({}, SUCCESS, { penaltyId });
+  return Object.assign({}, SUCCESS, { penaltyId: penaltyItem.penaltyId });
 }
 
 /**

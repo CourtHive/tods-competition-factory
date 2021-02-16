@@ -1,8 +1,9 @@
-import { UUID, UUIDS } from './utilities/UUID';
-import { dateTime, dateRange } from './utilities/dateTime';
-import { numericSort } from './utilities/sorting';
-import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { nearestPowerOf2, powerOf2, isNumeric } from './utilities/math';
+import { dateTime, dateRange } from './utilities/dateTime';
+import { makeDeepCopy } from './utilities/makeDeepCopy';
+import { numericSort } from './utilities/sorting';
+import { UUID, UUIDS } from './utilities/UUID';
+import { JSON2CSV } from './utilities/json';
 import {
   countValues,
   chunkArray,
@@ -18,6 +19,7 @@ import {
 export const utilities = {
   UUID,
   UUIDS,
+  JSON2CSV,
   isNumeric,
   dateTime,
   dateRange,

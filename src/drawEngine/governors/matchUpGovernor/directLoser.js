@@ -25,7 +25,7 @@ export function directLoser(props) {
   } = props;
 
   pushGlobalLog({
-    color: 'brightyellow',
+    color: 'brightblue',
     method: 'directLoser',
     loserDrawPosition,
   });

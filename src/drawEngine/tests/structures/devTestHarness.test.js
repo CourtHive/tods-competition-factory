@@ -2,45 +2,90 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../utilities';
 import fs from 'fs';
+import {
+  printGlobalLog,
+  purgeGlobalLog,
+  pushGlobalLog,
+} from '../../../global/globalLog';
 
 import {
-  // COMPASS,
-  // CURTIS_CONSOLATION,
-  // FEED_IN_CHAMPIONSHIP,
+  COMPASS,
+  CURTIS_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
+  MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
-  // MODIFIED_FEED_IN_CHAMPIONSHIP,
-  // ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-
-/*
-PASSED: FEED_IN_CHAMPIONSHIP 16 * 100
-PASSED: FEED_IN_CHAMPIONSHIP 32 * 100
-PASSED: MODIFIED_FEED_IN_CHAMPIONSHIP 32 * 100
-PASSED: CURTIS_CONSOLATION 32 * 100
-PASSED: ROUND_ROBIN 32 * 100
-PASSED: COMPASS 32 * 100
-PASSED: COMPASS 64 * 10
-PASSED: FMLC 8 * 100
-PASSED: FMLC 16 * 100
-PASSED: FMLC 32 * 100
-PASSED: FMLC 64 * 10
-*/
 
 it('can run stress tests when JEST_STRESS=true', () => {
   if (process.env.JEST_STRESS !== true) {
-    console.log('JEST_STRESS=false');
+    console.log('JEST_STRESS =', process.env.JEST_STRESS);
   }
 });
 
+test.skip.each([
+  [8, COMPASS, [5, 6, 3, 1]],
+  [8, ROUND_ROBIN, [5, 6, 3, 1]],
+  [8, CURTIS_CONSOLATION, [5, 6, 3, 1]],
+  [8, FEED_IN_CHAMPIONSHIP, [5, 6, 3, 1]],
+  [8, MODIFIED_FEED_IN_CHAMPIONSHIP, [5, 6, 3, 1]],
+  [8, FIRST_MATCH_LOSER_CONSOLATION, [5, 6, 3, 1]],
+])(
+  'pass specific bye replaceent scenarios',
+  (drawSize, drawType, positionsToReplaceWithBye) => {
+    pushGlobalLog(
+      {
+        color: 'brightyellow',
+        method: 'Begin replacementTest',
+      },
+      true
+    );
+    tournamentEngine.devContext(true);
+    let result = replacementTest({
+      drawType,
+      drawSize,
+      positionsToReplaceWithBye,
+      devMode: true,
+    });
+    if (!result.success) {
+      printGlobalLog(true);
+    } else {
+      purgeGlobalLog();
+    }
+  }
+);
+
+/*
+PASSED ...
+[ 8, 4, FEED_IN_CHAMPIONSHIP, 50],
+[16, 8, FEED_IN_CHAMPIONSHIP, 50],
+[16, 0, FEED_IN_CHAMPIONSHIP, 100],
+[32, 0, FEED_IN_CHAMPIONSHIP, 100],
+[32, 0, MODIFIED_FEED_IN_CHAMPIONSHIP, 100],
+[32, 0, CURTIS_CONSOLATION, 100],
+[ 8, 4, CURTIS_CONSOLATION, 100],
+[32, 0, ROUND_ROBIN, 100],
+[16, 8, COMPASS, 100],
+[32, 16, COMPASS, 50],
+[32, 0, COMPASS, 100],
+[64, 0, COMPASS, 10],
+[ 8, 0, FMLC, 100],
+[16, 0, FMLC, 100],
+[32, 0, FMLC, 100],
+[64, 0, FMLC, 10],
+[ 8, 4, FIRST_MATCH_LOSER_CONSOLATION, 100],
+[16, 8, FIRST_MATCH_LOSER_CONSOLATION, 50],
+[16, 8, ROUND_ROBIN, 50],
+*/
+
 // test used in development utilizing positionActions extension to identify problem areas
 test.each([
-  [16, 8, FIRST_MATCH_LOSER_CONSOLATION, 20],
-  [16, 8, ROUND_ROBIN, 20],
+  [8, 4, FEED_IN_CHAMPIONSHIP, 50],
+  [16, 8, FEED_IN_CHAMPIONSHIP, 50],
 ])(
   'can randomize drawPositions, randomize replacements, and complete drawType',
   (drawSize, byeLimit, drawType, iterations) => {
-    if (!process.env.JEST_STRESS) {
+    if (process.env.JEST_STRESS !== 'true') {
       return;
     }
 
@@ -69,6 +114,7 @@ test.each([
       }
     });
 
+    console.log({ drawSize, byeLimit, drawType, iterations });
     if (positionActionErrorScenarios.length) {
       console.log(`#### ERRORS ####`);
       console.log(
