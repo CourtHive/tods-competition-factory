@@ -10,6 +10,11 @@ import {
   getStageAssignedParticipantIds,
   structureAssignedDrawPositions,
 } from '../../../getters/positionsGetter';
+import {
+  getEnabledStructures,
+  getPolicyActions,
+  isAvailableAction,
+} from './actionPolicyUtils';
 
 import {
   WILDCARD,
@@ -45,11 +50,6 @@ import {
   MAIN,
   QUALIFYING,
 } from '../../../../constants/drawDefinitionConstants';
-import {
-  getEnabledStructures,
-  getPolicyActions,
-  isAvailableAction,
-} from './actionPolicyUtils';
 
 /**
  *
@@ -273,9 +273,11 @@ export function positionActions({
     if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
       const { validSwapAction } = getValidSwapAction({
         drawId,
-        drawPosition,
+        structure,
         structureId,
+        drawPosition,
         isByePosition,
+        drawDefinition,
         byeDrawPositions,
         positionAssignments,
         activeDrawPositions,

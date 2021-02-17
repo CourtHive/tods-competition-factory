@@ -1,4 +1,5 @@
-import { makeDeepCopy } from '../../../../utilities';
+import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
+import { intersection, makeDeepCopy } from '../../../../utilities';
 
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
@@ -7,8 +8,10 @@ import {
 } from '../../../../constants/positionActionConstants';
 
 export function getValidSwapAction({
+  drawDefinition,
   drawPosition,
   structureId,
+  structure,
   drawId,
 
   isByePosition,
@@ -45,6 +48,32 @@ export function getValidSwapAction({
       availableDrawPositions?.includes(assignment.drawPosition)
   );
 
+  // get relevant drawPositions => relevantMatchUps => sides => sourceDrawPositionRanges
+  const filteredDrawPositions = filteredAssignments.map(
+    ({ drawPosition }) => drawPosition
+  );
+  const { matchUps } = getAllStructureMatchUps({
+    drawDefinition,
+    structure,
+    inContext: true,
+  });
+  const relevantMatchUps = matchUps.filter(
+    ({ drawPositions }) =>
+      intersection(drawPositions, filteredDrawPositions).length
+  );
+  const sourceDrawPositionRangeMap = Object.assign(
+    {},
+    ...relevantMatchUps
+      .map((matchUp) => {
+        return matchUp.sides?.map(
+          ({ drawPosition, sourceDrawPositionRange }) => ({
+            [drawPosition]: sourceDrawPositionRange,
+          })
+        );
+      })
+      .flat()
+  );
+
   // availableAssignmentsMap is used to attach participant object to all filteredAssignments
   // which have a participant assginment so the client/UI has all relevant drawPosition details
   const availableParticipantIds = filteredAssignments
@@ -66,8 +95,13 @@ export function getValidSwapAction({
     const participant =
       availableParticpantsMap &&
       availableParticpantsMap[assignment.participantId];
+
+    const sourceDrawPositionRange =
+      sourceDrawPositionRangeMap[assignment.drawPosition];
+
     return Object.assign({}, assignment, {
       participant: makeDeepCopy(participant),
+      sourceDrawPositionRange,
     });
   });
 
