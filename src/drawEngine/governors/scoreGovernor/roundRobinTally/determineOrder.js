@@ -30,26 +30,11 @@ export function determineTeamOrder({
   complete.forEach((p) => (p.orderHash = getOrderHash(p)));
   complete.forEach((p) => (p.GEMscore = getRatioHash(p)));
 
+  const headToHeadPriority = tallyPolicy?.headToHeadPriority !== false;
+
   // START ORDER HASH
-  if (tallyPolicy?.headToHeadPriority) {
-    complete.sort(
-      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
-    );
-    const wins = complete.map((p) => p.results.matchUpsWon);
-    const counts = unique(wins);
-    counts.forEach((count) => {
-      const i = indices(count, wins);
-      if (i.length && i.length > 1) {
-        const start = Math.min(...i);
-        const end = Math.max(...i);
-        const n = end - start + 1;
-        if (n === 2) {
-          complete = subSort(complete, start, n, h2hOrder);
-        } else {
-          complete = subSort(complete, start, n, orderHashSort);
-        }
-      }
-    });
+  if (headToHeadPriority) {
+    h2hSort(h2hOrder, orderHashSort);
   } else {
     complete.sort(orderHashSort);
   }
@@ -61,7 +46,7 @@ export function determineTeamOrder({
   let rankOrder = 0;
   let rankHash = undefined;
   complete.forEach((p, i) => {
-    if (p.orderHash !== rankHash) {
+    if (p.orderHash !== rankHash || p.h2h) {
       rankOrder = i + 1;
       rankHash = p.orderHash;
     }
@@ -70,25 +55,8 @@ export function determineTeamOrder({
   // END ORDER HASH
 
   // START RATIO HASH
-  if (tallyPolicy?.headToHeadPriority) {
-    complete.sort(
-      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
-    );
-    const wins = complete.map((p) => p.results.matchUpsWon);
-    const counts = unique(wins);
-    counts.forEach((count) => {
-      const i = indices(count, wins);
-      if (i.length && i.length > 1) {
-        const start = Math.min(...i);
-        const end = Math.max(...i);
-        const n = end - start + 1;
-        if (n === 2) {
-          complete = subSort(complete, start, n, h2hRatio);
-        } else {
-          complete = subSort(complete, start, n, ratioHashSort);
-        }
-      }
-    });
+  if (headToHeadPriority) {
+    h2hSort(h2hRatio, ratioHashSort);
   } else {
     complete.sort(ratioHashSort);
   }
@@ -101,7 +69,7 @@ export function determineTeamOrder({
   let pointsOrder = 0;
   let GEMscore = undefined;
   complete.forEach((p, i) => {
-    if (p.GEMscore !== GEMscore) {
+    if (p.GEMscore !== GEMscore || p.h2h) {
       pointsOrder = i + 1;
       GEMscore = p.GEMscore;
     }
@@ -111,6 +79,29 @@ export function determineTeamOrder({
 
   return complete;
 
+  function h2hSort(h2hSortMethod, sortMethod) {
+    complete.sort(
+      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
+    );
+    const wins = complete.map((p) => p.results.matchUpsWon);
+    const counts = unique(wins);
+    counts.forEach((count) => {
+      const i = indices(count, wins);
+      if (i.length && i.length > 1) {
+        const start = Math.min(...i);
+        const end = Math.max(...i);
+        const n = end - start + 1;
+        if (n === 2) {
+          complete = subSort(complete, start, n, h2hSortMethod);
+          complete[start].h2h = true;
+          complete[start + 1].h2h = true;
+        } else {
+          complete = subSort(complete, start, n, sortMethod);
+        }
+      }
+    });
+  }
+
   function ratioHashSort(a, b) {
     return b.GEMscore - a.GEMscore;
   }
@@ -118,19 +109,19 @@ export function determineTeamOrder({
     return b.orderHash - a.orderHash;
   }
   function h2hRatio(a, b) {
-    const side1Head2Head = a.results.victories.indexOf(b.participantId) >= 0;
-    const side2Head2Head = b.results.victories.indexOf(a.participantId) >= 0;
-    if (side1Head2Head || side2Head2Head) {
-      return side2Head2Head ? 1 : -1;
+    const side1Head2HeadWin = a.results.victories.indexOf(b.participantId) >= 0;
+    const side2Head2HeadWin = b.results.victories.indexOf(a.participantId) >= 0;
+    if (side1Head2HeadWin || side2Head2HeadWin) {
+      return side2Head2HeadWin ? 1 : -1;
     }
     return b.GEMscore - a.GEMscore;
   }
 
   function h2hOrder(a, b) {
-    const side1Head2Head = a.results.victories.indexOf(b.participantId) >= 0;
-    const side2Head2Head = b.results.victories.indexOf(a.participantId) >= 0;
-    if (side1Head2Head || side2Head2Head) {
-      return side2Head2Head ? 1 : -1;
+    const side1Head2HeadWin = a.results.victories.indexOf(b.participantId) >= 0;
+    const side2Head2HeadWin = b.results.victories.indexOf(a.participantId) >= 0;
+    if (side1Head2HeadWin || side2Head2HeadWin) {
+      return side2Head2HeadWin ? 1 : -1;
     }
     return b.orderHash - a.orderHash;
   }
