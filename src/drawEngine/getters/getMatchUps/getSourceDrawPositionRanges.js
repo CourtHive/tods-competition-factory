@@ -72,7 +72,8 @@ export function getSourceDrawPositionRanges({
       roundNumber: targetRoundNumber,
     } = link.target;
     const sourceStructureProfile = sourceStructureProfiles[sourceStructureId];
-    const firstRoundDrawPositions = sourceStructureProfile[1].drawPositions;
+    const firstRoundDrawPositions =
+      sourceStructureProfile[1] && sourceStructureProfile[1].drawPositions;
     const sourceRoundProfile = sourceStructureProfile[sourceRoundNumber];
     const sourceRoundMatchUpsCount = sourceRoundProfile?.matchUpsCount;
     if (!sourceRoundMatchUpsCount) return;
