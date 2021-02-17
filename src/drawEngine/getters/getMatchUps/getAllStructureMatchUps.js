@@ -32,6 +32,7 @@ export function getAllStructureMatchUps({
   drawDefinition,
   contextFilters,
   matchUpFilters,
+  seedAssignments,
   policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
@@ -105,11 +106,17 @@ export function getAllStructureMatchUps({
     allPositionsAssigned,
   } = structureAssignedDrawPositions({ structure });
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
-  const { seedAssignments } = getStructureSeedAssignments({
+  const {
+    seedAssignments: structureSeedAssignments,
+  } = getStructureSeedAssignments({
     drawDefinition,
     mappedMatchUps,
     structure,
   });
+
+  // enables passing in seedAssignments rather than using structureSeedAssignments
+  seedAssignments = seedAssignments || structureSeedAssignments;
+
   const { structureId, structureName, stage, stageSequence } = structure;
   const { drawId, drawName } = drawDefinition || {};
 

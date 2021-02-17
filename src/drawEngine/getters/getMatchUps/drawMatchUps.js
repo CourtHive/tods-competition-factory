@@ -52,6 +52,9 @@ export function getDrawMatchUps({
   const { structures } = getDrawStructures({ drawDefinition });
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
 
+  // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
+  // AND: optionally pass these seedAssignments to other stage structures
+
   structures.forEach((structure) => {
     const {
       byeMatchUps = [],

@@ -28,12 +28,11 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
-  let { structureOptions } = props;
+  let { drawName, structureOptions } = props;
 
   const {
     uuids,
     drawId,
-    customName,
     drawEntries,
     matchUpType,
     seedingProfile,
@@ -116,7 +115,7 @@ export function generateDrawDefinition(props) {
     drawSize,
     drawType,
     automated,
-    customName,
+    drawName,
     seedsCount,
 
     tieFormat,
@@ -310,7 +309,7 @@ export function generateDrawDefinition(props) {
   };
   addDrawDefinitionExtension({ drawDefinition, extension });
 
-  const drawName = customName || drawType;
+  drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
   const errors = generatedDrawErrors || [];
@@ -321,7 +320,7 @@ export function generateDrawDefinition(props) {
     drawSize,
     drawType,
     automated,
-    customName,
+    drawName,
     seedsCount,
     tieFormat,
     matchUpType,

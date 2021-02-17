@@ -317,12 +317,12 @@ This is a convenience method which handles most use cases for draw generation.
 | eventId              | Required | string  | Unique identifier for the event within the current tournament                |
 | drawSize             | Required | number  | Number of draw postions there will be in the draw structure                  |
 | drawType             | Optional | string  | ELIMININATION, ROUND_ROBIN & etc, defaults to SINGLE_ELIMINATION             |
+| drawName             | Optional | string  | Custom name for the generated draw structure                                 |
 | automated            | Optional | boolean | Whether or not to automatically generate draw structure(s); defaults to true |
 | matchUpType          | Optional | string  | SINGLES, DOUBLES, or TEAM                                                    |
 | matchUpFormat        | Optional | string  | ITF TODS matchUpFormat code which describes scoring format                   |
 | playoffMatchUpFormat | Optional | string  | Alternate matchUpformat for connected playoff structures                     |
 | tieFormat            | Optional | object  | includes collectionDefinitions and winCriteria                               |
-| customName           | Optional | string  | Custom name for the generated draw structure                                 |
 | seedsCount           | Optional | number  | Desired seeds to be generated from rankings if no seededParticipants data    |
 | seedingProfile       | Optional | string  | Used to specify WATERFALL seeding, for instance, for Round Robin structures  |
 | seedByRanking        | Optional | boolean | Defaults to TRUE; use rankings for seeding if no seededParticipants provided |
