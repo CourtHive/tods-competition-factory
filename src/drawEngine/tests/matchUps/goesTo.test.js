@@ -61,19 +61,19 @@ function checkGoesTo(matchUps, expectation) {
     loserRoundPosition,
   ] = expectation;
 
-  let { winnerGoesTo, loserGoesTo } = getTargetMatchUp({
+  let { winnerGoesTo, loserGoesTo } = findTargetMatchUpByAttributes({
     matchUps,
     stage,
     roundNumber,
     roundPosition,
   });
-  const expectedWinnerMatchUp = getTargetMatchUp({
+  const expectedWinnerMatchUp = findTargetMatchUpByAttributes({
     matchUps,
     stage: winnerStage,
     roundNumber: winnerRoundNumber,
     roundPosition: winnerRoundPosition,
   });
-  const expectedloserMatchUp = getTargetMatchUp({
+  const expectedloserMatchUp = findTargetMatchUpByAttributes({
     matchUps,
     stage: loserStage,
     roundNumber: loserRoundNumber,
@@ -83,7 +83,12 @@ function checkGoesTo(matchUps, expectation) {
   expect(winnerGoesTo).toEqual(expectedWinnerMatchUp.matchUpId);
   expect(loserGoesTo).toEqual(expectedloserMatchUp.matchUpId);
 
-  function getTargetMatchUp({ matchUps, roundNumber, roundPosition, stage }) {
+  function findTargetMatchUpByAttributes({
+    matchUps,
+    roundNumber,
+    roundPosition,
+    stage,
+  }) {
     return matchUps.find(
       (matchUp) =>
         matchUp.stage === stage &&
