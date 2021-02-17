@@ -30,26 +30,11 @@ export function determineTeamOrder({
   complete.forEach((p) => (p.orderHash = getOrderHash(p)));
   complete.forEach((p) => (p.GEMscore = getRatioHash(p)));
 
+  const headToHeadPriority = tallyPolicy?.headToHeadPriority !== false;
+
   // START ORDER HASH
-  if (tallyPolicy?.headToHeadPriority) {
-    complete.sort(
-      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
-    );
-    const wins = complete.map((p) => p.results.matchUpsWon);
-    const counts = unique(wins);
-    counts.forEach((count) => {
-      const i = indices(count, wins);
-      if (i.length && i.length > 1) {
-        const start = Math.min(...i);
-        const end = Math.max(...i);
-        const n = end - start + 1;
-        if (n === 2) {
-          complete = subSort(complete, start, n, h2hOrder);
-        } else {
-          complete = subSort(complete, start, n, orderHashSort);
-        }
-      }
-    });
+  if (headToHeadPriority) {
+    h2hSort(h2hOrder, orderHashSort);
   } else {
     complete.sort(orderHashSort);
   }
@@ -70,25 +55,8 @@ export function determineTeamOrder({
   // END ORDER HASH
 
   // START RATIO HASH
-  if (tallyPolicy?.headToHeadPriority) {
-    complete.sort(
-      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
-    );
-    const wins = complete.map((p) => p.results.matchUpsWon);
-    const counts = unique(wins);
-    counts.forEach((count) => {
-      const i = indices(count, wins);
-      if (i.length && i.length > 1) {
-        const start = Math.min(...i);
-        const end = Math.max(...i);
-        const n = end - start + 1;
-        if (n === 2) {
-          complete = subSort(complete, start, n, h2hRatio);
-        } else {
-          complete = subSort(complete, start, n, ratioHashSort);
-        }
-      }
-    });
+  if (headToHeadPriority) {
+    h2hSort(h2hRatio, ratioHashSort);
   } else {
     complete.sort(ratioHashSort);
   }
@@ -110,6 +78,27 @@ export function determineTeamOrder({
   // END RATIO HASH
 
   return complete;
+
+  function h2hSort(h2hSortMethod, sortMethod) {
+    complete.sort(
+      (a, b) => (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0)
+    );
+    const wins = complete.map((p) => p.results.matchUpsWon);
+    const counts = unique(wins);
+    counts.forEach((count) => {
+      const i = indices(count, wins);
+      if (i.length && i.length > 1) {
+        const start = Math.min(...i);
+        const end = Math.max(...i);
+        const n = end - start + 1;
+        if (n === 2) {
+          complete = subSort(complete, start, n, h2hSortMethod);
+        } else {
+          complete = subSort(complete, start, n, sortMethod);
+        }
+      }
+    });
+  }
 
   function ratioHashSort(a, b) {
     return b.GEMscore - a.GEMscore;
