@@ -4,6 +4,9 @@ import { CURTIS_CONSOLATION } from '../../../../constants/drawDefinitionConstant
 test.each([
   [8, CURTIS_CONSOLATION, [8, 7, 4, 6]],
   [16, CURTIS_CONSOLATION, [15, 16, 13, 7, 14, 11, 10, 12]],
+  [16, CURTIS_CONSOLATION, [4, 2, 1, 3, 13, 14, 11, 6]],
+  [16, CURTIS_CONSOLATION, [1, 8, 5, 16, 7, 3, 4, 15]],
+  [16, CURTIS_CONSOLATION, [16, 12, 9, 3, 6, 15, 7, 10]],
   [
     32,
     CURTIS_CONSOLATION,

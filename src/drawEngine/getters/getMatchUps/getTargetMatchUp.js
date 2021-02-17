@@ -75,10 +75,6 @@ export function getTargetMatchUp({
     matchUpDrawPositionIndex = 1 - (relativeRoundPosition % 2);
   }
 
-  // TODO: for fedDrawPositions in linked elimination structures...
-  /// ...when roundNumber > 1 matchUpDrawPositionIndex should always be 0
-  // ...because fed drawPositions are always numerically smaller than advanced drawPositions
-
   let orderedPositions = roundPositions;
   let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
 
@@ -122,6 +118,7 @@ export function getTargetMatchUp({
     /*
       calculatedRoundPosition is undetermined for DRAW feedProfile
     */
+    console.log('not implemented:', { feedProfile });
   }
 
   const matchUp =
@@ -132,28 +129,45 @@ export function getTargetMatchUp({
         : matchUp;
     }, undefined);
 
-  const relevantPositionAssignments =
-    matchUp &&
-    positionAssignments.filter(({ drawPosition }) =>
-      matchUp.drawPositions.includes(drawPosition)
+  // targetDrawPosition and matchUpDrawPositionIndex are only relevant
+  // when drawPositions need to be assigned in positionAssignments
+  // which means only when a targetMatchUp is in a different structure
+  let targetDrawPosition;
+  if (matchUp.feedRound) {
+    // for fedDrawPositions in linked elimination structures...
+    // ...when roundNumber > 1 matchUpDrawPositionIndex should always be 0
+    // ...because fed drawPositions are always numerically smaller than advanced drawPositions
+    matchUpDrawPositionIndex = 0;
+    targetDrawPosition = Math.min(
+      ...(matchUp.drawPositions || []).filter((f) => f)
     );
-  const disabledDrawPositions = relevantPositionAssignments
-    ?.filter((assignment) => {
-      const { extension } = findExtension({
-        element: assignment,
-        name: DISABLE_LINKS,
-      });
-      return extension?.value;
-    })
-    .map(({ drawPosition }) => drawPosition);
-
-  if (disabledDrawPositions?.length) {
-    console.log({
-      disabledDrawPositions,
-      relevantPositionAssignments,
-    });
-    return { disabledDrawPositions };
+  } else {
+    // when not a feedRound targetDrawPosition can only be determined when both drawPositions present
+    targetDrawPosition =
+      matchUp.drawPositions?.length === 2 &&
+      matchUp.drawPositions[matchUpDrawPositionIndex];
   }
 
-  return { matchUp, matchUpDrawPositionIndex, disabledDrawPositions };
+  const relevantAssignment = positionAssignments.find(
+    ({ drawPosition }) => drawPosition === targetDrawPosition
+  );
+  if (relevantAssignment) {
+    const { extension } = findExtension({
+      element: relevantAssignment,
+      name: DISABLE_LINKS,
+    });
+    if (extension?.value) {
+      console.log({
+        drawPositionDisabled: targetDrawPosition,
+        relevantAssignment,
+      });
+      return { disabledDrawPosition: targetDrawPosition };
+    }
+  }
+
+  return {
+    matchUp,
+    targetDrawPosition,
+    matchUpDrawPositionIndex,
+  };
 }
