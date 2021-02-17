@@ -65,11 +65,11 @@ export function getValidSwapAction({
     {},
     ...relevantMatchUps
       .map((matchUp) => {
-        return matchUp.sides?.map(
-          ({ drawPosition, sourceDrawPositionRange }) => ({
+        return matchUp.sides
+          ?.filter(({ sourceDrawPositionRange }) => sourceDrawPositionRange)
+          .map(({ drawPosition, sourceDrawPositionRange }) => ({
             [drawPosition]: sourceDrawPositionRange,
-          })
-        );
+          }));
       })
       .flat()
   );
