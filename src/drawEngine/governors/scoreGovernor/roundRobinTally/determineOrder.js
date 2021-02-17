@@ -46,7 +46,7 @@ export function determineTeamOrder({
   let rankOrder = 0;
   let rankHash = undefined;
   complete.forEach((p, i) => {
-    if (p.orderHash !== rankHash) {
+    if (p.orderHash !== rankHash || p.h2h) {
       rankOrder = i + 1;
       rankHash = p.orderHash;
     }
@@ -69,7 +69,7 @@ export function determineTeamOrder({
   let pointsOrder = 0;
   let GEMscore = undefined;
   complete.forEach((p, i) => {
-    if (p.GEMscore !== GEMscore) {
+    if (p.GEMscore !== GEMscore || p.h2h) {
       pointsOrder = i + 1;
       GEMscore = p.GEMscore;
     }
@@ -93,6 +93,8 @@ export function determineTeamOrder({
         const n = end - start + 1;
         if (n === 2) {
           complete = subSort(complete, start, n, h2hSortMethod);
+          complete[start].h2h = true;
+          complete[start + 1].h2h = true;
         } else {
           complete = subSort(complete, start, n, sortMethod);
         }
@@ -107,19 +109,19 @@ export function determineTeamOrder({
     return b.orderHash - a.orderHash;
   }
   function h2hRatio(a, b) {
-    const side1Head2Head = a.results.victories.indexOf(b.participantId) >= 0;
-    const side2Head2Head = b.results.victories.indexOf(a.participantId) >= 0;
-    if (side1Head2Head || side2Head2Head) {
-      return side2Head2Head ? 1 : -1;
+    const side1Head2HeadWin = a.results.victories.indexOf(b.participantId) >= 0;
+    const side2Head2HeadWin = b.results.victories.indexOf(a.participantId) >= 0;
+    if (side1Head2HeadWin || side2Head2HeadWin) {
+      return side2Head2HeadWin ? 1 : -1;
     }
     return b.GEMscore - a.GEMscore;
   }
 
   function h2hOrder(a, b) {
-    const side1Head2Head = a.results.victories.indexOf(b.participantId) >= 0;
-    const side2Head2Head = b.results.victories.indexOf(a.participantId) >= 0;
-    if (side1Head2Head || side2Head2Head) {
-      return side2Head2Head ? 1 : -1;
+    const side1Head2HeadWin = a.results.victories.indexOf(b.participantId) >= 0;
+    const side2Head2HeadWin = b.results.victories.indexOf(a.participantId) >= 0;
+    if (side1Head2HeadWin || side2Head2HeadWin) {
+      return side2Head2HeadWin ? 1 : -1;
     }
     return b.orderHash - a.orderHash;
   }
