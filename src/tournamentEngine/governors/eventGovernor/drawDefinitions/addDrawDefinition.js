@@ -1,3 +1,5 @@
+import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
@@ -24,6 +26,23 @@ export function addDrawDefinition({
     if (drawDefinitionExists) {
       return { error: DRAW_ID_EXISTS };
     } else {
+      const { flightProfile } = getFlightProfile({ eventId });
+      const flight = flightProfile?.flights?.find(
+        (flight) => flight.drawId === drawDefinition.drawId
+      );
+      if (flight) {
+        // if this drawId was defined in a flightProfile...
+        // ...update the flight.drawName with the drawName in the drawDefinition
+        flight.drawName = drawDefinition.drawName;
+        const extension = {
+          name: 'flightProfile',
+          value: {
+            flights: flightProfile.flights,
+          },
+        };
+
+        addEventExtension({ event, extension });
+      }
       event.drawDefinitions.push(drawDefinition);
     }
   }
