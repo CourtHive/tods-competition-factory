@@ -112,7 +112,7 @@ export function tallyParticipantResults({
       if (o !== undefined && o.rankOrder !== undefined) {
         // subOrder is only assigned if there are ties
         if (rankOrderInstances > 1) {
-          const subOrder = subOrderMap[o.participantId];
+          const subOrder = subOrderMap && subOrderMap[o.participantId];
           result.ties = rankOrderInstances;
           result.subOrder = subOrder;
         }
