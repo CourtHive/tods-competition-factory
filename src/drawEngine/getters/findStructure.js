@@ -1,3 +1,5 @@
+import { structureSort } from './structureSort';
+
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
@@ -35,10 +37,11 @@ export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
     : !drawDefinition.structures
     ? MISSING_STRUCTURES
     : undefined;
-  const structures =
+  const structures = (
     (drawDefinition &&
       drawDefinition.structures?.filter(isStage).filter(isStageSequence)) ||
-    [];
+    []
+  ).sort(structureSort);
   return { structures, error };
 
   function isStage(structure) {

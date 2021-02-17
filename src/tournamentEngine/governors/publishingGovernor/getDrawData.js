@@ -16,11 +16,20 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ABANDONED,
   BYE,
+  CANCELLED,
   COMPLETED,
   DEFAULTED,
+  DOUBLE_WALKOVER,
+  IN_PROGRESS,
   RETIRED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import {
+  CONSOLATION,
+  MAIN,
+  PLAY_OFF,
+  QUALIFYING,
+} from '../../../constants/drawDefinitionConstants';
 
 export function getDrawData({
   tournamentParticipants = [],
@@ -37,6 +46,7 @@ export function getDrawData({
     matchUpFormat,
   }))(drawDefinition);
 
+  let mainStageSeedAssignments, qualificationStageSeedAssignments;
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
   let drawActive = false;
@@ -44,11 +54,40 @@ export function getDrawData({
     const structures = structureIds
       .map((structureId) => {
         const { structure } = findStructure({ drawDefinition, structureId });
+        const { seedAssignments } = getStructureSeedAssignments({
+          drawDefinition,
+          structure,
+        });
+
+        // capture the seedAssignments for MAIN/QUALIFYING { stageSequence: 1 }
+        if (structure.stage === MAIN && structure.stageSequence === 1) {
+          mainStageSeedAssignments = seedAssignments;
+        }
+        if (structure.stage === QUALIFYING && structure.stageSequence === 1) {
+          qualificationStageSeedAssignments = seedAssignments;
+        }
+
+        return structure;
+      })
+      .sort(structureSort)
+      .map((structure) => {
+        const { structureId } = structure;
+        let seedAssignments = [];
+
+        // pass seedAssignments from { stageSequence: 1 } to other stages
+        if ([MAIN, CONSOLATION, PLAY_OFF].includes(structure.stage)) {
+          seedAssignments = mainStageSeedAssignments;
+        }
+
+        if (structure.stage === QUALIFYING) {
+          seedAssignments = qualificationStageSeedAssignments;
+        }
 
         const { matchUps, roundMatchUps } = getAllStructureMatchUps({
           context: { drawId: drawInfo.drawId, ...context },
           tournamentParticipants,
           policyDefinition,
+          seedAssignments,
           drawDefinition,
           structure,
           inContext,
@@ -93,10 +132,20 @@ export function getDrawData({
         }))(structure);
 
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
-          // return active || matchUp.winningSide || matchUp.score;
-          // SCORE: when matchUp.score becomes object change logic
+          const activeMatchUpStatus = [
+            COMPLETED,
+            CANCELLED,
+            DEFAULTED,
+            RETIRED,
+            WALKOVER,
+            IN_PROGRESS,
+            DOUBLE_WALKOVER,
+          ].includes(matchUp.matchUpStatus);
           return (
-            active || !!matchUp.winningSide || !!matchUp.score?.sets?.length
+            active ||
+            activeMatchUpStatus ||
+            !!matchUp.winningSide ||
+            !!matchUp.score?.scoreStringSide1
           );
         }, false);
 
@@ -119,11 +168,6 @@ export function getDrawData({
 
         if (structureInfo.structureActive) drawActive = true;
 
-        const { seedAssignments } = getStructureSeedAssignments({
-          drawDefinition,
-          structure,
-        });
-
         return {
           ...structureInfo,
           structureId,
@@ -131,8 +175,7 @@ export function getDrawData({
           seedAssignments,
           participantResults,
         };
-      })
-      .sort(structureSort);
+      });
 
     // cleanup attribute used for sorting
     structures.forEach((structure) => delete structure.positionAssignments);
