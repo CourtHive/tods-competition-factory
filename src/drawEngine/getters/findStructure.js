@@ -37,12 +37,14 @@ export function getDrawStructures({ stage, stageSequence, drawDefinition }) {
     : !drawDefinition.structures
     ? MISSING_STRUCTURES
     : undefined;
-  const structures = (
-    (drawDefinition &&
-      drawDefinition.structures?.filter(isStage).filter(isStageSequence)) ||
-    []
-  ).sort(structureSort);
-  return { structures, error };
+
+  if (error) return { error };
+
+  const structures = drawDefinition.structures
+    ?.filter(isStage)
+    .filter(isStageSequence)
+    .sort(structureSort);
+  return { structures };
 
   function isStage(structure) {
     return !stage || structure.stage === stage;
