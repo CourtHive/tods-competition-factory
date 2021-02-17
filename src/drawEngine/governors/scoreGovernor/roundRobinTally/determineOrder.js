@@ -27,6 +27,13 @@ export function determineTeamOrder({
     return;
   }
 
+  // PSEUDOCODE - notes to refactor by
+  // 1. Sort by matchUpsWon
+  // 2. Determine if there are ties
+  // 3. SubSort by H2H wins or OrderHash/RatioHash
+
+  complete.sort(matchesWonSort);
+
   complete.forEach((p) => (p.orderHash = getOrderHash(p)));
   complete.forEach((p) => (p.GEMscore = getRatioHash(p)));
 
@@ -102,6 +109,12 @@ export function determineTeamOrder({
     });
   }
 
+  function matchesWonSort(a, b) {
+    if (disqualified.indexOf(b.participantId) >= 0) return 1;
+    if (disqualified.indexOf(a.participantId) >= 0) return -1;
+    return (b.results.matchUpsWon || 0) - (a.results.matchUpsWon || 0);
+  }
+
   function ratioHashSort(a, b) {
     return b.GEMscore - a.GEMscore;
   }
@@ -131,20 +144,11 @@ export function determineTeamOrder({
     return getRatioHash(p);
   }
   function getRatioHash(p) {
-    let rh;
-    if (tallyPolicy?.headToHeadPriority) {
-      rh =
-        p.results.matchUpsRatio * Math.pow(10, 16) +
-        p.results.setsRatio * Math.pow(10, 12) +
-        p.results.gamesDifference * Math.pow(10, 8) +
-        p.results.pointsRatio * Math.pow(10, 3);
-    } else {
-      rh =
-        p.results.matchUpsRatio * Math.pow(10, 16) +
-        p.results.setsRatio * Math.pow(10, 12) +
-        p.results.gamesRatio * Math.pow(10, 8) +
-        p.results.pointsRatio * Math.pow(10, 3);
-    }
+    const rh =
+      p.results.matchUpsRatio * Math.pow(10, 16) +
+      p.results.setsRatio * Math.pow(10, 12) +
+      p.results.gamesRatio * Math.pow(10, 8) +
+      p.results.pointsRatio * Math.pow(10, 3);
     return rh;
   }
 }
