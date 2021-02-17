@@ -37,13 +37,16 @@ import {
 export function generateFlightProfile({
   tournamentRecord,
   event,
-  drawNames = [],
-  drawNameRoot = 'Flight',
-  flightsCount,
+  stage,
+
+  deleteExisting,
   scaleAttributes,
   splitMethod,
-  stage,
-  deleteExisting,
+  flightsCount,
+
+  drawNameRoot = 'Flight',
+  drawNames = [],
+  uuids = [],
 }) {
   if (!event) return { error: MISSING_EVENT };
   const eventEntries = event.entries || [];
@@ -92,7 +95,7 @@ export function generateFlightProfile({
 
   const flights = generateRange(0, flightsCount).map((index) => {
     const flight = {
-      drawId: UUID(),
+      drawId: uuids?.pop() || UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
         (drawNames?.length && drawNames[index]) ||
