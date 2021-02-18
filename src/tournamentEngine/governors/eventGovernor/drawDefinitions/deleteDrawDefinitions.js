@@ -36,7 +36,12 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
         };
         auditTrail.push(auditData);
         const { drawId, drawType, drawName } = drawDefinition;
-        deletedDrawDetails.push({ drawId, drawType, drawName });
+        deletedDrawDetails.push({
+          drawId,
+          drawType,
+          drawName,
+          eventId: event.eventId,
+        });
         const { matchUps } = allDrawMatchUps({ event, drawDefinition });
         matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
       }
