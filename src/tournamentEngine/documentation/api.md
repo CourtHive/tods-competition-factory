@@ -356,32 +356,77 @@ tournamentEngine.assignSeedPositions({
 
 ## assignTieMatchUpParticipantId
 
+Used when interactively creating `{ participantType: PAIR }` participants.
+
 ---
 
 ## bulkMatchUpStatusUpdate
+
+Provides the ability to update the outcomes of multiple matchUps at once.
+
+```js
+const outcomes = [
+  {
+    eventId,
+    drawId,
+    matchUpId,
+    matchUpFormat,
+    matchUpStatus,
+    winningSide,
+    score,
+  },
+];
+tournamentEngine.bulkMatchUpStatusUpdate({ outcomes });
+```
 
 ---
 
 ## bulkScheduleMatchUps
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string[]} matchUpIds - array of matchUpIds to be scheduled
-- @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
+```js
+const schedule = {
+  scheduledTime: '08:00',
+  scheduledDayDate: '2021-01-01T00:00', // best practice to provide ISO date string
+  venueId,
+};
+tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+```
 
 ## bulkUpdatePublishedEventIds
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {object[]} outcomes - array of outcomes to be applied to matchUps, relevent attributes: { eventId: string; drawId: string; }
+Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate. publishedEventIds can be used to determine which events to re-publish.
 
-Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate
+```js
+const { publishedEventIds } = tournamentEngine.bulkUpdatePublishedEventIds({
+  outcomes,
+});
+```
 
 ---
 
 ## checkInParticipant
 
+Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.
+
+```js
+tournamentEngine.checkInParticipant({
+  drawId,
+  matchUpId,
+  participantId,
+});
+```
+
 ---
 
 ## checkOutParticipant
+
+```js
+tournamentEngine.checkOutParticipant({
+  drawId,
+  matchUpId,
+  participantId,
+});
+```
 
 ---
 
@@ -391,15 +436,32 @@ Returns a filtered array of publishedEventIds from all eventIds which are includ
 
 ## deleteDrawDefinitions
 
+Remove drawDefinitions from an event. An audit timeItem is added to the tournamentRecord whenever this method is called.
+
+```js
+tournamentEngine.deleteDrawDefinitions({
+  eventId,
+  drawIds: [drawId],
+});
+```
+
 ---
 
 ## removeEventEntries
 
+```js
+tournamentEngine.removeEventEntries({ eventId, participantIds });
+```
+
 ---
 
-## deleteFlightAndFlightDraws
+## deleteFlightAndFlightDraw
 
-Removes flight and associated drawDefinition (if generated) from flightProfile.
+Removes flight from event's flightProfile as well as associated drawDefinition (if generated).
+
+```js
+tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
+```
 
 ---
 

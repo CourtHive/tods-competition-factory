@@ -5,6 +5,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { deletionMessage } from './deletionMessage';
 import { removeCourtAssignment } from './removeCourtAssignment';
 
+// TODO: drawDefinition should not be required. Although this method may primarily be called from competitionEngine.
+// getScheduledCourtMatchUps should get matchUPs inContext so that drawIds can be determined.
 export function deleteCourt({
   tournamentRecord,
   drawDefinition,
