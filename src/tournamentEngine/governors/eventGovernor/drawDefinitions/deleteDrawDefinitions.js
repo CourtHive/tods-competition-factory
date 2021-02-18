@@ -1,5 +1,7 @@
-import { findEvent } from '../../../getters/eventGetter';
+import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
+import { addNotice } from '../../../../global/globalState';
+import { findEvent } from '../../../getters/eventGetter';
 import {
   addEventTimeItem,
   addTournamentTimeItem,
@@ -13,8 +15,6 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
-import { addNotice } from '../../../../global/globalState';
-import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   const drawId = Array.isArray(drawIds) && drawIds[0];
