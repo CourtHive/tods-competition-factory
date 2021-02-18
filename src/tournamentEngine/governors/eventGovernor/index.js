@@ -47,8 +47,12 @@ import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+
+import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
+import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { getFlightProfile } from '../../getters/getFlightProfile';
+import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 
 const eventGovernor = {
   addEvent,
@@ -57,6 +61,7 @@ const eventGovernor = {
   addDrawEntries,
   checkValidEntries,
 
+  modifyDrawName,
   addDrawDefinition,
   addPlayoffStructures,
   deleteDrawDefinitions,
@@ -74,7 +79,8 @@ const eventGovernor = {
 
   getFlightProfile,
   generateFlightProfile,
-  addDrawDefinitionTimeItem,
+  deleteFlightAndFlightDraw,
+  deleteFlightProfileAndFlightDraws,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
@@ -101,6 +107,7 @@ const eventGovernor = {
 
   generateDrawDefinition,
   regenerateDrawDefinition,
+  addDrawDefinitionTimeItem,
 
   assignTieMatchUpParticipantId,
 };
