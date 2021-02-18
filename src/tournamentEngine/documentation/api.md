@@ -6,6 +6,8 @@ route: /tournamentEngine/api
 
 # tournamentEngine API Reference
 
+All tournamentEngine methods return either `{ success: true }` or `{ error }`
+
 ## addCourt
 
 - @param {string} venueId
@@ -25,6 +27,22 @@ route: /tournamentEngine/api
 ---
 
 ## addDrawDefinition
+
+Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](#generateDrawDefinition).
+
+- @param (object) tournamentRecord - passed in automatically by tournamentEngine
+- @param {string} eventId - unique identifier for the event to which drawDefinition should be added
+- @param {object} drawDefinition - JSON object matching drawDefinition specification
+
+```js
+const { drawDefinition, error } = generateDrawDefinition(drawDefinitionValues);
+if (!error) {
+  const result = tournamentEngine.addDrawDefinition({
+    eventId,
+    drawDefinition,
+  });
+}
+```
 
 ---
 
