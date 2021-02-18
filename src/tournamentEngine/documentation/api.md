@@ -13,7 +13,9 @@ All tournamentEngine methods return either `{ success: true }` or `{ error }`
 - @param {string} venueId
 - @param {object} court - court object
 
-{ courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
+```js
+tournamentEngine.addCourt({ venueId, court });
+```
 
 ---
 
@@ -23,6 +25,22 @@ All tournamentEngine methods return either `{ success: true }` or `{ error }`
 - @param {number} courtsCount - number of courts to add
 - @param {string[]} courtNames - array of names to assign to generated courts
 - @param {object[]} dataAvailability - dataAvailability object
+
+```js
+const dateAvailability = [
+  {
+    date: '2020-01-01T00:00',
+    startTime: '07:00',
+    endTime: '19:00',
+    bookings: [
+      { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
+      { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
+      { startTime: '13:30', endTime: '14:00', bookingType: 'MAINTENANCE' },
+    ],
+  },
+];
+tournamentEngine.addCourts({ venueId, courtsCount: 3, dateAvailability });
+```
 
 ---
 
@@ -48,9 +66,22 @@ if (!error) {
 
 ## addDrawEntries
 
+```js
+tournamentEngine.addDrawEntries({
+  drawId,
+  stage: MAIN,
+  participantIds: alternateParticipantIds,
+  entryStatus: ALTERNATE,
+});
+```
+
 ---
 
 ## addEvent
+
+```js
+tournamentEngine.addEvent({ event });
+```
 
 ---
 
@@ -61,8 +92,17 @@ Adds participantIds to the entries array in an event
 - @param {object} tournamentRecord - passed in automatically by tournamentEngine
 - @param {string} eventId - tournamentEngine automatically retrieves event
 - @param {string[]} participantIds - ids of all participants to add to event
-- @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
-- @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+- @param {string} enryStatus - **optional** - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
+- @param {string} entryStage - **optional** - entryStage enum, e.g. QUALIFYING, MAIN
+
+```js
+tournamentEngine.addEventEntries({
+  eventId,
+  stage: MAIN,
+  participantIds: alternateParticipantIds,
+  entryStatus: ALTERNATE,
+});
+```
 
 ---
 
@@ -76,19 +116,56 @@ Add PAIR participant to an event. Creates new participantType: PAIR participants
 - @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
 - @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
 
+```js
+tournamentEngine.addEventEntryPairs({
+  eventId,
+  participantIdPairs,
+  entryStatus: ALTERNATE,
+  entryStage: QUALIFYING,
+});
+```
+
 ---
 
 ## addParticipant
 
-Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants
-Generates participant.participantId if none is provided
-Includes integrity checks for PAIR participants to insure participant.individualParticipantIds are valid
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Generates participant.participantId if none is provided. Includes integrity checks for PAIR participants to insure participant.individualParticipantIds are valid.
 
 - @param {object} participant - participant object
+
+```js
+const participantId = UUID();
+const participant = {
+  participantId, // optional
+  participantRole: COMPETITOR,
+  participantType: INDIVIDUAL,
+  person: {
+    standardFamilyName: 'Family',
+    standardGivenName: 'Given',
+  },
+};
+
+tournamentEngine.addParticipant({ participant });
+```
 
 ---
 
 ## addParticipants
+
+```js
+const participant = {
+  participantId, // optional
+  participantType: INDIVIDUAL,
+  person: {
+    standardFamilyName: 'Family',
+    standardGivenName: 'Given',
+  },
+};
+
+tournamentEngine.addParticipants({
+  participants: [participant],
+});
+```
 
 ---
 
@@ -101,9 +178,31 @@ Adds individualParticipantIds to GROUP or TEAM participants
 - @param {string[]} individualParticipantIds - individual participantIds to be added to grouping participant
 - @param {boolean} removeFromOtherTeams - whether or not to remove from other teams
 
+```js
+tournamentEngine.addIndividualParticipantIds({
+  groupingParticipantId,
+  individualParticipantIds,
+});
+```
+
 ---
 
 ## addPenalty
+
+```js
+const createdAt = new Date().toISOString();
+const penaltyData = {
+  refereeParticipantId: undefined,
+  participantIds: [participantId],
+  penaltyType: BALL_ABUSE,
+  penaltyCode: 'ORGCODE',
+  matchUpId: 'fakeMatchUpId',
+  issuedAt, // optional ISO timeStamp for time issued to participant
+  createdAt,
+  notes: 'Hit ball into sea',
+};
+let result = tournamentEngine.addPenalty(penaltyData);
+```
 
 ---
 
@@ -131,15 +230,24 @@ tournamentEngine.addPlayoffStructures({
 
 Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
 
-- @param {object} drawDefinition - added automatically by tournamentEngine with drawId
-- @param {string} drawId - used by tournamentEngine to retrieve drawDefinition
-- @param {string} structureId - structure identifier within drawDefinition
-- @param {number} drawPosition - drawPosition of the participant where subOrder is to be added
-- @param {number} subOrder - order in which tied participant should receive finishing position
+```js
+tournamentEngine.setSubOrder({
+  drawId,
+  structureId,
+  drawPosition: 1,
+  subOrder: 2,
+});
+```
 
 ---
 
 ## addVenue
+
+Adds **venueId** if not provided.
+
+```js
+tournamentEngine.addVenue({ venue: { venueName } });
+```
 
 ---
 
@@ -148,6 +256,10 @@ Assigns a subOrder value to a participant within a structure by drawPosition whe
 No parameters.
 
 Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
+
+```js
+const drawTypes = tournamentEngine.allowedDrawTypes();
+```
 
 ---
 

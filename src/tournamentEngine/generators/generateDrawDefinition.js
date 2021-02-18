@@ -58,6 +58,8 @@ export function generateDrawDefinition(props) {
     return validEntriesTest;
   }
 
+  // TODO: review use of allowedDrawTypes
+
   const tournamentAllowedDrawTypes =
     !ignoreAllowedDrawTypes &&
     tournamentRecord &&
