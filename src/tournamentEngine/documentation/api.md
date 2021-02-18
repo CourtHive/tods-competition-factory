@@ -469,31 +469,58 @@ tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
 
 Removes flightProfiles and all associated drawDefinitions from a specified event.
 
+```js
+tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+```
+
 ---
 
 ## deleteEvents
+
+```js
+tournamentEngine.deleteEvents({ eventIds });
+```
 
 ---
 
 ## deleteParticipants
 
+```js
+tournamentEngine.deleteParticipantIds({ paricipantIds });
+```
+
 ---
 
 ## deleteVenue
+
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenue({ venueId, force });
+```
 
 ---
 
 ## deleteVenues
 
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenues({ venueIds, force });
+```
+
 ---
 
 ## destroyPairEntry
 
-Removes a participantType: PAIR entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
+Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
 
-- @param {object} tournamentRecord - passed in by tournamentEngine
-- @param {string} eventId - resolved to event by tournamentEngine
-- @param {string} participantId - id of PAIR participant to remove; individualParticipantIds will be added as UNPAIRED participant entries
+```js
+tournamentEngine.destroyPairEntry({
+  eventId,
+  participantId,
+});
+```
 
 ---
 
@@ -681,16 +708,18 @@ Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
 
-- @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
-- @param {object} policyDefinition - polictyDefinition object
-- @param {number} participantCount - number of participants in draw structure
-- @param {number} drawSize - number of positions available in draw structure
+```js
+const { seedsCount, error } = getSeedsCount({
+  drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
+  policyDefinition: SEEDING_USTA,
+  participantCount: 15,
+  drawSize: 128,
+});
+```
 
 ---
 
 ## getState
-
-No parameters.
 
 Returns a deep copy of the current tournamentEngine state.
 
@@ -702,22 +731,19 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ## getTournamentParticipants
 
-Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
-
-- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
-- @param {object} participantFilters - attribute arrays with filter value strings
-- @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
-- @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
-- @param {boolean} withOpponents - include opponent participantIds
-- @param {boolean} withMatchUps - include all matchUps in which participant appears
-
-participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
+Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
 
 ```js
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
   participantFilters: { participantTypes: [INDIVIDUAL] },
+  inContext, // optional - adds individualParticipants for all individualParticipantIds
+  withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+  withOpponents, // optional - include opponent participantIds
+  withMatchUps, // optional - include all matchUps in which the participant appears
 });
 ```
+
+participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
 
 ---
 

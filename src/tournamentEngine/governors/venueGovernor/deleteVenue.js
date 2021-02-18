@@ -6,6 +6,7 @@ import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { deletionMessage } from './deletionMessage';
 import { removeCourtAssignment } from './removeCourtAssignment';
 
+// TODO: should not require drawDefinition
 export function deleteVenue({
   tournamentRecord,
   drawDefinition,
@@ -41,14 +42,15 @@ export function deleteVenue({
   return SUCCESS;
 }
 
-export function deleteVenues({ tournamentRecord, venueIds }) {
+// TODO: add force option
+export function deleteVenues({ tournamentRecord, venueIds, force }) {
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   tournamentRecord.venues.forEach((venue) => {
     const { venueId } = venue;
     if (venueIds.includes(venueId)) {
       const { venueId } = venue;
-      deleteVenue({ tournamentRecord, venueId });
+      deleteVenue({ tournamentRecord, venueId, force });
     }
   });
 
