@@ -6,33 +6,97 @@ route: /tournamentEngine/api
 
 # tournamentEngine API Reference
 
+All tournamentEngine methods return either `{ success: true }` or `{ error }`
+
 ## addCourt
 
-- @param {string} venueId
-- @param {object} court - court object
+Add a court to a Venue.
 
-{ courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
+```js
+const court = {
+  altitude, // optional
+  courtDimensions, // optional
+  courtId, // generated automatically if not provided
+  courtName,
+  dateAvailability, // optional - see below
+  latitude, // optional
+  longitude, // optional
+  onlineResources,  // optional
+  pace, // optional - string;
+  surfaceCategory, SurfaceCategoryEnum;
+  surfaceType, // string; see: https://www.itftennis.com/en/about-us/tennis-tech/recognised-courts/
+  surfacedDate?: Date;
+}
+tournamentEngine.addCourt({ venueId, court });
+```
 
 ---
 
 ## addCourts
 
-- @param {string} venueId
-- @param {number} courtsCount - number of courts to add
-- @param {string[]} courtNames - array of names to assign to generated courts
-- @param {object[]} dataAvailability - dataAvailability object
+Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**.
+
+```js
+const dateAvailability = [
+  {
+    date: '2020-01-01T00:00',
+    startTime: '07:00',
+    endTime: '19:00',
+    bookings: [
+      { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
+      { startTime: '08:30', endTime: '09:00', bookingType: 'MAINTENANCE' },
+      { startTime: '13:30', endTime: '14:00', bookingType: 'MAINTENANCE' },
+    ],
+  },
+];
+tournamentEngine.addCourts({
+  venueId,
+  courtsCount: 3, // optional, can be added/modified later
+  courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
+  dateAvailability, // optional
+});
+```
 
 ---
 
 ## addDrawDefinition
 
+Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](#generateDrawDefinition).
+
+```js
+const { drawDefinition, error } = generateDrawDefinition(drawDefinitionValues);
+if (!error) {
+  const result = tournamentEngine.addDrawDefinition({
+    eventId,
+    drawDefinition,
+  });
+}
+```
+
 ---
 
 ## addDrawEntries
 
+Bulk add an array of **participantIds** to a specific draw **stage** with a specific **entryStatus**.
+
+```js
+tournamentEngine.addDrawEntries({
+  drawId,
+  participantIds,
+  stage: MAIN, // optional
+  entryStatus: ALTERNATE, // optional
+});
+```
+
 ---
 
 ## addEvent
+
+Add an event object to a tournamentRecord.
+
+```js
+tournamentEngine.addEvent({ event });
+```
 
 ---
 
@@ -40,37 +104,62 @@ route: /tournamentEngine/api
 
 Adds participantIds to the entries array in an event
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} eventId - tournamentEngine automatically retrieves event
-- @param {string[]} participantIds - ids of all participants to add to event
-- @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
-- @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+```js
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds,
+  stage: MAIN, // optional
+  entryStatus: ALTERNATE, // optional
+});
+```
 
 ---
 
 ## addEventEntryPairs
 
-Add PAIR participant to an event. Creates new participantType: PAIR participants if necessary
+Add **PAIR** participant to an event. Creates new `{ participantType: PAIR }` participants if the combination of `individualParticipantIds` does not already exist.
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} eventId - tournamentEngine automatically retrieves event
-- @param {string[][]} participantIdPairs - array of paired id arrays for all participants to add to event
-- @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
-- @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+```js
+tournamentEngine.addEventEntryPairs({
+  eventId,
+  participantIdPairs,
+  entryStatus: ALTERNATE, // optional
+  entryStage: QUALIFYING, // optional
+});
+```
 
 ---
 
 ## addParticipant
 
-Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants
-Generates participant.participantId if none is provided
-Includes integrity checks for PAIR participants to insure participant.individualParticipantIds are valid
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to insure `participant.individualParticipantIds` are valid.
 
-- @param {object} participant - participant object
+```js
+const participantId = UUID();
+const participant = {
+  participantId, // automatically generated if not provided
+  participantRole: COMPETITOR,
+  participantType: INDIVIDUAL,
+  person: {
+    standardFamilyName: 'Family',
+    standardGivenName: 'Given',
+    nationalityCode, // optional
+    sex, // optional
+  },
+};
+
+tournamentEngine.addParticipant({ participant });
+```
 
 ---
 
 ## addParticipants
+
+Bulk add participants to a tournamentRecord.
+
+```js
+tournamentEngine.addParticipants({ participants });
+```
 
 ---
 
@@ -78,32 +167,49 @@ Includes integrity checks for PAIR participants to insure participant.individual
 
 Adds individualParticipantIds to GROUP or TEAM participants
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
-- @param {string[]} individualParticipantIds - individual participantIds to be added to grouping participant
-- @param {boolean} removeFromOtherTeams - whether or not to remove from other teams
+```js
+tournamentEngine.addIndividualParticipantIds({
+  groupingParticipantId,
+  individualParticipantIds,
+  removeFromOtherTeams, // optional boolean
+});
+```
 
 ---
 
 ## addPenalty
 
+Add a penaltyItem to one or more particpants.
+
+```js
+const createdAt = new Date().toISOString();
+const penaltyData = {
+  refereeParticipantId: undefined,
+  participantIds: [participantId],
+  penaltyType: BALL_ABUSE,
+  penaltyCode: 'Organization specific code',
+  matchUpId,
+  issuedAt, // optional ISO timeStamp for time issued to participant
+  createdAt,
+  notes: 'Hit ball into sea',
+};
+let result = tournamentEngine.addPenalty(penaltyData);
+```
+
 ---
 
 ## addPlayoffStructures
 
-- @param {object} drawDefinition - passed in automatically by drawEngine
-- @param {string} structureId - id of structure to which playoff structures are to be added
-- @param {number[]} roundNumbers - source roundNumbers which will feed target structures
-- @param {number[]} playoffPositions - positions to be played off
-- @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
-- @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
+Adds playoff structures to an existing drawDefinition.
 
 ```js
 tournamentEngine.addPlayoffStructures({
   drawId,
   structureId,
-  roundNumbers: [3], // either target roundNumbers or playoffPositions
-  playoffPositions: [3, 4],
+  roundNumbers: [3], // requires if not provided playoffPositions
+  playoffPositions: [3, 4], // required if not provided roundNumbers
+  playoffAttributes, // optional - object mapping exitProfiles to structure names, e.g. 0-1-1 for SOUTH
+  playoffStructureNameBase, // optional - base word for default playoff naming, e.g. 'Playoff'
 });
 ```
 
@@ -113,35 +219,58 @@ tournamentEngine.addPlayoffStructures({
 
 Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
 
-- @param {object} drawDefinition - added automatically by tournamentEngine with drawId
-- @param {string} drawId - used by tournamentEngine to retrieve drawDefinition
-- @param {string} structureId - structure identifier within drawDefinition
-- @param {number} drawPosition - drawPosition of the participant where subOrder is to be added
-- @param {number} subOrder - order in which tied participant should receive finishing position
+```js
+tournamentEngine.setSubOrder({
+  drawId,
+  structureId,
+  drawPosition: 1,
+  subOrder: 2,
+});
+```
 
 ---
 
 ## addVenue
 
+Adds **venueId** if not provided.
+
+```js
+tournamentEngine.addVenue({ venue: { venueName } });
+```
+
 ---
 
 ## allowedDrawTypes
 
-No parameters.
-
 Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
+
+```js
+const drawTypes = tournamentEngine.allowedDrawTypes();
+```
 
 ---
 
 ## allowedMatchUpFormats
 
-No parameters.
-
 Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
+
+```js
+const drawTypes = tournamentEngine.allowedDrawTypes();
+```
 
 ---
 
 ## allEventMatchUps
+
+Returns all matchUps for an event.
+
+```js
+const { matchUps } = allEventMatchUps({
+  eventId,
+  inContext: true, // include contextual details
+  nextMatchUps: true, // include winner/loser target matchUp details
+});
+```
 
 ---
 
@@ -157,86 +286,147 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
 ## alternateDrawPositionAssignment
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number} drawPosition - drawPosition where alternate participantId will be assigned
-- @param {string} alternateParticipantId - id of participant
+Replaces an existing drawPosition assignment with an alternateParticipantId. This method is included in `validActions` for [positionActions](/concepts/positionActions)
+
+```js
+tournamentEngine.alternateDrawPositionAssignment({
+  drawId,
+  structureId,
+  drawPosition,
+  alternateParticipantId,
+});
+```
 
 ---
 
 ## assignDrawPosition
 
+Low level function normally called by higher order convenience functions.
+
+```js
+tournamentEngine.assignDrawPosition({
+  drawId,
+  structureId,
+  drawPosition,
+  participantId, // optional - if assigning position to a participant
+  qualifier, // optional boolean, if assigning a space for a qualifier
+  bye, // optional boolean, if assigning a bye
+});
+```
+
 ---
 
 ## assignMatchUpCourt
+
+```js
+tournamentEngine.assignMatchUpCourt({
+  drawId, // drawId where matchUp is found
+  matchUpId,
+  courtId,
+  courtDayDate, // ISO date string
+});
+```
 
 ---
 
 ## assignSeedPositions
 
-- Provides the ability to assign seedPositions _after_ a structure has been generated
+Assign **seedNumbers** to **participantIds** within a target draw structure.
+
+- Provides the ability to assign seeding _after_ a structure has been generated
 - To be used _before_ participants are positioned
 
-Assign **participantIds** to **seedNumbers** within a target draw structure.
+**seedNumber** is unique while **seedValue** can be any string representation, e.g `"5-8"`
 
-```json
-Defaults to { stage: 'MAIN', stageSequence: 1 } if { structureId: undefined }
+```js
+let assignments = [{ seedNumber: 1, seedValue: 1, participantId }];
+tournamentEngine.assignSeedPositions({
+  eventId,
+  drawId,
+  structureId,
+  assignments,
+
+  stage, // opional; defaults to { stage: MAIN }
+  stageSequence, // optional; defaults to { stageSequence: 1 }
+  useExistingSeedLimits, // optional; restrict ability to assign seedNumbers beyond established limit
+});
 ```
-
-The structure of an **_assignment object_** is as follows:
-
-```json
-{
-  "seedNumber": 1,
-  "seedValue": 1,
-  "participantId": "uuid-of-participant"
-}
-```
-
-**seedNumber** is unique while **seedValue** can be any string representation.
-
-This allows seeds 5-8 to be visually represented as all having a seed value of '5' or '5-8'.
-
-| Parameters            | Required | Type    | Description                                                          |
-| :-------------------- | :------- | :------ | :------------------------------------------------------------------- |
-| drawId                | Required | string  | Unique identifier for target drawDefinition                          |
-| assignments           | Required | array   | Array of assignment objects                                          |
-| eventId               | Optional | string  | Not required; optimizes locating draw witthin tournamentRecord       |
-| structureId           | Optional | string  | Apply assignments to a specific structure, identified by structureId |
-| stage                 | Optional | string  | Locate target structure by stage; used together with stageSequence   |
-| stageSequence         | Optional | number  | Locate target structure by stageSequence; used together with stage   |
-| useExistingSeedLimits | Optional | boolean | Restrict ability to assign seedNumbers beyond established limit      |
 
 ---
 
 ## assignTieMatchUpParticipantId
 
+Used when interactively creating `{ participantType: PAIR }` participants.
+
 ---
 
 ## bulkMatchUpStatusUpdate
+
+Provides the ability to update the outcomes of multiple matchUps at once.
+
+```js
+const outcomes = [
+  {
+    eventId,
+    drawId,
+    matchUpId,
+    matchUpFormat,
+    matchUpStatus,
+    winningSide,
+    score,
+  },
+];
+tournamentEngine.bulkMatchUpStatusUpdate({ outcomes });
+```
 
 ---
 
 ## bulkScheduleMatchUps
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string[]} matchUpIds - array of matchUpIds to be scheduled
-- @param {object} schedule - { venueId?: string; scheduledDayDate?: string; scheduledTime?: string }
+```js
+const schedule = {
+  scheduledTime: '08:00',
+  scheduledDayDate: '2021-01-01T00:00', // best practice to provide ISO date string
+  venueId,
+};
+tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+```
 
 ## bulkUpdatePublishedEventIds
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {object[]} outcomes - array of outcomes to be applied to matchUps, relevent attributes: { eventId: string; drawId: string; }
+Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate. publishedEventIds can be used to determine which events to re-publish.
 
-Returns a filtered array of publishedEventIds from all eventIds which are included in a bulkMatchUpStatusUpdate
+```js
+const { publishedEventIds } = tournamentEngine.bulkUpdatePublishedEventIds({
+  outcomes,
+});
+```
 
 ---
 
 ## checkInParticipant
 
+Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.
+
+```js
+tournamentEngine.checkInParticipant({
+  drawId,
+  matchUpId,
+  participantId,
+});
+```
+
 ---
 
 ## checkOutParticipant
+
+```js
+tournamentEngine.checkOutParticipant({
+  drawId,
+  matchUpId,
+  participantId,
+});
+```
 
 ---
 
@@ -246,35 +436,91 @@ Returns a filtered array of publishedEventIds from all eventIds which are includ
 
 ## deleteDrawDefinitions
 
+Remove drawDefinitions from an event. An audit timeItem is added to the tournamentRecord whenever this method is called.
+
+```js
+tournamentEngine.deleteDrawDefinitions({
+  eventId,
+  drawIds: [drawId],
+});
+```
+
 ---
 
 ## removeEventEntries
+
+```js
+tournamentEngine.removeEventEntries({ eventId, participantIds });
+```
+
+---
+
+## deleteFlightAndFlightDraw
+
+Removes flight from event's flightProfile as well as associated drawDefinition (if generated).
+
+```js
+tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
+```
+
+---
+
+## deleteFlightProfileAndFlightDraws
+
+Removes flightProfiles and all associated drawDefinitions from a specified event.
+
+```js
+tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+```
 
 ---
 
 ## deleteEvents
 
+```js
+tournamentEngine.deleteEvents({ eventIds });
+```
+
 ---
 
 ## deleteParticipants
+
+```js
+tournamentEngine.deleteParticipantIds({ paricipantIds });
+```
 
 ---
 
 ## deleteVenue
 
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenue({ venueId, force });
+```
+
 ---
 
 ## deleteVenues
+
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenues({ venueIds, force });
+```
 
 ---
 
 ## destroyPairEntry
 
-Removes a participantType: PAIR entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
+Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
 
-- @param {object} tournamentRecord - passed in by tournamentEngine
-- @param {string} eventId - resolved to event by tournamentEngine
-- @param {string} participantId - id of PAIR participant to remove; individualParticipantIds will be added as UNPAIRED participant entries
+```js
+tournamentEngine.destroyPairEntry({
+  eventId,
+  participantId,
+});
+```
 
 ---
 
@@ -462,16 +708,18 @@ Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
 
-- @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
-- @param {object} policyDefinition - polictyDefinition object
-- @param {number} participantCount - number of participants in draw structure
-- @param {number} drawSize - number of positions available in draw structure
+```js
+const { seedsCount, error } = getSeedsCount({
+  drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
+  policyDefinition: SEEDING_USTA,
+  participantCount: 15,
+  drawSize: 128,
+});
+```
 
 ---
 
 ## getState
-
-No parameters.
 
 Returns a deep copy of the current tournamentEngine state.
 
@@ -483,22 +731,19 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 ## getTournamentParticipants
 
-Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
-
-- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
-- @param {object} participantFilters - attribute arrays with filter value strings
-- @param {boolean} inContext - adds individualParticipants for all individualParticipantIds
-- @param {boolean} withStatistics - adds events: { [eventId]: eventName }, matchUps: { [matchUpId]: score }, statistics: [{ statCode: 'winRatio'}]
-- @param {boolean} withOpponents - include opponent participantIds
-- @param {boolean} withMatchUps - include all matchUps in which participant appears
-
-participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
+Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
 
 ```js
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
   participantFilters: { participantTypes: [INDIVIDUAL] },
+  inContext, // optional - adds individualParticipants for all individualParticipantIds
+  withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+  withOpponents, // optional - include opponent participantIds
+  withMatchUps, // optional - include all matchUps in which the participant appears
 });
 ```
+
+participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
 
 ---
 
