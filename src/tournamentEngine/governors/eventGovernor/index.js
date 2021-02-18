@@ -52,6 +52,7 @@ import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFligh
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { getFlightProfile } from '../../getters/getFlightProfile';
+import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 
 const eventGovernor = {
   addEvent,
@@ -60,6 +61,7 @@ const eventGovernor = {
   addDrawEntries,
   checkValidEntries,
 
+  modifyDrawName,
   addDrawDefinition,
   addPlayoffStructures,
   deleteDrawDefinitions,
