@@ -270,6 +270,18 @@ Returns a filtered array of publishedEventIds from all eventIds which are includ
 
 ---
 
+## deleteFlightAndFlightDraws
+
+Removes flight and associated drawDefinition (if generated) from flightProfile.
+
+---
+
+## deleteFlightProfileAndFlightDraws
+
+Removes flightProfiles and all associated drawDefinitions from a specified event.
+
+---
+
 ## deleteEvents
 
 ---
