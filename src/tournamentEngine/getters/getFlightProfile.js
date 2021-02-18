@@ -1,12 +1,13 @@
 import { findEventExtension } from '../governors/queryGovernor/extensionQueries';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '../../constants/flightConstants';
 
 export function getFlightProfile({ event }) {
   if (!event) return { error: MISSING_EVENT };
   const { extension } = findEventExtension({
     event,
-    name: 'flightProfile',
+    name: FLIGHT_PROFILE,
   });
   const flightProfile = extension?.value;
 
