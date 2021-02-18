@@ -68,6 +68,7 @@ export function getValidAlternatesAction({
 function eligibleEntryStage({ structure, entry }) {
   const { stage } = structure;
   if (
+    !entry.entryStage ||
     entry.entryStage === stage ||
     (entry.entryStage === MAIN && stage === CONSOLATION)
   )
