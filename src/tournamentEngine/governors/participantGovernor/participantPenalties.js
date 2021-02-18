@@ -30,6 +30,7 @@ export function addPenalty({
 
   extensions,
   createdAt,
+  issuedAt,
 
   refereeParticipantId,
 }) {
@@ -52,6 +53,7 @@ export function addPenalty({
     matchUpId,
     notes,
 
+    issuedAt,
     createdAt,
   });
 
