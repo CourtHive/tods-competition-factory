@@ -3,7 +3,8 @@ import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
 
-// TODO: participantProfile => extension
+// TODO: participantProfile should be stored as an extension
+// Write tests...
 export function generateTeamsFromParticipantAttribute(props) {
   const {
     tournamentRecord,
@@ -71,5 +72,9 @@ export function generateTeamsFromParticipantAttribute(props) {
 
   console.log({ participantsAdded });
 
-  if (participantsAdded) return SUCCESS;
+  if (participantsAdded) {
+    return Object.assign({}, SUCCESS, { participantsAdded });
+  } else {
+    return { error: 'No matching participants found' };
+  }
 }

@@ -128,7 +128,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
       const { matchUpId, matchUpTieId, matchUpFormat } = matchUp;
-      const params = {
+      const payload = {
         drawId,
         matchUpId,
         matchUpTieId,
@@ -144,7 +144,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
         type: SCORE,
         method: 'setMatchUpStatus',
         message: 'set outcome and winningSide',
-        params,
+        payload,
       });
       validActions.push({ type: START });
       validActions.push({ type: END });

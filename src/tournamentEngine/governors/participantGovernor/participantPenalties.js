@@ -29,7 +29,7 @@ export function addPenalty({
   notes,
 
   extensions,
-  createdAt,
+  issuedAt,
 
   refereeParticipantId,
 }) {
@@ -45,6 +45,7 @@ export function addPenalty({
   );
   if (!relevantParticipants.length) return { error: PARTICIPANT_NOT_FOUND };
 
+  const createdAt = new Date().toISOString();
   const penaltyItem = Object.assign(penaltyTemplate({ penaltyId }), {
     refereeParticipantId,
     penaltyCode,
@@ -52,6 +53,7 @@ export function addPenalty({
     matchUpId,
     notes,
 
+    issuedAt,
     createdAt,
   });
 

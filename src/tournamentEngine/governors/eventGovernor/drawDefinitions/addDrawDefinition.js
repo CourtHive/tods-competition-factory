@@ -6,6 +6,7 @@ import { findEvent } from '../../../getters/eventGetter';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DRAW_ID_EXISTS } from '../../../../constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
 
 export function addDrawDefinition({
   tournamentRecord,
@@ -35,7 +36,7 @@ export function addDrawDefinition({
         // ...update the flight.drawName with the drawName in the drawDefinition
         flight.drawName = drawDefinition.drawName;
         const extension = {
-          name: 'flightProfile',
+          name: FLIGHT_PROFILE,
           value: {
             flights: flightProfile.flights,
           },

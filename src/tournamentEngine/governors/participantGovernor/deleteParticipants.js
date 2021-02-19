@@ -6,6 +6,9 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+// TODO: don't remove participants who are active in draws
+// If not active in draws, remove participantIds from all entries
+
 export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
@@ -20,6 +23,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
     participantsCount - tournamentRecord.participants.length;
 
   removeParticipantIdsFromAllTeams({ tournamentRecord, participantIds });
+
   return participantsRemovedCount
     ? SUCCESS
     : { error: 'Not all participants deleted' };
