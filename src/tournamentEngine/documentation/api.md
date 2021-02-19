@@ -1480,11 +1480,6 @@ Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts
 
 Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called. These matchUps are returned **inContext**.
 
-| Parameters     | Required | Type  | Description |
-| :------------- | :------- | :---- | :---------- |
-| matchUpFilters | Optional | array |             |
-| contestFilters | Optional | array |             |
-
 ```js
 const {
   abandonedMatchUps,
