@@ -1292,15 +1292,25 @@ removeDrawPositionAssignment({
 
 ## removeParticipantIdsFromAllTeams
 
+```js
+tournamentEngine.removeParticipantIdsFromAllTeams({
+  individualParticipantIds,
+  groupingType, // optional - restrict to removing from only specified groupingType
+});
+```
+
 ---
 
 ## removeIndividualParticipantIds
 
-Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
+Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
-- @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
+```js
+tournamentEngine.removeIndividualParticipantIds({
+  groupingParticipantId,
+  individualParticipantIds,
+});
+```
 
 ---
 
