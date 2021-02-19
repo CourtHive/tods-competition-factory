@@ -4,7 +4,7 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 
 import {
   CONSOLATION,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
@@ -16,7 +16,7 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-it('directs participant to FEED_FMLC consolation when walkover', () => {
+it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkover', () => {
   const participantsProfile = {
     participantsCount: 16,
     participantType: INDIVIDUAL,
@@ -26,7 +26,7 @@ it('directs participant to FEED_FMLC consolation when walkover', () => {
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,
@@ -94,7 +94,7 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,
@@ -162,7 +162,7 @@ it('correctly places consolation participant for WALKOVER outcome 2nd round matc
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,
@@ -228,7 +228,7 @@ it('correctly places WALKOVER loser of 2nd round match who had bye into consolat
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,
@@ -295,7 +295,7 @@ it('correctly places WALKOVER loser of 2nd round match who had BYE into consolat
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,
@@ -362,7 +362,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
       drawSize: 16,
       eventType: SINGLES,
       participantsCount: 14,
-      drawType: FEED_FMLC,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
           roundNumber: 1,

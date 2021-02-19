@@ -38,7 +38,7 @@ import {
   COMPASS_ATTRIBUTES,
   OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -154,7 +154,7 @@ export function generateDrawType(props = {}) {
     },
 
     [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(props),
-    [FEED_FMLC]: () =>
+    [FIRST_MATCH_LOSER_CONSOLATION]: () =>
       feedInChampionship(Object.assign(props, { feedRounds: 1, fmlc: true })),
     [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
     [FICQF]: () =>

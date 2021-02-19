@@ -13,18 +13,20 @@ import { drawEngine } from '../../sync';
 import {
   MAIN,
   FEED_IN_CHAMPIONSHIP,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
   COMPASS,
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
 
-it('can direct participants in First Match Consolation (FEED_FMLC)', () => {
+it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOLATION)', () => {
   reset();
   initialize();
   const drawSize = 32;
   mainDrawPositions({ drawSize });
-  const result = drawEngine.generateDrawType({ drawType: FEED_FMLC });
+  const result = drawEngine.generateDrawType({
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
+  });
   expect(result).not.toHaveProperty(ERROR);
   const { drawDefinition } = drawEngine.getState();
   expect(drawDefinition.links.length).toEqual(2);

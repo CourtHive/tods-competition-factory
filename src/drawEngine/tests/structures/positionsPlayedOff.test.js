@@ -2,7 +2,7 @@ import { getPositionsPlayedOff } from '../../governors/structureGovernor/getPosi
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { drawEngine } from '../../sync';
 
-import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {
   reset();
@@ -17,12 +17,12 @@ it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => 
   expect(positionsPlayedOff).toEqual([1, 2]);
 });
 
-it('can correctly determin positions playedOff for FEED_FMLC', () => {
+it('can correctly determin positions playedOff for FIRST_MATCH_LOSER_CONSOLATION', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const result = drawEngine.generateDrawType({
-    drawType: FEED_FMLC,
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);
 
@@ -30,7 +30,4 @@ it('can correctly determin positions playedOff for FEED_FMLC', () => {
 
   const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
   expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
-  // NOTE: FMLC positions played off can vary
-  //  ==> if there are no second round first match losers it plays off 9-10
-  //  ==> if there are second round first match losers it plays off 5-6
 });

@@ -13,7 +13,7 @@ import {
 
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import {
   BYE,

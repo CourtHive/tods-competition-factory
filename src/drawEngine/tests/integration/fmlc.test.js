@@ -5,7 +5,7 @@ import {
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
 
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import {
   BYE,
@@ -14,7 +14,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
-it('can generate FEED_FMLC', () => {
+it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 30;

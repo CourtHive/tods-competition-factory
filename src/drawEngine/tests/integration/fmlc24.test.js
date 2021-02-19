@@ -4,7 +4,7 @@ import {
   completeMatchUp,
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
