@@ -797,6 +797,13 @@ const {
 
 ## getEventData
 
+Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
+
+```js
+const { eventData } = tournamentEngine.getEventData({ drawId });
+const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
+```
+
 ---
 
 ## getMatchUpFormat
@@ -844,16 +851,29 @@ const {
 
 ## getPairedParticipant
 
+Returns the `{ participantType: PAIR }`, if any, which contains the specified `individualParticipantIds`.
+
+```js
+const { participant } = tournamentEngine.getPairedParticipant({
+  participantIds: individualParticipantIds,
+});
+```
+
 - @param {string[]} participantIds - ids of the participants
 
 ---
 
 ## getParticipantEventDetails
 
-Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
+Returns an array of eventDetails in which a specified `participantId` appears. Used primarily by `tournamentEngine.tournamentParticipants()` to add context.
 
-- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
-- @param {string} participantId - id of participant for which events (eventName, eventId) are desired
+```js
+const { eventDetails } = tournamentEngine.getParticipantEventDetails({
+  participantId,
+});
+
+const [{ eventName, eventId }] = eventDetails;
+```
 
 ---
 
