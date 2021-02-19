@@ -27,7 +27,7 @@ export function determineTeamOrder({
     return;
   }
 
-  // PSEUDOCODE - notes to refactor by
+  // PSEUDOCODE- notes to refactor by
   // 1. Sort by matchUpsWon
   // 2. Determine if there are ties
   // 3. SubSort by H2H wins or OrderHash/RatioHash
