@@ -10,10 +10,12 @@ Subscriptions enable external methods to be called when certain events occur whi
 
 ```js
 const subscriptions = {
-  audit: (payload) => {}, // payload = [{ action: '', payload: {} }]
-  modifyMatchUp: (payload) => {}, // payload = { matchUp }
   addMatchUps: (payload) => {}, // payload = { matchUps }
+  audit: (payload) => {}, // payload = [{ action: '', payload: {} }]
   deletedMatchUpIds: (payload) => {}, // payload = { matchUpIds }
+  modifyMatchUp: (payload) => {}, // payload = { matchUp }
+  publishEvent: (payload) => (), // payload = { eventData }
+  unPublishEvent: (payload) => (), // payload = { eventId }
 };
 ```
 

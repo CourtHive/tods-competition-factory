@@ -1,5 +1,6 @@
-import { getEventData } from './getEventData';
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addNotice } from '../../../global/globalState';
+import { getEventData } from './getEventData';
 
 import {
   MISSING_EVENT,
@@ -31,6 +32,8 @@ export function publishEvent({
     policyDefinition,
     event,
   });
+
+  addNotice({ topic: 'ublishEvent', payload: { eventData } });
 
   return Object.assign({}, SUCCESS, { eventData });
 }
