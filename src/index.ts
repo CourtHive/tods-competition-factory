@@ -41,7 +41,7 @@ export const utilities = {
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
-// START: Asynchronous and Synchronous engine exports
+// START- Asynchronous and Synchronous engine exports
 export { competitionEngine } from './competitionEngine/sync';
 export { competitionEngineAsync } from './competitionEngine/async';
 export { tournamentEngine } from './tournamentEngine/sync';
@@ -49,9 +49,9 @@ export { tournamentEngineAsync } from './tournamentEngine/async';
 export { drawEngine } from './drawEngine/sync';
 export { drawEngineAsync } from './drawEngine/async';
 export { mocksEngine } from './mocksEngine';
-// END: Asynchronous and Synchronous engine exports
+// END- Asynchronous and Synchronous engine exports
 
-// START: constants ---------------------------------------------------------------
+// START-: constants ---------------------------------------------------------------
 export { participantRoles } from './constants/participantRoles';
 export { participantTypes } from './constants/participantTypes';
 export { factoryConstants } from './constants';
@@ -81,4 +81,4 @@ export { scaleConstants } from './constants/scaleConstants';
 export { surfaceConstants } from './constants/surfaceConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
-// END: constants ---------------------------------------------------------------
+// END-: constants ---------------------------------------------------------------
