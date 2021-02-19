@@ -17,11 +17,11 @@ it('recognizes incomplete matchUp tiebreaks', () => {
   expect(matchUp.scoreString.trim()).toEqual(
     `6-3 3-6 [10${MATCH_TIEBREAK_JOINER}3`
   );
-  expect(matchUp.sets.length).toEqual(3);
+  expect(matchUp.score?.sets.length).toEqual(3);
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6 [10`);
-  expect(matchUp.sets.length).toEqual(3);
+  expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
   ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
@@ -30,7 +30,7 @@ it('recognizes incomplete matchUp tiebreaks', () => {
 
   ({ matchUp } = scoreMatchUp({ value: 'backspace', matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6 [1`);
-  expect(matchUp.sets.length).toEqual(3);
+  expect(matchUp.score?.sets.length).toEqual(3);
 
   // not valid to complete scoreString
   ({ matchUp, message } = scoreMatchUp({ value: ']', matchUp }));
@@ -59,13 +59,13 @@ it('can support 2nd set tiebreaks with 3rd set matchUp tiebreaks', () => {
 
   ({ matchUp } = enterValues({ values: v1, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual('6-3 6-7(2)');
-  expect(matchUp.sets.length).toEqual(2);
+  expect(matchUp.score?.sets.length).toEqual(2);
 
   ({ matchUp } = scoreMatchUp({ lowSide: 2, value: '3', matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(
     `6-3 6-7(2) [10${MATCH_TIEBREAK_JOINER}3`
   );
-  expect(matchUp.sets.length).toEqual(3);
+  expect(matchUp.score?.sets.length).toEqual(3);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ value: ']', matchUp }));
@@ -89,7 +89,7 @@ it('does not allow matchUp tiebreak scores greater than 2 digits', () => {
   expect(matchUp.scoreString.trim()).toEqual(
     `6-3 3-6 [10${MATCH_TIEBREAK_JOINER}3`
   );
-  expect(matchUp.sets.length).toEqual(3);
+  expect(matchUp.score?.sets.length).toEqual(3);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ lowSide: 1, value: '1', matchUp }));
@@ -114,7 +114,7 @@ it('can enter 0 for side 2 when matchUp tiebreak open bracket and no matchUp tie
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(`6-3 3-6`);
-  expect(matchUp.sets.length).toEqual(2);
+  expect(matchUp.score?.sets.length).toEqual(2);
   expect(matchUp.winningSide).toBeUndefined();
 
   ({ matchUp } = scoreMatchUp({ lowSide: 2, value: '0', matchUp }));
