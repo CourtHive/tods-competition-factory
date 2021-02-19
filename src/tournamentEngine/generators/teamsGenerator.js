@@ -2,9 +2,9 @@ import { UUID } from '../../utilities';
 import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
+import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../governors/queryGovernor/extensionQueries';
 
-// TODO: participantProfile should be stored as an extension
-// Write tests...
 export function generateTeamsFromParticipantAttribute(props) {
   const {
     tournamentRecord,
@@ -32,10 +32,13 @@ export function generateTeamsFromParticipantAttribute(props) {
           participantType: TEAM,
           participantRole: COMPETITOR,
           individualParticipantIds: [],
-          participantProfile: {
-            groupingAttribute: personAttribute || participantAttribute,
-          },
         };
+
+        const extension = {
+          name: 'groupingAttribute',
+          value: personAttribute || participantAttribute,
+        };
+        addExtension({ element: teams[attributeValue], extension });
       }
 
       teams[attributeValue].individualParticipantIds.push(
@@ -50,8 +53,12 @@ export function generateTeamsFromParticipantAttribute(props) {
     .map((participant) => {
       if (participant.participantType !== 'TEAM') return undefined;
       if (participant.participantRole !== 'COMPETITOR') return undefined;
-      const { participantProfile } = participant;
-      const { groupingAttribute } = participantProfile || {};
+
+      const { extension } = findExtension({
+        element: participant,
+        name: 'groupingAttribute',
+      });
+      const groupingAttribute = extension?.value;
 
       if (groupingAttributes.includes(groupingAttribute)) {
         return participant.participantId;

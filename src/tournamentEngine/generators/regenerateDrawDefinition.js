@@ -51,7 +51,6 @@ export function regenerateDrawDefinition({
         rejectedDrawDefinition: drawDefinition,
       });
 
-      // auditEngine.addAuditItem({ auditData });
       return SUCCESS;
     }
   } else {

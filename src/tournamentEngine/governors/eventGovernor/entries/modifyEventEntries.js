@@ -18,7 +18,8 @@ import { COMPETITOR } from '../../../../constants/participantRoles';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
-// TODO: untested
+// should NOT remove entries that are present in drawDefinition.entries
+// if those entries are assigned positions in any structures...
 export function modifyEventEntries({
   event,
   tournamentRecord,
@@ -30,7 +31,7 @@ export function modifyEventEntries({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  const tournamentParticipants = tournamentRecord.particpants || [];
+  const tournamentParticipants = tournamentRecord.participants || [];
   const individualParticipantIds = tournamentParticipants
     .filter((participant) => participant.participantType === INDIVIDUAL)
     .map((participant) => participant.participantId);
@@ -106,6 +107,7 @@ export function modifyEventEntries({
     })
   );
 
+  // remove all entries matching the stage which has been modified
   event.entries = event.entries.filter(
     (entry) => entry.entryStage === entryStage
   );

@@ -29,7 +29,6 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
     scoreObject.scoreStringSide1 = scoreString;
     scoreObject.scoreStringSide2 = reverseScoreString;
   }
-  // SCORE: check whether tests are written and whether sides have stringScores
   modifyMatchUpScore({
     drawDefinition,
     matchUp,

@@ -1,7 +1,7 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import {
   getOrderedDrawPositionPairs,
   replaceWithBye,
@@ -19,7 +19,7 @@ import { SINGLES } from '../../../constants/eventConstants';
 
 // import { printGlobalLog, pushGlobalLog } from '../../../global/globalLog';
 
-it('can generate FEED_FMLC with double-byes in consolation 17/32', () => {
+it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 17/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 17;
@@ -72,7 +72,7 @@ it('can generate FEED_FMLC with double-byes in consolation 17/32', () => {
   });
 });
 
-it('can generate FEED_FMLC with double-byes in consolation 18/32', () => {
+it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 18/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
   const participantsCount = 18;

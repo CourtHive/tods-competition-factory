@@ -15,8 +15,9 @@ const { generateRange, randomMember } = utilities;
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });
 
+  // NOTE: matchUp object used in these tests has { scoreString, sets } instead of using new { score } object
+
   it('can enter retirement or default after second set if matchUp is incomplete', () => {
-    // SCORE: matchUp object needs to be updated along with all test access to value
     let matchUp = { scoreString: undefined, sets: [], matchUpFormat };
 
     const values = [
