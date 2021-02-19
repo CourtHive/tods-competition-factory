@@ -1470,31 +1470,70 @@ Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts
 
 ## setTournamentCategories
 
+Define categories to be used in event creation for tournament record.
+
+```js
+const categories = [
+  {
+    categoryName: 'U18',
+    type: eventConstants.AGE,
+  },
+  {
+    categoryName: 'U16',
+    type: eventConstants.AGE,
+  },
+  {
+    categoryName: 'WTN',
+    type: eventConstants.RATING,
+  },
+];
+tournamentEngine.setTournamentCategories({ categories });
+```
+
 ---
 
 ## setTournamentEndDate
+
+Accepts an ISO String Date;
+
+```js
+tournamentEngine.setTournamentEndDate({ endDate });
+```
 
 ---
 
 ## setTournamentName
 
+```js
+const tournamentName = 'CourtHive Challenge';
+tournamentEngine.setTournamentName({
+  tournamentName,
+});
+```
+
 ---
 
 ## setTournamentNotes
+
+```js
+tournamentEngine.setTournamentNotes({ notes });
+```
 
 ---
 
 ## setTournamentStartDate
 
----
+Accepts an ISO String Date;
 
-## setVenueAddress
+```js
+tournamentEngine.setTournamentStartDate({ StartDate });
+```
 
 ---
 
 ## tournamentMatchUps
 
-Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called. These matchUps are returned **inContext**.
+Returns tournament matchUps grouped bye matchUpStatus. These matchUps are returned with _context_.
 
 ```js
 const {
@@ -1509,6 +1548,12 @@ const {
 ---
 
 ## unPublishEvent
+
+Modifies the `publishState` of an event. `Subscriptions` or middleware can be used to trigger messaging to services which make event data visible on public websites.
+
+```js
+tournamentEngine.unPublishEvent({ eventId });
+```
 
 ---
 

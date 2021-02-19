@@ -26,6 +26,7 @@ export function setTournamentNotes({ tournamentRecord, notes }) {
   return SUCCESS;
 }
 
+// TODO: check for matchUps that must be unscheduled with change in date
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
   if (!dateValidation.test(startDate)) return { error: INVALID_DATE };
   if (
@@ -38,6 +39,7 @@ export function setTournamentStartDate({ tournamentRecord, startDate }) {
   return SUCCESS;
 }
 
+// TODO: check for matchUps that must be unscheduled with change in date
 export function setTournamentEndDate({ tournamentRecord, endDate }) {
   if (!dateValidation.test(endDate)) return { error: INVALID_DATE };
   if (
