@@ -8,8 +8,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyCourtAvailability({
   tournamentRecord,
-  availability,
+  dateAvailability,
   courtId,
+  force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
@@ -17,10 +18,12 @@ export function modifyCourtAvailability({
   const { court, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
-  // TODO: determine if any scheduled matchUps would be affected and warn
-  // if forced then remove schedule detail from affected matchUps
+  if (force) {
+    // TODO: determine if any scheduled matchUps would be affected and warn
+    // if forced then remove schedule detail from affected matchUps
+  }
 
-  court.dateAvailability = availability;
+  court.dateAvailability = dateAvailability;
 
   return SUCCESS;
 }

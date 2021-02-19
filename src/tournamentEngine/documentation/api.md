@@ -184,10 +184,10 @@ Add a penaltyItem to one or more particpants.
 ```js
 const createdAt = new Date().toISOString();
 const penaltyData = {
-  refereeParticipantId: undefined,
+  refereeParticipantId, // optional
   participantIds: [participantId],
   penaltyType: BALL_ABUSE,
-  penaltyCode: 'Organization specific code',
+  penaltyCode: 'Organization specific code', // optional
   matchUpId,
   issuedAt, // optional ISO timeStamp for time issued to participant
   createdAt,
@@ -432,6 +432,13 @@ tournamentEngine.checkOutParticipant({
 
 ## deleteCourt
 
+```js
+tournamentEngine.deleteCourt({
+  courtId,
+  force, // override warnings about matchUps scheduled on specified court
+});
+```
+
 ---
 
 ## deleteDrawDefinitions
@@ -536,21 +543,66 @@ tournamentEngine.devContext(true);
 
 ## eventMatchUps
 
+Returns matchUps for an event grouped by status.
+
+```js
+const {
+  abandonedMatchUps,
+  byeMatchUps,
+  completedMatchUps,
+  pendingMatchUps,
+  upcomingMatchUps,
+} = tournamentEngine.eventMatchUps({
+  eventId,
+  nextMatchUps, // optional boolean; include winner/loser target matchUp details
+  matchUpFilters,
+  contextFilters,
+  tournamentAppliedPolicies,
+  inContext: true, // optional - adds context details to all matchUps
+});
+```
+
 ---
 
 ## findCourt
+
+```js
+const { court } = findCourt({ courtId });
+```
 
 ---
 
 ## findMatchUp
 
+```js
+const { matchUp } = tournamentEngine.findMatchUp({
+  drawId,
+  matchUpId,
+});
+```
+
 ---
 
 ## findParticipant
 
+Find tournament participant by either `participantId` or `personId`.
+
+```js
+const { participant } = tournamentEngine.findParticipant({
+  participantId,
+  personId, // required only if no participantId provided
+});
+```
+
 ---
 
 ## findVenue
+
+Returns a complete venue object. Primarily used internally.
+
+```js
+tournamentEngine.findVenue({ venueId });
+```
 
 ---
 
@@ -558,41 +610,92 @@ tournamentEngine.devContext(true);
 
 This is a convenience method which handles most use cases for draw generation.
 
-| Parameters           | Required | Type    | Description                                                                  |
-| :------------------- | :------- | :------ | :--------------------------------------------------------------------------- |
-| eventId              | Required | string  | Unique identifier for the event within the current tournament                |
-| drawSize             | Required | number  | Number of draw postions there will be in the draw structure                  |
-| drawType             | Optional | string  | ELIMININATION, ROUND_ROBIN & etc, defaults to SINGLE_ELIMINATION             |
-| drawName             | Optional | string  | Custom name for the generated draw structure                                 |
-| automated            | Optional | boolean | Whether or not to automatically generate draw structure(s); defaults to true |
-| matchUpType          | Optional | string  | SINGLES, DOUBLES, or TEAM                                                    |
-| matchUpFormat        | Optional | string  | ITF TODS matchUpFormat code which describes scoring format                   |
-| playoffMatchUpFormat | Optional | string  | Alternate matchUpformat for connected playoff structures                     |
-| tieFormat            | Optional | object  | includes collectionDefinitions and winCriteria                               |
-| seedsCount           | Optional | number  | Desired seeds to be generated from rankings if no seededParticipants data    |
-| seedingProfile       | Optional | string  | Used to specify WATERFALL seeding, for instance, for Round Robin structures  |
-| seedByRanking        | Optional | boolean | Defaults to TRUE; use rankings for seeding if no seededParticipants provided |
-| seededParticipants   | Optional | array   | Array of seeding objects including seedValue and participantId               |
-| qualifyingRound      | Optional | number  | Round of the strucrure which qualifies participants for connected structure  |
-| structureOptions     | Optional | object  | Defines groupSize and playoffGroups for Round Robin structures               |
-| policyDefinitions    | Optional | array   | Seeding or avoidance policies to be used when placing participants in draw   |
-| qualifyingPositions  | Optional | number  | Number of positions in this draw structure to will be filled by qualifiers   |
+```js
+const drawDefinitionValues = {
+  eventId, // optional - used to find any avoidance policies to be applied
+  drawSize, // number of drawPositions in the first draw structure
+  drawType, // optional - defaults to SINGLE_ELIMINATION
+  drawName, // cutom name for generated draw structure(s)
+  automated, // optional - whether or not to automatically place participants in structures
+  matchUpType, // optional - SINGLES, DOUBLES, or TEAM
+  matchUpFormat, // optional - default matchUpFormatCode for all contained matchUps
+  playoffMatchUpFormat, // optional - relevant for ROUND_ROBIN_WITH_PLAYOFFS
+  tieFormat, // optional - { collectionDefinitions, winCriteria } for 'dual' or 'tie' matchUps
+  seedsCount, // optional - number of seeds to generate if no seededParticipants provided
+  seededParticipants, // optional - { participantId, seedNumber, seedValue }
+  seedingProfile, // optional - used to specify WATERFALL seeding for ROUND_ROBIN
+  qualifyingRound, // optional - used to derive roundLimit
+  structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+  policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
+  qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
+};
+
+const { drawDefinition } = tournamentEngine.generateDrawDefinition(
+  drawDefinitionValues
+);
+```
 
 ---
 
 ## generateFlightProfile
 
-- @param {object} event - automatically retrieved by tournamentEngine given eventId
-- @param {string} eventId - unique identifier for event
-- @param {string} splitMethod - one of the supported methods for splitting entries
-- @param {object} scaleAttributes - { scaleName, scaleType, evenTType }
-- @param {number} flightsCount - number of flights to create from existing entries
-- @param {string[]} drawNames - array of names to be used when generating flights
-- @param {string} drawNameRoot - root word for generating flight names
+Splits event entries into # of draws. `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+};
+
+const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
+  eventId, // event for which entries will be split
+  scaleAttributes, // defines participant sort method prior to split
+  flightsCount: 3, // number of draws to be created
+  deleteExisting: true, // optional - remove existing flightProfile
+  splitMethod: SPLIT_WATERFALL, // optional - defaults to SPLIT_LEVEL_BASED
+  drawNames: ['Green Flight', 'Blue Flight'], // optional
+  drawNameRoot: 'Flight', // optional - used to generate drawNames, e.g. 'Flight 1', 'Flight 2'
+});
+
+const {
+  flights: [
+    {
+      drawId, // unique identifier for generating drawDefinitions
+      drawName, // custom name for generated draw
+      drawEntries, // entries allocated to target draw
+    },
+  ],
+} = flightProfile;
+
+// use flight information to generate drawDefinition
+const {
+  flights: [flight],
+} = flightProfile;
+
+Object.assign(drawDefinitionValues, flight);
+const { drawDefinition } = tournamentEngine.generateDrawDefinition(
+  drawDefinitionValues
+);
+```
 
 ---
 
 ## generateTeamsFromParticipantAttribute
+
+Uses attributes of individual participnts or persons to generate `{ participantType: TEAM }` participants.
+
+Returns count of # of TEAM participants added;
+
+```js
+const {
+  participantsAdded,
+} = tournamentEngine.generateTeamsFromParticipantAttribute({
+  participantAttribute,
+  personAttribute, // optional - attribute of person object
+  uuids, // optional - uuids to assign to generated participants
+});
+```
 
 ---
 
@@ -796,6 +899,8 @@ const { venues } = tournamentEngine.getVenues();
 
 ## getVenueData
 
+Returns restricted venue attributes along with information for all associated courts. Used primarily by `getEventData` to return a subset of venue/courts information for publishing purposes.
+
 ```js
 const {
   venueName,
@@ -834,27 +939,70 @@ const {
 
 ## mergeParticipants
 
+Merge `participants` array with existing tournament participants. Useful when synchronizing with a remote registration service, for example.
+
+```js
+tournamentEngine.mergeParticipants({ participants });
+```
+
 ---
 
 ## modifyCourtAvailability
+
+Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected.
+
+```js
+const result = tournamentEngine.modifyCourtAvailability({
+  courtId,
+  dateAvailability,
+  force, // override warning that existing scheduled matchUps exist
+});
+```
 
 ---
 
 ## modifyIndividualParticipantIds
 
-Modify grouping participant [TEAM, GROUP] individualParticipantIds
+Modify `individualParticipantIds` of a grouping participant `{ participantType: TEAM || GROUP }`.
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
-- @param {string[]} individualParticipantIds - new value for individualParticipantIds array
+```js
+tournamentEngine.devContext(true).modifyIndividualParticipantIds({
+  groupingParticipantId, // participant (TEAM or GROUP) to which participantIds are to be added
+  individualParticipantIds: newIndividualParticipantIds,
+});
+```
 
 ---
 
 ## modifyParticipant
 
+Modifies attributes of a participant with integrity checks to insure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
+
+```js
+tournamentEngine.modifyParticipant({
+  participant: updatedIndividualParticipant,
+});
+```
+
 ---
 
 ## modifyPenalty
+
+```js
+const penaltyData = {
+  participantIds: [participantId],
+  penaltyType: BALL_ABUSE,
+  matchUpId,
+  issuedAt,
+  notes: 'Hit ball into sea',
+};
+let result = tournamentEngine.addPenalty(penaltyData);
+const { penaltyId } = result;
+
+const notes = 'Hit ball into spectator';
+const modifications = { notes };
+tournamentEngine.modifyPenalty({ penaltyId, modifications });
+```
 
 ---
 
