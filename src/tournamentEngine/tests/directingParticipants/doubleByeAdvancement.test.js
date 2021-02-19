@@ -90,10 +90,10 @@ it('can create double bye and remove advanced participant when outcome is reset'
   );
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
-  let { method, params } = scoreAction;
+  let { method, payload } = scoreAction;
 
-  Object.assign(params, { outcome: toBePlayed });
-  let result = tournamentEngine[method](params);
+  Object.assign(payload, { outcome: toBePlayed });
+  let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
   checkExpectations({
     drawId,
@@ -210,10 +210,10 @@ it('can create double bye and replace bye with alternate', () => {
   );
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
-  let { method, params } = scoreAction;
+  let { method, payload } = scoreAction;
 
-  Object.assign(params, { outcome: toBePlayed });
-  let result = tournamentEngine[method](params);
+  Object.assign(payload, { outcome: toBePlayed });
+  let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
   checkExpectations({
     drawId,
@@ -227,10 +227,10 @@ it('can create double bye and replace bye with alternate', () => {
   });
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
   scoreAction = validActions.find(({ type }) => type === SCORE);
-  ({ method, params } = scoreAction);
+  ({ method, payload } = scoreAction);
 
-  Object.assign(params, { outcome, winningSide: outcome.winningSide });
-  result = tournamentEngine[method](params);
+  Object.assign(payload, { outcome, winningSide: outcome.winningSide });
+  result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
   checkExpectations({
     drawId,
@@ -243,10 +243,10 @@ it('can create double bye and replace bye with alternate', () => {
   expect(finalMatchUp.drawPositions).toEqual([4, undefined]);
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
   scoreAction = validActions.find(({ type }) => type === SCORE);
-  ({ method, params } = scoreAction);
+  ({ method, payload } = scoreAction);
 
-  Object.assign(params, { outcome: toBePlayed });
-  result = tournamentEngine[method](params);
+  Object.assign(payload, { outcome: toBePlayed });
+  result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
   checkExpectations({
     drawId,

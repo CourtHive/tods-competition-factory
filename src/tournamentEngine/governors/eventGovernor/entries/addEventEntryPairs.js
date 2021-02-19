@@ -18,7 +18,7 @@ import { MAIN } from '../../../../constants/drawDefinitionConstants';
 /**
  *
  * Add PAIR participant to an event
- * Creates new participantType: PAIR participants if necessary
+ * Creates new { participantType: PAIR } participants if necessary
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} eventId - tournamentEngine automatically retrieves event
