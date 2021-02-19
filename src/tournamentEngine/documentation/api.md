@@ -749,28 +749,86 @@ participantFilters imlemented: eventIds, participantTypes, participantRoles, sig
 
 ## getTournamentPenalties
 
+Returns an array of all penalties issued during a tournament.
+
+```js
+const { penalties } = tournamentEngine.getTournamentPenalties();
+```
+
 ---
 
 ## getTournamentInfo
+
+Returns tournament attributes. Used to attach details to publishing payload by `getEventData`.
+
+```js
+const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
+const {
+  tournamentId,
+  tournamentRank,
+
+  formalName,
+  tournamentName,
+  promotionalName,
+  onlineResources,
+
+  localTimeZone,
+  startDate,
+  endDate,
+
+  hostCountryCode,
+  tournamentContacts,
+  tournamentAddresses,
+} = tournamentInfo;
+```
 
 ---
 
 ## getVenues
 
+Returns an array of all Venues which are part of a tournamentRecord.
+
+```js
+const { venues } = tournamentEngine.getVenues();
+```
+
 ---
 
 ## getVenueData
+
+```js
+const {
+  venueName,
+  venueAbbreviation,
+  courtsInfo, // array of courts and associate attributes
+} = tournamentEngine.getVenueData({ venueId });
+```
 
 ---
 
 ## matchUpActions
 
-- return an array of all validActions for a given matchUp
--
-- @param {object} tournamentRecord - provided automatically if tournamentEngine state has been set
-- @param {string} drawId - if provided then drawDefinition will be found automatically
-- @param {object} drawDefinition
-- @param {string} matchUpId - id of matchUp for which validActions will be returned
+Return an array of all validActions for a specific matchUp.
+
+```js
+const {
+  isByeMatchUp, // boolean; true if matchUp includes a BYE
+  structureIsComplete, // boolean; true if structure is ready for positioning
+  validActions, // array of possible actions given current matchUpStatus
+} = tournamentEngine.matchUpActions({
+  drawId, // optional - not strictly required; method will find matchUp by brute force without it
+  matchUpId,
+});
+
+const {
+  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END'.
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
+```
+
+**strucutreIsComplete** indicates that a structure where participant progression is dependent on WIN_RATIO is ready for positioning in subsequent structure.
 
 ---
 
