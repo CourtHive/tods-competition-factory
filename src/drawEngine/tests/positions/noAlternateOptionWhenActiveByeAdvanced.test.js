@@ -86,9 +86,9 @@ it('can create double bye and remove advanced participant when outcome is reset'
   });
   let { validActions } = tournamentEngine.matchUpActions(finalMatchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
-  let { method, params } = scoreAction;
-  Object.assign(params, { outcome });
-  let result = tournamentEngine[method](params);
+  let { method, payload } = scoreAction;
+  Object.assign(payload, { outcome });
+  let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));

@@ -53,7 +53,7 @@ export function modifyCourt({
   if (modifications.dateAvailability) {
     const result = modifyCourtAvailability({
       tournamentRecord,
-      availability: modifications.dateAvailability,
+      dateAvailability: modifications.dateAvailability,
       courtId,
       force,
     });
