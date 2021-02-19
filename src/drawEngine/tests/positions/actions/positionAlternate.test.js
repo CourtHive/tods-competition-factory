@@ -108,7 +108,6 @@ it('can generate drawSize: 8 with only 4 participants', () => {
 });
 
 it('can generate drawSize: 8 with only 2 participants', () => {
-  // NOTE: at present BYEs will not be automatically positioned with another BYE
   const drawProfiles = [
     {
       drawSize: 8,
