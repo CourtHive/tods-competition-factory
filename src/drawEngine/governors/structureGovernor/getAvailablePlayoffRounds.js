@@ -1,12 +1,14 @@
+import { getPositionsPlayedOff } from './getPositionsPlayedOff';
+import { getStructureLinks } from '../../getters/linkGetter';
+import { findStructure } from '../../getters/findStructure';
+import { getSourceRounds } from './getSourceRounds';
+
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { findStructure } from '../../getters/findStructure';
-import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { getSourceRounds } from './getSourceRounds';
 
 export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -15,7 +17,6 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  // TODO: should this be valid for Round Robins?
   if (structure.structureType === CONTAINER)
     return { playoffSourceRounds: [], playoffRoundsRanges: [] };
 
@@ -30,10 +31,15 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
     (drawPosition) => !positionsPlayedOff.includes(drawPosition)
   );
 
+  const { links } = getStructureLinks({ drawDefinition, structureId });
+  const linkSourceRoundNumbers =
+    links?.source?.map((link) => link.source?.roundNumber) || [];
+
   const { playoffSourceRounds, playoffRoundsRanges } = getSourceRounds({
     drawDefinition,
     structureId,
     playoffPositions,
+    excludeRoundNumbers: linkSourceRoundNumbers,
   });
 
   return { playoffRounds: playoffSourceRounds, playoffRoundsRanges };
