@@ -1316,25 +1316,46 @@ tournamentEngine.removeIndividualParticipantIds({
 
 ## removePenalty
 
+Removes a penalty from all relevant tournament participants.
+
+```js
+tournamentEngine.removePenalty({ penaltyId });
+```
+
 ---
 
-## setDrawDefinitionDefaultMatchUpFormat
+## setDrawDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} drawId - id of the draw for which matchUpFormat is being set
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+```js
+tournamentEngine.setDrawDefaultMatchUpFormat({
+  drawId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
 ## setDrawParticipantRepresentatives
 
+Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.
+
+```js
+tournamentEngine.setDrawParticipantRepresentatives({
+  drawId,
+  representativeParticipantIds,
+});
+```
+
 ---
 
 ## setEventDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} eventId - id of the event for which matchUpFormat is being set
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+```js
+tournamentEngine.setEventDefaultMatchUpFormat({
+  eventId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
@@ -1342,11 +1363,21 @@ tournamentEngine.removeIndividualParticipantIds({
 
 - Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
 
-- @param {string} drawId - id of draw within which matchUp is found
-- @param {string} matchUpId - id of matchUp to be modified
-- @param {string} matchUpTieId - id of matchUpTie, if relevant
-- @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
-- @param {object} outcome - { score, winningSide, matchUpStatus }
+```js
+const outcome = {
+  score,
+  winningSide,
+  matchUpStatus,
+};
+
+tournamentEngine.setMatchUpStatus({
+  drawId,
+  matchUpId,
+  matchUpTieId, // optional - if part of a TIE matchUp
+  outcome,
+  matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+});
+```
 
 ---
 
@@ -1393,11 +1424,13 @@ tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
 
 ## setStructureDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} drawId - id of the draw within which structure is found
-- @param {object} drawDefinition - passed automatically by tournamentEngine when drawId is provided
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
-- @param {string} structureId - id of the structure for which the matchUpFormat is being set
+```js
+tournamentEngine.setStructureDefaultMatchUpFormat({
+  drawId,
+  structureId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
