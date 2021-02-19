@@ -13,7 +13,7 @@ it('handles set scoring with NoAD', () => {
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(`6-5 6-5`);
 
-  expect(matchUp.sets.length).toEqual(2);
+  expect(matchUp.score?.sets.length).toEqual(2);
   expect(matchUp.winningSide).toEqual(1);
 });
 

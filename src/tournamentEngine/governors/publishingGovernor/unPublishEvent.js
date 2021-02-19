@@ -1,4 +1,5 @@
 import { addEventTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addNotice } from '../../../global/globalState';
 
 import {
   MISSING_EVENT,
@@ -17,6 +18,8 @@ export function unPublishEvent({ tournamentRecord, event }) {
   };
   const result = addEventTimeItem({ event, timeItem });
   if (result.error) return { error: result.error };
+
+  addNotice({ topic: 'unpublishEvent', payload: { eventId: event.eventId } });
 
   return Object.assign({ eventId: event.eventId }, SUCCESS);
 }

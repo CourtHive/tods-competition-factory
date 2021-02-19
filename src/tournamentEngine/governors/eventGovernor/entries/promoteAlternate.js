@@ -84,8 +84,6 @@ function promoteWithinElement({
 
   participantEntry.entryStatus = DIRECT_ACCEPTANCE;
 
-  // QUESTION: should entryPosition be calculated based on entryPositions of existing DIRECT_ACCEPTANCE participants?
-
   // cleanUp
   const entryPosition = participantEntry?.entryPosition;
   delete participantEntry.entryPosition;

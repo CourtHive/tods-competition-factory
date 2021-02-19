@@ -7,7 +7,7 @@ import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
-import { addNotice, getDevContext } from '../../../../global/globalState';
+import { addNotice } from '../../../../global/globalState';
 import { positionTargets } from '../positionTargets';
 
 import { pushGlobalLog } from '../../../../global/globalLog';
@@ -275,23 +275,12 @@ function advanceDrawPosition({
     losingDrawPosiitonIsBye &&
     loserMatchUp.structureId !== structure.structureId
   ) {
-    const { drawPositions, roundNumber } = loserMatchUp;
-
+    const { roundNumber } = loserMatchUp;
     if (roundNumber === 1) {
-      // TODO: targetDrawPosition ready to be replaced by loserTargetDrawPosition
-      const sourceStructureRoundPosition = matchUp.roundPosition;
-      // loser drawPosition in target structure is determined bye even/odd
-      const targetDrawPositionIndex = 1 - (sourceStructureRoundPosition % 2);
-      const targetDrawPosition = drawPositions[targetDrawPositionIndex];
-      if (loserTargetDrawPosition !== targetDrawPosition && getDevContext()) {
-        console.log('###', { targetDrawPosition, loserTargetDrawPosition });
-      }
-      // END TODO....
-
       const result = assignDrawPositionBye({
         drawDefinition,
         structureId: loserTargetLink.target.structureId,
-        drawPosition: targetDrawPosition,
+        drawPosition: loserTargetDrawPosition,
         iterative: 'brightyellow',
       });
       if (result.error) return result;
@@ -486,30 +475,24 @@ function assignFedDrawPositionBye({
   mappedMatchUps,
   loserTargetDrawPosition,
 }) {
-  const { drawPositions, roundNumber } = loserMatchUp;
-
-  // TODO: targetDrawPosiiton can be replced with loserTargetDrawPosition
-  const targetDrawPosition = Math.min(...drawPositions.filter((f) => f));
-  if (loserTargetDrawPosition !== targetDrawPosition && getDevContext()) {
-    console.log('###', { targetDrawPosition, loserTargetDrawPosition });
-  }
+  const { roundNumber } = loserMatchUp;
 
   pushGlobalLog({
     method: `assignFedDrawPositionBye`,
     color: 'brightcyan',
-    targetDrawPosition,
+    loserTargetDrawPosition,
   });
   const loserStructureMatchUps =
     mappedMatchUps[loserMatchUp.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({
-    drawPosition: targetDrawPosition,
+    drawPosition: loserTargetDrawPosition,
     matchUps: loserStructureMatchUps,
   });
   if (initialRoundNumber === roundNumber) {
     const result = assignDrawPositionBye({
       drawDefinition,
       structureId: loserTargetLink.target.structureId,
-      drawPosition: targetDrawPosition,
+      drawPosition: loserTargetDrawPosition,
       iterative: 'red',
     });
     if (result.error) return result;

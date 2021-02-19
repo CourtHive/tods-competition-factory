@@ -31,15 +31,15 @@ export function conditionallyDisableLinkPositioning({
   });
 }
 
-// NOT READY TO USE
+// NOTE: NOT READY TO USE.
+// Would only be possible to remove disabling extension if the position is unassigned..
+// ...AND the source position has not yet attempted particpant traversal
 export function reEnableDrawPositionLinks({ drawPosition, structure }) {
   const { positionAssignments } = getPositionAssignments({ structure });
   const assignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  // only remove disabling extension if the position is unassigned
-  // AND the source position has not yet attempted particpant traversal
   const { participantId, bye, qualifier } = assignment || {};
   if (!participantId && !bye && !qualifier) {
     removeExtension({ element: assignment, name: DISABLE_LINKS });

@@ -369,7 +369,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       {
         finishingPositions: [1],
         structureName: 'Gold Flight',
-        // drawType: FEED_FMLC, // TODO: figure out why this is breaking
+        // drawType: FIRST_MATCH_LOSER_CONSOLATION, // TODO: figure out why this is breaking
       },
       {
         finishingPositions: [2],
@@ -461,7 +461,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   });
 
   /*
-  // if FEED_FMLC
+  // if FIRST_MATCH_LOSER_CONSOLATION
   const consolationStructures = drawDefinition.structures.reduce(
     (structures, structure) => {
       return structure.stage === CONSOLATION

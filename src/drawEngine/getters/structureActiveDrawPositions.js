@@ -12,8 +12,8 @@ import {
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
-// active drawPositions occur more than once in the matchUps of a structure,
-// OR are paired with active drawPositions
+// active drawPositions occur in activeMatchUps...
+// ...which have a winningSide, a scoreString, or a completed matchUpStatus
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { structure } = findStructure({ drawDefinition, structureId });

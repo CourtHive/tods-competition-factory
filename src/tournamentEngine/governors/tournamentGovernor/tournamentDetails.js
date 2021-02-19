@@ -1,22 +1,21 @@
+import { dateValidation } from '../../../fixtures/validations/regex';
+
 import { INVALID_DATE } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { dateValidation } from '../../../fixtures/validations/regex';
 
 export function setTournamentName({
   tournamentRecord,
-  name, // TODO: clear up name vs. tournamentName
   tournamentName,
   promotionalName,
   formalName,
 }) {
-  if (name) tournamentRecord.name = name;
   if (tournamentName) tournamentRecord.tournamentName = tournamentName;
   if (promotionalName) tournamentRecord.promotionalName = promotionalName;
   if (formalName) tournamentRecord.formalName = formalName;
-  if (tournamentRecord.promotionalName === tournamentRecord.name) {
+  if (tournamentRecord.promotionalName === tournamentRecord.tournamentName) {
     delete tournamentRecord.promotionalName;
   }
-  if (tournamentRecord.formalName === tournamentRecord.name) {
+  if (tournamentRecord.formalName === tournamentRecord.tournamentName) {
     delete tournamentRecord.formalName;
   }
   return SUCCESS;
@@ -27,6 +26,7 @@ export function setTournamentNotes({ tournamentRecord, notes }) {
   return SUCCESS;
 }
 
+// TODO: check for matchUps that must be unscheduled with change in date
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
   if (!dateValidation.test(startDate)) return { error: INVALID_DATE };
   if (
@@ -39,6 +39,7 @@ export function setTournamentStartDate({ tournamentRecord, startDate }) {
   return SUCCESS;
 }
 
+// TODO: check for matchUps that must be unscheduled with change in date
 export function setTournamentEndDate({ tournamentRecord, endDate }) {
   if (!dateValidation.test(endDate)) return { error: INVALID_DATE };
   if (

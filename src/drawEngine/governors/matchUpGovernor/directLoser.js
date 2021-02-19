@@ -13,7 +13,7 @@ import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstant
 import { pushGlobalLog } from '../../../global/globalLog';
 
 /*
-  FEED_FMLC linkCondition... check whether it is a participant's first 
+  FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
 export function directLoser(props) {
   const {

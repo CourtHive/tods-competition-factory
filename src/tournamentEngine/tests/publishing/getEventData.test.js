@@ -5,7 +5,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import {
   COMPASS,
   CONTAINER,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   PLAY_OFF,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -337,9 +337,9 @@ it('can generate payload for publishing a compass draw', () => {
     fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
 });
 
-it('can generate payload for publishing a FEED_FMLC draw', () => {
+it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', () => {
   const drawSize = 16;
-  const drawType = FEED_FMLC;
+  const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
   const { tournamentRecord } = generateTournamentWithParticipants({
     participantsCount: drawSize,

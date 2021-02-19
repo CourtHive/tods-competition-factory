@@ -9,8 +9,6 @@ import { DOUBLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantTypes';
 import { PENALTY, SCORE } from '../../../../constants/matchUpActionConstants';
 
-// NOTE: originally written to reproduce an error that ended up being a client side error
-// unrelated to tods-competition-factory... left for posterity
 it('can modify score for main draw match after loser directed to consolation', () => {
   const participantsProfile = {
     participantsCount: 16,

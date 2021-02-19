@@ -7,7 +7,7 @@ import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { getParticipantEventDetails } from '../../getters/participants/getParticipantEventDetails';
 import { modifyIndividualParticipantIds } from './groupings/modifyIndividualParticipantIds';
-import { participantMembership } from '../../getters/participants/participantMembership';
+import { getParticipantMembership } from '../../getters/participants/getParticipantMembership';
 import { generateTeamsFromParticipantAttribute } from '../../generators/teamsGenerator';
 import { addIndividualParticipantIds } from './groupings/addIndividualParticipantIds';
 import { publicFindParticipant } from '../../getters/participants/participantGetter';
@@ -44,7 +44,7 @@ const participantGovernor = {
   removeIndividualParticipantIds,
   modifyIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
-  participantMembership,
+  getParticipantMembership,
 
   generateTeamsFromParticipantAttribute,
 

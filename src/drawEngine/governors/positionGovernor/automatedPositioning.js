@@ -1,7 +1,7 @@
 import { positionByes } from './byePositioning/positionByes';
 import { positionSeedBlocks } from './positionSeeds';
 import { positionQualifiers } from './positionQualifiers';
-import { positionUnseededParticipants } from './positionParticipants';
+import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 

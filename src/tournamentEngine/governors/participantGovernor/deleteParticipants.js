@@ -22,7 +22,10 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   const participantsRemovedCount =
     participantsCount - tournamentRecord.participants.length;
 
-  removeParticipantIdsFromAllTeams({ tournamentRecord, participantIds });
+  removeParticipantIdsFromAllTeams({
+    tournamentRecord,
+    individualParticipantIds: participantIds,
+  });
 
   return participantsRemovedCount
     ? SUCCESS

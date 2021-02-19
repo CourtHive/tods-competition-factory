@@ -14,7 +14,7 @@ import {
   WIN_RATIO,
   CONTAINER,
   SINGLE_ELIMINATION,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -115,8 +115,7 @@ export function generateRoundRobinWithPlayOff(props) {
         true
       );
 
-      // CHECK VALIDITY: draw structure is not generated...
-      // if playoffGroup finishingPositions are not present in GroupSize
+      // playoffGroup finishingPositions are not valid if not present in GroupSize
       if (!finishingPositionsAreValid) {
         return undefined;
       }
@@ -152,9 +151,9 @@ export function generateRoundRobinWithPlayOff(props) {
         finishingPositionOffset += participantsInDraw;
 
         return playoffStructure;
-      } else if (playoffDrawType === FEED_FMLC) {
+      } else if (playoffDrawType === FIRST_MATCH_LOSER_CONSOLATION) {
         // TODO: test this
-        console.log('RRw/PO FEED_FMLC');
+        console.log('RRw/PO FIRST_MATCH_LOSER_CONSOLATION');
         const uuidsFMLC = [uuids?.pop(), uuids?.pop()];
         const {
           mainStructure: playoffStructure,

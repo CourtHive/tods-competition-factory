@@ -701,17 +701,67 @@ const {
 
 ## getCourtInfo
 
+```js
+const {
+  altitude,
+  courtId,
+  courtName,
+  courtDimensions,
+  latitude,
+  longitude,
+  surfaceCategory,
+  surfaceType,
+  surfaceDate,
+  pace,
+  notes,
+} = tournamentEngine.getCourtInfo({ courtId });
+```
+
 ---
 
 ## getCourts
+
+Returns courts associated with a tournaments; optionall filter by venue(s).
+
+```js
+const { courts } = tournamentEngine.getCourts({
+  venueId, // optional - return courts for a specific venue
+  venueIds, // optional - return courts for specified venues
+});
+```
 
 ---
 
 ## getDrawData
 
+Primarily used by `getEventData` for publishing purposes.
+
+```js
+const {
+  drawInfo: {
+    drawActive, // boolean - draw has active matchUps
+    drawCompleted, // boolean - all draw matchUps are complete
+    drawGenerated, // boolean - draw has structures containing matchUps
+  },
+  structures,
+} = getDrawData({ drawDefinition });
+```
+
 ---
 
 ## getEvent
+
+Get an event by either its `eventId` or by a `drawId` which it contains. Also returns `drawDefinition` if a `drawId` is specified.
+
+```js
+const {
+  event,
+  drawDefinition, // only returned if drawId is specified
+} = tournamentEngine.getEvent({
+  eventId, // optional - find event by eventId
+  drawId, // optional - find the event which contains specified drawId
+});
+```
 
 - @param {string} eventId - id of the event to retreive
 - @param {object} context - attributes to be added into each event object.
@@ -720,10 +770,11 @@ const {
 
 ## getEvents
 
-Return an array of deepCopies of all event objects.
+Return **deepCopies** of all events in a tournament record.
 
-- @param {object} context - attributes to be added into each event object.
-- @param {boolean} inContext - whether or not to add tournament context into event (not yet implemented).
+```js
+const { events } = tournamentEngine.getEvents();
+```
 
 ---
 
@@ -746,27 +797,72 @@ const {
 
 ## getEventData
 
+Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
+
+See [publishEvent](#publishEvent) for details on `policyDefinition`.
+
+```js
+const { eventData } = tournamentEngine.getEventData({
+  drawId,
+  policyDefinition, // optional
+});
+const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
+```
+
 ---
 
 ## getMatchUpFormat
 
-Returns the matchUpFormat code for a given matchUp, along with any
+Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} drawId - optional - avoid brute force search for matchUp
-- @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
-- @param {string} eventId - optional - if only the default matchUpFormat for an event is required
-- @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
-- @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
-- @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
+`matchUpFormat` for each matchUp is determined by traversing the hierarchy: `matchUp => stucture => drawDefinition => event`
+
+```js
+const {
+  matchUpFormat,
+  structureDefaultMatchUpFormat,
+  drawDefaultMatchUpFormat,
+  eventDefaultMatchUpFormat,
+} = tournamentEngine.getMatchUpFormat({
+  eventId,
+  drawId,
+  structureId,
+  matchUpId,
+});
+```
 
 ---
 
 ## getMatchUpScheduleDetails
 
+Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.
+
+```js
+const {
+  schedule: {
+    time,
+    courtId,
+    venueId,
+    startTime,
+    endTime,
+    milliseconds,
+    scheduledDate,
+    scheduledTime,
+  },
+} = tournamentEngine.getMatchUpScheduleDetails({ matchUp });
+```
+
 ---
 
 ## getPairedParticipant
+
+Returns the `{ participantType: PAIR }`, if any, which contains the specified `individualParticipantIds`.
+
+```js
+const { participant } = tournamentEngine.getPairedParticipant({
+  participantIds: individualParticipantIds,
+});
+```
 
 - @param {string[]} participantIds - ids of the participants
 
@@ -774,10 +870,15 @@ Returns the matchUpFormat code for a given matchUp, along with any
 
 ## getParticipantEventDetails
 
-Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears
+Returns an array of eventDetails in which a specified `participantId` appears. Used primarily by `tournamentEngine.tournamentParticipants()` to add context.
 
-- @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
-- @param {string} participantId - id of participant for which events (eventName, eventId) are desired
+```js
+const { eventDetails } = tournamentEngine.getParticipantEventDetails({
+  participantId,
+});
+
+const [{ eventName, eventId }] = eventDetails;
+```
 
 ---
 
@@ -785,25 +886,99 @@ Returns { eventDetails: { eventName, eventId }} for events in which participantI
 
 Returns the Range of finishing positions possible for all participantIds within a draw
 
-- @param {string} drawId - drawId of target draw within a tournament
-- @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
+```js
+const idMap = tournamentEngine.getParticipantIdFinishingPositions({
+  drawId,
+  byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
+});
+
+const {
+  relevantMatchUps,
+  finishingPositionRanges,
+  finishingPositionRange,
+} = idMap[participantId];
+```
+
+---
+
+## getParticipantMembership
+
+Returns all grouping participants which include `participantId` in `{ individualParticipantIds }`.
+
+```js
+const {
+  [PAIR]: doublesParticipantIds,
+  [GROUP]: groupParticipantIds,
+  [TEAM]: teamParticipantIds,
+} = tournamentEngine.getParticipantMembership({
+  participantId,
+});
+```
+
+---
 
 ## getParticipantScaleItem
+
+Return a ranking or rating or seeding value for a participant, referenced by participantId.
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+};
+const {
+  scaleItem: { scaleValue },
+} = tournamentEngine.getParticipantScaleItem({
+  participantId,
+  scaleAttributes,
+});
+```
 
 ---
 
 ## getParticipantSignInStatus
+
+Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](#modifyParticipantsSignInStatus).
+
+```js
+const signInStatus = tournamentEngine.getParticipantSignInStatus({
+  participantId,
+});
+```
 
 ---
 
 ## getPolicyDefinition
 
 Finds policyDefinition for either tournament, event (if eventId), or draw (if drawId);
-Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
+Takes policyType as a parameter.
+
+See [Policies](/concepts/policies).
+
+```js
+const { policyDefinition } = tournamentEngine.getPolicyDefinition({
+  policyType: POLICY_TYPE_SEEDING,
+  eventId, // optional
+  drawId, // optional
+});
+```
 
 ---
 
 ## getPositionAssignments
+
+Returns an array of `positionAssignments` for a structure. Combines `positionAssginments` for child structures in the case of ROUND_ROBIN where `{ structureType: CONTAINER }`.
+
+```js
+let { positionAssignments } = getPositionAssignments({
+  drawDefinition, // optional if { structure } is provided
+  structureId, // optional if { structure } is provided
+  structure, // optional if { drawDefinition, structureId } are provided
+});
+
+const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
+```
 
 ---
 
@@ -961,6 +1136,22 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyEventEntries
+
+Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
+
+```js
+tournamentEngine.modifyEventEntries({
+  eventId,
+  entryStage = MAIN,
+  participantIdPairs = [],
+  unpairedParticipantIds = [],
+  entryStatus = DIRECT_ACCEPTANCE,
+})
+```
+
+---
+
 ## modifyIndividualParticipantIds
 
 Modify `individualParticipantIds` of a grouping participant `{ participantType: TEAM || GROUP }`.
@@ -1008,38 +1199,84 @@ tournamentEngine.modifyPenalty({ penaltyId, modifications });
 
 ## newTournamentRecord
 
----
+Creates a new tournamentRecord in tournamentEngine state.
 
-## participantMembership
+```js
+tournamentEngine.newTournamentRecord({
+  tournamentId, // optional - will be generated if not provided
+});
 
-Returns all grouping participants which include participantId
-
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} participantId - id of individual participant
+const { tournamentRecord } = tournamentEngine.getState();
+```
 
 ---
 
 ## participantScaleItem
 
+Similar to [getParticipantScaleItem](#getParticipantScaleItem) but takes a `participant` object and doesn't require `tournamentEngine.setState(tournamentRecord)`.
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+};
+const {
+  scaleItem: { scaleValue },
+} = tournamentEngine.participantScaleItem({
+  participant,
+  scaleAttributes,
+});
+```
+
 ---
 
 ## modifyParticipantsSignInStatus
+
+Modify the signInStatus of multiple participants, referenced by participantId.
+
+```js
+tournamentEngine.modifyParticipantsSignInStatus({
+  participantIds: [participantId],
+  signInState: SIGNED_IN,
+});
+```
 
 ---
 
 ## modifySeedAssignment
 
-Change the display representation of a seedNumber
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
 
-- @param {string} drawId - id of drawDefinition within which structure occurs
-- @param {object} drawDefinition - added automatically by tournamentEngine
-- @param {string} participantId - id of participant which will receive the seedValue
-- @param {string} structureId - id of structure within drawDefinition
-- @param {string} seedValue - supports value of e.g. '5-8'
+```js
+tournamentEngine.modifySeedAssignment({
+  drawId,
+  structureId,
+  participantId,
+  seedValue, // display representation such as '5-8'
+});
+```
 
 ---
 
 ## publishEvent
+
+Utilizes [getEventData](#getEventData) to prepare data for display. Differs from [getEventData](#getEventData) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
+
+See [Policies](/concepts/policies) for more details on `policyDefinitions`.
+
+```js
+const policyDefinition = Object.assign(
+  {},
+  ROUND_NAMING_POLICY,
+  PARTICIPANT_PRIVACY_DEFAULT
+);
+
+const { eventData } = tournamentEngine.publishEvent({
+  eventId,
+  policyDefinition,
+});
+```
 
 ---
 
@@ -1053,52 +1290,88 @@ Change the display representation of a seedNumber
 
 ## removeDrawPositionAssignment
 
-Clear draw position.
+Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR particpant into UNPAIRED participants (DOUBLES only).
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number} drawPosition - number of drawPosition for which actions are to be returned
-- @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
-- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
-- @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
+```js
+removeDrawPositionAssignment({
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
+  drawPosition,
+  replaceWithBye, // optional
+  entryStatus, // optional - change the entryStatus of the removed participant
+  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+});
+```
 
 ---
 
 ## removeParticipantIdsFromAllTeams
 
+```js
+tournamentEngine.removeParticipantIdsFromAllTeams({
+  individualParticipantIds,
+  groupingType, // optional - restrict to removing from only specified groupingType
+});
+```
+
 ---
 
 ## removeIndividualParticipantIds
 
-Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
+Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
-- @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
+```js
+tournamentEngine.removeIndividualParticipantIds({
+  groupingParticipantId,
+  individualParticipantIds,
+});
+```
 
 ---
 
 ## removePenalty
 
+Removes a penalty from all relevant tournament participants.
+
+```js
+tournamentEngine.removePenalty({ penaltyId });
+```
+
 ---
 
-## setDrawDefinitionDefaultMatchUpFormat
+## setDrawDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} drawId - id of the draw for which matchUpFormat is being set
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+```js
+tournamentEngine.setDrawDefaultMatchUpFormat({
+  drawId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
 ## setDrawParticipantRepresentatives
 
+Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.
+
+```js
+tournamentEngine.setDrawParticipantRepresentatives({
+  drawId,
+  representativeParticipantIds,
+});
+```
+
 ---
 
 ## setEventDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} eventId - id of the event for which matchUpFormat is being set
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
+```js
+tournamentEngine.setEventDefaultMatchUpFormat({
+  eventId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
@@ -1106,11 +1379,21 @@ Remove individualParticipantIds from a grouping participant [TEAM, GROUP]
 
 - Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
 
-- @param {string} drawId - id of draw within which matchUp is found
-- @param {string} matchUpId - id of matchUp to be modified
-- @param {string} matchUpTieId - id of matchUpTie, if relevant
-- @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
-- @param {object} outcome - { score, winningSide, matchUpStatus }
+```js
+const outcome = {
+  score,
+  winningSide,
+  matchUpStatus,
+};
+
+tournamentEngine.setMatchUpStatus({
+  drawId,
+  matchUpId,
+  matchUpTieId, // optional - if part of a TIE matchUp
+  outcome,
+  matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+});
+```
 
 ---
 
@@ -1157,11 +1440,13 @@ tournamentEngine.setParticipantScaleItems({ scaleItemsWithParticipantIds });
 
 ## setStructureDefaultMatchUpFormat
 
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} drawId - id of the draw within which structure is found
-- @param {object} drawDefinition - passed automatically by tournamentEngine when drawId is provided
-- @param {string} matchUpFormat - TODS matchUpFormatCode defining scoring format
-- @param {string} structureId - id of the structure for which the matchUpFormat is being set
+```js
+tournamentEngine.setStructureDefaultMatchUpFormat({
+  drawId,
+  structureId,
+  matchUpFormat, // TODS matchUpFormatCode
+});
+```
 
 ---
 
@@ -1185,36 +1470,70 @@ Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts
 
 ## setTournamentCategories
 
+Define categories to be used in event creation for tournament record.
+
+```js
+const categories = [
+  {
+    categoryName: 'U18',
+    type: eventConstants.AGE,
+  },
+  {
+    categoryName: 'U16',
+    type: eventConstants.AGE,
+  },
+  {
+    categoryName: 'WTN',
+    type: eventConstants.RATING,
+  },
+];
+tournamentEngine.setTournamentCategories({ categories });
+```
+
 ---
 
 ## setTournamentEndDate
+
+Accepts an ISO String Date;
+
+```js
+tournamentEngine.setTournamentEndDate({ endDate });
+```
 
 ---
 
 ## setTournamentName
 
+```js
+const tournamentName = 'CourtHive Challenge';
+tournamentEngine.setTournamentName({
+  tournamentName,
+});
+```
+
 ---
 
 ## setTournamentNotes
+
+```js
+tournamentEngine.setTournamentNotes({ notes });
+```
 
 ---
 
 ## setTournamentStartDate
 
----
+Accepts an ISO String Date;
 
-## setVenueAddress
+```js
+tournamentEngine.setTournamentStartDate({ StartDate });
+```
 
 ---
 
 ## tournamentMatchUps
 
-Returns all matchUups in a tournamentRecord, assuming that `tournament.setState(tournamentRecord)` has already been called. These matchUps are returned **inContext**.
-
-| Parameters     | Required | Type  | Description |
-| :------------- | :------- | :---- | :---------- |
-| matchUpFilters | Optional | array |             |
-| contestFilters | Optional | array |             |
+Returns tournament matchUps grouped bye matchUpStatus. These matchUps are returned with _context_.
 
 ```js
 const {
@@ -1230,20 +1549,38 @@ const {
 
 ## unPublishEvent
 
+Modifies the `publishState` of an event. `Subscriptions` or middleware can be used to trigger messaging to services which make event data visible on public websites.
+
+```js
+tournamentEngine.unPublishEvent({ eventId });
+```
+
 ---
 
 ## withdrawParticipantAtDrawPosition
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number} drawPosition - number of drawPosition for which actions are to be returned
-- @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
-- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
+Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment).This method is included in `validActions` for [positionActions](/concepts/positionActions).
+
+```js
+withdrawParticipantAtDrawPosition({
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
+  drawPosition,
+  replaceWithBye, // optional
+  entryStatus = WITHDRAWN,
+  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+});
+```
 
 ---
 
 ## version
 
-Returns NPM package version
+Returns NPM package version. Can be used in configurations that utilize Competition Factory engines on both client and server to ensure equivalency.
+
+```js
+const version = tournamentEngine.version();
+```
 
 ---
