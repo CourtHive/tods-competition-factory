@@ -1,3 +1,4 @@
+import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { UUID } from '../../../utilities/UUID';
 
@@ -53,19 +54,14 @@ export function assignTieMatchUpParticipantId(props) {
     ).length;
 
     if (sideParticipantsCount === 2) {
-      const sideParticipantsIdHash = pairHash(individualParticipants);
-
-      // TODO: replace this block with getPairedParticipant({ participantIds})
-      const tournamentParticipants = tournamentRecord.participants || [];
-      const doublesPairsHashes = tournamentParticipants
-        .filter((participant) => participant.participantType === PAIR)
-        .map((pairParticipant) => {
-          const hash = pairHash(pairParticipant.individualParticipants);
-          return { [hash]: pairParticipant.participantId };
-        });
-      const doublesPairLookup = Object.assign({}, ...doublesPairsHashes);
-      const sideParticipantId = doublesPairLookup[sideParticipantsIdHash];
-      // END TODO
+      const participantIds = individualParticipants.map(
+        ({ participantId }) => participantId
+      );
+      const { participant } = getPairedParticipant({
+        tournamentRecord,
+        participantIds,
+      });
+      const sideParticipantId = participant?.participantId;
 
       if (sideParticipantId) {
         side.participantId = sideParticipantId;
@@ -102,13 +98,6 @@ export function assignTieMatchUpParticipantId(props) {
     );
     const person = participantData && participantData.person;
     return person && person.standardFamilyName;
-  }
-
-  function pairHash(pair) {
-    return pair
-      .map((participant) => participant.participantId)
-      .sort()
-      .join('|');
   }
 
   function removeParticipantIdFromPair({ side, sideMember }) {
