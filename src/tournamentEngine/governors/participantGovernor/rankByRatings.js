@@ -4,6 +4,7 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+// TODO: should be refactored to take scaleAttributes instead of { category, eventType }
 export function rankByRatings({
   tournamentRecord,
   participantIds,

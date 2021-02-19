@@ -13,7 +13,7 @@ import { GROUP, PAIR, TEAM } from '../../../constants/participantTypes';
  * @param {string} participantId - id of individual participant
  *
  */
-export function participantMembership({ tournamentRecord, participantId }) {
+export function getParticipantMembership({ tournamentRecord, participantId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

@@ -247,7 +247,7 @@ it('will not add invalid PAIR participants', () => {
   });
   expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
 
-  result = tournamentEngine.participantMembership({
+  result = tournamentEngine.getParticipantMembership({
     participantId: individualParticipantIds[0],
   });
   expect(result[PAIR].length).toEqual(1);

@@ -799,8 +799,13 @@ const {
 
 Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
 
+See [publishEvent](#publishEvent) for details on `policyDefinition`.
+
 ```js
-const { eventData } = tournamentEngine.getEventData({ drawId });
+const { eventData } = tournamentEngine.getEventData({
+  drawId,
+  policyDefinition, // optional
+});
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
 
@@ -881,25 +886,99 @@ const [{ eventName, eventId }] = eventDetails;
 
 Returns the Range of finishing positions possible for all participantIds within a draw
 
-- @param {string} drawId - drawId of target draw within a tournament
-- @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
+```js
+const idMap = tournamentEngine.getParticipantIdFinishingPositions({
+  drawId,
+  byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
+});
+
+const {
+  relevantMatchUps,
+  finishingPositionRanges,
+  finishingPositionRange,
+} = idMap[participantId];
+```
+
+---
+
+## getParticipantMembership
+
+Returns all grouping participants which include `participantId` in `{ individualParticipantIds }`.
+
+```js
+const {
+  [PAIR]: doublesParticipantIds,
+  [GROUP]: groupParticipantIds,
+  [TEAM]: teamParticipantIds,
+} = tournamentEngine.getParticipantMembership({
+  participantId,
+});
+```
+
+---
 
 ## getParticipantScaleItem
+
+Return a ranking or rating or seeding value for a participant, referenced by participantId.
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+};
+const {
+  scaleItem: { scaleValue },
+} = tournamentEngine.getParticipantScaleItem({
+  participantId,
+  scaleAttributes,
+});
+```
 
 ---
 
 ## getParticipantSignInStatus
+
+Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](#modifyParticipantsSignInStatus).
+
+```js
+const signInStatus = tournamentEngine.getParticipantSignInStatus({
+  participantId,
+});
+```
 
 ---
 
 ## getPolicyDefinition
 
 Finds policyDefinition for either tournament, event (if eventId), or draw (if drawId);
-Takes policyType as a parameter ('seeding', 'avoidance', or 'scoring')
+Takes policyType as a parameter.
+
+See [Policies](/concepts/policies).
+
+```js
+const { policyDefinition } = tournamentEngine.getPolicyDefinition({
+  policyType: POLICY_TYPE_SEEDING,
+  eventId, // optional
+  drawId, // optional
+});
+```
 
 ---
 
 ## getPositionAssignments
+
+Returns an array of `positionAssignments` for a structure. Combines `positionAssginments` for child structures in the case of ROUND_ROBIN where `{ structureType: CONTAINER }`.
+
+```js
+let { positionAssignments } = getPositionAssignments({
+  drawDefinition, // optional if { structure } is provided
+  structureId, // optional if { structure } is provided
+  structure, // optional if { drawDefinition, structureId } are provided
+});
+
+const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
+```
 
 ---
 
@@ -1104,38 +1183,84 @@ tournamentEngine.modifyPenalty({ penaltyId, modifications });
 
 ## newTournamentRecord
 
----
+Creates a new tournamentRecord in tournamentEngine state.
 
-## participantMembership
+```js
+tournamentEngine.newTournamentRecord({
+  tournamentId, // optional - will be generated if not provided
+});
 
-Returns all grouping participants which include participantId
-
-- @param {object} tournamentRecord - passed automatically by tournamentEngine
-- @param {string} participantId - id of individual participant
+const { tournamentRecord } = tournamentEngine.getState();
+```
 
 ---
 
 ## participantScaleItem
 
+Similar to [getParticipantScaleItem](#getParticipantScaleItem) but takes a `participant` object and doesn't require `tournamentEngine.setState(tournamentRecord)`.
+
+```js
+const scaleAttributes = {
+  scaleType: RATING,
+  eventType: SINGLES,
+  scaleName: 'WTN',
+};
+const {
+  scaleItem: { scaleValue },
+} = tournamentEngine.participantScaleItem({
+  participant,
+  scaleAttributes,
+});
+```
+
 ---
 
 ## modifyParticipantsSignInStatus
+
+Modify the signInStatus of multiple participants, referenced by participantId.
+
+```js
+tournamentEngine.modifyParticipantsSignInStatus({
+  participantIds: [participantId],
+  signInState: SIGNED_IN,
+});
+```
 
 ---
 
 ## modifySeedAssignment
 
-Change the display representation of a seedNumber
+Change the display representation of a seedNumber for a specified `participantId`. Method is utlized by `positionActions`.
 
-- @param {string} drawId - id of drawDefinition within which structure occurs
-- @param {object} drawDefinition - added automatically by tournamentEngine
-- @param {string} participantId - id of participant which will receive the seedValue
-- @param {string} structureId - id of structure within drawDefinition
-- @param {string} seedValue - supports value of e.g. '5-8'
+```js
+tournamentEngine.modifySeedAssignment({
+  drawId,
+  structureId,
+  participantId,
+  seedValue, // display representation such as '5-8'
+});
+```
 
 ---
 
 ## publishEvent
+
+Utilizes [getEventData](#getEventData) to prepare data for display. Differs from [getEventData](#getEventData) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
+
+See [Policies](/concepts/policies) for more details on `policyDefinitions`.
+
+```js
+const policyDefinition = Object.assign(
+  {},
+  ROUND_NAMING_POLICY,
+  PARTICIPANT_PRIVACY_DEFAULT
+);
+
+const { eventData } = tournamentEngine.publishEvent({
+  eventId,
+  policyDefinition,
+});
+```
 
 ---
 
@@ -1149,14 +1274,19 @@ Change the display representation of a seedNumber
 
 ## removeDrawPositionAssignment
 
-Clear draw position.
+Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR particpant into UNPAIRED participants (DOUBLES only).
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number} drawPosition - number of drawPosition for which actions are to be returned
-- @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
-- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
-- @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
+```js
+removeDrawPositionAssignment({
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
+  drawPosition,
+  replaceWithBye, // optional
+  entryStatus, // optional - change the entryStatus of the removed participant
+  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+});
+```
 
 ---
 
