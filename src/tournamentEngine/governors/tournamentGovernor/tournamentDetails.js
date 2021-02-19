@@ -12,10 +12,10 @@ export function setTournamentName({
   if (tournamentName) tournamentRecord.tournamentName = tournamentName;
   if (promotionalName) tournamentRecord.promotionalName = promotionalName;
   if (formalName) tournamentRecord.formalName = formalName;
-  if (tournamentRecord.promotionalName === tournamentRecord.name) {
+  if (tournamentRecord.promotionalName === tournamentRecord.tournamentName) {
     delete tournamentRecord.promotionalName;
   }
-  if (tournamentRecord.formalName === tournamentRecord.name) {
+  if (tournamentRecord.formalName === tournamentRecord.tournamentName) {
     delete tournamentRecord.formalName;
   }
   return SUCCESS;
