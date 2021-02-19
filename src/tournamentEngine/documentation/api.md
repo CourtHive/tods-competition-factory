@@ -961,6 +961,22 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyEventEntries
+
+Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
+
+```js
+tournamentEngine.modifyEventEntries({
+  eventId,
+  entryStage = MAIN,
+  participantIdPairs = [],
+  unpairedParticipantIds = [],
+  entryStatus = DIRECT_ACCEPTANCE,
+})
+```
+
+---
+
 ## modifyIndividualParticipantIds
 
 Modify `individualParticipantIds` of a grouping participant `{ participantType: TEAM || GROUP }`.

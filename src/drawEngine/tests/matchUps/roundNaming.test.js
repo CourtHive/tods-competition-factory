@@ -9,7 +9,7 @@ import {
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   OLYMPIC,
 } from '../../../constants/drawDefinitionConstants';
@@ -60,13 +60,13 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
   });
 });
 
-it('can return matchUps with roundNames from a FEED_FMLC structure', () => {
+it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
   let result = drawEngine
     .devContext(true)
-    .generateDrawType({ drawType: FEED_FMLC });
+    .generateDrawType({ drawType: FIRST_MATCH_LOSER_CONSOLATION });
   const { mainStructure, consolationStructure } = result;
   expect(mainStructure.structureName).toEqual(MAIN);
   result = drawEngine.attachPolicy({

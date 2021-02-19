@@ -2,7 +2,7 @@ import { getAvailablePlayoffRounds } from '../../governors/structureGovernor/get
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { drawEngine } from '../../sync';
 
-import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {
   reset();
@@ -39,12 +39,12 @@ it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => 
   });
 });
 
-it('can correctly determine positions playedOff for FEED_FMLC', () => {
+it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATION', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
   const result = drawEngine.devContext(true).generateDrawType({
-    drawType: FEED_FMLC,
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);
 
@@ -58,21 +58,10 @@ it('can correctly determine positions playedOff for FEED_FMLC', () => {
     drawDefinition,
     structureId,
   });
-  console.log('TODO: FMLC playoff rounds calculation', {
-    playoffRounds,
-    playoffRoundsRanges,
-  });
-  /*
-  expect(playoffRounds).toEqual([2, 3]);
+  expect(playoffRounds).toEqual([3]);
   expect(playoffRoundsRanges[0]).toEqual({
-    roundNumber: 2,
-    finishingPositionRange: '5-8',
-    finishingPositions: [5, 6, 7, 8],
-  });
-  expect(playoffRoundsRanges[1]).toEqual({
     roundNumber: 3,
     finishingPositionRange: '3-4',
     finishingPositions: [3, 4],
   });
-  */
 });

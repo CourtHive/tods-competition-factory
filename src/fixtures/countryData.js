@@ -1,4 +1,4 @@
-// ISO 3166-1 alpha-2
+// ISO- 3166-1 alpha-2
 
 export function countryToFlag(isoCode) {
   return isoCode && typeof String.fromCodePoint !== 'undefined'

@@ -38,16 +38,10 @@ import {
 } from '../../../../constants/matchUpStatusConstants';
 
 export function keyValueMatchUpScore(props) {
-  const { matchUp } = props;
-  const { matchUpFormat } = matchUp;
-  // SCORE: matchUp will have changed
-  let { scoreString, sets } = matchUp;
-  const { score, winningSide, matchUpStatus } = matchUp;
-  if (score?.sets) {
-    sets = sets || score.sets;
-    scoreString = scoreString || score.scoreStringSide1;
-  }
-  const { auto, checkFormat, shiftFirst, lowSide, value } = props;
+  const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = props;
+  const { score, winningSide, matchUpStatus, matchUpFormat } = matchUp;
+  const scoreString = matchUp.scoreString || score?.scoreStringSide1;
+  const sets = matchUp.sets || score?.sets;
   const result = keyValueScore({
     scoreString,
     sets,
@@ -65,8 +59,8 @@ export function keyValueMatchUpScore(props) {
   if (result?.updated) {
     const { sets, scoreString, winningSide, matchUpStatus } = result;
     updatedMatchUp = Object.assign({}, matchUp, {
-      sets,
-      scoreString,
+      sets, // required for present test suites
+      scoreString, // required for present test suites
       winningSide,
       matchUpStatus,
       // TODO: this should use the autocomplete function of matchUpScore

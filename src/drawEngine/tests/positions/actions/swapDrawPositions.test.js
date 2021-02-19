@@ -77,7 +77,7 @@ it('can recognize valid SWAP positions', () => {
   });
   options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  // NOTE: if the seeding policy has ignore valid seed positions then SEED_VALUE will appear for all placed participants
+  // if the seeding policy has ignore valid seed positions then SEED_VALUE will appear for all placed participants
 });
 
 it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () => {

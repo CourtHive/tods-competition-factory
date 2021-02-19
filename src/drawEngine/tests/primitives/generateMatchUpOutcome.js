@@ -22,7 +22,6 @@ function generateSetScores(setValues) {
  * @param {object[]} setValues - array of values arrays [side1Score, side2Score, side1TiebreakScore, side2TiebreakScore]
  */
 
-// SCORE: everywhere this method is used needs to be updated to expect object instead of string
 export function generateMatchUpOutcome({
   setValues,
   matchUpFormat = 'SET3-S:6/TB7',

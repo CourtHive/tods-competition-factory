@@ -11,8 +11,9 @@ import {
 
 export function getSourceRounds({
   drawDefinition,
-  playoffPositions = [],
   structureId,
+  playoffPositions = [],
+  excludeRoundNumbers = [],
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -46,7 +47,10 @@ export function getSourceRounds({
         ? rounds
         : rounds.concat(round.roundNumber);
     }, [])
-    .map((round) => parseInt(round));
+    .map((roundNumber) => parseInt(roundNumber))
+    .filter(
+      (roundNumber) => !excludeRoundNumbers.includes(parseInt(roundNumber))
+    );
 
   const playedOffRoundsMap = getFinishingPositionSourceRoundsMap({
     drawDefinition,

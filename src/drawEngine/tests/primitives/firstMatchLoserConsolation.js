@@ -3,7 +3,7 @@ import { generateRange } from '../../../utilities';
 
 import {
   MAIN,
-  FEED_FMLC,
+  FIRST_MATCH_LOSER_CONSOLATION,
   CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
@@ -14,7 +14,7 @@ export function generateFMLC({
   participantsCount,
   policyDefinition,
 }) {
-  const drawType = FEED_FMLC;
+  const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
   drawEngine.reset();
   drawEngine.newDrawDefinition();

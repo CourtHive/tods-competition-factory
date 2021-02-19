@@ -220,7 +220,7 @@ it('can properly generate feed in championship links', () => {
   );
 
   /*
-  // NOTE: visual check can be turned into further tests...
+  // visual check can be turned into further tests...
   const checkRounds = [8, 10];
   const visualCheck = [];
   Object.keys(consolationRoundMatchUps).forEach((roundNumber) => {

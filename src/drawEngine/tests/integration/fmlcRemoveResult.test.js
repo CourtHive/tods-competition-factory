@@ -1,6 +1,6 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine/sync';
-import { generateFMLC } from '../../tests/primitives/fmlc';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { drawEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 import {
@@ -176,7 +176,7 @@ it('can direct winners and losers', () => {
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
 });
 
-it('can remove matchUps properly in FEED_FMLC', () => {
+it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
   const participantsProfile = {
     participantsCount: 100,
     sex: MALE,

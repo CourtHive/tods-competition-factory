@@ -1,7 +1,7 @@
 import tournamentEngine from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
-import { FEED_FMLC } from '../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
@@ -28,11 +28,11 @@ it('can add 5-8 playoff structure to a SINGLE ELIMINATION structure', () => {
   expect(structures.length).toEqual(3);
 });
 
-it('can add playoff structures to a FEED_FMLC structure', () => {
+it('can add playoff structures to a FIRST_MATCH_LOSER_CONSOLATION structure', () => {
   const { success, drawDefinition } = tournamentEngineAddPlayoffsTest({
     drawSize: 16,
     playoffPositions: [3, 4],
-    drawType: FEED_FMLC,
+    drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
