@@ -8,7 +8,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 export function setDrawParticipantRepresentatives({
   tournamentRecord,
   drawId,
-  representatives,
+  representativeParticipantIds,
 }) {
   const { event, drawDefinition } = getDrawDefinition({
     tournamentRecord,
@@ -17,9 +17,8 @@ export function setDrawParticipantRepresentatives({
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  const representativeIds = representatives.map((r) => r.participantId);
   (drawDefinition.entries || []).forEach((entry) => {
-    const isRep = representativeIds.includes(entry.participantId);
+    const isRep = representativeParticipantIds.includes(entry.participantId);
     if (isRep) {
       entry.representative = true;
     } else {
