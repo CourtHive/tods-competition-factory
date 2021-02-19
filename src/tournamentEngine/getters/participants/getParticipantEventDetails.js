@@ -12,7 +12,6 @@ import { PAIR, TEAM } from '../../../constants/participantTypes';
  * @param {object} tournamentRecord - tournament object (passed automatically from tournamentEngine state)
  * @param {string} participantId - id of participant for which events (eventName, eventId) are desired
  */
-// TODO: this method may be replaceable by { withStatistics: true } in getTournamentParticipants();
 export function getParticipantEventDetails({
   tournamentRecord,
   participantId,
