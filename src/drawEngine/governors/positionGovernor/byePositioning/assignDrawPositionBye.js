@@ -7,7 +7,7 @@ import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
-import { addNotice, getDevContext } from '../../../../global/globalState';
+import { addNotice } from '../../../../global/globalState';
 import { positionTargets } from '../positionTargets';
 
 import { pushGlobalLog } from '../../../../global/globalLog';
