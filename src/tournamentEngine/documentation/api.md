@@ -701,17 +701,67 @@ const {
 
 ## getCourtInfo
 
+```js
+const {
+  altitude,
+  courtId,
+  courtName,
+  courtDimensions,
+  latitude,
+  longitude,
+  surfaceCategory,
+  surfaceType,
+  surfaceDate,
+  pace,
+  notes,
+} = tournamentEngine.getCourtInfo({ courtId });
+```
+
 ---
 
 ## getCourts
+
+Returns courts associated with a tournaments; optionall filter by venue(s).
+
+```js
+const { courts } = tournamentEngine.getCourts({
+  venueId, // optional - return courts for a specific venue
+  venueIds, // optional - return courts for specified venues
+});
+```
 
 ---
 
 ## getDrawData
 
+Primarily used by `getEventData` for publishing purposes.
+
+```js
+const {
+  drawInfo: {
+    drawActive, // boolean - draw has active matchUps
+    drawCompleted, // boolean - all draw matchUps are complete
+    drawGenerated, // boolean - draw has structures containing matchUps
+  },
+  structures,
+} = getDrawData({ drawDefinition });
+```
+
 ---
 
 ## getEvent
+
+Get an event by either its `eventId` or by a `drawId` which it contains. Also returns `drawDefinition` if a `drawId` is specified.
+
+```js
+const {
+  event,
+  drawDefinition, // only returned if drawId is specified
+} = tournamentEngine.getEvent({
+  eventId, // optional - find event by eventId
+  drawId, // optional - find the event which contains specified drawId
+});
+```
 
 - @param {string} eventId - id of the event to retreive
 - @param {object} context - attributes to be added into each event object.
@@ -720,10 +770,11 @@ const {
 
 ## getEvents
 
-Return an array of deepCopies of all event objects.
+Return **deepCopies** of all events in a tournament record.
 
-- @param {object} context - attributes to be added into each event object.
-- @param {boolean} inContext - whether or not to add tournament context into event (not yet implemented).
+```js
+const { events } = tournamentEngine.getEvents();
+```
 
 ---
 
@@ -750,19 +801,44 @@ const {
 
 ## getMatchUpFormat
 
-Returns the matchUpFormat code for a given matchUp, along with any
+Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
 
-- @param {object} tournamentRecord - passed in automatically by tournamentEngine
-- @param {string} drawId - optional - avoid brute force search for matchUp
-- @param {object} drawDefinition - passed in automatically by tournamentEngine when drawId provided
-- @param {string} eventId - optional - if only the default matchUpFormat for an event is required
-- @param {object} event - passed in automatically by tournamentEngine when drawId or eventId provided
-- @param {string} structureId - optional - if only the default matchUpFormat for a structure is required
-- @param {string} matchUpId - id of matchUp for which the scoped matchUpFormat(s) are desired
+`matchUpFormat` for each matchUp is determined by traversing the hierarchy: `matchUp => stucture => drawDefinition => event`
+
+```js
+const {
+  matchUpFormat,
+  structureDefaultMatchUpFormat,
+  drawDefaultMatchUpFormat,
+  eventDefaultMatchUpFormat,
+} = tournamentEngine.getMatchUpFormat({
+  eventId,
+  drawId,
+  structureId,
+  matchUpId,
+});
+```
 
 ---
 
 ## getMatchUpScheduleDetails
+
+Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.
+
+```js
+const {
+  schedule: {
+    time,
+    courtId,
+    venueId,
+    startTime,
+    endTime,
+    milliseconds,
+    scheduledDate,
+    scheduledTime,
+  },
+} = tournamentEngine.getMatchUpScheduleDetails({ matchUp });
+```
 
 ---
 
