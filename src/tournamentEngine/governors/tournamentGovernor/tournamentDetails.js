@@ -1,15 +1,14 @@
+import { dateValidation } from '../../../fixtures/validations/regex';
+
 import { INVALID_DATE } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { dateValidation } from '../../../fixtures/validations/regex';
 
 export function setTournamentName({
   tournamentRecord,
-  name, // TODO: clear up name vs. tournamentName
   tournamentName,
   promotionalName,
   formalName,
 }) {
-  if (name) tournamentRecord.name = name;
   if (tournamentName) tournamentRecord.tournamentName = tournamentName;
   if (promotionalName) tournamentRecord.promotionalName = promotionalName;
   if (formalName) tournamentRecord.formalName = formalName;

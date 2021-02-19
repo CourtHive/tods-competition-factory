@@ -227,8 +227,6 @@ it('can add events, venues, and schedule matchUps', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps({ contextFilters }));
   expect(matchUps.length).toEqual(1);
 
-  // TODO: add startTime, stopTime, resumeTime, official
-
   matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(matchUp.timeItems.length).toEqual(9);
 
