@@ -1246,7 +1246,7 @@ tournamentEngine.modifyParticipantsSignInStatus({
 
 ## modifySeedAssignment
 
-Change the display representation of a seedNumber for a specified `participantId`. Method is utlized by `positionActions`.
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
 
 ```js
 tournamentEngine.modifySeedAssignment({
@@ -1559,16 +1559,28 @@ tournamentEngine.unPublishEvent({ eventId });
 
 ## withdrawParticipantAtDrawPosition
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number} drawPosition - number of drawPosition for which actions are to be returned
-- @param {boolean} replaceWithBye - boolean whether or not to replace with BYE
-- @param {boolean} destroyPair - if { participantType: PAIR } it is possible to destroy pair entry before modifying entryStatus
+Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment).This method is included in `validActions` for [positionActions](/concepts/positionActions).
+
+```js
+withdrawParticipantAtDrawPosition({
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
+  drawPosition,
+  replaceWithBye, // optional
+  entryStatus = WITHDRAWN,
+  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+});
+```
 
 ---
 
 ## version
 
-Returns NPM package version
+Returns NPM package version. Can be used in configurations that utilize Competition Factory engines on both client and server to ensure equivalency.
+
+```js
+const version = tournamentEngine.version();
+```
 
 ---
