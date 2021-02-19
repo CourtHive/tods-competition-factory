@@ -119,17 +119,17 @@ it.only('can score a matchUp using params provided in validActions', () => {
   );
   let { validActions } = tournamentEngine.matchUpActions(targetMatchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
-  const { method, params } = scoreAction;
+  const { method, payload } = scoreAction;
 
   const { outcome } = generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
     winningSide: 2,
   });
 
-  Object.assign(params, { outcome });
+  Object.assign(payload, { outcome });
 
   tournamentEngine.devContext(true);
-  let result = tournamentEngine[method](params);
+  let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
   expect(result.matchUp.winningSide).toEqual(2);
 });
