@@ -8,6 +8,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+// The only difference from finding a venue is that information is filtered from both venue and courts
+// e.g. dataAvailability objects are not returned.
 export function getVenueData({ tournamentRecord, venueId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venueId) return { error: MISSING_VENUE_ID };
