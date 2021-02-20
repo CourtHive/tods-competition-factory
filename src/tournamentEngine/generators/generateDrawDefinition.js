@@ -166,13 +166,13 @@ export function generateDrawDefinition(props) {
 
   const { policyDefinition: eventAvoidancePolicy } =
     getPolicyDefinition({
-      eventId: event?.eventId,
+      event,
       policyType: POLICY_TYPE_AVOIDANCE,
     }) || {};
 
   const { policyDefinition: eventSeedingPolicy } =
     getPolicyDefinition({
-      eventId: event?.eventId,
+      event,
       policyType: POLICY_TYPE_SEEDING,
     }) || {};
 
@@ -184,6 +184,7 @@ export function generateDrawDefinition(props) {
       drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
     }
   }
+
   if (!appliedPolicies?.avoidance && eventAvoidancePolicy) {
     drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
   }
