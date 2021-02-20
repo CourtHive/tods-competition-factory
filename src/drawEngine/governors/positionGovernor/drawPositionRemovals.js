@@ -145,7 +145,10 @@ export function drawPositionRemovals({
   tasks.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
     const targetMatchUp = roundMatchUps[roundNumber].find(
       (matchUp) =>
-        intersection(matchUp.drawPositions, relevantPair).length === 2
+        intersection(
+          matchUp.drawPositions.filter((f) => f),
+          relevantPair.filter((f) => f)
+        ).length
     );
     if (!targetMatchUp) {
       return;
