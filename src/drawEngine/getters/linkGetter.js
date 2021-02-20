@@ -59,21 +59,23 @@ export function getStructureLinks({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { links } = drawDefinition;
-  const structureLinks = links.reduce(
-    (structureLinks, link) => {
-      if (
-        link.source.structureId === structureId &&
-        (!roundNumber || link.source.roundNumber === roundNumber)
-      )
-        structureLinks.source = structureLinks.source.concat(link);
-      if (
-        link.target.structureId === structureId &&
-        (!roundNumber || link.target.roundNumber === roundNumber)
-      )
-        structureLinks.target = structureLinks.target.concat(link);
-      return structureLinks;
-    },
-    { source: [], target: [] }
-  );
+  const structureLinks = links
+    .filter((f) => f)
+    .reduce(
+      (structureLinks, link) => {
+        if (
+          link.source?.structureId === structureId &&
+          (!roundNumber || link.source.roundNumber === roundNumber)
+        )
+          structureLinks.source = structureLinks.source.concat(link);
+        if (
+          link.target?.structureId === structureId &&
+          (!roundNumber || link.target.roundNumber === roundNumber)
+        )
+          structureLinks.target = structureLinks.target.concat(link);
+        return structureLinks;
+      },
+      { source: [], target: [] }
+    );
   return { links: structureLinks };
 }
