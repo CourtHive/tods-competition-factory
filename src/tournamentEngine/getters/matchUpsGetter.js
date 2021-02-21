@@ -53,11 +53,11 @@ export function allDrawMatchUps({
   event,
   context,
   inContext,
+  participants,
   nextMatchUps,
   matchUpFilters,
   contextFilters,
   drawDefinition,
-  participants = [],
   tournamentRecord,
   tournamentAppliedPolicies,
 }) {
@@ -69,8 +69,10 @@ export function allDrawMatchUps({
     gender,
     matchUpFormat,
   });
-  participants =
-    participants || (tournamentRecord && getParticipants({ tournamentRecord }));
+  const tournamentParticipants =
+    participants ||
+    (tournamentRecord && getParticipants({ tournamentRecord })) ||
+    [];
   const { matchUps } = getAllDrawMatchUps({
     drawDefinition,
     context: additionalContext,
@@ -78,8 +80,9 @@ export function allDrawMatchUps({
     matchUpFilters,
     contextFilters,
     nextMatchUps,
+    tournamentRecord,
+    tournamentParticipants,
     tournamentAppliedPolicies,
-    tournamentParticipants: participants,
   });
 
   return { matchUps };
@@ -116,6 +119,7 @@ export function allEventMatchUps({
         matchUpFilters,
         contextFilters,
         nextMatchUps,
+        tournamentRecord,
         tournamentAppliedPolicies,
         tournamentParticipants: participants,
       });
@@ -200,6 +204,7 @@ export function eventMatchUps({
         drawDefinition,
         matchUpFilters,
         contextFilters,
+        tournamentRecord,
         tournamentAppliedPolicies,
         tournamentParticipants,
       });
@@ -241,6 +246,7 @@ export function drawMatchUps({
     drawDefinition,
     matchUpFilters,
     contextFilters,
+    tournamentRecord,
     tournamentAppliedPolicies,
     tournamentParticipants,
   });

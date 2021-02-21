@@ -24,15 +24,12 @@ it('accurately determines winnerGoesTo and loserGoesTo for FIC matchUps', () => 
     },
   ];
   let {
-    tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     participantsProfile,
     goesTo: true,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allDrawMatchUps({
     drawId,
