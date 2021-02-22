@@ -3,6 +3,10 @@ export function unique(arr) {
   return arr.filter((item, i, s) => s.lastIndexOf(item) === i);
 }
 
+export function noNulls(arr) {
+  return arr.map((item) => (item === null ? undefined : item));
+}
+
 export function shuffleArray(arr) {
   return arr
     .map((a) => [Math.random(), a])

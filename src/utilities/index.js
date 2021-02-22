@@ -5,15 +5,16 @@ export { nearestPowerOf2, nextPowerOf2, powerOf2, isOdd } from './math';
 export { attributeFilter } from './attributeFilter';
 export {
   allNumeric,
-  intersection,
-  noNumeric,
-  countValues,
   chunkArray,
+  chunkByNth,
+  countValues,
   generateRange,
   instanceCount,
-  randomPop,
+  intersection,
+  noNulls,
+  noNumeric,
   randomMember,
+  randomPop,
   shuffleArray,
   unique,
-  chunkByNth,
 } from './arrays';
