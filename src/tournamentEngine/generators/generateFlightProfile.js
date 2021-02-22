@@ -109,14 +109,16 @@ export function generateFlightProfile({
   const extension = {
     name: FLIGHT_PROFILE,
     value: {
+      splitMethod,
+      scaleAttributes,
       flights,
     },
   };
 
   addEventExtension({ event, extension });
 
-  return Object.assign(SUCCESS, {
-    flightProfile: makeDeepCopy({ flights }),
+  return Object.assign({}, SUCCESS, {
+    flightProfile: makeDeepCopy({ flights, scaleAttributes, splitMethod }),
     splitEntries: (getDevContext() && splitEntries) || undefined,
   });
 }
