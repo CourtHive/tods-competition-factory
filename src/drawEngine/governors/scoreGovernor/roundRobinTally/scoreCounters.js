@@ -123,7 +123,7 @@ export function countGames({
 
 export function countPoints({ score, tallyPolicy }) {
   const pointsTally = [0, 0];
-  if (tallyPolicy.ignoreTiebreakPoints) return pointsTally;
+  if (tallyPolicy?.ignoreTiebreakPoints) return pointsTally;
 
   score?.sets?.forEach((set) => {
     if (set.side1TiebreakScore)
