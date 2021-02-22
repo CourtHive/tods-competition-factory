@@ -1,4 +1,11 @@
 import {
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
+import { OFFICIAL } from '../../../constants/participantRoles';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { findParticipant } from '../../../drawEngine/getters/participantGetter';
+import {
   addMatchUpScheduledDayDate as addScheduledDayDate,
   addMatchUpScheduledTime as addScheduledTime,
   addMatchUpResumeTime as addResumeTime,
@@ -7,6 +14,7 @@ import {
   addMatchUpOfficial as addOfficial,
   addMatchUpEndTime as addEndTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 
 export function addMatchUpScheduledDayDate({
   drawDefinition,
@@ -76,11 +84,29 @@ export function addMatchUpResumeTime({
 }
 
 export function addMatchUpOfficial({
+  tournamentRecord,
   drawDefinition,
   participantId,
   officialType,
   matchUpId,
 }) {
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
+
+  const { tournamentParticipants } = getTournamentParticipants({
+    tournamentRecord,
+    participantFilters: {
+      participantTypes: [INDIVIDUAL],
+      participantRoles: [OFFICIAL],
+    },
+  });
+
+  const { participant } = findParticipant({
+    tournamentParticipants,
+    participantId,
+  });
+
+  if (!participant) return { error: PARTICIPANT_NOT_FOUND };
+
   const result = addOfficial({
     drawDefinition,
     participantId,

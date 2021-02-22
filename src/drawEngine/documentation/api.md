@@ -27,9 +27,18 @@ route: /drawEngine/api
 
 ## addMatchUpEndTime
 
+```js
+const endTime = '2020-01-01T09:05:00Z';
+drawEngine.addMatchUpEndTime({ matchUpId, endTime });
+```
+
 ---
 
 ## addMatchUpOfficial
+
+```js
+drawEngine.addMatchUpOfficial({ matchUpId, participantId, officialType });
+```
 
 ---
 
