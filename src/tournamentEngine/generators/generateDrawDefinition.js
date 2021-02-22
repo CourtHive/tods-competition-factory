@@ -1,4 +1,7 @@
-import { addDrawDefinitionExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
+import {
+  addDrawDefinitionExtension,
+  addEventExtension,
+} from '../governors/tournamentGovernor/addRemoveExtensions';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
@@ -25,6 +28,8 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { getFlightProfile } from '../getters/getFlightProfile';
+import { FLIGHT_PROFILE } from '../../constants/flightConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -314,6 +319,24 @@ export function generateDrawDefinition(props) {
 
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
+
+  let flightNameModified;
+  const { flightProfile } = getFlightProfile({ event });
+  flightProfile?.flights?.forEach((flight) => {
+    if (flight.drawId === drawId && flight.drawName !== drawName) {
+      flightNameModified = true;
+      flight.drawName === drawName;
+    }
+  });
+  if (flightNameModified) {
+    const extension = {
+      name: FLIGHT_PROFILE,
+      value: {
+        flights: flightProfile.flights,
+      },
+    };
+    addEventExtension({ event, extension });
+  }
 
   const errors = generatedDrawErrors || [];
   if (matchUpFormatError) errors.push(matchUpFormat);

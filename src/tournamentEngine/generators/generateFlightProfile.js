@@ -96,6 +96,7 @@ export function generateFlightProfile({
 
   const flights = generateRange(0, flightsCount).map((index) => {
     const flight = {
+      flightNumber: index + 1,
       drawId: uuids?.pop() || UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
