@@ -88,7 +88,7 @@ export function getBaseCounts({ matchUps, matchUpFormat, tallyPolicy }) {
       participantResults[losingParticipantId].gamesLost +=
         gamesTally[winningSideIndex];
 
-      const pointsTally = countPoints({ score });
+      const pointsTally = countPoints({ score, tallyPolicy });
       participantResults[winningParticipantId].pointsWon +=
         pointsTally[winningSideIndex];
       participantResults[winningParticipantId].pointsLost +=

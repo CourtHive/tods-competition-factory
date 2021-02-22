@@ -120,6 +120,14 @@ export function chunkArray(arr, chunksize) {
     return all;
   }, []);
 }
+export function chunkSizeProfile(arr, [size, ...otherSizes]) {
+  return arr.length
+    ? [
+        arr.slice(0, size),
+        ...chunkSizeProfile(arr.slice(size), [...otherSizes, size]),
+      ]
+    : [];
+}
 export function groupConsecutiveNumbers(arr) {
   return arr.reduce((result, num) => {
     const finalGroup = result[result.length - 1];

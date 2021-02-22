@@ -305,7 +305,7 @@ export function positionActions({
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
   if (isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT })) {
-    const { validAlternatesAction } = getValidLuckyLosersAction({
+    const { validLuckyLosersAction } = getValidLuckyLosersAction({
       drawId,
       structure,
       structureId,
@@ -316,7 +316,7 @@ export function positionActions({
       tournamentParticipants,
       possiblyDisablingAction,
     });
-    if (validAlternatesAction) validActions.push(validAlternatesAction);
+    if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
   }
 
   return {

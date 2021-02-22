@@ -26,18 +26,16 @@ export function getValidLuckyLosersAction({
 }) {
   if (!drawId)
     return { error: MISSING_DRAW_ID, method: 'getValidLuckyLosersAction' };
-  if (
-    activeDrawPositions.includes(drawPosition) ||
-    structure.stage === PLAY_OFF
-  )
-    return {};
+  if (activeDrawPositions.includes(drawPosition)) return {};
 
   /*
   Available Lucky Losers are those participants who are assigned drawPositions
   in previous draw structures and have already lost
   */
 
-  const stages = structure.stage === CONSOLATION ? [MAIN] : [QUALIFYING];
+  const stages = [CONSOLATION, PLAY_OFF].includes(structure.stage)
+    ? [MAIN]
+    : [QUALIFYING];
   const contextFilters = { stages };
   const { completedMatchUps } = getDrawMatchUps({
     drawDefinition,
@@ -57,15 +55,16 @@ export function getValidLuckyLosersAction({
   const availableLuckyLosers = tournamentParticipants?.filter((participant) =>
     availableLuckyLoserParticipantIds.includes(participant.participantId)
   );
-  availableLuckyLosers.forEach((alternate) => {
+
+  availableLuckyLosers.forEach((luckyLoser) => {
     const entry = (drawDefinition.entries || []).find(
-      (entry) => entry.participantId === alternate.participantId
+      (entry) => entry.participantId === luckyLoser.participantId
     );
-    alternate.entryPosition = entry?.entryPosition;
+    luckyLoser.entryPosition = entry?.entryPosition;
   });
 
   if (availableLuckyLoserParticipantIds.length) {
-    const validAlternatesAction = {
+    const validLuckyLosersAction = {
       type: LUCKY_PARTICIPANT,
       method: LUCKY_PARTICIPANT_METHOD,
       availableLuckyLosers,
@@ -73,7 +72,7 @@ export function getValidLuckyLosersAction({
       willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
     };
-    return { validAlternatesAction };
+    return { validLuckyLosersAction };
   }
 
   return {};

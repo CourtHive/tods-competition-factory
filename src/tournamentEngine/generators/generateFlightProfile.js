@@ -96,6 +96,7 @@ export function generateFlightProfile({
 
   const flights = generateRange(0, flightsCount).map((index) => {
     const flight = {
+      flightNumber: index + 1,
       drawId: uuids?.pop() || UUID(),
       drawEntries: getDrawEntries(splitEntries[index]),
       drawName:
@@ -108,14 +109,16 @@ export function generateFlightProfile({
   const extension = {
     name: FLIGHT_PROFILE,
     value: {
+      splitMethod,
+      scaleAttributes,
       flights,
     },
   };
 
   addEventExtension({ event, extension });
 
-  return Object.assign(SUCCESS, {
-    flightProfile: makeDeepCopy({ flights }),
+  return Object.assign({}, SUCCESS, {
+    flightProfile: makeDeepCopy({ flights, scaleAttributes, splitMethod }),
     splitEntries: (getDevContext() && splitEntries) || undefined,
   });
 }

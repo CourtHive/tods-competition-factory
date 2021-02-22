@@ -95,7 +95,6 @@ export function tallyParticipantResults({
 
   const order = determineTeamOrder({
     participantResults,
-    policyDefinition,
     disqualified,
     tallyPolicy,
   });

@@ -34,6 +34,7 @@ export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
       const extension = {
         name: FLIGHT_PROFILE,
         value: {
+          ...flightProfile,
           flights,
         },
       };

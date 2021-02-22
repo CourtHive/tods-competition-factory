@@ -2,15 +2,14 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
-import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
+import { pushGlobalLog } from '../../../global/globalLog';
 import { numericSort } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstants';
-import { pushGlobalLog } from '../../../global/globalLog';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -75,17 +74,8 @@ export function directLoser(props) {
     );
   });
 
-  const {
-    loserHadMatchUpStatus: includesDefaultOrWalkover,
-  } = includesMatchUpStatuses({
-    sourceMatchUps,
-    loserDrawPosition,
-    drawPositionMatchUps,
-    matchUpStatuses: [WALKOVER, DEFAULTED],
-  });
   const validForConsolation =
-    loserLinkCondition === FIRST_MATCHUP &&
-    (includesDefaultOrWalkover || loserDrawPositionWins.length === 0);
+    loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
 
   const {
     positionAssignments: sourcePositionAssignments,

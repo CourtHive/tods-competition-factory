@@ -152,7 +152,7 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
   );
 });
 
-it('correctly places consolation participant for WALKOVER outcome 2nd round match with participant who had bye', () => {
+it('correctly places consolation BYE for WALKOVER outcome 2nd round match with participant who had bye', () => {
   const participantsProfile = {
     participantsCount: 16,
     participantType: INDIVIDUAL,
@@ -215,7 +215,7 @@ it('correctly places consolation participant for WALKOVER outcome 2nd round matc
   );
 
   expect(mainDrawPosition.bye).toEqual(true);
-  expect(consolationDrawPosition.participantId).not.toBeUndefined();
+  expect(consolationDrawPosition.participantId).toBeUndefined();
 });
 
 it('correctly places WALKOVER loser of 2nd round match who had bye into consolation', () => {
