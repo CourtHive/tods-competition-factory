@@ -7,6 +7,7 @@ export {
   allNumeric,
   chunkArray,
   chunkByNth,
+  chunkSizeProfile,
   countValues,
   generateRange,
   instanceCount,
