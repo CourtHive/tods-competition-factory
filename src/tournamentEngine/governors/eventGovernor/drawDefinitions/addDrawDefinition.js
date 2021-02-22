@@ -2,7 +2,6 @@ import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions'
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { addNotice } from '../../../../global/globalState';
-import { findEvent } from '../../../getters/eventGetter';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
