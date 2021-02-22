@@ -130,6 +130,28 @@ tournamentEngine.addEventEntryPairs({
 
 ---
 
+## addMatchUpEndTime
+
+```js
+const endTime = '2020-01-01T09:05:00Z';
+tournamentEngine.addMatchUpEndTime({ drawId, matchUpId, endTime });
+```
+
+---
+
+## addMatchUpOfficial
+
+```js
+tournamentEngine.addMatchUpOfficial({
+  drawId,
+  matchUpId,
+  participantId,
+  officialType,
+});
+```
+
+---
+
 ## addParticipant
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to insure `participant.individualParticipantIds` are valid.
