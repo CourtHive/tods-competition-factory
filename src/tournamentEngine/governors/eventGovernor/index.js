@@ -54,6 +54,7 @@ import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
+import { getScaledEntries } from './entries/getScaledEntries';
 
 const eventGovernor = {
   addEvent,
@@ -80,6 +81,7 @@ const eventGovernor = {
   modifySeedAssignment,
 
   getFlightProfile,
+  getScaledEntries,
   generateFlightProfile,
   deleteFlightAndFlightDraw,
   deleteFlightProfileAndFlightDraws,

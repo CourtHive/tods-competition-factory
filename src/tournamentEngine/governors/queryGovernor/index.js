@@ -7,7 +7,7 @@ import {
   drawMatchUps,
 } from '../../getters/matchUpsGetter';
 
-import { getParticipantScaleItem } from './scaleValue';
+import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getEventProperties } from './getEventProperties';
 import { getParticipantSignInStatus } from './signInStatus';
 import { bulkUpdatePublishedEventIds } from './publishState';

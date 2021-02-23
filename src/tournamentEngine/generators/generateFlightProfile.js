@@ -41,7 +41,10 @@ export function generateFlightProfile({
   stage,
 
   deleteExisting,
+
   scaleAttributes,
+  scaleSortMethod,
+  sortDescending,
   splitMethod,
   flightsCount,
 
@@ -56,10 +59,13 @@ export function generateFlightProfile({
   if (flightProfile && !deleteExisting) return { error: EXISTING_PROFILE };
 
   const { scaledEntries } = getScaledEntries({
-    scaleAttributes,
     tournamentRecord,
     event,
     stage,
+
+    scaleAttributes,
+    scaleSortMethod,
+    sortDescending,
   });
 
   const scaledEntryParticipantIds = scaledEntries.map(
