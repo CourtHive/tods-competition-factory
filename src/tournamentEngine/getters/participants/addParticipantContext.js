@@ -62,17 +62,18 @@ export function addParticipantContext({
       const {
         drawId,
         drawName,
-        structureName,
         eventId,
+        finishingPositionRange,
+        loserTo,
         matchUpId,
-        winningSide,
+        matchUpStatus,
+        roundName,
+        roundNumber,
         score,
         sides,
-        roundNumber,
-        roundName,
+        structureName,
         winnerTo,
-        loserTo,
-        finishingPositionRange,
+        winningSide,
       } = matchUp;
       const { winner, loser } = finishingPositionRange || {};
 
@@ -173,21 +174,22 @@ export function addParticipantContext({
               })
             );
             participantIdMap[relevantParticipantId].matchUps[matchUpId] = {
-              winningSide,
-              score,
-              perspectiveScoreString: participantScore,
+              drawId,
+              eventId,
+              finishingPositionRange,
+              loserTo,
+              matchUpId,
+              matchUpStatus,
+              opponentParticipantInfo,
               participantWon,
               partnerParticipantId,
-              opponentParticipantInfo,
-              finishingPositionRange,
-              roundNumber,
+              perspectiveScoreString: participantScore,
               roundName,
-              matchUpId,
-              eventId,
-              drawId,
+              roundNumber,
+              score,
               structureName,
               winnerTo,
-              loserTo,
+              winningSide,
             };
 
             if (partnerParticipantId && eventType === DOUBLES) {
