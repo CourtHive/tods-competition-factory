@@ -44,13 +44,6 @@ export function participantScaleItem({
         accessor && getAccessorValue({ element: timeItem.itemValue, accessor });
       const scaleValue = accessor ? accessorValue.value : timeItem.itemValue;
 
-      console.log({
-        filterType,
-        timeItem,
-        scaleValue,
-        accessor,
-      });
-
       const scaleItem = {
         scaleDate: timeItem.itemDate,
         scaleName,
