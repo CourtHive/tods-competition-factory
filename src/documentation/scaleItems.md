@@ -1,5 +1,5 @@
 ---
-name: Scale scaleItems
+name: Scale Items
 menu: General Concepts
 route: /concepts/scaleItems
 ---
@@ -57,5 +57,3 @@ const scaleAttributes = {
   accessor: 'ntrpRating',
 };
 ```
-
-const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
