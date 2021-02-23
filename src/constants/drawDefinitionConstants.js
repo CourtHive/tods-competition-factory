@@ -8,7 +8,7 @@ export const stageOrder = {
   [QUALIFYING]: 1,
   [MAIN]: 2,
   [PLAY_OFF]: 3,
-  [CONSOLATION]: 4,
+  [CONSOLATION]: 3,
 };
 
 // structureType
