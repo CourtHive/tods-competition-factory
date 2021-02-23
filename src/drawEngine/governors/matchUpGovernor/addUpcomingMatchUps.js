@@ -17,12 +17,13 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
     let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
     if (matchUp.matchUpStatus !== BYE && loserMatchUp?.matchUpStatus === BYE) {
-      const { matchUp: nextMatchUp } = getNextToBePlayedMatchUp({
-        matchUp: loserMatchUp,
-        drawDefinition,
-        structure,
-        inContextDrawMatchUps,
-      });
+      const { matchUp: nextMatchUp } =
+        getNextToBePlayedMatchUp({
+          matchUp: loserMatchUp,
+          drawDefinition,
+          structure,
+          inContextDrawMatchUps,
+        }) || {};
       loserTo =
         nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp });
     }
@@ -36,16 +37,19 @@ function getNextToBePlayedMatchUp({
   inContextDrawMatchUps,
 }) {
   const { matchUpId, matchUpStatus, structureId } = matchUp || {};
-  if (!matchUp || matchUp?.matchUpStatus === TO_BE_PLAYED) return { matchUp };
+  if (!matchUp || !structureId || matchUp?.matchUpStatus === TO_BE_PLAYED)
+    return { matchUp };
   if (matchUpStatus === BYE) {
     const { structure } = findStructure({ drawDefinition, structureId });
-    const targetData = positionTargets({
-      matchUpId,
-      structure,
-      drawDefinition,
-      inContextDrawMatchUps,
-    });
-    const { winnerMatchUp } = targetData.targetMatchUps;
+    const targetData =
+      structure &&
+      positionTargets({
+        matchUpId,
+        structure,
+        drawDefinition,
+        inContextDrawMatchUps,
+      });
+    const { winnerMatchUp } = targetData?.targetMatchUps || {};
     return getNextToBePlayedMatchUp({
       matchUp: winnerMatchUp,
       drawDefinition,
