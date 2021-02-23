@@ -1130,6 +1130,21 @@ const {
 
 ---
 
+## luckyLoserDrawPositionAssignment
+
+Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](/concepts/positionActions)
+
+```js
+tournamentEngine.luckyLoserDrawPositionAssignment({
+  drawId,
+  structureId,
+  drawPosition,
+  luckyLoserParticipantId,
+});
+```
+
+---
+
 ## matchUpActions
 
 Return an array of all validActions for a specific matchUp.

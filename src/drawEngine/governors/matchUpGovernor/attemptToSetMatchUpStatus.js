@@ -39,7 +39,6 @@ export function attemptToSetMatchUpStatus(props) {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    console.log('nonDirecting', { matchUpStatus });
     matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
     addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
