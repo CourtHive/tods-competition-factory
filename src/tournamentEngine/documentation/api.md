@@ -891,8 +891,6 @@ const { participant } = tournamentEngine.getPairedParticipant({
 });
 ```
 
-- @param {string[]} participantIds - ids of the participants
-
 ---
 
 ## getParticipantEventDetails
@@ -1126,7 +1124,7 @@ Returns restricted venue attributes along with information for all associated co
 const {
   venueName,
   venueAbbreviation,
-  courtsInfo, // array of courts and associate attributes
+  courtsInfo, // array of courts and associated attributes
 } = tournamentEngine.getVenueData({ venueId });
 ```
 
@@ -1582,7 +1580,7 @@ tournamentEngine.setTournamentStartDate({ StartDate });
 
 ## tournamentMatchUps
 
-Returns tournament matchUps grouped bye matchUpStatus. These matchUps are returned with _context_.
+Returns tournament matchUps grouped by matchUpStatus. These matchUps are returned with _context_.
 
 ```js
 const {
@@ -1608,7 +1606,7 @@ tournamentEngine.unPublishEvent({ eventId });
 
 ## withdrawParticipantAtDrawPosition
 
-Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment).This method is included in `validActions` for [positionActions](/concepts/positionActions).
+Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](/concepts/positionActions).
 
 ```js
 withdrawParticipantAtDrawPosition({
