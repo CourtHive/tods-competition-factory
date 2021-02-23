@@ -1,18 +1,23 @@
-import { getParticipantScaleItem } from '../../queryGovernor/scaleValue';
+import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScaleItem';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 
 /**
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
  * @param {object} event - will be passed in automatically if tournamentEngine is passed drawId or eventId
  * @param {string} stage - OPTIONAL - filters entries matching stage, if present
+ * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
+ * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
+ * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
  */
 export function getScaledEntries({
   tournamentRecord,
-  scaleAttributes,
   event,
   stage,
+
+  scaleAttributes,
+  scaleSortMethod,
+  sortDescending = false,
 }) {
   const entries = event?.entries || [];
 
@@ -35,14 +40,24 @@ export function getScaledEntries({
     })
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;
-      if (isNaN(scaleValue) || !parseFloat(scaleValue)) return false;
+      // if a custom sort method is not provided, filter out entries with non-float values
+      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue)))
+        return false;
       return scaleValue;
     })
-    .sort(scaleValueSort);
+    .sort(scaleSortMethod || defaultScaleValueSort);
+
+  console.log({ stageEntries, scaledEntries, scaleAttributes });
 
   return { scaledEntries };
-}
 
-function scaleValueSort(a, b) {
-  return parseFloat(a.scaleValue || 9999) - parseFloat(b.scaleValue || 9999);
+  function defaultScaleValueSort(a, b) {
+    return sortDescending
+      ? scaleItemValue(b) - scaleItemValue(a)
+      : scaleItemValue(a) - scaleItemValue(b);
+  }
+
+  function scaleItemValue(scaleItem) {
+    return parseFloat(scaleItem.scaleValue || (sortDescending ? -1 : 1e5));
+  }
 }

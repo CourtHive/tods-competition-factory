@@ -663,16 +663,21 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(
 
 Splits event entries into # of draws. `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
 
+See [Scale Items](/concepts/scaleItems).
+
 ```js
 const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 
 const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
   eventId, // event for which entries will be split
   scaleAttributes, // defines participant sort method prior to split
+  scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
+  sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
   flightsCount: 3, // number of draws to be created
   deleteExisting: true, // optional - remove existing flightProfile
   splitMethod: SPLIT_WATERFALL, // optional - defaults to SPLIT_LEVEL_BASED
@@ -943,11 +948,14 @@ const {
 
 Return a ranking or rating or seeding value for a participant, referenced by participantId.
 
+See [Scale Items](/concepts/scaleItems).
+
 ```js
 const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 const {
   scaleItem: { scaleValue },
@@ -999,6 +1007,23 @@ let { positionAssignments } = getPositionAssignments({
 });
 
 const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
+```
+
+---
+
+## getScaledEntries
+
+See [Scale Items](/concepts/scaleItems).
+
+```js
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId,
+  stage, // optional - filter entries by stage
+
+  scaleAttributes,
+  scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
+  sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
+});
 ```
 
 ---
@@ -1236,11 +1261,14 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 Similar to [getParticipantScaleItem](#getParticipantScaleItem) but takes a `participant` object and doesn't require `tournamentEngine.setState(tournamentRecord)`.
 
+See [Scale Items](/concepts/scaleItems).
+
 ```js
 const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 const {
   scaleItem: { scaleValue },

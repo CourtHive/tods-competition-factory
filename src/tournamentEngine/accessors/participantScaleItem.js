@@ -1,9 +1,11 @@
+import { getAccessorValue } from '../../utilities/getAccessorValue';
 import {
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
   MISSING_PARTICIPANT,
   SCALE_ITEM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
+import { SCALE } from '../../constants/scaleConstants';
 
 export function participantScaleItem({
   participant,
@@ -15,8 +17,8 @@ export function participantScaleItem({
 
   if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
-    const { scaleType, eventType, scaleName } = scaleAttributes;
-    const filterType = ['SCALE', scaleType, eventType, scaleName].join('.');
+    const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
+    const filterType = [SCALE, scaleType, eventType, scaleName].join('.');
     const filteredTimeItems = participant.timeItems
       .filter((timeItem) => timeItem.itemType === filterType)
       .filter((timeItem) => !requireTimeStamp || timeItem.itemDate)
@@ -35,14 +37,26 @@ export function participantScaleItem({
         eventType,
         scaleName,
       ] = timeItem.itemType.split('.');
-      if (itemSubject !== 'SCALE') return { error: INVALID_SCALE_ITEM };
+
+      if (itemSubject !== SCALE) return { error: INVALID_SCALE_ITEM };
+
+      const accessorValue =
+        accessor && getAccessorValue({ element: timeItem.itemValue, accessor });
+      const scaleValue = accessor ? accessorValue.value : timeItem.itemValue;
+
+      console.log({
+        filterType,
+        timeItem,
+        scaleValue,
+        accessor,
+      });
 
       const scaleItem = {
         scaleDate: timeItem.itemDate,
         scaleName,
         scaleType,
         eventType,
-        scaleValue: timeItem.itemValue,
+        scaleValue,
       };
       return { scaleItem };
     } else {
