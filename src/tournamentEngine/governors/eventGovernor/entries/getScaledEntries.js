@@ -47,8 +47,6 @@ export function getScaledEntries({
     })
     .sort(scaleSortMethod || defaultScaleValueSort);
 
-  console.log({ stageEntries, scaledEntries, scaleAttributes });
-
   return { scaledEntries };
 
   function defaultScaleValueSort(a, b) {
