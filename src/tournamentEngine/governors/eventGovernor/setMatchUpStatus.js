@@ -5,6 +5,12 @@ import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_DRAW_ID,
+  MISSING_MATCHUP_ID,
+} from '../../../constants/errorConditionConstants';
+import { makeDeepCopy } from '../../../utilities';
+import { getDevContext } from '../../../global/globalState';
 
 /**
  *
@@ -18,8 +24,12 @@ import { SUCCESS } from '../../../constants/resultConstants';
  *
  */
 export function setMatchUpStatus(props) {
-  let { outcome } = props;
   const { drawDefinition, matchUpId, matchUpTieId, matchUpFormat } = props;
+  if (!drawDefinition) return { error: MISSING_DRAW_ID };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  let { outcome } = props;
+
   let errors = [];
 
   if (matchUpFormat) {
@@ -57,7 +67,9 @@ export function setMatchUpStatus(props) {
 
   return errors && errors.length
     ? { error: errors }
-    : Object.assign({}, SUCCESS, { matchUp });
+    : matchUp && getDevContext()
+    ? Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) })
+    : SUCCESS;
 }
 
 export function bulkMatchUpStatusUpdate(props) {

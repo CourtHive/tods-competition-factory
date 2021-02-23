@@ -14,6 +14,7 @@ import {
 import {
   INVALID_MATCHUP_STATUS,
   MATCHUP_NOT_FOUND,
+  MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
 } from '../../../constants/errorConditionConstants';
 import {
@@ -29,6 +30,8 @@ export function setMatchUpStatus(props) {
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
   Object.assign(props, { mappedMatchUps });
 
@@ -48,7 +51,7 @@ export function setMatchUpStatus(props) {
   });
 
   if (!matchUp) {
-    return { errors: [{ error: MATCHUP_NOT_FOUND }] };
+    return { error: MATCHUP_NOT_FOUND };
   } else {
     const targetData = positionTargets({
       matchUpId,
@@ -127,14 +130,12 @@ export function setMatchUpStatus(props) {
     }
   }
 
-  if (getDevContext()) {
-    const result = {};
-    if (messages.length) Object.assign(result, { messages });
-    return Object.assign(result, SUCCESS, {
-      matchUp: makeDeepCopy(matchUp),
-    });
-  }
-  return SUCCESS;
+  return getDevContext()
+    ? Object.assign({}, SUCCESS, {
+        matchUp: makeDeepCopy(matchUp),
+        messages,
+      })
+    : SUCCESS;
 }
 
 function attemptStatusChange(props) {
