@@ -9,6 +9,7 @@ import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   NO_VALID_ATTRIBUTES,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
@@ -122,6 +123,7 @@ export function getTournamentPenalties({ tournamentRecord }) {
 
 export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!modifications) return { error: INVALID_VALUES, modifications };
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
   const participants = tournamentRecord?.participants || [];
