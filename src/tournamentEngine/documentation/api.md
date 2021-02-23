@@ -668,6 +668,7 @@ const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 
 const { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
@@ -948,6 +949,7 @@ const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 const {
   scaleItem: { scaleValue },
@@ -1241,6 +1243,7 @@ const scaleAttributes = {
   scaleType: RATING,
   eventType: SINGLES,
   scaleName: 'WTN',
+  accessor, // optional - string determining how to access attribute if scaleValue is an object
 };
 const {
   scaleItem: { scaleValue },
