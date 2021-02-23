@@ -73,7 +73,6 @@ export function addPlayoffStructures(props) {
     ? availablePlayoffRoundsRanges
     : playoffRoundsRanges;
 
-  let result;
   const newLinks = [];
   sourceRounds.forEach((roundNumber) => {
     const roundInfo = roundsRanges.find(
@@ -82,7 +81,7 @@ export function addPlayoffStructures(props) {
     const drawSize = roundInfo.finishingPositions.length;
     const finishingPositionOffset =
       Math.min(...roundInfo.finishingPositions) - 1;
-    result = playoff({
+    const { structure: targetStructure } = playoff({
       drawSize,
       stage: PLAY_OFF,
       roundOffset: 0,
@@ -92,12 +91,6 @@ export function addPlayoffStructures(props) {
       playoffStructureNameBase,
       finishingPositionOffset,
     });
-
-    const { structure: targetStructure, childStructures } = result;
-    const structures = [
-      targetStructure,
-      ...(childStructures || []).map((structure) => structure.structure),
-    ];
 
     const link = {
       linkType: LOSER,
@@ -113,8 +106,6 @@ export function addPlayoffStructures(props) {
     };
 
     newLinks.push(link);
-
-    return structures;
   });
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
