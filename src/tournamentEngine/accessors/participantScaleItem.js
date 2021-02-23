@@ -1,3 +1,4 @@
+import { getAccessorValue } from '../../utilities/getAccessorValue';
 import {
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
@@ -15,7 +16,7 @@ export function participantScaleItem({
 
   if (!participant.timeItems) participant.timeItems = [];
   if (participant && Array.isArray(participant.timeItems)) {
-    const { scaleType, eventType, scaleName } = scaleAttributes;
+    const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
     const filterType = ['SCALE', scaleType, eventType, scaleName].join('.');
     const filteredTimeItems = participant.timeItems
       .filter((timeItem) => timeItem.itemType === filterType)
@@ -37,12 +38,16 @@ export function participantScaleItem({
       ] = timeItem.itemType.split('.');
       if (itemSubject !== 'SCALE') return { error: INVALID_SCALE_ITEM };
 
+      const scaleValue = accessor
+        ? getAccessorValue({ element: timeItem.itemValue, accessor })
+        : timeItem.itemValue;
+
       const scaleItem = {
         scaleDate: timeItem.itemDate,
         scaleName,
         scaleType,
         eventType,
-        scaleValue: timeItem.itemValue,
+        scaleValue,
       };
       return { scaleItem };
     } else {
