@@ -43,6 +43,7 @@ import { luckyLoserDrawPositionAssignment } from './drawDefinitions/luckyLoserDr
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
+import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
@@ -77,6 +78,7 @@ const eventGovernor = {
   setEntryPositions,
   addEventEntryPairs,
   removeEventEntries,
+  removeDrawEntries,
   modifyEventEntries,
   modifyEntriesStatus,
   modifySeedAssignment,
