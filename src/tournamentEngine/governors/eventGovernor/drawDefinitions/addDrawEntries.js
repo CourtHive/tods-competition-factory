@@ -9,19 +9,15 @@ import {
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function addDrawEntries({
-  tournamentRecord,
-
+  drawDefinition,
   participantIds,
   entryStatus,
   entryStage,
   drawId,
+  event,
 }) {
-  if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawId) return { error: MISSING_DRAW_ID };
-  const { drawDefinition, event } = getDrawDefinition({
-    tournamentRecord,
-    drawId,
-  });
+  if (!event) return { error: EVENT_NOT_FOUND };
 
   if (drawDefinition) {
     const result = addEntries({
@@ -38,8 +34,11 @@ export function addDrawEntries({
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
+    const enteredParticipantIds = flight.drawEntries.map(
+      ({ participantId }) => participantId
+    );
     participantIds.forEach((participantId) => {
-      if (!flight.drawEntries.includes(participantId)) {
+      if (!enteredParticipantIds.includes(participantId)) {
         flight.drawEntries.push({
           participantId,
           entryStatus,
