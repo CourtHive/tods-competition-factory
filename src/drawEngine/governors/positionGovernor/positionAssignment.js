@@ -81,9 +81,11 @@ export function assignDrawPosition({
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
-  const { filled } = drawPositionFilled(positionAssignment);
+  const { containsParticipant, containsBye } = drawPositionFilled(
+    positionAssignment
+  );
   if (
-    filled?.containsParticipant &&
+    containsParticipant &&
     positionAssignment.participantId !== participantId
   ) {
     const { activeDrawPositions } = structureActiveDrawPositions({
@@ -96,7 +98,7 @@ export function assignDrawPosition({
     }
   }
 
-  if (filled?.containsBye) {
+  if (containsBye) {
     let result = clearDrawPosition({
       drawDefinition,
       drawPosition,
