@@ -6,7 +6,11 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP_STATUS,
   UNRECOGNIZED_MATCHUP_STATUS,
@@ -34,7 +38,6 @@ export function attemptToSetMatchUpStatus(props) {
       }
       matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
       matchUp.matchUpStatusCodes = matchUpStatusCodes;
-      addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
@@ -42,17 +45,26 @@ export function attemptToSetMatchUpStatus(props) {
     if (getDevContext()) console.log('nonDirecting', { matchUpStatus });
     matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
     matchUp.matchUpStatusCodes = matchUpStatusCodes;
-    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
   } else if (matchUpStatus === BYE) {
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
     if (result.error) return result;
   } else {
     if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
+      if (matchUpStatus === DOUBLE_WALKOVER) {
+        matchUp.matchUpStatus = matchUpStatus;
+        matchUp.matchUpStatusCodes = matchUpStatusCodes;
+        if (getDevContext()) {
+          console.log('advance participants which encounter DOUBLE_WALKOVER');
+        }
+      } else {
+        return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
+      }
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   }
+
+  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
 
   return SUCCESS;
 }

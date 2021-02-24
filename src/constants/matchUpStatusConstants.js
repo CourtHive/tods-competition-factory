@@ -16,38 +16,39 @@ export const DEAD_RUBBER = 'DEAD_RUBBER';
 export const directingMatchUpStatuses = [
   BYE,
   COMPLETED,
+  DEFAULTED,
+  DOUBLE_WALKOVER,
   RETIRED,
   WALKOVER,
-  DOUBLE_WALKOVER,
-  DEFAULTED,
 ];
 
 export const nonDirectingMatchUpStatuses = [
+  ABANDONED,
   CANCELLED,
   DEAD_RUBBER,
-  TO_BE_PLAYED,
-  NOT_PLAYED,
-  ABANDONED,
   IN_PROGRESS,
+  INCOMPLETE,
+  NOT_PLAYED,
   SUSPENDED,
+  TO_BE_PLAYED,
   undefined,
 ];
 
 export const activeMatchUpStatuses = [
+  ABANDONED,
   COMPLETED,
-  RETIRED,
-  WALKOVER,
+  DEFAULTED,
   DOUBLE_WALKOVER,
   IN_PROGRESS,
-  ABANDONED,
-  DEFAULTED,
+  RETIRED,
+  WALKOVER,
 ];
 
 export const upcomingMatchUpStatuses = [
-  TO_BE_PLAYED,
-  INCOMPLETE,
   IN_PROGRESS,
+  INCOMPLETE,
   SUSPENDED,
+  TO_BE_PLAYED,
 ];
 
 export const matchUpStatusConstants = {

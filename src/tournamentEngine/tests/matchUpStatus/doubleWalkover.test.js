@@ -1,8 +1,9 @@
-import { CANCELLED } from '../../../constants/matchUpStatusConstants';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-it('supports entering CANCELED matchUpStatus', () => {
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+
+it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -18,7 +19,10 @@ it('supports entering CANCELED matchUpStatus', () => {
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId,
-    outcome: { matchUpStatus: CANCELLED },
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
   });
-  console.log({ result });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
+  expect(matchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 });
