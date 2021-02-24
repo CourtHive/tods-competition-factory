@@ -107,15 +107,6 @@ export function assignDrawPosition({
 
   positionAssignment.participantId = participantId;
 
-  /*
-  positionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === drawPosition) {
-      assignment.participantId = participantId;
-      delete assignment.bye;
-    }
-  });
-  */
-
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({
       drawDefinition,
