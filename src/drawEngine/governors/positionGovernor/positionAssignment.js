@@ -11,6 +11,7 @@ import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
+import { clearDrawPosition } from './positionClear';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -69,19 +70,22 @@ export function assignDrawPosition({
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
-  const positionAssignment = positionAssignments.reduce(
-    (p, c) => (c.drawPosition === drawPosition ? c : p),
-    undefined
+  const positionAssignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
   );
+  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
+
   const participantExists = positionAssignments
     .map((d) => d.participantId)
     .includes(participantId);
-
-  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+
   const { filled } = drawPositionFilled(positionAssignment);
-  if (filled && positionAssignment.participantId !== participantId) {
+  if (
+    filled?.containsParticipant &&
+    positionAssignment.participantId !== participantId
+  ) {
     const { activeDrawPositions } = structureActiveDrawPositions({
       drawDefinition,
       structureId,
@@ -92,12 +96,25 @@ export function assignDrawPosition({
     }
   }
 
+  if (filled?.containsBye) {
+    let result = clearDrawPosition({
+      drawDefinition,
+      drawPosition,
+      structureId,
+    });
+    if (result.error) return result;
+  }
+
+  positionAssignment.participantId = participantId;
+
+  /*
   positionAssignments.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.participantId = participantId;
       delete assignment.bye;
     }
   });
+  */
 
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({

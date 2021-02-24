@@ -138,11 +138,6 @@ export function positionActions({
     drawDefinition,
     stages,
   });
-  /*
-  const assignedParticipantIds = assignedPositions.map(
-    (assignment) => assignment.participantId
-  );
-  */
   const unassignedParticipantIds = stageEntries
     .filter(
       (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
@@ -154,6 +149,7 @@ export function positionActions({
 
   if (
     isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
+    !isActiveDrawPosition &&
     (!positionAssignment || isByePosition)
   ) {
     const { validAssignmentActions } = getValidAssignmentActions({
@@ -161,6 +157,7 @@ export function positionActions({
       structureId,
       drawPosition,
       isByePosition,
+      activeDrawPositions,
       positionAssignments,
       tournamentParticipants,
       possiblyDisablingAction,
@@ -179,7 +176,7 @@ export function positionActions({
   if (positionAssignment) {
     if (
       isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
-      !activeDrawPositions.includes(drawPosition)
+      !isActiveDrawPosition
     ) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
