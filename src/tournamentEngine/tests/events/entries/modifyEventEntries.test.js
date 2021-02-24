@@ -1,8 +1,9 @@
-import { DOUBLES } from '../../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import mocksEngine from '../../../../mocksEngine';
 import { chunkArray, unique } from '../../../../utilities';
 import tournamentEngine from '../../../sync';
+
+import { DOUBLES } from '../../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const participantsProfile = {
