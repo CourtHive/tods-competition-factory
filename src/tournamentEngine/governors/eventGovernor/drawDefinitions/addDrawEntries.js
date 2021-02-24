@@ -1,6 +1,5 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
-import { getDrawDefinition } from '../../../getters/eventGetter';
 
 import {
   EVENT_NOT_FOUND,
