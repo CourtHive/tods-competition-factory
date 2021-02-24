@@ -38,7 +38,7 @@ export function getValidAssignmentActions({
       .map((assignment) => assignment.drawPosition);
   }
 
-  if (unfilledPositions.includes(drawPosition)) {
+  if (unfilledPositions.includes(drawPosition) || isByePosition) {
     const { structure } = findStructure({ drawDefinition, structureId });
     let availableParticipantIds;
     if (unplacedSeedAssignments.length) {
@@ -62,8 +62,6 @@ export function getValidAssignmentActions({
         structure,
       });
       if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
-
-      // 3) lucky losers from linked structures
     }
 
     const validAssignmentActions = [];

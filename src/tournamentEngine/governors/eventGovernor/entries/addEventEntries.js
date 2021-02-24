@@ -1,3 +1,5 @@
+import { removeEventEntries } from './removeEventEntries';
+
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import {
@@ -12,7 +14,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { removeEventEntries } from './removeEventEntries';
+import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
 
 /**
  *
@@ -27,6 +29,7 @@ export function addEventEntries(props) {
   const {
     tournamentRecord,
     drawDefinition,
+    drawId,
     event,
 
     participantIds = [],
@@ -82,16 +85,17 @@ export function addEventEntries(props) {
         entryStatus,
         entryStage,
       });
-      if (drawDefinition) {
-        // TODO: this is a gray area until we support multiple draws in an event
-        drawDefinition.entries.push({
-          participantId,
-          entryStatus,
-          entryStage,
-        });
-      }
     }
   });
+  if (drawId) {
+    addDrawEntries({
+      drawId,
+      drawDefinition,
+      participantIds: validParticipantIds,
+      entryStatus,
+      entryStage,
+    });
+  }
 
   // now remove any unpaired participantIds which exist as part of added paired participants
   if (event.eventType === DOUBLES) {

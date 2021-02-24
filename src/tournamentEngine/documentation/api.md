@@ -476,14 +476,6 @@ tournamentEngine.deleteDrawDefinitions({
 
 ---
 
-## removeEventEntries
-
-```js
-tournamentEngine.removeEventEntries({ eventId, participantIds });
-```
-
----
-
 ## deleteFlightAndFlightDraw
 
 Removes flight from event's flightProfile as well as associated drawDefinition (if generated).
@@ -1364,6 +1356,26 @@ removeDrawPositionAssignment({
   entryStatus, // optional - change the entryStatus of the removed participant
   destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
 });
+```
+
+---
+
+## removeDrawEntries
+
+Removes participantIds from `drawDefinition.entries` (if generated) as well as any relevent `flightProfile.flights`.
+
+```js
+tournamentEngine.removeDrawEntries({ drawId, eventId, participantIds });
+```
+
+---
+
+## removeEventEntries
+
+Removes `participantIds` from `event.entries` with integrity checks.
+
+```js
+tournamentEngine.removeEventEntries({ eventId, participantIds });
 ```
 
 ---

@@ -1,10 +1,12 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { getDrawDefinition } from '../../../getters/eventGetter';
 
 import {
-  DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
+  MISSING_DRAW_ID,
 } from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function addDrawEntries({
   tournamentRecord,
@@ -14,17 +16,38 @@ export function addDrawEntries({
   entryStage,
   drawId,
 }) {
+  if (!event) return { error: EVENT_NOT_FOUND };
+  if (!drawId) return { error: MISSING_DRAW_ID };
   const { drawDefinition, event } = getDrawDefinition({
     tournamentRecord,
     drawId,
   });
-  if (!event) return { error: EVENT_NOT_FOUND };
-  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-  return addEntries({
-    drawDefinition,
-    participantIds,
-    entryStatus,
-    stage: entryStage,
-  });
+  if (drawDefinition) {
+    const result = addEntries({
+      drawDefinition,
+      participantIds,
+      entryStatus,
+      stage: entryStage,
+    });
+    if (result.error) return result;
+  }
+
+  const { flightProfile } = getFlightProfile({ event });
+  const flight = flightProfile?.flights.find(
+    (flight) => flight.drawId === drawId
+  );
+  if (flight?.drawEntries) {
+    participantIds.forEach((participantId) => {
+      if (!flight.drawEntries.includes(participantId)) {
+        flight.drawEntries.push({
+          participantId,
+          entryStatus,
+          entryStage,
+        });
+      }
+    });
+  }
+
+  return SUCCESS;
 }
