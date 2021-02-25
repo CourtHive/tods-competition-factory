@@ -46,6 +46,7 @@ export function generateCurtisConsolation({
       roundOffset,
       stageSequence,
       structureId: uuids?.pop(),
+      uuids,
     });
 
     drawDefinition.structures.push(consolationStructure);
@@ -112,6 +113,7 @@ function consolationFeedStructure({
   structureId,
   roundOffset = 0,
   stageSequence = 1,
+  uuids,
 }) {
   const consolationDrawPositions = drawSize / (2 * Math.pow(2, roundOffset));
 
@@ -123,6 +125,7 @@ function consolationFeedStructure({
     baseDrawSize: consolationDrawPositions,
     isConsolation: true,
     finishingPositionOffset: consolationDrawPositions,
+    uuids,
   });
 
   const structureName = `${CONSOLATION} ${index + 1}`;

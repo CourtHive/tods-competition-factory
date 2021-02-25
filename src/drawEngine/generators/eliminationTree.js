@@ -14,6 +14,7 @@ export function treeMatchUps({
   roundLimit,
   qualifyingRound,
   finishingPositionOffset,
+  uuids,
 }) {
   if (isNaN(drawSize) || !powerOf2(drawSize) || drawSize < 2) {
     return { matchUps: [], roundsCount: 0 };
@@ -29,7 +30,12 @@ export function treeMatchUps({
   let matchUps = [];
   let roundNumber = 1;
 
-  ({ roundNodes, matchUps } = buildRound({ roundNumber, nodes, matchUps }));
+  ({ roundNodes, matchUps } = buildRound({
+    roundNumber,
+    nodes,
+    matchUps,
+    uuids,
+  }));
   roundNumber++;
 
   roundLimit = roundLimit || qualifyingRound;
@@ -40,6 +46,7 @@ export function treeMatchUps({
       roundNumber,
       nodes: roundNodes,
       matchUps,
+      uuids,
     }));
     roundNumber++;
   }
@@ -108,7 +115,7 @@ function addFinishingRounds({
   return matchUps;
 }
 
-function buildRound({ roundNumber, nodes, matchUps }) {
+function buildRound({ roundNumber, nodes, matchUps, uuids }) {
   let index = 0;
   const roundNodes = [];
   let roundPosition = 1;
@@ -124,7 +131,7 @@ function buildRound({ roundNumber, nodes, matchUps }) {
     const node = {
       roundPosition,
       children: [child1, child2],
-      matchUpId: UUID(),
+      matchUpId: uuids?.pop() || UUID(),
     };
     roundNodes.push(node);
     matchUps.push({
@@ -166,6 +173,7 @@ function roundMatchCounts({ drawSize }) {
 }
 
 export function feedInMatchUps({
+  uuids,
   drawSize,
   feedRounds = 0,
   skipRounds = 0,
@@ -267,6 +275,7 @@ export function feedInMatchUps({
       roundNumber,
       matchUps,
       nodes,
+      uuids,
     }));
     roundNumber++;
     if (feedRoundsProfile.includes(baseDrawRound)) {
@@ -286,6 +295,7 @@ export function feedInMatchUps({
           roundIteration, // meaningless; avoids eslint value never used
           roundNumber,
           matchUps,
+          uuids,
           fed,
         }));
         roundNumber++;
@@ -325,7 +335,14 @@ export function feedInMatchUps({
   }
 }
 
-function buildFeedRound({ nodes, drawPosition, fed, matchUps, roundNumber }) {
+function buildFeedRound({
+  uuids,
+  nodes,
+  drawPosition,
+  fed,
+  matchUps,
+  roundNumber,
+}) {
   const feedRoundMatchUpsCount = nodes.length;
   const initialGroupDrawPosition = drawPosition
     ? drawPosition - feedRoundMatchUpsCount
@@ -351,7 +368,7 @@ function buildFeedRound({ nodes, drawPosition, fed, matchUps, roundNumber }) {
     position.roundNumber = roundNumber - 1;
     matchUps.push({
       roundNumber,
-      matchUpId: UUID(),
+      matchUpId: uuids?.pop() || UUID(),
       roundPosition: position.roundPosition,
       drawPositions: [undefined, feedDrawPosition],
     });
