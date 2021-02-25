@@ -45,6 +45,7 @@ export function addPlayoffStructures(props) {
   if (sourceRoundsError) return { error: sourceRoundsError };
 
   const {
+    uuids,
     roundNumbers,
     drawDefinition,
     playoffPositions,
@@ -82,6 +83,7 @@ export function addPlayoffStructures(props) {
     const finishingPositionOffset =
       Math.min(...roundInfo.finishingPositions) - 1;
     const { structure: targetStructure } = playoff({
+      uuids,
       drawSize,
       stage: PLAY_OFF,
       roundOffset: 0,

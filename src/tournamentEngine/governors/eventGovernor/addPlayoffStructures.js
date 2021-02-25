@@ -11,6 +11,7 @@ export function addPlayoffStructures({
   playoffPositions,
   roundNumbers,
   structureId,
+  uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
@@ -20,6 +21,7 @@ export function addPlayoffStructures({
     roundNumbers,
     playoffPositions,
     playoffStructureNameBase,
+    uuids,
   });
 
   const playoffDetails = {
