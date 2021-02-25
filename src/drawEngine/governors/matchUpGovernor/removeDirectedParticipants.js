@@ -9,9 +9,13 @@ import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 
+// removeDirectedParticipants needs to handle DOUBLE_WALKOVERs
 export function removeDirectedParticipants(props) {
   const {
     drawDefinition,
@@ -22,6 +26,10 @@ export function removeDirectedParticipants(props) {
     mappedMatchUps,
     targetData,
   } = props;
+
+  if (matchUpStatus === DOUBLE_WALKOVER) {
+    console.log('DOUBLE_WALKOVER', targetData);
+  }
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {
