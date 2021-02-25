@@ -20,6 +20,7 @@ import {
 import {
   BYE,
   COMPLETED,
+  DOUBLE_WALKOVER,
   matchUpStatusConstants,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -50,84 +51,83 @@ export function setMatchUpStatus(props) {
     matchUpId,
   });
 
-  if (!matchUp) {
-    return { error: MATCHUP_NOT_FOUND };
-  } else {
-    const targetData = positionTargets({
-      matchUpId,
-      structure,
-      drawDefinition,
-      mappedMatchUps,
-      inContextDrawMatchUps,
-    });
-    Object.assign(props, { matchUp, structure, targetData });
-    const {
-      targetMatchUps: { loserMatchUp, winnerMatchUp },
-    } = targetData;
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-    // if neither loserMatchUp or winnerMatchUp have winningSide
-    // => score matchUp and advance participants along links
-    const inContextMatchUp = inContextDrawMatchUps.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
+  if (matchUp?.matchUpStatus === DOUBLE_WALKOVER) {
+    console.log('dw');
+  }
+
+  const targetData = positionTargets({
+    matchUpId,
+    structure,
+    drawDefinition,
+    mappedMatchUps,
+    inContextDrawMatchUps,
+  });
+  Object.assign(props, { matchUp, structure, targetData });
+  const {
+    targetMatchUps: { loserMatchUp, winnerMatchUp },
+  } = targetData;
+
+  // if neither loserMatchUp or winnerMatchUp have winningSide
+  // => score matchUp and advance participants along links
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const matchUpParticipantIds =
+    inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
+  const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
+  const loserMatchUpParticipantIds =
+    loserMatchUp?.sides?.map(({ participantId }) => participantId) || [];
+  const loserMatchUpParticipantIntersection = !!intersection(
+    matchUpParticipantIds,
+    loserMatchUpParticipantIds
+  ).length;
+  const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
+  const winnerMatchUpParticipantIds =
+    winnerMatchUp?.sides?.map(({ participantId }) => participantId) || [];
+  const winnerMatchUpParticipantIntersection = !!intersection(
+    matchUpParticipantIds,
+    winnerMatchUpParticipantIds
+  ).length;
+
+  const activeDownstream =
+    (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
+    (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
+
+  // if either lowerMatchUp or winnerMatchUp have winningSide
+  // => see if either matchUp has active players
+  // => if active players are present then outcome cannot change
+  // => if outcome is NOT different, apply new result information
+
+  if (!activeDownstream) {
+    // not activeDownstream also handles changing the winner of a finalRound
+    // as long as the matchUp is not the finalRound of a qualifying structure
+    const { errors: noDependenciesErrors, message } = noDownstreamDependencies(
+      props
     );
-    const matchUpParticipantIds =
-      inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-    const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
-    const loserMatchUpParticipantIds =
-      loserMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-    const loserMatchUpParticipantIntersection = !!intersection(
-      matchUpParticipantIds,
-      loserMatchUpParticipantIds
-    ).length;
-    const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
-    const winnerMatchUpParticipantIds =
-      winnerMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-    const winnerMatchUpParticipantIntersection = !!intersection(
-      matchUpParticipantIds,
-      winnerMatchUpParticipantIds
-    ).length;
-
-    const activeDownstream =
-      (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
-      (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
-
-    // if either lowerMatchUp or winnerMatchUp have winningSide
-    // => see if either matchUp has active players
-    // => if active players are present then outcome cannot change
-    // => if outcome is NOT different, apply new result information
-
-    if (!activeDownstream) {
-      // not activeDownstream also handles changing the winner of a finalRound
-      // as long as the matchUp is not the finalRound of a qualifying structure
-      const {
-        errors: noDependenciesErrors,
-        message,
-      } = noDownstreamDependencies(props);
-      if (message) messages.push(message);
-      if (noDependenciesErrors)
-        return { error: { errors: noDependenciesErrors } };
-    } else if (winningSide) {
-      const {
-        errors: winnerWithDependencyErrors,
-      } = winningSideWithDownstreamDependencies(props);
-      if (winnerWithDependencyErrors)
-        return { error: { errors: winnerWithDependencyErrors } };
-    } else if (matchUpStatus) {
-      const { errors: statusChangeErrors, message } = attemptStatusChange(
-        props
-      );
-      if (message) messages.push(message);
-      if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
-    } else {
-      if (getDevContext()) {
-        console.log('no valid actions', {
-          props,
-          loserMatchUpParticipantIds,
-          winnerMatchUpParticipantIds,
-        });
-      }
-      return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
+    if (message) messages.push(message);
+    if (noDependenciesErrors)
+      return { error: { errors: noDependenciesErrors } };
+  } else if (winningSide) {
+    const {
+      errors: winnerWithDependencyErrors,
+    } = winningSideWithDownstreamDependencies(props);
+    if (winnerWithDependencyErrors)
+      return { error: { errors: winnerWithDependencyErrors } };
+  } else if (matchUpStatus) {
+    const { errors: statusChangeErrors, message } = attemptStatusChange(props);
+    if (message) messages.push(message);
+    if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
+  } else {
+    if (getDevContext()) {
+      console.log('no valid actions', {
+        props,
+        loserMatchUpParticipantIds,
+        winnerMatchUpParticipantIds,
+      });
     }
+    return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
   }
 
   return getDevContext()
