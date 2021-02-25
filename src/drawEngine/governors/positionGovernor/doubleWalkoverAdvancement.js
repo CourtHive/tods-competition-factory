@@ -107,20 +107,35 @@ function conditionallyAdvanceDrawPosition({
       drawDefinition,
       inContextDrawMatchUps,
     });
-    const { targetMatchUps } = targetData;
+    const { targetMatchUps, targetLinks } = targetData;
+    const {
+      winnerMatchUp: nextWinnerMatchUp,
+      loserMatchUp: nextLoserMatchUp,
+      loserTargetDrawPosition: nextLoserTargetDrawPosition,
+    } = targetMatchUps;
 
-    const { winnerMatchUp: nextWinnerMatchUp } = targetMatchUps;
-
-    console.log(targetData);
     // TODO: assignMatchUpDrawPosition needs to recognize when a matchUp that is being assigned a drawPosition
     // will not receive another because other sourceMatchUp is a DOUBLE_WALKOVER
-    const result = assignMatchUpDrawPosition({
-      drawDefinition,
-      matchUpId: nextWinnerMatchUp.matchUpId,
-      drawPosition: drawPositionToAdvance,
-    });
-    console.log({ result });
-    if (result.error) console.log(result.error);
+    if (nextWinnerMatchUp) {
+      const result = assignMatchUpDrawPosition({
+        drawDefinition,
+        matchUpId: nextWinnerMatchUp.matchUpId,
+        drawPosition: drawPositionToAdvance,
+      });
+      if (result.error) console.log(result.error);
+    }
+
+    if (nextLoserMatchUp) {
+      const { loserTargetLink } = targetLinks;
+      const result = advanceByeToLoserMatchUp({
+        drawDefinition,
+        loserMatchUp: nextLoserMatchUp,
+        loserTargetLink,
+        loserTargetDrawPosition: nextLoserTargetDrawPosition,
+        mappedMatchUps,
+      });
+      if (result.error) return result;
+    }
   }
 
   return SUCCESS;

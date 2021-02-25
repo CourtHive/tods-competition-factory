@@ -51,8 +51,8 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   let { positionAssignments } = getPositionAssignments({
     structure: structures[1],
   });
-  const targetPositionAssignment = positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 4
-  );
-  expect(targetPositionAssignment.bye).toEqual(true);
+  const consolationByeDrawPositions = positionAssignments
+    .filter(({ bye }) => bye)
+    .map(({ drawPosition }) => drawPosition);
+  expect(consolationByeDrawPositions).toEqual([1, 4]);
 });
