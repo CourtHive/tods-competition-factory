@@ -1,20 +1,35 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
+  // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
       drawSize: 8,
+      drawType: FIRST_MATCH_LOSER_CONSOLATION,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+      ],
     },
   ];
   const {
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
+  // get the first upcoming matchUp, which will be { roundPosition: 2 }
   const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
-  const matchUpId = upcomingMatchUps[0].matchUpId;
+  const [matchUp] = upcomingMatchUps;
+  const { matchUpId, roundPosition } = matchUp;
+  expect(roundPosition).toEqual(2);
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
@@ -23,6 +38,21 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
-  expect(matchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  const { matchUp: updatedMatchUp } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+  });
+  expect(updatedMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+
+  const {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { positionAssignments } = getPositionAssignments({
+    structure: structures[1],
+  });
+  const targetPositionAssignment = positionAssignments.find(
+    ({ drawPosition }) => drawPosition === 4
+  );
+  expect(targetPositionAssignment.bye).toEqual(true);
 });
