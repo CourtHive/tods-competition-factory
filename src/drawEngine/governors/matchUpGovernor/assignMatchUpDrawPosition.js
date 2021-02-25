@@ -1,8 +1,12 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  getMappedStructureMatchUps,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { pushGlobalLog } from '../../../global/globalLog';
 import { addNotice } from '../../../global/globalState';
 import { numericSort } from '../../../utilities';
 
@@ -13,7 +17,6 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { pushGlobalLog } from '../../../global/globalLog';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -87,18 +90,18 @@ export function assignMatchUpDrawPosition({
     });
   }
 
-  if (positionAssigned && isByeMatchUp) {
-    const targetData = positionTargets({
-      matchUpId,
-      structure,
-      drawDefinition,
-      mappedMatchUps,
-      inContextDrawMatchUps,
-    });
-    const {
-      targetMatchUps: { winnerMatchUp },
-    } = targetData;
+  const targetData = positionTargets({
+    matchUpId,
+    structure,
+    drawDefinition,
+    mappedMatchUps,
+    inContextDrawMatchUps,
+  });
+  const {
+    targetMatchUps: { winnerMatchUp },
+  } = targetData;
 
+  if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
@@ -115,6 +118,32 @@ export function assignMatchUpDrawPosition({
             'winnerMatchUp in different structure... participant is in different targetDrawPosition'
           );
         }
+      }
+    }
+  } else {
+    const previousRound = matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
+    if (previousRound && winnerMatchUp) {
+      const structureMatchUps = getMappedStructureMatchUps({
+        mappedMatchUps,
+        structureId: structure.structureId,
+      });
+      const sourceMatchUp = structureMatchUps.find(({ drawPositions }) =>
+        drawPositions.includes(drawPosition)
+      );
+      const sourceRoundPosition = sourceMatchUp?.roundPosition;
+      const offset = sourceRoundPosition % 2 ? 1 : -1;
+      const pairedRoundPosition = sourceRoundPosition + offset;
+      const pairedMatchUp = structureMatchUps.find(
+        ({ roundPosition }) => roundPosition === pairedRoundPosition
+      );
+      if (pairedMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
+        const result = assignMatchUpDrawPosition({
+          drawDefinition,
+          drawPosition,
+          matchUpId: winnerMatchUp.matchUpId,
+          iterative: 'brightred',
+        });
+        if (result.error) return result;
       }
     }
   }

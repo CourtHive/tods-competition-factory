@@ -13,6 +13,7 @@ import {
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function doubleWalkoverAdvancement({
   drawDefinition,
@@ -23,6 +24,11 @@ export function doubleWalkoverAdvancement({
 }) {
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
+
+  if (structure.structureType === CONTAINER) {
+    console.log('Round Robin Double Walkover!');
+    return SUCCESS;
+  }
 
   const {
     loserMatchUp,
@@ -110,8 +116,6 @@ function conditionallyAdvanceDrawPosition({
   } = targetMatchUps;
 
   if (nextWinnerMatchUp && drawPositionToAdvance) {
-    // TODO: assignMatchUpDrawPosition needs to recognize when a matchUp that is being assigned a drawPosition
-    // will not receive another because other sourceMatchUp is a DOUBLE_WALKOVER
     const result = assignMatchUpDrawPosition({
       drawDefinition,
       matchUpId: nextWinnerMatchUp.matchUpId,
