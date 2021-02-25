@@ -5,6 +5,7 @@ import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { scoreHasValue } from './scoreHasValue';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -15,15 +16,15 @@ export function noDownstreamDependencies(props) {
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
     if (winningSideErrors?.length) return { errors: winningSideErrors };
-  } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
-    const { error } = attemptToSetMatchUpStatus(props);
-    if (error) return { errors: [error] };
-  } else if (!winningSide && score?.sets?.length) {
+  } else if (!winningSide && scoreHasValue({ score })) {
     const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
       props
     );
     if (incompleteScoreErrors) return incompleteScoreErrors;
-  } else if (!winningSide && matchUp.winningSide && !score?.sets?.length) {
+  } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
+    const { error } = attemptToSetMatchUpStatus(props);
+    if (error) return { errors: [error] };
+  } else if (!winningSide && matchUp.winningSide && !scoreHasValue({ score })) {
     const { structure, drawDefinition } = props;
     checkConnectedStructures({ drawDefinition, structure, matchUp });
 
