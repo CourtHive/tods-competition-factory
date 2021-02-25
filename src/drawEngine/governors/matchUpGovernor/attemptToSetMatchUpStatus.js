@@ -1,6 +1,7 @@
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { addNotice } from '../../../global/globalState';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -52,9 +53,9 @@ export function attemptToSetMatchUpStatus(props) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
         matchUp.matchUpStatus = matchUpStatus;
         matchUp.matchUpStatusCodes = matchUpStatusCodes;
-        if (getDevContext()) {
-          console.log('advance participants which encounter DOUBLE_WALKOVER');
-        }
+        delete matchUp.score;
+
+        doubleWalkoverAdvancement(props);
       } else {
         return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
       }
