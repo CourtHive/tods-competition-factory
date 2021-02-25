@@ -55,7 +55,7 @@ it('can set every valid matchUpStatus', () => {
   });
   expect(result.completedMatchUps.length).toEqual(2);
   expect(result.abandonedMatchUps.length).toEqual(1);
-  expect(result.upcomingMatchUps.length).toEqual(4);
-  expect(result.pendingMatchUps.length).toEqual(7);
+  expect(result.upcomingMatchUps.length).toEqual(5);
+  expect(result.pendingMatchUps.length).toEqual(6);
   expect(result.byeMatchUps.length).toEqual(1);
 });

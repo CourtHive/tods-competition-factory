@@ -56,8 +56,10 @@ export function getStructureMatchUps({
   matchUps
     .filter((matchUp) => !matchUp.collectionId) // filter out collection matchUps
     .forEach((matchUp) => {
-      if (matchUp.matchUpStatus === ABANDONED)
-        return abandonedMatchUps.push(matchUp);
+      if (matchUp.matchUpStatus === ABANDONED) {
+        abandonedMatchUps.push(matchUp);
+        return;
+      }
 
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
