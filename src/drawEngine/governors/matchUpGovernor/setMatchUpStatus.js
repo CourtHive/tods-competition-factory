@@ -20,7 +20,6 @@ import {
 import {
   BYE,
   COMPLETED,
-  DOUBLE_WALKOVER,
   matchUpStatusConstants,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -36,13 +35,6 @@ export function setMatchUpStatus(props) {
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
   Object.assign(props, { mappedMatchUps });
 
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    mappedMatchUps,
-    includeByeMatchUps: true,
-  });
-
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
   const { matchUp, structure } = findMatchUp({
@@ -53,9 +45,14 @@ export function setMatchUpStatus(props) {
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  if (matchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-    console.log('dw');
-  }
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    mappedMatchUps,
+    includeByeMatchUps: true,
+  });
+
+  Object.assign(props, { mappedMatchUps, inContextDrawMatchUps });
 
   const targetData = positionTargets({
     matchUpId,
@@ -65,6 +62,7 @@ export function setMatchUpStatus(props) {
     inContextDrawMatchUps,
   });
   Object.assign(props, { matchUp, structure, targetData });
+
   const {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
   } = targetData;

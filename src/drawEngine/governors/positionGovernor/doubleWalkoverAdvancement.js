@@ -86,10 +86,6 @@ function conditionallyAdvanceDrawPosition({
     (f) => f
   );
   if (intersection(sourceDrawPositions, targetDrawPositions).length) {
-    console.log('source drawPosition needs to be unadvanced', {
-      sourceDrawPositions,
-      targetDrawPositions,
-    });
     targetDrawPositions = targetDrawPositions.filter(
       (drawPosition) => !sourceDrawPositions.includes(drawPosition)
     );
@@ -100,42 +96,40 @@ function conditionallyAdvanceDrawPosition({
   }
   const drawPositionToAdvance = targetDrawPositions[0];
 
-  if (drawPositionToAdvance) {
-    const targetData = positionTargets({
-      matchUpId: winnerMatchUp.matchUpId,
-      structure,
-      drawDefinition,
-      inContextDrawMatchUps,
-    });
-    const { targetMatchUps, targetLinks } = targetData;
-    const {
-      winnerMatchUp: nextWinnerMatchUp,
-      loserMatchUp: nextLoserMatchUp,
-      loserTargetDrawPosition: nextLoserTargetDrawPosition,
-    } = targetMatchUps;
+  const targetData = positionTargets({
+    matchUpId: winnerMatchUp.matchUpId,
+    structure,
+    drawDefinition,
+    inContextDrawMatchUps,
+  });
+  const { targetMatchUps, targetLinks } = targetData;
+  const {
+    winnerMatchUp: nextWinnerMatchUp,
+    loserMatchUp: nextLoserMatchUp,
+    loserTargetDrawPosition: nextLoserTargetDrawPosition,
+  } = targetMatchUps;
 
+  if (nextWinnerMatchUp && drawPositionToAdvance) {
     // TODO: assignMatchUpDrawPosition needs to recognize when a matchUp that is being assigned a drawPosition
     // will not receive another because other sourceMatchUp is a DOUBLE_WALKOVER
-    if (nextWinnerMatchUp) {
-      const result = assignMatchUpDrawPosition({
-        drawDefinition,
-        matchUpId: nextWinnerMatchUp.matchUpId,
-        drawPosition: drawPositionToAdvance,
-      });
-      if (result.error) console.log(result.error);
-    }
+    const result = assignMatchUpDrawPosition({
+      drawDefinition,
+      matchUpId: nextWinnerMatchUp.matchUpId,
+      drawPosition: drawPositionToAdvance,
+    });
+    if (result.error) console.log(result.error);
+  }
 
-    if (nextLoserMatchUp) {
-      const { loserTargetLink } = targetLinks;
-      const result = advanceByeToLoserMatchUp({
-        drawDefinition,
-        loserMatchUp: nextLoserMatchUp,
-        loserTargetLink,
-        loserTargetDrawPosition: nextLoserTargetDrawPosition,
-        mappedMatchUps,
-      });
-      if (result.error) return result;
-    }
+  if (nextLoserMatchUp) {
+    const { loserTargetLink } = targetLinks;
+    const result = advanceByeToLoserMatchUp({
+      drawDefinition,
+      loserMatchUp: nextLoserMatchUp,
+      loserTargetLink,
+      loserTargetDrawPosition: nextLoserTargetDrawPosition,
+      mappedMatchUps,
+    });
+    if (result.error) return result;
   }
 
   return SUCCESS;

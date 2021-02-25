@@ -3,15 +3,27 @@ import { attemptToSetIncompleteScore } from './attemptToSetIncompleteScore';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
+import { removeDoubleWalkover } from './removeDoubleWalkover';
 import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import {
+  DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
+} from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
   const { matchUp, matchUpStatus, score, winningSide } = props;
+
+  const doubleWalkoverCleanup =
+    matchUp?.matchUpStatus === DOUBLE_WALKOVER &&
+    matchUpStatus !== DOUBLE_WALKOVER;
+  if (doubleWalkoverCleanup) {
+    const result = removeDoubleWalkover(props);
+    if (result.error) return result;
+  }
 
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
