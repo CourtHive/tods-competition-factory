@@ -1,5 +1,6 @@
-import { RETIRED } from '../../../../constants/matchUpStatusConstants';
 import { generateScoreString } from '../generateScoreString';
+
+import { RETIRED } from '../../../../constants/matchUpStatusConstants';
 
 test('can generate matchUp tiebreak string scores', () => {
   const sets = [

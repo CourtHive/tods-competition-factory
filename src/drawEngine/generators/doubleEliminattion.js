@@ -38,6 +38,7 @@ export function generateDoubleElimination({
     isConsolation: true,
     drawSize: drawSize - 1,
     finishingPositionOffset: consolationDrawPositions,
+    uuids,
   });
 
   const consolationStructure = structureTemplate({

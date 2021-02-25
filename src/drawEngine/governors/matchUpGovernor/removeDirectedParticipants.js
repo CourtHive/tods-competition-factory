@@ -137,7 +137,7 @@ export function removeDirectedParticipants(props) {
   return SUCCESS;
 }
 
-function removeDirectedWinner({
+export function removeDirectedWinner({
   winnerMatchUp,
   mappedMatchUps,
   drawDefinition,
@@ -217,7 +217,7 @@ function removeDirectedLoser({
   return { error };
 }
 
-function removeDirectedBye({
+export function removeDirectedBye({
   targetLink,
   drawPosition,
   drawDefinition,

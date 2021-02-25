@@ -15,6 +15,7 @@ export function getAllDrawMatchUps(props) {
   Object.assign(props, { requireParticipants: false });
 
   const {
+    abandonedMatchUps,
     completedMatchUps,
     upcomingMatchUps,
     pendingMatchUps,
@@ -22,6 +23,7 @@ export function getAllDrawMatchUps(props) {
     mappedMatchUps,
   } = getDrawMatchUps(props);
   const matchUps = [].concat(
+    ...abandonedMatchUps,
     ...completedMatchUps,
     ...upcomingMatchUps,
     ...pendingMatchUps,

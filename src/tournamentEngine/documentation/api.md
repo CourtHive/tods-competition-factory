@@ -82,6 +82,7 @@ Bulk add an array of **participantIds** to a specific draw **stage** with a spec
 ```js
 tournamentEngine.addDrawEntries({
   drawId,
+  eventId,
   participantIds,
   stage: MAIN, // optional
   entryStatus: ALTERNATE, // optional

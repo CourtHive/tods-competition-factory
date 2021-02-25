@@ -154,8 +154,8 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: mainStructureId,
-    expectedRoundPending: [0, 7],
-    expectedRoundUpcoming: [14, 1],
+    expectedRoundPending: [0, 8],
+    expectedRoundUpcoming: [14, 0],
     expectedRoundCompleted: [0, 0],
   });
 

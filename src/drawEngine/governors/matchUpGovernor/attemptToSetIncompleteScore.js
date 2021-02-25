@@ -5,12 +5,12 @@ import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetIncompleteScore(props) {
-  const { drawDefinition, matchUp, score } = props;
+  const { drawDefinition, matchUp, matchUpStatus, score } = props;
 
   modifyMatchUpScore({
     drawDefinition,
     matchUp,
-    matchUpStatus: INCOMPLETE,
+    matchUpStatus: matchUpStatus || INCOMPLETE,
     matchUpStatusCodes: [],
     score,
   });

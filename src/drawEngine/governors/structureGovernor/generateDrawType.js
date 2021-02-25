@@ -139,7 +139,7 @@ export function generateDrawType(props = {}) {
     [PLAY_OFF]: () => playoff(props),
 
     [FEED_IN]: () => {
-      const { matchUps } = feedInMatchUps({ drawSize });
+      const { matchUps } = feedInMatchUps({ drawSize, uuids });
 
       const structure = structureTemplate({
         structureName: structureName || stage,
