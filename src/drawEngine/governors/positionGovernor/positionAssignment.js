@@ -8,7 +8,6 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
