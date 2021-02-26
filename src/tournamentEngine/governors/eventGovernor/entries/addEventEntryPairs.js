@@ -1,6 +1,7 @@
 import { intersection } from '../../../../utilities/arrays';
 import { addParticipants } from '../../participantGovernor/addParticipants';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
+import { addNotice } from '../../../../global/globalState';
 import { addEventEntries } from './addEventEntries';
 
 import {
@@ -112,6 +113,10 @@ export function addEventEntryPairs({
     tournamentRecord,
     participantIds: pairParticipantIds,
   });
+
+  if (newParticipants.length) {
+    addNotice('newPairParticipants', { participants: newParticipants });
+  }
 
   return Object.assign({}, result, { message });
 }
