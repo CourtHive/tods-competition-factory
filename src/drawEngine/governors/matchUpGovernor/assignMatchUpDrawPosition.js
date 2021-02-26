@@ -123,6 +123,7 @@ export function assignMatchUpDrawPosition({
   } else {
     const previousRound = matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
     if (previousRound && winnerMatchUp) {
+      // TODO: recognize when paired position has no matchUpStatus but is downstream from multiple DOUBLE_WALKOVERS
       const structureMatchUps = getMappedStructureMatchUps({
         mappedMatchUps,
         structureId: structure.structureId,
