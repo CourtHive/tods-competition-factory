@@ -22,7 +22,11 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
     }))
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions);
-  return { orderedPairs, matchUps };
+
+  const filteredOrderedPairs = orderedPairs.map((pair) =>
+    pair.filter((f) => f)
+  );
+  return { filteredOrderedPairs, orderedPairs, matchUps };
 }
 
 export function getContextMatchUp({
