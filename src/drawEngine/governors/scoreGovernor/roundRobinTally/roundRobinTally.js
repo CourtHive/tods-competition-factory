@@ -4,7 +4,10 @@ import { determineTeamOrder } from './determineOrder';
 import { getBaseCounts } from './getBaseCounts';
 
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../../constants/matchUpStatusConstants';
 
 export function tallyParticipantResults({
   policyDefinition,
@@ -22,15 +25,21 @@ export function tallyParticipantResults({
   const relevantMatchUps = matchUps.filter(
     (matchUp) => matchUp.matchUpStatus !== BYE
   );
+
+  const matchUpComplete = (matchUp) =>
+    completedMatchUpStatuses.includes(matchUp?.matchUpStatus) ||
+    matchUp?.winningSide;
+
+  const completedMatchUps = matchUps.filter(matchUpComplete);
+
   const bracketComplete =
-    relevantMatchUps.filter((m) => m.winningSide !== undefined).length ===
-    relevantMatchUps.length;
+    relevantMatchUps.filter(matchUpComplete).length === relevantMatchUps.length;
   if (!bracketComplete) perPlayer = 0;
 
   const tallyPolicy = policyDefinition?.POLICY_TYPE_ROUND_ROBIN_TALLY;
 
   const { participantResults, disqualified } = getBaseCounts({
-    matchUps: relevantMatchUps,
+    matchUps: completedMatchUps,
     matchUpFormat,
     tallyPolicy,
   });

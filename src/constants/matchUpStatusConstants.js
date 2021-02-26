@@ -34,6 +34,17 @@ export const nonDirectingMatchUpStatuses = [
   undefined,
 ];
 
+export const completedMatchUpStatuses = [
+  CANCELLED,
+  ABANDONED,
+  COMPLETED,
+  DEAD_RUBBER,
+  DEFAULTED,
+  DOUBLE_WALKOVER,
+  RETIRED,
+  WALKOVER,
+];
+
 export const activeMatchUpStatuses = [
   ABANDONED,
   COMPLETED,

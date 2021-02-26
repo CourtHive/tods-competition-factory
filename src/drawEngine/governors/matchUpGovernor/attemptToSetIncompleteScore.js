@@ -7,6 +7,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function attemptToSetIncompleteScore(props) {
   const { drawDefinition, matchUp, matchUpStatus, score } = props;
 
+  delete matchUp.winningSide;
   modifyMatchUpScore({
     drawDefinition,
     matchUp,
@@ -14,7 +15,6 @@ export function attemptToSetIncompleteScore(props) {
     matchUpStatusCodes: [],
     score,
   });
-  delete matchUp.winningSide;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   if (isCollectionMatchUp) {

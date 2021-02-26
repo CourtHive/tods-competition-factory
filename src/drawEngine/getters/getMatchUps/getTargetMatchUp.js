@@ -2,6 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { chunkArray, generateRange } from '../../../utilities';
 import { getPositionAssignments } from '../positionsGetter';
+import { getDevContext } from '../../../global/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import {
@@ -113,12 +114,12 @@ export function getTargetMatchUp({
     /*
       RANDOM feed profile selects a random position from available
     */
-    console.log('not implemented:', { feedProfile });
+    if (getDevContext()) console.log('not implemented:', { feedProfile });
   } else if (feedProfile === DRAW) {
     /*
       calculatedRoundPosition is undetermined for DRAW feedProfile
     */
-    console.log('not implemented:', { feedProfile });
+    if (getDevContext()) console.log('not implemented:', { feedProfile });
   }
 
   const matchUp =

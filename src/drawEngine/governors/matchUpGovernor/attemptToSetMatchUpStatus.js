@@ -1,7 +1,7 @@
 import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
-import { addNotice } from '../../../global/globalState';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -19,14 +19,24 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetMatchUpStatus(props) {
-  const { matchUp, structure, matchUpStatus, matchUpStatusCodes } = props;
+  const {
+    drawDefinition,
+    matchUp,
+    structure,
+    matchUpStatus,
+    matchUpStatusCodes,
+  } = props;
 
   if (matchUp.winningSide) {
     if (matchUpStatus === BYE) {
       return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      matchUp.matchUpStatus = matchUpStatus;
-      matchUp.matchUpStatusCodes = matchUpStatusCodes;
+      modifyMatchUpScore({
+        matchUp,
+        drawDefinition,
+        matchUpStatus,
+        matchUpStatusCodes,
+      });
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
       // only possible to remove winningSide if neither winner
       // nor loser has been directed further into target structures
@@ -37,23 +47,35 @@ export function attemptToSetMatchUpStatus(props) {
       if (participantDirectionErrors) {
         return { error: participantDirectionErrors };
       }
-      matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
-      matchUp.matchUpStatusCodes = matchUpStatusCodes;
+      modifyMatchUpScore({
+        matchUp,
+        drawDefinition,
+        matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+        matchUpStatusCodes,
+      });
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    matchUp.matchUpStatus = matchUpStatus || TO_BE_PLAYED;
-    matchUp.matchUpStatusCodes = matchUpStatusCodes;
+    modifyMatchUpScore({
+      matchUp,
+      drawDefinition,
+      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+      matchUpStatusCodes,
+    });
   } else if (matchUpStatus === BYE) {
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
     if (result.error) return result;
   } else {
     if (isDirectingMatchUpStatus({ matchUpStatus })) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
-        matchUp.matchUpStatus = matchUpStatus;
-        matchUp.matchUpStatusCodes = matchUpStatusCodes;
-        delete matchUp.score;
+        modifyMatchUpScore({
+          matchUp,
+          drawDefinition,
+          matchUpStatus,
+          matchUpStatusCodes,
+          removeScore: true,
+        });
 
         doubleWalkoverAdvancement(props);
       } else {
@@ -63,8 +85,6 @@ export function attemptToSetMatchUpStatus(props) {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   }
-
-  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
 
   return SUCCESS;
 }
