@@ -43,7 +43,11 @@ function playoffStructures({
   exitProfile = '0', // rounds at which participant exited
 }) {
   if (drawSize < 2) return {};
-  const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
+  const { matchUps } = treeMatchUps({
+    uuids,
+    drawSize,
+    finishingPositionOffset,
+  });
   addNotice({ topic: 'addMatchUps', payload: { matchUps } });
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
@@ -93,6 +97,7 @@ function playoffStructures({
       structureName: targetName,
       childStructures,
     } = playoffStructures({
+      uuids,
       stage,
       playoffAttributes,
       drawDefinition,
