@@ -9,8 +9,10 @@ import {
 
 import {
   BYE,
+  CANCELLED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_MATCHUP_STATUS,
@@ -57,11 +59,13 @@ export function attemptToSetMatchUpStatus(props) {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
+    const removeScore = [CANCELLED, WALKOVER].includes(matchUpStatus);
     modifyMatchUpScore({
       matchUp,
       drawDefinition,
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       matchUpStatusCodes,
+      removeScore,
     });
   } else if (matchUpStatus === BYE) {
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });

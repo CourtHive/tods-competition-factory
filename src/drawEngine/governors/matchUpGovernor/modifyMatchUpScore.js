@@ -37,8 +37,9 @@ export function modifyMatchUpScore({
 }) {
   if (removeScore) {
     Object.assign(matchUp, toBePlayed);
+  } else if (score) {
+    matchUp.score = score;
   }
-  if (score) matchUp.score = score;
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
