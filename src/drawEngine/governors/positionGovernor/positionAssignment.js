@@ -16,7 +16,6 @@ import { clearDrawPosition } from './positionClear';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DRAW_POSITION,
-  INVALID_PARTICIPANT_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
@@ -37,18 +36,6 @@ export function assignDrawPosition({
     drawDefinition,
     structure,
   });
-
-  const validParticipantId = participantInEntries({
-    drawDefinition,
-    participantId,
-  });
-  if (!validParticipantId) {
-    return {
-      error: INVALID_PARTICIPANT_ID,
-      participantId,
-      method: 'assignDrawPosition',
-    };
-  }
 
   const participantSeedNumber = seedAssignments.reduce(
     (seedNumber, assignment) => {
