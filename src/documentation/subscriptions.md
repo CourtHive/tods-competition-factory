@@ -16,6 +16,7 @@ const subscriptions = {
   modifyMatchUp: (payload) => {}, // payload = { matchUp }
   publishEvent: (payload) => (), // payload = { eventData }
   unPublishEvent: (payload) => (), // payload = { eventId }
+  newPairParticipants: (payload) => (), // payload { participants }
 };
 ```
 
