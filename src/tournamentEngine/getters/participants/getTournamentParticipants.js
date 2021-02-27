@@ -1,7 +1,7 @@
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { addParticipantContext } from './addParticipantContext';
-import { makeDeepCopy } from '../../../utilities';
+import { attributeFilter, makeDeepCopy } from '../../../utilities';
 
 import {
   INVALID_OBJECT,
@@ -27,6 +27,7 @@ export function getTournamentParticipants({
   tournamentRecord,
 
   participantFilters = {},
+  policyDefinition,
 
   inContext,
   convertExtensions,
@@ -37,8 +38,19 @@ export function getTournamentParticipants({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
+  const participantAttributes = policyDefinition?.participant;
   let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant, convertExtensions)
+    (participant) => {
+      if (participantAttributes?.participant) {
+        const participantCopy = attributeFilter({
+          source: participant,
+          template: participantAttributes.participant,
+        });
+        return makeDeepCopy(participantCopy, convertExtensions);
+      } else {
+        return makeDeepCopy(participant, convertExtensions);
+      }
+    }
   );
 
   if (typeof participantFilters !== 'object')

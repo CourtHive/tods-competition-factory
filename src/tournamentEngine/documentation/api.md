@@ -1055,6 +1055,8 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withOpponents, // optional - include opponent participantIds
   withMatchUps, // optional - include all matchUps in which the participant appears
+  convertExtensions, // optional - BOOLEAN - convert extensions so _extenaionNAme attributes
+  policyDefinition, // optional - can accept a privacy policy to filter participant attributes
 });
 ```
 
