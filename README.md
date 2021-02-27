@@ -16,11 +16,13 @@ Engines manage different concerns within a document structure representing a tou
 2. **tournamentEngine** - for managing tournament participants and general tournament information
 3. **drawEngine** - generates drawDefinitions and manages participant movement through matchUps within structures
 
-## Policies
-
-Policies determine how the various Competition Factory engines function and can shape the way that results are returned; they enable configuration of seeding, avoidance, scoring, round naming and even privacy.
-
 ## Installation
+
+```sh
+yarn install tods-competition-factory
+```
+
+or
 
 ```sh
 npm install tods-competition-factory
