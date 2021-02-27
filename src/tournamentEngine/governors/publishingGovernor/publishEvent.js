@@ -33,7 +33,7 @@ export function publishEvent({
     event,
   });
 
-  addNotice({ topic: 'ublishEvent', payload: { eventData } });
+  addNotice({ topic: 'publishEvent', payload: { eventData } });
 
   return Object.assign({}, SUCCESS, { eventData });
 }
