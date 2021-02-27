@@ -9,6 +9,7 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
 import {
+  CANCELLED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
@@ -24,11 +25,12 @@ export function noDownstreamDependencies(props) {
     const result = removeDoubleWalkover(props);
     if (result.error) return result;
   }
+  const removeScore = [CANCELLED, DOUBLE_WALKOVER].includes(matchUpStatus);
 
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
     if (winningSideErrors?.length) return { errors: winningSideErrors };
-  } else if (!winningSide && scoreHasValue({ score })) {
+  } else if (!winningSide && scoreHasValue({ score }) && !removeScore) {
     const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
       props
     );
