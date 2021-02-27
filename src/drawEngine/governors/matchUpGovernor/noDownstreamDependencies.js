@@ -53,26 +53,6 @@ export function noDownstreamDependencies(props) {
     if (matchUp.matchUpStatus === DOUBLE_WALKOVER) {
       const result = checkDoubleWalkoverPropagation(props);
       if (result.error) return result;
-      /*
-      const {
-        targetMatchUps: { winnerMatchUp },
-      } = props.targetData;
-      if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-        const { drawDefinition, mappedMatchUps } = props;
-        const { matchUp: noContextWinnerMatchUp } = findMatchUp({
-          drawDefinition,
-          mappedMatchUps,
-          matchUpId: winnerMatchUp.matchUpId,
-        });
-        if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
-        modifyMatchUpScore({
-          drawDefinition,
-          removeScore: true,
-          matchUpStatus: TO_BE_PLAYED,
-          matchUp: noContextWinnerMatchUp,
-        });
-      }
-      */
     }
     modifyMatchUpScore({
       drawDefinition: props.drawDefinition,

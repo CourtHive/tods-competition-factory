@@ -7,6 +7,8 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
+import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
 // 2. rmove any advanced participant or BYE from winnerMatchUp
@@ -37,23 +39,54 @@ export function removeDoubleWalkover({
 
   // only handles winnerMatchUps in the same structure
   if (winnerMatchUp) {
-    const targetData = positionTargets({
-      matchUpId: winnerMatchUp.matchUpId,
-      structure,
+    removePropagatedDoubleWalkover({
       drawDefinition,
+      structure,
+      sourceMatchUp,
+      winnerMatchUp,
+      mappedMatchUps,
       inContextDrawMatchUps,
     });
-    const {
-      targetMatchUps,
-      targetLinks: { loserTargetLink: nextLoserTargetLink },
-    } = targetData;
-    const {
-      winnerMatchUp: nextWinnerMatchUp,
-      loserMatchUp: nextLoserMatchUp,
-      loserTargetDrawPosition: nextLoserTargetDrawPosition,
-    } = targetMatchUps;
+  }
 
-    if (nextWinnerMatchUp) {
+  return SUCCESS;
+}
+
+function removePropagatedDoubleWalkover({
+  drawDefinition,
+  structure,
+  sourceMatchUp,
+  winnerMatchUp,
+  mappedMatchUps,
+  inContextDrawMatchUps,
+}) {
+  const targetData = positionTargets({
+    matchUpId: winnerMatchUp.matchUpId,
+    structure,
+    drawDefinition,
+    inContextDrawMatchUps,
+  });
+  const {
+    targetMatchUps,
+    targetLinks: { loserTargetLink: nextLoserTargetLink },
+  } = targetData;
+  const {
+    winnerMatchUp: nextWinnerMatchUp,
+    loserMatchUp: nextLoserMatchUp,
+    loserTargetDrawPosition: nextLoserTargetDrawPosition,
+  } = targetMatchUps;
+
+  if (nextWinnerMatchUp) {
+    const { pairedPreviousMatchUp } = getPairedPreviousMatchUp({
+      matchUp: sourceMatchUp,
+      structureId: structure.structureId,
+      mappedMatchUps,
+    });
+    const pairedPreviousMatchUpComplete =
+      completedMatchUpStatuses.includes(pairedPreviousMatchUp?.matchUpStatus) ||
+      pairedPreviousMatchUp?.winningSide;
+
+    if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
       let targetDrawPositions = nextWinnerMatchUp.drawPositions.filter(
         (f) => f
@@ -68,25 +101,42 @@ export function removeDoubleWalkover({
         return { error: DRAW_POSITION_ASSIGNED };
       }
       const drawPositionToRemove = targetDrawPositions[0];
-      const result = removeDirectedWinner({
-        winnerMatchUp: nextWinnerMatchUp,
-        mappedMatchUps,
-        drawDefinition,
-        winningDrawPosition: drawPositionToRemove,
-      });
-      if (result.error) return result;
-    }
+      if (drawPositionToRemove) {
+        const targetData = positionTargets({
+          matchUpId: nextWinnerMatchUp.matchUpId,
+          structure,
+          drawDefinition,
+          inContextDrawMatchUps,
+        });
+        const {
+          targetMatchUps: { winnerMatchUp: subsequentWinnerMatchUp },
+        } = targetData;
 
-    if (nextLoserMatchUp) {
-      removeDirectedBye({
-        targetLink: nextLoserTargetLink,
-        drawPosition: nextLoserTargetDrawPosition,
-        drawDefinition,
-        mappedMatchUps,
-        inContextDrawMatchUps,
-      });
+        const targetWinnerMatchUp =
+          (subsequentWinnerMatchUp?.drawPositions.includes(
+            drawPositionToRemove
+          ) &&
+            subsequentWinnerMatchUp) ||
+          nextWinnerMatchUp;
+
+        const result = removeDirectedWinner({
+          winnerMatchUp: targetWinnerMatchUp,
+          mappedMatchUps,
+          drawDefinition,
+          winningDrawPosition: drawPositionToRemove,
+        });
+        if (result.error) return result;
+      }
     }
   }
 
-  return SUCCESS;
+  if (nextLoserMatchUp) {
+    removeDirectedBye({
+      targetLink: nextLoserTargetLink,
+      drawPosition: nextLoserTargetDrawPosition,
+      drawDefinition,
+      mappedMatchUps,
+      inContextDrawMatchUps,
+    });
+  }
 }

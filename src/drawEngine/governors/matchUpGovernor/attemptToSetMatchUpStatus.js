@@ -1,4 +1,5 @@
 import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
+import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
@@ -19,7 +20,6 @@ import {
   UNRECOGNIZED_MATCHUP_STATUS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 
 export function attemptToSetMatchUpStatus(props) {
   const {
@@ -37,7 +37,6 @@ export function attemptToSetMatchUpStatus(props) {
       return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
-        console.log('boo');
         const {
           errors: participantDirectionErrors,
         } = removeDirectedParticipants(props);
