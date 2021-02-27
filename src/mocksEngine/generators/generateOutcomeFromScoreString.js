@@ -47,6 +47,7 @@ export function generateOutcomeFromScoreString({
 
   return {
     outcome: {
+      matchUpStatus,
       winningSide,
       score,
     },
