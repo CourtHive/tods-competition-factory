@@ -19,13 +19,16 @@ import {
   UNRECOGNIZED_MATCHUP_STATUS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 
 export function attemptToSetMatchUpStatus(props) {
   const {
     drawDefinition,
     matchUp,
     structure,
+    targetData,
     matchUpStatus,
+    mappedMatchUps,
     matchUpStatusCodes,
   } = props;
 
@@ -33,6 +36,21 @@ export function attemptToSetMatchUpStatus(props) {
     if (matchUpStatus === BYE) {
       return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
+      if (matchUpStatus === DOUBLE_WALKOVER) {
+        console.log('boo');
+        const {
+          errors: participantDirectionErrors,
+        } = removeDirectedParticipants(props);
+        if (participantDirectionErrors) {
+          return { error: participantDirectionErrors };
+        }
+        const result = checkDoubleWalkoverPropagation({
+          drawDefinition,
+          mappedMatchUps,
+          targetData,
+        });
+        if (result.error) return result;
+      }
       modifyMatchUpScore({
         matchUp,
         drawDefinition,
@@ -45,7 +63,6 @@ export function attemptToSetMatchUpStatus(props) {
       const { errors: participantDirectionErrors } = removeDirectedParticipants(
         props
       );
-
       if (participantDirectionErrors) {
         return { error: participantDirectionErrors };
       }

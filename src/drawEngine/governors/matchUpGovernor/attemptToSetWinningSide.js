@@ -2,16 +2,13 @@ import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { directParticipants } from './directParticipants';
 
-import {
-  BYE,
-  DOUBLE_WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetWinningSide(props) {
   const { drawDefinition, winningSide, structure, matchUp } = props;
   let errors = [];
 
-  if ([BYE, DOUBLE_WALKOVER].includes(matchUp.matchUpStatus)) {
+  if ([BYE].includes(matchUp.matchUpStatus)) {
     return {
       errors: [{ error: 'Cannot set winningSide for BYE matchUpStatus' }],
     };

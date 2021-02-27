@@ -1,7 +1,10 @@
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import {
+  getMappedStructureMatchUps,
+  getMatchUpsMap,
+} from '../../getters/getMatchUps/getMatchUpsMap';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { intersection } from '../../../utilities';
@@ -14,6 +17,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 
 export function doubleWalkoverAdvancement({
   drawDefinition,
@@ -26,7 +31,6 @@ export function doubleWalkoverAdvancement({
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
 
   if (structure.structureType === CONTAINER) {
-    console.log('Round Robin Double Walkover!');
     return SUCCESS;
   }
 
@@ -122,6 +126,44 @@ function conditionallyAdvanceDrawPosition({
       drawPosition: drawPositionToAdvance,
     });
     if (result.error) console.log(result.error);
+  } else {
+    const previousRound =
+      winnerMatchUp.roundNumber > 1 && winnerMatchUp.roundNumber - 1;
+    if (previousRound && winnerMatchUp) {
+      const sourceRoundPosition = sourceMatchUp?.roundPosition;
+      const offset = sourceRoundPosition % 2 ? 1 : -1;
+      const pairedRoundPosition = sourceRoundPosition + offset;
+      const structureMatchUps = getMappedStructureMatchUps({
+        mappedMatchUps,
+        structureId: structure.structureId,
+      });
+      const pairedPreviousMatchUp = structureMatchUps.find(
+        ({ roundNumber, roundPosition }) =>
+          roundNumber === previousRound && roundPosition === pairedRoundPosition
+      );
+      const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
+      if (pairedPreviousMatchUpStatus === DOUBLE_WALKOVER) {
+        const { matchUp: noContextNextWinnerMatchUp } = findMatchUp({
+          drawDefinition,
+          mappedMatchUps,
+          matchUpId: winnerMatchUp.matchUpId,
+        });
+        if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
+        modifyMatchUpScore({
+          matchUp: noContextNextWinnerMatchUp,
+          drawDefinition,
+          matchUpStatus: DOUBLE_WALKOVER,
+          matchUpStatusCodes: [],
+          removeScore: true,
+        });
+        doubleWalkoverAdvancement({
+          drawDefinition,
+          structure,
+          mappedMatchUps,
+          targetData,
+        });
+      }
+    }
   }
 
   if (nextLoserMatchUp) {

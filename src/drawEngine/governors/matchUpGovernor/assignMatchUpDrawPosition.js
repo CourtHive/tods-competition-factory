@@ -123,7 +123,6 @@ export function assignMatchUpDrawPosition({
   } else {
     const previousRound = matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
     if (previousRound && winnerMatchUp) {
-      // TODO: recognize when paired position has no matchUpStatus but is downstream from multiple DOUBLE_WALKOVERS
       const structureMatchUps = getMappedStructureMatchUps({
         mappedMatchUps,
         structureId: structure.structureId,
@@ -135,7 +134,8 @@ export function assignMatchUpDrawPosition({
       const offset = sourceRoundPosition % 2 ? 1 : -1;
       const pairedRoundPosition = sourceRoundPosition + offset;
       const pairedMatchUp = structureMatchUps.find(
-        ({ roundPosition }) => roundPosition === pairedRoundPosition
+        ({ roundPosition, roundNumber }) =>
+          roundPosition === pairedRoundPosition && roundNumber === previousRound
       );
       if (pairedMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
         const result = assignMatchUpDrawPosition({

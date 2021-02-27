@@ -1,3 +1,4 @@
+import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { attemptToSetIncompleteScore } from './attemptToSetIncompleteScore';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
@@ -31,11 +32,13 @@ export function noDownstreamDependencies(props) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
     if (winningSideErrors?.length) return { errors: winningSideErrors };
   } else if (!winningSide && scoreHasValue({ score }) && !removeScore) {
+    // ABANDONED, INCOMPLETE
     const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
       props
     );
     if (incompleteScoreErrors) return incompleteScoreErrors;
   } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
+    // DOUBLE_WALKOVER, CANCELLED
     const { error } = attemptToSetMatchUpStatus(props);
     if (error) return { errors: [error] };
   } else if (!winningSide && matchUp.winningSide && !scoreHasValue({ score })) {
@@ -47,6 +50,30 @@ export function noDownstreamDependencies(props) {
     );
     if (participantDirectionErrors) return participantDirectionErrors;
   } else if (matchUp) {
+    if (matchUp.matchUpStatus === DOUBLE_WALKOVER) {
+      const result = checkDoubleWalkoverPropagation(props);
+      if (result.error) return result;
+      /*
+      const {
+        targetMatchUps: { winnerMatchUp },
+      } = props.targetData;
+      if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
+        const { drawDefinition, mappedMatchUps } = props;
+        const { matchUp: noContextWinnerMatchUp } = findMatchUp({
+          drawDefinition,
+          mappedMatchUps,
+          matchUpId: winnerMatchUp.matchUpId,
+        });
+        if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
+        modifyMatchUpScore({
+          drawDefinition,
+          removeScore: true,
+          matchUpStatus: TO_BE_PLAYED,
+          matchUp: noContextWinnerMatchUp,
+        });
+      }
+      */
+    }
     modifyMatchUpScore({
       drawDefinition: props.drawDefinition,
       removeScore: true,

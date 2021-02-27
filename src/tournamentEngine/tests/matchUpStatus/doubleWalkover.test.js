@@ -128,3 +128,231 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   }));
   expect(filteredOrderedPairs).toEqual(consolationStructureOrderedPairs);
 });
+
+it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  // get the first upcoming matchUp, which will be { roundPosition: 2 }
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const [matchUp] = upcomingMatchUps;
+  const { matchUpId, roundPosition } = matchUp;
+  expect(roundPosition).toEqual(2);
+
+  let {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+    [11, 12],
+    [13, 14],
+    [15, 16],
+    [1],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ]);
+
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(result.success).toEqual(true);
+
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+    [11, 12],
+    [13, 14],
+    [15, 16],
+    [1],
+    [],
+    [],
+    [],
+    [1],
+    [],
+    [],
+  ]);
+});
+
+it.only('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () => {
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          matchUpStatus: DOUBLE_WALKOVER,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  let {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+    [11, 12],
+    [13, 14],
+    [15, 16],
+    [1, 3],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ]);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const targetMatchUp = matchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4
+  );
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(result.success).toEqual(true);
+
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+  console.log({ filteredOrderedPairs });
+
+  // expect(filteredOrderedPairs).toEqual();
+});
+
+it.skip('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          matchUpStatus: DOUBLE_WALKOVER,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          matchUpStatus: DOUBLE_WALKOVER,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  let {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+    [11, 12],
+    [13, 14],
+    [15, 16],
+    [1, 3],
+    [],
+    [],
+    [],
+    [],
+    [],
+    [],
+  ]);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const targetMatchUp = matchUps.find(
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+  );
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+  console.log({ filteredOrderedPairs });
+
+  // expect(filteredOrderedPairs).toEqual();
+});
