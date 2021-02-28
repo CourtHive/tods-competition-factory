@@ -6,6 +6,7 @@ import tournamentEngine from '../../sync';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import drawEngine from '../../../drawEngine/sync';
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
@@ -206,7 +207,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   ]);
 });
 
-it.only('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () => {
+it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () => {
   const drawProfiles = [
     {
       drawSize: 16,
@@ -241,8 +242,7 @@ it.only('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', 
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs).toEqual([
+  const preWalkover = [
     [1, 2],
     [3, 4],
     [5, 6],
@@ -258,9 +258,12 @@ it.only('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', 
     [],
     [],
     [],
-  ]);
+  ];
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
+  expect(filteredOrderedPairs).toEqual(preWalkover);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4
   );
@@ -272,12 +275,30 @@ it.only('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', 
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  console.log({ filteredOrderedPairs });
+  expect(filteredOrderedPairs).toEqual(preWalkover);
 
-  // expect(filteredOrderedPairs).toEqual();
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+
+  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  expect(roundMatchUps[1].map(({ matchUpStatus }) => matchUpStatus)).toEqual([
+    'COMPLETED',
+    'COMPLETED',
+    'DOUBLE_WALKOVER',
+    'DOUBLE_WALKOVER',
+    'TO_BE_PLAYED',
+    'TO_BE_PLAYED',
+    'TO_BE_PLAYED',
+    'TO_BE_PLAYED',
+  ]);
+  expect(roundMatchUps[2].map(({ matchUpStatus }) => matchUpStatus)).toEqual([
+    'TO_BE_PLAYED',
+    'DOUBLE_WALKOVER',
+    'TO_BE_PLAYED',
+    'TO_BE_PLAYED',
+  ]);
 });
 
-it.skip('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
+it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   const drawProfiles = [
     {
       drawSize: 16,
@@ -352,7 +373,21 @@ it.skip('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  console.log({ filteredOrderedPairs });
-
-  // expect(filteredOrderedPairs).toEqual();
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [9, 10],
+    [11, 12],
+    [13, 14],
+    [15, 16],
+    [1, 3],
+    [],
+    [],
+    [],
+    [1],
+    [],
+    [1],
+  ]);
 });
