@@ -110,5 +110,5 @@ export function getValidAssignmentActions({
 function validAssignmentsSort(a, b) {
   if (a.bye) return -1;
   if (a.seedValue < b.seedValue || (a.seedValue && !b.seedValue)) return -1;
-  return (a.drawOrder || 0) - (b.drawOrder || 0);
+  return (a.seedNumber || 0) - (b.seedNumber || 0);
 }
