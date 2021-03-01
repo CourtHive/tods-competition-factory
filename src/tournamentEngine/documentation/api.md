@@ -126,6 +126,8 @@ tournamentEngine.addEventEntryPairs({
   participantIdPairs,
   entryStatus: ALTERNATE, // optional
   entryStage: QUALIFYING, // optional
+  uuids, // optional - array of UUIDs to use for newly created pairs
+  allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticpantIds
 });
 ```
 

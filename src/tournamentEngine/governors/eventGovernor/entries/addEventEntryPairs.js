@@ -36,6 +36,7 @@ export function addEventEntryPairs({
   entryStage = MAIN,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
+  allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -75,14 +76,16 @@ export function addEventEntryPairs({
     })
   );
 
-  // filter out existing participants
-  const newParticipants = provisionalParticipants.filter((participant) => {
-    return !existingParticipantIdPairs.find(
-      (existing) =>
-        intersection(existing, participant.individualParticipantIds).length ===
-        2
-    );
-  });
+  // filter out existing participants unless allowDuplicateParticipantIdPairs is true
+  const newParticipants = allowDuplicateParticipantIdPairs
+    ? provisionalParticipants
+    : provisionalParticipants.filter((participant) => {
+        return !existingParticipantIdPairs.find(
+          (existing) =>
+            intersection(existing, participant.individualParticipantIds)
+              .length === 2
+        );
+      });
 
   let message;
   if (newParticipants) {
