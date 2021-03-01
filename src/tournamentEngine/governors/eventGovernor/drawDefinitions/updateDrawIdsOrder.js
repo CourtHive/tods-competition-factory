@@ -1,4 +1,4 @@
-import { intersection } from '../../../../utilities';
+import { intersection, unique } from '../../../../utilities';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_VALUES,
@@ -29,11 +29,16 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (intersection(drawIds, orderedDrawIds).length !== drawIds.length)
     return { error: INVALID_VALUES, message: 'Missing drawIds' };
 
-  const validDrawOrders = Object.values(orderedDrawIdsMap).every(
-    (drawOrder) => !isNaN(drawOrder)
-  );
+  const drawOrders = Object.values(orderedDrawIdsMap);
+  const validDrawOrders = drawOrders.every((drawOrder) => !isNaN(drawOrder));
   if (!validDrawOrders)
     return { error: INVALID_VALUES, message: 'drawOrder must be numeric' };
+
+  if (unique(drawOrders).length !== drawOrders.length)
+    return {
+      error: INVALID_VALUES,
+      message: 'drawOrder values must be unique',
+    };
 
   event.drawDefinitions.forEach(
     (drawDefinition) =>
