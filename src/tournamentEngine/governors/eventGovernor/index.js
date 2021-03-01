@@ -53,6 +53,7 @@ import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setS
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
@@ -85,6 +86,7 @@ const eventGovernor = {
 
   getFlightProfile,
   getScaledEntries,
+  updateDrawIdsOrder,
   generateFlightProfile,
   deleteFlightAndFlightDraw,
   deleteFlightProfileAndFlightDraws,

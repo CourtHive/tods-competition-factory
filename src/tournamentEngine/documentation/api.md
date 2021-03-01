@@ -1634,6 +1634,22 @@ tournamentEngine.unPublishEvent({ eventId });
 
 ---
 
+## updateDrawIdsOrder
+
+Updates the `drawOrder` attribute of all `drawDefinitions` within an event. The `drawOrder` attribute can be used for sorting or for differentiating drawDefinitions for the award of rankings points, when "flighting" separates participants by some scaleValue.
+
+```js
+tournamentEngine.updateDrawIdsOrder({
+  event,
+  orderedDrawIdsMap: {
+    'id-Of-draw-1': 1,
+    'id-of-draw-2': 2,
+  },
+});
+```
+
+---
+
 ## withdrawParticipantAtDrawPosition
 
 Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](/concepts/positionActions).

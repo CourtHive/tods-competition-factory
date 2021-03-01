@@ -26,10 +26,18 @@ export function addDrawDefinition({ drawDefinition, event }) {
   if (drawDefinitionExists) {
     return { error: DRAW_ID_EXISTS };
   } else {
+    const drawOrders = event.drawDefinitions
+      .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
+      .sort((a, b) => a - b);
+
+    const nextDrawOrder = Math.max(0, ...drawOrders.filter((f) => f)) + 1;
+    let drawOrder = nextDrawOrder;
+
     const { flightProfile } = getFlightProfile({ event });
     const flight = flightProfile?.flights?.find(
       (flight) => flight.drawId === drawDefinition.drawId
     );
+
     if (flight) {
       // if this drawId was defined in a flightProfile...
       // ...update the flight.drawName with the drawName in the drawDefinition
@@ -42,8 +50,15 @@ export function addDrawDefinition({ drawDefinition, event }) {
         },
       };
 
+      const flightNumber = flight.flightNumber;
+      if (flightNumber && !drawOrders.includes(flightNumber)) {
+        drawOrder = flightNumber;
+      }
+
       addEventExtension({ event, extension });
     }
+
+    Object.assign(drawDefinition, { drawOrder });
     event.drawDefinitions.push(drawDefinition);
   }
 
