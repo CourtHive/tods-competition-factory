@@ -1,14 +1,46 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
+import { executionAsyncId, createHook } from 'async_hooks';
 
+/**
+ * This code enables "global" state for each async execution context.
+ * If there are multiple requests running at the same (concurrently) we will create instance state for current async execution context.
+ * Sample on this page: https://stackabuse.com/using-async-hooks-for-request-context-handling-in-node-js/
+ * This approach was made in order to avoid changing existing code and "drill" instance state to methods requiring it.
+ */
+
+const store = new Map();
 const globalState = {
   devContext: false,
   deepCopy: true,
-  subscriptions: {},
-  notices: [],
 };
 
-export function getGlobalState() {
-  return globalState;
+const asyncHook = createHook({
+  init: (asyncId, _, _triggerAsyncId) => {
+    if (store.has(_triggerAsyncId)) {
+      store.set(asyncId, store.get(_triggerAsyncId));
+    }
+  },
+  destroy: (asyncId) => {
+    if (store.has(asyncId)) {
+      store.delete(asyncId);
+    }
+  },
+});
+
+asyncHook.enable();
+
+export function createInstanceState() {
+  const instanceState = {
+    subscriptions: {},
+    notices: [],
+  };
+
+  store.set(executionAsyncId(), instanceState);
+  return instanceState;
+}
+
+export function getInstanceState() {
+  return store.get(executionAsyncId());
 }
 
 export function getDevContext() {
@@ -32,9 +64,11 @@ export function getDeepCopy() {
 }
 
 export function setSubscriptions({ subscriptions = {} } = {}) {
+  const instanceState = getInstanceState();
+
   if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
   Object.keys(subscriptions).forEach((subscription) => {
-    globalState.subscriptions[subscription] = subscriptions[subscription];
+    instanceState.subscriptions[subscription] = subscriptions[subscription];
   });
 }
 
@@ -42,36 +76,46 @@ export function addNotice({ topic, payload }) {
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
-  if (!globalState.subscriptions[topic]) return;
-  globalState.notices.push({ topic, payload });
+
+  const instanceState = getInstanceState();
+
+  if (!instanceState.subscriptions[topic]) return;
+  instanceState.notices.push({ topic, payload });
 }
 
 export function getNotices({ topic }) {
   if (typeof topic !== 'string') return [];
-  const notices = globalState.notices
+
+  const instanceState = getInstanceState();
+
+  const notices = instanceState.notices
     .filter((notice) => notice.topic === topic)
     .map((notice) => notice.payload);
   return notices.length && notices;
 }
 
 export function deleteNotices() {
-  globalState.notices = [];
+  const instanceState = getInstanceState();
+  instanceState.notices = [];
 }
 
 export function getTopics() {
-  const topics = Object.keys(globalState.subscriptions);
+  const instanceState = getInstanceState();
+  const topics = Object.keys(instanceState.subscriptions);
   return { topics };
 }
 
 export function callListener({ topic, notices }) {
-  const method = globalState.subscriptions[topic];
+  const instanceState = getInstanceState();
+  const method = instanceState.subscriptions[topic];
   if (method && typeof method === 'function') {
     method(notices);
   }
 }
 
 export async function callListenerAsync({ topic, notices }) {
-  const method = globalState.subscriptions[topic];
+  const instanceState = getInstanceState();
+  const method = instanceState.subscriptions[topic];
   if (method && typeof method === 'function') {
     await method(notices);
   }
