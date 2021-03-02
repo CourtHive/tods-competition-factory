@@ -8,20 +8,26 @@ route: /drawEngine/api
 
 ## addDrawEntries
 
-- @param {object} drawDefinition - drawDefinition object; passed in automatically when _drawEngine.setState(drawDefinition)_ has been previously called
-- @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
-- @param {string} entryStatus - entry status to be applied to all draw Entries
-- @param {string} stage - entry stage for particpants (QUALIFYING, MAIN)
+```js
+drawEngine.addDrawEntries({
+  participantIds, // an array of participantIds, should all be of the same participantType
+  entryStatus, // optional - defaults to DIRECT_ACCEPTANCE
+  stage, // optional - stage into which participantIds have been entered; defaults to MAIN
+});
+```
 
 ---
 
 ## addDrawEntry
 
-- @param {object} drawDefinition - drawDefinition object; passed in automatically by drawEngine when drawEngine.setSTate(drawdefinition) has been previously called
-- @param {string} participantId - id of participant being entered into draw
-- @param {object} participant - optional; for passing participantId
-- @param {string} entryStage - either QUALIFYING or MAIN
-- @param {string} entryStatus - entryStatusEnum (e.g. DIRECT_ACCEPTANCE, WILDCARD)
+```js
+drawEngine.addDrawEntry({
+  participantId,
+  entryStage, // optional - stage into which participantIds have been entered; defaults to MAIN
+  entryStatus, // optional - defaults to DIRECT_ACCEPTANCE
+  entryPosition, // optional - used to order entries, e.g. { entryPosition: 1 } for 1st alternate
+});
+```
 
 ---
 
@@ -44,21 +50,46 @@ drawEngine.addMatchUpOfficial({ matchUpId, participantId, officialType });
 
 ## addMatchUpResumeTime
 
+```js
+const resumeTime = '2020-01-01T09:00:00Z';
+drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
+```
+
 ---
 
 ## addMatchUpScheduledDayDate
+
+```js
+const scheduledDayDate = '2020-01-01';
+drawEngine.addMatchUpScheduledDayDate({ matchUpId, scheduledDayDate });
+```
 
 ---
 
 ## addMatchUpScheduledTime
 
+```js
+const scheduledTime = '08:00';
+drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
+```
+
 ---
 
 ## addMatchUpStartTime
 
+```js
+const startTime = '2020-01-01T08:05:00Z';
+drawEngine.addMatchUpStartTime({ matchUpId, startTime });
+```
+
 ---
 
 ## addMatchUpStopTime
+
+```js
+const stopTime = '2020-01-01T08:15:00Z';
+drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
+```
 
 ---
 
@@ -74,8 +105,10 @@ drawEngine.addMatchUpOfficial({ matchUpId, participantId, officialType });
 ```js
 drawEngine.addPlayoffStructures({
   structureId,
-  roundNumbers: [3], // either target roundNumbers or playoffPositions
-  playoffPositions: [3, 4],
+  roundNumbers: [3], // optional if playoffPositions not provided; roundNumbers of structure to be played off.
+  playoffPositions: [3, 4], // optional if roundNumbers not provided; finishing positions to be played off.
+  playoffAttributes, // optional - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
+  playoffStructureNameBase, // optional - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
 });
 ```
 
@@ -83,21 +116,52 @@ drawEngine.addPlayoffStructures({
 
 ## addMatchUpTimeItem
 
+```js
+const timeItem = {
+  itemType: SCHEDULED_DATE,
+  itemValue: scheduledDayDate,
+};
+drawEngine.addMatchUpTimeItem({
+  matchUpId,
+  timeItem,
+  duplicateValues: false,
+});
+```
+
 ---
 
 ## setSubOrder
 
 Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
 
-- @param {object} drawDefinition - added automatically by drawEngine if state is present or by tournamentEngine with drawId
-- @param {string} drawId - used by tournamentEngine to retrieve drawDefinition
-- @param {string} structureId - structure identifier within drawDefinition
-- @param {number} drawPosition - drawPosition of the participant where subOrder is to be added
-- @param {number} subOrder - order in which tied participant should receive finishing position
+```js
+drawEngine.setSubOrder({
+  structureId, // structure identifier within drawDefinition
+  drawPosition: 1, // drawPosition of the participant where subOrder is to be added
+  subOrder: 2, // order in which tied participant should receive finishing position
+});
+```
 
 ---
 
 ## allDrawMatchUps
+
+Returns all matchUps from all structures within a draw.
+
+```js
+const { matchUps } = drawEngine.allDrawMatchUps({
+  context, // optional context to be added into matchUps
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  roundFilter, // filter to target matchUps from specified rounds
+  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  matchUpFilters, // attribute filters
+  contextFilters, // filters based on context attributes
+  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
+  tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
+  requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
+  tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+});
+```
 
 ---
 
@@ -188,10 +252,6 @@ const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({
 
 ---
 
-## buildDrawHierarchy
-
----
-
 ## calcTieMatchUpScore
 
 ---
@@ -236,13 +296,34 @@ tournamentEngine.devContext(true);
 
 ## generateScoreString
 
-| Parameters    | Required | Type    | Description                                                              |
-| :------------ | :------- | :------ | :----------------------------------------------------------------------- |
-| sets          | Required | object  | An array of TODS sets objects                                            |
-| matchUpStatus | Optional | string  | TODS matchUpStatus ENUM                                                  |
-| winningSide   | Optional | number  | TODS side indicator: 1 or 2 (can also be string)                         |
-| winnerFirst   | Optional | boolean | Whether or not to display the winning side on the left of each set-score |
-| autoComplete  | Optional | boolean | Whether or not to convert **undefined** to 0                             |
+```js
+const sets = [
+  {
+    side1Score: 6,
+    side2Score: 7,
+    side1TiebreakScore: 3,
+    side2TiebreakScore: 7,
+    winningSide: 2,
+  },
+  {
+    side1Score: 7,
+    side2Score: 6,
+    side1TiebreakScore: 14,
+    side2TiebreakScore: 12,
+    winningSide: 1,
+  },
+  { side1Score: 3 },
+];
+let result = generateScoreString({
+    sets, // TODS sets object
+    winningSide, // optional - 1 or 2
+    reversed, // optional - reverse the score
+    winnerFirst = true, // optional - boolean - tranform sets so that winningSide is first (on left)
+    matchUpStatus, // optional - used to annotate scoreString
+    addOutcomeString, // optional - tranform matchUpStatus into outcomeString appended to scoreString
+    autoComplete: true, // optional - complete missing set score
+  });
+```
 
 ---
 
