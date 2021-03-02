@@ -72,7 +72,6 @@ function validDefinitionKeys(definition) {
 }
 
 export const drawEngine = (function () {
-  createInstanceState();
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
