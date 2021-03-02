@@ -385,6 +385,45 @@ Used when interactively creating `{ participantType: PAIR }` participants.
 
 ---
 
+## attachEventPolicy
+
+Attaches a policy to an event within a tournamentRecord.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.attachEventPolicy({
+  eventId,
+  policyDefinition: SEEDING_POLICY,
+});
+```
+
+---
+
+## attachPolicy
+
+Attaches a policy to a tournamentRecord.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+```
+
+---
+
+## automatedPositioning
+
+Positions participants in a draw structure.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.automatedPositioning({ drawId, structureId });
+```
+
+---
+
 ## bulkMatchUpStatusUpdate
 
 Provides the ability to update the outcomes of multiple matchUps at once.
@@ -717,6 +756,36 @@ const {
   personAttribute, // optional - attribute of person object
   uuids, // optional - uuids to assign to generated participants
 });
+```
+
+---
+
+## getAvailablePlayoffRounds
+
+Returns rounds of a structure which are available for adding playoff structures.
+
+```js
+const {
+  playoffRounds,
+  playoffRoundsRanges,
+} = tournamentEngine.getAvailablePlayoffRounds({
+  drawId,
+  structureId,
+});
+```
+
+...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
+
+```js
+    {
+      playoffRounds: [ 1, 2, 3 ],
+      playoffRoundsRanges: [
+        { round: 1, range: '9-16' },
+        { round: 2, range: '5-8' },
+        { round: 3, range: '3-4' }
+      ]
+    }
+
 ```
 
 ---

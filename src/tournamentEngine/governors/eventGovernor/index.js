@@ -42,6 +42,7 @@ import { withdrawParticipantAtDrawPosition } from './drawDefinitions/withdrawPar
 import { luckyLoserDrawPositionAssignment } from './drawDefinitions/luckyLoserDrawPositionAssignment';
 import { alternateDrawPositionAssignment } from './drawDefinitions/alternateDrawPositionAssignment';
 import { removeDrawPositionAssignment } from './drawDefinitions/removeDrawPositionAssignment';
+import { getAvailablePlayoffRounds } from './drawDefinitions/getAvailablePlayoffRounds';
 import { assignDrawPositionBye } from './drawDefinitions/assignDrawPositionBye';
 import { removeDrawEntries } from './drawDefinitions/removeDrawEntries';
 import { modifyEntriesStatus } from './entries/modifyEntriesStatus';
@@ -70,6 +71,7 @@ const eventGovernor = {
   addDrawDefinition,
   addPlayoffStructures,
   deleteDrawDefinitions,
+  getAvailablePlayoffRounds,
 
   setSubOrder,
   addEventEntries,

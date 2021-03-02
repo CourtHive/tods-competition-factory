@@ -167,92 +167,178 @@ const { matchUps } = drawEngine.allDrawMatchUps({
 
 ## allStructureMatchUps
 
-Returns object { matchUps } with array of all matchUps within a structure
+Returns all matchUps from a single structure within a draw.
 
-| Parameters     | Required | Type   | Description                                           |
-| :------------- | :------- | :----- | :---------------------------------------------------- |
-| structureId    | Required | string | id of structure for which matchUps are requeste4d     |
-| drawDefinition | Optional | object | if drawEngine does not already contain drawDefinition |
+```js
+const { matchUps } = drawEngine.allDrawMatchUps({
+  structureId,
+  context, // optional context to be added into matchUps
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  roundFilter, // filter to target matchUps from specified rounds
+  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  matchUpFilters, // attribute filters
+  contextFilters, // filters based on context attributes
+  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
+  tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
+  requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
+  tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+});
+```
 
 ---
 
 ## analyzeMatchUp
 
+Method used internally by the `scoreGovernor` and `keyValueScore`.
+
+```js
+const {
+  isActiveSet,
+  isExistingSet,
+  existingValue,
+  hasExistingValue,
+  isValidSideNumber,
+  completedSetsCount,
+  isCompletedMatchUp,
+  isLastSetWithValues,
+  validMatchUpOutcome,
+  matchUpScoringFormat,
+  calculatedWinningSide,
+  validMatchUpWinningSide,
+  completedSetsHaveValidOutcomes,
+  specifiedSetAnalysis: {
+    expectTiebreakSet,
+    expectTimedSet,
+    hasTiebreakCondition,
+    isCompletedSet,
+    isDecidingSet,
+    isTiebreakSet,
+    isValidSet,
+    isValidSetNumber,
+    isValidSetOutcome,
+    setFormat,
+    sideGameScores,
+    sideGameScoresCount,
+    sidePointScores,
+    sidePointScoresCount,
+    sideTiebreakScores,
+    sideTiebreakScoresCount,
+    winningSide,
+  },
+} = drawEngine.analyzeMatchUp({
+  matchUp,
+  sideNumber,
+  setNumber,
+  matchUpFormat,
+});
+```
+
 ---
 
 ## analyzeSet
+
+```js
+const {
+  expectTiebreakSet,
+  expectTimedSet,
+  hasTiebreakCondition,
+  isCompletedSet,
+  isDecidingSet,
+  isTiebreakSet,
+  isValidSet,
+  isValidSetNumber,
+  isValidSetOutcome,
+  setFormat,
+  sideGameScores,
+  sideGameScoresCount,
+  sidePointScores,
+  sidePointScoresCount,
+  sideTiebreakScores,
+  sideTiebreakScoresCount,
+  winningSide,
+} = drawEngine.analyzeSet({
+  setObject,
+  matchUpScoringFormat,
+});
+```
 
 ---
 
 ## assignDrawPosition
 
+```js
+drawEngine.assignDrawPosition({
+  structureId,
+  drawPosition,
+  participantId,
+});
+```
+
 ---
 
 ## assignDrawPositionBye
+
+```js
+drawEngine.assignDrawPositionBye({
+  structureId,
+  drawPosition,
+});
+```
 
 ---
 
 ## assignSeed
 
+```js
+result = drawEngine.assignSeed({
+  structureId,
+  seedNumber,
+  seedValue, // optional - display value, e.g. '5-8'
+  participantId,
+});
+```
+
 ---
 
 ## attachEventPolicy
+
+Attaches a policy to an event within a tournamentRecord.
+
+See [Policies](/concepts/policies).
+
+```js
+drawEngine.attachEventPolicy({
+  eventId,
+  policyDefinition: SEEDING_POLICY,
+});
+```
 
 ---
 
 ## attachPolicy
 
-Attaches a policy to a drawDefinition. Policies determine the rules for seeding, avoidance, etc.
+Attaches a policy to a drawDefinition.
 
-| Parameters       | Required | Type   | Description                            |
-| :--------------- | :------- | :----- | :------------------------------------- |
-| policyDefinition | Required | Object | A policy definition object (see below) |
+See [Policies](/concepts/policies).
 
-The structure of an **_assignment object_** is as follows:
-
-```json
-{
-  [policyName]: {      // e.g. 'seeding' or 'avoidance'
-    policyName: 'name'  // for 'seeding' can be the provider of the policy, e.g. 'ITF' or 'USTA'
-    ...attributes       // attributes relevant to the policyName
-  },
-}
+```js
+drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 ```
 
 ---
 
 ## automatedPositioning
 
----
+Positions participants in a draw structure. `drawEngine` is agnostic about the type of participants that are placed in a draw structure, but requires tournament participants for avoidance policies to work.
 
-## availablePlayoffRounds
-
-Returns rounds of a structure which are available for adding playoff structures.
+See [Policies](/concepts/policies).
 
 ```js
-const { playoffRounds, playoffRoundsRanges } = getAvailablePlayoffRounds({
-  drawDefinition,
+drawEngine.automatedPositioning({
   structureId,
+  participants, // optional - participants must be passed in for Avoidance Policies to be effective
 });
 ```
-
-...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
-
-```js
-    {
-      playoffRounds: [ 1, 2, 3 ],
-      playoffRoundsRanges: [
-        { round: 1, range: '9-16' },
-        { round: 2, range: '5-8' },
-        { round: 3, range: '3-4' }
-      ]
-    }
-
-```
-
----
-
-## calcTieMatchUpScore
 
 ---
 
@@ -323,6 +409,48 @@ let result = generateScoreString({
     addOutcomeString, // optional - tranform matchUpStatus into outcomeString appended to scoreString
     autoComplete: true, // optional - complete missing set score
   });
+```
+
+---
+
+## generateTieMatchUpScoreString
+
+Returns string representation of current tieMatchUp score.
+
+```js
+drawEngine.generateTieMatchUpScoreString({
+  matchUp,
+  separator, // optional - defaults to '-'
+});
+```
+
+---
+
+## getAvailablePlayoffRounds
+
+Returns rounds of a structure which are available for adding playoff structures.
+
+```js
+const {
+  playoffRounds,
+  playoffRoundsRanges,
+} = drawEngine.getAvailablePlayoffRounds({
+  structureId,
+});
+```
+
+...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
+
+```js
+    {
+      playoffRounds: [ 1, 2, 3 ],
+      playoffRoundsRanges: [
+        { round: 1, range: '9-16' },
+        { round: 2, range: '5-8' },
+        { round: 3, range: '3-4' }
+      ]
+    }
+
 ```
 
 ---
