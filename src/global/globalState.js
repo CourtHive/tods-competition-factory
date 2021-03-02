@@ -1,6 +1,13 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 import { executionAsyncId, createHook } from 'async_hooks';
 
+/**
+ * This code enables "global" state for each async execution context.
+ * If there are multiple requests running at the same (concurrently) we will create instance state for current async execution context.
+ * Sample on this page: https://stackabuse.com/using-async-hooks-for-request-context-handling-in-node-js/
+ * This approach was made in order to avoid changing existing code and "drill" instance state to methods requiring it.
+ */
+
 const store = new Map();
 const globalState = {
   devContext: false,
@@ -23,13 +30,13 @@ const asyncHook = createHook({
 asyncHook.enable();
 
 export function createInstanceState() {
-  const globalState = {
+  const instanceState = {
     subscriptions: {},
     notices: [],
   };
 
-  store.set(executionAsyncId(), globalState);
-  return globalState;
+  store.set(executionAsyncId(), instanceState);
+  return instanceState;
 }
 
 export function getInstanceState() {

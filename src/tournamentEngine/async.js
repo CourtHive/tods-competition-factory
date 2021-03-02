@@ -170,3 +170,5 @@ export function tournamentEngineAsync() {
     }
   }
 }
+
+export default tournamentEngineAsync;
