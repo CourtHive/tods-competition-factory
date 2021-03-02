@@ -1008,9 +1008,11 @@ const sortedStructures = drawDefinition.structures.sort(structureSort);
 
 ## swapDrawPositionAssignments
 
-- @param {string} drawId - id of drawDefinition within which structure is found
-- @param {string} structureId - id of structure of drawPosition
-- @param {number[]} drawPositions - drawPositions for which particpants will be swapped
+Swaps the `participantIds` of two `drawPositions`.
+
+```js
+drawEngine.swapDrawPositionAssignments({ structureId, drawPositions });
+```
 
 ---
 
