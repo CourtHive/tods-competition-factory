@@ -1124,7 +1124,9 @@ const { seedsCount, error } = getSeedsCount({
 Returns a deep copy of the current tournamentEngine state.
 
 ```js
-const { tournamentRecord } = tournamentEngine.getState();
+const { tournamentRecord } = tournamentEngine.getState({
+  convertExtensions, // optional - convert extensions to '_' prefixed attributes
+});
 ```
 
 ---

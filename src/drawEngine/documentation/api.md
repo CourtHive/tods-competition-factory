@@ -739,7 +739,9 @@ No parameters.
 Returns a deep copy of the current drawEngine state.
 
 ```js
-const { drawDefinition } = drawEngine.getState();
+const { drawDefinition } = drawEngine.getState({
+  convertExtensions, // optional - convert extensions to '_' prefixed attributes
+});
 ```
 
 ---
