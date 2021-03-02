@@ -22,12 +22,6 @@ Engines manage different concerns within a document structure representing a tou
 yarn install tods-competition-factory
 ```
 
-or
-
-```sh
-npm install tods-competition-factory
-```
-
 ### IMPORTANT
 
 **Competition Factory** is based on a combination of TODS v0.8 and elements which have been proposed for TODS v1.0. Until the v1.0 specification has been released there could be significant volatility in the JSON output of the methods included in this package.
