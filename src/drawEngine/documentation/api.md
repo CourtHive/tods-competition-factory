@@ -876,17 +876,30 @@ drawEngine.removeEntry({ participantId });
 
 ## reset
 
+Clears the drawEngine state.
+
+```js
+drawEngine.reset();
+```
+
 ---
 
 ## resetMatchUpTimeItems
+
+Removes all timeItems from a specified matchUp.
+
+```js
+drawEngine.resetMatchUpTimeItems({ matchUpId });
+```
 
 ---
 
 ## setDrawDescription
 
----
-
-## setDrawId
+```js
+const drawDescription = 'Draw Description';
+drawEngine.setDrawDescription({ description: drawDescription });
+```
 
 ---
 
