@@ -95,13 +95,6 @@ drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
 
 ## addPlayoffStructures
 
-- @param {object} drawDefinition - passed in automatically by drawEngine
-- @param {string} structureId - id of structure to which playoff structures are to be added
-- @param {number[]} roundNumbers - source roundNumbers which will feed target structures
-- @param {number[]} playoffPositions - positions to be played off
-- @param {object} playoffAttributes - mapping of exitProfile to structure names, e.g. 0-1-1 for SOUTH
-- @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
-
 ```js
 drawEngine.addPlayoffStructures({
   structureId,
