@@ -717,23 +717,7 @@ const {
 
 ## getStructureSeedAssignments
 
-Returns seedAssignments a specific structure based on structureId or structure
-
-| Parameters     | Required | Type   | Description                                     |
-| :------------- | :------- | :----- | :---------------------------------------------- |
-| drawDefinition | required | object | drawDefinition object                           |
-| structure      | Optional | object | Return seedAssignments for a specific structure |
-| structureId    | Optional | string | Return seedAssignments for a specific structure |
-
-The result is an array of objects which contain seeding details for all structures within the current draw
-
-| Object Attributes | Type   | Description                                                   |
-| :---------------- | :----- | :------------------------------------------------------------ |
-| structureId       | string | unique identifier for draw structure                          |
-| seedAssignments   | array  | array of assignment objects                                   |
-| stage             | string | draw stage within which structure appears                     |
-| stageSequence     | number | stageSequence within a draw stage                             |
-| seedLimit         | number | either defined structure seedLimit or number of drawPositions |
+Returns seedAssignments for a specific structure based on structureId or structure
 
 The structure of an **_assignment object_** is as follows:
 
@@ -748,18 +732,10 @@ The structure of an **_assignment object_** is as follows:
 The most basic usage is to retrieve seed assignments for a draw which has a single main stage structure
 
 ```js
-drawEngine.setState(drawDefinition);
-const structureId = drawDefinition.structures[0].structureId;
-const structureSeedingDetails = drawEngine.getStructureSeedAssignments({
+const { seedAssignments } = drawEngine.getStructureSeedAssignments({
   structureId,
 });
-const firstStructureDetails = structureSeedingDetails[0];
-const { seedAssignments } = firstStructureDetails;
 ```
-
----
-
-## getSetComplement
 
 ---
 
@@ -775,46 +751,67 @@ const { drawDefinition } = drawEngine.getState();
 
 ---
 
-## getRoundPresentationProfile
-
-Returns an object describing draw rounds such that they can be generated as independent columns
-
-- @param {boolean} isRoundRobin - flag to determine whether to generate for round robin or elimination structure
-- @param {object[]} matchUps - inContext matchUp objects, generally provided by **getAllStructureMatchUps()**
-
----
-
-## getStructureQualifiersCount
-
----
-
-## getTiebreakComplement
-
----
-
 ## initializeStructureSeedAssignments
+
+Creates the `seedAssignments` attribute for the specified structure.
+
+```js
+drawEngine.initializeStructureSeedAssignments({
+  structureId,
+  seedsCount,
+});
+```
 
 ---
 
 ## isCompletedStructure
 
-Expects drawEngine.setState(drawDefinition) has been previously called
 Returns boolean whether all matchUps in a given structure have been completed
 
-- @param {string} structureId
+```js
+const structureIsComplete = isCompletedStructure({
+  structureId,
+});
+```
 
 ---
 
 ## matchUpActions
 
-Return an array of all validActions for a given matchUp
+Return an array of all validActions for a specific matchUp.
 
-- @param {object} drawDefinition
-- @param {string} matchUpId - id of matchUp for which validActions will be returned
+```js
+const {
+  isByeMatchUp, // boolean; true if matchUp includes a BYE
+  structureIsComplete, // boolean; true if structure is ready for positioning
+  validActions, // array of possible actions given current matchUpStatus
+} = drawEngine.matchUpActions({
+  matchUpId,
+});
+
+const {
+  type, // 'REFEREE', 'SCHEDULE', 'PENALTY', 'STATUS', 'SCORE', 'START', 'END'.
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
+```
 
 ---
 
 ## matchUpDuration
+
+Calculates matchUp duration from START, STOP, RESUME, END timeItems.
+
+```js
+const {
+  milliseconds,
+  time, // string representation of elapsed time, e.g. "01:10:00" for an hour and 10 seconds
+  relevantTimeItems,
+} = drawEngine.matchUpDuration({
+  matchUp,
+});
+```
 
 ---
 
@@ -822,18 +819,50 @@ Return an array of all validActions for a given matchUp
 
 Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)
 
-Useful for automatically scoring all matchUps in connected draw structures
+Used by `mocksEngine` for automatically scoring all matchUps in connected draw structures as part of test suites.
 
-- @param {object} a - matchUp object
-- @param {object} b - matchUp object
+```js
+const { matchUps } = drawEngine.allDrawMatchUps();
+const sortedMatchUps = matchUps.sort(drawEngine.matchUpSort);
+```
 
 ---
 
 ## newDrawDefinition
 
+Creates a new drawDefinition within drawEngine state.
+
+```js
+const { drawId } = drawEngine.newDrawDefinition();
+const { drawDefinition } = drawEngine.getState();
+```
+
 ---
 
 ## positionActions
+
+```js
+const positionActions = drawEngine.positionActions({
+  structureId,
+  drawPosition,
+  policyDefinition: positionActionsPolicy, // optional - policy definiting what actions are allowed in client context
+});
+
+const {
+  isActiveDrawPosition, // boolean
+  isByePosition, // boolean
+  isDrawPosition, // boolean
+  hasPositionAssiged, // boolean
+  validActions,
+} = positionActions;
+
+const {
+  type, // 'ASSIGN', 'LUCKY', 'SWAP', 'BYE', 'REMOVE'
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
+```
 
 ---
 

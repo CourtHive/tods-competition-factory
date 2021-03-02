@@ -1247,8 +1247,6 @@ const {
 } = validAction;
 ```
 
-**strucutreIsComplete** indicates that a structure where participant progression is dependent on WIN_RATIO is ready for positioning in subsequent structure.
-
 ---
 
 ## mergeParticipants
@@ -1336,6 +1334,34 @@ tournamentEngine.modifyPenalty({ penaltyId, modifications });
 
 ---
 
+## modifyParticipantsSignInStatus
+
+Modify the signInStatus of multiple participants, referenced by participantId.
+
+```js
+tournamentEngine.modifyParticipantsSignInStatus({
+  participantIds: [participantId],
+  signInState: SIGNED_IN,
+});
+```
+
+---
+
+## modifySeedAssignment
+
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
+
+```js
+tournamentEngine.modifySeedAssignment({
+  drawId,
+  structureId,
+  participantId,
+  seedValue, // display representation such as '5-8'
+});
+```
+
+---
+
 ## newTournamentRecord
 
 Creates a new tournamentRecord in tournamentEngine state.
@@ -1373,30 +1399,30 @@ const {
 
 ---
 
-## modifyParticipantsSignInStatus
-
-Modify the signInStatus of multiple participants, referenced by participantId.
+## positionActions
 
 ```js
-tournamentEngine.modifyParticipantsSignInStatus({
-  participantIds: [participantId],
-  signInState: SIGNED_IN,
-});
-```
-
----
-
-## modifySeedAssignment
-
-Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
-
-```js
-tournamentEngine.modifySeedAssignment({
+const positionActions = tournamentEngine.positionActions({
   drawId,
   structureId,
-  participantId,
-  seedValue, // display representation such as '5-8'
+  drawPosition,
+  policyDefinition: positionActionsPolicy, // optional - policy definiting what actions are allowed in client context
 });
+
+const {
+  isActiveDrawPosition, // boolean
+  isByePosition, // boolean
+  isDrawPosition, // boolean
+  hasPositionAssiged, // boolean
+  validActions,
+} = positionActions;
+
+const {
+  type, // 'ASSIGN', 'LUCKY', 'SWAP', 'BYE', 'REMOVE'
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
 ```
 
 ---
