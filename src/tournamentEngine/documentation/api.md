@@ -863,6 +863,16 @@ const {
 
 ---
 
+## getEventAppliedPolicies
+
+```js
+const { appliedPolicies } = tournamentEngine.getEventAppliedPolicies({
+  eventId,
+});
+```
+
+---
+
 ## getEvents
 
 Return **deepCopies** of all events in a tournament record.
@@ -1679,6 +1689,18 @@ Accepts an ISO String Date;
 
 ```js
 tournamentEngine.setTournamentStartDate({ StartDate });
+```
+
+---
+
+## toggleParticipantCheckInState
+
+```js
+tournamentEngine.toggleParticipantCheckInState({
+  drawId,
+  matchUpId,
+  participantId,
+});
 ```
 
 ---

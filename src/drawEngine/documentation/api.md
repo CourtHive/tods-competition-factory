@@ -569,39 +569,110 @@ const {
 
 ## getDrawStructures
 
----
-
-## getEventAppliedPolicies
+```js
+const { structures } = drawEngine.getDrawStructures({
+  stage, // optional - filter by stage
+  stageSequence, // optiona - filter by stageSequence
+});
+```
 
 ---
 
 ## getMatchUpContextIds
 
+Convenience method to find a `matchUp` by `matchUpId` and return "context ids". Does NOT require that drawEngine state be set, but does require an array of "inContext" `matchUps`.
+
+```js
+const {
+  matchUpId,
+  drawId,
+  eventId,
+  structureId,
+  tournamentId,
+} = drawEngine.getMatchUpContextIds({ matchUps, matchUpId });
+```
+
 ---
 
 ## getMatchUpParticipantIds
+
+Convenience function; requires inContext matchUp.
+
+```js
+const {
+  sideParticipantIds,
+  individualParticipantIds,
+} = drawEngine.getMatchUpParticipantIds({ matchUp });
+```
 
 ---
 
 ## getMatchUpScheduleDetails
 
+Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.
+
+```js
+const {
+  schedule: {
+    time,
+    courtId,
+    venueId,
+    startTime,
+    endTime,
+    milliseconds,
+    scheduledDate,
+    scheduledTime,
+  },
+} = drawEngine.getMatchUpScheduleDetails({ matchUp });
+```
+
 ---
 
 ## getNextSeedBlock
+
+Returns the next block of drawPositions which are to be assigned seeded participants.
+
+```js
+const {
+  nextSeedBlock,
+  unplacedSeedParticipantIds,
+  unplacedSeedNumbers,
+  unfilledPositions,
+  unplacedSeedAssignments,
+} = drawEngine.getNextSeedBlock({
+  structureId,
+});
+```
 
 ---
 
 ## getNextUnfilledDrawPositions
 
+Returns the next valid block of unfilled drawPositions. Useful for UI to give visual indication of drawPostions valid to assign.
+
+```js
+const { nextUnfilledDrawPositions } = drawEngine.getNextUnfilledDrawPositions({
+  structureId,
+});
+```
+
 ---
 
 ## getParticipantIdFinishingPositions
 
-Returns the range of finishing positions for all participants
+Returns the Range of finishing positions possible for all participantIds within a draw
 
-- @param {string} drawId - drawId of target draw within a tournament
-- @param {object[]} tournamentParticipants - optional - to return matchUps with inContext participant details
-- @param {boolean} byeAdvancements - whether or not to consider byeAdancements in returns finishingPositionRange
+```js
+const idMap = drawEngine.getParticipantIdFinishingPositions({
+  byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
+});
+
+const {
+  relevantMatchUps,
+  finishingPositionRanges,
+  finishingPositionRange,
+} = idMap[participantId];
+```
 
 ---
 

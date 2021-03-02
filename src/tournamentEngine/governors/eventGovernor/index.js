@@ -59,6 +59,7 @@ import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { getScaledEntries } from './entries/getScaledEntries';
+import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 
 const eventGovernor = {
   addEvent,
@@ -116,6 +117,7 @@ const eventGovernor = {
 
   checkInParticipant,
   checkOutParticipant,
+  toggleParticipantCheckInState,
 
   generateDrawDefinition,
   regenerateDrawDefinition,
