@@ -623,7 +623,7 @@ const {
 ## findCourt
 
 ```js
-const { court } = findCourt({ courtId });
+const { court } = tournamentEngine.findCourt({ courtId });
 ```
 
 ---
@@ -631,9 +631,13 @@ const { court } = findCourt({ courtId });
 ## findMatchUp
 
 ```js
-const { matchUp } = tournamentEngine.findMatchUp({
+const {
+  matchUp,
+  structure, // returned for convenience
+} = tournamentEngine.findMatchUp({
   drawId,
   matchUpId,
+  inContext, // optional - boolean - returns matchUp with additional attributes
 });
 ```
 

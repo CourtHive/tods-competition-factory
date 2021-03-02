@@ -344,39 +344,140 @@ drawEngine.automatedPositioning({
 
 ## checkInParticipant
 
+Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.
+
+```js
+drawEngine.checkInParticipant({
+  matchUpId,
+  participantId,
+});
+```
+
 ---
 
 ## checkOutParticipant
+
+```js
+drawEngine.checkOutParticipant({
+  matchUpId,
+  participantId,
+});
+```
 
 ---
 
 ## clearDrawPosition
 
----
+Removes a `participantId` or `bye` from a specified `drawPosition` within a `structure` or, optionally, removes a specified `participantId` from a `structure`.
 
-## createQualifyingLink
+```js
+drawEngine.clearDrawPosition({
+  structureId,
+  drawPosition, // optional if participantId is provided
+  participantId, // optional if drawPosition is provided
+});
+```
 
 ---
 
 ## devContext
 
-Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging
+Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables logging
 
 ```js
-tournamentEngine.devContext(true);
+drawEngine.devContext(true);
 ```
 
 ---
 
 ## drawMatchUps
 
+Returns categorized matchUps from all structures within a draw.
+
+```js
+const {
+  upcomingMatchUps,
+  pendingMatchUps,
+  completedMatchUps,
+  abandonedMatchUps,
+  byeMatchUps,
+} = drawEngine.allDrawMatchUps({
+  context, // optional context to be added into matchUps
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  roundFilter, // filter to target matchUps from specified rounds
+  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  matchUpFilters, // attribute filters
+  contextFilters, // filters based on context attributes
+  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
+  tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
+  requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
+  tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+});
+```
+
 ---
 
 ## findMatchUp
 
+```js
+const {
+  matchUp,
+  structure, // returned for convenience
+} = drawEngine.findMatchUp({
+  matchUpId,
+  inContext, // optional - boolean - returns matchUp with additional attributes
+  tournamentParticipants, // optional - enables inContext matchUp to contain full participant objects
+});
+```
+
 ---
 
 ## generateDrawType
+
+Convenience method to generate pre-defined drawTypes.
+
+For more information on `feedPolicy` see [Feed Policies](/drawEngine/feedPolicies).
+
+```js
+drawEngine.generateDrawType({
+  drawType, // defaults to SINGLE_ELIMINATION
+
+  matchUpFormat, // optional - default matchUpFormat
+  playoffMatchUpFormat, // optional - default playoffMatchUpFormat
+
+  seedingProfile, // optional - applies only to WATERFALL seeding in ROUND_ROBIN structures
+  feedPolicy, // optional - provides fine-grain control for FEED_IN_CONSOLATION feed links
+
+  qualifyingRound, // optional - for qualifying draw structures, roundNumber to win to qualify
+  qualifyingPositions, // optional - number of drawPositions to be filled by qualifiers
+  finishingPositionLimit, // optional - for playoff structures, limit to the number of positions to be played off
+
+  structureOptions: {
+    groupSize, // e.g. 4 participants per group
+    groupSizeLimit: 8,
+  },
+
+  goesTo, // optional - generate winnerGoesTo and loserGoesTo attributes
+  uuids, // optional - array of UUIDs to be used for structureIds and matchUpIds
+
+  stage, // optional - defaults to MAIN
+  structureName, // optional - defaults to stage
+});
+```
+
+---
+
+## generateQualifyingLink
+
+Generates and adds a `link` to `drawDefinition.links`.
+
+```js
+drawEngine.generateQualifyingLink({
+  qualifyingStructureId,
+  mainStructureId,
+  qualifyingRound,
+});
+```
 
 ---
 
@@ -456,6 +557,13 @@ const {
 ---
 
 ## getCheckedInParticipantIds
+
+```js
+const {
+  allParticipantsCheckedIn, // boolean
+  checkedInParticipantIds, // array of participantIds
+} = drawEngine.getCheckedInParticipantIds({ matchUp });
+```
 
 ---
 
