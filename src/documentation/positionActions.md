@@ -11,5 +11,6 @@ const { positionActions } = tournamentEngine.positionActions({
   drawId,
   eventId,
   drawPosition,
+  policyDefinition: positionActionsPolicy, // optional - policy definiting what actions are allowed in client context
 });
 ```

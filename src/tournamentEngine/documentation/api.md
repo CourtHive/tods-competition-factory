@@ -385,6 +385,45 @@ Used when interactively creating `{ participantType: PAIR }` participants.
 
 ---
 
+## attachEventPolicy
+
+Attaches a policy to an event within a tournamentRecord.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.attachEventPolicy({
+  eventId,
+  policyDefinition: SEEDING_POLICY,
+});
+```
+
+---
+
+## attachPolicy
+
+Attaches a policy to a tournamentRecord.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+```
+
+---
+
+## automatedPositioning
+
+Positions participants in a draw structure.
+
+See [Policies](/concepts/policies).
+
+```js
+tournamentEngine.automatedPositioning({ drawId, structureId });
+```
+
+---
+
 ## bulkMatchUpStatusUpdate
 
 Provides the ability to update the outcomes of multiple matchUps at once.
@@ -584,7 +623,7 @@ const {
 ## findCourt
 
 ```js
-const { court } = findCourt({ courtId });
+const { court } = tournamentEngine.findCourt({ courtId });
 ```
 
 ---
@@ -592,9 +631,13 @@ const { court } = findCourt({ courtId });
 ## findMatchUp
 
 ```js
-const { matchUp } = tournamentEngine.findMatchUp({
+const {
+  matchUp,
+  structure, // returned for convenience
+} = tournamentEngine.findMatchUp({
   drawId,
   matchUpId,
+  inContext, // optional - boolean - returns matchUp with additional attributes
 });
 ```
 
@@ -721,6 +764,36 @@ const {
 
 ---
 
+## getAvailablePlayoffRounds
+
+Returns rounds of a structure which are available for adding playoff structures.
+
+```js
+const {
+  playoffRounds,
+  playoffRoundsRanges,
+} = tournamentEngine.getAvailablePlayoffRounds({
+  drawId,
+  structureId,
+});
+```
+
+...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
+
+```js
+    {
+      playoffRounds: [ 1, 2, 3 ],
+      playoffRoundsRanges: [
+        { round: 1, range: '9-16' },
+        { round: 2, range: '5-8' },
+        { round: 3, range: '3-4' }
+      ]
+    }
+
+```
+
+---
+
 ## getCourtInfo
 
 ```js
@@ -787,6 +860,16 @@ const {
 
 - @param {string} eventId - id of the event to retreive
 - @param {object} context - attributes to be added into each event object.
+
+---
+
+## getEventAppliedPolicies
+
+```js
+const { appliedPolicies } = tournamentEngine.getEventAppliedPolicies({
+  eventId,
+});
+```
 
 ---
 
@@ -1041,7 +1124,9 @@ const { seedsCount, error } = getSeedsCount({
 Returns a deep copy of the current tournamentEngine state.
 
 ```js
-const { tournamentRecord } = tournamentEngine.getState();
+const { tournamentRecord } = tournamentEngine.getState({
+  convertExtensions, // optional - convert extensions to '_' prefixed attributes
+});
 ```
 
 ---
@@ -1164,8 +1249,6 @@ const {
 } = validAction;
 ```
 
-**strucutreIsComplete** indicates that a structure where participant progression is dependent on WIN_RATIO is ready for positioning in subsequent structure.
-
 ---
 
 ## mergeParticipants
@@ -1253,6 +1336,34 @@ tournamentEngine.modifyPenalty({ penaltyId, modifications });
 
 ---
 
+## modifyParticipantsSignInStatus
+
+Modify the signInStatus of multiple participants, referenced by participantId.
+
+```js
+tournamentEngine.modifyParticipantsSignInStatus({
+  participantIds: [participantId],
+  signInState: SIGNED_IN,
+});
+```
+
+---
+
+## modifySeedAssignment
+
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
+
+```js
+tournamentEngine.modifySeedAssignment({
+  drawId,
+  structureId,
+  participantId,
+  seedValue, // display representation such as '5-8'
+});
+```
+
+---
+
 ## newTournamentRecord
 
 Creates a new tournamentRecord in tournamentEngine state.
@@ -1290,30 +1401,30 @@ const {
 
 ---
 
-## modifyParticipantsSignInStatus
-
-Modify the signInStatus of multiple participants, referenced by participantId.
+## positionActions
 
 ```js
-tournamentEngine.modifyParticipantsSignInStatus({
-  participantIds: [participantId],
-  signInState: SIGNED_IN,
-});
-```
-
----
-
-## modifySeedAssignment
-
-Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
-
-```js
-tournamentEngine.modifySeedAssignment({
+const positionActions = tournamentEngine.positionActions({
   drawId,
   structureId,
-  participantId,
-  seedValue, // display representation such as '5-8'
+  drawPosition,
+  policyDefinition: positionActionsPolicy, // optional - policy definiting what actions are allowed in client context
 });
+
+const {
+  isActiveDrawPosition, // boolean
+  isByePosition, // boolean
+  isDrawPosition, // boolean
+  hasPositionAssiged, // boolean
+  validActions,
+} = positionActions;
+
+const {
+  type, // 'ASSIGN', 'LUCKY', 'SWAP', 'BYE', 'REMOVE'
+  method, // tournamentEngine method relating to action type
+  payload, // attributes to be passed to method
+  // additional method-specific options for values to be added to payload when calling method
+} = validAction;
 ```
 
 ---
@@ -1456,7 +1567,7 @@ tournamentEngine.setEventDefaultMatchUpFormat({
 
 ## setMatchUpStatus
 
-- Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
 
 ```js
 const outcome = {
@@ -1606,6 +1717,18 @@ Accepts an ISO String Date;
 
 ```js
 tournamentEngine.setTournamentStartDate({ StartDate });
+```
+
+---
+
+## toggleParticipantCheckInState
+
+```js
+tournamentEngine.toggleParticipantCheckInState({
+  drawId,
+  matchUpId,
+  participantId,
+});
 ```
 
 ---

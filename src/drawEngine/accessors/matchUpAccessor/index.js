@@ -4,5 +4,5 @@ export { getMatchUpScheduleDetails } from './matchUpScheduleDetails';
 export { getMatchUp, getCollectionPositionMatchUps } from './matchUps';
 export { scheduledMatchUpTime } from './scheduledTime';
 export { scheduledMatchUpDate } from './scheduledDate';
-export { calcTieMatchUpScore } from './calcTieMatchUpScore';
+export { generateTieMatchUpScoreString } from './generateTieMatchUpScoreString';
 export { getMatchUpType } from './getMatchUpType';

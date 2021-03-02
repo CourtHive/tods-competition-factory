@@ -1,6 +1,6 @@
 import { WINNER, DRAW } from '../../../constants/drawDefinitionConstants';
 
-function createQualifyingLink({
+function generateQualifyingLink({
   qualifyingStructureId,
   mainStructureId,
   qualifyingRound,
@@ -24,7 +24,7 @@ function createQualifyingLink({
 }
 
 const linkGovernor = {
-  createQualifyingLink,
+  generateQualifyingLink,
 };
 
 export default linkGovernor;

@@ -1,3 +1,5 @@
+import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { intersection } from '../../../utilities';
 import {
@@ -7,11 +9,9 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
-import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
-// 2. rmove any advanced participant or BYE from winnerMatchUp
+// 2. remove any advanced participant or BYE from winnerMatchUp
 // 3. remove any BYE sent to linked consolation from winnerMatchUp
 
 export function removeDoubleWalkover({

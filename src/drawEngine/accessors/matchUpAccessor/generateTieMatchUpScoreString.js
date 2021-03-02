@@ -1,4 +1,4 @@
-export function calcTieMatchUpScore({ matchUp, separator = '-' }) {
+export function generateTieMatchUpScoreString({ matchUp, separator = '-' }) {
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];

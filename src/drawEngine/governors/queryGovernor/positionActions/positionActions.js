@@ -209,10 +209,15 @@ export function positionActions({
       }
     }
 
+    const validToAssignSeed =
+      structure.stage === QUALIFYING ||
+      (structure.stage === MAIN && structure.stageSequence === 1);
+
     if (
       !isByePosition &&
       isAvailableAction({ policyActions, action: SEED_VALUE }) &&
-      isValidSeedPosition({ drawDefinition, structureId, drawPosition })
+      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+      validToAssignSeed
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,

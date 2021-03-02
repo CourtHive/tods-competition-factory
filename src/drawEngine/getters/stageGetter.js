@@ -86,7 +86,7 @@ export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
   });
   return drawSize && drawSize - qualifyingPositions;
 }
-export function stageAlternates({ stage, drawDefinition }) {
+export function stageAlternatesCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
   return entryProfile[stage]?.alternates || 0;
 }
@@ -246,7 +246,7 @@ export function stageSpace({
   entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (entryStatus === ALTERNATE) {
-    if (stageAlternates({ stage, drawDefinition })) {
+    if (stageAlternatesCount({ stage, drawDefinition })) {
       return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
     } else {
       return { error: 'Alternates not allowed in stage' };
