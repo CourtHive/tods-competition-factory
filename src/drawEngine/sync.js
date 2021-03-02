@@ -28,6 +28,7 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+import { createInstanceState } from '../global/globalState';
 
 let drawDefinition;
 let tournamentParticipants = [];
@@ -71,6 +72,7 @@ function validDefinitionKeys(definition) {
 }
 
 export const drawEngine = (function () {
+  createInstanceState();
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
