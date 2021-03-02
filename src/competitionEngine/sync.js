@@ -3,7 +3,6 @@ import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
-  createInstanceState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -23,8 +22,6 @@ function setState(records, deepCopyOption = true) {
 }
 
 export const competitionEngine = (function () {
-  createInstanceState();
-
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
