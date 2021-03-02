@@ -1565,7 +1565,7 @@ tournamentEngine.setEventDefaultMatchUpFormat({
 
 ## setMatchUpStatus
 
-- Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
+Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
 
 ```js
 const outcome = {

@@ -905,29 +905,82 @@ drawEngine.setDrawDescription({ description: drawDescription });
 
 ## setMatchUpFormat
 
+Sets the default `matchUpFormat` for a `drawDefintion` or a `structure`, or for a specific `matchUp`.
+
+```js
+drawEngine.setMatchUpFormat({
+  matchUpFormat,
+  matchUpType, // optional - insures that a matchUpFormat is not set on a tieMatchUp
+  tieFormat, // optional - when setting the format for a tieMatchUp
+
+  structureId, // optional - if structureId is present and not matchUpId is present, then set for structure
+  matchUpId, // optional - if matchUpId is present then only set for matchUp
+});
+```
+
 ---
 
 ## setMatchUpStatus
+
+Sets either matchUpStatus or score and winningSide. Handles any winner/loser participant movements within or across structures.
+
+```js
+drawEngine.setMatchUpStatus({
+  matchUpId,
+  matchUpTieId, // optional - if part of a TIE matchUp
+  matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  winningSide,
+});
+```
 
 ---
 
 ## setParticipants
 
+Participants are not managed by the `drawEngine`, but they can be used when returning 'inContext' matchUps as well as when automated positioning relies on avoidance policies.
+
+```js
+drawEngine.setParticipants(participants);
+```
+
 ---
 
-## setStageAlternates
+## setStageAlternatesCount
+
+Sets an (optional) limit to the number of accepted alternates.
+
+Modifies the 'entryProfile' of a drawDefinition before the structures have been generated.
+
+```js
+drawEngine.setStageAlternatesCount({ alternatesCount: 8 });
+```
 
 ---
 
 ## setStageDrawSize
 
+Modifies the 'entryProfile' of a drawDefinition before the structures have been generated.
+
+```js
+drawEngine.setStageDrawSize({ stage: QUALIFYING, drawSize: 8 });
+drawEngine.setStageDrawSize({ stage: MAIN, drawSize: 16 });
+```
+
 ---
 
 ## setStageQualifiersCount
 
+```js
+drawEngine.setStageQualifiersCount({ qualifiersCount: 4 });
+```
+
 ---
 
 ## setStageWildcardsCount
+
+```js
+drawEngine.setStageWildcardsCount({ wildcardsCount: 2 });
+```
 
 ---
 
@@ -970,9 +1023,42 @@ const sortedStructures = drawDefinition.structures.sort(structureSort);
 
 ## getStructureMatchUps
 
+Returns categorized matchUps from a single structure.
+
+```js
+const {
+  upcomingMatchUps,
+  pendingMatchUps,
+  completedMatchUps,
+  abandonedMatchUps,
+  byeMatchUps,
+} = drawEngine.allDrawMatchUps({
+  structureId,
+  context, // optional context to be added into matchUps
+  inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+  roundFilter, // filter to target matchUps from specified rounds
+  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  matchUpFilters, // attribute filters
+  contextFilters, // filters based on context attributes
+  includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
+  tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
+  requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
+  tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+});
+```
+
 ---
 
 ## tallyParticipantResults
+
+Method used to calculate finishing positions within a ROUND_ROBIN group.
+
+```js
+const { participantResults } = drawEngine.tallyParticipantResults({
+  matchUps: structureMatchUps,
+  matchUpFormat,
+});
+```
 
 ---
 
@@ -988,6 +1074,10 @@ drawEngine.validDrawPositions({ matchUps });
 
 ## version
 
-Returns NPM package version
+Returns NPM package version. Can be used in configurations that utilize Competition Factory engines on both client and server to ensure equivalency.
+
+```js
+const version = drawEngine.version();
+```
 
 ---

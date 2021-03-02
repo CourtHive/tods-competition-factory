@@ -42,21 +42,27 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   return SUCCESS;
 }
 
-export function setStageAlternates({ drawDefinition, stage, alternates }) {
+export function setStageAlternatesCount({
+  drawDefinition,
+  stage,
+  alternatesCount,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) return { error: INVALID_STAGE };
 
   modifyEntryProfile({
     drawDefinition,
-    attributes: [{ [stage]: { alternates } }],
+    attributes: [{ [stage]: { alternates: alternatesCount } }],
   });
 
-  if (!alternates) {
+  if (!alternatesCount) {
     drawDefinition.entries =
       drawDefinition.entries?.filter((entry) => {
         return entry.entryStatus !== ALTERNATE;
       }) || [];
   }
+
+  return SUCCESS;
 }
 
 export function setStageWildcardsCount({
