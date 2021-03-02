@@ -7,7 +7,7 @@
 
 import { addDrawEntry, addDrawEntries } from './addingDrawEntries';
 import { modifySeedAssignment } from './modifySeedAssignment';
-import { removeEntry } from './removingDrawEntries';
+import { removeEntry } from './removeEntry';
 import { assignSeed } from './seedAssignment';
 import {
   setStageQualifiersCount,

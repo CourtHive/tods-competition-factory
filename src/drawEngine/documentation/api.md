@@ -868,6 +868,10 @@ const {
 
 ## removeEntry
 
+```js
+drawEngine.removeEntry({ participantId });
+```
+
 ---
 
 ## reset
@@ -934,11 +938,12 @@ Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts
 
 ## structureSort
 
-Sorting function to arrange structures by positionAssignments count (size) then stageSequence
+Sorting function to arrange structures by stage, positionAssignments count (size) then stageSequence
 Used internally to order Compass structures
 
-- @param {object} a - matchUp object
-- @param {object} b - matchUp object
+```js
+const sortedStructures = drawDefinition.structures.sort(structureSort);
+```
 
 ---
 
