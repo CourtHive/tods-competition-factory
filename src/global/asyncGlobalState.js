@@ -1,8 +1,6 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 import { executionAsyncId, createHook } from 'async_hooks';
 
-console.log('LOADED ASYNC STATE');
-
 /**
  * This code enables "global" state for each async execution context.
  * If there are multiple requests running at the same (concurrently) we will create instance state for current async execution context.
@@ -10,17 +8,17 @@ console.log('LOADED ASYNC STATE');
  * This approach was made in order to avoid changing existing code and "drill" instance state to methods requiring it.
  */
 
-const store = new Map();
+const asyncCtxStateMap = new Map();
 
 const asyncHook = createHook({
   init: (asyncId, _, _triggerAsyncId) => {
-    if (store.has(_triggerAsyncId)) {
-      store.set(asyncId, store.get(_triggerAsyncId));
+    if (asyncCtxStateMap.has(_triggerAsyncId)) {
+      asyncCtxStateMap.set(asyncId, asyncCtxStateMap.get(_triggerAsyncId));
     }
   },
   destroy: (asyncId) => {
-    if (store.has(asyncId)) {
-      store.delete(asyncId);
+    if (asyncCtxStateMap.has(asyncId)) {
+      asyncCtxStateMap.delete(asyncId);
     }
   },
 });
@@ -42,11 +40,11 @@ export function createInstanceState() {
     notices: [],
   };
 
-  store.set(executionAsyncId(), instanceState);
+  asyncCtxStateMap.set(executionAsyncId(), instanceState);
 }
 
 function getInstanceState() {
-  return store.get(executionAsyncId());
+  return asyncCtxStateMap.get(executionAsyncId());
 }
 
 export function setSubscriptions({ subscriptions = {} } = {}) {

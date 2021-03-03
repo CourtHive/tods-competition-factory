@@ -1,7 +1,5 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 
-console.log('LOADED SYNC STATE');
-
 const syncGlobalState = {
   subscriptions: {},
   notices: [],
