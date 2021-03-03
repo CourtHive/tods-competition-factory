@@ -10,6 +10,7 @@ import structureGovernor from './governors/structureGovernor';
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import {
+  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -28,6 +29,8 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+
+initiateGlobalState(true);
 
 let drawDefinition;
 let tournamentParticipants = [];

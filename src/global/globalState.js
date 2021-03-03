@@ -1,122 +1,52 @@
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
-import { executionAsyncId, createHook } from 'async_hooks';
+let globalStateProvider;
 
-/**
- * This code enables "global" state for each async execution context.
- * If there are multiple requests running at the same (concurrently) we will create instance state for current async execution context.
- * Sample on this page: https://stackabuse.com/using-async-hooks-for-request-context-handling-in-node-js/
- * This approach was made in order to avoid changing existing code and "drill" instance state to methods requiring it.
- */
-
-const store = new Map();
-const globalState = {
-  devContext: false,
-  deepCopy: true,
-};
-
-const asyncHook = createHook({
-  init: (asyncId, _, _triggerAsyncId) => {
-    if (store.has(_triggerAsyncId)) {
-      store.set(asyncId, store.get(_triggerAsyncId));
-    }
-  },
-  destroy: (asyncId) => {
-    if (store.has(asyncId)) {
-      store.delete(asyncId);
-    }
-  },
-});
-
-asyncHook.enable();
-
-export function createInstanceState() {
-  const instanceState = {
-    subscriptions: {},
-    notices: [],
-  };
-
-  store.set(executionAsyncId(), instanceState);
-  return instanceState;
+export function initiateGlobalState(async = false) {
+  if (async) globalStateProvider = require('../global/asyncGlobalState');
+  else globalStateProvider = require('../global/syncGlobalState');
 }
 
-export function getInstanceState() {
-  return store.get(executionAsyncId());
+export function createInstanceState() {
+  //Only applicable for async
+  if (globalStateProvider.createInstanceState)
+    globalStateProvider.createInstanceState();
 }
 
 export function getDevContext() {
-  return globalState.devContext;
+  return globalStateProvider.getDevContext();
 }
 
 export function setDevContext(value) {
-  if (typeof value === 'boolean') {
-    globalState.devContext = value;
-  }
+  globalStateProvider.setDevContext(value);
 }
 
 export function setDeepCopy(value) {
-  if (typeof value === 'boolean') {
-    globalState.deepCopy = value;
-  }
+  globalStateProvider.setDeepCopy(value);
 }
 
 export function getDeepCopy() {
-  return globalState.deepCopy;
+  return globalStateProvider.getDeepCopy();
 }
 
-export function setSubscriptions({ subscriptions = {} } = {}) {
-  const instanceState = getInstanceState();
-
-  if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
-  Object.keys(subscriptions).forEach((subscription) => {
-    instanceState.subscriptions[subscription] = subscriptions[subscription];
-  });
+export function setSubscriptions(subscription) {
+  globalStateProvider.setSubscriptions(subscription);
 }
 
-export function addNotice({ topic, payload }) {
-  if (typeof topic !== 'string' || typeof payload !== 'object') {
-    return;
-  }
-
-  const instanceState = getInstanceState();
-
-  if (!instanceState.subscriptions[topic]) return;
-  instanceState.notices.push({ topic, payload });
+export function addNotice(notice) {
+  globalStateProvider.addNotice(notice);
 }
 
-export function getNotices({ topic }) {
-  if (typeof topic !== 'string') return [];
-
-  const instanceState = getInstanceState();
-
-  const notices = instanceState.notices
-    .filter((notice) => notice.topic === topic)
-    .map((notice) => notice.payload);
-  return notices.length && notices;
+export function getNotices(topic) {
+  return globalStateProvider.getNotices(topic);
 }
 
 export function deleteNotices() {
-  const instanceState = getInstanceState();
-  instanceState.notices = [];
+  globalStateProvider.deleteNotices();
 }
 
 export function getTopics() {
-  const instanceState = getInstanceState();
-  const topics = Object.keys(instanceState.subscriptions);
-  return { topics };
+  return globalStateProvider.getTopics();
 }
 
-export function callListener({ topic, notices }) {
-  const instanceState = getInstanceState();
-  const method = instanceState.subscriptions[topic];
-  if (method && typeof method === 'function') {
-    method(notices);
-  }
-}
-
-export async function callListenerAsync({ topic, notices }) {
-  const instanceState = getInstanceState();
-  const method = instanceState.subscriptions[topic];
-  if (method && typeof method === 'function') {
-    await method(notices);
-  }
+export function callListener(payload) {
+  globalStateProvider.callListener(payload);
 }

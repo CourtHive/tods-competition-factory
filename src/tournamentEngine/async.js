@@ -12,6 +12,7 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 import {
+  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -26,6 +27,8 @@ import {
 import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import { createInstanceState } from '../global/globalState';
+
+initiateGlobalState(true);
 
 export function tournamentEngineAsync() {
   let tournamentRecord;

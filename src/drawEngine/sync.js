@@ -10,7 +10,7 @@ import structureGovernor from './governors/structureGovernor';
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { notifySubscribers } from '../global/notifySubscribers';
 import {
-  createInstanceState,
+  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -29,6 +29,8 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+
+initiateGlobalState();
 
 let drawDefinition;
 let tournamentParticipants = [];
@@ -72,7 +74,6 @@ function validDefinitionKeys(definition) {
 }
 
 export const drawEngine = (function () {
-  createInstanceState();
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),

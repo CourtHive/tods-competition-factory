@@ -12,7 +12,7 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 import {
-  createInstanceState,
+  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -26,6 +26,8 @@ import {
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribers } from '../global/notifySubscribers';
+
+initiateGlobalState();
 
 let tournamentRecord;
 
@@ -49,7 +51,6 @@ function setState(tournament, deepCopyOption) {
 }
 
 export const tournamentEngine = (function () {
-  createInstanceState();
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
