@@ -28,11 +28,11 @@ import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import { createInstanceState } from '../global/globalState';
 
-initiateGlobalState(true);
-
 export function tournamentEngineAsync() {
-  let tournamentRecord;
+  initiateGlobalState(true);
   createInstanceState();
+
+  let tournamentRecord;
   const policies = {};
 
   function newTournamentRecord(props) {

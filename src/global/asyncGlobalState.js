@@ -11,10 +11,6 @@ console.log('LOADED ASYNC STATE');
  */
 
 const store = new Map();
-const globalState = {
-  devContext: false,
-  deepCopy: true,
-};
 
 const asyncHook = createHook({
   init: (asyncId, _, _triggerAsyncId) => {
@@ -31,6 +27,15 @@ const asyncHook = createHook({
 
 asyncHook.enable();
 
+export default {
+  setSubscriptions,
+  addNotice,
+  getNotices,
+  deleteNotices,
+  getTopics,
+  callListener,
+};
+
 export function createInstanceState() {
   const instanceState = {
     subscriptions: {},
@@ -42,26 +47,6 @@ export function createInstanceState() {
 
 function getInstanceState() {
   return store.get(executionAsyncId());
-}
-
-export function getDevContext() {
-  return globalState.devContext;
-}
-
-export function setDevContext(value) {
-  if (typeof value === 'boolean') {
-    globalState.devContext = value;
-  }
-}
-
-export function setDeepCopy(value) {
-  if (typeof value === 'boolean') {
-    globalState.deepCopy = value;
-  }
-}
-
-export function getDeepCopy() {
-  return globalState.deepCopy;
 }
 
 export function setSubscriptions({ subscriptions = {} } = {}) {

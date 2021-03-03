@@ -1,3 +1,8 @@
+const globalState = {
+  devContext: false,
+  deepCopy: true,
+};
+
 let globalStateProvider;
 
 export function initiateGlobalState(async = false) {
@@ -12,19 +17,23 @@ export function createInstanceState() {
 }
 
 export function getDevContext() {
-  return globalStateProvider.getDevContext();
+  return globalState.devContext;
 }
 
 export function setDevContext(value) {
-  globalStateProvider.setDevContext(value);
+  if (typeof value === 'boolean') {
+    globalState.devContext = value;
+  }
 }
 
 export function setDeepCopy(value) {
-  globalStateProvider.setDeepCopy(value);
+  if (typeof value === 'boolean') {
+    globalState.deepCopy = value;
+  }
 }
 
 export function getDeepCopy() {
-  return globalStateProvider.getDeepCopy();
+  return globalState.deepCopy;
 }
 
 export function setSubscriptions(subscription) {

@@ -3,7 +3,6 @@ import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
-  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -13,8 +12,6 @@ import {
 
 import { INVALID_OBJECT } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-
-initiateGlobalState(true);
 
 let tournamentRecords;
 
