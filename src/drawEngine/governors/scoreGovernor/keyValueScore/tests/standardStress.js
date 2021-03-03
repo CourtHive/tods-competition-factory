@@ -8,9 +8,7 @@ import {
   STATUS_INTERRUPTED,
 } from '../constants';
 import { scoreMatchUp, enterValues } from './primitives';
-
-import { utilities } from 'tods-competition-factory';
-const { generateRange, randomMember } = utilities;
+import { generateRange, randomMember } from '../../../../../utilities';
 
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });
