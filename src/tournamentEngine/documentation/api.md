@@ -549,7 +549,7 @@ tournamentEngine.deleteEvents({ eventIds });
 ## deleteParticipants
 
 ```js
-tournamentEngine.deleteParticipantIds({ paricipantIds });
+tournamentEngine.deleteParticipants({ paricipantIds });
 ```
 
 ---
