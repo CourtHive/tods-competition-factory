@@ -92,6 +92,7 @@ export function addEventEntryPairs({
     const result = addParticipants({
       tournamentRecord,
       participants: newParticipants,
+      allowDuplicateParticipantIdPairs,
     });
 
     if (result.error) return { error: result.error };
