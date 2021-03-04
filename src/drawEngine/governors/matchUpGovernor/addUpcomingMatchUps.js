@@ -21,11 +21,11 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         getNextToBePlayedMatchUp({
           matchUp: loserMatchUp,
           drawDefinition,
-          structure,
           inContextDrawMatchUps,
         }) || {};
       loserTo =
-        nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp });
+        (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) ||
+        loserTo;
     }
     Object.assign(matchUp, { winnerTo, loserTo });
   });
