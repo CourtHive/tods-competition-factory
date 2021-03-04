@@ -51,6 +51,7 @@ export function removeDrawPositionAssignment(props) {
         });
         if (result.error) return result;
         modifyEntriesStatus({
+          tournamentRecord,
           participantIds: [individualParticipantIds],
           entryStatus,
           drawDefinition,
@@ -58,6 +59,7 @@ export function removeDrawPositionAssignment(props) {
         });
       } else {
         modifyEntriesStatus({
+          tournamentRecord,
           participantIds: [participantId],
           entryStatus,
           drawDefinition,

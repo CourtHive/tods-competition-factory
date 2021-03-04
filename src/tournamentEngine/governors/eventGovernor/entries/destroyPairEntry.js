@@ -84,6 +84,7 @@ export function destroyPairEntry({
 
   if (entryStatus) {
     return modifyEntriesStatus({
+      tournamentRecord,
       drawDefinition,
       participantIds: individualParticipantIds,
       event,

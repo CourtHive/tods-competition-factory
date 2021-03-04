@@ -1,12 +1,19 @@
+import { findParticipant } from '../../../../drawEngine/getters/participantGetter';
+
 import {
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { VALID_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import {
+  UNPAIRED,
+  VALID_ENTERED_TYPES,
+} from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 
 export function modifyEntriesStatus({
+  tournamentRecord,
   drawDefinition,
   participantIds,
   entryStatus,
@@ -32,6 +39,21 @@ export function modifyEntriesStatus({
       }
     });
   });
+
+  const tournamentParticipants = tournamentRecord?.participants || [];
+
+  const validEntryStatusForAllParticipantIds = participantIds.every(
+    (participantId) => {
+      const { participantType } = findParticipant({
+        tournamentParticipants,
+        participantId,
+      });
+      return !(participantType === PAIR && entryStatus === UNPAIRED);
+    }
+  );
+
+  if (!validEntryStatusForAllParticipantIds)
+    return { error: INVALID_ENTRY_STATUS };
 
   // if a drawDefinition is specified, modify entryStatus of participantIds
   if (drawDefinition) {
