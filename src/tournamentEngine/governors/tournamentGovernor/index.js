@@ -19,6 +19,8 @@ import {
   addTournamentExtension,
   removeEventExtension,
   addEventExtension,
+  addParticipantExtension,
+  removeParticipantExtension,
 } from './addRemoveExtensions';
 
 const tournamentGovernor = {
@@ -36,6 +38,8 @@ const tournamentGovernor = {
   removeEventExtension,
   addTournamentExtension,
   removeTournamentExtension,
+  addParticipantExtension,
+  removeParticipantExtension,
   addDrawDefinitionExtension,
   removeDrawDefinitionExtension,
 };

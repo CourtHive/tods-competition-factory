@@ -75,6 +75,19 @@ if (!error) {
 
 ---
 
+## addDrawDefinitionExtension
+
+```js
+tournamentEngine.addDrawDefinitionExtension({
+  extension: {
+    name: 'extension name',
+    value: {},
+  },
+});
+```
+
+---
+
 ## addDrawEntries
 
 Bulk add an array of **participantIds** to a specific draw **stage** with a specific **entryStatus**.
@@ -128,6 +141,33 @@ tournamentEngine.addEventEntryPairs({
   entryStage: QUALIFYING, // optional
   uuids, // optional - array of UUIDs to use for newly created pairs
   allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticpantIds
+});
+```
+
+---
+
+## addEventExtension
+
+```js
+tournamentEngine.addEventExtension({
+  extension: {
+    name: 'extension name',
+    value: {},
+  },
+});
+```
+
+---
+
+## addIndividualParticipantIds
+
+Adds individualParticipantIds to GROUP or TEAM participants
+
+```js
+tournamentEngine.addIndividualParticipantIds({
+  groupingParticipantId,
+  individualParticipantIds,
+  removeFromOtherTeams, // optional boolean
 });
 ```
 
@@ -188,20 +228,6 @@ tournamentEngine.addParticipants({ participants });
 
 ---
 
-## addIndividualParticipantIds
-
-Adds individualParticipantIds to GROUP or TEAM participants
-
-```js
-tournamentEngine.addIndividualParticipantIds({
-  groupingParticipantId,
-  individualParticipantIds,
-  removeFromOtherTeams, // optional boolean
-});
-```
-
----
-
 ## addPenalty
 
 Add a penaltyItem to one or more particpants.
@@ -250,6 +276,19 @@ tournamentEngine.setSubOrder({
   structureId,
   drawPosition: 1,
   subOrder: 2,
+});
+```
+
+---
+
+## addTournamentExtension
+
+```js
+tournamentEngine.addTournamentExtension({
+  extension: {
+    name: 'extension name',
+    value: {},
+  },
 });
 ```
 
@@ -628,6 +667,26 @@ const { court } = tournamentEngine.findCourt({ courtId });
 
 ---
 
+## findDrawDefinitionExtension
+
+```js
+const { extension } = tournamentEngine.findDrawDefinitionExtension({
+  drawId,
+  eventId,
+  name,
+});
+```
+
+---
+
+## findEventExtension
+
+```js
+const { extension } = tournamentEngine.findEventExtension({ eventId, name });
+```
+
+---
+
 ## findMatchUp
 
 ```js
@@ -652,6 +711,25 @@ const { participant } = tournamentEngine.findParticipant({
   participantId,
   personId, // required only if no participantId provided
 });
+```
+
+---
+
+## findParticipantExtension
+
+```js
+const { extension } = tournamentEngine.findParticipantExtension({
+  participantId,
+  name,
+});
+```
+
+---
+
+## findTournamentExtension
+
+```js
+const { extension } = tournamentEngine.findTournamentExtension({ name });
 ```
 
 ---
@@ -1275,6 +1353,16 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyDrawName
+
+```js
+tournamentEngine.modifyDrawName({
+  eventId,
+  drawId,
+  drawName,
+});
+```
+
 ## modifyEventEntries
 
 Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
@@ -1458,6 +1546,14 @@ const { eventData } = tournamentEngine.publishEvent({
 
 ---
 
+## removeDrawDefinitionExtension
+
+```js
+tournamentEngine.removeDrawDefintionExtension({ eventId, drawId, name });
+```
+
+---
+
 ## removeDrawPositionAssignment
 
 Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR particpant into UNPAIRED participants (DOUBLES only).
@@ -1496,13 +1592,10 @@ tournamentEngine.removeEventEntries({ eventId, participantIds });
 
 ---
 
-## removeParticipantIdsFromAllTeams
+## removeEventExtension
 
 ```js
-tournamentEngine.removeParticipantIdsFromAllTeams({
-  individualParticipantIds,
-  groupingType, // optional - restrict to removing from only specified groupingType
-});
+tournamentEngine.removeEventExtension({ eventId, name });
 ```
 
 ---
@@ -1520,12 +1613,39 @@ tournamentEngine.removeIndividualParticipantIds({
 
 ---
 
+## removeParticipantIdsFromAllTeams
+
+```js
+tournamentEngine.removeParticipantIdsFromAllTeams({
+  individualParticipantIds,
+  groupingType, // optional - restrict to removing from only specified groupingType
+});
+```
+
+---
+
+## removeParticipantExtension
+
+```js
+tournamentEngine.removeParticipantExtension({ participantId, name });
+```
+
+---
+
 ## removePenalty
 
 Removes a penalty from all relevant tournament participants.
 
 ```js
 tournamentEngine.removePenalty({ penaltyId });
+```
+
+---
+
+## removeTournamentExtension
+
+```js
+tournamentEngine.removeTournamentExtension({ name });
 ```
 
 ---
@@ -1765,7 +1885,7 @@ Updates the `drawOrder` attribute of all `drawDefinitions` within an event. The 
 
 ```js
 tournamentEngine.updateDrawIdsOrder({
-  event,
+  eventId,
   orderedDrawIdsMap: {
     'id-Of-draw-1': 1,
     'id-of-draw-2': 2,
