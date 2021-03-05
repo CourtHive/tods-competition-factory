@@ -25,29 +25,31 @@ import {
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { createInstanceState } from '../global/globalState';
 
-let tournamentRecord;
+export function tournamentEngineAsync() {
+  createInstanceState();
 
-const policies = {};
+  let tournamentRecord;
+  const policies = {};
 
-function newTournamentRecord(props) {
-  if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-  const template = definitionTemplate(props);
-  return Object.assign({}, template, props);
-}
+  function newTournamentRecord(props) {
+    if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
+    const template = definitionTemplate(props);
+    return Object.assign({}, template, props);
+  }
 
-function setState(tournament, deepCopyOption) {
-  if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
-  const tournamentId =
-    tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
-  if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord =
-    deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
+  function setState(tournament, deepCopyOption) {
+    if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
+    const tournamentId =
+      tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
+    if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
+    tournamentRecord =
+      deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
 
-  return Object.assign({ tournamentId }, SUCCESS);
-}
+    return Object.assign({ tournamentId }, SUCCESS);
+  }
 
-export const tournamentEngineAsync = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
@@ -88,7 +90,7 @@ export const tournamentEngineAsync = (async function () {
     return fx;
   };
 
-  await importGovernors([
+  importGovernors([
     queryGovernor,
     eventGovernor,
     venueGovernor,
@@ -137,7 +139,7 @@ export const tournamentEngineAsync = (async function () {
     return result;
   }
 
-  async function importGovernors(governors) {
+  function importGovernors(governors) {
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
@@ -168,6 +170,6 @@ export const tournamentEngineAsync = (async function () {
       }
     }
   }
-})();
+}
 
 export default tournamentEngineAsync;

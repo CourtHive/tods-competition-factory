@@ -82,3 +82,7 @@ export { surfaceConstants } from './constants/surfaceConstants';
 export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
 // END-: constants ---------------------------------------------------------------
+
+// START- overrides
+export { setStateProvider } from './global/globalState';
+// END
