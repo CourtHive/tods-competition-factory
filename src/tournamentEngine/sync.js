@@ -12,7 +12,6 @@ import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
 import {
-  initiateGlobalState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -26,8 +25,6 @@ import {
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 import { notifySubscribers } from '../global/notifySubscribers';
-
-initiateGlobalState();
 
 let tournamentRecord;
 

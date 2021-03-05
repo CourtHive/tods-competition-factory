@@ -1,19 +1,21 @@
+import syncStateEngine from './syncGlobalState';
 const globalState = {
   devContext: false,
   deepCopy: true,
 };
 
-let globalStateProvider;
+let _globalStateProvider = syncStateEngine;
 
-export function initiateGlobalState(async = false) {
-  if (async) globalStateProvider = require('../global/asyncGlobalState');
-  else globalStateProvider = require('../global/syncGlobalState');
+export function setStateProvider(globalStateProvider) {
+  if (!globalStateProvider)
+    throw new Error(`Global state provider can not be undefined or null`);
+  _globalStateProvider = globalStateProvider;
 }
 
 export function createInstanceState() {
   //Only applicable for async
-  if (globalStateProvider.createInstanceState)
-    globalStateProvider.createInstanceState();
+  if (_globalStateProvider.createInstanceState)
+    _globalStateProvider.createInstanceState();
 }
 
 export function getDevContext() {
@@ -37,25 +39,25 @@ export function getDeepCopy() {
 }
 
 export function setSubscriptions(subscription) {
-  globalStateProvider.setSubscriptions(subscription);
+  _globalStateProvider.setSubscriptions(subscription);
 }
 
 export function addNotice(notice) {
-  globalStateProvider.addNotice(notice);
+  _globalStateProvider.addNotice(notice);
 }
 
 export function getNotices(topic) {
-  return globalStateProvider.getNotices(topic);
+  return _globalStateProvider.getNotices(topic);
 }
 
 export function deleteNotices() {
-  globalStateProvider.deleteNotices();
+  _globalStateProvider.deleteNotices();
 }
 
 export function getTopics() {
-  return globalStateProvider.getTopics();
+  return _globalStateProvider.getTopics();
 }
 
 export function callListener(payload) {
-  globalStateProvider.callListener(payload);
+  _globalStateProvider.callListener(payload);
 }
