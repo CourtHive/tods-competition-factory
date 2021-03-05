@@ -152,9 +152,10 @@ it('supports policyDefinitions in positionActions', () => {
     drawId,
   });
   expect(result.hasPositionAssigned).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual(
-    noMovementActions
-  );
+  expect(result.validActions.map(({ type }) => type)).toEqual([
+    ADD_PENALTY,
+    ADD_NICKNAME,
+  ]);
 
   // now check the available positionActions for the consolation structure when participants are present
   // ...when an unrestricted policyDefinition is applied
@@ -168,7 +169,6 @@ it('supports policyDefinitions in positionActions', () => {
     REMOVE_ASSIGNMENT,
     WITHDRAW_PARTICIPANT,
     ASSIGN_BYE,
-    SEED_VALUE,
     ADD_PENALTY,
     ADD_NICKNAME,
     SWAP_PARTICIPANTS,

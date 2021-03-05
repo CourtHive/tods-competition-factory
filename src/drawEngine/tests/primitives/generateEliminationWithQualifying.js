@@ -102,7 +102,7 @@ export function generateEliminationWithQualifying({
   const [mainStructure] = mainStructures;
   const { structureId: mainStructureId } = mainStructure;
 
-  drawEngine.createQualifyingLink({
+  drawEngine.generateQualifyingLink({
     qualifyingStructureId,
     mainStructureId,
     qualifyingRound: roundLimit,

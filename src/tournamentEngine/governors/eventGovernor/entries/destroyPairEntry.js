@@ -63,6 +63,9 @@ export function destroyPairEntry({
 
   if (result.error) return result;
 
+  // TODO: optionally remove the PAIR participant from tournament.participants
+  // IF not present in other event.entries
+
   const individualParticipantIds = participant.individualParticipantIds;
 
   // TODO: this is currently duplicating action for drawDefinition
@@ -81,6 +84,7 @@ export function destroyPairEntry({
 
   if (entryStatus) {
     return modifyEntriesStatus({
+      tournamentRecord,
       drawDefinition,
       participantIds: individualParticipantIds,
       event,

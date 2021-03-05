@@ -1,4 +1,4 @@
-import { calcTieMatchUpScore } from '../../accessors/matchUpAccessor';
+import { generateTieMatchUpScoreString } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
@@ -14,7 +14,7 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (!matchUpId) return { error: MISSING_MATCHUP };
   const matchUp = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-  const scoreString = calcTieMatchUpScore({ matchUp });
+  const scoreString = generateTieMatchUpScoreString({ matchUp });
   const scoreObject = {};
   const { winningSide } = matchUp;
   const reverseScoreString = scoreString.split('-').reverse().join('-');

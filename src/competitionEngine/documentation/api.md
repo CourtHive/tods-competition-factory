@@ -8,13 +8,40 @@ route: /competitionEngine/api
 
 ## allCompetitionMatchUps
 
+```js
+const { matchUps } = competitionEngine.allCompetitionMatchUps();
+```
+
 ---
 
 ## competitionMatchUps
 
+Return an array of all matchUps, "inContext", contained within the collection of tournaments loaded into `competitionEngine.
+
+```js
+const { matchUps } = competitionEngine.competitionMatchUps();
+```
+
 ---
 
 ## competitionScheduleMatchUps
+
+```js
+const matchUpFilters = {
+  isMatchUpTie: false,
+  scheduledDate, // scheduled date of matchUps to return
+
+  localTimeZone, // optional - used to convert scheduleDate
+  localPerspective: true,
+};
+
+const {
+  completedMatchUps,
+  dateMatchUps,
+  courtsData,
+  venues,
+} = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+```
 
 ---
 
@@ -30,33 +57,64 @@ competitionEngine.devContext(true);
 
 ## getState
 
-No parameters.
-
 Returns a deep copy of the current competitionEngine state.
 
-### Usage
-
 ```js
-const { tournamentRecords } = compedtitionEngine.getState();
+const { tournaentRecords } = competition.getState({
+  convertExtensions, // optional - convert extensions to '_' prefixed attributes
+});
 ```
-
-Where **tournamentRecords** is an Array of **tournamentRecord** objects.
 
 ---
 
 ## getVenuesAndCourts
 
+Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
+
+```js
+const { courts, venues } = competitionEngine.getVenuesAndCourts();
+```
+
 ---
 
 ## matchUpScheduleChange
+
+Swaps the schedule details of two scheduled matchUps.
+
+```js
+competitionEngine.matchUpScheduleChange({
+  sourceMatchUpContextIds,
+  targetMatchUpContextIds,
+  sourceCourtId,
+  targetCourtId,
+  courtDayDate: dateSelected,
+});
+```
 
 ---
 
 ## removeMatchUpCourtAssignment
 
+```js
+competitionEngine.removeMatchUpCourtAssignment({
+  drawId,
+  matchUpId,
+  tournamentId,
+  courtDayDate,
+});
+```
+
 ---
 
 ## reorderUpcomingMatchUps
+
+```js
+const matchUpContextIds = [{ tournamentId, drawId, matchUpId }];
+competitionEngine.reorderUpcomingMatchUps({
+  matchUpContextIds,
+  firstToLast, // boolean - direction of reorder
+});
+```
 
 ---
 
@@ -72,8 +130,6 @@ Loads tournament records into competitionEngine.
 competitionEngine.setsState(tournamentRecords, deepCopy);
 ```
 
-By default a deep copy of each tournament record is made so that mutations made by competitionEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
-
 ---
 
 ## setSubscriptions
@@ -88,6 +144,10 @@ Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts
 
 ## version
 
-Returns NPM package version
+Returns NPM package version. Can be used in configurations that utilize Competition Factory engines on both client and server to ensure equivalency.
+
+```js
+const version = competitionEngine.version();
+```
 
 ---

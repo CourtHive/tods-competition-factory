@@ -4,7 +4,7 @@ import { instanceCount } from '../../../utilities/arrays';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
-interface MatchAnalysisInterface {
+interface MatchUpAnalysisInterface {
   matchUp: any;
   sideNumber: number;
   setNumber: number;
@@ -13,7 +13,7 @@ interface MatchAnalysisInterface {
   matchUpFormat: any;
 }
 
-export function analyzeMatchUp(props: MatchAnalysisInterface) {
+export function analyzeMatchUp(props: MatchUpAnalysisInterface) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } =
     props || {};
   let { matchUpFormat } = props || {};

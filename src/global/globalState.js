@@ -2,6 +2,8 @@ import syncStateEngine from './syncGlobalState';
 const globalState = {
   devContext: false,
   deepCopy: true,
+  subscriptions: {},
+  notices: [],
 };
 
 let _globalStateProvider = syncStateEngine;

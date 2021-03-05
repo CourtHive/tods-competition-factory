@@ -89,10 +89,6 @@ export const drawEngine = (function () {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
-    setDrawId: ({ drawId }) => {
-      drawDefinition.drawId = drawId;
-      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
-    },
     setDrawDescription: ({ description }) => {
       drawDefinition.description = description;
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);

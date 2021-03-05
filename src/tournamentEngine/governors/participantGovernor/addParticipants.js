@@ -1,5 +1,6 @@
-import { makeDeepCopy, UUID } from '../../../utilities';
+import { getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities/arrays';
+import { makeDeepCopy, UUID } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -16,14 +17,16 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_ID_EXISTS,
   MISSING_PARTICIPANT,
-  PARTICIPANT_PAIR_EXISTS,
   INVALID_VALUES,
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
-import { getDevContext } from '../../../global/globalState';
 
-export function addParticipant({ tournamentRecord, participant }) {
+export function addParticipant({
+  tournamentRecord,
+  participant,
+  allowDuplicateParticipantIdPairs,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (!participant.participantId) participant.participantId = UUID();
@@ -89,7 +92,11 @@ export function addParticipant({ tournamentRecord, participant }) {
           ).length === 2
       );
 
-    if (existingPairParticipant) return { error: PARTICIPANT_PAIR_EXISTS };
+    if (existingPairParticipant) {
+      if (!allowDuplicateParticipantIdPairs) {
+        return Object.assign({}, SUCCESS);
+      }
+    }
 
     if (!participant.participantName) {
       const individualParticipants = tournamentParticipants.filter(
@@ -156,7 +163,11 @@ export function addParticipant({ tournamentRecord, participant }) {
   return result;
 }
 
-export function addParticipants({ tournamentRecord, participants = [] }) {
+export function addParticipants({
+  tournamentRecord,
+  participants = [],
+  allowDuplicateParticipantIdPairs,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const tournamentParticipants = tournamentRecord.participants;
@@ -196,6 +207,7 @@ export function addParticipants({ tournamentRecord, participants = [] }) {
       const result = addParticipant({
         tournamentRecord,
         participant,
+        allowDuplicateParticipantIdPairs,
       });
       const { success, error, participant: addedParticipant } = result;
       if (success) addedParticipants.push(addedParticipant);
