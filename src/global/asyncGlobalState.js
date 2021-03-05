@@ -44,7 +44,13 @@ export function createInstanceState() {
 }
 
 function getInstanceState() {
-  return asyncCtxStateMap.get(executionAsyncId());
+  const asyncTaskId = executionAsyncId();
+  const instanceState = asyncCtxStateMap.get(asyncTaskId);
+
+  if (!instanceState)
+    throw new Error(`Can not get instance state for async task ${asyncTaskId}`);
+
+  return instanceState;
 }
 
 export function setSubscriptions({ subscriptions = {} } = {}) {
