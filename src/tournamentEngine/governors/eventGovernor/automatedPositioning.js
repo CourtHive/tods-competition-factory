@@ -56,7 +56,7 @@ export function automatedPlayoffPositioning({
         candidatesCount: 20,
         structureId: playoffStructureId,
       });
-      result.errors.forEach((error) => errors.push(error));
+      result.errors?.forEach((error) => errors.push(error));
     });
 
   return errors.length ? { error: errors } : SUCCESS;
