@@ -18,7 +18,6 @@ import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../getters/getMatchUps/drawMatchUps';
-import { getRoundPresentationProfile } from '../../getters/getMatchUps/getRoundPresentationProfile';
 
 import { credits } from '../../../fixtures/credits';
 import { findStructure } from '../../getters/findStructure';
@@ -70,7 +69,6 @@ const queryGovernor = {
   getMatchUpContextIds,
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
-  getRoundPresentationProfile,
 
   generateTieMatchUpScoreString,
   matchUpDuration,
