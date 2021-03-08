@@ -18,6 +18,8 @@ export function modifyEntriesStatus({
   participantIds,
   entryStatus,
   event,
+
+  autoEntryPositions = true,
 }) {
   if (!participantIds || !Array.isArray(participantIds))
     return {
@@ -57,15 +59,38 @@ export function modifyEntriesStatus({
 
   // if a drawDefinition is specified, modify entryStatus of participantIds
   if (drawDefinition) {
+    let maxEntryPosition = Math.max(
+      ...event.entries
+        .filter(
+          (entry) =>
+            entry.entryStatus === entryStatus && !isNaN(entry.entryPosition)
+        )
+        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+      0
+    );
     drawDefinition.entries.forEach((entry) => {
       if (participantIds.includes(entry.participantId)) {
         entry.entryStatus = entryStatus;
-        delete entry.entryPosition;
+        if (autoEntryPositions) {
+          entry.entryPosition = maxEntryPosition + 1;
+          maxEntryPosition++;
+        } else {
+          delete entry.entryPosition;
+        }
       }
     });
   }
 
   if (event) {
+    let maxEntryPosition = Math.max(
+      ...event.entries
+        .filter(
+          (entry) =>
+            entry.entryStatus === entryStatus && !isNaN(entry.entryPosition)
+        )
+        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+      0
+    );
     event.entries.forEach((entry) => {
       const presentInDraws = participantIdsPresentinDraws.includes(
         entry.participantId
@@ -76,7 +101,12 @@ export function modifyEntriesStatus({
       // prevent modifying status in event.
       if (participantIds.includes(entry.participantId) && !presentInDraws) {
         entry.entryStatus = entryStatus;
-        delete entry.entryPosition;
+        if (autoEntryPositions) {
+          entry.entryPosition = maxEntryPosition + 1;
+          maxEntryPosition++;
+        } else {
+          delete entry.entryPosition;
+        }
       }
     });
   }
