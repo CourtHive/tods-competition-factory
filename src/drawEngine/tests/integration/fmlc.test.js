@@ -115,7 +115,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [5, 8, 4, 2, 1],
+    expectedRoundPending: [5, 7, 4, 2, 1],
     expectedRoundUpcoming: [1, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -197,7 +197,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [4, 7, 4, 2, 1],
+    expectedRoundPending: [4, 5, 4, 2, 1],
     expectedRoundUpcoming: [2, 1],
     expectedRoundCompleted: [0, 0],
   });
