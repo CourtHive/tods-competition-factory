@@ -1,22 +1,26 @@
+import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getPositionAssignments } from '../../getters/positionsGetter';
+import { positionTargets } from '../positionGovernor/positionTargets';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { intersection, numericSort } from '../../../utilities';
+import { pushGlobalLog } from '../../../global/globalLog';
+import { addNotice } from '../../../global/globalState';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../getters/positionsGetter';
-import { positionTargets } from '../positionGovernor/positionTargets';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice } from '../../../global/globalState';
-import { numericSort } from '../../../utilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import {
   BYE,
+  COMPLETED,
   DOUBLE_WALKOVER,
+  RETIRED,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -98,7 +102,8 @@ export function assignMatchUpDrawPosition({
     inContextDrawMatchUps,
   });
   const {
-    targetMatchUps: { winnerMatchUp },
+    targetMatchUps: { winnerMatchUp, loserMatchUp, loserTargetDrawPosition },
+    targetLinks: { loserTargetLink },
   } = targetData;
 
   if (positionAssigned && isByeMatchUp) {
@@ -150,6 +155,36 @@ export function assignMatchUpDrawPosition({
         });
         if (result.error) return result;
       }
+    }
+  }
+
+  // if FIRST_MATCH_LOSER_CONSOLATION, check whether a BYE should be placed in consolation feed
+  if (
+    loserTargetLink?.linkCondition === FIRST_MATCHUP &&
+    updatedDrawPositions.filter((f) => f).length === 2 &&
+    !isByeMatchUp
+  ) {
+    const structureMatchUps = getMappedStructureMatchUps({
+      mappedMatchUps,
+      structureId: structure.structureId,
+    });
+    const firstRoundMatchUps = structureMatchUps.filter(
+      ({ drawPositions, roundNumber }) =>
+        roundNumber === 1 &&
+        intersection(drawPositions, updatedDrawPositions).length
+    );
+    const byePropagation = firstRoundMatchUps.every(({ matchUpStatus }) =>
+      [COMPLETED, RETIRED].includes(matchUpStatus)
+    );
+    if (byePropagation) {
+      const { structureId } = loserMatchUp;
+      const result = assignDrawPositionBye({
+        drawDefinition,
+        mappedMatchUps,
+        structureId,
+        drawPosition: loserTargetDrawPosition,
+      });
+      if (result.error) return result;
     }
   }
 
