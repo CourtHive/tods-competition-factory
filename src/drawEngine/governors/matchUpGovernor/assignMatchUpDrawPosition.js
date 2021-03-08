@@ -121,21 +121,25 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const previousRound = matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
-    if (previousRound && winnerMatchUp) {
+    const previousRoundNumber =
+      matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
+    if (previousRoundNumber && winnerMatchUp) {
       const structureMatchUps = getMappedStructureMatchUps({
         mappedMatchUps,
         structureId: structure.structureId,
       });
-      const sourceMatchUp = structureMatchUps.find(({ drawPositions }) =>
-        drawPositions.includes(drawPosition)
+      const sourceMatchUp = structureMatchUps.find(
+        ({ drawPositions, roundNumber }) =>
+          roundNumber === previousRoundNumber &&
+          drawPositions.includes(drawPosition)
       );
       const sourceRoundPosition = sourceMatchUp?.roundPosition;
       const offset = sourceRoundPosition % 2 ? 1 : -1;
       const pairedRoundPosition = sourceRoundPosition + offset;
       const pairedMatchUp = structureMatchUps.find(
         ({ roundPosition, roundNumber }) =>
-          roundPosition === pairedRoundPosition && roundNumber === previousRound
+          roundPosition === pairedRoundPosition &&
+          roundNumber === previousRoundNumber
       );
       if (pairedMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
         const result = assignMatchUpDrawPosition({
