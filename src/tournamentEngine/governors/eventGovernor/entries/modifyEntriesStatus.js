@@ -60,6 +60,7 @@ export function modifyEntriesStatus({
     drawDefinition.entries.forEach((entry) => {
       if (participantIds.includes(entry.participantId)) {
         entry.entryStatus = entryStatus;
+        delete entry.entryPosition;
       }
     });
   }
@@ -75,6 +76,7 @@ export function modifyEntriesStatus({
       // prevent modifying status in event.
       if (participantIds.includes(entry.participantId) && !presentInDraws) {
         entry.entryStatus = entryStatus;
+        delete entry.entryPosition;
       }
     });
   }
