@@ -33,6 +33,12 @@ export function publishEvent({
     event,
   });
 
+  // filter out drawData for unpublished draws
+  const publishState = eventData?.eventInfo?.publish?.state;
+  eventData.drawsData = eventData.drawsData.filter(({ drawId }) =>
+    publishState?.PUBLIC?.drawIds.includes(drawId)
+  );
+
   addNotice({ topic: 'publishEvent', payload: { eventData } });
 
   return Object.assign({}, SUCCESS, { eventData });
