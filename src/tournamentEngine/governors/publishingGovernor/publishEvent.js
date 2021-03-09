@@ -14,11 +14,14 @@ export function publishEvent({
   policyDefinition,
   status = PUBLIC,
   structureIds = [],
-  drawIds = [],
+  drawIds,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
+
+  if (!drawIds)
+    drawIds = event.drawDefinitions?.map(({ drawId }) => drawId) || [];
 
   const timeItem = {
     itemType: `${PUBLISH}.${STATUS}`,

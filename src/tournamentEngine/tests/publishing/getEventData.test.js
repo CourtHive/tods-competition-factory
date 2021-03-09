@@ -1,4 +1,3 @@
-import fs from 'fs';
 import tournamentEngine from '../../sync';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
@@ -16,6 +15,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
 import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { PUBLIC } from '../../../constants/timeItemConstants';
+import mocksEngine from '../../../mocksEngine';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -116,6 +117,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
 
+  const { drawId } = drawDefinition;
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 
@@ -149,7 +151,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     policyDefinition,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([]);
+  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -190,13 +192,6 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
       : names.concat(matchUp.structureName);
   }, []);
   expect(structureNames).toEqual(['Group 1', 'Group 2', 'Group 3', 'Group 4']);
-
-  const writeFile = process.env.TMX_TEST_FILES;
-  const fileName = `eventData.json`;
-  const dirPath = './src/tournamentEngine/tests/publishing/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
 });
 
 it('can generate payload for publishing a compass draw', () => {
@@ -328,13 +323,6 @@ it('can generate payload for publishing a compass draw', () => {
   expect(
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName
   ).toEqual('W-Quarterfinals');
-
-  const writeFile = process.env.TMX_TEST_FILES;
-  const fileName = `eventData.json`;
-  const dirPath = './src/tournamentEngine/tests/publishing/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
 });
 
 it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', () => {
@@ -441,7 +429,9 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
     policyDefinition,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([]);
+
+  const { drawId } = drawDefinition;
+  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -471,11 +461,54 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0]
       .sourceDrawPositionRange
   ).not.toBeUndefined();
+});
 
-  const writeFile = process.env.TMX_TEST_FILES;
-  const fileName = `eventData.json`;
-  const dirPath = './src/tournamentEngine/tests/publishing/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(eventData, undefined, 2));
+it('can filter out unpublished draws when publishing event', () => {
+  mocksEngine.generateTournamentRecord({});
+  const eventName = 'Test Event';
+  const event = { eventName };
+  let result = tournamentEngine.addEvent({ event });
+  let { event: eventResult } = result;
+  const { eventId } = eventResult;
+  expect(result.success).toEqual(true);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  const { flightProfile } = tournamentEngine.generateFlightProfile({
+    eventId,
+    flightsCount: 3,
+  });
+
+  flightProfile.flights?.forEach((flight) => {
+    const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+      eventId,
+      drawId: flight.drawId,
+      drawEntries: flight.drawEntries,
+    });
+    result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+    expect(result.success).toEqual(true);
+  });
+
+  const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
+  const policyDefinition = Object.assign(
+    {},
+    ROUND_NAMING_POLICY,
+    PARTICIPANT_PRIVACY_DEFAULT
+  );
+
+  const drawId = drawIds[0];
+  const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    eventId,
+    policyDefinition,
+    drawIds: [drawId],
+  });
+  expect(publishSuccess).toEqual(true);
+  expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
 });
