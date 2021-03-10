@@ -97,7 +97,7 @@ tournamentEngine.addDrawEntries({
   drawId,
   eventId,
   participantIds,
-  stage: MAIN, // optional
+  entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
 });
 ```
