@@ -8,8 +8,8 @@ import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const drawSize = 32;
@@ -20,7 +20,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: ITF_SEEDING,
+    policyDefinition: SEEDING_ITF,
   });
 
   const {
@@ -143,7 +143,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: ITF_SEEDING,
+    policyDefinition: SEEDING_ITF,
   });
 
   const {
@@ -265,7 +265,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
 
   const {
@@ -386,7 +386,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
 
   const {

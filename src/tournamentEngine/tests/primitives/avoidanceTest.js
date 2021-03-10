@@ -5,7 +5,7 @@ import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SUCCESS } = resultConstants;
 
@@ -103,7 +103,7 @@ export function avoidanceTest(props) {
     seedsCount,
     automated: true,
     event: eventResult,
-    policyDefinitions: [{ avoidance }, ITF_SEEDING],
+    policyDefinitions: [{ avoidance }, SEEDING_ITF],
   };
   const {
     error,

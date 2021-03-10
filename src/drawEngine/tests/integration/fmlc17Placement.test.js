@@ -4,8 +4,8 @@ import { completeMatchUp } from '../primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import { CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can support ITF Consolation BYE placement', () => {
   const drawSize = 32;
@@ -16,7 +16,7 @@ it('can support ITF Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: ITF_SEEDING,
+    policyDefinition: SEEDING_ITF,
   });
 
   const {
@@ -96,7 +96,7 @@ it('can support USTA Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
 
   const {

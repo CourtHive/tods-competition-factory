@@ -3,7 +3,7 @@ import tournamentEngine from '../../../sync';
 
 import { SINGLES } from '../../../../constants/eventConstants';
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
-import USTA_SEEDING from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can autoSeed by Rankings', () => {
   mocksEngine.generateTournamentRecord({ participantCount: 32 });
@@ -62,7 +62,7 @@ it('can autoSeed by Rankings', () => {
   result = tournamentEngine.autoSeeding({
     eventId,
     scaleAttributes,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
     sortDescending: true,
   });
   expect(result.success).toEqual(true);
@@ -90,7 +90,7 @@ it('can autoSeed by Rankings', () => {
   result = tournamentEngine.autoSeeding({
     eventId,
     scaleAttributes,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
     sortDescending: false,
   });
   expect(result.success).toEqual(true);
@@ -108,7 +108,7 @@ it('can autoSeed by Rankings', () => {
   result = tournamentEngine.autoSeeding({
     eventId,
     scaleAttributes,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
   expect(result.success).toEqual(true);
   scaleValues = result.scaleItemsWithParticipantIds

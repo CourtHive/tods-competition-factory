@@ -7,7 +7,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import ITF_SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -49,7 +49,7 @@ it('can generate a tournament with events and draws', () => {
     eventId,
     seedsCount: 8,
     event: eventResult,
-    policyDefinitions: [ITF_SEEDING_POLICY],
+    policyDefinitions: [SEEDING_ITF_POLICY],
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 
