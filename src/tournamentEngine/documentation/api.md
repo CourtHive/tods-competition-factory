@@ -97,7 +97,7 @@ tournamentEngine.addDrawEntries({
   drawId,
   eventId,
   participantIds,
-  stage: MAIN, // optional
+  entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
 });
 ```
@@ -261,6 +261,25 @@ tournamentEngine.addPlayoffStructures({
   playoffPositions: [3, 4], // required if not provided roundNumbers
   playoffAttributes, // optional - object mapping exitProfiles to structure names, e.g. 0-1-1 for SOUTH
   playoffStructureNameBase, // optional - base word for default playoff naming, e.g. 'Playoff'
+});
+```
+
+---
+
+## autoSeeding
+
+```js
+tournamentEngine.autoSeeding({
+  eventId,
+  policyDefinition, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+  scaleAttributes, // { scaleType, scaleName, }
+  scaleName, // Optional - defaults to scaleAttributes.scaleName
+  drawSize, // Optional - defaults to calculation based on # of entries
+  drawId, // Optional - will use flight.drawEntries or drawDefinition.entries rather than event.entries
+  stage, // Optional - filters entries by specified stage
+
+  scaleSortMethod, // Optional - user defined sorting method
+  sortDescending, // Optional - defaults to false
 });
 ```
 
@@ -1171,7 +1190,8 @@ See [Scale Items](/concepts/scaleItems).
 
 ```js
 const { scaledEntries } = tournamentEngine.getScaledEntries({
-  eventId,
+  eventId, // optional - not required if provided array of entries
+  entries, // optional - overrides use of event.entries
   stage, // optional - filter entries by stage
 
   scaleAttributes,
