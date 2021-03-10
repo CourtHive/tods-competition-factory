@@ -2,6 +2,7 @@ import { getEliminationDrawSize } from '../../../../drawEngine/getters/getElimin
 import { setParticipantScaleItems } from '../../participantGovernor/scaleItems';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { getSeedsCount } from '../../policyGovernor/getSeedsCount';
+import { getDevContext } from '../../../../global/globalState';
 import { getScaledEntries } from './getScaledEntries';
 
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
@@ -82,7 +83,7 @@ export function autoSeeding({
     {},
     ...(scaledEntries || [])
       .slice(0, seedsCount)
-      .map(({ participantId, index }) => ({ [participantId]: index + 1 }))
+      .map(({ participantId }, index) => ({ [participantId]: index + 1 }))
   );
 
   scaleName = scaleName || scaleAttributes.scaleName;
@@ -98,7 +99,7 @@ export function autoSeeding({
     };
     return {
       participantId,
-      scaleItem,
+      scaleItems: [scaleItem],
     };
   });
 
@@ -108,5 +109,7 @@ export function autoSeeding({
   });
   if (result.error) return result;
 
-  return SUCCESS;
+  return getDevContext()
+    ? Object.assign({}, SUCCESS, { scaleItemsWithParticipantIds })
+    : SUCCESS;
 }

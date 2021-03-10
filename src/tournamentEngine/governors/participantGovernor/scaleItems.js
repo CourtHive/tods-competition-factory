@@ -1,3 +1,5 @@
+import { participantScaleItem } from '../../accessors/participantScaleItem';
+
 import { SCALE } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -9,7 +11,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 export function setParticipantScaleItem({
   tournamentRecord,
