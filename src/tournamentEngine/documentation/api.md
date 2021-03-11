@@ -1662,6 +1662,35 @@ tournamentEngine.removePenalty({ penaltyId });
 
 ---
 
+## removeScaleValues
+
+Removes scale values for participants in a particular event. Optionally restrict by draw or stage.
+
+```js
+tournamentEngine.removeScaleValues({
+  eventId,
+  scaleAttributes, // { scaleType, scaleName, eventType }
+  scaleName, // optional - override default scaleName, event.category.categoryName || event.category.ageCategoryCode
+  drawId, // optional - to scope participants to entries in a specific draw
+  stage, // optinal - scope participants to entries in a specific stage of draw
+});
+```
+
+---
+
+## removeSeeding
+
+```js
+tournamentEngine.removeSeeding({
+  eventId,
+  scaleName, // optional - override default scaleName, event.category.categoryName || event.category.ageCategoryCode
+  drawId, // optional - to scope participants to entries in a specific draw
+  stage, // optinal - scope participants to entries in a specific stage of draw
+});
+```
+
+---
+
 ## removeTournamentExtension
 
 ```js

@@ -1,5 +1,5 @@
 import { getEliminationDrawSize } from '../../../../drawEngine/getters/getEliminationDrawSize';
-import { setParticipantScaleItems } from '../../participantGovernor/scaleItems';
+import { setParticipantScaleItems } from '../../participantGovernor/addScaleItems';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { getSeedsCount } from '../../policyGovernor/getSeedsCount';
 import { getDevContext } from '../../../../global/globalState';

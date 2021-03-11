@@ -1,4 +1,4 @@
-import { addParticipantScaleItem } from './scaleItems';
+import { addParticipantScaleItem } from './addScaleItems';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 import { RANKING, RATING } from '../../../constants/scaleConstants';

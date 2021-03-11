@@ -50,6 +50,9 @@ import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+import { removeScaleValues } from './entries/removeScaleValues';
+import { getScaledEntries } from './entries/getScaledEntries';
+import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
@@ -60,13 +63,14 @@ import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
-import { getScaledEntries } from './entries/getScaledEntries';
 
 const eventGovernor = {
   addEvent,
   deleteEvents,
 
   autoSeeding,
+  removeSeeding,
+  removeScaleValues,
   addDrawEntries,
   checkValidEntries,
 

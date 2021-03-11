@@ -15,8 +15,8 @@ import { modifyParticipantsSignInStatus } from './modifyParticipantsSignInStatus
 import { createGroupParticipant } from './groupings/createGroupParticipant';
 import { modifyParticipantOtherName } from './modifyParticipantOtherName';
 import { modifyParticipantName } from './modifyParticipantName';
-import { setParticipantScaleItems } from './scaleItems';
-import { setParticipantScaleItem } from './scaleItems';
+import { setParticipantScaleItems } from './addScaleItems';
+import { setParticipantScaleItem } from './addScaleItems';
 import { modifyParticipant } from './modifyParticipant';
 import {
   removeIndividualParticipantIds,
