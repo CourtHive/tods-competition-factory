@@ -1,10 +1,6 @@
-import { getEliminationDrawSize } from '../../../../drawEngine/getters/getEliminationDrawSize';
-import { getFlightProfile } from '../../../getters/getFlightProfile';
-import { getSeedsCount } from '../../policyGovernor/getSeedsCount';
+import { getEntriesAndSeedsCount } from '../../policyGovernor/getEntriesAndSeedsCount';
 import { getScaledEntries } from './getScaledEntries';
 
-import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 import { SEEDING } from '../../../../constants/scaleConstants';
 
 /**
@@ -39,32 +35,15 @@ export function autoSeeding({
   sortDescending,
   scaleSortMethod,
 }) {
-  if (!event) return { error: MISSING_EVENT };
-
-  let entries = event.entries;
-
-  if (drawId) {
-    const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.find((flight) => flight.drawId === drawId);
-    if (flight) {
-      entries = flight.drawEntries;
-    } else {
-      entries = drawDefinition?.entries;
-    }
-  }
-
-  const stageEntries = entries.filter(
-    (entry) =>
-      (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
-  );
-  const participantCount = stageEntries.length;
-
-  const { seedsCount, error } = getSeedsCount({
+  const { error, entries, seedsCount, stageEntries } = getEntriesAndSeedsCount({
+    drawDefinition,
+    drawId,
+    event,
     policyDefinition,
-    participantCount,
-    drawSize: drawSize || getEliminationDrawSize({ participantCount }),
+    drawSize,
+    stage,
   });
+
   if (error) return { error };
 
   const { scaledEntries } = getScaledEntries({
