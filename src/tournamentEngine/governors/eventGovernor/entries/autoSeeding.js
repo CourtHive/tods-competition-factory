@@ -1,13 +1,10 @@
 import { getEliminationDrawSize } from '../../../../drawEngine/getters/getEliminationDrawSize';
-import { setParticipantScaleItems } from '../../participantGovernor/addScaleItems';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { getSeedsCount } from '../../policyGovernor/getSeedsCount';
-import { getDevContext } from '../../../../global/globalState';
 import { getScaledEntries } from './getScaledEntries';
 
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import { SEEDING } from '../../../../constants/scaleConstants';
 
 /**
@@ -103,13 +100,5 @@ export function autoSeeding({
     };
   });
 
-  const result = setParticipantScaleItems({
-    tournamentRecord,
-    scaleItemsWithParticipantIds,
-  });
-  if (result.error) return result;
-
-  return getDevContext()
-    ? Object.assign({}, SUCCESS, { scaleItemsWithParticipantIds })
-    : SUCCESS;
+  return { scaleItemsWithParticipantIds };
 }

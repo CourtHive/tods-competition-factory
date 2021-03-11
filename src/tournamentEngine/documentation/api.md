@@ -269,7 +269,7 @@ tournamentEngine.addPlayoffStructures({
 ## autoSeeding
 
 ```js
-tournamentEngine.autoSeeding({
+const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
   policyDefinition, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
   scaleAttributes, // { scaleType, scaleName, }
@@ -280,6 +280,10 @@ tournamentEngine.autoSeeding({
 
   scaleSortMethod, // Optional - user defined sorting method
   sortDescending, // Optional - defaults to false
+});
+
+tournamentEngine.setParticipantScaleItems({
+  scaleItemsWithParticipantIds,
 });
 ```
 

@@ -66,11 +66,15 @@ it('can autoSeed by Rankings', () => {
     policyDefinition: SEEDING_USTA,
     sortDescending: true,
   });
-  expect(result.success).toEqual(true);
   let scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
     .filter((f) => f);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
+
+  result = tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
+  });
+  expect(result.success).toEqual(true);
 
   let seedingScaleAttributes = {
     scaleType: SEEDING,
@@ -95,11 +99,14 @@ it('can autoSeed by Rankings', () => {
     policyDefinition: SEEDING_USTA,
     sortDescending: false,
   });
-  expect(result.success).toEqual(true);
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
     .filter((f) => f);
   expect(scaleValues).toEqual([3, 4, 5, 1, 2, 6, 7, 8]);
+  result = tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
+  });
+  expect(result.success).toEqual(true);
 
   // now test seeding by ranking
   scaleAttributes = {
@@ -113,11 +120,14 @@ it('can autoSeed by Rankings', () => {
     scaleAttributes,
     policyDefinition: SEEDING_USTA,
   });
-  expect(result.success).toEqual(true);
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
     .filter((f) => f);
   expect(scaleValues).toEqual([8, 3, 2, 1, 7, 6, 5, 4]);
+  result = tournamentEngine.setParticipantScaleItems({
+    scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
+  });
+  expect(result.success).toEqual(true);
 
   seedingScaleAttributes = {
     scaleType: SEEDING,
