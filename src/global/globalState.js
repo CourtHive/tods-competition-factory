@@ -61,5 +61,5 @@ export function getTopics() {
 }
 
 export function callListener(payload) {
-  _globalStateProvider.callListener(payload);
+  return _globalStateProvider.callListener(payload);
 }
