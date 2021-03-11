@@ -61,6 +61,7 @@ it('can autoSeed by Rankings', () => {
   };
   result = tournamentEngine.autoSeeding({
     eventId,
+    scaleName: 'U18',
     scaleAttributes,
     policyDefinition: SEEDING_USTA,
     sortDescending: true,
@@ -73,7 +74,7 @@ it('can autoSeed by Rankings', () => {
 
   let seedingScaleAttributes = {
     scaleType: SEEDING,
-    scaleName: 'WTN',
+    scaleName: 'U18',
     eventType: SINGLES,
   };
   let { scaledEntries } = tournamentEngine.getScaledEntries({
@@ -89,6 +90,7 @@ it('can autoSeed by Rankings', () => {
   // now test that { sortDescending: false } sorts the other way
   result = tournamentEngine.autoSeeding({
     eventId,
+    scaleName: 'U18',
     scaleAttributes,
     policyDefinition: SEEDING_USTA,
     sortDescending: false,
@@ -107,6 +109,7 @@ it('can autoSeed by Rankings', () => {
   };
   result = tournamentEngine.autoSeeding({
     eventId,
+    scaleName: 'U18',
     scaleAttributes,
     policyDefinition: SEEDING_USTA,
   });
@@ -130,5 +133,12 @@ it('can autoSeed by Rankings', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
 
   // check that a timeItem was added
-  expect(tournamentParticipants[0].timeItems.length).toEqual(4);
+  expect(tournamentParticipants[0].timeItems.length).toEqual(5);
+
+  result = tournamentEngine.removeSeeding({
+    eventId,
+    scaleName: 'U18',
+  });
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
 });
