@@ -20,12 +20,7 @@ export function setParticipantScaleItem({
   let equivalentValue, participantFound;
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
-  const requiredAttributes = [
-    'scaleType',
-    'eventType',
-    'scaleName',
-    'scaleValue',
-  ];
+  const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
     requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
@@ -105,12 +100,7 @@ export function setParticipantScaleItems({
 
 function isValidScaleItem({ scaleItem }) {
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
-  const requiredAttributes = [
-    'scaleType',
-    'eventType',
-    'scaleName',
-    'scaleValue',
-  ];
+  const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
     requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
@@ -124,12 +114,7 @@ export function addParticipantScaleItem({ participant, scaleItem }) {
   }
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
-  const requiredAttributes = [
-    'scaleType',
-    'eventType',
-    'scaleName',
-    'scaleValue',
-  ];
+  const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
     requiredAttributes.filter((attribute) =>
       scaleItemAttributes.includes(attribute)
