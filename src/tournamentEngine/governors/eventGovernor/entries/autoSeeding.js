@@ -1,7 +1,6 @@
 import { getEntriesAndSeedsCount } from '../../policyGovernor/getEntriesAndSeedsCount';
+import { generateSeedingScaleItems } from './generateSeedingScaleItems';
 import { getScaledEntries } from './getScaledEntries';
-
-import { SEEDING } from '../../../../constants/scaleConstants';
 
 /**
  *
@@ -55,28 +54,12 @@ export function autoSeeding({
     stage,
   });
 
-  const seededEntries = Object.assign(
-    {},
-    ...(scaledEntries || [])
-      .slice(0, seedsCount)
-      .map(({ participantId }, index) => ({ [participantId]: index + 1 }))
-  );
-
-  scaleName = scaleName || scaleAttributes.scaleName;
-  const scaleDate = new Date().toISOString();
-
-  const scaleItemsWithParticipantIds = stageEntries.map(({ participantId }) => {
-    const scaleItem = {
-      scaleValue: seededEntries[participantId],
-      eventType: scaleAttributes.eventType,
-      scaleType: SEEDING,
-      scaleName,
-      scaleDate,
-    };
-    return {
-      participantId,
-      scaleItems: [scaleItem],
-    };
+  const { scaleItemsWithParticipantIds } = generateSeedingScaleItems({
+    scaledEntries,
+    seedsCount,
+    scaleAttributes,
+    scaleName,
+    stageEntries,
   });
 
   return { scaleItemsWithParticipantIds };

@@ -63,6 +63,7 @@ import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
+import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 
 const eventGovernor = {
   addEvent,
@@ -79,6 +80,8 @@ const eventGovernor = {
   addPlayoffStructures,
   deleteDrawDefinitions,
   getAvailablePlayoffRounds,
+
+  generateSeedingScaleItems,
 
   setSubOrder,
   addEventEntries,

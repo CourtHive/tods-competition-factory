@@ -847,6 +847,24 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(
 
 ---
 
+## generateSeedingScaleItems
+
+Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make use of a custom function for generating `scaledEntries`.
+
+```js
+const {
+  scaleItemsWithParticipantIds,
+} = tournamentEngine.generateSeedingScaleItems({
+  scaledEntries,
+  seedsCount,
+  scaleAttributes,
+  scaleName,
+  stageEntries,
+});
+```
+
+---
+
 ## generateTeamsFromParticipantAttribute
 
 Uses attributes of individual participnts or persons to generate `{ participantType: TEAM }` participants.
@@ -941,6 +959,26 @@ const {
   },
   structures,
 } = getDrawData({ drawDefinition });
+```
+
+---
+
+## getEntriesAndSeedsCount
+
+```js
+const {
+  error,
+  entries,
+  seedsCount,
+  stageEntries,
+} = tournamentEngine.getEntriesAndSeedsCount({
+  eventId,
+  policyDefinition, // seeding policy which determines # of seeds for # of participants/drawSize
+
+  drawSize, // optional - overrides number calculaed from entries in either event or draw
+  drawId, // optional - scopes entries to a specific flight/drawDefinition
+  stage, // optional - scopes entries to a specific stage
+});
 ```
 
 ---
