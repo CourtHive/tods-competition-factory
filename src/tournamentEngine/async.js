@@ -154,17 +154,13 @@ export function tournamentEngineAsync() {
 
             return result;
           } else {
-            try {
-              const result = await engineInvoke(
-                governor[governorMethod],
-                params,
-                governorMethod
-              );
+            const result = await engineInvoke(
+              governor[governorMethod],
+              params,
+              governorMethod
+            );
 
-              return result;
-            } catch (err) {
-              console.log('%c ERROR', 'color: orange', { err });
-            }
+            return result;
           }
         };
       }
