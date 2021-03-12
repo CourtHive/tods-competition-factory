@@ -41,8 +41,9 @@ export function generateDrawDefinition(props) {
     policyDefinitions,
     qualifyingPositions,
     drawType = SINGLE_ELIMINATION,
-    playoffMatchUpFormat,
+    finishingPositionNaming,
     ignoreAllowedDrawTypes,
+    playoffMatchUpFormat,
     feedPolicy,
 
     seededParticipants,
@@ -146,6 +147,7 @@ export function generateDrawDefinition(props) {
     uuids,
     matchUpFormat,
     playoffMatchUpFormat,
+    finishingPositionNaming,
 
     feedPolicy,
     goesTo: props.goesTo,
