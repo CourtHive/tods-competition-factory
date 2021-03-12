@@ -254,14 +254,14 @@ export function generateDrawDefinition(props) {
     const { scaledEntries: seedingScaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
-      entries: drawEntries,
+      entries,
       stage,
     });
 
     const { scaledEntries: rankingScaledEntries } = getScaledEntries({
       scaleAttributes: rankingScaleAttributes,
       tournamentRecord,
-      entries: drawEntries,
+      entries,
       stage,
     });
 
