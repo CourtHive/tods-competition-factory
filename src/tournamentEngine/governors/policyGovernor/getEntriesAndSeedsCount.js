@@ -46,10 +46,13 @@ export function getEntriesAndSeedsCount({
   );
   const participantCount = stageEntries.length;
 
+  const { drawSize: eliminationDrawSize } = getEliminationDrawSize({
+    participantCount,
+  });
   const { seedsCount, error } = getSeedsCount({
     policyDefinition,
     participantCount,
-    drawSize: drawSize || getEliminationDrawSize({ participantCount }),
+    drawSize: drawSize || eliminationDrawSize,
   });
   if (error) return { error };
 

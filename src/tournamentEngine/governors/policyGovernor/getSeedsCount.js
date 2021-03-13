@@ -5,8 +5,10 @@ import {
   MISSING_POLICY_DEFINITION,
   MISSING_SEEDCOUNT_THRESHOLDS,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
 
 /**
  *
@@ -24,9 +26,19 @@ export function getSeedsCount({
   drawSize,
 } = {}) {
   if (!policyDefinition) return { error: MISSING_POLICY_DEFINITION };
+  if (participantCount && isNaN(participantCount))
+    return { error: INVALID_VALUES };
   if (requireParticipantCount && !participantCount)
     return { error: MISSING_PARTICIPANT_COUNT };
-  if (!drawSize) return { error: MISSING_DRAW_SIZE };
+  if (!drawSize) {
+    if (participantCount) {
+      ({ drawSize } = getEliminationDrawSize({
+        participantCount,
+      }));
+    } else {
+      return { error: MISSING_DRAW_SIZE };
+    }
+  }
 
   const consideredParticipantCount =
     (requireParticipantCount && participantCount) || drawSize;

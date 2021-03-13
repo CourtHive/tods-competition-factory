@@ -571,6 +571,14 @@ const { structures } = drawEngine.getDrawStructures({
 
 ---
 
+## getEliminationDrawSize
+
+```js
+const { drawSize } = drawEngine.getEliminationDrawSize({ participantCount });
+```
+
+---
+
 ## getMatchUpContextIds
 
 Convenience method to find a `matchUp` by `matchUpId` and return "context ids". Does NOT require that drawEngine state be set, but does require an array of "inContext" `matchUps`.
