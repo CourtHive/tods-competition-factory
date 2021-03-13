@@ -176,7 +176,7 @@ export function assignMatchUpDrawPosition({
     const byePropagation = firstRoundMatchUps.every(({ matchUpStatus }) =>
       [COMPLETED, RETIRED].includes(matchUpStatus)
     );
-    if (byePropagation) {
+    if (byePropagation && loserMatchUp) {
       const { structureId } = loserMatchUp;
       const result = assignDrawPositionBye({
         drawDefinition,
