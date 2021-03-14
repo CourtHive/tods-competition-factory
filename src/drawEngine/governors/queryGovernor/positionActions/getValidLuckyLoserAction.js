@@ -1,11 +1,5 @@
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 
-import {
-  CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../../../constants/drawDefinitionConstants';
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
   LUCKY_PARTICIPANT,
