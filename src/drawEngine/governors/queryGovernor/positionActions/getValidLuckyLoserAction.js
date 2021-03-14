@@ -30,14 +30,18 @@ export function getValidLuckyLosersAction({
 
   /*
   Available Lucky Losers are those participants who are assigned drawPositions
-  in previous draw structures and have already lost
+  in source draw structures and have already lost
   */
 
-  const stages = [CONSOLATION, PLAY_OFF].includes(structure.stage)
-    ? [MAIN]
-    : [QUALIFYING];
-  const contextFilters = { stages };
-  const { completedMatchUps } = getDrawMatchUps({
+  const relevantLink = drawDefinition.links?.find(
+    (link) => link.target?.structureId === structure.structureId
+  );
+  const sourceStructureIds = [relevantLink?.source?.structureId].filter(
+    (f) => f
+  );
+
+  const contextFilters = { structureIds: sourceStructureIds };
+  let { completedMatchUps } = getDrawMatchUps({
     drawDefinition,
     contextFilters,
     inContext: true,
