@@ -57,6 +57,13 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
   expect(result.error).not.toBeUndefined();
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  console.log({ filteredOrderedPairs });
-  // console.log({ outcome }, result);
+  expect(filteredOrderedPairs).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, 3],
+    [],
+    [1],
+  ]);
 });
