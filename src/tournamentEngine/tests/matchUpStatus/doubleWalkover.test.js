@@ -1,12 +1,12 @@
 import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import drawEngine from '../../../drawEngine/sync';
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
