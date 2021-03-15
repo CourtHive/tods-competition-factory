@@ -957,9 +957,10 @@ const {
     drawActive, // boolean - draw has active matchUps
     drawCompleted, // boolean - all draw matchUps are complete
     drawGenerated, // boolean - draw has structures containing matchUps
+    participantPlacements, // boolean - whether any particpants have been placed in the draw
   },
   structures,
-} = getDrawData({ drawDefinition });
+} = tournamentEngine.getDrawData({ drawDefinition });
 ```
 
 ---

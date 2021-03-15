@@ -50,6 +50,7 @@ export function getDrawData({
   const { structureGroups } = getStructureGroups({ drawDefinition });
 
   let drawActive = false;
+  let participantPlacements = false; // if any positionAssignments include a participantId
   const groupedStructures = structureGroups.map((structureIds) => {
     const structures = structureIds
       .map((structureId) => {
@@ -100,6 +101,7 @@ export function getDrawData({
         const participantResults = positionAssignments
           .filter(({ participantId }) => participantId)
           .map((assignment) => {
+            participantPlacements = true;
             const { drawPosition, participantId } = assignment;
             const { extension } = findExtension({
               element: assignment,
@@ -190,6 +192,7 @@ export function getDrawData({
   const structures = groupedStructures.flat();
 
   drawInfo.drawActive = drawActive;
+  drawActive.participantPlacements = participantPlacements;
   drawInfo.drawGenerated = structures?.reduce((generated, structure) => {
     return generated || !!structure?.roundMatchUps;
   }, false);
