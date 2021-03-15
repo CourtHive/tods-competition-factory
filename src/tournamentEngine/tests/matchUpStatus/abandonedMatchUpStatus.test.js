@@ -37,7 +37,6 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
     matchUpStatus: COMPLETED,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  // Object.assign(outcome, { matchUpStatus: COMPLETED });
   result = tournamentEngine.devContext(true).setMatchUpStatus({
     drawId,
     matchUpId,
