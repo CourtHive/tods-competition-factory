@@ -192,7 +192,7 @@ export function getDrawData({
   const structures = groupedStructures.flat();
 
   drawInfo.drawActive = drawActive;
-  drawActive.participantPlacements = participantPlacements;
+  drawInfo.participantPlacements = participantPlacements;
   drawInfo.drawGenerated = structures?.reduce((generated, structure) => {
     return generated || !!structure?.roundMatchUps;
   }, false);
