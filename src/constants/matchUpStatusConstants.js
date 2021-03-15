@@ -13,6 +13,23 @@ export const IN_PROGRESS = 'IN_PROGRESS';
 export const TO_BE_PLAYED = 'TO_BE_PLAYED';
 export const DEAD_RUBBER = 'DEAD_RUBBER';
 
+export const validMatchUpStatuses = [
+  BYE,
+  RETIRED,
+  WALKOVER,
+  DOUBLE_WALKOVER,
+  SUSPENDED,
+  ABANDONED,
+  DEFAULTED,
+  CANCELLED,
+  COMPLETED,
+  INCOMPLETE,
+  NOT_PLAYED,
+  IN_PROGRESS,
+  TO_BE_PLAYED,
+  DEAD_RUBBER,
+];
+
 export const directingMatchUpStatuses = [
   BYE,
   COMPLETED,

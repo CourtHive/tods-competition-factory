@@ -1,6 +1,5 @@
 import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 import { removeDirectedParticipants } from './removeDirectedParticipants';
-import { attemptToSetIncompleteScore } from './attemptToSetIncompleteScore';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
@@ -10,14 +9,16 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
 import {
-  CANCELLED,
+  ABANDONED,
   DOUBLE_WALKOVER,
+  INCOMPLETE,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, score, winningSide } = props;
+  const { matchUp, score, winningSide } = props;
+  let { matchUpStatus } = props;
 
   const doubleWalkoverCleanup =
     matchUp?.matchUpStatus === DOUBLE_WALKOVER &&
@@ -26,28 +27,31 @@ export function noDownstreamDependencies(props) {
     const result = removeDoubleWalkover(props);
     if (result.error) return result;
   }
-  const removeScore = [CANCELLED, DOUBLE_WALKOVER].includes(matchUpStatus);
+  const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
+
+  const removeDirected = ({ removeScore } = {}) => {
+    const { structure, drawDefinition } = props;
+    checkConnectedStructures({ drawDefinition, structure, matchUp });
+    Object.assign(props, { removeScore });
+    const { errors } = removeDirectedParticipants(props);
+    return { errors };
+  };
 
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
     if (winningSideErrors?.length) return { errors: winningSideErrors };
-  } else if (!winningSide && scoreHasValue({ score }) && !removeScore) {
-    // ABANDONED, INCOMPLETE
-    const { errors: incompleteScoreErrors } = attemptToSetIncompleteScore(
-      props
-    );
-    if (incompleteScoreErrors) return incompleteScoreErrors;
+  } else if (!winningSide && scoreHasValue({ score }) && !doubleWalkover) {
+    if (!matchUpStatus) matchUpStatus = INCOMPLETE;
+    const removeScore = ![INCOMPLETE, ABANDONED].includes(matchUpStatus);
+    const { errors: participantDirectionErrors } = removeDirected({
+      removeScore,
+    });
+    if (participantDirectionErrors) return participantDirectionErrors;
   } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
-    // DOUBLE_WALKOVER, CANCELLED
     const { error } = attemptToSetMatchUpStatus(props);
     if (error) return { errors: [error] };
   } else if (!winningSide && matchUp.winningSide && !scoreHasValue({ score })) {
-    const { structure, drawDefinition } = props;
-    checkConnectedStructures({ drawDefinition, structure, matchUp });
-
-    const { errors: participantDirectionErrors } = removeDirectedParticipants(
-      props
-    );
+    const { errors: participantDirectionErrors } = removeDirected();
     if (participantDirectionErrors) return participantDirectionErrors;
   } else if (matchUp) {
     if (matchUp.matchUpStatus === DOUBLE_WALKOVER) {

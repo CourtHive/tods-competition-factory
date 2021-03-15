@@ -12,10 +12,18 @@ import {
 } from './checkStatusType';
 
 import {
+  ABANDONED,
+  CANCELLED,
+  INCOMPLETE,
+  TO_BE_PLAYED,
+  validMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
+import {
   INVALID_MATCHUP_STATUS,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
+  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import {
   BYE,
@@ -31,6 +39,16 @@ export function setMatchUpStatus(props) {
   // winningSide in props is new winningSide
   const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  if (
+    [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
+    winningSide
+  )
+    return { error: INVALID_VALUES, winningSide, matchUpStatus };
+
+  if (![undefined, ...validMatchUpStatuses].includes(matchUpStatus)) {
+    return { error: INVALID_MATCHUP_STATUS };
+  }
 
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
   Object.assign(props, { mappedMatchUps });

@@ -139,7 +139,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     matchUpId,
     matchUpStatus: 'BOGUS',
   }));
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,

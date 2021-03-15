@@ -1,4 +1,6 @@
+import { getDevContext } from '../../../global/globalState';
 import { findEvent } from '../../getters/eventGetter';
+import { makeDeepCopy } from '../../../utilities';
 
 import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
@@ -9,8 +11,6 @@ import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../../utilities';
-import { getDevContext } from '../../../global/globalState';
 
 /**
  *
