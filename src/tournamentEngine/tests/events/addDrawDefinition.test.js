@@ -27,4 +27,7 @@ it('can create flightProfile on addDrawDefinition', () => {
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
+
+  let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  expect(flightProfile.flights.length).toEqual(1);
 });

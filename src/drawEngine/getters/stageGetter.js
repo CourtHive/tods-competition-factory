@@ -1,3 +1,4 @@
+import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 import { findStructure } from './findStructure';
 import {
   findDrawDefinitionExtension,
@@ -20,7 +21,6 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
