@@ -28,7 +28,9 @@ export function removeScaleValues({
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.find((flight) => flight.drawId === drawId);
+    const flight = flightProfile?.flights?.find(
+      (flight) => flight.drawId === drawId
+    );
     if (flight) {
       entries = flight.drawEntries;
     } else {

@@ -28,7 +28,7 @@ export function removeDrawEntries({
   };
 
   const { flightProfile } = getFlightProfile({ event });
-  const flight = flightProfile?.flights.find(
+  const flight = flightProfile?.flights?.find(
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
