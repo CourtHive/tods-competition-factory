@@ -24,28 +24,30 @@ export function addParticipantContext({
       (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
     );
     const entries = event.entries || [];
-    entries.forEach((entry) => {
-      const { participantId } = entry;
+    entries
+      .filter((entry) => entry?.participantId)
+      .forEach((entry) => {
+        const participantId = entry?.participantId;
 
-      // include all individual participants that are part of teams & pairs
-      // relevantParticipantId is a reference to an individual
-      allRelevantParticipantIds({ participantId }).forEach(
-        ({ relevantParticipantId }) => {
-          if (!participantIdMap[relevantParticipantId])
-            participantIdMap[relevantParticipantId] = {
-              opponents: {},
-              matchUps: {},
-              events: {},
-              draws: {},
-              wins: 0,
-              losses: 0,
+        // include all individual participants that are part of teams & pairs
+        // relevantParticipantId is a reference to an individual
+        allRelevantParticipantIds(participantId).forEach(
+          ({ relevantParticipantId }) => {
+            if (!participantIdMap[relevantParticipantId])
+              participantIdMap[relevantParticipantId] = {
+                opponents: {},
+                matchUps: {},
+                events: {},
+                draws: {},
+                wins: 0,
+                losses: 0,
+              };
+            participantIdMap[relevantParticipantId].events[eventId] = {
+              ...eventInfo,
             };
-          participantIdMap[relevantParticipantId].events[eventId] = {
-            ...eventInfo,
-          };
-        }
-      );
-    });
+          }
+        );
+      });
 
     const { matchUps } = allEventMatchUps({
       event,
@@ -77,7 +79,7 @@ export function addParticipantContext({
       } = matchUp;
       const { winner, loser } = finishingPositionRange || {};
 
-      sides?.forEach(({ participantId, sideNumber }) => {
+      sides.forEach(({ participantId, sideNumber } = {}) => {
         if (!participantId) return;
 
         const drawType = drawTypes[drawId];
@@ -85,20 +87,19 @@ export function addParticipantContext({
           sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
         const participantWon = winningSide && sideNumber === winningSide;
         const opponent = matchUp.sides.find(
-          ({ sideNumber: otherSideNumber }) =>
+          ({ sideNumber: otherSideNumber } = {}) =>
             otherSideNumber === 3 - sideNumber
         );
-        const relevantOpponents = opponent?.participantId
-          ? allRelevantParticipantIds({
-              participantId: opponent.participantId,
-            })
-          : [];
+        const opponentParticipantId = opponent?.participantId;
+        const relevantOpponents =
+          (opponentParticipantId &&
+            allRelevantParticipantIds(opponentParticipantId)) ||
+          [];
         const finishingPositionRange =
           winningSide && (participantWon ? winner : loser);
 
-        const relevantParticipantIds = allRelevantParticipantIds({
-          participantId,
-        });
+        const relevantParticipantIds =
+          (participantId && allRelevantParticipantIds(participantId)) || [];
 
         // include all individual participants that are part of teams & pairs
         relevantParticipantIds.forEach(
@@ -210,9 +211,9 @@ export function addParticipantContext({
       });
     });
 
-    tournamentParticipants.forEach((participant) => {
-      const { participantId } = participant;
-      if (!participantIdMap[participantId]) return;
+    tournamentParticipants?.forEach((participant) => {
+      const participantId = participant?.participantId;
+      if (!participantId || !participantIdMap[participantId]) return;
 
       const {
         wins,
@@ -271,10 +272,13 @@ export function addParticipantContext({
     });
   });
 
-  function allRelevantParticipantIds({ participantId }) {
-    const participant = tournamentRecord.participants.find(
-      (participant) => participant.participantId === participantId
+  function allRelevantParticipantIds(participantId) {
+    if (!participantId) return [];
+    const participant = tournamentRecord.participants?.find(
+      (participant) => participant?.participantId === participantId
     );
+    if (!participant) return [];
+
     const {
       participantId: relevantParticipantId,
       participantType,
