@@ -784,6 +784,7 @@ const drawDefinitionValues = {
   tieFormat, // optional - { collectionDefinitions, winCriteria } for 'dual' or 'tie' matchUps
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
+  seedingScaleName, // optional - custom scale for determining seeded participants
   seedingProfile, // optional - used to specify WATERFALL seeding for ROUND_ROBIN
   qualifyingRound, // optional - used to derive roundLimit
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }

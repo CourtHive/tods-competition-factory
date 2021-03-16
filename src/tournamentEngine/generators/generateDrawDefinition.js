@@ -48,6 +48,7 @@ export function generateDrawDefinition(props) {
 
     seededParticipants,
     seedByRanking = true,
+    seedingScaleName,
   } = props;
 
   const participants = tournamentRecord?.participants;
@@ -241,7 +242,7 @@ export function generateDrawDefinition(props) {
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName: categoryName || ageCategoryCode,
+      scaleName: seedingScaleName || categoryName || ageCategoryCode,
       eventType,
     };
 
@@ -329,6 +330,7 @@ export function generateDrawDefinition(props) {
     seedsCount,
     tieFormat,
     matchUpType,
+    seedingScaleName,
     drawId: drawDefinition.drawId,
     category: event?.category,
   };
