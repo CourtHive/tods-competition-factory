@@ -10,11 +10,11 @@ import {
 import { FLIGHT_PROFILE } from '../../../constants/flightConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addFlight({ event, drawName, drawEntries, drawId }) {
+export function addFlight({ event, drawName, drawEntries = [], drawId }) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawName) return { error: MISSING_VALUE };
 
-  if (drawEntries) {
+  if (drawEntries?.length) {
     // check that all drawEntries are in event.entries
     const enteredParticipantIds =
       event.entries
@@ -33,9 +33,19 @@ export function addFlight({ event, drawName, drawEntries, drawId }) {
 
   const { flightProfile } = getFlightProfile({ event });
 
+  const flightNumbers =
+    flightProfile?.flights
+      ?.map(
+        ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
+      )
+      ?.filter((f) => f) || [];
+
+  const flightNumber = Math.max(0, ...flightNumbers) + 1;
+
   const flight = {
     drawName,
     drawEntries,
+    flightNumber,
     drawId: drawId || UUID(),
   };
 
