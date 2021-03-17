@@ -64,6 +64,7 @@ import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
+import { addFlight } from './addFlight';
 
 const eventGovernor = {
   addEvent,
@@ -96,6 +97,7 @@ const eventGovernor = {
   modifyEntriesStatus,
   modifySeedAssignment,
 
+  addFlight,
   getFlightProfile,
   getScaledEntries,
   updateDrawIdsOrder,
