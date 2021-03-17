@@ -340,6 +340,10 @@ export function sameDay(date1, date2) {
 export function getTimeZoneOffset({ date, timeZone } = {}) {
   // assume if provided a date string with no time element that
   // the date is intended to represent this date in local time zone
+
+  const isMissingDate = typeof date === 'string' && date.indexOf('-') < 0;
+  if (isMissingDate) return { error: INVALID_DATE };
+
   const isDateStringMissingTime =
     typeof date === 'string' && date.length === 10;
 
@@ -362,6 +366,9 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
   } catch (err) {
     return { error: INVALID_TIME_ZONE };
   }
+
+  if (localeString?.toLowerCase().indexOf('invalid') >= 0)
+    return { error: INVALID_DATE };
 
   localeString +=
     '.' + originalDate.getMilliseconds().toString().padStart(3, '0');
