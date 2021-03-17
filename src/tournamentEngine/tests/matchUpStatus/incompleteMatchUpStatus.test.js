@@ -128,3 +128,49 @@ it('removes advanced participant when completed score changes to incomplete resu
   }));
   expect(matchUp.score.scoreStringSide1).toEqual('6-1');
 });
+
+it('removes advanced participant in FINAL when completed score changes to incomplete result', () => {
+  const drawProfiles = [
+    {
+      drawSize: 2,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-1',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUp } = getContextMatchUp({
+    matchUps,
+    roundNumber: 1,
+    roundPosition: 1,
+  });
+  const { drawId, matchUpId } = matchUp;
+
+  const values = {
+    scoreString: '6-1',
+    matchUpStatus: INCOMPLETE,
+  };
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  ({ matchUp } = getContextMatchUp({
+    matchUps,
+    roundNumber: 1,
+    roundPosition: 1,
+  }));
+  expect(matchUp.score.scoreStringSide1).toEqual('6-1');
+  expect(matchUp.winningSide).toBeUndefined();
+});

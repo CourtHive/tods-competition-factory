@@ -35,6 +35,7 @@ export function modifyMatchUpScore({
   score,
 
   removeScore,
+  removeWinningSide,
 }) {
   if (removeScore) {
     Object.assign(matchUp, toBePlayed);
@@ -45,6 +46,7 @@ export function modifyMatchUpScore({
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
+  if (removeWinningSide) matchUp.winningSide = undefined;
 
   // middleware methods
   if (drawDefinition) {

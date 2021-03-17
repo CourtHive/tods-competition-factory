@@ -75,6 +75,7 @@ export function removeDirectedParticipants(props) {
     modifyMatchUpScore({
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       drawDefinition: props.drawDefinition,
+      removeWinningSide: true,
       matchUpStatusCodes,
       removeScore,
       matchUp,
