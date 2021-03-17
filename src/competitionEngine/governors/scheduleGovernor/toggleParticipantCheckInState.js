@@ -11,6 +11,7 @@ export function toggleParticipantCheckInState(params) {
   const { participantId, tournamentId, matchUpId, drawId } = params;
 
   const tournamentRecord = tournamentRecords[tournamentId];
+  const tournamentParticipants = tournamentRecord?.participants;
   const { drawDefinition } = getDrawDefinition({
     tournamentRecord,
     drawId,
@@ -26,9 +27,19 @@ export function toggleParticipantCheckInState(params) {
 
   let result;
   if (checkedInParticipantIds.includes(participantId)) {
-    result = checkOutParticipant({ matchUpId, participantId });
+    result = checkOutParticipant({
+      tournamentParticipants,
+      drawDefinition,
+      matchUpId,
+      participantId,
+    });
   } else {
-    result = checkInParticipant({ matchUpId, participantId });
+    result = checkInParticipant({
+      tournamentParticipants,
+      drawDefinition,
+      matchUpId,
+      participantId,
+    });
   }
   return result;
 }
