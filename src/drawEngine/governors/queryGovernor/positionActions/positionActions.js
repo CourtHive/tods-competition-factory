@@ -1,10 +1,12 @@
+import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
-import { getValidAssignmentActions } from './participantAssignments';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
+import { getValidAssignmentActions } from './participantAssignments';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
+import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
 import {
   getStageAssignedParticipantIds,
@@ -48,7 +50,9 @@ import {
 import {
   CONSOLATION,
   MAIN,
+  POSITION,
   QUALIFYING,
+  WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
 
 /**
@@ -92,6 +96,31 @@ export function positionActions({
   });
 
   if (actionsDisabled) return { message: 'Actions Disabled for structure' };
+
+  const { sourceStructureIds } =
+    getSourceStructureIdsDirectedBy({
+      drawDefinition,
+      structureId,
+      finishingPosition: WIN_RATIO,
+      linkType: POSITION,
+    }) || {};
+
+  let sourceStructuresCompleted;
+  if (sourceStructureIds?.length) {
+    sourceStructuresCompleted = sourceStructureIds.reduce(
+      (ready, sourceStructureId) => {
+        const completed = isCompletedStructure({
+          drawDefinition,
+          structureId: sourceStructureId,
+        });
+        return completed && ready;
+      },
+      true
+    );
+  }
+
+  const disablePlacementActions =
+    sourceStructureIds.length && !sourceStructuresCompleted;
 
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
@@ -150,6 +179,7 @@ export function positionActions({
   if (
     isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
     !isActiveDrawPosition &&
+    !disablePlacementActions &&
     (!positionAssignment || isByePosition)
   ) {
     const { validAssignmentActions } = getValidAssignmentActions({
@@ -291,7 +321,10 @@ export function positionActions({
     }
   }
 
-  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+  if (
+    isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) &&
+    !disablePlacementActions
+  ) {
     const { validAlternatesAction } = getValidAlternatesAction({
       event,
       drawId,
@@ -306,7 +339,10 @@ export function positionActions({
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
-  if (isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT })) {
+  if (
+    isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
+    !disablePlacementActions
+  ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
       drawId,
       structure,
