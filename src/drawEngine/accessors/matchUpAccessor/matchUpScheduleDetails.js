@@ -1,8 +1,8 @@
 import { matchUpEndTime } from './endTime';
 import { matchUpStartTime } from './startTime';
 import { matchUpDuration } from './matchUpDuration';
-import { scheduledMatchUpTime } from './scheduledTime';
-import { scheduledMatchUpDate } from './scheduledDate';
+import { scheduledMatchUpTime } from './scheduledMatchUpTime';
+import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 

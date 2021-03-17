@@ -21,7 +21,7 @@ export function scheduledMatchUpDate({
 
   const itemValue = scheduledDateItem && scheduledDateItem.itemValue;
 
-  if (localPerspective && localTimeZone) {
+  if (itemValue && localPerspective && localTimeZone) {
     const { offsetDate, error } = getTimeZoneOffset({
       date: itemValue,
       timeZone: localTimeZone,

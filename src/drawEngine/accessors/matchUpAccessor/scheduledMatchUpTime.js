@@ -16,13 +16,15 @@ export function scheduledMatchUpTime({
 
   const itemValue = lastScheduledTimeItem && lastScheduledTimeItem.itemValue;
 
-  if (localPerspective && localTimeZone) {
-    const { offsetDate, error } = getTimeZoneOffset({
-      date: itemValue,
-      timeZone: localTimeZone,
-    });
-    if (error) return { error };
-    return { scheduledTime: offsetDate };
+  if (itemValue && localPerspective && localTimeZone) {
+    if (itemValue?.indexOf(':') >= 0 && itemValue?.indexOf('-') >= 0) {
+      const { offsetDate, error } = getTimeZoneOffset({
+        date: itemValue,
+        timeZone: localTimeZone,
+      });
+      if (error) return { error };
+      return { scheduledTime: offsetDate };
+    }
   }
 
   return { scheduledTime: itemValue };
