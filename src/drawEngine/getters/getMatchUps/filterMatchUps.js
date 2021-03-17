@@ -3,30 +3,43 @@ import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledM
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 
-export function filterMatchUps({
-  stages,
-  courtIds,
-  matchUps,
-  matchUpTypes,
-  roundNumbers,
-  matchUpFormat,
-  collectionIds,
-  scheduledDate,
-  isMatchUpTie,
-  localTimeZone,
-  matchUpFormats,
-  matchUpStatuses,
-  localPerspective,
-  isCollectionMatchUp,
-}) {
+export function filterMatchUps(props) {
+  const {
+    stages,
+    courtIds,
+    matchUps,
+    matchUpTypes,
+    roundNumbers,
+    matchUpFormat,
+    collectionIds,
+    scheduledDate,
+    isMatchUpTie,
+    localTimeZone,
+    matchUpFormats,
+    matchUpStatuses,
+    localPerspective,
+    isCollectionMatchUp,
+  } = props;
   const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
-      if (isMatchUpTie && !matchUp.tieFormat) return false;
-      if (!isMatchUpTie && matchUp.tieFormat) return false;
+      if (isMatchUpTie && !matchUp.tieFormat) {
+        return false;
+      }
+      if (
+        !isMatchUpTie &&
+        matchUp.tieFormat &&
+        Object.keys(matchUp.tieFormat)
+      ) {
+        return false;
+      }
     }
     if (isCollectionMatchUp !== undefined) {
-      if (isCollectionMatchUp && !matchUp.collectionId) return false;
-      if (!isCollectionMatchUp && matchUp.collectionId) return false;
+      if (isCollectionMatchUp && !matchUp.collectionId) {
+        return false;
+      }
+      if (!isCollectionMatchUp && matchUp.collectionId) {
+        return false;
+      }
     }
     if (stages?.length && !stages.includes(matchUp.stage)) {
       return false;
