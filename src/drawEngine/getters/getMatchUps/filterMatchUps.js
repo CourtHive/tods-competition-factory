@@ -1,6 +1,6 @@
 import { sameDay } from '../../../utilities/dateTime';
-import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledTime';
-import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledDate';
+import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledMatchUpTime';
+import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 
 export function filterMatchUps({
@@ -66,7 +66,12 @@ export function filterMatchUps({
         localTimeZone,
         localPerspective,
       });
-      const comparisonDate = scheduledTime || matchUpDate;
+      const scheduledTimeDate =
+        scheduledTime &&
+        scheduledTime.indexOf('-') > 0 &&
+        scheduledTime.indexOf('T') > 0 &&
+        scheduledTime.split('T')[0];
+      const comparisonDate = scheduledTimeDate || matchUpDate;
       if (!sameDay(scheduledDate, comparisonDate)) return false;
     }
     if (matchUpFormat && matchUp.matchUpFormat !== matchUpFormat) {
