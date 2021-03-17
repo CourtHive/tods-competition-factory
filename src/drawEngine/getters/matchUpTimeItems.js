@@ -55,11 +55,16 @@ export function getCheckedInParticipantIds({ matchUp }) {
       const sideParticipantId = sideParticipantIds[sideIndex];
       const allIndividualsCheckedIn = sideIndividualParticipantIds.reduce(
         (checkedIn, participantId) => {
-          return checkedIn && checkedInParticipantIds.includes(participantId);
+          return (
+            checkedIn &&
+            participantId &&
+            checkedInParticipantIds.includes(participantId)
+          );
         },
         true
       );
       if (
+        sideParticipantId &&
         allIndividualsCheckedIn &&
         !checkedInParticipantIds.includes(sideParticipantId)
       ) {
@@ -73,7 +78,10 @@ export function getCheckedInParticipantIds({ matchUp }) {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(
         (participantId) => {
-          if (!checkedInParticipantIds.includes(participantId)) {
+          if (
+            participantId &&
+            !checkedInParticipantIds.includes(participantId)
+          ) {
             checkedInParticipantIds.push(participantId);
           }
         }
