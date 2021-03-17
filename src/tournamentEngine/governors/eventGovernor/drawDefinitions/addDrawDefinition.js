@@ -26,17 +26,24 @@ export function addDrawDefinition({ drawDefinition, event }) {
   );
 
   if (drawDefinitionExists) return { error: DRAW_ID_EXISTS };
-  const drawOrders = event.drawDefinitions
-    .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
-    .sort((a, b) => a - b);
-
-  const nextDrawOrder = Math.max(0, ...drawOrders.filter((f) => f)) + 1;
-  let drawOrder = nextDrawOrder;
+  const drawOrders =
+    event.drawDefinitions
+      .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
+      ?.filter((f) => f) || [];
 
   const { flightProfile } = getFlightProfile({ event });
   const flight = flightProfile?.flights?.find(
     (flight) => flight.drawId === drawId
   );
+
+  const flightNumbers =
+    flightProfile?.flights
+      ?.map(
+        ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
+      )
+      ?.filter((f) => f) || [];
+
+  let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
 
   let extension;
   if (flight) {
