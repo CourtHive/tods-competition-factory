@@ -53,16 +53,15 @@ export function getCheckedInParticipantIds({ matchUp }) {
   nestedIndividualParticipantIds.forEach(
     (sideIndividualParticipantIds, sideIndex) => {
       const sideParticipantId = sideParticipantIds[sideIndex];
-      const allIndividualsCheckedIn = sideIndividualParticipantIds.reduce(
-        (checkedIn, participantId) => {
+      const allIndividualsCheckedIn =
+        sideIndividualParticipantIds?.length &&
+        sideIndividualParticipantIds.reduce((checkedIn, participantId) => {
           return (
             checkedIn &&
             participantId &&
             checkedInParticipantIds.includes(participantId)
           );
-        },
-        true
-      );
+        }, true);
       if (
         sideParticipantId &&
         allIndividualsCheckedIn &&
