@@ -159,6 +159,19 @@ tournamentEngine.addEventExtension({
 
 ---
 
+## addFlight
+
+```js
+tournamentEngine.addFlight({
+  eventId,
+  drawName,
+  drawId, // optional -- if scenario involves client and server side tournamentEngines, provide { drawId: UUID() }
+  drawEntries, // optional
+});
+```
+
+---
+
 ## addIndividualParticipantIds
 
 Adds individualParticipantIds to GROUP or TEAM participants
@@ -261,44 +274,6 @@ tournamentEngine.addPlayoffStructures({
   playoffPositions: [3, 4], // required if not provided roundNumbers
   playoffAttributes, // optional - object mapping exitProfiles to structure names, e.g. 0-1-1 for SOUTH
   playoffStructureNameBase, // optional - base word for default playoff naming, e.g. 'Playoff'
-});
-```
-
----
-
-## autoSeeding
-
-```js
-const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
-  eventId,
-  policyDefinition, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
-  scaleAttributes, // { scaleType, scaleName, }
-  scaleName, // Optional - defaults to scaleAttributes.scaleName
-  drawSize, // Optional - defaults to calculation based on # of entries
-  drawId, // Optional - will use flight.drawEntries or drawDefinition.entries rather than event.entries
-  stage, // Optional - filters entries by specified stage
-
-  scaleSortMethod, // Optional - user defined sorting method
-  sortDescending, // Optional - defaults to false
-});
-
-tournamentEngine.setParticipantScaleItems({
-  scaleItemsWithParticipantIds,
-});
-```
-
----
-
-## setSubOrder
-
-Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
-
-```js
-tournamentEngine.setSubOrder({
-  drawId,
-  structureId,
-  drawPosition: 1,
-  subOrder: 2,
 });
 ```
 
@@ -482,6 +457,29 @@ See [Policies](/concepts/policies).
 
 ```js
 tournamentEngine.automatedPositioning({ drawId, structureId });
+```
+
+---
+
+## autoSeeding
+
+```js
+const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
+  eventId,
+  policyDefinition, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+  scaleAttributes, // { scaleType, scaleName, }
+  scaleName, // Optional - defaults to scaleAttributes.scaleName
+  drawSize, // Optional - defaults to calculation based on # of entries
+  drawId, // Optional - will use flight.drawEntries or drawDefinition.entries rather than event.entries
+  stage, // Optional - filters entries by specified stage
+
+  scaleSortMethod, // Optional - user defined sorting method
+  sortDescending, // Optional - defaults to false
+});
+
+tournamentEngine.setParticipantScaleItems({
+  scaleItemsWithParticipantIds,
+});
 ```
 
 ---
@@ -1863,6 +1861,21 @@ tournamentEngine.setsState(tournamentRecord, deepCopy);
 ```
 
 By default a deep copy of the tournament record is made so that mutations made by tournamentEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+
+---
+
+## setSubOrder
+
+Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+
+```js
+tournamentEngine.setSubOrder({
+  drawId,
+  structureId,
+  drawPosition: 1,
+  subOrder: 2,
+});
+```
 
 ---
 
