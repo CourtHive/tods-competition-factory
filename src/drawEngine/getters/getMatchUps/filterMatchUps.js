@@ -28,7 +28,7 @@ export function filterMatchUps(props) {
       if (
         !isMatchUpTie &&
         matchUp.tieFormat &&
-        Object.keys(matchUp.tieFormat)
+        Object.keys(matchUp.tieFormat)?.length
       ) {
         return false;
       }
