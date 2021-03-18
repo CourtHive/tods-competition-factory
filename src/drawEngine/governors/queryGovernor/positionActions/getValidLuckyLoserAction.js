@@ -19,12 +19,14 @@ export function getValidLuckyLosersAction({
   drawDefinition,
   activeDrawPositions,
   positionAssignments,
+  isWinRatioFedStructure,
   possiblyDisablingAction,
   tournamentParticipants = [],
 }) {
   if (!drawId)
     return { error: MISSING_DRAW_ID, method: 'getValidLuckyLosersAction' };
-  if (activeDrawPositions.includes(drawPosition)) return {};
+  if (activeDrawPositions.includes(drawPosition) || isWinRatioFedStructure)
+    return {};
 
   /*
   Available Lucky Losers are those participants who are assigned drawPositions

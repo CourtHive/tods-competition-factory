@@ -97,7 +97,7 @@ export function positionActions({
 
   if (actionsDisabled) return { message: 'Actions Disabled for structure' };
 
-  const { sourceStructureIds } =
+  const { sourceStructureIds: positionSourceStructureIds } =
     getSourceStructureIdsDirectedBy({
       drawDefinition,
       structureId,
@@ -106,8 +106,8 @@ export function positionActions({
     }) || {};
 
   let sourceStructuresCompleted;
-  if (sourceStructureIds?.length) {
-    sourceStructuresCompleted = sourceStructureIds.reduce(
+  if (positionSourceStructureIds?.length) {
+    sourceStructuresCompleted = positionSourceStructureIds.reduce(
       (ready, sourceStructureId) => {
         const completed = isCompletedStructure({
           drawDefinition,
@@ -119,8 +119,9 @@ export function positionActions({
     );
   }
 
+  const isWinRatioFedStructure = positionSourceStructureIds.length;
   const disablePlacementActions =
-    sourceStructureIds.length && !sourceStructuresCompleted;
+    positionSourceStructureIds.length && !sourceStructuresCompleted;
 
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
@@ -187,11 +188,14 @@ export function positionActions({
       structureId,
       drawPosition,
       isByePosition,
+      policyDefinition,
       activeDrawPositions,
       positionAssignments,
+      isWinRatioFedStructure,
       tournamentParticipants,
       possiblyDisablingAction,
       unassignedParticipantIds,
+      positionSourceStructureIds,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }
@@ -351,6 +355,7 @@ export function positionActions({
       drawDefinition,
       activeDrawPositions,
       positionAssignments,
+      isWinRatioFedStructure,
       tournamentParticipants,
       possiblyDisablingAction,
     });
