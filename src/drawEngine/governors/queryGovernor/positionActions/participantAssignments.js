@@ -29,13 +29,9 @@ export function getValidAssignmentActions({
   const validAssignmentActions = [];
   const { structure } = findStructure({ drawDefinition, structureId });
 
-  let unplacedSeedParticipantIds, unplacedSeedAssignments;
-  let unfilledPositions = positionAssignments
-    .filter(
-      (assignment) =>
-        !assignment.participantId && !assignment.bye && !assignment.qualifier
-    )
-    .map((assignment) => assignment.drawPosition);
+  let unplacedSeedParticipantIds,
+    unplacedSeedAssignments,
+    unfilledPositions = [];
 
   const ignoreSeedPositions =
     policyDefinition?.seeding?.validSeedPositions?.ignore;
@@ -53,7 +49,8 @@ export function getValidAssignmentActions({
     } = result);
   }
 
-  if (!unfilledPositions.length) {
+  // if there are no unfilledPositions for available seeds then return all unfilled positions
+  if (!unfilledPositions?.length) {
     unfilledPositions = positionAssignments
       .filter(
         (assignment) =>
