@@ -62,6 +62,19 @@ export function getValidAssignmentActions({
       .map((assignment) => assignment.drawPosition);
   }
 
+  const { positionsToAvoidDoubleBye } = getByesData({
+    drawDefinition,
+    structure,
+  });
+  if (!isByePosition) {
+    validAssignmentActions.push({
+      type: ASSIGN_BYE,
+      method: ASSIGN_BYE_METHOD,
+      positionsToAvoidDoubleBye,
+      willDisableLinks: possiblyDisablingAction,
+      payload: { drawId, structureId, drawPosition },
+    });
+  }
   if (isWinRatioFedStructure && ignoreSeedPositions) {
     const assignedParticipantIds = positionAssignments
       .map((assignment) => assignment.participantId)
@@ -104,19 +117,6 @@ export function getValidAssignmentActions({
         payload: { drawId, structureId, drawPosition },
       });
     }
-    const { positionsToAvoidDoubleBye } = getByesData({
-      drawDefinition,
-      structure,
-    });
-    if (!isByePosition) {
-      validAssignmentActions.push({
-        type: ASSIGN_BYE,
-        method: ASSIGN_BYE_METHOD,
-        positionsToAvoidDoubleBye,
-        willDisableLinks: possiblyDisablingAction,
-        payload: { drawId, structureId, drawPosition },
-      });
-    }
     return { validAssignmentActions };
   }
   if (unfilledPositions.includes(drawPosition) || isByePosition) {
@@ -142,20 +142,6 @@ export function getValidAssignmentActions({
         structure,
       });
       if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
-    }
-
-    const { positionsToAvoidDoubleBye } = getByesData({
-      drawDefinition,
-      structure,
-    });
-    if (!isByePosition) {
-      validAssignmentActions.push({
-        type: ASSIGN_BYE,
-        method: ASSIGN_BYE_METHOD,
-        positionsToAvoidDoubleBye,
-        willDisableLinks: possiblyDisablingAction,
-        payload: { drawId, structureId, drawPosition },
-      });
     }
 
     // add structureId and drawPosition to the payload so the client doesn't need to discover
