@@ -18,7 +18,7 @@ import { isNumeric } from '../../../utilities/math';
  * @param {boolean} - autoComplete - whether to convert undefined values to 0
  *
  */
-export function generateScoreString(props: any) {
+export function generateScoreString(props) {
   const {
     sets,
     winningSide,

@@ -5,12 +5,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { getSetWinningSide } from './getSetWinningSide';
 
-interface SetAnalysisInterface {
-  setObject: any;
-  matchUpScoringFormat: any;
-}
-
-export function analyzeSet(props: SetAnalysisInterface) {
+export function analyzeSet(props) {
   const { setObject, matchUpScoringFormat } = props;
   const { setNumber } = setObject || {};
   const { bestOf } = matchUpScoringFormat || {};
@@ -50,8 +45,7 @@ export function analyzeSet(props: SetAnalysisInterface) {
   const { tiebreakAt } = setFormat || {};
   const hasTiebreakCondition =
     tiebreakAt &&
-    sideGameScores.filter((gameScore: number) => gameScore >= tiebreakAt)
-      .length === 2;
+    sideGameScores.filter((gameScore) => gameScore >= tiebreakAt).length === 2;
 
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
@@ -92,7 +86,7 @@ export function analyzeSet(props: SetAnalysisInterface) {
     setObject,
   });
 
-  const analysis: any = {
+  const analysis = {
     expectTiebreakSet,
     expectTimedSet,
     hasTiebreakCondition,
@@ -133,19 +127,12 @@ export function analyzeSet(props: SetAnalysisInterface) {
   return analysis;
 }
 
-interface ValidSetOutcomeInterface {
-  setObject: any;
-  setFormat: any;
-  sideGameScores: number[];
-  sideTiebreakScores?: number[];
-}
-
 function checkValidStandardSetOutcome({
   setObject,
   setFormat,
   sideGameScores,
   sideTiebreakScores,
-}: ValidSetOutcomeInterface) {
+}) {
   if (!setObject) {
     return { result: false, error: MISSING_SET_OBJECT };
   }
@@ -155,13 +142,12 @@ function checkValidStandardSetOutcome({
     return { result: false, error: 'not standard set' };
   }
 
-  const validGameScores =
-    sideGameScores?.filter((s: any) => !isNaN(s)).length === 2;
+  const validGameScores = sideGameScores?.filter((s) => !isNaN(s)).length === 2;
   if (!validGameScores) return { result: false, error: INVALID_GAME_SCORES };
 
   const { setTo, tiebreakAt, tiebreakFormat, NoAD } = setFormat || {};
   const meetsSetTo = !!(
-    setTo && sideGameScores?.find((gameScore: number) => gameScore >= setTo)
+    setTo && sideGameScores?.find((gameScore) => gameScore >= setTo)
   );
   if (!meetsSetTo) return { result: false, error: INVALID_GAME_SCORES };
 
@@ -181,7 +167,7 @@ function checkValidStandardSetOutcome({
 
   const setTiebreakDefined = tiebreakAt && tiebreakFormat;
   const validTiebreakScores =
-    sideTiebreakScores?.filter((s: any) => !isNaN(s)).length === 2;
+    sideTiebreakScores?.filter((s) => !isNaN(s)).length === 2;
   const winningSideTiebreakScore =
     sideTiebreakScores && sideTiebreakScores[winningSideIndex];
   const losingSideTiebreakScore =
@@ -189,8 +175,7 @@ function checkValidStandardSetOutcome({
 
   const hasTiebreakCondition =
     tiebreakAt &&
-    sideGameScores.filter((gameScore: number) => gameScore >= tiebreakAt)
-      .length === 2;
+    sideGameScores.filter((gameScore) => gameScore >= tiebreakAt).length === 2;
   if (setTiebreakDefined) {
     const { NoAD: tiebreakNoAD, tiebreakTo } = tiebreakFormat;
 
@@ -208,9 +193,7 @@ function checkValidStandardSetOutcome({
 
       const meetsTiebreakTo = !!(
         tiebreakTo &&
-        sideTiebreakScores?.find(
-          (tiebreakScore: number) => tiebreakScore >= tiebreakTo
-        )
+        sideTiebreakScores?.find((tiebreakScore) => tiebreakScore >= tiebreakTo)
       );
       if (!meetsTiebreakTo) {
         return { result: false, error: 'invalid tiebreak scores (2)' };
@@ -275,17 +258,11 @@ function checkValidStandardSetOutcome({
   return { result: true };
 }
 
-interface ValidTiebreakScoresInterface {
-  setObject: any;
-  setFormat: any;
-  sideTiebreakScores: number[];
-}
-
 function checkValidTiebreakSetOutcome({
   setObject,
   setFormat,
   sideTiebreakScores,
-}: ValidTiebreakScoresInterface) {
+}) {
   if (!setObject) {
     return { result: false, error: MISSING_SET_OBJECT };
   }
@@ -303,7 +280,7 @@ function checkValidTiebreakSetOutcome({
   const { NoAD, tiebreakTo } = tiebreakSet || {};
 
   const validTiebreakScores =
-    sideTiebreakScores?.filter((s: any) => !isNaN(s)).length === 2;
+    sideTiebreakScores?.filter((s) => !isNaN(s)).length === 2;
   if (!validTiebreakScores) {
     return { result: false, error: 'invalid tiebreak scores (1)' };
   }
@@ -313,7 +290,7 @@ function checkValidTiebreakSetOutcome({
   }
 
   const meetsTiebreakTo = !!sideTiebreakScores?.find(
-    (tiebreakScore: number) => tiebreakScore >= tiebreakTo
+    (tiebreakScore) => tiebreakScore >= tiebreakTo
   );
   if (!meetsTiebreakTo) {
     return { result: false, error: 'invalid tiebreak scores (2)' };

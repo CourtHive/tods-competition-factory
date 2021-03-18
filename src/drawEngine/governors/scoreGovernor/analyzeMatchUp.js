@@ -4,16 +4,8 @@ import { instanceCount } from '../../../utilities/arrays';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
-interface MatchUpAnalysisInterface {
-  matchUp: any;
-  sideNumber: number;
-  setNumber: number;
-  isTiebreakValue: boolean;
-  isPointValue: boolean;
-  matchUpFormat: any;
-}
 
-export function analyzeMatchUp(props: MatchUpAnalysisInterface) {
+export function analyzeMatchUp(props) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } =
     props || {};
   let { matchUpFormat } = props || {};
@@ -25,18 +17,16 @@ export function analyzeMatchUp(props: MatchUpAnalysisInterface) {
   const setsCount = matchUp?.sets?.length;
   const setIndex = setNumber && setNumber - 1;
   const isExistingSet = !!matchUp?.sets?.find(
-    (set: any, index: number) =>
-      set.setNumber === setNumber && index === setIndex
+    (set, index) => set.setNumber === setNumber && index === setIndex
   );
-  const completedSets =
-    matchUp?.sets?.filter((set: any) => set?.winningSide) || [];
+  const completedSets = matchUp?.sets?.filter((set) => set?.winningSide) || [];
   const completedSetsCount = completedSets?.length || 0;
   const setsFollowingCurrent =
     (setNumber && matchUp?.sets?.slice(setNumber)) || [];
   const isLastSetWithValues = !!(
     setsCount &&
     setNumber &&
-    setsFollowingCurrent?.reduce((noValues: boolean, set: any) => {
+    setsFollowingCurrent?.reduce((noValues, set) => {
       return (
         (!set ||
           (!set.side1Score &&
@@ -52,7 +42,7 @@ export function analyzeMatchUp(props: MatchUpAnalysisInterface) {
 
   const setObject =
     setNumber <= setsCount &&
-    matchUp?.sets.find((set: any) => set.setNumber === setNumber);
+    matchUp?.sets.find((set) => set.setNumber === setNumber);
   const specifiedSetAnalysis = analyzeSet({ setObject, matchUpScoringFormat });
 
   const {
@@ -85,16 +75,13 @@ export function analyzeMatchUp(props: MatchUpAnalysisInterface) {
     completedSets &&
     completedSets
       .map(
-        (setObject: any) =>
+        (setObject) =>
           analyzeSet({ setObject, matchUpScoringFormat }).isValidSetOutcome
       )
-      .reduce(
-        (valid: boolean, validOutcome: boolean) => valid && validOutcome,
-        true
-      );
+      .reduce((valid, validOutcome) => valid && validOutcome, true);
 
   const setsWinCounts = completedSets.reduce(
-    (counts: number[], set: any) => {
+    (counts, set) => {
       const { winningSide } = set;
       const winningSideIndex = winningSide - 1;
       counts[winningSideIndex]++;
