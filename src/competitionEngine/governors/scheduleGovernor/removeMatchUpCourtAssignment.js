@@ -12,6 +12,7 @@ export function removeMatchUpCourtAssignment(params) {
   });
 
   return assignMatchUpCourt({
+    tournamentRecord,
     drawDefinition,
     matchUpId,
     courtId: '',

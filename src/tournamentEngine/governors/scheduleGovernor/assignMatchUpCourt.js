@@ -10,6 +10,7 @@ import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 export function assignMatchUpCourt({
   tournamentRecord,
   drawDefinition,
+  courtDayDate,
   matchUpId,
   courtId,
 }) {
@@ -23,7 +24,7 @@ export function assignMatchUpCourt({
 
   const timeItem = {
     itemType: ASSIGN_COURT,
-
+    itemDate: courtDayDate,
     itemValue: courtId,
   };
 

@@ -31,10 +31,12 @@ export function matchUpScheduleChange(params) {
     const result = assignMatchUpCourt({
       tournamentId: sourceTournamentId,
       drawId: sourceDrawId,
+      courtDayDate,
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
     });
     if (result?.success) matchUpsModified++;
+    if (result.error) return result;
   } else if (
     sourceCourtId &&
     targetCourtId &&
@@ -44,25 +46,35 @@ export function matchUpScheduleChange(params) {
     const sourceResult = assignMatchUpCourt({
       tournamentId: sourceTournamentId,
       drawId: sourceDrawId,
+      courtDayDate,
       matchUpId: sourceMatchUpId,
       courtId: targetCourtId,
     });
     if (sourceResult.success) matchUpsModified++;
+    if (sourceResult.error) return sourceResult;
 
     const targetResult = assignMatchUpCourt({
       tournamentId: targetTournamentId,
       drawId: targetDrawId,
+      courtDayDate,
       matchUpId: targetMatchUpId,
       courtId: sourceCourtId,
     });
     if (targetResult.success) matchUpsModified++;
+    if (targetResult.error) return targetResult;
   } else {
     console.log('matcUpScheduleChange', params);
   }
 
   return matchUpsModified ? SUCCESS : undefined;
 
-  function assignMatchUpCourt({ tournamentId, drawId, matchUpId, courtId }) {
+  function assignMatchUpCourt({
+    tournamentId,
+    drawId,
+    matchUpId,
+    courtDayDate,
+    courtId,
+  }) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
@@ -70,6 +82,7 @@ export function matchUpScheduleChange(params) {
     });
 
     return assignCourt({
+      tournamentRecord,
       drawDefinition,
       matchUpId,
       courtId,

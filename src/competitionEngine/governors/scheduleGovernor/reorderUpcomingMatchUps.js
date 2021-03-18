@@ -35,7 +35,7 @@ export function reorderUpcomingMatchUps(params) {
     scheduledTime,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition /*, event*/ } = getDrawDefinition({
+    const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
