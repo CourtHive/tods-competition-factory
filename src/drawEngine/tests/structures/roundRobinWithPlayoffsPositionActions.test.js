@@ -338,6 +338,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   expect(
     assignmentAction.availableParticipantIds.includes(participantId)
   ).toEqual(true);
+  expect(assignmentAction.availableParticipantIds.length).toEqual(8);
 
   // now test with seed position enforced (default behavior)
   drawPosition = 1;

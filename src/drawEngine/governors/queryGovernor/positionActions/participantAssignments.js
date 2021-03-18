@@ -1,7 +1,9 @@
+import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
+import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { findStructure } from '../../../getters/findStructure';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { getByesData } from '../../../getters/getByesData';
-import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
+import { unique } from '../../../../utilities';
 
 import {
   ASSIGN_BYE,
@@ -15,19 +17,41 @@ export function getValidAssignmentActions({
   structureId,
   drawPosition,
   isByePosition,
+  policyDefinition,
   positionAssignments,
   tournamentParticipants,
-  unassignedParticipantIds,
+  isWinRatioFedStructure,
   possiblyDisablingAction,
+  unassignedParticipantIds,
+  positionSourceStructureIds,
 }) {
   const { drawId } = drawDefinition;
-  const result = getNextSeedBlock({
-    drawDefinition,
-    structureId,
-    randomize: true,
-  });
-  const { unplacedSeedParticipantIds, unplacedSeedAssignments } = result;
-  let { unfilledPositions } = result;
+  const validAssignmentActions = [];
+  const { structure } = findStructure({ drawDefinition, structureId });
+
+  let unplacedSeedParticipantIds, unplacedSeedAssignments;
+  let unfilledPositions = positionAssignments
+    .filter(
+      (assignment) =>
+        !assignment.participantId && !assignment.bye && !assignment.qualifier
+    )
+    .map((assignment) => assignment.drawPosition);
+
+  const ignoreSeedPositions =
+    policyDefinition?.seeding?.validSeedPositions?.ignore;
+
+  if (!ignoreSeedPositions) {
+    const result = getNextSeedBlock({
+      drawDefinition,
+      structureId,
+      randomize: true,
+    });
+    ({
+      unplacedSeedParticipantIds,
+      unplacedSeedAssignments,
+      unfilledPositions,
+    } = result);
+  }
 
   if (!unfilledPositions.length) {
     unfilledPositions = positionAssignments
@@ -38,13 +62,69 @@ export function getValidAssignmentActions({
       .map((assignment) => assignment.drawPosition);
   }
 
+  if (isWinRatioFedStructure && ignoreSeedPositions) {
+    const assignedParticipantIds = positionAssignments
+      .map((assignment) => assignment.participantId)
+      .filter((f) => f);
+
+    const matchUpFilters = { structureIds: positionSourceStructureIds };
+    const { completedMatchUps } = getDrawMatchUps({
+      inContext: true,
+      matchUpFilters,
+      drawDefinition,
+    });
+
+    const availableParticipantIds = unique(
+      (completedMatchUps || [])
+        ?.map(({ sides }) => sides.map(({ participantId }) => participantId))
+        .flat()
+        .filter(
+          (participantId) => !assignedParticipantIds.includes(participantId)
+        )
+    );
+
+    const participantsAvailable = tournamentParticipants?.filter(
+      (participant) =>
+        availableParticipantIds?.includes(participant.participantId)
+    );
+
+    participantsAvailable?.forEach((participant) => {
+      const entry = (drawDefinition.entries || []).find(
+        (entry) => entry.participantId === participant.participantId
+      );
+      participant.entryPosition = entry?.entryPosition;
+    });
+    if (participantsAvailable?.length) {
+      validAssignmentActions.push({
+        type: ASSIGN_PARTICIPANT,
+        method: ASSIGN_PARTICIPANT_METHOD,
+        availableParticipantIds,
+        participantsAvailable,
+        willDisableLinks: possiblyDisablingAction,
+        payload: { drawId, structureId, drawPosition },
+      });
+    }
+    const { positionsToAvoidDoubleBye } = getByesData({
+      drawDefinition,
+      structure,
+    });
+    if (!isByePosition) {
+      validAssignmentActions.push({
+        type: ASSIGN_BYE,
+        method: ASSIGN_BYE_METHOD,
+        positionsToAvoidDoubleBye,
+        willDisableLinks: possiblyDisablingAction,
+        payload: { drawId, structureId, drawPosition },
+      });
+    }
+    return { validAssignmentActions };
+  }
   if (unfilledPositions.includes(drawPosition) || isByePosition) {
-    const { structure } = findStructure({ drawDefinition, structureId });
     let availableParticipantIds;
-    if (unplacedSeedAssignments.length) {
+    if (unplacedSeedAssignments?.length) {
       // return any valid seedAssignments
       const validToAssign = unplacedSeedAssignments.filter((seedAssignment) =>
-        unplacedSeedParticipantIds.includes(seedAssignment.participantId)
+        unplacedSeedParticipantIds?.includes(seedAssignment.participantId)
       );
 
       validToAssign.sort(validAssignmentsSort);
@@ -64,21 +144,15 @@ export function getValidAssignmentActions({
       if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });
     }
 
-    const validAssignmentActions = [];
-    const {
-      /*byesCount, placedByes,*/ positionsToAvoidDoubleBye,
-    } = getByesData({
+    const { positionsToAvoidDoubleBye } = getByesData({
       drawDefinition,
       structure,
     });
-    // const availableByes = byesCount - placedByes;
-    // BYEs limit is being disabled
-    if (/*availableByes &&*/ !isByePosition) {
+    if (!isByePosition) {
       validAssignmentActions.push({
         type: ASSIGN_BYE,
         method: ASSIGN_BYE_METHOD,
         positionsToAvoidDoubleBye,
-        // availableByes,
         willDisableLinks: possiblyDisablingAction,
         payload: { drawId, structureId, drawPosition },
       });
@@ -95,8 +169,6 @@ export function getValidAssignmentActions({
         method: ASSIGN_PARTICIPANT_METHOD,
         availableParticipantIds,
         participantsAvailable,
-        positionsToAvoidDoubleBye,
-        // availableByes,
         willDisableLinks: possiblyDisablingAction,
         payload: { drawId, structureId, drawPosition },
       });
