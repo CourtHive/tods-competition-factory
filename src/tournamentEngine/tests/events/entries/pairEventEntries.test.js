@@ -1,18 +1,14 @@
-import { tournamentEngine } from '../../../sync';
 import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
+import drawEngine from '../../../../drawEngine/sync';
+import { tournamentEngine } from '../../../sync';
 
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { /*INDIVIDUAL,*/ PAIR } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   UNPAIRED,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import drawEngine from '../../../../drawEngine/sync';
-// import { COMPETITOR } from '../../../constants/participantRoles';
-// import { ALTERNATE, UNPAIRED } from '../../../constants/entryStatusConstants';
-
-let result;
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = generateTournamentWithParticipants({
@@ -31,7 +27,7 @@ it('can add doubles events to a tournament record', () => {
     eventType: DOUBLES,
   };
 
-  result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.addEvent({ event });
   const { event: eventResult, success } = result;
   const { eventId } = eventResult;
   expect(success).toEqual(true);
