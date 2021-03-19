@@ -112,6 +112,8 @@ export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
 export const PARTICIPANT_NOT_CHECKED_IN = 'Participant not checked in';
 export const PARTICIPANT_ALREADY_CHECKED_IN = 'Participant already checked in';
+export const PARTICIPANT_ASSIGNED_DRAW_POSITION =
+  'Participant has assigned drawPosition';
 
 export const MISSING_PERSON_DETAILS = 'Missing person details';
 
@@ -282,6 +284,7 @@ export const errorConditionConstants = {
   NO_VALID_ATTRIBUTES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
+  PARTICIPANT_ASSIGNED_DRAW_POSITION,
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   PARTICIPANT_ID_EXISTS,

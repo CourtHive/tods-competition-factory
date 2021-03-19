@@ -1,13 +1,17 @@
+import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { findParticipant } from '../../../../drawEngine/getters/participantGetter';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
   MISSING_EVENT,
+  PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../../constants/errorConditionConstants';
 import {
   UNPAIRED,
   VALID_ENTERED_TYPES,
+  WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
@@ -17,6 +21,8 @@ export function modifyEntriesStatus({
   drawDefinition,
   participantIds,
   entryStatus,
+  drawId,
+  stage,
   event,
 
   autoEntryPositions = true,
@@ -24,23 +30,31 @@ export function modifyEntriesStatus({
   if (!participantIds || !Array.isArray(participantIds))
     return {
       error: INVALID_PARTICIPANT_ID,
-      participantIds,
       method: 'modifyEntriesStatus',
+      participantIds,
     };
   if (!VALID_ENTERED_TYPES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
 
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
 
-  // build up an array of participantIds which are present in drawDefinitions as well
-  const participantIdsPresentinDraws = [];
-  event.drawDefinitions?.forEach((drawDefinition) => {
-    drawDefinition.entries.forEach((entry) => {
-      if (participantIdsPresentinDraws.includes(entry.participantId)) {
-        participantIdsPresentinDraws.push(entry.participantId);
-      }
+  // build up an array of participantIds which are assigned positions in structures
+  // disallow changing entryStatus to WITHDRAWN or UNPAIRED for assignedParticipants
+  const assignedParticipantIds = [];
+  if ([WITHDRAWN, UNPAIRED].includes(entryStatus)) {
+    event.drawDefinitions?.forEach(({ structures } = {}) => {
+      (structures || []).forEach((structure) => {
+        const { positionAssignments } = getPositionAssignments({
+          drawDefinition,
+          structure,
+        });
+        const participantIds = (positionAssignments || [])
+          .map(({ participantId }) => participantId)
+          .filter((f) => f);
+        assignedParticipantIds.push(...participantIds);
+      });
     });
-  });
+  }
 
   const tournamentParticipants = tournamentRecord?.participants || [];
 
@@ -57,10 +71,9 @@ export function modifyEntriesStatus({
   if (!validEntryStatusForAllParticipantIds)
     return { error: INVALID_ENTRY_STATUS };
 
-  // if a drawDefinition is specified, modify entryStatus of participantIds
-  if (drawDefinition) {
-    let maxEntryPosition = Math.max(
-      ...event.entries
+  const getMaxEntryPosition = (entries = []) => {
+    return Math.max(
+      ...entries
         .filter(
           (entry) =>
             entry.entryStatus === entryStatus && !isNaN(entry.entryPosition)
@@ -68,47 +81,70 @@ export function modifyEntriesStatus({
         .map(({ entryPosition }) => parseInt(entryPosition || 0)),
       0
     );
-    drawDefinition.entries.forEach((entry) => {
-      if (participantIds.includes(entry.participantId)) {
+  };
+
+  const updateStatus = (entries = []) => {
+    const stageFilteredEntries = entries.filter((entry) => {
+      return !stage || !entry.entryStage || stage === entry.entryStage;
+    });
+    let maxEntryPosition = getMaxEntryPosition(stageFilteredEntries);
+    let modifications = 0;
+    const assigned = (entry) =>
+      assignedParticipantIds.includes(entry.participantId);
+
+    stageFilteredEntries.forEach((entry) => {
+      const modify =
+        participantIds.includes(entry.participantId) && !assigned(entry);
+      if (modify) {
         entry.entryStatus = entryStatus;
         if (autoEntryPositions) {
           entry.entryPosition = maxEntryPosition + 1;
           maxEntryPosition++;
+          modifications++;
         } else {
           delete entry.entryPosition;
         }
       }
     });
-  }
+    return modifications === participantIds.length
+      ? SUCCESS
+      : { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+  };
 
-  if (event) {
-    let maxEntryPosition = Math.max(
-      ...event.entries
-        .filter(
-          (entry) =>
-            entry.entryStatus === entryStatus && !isNaN(entry.entryPosition)
-        )
-        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
-      0
-    );
-    event.entries.forEach((entry) => {
-      const presentInDraws = participantIdsPresentinDraws.includes(
-        entry.participantId
-      );
+  const { flightProfile } = getFlightProfile({ event });
+  const flight = flightProfile?.flights?.find(
+    (flight) => flight.drawId === drawId
+  );
 
-      // if a participantId is also present in a drawDefinition...
-      // ...and a specific drawDefinition is NOT being modified as well:
-      // prevent modifying status in event.
-      if (participantIds.includes(entry.participantId) && !presentInDraws) {
-        entry.entryStatus = entryStatus;
-        if (autoEntryPositions) {
-          entry.entryPosition = maxEntryPosition + 1;
-          maxEntryPosition++;
-        } else {
-          delete entry.entryPosition;
-        }
-      }
-    });
+  const updateDrawEntries = ({ flight, drawDefinition }) => {
+    if (flight) {
+      const result = updateStatus(flight.drawEntries);
+      if (result.error) return result;
+    }
+    if (drawDefinition) {
+      const result = updateStatus(drawDefinition.entries);
+      if (result.error) return result;
+    }
+  };
+
+  // if flight or drawDefinition scope modifications
+  if (flight || drawDefinition) updateDrawEntries({ flight, drawDefinition });
+
+  if ((!flight && !drawDefinition) || entryStatus === WITHDRAWN) {
+    // if entryStatus is WITHDRAWN then participantIds appearing in ANY flight or drawDefinition must be removed
+    const result = updateStatus(event.entries);
+    if (result.error) return result;
+
+    if (entryStatus === WITHDRAWN) {
+      flightProfile?.flights?.forEach(({ drawEntries }) => {
+        const result = updateStatus(drawEntries);
+        if (result.error) return result;
+      });
+      event.drawDefinitions?.forEach(({ entries }) => {
+        const result = updateStatus(entries);
+        if (result.error) return result;
+      });
+    }
   }
 
   return SUCCESS;
