@@ -1426,6 +1426,24 @@ tournamentEngine.modifyDrawName({
 });
 ```
 
+---
+
+## modifyEntriesStatus
+
+Modify the entryStatus of participants already in an event or flight/draw. Does not allow participants assigned positions in structures to have an entryStatus of WITHDRAWN.
+
+```js
+const result = tournamentEngine.modifyEntriesStatus({
+  participantIds, // ids of participants whose entryStatus will be modified
+  entryStatus, // new entryStatus
+  eventId, // id of event where the modification(s) will occur
+  drawId, // optional - scope to a specific flight/draw
+  stage, // optional - scope to a specific stage
+});
+```
+
+---
+
 ## modifyEventEntries
 
 Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
