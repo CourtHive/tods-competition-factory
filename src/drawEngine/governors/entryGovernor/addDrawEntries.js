@@ -13,6 +13,7 @@ import {
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getMaxEntryPosition } from '../../../deducers/getMaxEntryPosition';
 
 /**
  *
@@ -70,6 +71,8 @@ export function addDrawEntries({
   participantIds,
   entryStatus = DIRECT_ACCEPTANCE,
   stage,
+
+  autoEntryPositions = true,
 }) {
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -96,11 +99,22 @@ export function addDrawEntries({
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
+  let maxEntryPosition = getMaxEntryPosition({
+    entries: drawDefinition.entries,
+    entryStatus,
+    stage,
+  });
+
   participantIds.forEach((participantId) => {
+    let entryPosition;
+    if (autoEntryPositions) {
+      entryPosition = maxEntryPosition + 1;
+      maxEntryPosition++;
+    }
     const entry = Object.assign(
       {},
       { participantId },
-      { entryStage: stage, entryStatus }
+      { entryStage: stage, entryStatus, entryPosition }
     );
     drawDefinition.entries.push(entry);
   });
