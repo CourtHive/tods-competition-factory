@@ -1,4 +1,5 @@
-import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
+import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
@@ -14,6 +15,8 @@ export function addDrawEntries({
   entryStage,
   drawId,
   event,
+
+  autoEntryPositions = true,
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: EVENT_NOT_FOUND };
@@ -24,6 +27,7 @@ export function addDrawEntries({
       participantIds,
       entryStatus,
       stage: entryStage,
+      autoEntryPositions,
     });
     if (result.error) return result;
   }
@@ -33,13 +37,24 @@ export function addDrawEntries({
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
+    let maxEntryPosition = getMaxEntryPosition({
+      entries: flight?.drawEntries,
+      stage: entryStage,
+      entryStatus,
+    });
     const enteredParticipantIds = flight.drawEntries.map(
       ({ participantId }) => participantId
     );
+    let entryPosition;
+    if (autoEntryPositions) {
+      entryPosition = maxEntryPosition + 1;
+      maxEntryPosition++;
+    }
     participantIds.forEach((participantId) => {
       if (!enteredParticipantIds.includes(participantId)) {
         flight.drawEntries.push({
           participantId,
+          entryPosition,
           entryStatus,
           entryStage,
         });

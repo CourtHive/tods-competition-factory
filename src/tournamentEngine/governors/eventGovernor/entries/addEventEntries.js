@@ -1,3 +1,5 @@
+import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
 import { removeEventEntries } from './removeEventEntries';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -14,7 +16,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
 
 /**
  *
@@ -35,6 +36,8 @@ export function addEventEntries(props) {
     participantIds = [],
     entryStatus = DIRECT_ACCEPTANCE,
     entryStage = MAIN,
+
+    autoEntryPositions = true,
   } = props;
 
   if (!event) return { error: MISSING_EVENT };
@@ -78,10 +81,21 @@ export function addEventEntries(props) {
     (e) => e.participantId || (e.participant && e.participant.participantId)
   );
 
+  let maxEntryPosition = getMaxEntryPosition({
+    entries: event.entries,
+    stage: entryStage,
+    entryStatus,
+  });
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
+      let entryPosition;
+      if (autoEntryPositions) {
+        entryPosition = maxEntryPosition + 1;
+        maxEntryPosition++;
+      }
       event.entries.push({
         participantId,
+        entryPosition,
         entryStatus,
         entryStage,
       });
