@@ -1,4 +1,5 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { intersection } from '../../../../utilities';
 
@@ -16,7 +17,7 @@ export function removeDrawEntries({
   drawDefinition,
   drawId,
   event,
-  // autoPositions = true,
+  autoEntryPositions = true,
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawId) return { error: MISSING_DRAW_ID };
@@ -46,10 +47,20 @@ export function removeDrawEntries({
   );
   if (flight?.drawEntries) {
     flight.drawEntries = flight.drawEntries.filter(filterEntry);
+    if (autoEntryPositions) {
+      flight.drawEntries = refreshEntryPositions({
+        entries: flight.drawEntries,
+      });
+    }
   }
 
   if (drawDefinition?.entries) {
     drawDefinition.entries = drawDefinition.entries.filter(filterEntry);
+    if (autoEntryPositions) {
+      drawDefinition.entries = refreshEntryPositions({
+        entries: drawDefinition.entries,
+      });
+    }
   }
 
   return SUCCESS;

@@ -1,5 +1,5 @@
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
 import { removeEventEntries } from './removeEventEntries';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -81,21 +81,10 @@ export function addEventEntries(props) {
     (e) => e.participantId || (e.participant && e.participant.participantId)
   );
 
-  let maxEntryPosition = getMaxEntryPosition({
-    entries: event.entries,
-    stage: entryStage,
-    entryStatus,
-  });
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.includes(participantId)) {
-      let entryPosition;
-      if (autoEntryPositions) {
-        entryPosition = maxEntryPosition + 1;
-        maxEntryPosition++;
-      }
       event.entries.push({
         participantId,
-        entryPosition,
         entryStatus,
         entryStage,
       });
@@ -134,6 +123,7 @@ export function addEventEntries(props) {
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({
         participantIds: unpairedParticipantIdsToRemove,
+        autoEntryPositions: false, // because the method will be called below if necessary
         event,
       });
     }
@@ -142,6 +132,12 @@ export function addEventEntries(props) {
   const invalidParticipantIds = !!(
     validParticipantIds.length !== participantIds.length
   );
+
+  if (autoEntryPositions) {
+    event.entries = refreshEntryPositions({
+      entries: event.entries,
+    });
+  }
 
   return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
 }

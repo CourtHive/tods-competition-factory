@@ -1,4 +1,4 @@
-import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
+import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 
@@ -99,25 +99,18 @@ export function addDrawEntries({
     return { error: INVALID_ENTRIES, invalidParticipantIds };
   }
 
-  let maxEntryPosition = getMaxEntryPosition({
-    entries: drawDefinition.entries,
-    entryStatus,
-    stage,
-  });
-
   participantIds.forEach((participantId) => {
-    let entryPosition;
-    if (autoEntryPositions) {
-      entryPosition = maxEntryPosition + 1;
-      maxEntryPosition++;
-    }
     const entry = Object.assign(
-      {},
       { participantId },
-      { entryStage: stage, entryStatus, entryPosition }
+      { entryStage: stage, entryStatus }
     );
     drawDefinition.entries.push(entry);
   });
+  if (autoEntryPositions) {
+    drawDefinition.entries = refreshEntryPositions({
+      entries: drawDefinition.entries,
+    });
+  }
 
   return SUCCESS;
 }

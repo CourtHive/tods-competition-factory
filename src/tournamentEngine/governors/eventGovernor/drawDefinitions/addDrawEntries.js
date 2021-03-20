@@ -1,5 +1,5 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
@@ -37,29 +37,23 @@ export function addDrawEntries({
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
-    let maxEntryPosition = getMaxEntryPosition({
-      entries: flight?.drawEntries,
-      stage: entryStage,
-      entryStatus,
-    });
     const enteredParticipantIds = flight.drawEntries.map(
       ({ participantId }) => participantId
     );
-    let entryPosition;
-    if (autoEntryPositions) {
-      entryPosition = maxEntryPosition + 1;
-      maxEntryPosition++;
-    }
     participantIds.forEach((participantId) => {
       if (!enteredParticipantIds.includes(participantId)) {
         flight.drawEntries.push({
           participantId,
-          entryPosition,
           entryStatus,
           entryStage,
         });
       }
     });
+    if (autoEntryPositions) {
+      flight.drawEntries = refreshEntryPositions({
+        entries: flight.drawEntries,
+      });
+    }
   }
 
   return SUCCESS;

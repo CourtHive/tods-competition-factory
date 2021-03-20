@@ -1,3 +1,4 @@
+import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 
 import {
@@ -10,7 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function removeEntry({
   participantId,
   drawDefinition,
-  // autoPositions = true,
+  autoEntryPositions = true,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
@@ -26,5 +27,12 @@ export function removeEntry({
       (entry) => entry.participantId !== participantId
     );
   }
+
+  if (autoEntryPositions) {
+    drawDefinition.entries = refreshEntryPositions({
+      entries: drawDefinition.entries,
+    });
+  }
+
   return SUCCESS;
 }

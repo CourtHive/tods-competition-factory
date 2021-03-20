@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { findParticipant } from '../../../../common/deducers/findParticipant';
-import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
@@ -68,11 +68,6 @@ export function modifyEntriesStatus({
     const stageFilteredEntries = entries.filter((entry) => {
       return !stage || !entry.entryStage || stage === entry.entryStage;
     });
-    let maxEntryPosition = getMaxEntryPosition({
-      entries: stageFilteredEntries,
-      entryStatus,
-      stage,
-    });
     let modifications = 0;
     const assigned = (entry) =>
       assignedParticipantIds.includes(entry.participantId);
@@ -82,13 +77,8 @@ export function modifyEntriesStatus({
         participantIds.includes(entry.participantId) && !assigned(entry);
       if (modify) {
         entry.entryStatus = entryStatus;
-        if (autoEntryPositions) {
-          entry.entryPosition = maxEntryPosition + 1;
-          maxEntryPosition++;
-          modifications++;
-        } else {
-          delete entry.entryPosition;
-        }
+        if (!autoEntryPositions) delete entry.entryPosition;
+        modifications++;
       }
     });
     return modifications === participantIds.length
@@ -132,5 +122,20 @@ export function modifyEntriesStatus({
     }
   }
 
+  if (autoEntryPositions) {
+    event.entries = refreshEntryPositions({
+      entries: event.entries,
+    });
+    if (flight) {
+      flight.drawEntries = refreshEntryPositions({
+        entries: flight.drawEntries,
+      });
+    }
+    if (drawDefinition) {
+      drawDefinition.entries = refreshEntryPositions({
+        entries: drawDefinition.entries,
+      });
+    }
+  }
   return SUCCESS;
 }

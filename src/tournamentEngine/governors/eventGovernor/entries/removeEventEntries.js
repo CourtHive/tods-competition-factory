@@ -1,4 +1,5 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { removeDrawEntries } from '../drawDefinitions/removeDrawEntries';
 import { intersection } from '../../../../utilities';
 
@@ -15,7 +16,7 @@ export function removeEventEntries({
   drawId,
   drawDefinition,
   event,
-  // autoPositions = true,
+  autoEntryPositions = true,
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length)
@@ -39,6 +40,11 @@ export function removeEventEntries({
       (entry.participant && entry.participant.participantId);
     return participantIds.includes(entryId) ? false : true;
   });
+  if (autoEntryPositions) {
+    event.entries = refreshEntryPositions({
+      entries: event.entries,
+    });
+  }
 
   if (drawId) {
     removeDrawEntries({ participantIds, drawId, drawDefinition, event });
