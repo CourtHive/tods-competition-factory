@@ -12,7 +12,7 @@ makeDeepCopy(element, convertExtensions);
 
 Makes a deep copy of a JSON object.
 
-When **convertExtensions** is **true** then TODS extensions objects are converted as follows:
+When **convertExtensions** is **true**, TODS extensions objects are converted as follows:
 
 ```js
 // original
