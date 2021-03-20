@@ -1,5 +1,6 @@
 import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
 import { findParticipant } from '../../../../drawEngine/getters/participantGetter';
+import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
@@ -71,23 +72,15 @@ export function modifyEntriesStatus({
   if (!validEntryStatusForAllParticipantIds)
     return { error: INVALID_ENTRY_STATUS };
 
-  const getMaxEntryPosition = (entries = []) => {
-    return Math.max(
-      ...entries
-        .filter(
-          (entry) =>
-            entry.entryStatus === entryStatus && !isNaN(entry.entryPosition)
-        )
-        .map(({ entryPosition }) => parseInt(entryPosition || 0)),
-      0
-    );
-  };
-
-  const updateStatus = (entries = []) => {
+  const updateEntryStatus = (entries = []) => {
     const stageFilteredEntries = entries.filter((entry) => {
       return !stage || !entry.entryStage || stage === entry.entryStage;
     });
-    let maxEntryPosition = getMaxEntryPosition(stageFilteredEntries);
+    let maxEntryPosition = getMaxEntryPosition({
+      entries: stageFilteredEntries,
+      entryStatus,
+      stage,
+    });
     let modifications = 0;
     const assigned = (entry) =>
       assignedParticipantIds.includes(entry.participantId);
@@ -118,11 +111,11 @@ export function modifyEntriesStatus({
 
   const updateDrawEntries = ({ flight, drawDefinition }) => {
     if (flight) {
-      const result = updateStatus(flight.drawEntries);
+      const result = updateEntryStatus(flight.drawEntries);
       if (result.error) return result;
     }
     if (drawDefinition) {
-      const result = updateStatus(drawDefinition.entries);
+      const result = updateEntryStatus(drawDefinition.entries);
       if (result.error) return result;
     }
   };
@@ -132,16 +125,16 @@ export function modifyEntriesStatus({
 
   if ((!flight && !drawDefinition) || entryStatus === WITHDRAWN) {
     // if entryStatus is WITHDRAWN then participantIds appearing in ANY flight or drawDefinition must be removed
-    const result = updateStatus(event.entries);
+    const result = updateEntryStatus(event.entries);
     if (result.error) return result;
 
     if (entryStatus === WITHDRAWN) {
       flightProfile?.flights?.forEach(({ drawEntries }) => {
-        const result = updateStatus(drawEntries);
+        const result = updateEntryStatus(drawEntries);
         if (result.error) return result;
       });
       event.drawDefinitions?.forEach(({ entries }) => {
-        const result = updateStatus(entries);
+        const result = updateEntryStatus(entries);
         if (result.error) return result;
       });
     }
