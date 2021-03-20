@@ -99,6 +99,7 @@ tournamentEngine.addDrawEntries({
   participantIds,
   entryStage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```
 
@@ -124,6 +125,7 @@ tournamentEngine.addEventEntries({
   participantIds,
   stage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```
 
@@ -1439,6 +1441,7 @@ const result = tournamentEngine.modifyEntriesStatus({
   eventId, // id of event where the modification(s) will occur
   drawId, // optional - scope to a specific flight/draw
   stage, // optional - scope to a specific stage
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```
 
@@ -1658,7 +1661,12 @@ removeDrawPositionAssignment({
 Removes participantIds from `drawDefinition.entries` (if generated) as well as any relevent `flightProfile.flights`.
 
 ```js
-tournamentEngine.removeDrawEntries({ drawId, eventId, participantIds });
+tournamentEngine.removeDrawEntries({
+  drawId,
+  eventId,
+  participantIds
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  });
 ```
 
 ---
@@ -1668,7 +1676,11 @@ tournamentEngine.removeDrawEntries({ drawId, eventId, participantIds });
 Removes `participantIds` from `event.entries` with integrity checks.
 
 ```js
-tournamentEngine.removeEventEntries({ eventId, participantIds });
+tournamentEngine.removeEventEntries({
+  eventId,
+  participantIds,
+  autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+});
 ```
 
 ---

@@ -77,7 +77,7 @@ export function modifyEntriesStatus({
         participantIds.includes(entry.participantId) && !assigned(entry);
       if (modify) {
         entry.entryStatus = entryStatus;
-        if (!autoEntryPositions) delete entry.entryPosition;
+        delete entry.entryPosition;
         modifications++;
       }
     });
@@ -90,6 +90,30 @@ export function modifyEntriesStatus({
   const flight = flightProfile?.flights?.find(
     (flight) => flight.drawId === drawId
   );
+
+  const autoPosition = () => {
+    event.entries = refreshEntryPositions({
+      entries: event.entries,
+    });
+    if (flight) {
+      flight.drawEntries = refreshEntryPositions({
+        entries: flight.drawEntries,
+      });
+    }
+    if (drawDefinition) {
+      drawDefinition.entries = refreshEntryPositions({
+        entries: drawDefinition.entries,
+      });
+    }
+  };
+
+  const entryPositionsExist =
+    event.entries?.find(({ entryPosition }) => entryPosition) ||
+    flight?.drawEntries?.find(({ entryPosition }) => entryPosition) ||
+    drawDefinition?.entries?.find(({ entryPosition }) => entryPosition);
+
+  // before modifying, if autoEntryPositions: true, pre-assign entryPositions
+  if (autoEntryPositions && !entryPositionsExist) autoPosition();
 
   const updateDrawEntries = ({ flight, drawDefinition }) => {
     if (flight) {
@@ -122,20 +146,7 @@ export function modifyEntriesStatus({
     }
   }
 
-  if (autoEntryPositions) {
-    event.entries = refreshEntryPositions({
-      entries: event.entries,
-    });
-    if (flight) {
-      flight.drawEntries = refreshEntryPositions({
-        entries: flight.drawEntries,
-      });
-    }
-    if (drawDefinition) {
-      drawDefinition.entries = refreshEntryPositions({
-        entries: drawDefinition.entries,
-      });
-    }
-  }
+  if (autoEntryPositions) autoPosition();
+
   return SUCCESS;
 }
