@@ -1577,7 +1577,7 @@ const positionActions = tournamentEngine.positionActions({
   drawId,
   structureId,
   drawPosition,
-  policyDefinition: positionActionsPolicy, // optional - policy definiting what actions are allowed in client context
+  policyDefinition: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
 });
 
 const {
