@@ -1,4 +1,4 @@
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -7,21 +7,16 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function removeEntry({ participantId, drawDefinition }) {
+export function removeEntry({
+  participantId,
+  drawDefinition,
+  // autoPositions = true,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  const isAssignedParticipant = (drawDefinition.structures || []).find(
-    (structure) => {
-      const { positionAssignments } = structureAssignedDrawPositions({
-        structure,
-      });
-      const participantIsAssigned = positionAssignments.find(
-        (assignment) => assignment.participantId === participantId
-      );
-      return participantIsAssigned;
-    }
-  );
+  const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
+  const isAssignedParticipant = assignedParticipantIds.includes(participantId);
 
   if (isAssignedParticipant)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };

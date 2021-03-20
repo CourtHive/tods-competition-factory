@@ -1,5 +1,5 @@
 import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
+import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
 import { removeEventEntries } from './removeEventEntries';
 
 import { SUCCESS } from '../../../../constants/resultConstants';

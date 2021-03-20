@@ -1,6 +1,8 @@
 import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
+import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
 import { getValidAssignmentActions } from './participantAssignments';
@@ -8,10 +10,6 @@ import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
 import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
-import {
-  getStageAssignedParticipantIds,
-  structureAssignedDrawPositions,
-} from '../../../getters/positionsGetter';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -164,7 +162,7 @@ export function positionActions({
     stages,
   });
 
-  const stageAssignedParticipantIds = getStageAssignedParticipantIds({
+  const stageAssignedParticipantIds = getAssignedParticipantIds({
     drawDefinition,
     stages,
   });

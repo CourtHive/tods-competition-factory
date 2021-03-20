@@ -1,4 +1,4 @@
-import { getMaxEntryPosition } from '../../../deducers/getMaxEntryPosition';
+import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 

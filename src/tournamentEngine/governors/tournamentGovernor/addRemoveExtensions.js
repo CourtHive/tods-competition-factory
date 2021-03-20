@@ -9,7 +9,7 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { findParticipant } from '../../../drawEngine/getters/participantGetter';
+import { findParticipant } from '../../../common/deducers/findParticipant';
 
 export function addExtension({ element, extension }) {
   if (!element) return { error: MISSING_VALUE };

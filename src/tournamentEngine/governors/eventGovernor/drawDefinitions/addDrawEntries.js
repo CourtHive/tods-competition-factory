@@ -1,5 +1,5 @@
 import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
+import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {

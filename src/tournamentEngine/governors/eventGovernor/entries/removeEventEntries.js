@@ -1,9 +1,12 @@
+import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { removeDrawEntries } from '../drawDefinitions/removeDrawEntries';
+import { intersection } from '../../../../utilities';
 
 import {
   MISSING_EVENT,
   EVENT_NOT_FOUND,
   MISSING_PARTICIPANT_IDS,
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -12,6 +15,7 @@ export function removeEventEntries({
   drawId,
   drawDefinition,
   event,
+  // autoPositions = true,
 }) {
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length)
@@ -20,7 +24,15 @@ export function removeEventEntries({
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
   if (!event.entries) event.entries = [];
 
-  // TODO: filter participantIds / don't delete those that are active in drawDefinitions
+  const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
+  const someAssignedParticipantIds = intersection(
+    participantIds,
+    assignedParticipantIds
+  ).length;
+
+  if (someAssignedParticipantIds)
+    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+
   event.entries = event.entries.filter((entry) => {
     const entryId =
       entry.participantId ||

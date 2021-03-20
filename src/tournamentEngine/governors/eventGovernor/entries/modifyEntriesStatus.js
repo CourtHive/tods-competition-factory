@@ -1,6 +1,6 @@
-import { getPositionAssignments } from '../../../../drawEngine/getters/positionsGetter';
-import { findParticipant } from '../../../../drawEngine/getters/participantGetter';
-import { getMaxEntryPosition } from '../../../../deducers/getMaxEntryPosition';
+import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { findParticipant } from '../../../../common/deducers/findParticipant';
+import { getMaxEntryPosition } from '../../../../common/deducers/getMaxEntryPosition';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
@@ -43,17 +43,9 @@ export function modifyEntriesStatus({
   // disallow changing entryStatus to WITHDRAWN or UNPAIRED for assignedParticipants
   const assignedParticipantIds = [];
   if ([WITHDRAWN, UNPAIRED].includes(entryStatus)) {
-    event.drawDefinitions?.forEach(({ structures } = {}) => {
-      (structures || []).forEach((structure) => {
-        const { positionAssignments } = getPositionAssignments({
-          drawDefinition,
-          structure,
-        });
-        const participantIds = (positionAssignments || [])
-          .map(({ participantId }) => participantId)
-          .filter((f) => f);
-        assignedParticipantIds.push(...participantIds);
-      });
+    event.drawDefinitions?.forEach((drawDefinition) => {
+      const participantIds = getAssignedParticipantIds({ drawDefinition });
+      assignedParticipantIds.push(...participantIds);
     });
   }
 
