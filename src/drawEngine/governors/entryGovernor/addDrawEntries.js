@@ -1,5 +1,6 @@
-import { participantInEntries } from '../../getters/entryGetter';
+import { getMaxEntryPosition } from '../../../deducers/getMaxEntryPosition';
 import { validStage, stageSpace } from '../../getters/stageGetter';
+import { participantInEntries } from '../../getters/entryGetter';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import {
@@ -13,7 +14,6 @@ import {
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { getMaxEntryPosition } from '../../../deducers/getMaxEntryPosition';
 
 /**
  *
