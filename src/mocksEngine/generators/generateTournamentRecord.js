@@ -32,6 +32,7 @@ export function generateTournamentRecord({
   drawProfiles,
 
   completeAllMatchUps,
+  randomWinningSide,
   inContext,
   goesTo,
 }) {
@@ -87,6 +88,7 @@ export function generateTournamentRecord({
         participants,
         tournamentEngine,
         completeAllMatchUps,
+        randomWinningSide,
         goesTo,
       });
       drawIds.push(drawId);
@@ -103,6 +105,7 @@ function generateEventWithDraw({
   participants,
   tournamentEngine,
   completeAllMatchUps,
+  randomWinningSide,
   goesTo,
 }) {
   const {
@@ -175,7 +178,12 @@ function generateEventWithDraw({
 
   const manual = automated === false;
   if (!manual && completeAllMatchUps) {
-    completeDrawMatchUps({ tournamentEngine, drawId, matchUpFormat });
+    completeDrawMatchUps({
+      tournamentEngine,
+      drawId,
+      matchUpFormat,
+      randomWinningSide,
+    });
   } else if (!manual && drawProfile.outcomes) {
     const { matchUps } = tournamentEngine.allDrawMatchUps({
       drawId,
