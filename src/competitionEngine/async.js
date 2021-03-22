@@ -11,7 +11,10 @@ import {
   deleteNotices,
 } from '../global/globalState';
 
-import { INVALID_OBJECT } from '../constants/errorConditionConstants';
+import {
+  INVALID_OBJECT,
+  INVALID_RECORDS,
+} from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 export function competitionEngineAsync() {
@@ -89,10 +92,7 @@ export function competitionEngineAsync() {
 
   function setState(records, deepCopyOption = true) {
     if (typeof records !== 'object') return { error: INVALID_OBJECT };
-    if (Array.isArray(records))
-      return {
-        error: 'records must be an object with tournamentId keys',
-      };
+    if (Array.isArray(records)) return { error: INVALID_RECORDS };
     tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
     return SUCCESS;
   }

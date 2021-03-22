@@ -1,3 +1,5 @@
+export const INVALID_RECORDS =
+  'records must be an object with tournamentId keys';
 export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
 export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
 export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
@@ -214,6 +216,7 @@ export const errorConditionConstants = {
   INVALID_PARTICIPANT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_POLICY_DEFINITION,
+  INVALID_RECORDS,
   INVALID_SCALE_ITEM,
   INVALID_SEED_NUMBER,
   INVALID_SET_NUMBER,
