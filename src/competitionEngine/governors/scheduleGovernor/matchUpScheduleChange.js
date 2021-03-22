@@ -1,6 +1,7 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 
+import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
@@ -66,7 +67,7 @@ export function matchUpScheduleChange(params) {
     console.log('matcUpScheduleChange', params);
   }
 
-  return matchUpsModified ? SUCCESS : undefined;
+  return matchUpsModified ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };
 
   function assignMatchUpCourt({
     tournamentId,

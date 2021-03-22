@@ -159,6 +159,7 @@ export const MISSING_SCHEDULE = 'Missing schedule';
 export const INVALID_SCALE_ITEM = 'Invalid scaleItem';
 export const SCALE_ITEM_NOT_FOUND = 'No scaleItem found';
 
+export const MODIFICATIONS_FAILED = 'Modifications failed';
 export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 
 export const INVALID_CONFIGURATION = 'Invalid configuration';
@@ -277,6 +278,7 @@ export const errorConditionConstants = {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   MISSING_VENUE_ID,
+  MODIFICATIONS_FAILED,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
   BYES_LIMIT_REACHED,
   NO_MODIFICATIONS_APPLIED,
