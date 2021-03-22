@@ -89,6 +89,10 @@ export function competitionEngineAsync() {
 
   function setState(records, deepCopyOption = true) {
     if (typeof records !== 'object') return { error: INVALID_OBJECT };
+    if (Array.isArray(records))
+      return {
+        error: 'records must be an object with tournamentId keys',
+      };
     tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
     return SUCCESS;
   }
