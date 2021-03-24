@@ -18,8 +18,8 @@ export function assignMatchUpCourt({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {
-    const { error } = findCourt({ tournamentRecord, courtId });
-    if (error) return { error };
+    const result = findCourt({ tournamentRecord, courtId });
+    if (result.error) return result;
   }
 
   const timeItem = {
