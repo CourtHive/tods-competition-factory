@@ -1,10 +1,10 @@
-import { getCourts } from '../../getters/courtGetter';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { removeCourtAssignment } from './removeCourtAssignment';
+import { getCourts } from '../../getters/courtGetter';
+import { deletionMessage } from './deletionMessage';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { deletionMessage } from './deletionMessage';
-import { removeCourtAssignment } from './removeCourtAssignment';
 
 // TODO: should not require drawDefinition
 export function deleteVenue({
