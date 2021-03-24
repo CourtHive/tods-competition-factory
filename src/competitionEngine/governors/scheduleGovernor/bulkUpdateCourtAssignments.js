@@ -7,6 +7,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
 export function bulkUpdateCourtAssignments({
   tournamentRecords,
@@ -16,41 +17,56 @@ export function bulkUpdateCourtAssignments({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(courtAssignments)) return { error: MISSING_VALUE };
 
-  const tournamentMap = courtAssignments.map((tournamentMap, assignment) => {
+  const tournamentMap = courtAssignments.reduce((tournamentMap, assignment) => {
     const { tournamentId } = assignment;
     if (!tournamentMap[tournamentId]) tournamentMap[tournamentId] = [];
     tournamentMap[tournamentId].push(assignment);
     return tournamentMap;
   }, {});
 
+  let error;
   const tournamentIds = Object.keys(tournamentMap);
-  tournamentIds.forEach((tournamentId) => {
+  tournamentIds.every((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-    const drawMap = tournamentMap[tournamentId].map((drawMap, assignment) => {
-      const { drawId } = assignment;
-      if (!drawMap[drawId]) drawMap[drawId] = [];
-      drawMap[drawId].push(assignment);
-      return tournamentMap;
-    }, {});
+    if (!tournamentRecord) {
+      error = { error: MISSING_TOURNAMENT_RECORD };
+      return false;
+    }
+    const drawMap = tournamentMap[tournamentId].reduce(
+      (drawMap, assignment) => {
+        const { drawId } = assignment;
+        if (!drawMap[drawId]) drawMap[drawId] = [];
+        drawMap[drawId].push(assignment);
+        return drawMap;
+      },
+      {}
+    );
     const drawIds = Object.keys(drawMap);
-    drawIds.forEach((drawId) => {
-      drawMap[drawId].forEach((assignment) => {
-        const drawDefinition = tournamentRecord.drawDefinitions?.find(
-          (drawDefinition) => drawDefinition.drawId === drawId
-        );
-        if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+    drawIds.every((drawId) => {
+      const { drawDefinition } = findEvent({ tournamentRecord, drawId });
+      if (!drawDefinition) {
+        error = { error: MISSING_DRAW_DEFINITION };
+        return false;
+      }
+      drawMap[drawId].every((assignment) => {
         const { matchUpId, courtId } = assignment;
-        assignMatchUpCourt({
+        const result = assignMatchUpCourt({
           tournamentRecord,
           drawDefinition,
           courtDayDate,
           matchUpId,
           courtId,
         });
+        if (result.success) {
+          return result?.success;
+        } else {
+          error = { error: 'Unable to assign court' };
+        }
       });
+
+      return true;
     });
   });
 
-  return SUCCESS;
+  return error || SUCCESS;
 }

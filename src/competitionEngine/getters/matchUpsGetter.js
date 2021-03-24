@@ -17,15 +17,16 @@ export function allCompetitionMatchUps({
   const competitionMatchUps = tournamentIds
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      return allTournamentMatchUps({
+      const { matchUps } = allTournamentMatchUps({
         tournamentRecord,
         matchUpFilters,
         contextFilters,
       });
+      return matchUps;
     })
     .flat();
 
-  return competitionMatchUps;
+  return { matchUps: competitionMatchUps };
 }
 
 export function competitionScheduleMatchUps(props) {
