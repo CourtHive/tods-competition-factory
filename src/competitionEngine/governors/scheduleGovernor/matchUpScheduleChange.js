@@ -12,19 +12,19 @@ export function matchUpScheduleChange(params) {
     sourceCourtId,
     targetCourtId,
     courtDayDate,
-  } = params;
+  } = params || {};
 
   const {
     drawId: sourceDrawId,
     matchUpId: sourceMatchUpId,
     tournamentId: sourceTournamentId,
-  } = sourceMatchUpContextIds;
+  } = sourceMatchUpContextIds || {};
 
   const {
     drawId: targetDrawId,
     matchUpId: targetMatchUpId,
     tournamentId: targetTournamentId,
-  } = targetMatchUpContextIds;
+  } = targetMatchUpContextIds || {};
 
   let matchUpsModified = 0;
 
