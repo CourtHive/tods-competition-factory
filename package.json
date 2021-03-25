@@ -8,7 +8,7 @@
     "competition",
     "tennis"
   ],
-  "version": "0.5.35",
+  "version": "0.5.36",
   "license": "MIT",
   "private": false,
   "jest": {
