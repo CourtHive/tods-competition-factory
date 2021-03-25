@@ -1441,6 +1441,8 @@ const result = tournamentEngine.modifyEntriesStatus({
   eventId, // id of event where the modification(s) will occur
   drawId, // optional - scope to a specific flight/draw
   stage, // optional - scope to a specific stage
+
+  eventSync, // optional - if there is only a single drawDefinition in event, keep event.entries in sync
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
 });
 ```

@@ -26,6 +26,7 @@ export function modifyEntriesStatus({
   stage,
   event,
 
+  eventSync,
   autoEntryPositions = true,
 }) {
   if (!participantIds || !Array.isArray(participantIds))
@@ -129,21 +130,39 @@ export function modifyEntriesStatus({
   // if flight or drawDefinition scope modifications
   if (flight || drawDefinition) updateDrawEntries({ flight, drawDefinition });
 
-  if ((!flight && !drawDefinition) || entryStatus === WITHDRAWN) {
+  const singleDraw =
+    flightProfile?.flights?.length === 1 &&
+    event.drawDefinitions?.length <= flightProfile?.flights?.length;
+
+  if (
+    (!flight && !drawDefinition) ||
+    entryStatus === WITHDRAWN ||
+    (eventSync && singleDraw) // if there is only one draw keep event entries in sync
+  ) {
     // if entryStatus is WITHDRAWN then participantIds appearing in ANY flight or drawDefinition must be removed
     const result = updateEntryStatus(event.entries);
     if (result.error) return result;
 
+    let error;
     if (entryStatus === WITHDRAWN) {
-      flightProfile?.flights?.forEach(({ drawEntries }) => {
+      flightProfile?.flights?.every(({ drawEntries }) => {
         const result = updateEntryStatus(drawEntries);
-        if (result.error) return result;
+        if (result.error) {
+          error = result.error;
+          return false;
+        }
+        return true;
       });
-      event.drawDefinitions?.forEach(({ entries }) => {
+      event.drawDefinitions?.every(({ entries }) => {
         const result = updateEntryStatus(entries);
-        if (result.error) return result;
+        if (result.error) {
+          error = result.error;
+          return false;
+        }
+        return true;
       });
     }
+    if (error) return { error };
   }
 
   if (autoEntryPositions) autoPosition();
