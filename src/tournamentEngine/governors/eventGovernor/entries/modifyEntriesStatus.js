@@ -77,18 +77,14 @@ export function modifyEntriesStatus({
     const isAssigned = (entry) =>
       assignedParticipantIds.includes(entry.participantId);
 
-    let error;
-    filteredEntries.every((entry) => {
-      if (isAssigned(entry)) {
-        error = { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
-        return false;
-      }
+    const success = filteredEntries.every((entry) => {
+      if (isAssigned(entry)) return false;
       entry.entryStatus = entryStatus;
       delete entry.entryPosition;
       return true;
     });
 
-    return error || SUCCESS;
+    return success ? SUCCESS : { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
   };
 
   const { flightProfile } = getFlightProfile({ event });
@@ -124,10 +120,12 @@ export function modifyEntriesStatus({
     if (flight) {
       const result = updateEntryStatus(flight.drawEntries);
       if (result.error) return result;
+      console.log('updated flight entries', flight.drawEntries);
     }
     if (drawDefinition) {
       const result = updateEntryStatus(drawDefinition.entries);
       if (result.error) return result;
+      console.log('updated draw entries', drawDefinition.entries);
     }
   };
 
