@@ -66,25 +66,29 @@ export function modifyEntriesStatus({
     return { error: INVALID_ENTRY_STATUS };
 
   const updateEntryStatus = (entries = []) => {
-    const stageFilteredEntries = entries.filter((entry) => {
-      return !stage || !entry.entryStage || stage === entry.entryStage;
-    });
-    let modifications = 0;
-    const assigned = (entry) =>
+    const filteredEntries = entries
+      // filter out entries bye stage (if specified)
+      .filter((entry) => {
+        return !stage || !entry.entryStage || stage === entry.entryStage;
+      })
+      // filter by specified participantIds
+      .filter(({ participantId }) => participantIds.includes(participantId));
+
+    const isAssigned = (entry) =>
       assignedParticipantIds.includes(entry.participantId);
 
-    stageFilteredEntries.forEach((entry) => {
-      const modify =
-        participantIds.includes(entry.participantId) && !assigned(entry);
-      if (modify) {
-        entry.entryStatus = entryStatus;
-        delete entry.entryPosition;
-        modifications++;
+    let error;
+    filteredEntries.every((entry) => {
+      if (isAssigned(entry)) {
+        error = { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+        return false;
       }
+      entry.entryStatus = entryStatus;
+      delete entry.entryPosition;
+      return true;
     });
-    return modifications === participantIds.length
-      ? SUCCESS
-      : { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+
+    return error || SUCCESS;
   };
 
   const { flightProfile } = getFlightProfile({ event });
