@@ -120,12 +120,10 @@ export function modifyEntriesStatus({
     if (flight) {
       const result = updateEntryStatus(flight.drawEntries);
       if (result.error) return result;
-      console.log('updated flight entries', flight.drawEntries);
     }
     if (drawDefinition) {
       const result = updateEntryStatus(drawDefinition.entries);
       if (result.error) return result;
-      console.log('updated draw entries', drawDefinition.entries);
     }
   };
 
