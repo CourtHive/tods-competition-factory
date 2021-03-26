@@ -790,7 +790,7 @@ const drawDefinitionValues = {
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
-  finishingPositionNaming, // optional - map of { [finishingPositionRange]: customName }
+  finishingPositionNaming, // optional - map of { [finishingPositionRange]: { name: 'customName', abbreviation: 'A' } }
 };
 
 const { drawDefinition } = tournamentEngine.generateDrawDefinition(

@@ -58,11 +58,14 @@ function playoffStructures({
   const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
   const base =
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
-  const customName =
+  const customNaming =
     finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
   const structureName =
-    customName || attributeProfile?.name || `${base}${finishingPositionRange}`;
-  const structureAbbreviation = attributeProfile?.abbreviation;
+    customNaming?.name ||
+    attributeProfile?.name ||
+    `${base}${finishingPositionRange}`;
+  const structureAbbreviation =
+    customNaming?.abbreviation || attributeProfile?.abbreviation;
   const structure = structureTemplate({
     stage,
     matchUps,
