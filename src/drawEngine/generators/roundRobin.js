@@ -3,6 +3,7 @@ import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
+import { feedInChampionship } from './feedInChampionShip';
 import { drawPositionsHash } from './roundRobinGroups';
 
 import {
@@ -20,7 +21,6 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
-import { feedInChampionship } from './feedInChampionShip';
 
 export function generateRoundRobin({
   uuids,
