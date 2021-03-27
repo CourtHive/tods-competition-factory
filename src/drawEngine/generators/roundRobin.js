@@ -296,8 +296,8 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
 
 function groupRounds({ groupSize, drawPositionOffset }) {
   const numArr = (count) => [...Array(count)].map((_, i) => i);
-  const groupPositions = numArr(groupSize + 1).slice(1);
-  const rounds = numArr(groupSize - 1).map(() => []);
+  const groupPositions = numArr(2 * Math.round(groupSize / 2) + 1).slice(1);
+  const rounds = numArr(groupPositions.length - 1).map(() => []);
 
   let aRow = groupPositions.slice(0, groupPositions.length / 2);
   let bRow = groupPositions.slice(groupPositions.length / 2);
@@ -319,13 +319,21 @@ function groupRounds({ groupSize, drawPositionOffset }) {
   aRow = [].concat(aHead, bUp, ...aRow);
   bRow = [].concat(...bRow, aDown);
 
-  const orderedRounds = rounds.reverse().map((round) =>
-    round.map((groupPositions) => {
-      const drawPositions = groupPositions.map(
-        (groupPosition) => groupPosition + drawPositionOffset
-      );
-      return drawPositionsHash(drawPositions);
-    })
-  );
+  const sum = (x) => x[0].reduce((a, b) => a + b);
+  const orderedRounds = rounds
+    .reverse()
+    .sort((a, b) => sum(a) - sum(b))
+    .map((round) =>
+      round
+        .filter((groupPositions) =>
+          groupPositions.every((position) => position <= groupSize)
+        )
+        .map((groupPositions) => {
+          const drawPositions = groupPositions.map(
+            (groupPosition) => groupPosition + drawPositionOffset
+          );
+          return drawPositionsHash(drawPositions);
+        })
+    );
   return orderedRounds;
 }
