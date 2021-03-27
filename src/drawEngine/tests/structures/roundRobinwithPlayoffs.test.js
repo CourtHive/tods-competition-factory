@@ -485,11 +485,15 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
   mainStructure.structures.forEach((structure, structureOrder) => {
-    const values = setsValues[structureOrder];
+    // const values = setsValues[structureOrder];
     const structureMatchUps = structure.matchUps;
     structureMatchUps.forEach((matchUp, matchUpIndex) => {
       const { matchUpId } = matchUp;
-      const setValues = values[matchUpIndex];
+      // const setValues = values[matchUpIndex];
+      const setValues = [
+        [6, 3],
+        [6, 3],
+      ];
       const outcome = generateMatchUpOutcome({
         matchUpFormat,
         setValues,

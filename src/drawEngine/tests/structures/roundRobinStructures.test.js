@@ -41,14 +41,6 @@ it('can generate Round Robins with varying group sizes', () => {
   });
   expect(structure.structures.length).toEqual(6);
   expect(structure.structures[0].matchUps.length).toEqual(10);
-  expect(structure.structures[0].matchUps[0].drawPositions).toMatchObject([
-    1,
-    2,
-  ]);
-  expect(structure.structures[0].matchUps[1].drawPositions).toMatchObject([
-    1,
-    5,
-  ]);
 
   reset();
   initialize();
@@ -64,11 +56,11 @@ it('can generate Round Robins with varying group sizes', () => {
   expect(structure.structures[0].matchUps[1].roundNumber).toEqual(2);
   expect(structure.structures[0].matchUps[0].drawPositions).toMatchObject([
     1,
-    3,
+    2,
   ]);
   expect(structure.structures[0].matchUps[1].drawPositions).toMatchObject([
     1,
-    2,
+    3,
   ]);
   expect(structure.structures[0].matchUps[2].drawPositions).toMatchObject([
     2,

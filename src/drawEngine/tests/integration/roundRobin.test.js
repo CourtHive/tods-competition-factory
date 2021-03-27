@@ -44,7 +44,7 @@ it('can generate and verify round robin structures', () => {
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 2,
     expectedPositionsAssignedCount: 10,
-    expectedRoundMatchUpsCounts: [2, 2, 4, 4],
+    expectedRoundMatchUpsCounts: [4, 4, 4, 4, 4],
     expectedSeedValuesWithBye: [1, 2],
   });
 
