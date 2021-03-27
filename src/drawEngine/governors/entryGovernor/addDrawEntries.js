@@ -14,6 +14,7 @@ import {
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -28,7 +29,7 @@ export function addDrawEntry({
   drawDefinition,
   participantId,
   participant,
-  entryStage,
+  entryStage = MAIN,
   entryStatus = DIRECT_ACCEPTANCE,
   entryPosition,
 }) {
@@ -70,7 +71,7 @@ export function addDrawEntries({
   drawDefinition,
   participantIds,
   entryStatus = DIRECT_ACCEPTANCE,
-  stage,
+  stage = MAIN,
 
   autoEntryPositions = true,
 }) {
