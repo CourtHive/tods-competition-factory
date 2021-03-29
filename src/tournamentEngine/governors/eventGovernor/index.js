@@ -21,7 +21,8 @@ import {
   checkInParticipant,
   checkOutParticipant,
 } from './participantCheckInState';
-import { setDrawParticipantRepresentatives } from './drawDefinitions/setDrawParticipantRepresentatives';
+import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
+import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 
 import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
@@ -120,7 +121,8 @@ const eventGovernor = {
   removeDrawPositionAssignment,
   alternateDrawPositionAssignment,
   withdrawParticipantAtDrawPosition,
-  setDrawParticipantRepresentatives,
+  setDrawParticipantRepresentativeIds,
+  getDrawParticipantRepresentativeIds,
   luckyLoserDrawPositionAssignment,
 
   automatedPositioning,

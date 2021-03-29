@@ -966,6 +966,20 @@ const {
 
 ---
 
+## getDrawParticipantRepresentativeIds
+
+Get the participantIds of participants in the draw who are representing players by observing the creation of the draw.
+
+```js
+const {
+  representativeParticipantIds,
+} = tournamentEngine.getDrawParticipantRepresentativeIds({
+  drawId,
+});
+```
+
+---
+
 ## getEntriesAndSeedsCount
 
 ```js
@@ -1785,12 +1799,12 @@ tournamentEngine.setDrawDefaultMatchUpFormat({
 
 ---
 
-## setDrawParticipantRepresentatives
+## setDrawParticipantRepresentativeIds
 
 Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.
 
 ```js
-tournamentEngine.setDrawParticipantRepresentatives({
+tournamentEngine.setDrawParticipantRepresentativeIds({
   drawId,
   representativeParticipantIds,
 });
