@@ -141,7 +141,7 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
 
   const earliestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemType)
+      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -175,7 +175,7 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
 
   const latestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -215,7 +215,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
@@ -277,7 +277,7 @@ export function addMatchUpResumeTime({
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 

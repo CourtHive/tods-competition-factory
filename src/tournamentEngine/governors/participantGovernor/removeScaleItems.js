@@ -29,7 +29,7 @@ export function removeParticipantsScaleItems({
     if (participantIds.includes(participant.participantId)) {
       if (participant.timeItems) {
         participant.timeItems = participant.timeItems.filter((timeItem) => {
-          return timeItem.itemType !== itemType;
+          return timeItem && timeItem?.itemType !== itemType;
         });
       }
     }

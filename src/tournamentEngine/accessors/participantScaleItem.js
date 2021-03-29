@@ -20,8 +20,8 @@ export function participantScaleItem({
     const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
     const filterType = [SCALE, scaleType, eventType, scaleName].join('.');
     const filteredTimeItems = participant.timeItems
-      .filter((timeItem) => timeItem.itemType === filterType)
-      .filter((timeItem) => !requireTimeStamp || timeItem.itemDate)
+      .filter((timeItem) => timeItem?.itemType === filterType)
+      .filter((timeItem) => !requireTimeStamp || timeItem?.itemDate)
       .sort(
         (a, b) =>
           new Date(a.createdAt || undefined) -

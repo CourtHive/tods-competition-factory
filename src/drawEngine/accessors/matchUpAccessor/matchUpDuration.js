@@ -27,7 +27,9 @@ export function matchUpDuration({ matchUp }) {
 
   const relevantTimeItems = matchUp.timeItems
     .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemType)
+      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
+        timeItem?.itemType
+      )
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 

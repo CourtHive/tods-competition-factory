@@ -21,7 +21,7 @@ export function getTimeItem({
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };
 
   const filteredSorted = element.timeItems
-    .filter((timeItem) => timeItem.itemType === itemType)
+    .filter((timeItem) => timeItem?.itemType === itemType)
     .filter(
       (timeItem) =>
         !itemSubTypes || timeItem?.itemSubTypes?.includes(itemSubTypes)

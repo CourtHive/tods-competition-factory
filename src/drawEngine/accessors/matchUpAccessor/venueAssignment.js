@@ -5,7 +5,7 @@ export function matchUpAssignedVenueId({ matchUp }) {
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
   const lastCourtAssignmentItem = timeItems
-    .filter((timeItem) => timeItem.itemType === ASSIGN_VENUE)
+    .filter((timeItem) => timeItem?.itemType === ASSIGN_VENUE)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
 
