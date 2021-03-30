@@ -9,7 +9,6 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'CourtHive', // Usually your GitHub org/user name.
   projectName: 'tods-competition-factory', // Usually your repo name.
-  defaultDarkMode: false,
   themeConfig: {
     navbar: {
       title: 'Competition Factory',
