@@ -8,10 +8,13 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Document Integrity',
-    // imageUrl: 'img/undraw_docusaurus_mountain.svg',
+    title: 'Standards Based',
+    imageUrl: 'img/TODS.png',
     description: (
-      <>The Competition Factory insures that TODS documents are always valid</>
+      <>
+        The Competition Factory generates and consumes TODS documents and
+        insures that all document mutations are valid
+      </>
     ),
   },
 ];
