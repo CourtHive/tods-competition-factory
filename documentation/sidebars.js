@@ -3,17 +3,29 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['overview'],
+      items: ['overview', 'installation'],
+    },
+    {
+      type: 'category',
+      label: 'Concepts',
+      items: [
+        'concepts/subscriptions',
+        {
+          Policies: ['concepts/policies', 'policies/feedPolicy'],
+        },
+        'concepts/timeItems',
+        'concepts/scaleItems',
+      ],
     },
     {
       type: 'category',
       label: 'Competition Engine',
-      items: ['competition-engine-api'],
+      items: ['apis/competition-engine-api'],
     },
     {
       type: 'category',
       label: 'Tournament Engine',
-      items: ['tournament-engine-api'],
+      items: ['apis/tournament-engine-api'],
     },
   ],
 };

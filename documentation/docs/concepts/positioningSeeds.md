@@ -1,9 +1,6 @@
 ---
-name: Positioning Seeds
-menu: Draw Engine
+title: Positioning Seeds
 ---
-
-# Positioning Seeds
 
 **drawEngine** manages a **seedAssignments** attribute of **structure** which expects there to be one **participantId** per **seedNumber**
 

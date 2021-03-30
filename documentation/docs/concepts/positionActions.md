@@ -1,10 +1,6 @@
 ---
-name: Position Actions
-menu: General Concepts
-route: /concepts/positionActions
+title: Position Actions
 ---
-
-# Position Actions
 
 ```js
 const { positionActions } = tournamentEngine.positionActions({

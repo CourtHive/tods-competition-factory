@@ -1,9 +1,6 @@
 ---
-name: Scale Items
-menu: General Concepts
+title: Scale Items
 ---
-
-# scaleItems and scaleAttributes
 
 **scaleItems** capture participant RANKING, RATING and SEEDING values. They are attached to `participants` as [Time Items](./timeItems).
 

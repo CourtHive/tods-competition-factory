@@ -1,10 +1,6 @@
 ---
-name: Policies
-menu: General Concepts
-route: /concepts/policies
+title: Introduction to Policies
 ---
-
-# Policies
 
 Policies determine how the various Competition Factory engines function and can shape the way that results are returned. Policies can be attached to the `tournamentRecord`, `events`, or to `drawDefinitions` within an `event`. They can also be passed into some `tournamentEngine` and `drawEngine` methods.
 
@@ -30,3 +26,5 @@ The structure of an **_policyDefinition_** is as follows:
 - POLICY_TYPE_SEEDING
 - POLICY_TYPE_SCORING
 - POLICY_TYPE_DRAWS
+
+[Feed Policy](../policies/feedPolicy)

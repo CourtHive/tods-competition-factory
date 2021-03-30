@@ -1,10 +1,6 @@
 ---
-name: Subscriptions
-menu: General Concepts
-route: /concepts/subscriptions
+title: Subscriptions
 ---
-
-# Subscriptions
 
 Subscriptions enable external methods to be called when certain events occur while the Competition Factory engines are mutating a tournament document.
 

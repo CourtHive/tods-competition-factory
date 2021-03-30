@@ -1,10 +1,6 @@
 ---
-name: Time Items
-menu: General Concepts
-route: /concepts/timeItems
+title: Time Items
 ---
-
-# Time Items
 
 **timeItems** can exist on any document element in TODS and are used to capture attributes which may change over time and where it is desierable to keep track of such changes.
 
