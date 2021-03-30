@@ -15,9 +15,7 @@ export function setDrawParticipantRepresentativeIds({
     return { error: INVALID_VALUES };
 
   const enteredParticipantIds = (drawDefinition?.entries || [])
-    ?.map(({ participantId }) => {
-      participantId;
-    })
+    ?.map(({ participantId }) => participantId)
     .filter((f) => f);
 
   // An empty array is valid; if ids provided...
@@ -34,5 +32,6 @@ export function setDrawParticipantRepresentativeIds({
     name: 'participantRepresentatives',
     value: representativeParticipantIds,
   };
+
   return addDrawDefinitionExtension({ drawDefinition, extension });
 }

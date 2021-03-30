@@ -6,7 +6,7 @@ export function getDrawParticipantRepresentativeIds({ drawDefinition }) {
     name: 'participantRepresentatives',
   });
 
-  const representativeParticipantIds = extension?.values || [];
+  const representativeParticipantIds = extension?.value || [];
 
   return { representativeParticipantIds };
 }
