@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['getting-started'],
+      items: ['overview'],
     },
     {
       type: 'category',

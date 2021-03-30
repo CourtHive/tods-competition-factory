@@ -347,7 +347,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
 ## alternateDrawPositionAssignment
 
-Replaces an existing drawPosition assignment with an alternateParticipantId. This method is included in `validActions` for [positionActions](/concepts/positionActions)
+Replaces an existing drawPosition assignment with an alternateParticipantId. This method is included in `validActions` for [positionActions](concepts/positionActions)
 
 ```js
 tournamentEngine.alternateDrawPositionAssignment({
@@ -425,7 +425,7 @@ Used when interactively creating `{ participantType: PAIR }` participants.
 
 Attaches a policy to an event within a tournamentRecord.
 
-See [Policies](/concepts/policies).
+See [Policies](concepts/policies).
 
 ```js
 tournamentEngine.attachEventPolicy({
@@ -440,7 +440,7 @@ tournamentEngine.attachEventPolicy({
 
 Attaches a policy to a tournamentRecord.
 
-See [Policies](/concepts/policies).
+See [Policies](concepts/policies).
 
 ```js
 tournamentEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
@@ -452,7 +452,7 @@ tournamentEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 
 Positions participants in a draw structure.
 
-See [Policies](/concepts/policies).
+See [Policies](concepts/policies).
 
 ```js
 tournamentEngine.automatedPositioning({ drawId, structureId });
@@ -801,7 +801,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(
 
 Splits event entries into # of draws. `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
 
-See [Scale Items](/concepts/scaleItems).
+See [Scale Items](concepts/scaleItems).
 
 ```js
 const scaleAttributes = {
@@ -1177,7 +1177,7 @@ const {
 
 Return a ranking or rating or seeding value for a participant, referenced by participantId.
 
-See [Scale Items](/concepts/scaleItems).
+See [Scale Items](concepts/scaleItems).
 
 ```js
 const scaleAttributes = {
@@ -1212,7 +1212,7 @@ const signInStatus = tournamentEngine.getParticipantSignInStatus({
 
 Finds policyDefinition for either draw (if drawId), event (if eventId), or tournament, in that order. This enables a default policy to be attached to the tournament record and for event-specific or draw-specific policies to override the default(s).
 
-See [Policies](/concepts/policies).
+See [Policies](concepts/policies).
 
 ```js
 const { policyDefinition } = tournamentEngine.getPolicyDefinition({
@@ -1242,7 +1242,7 @@ const [{ drawPosition, participantId, qualifier, bye }] = positionAssignments;
 
 ## getScaledEntries
 
-See [Scale Items](/concepts/scaleItems).
+See [Scale Items](concepts/scaleItems).
 
 ```js
 const { scaledEntries } = tournamentEngine.getScaledEntries({
@@ -1368,7 +1368,7 @@ const {
 
 ## luckyLoserDrawPositionAssignment
 
-Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](/concepts/positionActions)
+Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](concepts/positionActions)
 
 ```js
 tournamentEngine.luckyLoserDrawPositionAssignment({
@@ -1536,7 +1536,7 @@ tournamentEngine.modifyParticipantsSignInStatus({
 
 ## modifySeedAssignment
 
-Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](/concepts/positionActions).
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](concepts/positionActions).
 
 ```js
 tournamentEngine.modifySeedAssignment({
@@ -1567,7 +1567,7 @@ const { tournamentRecord } = tournamentEngine.getState();
 
 Similar to [getParticipantScaleItem](#getParticipantScaleItem) but takes a `participant` object and doesn't require `tournamentEngine.setState(tournamentRecord)`.
 
-See [Scale Items](/concepts/scaleItems).
+See [Scale Items](concepts/scaleItems).
 
 ```js
 const scaleAttributes = {
@@ -1618,7 +1618,7 @@ const {
 
 Utilizes [getEventData](#getEventData) to prepare data for display. Differs from [getEventData](#getEventData) in that it modifies the `publishState` of the event. Subscriptions or middleware may be used to deliver the generated payload for presentation on a public website.
 
-See [Policies](/concepts/policies) for more details on `policyDefinitions`.
+See [Policies](concepts/policies) for more details on `policyDefinitions`.
 
 ```js
 const policyDefinition = Object.assign(
@@ -1924,7 +1924,7 @@ tournamentEngine.setSubOrder({
 
 ## setSubscriptions
 
-Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
+Please refer to the [Subscriptions](concepts/subscriptions) in General Concepts.
 
 ---
 
@@ -2047,7 +2047,7 @@ tournamentEngine.updateDrawIdsOrder({
 
 ## withdrawParticipantAtDrawPosition
 
-Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](/concepts/positionActions).
+Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](concepts/positionActions).
 
 ```js
 withdrawParticipantAtDrawPosition({

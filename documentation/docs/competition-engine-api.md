@@ -131,7 +131,7 @@ competitionEngine.setsState(tournamentRecords, deepCopy);
 
 ## setSubscriptions
 
-Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
+Please refer to the [Subscriptions](concepts/subscriptions) in General Concepts.
 
 ---
 
