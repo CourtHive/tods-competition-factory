@@ -14,7 +14,7 @@ module.exports = {
       title: 'Competition Factory',
       logo: {
         alt: 'CourtHive Logo',
-        src: 'img/CourtHiveR.png',
+        src: 'img/CourtHive.png',
       },
       items: [
         {
