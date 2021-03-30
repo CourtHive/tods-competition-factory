@@ -39,8 +39,8 @@ export default function Home() {
   const { siteConfig = {} } = context;
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title={`${siteConfig.title}`}
+      description="Tournament Management Components"
     >
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
@@ -48,6 +48,7 @@ export default function Home() {
           <p className="hero__subtitle">{siteConfig.tagline}</p>
           <div className={styles.buttons}>
             <Link
+              style={{ color: 'lightgreen' }}
               className={clsx(
                 'button button--outline button--secondary button--lg',
                 styles.getStarted
