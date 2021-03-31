@@ -25,8 +25,17 @@ const features = [
       <>
         Based on years of experience running thousands of events for national
         governing bodies, Competition Factory now powers the tournament
-        management solution built for the largest tennis federation in the
-        world.
+        management platform of the largest tennis federation in the world.
+      </>
+    ),
+  },
+  {
+    title: 'Rigorously tested',
+    imageUrl: 'img/jest.png',
+    description: (
+      <>
+        Adheres to a Test Driven Development process utilizing Jest. With ~200
+        test suites and ~600 total tests quality control is assured.
       </>
     ),
   },
