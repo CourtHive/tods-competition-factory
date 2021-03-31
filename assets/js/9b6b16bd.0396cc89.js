@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[27],{98:function(o){o.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Welcome","permalink":"/tods-competition-factory/blog/welcome"},{"title":"Hello","permalink":"/tods-competition-factory/blog/hello-world"},{"title":"Hola","permalink":"/tods-competition-factory/blog/hola"}]}')}}]);
