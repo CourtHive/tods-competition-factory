@@ -294,7 +294,7 @@ result = drawEngine.assignSeed({
 
 Attaches a policy to an event within a tournamentRecord.
 
-See [Policies](/concepts/policies).
+See [Policies](../concepts/policies).
 
 ```js
 drawEngine.attachEventPolicy({
@@ -309,7 +309,7 @@ drawEngine.attachEventPolicy({
 
 Attaches a policy to a drawDefinition.
 
-See [Policies](/concepts/policies).
+See [Policies](../concepts/policies).
 
 ```js
 drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
@@ -321,7 +321,7 @@ drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
 
 Positions participants in a draw structure. `drawEngine` is agnostic about the type of participants that are placed in a draw structure, but requires tournament participants for avoidance policies to work.
 
-See [Policies](/concepts/policies).
+See [Policies](../concepts/policies).
 
 ```js
 drawEngine.automatedPositioning({
@@ -426,7 +426,7 @@ const {
 
 Convenience method to generate pre-defined drawTypes.
 
-For more information on `feedPolicy` see [Feed Policies](/drawEngine/feedPolicies).
+For more information on `feedPolicy` see [Feed Policies](../policies/feedPolicy).
 
 ```js
 drawEngine.generateDrawType({
@@ -1001,7 +1001,7 @@ By default a deep copy of the tournament record is made so that mutations made b
 
 ## setSubscriptions
 
-Please refer to the [Subscriptions](/concepts/subscriptions) in General Concepts.
+Please refer to the [Subscriptions](../concepts/subscriptions) in General Concepts.
 
 ---
 
