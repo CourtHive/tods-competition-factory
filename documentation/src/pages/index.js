@@ -8,21 +8,41 @@ import styles from './styles.module.css';
 
 const features = [
   {
-    title: 'Standards Based',
+    title: 'Standards based',
     imageUrl: 'img/TODS.png',
+    imageLink: 'https://itftennis.atlassian.net/wiki/spaces/TODS/overview',
     description: (
       <>
         The Competition Factory generates and consumes TODS documents and
-        insures that all document mutations are valid
+        insures that all document mutations are valid.
+      </>
+    ),
+  },
+  {
+    title: 'Proven in production',
+    imageUrl: 'img/tmx.png',
+    description: (
+      <>
+        Based on years of experience running thousands of events for national
+        governing bodies, Competition Factory now powers the tournament
+        management solution built for the largest tennis federation in the
+        world.
       </>
     ),
   },
 ];
 
-function Feature({ imageUrl, title, description }) {
+function handleOnClick(imageLink) {
+  if (imageLink) window.open(imageLink, '_blank', 'noopener,noreferrer');
+}
+
+function Feature({ imageLink, imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div className={clsx('col col--4', styles.feature)}>
+    <div
+      className={clsx('col col--4', styles.feature)}
+      onClick={() => handleOnClick(imageLink)}
+    >
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
