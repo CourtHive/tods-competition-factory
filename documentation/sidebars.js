@@ -11,10 +11,18 @@ module.exports = {
       items: [
         'concepts/subscriptions',
         {
-          Policies: ['concepts/policies', 'policies/feedPolicy'],
+          Policies: [
+            'concepts/policies',
+            'policies/feedPolicy',
+            {
+              Avoidance: ['policies/avoidance', 'policies/accessors'],
+            },
+          ],
         },
         'concepts/timeItems',
         'concepts/scaleItems',
+        'concepts/matchUpFormat',
+        'concepts/context',
       ],
     },
     {
@@ -31,6 +39,11 @@ module.exports = {
       type: 'category',
       label: 'Tournament Engine',
       items: ['apis/tournament-engine-api'],
+    },
+    {
+      type: 'category',
+      label: 'Draw Engine',
+      items: ['apis/draw-engine-api'],
     },
   ],
 };

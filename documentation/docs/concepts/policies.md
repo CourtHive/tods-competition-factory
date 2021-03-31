@@ -15,16 +15,24 @@ The structure of an **_policyDefinition_** is as follows:
 }
 ```
 
-## Supported Policies
+## Policy Types
 
-- POLICY_TYPE_ROUND_ROBIN_TALLY
-- POLICY_TYPE_POSITION_ACTIONS
-- POLICY_TYPE_ROUND_NAMING
-- POLICY_TYPE_PARTICIPANT
-- POLICY_TYPE_SCHEDULING
-- POLICY_TYPE_AVOIDANCE
-- POLICY_TYPE_SEEDING
-- POLICY_TYPE_SCORING
-- POLICY_TYPE_DRAWS
+### [Avoidance Policy](../policies/avoidance)
 
-[Feed Policy](../policies/feedPolicy)
+Can be attached to drawDefinitions to specify the attriubutes by which particpants should be separated
+
+### [Feed Policy](../policies/feedPolicy)
+
+Useful for determining the way in which consolation feed rounds direct players
+
+### Position Actions Policy
+
+### Round Naming Policy
+
+### Participant Policy
+
+### Scheduling Policy
+
+### Scoring Policy
+
+### Draws Policy

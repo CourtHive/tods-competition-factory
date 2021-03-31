@@ -1,10 +1,6 @@
 ---
-name: MatchUp Formats
-menu: General Concepts
-route: /concepts/matchUpFormat
+title: MatchUp Formats
 ---
-
-# MatchUp Formats
 
 In TODS, a **drawDefinition** is a collection of **structures**. For example a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another. USTA's TDM, its predecessor TMS, and CourtHive TMX Classic do not represent the relationship between structures as hierarchical, whereas in TODS there is a nesting of elements:
 

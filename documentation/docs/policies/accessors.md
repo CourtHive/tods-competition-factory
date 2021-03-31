@@ -1,9 +1,6 @@
 ---
-name: Accessors
-menu: General Concepts
+title: Accessors
 ---
-
-# Accessors
 
 Accessors are strings which describe an attribute path to a value nested within an object. They are used in [Avoidance Policies](./avoidance) and [scaleAttributes](./scaleItems).
 

@@ -1,5 +1,5 @@
 ---
-title: Avoidance
+title: Introduction to Avoidance
 menu: Draw Engine
 ---
 
@@ -51,7 +51,7 @@ const AVOIDANCE_COUNTRY = {
 
 **roundsToSeparate** defines the desired separation; if undefined defaults to maximum separation.
 
-**policyAttrributes** is an array of "accessors" which determine which attributes of participants to consider. In the example above the _nationalityCode_ of participants can be found in different places depending on whether the participant is an INDIVIDUAL or a PAIR. This notation works regardless of whether child attributes are strings, numbers, or arrays, as is the case with _individualPartcipants_ in PAIR participants.
+**policyAttrributes** is an array of ["accessors"](./accessors) which determine which attributes of participants to consider. In the example above the _nationalityCode_ of participants can be found in different places depending on whether the participant is an INDIVIDUAL or a PAIR. This notation works regardless of whether child attributes are strings, numbers, or arrays, as is the case with _individualPartcipants_ in PAIR participants.
 
 **policyAttributes** can have an additional attribute **_significantCharacters_** which specifies the number of characters which will be considered when creating values for each key.
 

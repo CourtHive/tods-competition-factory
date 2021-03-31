@@ -1,10 +1,6 @@
 ---
-name: Context
-menu: General Concepts
-route: /concepts/context
+title: Context
 ---
-
-# Context
 
 When **matchUps** and **tournamentParticipants** are returned **inContext** it means that they include contextual information that is not part of the TODS document structure from which they originated.
 
