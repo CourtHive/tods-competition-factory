@@ -35,7 +35,7 @@ const { scaleItem } = tournamentEngine.getParticipantScaleItem({
 
 When **scaleValues** are objects, **scaleAttributes** may include an **accessor** describing an attribute path to a nested value.
 
-See [Accessors](./accessors).
+See [Accessors](../policies/accessors).
 
 ```js
 // to access the value of a particular attribute...

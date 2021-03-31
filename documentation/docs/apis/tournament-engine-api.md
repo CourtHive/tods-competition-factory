@@ -347,7 +347,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
 ## alternateDrawPositionAssignment
 
-Replaces an existing drawPosition assignment with an alternateParticipantId. This method is included in `validActions` for [positionActions](../concepts/positionActions)
+Replaces an existing drawPosition assignment with an alternateParticipantId. This method is included in `validActions` for [positionActions](../policies/positionActions)
 
 ```js
 tournamentEngine.alternateDrawPositionAssignment({
@@ -1368,7 +1368,7 @@ const {
 
 ## luckyLoserDrawPositionAssignment
 
-Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](../concepts/positionActions)
+Replaces an existing drawPosition assignment with a luckyLoserParticipantId. This method is included in `validActions` for [positionActions](../policies/positionActions)
 
 ```js
 tournamentEngine.luckyLoserDrawPositionAssignment({
@@ -1536,7 +1536,7 @@ tournamentEngine.modifyParticipantsSignInStatus({
 
 ## modifySeedAssignment
 
-Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](../concepts/positionActions).
+Change the display representation of a seedNumber for a specified `participantId`. This method is included in `validActions` for [positionActions](../policies/positionActions).
 
 ```js
 tournamentEngine.modifySeedAssignment({
@@ -2047,7 +2047,7 @@ tournamentEngine.updateDrawIdsOrder({
 
 ## withdrawParticipantAtDrawPosition
 
-Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](../concepts/positionActions).
+Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment). This method is included in `validActions` for [positionActions](../policies/positionActions).
 
 ```js
 withdrawParticipantAtDrawPosition({

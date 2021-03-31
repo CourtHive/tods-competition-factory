@@ -2,7 +2,7 @@
 title: Accessors
 ---
 
-Accessors are strings which describe an attribute path to a value nested within an object. They are used in [Avoidance Policies](./avoidance) and [scaleAttributes](./scaleItems).
+Accessors are strings which describe an attribute path to a value nested within an object. They are used in [Avoidance Policies](./avoidance) and [scaleAttributes](../concepts/scaleItems).
 
 ```js
 // given the follwoing accessor...

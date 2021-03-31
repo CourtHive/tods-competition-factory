@@ -17,6 +17,8 @@ module.exports = {
             {
               Avoidance: ['policies/avoidance', 'policies/accessors'],
             },
+            'policies/positionActions',
+            'policies/positioningSeeds',
           ],
         },
         'concepts/timeItems',
