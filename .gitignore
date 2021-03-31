@@ -11,3 +11,4 @@ dist
 .nvim*
 documentation/.docusaurus
 documentation/build
+.DS_Store
