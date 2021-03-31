@@ -10,3 +10,4 @@ dist
 *.VSCodeCounter
 .nvim*
 documentation/.docusaurus
+documentation/build
