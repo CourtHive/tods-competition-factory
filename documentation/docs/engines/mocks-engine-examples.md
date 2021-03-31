@@ -1,10 +1,6 @@
 ---
-name: Generating Tournaments
-menu: Mocks Engine
-route: /mocksengine/tournaments
+title: Generating Tournaments
 ---
-
-# Generating Tournaments
 
 The Mocks Engine is used to generate tournaments for many of the Jest tests suites used in the development of the Competition Factory.
 

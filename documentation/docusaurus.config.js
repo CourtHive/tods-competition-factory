@@ -2,8 +2,8 @@
 module.exports = {
   title: 'Competition Factory',
   tagline: 'Tournament Management Tools',
-  url: 'https://github.com/CourtHive/tods-competition-factory',
-  baseUrl: '/',
+  url: 'https://github.com/CourtHive',
+  baseUrl: '/tods-competition-factory/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

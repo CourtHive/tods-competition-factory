@@ -19,6 +19,11 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Mocks Engine',
+      items: ['engines/mocks-engine-examples', 'apis/mocks-engine-api'],
+    },
+    {
+      type: 'category',
       label: 'Competition Engine',
       items: ['apis/competition-engine-api'],
     },
