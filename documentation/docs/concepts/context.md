@@ -27,4 +27,4 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
 
 ## Converted Extensions
 
-All elements that are returned **inContext** include converted extensions. See **makeDeepCopy** in [Utilities](/utilities/makedeepcopy).
+All elements that are returned **inContext** include converted extensions. See **makeDeepCopy** in [Utilities](../engines/makedeepcopy).

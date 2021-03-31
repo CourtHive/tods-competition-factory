@@ -1,10 +1,6 @@
 ---
-name: makeDeepCopy
-menu: Utilities
-route: /utilities/makedeepcopy
+title: makeDeepCopy
 ---
-
-# makeDeepCopy
 
 ```js
 makeDeepCopy(element, convertExtensions);
