@@ -34,8 +34,8 @@ const features = [
     imageUrl: 'img/jest.png',
     description: (
       <>
-        Adheres to a Test Driven Development process utilizing Jest. With ~200
-        test suites and ~600 total tests quality control is assured.
+        Built following a Test Driven Development process utilizing Jest. With
+        ~200 test suites and ~600 total tests quality control is assured.
       </>
     ),
   },
