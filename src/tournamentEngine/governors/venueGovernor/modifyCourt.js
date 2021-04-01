@@ -2,7 +2,6 @@ import { modifyCourtAvailability } from './courtAvailability';
 import { addNotice } from '../../../global/globalState';
 import courtTemplate from '../../generators/courtTemplate';
 import { findCourt } from '../../getters/courtGetter';
-import { findVenue } from '../../getters/venueGetter';
 import { makeDeepCopy } from '../../../utilities';
 
 import {
