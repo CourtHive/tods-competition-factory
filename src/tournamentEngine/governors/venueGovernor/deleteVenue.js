@@ -5,6 +5,7 @@ import { deletionMessage } from './deletionMessage';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { addNotice } from '../../../global/globalState';
 
 // TODO: should not require drawDefinition
 export function deleteVenue({
@@ -38,6 +39,8 @@ export function deleteVenue({
   tournamentRecord.venues = tournamentRecord.venues.filter(
     (venue) => venue.venueId !== venueId
   );
+
+  addNotice({ topic: 'deleteVenue', payload: { venueId } });
 
   return SUCCESS;
 }

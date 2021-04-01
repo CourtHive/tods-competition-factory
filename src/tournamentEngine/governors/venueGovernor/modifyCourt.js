@@ -1,3 +1,10 @@
+import { modifyCourtAvailability } from './courtAvailability';
+import { addNotice } from '../../../global/globalState';
+import courtTemplate from '../../generators/courtTemplate';
+import { findCourt } from '../../getters/courtGetter';
+import { findVenue } from '../../getters/venueGetter';
+import { makeDeepCopy } from '../../../utilities';
+
 import {
   INVALID_OBJECT,
   MISSING_COURT_ID,
@@ -5,10 +12,6 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { makeDeepCopy } from '../../../utilities';
-import courtTemplate from '../../generators/courtTemplate';
-import { findCourt } from '../../getters/courtGetter';
-import { modifyCourtAvailability } from './courtAvailability';
 
 export function modifyCourt({
   tournamentRecord,
@@ -21,7 +24,7 @@ export function modifyCourt({
   if (!modifications || typeof modifications !== 'object')
     return { error: INVALID_OBJECT };
 
-  const { court, error } = findCourt({ tournamentRecord, courtId });
+  const { court, venue, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
   // not valid to modify a courtId
@@ -60,5 +63,6 @@ export function modifyCourt({
     if (result.error) errors.push(result);
   }
 
+  addNotice({ topic: 'modifyVenue', payload: { venue } });
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }

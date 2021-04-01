@@ -13,6 +13,9 @@ const subscriptions = {
   publishEvent: (payload) => (), // payload = { eventData }
   unPublishEvent: (payload) => (), // payload = { eventId }
   newPairParticipants: (payload) => (), // payload { participants }
+  addVenue: (payload) => (), // payload { venue }
+  modifyVenue: (payload) => (), // payload { venue }
+  deleteVenue: (payload) => (), // payload { venueId }
 };
 ```
 

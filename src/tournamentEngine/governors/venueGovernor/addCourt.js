@@ -1,6 +1,6 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { courtTemplate } from '../../generators/courtTemplate';
-import { getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { validDateAvailability } from './dateAvailability';
 import { findVenue } from '../../getters/venueGetter';
 
@@ -18,7 +18,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
  * @param {object} court - court object
  * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
  */
-export function addCourt({ tournamentRecord, venueId, court }) {
+export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
@@ -55,6 +55,10 @@ export function addCourt({ tournamentRecord, venueId, court }) {
       }
     });
     venue.courts.push(courtRecord);
+
+    if (!disableNotice) {
+      addNotice({ topic: 'modifyVenue', payload: { venue } });
+    }
 
     if (errors.length) {
       return { error: { errors } };
@@ -95,11 +99,13 @@ export function addCourts({
   });
 
   const result = courts.map((court) =>
-    addCourt({ tournamentRecord, venueId, court })
+    addCourt({ tournamentRecord, venueId, court, disableNotice: true })
   );
   const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 
   if (courtRecords.length === courtsCount) {
+    const { venue } = findVenue({ tournamentRecord, venueId });
+    addNotice({ topic: 'modifyVenue', payload: { venue } });
     return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
   } else {
     return Object.assign(

@@ -1,5 +1,5 @@
 import { venueTemplate } from '../../generators/venueTemplate';
-import { getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 
 import { VENUE_EXISTS } from '../../../constants/errorConditionConstants';
@@ -17,6 +17,8 @@ export function addVenue({ tournamentRecord, venue }) {
 
   if (!venueExists) {
     tournamentRecord.venues.push(venueRecord);
+    addNotice({ topic: 'addVenue', payload: { venue: venueRecord } });
+
     return getDevContext()
       ? Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS)
       : SUCCESS;

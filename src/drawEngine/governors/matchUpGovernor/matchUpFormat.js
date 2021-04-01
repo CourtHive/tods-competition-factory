@@ -1,6 +1,7 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../getters/findStructure';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { findStructure } from '../../getters/findStructure';
+import { addNotice } from '../../../global/globalState';
 
 import {
   MATCHUP_NOT_FOUND,
@@ -11,7 +12,6 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice } from '../../../global/globalState';
 
 export function setMatchUpFormat(props) {
   const errors = [];

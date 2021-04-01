@@ -1,7 +1,10 @@
+import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import venueTemplate from '../../generators/venueTemplate';
 import { findVenue } from '../../getters/venueGetter';
+import { deletionMessage } from './deletionMessage';
 import { makeDeepCopy } from '../../../utilities';
 import { modifyCourt } from './modifyCourt';
+import { addCourt } from './addCourt';
 
 import {
   COURT_NOT_FOUND,
@@ -11,9 +14,7 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addCourt } from './addCourt';
-import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
-import { deletionMessage } from './deletionMessage';
+import { addNotice } from '../../../global/globalState';
 
 export function modifyVenue({
   tournamentRecord,
@@ -109,6 +110,8 @@ export function modifyVenue({
     });
 
   if (errors.length) return { error: { errors } };
+
+  addNotice({ topic: 'modifyVenue', payload: { venue } });
 
   return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
 }
