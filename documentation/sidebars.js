@@ -9,7 +9,6 @@ module.exports = {
       type: 'category',
       label: 'Concepts',
       items: [
-        'concepts/subscriptions',
         {
           Policies: [
             'concepts/policies',
@@ -25,6 +24,7 @@ module.exports = {
         'concepts/scaleItems',
         'concepts/matchUpFormat',
         'concepts/context',
+        'concepts/subscriptions',
       ],
     },
     {
