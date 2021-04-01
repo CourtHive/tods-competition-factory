@@ -36,7 +36,7 @@ export function directParticipants(props) {
   modifyMatchUpScore({
     drawDefinition,
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
-    machUpStatusCoes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
+    machUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     winningSide,
     removeScore,
     matchUp,
