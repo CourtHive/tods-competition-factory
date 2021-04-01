@@ -1,5 +1,6 @@
 import { addExtension } from '../tournamentGovernor/addRemoveExtensions';
 import penaltyTemplate from '../../generators/penaltyTemplate';
+import { addNotice } from '../../../global/globalState';
 
 import {
   PENALTY_NOT_FOUND,
@@ -69,6 +70,11 @@ export function addPenalty({
     participant.penalties.push(penaltyItem);
   });
 
+  addNotice({
+    topic: 'modifyParticipants',
+    payload: { participants: relevantParticipants },
+  });
+
   return Object.assign({}, SUCCESS, { penaltyId: penaltyItem.penaltyId });
 }
 
@@ -82,18 +88,31 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
   if (!penaltyId) return { error: MISSING_PENALTY_ID };
 
   const participants = tournamentRecord?.participants || [];
+  const modifiedParticipants = [];
 
   let penaltyRemoved = false;
   let removedPenalty;
   participants.forEach((participant) => {
+    let participantModified = false;
     participant.penalties = (participant.penalties || []).filter((penalty) => {
-      if (penalty.penaltyId === penaltyId && !penaltyRemoved) {
-        removedPenalty = penalty;
-        penaltyRemoved = true;
+      if (penalty.penaltyId === penaltyId) {
+        participantModified = true;
+        if (!penaltyRemoved) {
+          removedPenalty = penalty;
+          penaltyRemoved = true;
+        }
       }
+      if (participantModified) modifiedParticipants.push(participant);
       return penalty.penaltyId !== penaltyId;
     });
   });
+
+  if (removedPenalty) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
 
   return removedPenalty
     ? Object.assign({}, SUCCESS, { penalty: removedPenalty })
@@ -140,9 +159,12 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
     return { error: NO_VALID_ATTRIBUTES };
 
   let updatedPenalty;
+  const modifiedParticipants = [];
   participants.forEach((participant) => {
+    let participantModified = false;
     participant.penalties = (participant.penalties || []).map((penalty) => {
       if (penalty.penaltyId === penaltyId) {
+        participantModified = true;
         validModificationAttributes.forEach((attribute) =>
           Object.assign(penalty, { [attribute]: modifications[attribute] })
         );
@@ -152,7 +174,15 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
 
       return penalty;
     });
+    if (participantModified) modifiedParticipants.push(participant);
   });
+
+  if (updatedPenalty) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
 
   return updatedPenalty
     ? Object.assign({}, SUCCESS, { penalty: updatedPenalty })

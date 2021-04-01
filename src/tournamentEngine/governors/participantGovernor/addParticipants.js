@@ -1,4 +1,4 @@
-import { getDevContext } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities/arrays';
 import { makeDeepCopy, UUID } from '../../../utilities';
 
@@ -25,6 +25,7 @@ import {
 export function addParticipant({
   tournamentRecord,
   participant,
+  disableNotice,
   allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -157,6 +158,14 @@ export function addParticipant({
   }
 
   tournamentRecord.participants.push(participant);
+
+  if (!disableNotice) {
+    addNotice({
+      topic: 'addParticipants',
+      payload: { participants: [participant] },
+    });
+  }
+
   const result = Object.assign({}, SUCCESS);
   if (getDevContext())
     Object.assign(result, { participant: makeDeepCopy(participant) });
@@ -207,6 +216,7 @@ export function addParticipants({
       const result = addParticipant({
         tournamentRecord,
         participant,
+        disableNotice: true,
         allowDuplicateParticipantIdPairs,
       });
       const { success, error, participant: addedParticipant } = result;
@@ -217,6 +227,10 @@ export function addParticipants({
     if (errors.length) {
       return { error: errors };
     } else {
+      addNotice({
+        topic: 'addParticipants',
+        payload: { participants: addedParticipants },
+      });
       const result = Object.assign({}, SUCCESS, {
         participants: makeDeepCopy(addedParticipants),
       });

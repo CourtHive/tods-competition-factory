@@ -1,3 +1,5 @@
+import { addNotice } from '../../../../global/globalState';
+
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
@@ -12,7 +14,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 /**
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {string} groupingParticipantId - grouping participant to which participantIds are to be added
+ * @param {string} groupingParticipantId - grouping participant from which participantIds are to be removed
  * @param {string[]} individualParticipantIds - individual participantIds to be removed to grouping participant
  *
  */
@@ -43,6 +45,13 @@ export function removeIndividualParticipantIds({
     groupingParticipant,
     individualParticipantIds,
   });
+
+  if (removed) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: [groupingParticipant] },
+    });
+  }
 
   if (error) return { error };
 

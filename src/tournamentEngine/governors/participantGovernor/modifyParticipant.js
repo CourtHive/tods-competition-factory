@@ -6,9 +6,9 @@ import {
   PAIR,
   participantTypes,
 } from '../../../constants/participantTypes';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
-import { getDevContext } from '../../../global/globalState';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -119,6 +119,11 @@ export function modifyParticipant({
       removeFromOtherTeams,
     });
   }
+
+  addNotice({
+    topic: 'modifyParticipants',
+    payload: { participants: [existingParticipant] },
+  });
 
   if (getDevContext()) {
     return Object.assign({}, SUCCESS, {

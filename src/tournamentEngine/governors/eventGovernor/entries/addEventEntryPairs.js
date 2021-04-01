@@ -119,7 +119,7 @@ export function addEventEntryPairs({
   });
 
   if (newParticipants.length) {
-    addNotice('newPairParticipants', { participants: newParticipants });
+    addNotice('addParticipants', { participants: newParticipants });
   }
 
   return Object.assign({}, result, { message });

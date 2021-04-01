@@ -1,5 +1,6 @@
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import venueTemplate from '../../generators/venueTemplate';
+import { addNotice } from '../../../global/globalState';
 import { findVenue } from '../../getters/venueGetter';
 import { deletionMessage } from './deletionMessage';
 import { makeDeepCopy } from '../../../utilities';
@@ -14,7 +15,6 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice } from '../../../global/globalState';
 
 export function modifyVenue({
   tournamentRecord,
