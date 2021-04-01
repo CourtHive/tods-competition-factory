@@ -87,7 +87,8 @@ export function modifyIndividualParticipantIds({
   });
   if (removeResult.error) return removeResult;
 
-  if (getTopics().includes('modifyParticipants')) {
+  const { topics } = getTopics();
+  if (topics.includes('modifyParticipants')) {
     const updatedParticipant = tournamentParticipants.find(
       ({ participantId }) => participantId === groupingParticipantId
     );
