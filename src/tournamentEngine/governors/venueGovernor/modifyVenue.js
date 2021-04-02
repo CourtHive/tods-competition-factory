@@ -94,6 +94,7 @@ export function modifyVenue({
       let result = modifyCourt({
         tournamentRecord,
         modifications: court,
+        disableNotice: true,
         courtId,
         force,
       });

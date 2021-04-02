@@ -14,8 +14,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function modifyCourt({
   tournamentRecord,
-  courtId,
   modifications,
+  disableNotice,
+  courtId,
   force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -62,6 +63,7 @@ export function modifyCourt({
     if (result.error) errors.push(result);
   }
 
-  addNotice({ topic: 'modifyVenue', payload: { venue } });
+  if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
+
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }
