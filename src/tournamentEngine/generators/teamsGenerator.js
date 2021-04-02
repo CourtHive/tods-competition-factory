@@ -1,9 +1,11 @@
-import { UUID } from '../../utilities';
+import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
+import { findExtension } from '../governors/queryGovernor/extensionQueries';
+
 import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
-import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../governors/queryGovernor/extensionQueries';
+import { UUID } from '../../utilities';
+import { addNotice } from '../../global/globalState';
 
 export function generateTeamsFromParticipantAttribute(props) {
   const {
@@ -67,17 +69,24 @@ export function generateTeamsFromParticipantAttribute(props) {
     })
     .filter((f) => f);
 
+  const newParticipants = [];
   let participantsAdded = 0;
   Object.keys(teams).forEach((attributeValue) => {
     const participant = teams[attributeValue];
     const { participantId } = participant;
     if (!overlappingTeamParticipantids.includes(participantId)) {
       tournamentRecord.participants.push(participant);
+      newParticipants.push(participant);
       participantsAdded++;
     }
   });
 
-  console.log({ participantsAdded });
+  if (participantsAdded) {
+    addNotice({
+      topic: 'addParticipants',
+      payload: { participants: newParticipants },
+    });
+  }
 
   if (participantsAdded) {
     return Object.assign({}, SUCCESS, { participantsAdded });

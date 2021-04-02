@@ -1,3 +1,6 @@
+import { addParticipantTimeItem } from '../tournamentGovernor/addTimeItem';
+import { addNotice, getTopics } from '../../../global/globalState';
+
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANTS,
@@ -10,7 +13,6 @@ import {
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addParticipantTimeItem } from '../tournamentGovernor/addTimeItem';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,
@@ -27,6 +29,7 @@ export function modifyParticipantsSignInStatus({
   if (!participants.length) return { error: MISSING_PARTICIPANTS };
 
   const errors = [];
+  const modifiedParticipants = [];
   const createdAt = new Date().toISOString();
   participants.forEach((participant) => {
     const { participantId } = participant;
@@ -43,8 +46,17 @@ export function modifyParticipantsSignInStatus({
         timeItem,
       });
       if (result.error) errors.push(result.error);
+      modifiedParticipants.push(participant);
     }
   });
+
+  const { topics } = getTopics();
+  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
 
   return errors.length ? { error: errors } : SUCCESS;
 }

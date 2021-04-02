@@ -1,4 +1,5 @@
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice, getTopics } from '../../../global/globalState';
 
 export function mergeParticipants({
   tournamentRecord,
@@ -15,11 +16,11 @@ export function mergeParticipants({
   );
 
   // check for overlap with existing players, add any newly retrieved attributes to existing
-  let modifiedParticipants = 0;
-  tournamentRecord.participants.forEach((p) => {
-    if (idMap[p.participantId]) {
-      Object.assign(p, idMap[p.participantId]);
-      modifiedParticipants++;
+  const modifiedParticipants = [];
+  tournamentRecord.participants.forEach((participant) => {
+    if (idMap[participant.participantId]) {
+      Object.assign(participant, idMap[participant.participantId]);
+      modifiedParticipants.push(participant);
     }
   });
 
@@ -30,13 +31,29 @@ export function mergeParticipants({
     existingParticipantIds.includes(p.participantId)
   );
 
+  const { topics } = getTopics();
+
   if (newParticipants.length) {
     tournamentRecord.participants = tournamentRecord.participants.concat(
       ...newParticipants
     );
+
+    if (topics.includes('addParticipants')) {
+      addNotice({
+        topic: 'addParticipants',
+        payload: { participants: newParticipants },
+      });
+    }
   }
 
-  if (newParticipants.length || modifiedParticipants) {
+  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
+
+  if (newParticipants.length || modifiedParticipants.length) {
     return SUCCESS;
   }
 }

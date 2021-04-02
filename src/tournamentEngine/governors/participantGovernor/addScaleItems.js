@@ -11,13 +11,14 @@ import {
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
+import { addNotice, getTopics } from '../../../global/globalState';
 
 export function setParticipantScaleItem({
   tournamentRecord,
   participantId,
   scaleItem,
 }) {
-  let equivalentValue, participantFound;
+  let equivalentValue, participant;
 
   const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
@@ -33,23 +34,32 @@ export function setParticipantScaleItem({
     validScaleItem &&
     Array.isArray(tournamentRecord.participants)
   ) {
-    tournamentRecord.participants.forEach((participant) => {
-      if (participant.participantId === participantId) {
-        participantFound = true;
-        const { newValue, error } = addParticipantScaleItem({
-          participant,
-          scaleItem,
-        });
-        if (error) return { error };
+    participant = tournamentRecord.participants.find(
+      (participant) => participant.participantId === participantId
+    );
 
-        equivalentValue = scaleItem.scaleValue === newValue;
+    if (participant) {
+      const { newValue, error } = addParticipantScaleItem({
+        participant,
+        scaleItem,
+      });
+      if (error) return { error };
+
+      equivalentValue = scaleItem.scaleValue === newValue;
+
+      const { topics } = getTopics();
+      if (topics.includes('modifyParticipants')) {
+        addNotice({
+          topic: 'modifyParticipants',
+          payload: { participants: [participant] },
+        });
       }
-    });
+    }
   }
 
   return equivalentValue
     ? { ...SUCCESS, message: VALUE_UNCHANGED, value: scaleItem.scaleValue }
-    : participantFound
+    : participant
     ? { ...SUCCESS, value: scaleItem.scaleValue }
     : { error: PARTICIPANT_NOT_FOUND };
 }
@@ -65,6 +75,7 @@ export function setParticipantScaleItems({
   const participantScaleItemsMap = {};
 
   const errors = [];
+  const modifiedParticipants = [];
   scaleItemsWithParticipantIds.forEach((item) => {
     const participantId = item?.participantId;
     if (Array.isArray(item?.scaleItems)) {
@@ -86,12 +97,25 @@ export function setParticipantScaleItems({
     if (Array.isArray(participantScaleItemsMap[participantId])) {
       participantScaleItemsMap[participantId].forEach((scaleItem) => {
         addParticipantScaleItem({ participant, scaleItem });
+        modifiedParticipants.push(participant);
         modificationsApplied++;
       });
     }
   });
 
   const message = !modificationsApplied && NO_MODIFICATIONS_APPLIED;
+
+  const { topics } = getTopics();
+  if (
+    topics.includes('modifyParticipants') &&
+    modificationsApplied &&
+    !errors.length
+  ) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
 
   return errors.length
     ? { error: errors }

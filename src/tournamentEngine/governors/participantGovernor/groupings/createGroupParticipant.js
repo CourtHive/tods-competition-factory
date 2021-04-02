@@ -11,6 +11,7 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { addNotice, getTopics } from '../../../../global/globalState';
 
 // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
 // would require that tournamentRecord be loaded in tournamentEngine
@@ -61,6 +62,14 @@ export function createGroupParticipant({
     participant: groupParticipant,
   });
   if (result.error) return result;
+
+  const { topics } = getTopics();
+  if (topics.includes('addParticipants')) {
+    addNotice({
+      topic: 'addParticipants',
+      payload: { participants: [groupParticipant] },
+    });
+  }
 
   return Object.assign({}, SUCCESS, {
     participant: makeDeepCopy(groupParticipant),
