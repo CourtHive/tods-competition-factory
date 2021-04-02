@@ -42,9 +42,6 @@
     "test": "tsdx test",
     "lint": "tsdx eslint src",
     "prepare": "tsdx build",
-    "docz:dev": "docz dev",
-    "docz:build": "docz build",
-    "docz:serve": "docz build && docz serve",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
     "postpublish": "pinst --enable"
@@ -74,7 +71,6 @@
     "@typescript-eslint/eslint-plugin": "4.20.0",
     "@typescript-eslint/parser": "4.20.0",
     "babel-jest": "26.6.3",
-    "docz": "2.3.1",
     "eslint": "7.23.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-jest": "24.3.2",
