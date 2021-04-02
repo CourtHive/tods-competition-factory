@@ -1,6 +1,6 @@
 import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
-import { courtTemplate } from '../../generators/courtTemplate';
 import { addNotice, getDevContext } from '../../../global/globalState';
+import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';
 import { findVenue } from '../../getters/venueGetter';
 

@@ -1,6 +1,6 @@
 import { modifyCourtAvailability } from './courtAvailability';
-import { addNotice } from '../../../global/globalState';
 import courtTemplate from '../../generators/courtTemplate';
+import { addNotice } from '../../../global/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -57,13 +57,16 @@ export function modifyCourt({
     const result = modifyCourtAvailability({
       tournamentRecord,
       dateAvailability: modifications.dateAvailability,
+      disableNotice,
       courtId,
       force,
     });
     if (result.error) errors.push(result);
   }
 
-  if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
+  if (!disableNotice) {
+    addNotice({ topic: 'modifyVenue', payload: { venue } });
+  }
 
   return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
 }

@@ -10,6 +10,7 @@ import { addNotice } from '../../../global/globalState';
 export function modifyCourtAvailability({
   tournamentRecord,
   dateAvailability,
+  disableNotice,
   courtId,
   force,
 }) {
@@ -25,7 +26,7 @@ export function modifyCourtAvailability({
   }
 
   court.dateAvailability = dateAvailability;
-  addNotice({ topic: 'modifyVenue', payload: { venue } });
+  if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
 
   return SUCCESS;
 }
