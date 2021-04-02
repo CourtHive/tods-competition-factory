@@ -99,7 +99,12 @@ export function modifyVenue({
         force,
       });
       if (result.error === COURT_NOT_FOUND) {
-        result = addCourt({ tournamentRecord, venueId, court });
+        result = addCourt({
+          tournamentRecord,
+          venueId,
+          court,
+          disableNotice: true,
+        });
       }
       if (result.error) {
         if (result.error.errors) {
