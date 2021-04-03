@@ -155,6 +155,7 @@ function updatePerson({
   const newPersonValues = {};
   const {
     sex,
+    personId,
     nationalityCode,
     standardFamilyName,
     standardGivenName,
@@ -163,6 +164,9 @@ function updatePerson({
     newPersonValues.sex = sex;
 
   let personNameModified;
+  if (personId && typeof personId === 'string') {
+    newPersonValues.personId = personId;
+  }
   if (
     nationalityCode &&
     typeof nationalityCode === 'string' &&
