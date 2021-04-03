@@ -29,6 +29,7 @@ import {
   removePenalty,
   getTournamentPenalties,
 } from './participantPenalties';
+import { getTournamentPersons } from '../../getters/getTournamentPersons';
 
 const participantGovernor = {
   addPenalty,
@@ -65,6 +66,7 @@ const participantGovernor = {
   getParticipantEventDetails,
   findParticipant: publicFindParticipant,
   getTournamentParticipants,
+  getTournamentPersons,
 };
 
 export default participantGovernor;
