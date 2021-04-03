@@ -1291,7 +1291,7 @@ Returns **deepCopies** of tournament participants filtered by participantFilters
 
 ```js
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-  participantFilters: { participantTypes: [INDIVIDUAL] },
+  participantFilters: { participantTypes: [INDIVIDUAL] }, // optional - filters
   inContext, // optional - adds individualParticipants for all individualParticipantIds
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withOpponents, // optional - include opponent participantIds
@@ -1302,6 +1302,18 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
 ```
 
 participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
+
+---
+
+## getTournamentPersons
+
+Returns **deepCopies** of persons extracted from tournament participants.
+
+```js
+const { tournamentPersons } = tournamentEngine.getTournamentPersons({
+  participantFilters: { participantRoles: [COMPETITOR] }, // optional - filters
+});
+```
 
 ---
 
