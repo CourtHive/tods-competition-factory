@@ -207,6 +207,55 @@ tournamentEngine.addMatchUpOfficial({
 
 ---
 
+## addMatchUpResumeTime
+
+```js
+const resumeTime = '2020-01-01T09:00:00Z';
+tournamentEngine.addMatchUpResumeTime({ drawId, matchUpId, resumeTime });
+```
+
+---
+
+## addMatchUpScheduledDayDate
+
+```js
+const scheduledDayDate = '2020-01-01';
+tournamentEngine.addMatchUpScheduledDayDate({
+  drawId,
+  matchUpId,
+  scheduledDayDate,
+});
+```
+
+---
+
+## addMatchUpScheduledTime
+
+```js
+const scheduledTime = '08:00';
+tournamentEngine.addMatchUpScheduledTime({ drawId, matchUpId, scheduledTime });
+```
+
+---
+
+## addMatchUpStartTime
+
+```js
+const startTime = '2020-01-01T08:05:00Z';
+tournamentEngine.addMatchUpStartTime({ drawId, matchUpId, startTime });
+```
+
+---
+
+## addMatchUpStopTime
+
+```js
+const stopTime = '2020-01-01T08:15:00Z';
+tournamentEngine.addMatchUpStopTime({ drawId, matchUpId, stopTime });
+```
+
+---
+
 ## addParticipant
 
 Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to insure `participant.individualParticipantIds` are valid.
