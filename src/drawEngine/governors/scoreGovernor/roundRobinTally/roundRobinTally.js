@@ -19,7 +19,8 @@ export function tallyParticipantResults({
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
 
-  const parsedGroupMatchUpFormat = matchUpFormatCode.parse(matchUpFormat) || {};
+  const parsedGroupMatchUpFormat =
+    (matchUpFormat && matchUpFormatCode.parse(matchUpFormat)) || {};
 
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   const relevantMatchUps = matchUps.filter(
@@ -48,9 +49,7 @@ export function tallyParticipantResults({
   // matchUp scoring format for the bracket, not the inidivudal matchUp formats
   const bestOfGames = parsedGroupMatchUpFormat.bestOf;
   const bracketSetsToWin = (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
-  const bracketGamesForSet =
-    parsedGroupMatchUpFormat.setFormat &&
-    parsedGroupMatchUpFormat.setFormat.setTo;
+  const bracketGamesForSet = parsedGroupMatchUpFormat.setFormat?.setTo;
 
   Object.keys(participantResults).forEach((participantId) => {
     const setsNumerator = participantResults[participantId].setsWon;
