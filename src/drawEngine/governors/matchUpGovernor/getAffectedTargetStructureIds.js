@@ -37,7 +37,7 @@ export function getAffectedTargetStructureIds({
     structureId: structure.structureId,
   });
   const structureIds = links
-    .filter((link) => {
+    ?.filter((link) => {
       return intersection(
         finishingPositions,
         link.source?.finishingPositions || []

@@ -156,7 +156,7 @@ export function getStageEntries({
  */
 export function playoffEntries({ drawDefinition, structureId }) {
   const entries = [];
-  const inboundLink = drawDefinition.links.find(
+  const inboundLink = (drawDefinition.links || []).find(
     (link) =>
       link.linkType === POSITION && link.target.structureId === structureId
   );

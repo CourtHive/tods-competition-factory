@@ -58,7 +58,7 @@ export function getStructureLinks({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
-  const { links } = drawDefinition;
+  const links = drawDefinition.links || [];
   const structureLinks = links
     .filter((f) => f)
     .reduce(
