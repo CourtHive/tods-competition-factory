@@ -48,7 +48,9 @@ export const currentUTCDate = () => {
     date.getUTCMonth().toString().length === 1
       ? `0${date.getUTCMonth() + 1}`
       : `${date.getUTCMonth()}`;
-  return `${date.getUTCFullYear()}-${utcMonth}-${date.getUTCDate()}`;
+  return `${date.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(
+    date.getUTCDate()
+  )}`;
 };
 
 export const currentUTCDateWithTime = () => {

@@ -11,7 +11,6 @@ import {
   INVALID_DATE,
   INVALID_TIME,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   dateValidation,
   timeValidation,
@@ -26,19 +25,6 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
-
-/* 
-  local version of addMatchUpTimeItem for functions in this module which
-  access the matchUp WITHOUT CONTEXT, necessary to modify original
-*/
-function newTimeItem({ matchUp, timeItem }) {
-  if (!matchUp.timeItems) matchUp.timeItems = [];
-  const createdAt = new Date().toISOString();
-  Object.assign(timeItem, { createdAt });
-  matchUp.timeItems.push(timeItem);
-
-  return SUCCESS;
-}
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -160,7 +146,12 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
       (timeItem) => timeItem.itemType !== START_TIME
     );
     const timeItem = { itemType: START_TIME, itemValue: startTime };
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: false,
+    });
   } else {
     return { error: INVALID_START_TIME };
   }
@@ -191,7 +182,12 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
       (timeItem) => timeItem.itemType !== END_TIME
     );
     const timeItem = { itemType: END_TIME, itemValue: endTime };
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: false,
+    });
   } else {
     return { error: INVALID_END_TIME };
   }
@@ -249,7 +245,12 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
       itemValue: stopTime,
     };
 
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: true,
+    });
   } else {
     return { error: INVALID_STOP_TIME };
   }
@@ -311,7 +312,12 @@ export function addMatchUpResumeTime({
       itemValue: resumeTime,
     };
 
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: true,
+    });
   } else {
     return { error: INVALID_RESUME_TIME };
   }
