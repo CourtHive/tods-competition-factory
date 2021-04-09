@@ -67,7 +67,7 @@ export function modifyEntriesStatus({
 
   const updateEntryStatus = (entries = []) => {
     const filteredEntries = entries
-      // filter out entries bye stage (if specified)
+      // filter out entries by stage (if specified)
       .filter((entry) => {
         return !stage || !entry.entryStage || stage === entry.entryStage;
       })
