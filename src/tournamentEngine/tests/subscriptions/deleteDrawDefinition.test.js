@@ -40,8 +40,9 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(timeItem.itemValue.drawId).toEqual(drawId);
   expect(timeItem.itemValue.drawType).toEqual(SINGLE_ELIMINATION);
 
-  ({ timeItem } = tournamentEngine.getTournamentTimeItem({
+  ({ timeItem } = tournamentEngine.getEventTimeItem({
     itemType: 'deleteDrawDefinitions',
+    eventId,
   }));
   expect(timeItem.itemValue.length).toEqual(1);
   expect(timeItem.itemValue[0].drawId).toEqual(drawId);
