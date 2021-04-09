@@ -142,9 +142,11 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
     timeDate(startTime) < earliestRelevantTimeValue
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
-    matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemType !== START_TIME
-    );
+    if (matchUp.timeItems) {
+      matchUp.timeItems = matchUp.timeItems.filter(
+        (timeItem) => timeItem.itemType !== START_TIME
+      );
+    }
     const timeItem = { itemType: START_TIME, itemValue: startTime };
     return addMatchUpTimeItem({
       drawDefinition,
@@ -178,9 +180,11 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   // END_TIME must be after any START_TIMEs, STOP_TIMEs, RESUME_TIMEs
   if (!latestRelevantTimeValue || timeDate(endTime) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
-    matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemType !== END_TIME
-    );
+    if (matchUp.timeItems) {
+      matchUp.timeItems = matchUp.timeItems.filter(
+        (timeItem) => timeItem.itemType !== END_TIME
+      );
+    }
     const timeItem = { itemType: END_TIME, itemValue: endTime };
     return addMatchUpTimeItem({
       drawDefinition,
@@ -233,7 +237,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     );
 
   if (timeDate(stopTime) > latestRelevantTimeValue) {
-    if (lastRelevantTimeItemIsStop) {
+    if (matchUp.timeItems && lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp
@@ -300,7 +304,7 @@ export function addMatchUpResumeTime({
     );
 
   if (timeDate(resumeTime) > latestRelevantTimeValue) {
-    if (lastRelevantTimeItemIsResume) {
+    if (matchUp.timeItems && lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp
