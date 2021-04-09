@@ -1,4 +1,4 @@
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { MAIN } from '../../constants/drawDefinitionConstants';
 
 export function refreshEntryPositions({ entries = [] } = {}) {
   const stagedEntries = entries.reduce((stages, entry) => {
