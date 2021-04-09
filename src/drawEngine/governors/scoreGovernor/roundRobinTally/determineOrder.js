@@ -1,7 +1,7 @@
 import { unique } from '../../../../utilities';
 import { indices, subSort } from '../../../../utilities/arrays';
 
-export function determineTeamOrder({
+export function determineOrder({
   participantResults,
   disqualified,
   tallyPolicy,

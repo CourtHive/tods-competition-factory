@@ -1,6 +1,6 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { instanceCount } from '../../../../utilities/arrays';
-import { determineTeamOrder } from './determineOrder';
+import { determineOrder } from './determineOrder';
 import { getBaseCounts } from './getBaseCounts';
 
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
@@ -22,9 +22,8 @@ export function tallyParticipantResults({
   const parsedGroupMatchUpFormat =
     (matchUpFormat && matchUpFormatCode.parse(matchUpFormat)) || {};
 
-  // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   const relevantMatchUps = matchUps.filter(
-    (matchUp) => matchUp.matchUpStatus !== BYE
+    (matchUp) => matchUp && matchUp.matchUpStatus !== BYE
   );
 
   const matchUpComplete = (matchUp) =>
@@ -35,6 +34,7 @@ export function tallyParticipantResults({
 
   const bracketComplete =
     relevantMatchUps.filter(matchUpComplete).length === relevantMatchUps.length;
+  // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
   const tallyPolicy = policyDefinition?.POLICY_TYPE_ROUND_ROBIN_TALLY;
@@ -101,7 +101,7 @@ export function tallyParticipantResults({
     ].games = `${participantResults[participantId].gamesWon}/${participantResults[participantId].gamesLost}`;
   });
 
-  const order = determineTeamOrder({
+  const order = determineOrder({
     participantResults,
     disqualified,
     tallyPolicy,
