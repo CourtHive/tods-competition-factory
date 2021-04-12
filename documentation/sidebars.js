@@ -12,12 +12,13 @@ module.exports = {
         {
           Policies: [
             'concepts/policies',
-            'policies/feedPolicy',
             {
               Avoidance: ['policies/avoidance', 'policies/accessors'],
             },
             'policies/positionActions',
             'policies/positioningSeeds',
+            'policies/tallyPolicy',
+            'policies/feedPolicy',
           ],
         },
         'concepts/timeItems',

@@ -25,7 +25,11 @@ Can be attached to drawDefinitions to specify the attriubutes by which particpan
 
 Useful for determining the way in which consolation feed rounds direct players
 
-### Position Actions Policy
+### [Round Robin Tally Policy](../policies/tallyPolicy)
+
+Controls how calculations are performed which determine participant positions within Round Robin groups
+
+### [Position Actions Policy](../policies/positionActions)
 
 ### Round Naming Policy
 
