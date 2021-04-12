@@ -3,11 +3,11 @@ import { indices, subSort } from '../../../../utilities/arrays';
 
 export function determineOrder({
   participantResults,
+  participantsCount,
   disqualified,
   tallyPolicy,
 }) {
   const participantIds = Object.keys(participantResults);
-  const participantsCount = participantIds.length;
 
   // order is an array of objects formatted for processing by ties()
   const order = participantIds.reduce((arr, participantId, i) => {

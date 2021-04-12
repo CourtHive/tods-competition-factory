@@ -1,14 +1,33 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
+import { intersection } from '../../../../utilities';
+import { calculateRatios } from './calculateRatios';
+
 import {
   DEFAULTED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function getBaseCounts({ matchUps, matchUpFormat, tallyPolicy }) {
+export function getParticipantResults({
+  matchUpFormat,
+  participantIds,
+  tallyPolicy,
+  perPlayer,
+  matchUps,
+}) {
   const disqualified = [];
   const participantResults = {};
 
-  matchUps.forEach((matchUp) => {
+  const filteredMatchUps = matchUps.filter((matchUp) => {
+    return (
+      !participantIds?.length ||
+      intersection(participantIds, [
+        getSideId(matchUp, 0),
+        getSideId(matchUp, 1),
+      ]).length === 2
+    );
+  });
+
+  filteredMatchUps.forEach((matchUp) => {
     const { matchUpStatus, score, winningSide } = matchUp;
 
     const winningParticipantId = winningSide && getWinningSideId(matchUp);
@@ -110,6 +129,8 @@ export function getBaseCounts({ matchUps, matchUpFormat, tallyPolicy }) {
         pointsLost: 0,
       };
   }
+
+  calculateRatios({ participantResults, perPlayer, matchUpFormat });
 
   return { participantResults, disqualified };
 }
