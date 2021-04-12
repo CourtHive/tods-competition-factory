@@ -100,6 +100,7 @@ function isComplete({ participantResults, participantsCount }) {
 }
 
 function processAttribute({
+  disableHeadToHead,
   participantIds,
   matchUpFormat,
   tallyPolicy,
@@ -127,8 +128,8 @@ function processAttribute({
       .map((key) => groups[key])
       .map((participantIds) =>
         groupSubSort({
-          subSortAttribute: attribute,
           participantResults,
+          disableHeadToHead,
           participantIds,
           matchUpFormat,
           tallyPolicy,
@@ -152,7 +153,7 @@ const tallyDirectives = [
 
 function groupSubSort({
   participantResults,
-  subSortAttribute,
+  disableHeadToHead,
   participantIds,
   matchUpFormat,
   tallyPolicy,
@@ -163,8 +164,7 @@ function groupSubSort({
   if (participantIds.length === 2) {
     if (
       !tallyPolicy?.headToHead ||
-      (!tallyPolicy.headToHead.disabled &&
-        !tallyPolicy?.headToHead[subSortAttribute]?.disabled)
+      (!tallyPolicy.headToHead.disabled && !disableHeadToHead)
     ) {
       const result = headToHeadWinner({ participantIds, participantResults });
       if (result) return result;
@@ -175,8 +175,9 @@ function groupSubSort({
 
   let result;
   (tallyPolicy?.tallyDirectives || tallyDirectives).every(
-    ({ attribute, idsFilter }) => {
+    ({ attribute, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
+        disableHeadToHead,
         participantIds,
         matchUpFormat,
         tallyPolicy,
