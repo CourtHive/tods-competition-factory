@@ -1,0 +1,20 @@
+{
+  "unversionedId": "apis/tournament-engine-api",
+  "id": "apis/tournament-engine-api",
+  "isDocsHomePage": false,
+  "title": "Tournament Engine API",
+  "description": "All tournamentEngine methods return either { success: true } or { error }",
+  "source": "@site/docs/apis/tournament-engine-api.md",
+  "slug": "/apis/tournament-engine-api",
+  "permalink": "/tods-competition-factory/docs/apis/tournament-engine-api",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Competition Engine API",
+    "permalink": "/tods-competition-factory/docs/apis/competition-engine-api"
+  },
+  "next": {
+    "title": "Draw Engine API",
+    "permalink": "/tods-competition-factory/docs/apis/draw-engine-api"
+  }
+}

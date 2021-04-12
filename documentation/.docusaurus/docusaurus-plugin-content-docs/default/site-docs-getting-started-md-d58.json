@@ -1,0 +1,16 @@
+{
+  "unversionedId": "getting-started",
+  "id": "getting-started",
+  "isDocsHomePage": false,
+  "title": "Overview",
+  "description": "The Tennis Open Data Standards, (TODS), provide a document-based representation of all of the elements of a tournament including participants, events, draws, matchUps, contacts, and references to online resources. Although the data standard is emerging in the sport of Tennis, the data structures apply to tournaments in many sports.",
+  "source": "@site/docs/getting-started.md",
+  "slug": "/",
+  "permalink": "/docs/",
+  "version": "current",
+  "sidebar": "docs",
+  "next": {
+    "title": "Competition Engine API",
+    "permalink": "/docs/competition-engine-api"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "unversionedId": "concepts/positionActions",
+  "id": "concepts/positionActions",
+  "isDocsHomePage": false,
+  "title": "Position Actions",
+  "description": "`js",
+  "source": "@site/docs/concepts/positionActions.md",
+  "slug": "/concepts/positionActions",
+  "permalink": "/tods-competition-factory/docs/concepts/positionActions",
+  "version": "current"
+}

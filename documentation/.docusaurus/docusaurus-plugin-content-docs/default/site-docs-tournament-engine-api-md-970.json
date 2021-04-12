@@ -1,0 +1,16 @@
+{
+  "unversionedId": "tournament-engine-api",
+  "id": "tournament-engine-api",
+  "isDocsHomePage": false,
+  "title": "Tournament Engine API",
+  "description": "All tournamentEngine methods return either { success: true } or { error }",
+  "source": "@site/docs/tournament-engine-api.md",
+  "slug": "/tournament-engine-api",
+  "permalink": "/docs/tournament-engine-api",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Competition Engine API",
+    "permalink": "/docs/competition-engine-api"
+  }
+}

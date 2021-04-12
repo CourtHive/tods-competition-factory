@@ -1,0 +1,20 @@
+{
+  "unversionedId": "policies/tallyPolicy",
+  "id": "policies/tallyPolicy",
+  "isDocsHomePage": false,
+  "title": "Round Robin Tally Policy",
+  "description": "`js",
+  "source": "@site/docs/policies/tallyPolicy.md",
+  "slug": "/policies/tallyPolicy",
+  "permalink": "/tods-competition-factory/docs/policies/tallyPolicy",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Positioning Seeds",
+    "permalink": "/tods-competition-factory/docs/policies/positioningSeeds"
+  },
+  "next": {
+    "title": "Feed Policy",
+    "permalink": "/tods-competition-factory/docs/policies/feedPolicy"
+  }
+}

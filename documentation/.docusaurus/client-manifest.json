@@ -1,0 +1,665 @@
+{
+  "entrypoints": [
+    "main"
+  ],
+  "origins": {
+    "1": [
+      0,
+      2,
+      3,
+      4,
+      10,
+      12,
+      21,
+      33,
+      38,
+      39,
+      47,
+      1
+    ],
+    "2": [
+      0,
+      1,
+      3,
+      4,
+      12,
+      21,
+      33,
+      38,
+      39,
+      47,
+      2
+    ],
+    "3": [
+      0,
+      1,
+      2,
+      12,
+      21,
+      33,
+      39,
+      3
+    ],
+    "styles": [
+      1,
+      2,
+      3,
+      4,
+      10,
+      12,
+      21,
+      33,
+      38,
+      39,
+      45,
+      46,
+      47,
+      0
+    ],
+    "@theme/BlogTagsListPage": [
+      0,
+      1,
+      2,
+      4
+    ],
+    "~blog/default/tods-competition-factory-blog-771.json": [
+      5
+    ],
+    "@site/docs/apis/tournament-engine-api.md": [
+      6
+    ],
+    "@site/docs/concepts/matchUpFormat.md": [
+      7
+    ],
+    "~blog/default/tods-competition-factory-blog-tags-hello-502.json": [
+      8
+    ],
+    "@site/docs/policies/accessors.md": [
+      9
+    ],
+    "@theme/DocItem": [
+      0,
+      1,
+      10
+    ],
+    "@site/docs/concepts/scaleItems.md": [
+      11
+    ],
+    "@theme/DocPage": [
+      0,
+      1,
+      2,
+      3,
+      47
+    ],
+    "@theme/NotFound": [
+      0,
+      1,
+      2,
+      47
+    ],
+    "@site/docs/overview.md": [
+      13
+    ],
+    "@site/blog/2019-05-30-welcome.md": [
+      14
+    ],
+    "@site/docs/engines/makeDeepCopy.md": [
+      15
+    ],
+    "~blog/default/tods-competition-factory-blog-tags-docusaurus-28d.json": [
+      16
+    ],
+    "@site/blog/2019-05-29-hello-world.md?truncated=true": [
+      17
+    ],
+    "~blog/default/tods-competition-factory-blog-tags-facebook-283.json": [
+      18
+    ],
+    "@site/docs/installation.md": [
+      19
+    ],
+    "@site/docs/apis/competition-engine-api.md": [
+      20
+    ],
+    "@theme/BlogTagsPostsPage": [
+      0,
+      1,
+      2,
+      3,
+      21
+    ],
+    "@site/docs/policies/positioningSeeds.md": [
+      22
+    ],
+    "@site/docs/concepts/timeItems.md": [
+      23
+    ],
+    "~blog/default/tods-competition-factory-blog-tags-hola-045.json": [
+      24
+    ],
+    "@site/docs/policies/positionActions.md": [
+      25
+    ],
+    "@site/blog/2019-05-28-hola.md?truncated=true": [
+      26
+    ],
+    "~docs/default/version-current-metadata-prop-751.json": [
+      27
+    ],
+    "@site/docs/concepts/policies.md": [
+      28
+    ],
+    "@site/docs/policies/feedPolicy.md": [
+      29
+    ],
+    "/Users/charlesallen/Development/CourtHive/tods-competition-factory/documentation/.docusaurus/docusaurus-plugin-content-blog/default/blog-post-list-prop-default.json": [
+      30
+    ],
+    "@site/docs/apis/mocks-engine-api.md": [
+      31
+    ],
+    "@site/docs/policies/tallyPolicy.md": [
+      32
+    ],
+    "@theme/BlogListPage": [
+      0,
+      1,
+      2,
+      3,
+      33
+    ],
+    "@site/blog/2019-05-30-welcome.md?truncated=true": [
+      34
+    ],
+    "@site/docs/apis/draw-engine-api.md": [
+      35
+    ],
+    "@site/docs/concepts/context.md": [
+      36
+    ],
+    "@site/blog/2019-05-28-hola.md": [
+      37
+    ],
+    "@site/src/pages/index.js": [
+      0,
+      1,
+      2,
+      38
+    ],
+    "@theme/BlogPostPage": [
+      0,
+      1,
+      2,
+      3,
+      39
+    ],
+    "@site/docs/policies/avoidance.md": [
+      40
+    ],
+    "@site/blog/2019-05-29-hello-world.md": [
+      41
+    ],
+    "~blog/default/tods-competition-factory-blog-tags-tags-943.json": [
+      42
+    ],
+    "@site/docs/concepts/subscriptions.md": [
+      43
+    ],
+    "@site/docs/engines/mocks-engine-examples.md": [
+      44
+    ],
+    "@generated/docusaurus.config": [
+      0,
+      46,
+      45
+    ],
+    "main": [
+      0,
+      46,
+      45
+    ],
+    "runtime~main": [
+      0,
+      45,
+      46
+    ]
+  },
+  "assets": {
+    "0": {
+      "css": [
+        {
+          "file": "assets/css/styles.1f416fd0.css",
+          "hash": "3fb7ad874893a4f763fe",
+          "publicPath": "/tods-competition-factory/assets/css/styles.1f416fd0.css"
+        }
+      ],
+      "js": [
+        {
+          "file": "assets/js/styles.0ba05684.js",
+          "hash": "3fb7ad874893a4f763fe",
+          "publicPath": "/tods-competition-factory/assets/js/styles.0ba05684.js"
+        }
+      ]
+    },
+    "1": {
+      "js": [
+        {
+          "file": "assets/js/1.f29d7217.js",
+          "hash": "b4eeb52165dfce12c21a",
+          "publicPath": "/tods-competition-factory/assets/js/1.f29d7217.js"
+        }
+      ]
+    },
+    "2": {
+      "js": [
+        {
+          "file": "assets/js/2.a7f947b2.js",
+          "hash": "9ad7a45fcdf7604baba3",
+          "publicPath": "/tods-competition-factory/assets/js/2.a7f947b2.js"
+        }
+      ]
+    },
+    "3": {
+      "js": [
+        {
+          "file": "assets/js/3.8bddac2d.js",
+          "hash": "7103e5b8252b052d50bd",
+          "publicPath": "/tods-competition-factory/assets/js/3.8bddac2d.js"
+        }
+      ]
+    },
+    "4": {
+      "js": [
+        {
+          "file": "assets/js/01a85c17.d312727f.js",
+          "hash": "225bbead5a321025f6c5",
+          "publicPath": "/tods-competition-factory/assets/js/01a85c17.d312727f.js"
+        }
+      ]
+    },
+    "5": {
+      "js": [
+        {
+          "file": "assets/js/02562336.e9de5316.js",
+          "hash": "7bddf92d96b24d454c66",
+          "publicPath": "/tods-competition-factory/assets/js/02562336.e9de5316.js"
+        }
+      ]
+    },
+    "6": {
+      "js": [
+        {
+          "file": "assets/js/0a4d4ba7.6c00c6d2.js",
+          "hash": "77f1c352c905bffce90f",
+          "publicPath": "/tods-competition-factory/assets/js/0a4d4ba7.6c00c6d2.js"
+        }
+      ]
+    },
+    "7": {
+      "js": [
+        {
+          "file": "assets/js/0b4afbcd.7063e56d.js",
+          "hash": "270c602f88e45b50db61",
+          "publicPath": "/tods-competition-factory/assets/js/0b4afbcd.7063e56d.js"
+        }
+      ]
+    },
+    "8": {
+      "js": [
+        {
+          "file": "assets/js/0db328d2.01e72813.js",
+          "hash": "76be4012a062b46b6661",
+          "publicPath": "/tods-competition-factory/assets/js/0db328d2.01e72813.js"
+        }
+      ]
+    },
+    "9": {
+      "js": [
+        {
+          "file": "assets/js/17027a54.0ee88c46.js",
+          "hash": "96e36087221269d96eed",
+          "publicPath": "/tods-competition-factory/assets/js/17027a54.0ee88c46.js"
+        }
+      ]
+    },
+    "10": {
+      "js": [
+        {
+          "file": "assets/js/17896441.54eef819.js",
+          "hash": "a7094b9ee9752bfbdf61",
+          "publicPath": "/tods-competition-factory/assets/js/17896441.54eef819.js"
+        }
+      ]
+    },
+    "11": {
+      "js": [
+        {
+          "file": "assets/js/1b70c1ec.39bbcdbc.js",
+          "hash": "d391e22f0177137a33d3",
+          "publicPath": "/tods-competition-factory/assets/js/1b70c1ec.39bbcdbc.js"
+        }
+      ]
+    },
+    "13": {
+      "js": [
+        {
+          "file": "assets/js/1db64337.b29a23c2.js",
+          "hash": "dcb1866643aaaddce742",
+          "publicPath": "/tods-competition-factory/assets/js/1db64337.b29a23c2.js"
+        }
+      ]
+    },
+    "14": {
+      "js": [
+        {
+          "file": "assets/js/2868cdab.6d83ee9b.js",
+          "hash": "15c166e2bea4be0e833d",
+          "publicPath": "/tods-competition-factory/assets/js/2868cdab.6d83ee9b.js"
+        }
+      ]
+    },
+    "15": {
+      "js": [
+        {
+          "file": "assets/js/2fd2f150.52e5b6c7.js",
+          "hash": "3909f28744b5b5307878",
+          "publicPath": "/tods-competition-factory/assets/js/2fd2f150.52e5b6c7.js"
+        }
+      ]
+    },
+    "16": {
+      "js": [
+        {
+          "file": "assets/js/3105c4e2.a84b3b56.js",
+          "hash": "96fe0024a7188f02908f",
+          "publicPath": "/tods-competition-factory/assets/js/3105c4e2.a84b3b56.js"
+        }
+      ]
+    },
+    "17": {
+      "js": [
+        {
+          "file": "assets/js/3570154c.2b4cdca9.js",
+          "hash": "7513dbea94507e847f7b",
+          "publicPath": "/tods-competition-factory/assets/js/3570154c.2b4cdca9.js"
+        }
+      ]
+    },
+    "18": {
+      "js": [
+        {
+          "file": "assets/js/37a2b7bb.61435bf7.js",
+          "hash": "55af4def064486fbc5d5",
+          "publicPath": "/tods-competition-factory/assets/js/37a2b7bb.61435bf7.js"
+        }
+      ]
+    },
+    "19": {
+      "js": [
+        {
+          "file": "assets/js/3b8c55ea.4b1abce4.js",
+          "hash": "65cf5ac4aaf63f43276a",
+          "publicPath": "/tods-competition-factory/assets/js/3b8c55ea.4b1abce4.js"
+        }
+      ]
+    },
+    "20": {
+      "js": [
+        {
+          "file": "assets/js/5bf4bf80.4f1ea1e6.js",
+          "hash": "e38e29aeed7d3b1a9eb1",
+          "publicPath": "/tods-competition-factory/assets/js/5bf4bf80.4f1ea1e6.js"
+        }
+      ]
+    },
+    "21": {
+      "js": [
+        {
+          "file": "assets/js/6875c492.684e5097.js",
+          "hash": "94db749e1118a977f5a2",
+          "publicPath": "/tods-competition-factory/assets/js/6875c492.684e5097.js"
+        }
+      ]
+    },
+    "22": {
+      "js": [
+        {
+          "file": "assets/js/6880f831.47446cea.js",
+          "hash": "e864cc8f2beaad3db451",
+          "publicPath": "/tods-competition-factory/assets/js/6880f831.47446cea.js"
+        }
+      ]
+    },
+    "23": {
+      "js": [
+        {
+          "file": "assets/js/6dee62f0.af3affa6.js",
+          "hash": "e64fa39ebcfd5cf9018b",
+          "publicPath": "/tods-competition-factory/assets/js/6dee62f0.af3affa6.js"
+        }
+      ]
+    },
+    "24": {
+      "js": [
+        {
+          "file": "assets/js/8155fdf1.533259c0.js",
+          "hash": "28289a37116e64b4a1d6",
+          "publicPath": "/tods-competition-factory/assets/js/8155fdf1.533259c0.js"
+        }
+      ]
+    },
+    "25": {
+      "js": [
+        {
+          "file": "assets/js/8dba48ef.3d0b3685.js",
+          "hash": "80480f86a876a46bb40d",
+          "publicPath": "/tods-competition-factory/assets/js/8dba48ef.3d0b3685.js"
+        }
+      ]
+    },
+    "26": {
+      "js": [
+        {
+          "file": "assets/js/8e9f0a8a.ce706966.js",
+          "hash": "293169ec8d32c28e740e",
+          "publicPath": "/tods-competition-factory/assets/js/8e9f0a8a.ce706966.js"
+        }
+      ]
+    },
+    "27": {
+      "js": [
+        {
+          "file": "assets/js/935f2afb.9a28464b.js",
+          "hash": "197a672c9d2b3986b05a",
+          "publicPath": "/tods-competition-factory/assets/js/935f2afb.9a28464b.js"
+        }
+      ]
+    },
+    "28": {
+      "js": [
+        {
+          "file": "assets/js/98521a2b.a72511a6.js",
+          "hash": "bea53749b881d1fb20b8",
+          "publicPath": "/tods-competition-factory/assets/js/98521a2b.a72511a6.js"
+        }
+      ]
+    },
+    "29": {
+      "js": [
+        {
+          "file": "assets/js/9af8b7ac.90c1805d.js",
+          "hash": "4e7a12a75b98c28f8472",
+          "publicPath": "/tods-competition-factory/assets/js/9af8b7ac.90c1805d.js"
+        }
+      ]
+    },
+    "30": {
+      "js": [
+        {
+          "file": "assets/js/9b6b16bd.89ed0111.js",
+          "hash": "6b31697177ef24b956b5",
+          "publicPath": "/tods-competition-factory/assets/js/9b6b16bd.89ed0111.js"
+        }
+      ]
+    },
+    "31": {
+      "js": [
+        {
+          "file": "assets/js/a0fd3511.068139b9.js",
+          "hash": "5494b82cd087e385a947",
+          "publicPath": "/tods-competition-factory/assets/js/a0fd3511.068139b9.js"
+        }
+      ]
+    },
+    "32": {
+      "js": [
+        {
+          "file": "assets/js/a37e9f42.b3860c4c.js",
+          "hash": "0e00af8e58be78e98725",
+          "publicPath": "/tods-competition-factory/assets/js/a37e9f42.b3860c4c.js"
+        }
+      ]
+    },
+    "33": {
+      "js": [
+        {
+          "file": "assets/js/a6aa9e1f.a42a9f63.js",
+          "hash": "daa7811adf39a337cdbb",
+          "publicPath": "/tods-competition-factory/assets/js/a6aa9e1f.a42a9f63.js"
+        }
+      ]
+    },
+    "34": {
+      "js": [
+        {
+          "file": "assets/js/af172acd.ea7043b2.js",
+          "hash": "d534cbfa9efcbc9c517c",
+          "publicPath": "/tods-competition-factory/assets/js/af172acd.ea7043b2.js"
+        }
+      ]
+    },
+    "35": {
+      "js": [
+        {
+          "file": "assets/js/b0126e05.0aa88af3.js",
+          "hash": "bea7b09aa828b9bde3a4",
+          "publicPath": "/tods-competition-factory/assets/js/b0126e05.0aa88af3.js"
+        }
+      ]
+    },
+    "36": {
+      "js": [
+        {
+          "file": "assets/js/bcd474f7.250b532c.js",
+          "hash": "0a2e622af5d5d68e7b79",
+          "publicPath": "/tods-competition-factory/assets/js/bcd474f7.250b532c.js"
+        }
+      ]
+    },
+    "37": {
+      "js": [
+        {
+          "file": "assets/js/bdd709f1.fbc840f1.js",
+          "hash": "6748ff0506a339bfb098",
+          "publicPath": "/tods-competition-factory/assets/js/bdd709f1.fbc840f1.js"
+        }
+      ]
+    },
+    "38": {
+      "js": [
+        {
+          "file": "assets/js/c4f5d8e4.1e45ded5.js",
+          "hash": "dfecba00e19b8692e8ec",
+          "publicPath": "/tods-competition-factory/assets/js/c4f5d8e4.1e45ded5.js"
+        }
+      ]
+    },
+    "39": {
+      "js": [
+        {
+          "file": "assets/js/ccc49370.8e8353da.js",
+          "hash": "f40c884385c476b29417",
+          "publicPath": "/tods-competition-factory/assets/js/ccc49370.8e8353da.js"
+        }
+      ]
+    },
+    "40": {
+      "js": [
+        {
+          "file": "assets/js/d15fb99b.1b2e1455.js",
+          "hash": "d1c5be06527a94b4846b",
+          "publicPath": "/tods-competition-factory/assets/js/d15fb99b.1b2e1455.js"
+        }
+      ]
+    },
+    "41": {
+      "js": [
+        {
+          "file": "assets/js/d610846f.d0b4e42d.js",
+          "hash": "4c3b88c54ecd8cd48f37",
+          "publicPath": "/tods-competition-factory/assets/js/d610846f.d0b4e42d.js"
+        }
+      ]
+    },
+    "42": {
+      "js": [
+        {
+          "file": "assets/js/dadb4855.85c0adfa.js",
+          "hash": "ce7ad54b75102209aa63",
+          "publicPath": "/tods-competition-factory/assets/js/dadb4855.85c0adfa.js"
+        }
+      ]
+    },
+    "43": {
+      "js": [
+        {
+          "file": "assets/js/ea2b9d13.a76fbd07.js",
+          "hash": "64d757da86934f090d86",
+          "publicPath": "/tods-competition-factory/assets/js/ea2b9d13.a76fbd07.js"
+        }
+      ]
+    },
+    "44": {
+      "js": [
+        {
+          "file": "assets/js/fa634795.e99a540e.js",
+          "hash": "356cc8471cd5e5aabf72",
+          "publicPath": "/tods-competition-factory/assets/js/fa634795.e99a540e.js"
+        }
+      ]
+    },
+    "45": {
+      "js": [
+        {
+          "file": "assets/js/main.c5ccff95.js",
+          "hash": "26626cdc9ffe70afc46d",
+          "publicPath": "/tods-competition-factory/assets/js/main.c5ccff95.js"
+        }
+      ]
+    },
+    "46": {
+      "js": [
+        {
+          "file": "assets/js/runtime~main.7cd88b06.js",
+          "hash": "72f10ae52d8cb9c22719",
+          "publicPath": "/tods-competition-factory/assets/js/runtime~main.7cd88b06.js"
+        }
+      ]
+    },
+    "47": {
+      "js": [
+        {
+          "file": "assets/js/1be78505.a1de943f.js",
+          "hash": "3dd25c70868c2ba4db67",
+          "publicPath": "/tods-competition-factory/assets/js/1be78505.a1de943f.js"
+        },
+        {
+          "file": "assets/js/47.e9d9e39d.js",
+          "hash": "8876d7a574bb74cc8431",
+          "publicPath": "/tods-competition-factory/assets/js/47.e9d9e39d.js"
+        }
+      ]
+    }
+  }
+}

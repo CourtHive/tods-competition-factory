@@ -1,0 +1,11 @@
+{
+  "unversionedId": "engines/makeDeepCopy",
+  "id": "engines/makeDeepCopy",
+  "isDocsHomePage": false,
+  "title": "makeDeepCopy",
+  "description": "`js",
+  "source": "@site/docs/engines/makeDeepCopy.md",
+  "slug": "/engines/makeDeepCopy",
+  "permalink": "/tods-competition-factory/docs/engines/makeDeepCopy",
+  "version": "current"
+}
