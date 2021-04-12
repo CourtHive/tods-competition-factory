@@ -1,5 +1,4 @@
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
-
+import syncStateEngine from './syncGlobalState';
 const globalState = {
   devContext: false,
   deepCopy: true,
@@ -7,8 +6,18 @@ const globalState = {
   notices: [],
 };
 
-export function getGlobalState() {
-  return globalState;
+let _globalStateProvider = syncStateEngine;
+
+export function setStateProvider(globalStateProvider) {
+  if (!globalStateProvider)
+    throw new Error(`Global state provider can not be undefined or null`);
+  _globalStateProvider = globalStateProvider;
+}
+
+export function createInstanceState() {
+  //Only applicable for async
+  if (_globalStateProvider.createInstanceState)
+    _globalStateProvider.createInstanceState();
 }
 
 export function getDevContext() {
@@ -31,48 +40,26 @@ export function getDeepCopy() {
   return globalState.deepCopy;
 }
 
-export function setSubscriptions({ subscriptions = {} } = {}) {
-  if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
-  Object.keys(subscriptions).forEach((subscription) => {
-    globalState.subscriptions[subscription] = subscriptions[subscription];
-  });
+export function setSubscriptions(subscription) {
+  _globalStateProvider.setSubscriptions(subscription);
 }
 
-export function addNotice({ topic, payload }) {
-  if (typeof topic !== 'string' || typeof payload !== 'object') {
-    return;
-  }
-  if (!globalState.subscriptions[topic]) return;
-  globalState.notices.push({ topic, payload });
+export function addNotice(notice) {
+  _globalStateProvider.addNotice(notice);
 }
 
-export function getNotices({ topic }) {
-  if (typeof topic !== 'string') return [];
-  const notices = globalState.notices
-    .filter((notice) => notice.topic === topic)
-    .map((notice) => notice.payload);
-  return notices.length && notices;
+export function getNotices(topic) {
+  return _globalStateProvider.getNotices(topic);
 }
 
 export function deleteNotices() {
-  globalState.notices = [];
+  _globalStateProvider.deleteNotices();
 }
 
 export function getTopics() {
-  const topics = Object.keys(globalState.subscriptions);
-  return { topics };
+  return _globalStateProvider.getTopics();
 }
 
-export function callListener({ topic, notices }) {
-  const method = globalState.subscriptions[topic];
-  if (method && typeof method === 'function') {
-    method(notices);
-  }
-}
-
-export async function callListenerAsync({ topic, notices }) {
-  const method = globalState.subscriptions[topic];
-  if (method && typeof method === 'function') {
-    await method(notices);
-  }
+export function callListener(payload) {
+  return _globalStateProvider.callListener(payload);
 }

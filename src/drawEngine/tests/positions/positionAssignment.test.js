@@ -50,12 +50,15 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   expect(unassignedPositions.length).toEqual(participantIds.length);
 
   // expect it to fail if a bogus participantId is used to assign a position
+  // NOTE: this validation check has been removed because of flighting... need to make it optional check?
+  /*
   result = drawEngine.assignDrawPosition({
     structureId,
     drawPosition: 1,
     participantId: 'bogusId',
   });
   expect(result).toHaveProperty(ERROR);
+  */
 
   // expect it to fail if an invalid drawPosition is attempted
   const participantId = participantIds[0];

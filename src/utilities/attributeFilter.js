@@ -9,20 +9,19 @@ export function attributeFilter({ source, template }) {
     const oKeys = Object.keys(templateObject);
     for (let k = 0; k < vKeys.length; k++) {
       if (oKeys.indexOf(vKeys[k]) >= 0) {
-        const oo = templateObject[vKeys[k]];
-        const vo = valuesObject[vKeys[k]];
-        if (
-          oo &&
-          typeof oo === 'object' &&
-          typeof vo !== 'function' &&
-          oo.constructor !== Array
-        ) {
-          outputObject[vKeys[k]] = {};
-          attributeCopy(
-            valuesObject[vKeys[k]],
-            templateObject[vKeys[k]],
-            outputObject[vKeys[k]]
-          );
+        const tobj = templateObject[vKeys[k]];
+        const vobj = valuesObject[vKeys[k]];
+        if (tobj && typeof tobj === 'object' && typeof vobj !== 'function') {
+          if (tobj.constructor !== Array) {
+            outputObject[vKeys[k]] = {};
+            attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
+          } else if (tobj.length) {
+            outputObject[vKeys[k]] = (vobj || []).map((arrayMember) => {
+              const target = {};
+              attributeCopy(arrayMember, tobj[0], target);
+              return target;
+            });
+          }
         } else {
           if (templateObject[vKeys[k]]) {
             outputObject[vKeys[k]] = valuesObject[vKeys[k]];

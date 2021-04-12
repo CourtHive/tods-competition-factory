@@ -1,11 +1,8 @@
+import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
-import {
-  addEventTimeItem,
-  addTournamentTimeItem,
-} from '../../tournamentGovernor/addTimeItem';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
@@ -51,10 +48,8 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     const itemType = `${PUBLISH}.${STATUS}`;
     const publishStatus = getTimeItem({ event, itemType });
     const drawPublished =
-      publishStatus &&
-      (!publishStatus.drawIds?.length ||
-        publishStatus.drawIds.includes(drawId)) &&
-      publishStatus !== HIDDEN;
+      publishStatus && publishStatus.drawIds?.includes(drawId);
+    publishStatus !== HIDDEN;
     if (drawPublished) {
       const updatedDrawIds =
         publishStatus.drawIds?.filter(
@@ -79,7 +74,8 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
       itemType: 'deleteDrawDefinitions',
       itemValue: deletedDrawDetails,
     };
-    addTournamentTimeItem({ tournamentRecord, timeItem });
+    const result = addEventTimeItem({ event, timeItem });
+    if (result.error) return { error: result.error };
   }
   if (matchUpIds.length)
     addNotice({ topic: 'deletedMatchUpIds', payload: { matchUpIds } });

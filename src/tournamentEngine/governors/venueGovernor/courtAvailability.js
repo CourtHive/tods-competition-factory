@@ -5,17 +5,19 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice } from '../../../global/globalState';
 
 export function modifyCourtAvailability({
   tournamentRecord,
   dateAvailability,
+  disableNotice,
   courtId,
   force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
 
-  const { court, error } = findCourt({ tournamentRecord, courtId });
+  const { court, venue, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };
 
   if (force) {
@@ -24,6 +26,7 @@ export function modifyCourtAvailability({
   }
 
   court.dateAvailability = dateAvailability;
+  if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
 
   return SUCCESS;
 }

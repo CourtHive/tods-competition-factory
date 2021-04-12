@@ -1,5 +1,6 @@
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
 import { removeCourtAssignment } from './removeCourtAssignment';
+import { addNotice } from '../../../global/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
@@ -10,6 +11,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function deleteCourt({
   tournamentRecord,
   drawDefinition,
+  disableNotice,
   courtId,
   force,
 }) {
@@ -33,6 +35,7 @@ export function deleteCourt({
     venue.courts = (venue.courts || []).filter((courtRecord) => {
       return courtRecord.courtId !== courtId;
     });
+    if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
   } else {
     return deletionMessage({ matchUpsCount: matchUps.length });
   }

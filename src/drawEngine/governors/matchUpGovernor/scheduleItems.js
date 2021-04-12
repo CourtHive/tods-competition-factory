@@ -11,7 +11,6 @@ import {
   INVALID_DATE,
   INVALID_TIME,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   dateValidation,
   timeValidation,
@@ -26,19 +25,6 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
-
-/* 
-  local version of addMatchUpTimeItem for functions in this module which
-  access the matchUp WITHOUT CONTEXT, necessary to modify original
-*/
-function newTimeItem({ matchUp, timeItem }) {
-  if (!matchUp.timeItems) matchUp.timeItems = [];
-  const createdAt = new Date().toISOString();
-  Object.assign(timeItem, { createdAt });
-  matchUp.timeItems.push(timeItem);
-
-  return SUCCESS;
-}
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -141,7 +127,7 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
 
   const earliestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemType)
+      [STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -156,11 +142,18 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
     timeDate(startTime) < earliestRelevantTimeValue
   ) {
     // there can be only one START_TIME; if a prior START_TIME exists, remove it
-    matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemType !== START_TIME
-    );
+    if (matchUp.timeItems) {
+      matchUp.timeItems = matchUp.timeItems.filter(
+        (timeItem) => timeItem.itemType !== START_TIME
+      );
+    }
     const timeItem = { itemType: START_TIME, itemValue: startTime };
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: false,
+    });
   } else {
     return { error: INVALID_START_TIME };
   }
@@ -175,7 +168,7 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
 
   const latestRelevantTimeValue = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .map((timeItem) => timeDate(timeItem.itemValue))
     .reduce(
@@ -187,11 +180,18 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   // END_TIME must be after any START_TIMEs, STOP_TIMEs, RESUME_TIMEs
   if (!latestRelevantTimeValue || timeDate(endTime) > latestRelevantTimeValue) {
     // there can be only one END_TIME; if a prior END_TIME exists, remove it
-    matchUp.timeItems = matchUp.timeItems.filter(
-      (timeItem) => timeItem.itemType !== END_TIME
-    );
+    if (matchUp.timeItems) {
+      matchUp.timeItems = matchUp.timeItems.filter(
+        (timeItem) => timeItem.itemType !== END_TIME
+      );
+    }
     const timeItem = { itemType: END_TIME, itemValue: endTime };
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: false,
+    });
   } else {
     return { error: INVALID_END_TIME };
   }
@@ -215,7 +215,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
@@ -237,7 +237,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
     );
 
   if (timeDate(stopTime) > latestRelevantTimeValue) {
-    if (lastRelevantTimeItemIsStop) {
+    if (matchUp.timeItems && lastRelevantTimeItemIsStop) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp
@@ -249,7 +249,12 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
       itemValue: stopTime,
     };
 
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: true,
+    });
   } else {
     return { error: INVALID_STOP_TIME };
   }
@@ -277,7 +282,7 @@ export function addMatchUpResumeTime({
 
   const relevantTimeItems = timeItems
     .filter((timeItem) =>
-      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem.itemType)
+      [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType)
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
@@ -299,7 +304,7 @@ export function addMatchUpResumeTime({
     );
 
   if (timeDate(resumeTime) > latestRelevantTimeValue) {
-    if (lastRelevantTimeItemIsResume) {
+    if (matchUp.timeItems && lastRelevantTimeItemIsResume) {
       const targetTimeStamp = lastRelevantTimeItem.createdAt;
       matchUp.timeItems = matchUp.timeItems.filter(
         (timeItem) => timeItem.createdAt !== targetTimeStamp
@@ -311,7 +316,12 @@ export function addMatchUpResumeTime({
       itemValue: resumeTime,
     };
 
-    return newTimeItem({ matchUp, timeItem });
+    return addMatchUpTimeItem({
+      drawDefinition,
+      matchUpId,
+      timeItem,
+      duplicateValues: true,
+    });
   } else {
     return { error: INVALID_RESUME_TIME };
   }

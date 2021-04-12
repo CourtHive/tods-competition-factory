@@ -48,6 +48,8 @@ export function allPlayoffPositionsFilled(props) {
     structureId,
   });
 
+  if (!playoffStructures?.length) return false;
+
   const enteredParticipantsCount =
     drawDefinition?.entries?.filter((entry) =>
       STRUCTURE_ENTERED_TYPES.includes(entry?.entryStatus)

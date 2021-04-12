@@ -6,9 +6,9 @@ import {
   PAIR,
   participantTypes,
 } from '../../../constants/participantTypes';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { participantRoles } from '../../../constants/participantRoles';
 import { genderConstants } from '../../../constants/genderConstants';
-import { getDevContext } from '../../../global/globalState';
 import { addParticipant } from './addParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
@@ -120,6 +120,11 @@ export function modifyParticipant({
     });
   }
 
+  addNotice({
+    topic: 'modifyParticipants',
+    payload: { participants: [existingParticipant] },
+  });
+
   if (getDevContext()) {
     return Object.assign({}, SUCCESS, {
       participant: makeDeepCopy(existingParticipant),
@@ -150,6 +155,7 @@ function updatePerson({
   const newPersonValues = {};
   const {
     sex,
+    personId,
     nationalityCode,
     standardFamilyName,
     standardGivenName,
@@ -158,6 +164,9 @@ function updatePerson({
     newPersonValues.sex = sex;
 
   let personNameModified;
+  if (personId && typeof personId === 'string') {
+    newPersonValues.personId = personId;
+  }
   if (
     nationalityCode &&
     typeof nationalityCode === 'string' &&

@@ -4,7 +4,6 @@ export const POLICY_PRIVACY_DEFAULT = {
   [POLICY_TYPE_PARTICIPANT]: {
     policyName: 'Participant Privacy Policy',
     participant: {
-      name: true,
       contacts: false,
       individualParticipants: true,
       individualParticipantIds: true,

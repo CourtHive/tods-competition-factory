@@ -25,7 +25,7 @@ import { PAIR } from '../../../../constants/participantTypes';
  *
  */
 export function removeDrawPositionAssignment(props) {
-  const { replaceWithBye, destroyPair, entryStatus } = props;
+  const { drawId, replaceWithBye, destroyPair, entryStatus } = props;
 
   const result = clearDrawPosition(props);
   if (result.error) return result;
@@ -51,16 +51,20 @@ export function removeDrawPositionAssignment(props) {
         });
         if (result.error) return result;
         modifyEntriesStatus({
-          participantIds: [individualParticipantIds],
+          tournamentRecord,
+          participantIds: individualParticipantIds,
           entryStatus,
           drawDefinition,
+          drawId,
           event,
         });
       } else {
         modifyEntriesStatus({
+          tournamentRecord,
           participantIds: [participantId],
           entryStatus,
           drawDefinition,
+          drawId,
           event,
         });
       }

@@ -1,4 +1,5 @@
 import { structureSort } from '../getters/structureSort';
+import { addNotice } from '../../global/globalState';
 import structureTemplate from './structureTemplate';
 import { treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
@@ -21,6 +22,7 @@ export function playoff(props) {
  * @param {string} exitProfile - rounds at which a participant exited each structure, e.g. 0-1-1-1 for losing EAST, WEST, SOUTH
  * @param {number} finishingPositionOffset - amount by which to offset finishingPositions, e.g. 2 for playing off 3-4
  * @param {number} finishingPositionLimit - highest value of possible finishing Positions to play off
+ * @param {object} finishingPositionNaming - map of { [finishingPositionRange]: customName }
  * @param {number} roundOffsetLimit - how many rounds to play off (# of additional matchUps per participant)
  * @param {number} roundOffset - used internally to track generated structures; saved in structure attributes;
  * @param {number} stageSequence - what sequence within stage structures, e.g. WEST is stageSequence 2 in COMPASS
@@ -37,12 +39,18 @@ function playoffStructures({
   roundOffsetLimit,
   playoffAttributes,
   finishingPositionLimit,
+  finishingPositionNaming,
   playoffStructureNameBase,
   finishingPositionOffset = 0,
   exitProfile = '0', // rounds at which participant exited
 }) {
   if (drawSize < 2) return {};
-  const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
+  const { matchUps } = treeMatchUps({
+    uuids,
+    drawSize,
+    finishingPositionOffset,
+  });
+  addNotice({ topic: 'addMatchUps', payload: { matchUps } });
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;
@@ -50,9 +58,14 @@ function playoffStructures({
   const attributeProfile = playoffAttributes && playoffAttributes[exitProfile];
   const base =
     (playoffStructureNameBase && `${playoffStructureNameBase} `) || '';
+  const customNaming =
+    finishingPositionNaming && finishingPositionNaming[finishingPositionRange];
   const structureName =
-    attributeProfile?.name || `${base}${finishingPositionRange}`;
-  const structureAbbreviation = attributeProfile?.abbreviation;
+    customNaming?.name ||
+    attributeProfile?.name ||
+    `${base}${finishingPositionRange}`;
+  const structureAbbreviation =
+    customNaming?.abbreviation || attributeProfile?.abbreviation;
   const structure = structureTemplate({
     stage,
     matchUps,
@@ -91,11 +104,13 @@ function playoffStructures({
       structureName: targetName,
       childStructures,
     } = playoffStructures({
+      uuids,
       stage,
       playoffAttributes,
       drawDefinition,
       roundOffsetLimit,
       finishingPositionLimit,
+      finishingPositionNaming,
       playoffStructureNameBase,
       stageSequence: stageSequence + 1,
       drawSize: playoffDrawPositions,

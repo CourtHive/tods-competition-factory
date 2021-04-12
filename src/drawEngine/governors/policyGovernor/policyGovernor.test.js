@@ -2,7 +2,7 @@ import { drawEngine } from '../../sync';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 
 it('can set and reset policy governor', () => {
@@ -10,12 +10,12 @@ it('can set and reset policy governor', () => {
 
   drawEngine.reset();
   // cannot attach a policy if no drawDefinition
-  let result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  let result = drawEngine.attachPolicy({ policyDefinition: SEEDING_ITF });
   expect(result).toMatchObject({ error: MISSING_DRAW_DEFINITION });
 
   drawEngine.newDrawDefinition();
 
-  result = drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  result = drawEngine.attachPolicy({ policyDefinition: SEEDING_ITF });
   expect(result).toMatchObject(SUCCESS);
 
   const { drawDefinition } = drawEngine.getState();

@@ -1,4 +1,4 @@
-import { findParticipant } from '../../../drawEngine/getters/participantGetter';
+import { findParticipant } from '../../../common/deducers/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 
 export function findTournamentParticipant({ tournamentRecord, participantId }) {

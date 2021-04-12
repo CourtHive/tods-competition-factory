@@ -1,5 +1,6 @@
-import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
+import { addIndividualParticipantIds } from './addIndividualParticipantIds';
+import { addNotice, getTopics } from '../../../../global/globalState';
 
 import {
   INVALID_PARTICIPANT_IDS,
@@ -85,6 +86,18 @@ export function modifyIndividualParticipantIds({
     individualParticipantIds: individualParticipantIdsToRemove,
   });
   if (removeResult.error) return removeResult;
+
+  const { topics } = getTopics();
+  if (topics.includes('modifyParticipants')) {
+    const updatedParticipant = tournamentParticipants.find(
+      ({ participantId }) => participantId === groupingParticipantId
+    );
+
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: [updatedParticipant] },
+    });
+  }
 
   return Object.assign({}, addResult, removeResult);
 }

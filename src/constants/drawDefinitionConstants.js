@@ -8,7 +8,7 @@ export const stageOrder = {
   [QUALIFYING]: 1,
   [MAIN]: 2,
   [PLAY_OFF]: 3,
-  [CONSOLATION]: 4,
+  [CONSOLATION]: 3,
 };
 
 // structureType
@@ -90,7 +90,6 @@ export const MULTI_STRUCTURE_DRAWS = [
   FICSF,
   FICQF,
   FICR16,
-  MFIC,
 
   FIRST_MATCH_LOSER_CONSOLATION,
   FIRST_ROUND_LOSER_CONSOLATION,

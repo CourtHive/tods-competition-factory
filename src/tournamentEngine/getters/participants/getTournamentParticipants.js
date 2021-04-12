@@ -1,6 +1,6 @@
-import { getAccessorValue } from '../../../utilities/getAccessorValue';
-import { getTimeItem } from '../../governors/queryGovernor/timeItems';
+import { participantPolicyDefinitionFilter } from './participantPolicyDefinitionFilter';
 import { addParticipantContext } from './addParticipantContext';
+import { filterParticipants } from './filterParticipants';
 import { makeDeepCopy } from '../../../utilities';
 
 import {
@@ -8,9 +8,7 @@ import {
   MISSING_PARTICIPANTS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
 import { PAIR, TEAM } from '../../../constants/participantTypes';
-import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 
 /**
  * Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
@@ -27,6 +25,7 @@ export function getTournamentParticipants({
   tournamentRecord,
 
   participantFilters = {},
+  policyDefinition,
 
   inContext,
   convertExtensions,
@@ -37,80 +36,21 @@ export function getTournamentParticipants({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
-  let tournamentParticipants = tournamentRecord.participants.map(
-    (participant) => makeDeepCopy(participant, convertExtensions)
-  );
+  let tournamentParticipants = participantPolicyDefinitionFilter({
+    participants: tournamentRecord.participants,
+    policyDefinition,
+    convertExtensions,
+  });
 
   if (typeof participantFilters !== 'object')
     return { error: INVALID_OBJECT, participantFilters };
 
-  const {
-    eventIds,
-    signInStatus,
-    participantTypes,
-    participantRoles,
-    accessorValues,
-  } = participantFilters;
-
-  const participantHasAccessorValues = (participant) => {
-    return accessorValues.reduce((hasValues, keyValue) => {
-      const { accessor, value } = keyValue;
-      const { values } = getAccessorValue({
-        element: participant,
-        accessor,
-      });
-      return hasValues && values?.includes(value);
-    }, true);
-  };
-
-  tournamentParticipants = tournamentParticipants.filter((participant) => {
-    const participantSignInStatus = getTimeItem({
-      element: participant,
-      itemType: SIGN_IN_STATUS,
+  if (participantFilters)
+    tournamentParticipants = filterParticipants({
+      tournamentRecord,
+      participantFilters,
+      participants: tournamentParticipants,
     });
-    return (
-      (!signInStatus || participantSignInStatus === signInStatus) &&
-      (!participantTypes ||
-        (isValidFilterArray(participantTypes) &&
-          participantTypes.includes(participant.participantType))) &&
-      (!participantRoles ||
-        (isValidFilterArray(participantRoles) &&
-          participantRoles.includes(participant.participantRole))) &&
-      (!accessorValues ||
-        (isValidFilterArray(accessorValues) &&
-          participantHasAccessorValues(participant)))
-    );
-  });
-
-  const tournamentEvents =
-    (isValidFilterArray(eventIds) &&
-      tournamentRecord.events.filter((event) =>
-        eventIds.includes(event.eventId)
-      )) ||
-    tournamentRecord.events ||
-    [];
-
-  if (tournamentEvents.length && eventIds) {
-    const participantIds = tournamentEvents
-      .filter((event) => eventIds.includes(event.eventId))
-      .map((event) => {
-        const enteredParticipantIds = event.entries.map(
-          (entry) => entry.participantId
-        );
-        if (event.eventType === SINGLES) return enteredParticipantIds;
-        const individualParticipantIds = tournamentRecord.participants
-          .filter((participant) =>
-            enteredParticipantIds.includes(participant.participantId)
-          )
-          .map((participant) => participant.individualParticipantIds)
-          .flat(1);
-        return enteredParticipantIds.concat(...individualParticipantIds);
-      })
-      .flat(1);
-    tournamentParticipants = tournamentParticipants.filter((participant) =>
-      participantIds.includes(participant.participantId)
-    );
-  }
 
   if (inContext) {
     tournamentParticipants.forEach((participant) => {
@@ -130,7 +70,7 @@ export function getTournamentParticipants({
   if (withMatchUps || withStatistics || withOpponents) {
     addParticipantContext({
       tournamentRecord,
-      tournamentEvents,
+      tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
       withStatistics,
       withOpponents,
@@ -139,8 +79,4 @@ export function getTournamentParticipants({
   }
 
   return { tournamentParticipants };
-}
-
-function isValidFilterArray(filter) {
-  return filter && Array.isArray(filter) && filter.length;
 }

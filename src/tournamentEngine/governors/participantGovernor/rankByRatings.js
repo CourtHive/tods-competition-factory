@@ -1,8 +1,9 @@
-import { addParticipantScaleItem } from './scaleItems';
+import { addParticipantScaleItem } from './addScaleItems';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 
 import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice, getTopics } from '../../../global/globalState';
 
 // TODO: should be refactored to take scaleAttributes instead of { category, eventType }
 export function rankByRatings({
@@ -42,7 +43,7 @@ export function rankByRatings({
 
   const idMap = Object.assign({}, ...sortedParticipantIds);
 
-  let modifiedParticipants = 0;
+  let modifiedParticipants = [];
   relevantParticipants.forEach((participant) => {
     const ranking = idMap[participant.participantId];
     const scaleItem = {
@@ -53,8 +54,18 @@ export function rankByRatings({
     };
 
     const result = addParticipantScaleItem({ participant, scaleItem });
-    if (result && result.success) modifiedParticipants++;
+    if (result && result.success) {
+      modifiedParticipants.push(participant);
+    }
   });
 
-  if (modifiedParticipants) return SUCCESS;
+  const { topics } = getTopics();
+  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: modifiedParticipants },
+    });
+  }
+
+  if (modifiedParticipants.length) return SUCCESS;
 }

@@ -48,7 +48,9 @@ export const currentUTCDate = () => {
     date.getUTCMonth().toString().length === 1
       ? `0${date.getUTCMonth() + 1}`
       : `${date.getUTCMonth()}`;
-  return `${date.getUTCFullYear()}-${utcMonth}-${date.getUTCDate()}`;
+  return `${date.getUTCFullYear()}-${zeroPad(utcMonth)}-${zeroPad(
+    date.getUTCDate()
+  )}`;
 };
 
 export const currentUTCDateWithTime = () => {
@@ -159,8 +161,8 @@ function splitTime(value) {
   return time;
 }
 
-export function militaryTime(value, env) {
-  const time = splitTime(value || (env && env.schedule.default_time));
+export function militaryTime(value) {
+  const time = splitTime(value);
   if (time.ampm && time.hours) {
     if (time.ampm.toLowerCase() === 'pm' && parseInt(time.hours) < 12)
       time.hours = ((time.hours && parseInt(time.hours)) || 0) + 12;
@@ -171,8 +173,8 @@ export function militaryTime(value, env) {
   return timeString.split(':').map(zeroPad).join(':');
 }
 
-export function regularTime(value, env) {
-  const time = splitTime(value || (env && env.schedule.default_time));
+export function regularTime(value) {
+  const time = splitTime(value);
   if (time.ampm) return value;
   if (time.hours > 12) {
     time.hours -= 12;
@@ -192,10 +194,8 @@ export function regularTime(value, env) {
   return `${time.hours || '12'}:${time.minutes || '00'} ${time.ampm}`;
 }
 
-export function convertTime(value, env) {
-  return !env || env.schedule.time24
-    ? militaryTime(value, env)
-    : regularTime(value, env);
+export function convertTime(value, time24) {
+  return time24 ? militaryTime(value) : regularTime(value);
 }
 
 export function futureDate(days = 1) {
@@ -313,9 +313,10 @@ export function ymd2date(ymd) {
 
 export function timeToDate(time, date = undefined) {
   const [hours, minutes] = (time || '00:00').split(':');
-  return date
+  const milliseconds = date
     ? new Date(date).setHours(hours, minutes, 0, 0)
     : new Date().setHours(hours, minutes, 0, 0);
+  return new Date(milliseconds);
 }
 
 export function zeroPad(number) {
@@ -340,6 +341,10 @@ export function sameDay(date1, date2) {
 export function getTimeZoneOffset({ date, timeZone } = {}) {
   // assume if provided a date string with no time element that
   // the date is intended to represent this date in local time zone
+
+  const isMissingDate = typeof date === 'string' && date.indexOf('-') < 0;
+  if (isMissingDate) return { error: INVALID_DATE };
+
   const isDateStringMissingTime =
     typeof date === 'string' && date.length === 10;
 
@@ -362,6 +367,9 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
   } catch (err) {
     return { error: INVALID_TIME_ZONE };
   }
+
+  if (localeString?.toLowerCase().indexOf('invalid') >= 0)
+    return { error: INVALID_DATE };
 
   localeString +=
     '.' + originalDate.getMilliseconds().toString().padStart(3, '0');
@@ -391,6 +399,7 @@ export const dateTime = {
   offsetDate,
   offsetTime,
   futureDate,
+  timeToDate,
   convertTime,
   getDateByWeek,
   currentUTCDate,

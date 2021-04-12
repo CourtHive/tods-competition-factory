@@ -32,6 +32,7 @@ export function generateTournamentRecord({
   drawProfiles,
 
   completeAllMatchUps,
+  randomWinningSide,
   inContext,
   goesTo,
 }) {
@@ -87,6 +88,7 @@ export function generateTournamentRecord({
         participants,
         tournamentEngine,
         completeAllMatchUps,
+        randomWinningSide,
         goesTo,
       });
       drawIds.push(drawId);
@@ -103,6 +105,7 @@ function generateEventWithDraw({
   participants,
   tournamentEngine,
   completeAllMatchUps,
+  randomWinningSide,
   goesTo,
 }) {
   const {
@@ -114,6 +117,7 @@ function generateEventWithDraw({
     drawType = SINGLE_ELIMINATION,
     feedPolicy,
     structureOptions,
+    automated,
   } = drawProfile;
   let { participantsCount = 32, seedsCount } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -164,6 +168,7 @@ function generateEventWithDraw({
     feedPolicy,
     structureOptions,
     goesTo,
+    automated,
   });
 
   if (generationError) return { error: generationError };
@@ -171,9 +176,15 @@ function generateEventWithDraw({
 
   const { drawId } = drawDefinition;
 
-  if (completeAllMatchUps) {
-    completeDrawMatchUps({ tournamentEngine, drawId, matchUpFormat });
-  } else if (drawProfile.outcomes) {
+  const manual = automated === false;
+  if (!manual && completeAllMatchUps) {
+    completeDrawMatchUps({
+      tournamentEngine,
+      drawId,
+      matchUpFormat,
+      randomWinningSide,
+    });
+  } else if (!manual && drawProfile.outcomes) {
     const { matchUps } = tournamentEngine.allDrawMatchUps({
       drawId,
       inContext: true,

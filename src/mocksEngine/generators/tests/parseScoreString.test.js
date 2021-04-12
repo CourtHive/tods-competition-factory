@@ -8,6 +8,7 @@ it('can parse winner and loser score strings', () => {
 
   scoreString = '1-6 1-6';
   sets = parseScoreString({ scoreString });
+  console.log({ sets });
   expect(sets[0].side1Score).toEqual(1);
   expect(sets[0].side2Score).toEqual(6);
 });

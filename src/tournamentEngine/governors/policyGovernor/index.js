@@ -1,5 +1,6 @@
-import { getEventAppliedPolicies } from './getAppliedPolicies';
 import { allowedDrawTypes, allowedMatchUpFormats } from './allowedTypes';
+import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
+import { getEventAppliedPolicies } from './getAppliedPolicies';
 import { getSeedsCount } from './getSeedsCount';
 
 import {
@@ -14,6 +15,7 @@ const policyGovernor = {
   removeEventPolicy,
 
   getSeedsCount,
+  getEntriesAndSeedsCount,
 
   allowedDrawTypes,
   allowedMatchUpFormats,

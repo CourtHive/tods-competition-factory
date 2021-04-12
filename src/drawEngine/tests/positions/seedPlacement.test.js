@@ -15,8 +15,8 @@ import {
 } from '../../../constants/entryStatusConstants';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
@@ -70,7 +70,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 32,
-    policy: ITF_SEEDING,
+    policy: SEEDING_ITF,
     expectedBlocks: ITF32expectedBlocks,
   });
 
@@ -86,7 +86,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 64,
-    policy: ITF_SEEDING,
+    policy: SEEDING_ITF,
     expectedBlocks: ITF64expectedBlocks,
   });
 
@@ -98,7 +98,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 16,
-    policy: USTA_SEEDING,
+    policy: SEEDING_USTA,
     expectedBlocks: USTA16expectedBlocks,
   });
 
@@ -114,7 +114,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 32,
-    policy: USTA_SEEDING,
+    policy: SEEDING_USTA,
     expectedBlocks: USTA32expectedBlocks,
   });
 
@@ -130,7 +130,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 64,
-    policy: USTA_SEEDING,
+    policy: SEEDING_USTA,
     expectedBlocks: USTA64expectedBlocks,
   });
 
@@ -184,7 +184,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 128,
-    policy: USTA_SEEDING,
+    policy: SEEDING_USTA,
     expectedBlocks: USTA128expectedBlocks,
   });
 
@@ -308,7 +308,7 @@ it('generates valild seedBlocks given different policies', () => {
   ];
   checkSeedBlocks({
     drawSize: 256,
-    policy: USTA_SEEDING,
+    policy: SEEDING_USTA,
     expectedBlocks: USTA256expectedBlocks,
   });
 });
@@ -319,7 +319,7 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const stage = MAIN;
   mainDrawWithEntries({ drawSize, seedsCount });
 
-  drawEngine.attachPolicy({ policyDefinition: ITF_SEEDING });
+  drawEngine.attachPolicy({ policyDefinition: SEEDING_ITF });
   const { drawDefinition } = drawEngine.getState();
 
   const { structures: stageStructures } = getDrawStructures({

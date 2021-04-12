@@ -269,7 +269,7 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
   expect(byePositions).toEqual([2, 3, 5, 6]);
 });
 
-it.only('does not remove CONSOLATION BYE if at least one source position is a BYE', () => {
+it('does not remove CONSOLATION BYE if at least one source position is a BYE', () => {
   const drawProfiles = [
     {
       drawSize: 8,

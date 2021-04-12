@@ -1,6 +1,6 @@
 import { matchUpActions } from './matchUpActions';
 import {
-  calcTieMatchUpScore,
+  generateTieMatchUpScoreString,
   matchUpDuration,
   getMatchUpScheduleDetails,
   getMatchUpContextIds,
@@ -18,7 +18,6 @@ import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../getters/getMatchUps/drawMatchUps';
-import { getRoundPresentationProfile } from '../../getters/getMatchUps/getRoundPresentationProfile';
 
 import { credits } from '../../../fixtures/credits';
 import { findStructure } from '../../getters/findStructure';
@@ -28,6 +27,7 @@ import { getParticipantIdFinishingPositions } from './finishingPositions';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
+import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 
 /*
   return an array of all matchUps within a drawDefinition
@@ -58,6 +58,7 @@ const queryGovernor = {
   allDrawMatchUps,
   drawMatchUps,
 
+  getEliminationDrawSize,
   getParticipantIdMatchUps,
   getParticipantIdFinishingPositions,
 
@@ -70,9 +71,8 @@ const queryGovernor = {
   getMatchUpContextIds,
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
-  getRoundPresentationProfile,
 
-  calcTieMatchUpScore,
+  generateTieMatchUpScoreString,
   matchUpDuration,
   credits,
 };

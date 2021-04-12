@@ -41,12 +41,14 @@ export function generateDrawDefinition(props) {
     policyDefinitions,
     qualifyingPositions,
     drawType = SINGLE_ELIMINATION,
-    playoffMatchUpFormat,
+    finishingPositionNaming,
     ignoreAllowedDrawTypes,
+    playoffMatchUpFormat,
     feedPolicy,
 
     seededParticipants,
     seedByRanking = true,
+    seedingScaleName,
   } = props;
 
   const participants = tournamentRecord?.participants;
@@ -146,6 +148,7 @@ export function generateDrawDefinition(props) {
     uuids,
     matchUpFormat,
     playoffMatchUpFormat,
+    finishingPositionNaming,
 
     feedPolicy,
     goesTo: props.goesTo,
@@ -239,7 +242,7 @@ export function generateDrawDefinition(props) {
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName: categoryName || ageCategoryCode,
+      scaleName: seedingScaleName || categoryName || ageCategoryCode,
       eventType,
     };
 
@@ -252,14 +255,14 @@ export function generateDrawDefinition(props) {
     const { scaledEntries: seedingScaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
-      event,
+      entries,
       stage,
     });
 
     const { scaledEntries: rankingScaledEntries } = getScaledEntries({
       scaleAttributes: rankingScaleAttributes,
       tournamentRecord,
-      event,
+      entries,
       stage,
     });
 
@@ -327,6 +330,7 @@ export function generateDrawDefinition(props) {
     seedsCount,
     tieFormat,
     matchUpType,
+    seedingScaleName,
     drawId: drawDefinition.drawId,
     category: event?.category,
   };

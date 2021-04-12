@@ -10,7 +10,6 @@ import {
   ALTERNATE,
   UNPAIRED,
 } from '../../../../constants/entryStatusConstants';
-import { PARTICIPANT_PAIR_EXISTS } from '../../../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 
 let result;
@@ -165,7 +164,7 @@ it('can destroy pair entries in doubles events', () => {
   };
 
   result = tournamentEngine.addParticipant({ participant });
-  expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.getPairedParticipant({
     participantIds: individualParticipantIds,

@@ -10,7 +10,6 @@ import {
   MISSING_PARTICIPANT_ROLE,
   MISSING_PERSON_DETAILS,
   PARTICIPANT_ID_EXISTS,
-  PARTICIPANT_PAIR_EXISTS,
 } from '../../../constants/errorConditionConstants';
 
 it('will not add the same participantId twice', () => {
@@ -245,11 +244,29 @@ it('will not add invalid PAIR participants', () => {
   result = tournamentEngine.addParticipant({
     participant: pairParticipant,
   });
-  expect(result.error).toEqual(PARTICIPANT_PAIR_EXISTS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.getParticipantMembership({
     participantId: individualParticipantIds[0],
   });
   expect(result[PAIR].length).toEqual(1);
+  expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
+
+  // Not attempt add again but this time allowDuplicates
+  pairParticipant = {
+    participantType: PAIR,
+    participantRole: COMPETITOR,
+    individualParticipantIds,
+  };
+  result = tournamentEngine.addParticipant({
+    participant: pairParticipant,
+    allowDuplicateParticipantIdPairs: true,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getParticipantMembership({
+    participantId: individualParticipantIds[0],
+  });
+  expect(result[PAIR].length).toEqual(2);
   expect(result[PAIR][0].participantId).toEqual(pairParticipantId);
 });

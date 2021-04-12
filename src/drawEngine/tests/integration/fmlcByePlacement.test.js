@@ -7,8 +7,8 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
-import USTA_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import ITF_SEEDING from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
@@ -22,7 +22,7 @@ it('can support ITF Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: ITF_SEEDING,
+    policyDefinition: SEEDING_ITF,
   });
 
   const completionValues = [
@@ -65,7 +65,7 @@ it('can support USTA Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
 
   const completionValues = [
@@ -109,7 +109,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: USTA_SEEDING,
+    policyDefinition: SEEDING_USTA,
   });
 
   let completionValues = [

@@ -157,7 +157,7 @@ it('can write to the file system', () => {
 
   const drawType = DOUBLE_ELIMINATION;
   const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile)
     fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));

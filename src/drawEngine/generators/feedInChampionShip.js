@@ -41,6 +41,7 @@ export function feedInChampionship(props = {}) {
     feedsFromFinal,
     isConsolation: true,
     finishingPositionOffset: baseDrawSize,
+    uuids,
   });
 
   const consolationStructure = structureTemplate({

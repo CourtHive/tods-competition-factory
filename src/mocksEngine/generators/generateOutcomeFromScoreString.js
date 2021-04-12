@@ -34,19 +34,18 @@ export function generateOutcomeFromScoreString({
     sets: neutralParsedSets,
     reversed: true,
   });
-  if (winningSide === 1) {
-    score.scoreStringSide1 = winningScoreString;
-    score.scoreStringSide2 = losingScoreString;
-  } else if (winningSide === 2) {
+  if (winningSide === 2) {
     score.scoreStringSide1 = losingScoreString;
     score.scoreStringSide2 = winningScoreString;
   } else {
-    score.scoreStringSide1 = scoreString;
+    score.scoreStringSide1 = winningScoreString;
+    score.scoreStringSide2 = losingScoreString;
   }
   score.sets = parseScoreString({ scoreString: score.scoreStringSide1 });
 
   return {
     outcome: {
+      matchUpStatus,
       winningSide,
       score,
     },

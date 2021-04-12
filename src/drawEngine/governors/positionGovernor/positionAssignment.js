@@ -8,14 +8,13 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
-import { participantInEntries } from '../../getters/entryGetter';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
+import { clearDrawPosition } from './positionClear';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DRAW_POSITION,
-  INVALID_PARTICIPANT_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
@@ -37,18 +36,6 @@ export function assignDrawPosition({
     structure,
   });
 
-  const validParticipantId = participantInEntries({
-    drawDefinition,
-    participantId,
-  });
-  if (!validParticipantId) {
-    return {
-      error: INVALID_PARTICIPANT_ID,
-      participantId,
-      method: 'assignDrawPosition',
-    };
-  }
-
   const participantSeedNumber = seedAssignments.reduce(
     (seedNumber, assignment) => {
       return assignment.participantId === participantId
@@ -69,19 +56,24 @@ export function assignDrawPosition({
       return { error: INVALID_DRAW_POSITION_FOR_SEEDING };
   }
 
-  const positionAssignment = positionAssignments.reduce(
-    (p, c) => (c.drawPosition === drawPosition ? c : p),
-    undefined
+  const positionAssignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
   );
+  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
+
   const participantExists = positionAssignments
     .map((d) => d.participantId)
     .includes(participantId);
-
-  if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
-  const { filled } = drawPositionFilled(positionAssignment);
-  if (filled && positionAssignment.participantId !== participantId) {
+
+  const { containsParticipant, containsBye } = drawPositionFilled(
+    positionAssignment
+  );
+  if (
+    containsParticipant &&
+    positionAssignment.participantId !== participantId
+  ) {
     const { activeDrawPositions } = structureActiveDrawPositions({
       drawDefinition,
       structureId,
@@ -92,12 +84,16 @@ export function assignDrawPosition({
     }
   }
 
-  positionAssignments.forEach((assignment) => {
-    if (assignment.drawPosition === drawPosition) {
-      assignment.participantId = participantId;
-      delete assignment.bye;
-    }
-  });
+  if (containsBye) {
+    let result = clearDrawPosition({
+      drawDefinition,
+      drawPosition,
+      structureId,
+    });
+    if (result.error) return result;
+  }
+
+  positionAssignment.participantId = participantId;
 
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({

@@ -2,6 +2,7 @@ import { findExtension } from '../../../tournamentEngine/governors/queryGovernor
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { chunkArray, generateRange } from '../../../utilities';
 import { getPositionAssignments } from '../positionsGetter';
+import { getDevContext } from '../../../global/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
 import {
@@ -113,12 +114,12 @@ export function getTargetMatchUp({
     /*
       RANDOM feed profile selects a random position from available
     */
-    console.log('not implemented:', { feedProfile });
+    if (getDevContext()) console.log('not implemented:', { feedProfile });
   } else if (feedProfile === DRAW) {
     /*
       calculatedRoundPosition is undetermined for DRAW feedProfile
     */
-    console.log('not implemented:', { feedProfile });
+    if (getDevContext()) console.log('not implemented:', { feedProfile });
   }
 
   const matchUp =
@@ -133,7 +134,7 @@ export function getTargetMatchUp({
   // when drawPositions need to be assigned in positionAssignments
   // which means only when a targetMatchUp is in a different structure
   let targetDrawPosition;
-  if (matchUp.feedRound) {
+  if (matchUp?.feedRound) {
     // for fedDrawPositions in linked elimination structures...
     // ...when roundNumber > 1 matchUpDrawPositionIndex should always be 0
     // ...because fed drawPositions are always numerically smaller than advanced drawPositions
@@ -144,8 +145,8 @@ export function getTargetMatchUp({
   } else {
     // when not a feedRound targetDrawPosition can only be determined when both drawPositions present
     targetDrawPosition =
-      matchUp.drawPositions?.length === 2 &&
-      matchUp.drawPositions[matchUpDrawPositionIndex];
+      matchUp?.drawPositions?.length === 2 &&
+      matchUp?.drawPositions[matchUpDrawPositionIndex];
   }
 
   const relevantAssignment = positionAssignments.find(

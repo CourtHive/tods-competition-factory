@@ -1,32 +1,45 @@
 import { sameDay } from '../../../utilities/dateTime';
-import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledTime';
-import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledDate';
+import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledMatchUpTime';
+import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
 
-export function filterMatchUps({
-  stages,
-  courtIds,
-  matchUps,
-  matchUpTypes,
-  roundNumbers,
-  matchUpFormat,
-  collectionIds,
-  scheduledDate,
-  isMatchUpTie,
-  localTimeZone,
-  matchUpFormats,
-  matchUpStatuses,
-  localPerspective,
-  isCollectionMatchUp,
-}) {
+export function filterMatchUps(props) {
+  const {
+    stages,
+    courtIds,
+    matchUps,
+    matchUpTypes,
+    roundNumbers,
+    matchUpFormat,
+    collectionIds,
+    scheduledDate,
+    isMatchUpTie,
+    localTimeZone,
+    matchUpFormats,
+    matchUpStatuses,
+    localPerspective,
+    isCollectionMatchUp,
+  } = props;
   const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
-      if (isMatchUpTie && !matchUp.tieFormat) return false;
-      if (!isMatchUpTie && matchUp.tieFormat) return false;
+      if (isMatchUpTie && !matchUp.tieFormat) {
+        return false;
+      }
+      if (
+        !isMatchUpTie &&
+        matchUp.tieFormat &&
+        Object.keys(matchUp.tieFormat)?.length
+      ) {
+        return false;
+      }
     }
     if (isCollectionMatchUp !== undefined) {
-      if (isCollectionMatchUp && !matchUp.collectionId) return false;
-      if (!isCollectionMatchUp && matchUp.collectionId) return false;
+      if (isCollectionMatchUp && !matchUp.collectionId) {
+        return false;
+      }
+      if (!isCollectionMatchUp && matchUp.collectionId) {
+        return false;
+      }
     }
     if (stages?.length && !stages.includes(matchUp.stage)) {
       return false;
@@ -66,7 +79,12 @@ export function filterMatchUps({
         localTimeZone,
         localPerspective,
       });
-      const comparisonDate = scheduledTime || matchUpDate;
+      const scheduledTimeDate =
+        scheduledTime &&
+        scheduledTime.indexOf('-') > 0 &&
+        scheduledTime.indexOf('T') > 0 &&
+        scheduledTime.split('T')[0];
+      const comparisonDate = scheduledTimeDate || matchUpDate;
       if (!sameDay(scheduledDate, comparisonDate)) return false;
     }
     if (matchUpFormat && matchUp.matchUpFormat !== matchUpFormat) {

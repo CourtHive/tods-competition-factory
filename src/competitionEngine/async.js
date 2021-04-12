@@ -3,6 +3,7 @@ import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
+  createInstanceState,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
@@ -10,18 +11,14 @@ import {
   deleteNotices,
 } from '../global/globalState';
 
-import { INVALID_OBJECT } from '../constants/errorConditionConstants';
+import {
+  INVALID_OBJECT,
+  INVALID_RECORDS,
+} from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
-let tournamentRecords;
-
-function setState(records, deepCopyOption = true) {
-  if (typeof records !== 'object') return { error: INVALID_OBJECT };
-  tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-  return SUCCESS;
-}
-
-export const competitionEngineAsync = (async function () {
+export function competitionEngineAsync() {
+  let tournamentRecords;
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
@@ -31,31 +28,29 @@ export const competitionEngineAsync = (async function () {
         setSubscriptions({ subscriptions });
       return fx;
     },
+    version: () => {
+      return '@VERSION@';
+    },
+    devContext: (isDev) => {
+      setDevContext(isDev);
+      return fx;
+    },
+    setState: (tournamentRecords, deepCopyOption) => {
+      setDeepCopy(deepCopyOption);
+      const result = setState(tournamentRecords);
+      if (result?.error) {
+        fx.error = result.error;
+        fx.success = false;
+      } else {
+        fx.error = undefined;
+        fx.success = true;
+      }
+      return fx;
+    },
   };
 
+  createInstanceState();
   importGovernors([queryGovernor, scheduleGovernor]);
-
-  fx.version = () => {
-    return '@VERSION@';
-  };
-  fx.devContext = (isDev) => {
-    setDevContext(isDev);
-    return fx;
-  };
-  fx.setState = (tournamentRecords, deepCopyOption) => {
-    setDeepCopy(deepCopyOption);
-    const result = setState(tournamentRecords);
-    if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
-    } else {
-      fx.error = undefined;
-      fx.success = true;
-    }
-    return fx;
-  };
-
-  return fx;
 
   // enable Middleware
   async function engineInvoke(fx, params) {
@@ -94,6 +89,15 @@ export const competitionEngineAsync = (async function () {
       }
     }
   }
-})();
+
+  function setState(records, deepCopyOption = true) {
+    if (typeof records !== 'object') return { error: INVALID_OBJECT };
+    if (Array.isArray(records)) return { error: INVALID_RECORDS };
+    tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
+    return SUCCESS;
+  }
+
+  return fx;
+}
 
 export default competitionEngineAsync;

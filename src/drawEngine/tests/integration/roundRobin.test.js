@@ -12,15 +12,13 @@ import {
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can generate and verify round robin structures', () => {
-  let structureId;
-
-  ({ structureId } = generateRoundRobin({
+  let { structureId } = generateRoundRobin({
     drawSize: 8,
     groupSize: 4,
     seedsCount: 4,
     assignSeeds: 4,
     participantsCount: 6,
-  }));
+  });
 
   verifyStructure({
     structureId,
@@ -46,7 +44,7 @@ it('can generate and verify round robin structures', () => {
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 2,
     expectedPositionsAssignedCount: 10,
-    expectedRoundMatchUpsCounts: [4, 4, 4, 4, 4, 0],
+    expectedRoundMatchUpsCounts: [4, 4, 4, 4, 4],
     expectedSeedValuesWithBye: [1, 2],
   });
 
@@ -126,7 +124,7 @@ it('can write to the file system', () => {
   const { drawDefinition } = drawEngine.getState();
   const drawType = ROUND_ROBIN;
   const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/documentation/generated/';
+  const dirPath = './src/drawEngine/generated/';
   const output = `${dirPath}${fileName}`;
   if (writeFile)
     fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));

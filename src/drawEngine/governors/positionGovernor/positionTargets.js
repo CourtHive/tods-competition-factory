@@ -113,7 +113,6 @@ function targetByRoundOutcome({
   };
 }
 
-// function targetByWinRatio({ drawDefinition, matchUp, structure }) {
 function targetByWinRatio({ matchUp }) {
   return {
     matchUp,

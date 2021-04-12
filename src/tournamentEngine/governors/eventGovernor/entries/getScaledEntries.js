@@ -4,7 +4,8 @@ import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConsta
 /**
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {object} event - will be passed in automatically if tournamentEngine is passed drawId or eventId
+ * @param {object} event - OPTIONAL - will be passed in automatically if tournamentEngine is passed drawId or eventId
+ * @param {object} entries - OPTIONAL - provide entries rather than using event.entries
  * @param {string} stage - OPTIONAL - filters entries matching stage, if present
  * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
  * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
@@ -15,11 +16,13 @@ export function getScaledEntries({
   event,
   stage,
 
+  entries,
+
   scaleAttributes,
   scaleSortMethod,
   sortDescending = false,
 }) {
-  const entries = event?.entries || [];
+  entries = entries || event?.entries || [];
 
   const stageEntries = entries.filter(
     (entry) =>

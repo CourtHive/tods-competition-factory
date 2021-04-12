@@ -1,6 +1,7 @@
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 
+import { MODIFICATIONS_FAILED } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function reorderUpcomingMatchUps(params) {
@@ -23,10 +24,16 @@ export function reorderUpcomingMatchUps(params) {
       matchUpId,
       scheduledTime,
     });
-    if (result.success) matchUpsModified++;
+    if (result.success) {
+      matchUpsModified++;
+    } else {
+      return result;
+    }
   });
 
-  return matchUpsModified ? SUCCESS : undefined;
+  return matchUpsModified === matchUpsCount
+    ? SUCCESS
+    : { error: MODIFICATIONS_FAILED };
 
   function assignMatchUpScheduledTime({
     tournamentId,
@@ -35,7 +42,7 @@ export function reorderUpcomingMatchUps(params) {
     scheduledTime,
   }) {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { drawDefinition /*, event*/ } = getDrawDefinition({
+    const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });

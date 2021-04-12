@@ -5,6 +5,7 @@ import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
+import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 
 const scheduleGovernor = {
   // addTimeItem,
@@ -12,6 +13,7 @@ const scheduleGovernor = {
   scheduleMatchUps,
   matchUpScheduleChange,
   reorderUpcomingMatchUps,
+  bulkUpdateCourtAssignments,
   removeMatchUpCourtAssignment,
   toggleParticipantCheckInState,
 };

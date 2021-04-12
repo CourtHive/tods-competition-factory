@@ -1,30 +1,60 @@
-import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addingDrawEntries';
-import { getDrawDefinition } from '../../../getters/eventGetter';
+import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import {
-  DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
+  MISSING_DRAW_ID,
 } from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function addDrawEntries({
-  tournamentRecord,
-
+  drawDefinition,
   participantIds,
   entryStatus,
   entryStage,
   drawId,
-}) {
-  const { drawDefinition, event } = getDrawDefinition({
-    tournamentRecord,
-    drawId,
-  });
-  if (!event) return { error: EVENT_NOT_FOUND };
-  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
+  event,
 
-  return addEntries({
-    drawDefinition,
-    participantIds,
-    entryStatus,
-    stage: entryStage,
-  });
+  autoEntryPositions = true,
+}) {
+  if (!drawId) return { error: MISSING_DRAW_ID };
+  if (!event) return { error: EVENT_NOT_FOUND };
+
+  if (drawDefinition) {
+    const result = addEntries({
+      drawDefinition,
+      participantIds,
+      entryStatus,
+      stage: entryStage,
+      autoEntryPositions,
+    });
+    if (result.error) return result;
+  }
+
+  const { flightProfile } = getFlightProfile({ event });
+  const flight = flightProfile?.flights.find(
+    (flight) => flight.drawId === drawId
+  );
+  if (flight?.drawEntries) {
+    const enteredParticipantIds = flight.drawEntries.map(
+      ({ participantId }) => participantId
+    );
+    participantIds.forEach((participantId) => {
+      if (!enteredParticipantIds.includes(participantId)) {
+        flight.drawEntries.push({
+          participantId,
+          entryStatus,
+          entryStage,
+        });
+      }
+    });
+    if (autoEntryPositions) {
+      flight.drawEntries = refreshEntryPositions({
+        entries: flight.drawEntries,
+      });
+    }
+  }
+
+  return SUCCESS;
 }

@@ -1,4 +1,5 @@
 import { findTournamentParticipant } from '../../getters/participants/participantGetter';
+import { addNotice, getTopics } from '../../../global/globalState';
 
 import {
   MISSING_PARTICIPANT_ID,
@@ -22,6 +23,14 @@ export function modifyParticipantOtherName({
   if (!participant) return { error: PARTICIPANT_NOT_FOUND };
 
   participant.participantOtherName = participantOtherName;
+
+  const { topics } = getTopics();
+  if (topics.includes('modifyParticipants')) {
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: [participant] },
+    });
+  }
 
   return SUCCESS;
 }

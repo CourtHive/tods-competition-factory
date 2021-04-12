@@ -1,4 +1,5 @@
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { addNotice, getTopics } from '../../../../global/globalState';
 import { makeDeepCopy } from '../../../../utilities';
 
 import {
@@ -83,6 +84,18 @@ export function addIndividualParticipantIds({
     groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.concat(
       ...participantIdsToAdd
     );
+  }
+
+  const { topics } = getTopics();
+  if (topics.includes('modifyParticipants')) {
+    const updatedParticipant = tournamentParticipants.find(
+      ({ participantId }) => participantId === groupingParticipantId
+    );
+
+    addNotice({
+      topic: 'modifyParticipants',
+      payload: { participants: [updatedParticipant] },
+    });
   }
 
   return Object.assign({}, SUCCESS, {

@@ -85,7 +85,7 @@ it('can return valid actions for matchUps', () => {
   expect(actionTypes.includes(STATUS)).toEqual(false);
 });
 
-it.only('can score a matchUp using params provided in validActions', () => {
+it('can score a matchUp using params provided in validActions', () => {
   const drawProfiles = [
     {
       drawSize: 32,

@@ -5,6 +5,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
@@ -34,15 +35,18 @@ export function modifyMatchUpScore({
   score,
 
   removeScore,
+  removeWinningSide,
 }) {
   if (removeScore) {
     Object.assign(matchUp, toBePlayed);
+  } else if (score) {
+    matchUp.score = score;
   }
-  if (score) matchUp.score = score;
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
+  if (removeWinningSide) matchUp.winningSide = undefined;
 
   // middleware methods
   if (drawDefinition) {
@@ -82,4 +86,5 @@ export function modifyMatchUpScore({
   }
 
   addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  return SUCCESS;
 }

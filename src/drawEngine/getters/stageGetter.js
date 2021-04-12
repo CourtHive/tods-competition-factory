@@ -1,3 +1,4 @@
+import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 import { findStructure } from './findStructure';
 import {
   findDrawDefinitionExtension,
@@ -20,7 +21,6 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import { modifyEntryProfile } from '../governors/entryGovernor/modifyEntryProfile';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
@@ -86,7 +86,7 @@ export function getStageDrawPositionsAvailable({ stage, drawDefinition }) {
   });
   return drawSize && drawSize - qualifyingPositions;
 }
-export function stageAlternates({ stage, drawDefinition }) {
+export function stageAlternatesCount({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
   return entryProfile[stage]?.alternates || 0;
 }
@@ -156,7 +156,7 @@ export function getStageEntries({
  */
 export function playoffEntries({ drawDefinition, structureId }) {
   const entries = [];
-  const inboundLink = drawDefinition.links.find(
+  const inboundLink = (drawDefinition.links || []).find(
     (link) =>
       link.linkType === POSITION && link.target.structureId === structureId
   );
@@ -246,7 +246,7 @@ export function stageSpace({
   entryStatus = DIRECT_ACCEPTANCE,
 }) {
   if (entryStatus === ALTERNATE) {
-    if (stageAlternates({ stage, drawDefinition })) {
+    if (stageAlternatesCount({ stage, drawDefinition })) {
       return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
     } else {
       return { error: 'Alternates not allowed in stage' };

@@ -86,7 +86,6 @@ function promoteWithinElement({
 
   // cleanUp
   const entryPosition = participantEntry?.entryPosition;
-  delete participantEntry.entryPosition;
 
   if (entryPosition) {
     // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
@@ -99,6 +98,17 @@ function promoteWithinElement({
       }
     });
   }
+
+  let maxEntryPosition = Math.max(
+    ...element.entries
+      .filter(
+        (entry) =>
+          entry.entryStatus === DIRECT_ACCEPTANCE && !isNaN(entry.entryPosition)
+      )
+      .map(({ entryPosition }) => parseInt(entryPosition || 0)),
+    0
+  );
+  participantEntry.entryPosition = (maxEntryPosition || 0) + 1;
 
   return SUCCESS;
 }

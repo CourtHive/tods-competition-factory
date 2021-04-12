@@ -1,10 +1,5 @@
-import {
-  MISSING_PARTICIPANT_ID,
-  PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { OFFICIAL } from '../../../constants/participantRoles';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { findParticipant } from '../../../drawEngine/getters/participantGetter';
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+import { findParticipant } from '../../../common/deducers/findParticipant';
 import {
   addMatchUpScheduledDayDate as addScheduledDayDate,
   addMatchUpScheduledTime as addScheduledTime,
@@ -14,7 +9,13 @@ import {
   addMatchUpOfficial as addOfficial,
   addMatchUpEndTime as addEndTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
+
+import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { OFFICIAL } from '../../../constants/participantRoles';
+import {
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 export function addMatchUpScheduledDayDate({
   drawDefinition,

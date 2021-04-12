@@ -5,7 +5,7 @@ import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
 
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directParticipants(props) {
@@ -30,13 +30,18 @@ export function directParticipants(props) {
     return { errors };
   }
 
-  matchUp.winningSide = winningSide;
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
-  matchUp.matchUpStatus = (matchUpStatusIsValid && matchUpStatus) || COMPLETED;
-  matchUp.matchUpStatusCodes =
-    (matchUpStatusIsValid && matchUpStatusCodes) || [];
 
-  modifyMatchUpScore({ drawDefinition, matchUp, score });
+  const removeScore = [WALKOVER].includes(matchUpStatus);
+  modifyMatchUpScore({
+    drawDefinition,
+    matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+    matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
+    winningSide,
+    removeScore,
+    matchUp,
+    score,
+  });
 
   if (isCollectionMatchUp) {
     const { matchUpTieId } = props;

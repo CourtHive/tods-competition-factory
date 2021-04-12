@@ -83,19 +83,3 @@ export function structureAssignedDrawPositions({
     allPositionsAssigned,
   };
 }
-
-export function getStageAssignedParticipantIds({ drawDefinition, stages }) {
-  const stageStructures = drawDefinition.structures.filter((structure) =>
-    stages.includes(structure.stage)
-  );
-  return stageStructures
-    .map((structure) => {
-      const { positionAssignments } = getPositionAssignments({
-        structure,
-      });
-      return positionAssignments
-        .map(({ participantId }) => participantId)
-        .filter((f) => f);
-    })
-    .flat();
-}

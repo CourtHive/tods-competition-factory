@@ -4,13 +4,18 @@ import { getStructureMatchUps } from './getStructureMatchUps';
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
 export function getAllDrawMatchUps(props) {
+  if (!props.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   Object.assign(props, { requireParticipants: false });
+
   const {
+    abandonedMatchUps,
     completedMatchUps,
     upcomingMatchUps,
     pendingMatchUps,
@@ -18,11 +23,13 @@ export function getAllDrawMatchUps(props) {
     mappedMatchUps,
   } = getDrawMatchUps(props);
   const matchUps = [].concat(
+    ...abandonedMatchUps,
     ...completedMatchUps,
     ...upcomingMatchUps,
     ...pendingMatchUps,
     ...byeMatchUps
   );
+
   return { matchUps, mappedMatchUps };
 }
 
@@ -41,6 +48,8 @@ export function getDrawMatchUps({
   tournamentParticipants,
   tournamentAppliedPolicies,
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   let allByeMatchUps = [];
   let allPendingMatchUps = [];
   let allUpcomingMatchUps = [];

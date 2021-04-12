@@ -32,7 +32,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
 
   const timeItems = matchUp.timeItems || [];
   const checkInItems = timeItems
-    .filter((timeItem) => [CHECK_IN, CHECK_OUT].includes(timeItem.itemType))
+    .filter((timeItem) => [CHECK_IN, CHECK_OUT].includes(timeItem?.itemType))
     .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   const timeItemParticipantIds = checkInItems.map(
     (timeItem) => timeItem.itemValue
@@ -43,7 +43,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
     (participantId) => {
       const participantCheckedIn =
         checkInItems
-          .filter((timeItem) => timeItem.itemValue === participantId)
+          .filter((timeItem) => timeItem?.itemValue === participantId)
           .reverse()[0].itemType === CHECK_IN;
       return participantCheckedIn;
     }
@@ -53,13 +53,17 @@ export function getCheckedInParticipantIds({ matchUp }) {
   nestedIndividualParticipantIds.forEach(
     (sideIndividualParticipantIds, sideIndex) => {
       const sideParticipantId = sideParticipantIds[sideIndex];
-      const allIndividualsCheckedIn = sideIndividualParticipantIds.reduce(
-        (checkedIn, participantId) => {
-          return checkedIn && checkedInParticipantIds.includes(participantId);
-        },
-        true
-      );
+      const allIndividualsCheckedIn =
+        sideIndividualParticipantIds?.length &&
+        sideIndividualParticipantIds.reduce((checkedIn, participantId) => {
+          return (
+            checkedIn &&
+            participantId &&
+            checkedInParticipantIds.includes(participantId)
+          );
+        }, true);
       if (
+        sideParticipantId &&
         allIndividualsCheckedIn &&
         !checkedInParticipantIds.includes(sideParticipantId)
       ) {
@@ -73,7 +77,10 @@ export function getCheckedInParticipantIds({ matchUp }) {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(
         (participantId) => {
-          if (!checkedInParticipantIds.includes(participantId)) {
+          if (
+            participantId &&
+            !checkedInParticipantIds.includes(participantId)
+          ) {
             checkedInParticipantIds.push(participantId);
           }
         }

@@ -114,19 +114,19 @@ export function generateParticipants({
 
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
-    const { firstName, lastName, extensions } = person || {};
+    const { firstName, lastName, extensions, nationalityCode } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
-    const nationalityCode = country && (country.ioc || country.iso);
-    if (countriesList?.length && !nationalityCode) {
+    const mockedNationalityCode = country && (country.ioc || country.iso);
+    if (countriesList?.length && !nationalityCode && !mockedNationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
     }
     const address = generateAddress({
       ...addressValues,
       participantIndex,
-      nationalityCode,
+      nationalityCode: mockedNationalityCode || nationalityCode,
     });
     const participant = {
       participantId: UUID(),

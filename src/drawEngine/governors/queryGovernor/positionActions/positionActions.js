@@ -1,15 +1,15 @@
+import { getSourceStructureIdsDirectedBy } from '../../../getters/getSourceStructureIdsDirectedBy';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getStructureSeedAssignments } from '../../../getters/getStructureSeedAssignments';
-import { getValidAssignmentActions } from './participantAssignments';
+import { getAssignedParticipantIds } from '../../../getters/getAssignedParticipantIds';
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
+import { getValidAssignmentActions } from './participantAssignments';
 import { isValidSeedPosition } from '../../../getters/seedGetter';
 import { getStageEntries } from '../../../getters/stageGetter';
+import { isCompletedStructure } from '../structureActions';
 import { getValidSwapAction } from './getValidSwapAction';
-import {
-  getStageAssignedParticipantIds,
-  structureAssignedDrawPositions,
-} from '../../../getters/positionsGetter';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -48,7 +48,9 @@ import {
 import {
   CONSOLATION,
   MAIN,
+  POSITION,
   QUALIFYING,
+  WIN_RATIO,
 } from '../../../../constants/drawDefinitionConstants';
 
 /**
@@ -93,6 +95,32 @@ export function positionActions({
 
   if (actionsDisabled) return { message: 'Actions Disabled for structure' };
 
+  const { sourceStructureIds: positionSourceStructureIds } =
+    getSourceStructureIdsDirectedBy({
+      drawDefinition,
+      structureId,
+      finishingPosition: WIN_RATIO,
+      linkType: POSITION,
+    }) || {};
+
+  let sourceStructuresCompleted;
+  if (positionSourceStructureIds?.length) {
+    sourceStructuresCompleted = positionSourceStructureIds.reduce(
+      (ready, sourceStructureId) => {
+        const completed = isCompletedStructure({
+          drawDefinition,
+          structureId: sourceStructureId,
+        });
+        return completed && ready;
+      },
+      true
+    );
+  }
+
+  const isWinRatioFedStructure = positionSourceStructureIds.length;
+  const disablePlacementActions =
+    positionSourceStructureIds.length && !sourceStructuresCompleted;
+
   const { policyActions } = getPolicyActions({ enabledStructures, structure });
 
   const possiblyDisablingAction =
@@ -134,15 +162,10 @@ export function positionActions({
     stages,
   });
 
-  const stageAssignedParticipantIds = getStageAssignedParticipantIds({
+  const stageAssignedParticipantIds = getAssignedParticipantIds({
     drawDefinition,
     stages,
   });
-  /*
-  const assignedParticipantIds = assignedPositions.map(
-    (assignment) => assignment.participantId
-  );
-  */
   const unassignedParticipantIds = stageEntries
     .filter(
       (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
@@ -154,6 +177,8 @@ export function positionActions({
 
   if (
     isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
+    !isActiveDrawPosition &&
+    !disablePlacementActions &&
     (!positionAssignment || isByePosition)
   ) {
     const { validAssignmentActions } = getValidAssignmentActions({
@@ -161,10 +186,14 @@ export function positionActions({
       structureId,
       drawPosition,
       isByePosition,
+      policyDefinition,
+      activeDrawPositions,
       positionAssignments,
+      isWinRatioFedStructure,
       tournamentParticipants,
       possiblyDisablingAction,
       unassignedParticipantIds,
+      positionSourceStructureIds,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }
@@ -179,7 +208,7 @@ export function positionActions({
   if (positionAssignment) {
     if (
       isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) &&
-      !activeDrawPositions.includes(drawPosition)
+      !isActiveDrawPosition
     ) {
       validActions.push({
         type: REMOVE_ASSIGNMENT,
@@ -212,10 +241,15 @@ export function positionActions({
       }
     }
 
+    const validToAssignSeed =
+      structure.stage === QUALIFYING ||
+      (structure.stage === MAIN && structure.stageSequence === 1);
+
     if (
       !isByePosition &&
       isAvailableAction({ policyActions, action: SEED_VALUE }) &&
-      isValidSeedPosition({ drawDefinition, structureId, drawPosition })
+      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+      validToAssignSeed
     ) {
       const { seedAssignments } = getStructureSeedAssignments({
         drawDefinition,
@@ -289,7 +323,10 @@ export function positionActions({
     }
   }
 
-  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT })) {
+  if (
+    isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) &&
+    !disablePlacementActions
+  ) {
     const { validAlternatesAction } = getValidAlternatesAction({
       event,
       drawId,
@@ -304,7 +341,10 @@ export function positionActions({
     });
     if (validAlternatesAction) validActions.push(validAlternatesAction);
   }
-  if (isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT })) {
+  if (
+    isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
+    !disablePlacementActions
+  ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
       drawId,
       structure,
@@ -313,6 +353,7 @@ export function positionActions({
       drawDefinition,
       activeDrawPositions,
       positionAssignments,
+      isWinRatioFedStructure,
       tournamentParticipants,
       possiblyDisablingAction,
     });

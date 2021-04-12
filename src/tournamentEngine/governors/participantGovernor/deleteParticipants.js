@@ -5,6 +5,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice } from '../../../global/globalState';
 
 // TODO: don't remove participants who are active in draws
 // If not active in draws, remove participantIds from all entries
@@ -26,6 +27,13 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
     tournamentRecord,
     individualParticipantIds: participantIds,
   });
+
+  if (participantsRemovedCount) {
+    addNotice({
+      topic: 'deleteParticipants',
+      payload: { participantIds },
+    });
+  }
 
   return participantsRemovedCount
     ? SUCCESS

@@ -11,7 +11,7 @@ import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
-import { findParticipant } from '../participantGetter';
+import { findParticipant } from '../../../common/deducers/findParticipant';
 import { makeDeepCopy } from '../../../utilities';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';

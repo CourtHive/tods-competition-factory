@@ -17,6 +17,7 @@ import {
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
+// TODO: accept matchUpIds instead of matchUps
 export function scheduleMatchUps(props) {
   const {
     tournamentRecords,

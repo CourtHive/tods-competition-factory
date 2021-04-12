@@ -28,6 +28,4 @@ it('Feeds both consolation rounds TOP_DOWN', () => {
   drawDefinition.links.forEach((link) =>
     expect(link.target.feedProfile).toEqual(TOP_DOWN)
   );
-
-  expect('foo');
 });

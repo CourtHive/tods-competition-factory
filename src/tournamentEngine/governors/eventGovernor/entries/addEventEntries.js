@@ -1,3 +1,7 @@
+import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
+import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { removeEventEntries } from './removeEventEntries';
+
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import {
@@ -12,7 +16,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { removeEventEntries } from './removeEventEntries';
 
 /**
  *
@@ -27,11 +30,14 @@ export function addEventEntries(props) {
   const {
     tournamentRecord,
     drawDefinition,
+    drawId,
     event,
 
     participantIds = [],
     entryStatus = DIRECT_ACCEPTANCE,
     entryStage = MAIN,
+
+    autoEntryPositions = true,
   } = props;
 
   if (!event) return { error: MISSING_EVENT };
@@ -82,16 +88,17 @@ export function addEventEntries(props) {
         entryStatus,
         entryStage,
       });
-      if (drawDefinition) {
-        // TODO: this is a gray area until we support multiple draws in an event
-        drawDefinition.entries.push({
-          participantId,
-          entryStatus,
-          entryStage,
-        });
-      }
     }
   });
+  if (drawId) {
+    addDrawEntries({
+      drawId,
+      drawDefinition,
+      participantIds: validParticipantIds,
+      entryStatus,
+      entryStage,
+    });
+  }
 
   // now remove any unpaired participantIds which exist as part of added paired participants
   if (event.eventType === DOUBLES) {
@@ -116,6 +123,7 @@ export function addEventEntries(props) {
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({
         participantIds: unpairedParticipantIdsToRemove,
+        autoEntryPositions: false, // because the method will be called below if necessary
         event,
       });
     }
@@ -124,6 +132,12 @@ export function addEventEntries(props) {
   const invalidParticipantIds = !!(
     validParticipantIds.length !== participantIds.length
   );
+
+  if (autoEntryPositions) {
+    event.entries = refreshEntryPositions({
+      entries: event.entries,
+    });
+  }
 
   return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
 }

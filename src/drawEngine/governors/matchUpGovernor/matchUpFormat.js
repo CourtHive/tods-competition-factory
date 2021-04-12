@@ -1,6 +1,7 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { findStructure } from '../../getters/findStructure';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { findStructure } from '../../getters/findStructure';
+import { addNotice } from '../../../global/globalState';
 
 import {
   MATCHUP_NOT_FOUND,
@@ -49,6 +50,7 @@ export function setMatchUpFormat(props) {
       } else if (tieFormat) {
         matchUp.tieFormat = tieFormat;
       }
+      addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });

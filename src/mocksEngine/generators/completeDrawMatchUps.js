@@ -2,12 +2,14 @@ import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/ge
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { structureSort } from '../../drawEngine/getters/structureSort';
 import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+import { randomInt } from '../../utilities/math';
 
 import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function completeDrawMatchUps({
   tournamentEngine,
+  randomWinningSide,
   matchUpFormat,
   drawId,
 }) {
@@ -27,14 +29,15 @@ export function completeDrawMatchUps({
         drawId,
         matchUpId,
       });
+      const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
       if (targetMatchUp.readyToScore) {
         const result = completeMatchUp({
           tournamentEngine,
           targetMatchUp,
-          scoreString: '6-1 6-1',
-          winningSide: 1,
           matchUpStatus: COMPLETED,
+          scoreString: '6-1 6-1',
           matchUpFormat,
+          winningSide,
           drawId,
         });
         if (result.error) {

@@ -21,6 +21,8 @@ export function removeDirectedParticipants(props) {
     matchUpStatusCodes,
     mappedMatchUps,
     targetData,
+    removeScore = true,
+    score,
   } = props;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
@@ -29,8 +31,9 @@ export function removeDirectedParticipants(props) {
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       drawDefinition: props.drawDefinition,
       matchUpStatusCodes,
-      removeScore: true,
+      removeScore,
       matchUp,
+      score,
     });
 
     const { matchUpTieId } = props;
@@ -72,9 +75,11 @@ export function removeDirectedParticipants(props) {
     modifyMatchUpScore({
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       drawDefinition: props.drawDefinition,
+      removeWinningSide: true,
       matchUpStatusCodes,
-      removeScore: true,
+      removeScore,
       matchUp,
+      score,
     });
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
@@ -137,7 +142,7 @@ export function removeDirectedParticipants(props) {
   return SUCCESS;
 }
 
-function removeDirectedWinner({
+export function removeDirectedWinner({
   winnerMatchUp,
   mappedMatchUps,
   drawDefinition,
@@ -217,7 +222,7 @@ function removeDirectedLoser({
   return { error };
 }
 
-function removeDirectedBye({
+export function removeDirectedBye({
   targetLink,
   drawPosition,
   drawDefinition,

@@ -22,7 +22,11 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
     }))
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions);
-  return { orderedPairs, matchUps };
+
+  const filteredOrderedPairs = orderedPairs.map((pair) =>
+    pair.filter((f) => f)
+  );
+  return { filteredOrderedPairs, orderedPairs, matchUps };
 }
 
 export function getContextMatchUp({
@@ -67,11 +71,13 @@ export function removeAssignment({
   structureId,
   drawPosition,
   replaceWithBye,
+  policyDefinition,
 }) {
   let result = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
+    policyDefinition,
   });
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
@@ -85,11 +91,17 @@ export function removeAssignment({
   expect(result.success).toEqual(true);
 }
 
-export function replaceWithBye({ drawId, structureId, drawPosition }) {
+export function replaceWithBye({
+  drawId,
+  structureId,
+  drawPosition,
+  policyDefinition,
+}) {
   const { validActions } = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
+    policyDefinition,
   });
   const { method, payload } = validActions.find(({ type }) => type === BYE);
   const result = tournamentEngine[method](payload);
@@ -97,11 +109,17 @@ export function replaceWithBye({ drawId, structureId, drawPosition }) {
   return result;
 }
 
-export function replaceWithAlternate({ drawId, structureId, drawPosition }) {
+export function replaceWithAlternate({
+  drawId,
+  structureId,
+  drawPosition,
+  policyDefinition,
+}) {
   const { validActions } = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
+    policyDefinition,
   });
   let result = validActions.find(({ type }) => type === ALTERNATE);
   const { method, payload, availableAlternatesParticipantIds } = result;

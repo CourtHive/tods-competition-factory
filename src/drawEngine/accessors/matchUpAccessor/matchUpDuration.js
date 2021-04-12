@@ -11,10 +11,12 @@ import {
   RESUME_TIME,
   END_TIME,
 } from '../../../constants/timeItemConstants';
+import { currentUTCDate } from '../../../utilities/dateTime';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
-    const td = new Date(`2020-01-01T${value}`);
+    const dateString = currentUTCDate();
+    const td = new Date(`${dateString}T${value}`);
     return td;
   } else {
     return new Date(value);
@@ -27,7 +29,9 @@ export function matchUpDuration({ matchUp }) {
 
   const relevantTimeItems = matchUp.timeItems
     .filter((timeItem) =>
-      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(timeItem.itemType)
+      [START_TIME, STOP_TIME, RESUME_TIME, END_TIME].includes(
+        timeItem?.itemType
+      )
     )
     .sort((a, b) => timeDate(a.itemValue) - timeDate(b.itemValue));
 
@@ -79,7 +83,6 @@ export function matchUpDuration({ matchUp }) {
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
     if (getDevContext()) console.log('START or RESUME');
-    // TODO: test this... matchUp has not clompleted and is active
     const interval = new Date() - timeDate(elapsed.lastValue);
     elapsed.milliseconds += interval;
   }

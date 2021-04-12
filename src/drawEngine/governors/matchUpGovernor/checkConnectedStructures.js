@@ -1,5 +1,6 @@
-import { isCompletedStructure } from '../queryGovernor/structureActions';
 import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
+import { isCompletedStructure } from '../queryGovernor/structureActions';
+import { getDevContext } from '../../../global/globalState';
 
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
@@ -27,7 +28,7 @@ export function checkConnectedStructures({
         matchUp,
       });
       if (structureIds?.length) {
-        console.log('affects:', { structureIds });
+        if (getDevContext()) console.log('affects:', { structureIds });
       }
       return structureIds;
     }

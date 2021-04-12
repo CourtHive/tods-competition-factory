@@ -3,6 +3,7 @@ import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter
 import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { generateRange, nextPowerOf2, UUID } from '../../utilities';
 import { getRoundRobinGroupMatchUps } from './roundRobinGroups';
+import { feedInChampionship } from './feedInChampionShip';
 import { drawPositionsHash } from './roundRobinGroups';
 
 import {
@@ -18,9 +19,8 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
-import { feedInChampionship } from './feedInChampionShip';
 
 export function generateRoundRobin({
   uuids,
@@ -259,7 +259,7 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
 
   const matchUps = uniqueMatchUpGroupings
     .map(positionMatchUp)
-    .sort((a, b) => a.roundNumber - b.roundNumber);
+    .sort((a, b) => (a.roundNumber || 9999) - (b.roundNumber || 9999));
 
   return matchUps;
 
@@ -283,13 +283,13 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
       drawPositions.slice(0, drawPositions.length - 1)
     );
     const matchUp = {
-      roundNumber,
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
-      matchUpStatus: TO_BE_PLAYED,
+      matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,
       // finishingPositionRange in RR is not very useful, but provided for consistency
       finishingPositionRange: { winner, loser },
     };
+    if (roundNumber) matchUp.roundNumber = roundNumber;
     return matchUp;
   }
 }
@@ -319,12 +319,21 @@ function groupRounds({ groupSize, drawPositionOffset }) {
   aRow = [].concat(aHead, bUp, ...aRow);
   bRow = [].concat(...bRow, aDown);
 
-  return rounds.reverse().map((round) =>
-    round.map((groupPositions) => {
-      const drawPositions = groupPositions.map(
-        (groupPosition) => groupPosition + drawPositionOffset
-      );
-      return drawPositionsHash(drawPositions);
-    })
-  );
+  const sum = (x) => x[0].reduce((a, b) => a + b);
+  const orderedRounds = rounds
+    .reverse()
+    .sort((a, b) => sum(a) - sum(b))
+    .map((round) =>
+      round
+        .filter((groupPositions) =>
+          groupPositions.every((position) => position <= groupSize)
+        )
+        .map((groupPositions) => {
+          const drawPositions = groupPositions.map(
+            (groupPosition) => groupPosition + drawPositionOffset
+          );
+          return drawPositionsHash(drawPositions);
+        })
+    );
+  return orderedRounds;
 }

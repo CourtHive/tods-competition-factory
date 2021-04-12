@@ -1,6 +1,7 @@
 import { intersection } from '../../../../utilities/arrays';
 import { addParticipants } from '../../participantGovernor/addParticipants';
 import { getPairedParticipant } from '../../participantGovernor/getPairedParticipant';
+import { addNotice } from '../../../../global/globalState';
 import { addEventEntries } from './addEventEntries';
 
 import {
@@ -35,6 +36,7 @@ export function addEventEntryPairs({
   entryStage = MAIN,
   entryStatus = ALTERNATE,
   participantIdPairs = [],
+  allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -74,20 +76,23 @@ export function addEventEntryPairs({
     })
   );
 
-  // filter out existing participants
-  const newParticipants = provisionalParticipants.filter((participant) => {
-    return !existingParticipantIdPairs.find(
-      (existing) =>
-        intersection(existing, participant.individualParticipantIds).length ===
-        2
-    );
-  });
+  // filter out existing participants unless allowDuplicateParticipantIdPairs is true
+  const newParticipants = allowDuplicateParticipantIdPairs
+    ? provisionalParticipants
+    : provisionalParticipants.filter((participant) => {
+        return !existingParticipantIdPairs.find(
+          (existing) =>
+            intersection(existing, participant.individualParticipantIds)
+              .length === 2
+        );
+      });
 
   let message;
   if (newParticipants) {
     const result = addParticipants({
       tournamentRecord,
       participants: newParticipants,
+      allowDuplicateParticipantIdPairs,
     });
 
     if (result.error) return { error: result.error };
@@ -112,6 +117,10 @@ export function addEventEntryPairs({
     tournamentRecord,
     participantIds: pairParticipantIds,
   });
+
+  if (newParticipants.length) {
+    addNotice('addParticipants', { participants: newParticipants });
+  }
 
   return Object.assign({}, result, { message });
 }

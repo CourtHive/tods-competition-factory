@@ -3,6 +3,7 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 
 import {
+  MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
@@ -11,6 +12,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
 
   const { flightProfile } = getFlightProfile({ event });
@@ -21,12 +23,6 @@ export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
     );
 
     if (flight) {
-      deleteDrawDefinitions({
-        tournamentRecord,
-        eventId: event.eventId,
-        drawIds: [drawId],
-      });
-
       const flights = flightProfile.flights.filter(
         (flight) => flight.drawId !== drawId
       );
@@ -42,6 +38,12 @@ export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
       addEventExtension({ event, extension });
     }
   }
+
+  deleteDrawDefinitions({
+    tournamentRecord,
+    eventId: event.eventId,
+    drawIds: [drawId],
+  });
 
   return SUCCESS;
 }

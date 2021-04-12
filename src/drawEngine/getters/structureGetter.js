@@ -1,6 +1,7 @@
-import { findStructure } from './findStructure';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { findStructure } from './findStructure';
+
+import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getDrawStructures({
   stage,

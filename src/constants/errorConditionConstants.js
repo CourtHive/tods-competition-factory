@@ -1,3 +1,5 @@
+export const INVALID_RECORDS =
+  'records must be an object with tournamentId keys';
 export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
 export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
 export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
@@ -112,6 +114,8 @@ export const MISSING_PARTICIPANT_IDS = 'Missing participantIds';
 export const MISSING_PARTICIPANT_COUNT = 'Missing participantCount';
 export const PARTICIPANT_NOT_CHECKED_IN = 'Participant not checked in';
 export const PARTICIPANT_ALREADY_CHECKED_IN = 'Participant already checked in';
+export const PARTICIPANT_ASSIGNED_DRAW_POSITION =
+  'Participant has assigned drawPosition';
 
 export const MISSING_PERSON_DETAILS = 'Missing person details';
 
@@ -157,6 +161,7 @@ export const MISSING_SCHEDULE = 'Missing schedule';
 export const INVALID_SCALE_ITEM = 'Invalid scaleItem';
 export const SCALE_ITEM_NOT_FOUND = 'No scaleItem found';
 
+export const MODIFICATIONS_FAILED = 'Modifications failed';
 export const NO_MODIFICATIONS_APPLIED = 'No modifications applied';
 
 export const INVALID_CONFIGURATION = 'Invalid configuration';
@@ -211,6 +216,7 @@ export const errorConditionConstants = {
   INVALID_PARTICIPANT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_POLICY_DEFINITION,
+  INVALID_RECORDS,
   INVALID_SCALE_ITEM,
   INVALID_SEED_NUMBER,
   INVALID_SET_NUMBER,
@@ -275,6 +281,7 @@ export const errorConditionConstants = {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   MISSING_VENUE_ID,
+  MODIFICATIONS_FAILED,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
   BYES_LIMIT_REACHED,
   NO_MODIFICATIONS_APPLIED,
@@ -282,6 +289,7 @@ export const errorConditionConstants = {
   NO_VALID_ATTRIBUTES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
+  PARTICIPANT_ASSIGNED_DRAW_POSITION,
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   PARTICIPANT_ID_EXISTS,

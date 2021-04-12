@@ -115,7 +115,7 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [5, 8, 4, 2, 1],
+    expectedRoundPending: [5, 7, 4, 2, 1],
     expectedRoundUpcoming: [1, 0],
     expectedRoundCompleted: [0, 0],
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
@@ -197,19 +197,20 @@ it('can direct winners and losers', () => {
 
   verifyMatchUps({
     structureId: consolationStructureId,
-    expectedRoundPending: [4, 7, 4, 2, 1],
+    expectedRoundPending: [4, 5, 4, 2, 1],
     expectedRoundUpcoming: [2, 1],
     expectedRoundCompleted: [0, 0],
   });
 
   // now advance drawPosition 32 in main structure which had a BYE in first round
   // the loser from drawPositions 29-30 should NOT go into the consolation structure
-  completeMatchUp({
+  const { success } = completeMatchUp({
     structureId: mainStructureId,
     roundNumber: 2,
     roundPosition: 8,
     winningSide: 2,
   });
+  expect(success).toEqual(true);
 
   ({
     structures: [mainStructure],
@@ -259,7 +260,7 @@ it('can change matchUpStatus', () => {
     matchUpId,
     matchUpStatus: 'BOGUS',
   });
-  let hasErrors = Boolean(result?.error?.errors?.length);
+  let hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
   result = drawEngine.setMatchUpStatus({
