@@ -1,7 +1,6 @@
-import { instanceCount, unique } from '../../../../utilities/arrays';
-import { getFinishingPositions } from './getFinishingPositions';
-import { determineOrder } from './determineOrder';
 import { getParticipantResults } from './getParticipantResults';
+import { unique } from '../../../../utilities/arrays';
+import { getGroupOrder } from './getGroupOrder';
 
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
 import {
@@ -47,56 +46,21 @@ export function tallyParticipantResults({
     perPlayer,
   });
 
-  const order = determineOrder({
-    participantResults,
-    participantsCount,
-    disqualified,
-    tallyPolicy,
-  });
-
-  const finishingPositions = getFinishingPositions({
+  const groupOrder = getGroupOrder({
     matchUps: completedMatchUps,
     participantResults,
     participantsCount,
     matchUpFormat,
     disqualified,
     tallyPolicy,
+    subOrderMap,
   });
 
-  if (bracketComplete && finishingPositions) {
-    finishingPositions.forEach((finishingPosition) => {
+  // do not add groupOrder if bracket is not complete
+  if (bracketComplete && groupOrder) {
+    groupOrder.forEach((finishingPosition) => {
       const result = participantResults[finishingPosition.participantId];
-      result.finishingPosition = finishingPosition.position;
-    });
-  }
-
-  // do not calculate order if bracket is not complete
-  if (bracketComplete && order) {
-    const rankOrders = order.map(({ rankOrder }) => rankOrder);
-    const rankOrdersCount = instanceCount(rankOrders);
-    order.forEach((o) => {
-      const result = participantResults[o.participantId];
-      const rankOrderInstances = rankOrdersCount[o.rankOrder];
-
-      result.GEMscore = o.GEMscore;
-      if (o !== undefined && o.rankOrder !== undefined) {
-        // subOrder is only assigned if there are ties
-        if (rankOrderInstances > 1) {
-          const subOrder = subOrderMap && subOrderMap[o.participantId];
-          result.ties = rankOrderInstances;
-          result.subOrder = subOrder;
-        }
-
-        result.rankOrder = o.rankOrder;
-        result.groupOrder = o.rankOrder + (result.subOrder || 1) - 1;
-      }
-
-      // calculate order for awarding points
-      if (o !== undefined && o.pointsOrder !== undefined) {
-        result.pointsOrder = o.pointsOrder;
-      } else {
-        result.pointsOrder = undefined;
-      }
+      result.groupOrder = finishingPosition.groupOrder;
     });
   }
 

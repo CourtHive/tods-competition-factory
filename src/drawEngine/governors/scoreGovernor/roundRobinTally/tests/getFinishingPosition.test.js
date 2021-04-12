@@ -29,12 +29,12 @@ it('can recognize absolute ties between multiple participants', () => {
 
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual([1, 1, 1, 1, 1]);
 
   expect(
-    participantResults.map(({ participantResult }) => participantResult.fpTies)
+    participantResults.map(({ participantResult }) => participantResult.ties)
   ).toEqual([5, 5, 5, 5, 5]);
 });
 
@@ -71,7 +71,7 @@ it('can breat 3 way ties bye matchUpsWon ratio', () => {
 
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual([1, 2, 3, 4, 5]);
 });
@@ -106,7 +106,7 @@ it('can recognize unbreakable 3 way ties', () => {
 
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual([1, 2, 2, 2, 5]);
 });
@@ -145,7 +145,7 @@ it('can break 3 way ties bye setsRatio without idsFilter', () => {
 
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual([1, 2, 3, 4, 5]);
 });
@@ -180,7 +180,7 @@ it('can breake 3 way ties by gamesRatio', () => {
 
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual([1, 2, 3, 4, 5]);
 });
@@ -212,7 +212,7 @@ it('can break h2h ties between 2 participants', () => {
   const { participantResults } = generateScenario({ outcomeValues });
   expect(
     participantResults.map(
-      ({ participantResult }) => participantResult.finishingPosition
+      ({ participantResult }) => participantResult.groupOrder
     )
   ).toEqual(expectation);
 
