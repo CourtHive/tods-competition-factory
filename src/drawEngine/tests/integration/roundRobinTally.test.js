@@ -164,7 +164,6 @@ it('calculate participantResult values are present for all drawPositions', () =>
       expect(isNaN(result.gamesDifference)).toEqual(false);
       expect(isNaN(result.pointsRatio)).toEqual(false);
       expect(isNaN(result.groupOrder)).toEqual(false);
-      expect(isNaN(result.pointsOrder)).toEqual(false);
     });
   });
 });
