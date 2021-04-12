@@ -20,14 +20,13 @@ export function getFinishingPositions(props) {
     participantResults,
     disqualified,
   });
+
   const finishingPositions = Object.keys(matchUpsWonGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
     .map((key) => matchUpsWonGroups[key])
     .map((participantIds) => groupSubSort({ participantIds, ...props }))
     .flat(Infinity);
-
-  // console.log({ finishingPositions });
 
   let groupPosition = 1;
   let priorPositionResolution;
@@ -94,18 +93,18 @@ function processAttribute({
   matchUpFormat,
   tallyPolicy,
   attribute,
-  // idsFilter,
+  idsFilter,
   matchUps,
 }) {
   const { participantResults, disqualified } = getParticipantResults({
-    // participantIds: idsFilter && participantIds,
-    participantIds,
+    participantIds: idsFilter && participantIds,
     matchUpFormat,
     tallyPolicy,
     matchUps,
   });
   const groups = getGroups({
     participantResults,
+    participantIds,
     disqualified,
     attribute,
   });
@@ -129,9 +128,9 @@ function processAttribute({
 }
 
 const directives = [
-  { attribute: 'matchUpsRatio', idsFilter: true },
-  { attribute: 'setsRatio', idsFilter: true },
-  { attribute: 'gamesRatio', idsFilter: true },
+  { attribute: 'matchUpsRatio', idsFilter: false },
+  { attribute: 'setsRatio', idsFilter: false },
+  { attribute: 'gamesRatio', idsFilter: false },
   { attribute: 'matchUpsRatio', idsFilter: true },
   { attribute: 'setsRatio', idsFilter: true },
   { attribute: 'gamesRatio', idsFilter: true },
@@ -163,7 +162,6 @@ function groupSubSort({
       idsFilter,
       matchUps,
     });
-    if (result) console.log({ attribute });
     return result ? false : true;
   });
   if (result) return result;
@@ -188,8 +186,13 @@ function headToHeadWinner({ participantIds, participantResults }) {
   }
 }
 
-function getGroups({ participantResults, attribute, disqualified }) {
-  const resultsArray = getResultsArray({ participantResults });
+function getGroups({
+  participantResults,
+  participantIds,
+  disqualified,
+  attribute,
+}) {
+  const resultsArray = getResultsArray({ participantResults, participantIds });
   const groups = resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
     const value = results[attribute];
@@ -206,8 +209,8 @@ function getGroups({ participantResults, attribute, disqualified }) {
   return groups;
 }
 
-function getResultsArray({ participantResults }) {
-  const participantIds = Object.keys(participantResults);
+function getResultsArray({ participantResults, participantIds }) {
+  participantIds = participantIds || Object.keys(participantResults);
   return participantIds.reduce((arr, participantId, i) => {
     arr.push({ participantId, i, results: participantResults[participantId] });
     return arr;
