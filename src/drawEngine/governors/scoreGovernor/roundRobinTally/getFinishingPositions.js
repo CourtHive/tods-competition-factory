@@ -94,9 +94,11 @@ function processAttribute({
   matchUpFormat,
   tallyPolicy,
   attribute,
+  // idsFilter,
   matchUps,
 }) {
   const { participantResults, disqualified } = getParticipantResults({
+    // participantIds: idsFilter && participantIds,
     participantIds,
     matchUpFormat,
     tallyPolicy,
@@ -126,6 +128,15 @@ function processAttribute({
   }
 }
 
+const directives = [
+  { attribute: 'matchUpsRatio', idsFilter: true },
+  { attribute: 'setsRatio', idsFilter: true },
+  { attribute: 'gamesRatio', idsFilter: true },
+  { attribute: 'matchUpsRatio', idsFilter: true },
+  { attribute: 'setsRatio', idsFilter: true },
+  { attribute: 'gamesRatio', idsFilter: true },
+];
+
 function groupSubSort({
   participantResults,
   participantIds,
@@ -142,21 +153,18 @@ function groupSubSort({
     // determine wins by sets... then games...
   }
 
-  let result = processAttribute({
-    attribute: 'matchUpsRatio',
-    participantIds,
-    matchUpFormat,
-    tallyPolicy,
-    matchUps,
-  });
-  if (result) return result;
-
-  result = processAttribute({
-    attribute: 'setsRatio',
-    participantIds,
-    matchUpFormat,
-    tallyPolicy,
-    matchUps,
+  let result;
+  directives.every(({ attribute, idsFilter }) => {
+    result = processAttribute({
+      participantIds,
+      matchUpFormat,
+      tallyPolicy,
+      attribute,
+      idsFilter,
+      matchUps,
+    });
+    if (result) console.log({ attribute });
+    return result ? false : true;
   });
   if (result) return result;
 
