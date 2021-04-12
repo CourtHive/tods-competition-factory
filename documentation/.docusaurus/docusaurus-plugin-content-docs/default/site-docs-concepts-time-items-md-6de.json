@@ -1,0 +1,20 @@
+{
+  "unversionedId": "concepts/timeItems",
+  "id": "concepts/timeItems",
+  "isDocsHomePage": false,
+  "title": "Time Items",
+  "description": "timeItems can exist on any document element in TODS and are used to capture attributes which may change over time and where it is desierable to keep track of such changes.",
+  "source": "@site/docs/concepts/timeItems.md",
+  "slug": "/concepts/timeItems",
+  "permalink": "/tods-competition-factory/docs/concepts/timeItems",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Feed Policy",
+    "permalink": "/tods-competition-factory/docs/policies/feedPolicy"
+  },
+  "next": {
+    "title": "Scale Items",
+    "permalink": "/tods-competition-factory/docs/concepts/scaleItems"
+  }
+}

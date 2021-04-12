@@ -1,0 +1,11 @@
+{
+  "unversionedId": "concepts/positioningSeeds",
+  "id": "concepts/positioningSeeds",
+  "isDocsHomePage": false,
+  "title": "Positioning Seeds",
+  "description": "drawEngine manages a seedAssignments attribute of structure which expects there to be one participantId per seedNumber",
+  "source": "@site/docs/concepts/positioningSeeds.md",
+  "slug": "/concepts/positioningSeeds",
+  "permalink": "/tods-competition-factory/docs/concepts/positioningSeeds",
+  "version": "current"
+}

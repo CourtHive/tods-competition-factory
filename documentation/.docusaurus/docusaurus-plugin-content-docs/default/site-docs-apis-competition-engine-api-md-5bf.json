@@ -1,0 +1,20 @@
+{
+  "unversionedId": "apis/competition-engine-api",
+  "id": "apis/competition-engine-api",
+  "isDocsHomePage": false,
+  "title": "Competition Engine API",
+  "description": "allCompetitionMatchUps",
+  "source": "@site/docs/apis/competition-engine-api.md",
+  "slug": "/apis/competition-engine-api",
+  "permalink": "/tods-competition-factory/docs/apis/competition-engine-api",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Mocks Engine API",
+    "permalink": "/tods-competition-factory/docs/apis/mocks-engine-api"
+  },
+  "next": {
+    "title": "Tournament Engine API",
+    "permalink": "/tods-competition-factory/docs/apis/tournament-engine-api"
+  }
+}

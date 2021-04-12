@@ -1,0 +1,20 @@
+{
+  "unversionedId": "policies/avoidance",
+  "id": "policies/avoidance",
+  "isDocsHomePage": false,
+  "title": "Introduction to Avoidance",
+  "description": "Avoidance is an attempt to insure that grouped players do not encounter each other in early rounds (or just the first round) of an elimination draw structure, or that round robin brackets are generated such that players from the same group are evenly distributed across brackets and do not encounter each other unless there are more group members than there are brackets.",
+  "source": "@site/docs/policies/avoidance.md",
+  "slug": "/policies/avoidance",
+  "permalink": "/tods-competition-factory/docs/policies/avoidance",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Introduction to Policies",
+    "permalink": "/tods-competition-factory/docs/concepts/policies"
+  },
+  "next": {
+    "title": "Accessors",
+    "permalink": "/tods-competition-factory/docs/policies/accessors"
+  }
+}

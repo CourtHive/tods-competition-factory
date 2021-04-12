@@ -1,0 +1,16 @@
+{
+  "unversionedId": "apis/draw-engine-api",
+  "id": "apis/draw-engine-api",
+  "isDocsHomePage": false,
+  "title": "Draw Engine API",
+  "description": "addDrawEntries",
+  "source": "@site/docs/apis/draw-engine-api.md",
+  "slug": "/apis/draw-engine-api",
+  "permalink": "/tods-competition-factory/docs/apis/draw-engine-api",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Tournament Engine API",
+    "permalink": "/tods-competition-factory/docs/apis/tournament-engine-api"
+  }
+}

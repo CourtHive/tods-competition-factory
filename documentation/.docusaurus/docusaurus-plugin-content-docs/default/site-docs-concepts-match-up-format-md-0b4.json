@@ -1,0 +1,20 @@
+{
+  "unversionedId": "concepts/matchUpFormat",
+  "id": "concepts/matchUpFormat",
+  "isDocsHomePage": false,
+  "title": "MatchUp Formats",
+  "description": "In TODS, a drawDefinition is a collection of structures. For example a MAIN structure and a CONSOLATION structure are considered to be part of the same drawDefinition because they have a logical relationship whereby participants move from one structure to another. USTA's TDM, its predecessor TMS, and CourtHive TMX Classic do not represent the relationship between structures as hierarchical, whereas in TODS there is a nesting of elements:",
+  "source": "@site/docs/concepts/matchUpFormat.md",
+  "slug": "/concepts/matchUpFormat",
+  "permalink": "/tods-competition-factory/docs/concepts/matchUpFormat",
+  "version": "current",
+  "sidebar": "docs",
+  "previous": {
+    "title": "Scale Items",
+    "permalink": "/tods-competition-factory/docs/concepts/scaleItems"
+  },
+  "next": {
+    "title": "Context",
+    "permalink": "/tods-competition-factory/docs/concepts/context"
+  }
+}
