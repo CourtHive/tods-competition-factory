@@ -9,18 +9,12 @@ export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
 
   function parseSet({ set, setNumber }) {
     const matchTiebreak =
-      set.startsWith('[') && set.split('[')[1].split(']')[0].split('-');
-    const setTiebreakLowScore =
-      set.includes('(') && set.split('(')[1].split(')')[0];
-    const side1TiebreakPerspective =
-      ![false, undefined].includes(setTiebreakLowScore) &&
-      getTiebreakComplement({
-        isSide1: true,
-        lowValue: setTiebreakLowScore,
-        tiebreakTo,
-      });
-    const side2TiebreakPerspective =
-      side1TiebreakPerspective && side1TiebreakPerspective.reverse();
+      set.startsWith('[') &&
+      set
+        .split('[')[1]
+        .split(']')[0]
+        .split('-')
+        .map((sideScore) => parseInt(sideScore));
     const setString = set.includes('(')
       ? set.split('(')[0]
       : set.includes('[')
@@ -37,17 +31,22 @@ export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
         ? 2
         : undefined;
 
-    const setTiebreak =
-      winningSide === 1
-        ? side2TiebreakPerspective
-        : winningSide === 2
-        ? side1TiebreakPerspective
-        : [];
+    const setTiebreakLowScore =
+      set.includes('(') && set.split('(')[1].split(')')[0];
+
+    const side1TiebreakPerspective =
+      ![false, undefined].includes(setTiebreakLowScore) &&
+      getTiebreakComplement({
+        isSide1: winningSide === 2,
+        lowValue: setTiebreakLowScore,
+        tiebreakTo,
+      });
+
+    const setTiebreak = side1TiebreakPerspective || [];
 
     const [side1Score, side2Score] = setScores || [];
-    const [tb1, tb2] = matchTiebreak || setTiebreak || [];
-    const side2TiebreakScore = tb1 === 0 || tb1 ? tb1 : undefined;
-    const side1TiebreakScore = tb2 === 0 || tb2 ? tb2 : undefined;
+    const [side1TiebreakScore, side2TiebreakScore] =
+      matchTiebreak || setTiebreak || [];
 
     return {
       side1Score,
