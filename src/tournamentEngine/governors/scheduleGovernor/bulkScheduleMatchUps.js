@@ -60,7 +60,7 @@ export function bulkScheduleMatchUps({
         matchUpIds.includes(matchUpId)
       );
       drawMatchUpIds.forEach((matchUpId) => {
-        if (scheduledTime) {
+        if (scheduledTime !== undefined) {
           const result = addMatchUpScheduledTime({
             drawDefinition,
             matchUpId,
@@ -68,7 +68,7 @@ export function bulkScheduleMatchUps({
           });
           if (result.error) errors.push({ error: result.error, scheduledTime });
         }
-        if (scheduledDayDate) {
+        if (scheduledDayDate !== undefined) {
           const result = addMatchUpScheduledDayDate({
             drawDefinition,
             matchUpId,
@@ -77,7 +77,7 @@ export function bulkScheduleMatchUps({
           if (result.error)
             errors.push({ error: result.error, scheduledDayDate });
         }
-        if (venueId) {
+        if (venueId !== undefined) {
           const result = assignMatchUpVenue({
             tournamentRecord,
             drawDefinition,
