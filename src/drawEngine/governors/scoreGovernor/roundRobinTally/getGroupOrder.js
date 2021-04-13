@@ -111,6 +111,7 @@ export function getGroupOrder(props) {
 
       // result.positionOrder = f.position + (result.subOrder || 1) - 1;
       f.groupOrder = f.position + (result.subOrder || 1) - 1;
+      result.rankOrder = f.position;
     }
     result.GEMscore = getRatioHash(result);
   });
