@@ -1,6 +1,45 @@
 import { getParticipantResults } from './getParticipantResults';
 import { instanceCount } from '../../../../utilities';
 
+/*
+Round Robin group tally logic by default implements the following guidelines:
+
+The player who wins the most matches is the winner.
+If two players are tied, then the winner of their head-to-head match is the winner.
+
+If three or more players are tied, tie are broken as follows:
+• The head-to-head win-loss record in matches involving just the tied players;
+• The player with the highest percentage of sets won of all sets completed;
+• The head-to-head win-loss record in matches involving the players who remain tied;
+• The player with the highest percentage of games won of all games completed;
+• The head-to-head win-loss record in matches involving the players who remain tied;
+• The player with the highest percentage of sets won of sets completed among players in the group under consideration;
+• The head-to-head win-loss record in matches involving the players who remain tied;
+• The player with the highest percentage of games won of games completed among the players under consideration; and
+• The head-to-head win-loss record in matches involving the players who remain tied.
+
+After initial separation of participants by `matchUpsWon`,
+the implementation is configurable by supplying an array of `tallyDirectives` in the `tallyPolicy`.
+
+The algorithm relies on the values avaialble in the calculated `participantResults` and works as follows:
+• separate particpants into groups by a given attribute
+• a group with a single participant is 'resolved'
+• groups of two participants are resolved by head-to-head (if not disabled/if participants faced each other)
+• groups of three or more search for an attribute that will separate them into smaller groups
+• participantResults scoped to the members of a group and recalculated when `{ idsFilter: true }`
+*/
+
+const defaultTallyDirectives = [
+  { attribute: 'matchUpsRatio', idsFilter: false },
+  { attribute: 'setsRatio', idsFilter: false },
+  { attribute: 'gamesRatio', idsFilter: false },
+  { attribute: 'pointsRatio', idsFilter: false },
+  { attribute: 'matchUpsRatio', idsFilter: true },
+  { attribute: 'setsRatio', idsFilter: true },
+  { attribute: 'gamesRatio', idsFilter: true },
+  { attribute: 'pointsRatio', idsFilter: true },
+];
+
 /**
  *
  * @param {object[]} participantResults - calculated results for each participant
@@ -9,6 +48,7 @@ import { instanceCount } from '../../../../utilities';
  *
  * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
+
 export function getGroupOrder(props) {
   const { participantResults, disqualified, subOrderMap } = props;
 
@@ -140,17 +180,6 @@ function processAttribute({
   }
 }
 
-const tallyDirectives = [
-  { attribute: 'matchUpsRatio', idsFilter: false },
-  { attribute: 'setsRatio', idsFilter: false },
-  { attribute: 'gamesRatio', idsFilter: false },
-  { attribute: 'pointsRatio', idsFilter: false },
-  { attribute: 'matchUpsRatio', idsFilter: true },
-  { attribute: 'setsRatio', idsFilter: true },
-  { attribute: 'gamesRatio', idsFilter: true },
-  { attribute: 'pointsRatio', idsFilter: true },
-];
-
 function groupSubSort({
   participantResults,
   disableHeadToHead,
@@ -174,7 +203,7 @@ function groupSubSort({
   }
 
   let result;
-  (tallyPolicy?.tallyDirectives || tallyDirectives).every(
+  (tallyPolicy?.tallyDirectives || defaultTallyDirectives).every(
     ({ attribute, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
         disableHeadToHead,

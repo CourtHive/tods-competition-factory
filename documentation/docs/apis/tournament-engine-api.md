@@ -263,10 +263,12 @@ Convenience function to add several schedule items at once.
 tournamentEngine.addMatchUpScheduleItems({
   drawId,
   matchUpId,
-  scheduledTime,
-  scheduledDayDate,
-  startTime,
-  endTime,
+  schedule: {
+    scheduledTime,
+    scheduledDayDate,
+    startTime,
+    endTime,
+  },
   disableNotice, // when disabled subscribers will not be notified
 });
 ```

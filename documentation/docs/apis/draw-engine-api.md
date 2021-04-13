@@ -100,10 +100,12 @@ Convenience function to add several schedule items at once.
 ```js
 drawEngine.addMatchUpScheduleItems({
   matchUpId,
-  scheduledTime,
-  scheduledDayDate,
-  startTime,
-  endTime,
+  schedule: {
+    scheduledTime,
+    scheduledDayDate,
+    startTime,
+    endTime,
+  },
   disableNotice, // when disabled subscribers will not be notified
 });
 ```
