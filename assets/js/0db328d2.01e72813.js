@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[8],{73:function(o){o.exports=JSON.parse('{"allTagsPath":"/tods-competition-factory/blog/tags","slug":"hello","name":"hello","count":2,"permalink":"/tods-competition-factory/blog/tags/hello"}')}}]);
