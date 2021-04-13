@@ -4,7 +4,6 @@ import tournamentEngine from '../../sync';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
-  // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
       drawSize: 4,

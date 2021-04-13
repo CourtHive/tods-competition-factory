@@ -12,7 +12,7 @@ import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
-it('can generate a tournament with events and draws', () => {
+it('can bulk schedule matchUps', () => {
   const { tournamentRecord } = generateTournamentWithParticipants({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
@@ -82,11 +82,26 @@ it('can generate a tournament with events and draws', () => {
     venueId,
   };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  expect(result.success).toEqual(true);
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const matchUpsWithScheduledTime = matchUps.filter(
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let matchUpsWithScheduledTime = matchUps.filter(
     (matchUp) => matchUp.schedule?.scheduledTime
   );
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
+
+  schedule = {
+    scheduledTime: '',
+    scheduledDayDate: '',
+    venueId,
+  };
+  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  matchUpsWithScheduledTime = matchUps.filter(
+    (matchUp) => matchUp.schedule?.scheduledTime
+  );
+  expect(matchUpsWithScheduledTime.length).toEqual(0);
 });

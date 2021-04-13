@@ -32,7 +32,11 @@ drawEngine.addDrawEntry({
 
 ```js
 const endTime = '2020-01-01T09:05:00Z';
-drawEngine.addMatchUpEndTime({ matchUpId, endTime });
+drawEngine.addMatchUpEndTime({
+  matchUpId,
+  endTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -40,7 +44,12 @@ drawEngine.addMatchUpEndTime({ matchUpId, endTime });
 ## addMatchUpOfficial
 
 ```js
-drawEngine.addMatchUpOfficial({ matchUpId, participantId, officialType });
+drawEngine.addMatchUpOfficial({
+  matchUpId,
+  participantId,
+  officialType,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -49,7 +58,11 @@ drawEngine.addMatchUpOfficial({ matchUpId, participantId, officialType });
 
 ```js
 const resumeTime = '2020-01-01T09:00:00Z';
-drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
+drawEngine.addMatchUpResumeTime({
+  matchUpId,
+  resumeTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -58,7 +71,11 @@ drawEngine.addMatchUpResumeTime({ matchUpId, resumeTime });
 
 ```js
 const scheduledDayDate = '2020-01-01';
-drawEngine.addMatchUpScheduledDayDate({ matchUpId, scheduledDayDate });
+drawEngine.addMatchUpScheduledDayDate({
+  matchUpId,
+  scheduledDayDate,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -67,7 +84,28 @@ drawEngine.addMatchUpScheduledDayDate({ matchUpId, scheduledDayDate });
 
 ```js
 const scheduledTime = '08:00';
-drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
+drawEngine.addMatchUpScheduledTime({
+  matchUpId,
+  scheduledTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpScheduleItems
+
+Convenience function to add several schedule items at once.
+
+```js
+drawEngine.addMatchUpScheduleItems({
+  matchUpId,
+  scheduledTime,
+  scheduledDayDate,
+  startTime,
+  endTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -76,7 +114,11 @@ drawEngine.addMatchUpScheduledTime({ matchUpId, scheduledTime });
 
 ```js
 const startTime = '2020-01-01T08:05:00Z';
-drawEngine.addMatchUpStartTime({ matchUpId, startTime });
+drawEngine.addMatchUpStartTime({
+  matchUpId,
+  startTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -85,7 +127,11 @@ drawEngine.addMatchUpStartTime({ matchUpId, startTime });
 
 ```js
 const stopTime = '2020-01-01T08:15:00Z';
-drawEngine.addMatchUpStopTime({ matchUpId, stopTime });
+drawEngine.addMatchUpStopTime({
+  matchUpId,
+  stopTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---

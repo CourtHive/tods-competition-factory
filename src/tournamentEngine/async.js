@@ -11,6 +11,8 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import participantGovernor from './governors/participantGovernor';
 import definitionTemplate from './generators/tournamentRecordTemplate';
+import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { createInstanceState } from '../global/globalState';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -24,8 +26,6 @@ import {
   MISSING_TOURNAMENT_ID,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import { notifySubscribersAsync } from '../global/notifySubscribers';
-import { createInstanceState } from '../global/globalState';
 
 export function tournamentEngineAsync() {
   createInstanceState();

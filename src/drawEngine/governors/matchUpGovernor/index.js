@@ -16,6 +16,7 @@ import {
   addMatchUpStopTime,
   addMatchUpResumeTime,
   addMatchUpOfficial,
+  addMatchUpScheduleItems,
 } from './scheduleItems';
 
 const matchUpGovernor = {
@@ -28,6 +29,7 @@ const matchUpGovernor = {
   checkOutParticipant,
   getCheckedInParticipantIds,
 
+  addMatchUpScheduleItems,
   addMatchUpScheduledDayDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,

@@ -14,12 +14,15 @@ export function addMatchUpTimeItem({
   matchUpId,
   timeItem,
   duplicateValues,
+  disableNotice,
 }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
-  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  if (!disableNotice) {
+    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  }
   return result;
 }
 
