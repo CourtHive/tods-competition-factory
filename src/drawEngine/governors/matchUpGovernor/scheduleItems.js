@@ -12,6 +12,7 @@ import {
   INVALID_TIME,
   MISSING_DRAW_DEFINITION,
   MATCHUP_NOT_FOUND,
+  MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 import {
   dateValidation,
@@ -47,13 +48,13 @@ export function addMatchUpScheduleItems({
   drawDefinition,
   matchUpId,
   disableNotice,
-  scheduledDayDate,
-  scheduledTime,
-  startTime,
-  endTime,
+  schedule,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (!schedule) return { error: MISSING_VALUE };
+
+  const { scheduledDayDate, scheduledTime, startTime, endTime } = schedule;
 
   if (scheduledDayDate) {
     const result = addMatchUpScheduledDayDate({

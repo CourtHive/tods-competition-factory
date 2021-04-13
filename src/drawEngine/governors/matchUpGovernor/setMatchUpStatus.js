@@ -6,6 +6,7 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
 import { getDevContext } from '../../../global/globalState';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { addMatchUpScheduleItems } from './scheduleItems';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
@@ -62,6 +63,17 @@ export function setMatchUpStatus(props) {
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const { schedule } = props;
+  if (schedule) {
+    const result = addMatchUpScheduleItems({
+      disableNotice: true,
+      drawDefinition,
+      matchUpId,
+      schedule,
+    });
+    if (result.error) return result;
+  }
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
