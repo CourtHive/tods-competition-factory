@@ -189,7 +189,12 @@ tournamentEngine.addIndividualParticipantIds({
 
 ```js
 const endTime = '2020-01-01T09:05:00Z';
-tournamentEngine.addMatchUpEndTime({ drawId, matchUpId, endTime });
+tournamentEngine.addMatchUpEndTime({
+  drawId,
+  matchUpId,
+  endTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -202,6 +207,7 @@ tournamentEngine.addMatchUpOfficial({
   matchUpId,
   participantId,
   officialType,
+  disableNotice, // when disabled subscribers will not be notified
 });
 ```
 
@@ -211,7 +217,12 @@ tournamentEngine.addMatchUpOfficial({
 
 ```js
 const resumeTime = '2020-01-01T09:00:00Z';
-tournamentEngine.addMatchUpResumeTime({ drawId, matchUpId, resumeTime });
+tournamentEngine.addMatchUpResumeTime({
+  drawId,
+  matchUpId,
+  resumeTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -224,6 +235,7 @@ tournamentEngine.addMatchUpScheduledDayDate({
   drawId,
   matchUpId,
   scheduledDayDate,
+  disableNotice, // when disabled subscribers will not be notified
 });
 ```
 
@@ -233,7 +245,30 @@ tournamentEngine.addMatchUpScheduledDayDate({
 
 ```js
 const scheduledTime = '08:00';
-tournamentEngine.addMatchUpScheduledTime({ drawId, matchUpId, scheduledTime });
+tournamentEngine.addMatchUpScheduledTime({
+  drawId,
+  matchUpId,
+  scheduledTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpScheduleItems
+
+Convenience function to add several schedule items at once.
+
+```js
+tournamentEngine.addMatchUpScheduleItems({
+  drawId,
+  matchUpId,
+  scheduledTime,
+  scheduledDayDate,
+  startTime,
+  endTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -242,7 +277,12 @@ tournamentEngine.addMatchUpScheduledTime({ drawId, matchUpId, scheduledTime });
 
 ```js
 const startTime = '2020-01-01T08:05:00Z';
-tournamentEngine.addMatchUpStartTime({ drawId, matchUpId, startTime });
+tournamentEngine.addMatchUpStartTime({
+  drawId,
+  matchUpId,
+  startTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---
@@ -251,7 +291,12 @@ tournamentEngine.addMatchUpStartTime({ drawId, matchUpId, startTime });
 
 ```js
 const stopTime = '2020-01-01T08:15:00Z';
-tournamentEngine.addMatchUpStopTime({ drawId, matchUpId, stopTime });
+tournamentEngine.addMatchUpStopTime({
+  drawId,
+  matchUpId,
+  stopTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
 ```
 
 ---

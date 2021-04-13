@@ -1,6 +1,7 @@
 import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../../common/deducers/findParticipant';
 import {
+  addMatchUpScheduleItems as addScheduleItems,
   addMatchUpScheduledDayDate as addScheduledDayDate,
   addMatchUpScheduledTime as addScheduledTime,
   addMatchUpResumeTime as addResumeTime,
@@ -17,17 +18,23 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+export function addMatchUpScheduleItems(props) {
+  return addScheduleItems(props);
+}
+
 export function addMatchUpScheduledDayDate({
   drawDefinition,
   matchUpId,
+  disableNotice,
   scheduledDayDate,
 }) {
   // TODO: check that scheduledDayDate is within range of event dates / tournament dates
 
   const result = addScheduledDayDate({
     drawDefinition,
-    scheduledDayDate,
     matchUpId,
+    disableNotice,
+    scheduledDayDate,
   });
 
   return result;
@@ -37,36 +44,60 @@ export function addMatchUpScheduledTime({
   drawDefinition,
   scheduledTime,
   matchUpId,
+  disableNotice,
 }) {
   // TODO: check that scheduledTime is within range of event dates / tournament dates
 
-  const result = addScheduledTime({ drawDefinition, matchUpId, scheduledTime });
+  const result = addScheduledTime({
+    drawDefinition,
+    matchUpId,
+    scheduledTime,
+    disableNotice,
+  });
   return result;
 }
 
-export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
+export function addMatchUpStartTime({
+  drawDefinition,
+  matchUpId,
+  startTime,
+  disableNotice,
+}) {
   const result = addStartTime({
     drawDefinition,
     matchUpId,
     startTime,
+    disableNotice,
   });
   return result;
 }
 
-export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
+export function addMatchUpEndTime({
+  drawDefinition,
+  matchUpId,
+  endTime,
+  disableNotice,
+}) {
   const result = addEndTime({
     drawDefinition,
     matchUpId,
     endTime,
+    disableNotice,
   });
   return result;
 }
 
-export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
+export function addMatchUpStopTime({
+  drawDefinition,
+  matchUpId,
+  stopTime,
+  disableNotice,
+}) {
   const result = addStopTime({
     drawDefinition,
     matchUpId,
     stopTime,
+    disableNotice,
   });
   return result;
 }
@@ -75,11 +106,13 @@ export function addMatchUpResumeTime({
   drawDefinition,
   matchUpId,
   resumeTime,
+  disableNotice,
 }) {
   const result = addResumeTime({
     drawDefinition,
     matchUpId,
     resumeTime,
+    disableNotice,
   });
   return result;
 }
@@ -90,6 +123,7 @@ export function addMatchUpOfficial({
   participantId,
   officialType,
   matchUpId,
+  disableNotice,
 }) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
@@ -113,6 +147,7 @@ export function addMatchUpOfficial({
     participantId,
     officialType,
     matchUpId,
+    disableNotice,
   });
   return result;
 }

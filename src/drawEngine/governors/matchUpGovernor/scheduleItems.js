@@ -10,6 +10,8 @@ import {
   INVALID_END_TIME,
   INVALID_DATE,
   INVALID_TIME,
+  MISSING_DRAW_DEFINITION,
+  MATCHUP_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import {
   dateValidation,
@@ -25,6 +27,8 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { addNotice } from '../../../global/globalState';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -39,9 +43,67 @@ function validTimeValue(value) {
   return !!(value === undefined || timeValidation.test(value));
 }
 
+export function addMatchUpScheduleItems({
+  drawDefinition,
+  matchUpId,
+  disableNotice,
+  scheduledDayDate,
+  scheduledTime,
+  startTime,
+  endTime,
+}) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+
+  if (scheduledDayDate) {
+    const result = addMatchUpScheduledDayDate({
+      drawDefinition,
+      matchUpId,
+      scheduledDayDate,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  }
+  if (scheduledTime) {
+    const result = addMatchUpScheduledTime({
+      drawDefinition,
+      matchUpId,
+      scheduledTime,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  }
+  if (startTime) {
+    const result = addMatchUpStartTime({
+      drawDefinition,
+      matchUpId,
+      startTime,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  }
+  if (endTime) {
+    const result = addMatchUpEndTime({
+      drawDefinition,
+      matchUpId,
+      endTime,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  }
+
+  if (!disableNotice) {
+    const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+    if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  }
+  return SUCCESS;
+}
+
 export function addMatchUpScheduledDayDate({
   drawDefinition,
   matchUpId,
+  disableNotice,
   scheduledDayDate,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -63,6 +125,7 @@ export function addMatchUpScheduledDayDate({
     drawDefinition,
     matchUpId,
     timeItem,
+    disableNotice,
     duplicateValues: false,
   });
 }
@@ -70,6 +133,7 @@ export function addMatchUpScheduledDayDate({
 export function addMatchUpScheduledTime({
   drawDefinition,
   matchUpId,
+  disableNotice,
   scheduledTime,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -90,6 +154,7 @@ export function addMatchUpScheduledTime({
     drawDefinition,
     matchUpId,
     timeItem,
+    disableNotice,
     duplicateValues: false,
   });
 }
@@ -97,6 +162,7 @@ export function addMatchUpScheduledTime({
 export function addMatchUpOfficial({
   drawDefinition,
   matchUpId,
+  disableNotice,
   participantId,
   officialType,
 }) {
@@ -114,11 +180,17 @@ export function addMatchUpOfficial({
     drawDefinition,
     matchUpId,
     timeItem,
+    disableNotice,
     duplicateValues: false,
   });
 }
 
-export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
+export function addMatchUpStartTime({
+  drawDefinition,
+  matchUpId,
+  startTime,
+  disableNotice,
+}) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(startTime)) return { error: INVALID_TIME };
 
@@ -152,6 +224,7 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
       drawDefinition,
       matchUpId,
       timeItem,
+      disableNotice,
       duplicateValues: false,
     });
   } else {
@@ -159,7 +232,12 @@ export function addMatchUpStartTime({ drawDefinition, matchUpId, startTime }) {
   }
 }
 
-export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
+export function addMatchUpEndTime({
+  drawDefinition,
+  matchUpId,
+  endTime,
+  disableNotice,
+}) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(endTime)) return { error: INVALID_TIME };
 
@@ -190,6 +268,7 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
       drawDefinition,
       matchUpId,
       timeItem,
+      disableNotice,
       duplicateValues: false,
     });
   } else {
@@ -197,7 +276,12 @@ export function addMatchUpEndTime({ drawDefinition, matchUpId, endTime }) {
   }
 }
 
-export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
+export function addMatchUpStopTime({
+  drawDefinition,
+  matchUpId,
+  stopTime,
+  disableNotice,
+}) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!validTimeValue(stopTime)) return { error: INVALID_TIME };
 
@@ -253,6 +337,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
       drawDefinition,
       matchUpId,
       timeItem,
+      disableNotice,
       duplicateValues: true,
     });
   } else {
@@ -263,6 +348,7 @@ export function addMatchUpStopTime({ drawDefinition, matchUpId, stopTime }) {
 export function addMatchUpResumeTime({
   drawDefinition,
   matchUpId,
+  disableNotice,
   resumeTime,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -320,6 +406,7 @@ export function addMatchUpResumeTime({
       drawDefinition,
       matchUpId,
       timeItem,
+      disableNotice,
       duplicateValues: true,
     });
   } else {

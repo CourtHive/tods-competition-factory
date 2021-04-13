@@ -10,11 +10,14 @@ import {
   addMatchUpStopTime,
   addMatchUpResumeTime,
   addMatchUpOfficial,
+  addMatchUpScheduleItems,
 } from './scheduleItems';
 
 const scheduleGovernor = {
   assignMatchUpCourt,
   assignMatchUpVenue,
+
+  addMatchUpScheduleItems,
   addMatchUpScheduledDayDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
