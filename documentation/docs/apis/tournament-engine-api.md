@@ -263,10 +263,12 @@ Convenience function to add several schedule items at once.
 tournamentEngine.addMatchUpScheduleItems({
   drawId,
   matchUpId,
-  scheduledTime,
-  scheduledDayDate,
-  startTime,
-  endTime,
+  schedule: {
+    scheduledTime,
+    scheduledDayDate,
+    startTime,
+    endTime,
+  },
   disableNotice, // when disabled subscribers will not be notified
 });
 ```
@@ -1943,6 +1945,13 @@ tournamentEngine.setMatchUpStatus({
   matchUpTieId, // optional - if part of a TIE matchUp
   outcome,
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  schedule: {
+    // optional - set schedule items
+    scheduledDayDate,
+    scheduledTime,
+    startTime,
+    endTime,
+  },
 });
 ```
 

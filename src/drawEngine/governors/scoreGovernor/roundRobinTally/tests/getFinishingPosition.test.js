@@ -111,7 +111,7 @@ it('can recognize unbreakable 3 way ties', () => {
   ).toEqual([1, 2, 2, 2, 5]);
 });
 
-it('can break 3 way ties bye setsRatio without idsFilter', () => {
+it('can break 3 way ties by setsRatio without idsFilter', () => {
   const outcomeValues = [
     [[4, 5], '6-0 6-0', 1], // win for drawPosition: 4
     [[2, 4], '6-0 6-0', 2], // win for drawPosition: 4
@@ -150,7 +150,7 @@ it('can break 3 way ties bye setsRatio without idsFilter', () => {
   ).toEqual([1, 2, 3, 4, 5]);
 });
 
-it('can breake 3 way ties by gamesRatio', () => {
+it('can break 3 way ties by gamesRatio', () => {
   const outcomeValues = [
     [[4, 5], '6-0 6-0', 1], // win for drawPosition: 4
     [[2, 4], '6-0 6-0', 2], // win for drawPosition: 4

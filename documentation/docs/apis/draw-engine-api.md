@@ -100,10 +100,12 @@ Convenience function to add several schedule items at once.
 ```js
 drawEngine.addMatchUpScheduleItems({
   matchUpId,
-  scheduledTime,
-  scheduledDayDate,
-  startTime,
-  endTime,
+  schedule: {
+    scheduledTime,
+    scheduledDayDate,
+    startTime,
+    endTime,
+  },
   disableNotice, // when disabled subscribers will not be notified
 });
 ```
@@ -979,6 +981,13 @@ drawEngine.setMatchUpStatus({
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   winningSide,
+  schedule: {
+    // optional - set schedule items
+    scheduledDayDate,
+    scheduledTime,
+    startTime,
+    endTime,
+  },
 });
 ```
 
