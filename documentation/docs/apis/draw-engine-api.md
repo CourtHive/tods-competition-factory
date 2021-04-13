@@ -981,6 +981,13 @@ drawEngine.setMatchUpStatus({
   matchUpTieId, // optional - if part of a TIE matchUp
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   winningSide,
+  schedule: {
+    // optional - set schedule items
+    scheduledDayDate,
+    scheduledTime,
+    startTime,
+    endTime,
+  },
 });
 ```
 

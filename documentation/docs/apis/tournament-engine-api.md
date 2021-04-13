@@ -1945,6 +1945,13 @@ tournamentEngine.setMatchUpStatus({
   matchUpTieId, // optional - if part of a TIE matchUp
   outcome,
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  schedule: {
+    // optional - set schedule items
+    scheduledDayDate,
+    scheduledTime,
+    startTime,
+    endTime,
+  },
 });
 ```
 
