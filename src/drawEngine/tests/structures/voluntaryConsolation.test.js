@@ -25,7 +25,7 @@ it('can add draw with voluntary consolation stage', () => {
   expect(drawDefinition.structures[0].stage).toEqual(VOLUNTARY_CONSOLATION);
 });
 
-it.only('can add voluntary consolation structure to an existing draw', () => {
+it('can add voluntary consolation structure to an existing draw', () => {
   const drawSize = 32;
   const drawProfiles = [
     {
