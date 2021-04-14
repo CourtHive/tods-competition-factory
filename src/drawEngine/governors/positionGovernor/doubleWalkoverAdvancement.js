@@ -1,6 +1,7 @@
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
@@ -18,7 +19,6 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 
 export function doubleWalkoverAdvancement({
   drawDefinition,
