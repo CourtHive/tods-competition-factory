@@ -51,6 +51,7 @@ import { addPlayoffStructures } from './addPlayoffStructures';
 import { modifySeedAssignment } from './modifySeedAssignment';
 
 import { setSubOrder } from '../../../drawEngine/governors/positionGovernor/setSubOrder';
+import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { removeScaleValues } from './entries/removeScaleValues';
 import { getScaledEntries } from './entries/getScaledEntries';
 import { removeSeeding } from './entries/removeSeeding';
@@ -60,11 +61,11 @@ import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipa
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
+import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
-import { generateSeedingScaleItems } from './entries/generateSeedingScaleItems';
 import { addFlight } from './addFlight';
 
 const eventGovernor = {
@@ -105,6 +106,7 @@ const eventGovernor = {
   generateFlightProfile,
   deleteFlightAndFlightDraw,
   deleteFlightProfileAndFlightDraws,
+  addVoluntaryConsolationStage,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,

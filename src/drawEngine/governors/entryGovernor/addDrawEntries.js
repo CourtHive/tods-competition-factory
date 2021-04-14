@@ -2,7 +2,10 @@ import { refreshEntryPositions } from '../../../common/producers/refreshEntryPos
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  LUCKY_LOSER,
+} from '../../../constants/entryStatusConstants';
 import {
   INVALID_STAGE,
   MISSING_STAGE,
@@ -14,7 +17,10 @@ import {
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+import {
+  MAIN,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
 /**
  *
@@ -46,9 +52,26 @@ export function addDrawEntry({
 
   participantId = participantId || (participant && participant.participantId);
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-  if (participantInEntries({ participantId, drawDefinition })) {
+
+  const invalidLuckyLoser =
+    entryStatus === LUCKY_LOSER &&
+    participantInEntries({ participantId, drawDefinition, entryStatus });
+  const invalidVoluntaryConsolation =
+    entryStage === VOLUNTARY_CONSOLATION &&
+    participantInEntries({
+      participantId,
+      drawDefinition,
+      entryStage,
+    });
+  const invalidEntry =
+    entryStatus !== LUCKY_LOSER &&
+    entryStage !== VOLUNTARY_CONSOLATION &&
+    participantInEntries({ drawDefinition, participantId });
+
+  if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
     return { error: EXISTING_PARTICIPANT };
   }
+
   const entry = Object.assign({}, participant, {
     participantId,
     entryStage,
@@ -88,7 +111,22 @@ export function addDrawEntries({
 
   const invalidParticipantIds = participantIds.reduce(
     (invalid, participantId) => {
-      if (participantInEntries({ participantId, drawDefinition })) {
+      const invalidLuckyLoser =
+        entryStatus === LUCKY_LOSER &&
+        participantInEntries({ participantId, drawDefinition, entryStatus });
+      const invalidVoluntaryConsolation =
+        stage === VOLUNTARY_CONSOLATION &&
+        participantInEntries({
+          participantId,
+          drawDefinition,
+          entryStage: stage,
+        });
+      const invalidEntry =
+        entryStatus !== LUCKY_LOSER &&
+        stage !== VOLUNTARY_CONSOLATION &&
+        participantInEntries({ drawDefinition, participantId });
+
+      if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
         return invalid.concat({ participantId, error: EXISTING_PARTICIPANT });
       }
       return invalid;
