@@ -2,7 +2,6 @@ import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { findStructure } from '../../../getters/findStructure';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
-import { getByesData } from '../../../getters/getByesData';
 import { unique } from '../../../../utilities';
 
 import {
@@ -59,15 +58,10 @@ export function getValidAssignmentActions({
       .map((assignment) => assignment.drawPosition);
   }
 
-  const { positionsToAvoidDoubleBye } = getByesData({
-    drawDefinition,
-    structure,
-  });
   if (!isByePosition) {
     validAssignmentActions.push({
       type: ASSIGN_BYE,
       method: ASSIGN_BYE_METHOD,
-      positionsToAvoidDoubleBye,
       willDisableLinks: possiblyDisablingAction,
       payload: { drawId, structureId, drawPosition },
     });
