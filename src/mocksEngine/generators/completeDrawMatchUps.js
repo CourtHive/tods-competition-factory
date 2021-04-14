@@ -24,29 +24,32 @@ export function completeDrawMatchUps({
       structure,
       inContext: true,
     });
-    matchUps.sort(matchUpSort).forEach(({ matchUpId }) => {
-      const { matchUp: targetMatchUp } = tournamentEngine.findMatchUp({
-        drawId,
-        matchUpId,
-      });
-      const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
-      if (targetMatchUp.readyToScore) {
-        const result = completeMatchUp({
-          tournamentEngine,
-          targetMatchUp,
-          matchUpStatus: COMPLETED,
-          scoreString: '6-1 6-1',
-          matchUpFormat,
-          winningSide,
+    matchUps
+      .filter(({ winningSide }) => !winningSide)
+      .sort(matchUpSort)
+      .forEach(({ matchUpId }) => {
+        const { matchUp: targetMatchUp } = tournamentEngine.findMatchUp({
           drawId,
+          matchUpId,
         });
-        if (result.error) {
-          console.log({ result });
-          errors.push(result.error);
-          return result;
+        const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
+        if (targetMatchUp.readyToScore) {
+          const result = completeMatchUp({
+            tournamentEngine,
+            targetMatchUp,
+            matchUpStatus: COMPLETED,
+            scoreString: '6-1 6-1',
+            matchUpFormat,
+            winningSide,
+            drawId,
+          });
+          if (result.error) {
+            console.log({ result });
+            errors.push(result.error);
+            return result;
+          }
         }
-      }
-    });
+      });
   });
   return errors.length ? { error: errors } : SUCCESS;
 }

@@ -7,6 +7,7 @@ import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatCon
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import {
   MAIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
@@ -184,6 +185,22 @@ function generateEventWithDraw({
       matchUpFormat,
       randomWinningSide,
     });
+    if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+      const mainStructure = drawDefinition.structures.find(
+        (structure) => structure.stage === MAIN
+      );
+      tournamentEngine.automatedPlayoffPositioning({
+        drawId,
+        structureId: mainStructure.structureId,
+      });
+      completeDrawMatchUps({
+        tournamentEngine,
+        drawId,
+        matchUpFormat,
+        randomWinningSide,
+      });
+    }
+    // TODO: check if RRWPO & automate & complete
   } else if (!manual && drawProfile.outcomes) {
     const { matchUps } = tournamentEngine.allDrawMatchUps({
       drawId,
