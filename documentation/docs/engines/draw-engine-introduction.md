@@ -1,12 +1,23 @@
 ---
-title: matchUpStatus
+title: Introduction
 ---
+
+The **_drawEngine_** generates drawDefinitions and matchUp results, managing participant movement within and between structures. Participants, however, are not necessary for the operations performed by the **_drawEngine_**, and reference to `participantIds` only occurs in two places:
+
+1. `drawDefinition.entries`
+2. `drawDefinition.structures[#].positionAssignments`
+
+## Participant "agnostic"
+
+The **_drawEngine_** is "participant agnostic", and doesn't know or care whether the participants moving through the `structures` of a draw are `participantType` INDIVIDUAL, PAIR or TEAM.
+
+The logic governing participant movements between `matchUps` within `structures` requires only `drawPositions`; `positionAssignments` are used when requesting `matchUps` with "context" to add `sides` which include `participants`.
 
 ## Changing matchUpStatus
 
 Changing the `matchUpStatus` of a `matchUp` may affect other `matchUps` across the structures that make up a draw.
 
-Any attempt to from a **_directing_** to a **_non-directing_** `matchUpStatus`, or vice-versa, causes the **_drawEngine_** to check the validity of the change and, if valid, to modify all affected `matchUps`.
+Any attempt to change from a **_directing_** to a **_non-directing_** `matchUpStatus`, or vice-versa, causes the **_drawEngine_** to check the validity of the change and, if valid, to modify all affected `matchUps`.
 
 ## matchUpStatus effects
 
@@ -30,10 +41,6 @@ Any attempt to from a **_directing_** to a **_non-directing_** `matchUpStatus`, 
 ## Single structure effects
 
 If the effects of a change to a `matchUpStatus` are limited to a single structure, the only changes necessary are that `drawPositions` of relevant `matchUps` be modified to reflect participant movements across rounds.
-
-:::tip
-`drawDefinitions` are "participant agnostic". All `matchUps` within `structures` require only `drawPositions`.
-:::
 
 ## Multi-structure effects
 
