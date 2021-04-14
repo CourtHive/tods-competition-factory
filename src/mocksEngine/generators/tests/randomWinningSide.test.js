@@ -23,8 +23,9 @@ it.each([
   });
 
   const winningSides = matchUps.map(({ winningSide }) => winningSide);
+  const completed = matchUps.filter(({ winningSide }) => winningSide);
   const instances = instanceCount(winningSides);
-  console.log({ instances });
+  expect(instances[1] + instances[2]).toEqual(completed.length);
 });
 
 function generateScenario({ drawSize, structureOptions, drawType }) {
