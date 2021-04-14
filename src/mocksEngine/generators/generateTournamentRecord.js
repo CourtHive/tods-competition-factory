@@ -119,6 +119,7 @@ function generateEventWithDraw({
     feedPolicy,
     structureOptions,
     automated,
+    stage,
   } = drawProfile;
   let { participantsCount = 32, seedsCount } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -141,7 +142,11 @@ function generateEventWithDraw({
     .filter(isEventParticipantType)
     .slice(0, participantsCount)
     .map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  result = tournamentEngine.addEventEntries({
+    eventId,
+    participantIds,
+    entryStage: stage,
+  });
   if (result.error) return { error: result.error };
 
   const alternatesParticipantIds = participants
@@ -170,6 +175,7 @@ function generateEventWithDraw({
     structureOptions,
     goesTo,
     automated,
+    stage,
   });
 
   if (generationError) return { error: generationError };

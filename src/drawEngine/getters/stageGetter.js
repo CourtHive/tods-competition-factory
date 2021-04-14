@@ -15,9 +15,7 @@ import {
   POSITION,
   CONTAINER,
   PLAY_OFF,
-  MAIN,
-  QUALIFYING,
-  CONSOLATION,
+  validStages,
 } from '../../constants/drawDefinitionConstants';
 
 import { SUCCESS } from '../../constants/resultConstants';
@@ -40,7 +38,7 @@ export function validStage({ stage, drawDefinition }) {
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });
   const exists = Object.keys(entryProfile).includes(stage);
-  if (!exists && [MAIN, QUALIFYING, PLAY_OFF, CONSOLATION].includes(stage)) {
+  if (!exists && validStages.includes(stage)) {
     const attributes = [
       {
         [stage]: {

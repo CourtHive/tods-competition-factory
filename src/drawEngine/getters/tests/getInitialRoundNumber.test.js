@@ -1,8 +1,9 @@
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateRange } from '../../../utilities';
 import { getInitialRoundNumber } from '../getInitialRoundNumber';
+
+import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 it('can accurately determine initialRoundNumber', () => {
   const drawProfiles = [

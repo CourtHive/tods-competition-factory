@@ -35,6 +35,7 @@ export function generateDrawDefinition(props) {
     drawId,
     drawEntries,
     matchUpType,
+    stage = MAIN,
     seedingProfile,
     qualifyingRound,
     automated = true,
@@ -92,7 +93,6 @@ export function generateDrawDefinition(props) {
     matchUpFormat = 'SET3-S:6/TB7';
   }
 
-  const stage = MAIN;
   const entries = drawEntries || event?.entries || [];
   const eventType = event?.eventType;
   const stageEntries = entries.filter(
@@ -115,6 +115,7 @@ export function generateDrawDefinition(props) {
   });
 
   const drawProfile = {
+    stage,
     drawId,
     drawSize,
     drawType,
