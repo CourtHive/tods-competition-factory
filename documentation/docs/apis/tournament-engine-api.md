@@ -397,6 +397,19 @@ tournamentEngine.addVenue({ venue: { venueName } });
 
 ---
 
+## addVoluntaryConsolationStage
+
+Modifies the entryProfile for a draw to allow `{ entryStage: VOLUNTARY_CONSOLATION }`
+
+```js
+tournamentEngine.addVoluntaryConsolationStage({
+  drawId,
+  drawSize,
+});
+```
+
+---
+
 ## allowedDrawTypes
 
 Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
@@ -973,6 +986,19 @@ const {
   participantAttribute,
   personAttribute, // optional - attribute of person object
   uuids, // optional - uuids to assign to generated participants
+});
+```
+
+---
+
+### generateVoluntaryConsolationStructure
+
+Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
+
+```js
+tournamentEngine.generateVoluntaryConsolationStructure({
+  drawId,
+  automated: true, // optional
 });
 ```
 
