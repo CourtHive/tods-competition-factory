@@ -10,7 +10,6 @@ export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
-export const BYES_LIMIT_REACHED = 'BYEs limit';
 export const DRAW_POSITION_ASSIGNED = 'drawPosition already assigned';
 export const DRAW_POSITION_NOT_CLEARED = 'drawPosition not cleared';
 export const DRAW_POSITION_NOT_FOUND = 'drawPosition not found';
@@ -31,6 +30,7 @@ export const MISSING_SEEDCOUNT_THRESHOLDS = 'Missing seedCountThresholds';
 export const MISSING_SEED_ASSIGNMENTS = 'Missing seedAssignments';
 export const MISSING_SEED_BLOCKS = 'Missing seedBlocks';
 export const INVALID_SEED_NUMBER = 'Invalid seedNumber';
+export const INVALID_SEED_POSITION = 'Invalid seedPosition';
 
 export const MISSING_TARGET_LINK = 'Missing targetLink';
 
@@ -219,6 +219,7 @@ export const errorConditionConstants = {
   INVALID_RECORDS,
   INVALID_SCALE_ITEM,
   INVALID_SEED_NUMBER,
+  INVALID_SEED_POSITION,
   INVALID_SET_NUMBER,
   INVALID_SIDE_NUMBER,
   INVALID_STAGE,
@@ -283,7 +284,6 @@ export const errorConditionConstants = {
   MISSING_VENUE_ID,
   MODIFICATIONS_FAILED,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
-  BYES_LIMIT_REACHED,
   NO_MODIFICATIONS_APPLIED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,

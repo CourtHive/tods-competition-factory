@@ -168,15 +168,13 @@ drawEngine.addMatchUpTimeItem({
 
 ---
 
-## setSubOrder
+## addVoluntaryConsolationStage
 
-Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+Modifies the entryProfile for a draw to allow `{ entryStage: VOLUNTARY_CONSOLATION }`
 
 ```js
-drawEngine.setSubOrder({
-  structureId, // structure identifier within drawDefinition
-  drawPosition: 1, // drawPosition of the participant where subOrder is to be added
-  subOrder: 2, // order in which tied participant should receive finishing position
+drawEngine.addVoluntaryConsolationStage({
+  drawSize,
 });
 ```
 
@@ -560,6 +558,18 @@ Returns string representation of current tieMatchUp score.
 drawEngine.generateTieMatchUpScoreString({
   matchUp,
   separator, // optional - defaults to '-'
+});
+```
+
+---
+
+### generateVoluntaryConsolationStructure
+
+Generates a new structure within a `drawDefinition` if any draw entries are present for `{ entryStage: VOLUNTARY_CONSOLATION }`.
+
+```js
+drawEngine.generateVoluntaryConsolationStructure({
+  automated: true, // optional
 });
 ```
 
@@ -1057,6 +1067,20 @@ By default a deep copy of the tournament record is made so that mutations made b
 ## setSubscriptions
 
 Please refer to the [Subscriptions](../concepts/subscriptions) in General Concepts.
+
+---
+
+## setSubOrder
+
+Assigns a subOrder value to a participant within a structure by drawPosition where participant has been assigned
+
+```js
+drawEngine.setSubOrder({
+  structureId, // structure identifier within drawDefinition
+  drawPosition: 1, // drawPosition of the participant where subOrder is to be added
+  subOrder: 2, // order in which tied participant should receive finishing position
+});
+```
 
 ---
 

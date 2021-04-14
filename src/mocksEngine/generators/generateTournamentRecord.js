@@ -7,6 +7,7 @@ import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatCon
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import {
   MAIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
@@ -118,6 +119,7 @@ function generateEventWithDraw({
     feedPolicy,
     structureOptions,
     automated,
+    stage,
   } = drawProfile;
   let { participantsCount = 32, seedsCount } = drawProfile;
   if (participantsCount > drawSize) participantsCount = drawSize;
@@ -140,7 +142,11 @@ function generateEventWithDraw({
     .filter(isEventParticipantType)
     .slice(0, participantsCount)
     .map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  result = tournamentEngine.addEventEntries({
+    eventId,
+    participantIds,
+    entryStage: stage,
+  });
   if (result.error) return { error: result.error };
 
   const alternatesParticipantIds = participants
@@ -169,6 +175,7 @@ function generateEventWithDraw({
     structureOptions,
     goesTo,
     automated,
+    stage,
   });
 
   if (generationError) return { error: generationError };
@@ -184,6 +191,22 @@ function generateEventWithDraw({
       matchUpFormat,
       randomWinningSide,
     });
+    if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+      const mainStructure = drawDefinition.structures.find(
+        (structure) => structure.stage === MAIN
+      );
+      tournamentEngine.automatedPlayoffPositioning({
+        drawId,
+        structureId: mainStructure.structureId,
+      });
+      completeDrawMatchUps({
+        tournamentEngine,
+        drawId,
+        matchUpFormat,
+        randomWinningSide,
+      });
+    }
+    // TODO: check if RRWPO & automate & complete
   } else if (!manual && drawProfile.outcomes) {
     const { matchUps } = tournamentEngine.allDrawMatchUps({
       drawId,

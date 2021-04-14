@@ -46,7 +46,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Draw Engine',
-      items: ['apis/draw-engine-api'],
+      items: ['engines/draw-engine-introduction', 'apis/draw-engine-api'],
     },
   ],
 };

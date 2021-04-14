@@ -6,7 +6,6 @@ import { findStructure } from '../../../getters/findStructure';
 import { getByesData } from '../../../getters/getByesData';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { BYES_LIMIT_REACHED } from '../../../../constants/errorConditionConstants';
 
 export function positionByes({
   drawDefinition,
@@ -26,11 +25,7 @@ export function positionByes({
   });
 
   const byesToPlace = byesCount - placedByes;
-  if (byesToPlace < 0) {
-    console.log('Too many BYEs playced');
-    return { error: BYES_LIMIT_REACHED };
-  }
-  if (byesToPlace === 0) return SUCCESS;
+  if (byesToPlace <= 0) return SUCCESS;
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const {

@@ -7,6 +7,7 @@ import { findStructure } from './findStructure';
 
 import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
 import {
+  INVALID_SEED_POSITION,
   MISSING_SEEDING_POLICY,
   MISSING_SEED_BLOCKS,
   MISSING_STRUCTURE,
@@ -18,10 +19,8 @@ export function getValidSeedBlocks({
   appliedPolicies,
   allPositions,
 }) {
-  let waterfallSeeding;
   let firstRoundSeedsCount,
     fedSeedNumberOffset = 0;
-  const errors = [];
   let isFeedIn,
     isContainer,
     validSeedBlocks = [];
@@ -63,7 +62,14 @@ export function getValidSeedBlocks({
 
   const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
 
-  if (!seedBlocks) errors.push({ error: MISSING_SEEDING_POLICY });
+  if (!seedBlocks) {
+    return {
+      error: MISSING_SEEDING_POLICY,
+      validSeedBlocks: [],
+      isContainer,
+      isFeedIn,
+    };
+  }
   const baseDrawSize = firstRoundDrawPositions?.length || 0;
 
   // firstRoundDrawPositions have been popped
@@ -109,8 +115,15 @@ export function getValidSeedBlocks({
       seedNumberOffset: fedSeedNumberOffset,
       drawPositionOffset: firstRoundDrawPositionOffset,
     });
+    if (error) {
+      return {
+        error,
+        validSeedBlocks: [],
+        isContainer,
+        isFeedIn,
+      };
+    }
     blocks.forEach((block) => validSeedBlocks.push(block));
-    if (error) errors.push({ seedBlockError: error });
   }
 
   const seedDrawPositions = [].concat(
@@ -124,13 +137,16 @@ export function getValidSeedBlocks({
   );
 
   if (!isFeedIn && !isContainer && !validSeedPositions) {
-    console.log('ERROR:', { seedDrawPositions });
+    return {
+      error: INVALID_SEED_POSITION,
+      validSeedBlocks: [],
+      isContainer,
+      isFeedIn,
+    };
   }
 
   return {
-    error: errors,
     validSeedBlocks,
-    waterfallSeeding,
     isFeedIn,
     isContainer,
   };
