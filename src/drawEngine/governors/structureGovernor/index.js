@@ -1,3 +1,4 @@
+import { generateVoluntaryConsolationStructure } from '../../generators/voluntaryConsolation';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { buildDrawHierarchy } from '../../generators/drawHierarchy';
@@ -23,6 +24,7 @@ const structureGovernor = {
   structureSort,
   generateDrawType,
   addVoluntaryConsolationStage,
+  generateVoluntaryConsolationStructure,
 
   buildDrawHierarchy, // obsolete
 };

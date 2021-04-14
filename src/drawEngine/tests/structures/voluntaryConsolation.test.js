@@ -73,4 +73,19 @@ it.only('can add voluntary consolation structure to an existing draw', () => {
     ({ entryStage }) => entryStage === VOLUNTARY_CONSOLATION
   );
   expect(voluntaryEntries.length).toEqual(consolationParticipantIds.length);
+
+  result = tournamentEngine.generateVoluntaryConsolationStructure({
+    drawId,
+    automated: true,
+  });
+  expect(result.success).toEqual(true);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const voluntaryConsolationStructure = drawDefinition.structures.find(
+    ({ stage }) => stage === VOLUNTARY_CONSOLATION
+  );
+  const assignedPositions = voluntaryConsolationStructure.positionAssignments.filter(
+    ({ participantId }) => participantId
+  );
+  expect(assignedPositions.length).toEqual(consolationParticipantIds.length);
 });
