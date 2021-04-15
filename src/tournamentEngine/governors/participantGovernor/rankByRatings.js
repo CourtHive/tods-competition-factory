@@ -4,6 +4,7 @@ import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { addNotice, getTopics } from '../../../global/globalState';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 // TODO: should be refactored to take scaleAttributes instead of { category, eventType }
 export function rankByRatings({
@@ -60,9 +61,9 @@ export function rankByRatings({
   });
 
   const { topics } = getTopics();
-  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+  if (modifiedParticipants.length && topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }

@@ -1,11 +1,12 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { removeCourtAssignment } from './removeCourtAssignment';
+import { addNotice } from '../../../global/globalState';
 import { getCourts } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { addNotice } from '../../../global/globalState';
+import { DELETE_VENUE } from '../../../constants/topicConstants';
 
 // TODO: should not require drawDefinition
 export function deleteVenue({
@@ -40,7 +41,7 @@ export function deleteVenue({
     (venue) => venue.venueId !== venueId
   );
 
-  addNotice({ topic: 'deleteVenue', payload: { venueId } });
+  addNotice({ topic: DELETE_VENUE, payload: { venueId } });
 
   return SUCCESS;
 }

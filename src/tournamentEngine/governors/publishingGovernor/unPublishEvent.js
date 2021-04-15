@@ -7,6 +7,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HIDDEN, PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { UNPUBLISH_EVENT } from '../../../constants/topicConstants';
 
 export function unPublishEvent({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -19,7 +20,7 @@ export function unPublishEvent({ tournamentRecord, event }) {
   const result = addEventTimeItem({ event, timeItem });
   if (result.error) return { error: result.error };
 
-  addNotice({ topic: 'unpublishEvent', payload: { eventId: event.eventId } });
+  addNotice({ topic: UNPUBLISH_EVENT, payload: { eventId: event.eventId } });
 
   return Object.assign({ eventId: event.eventId }, SUCCESS);
 }

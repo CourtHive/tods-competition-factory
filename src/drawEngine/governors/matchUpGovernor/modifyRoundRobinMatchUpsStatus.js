@@ -1,6 +1,8 @@
-import { addNotice } from '../../../global/globalState';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { addNotice } from '../../../global/globalState';
+
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function modifyRoundRobinMatchUpsStatus({
   positionAssignments,
@@ -22,7 +24,7 @@ export function modifyRoundRobinMatchUpsStatus({
 
       Object.assign(matchUp, { matchUpStatus });
       addNotice({
-        topic: 'modifyMatchUp',
+        topic: MODIFY_MATCHUP,
         payload: { matchUp },
       });
     }

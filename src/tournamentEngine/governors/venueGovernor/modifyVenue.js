@@ -15,6 +15,7 @@ import {
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyVenue({
   tournamentRecord,
@@ -117,7 +118,7 @@ export function modifyVenue({
 
   if (errors.length) return { error: { errors } };
 
-  addNotice({ topic: 'modifyVenue', payload: { venue } });
+  addNotice({ topic: MODIFY_VENUE, payload: { venue } });
 
   return Object.assign({}, SUCCESS, { venue: makeDeepCopy(venue) });
 }

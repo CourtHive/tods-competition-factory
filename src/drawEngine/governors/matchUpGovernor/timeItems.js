@@ -4,6 +4,7 @@ import { addNotice } from '../../../global/globalState';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 /*
   generic function to addMatchUpTimeItem
@@ -21,7 +22,7 @@ export function addMatchUpTimeItem({
 
   const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
   if (!disableNotice) {
-    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
   }
   return result;
 }
@@ -30,6 +31,6 @@ export function resetMatchUpTimeItems({ drawDefinition, matchUpId }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
-  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
   return SUCCESS;
 }

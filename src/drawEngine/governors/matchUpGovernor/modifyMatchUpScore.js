@@ -6,6 +6,7 @@ import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 /**
  *
@@ -85,6 +86,6 @@ export function modifyMatchUpScore({
     }
   }
 
-  addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+  addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
   return SUCCESS;
 }

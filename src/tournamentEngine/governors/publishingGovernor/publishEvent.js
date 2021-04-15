@@ -9,6 +9,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { PUBLISH, PUBLIC, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 
 export function publishEvent({
   tournamentRecord,
@@ -61,7 +62,7 @@ export function publishEvent({
     publishState?.PUBLIC?.drawIds.includes(drawId)
   );
 
-  addNotice({ topic: 'publishEvent', payload: { eventData } });
+  addNotice({ topic: PUBLISH_EVENT, payload: { eventData } });
 
   return Object.assign({}, SUCCESS, { eventData });
 }

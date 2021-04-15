@@ -1,11 +1,12 @@
 import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
+import { addNotice } from '../../../global/globalState';
 
 import {
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice } from '../../../global/globalState';
+import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
 
 // TODO: don't remove participants who are active in draws
 // If not active in draws, remove participantIds from all entries
@@ -30,7 +31,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
 
   if (participantsRemovedCount) {
     addNotice({
-      topic: 'deleteParticipants',
+      topic: DELETE_PARTICIPANTS,
       payload: { participantIds },
     });
   }

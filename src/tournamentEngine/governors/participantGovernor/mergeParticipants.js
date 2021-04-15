@@ -1,5 +1,10 @@
-import { SUCCESS } from '../../../constants/resultConstants';
 import { addNotice, getTopics } from '../../../global/globalState';
+
+import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  ADD_PARTICIPANTS,
+  MODIFY_PARTICIPANTS,
+} from '../../../constants/topicConstants';
 
 export function mergeParticipants({
   tournamentRecord,
@@ -38,17 +43,17 @@ export function mergeParticipants({
       ...newParticipants
     );
 
-    if (topics.includes('addParticipants')) {
+    if (topics.includes(ADD_PARTICIPANTS)) {
       addNotice({
-        topic: 'addParticipants',
+        topic: ADD_PARTICIPANTS,
         payload: { participants: newParticipants },
       });
     }
   }
 
-  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+  if (modifiedParticipants.length && topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }

@@ -21,6 +21,7 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
@@ -89,7 +90,7 @@ export function assignMatchUpDrawPosition({
 
   if (positionAdded) {
     addNotice({
-      topic: 'modifyMatchUp',
+      topic: MODIFY_MATCHUP,
       payload: { matchUp },
     });
   }

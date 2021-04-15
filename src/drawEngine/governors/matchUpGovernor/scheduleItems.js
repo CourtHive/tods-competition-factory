@@ -1,5 +1,12 @@
-import { addMatchUpTimeItem } from './timeItems';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { formatDate } from '../../../utilities/dateTime';
+import { addNotice } from '../../../global/globalState';
+import { addMatchUpTimeItem } from './timeItems';
+import {
+  dateValidation,
+  timeValidation,
+  validTimeString,
+} from '../../../fixtures/validations/regex';
 
 import {
   MISSING_MATCHUP_ID,
@@ -15,12 +22,6 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 import {
-  dateValidation,
-  timeValidation,
-  validTimeString,
-} from '../../../fixtures/validations/regex';
-import { formatDate } from '../../../utilities/dateTime';
-import {
   START_TIME,
   STOP_TIME,
   RESUME_TIME,
@@ -29,7 +30,7 @@ import {
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice } from '../../../global/globalState';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -96,7 +97,7 @@ export function addMatchUpScheduleItems({
   if (!disableNotice) {
     const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
   }
   return SUCCESS;
 }

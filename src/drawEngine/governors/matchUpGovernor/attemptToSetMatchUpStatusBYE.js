@@ -8,6 +8,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (!structure) return { error: MISSING_STRUCTURE };
@@ -34,7 +35,7 @@ export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (matchUpIncludesBye) {
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
-    addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
     return SUCCESS;
   } else {
     return {

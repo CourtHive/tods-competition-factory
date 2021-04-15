@@ -12,6 +12,10 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
+import {
+  AUDIT,
+  DELETED_MATCHUPIDS,
+} from '../../../../constants/topicConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   const drawId = Array.isArray(drawIds) && drawIds[0];
@@ -69,7 +73,7 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   }
 
   if (auditTrail.length) {
-    addNotice({ topic: 'audit', payload: auditTrail });
+    addNotice({ topic: AUDIT, payload: auditTrail });
     const timeItem = {
       itemType: 'deleteDrawDefinitions',
       itemValue: deletedDrawDetails,
@@ -78,6 +82,6 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     if (result.error) return { error: result.error };
   }
   if (matchUpIds.length)
-    addNotice({ topic: 'deletedMatchUpIds', payload: { matchUpIds } });
+    addNotice({ topic: DELETED_MATCHUPIDS, payload: { matchUpIds } });
   return SUCCESS;
 }

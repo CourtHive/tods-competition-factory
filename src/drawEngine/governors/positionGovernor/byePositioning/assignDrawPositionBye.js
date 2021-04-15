@@ -26,6 +26,7 @@ import {
   CONSOLATION,
   CONTAINER,
 } from '../../../../constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 
 /*
   assignDrawPositionBye
@@ -190,7 +191,7 @@ function setMatchUpStatusBYE({ matchUp }) {
   });
 
   addNotice({
-    topic: 'modifyMatchUp',
+    topic: MODIFY_MATCHUP,
     payload: { matchUp },
   });
 }
@@ -391,7 +392,7 @@ function advanceWinner({
   });
 
   addNotice({
-    topic: 'modifyMatchUp',
+    topic: MODIFY_MATCHUP,
     payload: { matchUp: noContextWinnerMatchUp },
   });
 

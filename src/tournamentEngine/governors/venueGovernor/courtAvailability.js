@@ -6,6 +6,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { addNotice } from '../../../global/globalState';
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyCourtAvailability({
   tournamentRecord,
@@ -26,7 +27,7 @@ export function modifyCourtAvailability({
   }
 
   court.dateAvailability = dateAvailability;
-  if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
+  if (!disableNotice) addNotice({ topic: MODIFY_VENUE, payload: { venue } });
 
   return SUCCESS;
 }

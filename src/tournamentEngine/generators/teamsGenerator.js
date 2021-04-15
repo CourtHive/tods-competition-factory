@@ -7,6 +7,7 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
 import { UUID } from '../../utilities';
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
+import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 
 export function generateTeamsFromParticipantAttribute(props) {
   const {
@@ -84,7 +85,7 @@ export function generateTeamsFromParticipantAttribute(props) {
 
   if (participantsAdded) {
     addNotice({
-      topic: 'addParticipants',
+      topic: ADD_PARTICIPANTS,
       payload: { participants: newParticipants },
     });
   }

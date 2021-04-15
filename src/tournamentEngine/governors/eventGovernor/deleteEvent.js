@@ -3,6 +3,7 @@ import { addNotice } from '../../../global/globalState';
 
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { AUDIT } from '../../../constants/topicConstants';
 
 export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
@@ -28,7 +29,7 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
   });
 
   if (auditTrail.length) {
-    addNotice({ topic: 'audit', payload: auditTrail });
+    addNotice({ topic: AUDIT, payload: auditTrail });
     const timeItem = {
       itemType: 'deleteEvents',
       itemValue: deletedEventDetails,

@@ -19,6 +19,7 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from './scheduleItems';
+import { removeDelegatedOutcome } from './removeDelegatedOutcome';
 
 const matchUpGovernor = {
   setMatchUpStatus,
@@ -39,6 +40,7 @@ const matchUpGovernor = {
   addMatchUpResumeTime,
 
   setDelegatedOutcome,
+  removeDelegatedOutcome,
 
   matchUpSort,
   addMatchUpOfficial,

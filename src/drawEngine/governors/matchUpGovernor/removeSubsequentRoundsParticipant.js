@@ -1,8 +1,10 @@
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { addNotice } from '../../../global/globalState';
 import { numericSort } from '../../../utilities';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+
+import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 // TODO: Consolidate with duplicated version of this function
 export function removeSubsequentRoundsParticipant({
@@ -57,7 +59,7 @@ export function removeSubsequentRoundsParticipant({
 
     matchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
     addNotice({
-      topic: 'modifyMatchUp',
+      topic: MODIFY_MATCHUP,
       payload: { matchUp },
     });
   });
