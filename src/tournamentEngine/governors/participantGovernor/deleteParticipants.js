@@ -2,8 +2,10 @@ import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualPa
 import { addNotice } from '../../../global/globalState';
 
 import {
+  CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
+  NO_PARTICIPANTS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
@@ -16,7 +18,7 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
   const participantsCount = tournamentRecord.participants?.length;
-  if (!participantsCount) return { error: 'Tournament has no participants' };
+  if (!participantsCount) return { error: NO_PARTICIPANTS };
 
   tournamentRecord.participants = tournamentRecord.participants.filter(
     (participant) => !participantIds.includes(participant.participantId)
@@ -38,5 +40,5 @@ export function deleteParticipants({ tournamentRecord, participantIds }) {
 
   return participantsRemovedCount
     ? SUCCESS
-    : { error: 'Not all participants deleted' };
+    : { error: CANNOT_REMOVE_PARTICIPANTS };
 }

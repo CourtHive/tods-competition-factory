@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { DELETE_DRAW_DEFINITIONS } from '../../../constants/auditConstants';
 
 it('can notify subscriber when audit information is added', () => {
   const drawProfiles = [
@@ -20,7 +21,7 @@ it('can notify subscriber when audit information is added', () => {
   const subscriptions = {
     audit: (notices) => {
       expect(notices.length).toEqual(1);
-      expect(notices[0][0].action).toEqual('deleteDrawDefinition');
+      expect(notices[0][0].action).toEqual(DELETE_DRAW_DEFINITIONS);
       expect(notices[0][0].payload.drawDefinition).not.toBeUndefined();
     },
   };
