@@ -22,7 +22,7 @@ it('can notify subscriber when audit information is added', () => {
     audit: (notices) => {
       expect(notices.length).toEqual(1);
       expect(notices[0][0].action).toEqual(DELETE_DRAW_DEFINITIONS);
-      expect(notices[0][0].payload.drawDefinition).not.toBeUndefined();
+      expect(notices[0][0].payload.drawDefinitions).not.toBeUndefined();
     },
   };
   tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);
