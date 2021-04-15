@@ -6,6 +6,7 @@ import { generateRange } from '../../utilities';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ADD_MATCHUPS } from '../../constants/topicConstants';
 
 export function playoff(props) {
   const { structure, childStructures } = playoffStructures(props);
@@ -50,7 +51,7 @@ function playoffStructures({
     drawSize,
     finishingPositionOffset,
   });
-  addNotice({ topic: 'addMatchUps', payload: { matchUps } });
+  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;

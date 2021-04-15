@@ -9,6 +9,7 @@ import {
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUB_ORDER } from '../../../constants/extensionConstants';
 
 /**
  *
@@ -52,7 +53,7 @@ export function setSubOrder({
   );
 
   const extension = {
-    name: 'subOrder',
+    name: SUB_ORDER,
     value: subOrder,
   };
   let result = addExtension({ element: assignment, extension });

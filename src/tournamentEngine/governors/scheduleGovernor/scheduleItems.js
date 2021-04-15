@@ -2,7 +2,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 import { findParticipant } from '../../../common/deducers/findParticipant';
 import {
   addMatchUpScheduleItems as addScheduleItems,
-  addMatchUpScheduledDayDate as addScheduledDayDate,
+  addMatchUpScheduledDate as addScheduledDate,
   addMatchUpScheduledTime as addScheduledTime,
   addMatchUpResumeTime as addResumeTime,
   addMatchUpStartTime as addStartTime,
@@ -22,19 +22,19 @@ export function addMatchUpScheduleItems(props) {
   return addScheduleItems(props);
 }
 
-export function addMatchUpScheduledDayDate({
+export function addMatchUpScheduledDate({
   drawDefinition,
   matchUpId,
   disableNotice,
-  scheduledDayDate,
+  scheduledDate,
 }) {
-  // TODO: check that scheduledDayDate is within range of event dates / tournament dates
+  // TODO: check that scheduledDate is within range of event dates / tournament dates
 
-  const result = addScheduledDayDate({
+  const result = addScheduledDate({
     drawDefinition,
     matchUpId,
     disableNotice,
-    scheduledDayDate,
+    scheduledDate,
   });
 
   return result;

@@ -79,7 +79,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(upcoming.length).toEqual(16);
   expect(pendingMatchUps.length).toEqual(15);
 
-  const scheduledDate = '2020-01-01';
+  let scheduledDate = '2020-01-01';
   let contextFilters = {
     eventIds: [],
     drawIds: [drawId],
@@ -121,11 +121,11 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result).toEqual(SUCCESS);
 
-  const scheduledDayDate = '2020-01-03T00:00';
-  result = tournamentEngine.addMatchUpScheduledDayDate({
+  scheduledDate = '2020-01-03T00:00';
+  result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate,
+    scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -141,7 +141,7 @@ it('can add events, venues, and schedule matchUps', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps({ contextFilters }));
   expect(matchUps.length).toEqual(1);
   expect(matchUps[0].schedule.courtId).toEqual(courtId);
-  expect(matchUps[0].schedule.scheduledDate).toEqual(scheduledDayDate);
+  expect(matchUps[0].schedule.scheduledDate).toEqual(scheduledDate);
   expect(matchUps[0].schedule.scheduledTime).toEqual(scheduledTime);
 
   const venueName = 'New venue name';

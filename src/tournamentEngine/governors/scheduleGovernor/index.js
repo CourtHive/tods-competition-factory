@@ -3,7 +3,7 @@ import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 import {
-  addMatchUpScheduledDayDate,
+  addMatchUpScheduledDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,
@@ -18,7 +18,7 @@ const scheduleGovernor = {
   assignMatchUpVenue,
 
   addMatchUpScheduleItems,
-  addMatchUpScheduledDayDate,
+  addMatchUpScheduledDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,

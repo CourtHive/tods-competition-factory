@@ -11,6 +11,7 @@ import {
   COURT_EXISTS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 /**
  *
@@ -57,7 +58,7 @@ export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
     venue.courts.push(courtRecord);
 
     if (!disableNotice) {
-      addNotice({ topic: 'modifyVenue', payload: { venue } });
+      addNotice({ topic: MODIFY_VENUE, payload: { venue } });
     }
 
     if (errors.length) {
@@ -105,7 +106,7 @@ export function addCourts({
 
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });
-    addNotice({ topic: 'modifyVenue', payload: { venue } });
+    addNotice({ topic: MODIFY_VENUE, payload: { venue } });
     return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
   } else {
     return Object.assign(

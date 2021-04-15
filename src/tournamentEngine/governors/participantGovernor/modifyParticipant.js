@@ -18,6 +18,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function modifyParticipant({
   tournamentRecord,
@@ -121,7 +122,7 @@ export function modifyParticipant({
   }
 
   addNotice({
-    topic: 'modifyParticipants',
+    topic: MODIFY_PARTICIPANTS,
     payload: { participants: [existingParticipant] },
   });
 

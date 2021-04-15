@@ -7,6 +7,7 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function modifyParticipantOtherName({
   tournamentRecord,
@@ -25,9 +26,9 @@ export function modifyParticipantOtherName({
   participant.participantOtherName = participantOtherName;
 
   const { topics } = getTopics();
-  if (topics.includes('modifyParticipants')) {
+  if (topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: [participant] },
     });
   }

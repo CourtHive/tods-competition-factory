@@ -13,6 +13,7 @@ import {
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 /**
  *
@@ -71,7 +72,7 @@ export function addPenalty({
   });
 
   addNotice({
-    topic: 'modifyParticipants',
+    topic: MODIFY_PARTICIPANTS,
     payload: { participants: relevantParticipants },
   });
 
@@ -109,7 +110,7 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
 
   if (removedPenalty) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }
@@ -179,7 +180,7 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
 
   if (updatedPenalty) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }

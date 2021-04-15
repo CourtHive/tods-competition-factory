@@ -13,6 +13,7 @@ import {
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,
@@ -51,9 +52,9 @@ export function modifyParticipantsSignInStatus({
   });
 
   const { topics } = getTopics();
-  if (modifiedParticipants.length && topics.includes('modifyParticipants')) {
+  if (modifiedParticipants.length && topics.includes(MODIFY_PARTICIPANTS)) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }

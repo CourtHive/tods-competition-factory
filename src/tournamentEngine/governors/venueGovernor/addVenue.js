@@ -4,6 +4,7 @@ import { UUID, makeDeepCopy } from '../../../utilities';
 
 import { VENUE_EXISTS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ADD_VENUE } from '../../../constants/topicConstants';
 
 export function addVenue({ tournamentRecord, venue }) {
   if (!tournamentRecord.venues) tournamentRecord.venues = [];
@@ -17,7 +18,7 @@ export function addVenue({ tournamentRecord, venue }) {
 
   if (!venueExists) {
     tournamentRecord.venues.push(venueRecord);
-    addNotice({ topic: 'addVenue', payload: { venue: venueRecord } });
+    addNotice({ topic: ADD_VENUE, payload: { venue: venueRecord } });
 
     return getDevContext()
       ? Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS)

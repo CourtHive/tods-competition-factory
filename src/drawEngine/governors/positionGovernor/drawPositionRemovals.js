@@ -14,6 +14,7 @@ import {
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 /**
  *
@@ -225,7 +226,7 @@ function removeDrawPosition({
   const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
   Object.assign(targetMatchUp, { matchUpStatus });
   addNotice({
-    topic: 'modifyMatchUp',
+    topic: MODIFY_MATCHUP,
     payload: { matchUp: targetMatchUp },
   });
 

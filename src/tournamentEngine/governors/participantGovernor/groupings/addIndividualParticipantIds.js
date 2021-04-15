@@ -15,6 +15,7 @@ import {
   TEAM,
 } from '../../../../constants/participantTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -87,13 +88,13 @@ export function addIndividualParticipantIds({
   }
 
   const { topics } = getTopics();
-  if (topics.includes('modifyParticipants')) {
+  if (topics.includes(MODIFY_PARTICIPANTS)) {
     const updatedParticipant = tournamentParticipants.find(
       ({ participantId }) => participantId === groupingParticipantId
     );
 
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: [updatedParticipant] },
     });
   }

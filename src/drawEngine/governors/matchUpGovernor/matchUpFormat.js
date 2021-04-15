@@ -12,6 +12,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function setMatchUpFormat(props) {
   const errors = [];
@@ -50,7 +51,7 @@ export function setMatchUpFormat(props) {
       } else if (tieFormat) {
         matchUp.tieFormat = tieFormat;
       }
-      addNotice({ topic: 'modifyMatchUp', payload: { matchUp } });
+      addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });

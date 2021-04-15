@@ -5,6 +5,7 @@ import { findCourt } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 // TODO: drawDefinition should not be required. Although this method may primarily be called from competitionEngine.
 // getScheduledCourtMatchUps should get matchUPs inContext so that drawIds can be determined.
@@ -35,7 +36,7 @@ export function deleteCourt({
     venue.courts = (venue.courts || []).filter((courtRecord) => {
       return courtRecord.courtId !== courtId;
     });
-    if (!disableNotice) addNotice({ topic: 'modifyVenue', payload: { venue } });
+    if (!disableNotice) addNotice({ topic: MODIFY_VENUE, payload: { venue } });
   } else {
     return deletionMessage({ matchUpsCount: matchUps.length });
   }

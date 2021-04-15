@@ -12,6 +12,11 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
+import {
+  AUDIT,
+  DELETED_MATCHUPIDS,
+} from '../../../../constants/topicConstants';
+import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   const drawId = Array.isArray(drawIds) && drawIds[0];
@@ -28,8 +33,8 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
         const auditData = {
-          action: 'deleteDrawDefinition',
-          payload: { drawDefinition },
+          action: DELETE_DRAW_DEFINITIONS,
+          payload: { drawDefinitions: [drawDefinition] },
         };
         auditTrail.push(auditData);
         const { drawId, drawType, drawName } = drawDefinition;
@@ -69,15 +74,15 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   }
 
   if (auditTrail.length) {
-    addNotice({ topic: 'audit', payload: auditTrail });
+    addNotice({ topic: AUDIT, payload: auditTrail });
     const timeItem = {
-      itemType: 'deleteDrawDefinitions',
+      itemType: DELETE_DRAW_DEFINITIONS,
       itemValue: deletedDrawDetails,
     };
     const result = addEventTimeItem({ event, timeItem });
     if (result.error) return { error: result.error };
   }
   if (matchUpIds.length)
-    addNotice({ topic: 'deletedMatchUpIds', payload: { matchUpIds } });
+    addNotice({ topic: DELETED_MATCHUPIDS, payload: { matchUpIds } });
   return SUCCESS;
 }

@@ -1,11 +1,13 @@
 import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
+import { addNotice } from '../../global/globalState';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { TEAM } from '../../constants/participantTypes';
 import { UUID } from '../../utilities';
-import { addNotice } from '../../global/globalState';
+import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
+import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 
 export function generateTeamsFromParticipantAttribute(props) {
   const {
@@ -37,7 +39,7 @@ export function generateTeamsFromParticipantAttribute(props) {
         };
 
         const extension = {
-          name: 'groupingAttribute',
+          name: GROUPING_ATTRIBUTE,
           value: personAttribute || participantAttribute,
         };
         addExtension({ element: teams[attributeValue], extension });
@@ -53,12 +55,12 @@ export function generateTeamsFromParticipantAttribute(props) {
 
   const overlappingTeamParticipantids = participants
     .map((participant) => {
-      if (participant.participantType !== 'TEAM') return undefined;
-      if (participant.participantRole !== 'COMPETITOR') return undefined;
+      if (participant.participantType !== TEAM) return undefined;
+      if (participant.participantRole !== COMPETITOR) return undefined;
 
       const { extension } = findExtension({
         element: participant,
-        name: 'groupingAttribute',
+        name: GROUPING_ATTRIBUTE,
       });
       const groupingAttribute = extension?.value;
 
@@ -83,7 +85,7 @@ export function generateTeamsFromParticipantAttribute(props) {
 
   if (participantsAdded) {
     addNotice({
-      topic: 'addParticipants',
+      topic: ADD_PARTICIPANTS,
       payload: { participants: newParticipants },
     });
   }

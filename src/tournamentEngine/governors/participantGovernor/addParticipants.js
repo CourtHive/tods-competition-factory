@@ -21,6 +21,7 @@ import {
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
+import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function addParticipant({
   tournamentRecord,
@@ -161,7 +162,7 @@ export function addParticipant({
 
   if (!disableNotice) {
     addNotice({
-      topic: 'addParticipants',
+      topic: ADD_PARTICIPANTS,
       payload: { participants: [participant] },
     });
   }
@@ -228,7 +229,7 @@ export function addParticipants({
       return { error: errors };
     } else {
       addNotice({
-        topic: 'addParticipants',
+        topic: ADD_PARTICIPANTS,
         payload: { participants: addedParticipants },
       });
       const result = Object.assign({}, SUCCESS, {

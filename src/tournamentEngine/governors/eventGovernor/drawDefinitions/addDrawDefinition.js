@@ -10,6 +10,7 @@ import {
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 
 export function addDrawDefinition({ drawDefinition, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
@@ -87,7 +88,7 @@ export function addDrawDefinition({ drawDefinition, event }) {
   event.drawDefinitions.push(drawDefinition);
 
   const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-  addNotice({ topic: 'addMatchUps', payload: { matchUps } });
+  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
 
   return SUCCESS;
 }

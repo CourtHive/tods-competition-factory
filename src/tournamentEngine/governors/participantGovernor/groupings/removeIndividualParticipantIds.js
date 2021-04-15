@@ -10,6 +10,7 @@ import {
 import { GROUP, TEAM } from '../../../../constants/participantTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -48,7 +49,7 @@ export function removeIndividualParticipantIds({
 
   if (removed) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: [groupingParticipant] },
     });
   }

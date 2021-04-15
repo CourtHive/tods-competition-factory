@@ -12,6 +12,7 @@ import {
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { addNotice, getTopics } from '../../../../global/globalState';
+import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
 // would require that tournamentRecord be loaded in tournamentEngine
@@ -64,9 +65,9 @@ export function createGroupParticipant({
   if (result.error) return result;
 
   const { topics } = getTopics();
-  if (topics.includes('addParticipants')) {
+  if (topics.includes(ADD_PARTICIPANTS)) {
     addNotice({
-      topic: 'addParticipants',
+      topic: ADD_PARTICIPANTS,
       payload: { participants: [groupParticipant] },
     });
   }

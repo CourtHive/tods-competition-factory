@@ -98,6 +98,8 @@ export const INVALID_TIME_ZONE = 'Invalid Time Zone';
 export const INVALID_GAME_SCORES = 'Invalid game scores';
 export const INVALID_WINNING_SIDE = 'Invalid winningSide';
 
+export const NO_PARTICIPANTS = 'Tournament has no participants';
+export const CANNOT_REMOVE_PARTICIPANTS = 'Cannot remove participants';
 export const INVALID_PARTICIPANT = 'Invalid participant';
 export const INVALID_PARTICIPANT_ID = 'Invalid participantId';
 export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
@@ -180,6 +182,7 @@ export const NOT_IMPLEMENTED = 'Not implemented';
 export const EXISTING_PROFILE = 'Existing Profile';
 
 export const errorConditionConstants = {
+  CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,
   DRAW_DEFINITION_NOT_FOUND,
@@ -285,6 +288,7 @@ export const errorConditionConstants = {
   MODIFICATIONS_FAILED,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
   NO_MODIFICATIONS_APPLIED,
+  NO_PARTICIPANT_REMOVED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,
   NOT_FOUND,

@@ -15,6 +15,7 @@ import { COMPETITOR } from '../../../../constants/participantRoles';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -119,7 +120,7 @@ export function addEventEntryPairs({
   });
 
   if (newParticipants.length) {
-    addNotice('addParticipants', { participants: newParticipants });
+    addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
   }
 
   return Object.assign({}, result, { message });

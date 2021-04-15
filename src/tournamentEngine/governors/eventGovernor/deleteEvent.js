@@ -3,6 +3,8 @@ import { addNotice } from '../../../global/globalState';
 
 import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { AUDIT } from '../../../constants/topicConstants';
+import { DELETE_EVENTS } from '../../../constants/auditConstants';
 
 export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
@@ -12,8 +14,8 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
   tournamentRecord.events = (tournamentRecord.events || []).filter((event) => {
     if (eventIds.includes(event.eventId)) {
       const auditData = {
-        action: 'deleteEvent',
-        payload: { event },
+        action: DELETE_EVENTS,
+        payload: { events: [event] },
       };
       auditTrail.push(auditData);
       deletedEventDetails.push({
@@ -28,9 +30,9 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
   });
 
   if (auditTrail.length) {
-    addNotice({ topic: 'audit', payload: auditTrail });
+    addNotice({ topic: AUDIT, payload: auditTrail });
     const timeItem = {
-      itemType: 'deleteEvents',
+      itemType: DELETE_EVENTS,
       itemValue: deletedEventDetails,
     };
     addTournamentTimeItem({ tournamentRecord, timeItem });

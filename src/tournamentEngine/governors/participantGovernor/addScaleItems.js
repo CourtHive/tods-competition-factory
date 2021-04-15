@@ -12,6 +12,7 @@ import {
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
 import { addNotice, getTopics } from '../../../global/globalState';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function setParticipantScaleItem({
   tournamentRecord,
@@ -48,9 +49,9 @@ export function setParticipantScaleItem({
       equivalentValue = scaleItem.scaleValue === newValue;
 
       const { topics } = getTopics();
-      if (topics.includes('modifyParticipants')) {
+      if (topics.includes(MODIFY_PARTICIPANTS)) {
         addNotice({
-          topic: 'modifyParticipants',
+          topic: MODIFY_PARTICIPANTS,
           payload: { participants: [participant] },
         });
       }
@@ -107,12 +108,12 @@ export function setParticipantScaleItems({
 
   const { topics } = getTopics();
   if (
-    topics.includes('modifyParticipants') &&
+    topics.includes(MODIFY_PARTICIPANTS) &&
     modificationsApplied &&
     !errors.length
   ) {
     addNotice({
-      topic: 'modifyParticipants',
+      topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }
