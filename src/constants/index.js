@@ -1,3 +1,4 @@
+import { auditConstants } from './auditConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
 import { entryStatusConstants } from './entryStatusConstants';
 import { errorConditionConstants } from './errorConditionConstants';
@@ -20,6 +21,7 @@ import { timeItemConstants } from './timeItemConstants';
 import { topicConstants } from './topicConstants';
 
 export const factoryConstants = {
+  auditConstants,
   drawDefinitionConstants,
   entryStatusConstants,
   errorConditionConstants,
