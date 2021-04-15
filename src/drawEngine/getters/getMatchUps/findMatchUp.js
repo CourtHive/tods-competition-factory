@@ -3,6 +3,8 @@ import { getMatchUp } from '../../accessors/matchUpAccessor/matchUps';
 import { getDrawStructures } from '../findStructure';
 import { makeDeepCopy } from '../../../utilities';
 import {
+  INVALID_VALUES,
+  MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
@@ -27,6 +29,7 @@ export function findMatchUp({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
+  if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };
 
   const { structures } = getDrawStructures({ drawDefinition });
   const { matchUp, structure } = structures.reduce((result, structure) => {
@@ -40,6 +43,8 @@ export function findMatchUp({
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
     return matchUp ? { matchUp, structure } : result;
   }, {});
+
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   return { matchUp, structure };
 }

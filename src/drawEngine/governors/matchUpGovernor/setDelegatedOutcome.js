@@ -1,4 +1,5 @@
-import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 
 import {
   MISSING_DRAW_DEFINITION,
@@ -13,13 +14,15 @@ export function setDelegatedOutcome({ drawDefinition, matchUpId, outcome }) {
   if (!matchUpId) return { error: MISSING_MATCHUP };
   if (!outcome) return { error: MISSING_VALUE };
 
-  // TODO: check validity of outcome
+  const { error, matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  if (error) return { error };
 
+  // TODO: check validity of outcome
   const extension = {
     name: DELEGATED_OUTCOME,
     value: outcome,
   };
-  const result = addDrawDefinitionExtension({ drawDefinition, extension });
+  const result = addExtension({ element: matchUp, extension });
   if (result.error) return result;
 
   return SUCCESS;
