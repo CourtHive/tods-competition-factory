@@ -31,7 +31,6 @@ export function tournamentEngineAsync() {
   createInstanceState();
 
   let tournamentRecord;
-  const policies = {};
 
   function newTournamentRecord(props) {
     if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
@@ -128,7 +127,6 @@ export function tournamentEngineAsync() {
 
     const result = await fx({
       ...params,
-      policies,
       tournamentRecord,
     });
 

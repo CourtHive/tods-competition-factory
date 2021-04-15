@@ -1,4 +1,10 @@
-import policyTemplate from './policyDefinitionTemplate';
+import {
+  addEventExtension,
+  addTournamentExtension,
+  removeEventExtension,
+} from '../tournamentGovernor/addRemoveExtensions';
+// import policyTemplate from './policyDefinitionTemplate';
+
 import {
   getAppliedPolicies,
   getEventAppliedPolicies,
@@ -9,61 +15,42 @@ import {
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-  INVALID_POLICY_DEFINITION,
+  // INVALID_POLICY_DEFINITION,
   EXISTING_POLICY_TYPE,
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
-  INVALID_OBJECT,
+  MISSING_VALUE,
+  // INVALID_OBJECT,
 } from '../../../constants/errorConditionConstants';
+import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
-export function addPolicyDefinition({ tournamentRecord, policyDefinition }) {
-  const errors = [];
+export function attachPolicy({ tournamentRecord, policyDefinition }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!policyDefinition || typeof policyDefinition !== 'object') {
-    errors.push({ error: MISSING_POLICY_DEFINITION });
-    return { errors };
+    return { error: MISSING_POLICY_DEFINITION };
   }
 
   if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
-  Object.keys(policyDefinition).forEach((policyType) => {
+  const applied = Object.keys(policyDefinition).every((policyType) => {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
+      return true;
     } else {
-      errors.push({ error: EXISTING_POLICY_TYPE });
+      return false;
     }
   });
 
-  if (!errors.length) {
-    tournamentRecord.extensions = tournamentRecord.extensions.filter(
-      (extension) => extension.name !== 'appliedPolicies'
-    );
-    tournamentRecord.extensions.push({
-      name: 'appliedPolicies',
+  if (applied) {
+    const extension = {
+      name: APPLIED_POLICIES,
       value: appliedPolicies,
-    });
+    };
+    addTournamentExtension({ tournamentRecord, extension });
   }
 
-  return errors.length ? errors : SUCCESS;
-}
-
-function addPolicy({ policies, policyDefinition }) {
-  if (typeof policyDefinition !== 'object') return { error: INVALID_OBJECT };
-  if (!validDefinitionKeys(policyDefinition))
-    return { error: INVALID_POLICY_DEFINITION };
-  Object.assign(policies, policyDefinition);
-  return SUCCESS;
-}
-
-export function attachPolicy({ tournamentRecord, policies, policyDefinition }) {
-  if (!tournamentRecord) {
-    return { error: MISSING_TOURNAMENT_RECORD };
-  }
-  let result = addPolicy({ policies, policyDefinition });
-  if (result && result.errors) return { error: result.errors };
-  result = addPolicyDefinition({ tournamentRecord, policyDefinition });
-  if (result && result.errors) return { error: result.errors };
-  return SUCCESS;
+  return !applied ? { error: EXISTING_POLICY_TYPE } : SUCCESS;
 }
 
 export function attachEventPolicy({
@@ -84,52 +71,44 @@ export function attachEventPolicy({
   let policiesApplied = 0;
   if (!event.extensions) event.extensions = [];
   const { appliedPolicies } = getEventAppliedPolicies({ event });
+
   Object.keys(policyDefinition).forEach((policyType) => {
-    if (policyDefinition[policyType].policyAttributes) {
-      appliedPolicies[policyType] = policyDefinition[policyType];
-      policiesApplied++;
-    }
+    appliedPolicies[policyType] = policyDefinition[policyType];
+    policiesApplied++;
   });
 
-  event.extensions = event.extensions.filter(
-    (extension) => extension.name !== 'appliedPolicies'
-  );
-  event.extensions.push({ name: 'appliedPolicies', value: appliedPolicies });
+  if (policiesApplied) {
+    const extension = { name: APPLIED_POLICIES, value: appliedPolicies };
+    addEventExtension({ event, extension });
+  }
 
   return policiesApplied ? SUCCESS : { error: POLICY_NOT_ATTACHED };
 }
 
 export function removeEventPolicy({ tournamentRecord, event, policyType }) {
-  if (!tournamentRecord) {
-    return { error: MISSING_TOURNAMENT_RECORD };
-  }
-  if (!event) {
-    return { error: MISSING_EVENT };
-  }
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!policyType) return { error: MISSING_VALUE };
+  if (!event) return { error: MISSING_EVENT };
 
   let policyRemoved;
-
   if (event.extensions) {
     const { appliedPolicies } = getEventAppliedPolicies({ event });
-    if (appliedPolicies && policyType && appliedPolicies[policyType]) {
+    if (appliedPolicies && appliedPolicies[policyType]) {
       delete appliedPolicies[policyType];
       policyRemoved = true;
 
-      event.extensions = event.extensions.filter(
-        (extension) => extension.name !== 'appliedPolicies'
-      );
-
       if (Object.keys(appliedPolicies).length) {
-        event.extensions.push({
-          name: 'appliedPolicies',
-          value: appliedPolicies,
-        });
+        const extension = { name: APPLIED_POLICIES, value: appliedPolicies };
+        addEventExtension({ event, extension });
+      } else {
+        removeEventExtension({ event, name: APPLIED_POLICIES });
       }
     }
   }
   return policyRemoved ? SUCCESS : { error: POLICY_NOT_FOUND };
 }
 
+/*
 function validDefinitionKeys(definition) {
   const definitionKeys = Object.keys(definition);
   const validKeys = Object.keys(policyTemplate());
@@ -139,3 +118,4 @@ function validDefinitionKeys(definition) {
   );
   return valid;
 }
+*/

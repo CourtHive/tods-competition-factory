@@ -28,8 +28,6 @@ import { notifySubscribers } from '../global/notifySubscribers';
 
 let tournamentRecord;
 
-const policies = {};
-
 function newTournamentRecord(props) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
   const template = definitionTemplate(props);
@@ -127,8 +125,6 @@ export const tournamentEngine = (function () {
 
     const result = fx({
       ...params,
-
-      policies,
       tournamentRecord,
     });
 
