@@ -16,7 +16,8 @@ import {
       all individualParticipants are considered checkedIn
 */
 export function getCheckedInParticipantIds({ matchUp }) {
-  if (!matchUp || !matchUp.hasContext) {
+  if (!matchUp) return { error: MISSING_MATCHUP };
+  if (!matchUp.hasContext) {
     return { error: MISSING_CONTEXT };
   }
 

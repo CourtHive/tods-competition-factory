@@ -4,6 +4,7 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
 
 import {
+  MATCHUP_NOT_FOUND,
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
@@ -33,7 +34,11 @@ export function checkInParticipant({
       matchUpId,
       inContext: true,
     });
-    const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
+    if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+    const { error, checkedInParticipantIds } = getCheckedInParticipantIds({
+      matchUp,
+    });
+    if (error) return { error };
     if (checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_ALREADY_CHECKED_IN };
     }
