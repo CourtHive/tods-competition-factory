@@ -44,7 +44,8 @@
     "prepare": "tsdx build",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
-    "postpublish": "pinst --enable"
+    "postpublish": "pinst --enable",
+    "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy"
   },
   "peerDependencies": {},
   "husky": {
