@@ -5,6 +5,8 @@ import {
 } from '../../../../drawEngine/governors/matchUpGovernor/checkInStatus';
 import { findMatchUp } from '../../../getters/matchUpsGetter';
 
+import { MATCHUP_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+
 export function toggleParticipantCheckInState(params) {
   const { tournamentRecord, participantId, matchUpId, drawDefinition } = params;
   const tournamentParticipants = tournamentRecord.participants || [];
@@ -15,9 +17,11 @@ export function toggleParticipantCheckInState(params) {
     matchUpId,
     inContext: true,
   });
-  const { checkedInParticipantIds } = getCheckedInParticipantIds({
+  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+  const { error, checkedInParticipantIds } = getCheckedInParticipantIds({
     matchUp,
   });
+  if (error) return { error };
 
   if (checkedInParticipantIds.includes(participantId)) {
     return checkOutParticipant({
