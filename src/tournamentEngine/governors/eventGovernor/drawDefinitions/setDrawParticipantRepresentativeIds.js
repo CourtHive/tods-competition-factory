@@ -5,6 +5,7 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
+import { PARTICIPANT_REPRESENTATIVES } from '../../../../constants/extensionConstants';
 
 export function setDrawParticipantRepresentativeIds({
   representativeParticipantIds,
@@ -29,7 +30,7 @@ export function setDrawParticipantRepresentativeIds({
   }
 
   const extension = {
-    name: 'participantRepresentatives',
+    name: PARTICIPANT_REPRESENTATIVES,
     value: representativeParticipantIds,
   };
 

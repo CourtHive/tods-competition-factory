@@ -16,8 +16,10 @@ import { scaleConstants } from './scaleConstants';
 import { timeItemConstants } from './timeItemConstants';
 import { flightConstants } from './flightConstants';
 import { matchUpActionConstants } from './matchUpActionConstants';
+import { extensionConstants } from './extensionConstants';
 
 export const factoryConstants = {
+  extensionConstants,
   matchUpActionConstants,
   drawDefinitionConstants,
   entryStatusConstants,

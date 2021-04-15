@@ -28,6 +28,7 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+import { DRAW_PROFILE } from '../constants/extensionConstants';
 
 let drawDefinition;
 let tournamentParticipants = [];
@@ -38,7 +39,7 @@ function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
   const drawDefinition = definitionTemplate();
   if (drawProfile) {
     const extension = {
-      name: 'drawProfile',
+      name: DRAW_PROFILE,
       value: drawProfile,
     };
     addDrawDefinitionExtension({ drawDefinition, extension });

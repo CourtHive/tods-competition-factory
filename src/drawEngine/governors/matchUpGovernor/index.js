@@ -3,6 +3,7 @@ import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
+import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
 import { setMatchUpStatus } from './setMatchUpStatus';
@@ -36,6 +37,8 @@ const matchUpGovernor = {
   addMatchUpEndTime,
   addMatchUpStopTime,
   addMatchUpResumeTime,
+
+  setDelegatedOutcome,
 
   matchUpSort,
   addMatchUpOfficial,

@@ -25,6 +25,7 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { DRAW_PROFILE } from '../../constants/extensionConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -311,7 +312,7 @@ export function generateDrawDefinition(props) {
   const { drawDefinition } = drawEngine.getState();
 
   const extension = {
-    name: 'drawProfile',
+    name: DRAW_PROFILE,
     value: drawProfile,
   };
   addDrawDefinitionExtension({ drawDefinition, extension });
