@@ -22,11 +22,11 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
   const matchUp = matchUps[0];
   const { drawId, matchUpId } = matchUp;
 
-  const scheduledDayDate = '2020-01-03';
-  let result = tournamentEngine.addMatchUpScheduledDayDate({
+  const scheduledDate = '2020-01-03';
+  let result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate,
+    scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -36,13 +36,13 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     drawId,
     matchUpId,
   });
-  expect(schedule.scheduledDate).toEqual(scheduledDayDate);
+  expect(schedule.scheduledDate).toEqual(scheduledDate);
 
-  const newScheduledDayDate = '2020-01-02';
-  result = tournamentEngine.addMatchUpScheduledDayDate({
+  const newScheduledDate = '2020-01-02';
+  result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate: newScheduledDayDate,
+    scheduledDate: newScheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -52,12 +52,12 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     drawId,
     matchUpId,
   }));
-  expect(schedule.scheduledDate).toEqual(newScheduledDayDate);
+  expect(schedule.scheduledDate).toEqual(newScheduledDate);
 
-  result = tournamentEngine.addMatchUpScheduledDayDate({
+  result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate,
+    scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -67,12 +67,12 @@ it('can re-schedule matchUp date backwards and forwards in time', () => {
     drawId,
     matchUpId,
   }));
-  expect(schedule.scheduledDate).toEqual(scheduledDayDate);
+  expect(schedule.scheduledDate).toEqual(scheduledDate);
 
-  result = tournamentEngine.addMatchUpScheduledDayDate({
+  result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate: undefined,
+    scheduledDate: undefined,
   });
   expect(result).toEqual(SUCCESS);
 

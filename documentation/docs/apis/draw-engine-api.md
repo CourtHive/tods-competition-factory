@@ -67,13 +67,13 @@ drawEngine.addMatchUpResumeTime({
 
 ---
 
-## addMatchUpScheduledDayDate
+## addMatchUpScheduledDate
 
 ```js
-const scheduledDayDate = '2020-01-01';
-drawEngine.addMatchUpScheduledDayDate({
+const scheduledDate = '2020-01-01';
+drawEngine.addMatchUpScheduledDate({
   matchUpId,
-  scheduledDayDate,
+  scheduledDate,
   disableNotice, // when disabled subscribers will not be notified
 });
 ```
@@ -102,7 +102,7 @@ drawEngine.addMatchUpScheduleItems({
   matchUpId,
   schedule: {
     scheduledTime,
-    scheduledDayDate,
+    scheduledDate,
     startTime,
     endTime,
   },
@@ -157,7 +157,7 @@ drawEngine.addPlayoffStructures({
 ```js
 const timeItem = {
   itemType: SCHEDULED_DATE,
-  itemValue: scheduledDayDate,
+  itemValue: scheduledDate,
 };
 drawEngine.addMatchUpTimeItem({
   matchUpId,
@@ -993,7 +993,7 @@ drawEngine.setMatchUpStatus({
   winningSide,
   schedule: {
     // optional - set schedule items
-    scheduledDayDate,
+    scheduledDate,
     scheduledTime,
     startTime,
     endTime,

@@ -72,13 +72,13 @@ it('can bulk schedule matchUps', () => {
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  schedule = { scheduledDayDate: 'December 3rd 2100' };
+  schedule = { scheduledDate: 'December 3rd 2100' };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.error).toEqual(INVALID_VALUES);
 
   schedule = {
     scheduledTime: '08:00',
-    scheduledDayDate: '2021-01-01',
+    scheduledDate: '2021-01-01',
     venueId,
   };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
@@ -93,7 +93,7 @@ it('can bulk schedule matchUps', () => {
 
   schedule = {
     scheduledTime: '',
-    scheduledDayDate: '',
+    scheduledDate: '',
     venueId,
   };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });

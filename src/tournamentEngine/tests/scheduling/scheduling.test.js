@@ -120,7 +120,7 @@ it('can add events, venues, and schedule matchUps', () => {
   tournamentRecord = tournamentRecords[tournamentId];
   tournamentEngine.setState(tournamentRecord);
 
-  const scheduledDate = '2020-01-01T00:00';
+  let scheduledDate = '2020-01-01T00:00';
   let contextFilters = {
     eventIds: [],
     drawIds: [drawId],
@@ -208,11 +208,11 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result).toEqual(SUCCESS);
 
-  const scheduledDayDate = '2020-01-03';
-  result = tournamentEngine.addMatchUpScheduledDayDate({
+  scheduledDate = '2020-01-03';
+  result = tournamentEngine.addMatchUpScheduledDate({
     drawId,
     matchUpId,
-    scheduledDayDate,
+    scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 

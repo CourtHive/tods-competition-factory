@@ -55,13 +55,13 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
 
-  const { scheduledDayDate, scheduledTime, startTime, endTime } = schedule;
+  const { scheduledDate, scheduledTime, startTime, endTime } = schedule;
 
-  if (scheduledDayDate) {
-    const result = addMatchUpScheduledDayDate({
+  if (scheduledDate) {
+    const result = addMatchUpScheduledDate({
       drawDefinition,
       matchUpId,
-      scheduledDayDate,
+      scheduledDate,
       disableNotice: true,
     });
     if (result?.error) return result;
@@ -102,25 +102,25 @@ export function addMatchUpScheduleItems({
   return SUCCESS;
 }
 
-export function addMatchUpScheduledDayDate({
+export function addMatchUpScheduledDate({
   drawDefinition,
   matchUpId,
   disableNotice,
-  scheduledDayDate,
+  scheduledDate,
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  // TODO: if there is existing scheduledDayDate and no other relevant timeItems, delete prior
+  // TODO: if there is existing scheduledDate and no other relevant timeItems, delete prior
 
-  // TODO: check that 1) scheduledDayDate is valid date and 2) is in range for tournament
+  // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 
-  const validDate = dateValidation.test(scheduledDayDate);
-  if (scheduledDayDate && !validDate) return { error: INVALID_DATE };
+  const validDate = dateValidation.test(scheduledDate);
+  if (scheduledDate && !validDate) return { error: INVALID_DATE };
 
   const timeItem = {
     itemType: SCHEDULED_DATE,
-    itemValue: scheduledDayDate,
+    itemValue: scheduledDate,
   };
 
   return addMatchUpTimeItem({
@@ -143,7 +143,7 @@ export function addMatchUpScheduledTime({
   // must support undefined as a value so that scheduledTime can be cleared
   if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
 
-  // TODO: scheduleTime must be on same day as scheduledDayDate (if it exists)
+  // TODO: scheduleTime must be on same day as scheduledDate (if it exists)
   // TODO: check that scheduledTime is a date object with time
 
   const itemValue = scheduledTime;

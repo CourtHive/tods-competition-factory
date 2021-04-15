@@ -10,7 +10,7 @@ import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
 
 import {
-  addMatchUpScheduledDayDate,
+  addMatchUpScheduledDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,
@@ -32,7 +32,7 @@ const matchUpGovernor = {
   getCheckedInParticipantIds,
 
   addMatchUpScheduleItems,
-  addMatchUpScheduledDayDate,
+  addMatchUpScheduledDate,
   addMatchUpScheduledTime,
   addMatchUpStartTime,
   addMatchUpEndTime,

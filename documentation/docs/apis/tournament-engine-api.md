@@ -227,14 +227,14 @@ tournamentEngine.addMatchUpResumeTime({
 
 ---
 
-## addMatchUpScheduledDayDate
+## addMatchUpScheduledDate
 
 ```js
-const scheduledDayDate = '2020-01-01';
-tournamentEngine.addMatchUpScheduledDayDate({
+const scheduledDate = '2020-01-01';
+tournamentEngine.addMatchUpScheduledDate({
   drawId,
   matchUpId,
-  scheduledDayDate,
+  scheduledDate,
   disableNotice, // when disabled subscribers will not be notified
 });
 ```
@@ -265,7 +265,7 @@ tournamentEngine.addMatchUpScheduleItems({
   matchUpId,
   schedule: {
     scheduledTime,
-    scheduledDayDate,
+    scheduledDate,
     startTime,
     endTime,
   },
@@ -618,7 +618,7 @@ tournamentEngine.bulkMatchUpStatusUpdate({ outcomes });
 ```js
 const schedule = {
   scheduledTime: '08:00',
-  scheduledDayDate: '2021-01-01T00:00', // best practice to provide ISO date string
+  scheduledDate: '2021-01-01T00:00', // best practice to provide ISO date string
   venueId,
 };
 tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
@@ -1973,7 +1973,7 @@ tournamentEngine.setMatchUpStatus({
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   schedule: {
     // optional - set schedule items
-    scheduledDayDate,
+    scheduledDate,
     scheduledTime,
     startTime,
     endTime,

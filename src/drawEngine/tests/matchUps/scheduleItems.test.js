@@ -22,10 +22,10 @@ it('can add schedule items', () => {
   let matchUp = matchUps[0];
   const { matchUpId } = matchUp;
 
-  const scheduledDayDate = '2020-01-01';
-  let result = drawEngine.addMatchUpScheduledDayDate({
+  const scheduledDate = '2020-01-01';
+  let result = drawEngine.addMatchUpScheduledDate({
     matchUpId,
-    scheduledDayDate,
+    scheduledDate,
   });
   expect(result).toEqual(SUCCESS);
 

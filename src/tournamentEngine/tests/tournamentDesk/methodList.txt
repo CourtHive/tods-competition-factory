@@ -27,7 +27,7 @@ tournamentEngine
 * addDrawDefinition
 * addEventEntryPairs
 * addIndividualParticipantIds
-* addMatchUpScheduledDayDate
+* addMatchUpScheduledDate
 * addMatchUpScheduledTime
 * addParticipants
 * addPlayoffStructures
