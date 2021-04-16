@@ -1,12 +1,15 @@
-import policyTemplate from './policyDefinitionTemplate';
+import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+// import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
+
+import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  INVALID_OBJECT,
+  // INVALID_OBJECT,
   EXISTING_POLICY_TYPE,
   MISSING_DRAW_DEFINITION,
   MISSING_POLICY_DEFINITION,
-  INVALID_POLICY_DEFINITION,
+  // INVALID_POLICY_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
 function addPolicyProfile({ drawDefinition, policyDefinition }) {
@@ -19,46 +22,37 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
 
-  Object.keys(policyDefinition).forEach((policyType) => {
+  const applied = Object.keys(policyDefinition).every((policyType) => {
     if (!appliedPolicies[policyType]) {
       appliedPolicies[policyType] = policyDefinition[policyType];
+      return true;
     } else {
-      errors.push({ error: EXISTING_POLICY_TYPE });
+      return false;
     }
   });
 
-  if (!errors.length) {
-    drawDefinition.extensions = drawDefinition.extensions.filter(
-      (extension) => extension.name !== 'appliedPolicies'
-    );
-    drawDefinition.extensions.push({
-      name: 'appliedPolicies',
+  if (applied) {
+    const extension = {
+      name: APPLIED_POLICIES,
       value: appliedPolicies,
-    });
+    };
+    const result = addExtension({ element: drawDefinition, extension });
+    if (result.error) return result;
   }
 
-  return errors.length ? errors : SUCCESS;
+  return !applied ? { error: EXISTING_POLICY_TYPE } : SUCCESS;
 }
 
-function addPolicy({ policies, policyDefinition }) {
-  if (typeof policyDefinition !== 'object') return { error: INVALID_OBJECT };
-  if (!validDefinitionKeys(policyDefinition))
-    return { error: INVALID_POLICY_DEFINITION };
-  Object.assign(policies, policyDefinition);
-  return SUCCESS;
-}
-
-function attachPolicy({ drawDefinition, policies, policyDefinition }) {
+function attachPolicy({ drawDefinition, policyDefinition }) {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
-  let result = addPolicy({ policies, policyDefinition });
-  if (result && result.errors) return { error: result.errors };
-  result = addPolicyProfile({ drawDefinition, policyDefinition });
+  let result = addPolicyProfile({ drawDefinition, policyDefinition });
   if (result && result.errors) return { error: result.errors };
   return SUCCESS;
 }
 
+/*
 function validDefinitionKeys(definition) {
   const definitionKeys = Object.keys(definition);
   const validKeys = Object.keys(policyTemplate());
@@ -68,6 +62,7 @@ function validDefinitionKeys(definition) {
   );
   return valid;
 }
+*/
 
 const policyGovernor = {
   attachPolicy,

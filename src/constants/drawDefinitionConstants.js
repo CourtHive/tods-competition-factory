@@ -112,6 +112,24 @@ export const MULTI_STRUCTURE_DRAWS = [
   ROUND_ROBIN_WITH_PLAYOFF,
 ];
 
+export const generatedDrawTypes = [
+  COMPASS,
+  CURTIS,
+  DOUBLE_ELIMINATION,
+  FEED_IN_CHAMPIONSHIP_TO_QF,
+  FEED_IN_CHAMPIONSHIP_TO_R16,
+  FEED_IN_CHAMPIONSHIP_TO_SF,
+  FEED_IN_CHAMPIONSHIP,
+  FEED_IN,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  FIRST_ROUND_LOSER_CONSOLATION,
+  MODIFIED_FEED_IN_CHAMPIONSHIP,
+  OLYMPIC,
+  PLAY_OFF,
+  ROUND_ROBIN_WITH_PLAYOFF,
+  SINGLE_ELIMINATION,
+];
+
 export const drawDefinitionConstants = {
   MAIN,
   QUALIFYING,
@@ -164,6 +182,7 @@ export const drawDefinitionConstants = {
   ROUND_OUTCOME,
 
   MULTI_STRUCTURE_DRAWS,
+  generatedDrawTypes,
 };
 
 export default drawDefinitionConstants;

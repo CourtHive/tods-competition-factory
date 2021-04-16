@@ -6,7 +6,6 @@ dist
 *.un~
 .*.un~
 *.code-workspace
-.docz
 *.VSCodeCounter
 .nvim*
 documentation/.docusaurus

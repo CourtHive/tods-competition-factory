@@ -1,3 +1,4 @@
+export const APPLIED_POLICIES = 'appliedPolicies';
 export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_PROFILE = 'drawProfile';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';

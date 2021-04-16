@@ -33,8 +33,6 @@ import { DRAW_PROFILE } from '../constants/extensionConstants';
 let drawDefinition;
 let tournamentParticipants = [];
 
-const policies = {};
-
 function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
   const drawDefinition = definitionTemplate();
   if (drawProfile) {
@@ -145,7 +143,6 @@ export const drawEngine = (function () {
   function invoke({ params, governor, key }) {
     const result = governor[key]({
       ...params,
-      policies,
       drawDefinition,
       tournamentParticipants,
     });
