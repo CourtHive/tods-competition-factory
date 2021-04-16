@@ -1,4 +1,4 @@
-import { CONSOLATION, MAIN } from '../../constants/drawDefinitionConstants';
+// import { CONSOLATION, MAIN } from '../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 
