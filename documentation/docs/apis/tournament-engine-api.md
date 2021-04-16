@@ -860,7 +860,7 @@ const { extension } = tournamentEngine.findParticipantExtension({
 Find `policyType` either on an event object or the tournamentRecord.
 
 ```js
-const policy = tournamentEngine.findPolicy({
+const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
   eventId, // optional
 });
