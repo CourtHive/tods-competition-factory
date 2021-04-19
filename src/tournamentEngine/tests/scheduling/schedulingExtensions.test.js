@@ -3,7 +3,6 @@ import tournamentEngine from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { SINGLES } from '../../../constants/eventConstants';
-// import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 
 // categoryTypes
 const JUNIOR = 'JUNIOR';
