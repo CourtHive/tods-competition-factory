@@ -43,7 +43,7 @@ it.each([
       ],
     });
 
-    let result = tournamentEngine.getScheduleTiming({
+    let result = tournamentEngine.getMatchUpFormatTiming({
       defaultAverageMinutes: 87,
       defaultRecoveryMinutes: 57,
       matchUpFormat,
@@ -62,7 +62,7 @@ it.each([
     });
     expect(result.success).toEqual(true);
 
-    result = tournamentEngine.getScheduleTiming({
+    result = tournamentEngine.getMatchUpFormatTiming({
       matchUpFormat,
       categoryName,
       categoryType,

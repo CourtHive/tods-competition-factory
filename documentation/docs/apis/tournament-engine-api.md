@@ -1226,6 +1226,27 @@ const {
 
 ---
 
+## getMatchUpFormatTiming
+
+Searches for policy definitions or extensions to determine the `averageMinutes` and `recoveryMinutes` for a given `matchUpFormat`. Extensions are considered to be overrides of policy definitions.
+
+```js
+const {
+  averageMinutes,
+  recoveryMinutes,
+} = tournamentEngine.getMatchUpFormatTiming({
+  defaultAverageMinutes, // optional setting if no matching definition found
+  defaultRecoveryMinutes, // optional setting if no matching definition found
+  matchUpFormat,
+  categoryName, // optional
+  categoryType, // optional
+  eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
+  eventId, // optional - prioritizes policy definition attached to event before tournament record
+});
+```
+
+---
+
 ## getMatchUpScheduleDetails
 
 Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.
@@ -1388,24 +1409,6 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
   scaleAttributes,
   scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
   sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
-});
-```
-
----
-
-## getScheduleTiming
-
-Searches for policy definitions or extensions to determine the `averageMinutes` and `recoveryMinutes` for a given `matchUpFormat`. Extensions are considered to be overrides of policy definitions.
-
-```js
-const { averageMinutes, recoveryMinutes } = tournamentEngine.getScheduleTiming({
-  defaultAverageMinutes, // optional setting if no matching definition found
-  defaultRecoveryMinutes, // optional setting if no matching definition found
-  matchUpFormat,
-  categoryName, // optional
-  categoryType, // optional
-  eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
-  eventId, // optional - prioritizes policy definition attached to event before tournament record
 });
 ```
 

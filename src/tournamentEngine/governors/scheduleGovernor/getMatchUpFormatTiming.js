@@ -21,7 +21,7 @@ import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
  *
  * @returns { averageMinutes, recoveryMinutes };
  */
-export function getScheduleTiming({
+export function getMatchUpFormatTiming({
   defaultAverageMinutes = 90,
   defaultRecoveryMinutes = 60,
   tournamentRecord,
