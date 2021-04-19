@@ -1393,6 +1393,24 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 
 ---
 
+## getScheduleTiming
+
+Searches for policy definitions or extensions to determine the `averageMinutes` and `recoveryMinutes` for a given `matchUpFormat`. Extensions are considered to be overrides of policy definitions.
+
+```js
+const { averageMinutes, recoveryMinutes } = tournamentEngine.getScheduleTiming({
+  defaultAverageMinutes, // optional setting if no matching definition found
+  defaultRecoveryMinutes, // optional setting if no matching definition found
+  matchUpFormat,
+  categoryName, // optional
+  categoryType, // optional
+  eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
+  eventId, // optional - prioritizes policy definition attached to event before tournament record
+});
+```
+
+---
+
 ## getSeedsCount
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
