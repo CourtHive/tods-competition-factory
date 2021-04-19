@@ -4,10 +4,7 @@ import {
   findTournamentExtension,
 } from '../queryGovernor/extensionQueries';
 
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 
@@ -32,7 +29,6 @@ export function getMatchUpFormatTiming({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
 
   const { policy } = findPolicy({
     tournamentRecord,
@@ -45,11 +41,17 @@ export function getMatchUpFormatTiming({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const tournamentScheuling = findTournamentExtension({
+  const { extension: tournamentExtension } = findTournamentExtension({
     tournamentRecord,
     name: SCHEDULE_TIMING,
   });
-  const eventScheduling = findEventExtension({ event, name: SCHEDULE_TIMING });
+  const tournamentScheduling = tournamentExtension?.value;
+
+  const { extension: eventExtension } = findEventExtension({
+    event,
+    name: SCHEDULE_TIMING,
+  });
+  const eventScheduling = eventExtension?.value;
 
   const timingDetails = {
     matchUpFormat,
@@ -57,7 +59,7 @@ export function getMatchUpFormatTiming({
     categoryType,
 
     eventScheduling,
-    tournamentScheuling,
+    tournamentScheduling,
     defaultTiming,
     policy,
   };
@@ -90,7 +92,7 @@ function getMatchUpRecoveryTimes({
   averageMinutes,
 
   defaultTiming,
-  tournamentScheuling,
+  tournamentScheduling,
   eventScheduling,
   policy,
 }) {
@@ -103,9 +105,9 @@ function getMatchUpRecoveryTimes({
     });
 
   const tournamentRecoveryTimes =
-    tournamentScheuling?.matchUpRecoveryTimes &&
+    tournamentScheduling?.matchUpRecoveryTimes &&
     findMatchupFormatRecoveryTimes({
-      ...tournamentScheuling,
+      ...tournamentScheduling,
       averageMinutes,
       matchUpFormat,
     });
@@ -118,24 +120,30 @@ function getMatchUpRecoveryTimes({
       matchUpFormat,
     });
 
-  const recoveryTimes = (
-    eventRecoveryTimes ||
-    tournamentRecoveryTimes ||
-    policyRecoveryTimes ||
-    policy?.defaultTimes?.recoveryTimes ||
-    defaultTiming?.recoveryTimes
-  )
-    .sort(
-      (a, b) => (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
+  const recoveryTimes = [
+    eventRecoveryTimes,
+    tournamentRecoveryTimes,
+    policyRecoveryTimes,
+    policy?.defaultTimes?.recoveryTimes,
+    defaultTiming?.recoveryTimes,
+  ]
+    .filter((f) => f)
+    .map((recoveryTimes) =>
+      recoveryTimes
+        .sort(
+          (a, b) =>
+            (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
+        )
+        .find(({ categoryTypes, categoryNames }) => {
+          return (
+            (!categoryNames && !categoryTypes) ||
+            (!categoryNames?.length && !categoryTypes?.length) ||
+            categoryNames.includes(categoryName) ||
+            categoryTypes.includes(categoryType)
+          );
+        })
     )
-    .find(({ categoryTypes, categoryNames }) => {
-      return (
-        (!categoryNames && !categoryTypes) ||
-        (!categoryNames?.length && !categoryTypes?.length) ||
-        categoryNames.includes(categoryName) ||
-        categoryTypes.includes(categoryType)
-      );
-    });
+    .find((f) => f);
 
   return recoveryTimes;
 }
@@ -146,7 +154,7 @@ function getMatchUpAverageTimes({
   categoryType,
 
   defaultTiming,
-  tournamentScheuling,
+  tournamentScheduling,
   eventScheduling,
   policy,
 }) {
@@ -158,9 +166,9 @@ function getMatchUpAverageTimes({
     });
 
   const tournamentAverageTimes =
-    tournamentScheuling?.matchUpAverageTimes &&
+    tournamentScheduling?.matchUpAverageTimes &&
     findMatchupFormatAverageTimes({
-      ...tournamentScheuling,
+      ...tournamentScheduling,
       matchUpFormat,
     });
 
@@ -171,24 +179,33 @@ function getMatchUpAverageTimes({
       matchUpFormat,
     });
 
-  const averageTimes = (
-    eventAverageTimes ||
-    tournamentAverageTimes ||
-    policyAverageTimes ||
-    policy?.defaultTimes?.averageTimes ||
-    defaultTiming?.averageTimes
-  )
-    .sort(
-      (a, b) => (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
+  const averageTimes = [
+    eventAverageTimes,
+    tournamentAverageTimes,
+    policyAverageTimes,
+    policy?.defaultTimes?.averageTimes,
+    defaultTiming?.averageTimes,
+  ]
+    .filter((f) => f)
+    .map((averageTimes) =>
+      averageTimes
+        .sort(
+          (a, b) =>
+            (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
+        )
+        .find(({ categoryTypes, categoryNames }) => {
+          return (
+            (!categoryName &&
+              !categoryType &&
+              !categoryNames &&
+              !categoryTypes) ||
+            (!categoryNames?.length && !categoryTypes?.length) ||
+            categoryNames?.includes(categoryName) ||
+            categoryTypes?.includes(categoryType)
+          );
+        })
     )
-    .find(({ categoryTypes, categoryNames }) => {
-      return (
-        (!categoryNames && !categoryTypes) ||
-        (!categoryNames?.length && !categoryTypes?.length) ||
-        categoryNames?.includes(categoryName) ||
-        categoryTypes?.includes(categoryType)
-      );
-    });
+    .find((f) => f);
 
   return averageTimes;
 }

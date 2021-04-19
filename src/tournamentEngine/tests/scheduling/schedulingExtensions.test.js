@@ -1,11 +1,11 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import { SINGLES } from '../../../constants/eventConstants';
+// import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 
 // categoryTypes
-const ADULT = 'ADULT';
 const JUNIOR = 'JUNIOR';
 
 it.each([
@@ -16,15 +16,8 @@ it.each([
     recoveryMinutes: 60,
     eventType: SINGLES,
   },
-  { matchUpFormat: 'SET3-S:6/TB7', categoryType: ADULT, averageMinutes: 120 },
-  {
-    matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-    categoryType: ADULT,
-    averageMinutes: 90,
-    eventType: DOUBLES,
-  },
 ])(
-  'can retrieve matchUpAverageTimes for for matchUpFormats',
+  'can modify matchUpAverageTimes for for matchUpFormats',
   ({
     matchUpFormat,
     categoryName,
@@ -75,5 +68,22 @@ it.each([
     if (recoveryMinutes) {
       expect(result.recoveryMinutes).toEqual(recoveryMinutes);
     }
+
+    result = tournamentEngine.modifyMatchUpFormatTiming({
+      matchUpFormat,
+      averageTimes: [{ categoryNames: [JUNIOR], minutes: { default: 127 } }],
+    });
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.getMatchUpFormatTiming({
+      matchUpFormat,
+    });
+    expect(result.averageMinutes).toEqual(90);
+
+    result = tournamentEngine.getMatchUpFormatTiming({
+      matchUpFormat,
+      categoryName: JUNIOR,
+    });
+    expect(result.averageMinutes).toEqual(127);
   }
 );

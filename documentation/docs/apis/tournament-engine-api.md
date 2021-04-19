@@ -1597,6 +1597,29 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyMatchUpFormatTiming
+
+```js
+tournamentEngine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  averageTimes: [
+    {
+      categoryNames: [U12, U14],
+      minutes: { [DOUBLES]: 110, default: 130 },
+    },
+    {
+      categoryNames: [U16, U18],
+      minutes: { [DOUBLES]: 100, default: 120 },
+    },
+  ],
+  recoveryTimes: [
+    { categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } },
+  ],
+});
+```
+
+---
+
 ## modifyDrawName
 
 ```js
