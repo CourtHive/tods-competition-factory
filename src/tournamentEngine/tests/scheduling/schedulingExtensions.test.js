@@ -7,17 +7,8 @@ import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING
 // categoryTypes
 const ADULT = 'ADULT';
 const JUNIOR = 'JUNIOR';
-const WHEELCHAIR = 'WHEELCHAIR';
 
 it.each([
-  { matchUpFormat: 'SET1-S:4/TB5@3', averageMinutes: 20, recoveryMinutes: 15 },
-  {
-    matchUpFormat: 'SET3-S:6/TB7',
-    categoryType: JUNIOR,
-    averageMinutes: 137,
-    recoveryMinutes: 30,
-    eventType: DOUBLES,
-  },
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
@@ -27,9 +18,10 @@ it.each([
   },
   { matchUpFormat: 'SET3-S:6/TB7', categoryType: ADULT, averageMinutes: 120 },
   {
-    matchUpFormat: 'SET3-S:6/TB7',
-    categoryType: WHEELCHAIR,
-    averageMinutes: 120,
+    matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+    categoryType: ADULT,
+    averageMinutes: 90,
+    eventType: DOUBLES,
   },
 ])(
   'can retrieve matchUpAverageTimes for for matchUpFormats',

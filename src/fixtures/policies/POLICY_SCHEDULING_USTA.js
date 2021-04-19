@@ -33,7 +33,10 @@ export const POLICY_SCHEDULING_USTA = {
       },
       {
         matchUpFormatCodes: ['SET3-S:6/TB7-F:TB10'],
-        averageTimes: [{ categoryNames: [], minutes: { default: 90 } }],
+        averageTimes: [
+          { categoryNames: [], minutes: { default: 90 } },
+          { categoryNames: [ADULT], minutes: { default: 90 } },
+        ],
       },
       {
         matchUpFormatCodes: ['SET3-S:6/TB7-F:TB7'],
