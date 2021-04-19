@@ -860,7 +860,7 @@ const { extension } = tournamentEngine.findParticipantExtension({
 Find `policyType` either on an event object or the tournamentRecord.
 
 ```js
-const policy = tournamentEngine.findPolicy({
+const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
   eventId, // optional
 });
@@ -1226,6 +1226,27 @@ const {
 
 ---
 
+## getMatchUpFormatTiming
+
+Searches for policy definitions or extensions to determine the `averageMinutes` and `recoveryMinutes` for a given `matchUpFormat`. Extensions are considered to be overrides of policy definitions.
+
+```js
+const {
+  averageMinutes,
+  recoveryMinutes,
+} = tournamentEngine.getMatchUpFormatTiming({
+  defaultAverageMinutes, // optional setting if no matching definition found
+  defaultRecoveryMinutes, // optional setting if no matching definition found
+  matchUpFormat,
+  categoryName, // optional
+  categoryType, // optional
+  eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
+  eventId, // optional - prioritizes policy definition attached to event before tournament record
+});
+```
+
+---
+
 ## getMatchUpScheduleDetails
 
 Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.
@@ -1571,6 +1592,29 @@ const result = tournamentEngine.modifyCourtAvailability({
   courtId,
   dateAvailability,
   force, // override warning that existing scheduled matchUps exist
+});
+```
+
+---
+
+## modifyMatchUpFormatTiming
+
+```js
+tournamentEngine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  averageTimes: [
+    {
+      categoryNames: [U12, U14],
+      minutes: { [DOUBLES]: 110, default: 130 },
+    },
+    {
+      categoryNames: [U16, U18],
+      minutes: { [DOUBLES]: 100, default: 120 },
+    },
+  ],
+  recoveryTimes: [
+    { categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } },
+  ],
 });
 ```
 

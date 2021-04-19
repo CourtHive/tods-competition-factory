@@ -113,8 +113,10 @@ it('can find policies whether on event or tournamentRecord', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.findPolicy({ policyType: POLICY_TYPE_SCORING });
-  expect(result.policyName).toEqual(testPolicyName);
+  let { policy } = tournamentEngine.findPolicy({
+    policyType: POLICY_TYPE_SCORING,
+  });
+  expect(policy.policyName).toEqual(testPolicyName);
 
   const event = {
     eventName: 'Test Event',
@@ -127,11 +129,11 @@ it('can find policies whether on event or tournamentRecord', () => {
   expect(result.success).toEqual(true);
 
   // expect to find the policy attached to the tournament even when passing eventId
-  result = tournamentEngine.findPolicy({
+  ({ policy } = tournamentEngine.findPolicy({
     eventId,
     policyType: POLICY_TYPE_SCORING,
-  });
-  expect(result.policyName).toEqual(testPolicyName);
+  }));
+  expect(policy.policyName).toEqual(testPolicyName);
 
   result = tournamentEngine.attachEventPolicy({
     eventId,
@@ -143,17 +145,21 @@ it('can find policies whether on event or tournamentRecord', () => {
   expect(updatedRecord.events.length).toEqual(1);
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
-  result = tournamentEngine.findPolicy({ policyType: POLICY_TYPE_SCORING });
-  expect(result.policyName).toEqual(testPolicyName);
+  ({ policy } = tournamentEngine.findPolicy({
+    policyType: POLICY_TYPE_SCORING,
+  }));
+  expect(policy.policyName).toEqual(testPolicyName);
 
-  result = tournamentEngine.findPolicy({ policyType: POLICY_TYPE_AVOIDANCE });
-  expect(result).toBeUndefined();
+  ({ policy } = tournamentEngine.findPolicy({
+    policyType: POLICY_TYPE_AVOIDANCE,
+  }));
+  expect(result.policy).toBeUndefined();
 
-  result = tournamentEngine.findPolicy({
+  ({ policy } = tournamentEngine.findPolicy({
     eventId,
     policyType: POLICY_TYPE_AVOIDANCE,
-  });
-  expect(result.policyName).toEqual('Nationality Code');
+  }));
+  expect(policy.policyName).toEqual('Nationality Code');
 
   result = tournamentEngine.attachEventPolicy({
     eventId,

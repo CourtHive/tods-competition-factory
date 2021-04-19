@@ -17,6 +17,7 @@ import { policyConstants } from './policyConstants';
 import { positionActionConstants } from './positionActionConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
+import { scheduleConstants } from './scheduleConstants';
 import { timeItemConstants } from './timeItemConstants';
 import { topicConstants } from './topicConstants';
 
@@ -40,6 +41,7 @@ export const factoryConstants = {
   positionActionConstants,
   resultConstants,
   scaleConstants,
+  scheduleConstants,
   timeItemConstants,
   topicConstants,
 };
