@@ -412,26 +412,6 @@ tournamentEngine.addVoluntaryConsolationStage({
 
 ---
 
-## allowedDrawTypes
-
-Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
-
-```js
-const drawTypes = tournamentEngine.allowedDrawTypes();
-```
-
----
-
-## allowedMatchUpFormats
-
-Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
-
-```js
-const drawTypes = tournamentEngine.allowedDrawTypes();
-```
-
----
-
 ## allEventMatchUps
 
 Returns all matchUps for an event.
@@ -1027,6 +1007,26 @@ tournamentEngine.generateVoluntaryConsolationStructure({
   drawId,
   automated: true, // optional
 });
+```
+
+---
+
+## getAllowedDrawTypes
+
+Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
+
+```js
+const drawTypes = tournamentEngine.getAllowedDrawTypes();
+```
+
+---
+
+## getAllowedMatchUpFormats
+
+Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
+
+```js
+const drawTypes = tournamentEngine.getAllowedMatchUpFormats();
 ```
 
 ---

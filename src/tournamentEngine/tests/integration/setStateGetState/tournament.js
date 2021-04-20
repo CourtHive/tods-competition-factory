@@ -79,7 +79,6 @@ export const tournament = {
   startDate: '2021-01-01T00:00:00.000Z',
   events: [
     {
-      allowedDrawTypes: ['COMPASS'],
       _id: '5fd36b6c6b5f8f65c777650a',
       gender: 'MALE',
       endDate: '2021-01-04T00:00:00.000Z',
@@ -101,7 +100,6 @@ export const tournament = {
       updatedAt: '2020-12-11T13:37:23.949Z',
     },
     {
-      allowedDrawTypes: ['COMPASS'],
       _id: '5fd36b6c6b5f8f65c777650c',
       gender: 'MALE',
       endDate: '2021-01-04T00:00:00.000Z',
