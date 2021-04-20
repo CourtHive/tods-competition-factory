@@ -18,7 +18,6 @@ it('can set and remove policies from tournamentRecords and events', () => {
   const scoringPolicy = {
     [POLICY_TYPE_SCORING]: {
       policyName: 'TEST',
-      allowedMatchUpFormats: ['SET3-S:6/TB7'],
     },
   };
   let result = tournamentEngine.attachPolicy({
@@ -37,12 +36,6 @@ it('can set and remove policies from tournamentRecords and events', () => {
   const { tournamentRecord } = tournamentEngine.getState();
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   expect(appliedPolicies.scoring.policyName).toEqual('TEST');
-
-  const allowedMatchUpFormats = tournamentEngine.allowedMatchUpFormats();
-  expect(allowedMatchUpFormats.length).toEqual(1);
-  expect(allowedMatchUpFormats[0]).toEqual(
-    scoringPolicy.scoring.allowedMatchUpFormats[0]
-  );
 
   // test adding event policies
   const event = {
@@ -105,7 +98,6 @@ it('can find policies whether on event or tournamentRecord', () => {
   const scoringPolicy = {
     [POLICY_TYPE_SCORING]: {
       policyName: testPolicyName,
-      allowedMatchUpFormats: ['SET3-S:6/TB7'],
     },
   };
   let result = tournamentEngine.attachPolicy({

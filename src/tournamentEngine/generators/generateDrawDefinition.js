@@ -4,7 +4,7 @@ import { checkValidEntries } from '../governors/eventGovernor/entries/checkValid
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
 import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
-import { allowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
+import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import drawEngine from '../../drawEngine/sync';
 
@@ -62,21 +62,14 @@ export function generateDrawDefinition(props) {
     return validEntriesTest;
   }
 
-  // TODO: review use of allowedDrawTypes
-
   const tournamentAllowedDrawTypes =
     !ignoreAllowedDrawTypes &&
     tournamentRecord &&
-    allowedDrawTypes({ tournamentRecord });
+    getAllowedDrawTypes({ tournamentRecord });
   if (
-    tournamentAllowedDrawTypes &&
+    tournamentAllowedDrawTypes?.length &&
     !tournamentAllowedDrawTypes.includes(drawType)
   ) {
-    return { error: INVALID_DRAW_TYPE };
-  }
-  const eventAllowedDrawTypes =
-    !ignoreAllowedDrawTypes && event?.allowedDrawTypes;
-  if (eventAllowedDrawTypes && !eventAllowedDrawTypes.includes(drawType)) {
     return { error: INVALID_DRAW_TYPE };
   }
 

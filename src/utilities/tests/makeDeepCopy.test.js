@@ -12,7 +12,6 @@ it('can convert extensions during deepCopy', () => {
   const scoringPolicy = {
     scoring: {
       policyName: 'TEST',
-      allowedMatchUpFormats: ['SET3-S:6/TB7'],
     },
   };
   let result = tournamentEngine.attachPolicy({

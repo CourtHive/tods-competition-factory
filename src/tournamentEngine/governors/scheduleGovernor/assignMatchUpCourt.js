@@ -6,6 +6,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
+import { assignMatchUpVenue } from './assignMatchUpVenue';
 
 export function assignMatchUpCourt({
   tournamentRecord,
@@ -19,8 +20,19 @@ export function assignMatchUpCourt({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {
-    const result = findCourt({ tournamentRecord, courtId });
-    if (result.error) return result;
+    const { venue, error } = findCourt({ tournamentRecord, courtId });
+    if (error) return { error };
+    const { venueId } = venue || {};
+    if (venueId) {
+      const result = assignMatchUpVenue({
+        tournamentRecord,
+        drawDefinition,
+        matchUpId,
+        venueId,
+        disableNotice,
+      });
+      if (result.error) return result;
+    }
   }
 
   const timeItem = {

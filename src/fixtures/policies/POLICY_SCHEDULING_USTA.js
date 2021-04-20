@@ -18,10 +18,6 @@ export const POLICY_SCHEDULING_USTA = {
     },
     matchUpAverageTimes: [
       {
-        matchUpFormatCodes: [],
-        averageTimes: [{ categoryNames: [], minutes: { default: 90 } }],
-      },
-      {
         matchUpFormatCodes: ['SET3-S:6/TB7'],
         averageTimes: [
           { categoryTypes: [JUNIOR], minutes: { default: 137 } },
@@ -35,7 +31,7 @@ export const POLICY_SCHEDULING_USTA = {
         matchUpFormatCodes: ['SET3-S:6/TB7-F:TB10'],
         averageTimes: [
           { categoryNames: [], minutes: { default: 90 } },
-          { categoryNames: [ADULT], minutes: { default: 90 } },
+          { categoryTypes: [ADULT], minutes: { default: 90 } },
         ],
       },
       {

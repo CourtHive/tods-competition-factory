@@ -1,4 +1,4 @@
-import { allowedDrawTypes, allowedMatchUpFormats } from './allowedTypes';
+import { getAllowedDrawTypes, getAllowedMatchUpFormats } from './allowedTypes';
 import { getEntriesAndSeedsCount } from './getEntriesAndSeedsCount';
 import { getEventAppliedPolicies } from './getAppliedPolicies';
 import { getSeedsCount } from './getSeedsCount';
@@ -19,8 +19,8 @@ const policyGovernor = {
   getSeedsCount,
   getEntriesAndSeedsCount,
 
-  allowedDrawTypes,
-  allowedMatchUpFormats,
+  getAllowedDrawTypes,
+  getAllowedMatchUpFormats,
   getEventAppliedPolicies,
 };
 
