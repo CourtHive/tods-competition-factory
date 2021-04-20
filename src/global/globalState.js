@@ -60,6 +60,6 @@ export function getTopics() {
   return _globalStateProvider.getTopics();
 }
 
-export function callListener(payload) {
+export async function callListener(payload) {
   return _globalStateProvider.callListener(payload);
 }
