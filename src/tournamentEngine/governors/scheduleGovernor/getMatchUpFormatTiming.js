@@ -30,6 +30,9 @@ export function getMatchUpFormatTiming({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
+  // event is optional, so eventType can also be passed in directly
+  eventType = eventType || event?.eventType;
+
   const { policy } = findPolicy({
     tournamentRecord,
     event,
@@ -134,14 +137,12 @@ function getMatchUpRecoveryTimes({
           (a, b) =>
             (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
         )
-        .find(({ categoryTypes, categoryNames }) => {
-          return (
-            (!categoryNames && !categoryTypes) ||
+        .find(
+          ({ categoryTypes, categoryNames }) =>
             (!categoryNames?.length && !categoryTypes?.length) ||
-            categoryNames.includes(categoryName) ||
-            categoryTypes.includes(categoryType)
-          );
-        })
+            categoryNames?.includes(categoryName) ||
+            categoryTypes?.includes(categoryType)
+        )
     )
     .find((f) => f);
 
@@ -193,17 +194,12 @@ function getMatchUpAverageTimes({
           (a, b) =>
             (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
         )
-        .find(({ categoryTypes, categoryNames }) => {
-          return (
-            (!categoryName &&
-              !categoryType &&
-              !categoryNames &&
-              !categoryTypes) ||
+        .find(
+          ({ categoryTypes, categoryNames }) =>
             (!categoryNames?.length && !categoryTypes?.length) ||
             categoryNames?.includes(categoryName) ||
             categoryTypes?.includes(categoryType)
-          );
-        })
+        )
     )
     .find((f) => f);
 

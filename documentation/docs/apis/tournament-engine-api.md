@@ -1218,6 +1218,14 @@ const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 
 ---
 
+## getEventMatchUpFormatTiming
+
+```js
+
+```
+
+---
+
 ## getMatchUpFormat
 
 Returns `matchUpFormat` codes for specified context(s). Refer to `getMatchUpFormat.test.js` for specfic use cases.
