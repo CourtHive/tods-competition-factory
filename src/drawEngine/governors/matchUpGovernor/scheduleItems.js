@@ -1,3 +1,5 @@
+import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
+import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { formatDate } from '../../../utilities/dateTime';
 import { addNotice } from '../../../global/globalState';
@@ -46,6 +48,7 @@ function validTimeValue(value) {
 }
 
 export function addMatchUpScheduleItems({
+  tournamentRecord,
   drawDefinition,
   matchUpId,
   disableNotice,
@@ -55,7 +58,14 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
 
-  const { scheduledDate, scheduledTime, startTime, endTime } = schedule;
+  const {
+    scheduledDate,
+    scheduledTime,
+    startTime,
+    endTime,
+    courtId,
+    venueId,
+  } = schedule;
 
   if (scheduledDate) {
     const result = addMatchUpScheduledDate({
@@ -89,6 +99,26 @@ export function addMatchUpScheduleItems({
       drawDefinition,
       matchUpId,
       endTime,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  }
+  if (courtId && scheduledDate) {
+    const result = assignMatchUpCourt({
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+      courtDayDate: scheduledDate,
+      courtId,
+      disableNotice: true,
+    });
+    if (result?.error) return result;
+  } else if (venueId) {
+    const result = assignMatchUpVenue({
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+      venueId,
       disableNotice: true,
     });
     if (result?.error) return result;

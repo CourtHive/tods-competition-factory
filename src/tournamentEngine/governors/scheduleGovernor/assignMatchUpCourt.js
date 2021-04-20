@@ -13,6 +13,7 @@ export function assignMatchUpCourt({
   courtDayDate,
   matchUpId,
   courtId,
+  disableNotice,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -32,6 +33,7 @@ export function assignMatchUpCourt({
     drawDefinition,
     matchUpId,
     timeItem,
+    disableNotice,
     duplicateValues: false,
   });
 }
