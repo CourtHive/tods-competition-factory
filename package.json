@@ -62,7 +62,7 @@
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
-    "@babel/core": "7.13.15",
+    "@babel/core": "7.13.16",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.13.8",
     "@babel/plugin-proposal-optional-chaining": "7.13.12",
     "@babel/preset-env": "7.13.15",
