@@ -805,7 +805,7 @@ const {
 ## findCourt
 
 ```js
-const { court } = tournamentEngine.findCourt({ courtId });
+const { court, venue } = tournamentEngine.findCourt({ courtId });
 ```
 
 ---

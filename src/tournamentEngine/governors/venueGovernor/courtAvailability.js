@@ -1,3 +1,4 @@
+import { addNotice } from '../../../global/globalState';
 import { findCourt } from '../../getters/courtGetter';
 
 import {
@@ -5,7 +6,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice } from '../../../global/globalState';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyCourtAvailability({
