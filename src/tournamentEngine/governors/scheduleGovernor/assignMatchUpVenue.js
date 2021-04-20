@@ -12,6 +12,7 @@ export function assignMatchUpVenue({
   drawDefinition,
   matchUpId,
   venueId,
+  disableNotice,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -30,6 +31,7 @@ export function assignMatchUpVenue({
     drawDefinition,
     matchUpId,
     timeItem,
+    disableNotice,
     duplicateValues: false,
   });
 }

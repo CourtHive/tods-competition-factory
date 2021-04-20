@@ -264,6 +264,8 @@ tournamentEngine.addMatchUpScheduleItems({
   drawId,
   matchUpId,
   schedule: {
+    courtId, // requires scheduledDate
+    venueId,
     scheduledTime,
     scheduledDate,
     startTime,
@@ -494,6 +496,18 @@ tournamentEngine.assignMatchUpCourt({
   matchUpId,
   courtId,
   courtDayDate, // ISO date string
+});
+```
+
+---
+
+## assignMatchUpVenue
+
+```js
+tournamentEngine.assignMatchUVenue({
+  drawId, // drawId where matchUp is found
+  matchUpId,
+  venueId,
 });
 ```
 
@@ -791,7 +805,7 @@ const {
 ## findCourt
 
 ```js
-const { court } = tournamentEngine.findCourt({ courtId });
+const { court, venue } = tournamentEngine.findCourt({ courtId });
 ```
 
 ---
@@ -2030,6 +2044,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   schedule: {
     // optional - set schedule items
+    courtId, // requires scheduledDate
+    venueId,
     scheduledDate,
     scheduledTime,
     startTime,

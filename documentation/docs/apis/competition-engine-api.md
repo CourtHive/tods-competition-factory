@@ -117,6 +117,18 @@ competitionEngine.reorderUpcomingMatchUps({
 
 ## scheduleMatchUps
 
+Auto schedule matchUps on a given date using the Garmin formula.
+
+```js
+competitionEngine.scheduleMatchUps({
+  date,
+  matchUps
+  venueIds,
+  periodLength = 30,
+  averageMatchUpTime = 90,
+});
+```
+
 ---
 
 ## setState
