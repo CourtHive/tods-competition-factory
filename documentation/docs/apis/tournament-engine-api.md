@@ -1304,7 +1304,7 @@ const { participant } = tournamentEngine.getPairedParticipant({
 
 ## getParticipantEventDetails
 
-Returns an array of eventDetails in which a specified `participantId` appears. Used primarily by `tournamentEngine.tournamentParticipants()` to add context.
+Returns an array of eventDetails in which a specified `participantId` appears. For more detailed information use `tournamentEngine.getTournamentParticipants({ inContext: true })`.
 
 ```js
 const { eventDetails } = tournamentEngine.getParticipantEventDetails({

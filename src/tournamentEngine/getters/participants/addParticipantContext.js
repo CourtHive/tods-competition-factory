@@ -54,10 +54,13 @@ export function addParticipantContext({
       inContext: true,
       nextMatchUps: true,
     });
-    const drawTypes = Object.assign(
+    const drawDetails = Object.assign(
       {},
       ...event.drawDefinitions.map((drawDefinition) => ({
-        [drawDefinition.drawId]: drawDefinition.drawType,
+        [drawDefinition.drawId]: {
+          drawType: drawDefinition.drawType,
+          drawEntries: drawDefinition.entries,
+        },
       }))
     );
     matchUps.forEach((matchUp) => {
@@ -82,7 +85,7 @@ export function addParticipantContext({
       sides.forEach(({ participantId, sideNumber } = {}) => {
         if (!participantId) return;
 
-        const drawType = drawTypes[drawId];
+        const { drawType, drawEntries } = drawDetails[drawId];
         const participantScore =
           sideNumber === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
         const participantWon = winningSide && sideNumber === winningSide;
@@ -101,12 +104,20 @@ export function addParticipantContext({
         const relevantParticipantIds =
           (participantId && allRelevantParticipantIds(participantId)) || [];
 
+        const drawEntry = drawEntries.find(
+          (entry) => entry.participantId === participantId
+        );
+
         // include all individual participants that are part of teams & pairs
         relevantParticipantIds.forEach(
           ({ relevantParticipantId, participantType }) => {
+            const { entryStage, entryStatus, entryPosition } = drawEntry || {};
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawName,
               drawType,
+              entryStage,
+              entryStatus,
+              entryPosition,
               eventId,
               drawId,
             };
