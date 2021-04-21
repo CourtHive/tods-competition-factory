@@ -21,8 +21,6 @@ tournamentEngine
 - bulkMatchUpStatusUpdate
 - bulkUpdatePublishedEventIds
 - getPolicyDefinition
-- getSeedsCount
-- modifyParticipant
 - withdrawParticipantAtDrawPosition
 * addDrawDefinition
 * addEventEntryPairs
@@ -50,11 +48,13 @@ tournamentEngine
 * getEventTimeItem
 * getParticipantEventDetails
 * getParticipantSignInStatus
+* getSeedsCount
 * getTournamentParticipants
 * matchUpActions
 * modifyEntriesStatus
 * modifyIndividualParticipantIds
 * modifyVenue
+* modifyParticipant
 * modifyParticipantName
 * modifyParticipantOtherName
 * modifyParticipantSignInStatus

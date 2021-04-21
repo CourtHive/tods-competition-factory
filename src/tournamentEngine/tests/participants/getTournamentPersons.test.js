@@ -2,6 +2,7 @@ import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 it('can retrieve and modify tournament persons', () => {
   const participantsProfile = {
@@ -32,7 +33,7 @@ it('can retrieve and modify tournament persons', () => {
     }),
   });
 
-  const result = tournamentEngine.modifyParticipant({
+  let result = tournamentEngine.modifyParticipant({
     participant: updatedParticipant,
   });
   expect(result.success).toEqual(true);
@@ -44,4 +45,16 @@ it('can retrieve and modify tournament persons', () => {
   expect(participant.person.personId).toEqual(
     updatedParticipant.person.personId
   );
+
+  const personId = updatedParticipant.person.personId;
+  result = tournamentEngine.findParticipant({
+    personId,
+  });
+
+  expect(result.participant.person.personId).toEqual(personId);
+
+  result = tournamentEngine.findParticipant({
+    personId: undefined,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
 });
