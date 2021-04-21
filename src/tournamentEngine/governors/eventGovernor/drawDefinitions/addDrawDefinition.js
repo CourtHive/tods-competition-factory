@@ -9,7 +9,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 
 export function addDrawDefinition({ drawDefinition, event }) {

@@ -7,7 +7,7 @@ import {
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addFlight({ event, drawName, drawEntries = [], drawId }) {

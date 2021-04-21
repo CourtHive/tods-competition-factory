@@ -6,7 +6,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {

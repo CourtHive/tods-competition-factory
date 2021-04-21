@@ -8,11 +8,7 @@ export const SPLIT_LEVEL_BASED = 'splitLevelBased'; // Evenly chunk sorted entri
 export const SPLIT_WATERFALL = 'splitWaterfall'; // 1,2,3,4,1,2,3,4,1,2,3,4,1,2,3,4
 export const SPLIT_SHUTTLE = 'splitShuttle'; // 1,2,3,4,4,3,2,1,1,2,3,4,4,3,2,1
 
-export const FLIGHT_PROFILE = 'flightProfile';
-
 export const flightConstants = {
-  FLIGHT_PROFILE,
-
   SPLIT_LEVEL_BASED,
   SPLIT_WATERFALL,
   SPLIT_SHUTTLE,

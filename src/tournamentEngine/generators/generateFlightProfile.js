@@ -17,10 +17,10 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import {
-  FLIGHT_PROFILE,
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
 } from '../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 
 /**
  *

@@ -1,7 +1,7 @@
 import { findEventExtension } from '../governors/queryGovernor/extensionQueries';
 
 import { MISSING_EVENT } from '../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 
 export function getFlightProfile({ event }) {
   if (!event) return { error: MISSING_EVENT };

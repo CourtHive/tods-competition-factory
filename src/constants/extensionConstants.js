@@ -2,6 +2,7 @@ export const APPLIED_POLICIES = 'appliedPolicies';
 export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_PROFILE = 'drawProfile';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
+export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const SCHEDULE_TIMING = 'scheduleTiming';
@@ -11,6 +12,7 @@ export const extensionConstants = {
   DISABLE_LINKS,
   DRAW_PROFILE,
   DELEGATED_OUTCOME,
+  FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE,
   PARTICIPANT_REPRESENTATIVES,
   SCHEDULE_TIMING,
