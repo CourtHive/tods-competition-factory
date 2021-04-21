@@ -1,6 +1,7 @@
 import { makeDeepCopy } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
 
+import { extensionConstants } from '../../../constants/extensionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
@@ -24,10 +25,23 @@ export function addParticipantContext({
       (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
     );
     const entries = event.entries || [];
+
+    const disallowedConstants = [].concat(...Object.values(extensionConstants));
+    const disallowedKeys = disallowedConstants.map(
+      (constant) => `_${constant}`
+    );
+    // don't allow system extensions to be copied to participants
+    const filteredEventInfo = Object.keys(eventInfo)
+      .filter((key) => !disallowedKeys.includes(key))
+      .reduce((obj, key) => {
+        obj[key] = eventInfo[key];
+        return obj;
+      }, {});
+
     entries
       .filter((entry) => entry?.participantId)
       .forEach((entry) => {
-        const participantId = entry?.participantId;
+        const { participantId, entryStage, entryStatus, entryPosition } = entry;
 
         // include all individual participants that are part of teams & pairs
         // relevantParticipantId is a reference to an individual
@@ -43,17 +57,47 @@ export function addParticipantContext({
                 losses: 0,
               };
             participantIdMap[relevantParticipantId].events[eventId] = {
-              ...eventInfo,
+              ...filteredEventInfo,
+              entryStage,
+              entryStatus,
+              entryPosition,
+              drawIds: [],
             };
           }
         );
       });
+
+    // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
+    eventInfo._flightProfile?.flights?.forEach((flight) => {
+      const { drawId, drawEntries } = flight;
+      drawEntries.forEach((drawEntry) => {
+        const {
+          participantId,
+          entryStage,
+          entryStatus,
+          entryPosition,
+        } = drawEntry;
+        allRelevantParticipantIds(participantId).forEach(
+          ({ relevantParticipantId }) => {
+            participantIdMap[relevantParticipantId].events[
+              eventId
+            ].drawIds.push(drawId);
+            participantIdMap[relevantParticipantId].draws[drawId] = {
+              entryStage,
+              entryStatus,
+              entryPosition,
+            };
+          }
+        );
+      });
+    });
 
     const { matchUps } = allEventMatchUps({
       event,
       inContext: true,
       nextMatchUps: true,
     });
+
     const drawDetails = Object.assign(
       {},
       ...event.drawDefinitions.map((drawDefinition) => ({
