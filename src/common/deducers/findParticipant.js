@@ -9,9 +9,7 @@ export function findParticipant({
   const participant = tournamentParticipants.find(
     (candidate) =>
       (participantId && candidate.participantId === participantId) ||
-      (personId &&
-        participant.person &&
-        participant.person.personId === personId)
+      (personId && candidate.person && candidate.person.personId === personId)
   );
   const participantAttributes = policyDefinition.participant;
   if (participantAttributes) {
