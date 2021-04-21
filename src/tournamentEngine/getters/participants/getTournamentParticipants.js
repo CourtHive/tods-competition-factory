@@ -32,6 +32,8 @@ export function getTournamentParticipants({
   withStatistics,
   withOpponents,
   withMatchUps,
+  withEvents,
+  withDraws,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -75,6 +77,8 @@ export function getTournamentParticipants({
       withStatistics,
       withOpponents,
       withMatchUps,
+      withEvents,
+      withDraws,
     });
   }
 

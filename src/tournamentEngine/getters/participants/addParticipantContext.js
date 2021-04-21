@@ -12,6 +12,8 @@ export function addParticipantContext({
   withMatchUps,
   withStatistics,
   withOpponents,
+  withEvents = true,
+  withDraws = true,
 }) {
   const participantIdMap = {};
 
@@ -289,11 +291,15 @@ export function addParticipantContext({
         statValue,
       };
 
-      participant.draws = Object.values(draws);
-      participant.events = Object.values(events);
+      const participantDraws = Object.values(draws);
+      const participantEvents = Object.values(events);
+
+      if (withDraws) participant.draws = participantDraws;
+      if (withEvents) participant.events = participantEvents;
+
       if (withOpponents) {
         participant.opponents = Object.values(opponents).flat();
-        participant.draws.forEach((draw) => {
+        participantDraws.forEach((draw) => {
           draw.opponents = Object.values(opponents)
             .flat()
             .filter((opponent) => opponent.drawId === draw.drawId);
@@ -301,7 +307,7 @@ export function addParticipantContext({
       }
       if (withMatchUps) {
         participant.matchUps = Object.values(matchUps);
-        participant.draws.forEach((draw) => {
+        participantDraws.forEach((draw) => {
           const drawMatchUps =
             Object.values(matchUps)?.filter(
               (matchUp) => matchUp.drawId === draw.drawId
