@@ -16,11 +16,9 @@ it('can create and return flighProfiles', () => {
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile).toBeUndefined();
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -67,6 +65,13 @@ it('can create and return flighProfiles', () => {
     'Flight 4',
   ]);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    convertExtensions: true,
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+  }));
+  expect(tournamentParticipants[0].events[0].drawIds.length).toBeGreaterThan(0);
 });
 
 it('can create and return flighProfiles with drawDefinitions', () => {

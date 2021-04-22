@@ -64,6 +64,8 @@ export function generateDrawType(props = {}) {
     structureName,
     stageSequence = 1,
     drawType = SINGLE_ELIMINATION,
+    // qualifyingPositions, => passed through in props to treeMatchUps
+    // qualifyingRound, => passed through in props to treeMatchUps
     drawDefinition,
   } = props;
 
