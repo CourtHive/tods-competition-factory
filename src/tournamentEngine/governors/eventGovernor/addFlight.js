@@ -10,7 +10,15 @@ import {
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addFlight({ event, drawName, drawEntries = [], drawId }) {
+export function addFlight({
+  event,
+  stage,
+  drawId,
+  drawName,
+  drawSize,
+  drawEntries = [],
+  qualifyingPositions,
+}) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawName) return { error: MISSING_VALUE };
 
@@ -43,9 +51,12 @@ export function addFlight({ event, drawName, drawEntries = [], drawId }) {
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
   const flight = {
+    stage,
     drawName,
+    drawSize,
     drawEntries,
     flightNumber,
+    qualifyingPositions,
     drawId: drawId || UUID(),
   };
 

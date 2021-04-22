@@ -10,9 +10,9 @@ import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function treeMatchUps({
   drawSize,
-  qualifyingPositions,
   roundLimit,
-  qualifyingRound,
+  qualifyingRound, // round at which participants qualify
+  qualifyingPositions,
   finishingPositionOffset,
   uuids,
 }) {

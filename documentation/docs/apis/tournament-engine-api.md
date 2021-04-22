@@ -163,6 +163,7 @@ tournamentEngine.addEventExtension({
 ```js
 tournamentEngine.addFlight({
   eventId,
+  stage,
   drawName,
   drawId, // optional -- if scenario involves client and server side tournamentEngines, provide { drawId: UUID() }
   drawEntries, // optional
@@ -915,9 +916,11 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(
 
 ## generateFlightProfile
 
-Splits event entries into # of draws. `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
+Splits event entries into `flightsCount` (# of draws). `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
 
-See [Scale Items](../concepts/scaleItems).
+NOTE: The method returns `{ flightProfile, splitEntries }` for testing; `splitEntries` provides a breakdown on how `event.entries` were split across each `flight` within the `event`.
+
+For an explanation of `scaleAttributes` see [Scale Items](../concepts/scaleItems).
 
 ```js
 const scaleAttributes = {

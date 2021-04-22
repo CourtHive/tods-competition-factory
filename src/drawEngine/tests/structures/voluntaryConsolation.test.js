@@ -1,7 +1,46 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
-import { VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import {
+  QUALIFYING,
+  VOLUNTARY_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
+import { SINGLES } from '../../../constants/eventConstants';
+
+it.only('can add draw with empty voluntary consolation stage', () => {
+  const eventProfiles = [
+    {
+      eventName: 'Event Flights Test',
+      eventType: SINGLES,
+      matchUpFormat: FORMAT_STANDARD,
+      drawProfiles: [
+        {
+          drawSize: 16,
+          drawName: 'Qualifying Draw',
+          stage: QUALIFYING,
+        },
+        {
+          drawSize: 32,
+          qualifyingPositions: 4,
+          drawName: 'Main Draw',
+        },
+        {
+          drawName: 'Consolation Draw',
+          stage: VOLUNTARY_CONSOLATION,
+        },
+      ],
+    },
+  ];
+  const {
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
+
+  const { event } = tournamentEngine.getEvent({ eventId });
+  console.log(event.extensions[0].value.flights);
+});
 
 it('can add draw with voluntary consolation stage', () => {
   const drawSize = 8;
