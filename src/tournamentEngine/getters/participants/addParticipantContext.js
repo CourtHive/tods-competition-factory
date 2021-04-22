@@ -85,6 +85,8 @@ export function addParticipantContext({
               eventId
             ].drawIds.push(drawId);
             participantIdMap[relevantParticipantId].draws[drawId] = {
+              drawId,
+              eventId,
               entryStage,
               entryStatus,
               entryPosition,
@@ -102,7 +104,7 @@ export function addParticipantContext({
 
     const drawDetails = Object.assign(
       {},
-      ...event.drawDefinitions.map((drawDefinition) => ({
+      ...(event.drawDefinitions || []).map((drawDefinition) => ({
         [drawDefinition.drawId]: {
           drawType: drawDefinition.drawType,
           drawEntries: drawDefinition.entries,
