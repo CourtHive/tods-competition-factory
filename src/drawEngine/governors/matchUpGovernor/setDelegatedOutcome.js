@@ -16,7 +16,7 @@ export function setDelegatedOutcome({
   outcome,
 }) {
   if (!matchUp && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP };
+  if (!matchUp && !matchUpId) return { error: MISSING_MATCHUP };
   if (!outcome) return { error: MISSING_VALUE };
 
   if (!matchUp) {
