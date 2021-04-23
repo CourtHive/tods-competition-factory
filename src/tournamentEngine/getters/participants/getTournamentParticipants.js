@@ -62,7 +62,7 @@ export function getTournamentParticipants({
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
-            return makeDeepCopy(individualParticipant, convertExtensions);
+            return makeDeepCopy(individualParticipant, convertExtensions, true);
           }
         );
       }
