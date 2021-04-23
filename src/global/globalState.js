@@ -36,7 +36,7 @@ export function setDeepCopy(value) {
   }
 }
 
-export function getDeepCopy() {
+export function deepCopyEnabled() {
   return globalState.deepCopy;
 }
 

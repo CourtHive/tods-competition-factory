@@ -1,7 +1,7 @@
 import { makeDeepCopy } from '../../../utilities';
 import { allEventMatchUps } from '../matchUpsGetter';
-
 import { extensionConstants } from '../../../constants/extensionConstants';
+
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
@@ -19,7 +19,7 @@ export function addParticipantContext({
 
   // first loop through all filtered events and capture events played
   tournamentEvents.forEach((rawEvent) => {
-    const event = makeDeepCopy(rawEvent, true);
+    const event = makeDeepCopy(rawEvent, true, true);
     const { eventId, eventName, eventType, category } = event;
     const eventInfo = { eventId, eventName, eventType, category };
     const extensionKeys = Object.keys(event).filter((key) => key[0] === '_');
