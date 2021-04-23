@@ -35,6 +35,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
+  // TODO: review
   const venuesData = venues.map((venue) =>
     (({ venueData }) => ({
       ...venueData,
