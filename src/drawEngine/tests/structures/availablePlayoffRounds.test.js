@@ -1,10 +1,16 @@
 import { getAvailablePlayoffRounds } from '../../governors/structureGovernor/getAvailablePlayoffRounds';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
+  FIRST_MATCH_LOSER_CONSOLATION,
+} from '../../../constants/drawDefinitionConstants';
 
-it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {
+it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
@@ -64,4 +70,31 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
     finishingPositionRange: '3-4',
     finishingPositions: [3, 4],
   });
+});
+
+it('can accurately determine available playoff rounds for consolation draw of FIC', () => {
+  const drawProfiles = [
+    {
+      drawSize: 64,
+      drawType: FEED_IN_CHAMPIONSHIP,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const {
+    structures: [consolationStructure],
+  } = drawEngine
+    .setState(drawDefinition)
+    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+
+  const { structureId } = consolationStructure;
+  const { playoffRounds } = tournamentEngine.getAvailablePlayoffRounds({
+    drawDefinition,
+    structureId,
+  });
+  expect(playoffRounds).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
