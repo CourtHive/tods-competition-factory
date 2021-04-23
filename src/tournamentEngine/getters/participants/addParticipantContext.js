@@ -69,21 +69,19 @@ export function addParticipantContext({
         );
       });
 
-    // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
-    eventInfo._flightProfile?.flights?.forEach((flight) => {
-      const { drawId, drawEntries } = flight;
-      drawEntries.forEach((drawEntry) => {
-        const {
-          participantId,
-          entryStage,
-          entryStatus,
-          entryPosition,
-        } = drawEntry;
-        allRelevantParticipantIds(participantId).forEach(
-          ({ relevantParticipantId }) => {
-            participantIdMap[relevantParticipantId].events[
-              eventId
-            ].drawIds.push(drawId);
+    const addDrawData = ({ drawId, drawEntry }) => {
+      const {
+        participantId,
+        entryStage,
+        entryStatus,
+        entryPosition,
+      } = drawEntry;
+      allRelevantParticipantIds(participantId).forEach(
+        ({ relevantParticipantId }) => {
+          const eventDrawIds =
+            participantIdMap[relevantParticipantId].events[eventId].drawIds;
+          if (!eventDrawIds.includes(drawId)) {
+            eventDrawIds.push(drawId);
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawId,
               eventId,
@@ -92,8 +90,19 @@ export function addParticipantContext({
               entryPosition,
             };
           }
-        );
-      });
+        }
+      );
+    };
+
+    // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
+    eventInfo._flightProfile?.flights?.forEach((flight) => {
+      const { drawId, drawEntries } = flight;
+      drawEntries.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
+    });
+
+    // iterate through drawDefinitiosn to insure that draw entries are captured if no flightProfile is present
+    event.drawDefinitions?.forEach(({ drawId, entries }) => {
+      entries.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
     });
 
     const { matchUps } = allEventMatchUps({
