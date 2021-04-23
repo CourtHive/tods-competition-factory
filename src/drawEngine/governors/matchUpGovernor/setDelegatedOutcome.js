@@ -9,13 +9,24 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
 
-export function setDelegatedOutcome({ drawDefinition, matchUpId, outcome }) {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+export function setDelegatedOutcome({
+  drawDefinition,
+  matchUp,
+  matchUpId,
+  outcome,
+}) {
+  if (!matchUp && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP };
   if (!outcome) return { error: MISSING_VALUE };
 
-  const { error, matchUp } = findMatchUp({ drawDefinition, matchUpId });
-  if (error) return { error };
+  if (!matchUp) {
+    const { error, matchUp: sourceMatchUp } = findMatchUp({
+      drawDefinition,
+      matchUpId,
+    });
+    if (error) return { error };
+    matchUp = sourceMatchUp;
+  }
 
   // TODO: check validity of outcome
   const extension = {
