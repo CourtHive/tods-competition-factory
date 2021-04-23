@@ -1014,6 +1014,20 @@ tournamentEngine.generateVoluntaryConsolationStructure({
 
 ---
 
+## getAllEventData
+
+Returns all `matchUps` for all draws in all events along with `tournamentInfo`, `eventInfo`, and `drawInfo`.
+
+```js
+const { allEventData } = tournamentEngine.getEventData({
+  policyDefinition, // optional - allows participant data to be filtered via a privacy policy
+});
+
+const { tournamentInfo, eventsData, venuesData } = allEventData;
+```
+
+---
+
 ## getAllowedDrawTypes
 
 Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
