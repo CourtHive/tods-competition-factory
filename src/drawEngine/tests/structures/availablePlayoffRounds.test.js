@@ -98,3 +98,71 @@ it('can accurately determine available playoff rounds for consolation draw of FI
   });
   expect(playoffRounds).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
+
+it('can generate only specified playoff rounds and give them custom names', () => {
+  const drawProfiles = [
+    {
+      drawSize: 64,
+      drawType: FEED_IN_CHAMPIONSHIP,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const {
+    structures: [consolationStructure],
+  } = drawEngine
+    .setState(drawDefinition)
+    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+
+  const { structureId } = consolationStructure;
+
+  const playoffAttributes = {
+    '0-2': { name: 'BRONZE', abbreviation: 'B' },
+  };
+  const result = tournamentEngine.devContext(true).addPlayoffStructures({
+    drawId,
+    structureId,
+    exitProfileLimit: true,
+    roundNumbers: [2],
+    playoffAttributes,
+  });
+  const structureNames = result.drawDefinition.structures.map(
+    (s) => s.structureName
+  );
+  expect(structureNames).toEqual(['MAIN', 'CONSOLATION', 'BRONZE']);
+  expect(result.drawDefinition.links.length).toEqual(7);
+});
+
+it('can use roundProfiles to specify depth of playoff structures', () => {
+  const drawProfiles = [
+    {
+      drawSize: 64,
+      drawType: FEED_IN_CHAMPIONSHIP,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const {
+    structures: [consolationStructure],
+  } = drawEngine
+    .setState(drawDefinition)
+    .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
+
+  const { structureId } = consolationStructure;
+
+  const result = tournamentEngine.devContext(true).addPlayoffStructures({
+    drawId,
+    structureId,
+    exitProfileLimit: true,
+    roundProfiles: [{ 2: 1 }],
+  });
+  expect(result.drawDefinition.links.length).toEqual(7);
+});

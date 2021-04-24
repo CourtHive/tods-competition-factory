@@ -1,4 +1,6 @@
 import { generateRange } from '../../utilities';
+import { getDevContext } from '../../global/globalState';
+
 import {
   BOTTOM_UP,
   TOP_DOWN,
@@ -49,11 +51,16 @@ export function feedInLinks({
         },
         target: {
           feedProfile,
-          groupedOrder: roundGroupedOrder[roundNumber - 1],
           roundNumber: targetRound,
           structureId: consolationStructure.structureId,
         },
       };
+      const groupedOrder = roundGroupedOrder[roundNumber - 1];
+      if (groupedOrder) link.target.groupedOrder = groupedOrder;
+      if (getDevContext()) {
+        link.source.structureName = mainStructure.structureName;
+        link.target.structureName = consolationStructure.structureName;
+      }
       if (roundNumber === 2 && fmlc) {
         link.linkCondition = FIRST_MATCHUP;
         link.target.feedProfile = TOP_DOWN;
