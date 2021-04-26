@@ -105,15 +105,10 @@ export function scheduleMatchUps(props) {
           const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
           const scheduledTime = `${formatDate(date)}T${formatTime}`;
 
-          const result = addMatchUpScheduledTime({
+          addMatchUpScheduledTime({
             drawDefinition,
             matchUpId,
             scheduledTime,
-          });
-          console.log('adding matchUpScheduled time', {
-            result,
-            matchUpId,
-            scheduleTime,
           });
         }
       } else {
