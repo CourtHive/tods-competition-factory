@@ -145,6 +145,16 @@ export function dateRange(startDt, endDt) {
   }
 }
 
+// matches valid ISO date string
+const re = /^([+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([.,]\d+(?!:))?)?(\17[0-5]\d([.,]\d+)?)?([zZ]|([+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
+export function isISODateString(dateString) {
+  return re.test(dateString);
+}
+
+export function extractDate(dateString) {
+  return isISODateString(dateString) ? dateString.split('T')[0] : undefined;
+}
+
 // returns 2020-01-01T00:00:00.000Z
 export function isoDateString(date) {
   const formattedDate = formatDate(date);
@@ -312,7 +322,7 @@ export function ymd2date(ymd) {
 }
 
 export function timeToDate(time, date = undefined) {
-  const [hours, minutes] = (time || '00:00').split(':');
+  const [hours, minutes] = (time || '00:00').split(':').map(zeroPad);
   const milliseconds = date
     ? new Date(date).setHours(hours, minutes, 0, 0)
     : new Date().setHours(hours, minutes, 0, 0);
