@@ -1,8 +1,13 @@
 import { generateRange } from '../../../../utilities/arrays';
-import { DateHHMM, currentUTCDate } from '../../../../utilities/dateTime';
+import {
+  DateHHMM,
+  currentUTCDate,
+  sameDay,
+  zeroPad,
+} from '../../../../utilities/dateTime';
 
 export function timeToDate(time, date = undefined) {
-  const [hours, minutes] = (time || '00:00').split(':');
+  const [hours, minutes] = (time || '00:00').split(':').map(zeroPad);
   return date
     ? new Date(date).setHours(hours, minutes, 0, 0)
     : new Date().setHours(hours, minutes, 0, 0);
@@ -32,7 +37,7 @@ export function courtsAvailableAtPeriodStart({
   return { available, count: available.length };
 
   function sameDate(courtDate) {
-    return courtDate.date === date;
+    return sameDay(courtDate.date, date);
   }
   function enoughTime(courtDate) {
     const timeSlots = generateTimeSlots({ courtDate, includeBookingTypes });

@@ -1,11 +1,8 @@
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { sameDay } from '../../../utilities/dateTime';
-import {
-  timeToDate,
-  matchUpTiming,
-} from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
+import { formatDate, sameDay, zeroPad } from '../../../utilities/dateTime';
+import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
 
 import {
   BYE,
@@ -47,7 +44,8 @@ export function scheduleMatchUps(props) {
         dateAvailability?.startTime || court.startTime;
 
       return comparisonStartTime &&
-        new Date(comparisonStartTime) < new Date(minStartTime)
+        (!minStartTime ||
+          new Date(comparisonStartTime) < new Date(minStartTime))
         ? comparisonStartTime
         : minStartTime;
     }, undefined);
@@ -61,7 +59,7 @@ export function scheduleMatchUps(props) {
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
       return comparisonEndTime &&
-        new Date(comparisonEndTime) > new Date(maxEndTime)
+        (!maxEndTime || new Date(comparisonEndTime) > new Date(maxEndTime))
         ? comparisonEndTime
         : maxEndTime;
     }, undefined);
@@ -76,7 +74,6 @@ export function scheduleMatchUps(props) {
     averageMatchUpTime,
   };
   const { scheduleTimes } = matchUpTiming(timingParameters);
-  console.log({ timingParameters, scheduleTimes });
 
   const matchUpsToSchedule = matchUps.filter((matchUp) => {
     const doNotSchedule = [
@@ -105,11 +102,19 @@ export function scheduleMatchUps(props) {
           const { scheduleTime } = scheduleTimes.shift();
 
           // must include date being scheduled to generate proper ISO string
-          const scheduledTime = new Date(
-            timeToDate(scheduleTime, date)
-          ).toISOString();
+          const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
+          const scheduledTime = `${formatDate(date)}T${formatTime}`;
 
-          addMatchUpScheduledTime({ drawDefinition, matchUpId, scheduledTime });
+          const result = addMatchUpScheduledTime({
+            drawDefinition,
+            matchUpId,
+            scheduledTime,
+          });
+          console.log('adding matchUpScheduled time', {
+            result,
+            matchUpId,
+            scheduleTime,
+          });
         }
       } else {
         console.log(MISSING_TOURNAMENT_ID);
