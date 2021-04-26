@@ -291,7 +291,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(schedule.scheduledTime).toBeUndefined();
 });
 
-it.only('adds venueId to matchUp.schedule when court is assigned', () => {
+it('adds venueId to matchUp.schedule when court is assigned', () => {
   const startDate = '2020-01-01';
   const endDate = '2020-01-06';
   const participantsCount = 32;
