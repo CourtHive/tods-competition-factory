@@ -16,6 +16,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { sameDay } from '../../../utilities/dateTime';
 
 // TODO: accept matchUpIds instead of matchUps
 export function scheduleMatchUps(props) {
@@ -39,16 +40,29 @@ export function scheduleMatchUps(props) {
 
   if (!startTime) {
     startTime = courts.reduce((minStartTime, court) => {
-      return new Date(court.startTime) > new Date(minStartTime)
-        ? court.startTime
+      const dateAvailability = court.dateAvailability?.find((availability) =>
+        sameDay(date, availability.date)
+      );
+      const comparisonStartTime =
+        dateAvailability?.startTime || court.startTime;
+
+      return comparisonStartTime &&
+        new Date(comparisonStartTime) < new Date(minStartTime)
+        ? comparisonStartTime
         : minStartTime;
     }, undefined);
   }
 
   if (!endTime) {
     endTime = courts.reduce((maxEndTime, court) => {
-      return new Date(court.endTime) > new Date(maxEndTime)
-        ? court.endTime
+      const dateAvailability = court.dateAvailability?.find((availability) =>
+        sameDay(date, availability.date)
+      );
+      const comparisonEndTime = dateAvailability?.endTime || court.endTime;
+
+      return comparisonEndTime &&
+        new Date(comparisonEndTime) > new Date(maxEndTime)
+        ? comparisonEndTime
         : maxEndTime;
     }, undefined);
   }
@@ -62,6 +76,7 @@ export function scheduleMatchUps(props) {
     averageMatchUpTime,
   };
   const { scheduleTimes } = matchUpTiming(timingParameters);
+  console.log({ timingParameters, scheduleTimes });
 
   const matchUpsToSchedule = matchUps.filter((matchUp) => {
     const doNotSchedule = [
