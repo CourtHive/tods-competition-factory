@@ -1,3 +1,4 @@
+import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
@@ -14,7 +15,6 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 
 // TODO: accept matchUpIds instead of matchUps
 export function scheduleMatchUps(props) {
