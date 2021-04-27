@@ -14,6 +14,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 
 // TODO: accept matchUpIds instead of matchUps
 export function scheduleMatchUps(props) {
@@ -110,6 +111,16 @@ export function scheduleMatchUps(props) {
             matchUpId,
             scheduledTime,
           });
+
+          if (venueIds?.length === 1) {
+            const [venueId] = venueIds;
+            assignMatchUpVenue({
+              tournamentRecord,
+              drawDefinition,
+              matchUpId,
+              venueId,
+            });
+          }
         }
       } else {
         console.log(MISSING_TOURNAMENT_ID);
