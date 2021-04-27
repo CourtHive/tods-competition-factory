@@ -52,7 +52,7 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
       courtId: courtIds[index % 3],
     })
   );
-  result = competitionEngine.setState({ [tournamentId]: tournamentRecord });
+  result = competitionEngine.setState([tournamentRecord]);
   expect(result.success).toEqual(true);
   result = competitionEngine.bulkUpdateCourtAssignments({
     courtAssignments,

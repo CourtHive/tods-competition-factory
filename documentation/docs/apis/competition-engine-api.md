@@ -133,9 +133,12 @@ competitionEngine.scheduleMatchUps({
 
 ## setState
 
-Loads tournament records into competitionEngine.
+Loads tournament records into competitionEngine; supports both an array of tournamentRecords and an object with tournamentId keys.
 
 ```js
+const tournamentRecords = [tournamentRecord];
+// or const tournamentRecords = { [tournamentId]: tournamentRecord }
+
 competitionEngine.setsState(tournamentRecords, deepCopy);
 ```
 
