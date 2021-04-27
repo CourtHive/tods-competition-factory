@@ -1,11 +1,17 @@
+import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
 import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import {
-  timeToDate,
-  matchUpTiming,
-} from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
+import { formatDate, sameDay, zeroPad } from '../../../utilities/dateTime';
+import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  MISSING_TOURNAMENT_ID,
+  MISSING_MATCHUP_IDS,
+} from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   ABANDONED,
@@ -14,21 +20,37 @@ import {
   WALKOVER,
   COMPLETED,
 } from '../../../constants/matchUpStatusConstants';
-import { MISSING_TOURNAMENT_ID } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-// TODO: accept matchUpIds instead of matchUps
+// accepts either matchUps or matchUpIds
 export function scheduleMatchUps(props) {
   const {
     tournamentRecords,
 
+    matchUpFilters,
+    contextFilters,
+
     venueIds,
-    matchUps,
+    matchUpIds,
     date,
 
     periodLength = 30,
     averageMatchUpTime = 90,
   } = props;
+
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
+
+  let matchUps = props.matchUps;
+  if (!matchUps) {
+    const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
+      tournamentRecords,
+      matchUpFilters,
+      contextFilters,
+    });
+    matchUps = competitionMatchUps.filter(({ matchUpId }) =>
+      matchUpIds.includes(matchUpId)
+    );
+  }
 
   let { startTime, endTime } = props;
 
@@ -39,16 +61,30 @@ export function scheduleMatchUps(props) {
 
   if (!startTime) {
     startTime = courts.reduce((minStartTime, court) => {
-      return new Date(court.startTime) > new Date(minStartTime)
-        ? court.startTime
+      const dateAvailability = court.dateAvailability?.find((availability) =>
+        sameDay(date, availability.date)
+      );
+      const comparisonStartTime =
+        dateAvailability?.startTime || court.startTime;
+
+      return comparisonStartTime &&
+        (!minStartTime ||
+          new Date(comparisonStartTime) < new Date(minStartTime))
+        ? comparisonStartTime
         : minStartTime;
     }, undefined);
   }
 
   if (!endTime) {
     endTime = courts.reduce((maxEndTime, court) => {
-      return new Date(court.endTime) > new Date(maxEndTime)
-        ? court.endTime
+      const dateAvailability = court.dateAvailability?.find((availability) =>
+        sameDay(date, availability.date)
+      );
+      const comparisonEndTime = dateAvailability?.endTime || court.endTime;
+
+      return comparisonEndTime &&
+        (!maxEndTime || new Date(comparisonEndTime) > new Date(maxEndTime))
+        ? comparisonEndTime
         : maxEndTime;
     }, undefined);
   }
@@ -90,11 +126,24 @@ export function scheduleMatchUps(props) {
           const { scheduleTime } = scheduleTimes.shift();
 
           // must include date being scheduled to generate proper ISO string
-          const scheduledTime = new Date(
-            timeToDate(scheduleTime, date)
-          ).toISOString();
+          const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
+          const scheduledTime = `${formatDate(date)}T${formatTime}`;
 
-          addMatchUpScheduledTime({ drawDefinition, matchUpId, scheduledTime });
+          addMatchUpScheduledTime({
+            drawDefinition,
+            matchUpId,
+            scheduledTime,
+          });
+
+          if (venueIds?.length === 1) {
+            const [venueId] = venueIds;
+            assignMatchUpVenue({
+              tournamentRecord,
+              drawDefinition,
+              matchUpId,
+              venueId,
+            });
+          }
         }
       } else {
         console.log(MISSING_TOURNAMENT_ID);

@@ -13,6 +13,7 @@ export function filterMatchUps(props) {
     matchUpFormat,
     collectionIds,
     scheduledDate,
+    scheduledDates,
     isMatchUpTie,
     localTimeZone,
     matchUpFormats,
@@ -68,7 +69,8 @@ export function filterMatchUps(props) {
     ) {
       return false;
     }
-    if (scheduledDate) {
+
+    if (scheduledDate || scheduledDates) {
       const { scheduledTime } = scheduledMatchUpTime({
         matchUp,
         localTimeZone,
@@ -85,11 +87,23 @@ export function filterMatchUps(props) {
         scheduledTime.indexOf('T') > 0 &&
         scheduledTime.split('T')[0];
       const comparisonDate = scheduledTimeDate || matchUpDate;
-      if (!sameDay(scheduledDate, comparisonDate)) return false;
+
+      if (scheduledDate && !sameDay(scheduledDate, comparisonDate))
+        return false;
+
+      if (
+        scheduledDates &&
+        !scheduledDates.find((scheduledDate) =>
+          sameDay(scheduledDate, comparisonDate)
+        )
+      )
+        return false;
     }
+
     if (matchUpFormat && matchUp.matchUpFormat !== matchUpFormat) {
       return false;
     }
+
     if (courtIds) {
       const { courtId } = matchUpAssignedCourtId({ matchUp });
       if (!courtIds.includes(courtId)) {

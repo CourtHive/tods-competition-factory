@@ -111,9 +111,10 @@ it('can add events, venues, and schedule matchUps', () => {
     tournamentRecord.tournamentId;
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
+  const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
   result = competitionEngine
     .setState(tournamentRecords)
-    .scheduleMatchUps({ date, matchUps: upcoming });
+    .scheduleMatchUps({ date, matchUpIds });
   expect(result).toEqual(SUCCESS);
 
   ({ tournamentRecords } = competitionEngine.getState());
@@ -388,9 +389,10 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     tournamentRecord.tournamentId;
   let tournamentRecords = { [tournamentId]: tournamentRecord };
 
+  const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
   result = competitionEngine
     .setState(tournamentRecords)
-    .scheduleMatchUps({ date, matchUps: upcoming });
+    .scheduleMatchUps({ date, matchUpIds });
   expect(result).toEqual(SUCCESS);
 
   ({ tournamentRecords } = competitionEngine.getState());

@@ -1,5 +1,5 @@
 import { validTimeString } from '../../../fixtures/validations/regex';
-import { getDevContext } from '../../../global/globalState';
+import { currentUTCDate } from '../../../utilities/dateTime';
 
 import {
   MISSING_MATCHUP,
@@ -11,7 +11,6 @@ import {
   RESUME_TIME,
   END_TIME,
 } from '../../../constants/timeItemConstants';
-import { currentUTCDate } from '../../../utilities/dateTime';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -82,7 +81,6 @@ export function matchUpDuration({ matchUp }) {
   );
 
   if ([START_TIME, RESUME_TIME].includes(elapsed.lastType)) {
-    if (getDevContext()) console.log('START or RESUME');
     const interval = new Date() - timeDate(elapsed.lastValue);
     elapsed.milliseconds += interval;
   }

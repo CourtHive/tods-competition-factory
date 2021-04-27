@@ -20,8 +20,20 @@ let tournamentRecords;
 
 function setState(records, deepCopyOption = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
-  if (Array.isArray(records)) return { error: INVALID_RECORDS };
+
+  if (Array.isArray(records)) {
+    const validRecordsArray =
+      records.filter(({ tournamentId }) => tournamentId).length ===
+      records.length;
+    if (!validRecordsArray) return { error: INVALID_RECORDS };
+    records = Object.assign(
+      {},
+      ...records.map((record) => ({ [record.tournamentId]: record }))
+    );
+  }
+
   tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
+
   return SUCCESS;
 }
 
