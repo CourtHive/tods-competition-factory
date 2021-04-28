@@ -4,6 +4,8 @@ import mocksEngine from '../../../mocksEngine';
 import {
   ABANDONED,
   CANCELLED,
+  AWAITING_RESULT,
+  IN_PROGRESS,
   RETIRED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
@@ -116,4 +118,44 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
     ({ matchUpStatus }) => matchUpStatus === CANCELLED
   );
   expect(cancelled.score.scoreStringSide1).toEqual('');
+});
+
+it.only('allows COMPLETED status with no outcome', () => {
+  const participantsProfile = {
+    participantsCount: 16,
+  };
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      participantsCount: 15,
+    },
+  ];
+  let {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile,
+  });
+
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: {
+      matchUpStatus: IN_PROGRESS,
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: {
+      matchUpStatus: AWAITING_RESULT,
+    },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
 });

@@ -9,6 +9,7 @@ import {
   IN_PROGRESS,
   NOT_PLAYED,
   DEAD_RUBBER,
+  AWAITING_RESULT,
 } from '../../../constants/matchUpStatusConstants';
 
 it('supports entering CANCELED matchUpStatus', () => {
@@ -177,4 +178,28 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
 
   const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
   expect(matchUp.matchUpStatus).toEqual(IN_PROGRESS);
+});
+
+it('supports entering AWAITING_RESULT matchUpStatus', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: { matchUpStatus: AWAITING_RESULT },
+  });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
+  expect(matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
 });
