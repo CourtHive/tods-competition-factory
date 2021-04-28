@@ -1,3 +1,6 @@
+import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+
+import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import {
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
@@ -7,16 +10,14 @@ import {
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
 
 /**
  *
  * @param {boolean} requireParticipantCount - whether or not to consider participantCount
  * @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
- * @param {object} policyDefinition - polictyDefinition object
  * @param {number} participantCount - number of participants in draw structure
  * @param {number} drawSize - number of positions available in draw structure
+ * @param {object} policyDefinition - polictyDefinition object
  */
 export function getSeedsCount({
   requireParticipantCount = true,

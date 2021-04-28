@@ -42,6 +42,7 @@ export function generateDrawDefinition(props) {
     automated = true,
     policyDefinitions,
     qualifyingPositions,
+    enforcePolicyLimits = true,
     drawType = SINGLE_ELIMINATION,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
@@ -107,27 +108,6 @@ export function generateDrawDefinition(props) {
     tieFormat,
     matchUpType,
   });
-
-  const drawProfile = {
-    stage,
-    drawId,
-    drawSize,
-    drawType,
-    automated,
-    drawName,
-    seedsCount,
-
-    tieFormat,
-    matchUpType,
-
-    structureOptions,
-    qualifyingRound,
-    qualifyingPositions,
-
-    category: event?.category,
-  };
-
-  if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
 
   const {
     mappedMatchUps,
@@ -200,7 +180,15 @@ export function generateDrawDefinition(props) {
 
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
-  drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
+
+  const { seedLimit } = drawEngine.initializeStructureSeedAssignments({
+    participantCount: stageEntries.length,
+    enforcePolicyLimits,
+    structureId,
+    seedsCount,
+  });
+
+  if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
 
   if (seededParticipants) {
     seededParticipants
@@ -303,6 +291,27 @@ export function generateDrawDefinition(props) {
   }
 
   const { drawDefinition } = drawEngine.getState();
+
+  const drawProfile = {
+    stage,
+    drawId,
+    drawSize,
+    drawType,
+    automated,
+    drawName,
+    seedsCount,
+
+    tieFormat,
+    matchUpType,
+
+    structureOptions,
+    qualifyingRound,
+    qualifyingPositions,
+
+    category: event?.category,
+  };
+
+  if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
 
   const extension = {
     name: DRAW_PROFILE,

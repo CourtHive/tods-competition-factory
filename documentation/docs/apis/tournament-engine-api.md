@@ -912,6 +912,7 @@ const drawDefinitionValues = {
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
   finishingPositionNaming, // optional - map of { [finishingPositionRange]: { name: 'customName', abbreviation: 'A' } }
+  enforcePolicyLimits, // optional - defaults to true - constrains seedsCount to policyDefinition limits
 };
 
 const { drawDefinition } = tournamentEngine.generateDrawDefinition(

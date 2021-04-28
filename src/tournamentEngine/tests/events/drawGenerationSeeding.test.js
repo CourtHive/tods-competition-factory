@@ -1,3 +1,4 @@
+import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -6,7 +7,6 @@ import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import drawEngine from '../../../drawEngine/sync';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   mocksEngine.generateTournamentRecord({});
@@ -86,4 +86,56 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     );
     expect(result.success).toEqual(true);
   });
+});
+
+it('can constrain seedsCount by policyDefinition', () => {
+  mocksEngine.generateTournamentRecord({});
+  const eventName = 'Test Event';
+  const ageCategoryCode = 'U18';
+  const event = { eventName, category: { ageCategoryCode } };
+  let result = tournamentEngine.addEvent({ event });
+  let { event: eventResult } = result;
+  const { eventId } = eventResult;
+  expect(result.success).toEqual(true);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  const scaleValues = [1, 2, 3, 4, 5, 6, 7, 8];
+  scaleValues.forEach((scaleValue, index) => {
+    let scaleItem = {
+      scaleValue,
+      scaleName: ageCategoryCode,
+      scaleType: SEEDING,
+      eventType: SINGLES,
+      scaleDate: '2020-06-06',
+    };
+    const participantId = participantIds[index];
+    let result = tournamentEngine.setParticipantScaleItem({
+      participantId,
+      scaleItem,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  const drawSize = 32;
+  const participantCount = 32;
+
+  const { seedsCount } = tournamentEngine.getSeedsCount({
+    policyDefinition: SEEDING_USTA,
+    participantCount,
+    drawSize,
+  });
+
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    eventId,
+    seedsCount: 10, // this is in excess of policy limit
+  });
+  expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 });
