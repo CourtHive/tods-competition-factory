@@ -120,7 +120,7 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
   expect(cancelled.score.scoreStringSide1).toEqual('');
 });
 
-it.only('allows COMPLETED status with no outcome', () => {
+it('allows COMPLETED status with no outcome', () => {
   const participantsProfile = {
     participantsCount: 16,
   };
@@ -158,4 +158,49 @@ it.only('allows COMPLETED status with no outcome', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
+});
+
+it('attaches notes to matchUps', () => {
+  const participantsProfile = {
+    participantsCount: 16,
+  };
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      participantsCount: 15,
+    },
+  ];
+  let {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile,
+  });
+
+  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const firstNote = 'first note';
+  const secondNote = 'second note';
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    notes: firstNote,
+    outcome: {
+      matchUpStatus: IN_PROGRESS,
+    },
+  });
+  expect(result.matchUp.notes).toEqual(firstNote);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    notes: secondNote,
+    outcome: {
+      matchUpStatus: IN_PROGRESS,
+    },
+  });
+  expect(result.matchUp.notes).toEqual(secondNote);
+  expect(result.success).toEqual(true);
 });

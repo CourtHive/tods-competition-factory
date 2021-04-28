@@ -203,7 +203,7 @@ function attemptStatusChange(props) {
 }
 
 function winningSideWithDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, winningSide } = props;
+  const { matchUp, matchUpStatus, winningSide, notes } = props;
 
   if (winningSide === matchUp.winningSide) {
     if (matchUpStatus) {
@@ -227,7 +227,7 @@ function winningSideWithDownstreamDependencies(props) {
       }
     } else {
       const { drawDefinition, score } = props;
-      modifyMatchUpScore({ drawDefinition, matchUp, score });
+      modifyMatchUpScore({ drawDefinition, matchUp, score, notes });
     }
   } else {
     return {
@@ -249,6 +249,7 @@ function applyMatchUpValues(props) {
     matchUpStatus,
     matchUpStatusCodes,
     score,
+    notes,
   } = props;
   modifyMatchUpScore({
     drawDefinition,
@@ -256,5 +257,6 @@ function applyMatchUpValues(props) {
     matchUpStatus: matchUpStatus || COMPLETED,
     matchUpStatusCodes,
     score,
+    notes,
   });
 }

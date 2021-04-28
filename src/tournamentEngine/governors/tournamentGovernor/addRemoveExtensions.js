@@ -1,3 +1,5 @@
+import { findParticipant } from '../../../common/deducers/findParticipant';
+
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
@@ -9,7 +11,6 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { findParticipant } from '../../../common/deducers/findParticipant';
 
 export function addExtension({ element, extension }) {
   if (!element) return { error: MISSING_VALUE };

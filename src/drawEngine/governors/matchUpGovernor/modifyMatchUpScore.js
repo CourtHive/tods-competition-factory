@@ -1,3 +1,4 @@
+import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
@@ -34,6 +35,7 @@ export function modifyMatchUpScore({
   winningSide,
   matchUp,
   score,
+  notes,
 
   removeScore,
   removeWinningSide,
@@ -84,6 +86,10 @@ export function modifyMatchUpScore({
         matchUps,
       });
     }
+  }
+
+  if (notes) {
+    addNotes({ element: matchUp, notes });
   }
 
   addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });

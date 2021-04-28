@@ -30,6 +30,7 @@ export function setMatchUpStatus(props) {
     matchUpTieId,
     matchUpFormat,
     schedule,
+    notes,
   } = props;
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
@@ -68,6 +69,7 @@ export function setMatchUpStatus(props) {
     winningSide: outcome?.winningSide,
     score: outcome?.score,
     schedule,
+    notes,
   });
   if (setMatchUpStatusError?.errors)
     errors = errors.concat(setMatchUpStatusError.errors);

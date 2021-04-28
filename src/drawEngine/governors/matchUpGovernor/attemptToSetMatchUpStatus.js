@@ -24,6 +24,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function attemptToSetMatchUpStatus(props) {
   const {
     drawDefinition,
+    notes,
     matchUp,
     structure,
     targetData,
@@ -51,6 +52,7 @@ export function attemptToSetMatchUpStatus(props) {
         if (result.error) return result;
       }
       modifyMatchUpScore({
+        notes,
         matchUp,
         drawDefinition,
         matchUpStatus,
@@ -66,6 +68,7 @@ export function attemptToSetMatchUpStatus(props) {
         return { error: participantDirectionErrors };
       }
       modifyMatchUpScore({
+        notes,
         matchUp,
         drawDefinition,
         matchUpStatus: matchUpStatus || TO_BE_PLAYED,
@@ -77,6 +80,7 @@ export function attemptToSetMatchUpStatus(props) {
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
     const removeScore = [CANCELLED, WALKOVER].includes(matchUpStatus);
     modifyMatchUpScore({
+      notes,
       matchUp,
       drawDefinition,
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
@@ -90,6 +94,7 @@ export function attemptToSetMatchUpStatus(props) {
     if (isDirectingMatchUpStatus({ matchUpStatus })) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
         modifyMatchUpScore({
+          notes,
           matchUp,
           drawDefinition,
           matchUpStatus,
