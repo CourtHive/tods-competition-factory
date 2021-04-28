@@ -1005,6 +1005,7 @@ drawEngine.setMatchUpStatus({
     startTime,
     endTime,
   },
+  notes, // optional - add note (string) to matchUp object
 });
 ```
 

@@ -2072,8 +2072,8 @@ tournamentEngine.setMatchUpStatus({
   drawId,
   matchUpId,
   matchUpTieId, // optional - if part of a TIE matchUp
-  outcome,
   matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
+  outcome,
   schedule: {
     // optional - set schedule items
     courtId, // requires scheduledDate
@@ -2083,6 +2083,7 @@ tournamentEngine.setMatchUpStatus({
     startTime,
     endTime,
   },
+  notes, // optional - add note (string) to matchUp object
 });
 ```
 
