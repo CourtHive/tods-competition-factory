@@ -6,7 +6,9 @@ title: Competition Engine API
 ## allCompetitionMatchUps
 
 ```js
-const { matchUps } = competitionEngine.allCompetitionMatchUps();
+const { matchUps } = competitionEngine.allCompetitionMatchUps({
+  scheduleVisibilityFilters,
+});
 ```
 
 ---
@@ -42,7 +44,9 @@ const {
   completedMatchUps,
   pendingMatchUps,
   upcomingMatchUps,
-} = competitionEngine.competitionMatchUps();
+} = competitionEngine.competitionMatchUps({
+  scheduleVisibilityFilters,
+});
 ```
 
 ---

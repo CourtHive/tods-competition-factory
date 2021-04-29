@@ -36,6 +36,7 @@ export function getAllStructureMatchUps({
   policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
 
   mappedMatchUps,
 }) {
@@ -174,6 +175,7 @@ export function getAllStructureMatchUps({
         roundNamingProfile,
         drawPositionsRanges,
         sourceDrawPositionRanges,
+        scheduleVisibilityFilters,
       })
     );
     if (contextFilters) {
@@ -203,10 +205,14 @@ export function getAllStructureMatchUps({
     isCollectionBye,
     roundNamingProfile,
     drawPositionsRanges,
+    scheduleVisibilityFilters,
     sourceDrawPositionRanges,
   }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
-    const { schedule } = getMatchUpScheduleDetails({ matchUp });
+    const { schedule } = getMatchUpScheduleDetails({
+      scheduleVisibilityFilters,
+      matchUp,
+    });
     const { drawPositions, roundNumber, roundPosition } = matchUp;
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
@@ -257,6 +263,7 @@ export function getAllStructureMatchUps({
             roundNamingProfile,
             drawPositionsRanges,
             sourceDrawPositionRanges,
+            scheduleVisibilityFilters,
           });
         }
       );

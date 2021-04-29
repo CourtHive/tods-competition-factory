@@ -27,6 +27,7 @@ export function getStructureMatchUps({
   tournamentParticipants,
   tournamentAppliedPolicies,
   requireParticipants = true,
+  scheduleVisibilityFilters,
 }) {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -42,6 +43,7 @@ export function getStructureMatchUps({
     policyDefinition,
     tournamentParticipants,
     tournamentAppliedPolicies,
+    scheduleVisibilityFilters,
   });
   if (error) return { error };
   const { assignedPositions } = structureAssignedDrawPositions({ structure });

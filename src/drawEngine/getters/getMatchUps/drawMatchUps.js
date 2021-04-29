@@ -48,6 +48,7 @@ export function getDrawMatchUps({
   requireParticipants,
   tournamentParticipants,
   tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -85,6 +86,7 @@ export function getDrawMatchUps({
       requireParticipants,
       tournamentParticipants,
       tournamentAppliedPolicies,
+      scheduleVisibilityFilters,
       inContext: inContext || nextMatchUps,
     });
 

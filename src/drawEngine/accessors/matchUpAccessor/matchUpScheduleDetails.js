@@ -7,7 +7,12 @@ import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 import { extractDate } from '../../../utilities/dateTime';
 
-export function getMatchUpScheduleDetails({ matchUp }) {
+export function getMatchUpScheduleDetails({
+  scheduleVisibilityFilters,
+  matchUp,
+}) {
+  if (scheduleVisibilityFilters) console.log({ scheduleVisibilityFilters });
+
   const { milliseconds, time } = matchUpDuration({ matchUp });
   let { scheduledDate } = scheduledMatchUpDate({ matchUp });
   const { scheduledTime } = scheduledMatchUpTime({ matchUp });

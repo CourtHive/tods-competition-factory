@@ -77,6 +77,7 @@ export function competitionScheduleMatchUps(props) {
 }
 
 export function competitionMatchUps({
+  scheduleVisibilityFilters,
   tournamentRecords,
   matchUpFilters,
   contextFilters,
@@ -87,6 +88,7 @@ export function competitionMatchUps({
   const tournamentsMatchUps = tournamentIds.map((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     return tournamentMatchUps({
+      scheduleVisibilityFilters,
       tournamentRecord,
       matchUpFilters,
       contextFilters,
@@ -94,11 +96,11 @@ export function competitionMatchUps({
   });
 
   const matchUpGroupings = tournamentsMatchUps.reduce(
-    (groupings, tournamentMatchUps) => {
-      const keys = Object.keys(tournamentMatchUps);
+    (groupings, matchUpGroupings) => {
+      const keys = Object.keys(matchUpGroupings);
       keys.forEach((key) => {
         if (!groupings[key]) groupings[key] = [];
-        groupings[key] = groupings[key].concat(tournamentMatchUps[key]);
+        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
       });
 
       return groupings;

@@ -213,7 +213,7 @@ const { matchUps } = drawEngine.allDrawMatchUps({
 Returns all matchUps from a single structure within a draw.
 
 ```js
-const { matchUps } = drawEngine.allDrawMatchUps({
+const { matchUps } = drawEngine.allStructureMatchUps({
   structureId,
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
@@ -444,7 +444,7 @@ const {
   completedMatchUps,
   abandonedMatchUps,
   byeMatchUps,
-} = drawEngine.allDrawMatchUps({
+} = drawEngine.drawMatchUps({
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   roundFilter, // filter to target matchUps from specified rounds
@@ -686,7 +686,10 @@ const {
     scheduledDate,
     scheduledTime,
   },
-} = drawEngine.getMatchUpScheduleDetails({ matchUp });
+} = drawEngine.getMatchUpScheduleDetails({
+  scheduleVisibilityFilters,
+  matchUp,
+});
 ```
 
 ---
@@ -1129,7 +1132,7 @@ const {
   completedMatchUps,
   abandonedMatchUps,
   byeMatchUps,
-} = drawEngine.allDrawMatchUps({
+} = drawEngine.getStructureMatchUps({
   structureId,
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
@@ -1141,6 +1144,7 @@ const {
   tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
   requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
   tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
+  scheduleVisibilityFilters,
 });
 ```
 
