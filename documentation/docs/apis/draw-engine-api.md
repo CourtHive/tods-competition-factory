@@ -544,7 +544,7 @@ const sets = [
   },
   { side1Score: 3 },
 ];
-let result = generateScoreString({
+let result = drawEngine.generateScoreString({
     sets, // TODS sets object
     winningSide, // optional - 1 or 2
     reversed, // optional - reverse the score
@@ -744,7 +744,9 @@ const {
 Determines which finishing positions will be returned by a draw. For example, a First Match Loser Consolation with a draw size of 16 will playoff possitions 1, 2, 9 and 10.
 
 ```js
-const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
+const { positionsPlayedOff } = drawEngine.getPositionsPlayedOff({
+  drawDefinition,
+});
 ```
 
 ---
@@ -754,7 +756,9 @@ const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
 Organizes matchUps by roundNumber. **roundMatchUps** contains matchUp objects; **roundProfile** provides an overview of drawPositions which have advanced to each round, a matchUpsCount, finishingPositionRange for winners and losers, and finishingRound.
 
 ```js
-const { roundMatchUps, roundProfile } = getRoundMatchUps({ matchUps });
+const { roundMatchUps, roundProfile } = drawEngine.getRoundMatchUps({
+  matchUps,
+});
 ```
 
 ---
@@ -769,8 +773,7 @@ const {
   playoffSourceRounds,
   playedOffSourceRounds,
   playoffPositionsReturned,
-} = getSourceRounds({
-  drawDefinition,
+} = drawEngine.getSourceRounds({
   structureId,
   playoffPositions: [3, 4],
 });
@@ -834,7 +837,7 @@ drawEngine.initializeStructureSeedAssignments({
 Returns boolean whether all matchUps in a given structure have been completed
 
 ```js
-const structureIsComplete = isCompletedStructure({
+const structureIsComplete = drawEngine.isCompletedStructure({
   structureId,
 });
 ```
@@ -1098,7 +1101,9 @@ Sorting function to arrange structures by stage, positionAssignments count (size
 Used internally to order Compass structures
 
 ```js
-const sortedStructures = drawDefinition.structures.sort(structureSort);
+const sortedStructures = drawDefinition.structures.sort(
+  drawEngine.structureSort
+);
 ```
 
 ---
