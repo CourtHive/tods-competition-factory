@@ -1,8 +1,7 @@
-import { tournamentEngine } from '../../sync';
-import { competitionEngine } from '../../../competitionEngine/sync';
-
-import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
+import { competitionEngine } from '../../../competitionEngine/sync';
+import { tournamentEngine } from '../../sync';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -102,7 +101,7 @@ it('can add events, venues, and schedule matchUps', () => {
     periodLength: 30,
     averageMatchUpTime: 90,
   };
-  const { scheduleTimes } = matchUpTiming(timingParameters);
+  const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(19);
 
   ({ tournamentRecord } = tournamentEngine.getState());
@@ -380,7 +379,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     periodLength: 30,
     averageMatchUpTime: 90,
   };
-  const { scheduleTimes } = matchUpTiming(timingParameters);
+  const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(19);
 
   ({ tournamentRecord } = tournamentEngine.getState());
