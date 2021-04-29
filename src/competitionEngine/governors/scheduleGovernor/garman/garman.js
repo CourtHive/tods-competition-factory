@@ -101,7 +101,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
   return timeSlots;
 }
 
-export function matchUpTiming({
+export function getScheduleTimes({
   startTime = '8:00',
   endTime = '19:00',
   date = currentUTCDate(),
@@ -216,7 +216,7 @@ function addMinutes(startDate, minutes) {
 }
 
 const garman = {
-  matchUpTiming,
+  getScheduleTimes,
   generateTimeSlots,
   courtsAvailableAtPeriodStart,
 };
