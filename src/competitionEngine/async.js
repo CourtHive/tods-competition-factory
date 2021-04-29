@@ -14,11 +14,12 @@ import {
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
+  INVALID_VALUES,
 } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 export function competitionEngineAsync() {
-  let tournamentRecords;
+  let tournamentRecords = {};
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
@@ -38,6 +39,18 @@ export function competitionEngineAsync() {
     setState: (tournamentRecords, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
       const result = setState(tournamentRecords);
+      if (result?.error) {
+        fx.error = result.error;
+        fx.success = false;
+      } else {
+        fx.error = undefined;
+        fx.success = true;
+      }
+      return fx;
+    },
+    setTournamentRecord: (tournamentRecord, deepCopyOption) => {
+      setDeepCopy(deepCopyOption);
+      const result = setTournamentRecord(tournamentRecord, deepCopyOption);
       if (result?.error) {
         fx.error = result.error;
         fx.success = false;
@@ -88,6 +101,14 @@ export function competitionEngineAsync() {
         };
       }
     }
+  }
+
+  function setTournamentRecord(record, deepCopyOption = true) {
+    if (typeof record !== 'object') return { error: INVALID_OBJECT };
+    if (!record.tournamentId) return { error: INVALID_VALUES };
+    const tournamentRecord = deepCopyOption ? makeDeepCopy(record) : record;
+    tournamentRecords[tournamentRecord.tournamentId] = tournamentRecord;
+    return SUCCESS;
   }
 
   function setState(records, deepCopyOption = true) {
