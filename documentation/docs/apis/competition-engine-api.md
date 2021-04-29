@@ -13,10 +13,16 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps();
 
 ## competitionMatchUps
 
-Return an array of all matchUps, "inContext", contained within the collection of tournaments loaded into `competitionEngine.
+Returns aggregated arrays of "inContext" matchUps for all tournamentRecords loaded into `competitionEngine`.
 
 ```js
-const { matchUps } = competitionEngine.competitionMatchUps();
+const {
+  byeMatchUps,
+  abandonedMatchUps,
+  completedMatchUps,
+  pendingMatchUps,
+  upcomingMatchUps,
+} = competitionEngine.competitionMatchUps();
 ```
 
 ---
