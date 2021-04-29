@@ -39,7 +39,7 @@ The Compeition Factory implementation of the Garman formula defines a court avai
         ]
     }
 
-The **matchUpTiming** function works for a single day and has the following parameters (and defaults):
+The **getScheduleTimes** function works for a single day and has the following parameters (and defaults):
 
     date,                   // date in the form 'YYYY-MM-DD'
     startTime='8:00',
