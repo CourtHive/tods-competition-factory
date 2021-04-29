@@ -113,8 +113,10 @@ export function offsetTime(date) {
 }
 
 export function dateRange(startDt, endDt) {
+  const startDate = new Date(startDt);
+  const endDate = new Date(endDt);
   const error =
-    isDate(endDt) && isDate(startDt) && isValidDateRange(startDt, endDt)
+    isDate(endDate) && isDate(startDate) && isValidDateRange(startDate, endDate)
       ? false
       : true;
   const between = [];
@@ -124,8 +126,8 @@ export function dateRange(startDt, endDt) {
   if (error) {
     console.log('error occured!!!... Please Enter Valid Dates');
   } else {
-    const currentDate = offsetDate(startDt);
-    const end = offsetDate(endDt);
+    const currentDate = offsetDate(startDate);
+    const end = offsetDate(endDate);
     while (currentDate <= end && keepLooping) {
       iterations += 1;
       if (iterations > 300) {
