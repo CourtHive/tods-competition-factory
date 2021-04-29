@@ -1,10 +1,12 @@
 import { generateEventWithFlights } from './generateEventWithFlights';
+import { dateRange, formatDate } from '../../utilities/dateTime';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { tournamentEngine } from '../../tournamentEngine/sync';
 import { generateParticipants } from './generateParticipants';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
+import competitionEngine from '../../competitionEngine/sync';
 
 /**
  *
@@ -24,6 +26,7 @@ export function generateTournamentRecord({
   participantsProfile,
   drawProfiles,
   eventProfiles,
+  venueProfiles,
 
   completeAllMatchUps,
   randomWinningSide,
@@ -41,6 +44,12 @@ export function generateTournamentRecord({
 
     sex,
   } = participantsProfile || {};
+
+  if (!startDate && !endDate) {
+    const tournamentDate = new Date();
+    startDate = formatDate(tournamentDate);
+    endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
+  }
 
   tournamentEngine.newTournamentRecord({ startDate, endDate });
 
@@ -82,7 +91,8 @@ export function generateTournamentRecord({
   tournamentEngine.addParticipants({ participants });
 
   const drawIds = [],
-    eventIds = [];
+    eventIds = [],
+    venueIds = [];
   if (drawProfiles) {
     drawProfiles.forEach((drawProfile) => {
       const { drawId, eventId } = generateEventWithDraw({
@@ -110,6 +120,36 @@ export function generateTournamentRecord({
     });
   }
 
+  if (venueProfiles) {
+    venueProfiles.forEach(
+      ({ venueName, courtsCount, dateAvailability }, index) => {
+        const venue = { venueName: venueName || `Venue ${index + 1}` };
+        const {
+          venue: { venueId },
+        } = tournamentEngine.devContext(true).addVenue({ venue });
+        venueIds.push(venueId);
+
+        const dates = dateRange(startDate, endDate);
+        dateAvailability =
+          (!Array.isArray(dateAvailability) &&
+            dates.map((date) => ({
+              date: formatDate(date),
+              startTime: '07:00',
+              endTime: '19:00',
+            }))) ||
+          dateAvailability;
+
+        tournamentEngine.addCourts({
+          venueId,
+          courtsCount,
+          dateAvailability,
+        });
+      }
+    );
+  }
+
   const { tournamentRecord } = tournamentEngine.getState();
-  return { tournamentRecord, drawIds, eventIds };
+  competitionEngine.setTournamentRecord(tournamentRecord);
+
+  return { tournamentRecord, drawIds, eventIds, venueIds };
 }
