@@ -1,10 +1,9 @@
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
 import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { matchUpTiming } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
-import { getVenuesAndCourts } from '../../../competitionEngine/getters/venuesAndCourtsGetter';
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { formatDate, sameDay, zeroPad } from '../../../utilities/dateTime';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
+import { calculateScheduleTimes } from './calculateScheduleTimes';
+import { formatDate, zeroPad } from '../../../utilities/dateTime';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -21,18 +20,13 @@ import {
   COMPLETED,
 } from '../../../constants/matchUpStatusConstants';
 
-// accepts either matchUps or matchUpIds
 export function scheduleMatchUps(props) {
   const {
     tournamentRecords,
-
-    matchUpFilters,
-    contextFilters,
-
-    venueIds,
     matchUpIds,
-    date,
+    venueIds,
 
+    date,
     periodLength = 30,
     averageMatchUpTime = 90,
   } = props;
@@ -44,8 +38,6 @@ export function scheduleMatchUps(props) {
   if (!matchUps) {
     const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
       tournamentRecords,
-      matchUpFilters,
-      contextFilters,
     });
     matchUps = competitionMatchUps.filter(({ matchUpId }) =>
       matchUpIds.includes(matchUpId)
@@ -54,50 +46,15 @@ export function scheduleMatchUps(props) {
 
   let { startTime, endTime } = props;
 
-  const { courts: allCourts } = getVenuesAndCourts({ tournamentRecords });
-  const courts = allCourts.filter(
-    (court) => !venueIds || venueIds.includes(court.venueId)
-  );
-
-  if (!startTime) {
-    startTime = courts.reduce((minStartTime, court) => {
-      const dateAvailability = court.dateAvailability?.find((availability) =>
-        sameDay(date, availability.date)
-      );
-      const comparisonStartTime =
-        dateAvailability?.startTime || court.startTime;
-
-      return comparisonStartTime &&
-        (!minStartTime ||
-          new Date(comparisonStartTime) < new Date(minStartTime))
-        ? comparisonStartTime
-        : minStartTime;
-    }, undefined);
-  }
-
-  if (!endTime) {
-    endTime = courts.reduce((maxEndTime, court) => {
-      const dateAvailability = court.dateAvailability?.find((availability) =>
-        sameDay(date, availability.date)
-      );
-      const comparisonEndTime = dateAvailability?.endTime || court.endTime;
-
-      return comparisonEndTime &&
-        (!maxEndTime || new Date(comparisonEndTime) > new Date(maxEndTime))
-        ? comparisonEndTime
-        : maxEndTime;
-    }, undefined);
-  }
-
-  const timingParameters = {
-    date,
-    courts,
+  const { venueId, scheduleTimes } = calculateScheduleTimes({
+    tournamentRecords,
     startTime,
     endTime,
-    periodLength,
+    date,
     averageMatchUpTime,
-  };
-  const { scheduleTimes } = matchUpTiming(timingParameters);
+    periodLength,
+    venueIds,
+  });
 
   const matchUpsToSchedule = matchUps.filter((matchUp) => {
     const doNotSchedule = [
@@ -111,40 +68,58 @@ export function scheduleMatchUps(props) {
     return !matchUp?.winningSide && !doNotSchedule;
   });
 
-  // TODO: can be optimized by aggregating all matchUpIds to be scheduled for a particular drawDefinition
   if (matchUpsToSchedule?.length) {
-    matchUpsToSchedule.forEach((targetMatchUp) => {
-      const { drawId, matchUpId, tournamentId } = targetMatchUp;
+    // for optimization, build up an object for each tournament and an array for each draw with target matchUps
+    const matchUpMap = matchUpsToSchedule.reduce((matchUpMap, matchUp) => {
+      const { drawId, tournamentId } = matchUp;
+      if (!matchUpMap[tournamentId]) matchUpMap[tournamentId] = {};
+      if (!matchUpMap[tournamentId][drawId]) {
+        matchUpMap[tournamentId][drawId] = [matchUp];
+      } else {
+        matchUpMap[tournamentId][drawId].push(matchUp);
+      }
+      return matchUpMap;
+    }, {});
+
+    Object.keys(matchUpMap).forEach((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       if (tournamentRecord) {
-        const { drawDefinition } = getDrawDefinition({
-          tournamentRecord,
-          drawId,
-        });
-
-        if (drawDefinition && scheduleTimes.length) {
-          const { scheduleTime } = scheduleTimes.shift();
-
-          // must include date being scheduled to generate proper ISO string
-          const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
-          const scheduledTime = `${formatDate(date)}T${formatTime}`;
-
-          addMatchUpScheduledTime({
-            drawDefinition,
-            matchUpId,
-            scheduledTime,
+        Object.keys(matchUpMap[tournamentId]).forEach((drawId) => {
+          const { drawDefinition } = getDrawDefinition({
+            tournamentRecord,
+            drawId,
           });
+          if (drawDefinition) {
+            const drawMatchUps = matchUpMap[tournamentId][drawId];
+            drawMatchUps.forEach(({ matchUpId }) => {
+              if (scheduleTimes.length) {
+                const { scheduleTime } = scheduleTimes.shift();
 
-          if (venueIds?.length === 1) {
-            const [venueId] = venueIds;
-            assignMatchUpVenue({
-              tournamentRecord,
-              drawDefinition,
-              matchUpId,
-              venueId,
+                // must include date being scheduled to generate proper ISO string
+                const formatTime = scheduleTime
+                  .split(':')
+                  .map(zeroPad)
+                  .join(':');
+                const scheduledTime = `${formatDate(date)}T${formatTime}`;
+
+                addMatchUpScheduledTime({
+                  drawDefinition,
+                  matchUpId,
+                  scheduledTime,
+                });
+
+                if (venueId) {
+                  assignMatchUpVenue({
+                    tournamentRecord,
+                    drawDefinition,
+                    matchUpId,
+                    venueId,
+                  });
+                }
+              }
             });
           }
-        }
+        });
       } else {
         console.log(MISSING_TOURNAMENT_ID);
       }
