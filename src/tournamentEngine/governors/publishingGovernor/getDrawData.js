@@ -4,6 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { findExtension } from '../queryGovernor/extensionQueries';
+import { getDevContext } from '../../../global/globalState';
 import {
   generateRange,
   intersection,
@@ -186,7 +187,9 @@ export function getDrawData({
   });
 
   if (groupedStructures.length > 1) {
-    return { error: 'drawDefinition contains unlinked structures' };
+    const error = { error: 'drawDefinition contains unlinked structures' };
+    if (getDevContext()) console.log(error);
+    return error;
   }
 
   const structures = groupedStructures.flat();
