@@ -16,8 +16,8 @@ it('accurately determines winnerGoesTo and loserGoesTo for FIC matchUps', () => 
 
   const outcome = {
     score: {
-      side1ScoreString: '6-1 6-1',
-      side2ScoreString: '1-6 1-6',
+      scoreStringSide1: '6-1 6-1',
+      scoreStringSide2: '1-6 1-6',
     },
   };
   const result = tournamentEngine.setDelegatedOutcome({
