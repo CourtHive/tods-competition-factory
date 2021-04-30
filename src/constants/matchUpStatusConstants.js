@@ -84,6 +84,7 @@ export const upcomingMatchUpStatuses = [
 
 export const matchUpStatusConstants = {
   ABANDONED,
+  AWAITING_RESULT,
   BYE,
   CANCELLED,
   COMPLETED,
