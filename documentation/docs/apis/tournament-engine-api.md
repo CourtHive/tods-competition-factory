@@ -2080,7 +2080,6 @@ tournamentEngine.setMatchUpStatus({
   drawId,
   matchUpId,
   matchUpTieId, // optional - if part of a TIE matchUp
-  matchUpStatus, // optional - if matchUpFormat differs from event/draw/structure defaults
   outcome,
   schedule: {
     // optional - set schedule items
