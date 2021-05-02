@@ -1873,8 +1873,12 @@ const policyDefinition = Object.assign(
 );
 
 const { eventData } = tournamentEngine.publishEvent({
-  eventId,
   policyDefinition,
+  eventId,
+  drawIds, // optional - array of drawIds within the event to publish
+  structureIds = [], // optional - specify structureIds
+  drawIdsToRemove, // optional - add these drawIds to drawIds already published
+  drawIdsToAdd, // optional - remove these drawIds from drawIds published
 });
 ```
 
