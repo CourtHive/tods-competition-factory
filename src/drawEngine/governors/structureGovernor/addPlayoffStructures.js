@@ -1,6 +1,7 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
+import { matchUpIsComplete } from '../scoreGovernor/matchUpIsComplete';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { playoff } from '../../generators/playoffStructures';
 import { findStructure } from '../../getters/findStructure';
@@ -160,9 +161,10 @@ export function addPlayoffStructures(props) {
 
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps.filter(
-    ({ winningSide, structureId }) =>
-      winningSide && structureId === sourceStructureId
+    (matchUp) =>
+      matchUpIsComplete(matchUp) && matchUp.structureId === sourceStructureId
   );
+
   completedMatchUps.forEach((matchUp) => {
     const { matchUpId, score, winningSide } = matchUp;
     const targetData = positionTargets({

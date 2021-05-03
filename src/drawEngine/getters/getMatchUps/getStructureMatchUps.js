@@ -1,6 +1,8 @@
-import { findStructure } from '../findStructure';
+import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
+import { findStructure } from '../findStructure';
+
 import {
   ABANDONED,
   upcomingMatchUpStatuses,
@@ -123,7 +125,7 @@ export function getStructureMatchUps({
       }
 
       if (isByeMatchUp) return byeMatchUps.push(matchUp);
-      if (matchUp.winningSide) return completedMatchUps.push(matchUp);
+      if (matchUpIsComplete(matchUp)) return completedMatchUps.push(matchUp);
       if (isUpcomingMatchUp) return upcomingMatchUps.push(matchUp);
 
       return pendingMatchUps.push(matchUp);

@@ -40,7 +40,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   const { completedMatchUps, pendingMatchUps } = tournamentEngine.drawMatchUps({
     drawId,
   });
-  expect(completedMatchUps.length).toEqual(1);
+  expect(completedMatchUps.length).toEqual(2);
 
-  console.log(pendingMatchUps[1]);
+  console.log(pendingMatchUps);
 });
