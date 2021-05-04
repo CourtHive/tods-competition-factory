@@ -70,12 +70,28 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   });
 
   expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
-  expect(playoffRounds).toEqual([3]);
+
+  // NOTE: Change was made to allow FMLC playoff round from 2nd round MAIN
+  expect(playoffRounds).toEqual([2, 3]);
+  expect(playoffRoundsRanges).toEqual([
+    {
+      roundNumber: 2,
+      finishingPositions: [5, 6, 7, 8],
+      finishingPositionRange: '5-8',
+    },
+    {
+      roundNumber: 3,
+      finishingPositions: [3, 4],
+      finishingPositionRange: '3-4',
+    },
+  ]);
+  /*
   expect(playoffRoundsRanges[0]).toEqual({
     roundNumber: 3,
     finishingPositionRange: '3-4',
     finishingPositions: [3, 4],
   });
+  */
 });
 
 it('can accurately determine available playoff rounds for consolation draw of FIC', () => {

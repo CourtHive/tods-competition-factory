@@ -39,6 +39,7 @@ export function getSourceRounds({
     finishingPositions: relevantPlayoffPositions,
   });
 
+  // reduce the sourceRoundsMap to roundNumbers, not including excludedRoundNumbers
   const relevantPlayoffSourceRounds = Object.values(
     playoffPositionSourceRoundsMap
   )
@@ -52,12 +53,14 @@ export function getSourceRounds({
       (roundNumber) => !excludeRoundNumbers.includes(parseInt(roundNumber))
     );
 
+  // generate a map of finishingPosition: { roundNumber }
   const playedOffRoundsMap = getFinishingPositionSourceRoundsMap({
     drawDefinition,
     structureId,
     finishingPositions: positionsPlayedOff,
   });
 
+  // determine which rounds produced played off positions
   const playedOffSourceRounds = Object.values(playedOffRoundsMap)
     .reduce((rounds, round) => {
       return rounds.includes(round.roundNumber)
@@ -66,6 +69,7 @@ export function getSourceRounds({
     }, [])
     .map((round) => parseInt(round));
 
+  // available playoffSourceRounds are those releventPlayoffSourceRounds which are not included in playoffSourceRounds
   const playoffSourceRounds = relevantPlayoffSourceRounds
     .filter((roundNumber) => !playedOffSourceRounds.includes(roundNumber))
     .sort(numericSort);

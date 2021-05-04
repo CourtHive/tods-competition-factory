@@ -165,7 +165,7 @@ export function setMatchUpStatus(props) {
         winnerMatchUpParticipantIds,
       });
     }
-    return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
+    return { error: NO_VALID_ACTIONS };
   }
 
   return getDevContext()

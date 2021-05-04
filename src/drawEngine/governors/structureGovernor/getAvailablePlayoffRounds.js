@@ -3,7 +3,10 @@ import { getStructureLinks } from '../../getters/linkGetter';
 import { findStructure } from '../../getters/findStructure';
 import { getSourceRounds } from './getSourceRounds';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import {
+  CONTAINER,
+  FIRST_MATCHUP,
+} from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
@@ -25,15 +28,20 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
     (assignment) => assignment.drawPosition
   );
 
+  // positions which are being played off by existing structure(s)
   const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
 
+  // all positions which are NOT currently being played off
   const playoffPositions = drawPositions.filter(
     (drawPosition) => !positionsPlayedOff.includes(drawPosition)
   );
 
   const { links } = getStructureLinks({ drawDefinition, structureId });
   const linkSourceRoundNumbers =
-    links?.source?.map((link) => link.source?.roundNumber) || [];
+    links?.source
+      // TODO: perhaps this should be enabled by a policyDefinition
+      ?.filter((link) => !link.linkCondition === FIRST_MATCHUP)
+      .map((link) => link.source?.roundNumber) || [];
 
   const { playoffSourceRounds, playoffRoundsRanges } = getSourceRounds({
     drawDefinition,
