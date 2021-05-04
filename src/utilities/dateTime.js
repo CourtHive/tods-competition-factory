@@ -150,7 +150,26 @@ export function dateRange(startDt, endDt) {
 // matches valid ISO date string
 const re = /^([+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24:?00)([.,]\d+(?!:))?)?(\17[0-5]\d([.,]\d+)?)?([zZ]|([+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/;
 export function isISODateString(dateString) {
+  if (typeof dateString !== 'string') return false;
   return re.test(dateString);
+}
+
+function isTimeString(timeString) {
+  if (typeof timeString !== 'string') return false;
+  const parts = timeString.split(':');
+  const isNumeric = parts.every((part) => !isNaN(part));
+  if (parts.length < 2 || !isNumeric) return false;
+  if (parseInt(parts[0]) > 23) return false;
+  if (parseInt(parts[1]) > 60) return false;
+  return true;
+}
+
+export function extractTime(dateString) {
+  return isISODateString(dateString)
+    ? dateString.split('T').reverse()[0]
+    : isTimeString(dateString)
+    ? dateString.split(':').slice(0, 2).map(zeroPad).join(':')
+    : undefined;
 }
 
 export function extractDate(dateString) {
@@ -405,6 +424,8 @@ export const dateTime = {
   sameDay,
   timeUTC,
   DateHHMM,
+  extractTime,
+  extractDate,
   ymd2date,
   validDate,
   formatDate,
@@ -416,4 +437,6 @@ export const dateTime = {
   getDateByWeek,
   currentUTCDate,
   getTimeZoneOffset,
+  isTimeString,
+  isISODateString,
 };
