@@ -42,5 +42,9 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
     excludeRoundNumbers: linkSourceRoundNumbers,
   });
 
-  return { playoffRounds: playoffSourceRounds, playoffRoundsRanges };
+  return {
+    playoffRounds: playoffSourceRounds,
+    playoffRoundsRanges,
+    positionsPlayedOff,
+  };
 }

@@ -68,10 +68,12 @@ export function treeMatchUps({
 }
 
 function addFinishingRounds({
-  matchUps,
+  finishingPositionOffset = 0,
+  positionsFed,
   roundsCount,
   roundLimit,
-  finishingPositionOffset = 0,
+  matchUps,
+  fmlc,
 }) {
   // object containing # of matchUps (value) for each round (attribute)
   const roundMatchCounts = matchUps.reduce((p, matchUp) => {
@@ -95,8 +97,13 @@ function addFinishingRounds({
     matchUp.finishingRound =
       roundsCount + 1 - matchUp.roundNumber - finishingRoundOffset;
 
-    const rangeOffset = 1 + finishingPositionOffset;
+    // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
+    const fmlcException = fmlc && matchUp.roundNumber !== 1;
+    const rangeOffset =
+      1 + finishingPositionOffset + (fmlcException ? positionsFed : 0);
+
     const currentMatchUps = roundMatchCounts[matchUp.roundNumber];
+
     const upcomingMatchUps = roundMatchCountArray
       .slice(matchUp.roundNumber - 1)
       .reduce((a, b) => a + b, 0);
@@ -106,6 +113,7 @@ function addFinishingRounds({
       rangeOffset,
       upcomingMatchUps + rangeOffset + finalPosition
     );
+
     const slicer = upcomingMatchUps + finalPosition - currentMatchUps;
     const loser = finishingRange(finishingPositionRange.slice(slicer));
     const winner = finishingRange(finishingPositionRange.slice(0, slicer));
@@ -181,6 +189,8 @@ export function feedInMatchUps({
   isConsolation,
   feedsFromFinal,
   feedRoundsProfile = [],
+
+  fmlc,
   finishingPositionOffset,
 
   linkFedRoundNumbers = [],
@@ -307,18 +317,21 @@ export function feedInMatchUps({
 
   if (roundsCount !== roundNumber - 1) console.log('ERROR');
 
-  // if this is a feed-in consolation then finishing drawPositions must be offset
-  // by the number of drawPositions which will be fed into the consolation draw
+  // if this is a feed-in consolation then finishing drawPositions must be offset ...
+  // ... by the number of drawPositions which will be fed into the consolation draw
   // final drawPositions will be played off twice up until the final feed round
+
   const consolationFinish = baseDrawSize - positionsFed;
   const modifiedFinishingPositionOffset = isConsolation
     ? consolationFinish
     : finishingPositionOffset;
 
   matchUps = addFinishingRounds({
-    matchUps,
-    roundsCount,
     finishingPositionOffset: modifiedFinishingPositionOffset,
+    positionsFed,
+    roundsCount,
+    matchUps,
+    fmlc,
   });
 
   const draw = roundNodes && roundNodes.length ? roundNodes[0] : roundNodes;

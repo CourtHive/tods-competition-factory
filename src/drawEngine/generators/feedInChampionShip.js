@@ -1,12 +1,13 @@
-import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
   treeMatchUps,
   feedInMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
+
+import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function feedInChampionship(props = {}) {
   const {
@@ -42,6 +43,7 @@ export function feedInChampionship(props = {}) {
     isConsolation: true,
     finishingPositionOffset: baseDrawSize,
     uuids,
+    fmlc,
   });
 
   const consolationStructure = structureTemplate({
