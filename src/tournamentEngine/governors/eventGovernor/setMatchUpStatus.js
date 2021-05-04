@@ -37,8 +37,6 @@ export function setMatchUpStatus(props) {
 
   let { outcome } = props;
 
-  let errors = [];
-
   if (matchUpFormat) {
     const result = setMatchUpFormat({
       drawDefinition,
@@ -71,12 +69,9 @@ export function setMatchUpStatus(props) {
     schedule,
     notes,
   });
-  if (setMatchUpStatusError?.errors)
-    errors = errors.concat(setMatchUpStatusError.errors);
+  if (setMatchUpStatusError) return { error: setMatchUpStatusError };
 
-  return errors && errors.length
-    ? { error: errors }
-    : matchUp && getDevContext()
+  return matchUp && getDevContext()
     ? Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) })
     : SUCCESS;
 }

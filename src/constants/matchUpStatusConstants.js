@@ -14,6 +14,18 @@ export const SUSPENDED = 'SUSPENDED';
 export const TO_BE_PLAYED = 'TO_BE_PLAYED';
 export const WALKOVER = 'WALKOVER';
 
+export const particicipantsRequiredMatchUpStatuses = [
+  AWAITING_RESULT,
+  COMPLETED,
+  DEFAULTED,
+  DOUBLE_WALKOVER,
+  IN_PROGRESS,
+  INCOMPLETE,
+  RETIRED,
+  SUSPENDED,
+  WALKOVER,
+];
+
 export const validMatchUpStatuses = [
   ABANDONED,
   AWAITING_RESULT,
