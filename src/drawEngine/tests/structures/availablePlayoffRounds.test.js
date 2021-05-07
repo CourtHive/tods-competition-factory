@@ -191,7 +191,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   expect(result.drawDefinition.links.length).toEqual(7);
 });
 
-it.only('can determine available playoff rounds for consolation draw of FEED_IN', () => {
+it('can determine available playoff rounds for consolation draw of FEED_IN', () => {
   const drawProfiles = [
     {
       drawSize: 56,
