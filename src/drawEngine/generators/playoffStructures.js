@@ -1,7 +1,7 @@
 import { structureSort } from '../getters/structureSort';
 import { addNotice } from '../../global/globalState';
 import structureTemplate from './structureTemplate';
-import { treeMatchUps } from './eliminationTree';
+import { feedInMatchUps, treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
@@ -37,6 +37,7 @@ function playoffStructures({
   stage = MAIN,
   sequenceLimit,
   drawDefinition,
+  staggeredEntry,
   roundOffset = 0,
   roundOffsetLimit,
   playoffAttributes,
@@ -75,11 +76,9 @@ function playoffStructures({
   const structureAbbreviation =
     customNaming?.abbreviation || attributeProfile?.abbreviation;
 
-  const { matchUps } = treeMatchUps({
-    uuids,
-    drawSize,
-    finishingPositionOffset,
-  });
+  const { matchUps } = staggeredEntry
+    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
 
   const structure = structureTemplate({
     stage,

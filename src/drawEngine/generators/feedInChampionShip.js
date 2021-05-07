@@ -18,19 +18,23 @@ export function feedInChampionship(props = {}) {
     drawDefinition,
     feedsFromFinal,
     stageSequence = 1,
-    feedPolicy,
     finishingPositionOffset,
+    staggeredEntry,
+    feedPolicy,
     fmlc,
   } = props;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
+  const { matchUps } = staggeredEntry
+    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
+
   const mainStructure = structureTemplate({
-    matchUps,
-    stage: MAIN,
-    stageSequence,
-    structureId: uuids?.pop(),
     structureName: structureName || MAIN,
+    structureId: uuids?.pop(),
+    stageSequence,
+    stage: MAIN,
+    matchUps,
   });
 
   drawDefinition.structures.push(mainStructure);

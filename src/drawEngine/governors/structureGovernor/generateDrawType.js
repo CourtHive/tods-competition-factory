@@ -62,6 +62,7 @@ export function generateDrawType(props = {}) {
     goesTo,
     stage = MAIN,
     structureName,
+    staggeredEntry,
     stageSequence = 1,
     drawType = SINGLE_ELIMINATION,
     // qualifyingPositions, => passed through in props to treeMatchUps
@@ -78,14 +79,15 @@ export function generateDrawType(props = {}) {
 
   // check that drawSize is a valid value
   const invalidDrawSize =
-    drawType !== FEED_IN &&
-    (drawSize < 2 ||
-      (drawType === ROUND_ROBIN && drawSize < 3) ||
-      (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
-      (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
-        drawType
-      ) &&
-        !powerOf2(drawSize)));
+    drawSize < 2 ||
+    (!staggeredEntry &&
+      drawType !== FEED_IN &&
+      ((drawType === ROUND_ROBIN && drawSize < 3) ||
+        (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
+        (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
+          drawType
+        ) &&
+          !powerOf2(drawSize))));
 
   if (invalidDrawSize) {
     return { error: INVALID_DRAW_SIZE };

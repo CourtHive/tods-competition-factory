@@ -1,5 +1,8 @@
 import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
-import { treeMatchUps } from '../../drawEngine/generators/eliminationTree';
+import {
+  feedInMatchUps,
+  treeMatchUps,
+} from '../../drawEngine/generators/eliminationTree';
 
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
 import {
@@ -17,12 +20,15 @@ export function firstRoundLoserConsolation(props) {
     stage = MAIN,
     structureName,
     drawDefinition,
+    staggeredEntry,
     stageSequence = 1,
     finishingPositionOffset = 0,
   } = props;
 
   drawSize = drawSize || getStageDrawPositionsCount({ stage, drawDefinition });
-  const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
+  const { matchUps } = staggeredEntry
+    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
   const mainStructure = structureTemplate({
     stage,
     matchUps,
