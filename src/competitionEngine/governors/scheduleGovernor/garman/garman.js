@@ -14,11 +14,11 @@ export function timeToDate(time, date = undefined) {
 }
 
 export function courtsAvailableAtPeriodStart({
+  includeBookingTypes,
+  averageMatchUpTime,
+  periodStart,
   courts,
   date,
-  periodStart,
-  averageMatchUpTime,
-  includeBookingTypes,
 }) {
   const periodStartTime = timeToDate(periodStart);
   const periodEndTime = addMinutes(periodStartTime, averageMatchUpTime);
@@ -139,10 +139,10 @@ export function getScheduleTimes({
     // availableCourts calculated from periodStartTime and averageMatchUpTime
     // a court is only available if it can accommodate matchUps of duration averageMatchUpTime
     const availableCourts = courtsAvailableAtPeriodStart({
+      averageMatchUpTime,
+      periodStart,
       courts,
       date,
-      periodStart,
-      averageMatchUpTime,
     }).count;
 
     // newCourts are courts which have become available for the start of current time period

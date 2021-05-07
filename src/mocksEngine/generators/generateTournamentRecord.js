@@ -51,7 +51,8 @@ export function generateTournamentRecord({
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  tournamentEngine.newTournamentRecord({ startDate, endDate });
+  const result = tournamentEngine.newTournamentRecord({ startDate, endDate });
+  if (result.error) return result;
 
   const getEventProfileParticipantsCount = (eventProfile) =>
     eventProfile?.drawProfiles.reduce((total, { drawSize, drawEntries }) => {

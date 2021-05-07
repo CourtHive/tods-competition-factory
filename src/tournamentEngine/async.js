@@ -1,18 +1,16 @@
-import { UUID } from '../utilities';
-import { makeDeepCopy } from '../utilities';
-
-import { findEvent } from './getters/eventGetter';
+import { newTournamentRecord } from './generators/newTournamentRecord';
+import { notifySubscribersAsync } from '../global/notifySubscribers';
+import participantGovernor from './governors/participantGovernor';
+import publishingGovernor from './governors/publishingGovernor';
+import tournamentGovernor from './governors/tournamentGovernor';
+import scheduleGovernor from './governors/scheduleGovernor';
+import { createInstanceState } from '../global/globalState';
+import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
-import policyGovernor from './governors/policyGovernor';
-import scheduleGovernor from './governors/scheduleGovernor';
-import publishingGovernor from './governors/publishingGovernor';
-import tournamentGovernor from './governors/tournamentGovernor';
-import participantGovernor from './governors/participantGovernor';
-import definitionTemplate from './generators/tournamentRecordTemplate';
-import { notifySubscribersAsync } from '../global/notifySubscribers';
-import { createInstanceState } from '../global/globalState';
+import { findEvent } from './getters/eventGetter';
+import { makeDeepCopy } from '../utilities';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -31,12 +29,6 @@ export function tournamentEngineAsync() {
   createInstanceState();
 
   let tournamentRecord;
-
-  function newTournamentRecord(props) {
-    if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-    const template = definitionTemplate(props);
-    return Object.assign({}, template, props);
-  }
 
   function setState(tournament, deepCopyOption) {
     if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
@@ -59,7 +51,9 @@ export function tournamentEngineAsync() {
       return fx;
     },
     newTournamentRecord: (props = {}) => {
-      tournamentRecord = newTournamentRecord(props);
+      const result = newTournamentRecord(props);
+      if (result.error) return result;
+      tournamentRecord = result;
       const tournamentId = tournamentRecord.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
     },
