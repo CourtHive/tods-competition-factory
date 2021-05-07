@@ -6,8 +6,10 @@ import { drawEngine } from '../../sync';
 
 import {
   CONSOLATION,
+  FEED_IN,
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
+  MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
 it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () => {
@@ -187,4 +189,31 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
     roundProfiles: [{ 2: 1 }],
   });
   expect(result.drawDefinition.links.length).toEqual(7);
+});
+
+it.only('can determine available playoff rounds for consolation draw of FEED_IN', () => {
+  const drawProfiles = [
+    {
+      drawSize: 56,
+      drawType: FEED_IN,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const {
+    structures: [mainStructure],
+  } = drawEngine
+    .setState(drawDefinition)
+    .getDrawStructures({ stage: MAIN, stageSequence: 1 });
+
+  const { structureId } = mainStructure;
+  const { playoffRounds } = tournamentEngine.getAvailablePlayoffRounds({
+    drawDefinition,
+    structureId,
+  });
+  expect(playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
 });
