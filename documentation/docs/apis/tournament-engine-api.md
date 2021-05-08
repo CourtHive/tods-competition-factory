@@ -1031,7 +1031,7 @@ tournamentEngine.generateVoluntaryConsolationStructure({
 Returns all `matchUps` for all draws in all events along with `tournamentInfo`, `eventInfo`, and `drawInfo`.
 
 ```js
-const { allEventData } = tournamentEngine.getEventData({
+const { allEventData } = tournamentEngine.getAllEventData({
   policyDefinition, // optional - allows participant data to be filtered via a privacy policy
 });
 
