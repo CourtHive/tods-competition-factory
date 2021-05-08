@@ -1,10 +1,10 @@
+import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
+import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../drawEngine/getters/getMatchUps/drawMatchUps';
-import { makeDeepCopy } from '../../utilities/makeDeepCopy';
-import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
-import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
 
 import {
   MATCHUP_NOT_FOUND,
@@ -18,6 +18,7 @@ export function allTournamentMatchUps({
   nextMatchUps,
   matchUpFilters,
   contextFilters,
+  policyDefinition,
   scheduleVisibilityFilters,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -43,6 +44,7 @@ export function allTournamentMatchUps({
           participants,
           matchUpFilters,
           contextFilters,
+          policyDefinition,
           scheduleVisibilityFilters,
           tournamentAppliedPolicies,
         }).matchUps
@@ -61,6 +63,7 @@ export function allDrawMatchUps({
   contextFilters,
   drawDefinition,
   tournamentRecord,
+  policyDefinition,
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
@@ -84,6 +87,7 @@ export function allDrawMatchUps({
     contextFilters,
     nextMatchUps,
     tournamentRecord,
+    policyDefinition,
     tournamentParticipants,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
@@ -101,6 +105,7 @@ export function allEventMatchUps({
   contextFilters,
   participants = [],
   tournamentRecord,
+  policyDefinition,
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
@@ -125,6 +130,7 @@ export function allEventMatchUps({
         contextFilters,
         nextMatchUps,
         tournamentRecord,
+        policyDefinition,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
         tournamentParticipants: participants,
@@ -142,6 +148,7 @@ export function tournamentMatchUps({
   contextFilters,
   inContext = true,
   nextMatchUps,
+  policyDefinition,
   scheduleVisibilityFilters,
 }) {
   const tournamentId =
@@ -164,6 +171,7 @@ export function tournamentMatchUps({
         matchUpFilters,
         contextFilters,
         nextMatchUps,
+        policyDefinition,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
       })
@@ -194,6 +202,7 @@ export function eventMatchUps({
   matchUpFilters,
   contextFilters,
   tournamentRecord,
+  policyDefinition,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
@@ -214,6 +223,7 @@ export function eventMatchUps({
         matchUpFilters,
         contextFilters,
         tournamentRecord,
+        policyDefinition,
         tournamentAppliedPolicies,
         tournamentParticipants,
         scheduleVisibilityFilters,
@@ -242,6 +252,7 @@ export function drawMatchUps({
   contextFilters,
   drawDefinition,
   tournamentRecord,
+  policyDefinition,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
@@ -258,6 +269,7 @@ export function drawMatchUps({
     matchUpFilters,
     contextFilters,
     tournamentRecord,
+    policyDefinition,
     tournamentAppliedPolicies,
     tournamentParticipants,
     scheduleVisibilityFilters,
