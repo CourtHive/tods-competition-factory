@@ -1,3 +1,4 @@
+import { competitionScheduleMatchUps } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 import { sameDay } from '../../../utilities/dateTime';
 import { getScheduleTimes } from './garman/garman';
@@ -50,6 +51,15 @@ export function calculateScheduleTimes({
         : maxEndTime;
     }, undefined);
   }
+
+  // Get an array of all matchUps scheduled for the date
+  // some of them may have courts assigned and some may only have venueIds
+  // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
+  const matchUpFilters = { scheduledDate: date };
+  competitionScheduleMatchUps({
+    tournamentRecords,
+    matchUpFilters,
+  });
 
   const timingParameters = {
     date,

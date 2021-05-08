@@ -34,6 +34,7 @@ it('auto schedules venue if only one venue provided', () => {
   });
   expect(result.dateMatchUps.length).toEqual(0);
 
+  competitionEngine.scheduleMatchUps({ date: startDate, matchUpIds });
   // const { pendingMatchUps } = competitionEngine.competitionMatchUps();
   // console.log({ pendingMatchUps });
 });
