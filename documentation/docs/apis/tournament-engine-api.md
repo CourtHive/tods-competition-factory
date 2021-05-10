@@ -1485,14 +1485,22 @@ const { tournamentRecord } = tournamentEngine.getState({
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
 
 ```js
+const participantFilters = {
+  accessorValues,
+  eventEntriesOnly, // boolean
+  participantTypes: [INDIVIDUAL],
+  participantRoles, [COMPETITOR],
+  signInStatus, // specific signIn status
+  eventIds, // events in which participants appear
+};
 const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-  participantFilters: { participantTypes: [INDIVIDUAL] }, // optional - filters
   inContext, // optional - adds individualParticipants for all individualParticipantIds
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withOpponents, // optional - include opponent participantIds
   withMatchUps, // optional - include all matchUps in which the participant appears
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinition, // optional - can accept a privacy policy to filter participant attributes
+  participantFilters, // optional - filters
 });
 ```
 

@@ -9,13 +9,18 @@ export function filterParticipants({
   participantFilters,
   participants,
 }) {
+  let { eventIds } = participantFilters;
   const {
-    eventIds,
-    signInStatus,
-    participantTypes,
-    participantRoles,
     accessorValues,
+    eventEntriesOnly,
+    participantRoles,
+    participantTypes,
+    signInStatus,
   } = participantFilters;
+
+  if (!eventIds?.length && eventEntriesOnly) {
+    eventIds = tournamentRecord.events?.map(({ eventId }) => eventId);
+  }
 
   const participantHasAccessorValues = (participant) => {
     return accessorValues.reduce((hasValues, keyValue) => {
