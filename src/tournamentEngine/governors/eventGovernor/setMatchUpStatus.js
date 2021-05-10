@@ -30,6 +30,7 @@ export function setMatchUpStatus(props) {
     matchUpTieId,
     matchUpFormat,
     schedule,
+    tournamentRecord,
     notes,
   } = props;
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
@@ -59,6 +60,7 @@ export function setMatchUpStatus(props) {
   }
 
   const { error: setMatchUpStatusError, matchUp } = drawEngineSetMatchUpStatus({
+    tournamentRecord,
     drawDefinition,
     matchUpId,
     matchUpTieId,
@@ -69,7 +71,9 @@ export function setMatchUpStatus(props) {
     schedule,
     notes,
   });
-  if (setMatchUpStatusError) return { error: setMatchUpStatusError };
+  if (setMatchUpStatusError) {
+    return { error: setMatchUpStatusError };
+  }
 
   return matchUp && getDevContext()
     ? Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) })

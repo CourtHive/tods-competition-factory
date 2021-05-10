@@ -1,5 +1,5 @@
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
-import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/garman';
+import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { tournamentEngine } from '../../sync';
 

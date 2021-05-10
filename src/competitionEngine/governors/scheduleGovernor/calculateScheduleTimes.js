@@ -1,7 +1,8 @@
+import { getMatchUpFormatTiming } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpFormatTiming';
 import { competitionScheduleMatchUps } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
-import { sameDay } from '../../../utilities/dateTime';
-import { getScheduleTimes } from './garman/garman';
+import { extractTime, sameDay } from '../../../utilities/dateTime';
+import { getScheduleTimes } from './garman/getScheduleTimes';
 
 export function calculateScheduleTimes({
   tournamentRecords,
@@ -52,13 +53,40 @@ export function calculateScheduleTimes({
     }, undefined);
   }
 
+  // get a mapping of eventIds to category details
+  const eventDetails = Object.assign(
+    {},
+    ...Object.keys(tournamentRecords)
+      .map((tournamentId) =>
+        (tournamentRecords[tournamentId].events || []).map((event) => ({
+          [event.eventId]: { tournamentId, event },
+        }))
+      )
+      .flat()
+  );
+
   // Get an array of all matchUps scheduled for the date
   // some of them may have courts assigned and some may only have venueIds
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
   const matchUpFilters = { scheduledDate: date };
-  competitionScheduleMatchUps({
+  const { dateMatchUps } = competitionScheduleMatchUps({
     tournamentRecords,
     matchUpFilters,
+  });
+  const bookings = dateMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
+    const { event, tournamentId } = eventDetails[eventId];
+    const tournamentRecord = tournamentRecords[tournamentId];
+    const { averageMinutes } = getMatchUpFormatTiming({
+      matchUpFormat,
+      tournamentRecord,
+      event,
+    });
+    const booking = {
+      averageMinutes,
+      scheduledTime: extractTime(schedule.scheduledTime),
+      venueId: schedule.venueId,
+    };
+    return booking;
   });
 
   const timingParameters = {
@@ -66,6 +94,7 @@ export function calculateScheduleTimes({
     courts,
     startTime,
     endTime,
+    bookings,
     periodLength,
     averageMatchUpTime,
   };
