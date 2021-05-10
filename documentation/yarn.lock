@@ -98,7 +98,7 @@
     "@algolia/requester-common" "4.8.6"
     "@algolia/transporter" "4.8.6"
 
-"@algolia/client-search@^4.5.1":
+"@algolia/client-search@4.9.1":
   version "4.9.1"
   resolved "https://registry.yarnpkg.com/@algolia/client-search/-/client-search-4.9.1.tgz#a2fbc47a1b343dade9a8b06310231d51ff675b1b"
   integrity sha512-r9Cw2r8kJr45iYncFDht6EshARghU265wuY8Q8oHrpFHjAziEYdsUOdNmQKbsSH5J3gLjDPx1EI5DzVd6ivn3w==
@@ -1822,7 +1822,7 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@^17.0.5":
+"@types/react@17.0.5":
   version "17.0.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.5.tgz#3d887570c4489011f75a3fc8f965bf87d09a1bea"
   integrity sha512-bj4biDB9ZJmGAYTWSKJly6bMr4BLUiBrx9ujiJEoP9XIDY9CTaPGxE5QWN/1WjpPLzYF7/jRNnV2nNxNe970sw==
