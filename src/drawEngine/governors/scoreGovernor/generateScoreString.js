@@ -55,12 +55,8 @@ export function generateScoreString(props) {
     const isTiebreakSet =
       !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
 
-    const {
-      side1Score,
-      side2Score,
-      side1TiebreakScore,
-      side2TiebreakScore,
-    } = currentSet;
+    const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
+      currentSet;
 
     const t1 =
       side1TiebreakScore ||

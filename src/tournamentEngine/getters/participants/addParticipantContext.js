@@ -71,12 +71,8 @@ export function addParticipantContext({
       });
 
     const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
-      const {
-        participantId,
-        entryStage,
-        entryStatus,
-        entryPosition,
-      } = drawEntry;
+      const { participantId, entryStage, entryStatus, entryPosition } =
+        drawEntry;
       allRelevantParticipantIds(participantId).forEach(
         ({ relevantParticipantId }) => {
           const eventDrawIds =
@@ -313,14 +309,8 @@ export function addParticipantContext({
       const participantId = participant?.participantId;
       if (!participantId || !participantIdMap[participantId]) return;
 
-      const {
-        wins,
-        losses,
-        matchUps,
-        events,
-        draws,
-        opponents,
-      } = participantIdMap[participantId];
+      const { wins, losses, matchUps, events, draws, opponents } =
+        participantIdMap[participantId];
       const numerator = wins;
       const denominator = wins + losses;
       const statValue = denominator && numerator / denominator;
@@ -381,10 +371,8 @@ export function addParticipantContext({
     );
     if (!participant) return [];
 
-    const {
-      participantId: relevantParticipantId,
-      participantType,
-    } = participant;
+    const { participantId: relevantParticipantId, participantType } =
+      participant;
 
     const individualParticipantIdObjects = (
       participant.individualParticipantIds || []

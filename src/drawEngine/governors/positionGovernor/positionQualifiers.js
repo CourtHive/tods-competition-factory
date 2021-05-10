@@ -15,9 +15,8 @@ export function positionQualifiers(props) {
     return { error: 'Consolation Stage: No Qualifiters' };
   }
 
-  const { positionAssignments, unplacedQualifiersCount } = getQualifiersData(
-    props
-  );
+  const { positionAssignments, unplacedQualifiersCount } =
+    getQualifiersData(props);
   const unfilledDrawPositions = positionAssignments
     .filter((assignment) => {
       return (

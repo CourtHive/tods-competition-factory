@@ -58,11 +58,10 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(updatedRecord.events.length).toEqual(1);
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
-  const {
-    appliedPolicies: updatedAppliedPolicies,
-  } = tournamentEngine.getEventAppliedPolicies({
-    eventId,
-  });
+  const { appliedPolicies: updatedAppliedPolicies } =
+    tournamentEngine.getEventAppliedPolicies({
+      eventId,
+    });
   expect(updatedAppliedPolicies.avoidance.policyName).toEqual(
     'Nationality Code'
   );

@@ -64,15 +64,12 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   expect(playoffSourceRounds).toEqual([2]);
   expect(playoffPositionsReturned).toEqual([5, 6, 7, 8]);
 
-  ({
-    sourceRounds,
-    playoffSourceRounds,
-    playoffPositionsReturned,
-  } = getSourceRounds({
-    drawDefinition,
-    structureId,
-    playoffPositions: [9],
-  }));
+  ({ sourceRounds, playoffSourceRounds, playoffPositionsReturned } =
+    getSourceRounds({
+      drawDefinition,
+      structureId,
+      playoffPositions: [9],
+    }));
   expect(playoffSourceRounds).toEqual([1]);
   expect(playoffPositionsReturned).toEqual([9, 10, 11, 12, 13, 14, 15, 16]);
 });

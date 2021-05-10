@@ -71,15 +71,13 @@ function removeParticipantIdsFromGroupingParticipant({
   if (!groupingParticipant.individualParticipantIds)
     groupingParticipant.individualParticipantIds = [];
 
-  groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.filter(
-    (participantId) => {
-      const removeParticipant = individualParticipantIds?.includes(
-        participantId
-      );
+  groupingParticipant.individualParticipantIds =
+    groupingParticipant.individualParticipantIds.filter((participantId) => {
+      const removeParticipant =
+        individualParticipantIds?.includes(participantId);
       if (removeParticipant) removed++;
       return !removeParticipant;
-    }
-  );
+    });
   if (notRemoved.length)
     return { error: 'Participants not removed', notRemoved };
 

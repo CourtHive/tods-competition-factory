@@ -136,40 +136,29 @@ export function keyValueScore(props) {
   }
 
   if (analysis.isTimedSet) {
-    ({
-      message,
-      sets,
-      scoreString,
-      updated,
-      matchUpStatus,
-      winningSide,
-    } = keyValueTimedSetScore({
-      analysis,
-      lowSide,
-      scoreString,
-      sets,
-      matchUpStatus,
-      winningSide,
-      value,
-    }));
-  } else if (OUTCOMEKEYS.includes(value)) {
-    if (analysis.finalSetIsComplete || winningSide) {
-      message = 'final set is already complete';
-    } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
-      ({
-        sets,
-        scoreString,
-        matchUpStatus,
-        winningSide,
-        updated,
-      } = processOutcome({
+    ({ message, sets, scoreString, updated, matchUpStatus, winningSide } =
+      keyValueTimedSetScore({
+        analysis,
         lowSide,
-        sets,
         scoreString,
+        sets,
         matchUpStatus,
         winningSide,
         value,
       }));
+  } else if (OUTCOMEKEYS.includes(value)) {
+    if (analysis.finalSetIsComplete || winningSide) {
+      message = 'final set is already complete';
+    } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
+      ({ sets, scoreString, matchUpStatus, winningSide, updated } =
+        processOutcome({
+          lowSide,
+          sets,
+          scoreString,
+          matchUpStatus,
+          winningSide,
+          value,
+        }));
     } else if (analysis.isTiebreakEntry || analysis.isIncompleteSetScore) {
       message = 'incomplete set scoreString or tiebreak entry';
     } else {

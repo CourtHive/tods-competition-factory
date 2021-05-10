@@ -57,14 +57,13 @@ export function getTournamentParticipants({
   if (inContext) {
     tournamentParticipants.forEach((participant) => {
       if ([PAIR, TEAM].includes(participant.participantType)) {
-        participant.individualParticipants = participant.individualParticipantIds.map(
-          (participantId) => {
+        participant.individualParticipants =
+          participant.individualParticipantIds.map((participantId) => {
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
             return makeDeepCopy(individualParticipant, convertExtensions, true);
-          }
-        );
+          });
       }
     });
   }

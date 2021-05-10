@@ -141,16 +141,14 @@ export function setMatchUpStatus(props) {
   if (!activeDownstream) {
     // not activeDownstream also handles changing the winner of a finalRound
     // as long as the matchUp is not the finalRound of a qualifying structure
-    const { errors: noDependenciesErrors, message } = noDownstreamDependencies(
-      props
-    );
+    const { errors: noDependenciesErrors, message } =
+      noDownstreamDependencies(props);
     if (message) messages.push(message);
     if (noDependenciesErrors)
       return { error: { errors: noDependenciesErrors } };
   } else if (winningSide) {
-    const {
-      errors: winnerWithDependencyErrors,
-    } = winningSideWithDownstreamDependencies(props);
+    const { errors: winnerWithDependencyErrors } =
+      winningSideWithDownstreamDependencies(props);
     if (winnerWithDependencyErrors)
       return { error: { errors: winnerWithDependencyErrors } };
   } else if (matchUpStatus) {

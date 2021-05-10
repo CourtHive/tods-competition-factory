@@ -75,10 +75,8 @@ export function checkOutParticipant({
       return { error: PARTICIPANT_NOT_CHECKED_IN };
     }
 
-    const {
-      sideParticipantIds,
-      nestedIndividualParticipantIds,
-    } = getMatchUpParticipantIds({ matchUp });
+    const { sideParticipantIds, nestedIndividualParticipantIds } =
+      getMatchUpParticipantIds({ matchUp });
     const sideIndex = sideParticipantIds.indexOf(participantId);
     if ([0, 1].includes(sideIndex)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(

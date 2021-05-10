@@ -33,17 +33,15 @@ export function getParticipantPlacement({
     positionAssignments: candidatePositionAssignments,
   });
 
-  const {
-    participantId: selectedParticipantId,
-    groupKey: newGroupKey,
-  } = getNextParticipantId({
-    groupKey,
-    idCollections,
-    policyAttributes,
-    targetParticipantIds,
-    useSpecifiedGroupKey,
-    participants: participantsWithContext,
-  });
+  const { participantId: selectedParticipantId, groupKey: newGroupKey } =
+    getNextParticipantId({
+      groupKey,
+      idCollections,
+      policyAttributes,
+      targetParticipantIds,
+      useSpecifiedGroupKey,
+      participants: participantsWithContext,
+    });
 
   const selectedParticipantGroups = getParticipantGroups({
     allGroups,

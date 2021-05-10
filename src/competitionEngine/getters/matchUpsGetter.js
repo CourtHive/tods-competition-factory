@@ -31,11 +31,8 @@ export function allCompetitionMatchUps({
 
 export function competitionScheduleMatchUps(props) {
   const { courts, venues } = getVenuesAndCourts(props);
-  const {
-    completedMatchUps,
-    upcomingMatchUps,
-    pendingMatchUps,
-  } = competitionMatchUps(props);
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
+    competitionMatchUps(props);
   const dateMatchUps = [
     ...(upcomingMatchUps || []),
     ...(pendingMatchUps || []),

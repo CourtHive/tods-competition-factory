@@ -26,9 +26,8 @@ it('can modify entryStatus within event.entries', () => {
     participantsProfile,
   });
 
-  const {
-    tournamentParticipants,
-  } = tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
   const participantIds = tournamentParticipants.map((p) => p.participantId);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });

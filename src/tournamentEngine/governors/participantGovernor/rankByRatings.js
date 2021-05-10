@@ -13,9 +13,9 @@ export function rankByRatings({
   category,
   eventType,
 }) {
-  const relevantParticipants = (
-    tournamentRecord.participants || []
-  ).filter((p) => participantIds.includes(p.participantId));
+  const relevantParticipants = (tournamentRecord.participants || []).filter(
+    (p) => participantIds.includes(p.participantId)
+  );
 
   const participantRating = (participant) => {
     const scaleAttributes = {

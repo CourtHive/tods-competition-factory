@@ -34,11 +34,8 @@ export function doubleWalkoverAdvancement({
     return SUCCESS;
   }
 
-  const {
-    loserMatchUp,
-    winnerMatchUp,
-    loserTargetDrawPosition,
-  } = targetMatchUps;
+  const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
+    targetMatchUps;
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,

@@ -62,9 +62,8 @@ it('can add doubles events to a tournament record', () => {
     drawId,
     matchUpFormat: defaultMatchUpFormat,
   });
-  const {
-    tournamentRecord: updatedTournamentRecord,
-  } = tournamentEngine.getState();
+  const { tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getState();
   expect(
     updatedTournamentRecord.events[0].drawDefinitions[0].matchUpFormat
   ).toEqual(defaultMatchUpFormat);

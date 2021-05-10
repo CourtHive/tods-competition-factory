@@ -114,10 +114,8 @@ function swapParticipantIdWithBYE({
     ({ participantId }) => participantId
   );
   const originalByeDrawPosition = originalByeAssignment.drawPosition;
-  const {
-    participantId,
-    drawPosition: originalParticipantIdDrawPosition,
-  } = originalParticipantIdAssignment;
+  const { participantId, drawPosition: originalParticipantIdDrawPosition } =
+    originalParticipantIdAssignment;
   const { structureId } = structure;
 
   // remove both drawPosition assignments

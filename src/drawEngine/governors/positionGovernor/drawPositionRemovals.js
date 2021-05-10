@@ -78,10 +78,8 @@ export function drawPositionRemovals({
   const pairingDetails = roundNumbers
     .map((roundNumber) => {
       // find the pair of drawPositions which includes the targetDrawPosition
-      const relevantPair = roundProfile[
-        roundNumber
-      ].pairedDrawPositions.find((drawPositions) =>
-        drawPositions.includes(targetDrawPosition)
+      const relevantPair = roundProfile[roundNumber].pairedDrawPositions.find(
+        (drawPositions) => drawPositions.includes(targetDrawPosition)
       );
       // find the drawPosition which is paired with the targetDrawPosition
       const pairedDrawPosition = relevantPair?.find(

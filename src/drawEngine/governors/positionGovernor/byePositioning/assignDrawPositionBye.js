@@ -232,9 +232,8 @@ function advanceDrawPosition({
   const losingDrawPosition = matchUp.drawPositions.find(
     (drawPosition) => drawPosition !== drawPositionToAdvance
   );
-  const losingDrawPosiitonIsBye = byeAssignedDrawPositions.includes(
-    losingDrawPosition
-  );
+  const losingDrawPosiitonIsBye =
+    byeAssignedDrawPositions.includes(losingDrawPosition);
 
   const {
     targetLinks: { loserTargetLink },

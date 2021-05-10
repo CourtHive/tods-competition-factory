@@ -152,9 +152,9 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
     (attribute) => attribute !== 'penaltyId'
   );
 
-  const validModificationAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validAttributes.includes(attribute));
+  const validModificationAttributes = Object.keys(modifications).filter(
+    (attribute) => validAttributes.includes(attribute)
+  );
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };

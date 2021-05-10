@@ -60,12 +60,8 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
   };
 
   matchUps.forEach((matchUp) => {
-    const {
-      drawPositions,
-      drawPositionsRange,
-      roundNumber,
-      roundPosition,
-    } = matchUp;
+    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
+      matchUp;
 
     const expectation =
       expectations[roundNumber] && expectations[roundNumber][roundPosition];
@@ -120,12 +116,8 @@ it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_T
   };
 
   matchUps.forEach((matchUp) => {
-    const {
-      drawPositions,
-      drawPositionsRange,
-      roundNumber,
-      roundPosition,
-    } = matchUp;
+    const { drawPositions, drawPositionsRange, roundNumber, roundPosition } =
+      matchUp;
 
     const expectation =
       expectations[roundNumber] && expectations[roundNumber][roundPosition];

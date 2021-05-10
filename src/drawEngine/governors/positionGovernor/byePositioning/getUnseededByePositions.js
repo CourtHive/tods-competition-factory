@@ -60,10 +60,8 @@ export function getUnseededByePositions({
   };
   const getNextDrawPosition = (chunks) => {
     const { greaterHalf, lesserHalf } = getHalves(chunks);
-    const {
-      greaterHalf: greaterQuarter,
-      lesserHalf: lesserQuarter,
-    } = getHalves(greaterHalf);
+    const { greaterHalf: greaterQuarter, lesserHalf: lesserQuarter } =
+      getHalves(greaterHalf);
     const shuffledQuarter = shuffleArray(greaterQuarter.flat(Infinity));
     const drawPosition = shuffledQuarter.pop();
     const diminishedQuarter = greaterQuarter
@@ -86,13 +84,13 @@ export function getUnseededByePositions({
     let filteredChunks = sortedChunked.map((chunk) =>
       chunk.filter(unfilledDrawPosition)
     );
-    const drawPositionCount = [].concat(...filteredChunks.flat(Infinity))
-      .length;
+    const drawPositionCount = [].concat(
+      ...filteredChunks.flat(Infinity)
+    ).length;
     const orderedDrawPositions = [];
     for (let i = 0; i < drawPositionCount; i++) {
-      const { newlyFilteredChunks, drawPosition } = getNextDrawPosition(
-        filteredChunks
-      );
+      const { newlyFilteredChunks, drawPosition } =
+        getNextDrawPosition(filteredChunks);
       orderedDrawPositions.push(drawPosition);
       filteredChunks = newlyFilteredChunks;
     }

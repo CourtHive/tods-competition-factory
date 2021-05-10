@@ -75,9 +75,8 @@ export function replacementTest({
 
   if (!byeLimit) {
     // get the updated positionAssignments
-    const {
-      positionAssignments: updatedPositionAssignments,
-    } = drawPositionAssignments({ drawId });
+    const { positionAssignments: updatedPositionAssignments } =
+      drawPositionAssignments({ drawId });
 
     // shuffle updated positionAssignments and slice to select random number of drawPositions to assign
     const assignmentCount = randomInt(0, participantsCount);

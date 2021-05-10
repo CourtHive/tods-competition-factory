@@ -28,16 +28,13 @@ export function positionByes({
   if (byesToPlace <= 0) return SUCCESS;
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const {
-    isFeedIn,
-    strictSeedOrderByePositions,
-    blockSeedOrderByePositions,
-  } = getSeedOrderByePositions({
-    structure,
-    drawDefinition,
-    appliedPolicies,
-    relevantMatchUps,
-  });
+  const { isFeedIn, strictSeedOrderByePositions, blockSeedOrderByePositions } =
+    getSeedOrderByePositions({
+      structure,
+      drawDefinition,
+      appliedPolicies,
+      relevantMatchUps,
+    });
 
   const seedOrderByePositions = blockOrdered
     ? blockSeedOrderByePositions

@@ -105,11 +105,8 @@ export function avoidanceTest(props) {
     event: eventResult,
     policyDefinitions: [{ avoidance }, SEEDING_ITF],
   };
-  const {
-    error,
-    conflicts,
-    drawDefinition,
-  } = tournamentEngine.generateDrawDefinition(values);
+  const { error, conflicts, drawDefinition } =
+    tournamentEngine.generateDrawDefinition(values);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);

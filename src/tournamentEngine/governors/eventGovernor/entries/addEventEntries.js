@@ -117,9 +117,10 @@ export function addEventEntries(props) {
       )
       .map((participant) => participant.individualParticipantIds)
       .flat(Infinity);
-    const unpairedParticipantIdsToRemove = unpairedIndividualParticipantIds.filter(
-      (participantId) => pairedIndividualParticipantIds.includes(participantId)
-    );
+    const unpairedParticipantIdsToRemove =
+      unpairedIndividualParticipantIds.filter((participantId) =>
+        pairedIndividualParticipantIds.includes(participantId)
+      );
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({
         participantIds: unpairedParticipantIdsToRemove,

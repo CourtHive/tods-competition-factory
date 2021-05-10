@@ -123,8 +123,9 @@ it('can add voluntary consolation structure to an existing draw', () => {
   const voluntaryConsolationStructure = drawDefinition.structures.find(
     ({ stage }) => stage === VOLUNTARY_CONSOLATION
   );
-  const assignedPositions = voluntaryConsolationStructure.positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedPositions =
+    voluntaryConsolationStructure.positionAssignments.filter(
+      ({ participantId }) => participantId
+    );
   expect(assignedPositions.length).toEqual(consolationParticipantIds.length);
 });

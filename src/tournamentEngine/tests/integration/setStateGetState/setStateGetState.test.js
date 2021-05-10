@@ -27,9 +27,8 @@ it('can recognize invalid matchUps', () => {
   result = validDrawPositions({ matchUps: drawMatchUps });
   expect(result).toEqual(true);
 
-  const {
-    matchUps: postExecutionMatchUps,
-  } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps: postExecutionMatchUps } =
+    tournamentEngine.allTournamentMatchUps();
 
   result = validDrawPositions({
     matchUps: postExecutionMatchUps,

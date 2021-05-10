@@ -67,9 +67,8 @@ export function assignDrawPosition({
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
-  const { containsParticipant, containsBye } = drawPositionFilled(
-    positionAssignment
-  );
+  const { containsParticipant, containsBye } =
+    drawPositionFilled(positionAssignment);
   if (
     containsParticipant &&
     positionAssignment.participantId !== participantId

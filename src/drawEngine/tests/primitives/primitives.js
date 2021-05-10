@@ -94,9 +94,8 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
     });
     expect(result).toMatchObject(SUCCESS);
     ({ drawDefinition } = drawEngine.getState());
-    const {
-      unassignedPositions: stillUnassigned,
-    } = structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } =
+      structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -116,11 +115,8 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
   });
   expect(upcomingStructureMatchUps.length).toEqual(drawSize / 2);
 
-  const {
-    upcomingMatchUps,
-    pendingMatchUps,
-    completedMatchUps,
-  } = drawEngine.drawMatchUps();
+  const { upcomingMatchUps, pendingMatchUps, completedMatchUps } =
+    drawEngine.drawMatchUps();
   expect(upcomingMatchUps.length).toEqual(drawSize / 2);
   expect(pendingMatchUps.length).toEqual(drawSize / 2 - 1);
   expect(completedMatchUps.length).toEqual(0);

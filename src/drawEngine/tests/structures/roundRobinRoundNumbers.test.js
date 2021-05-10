@@ -20,16 +20,7 @@ it('generates roundNumbers for all matchUps when odd-sized groups', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.map((m) => m.roundNumber)).toEqual([
-    1,
-    1,
-    2,
-    2,
-    3,
-    3,
-    4,
-    4,
-    5,
-    5,
+    1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
   ]);
 });
 

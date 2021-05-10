@@ -62,14 +62,11 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
 
   const { drawDefinition } = drawEngine.getState();
 
-  const {
-    playoffRounds,
-    playoffRoundsRanges,
-    positionsPlayedOff,
-  } = getAvailablePlayoffRounds({
-    drawDefinition,
-    structureId,
-  });
+  const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
+    getAvailablePlayoffRounds({
+      drawDefinition,
+      structureId,
+    });
 
   expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
 

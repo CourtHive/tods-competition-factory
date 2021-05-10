@@ -68,25 +68,21 @@ export function automatedPositioning({
     }));
   }
 
-  const {
-    error: unseededPositionError,
-    conflicts: unseededConflicts,
-  } = positionUnseededParticipants({
-    candidatesCount,
-    drawDefinition,
-    mappedMatchUps,
-    participants,
-    structure,
-  });
-  const {
-    error: qualifierPositionError,
-    conflicts: qualifierConflicts,
-  } = positionQualifiers({
-    drawDefinition,
-    mappedMatchUps,
-    participants,
-    structure,
-  });
+  const { error: unseededPositionError, conflicts: unseededConflicts } =
+    positionUnseededParticipants({
+      candidatesCount,
+      drawDefinition,
+      mappedMatchUps,
+      participants,
+      structure,
+    });
+  const { error: qualifierPositionError, conflicts: qualifierConflicts } =
+    positionQualifiers({
+      drawDefinition,
+      mappedMatchUps,
+      participants,
+      structure,
+    });
 
   if (seedBlockErrors) errors = errors.concat(...seedBlockErrors);
   if (byePositionError) errors.push(byePositionError);

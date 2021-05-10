@@ -11,9 +11,8 @@ it('can sign participants in and out', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const {
-    tournamentParticipants,
-  } = tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
 
   const { participantId } = tournamentParticipants[0];
 

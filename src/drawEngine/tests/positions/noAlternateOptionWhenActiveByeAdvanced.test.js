@@ -31,15 +31,11 @@ it('can create double bye and remove advanced participant when outcome is reset'
   });
   tournamentEngine.setState(tournamentRecord);
 
-  let {
-    completedMatchUps,
-    upcomingMatchUps,
-    byeMatchUps,
-    pendingMatchUps,
-  } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  let { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
+    tournamentEngine.drawMatchUps({
+      drawId,
+      inContext: true,
+    });
   expect(byeMatchUps.length).toEqual(3);
   expect(completedMatchUps.length).toEqual(0);
   expect(pendingMatchUps.length).toEqual(2);
@@ -94,15 +90,11 @@ it('can create double bye and remove advanced participant when outcome is reset'
   finalMatchUp = matchUps.find(({ roundNumber }) => roundNumber === 3);
   expect(finalMatchUp.matchUpStatus).toEqual(COMPLETED);
 
-  ({
-    completedMatchUps,
-    upcomingMatchUps,
-    byeMatchUps,
-    pendingMatchUps,
-  } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  }));
+  ({ completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
+    tournamentEngine.drawMatchUps({
+      drawId,
+      inContext: true,
+    }));
   expect(byeMatchUps.length).toEqual(6);
   expect(completedMatchUps.length).toEqual(1);
   expect(pendingMatchUps.length).toEqual(0);
@@ -116,11 +108,8 @@ it('can create double bye and remove advanced participant when outcome is reset'
   expect(validActions.map(({ type }) => type)).toEqual([]);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  const {
-    activeDrawPositions,
-    inactiveDrawPositions,
-    byeDrawPositions,
-  } = structureActiveDrawPositions({ drawDefinition, structureId });
+  const { activeDrawPositions, inactiveDrawPositions, byeDrawPositions } =
+    structureActiveDrawPositions({ drawDefinition, structureId });
   expect(activeDrawPositions.length).toEqual(8);
   expect(inactiveDrawPositions.length).toEqual(0);
   expect(byeDrawPositions.length).toEqual(6);
@@ -141,15 +130,11 @@ function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
 
 function checkExpectations({ drawId, expectations }) {
   if (!expectations) return;
-  const {
-    completedMatchUps,
-    upcomingMatchUps,
-    byeMatchUps,
-    pendingMatchUps,
-  } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
+    tournamentEngine.drawMatchUps({
+      drawId,
+      inContext: true,
+    });
   const expectedMatchUpsCount =
     completedMatchUps.length +
     upcomingMatchUps.length +

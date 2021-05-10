@@ -10,12 +10,8 @@ import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 
 export function generateTeamsFromParticipantAttribute(props) {
-  const {
-    tournamentRecord,
-    participantAttribute,
-    personAttribute,
-    uuids,
-  } = props;
+  const { tournamentRecord, participantAttribute, personAttribute, uuids } =
+    props;
 
   const teams = {};
   const participants = tournamentRecord.participants || [];

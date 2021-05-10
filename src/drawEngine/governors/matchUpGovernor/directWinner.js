@@ -21,12 +21,11 @@ export function directWinner({
     });
 
     const sourceStructureId = winnerTargetLink.source.structureId;
-    const {
-      positionAssignments: sourcePositionAssignments,
-    } = structureAssignedDrawPositions({
-      drawDefinition,
-      structureId: sourceStructureId,
-    });
+    const { positionAssignments: sourcePositionAssignments } =
+      structureAssignedDrawPositions({
+        drawDefinition,
+        structureId: sourceStructureId,
+      });
     const winnerParticipantId = sourcePositionAssignments.reduce(
       (participantId, assignment) => {
         return assignment.drawPosition === winningDrawPosition
@@ -37,12 +36,11 @@ export function directWinner({
     );
 
     const targetStructureId = winnerTargetLink.target.structureId;
-    const {
-      positionAssignments: targetPositionAssignments,
-    } = structureAssignedDrawPositions({
-      drawDefinition,
-      structureId: targetStructureId,
-    });
+    const { positionAssignments: targetPositionAssignments } =
+      structureAssignedDrawPositions({
+        drawDefinition,
+        structureId: targetStructureId,
+      });
 
     const winnerExistingDrawPosition = targetPositionAssignments.reduce(
       (drawPosition, assignment) => {
@@ -63,9 +61,8 @@ export function directWinner({
         return inTarget && unfilled;
       })
       .map((assignment) => assignment.drawPosition);
-    const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
-      targetMatchUpDrawPosition
-    );
+    const targetDrawPositionIsUnfilled =
+      unfilledTargetMatchUpDrawPositions.includes(targetMatchUpDrawPosition);
 
     if (
       winnerTargetLink.target.roundNumber === 1 &&

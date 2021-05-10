@@ -70,10 +70,8 @@ it('can add doubles events to a tournament record', () => {
     eventId,
     event: eventResult,
   };
-  const {
-    success: drawGenrationSuccess,
-    drawDefinition,
-  } = tournamentEngine.generateDrawDefinition(values);
+  const { success: drawGenrationSuccess, drawDefinition } =
+    tournamentEngine.generateDrawDefinition(values);
   expect(drawGenrationSuccess).toEqual(true);
 
   const { matchUps } = drawEngine.setState(drawDefinition).allDrawMatchUps();

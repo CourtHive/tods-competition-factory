@@ -50,9 +50,10 @@ export function getSeedOrderByePositions({
     },
     []
   );
-  const orderedSortedFirstRoundSeededDrawPositions = valueOrderedBlockSortedPositionedSeeds.map(
-    (positionedSeed) => positionedSeed.drawPosition
-  );
+  const orderedSortedFirstRoundSeededDrawPositions =
+    valueOrderedBlockSortedPositionedSeeds.map(
+      (positionedSeed) => positionedSeed.drawPosition
+    );
 
   // returns list of bye positions which strictly follows where seeds
   // have been placed according to sorted seedNumbers

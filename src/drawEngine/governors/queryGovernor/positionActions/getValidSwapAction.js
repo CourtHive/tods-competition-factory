@@ -79,10 +79,8 @@ export function getValidSwapAction({
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
     .filter((f) => f);
-  const participantsAvailable = (
-    tournamentParticipants || []
-  ).filter((participant) =>
-    availableParticipantIds.includes(participant.participantId)
+  const participantsAvailable = (tournamentParticipants || []).filter(
+    (participant) => availableParticipantIds.includes(participant.participantId)
   );
   const availableParticpantsMap = Object.assign(
     {},

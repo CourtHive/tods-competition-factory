@@ -97,10 +97,8 @@ function getModifiedSet(props) {
   const { isValidSet } = modifiedSetAnalysis;
   if (!isValidSet) {
     // check modifications which might make it a valid set
-    const {
-      hasTiebreakCondition,
-      sideTiebreakScoresCount,
-    } = modifiedSetAnalysis;
+    const { hasTiebreakCondition, sideTiebreakScoresCount } =
+      modifiedSetAnalysis;
 
     if (hasTiebreakCondition && sideTiebreakScoresCount) {
       modifiedSet.side1TiebreakScore = undefined;

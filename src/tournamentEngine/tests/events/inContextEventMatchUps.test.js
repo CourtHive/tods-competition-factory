@@ -27,11 +27,10 @@ it('can return event matchUps with context and upcoming matchUps', () => {
   checkExpectation({ matchUps, expectation: [1, 1, [2, 1]] });
   checkExpectation({ matchUps, expectation: [1, 3, [2, 2]] });
 
-  const {
-    matchUps: tournamentMatchUps,
-  } = tournamentEngine.allTournamentMatchUps({
-    nextMatchUps: true,
-  });
+  const { matchUps: tournamentMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      nextMatchUps: true,
+    });
 
   const relevantMatchUps = tournamentMatchUps.filter(
     (matchUp) => matchUp.drawId === drawId
@@ -74,11 +73,10 @@ it('can return event matchUps with context and upcoming matchUps for FEED_IN_CHA
   checkExpectation({ matchUps, expectation: [1, 1, [2, 1]] });
   checkExpectation({ matchUps, expectation: [1, 3, [2, 2]] });
 
-  const {
-    matchUps: tournamentMatchUps,
-  } = tournamentEngine.allTournamentMatchUps({
-    nextMatchUps: true,
-  });
+  const { matchUps: tournamentMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      nextMatchUps: true,
+    });
 
   const relevantMatchUps = tournamentMatchUps.filter(
     (matchUp) => matchUp.drawId === drawId
@@ -131,12 +129,8 @@ it('can return enerate upcoming matchUps for FEED_IN_CHAMPIONSHIP with BYEs in C
 });
 
 function checkExpectation({ matchUps, expectation }) {
-  const [
-    roundNumber,
-    roundPosition,
-    expectedWinnerTo,
-    expectedLoserTo,
-  ] = expectation;
+  const [roundNumber, roundPosition, expectedWinnerTo, expectedLoserTo] =
+    expectation;
   const matchUp = matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&

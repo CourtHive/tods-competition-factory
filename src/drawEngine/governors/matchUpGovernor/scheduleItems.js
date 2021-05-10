@@ -58,14 +58,8 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
 
-  const {
-    scheduledDate,
-    scheduledTime,
-    startTime,
-    endTime,
-    courtId,
-    venueId,
-  } = schedule;
+  const { scheduledDate, scheduledTime, startTime, endTime, courtId, venueId } =
+    schedule;
 
   if (scheduledDate) {
     const result = addMatchUpScheduledDate({

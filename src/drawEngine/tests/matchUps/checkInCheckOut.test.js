@@ -26,10 +26,8 @@ it('can check-in and check-out matchUp participants', () => {
   const matchUp = matchUps[0];
   const { matchUpId } = matchUp;
 
-  const {
-    sideParticipantIds,
-    individualParticipantIds,
-  } = drawEngine.getMatchUpParticipantIds({ matchUp });
+  const { sideParticipantIds, individualParticipantIds } =
+    drawEngine.getMatchUpParticipantIds({ matchUp });
   expect(sideParticipantIds.length).toEqual(2);
   expect(individualParticipantIds.length).toEqual(4);
 
@@ -48,10 +46,8 @@ it('can check-in and check-out matchUp participants', () => {
     individualParticipantIds[0]
   );
 
-  let {
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp });
+  let { allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
@@ -67,10 +63,8 @@ it('can check-in and check-out matchUp participants', () => {
     matchUpId,
     inContext: true,
   }));
-  ({
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 
@@ -86,10 +80,8 @@ it('can check-in and check-out matchUp participants', () => {
     matchUpId,
     inContext: true,
   }));
-  ({
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(6);
 
@@ -116,10 +108,8 @@ it('can check-in and check-out matchUp participants', () => {
     matchUpId,
     inContext: true,
   }));
-  ({
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp: updatedMatchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(3);
 

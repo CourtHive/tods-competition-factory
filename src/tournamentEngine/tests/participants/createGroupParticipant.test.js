@@ -8,12 +8,11 @@ it('can create group participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
 
   tournamentEngine.setState(tournamentRecord);
-  const {
-    tournamentParticipants: individualParticipants,
-  } = getTournamentParticipants({
-    tournamentRecord,
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-  });
+  const { tournamentParticipants: individualParticipants } =
+    getTournamentParticipants({
+      tournamentRecord,
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
 
   const [participant1, participant2] = individualParticipants;
 
@@ -33,15 +32,13 @@ it('can create group participants', () => {
   });
   expect(result.success).toEqual(true);
 
-  const {
-    tournamentRecord: updatedTournamentRecord,
-  } = tournamentEngine.getState();
-  const {
-    tournamentParticipants: groupParticipants,
-  } = getTournamentParticipants({
-    tournamentRecord: updatedTournamentRecord,
-    participantFilters: { participantTypes: [GROUP] },
-  });
+  const { tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getState();
+  const { tournamentParticipants: groupParticipants } =
+    getTournamentParticipants({
+      tournamentRecord: updatedTournamentRecord,
+      participantFilters: { participantTypes: [GROUP] },
+    });
 
   expect(groupParticipants.length).toEqual(1);
 });

@@ -38,9 +38,8 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(result).toEqual(SUCCESS);
 
   // Check length of extensions for each element
-  let {
-    tournamentRecord: updatedTournamentRecord,
-  } = tournamentEngine.getState();
+  let { tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getState();
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
 
   let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -50,11 +49,10 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(drawDefinition.extensions.length).toEqual(4);
 
   // Retrieve extensions from elements
-  let {
-    extension: tournamentRecordExtension,
-  } = tournamentEngine.findTournamentExtension({
-    name: extensionName,
-  });
+  let { extension: tournamentRecordExtension } =
+    tournamentEngine.findTournamentExtension({
+      name: extensionName,
+    });
   expect(tournamentRecordExtension.value).toEqual(extensionValue);
 
   let { extension: eventExtension } = tournamentEngine.findEventExtension({
@@ -63,12 +61,11 @@ it('can add and remove extensions from tournamentRecords', () => {
   });
   expect(eventExtension.value).toEqual(extensionValue);
 
-  let {
-    extension: drawDefinitionExtension,
-  } = tournamentEngine.findEventExtension({
-    name: extensionName,
-    drawId,
-  });
+  let { extension: drawDefinitionExtension } =
+    tournamentEngine.findEventExtension({
+      name: extensionName,
+      drawId,
+    });
   expect(drawDefinitionExtension.value).toEqual(extensionValue);
 
   // now test adding the same extension name... should overwrite existing

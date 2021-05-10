@@ -26,10 +26,8 @@ it('can toggle participant check-in state', () => {
     ({ participantId }) => participantId
   );
 
-  let {
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp });
+  let { allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(0);
 
@@ -47,10 +45,8 @@ it('can toggle participant check-in state', () => {
     inContext: true,
   }));
 
-  ({
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
@@ -68,10 +64,8 @@ it('can toggle participant check-in state', () => {
     inContext: true,
   }));
 
-  ({
-    allParticipantsCheckedIn,
-    checkedInParticipantIds,
-  } = drawEngine.getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
+    drawEngine.getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(2);
 });

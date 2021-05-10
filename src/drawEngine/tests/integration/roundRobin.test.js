@@ -171,12 +171,11 @@ function generateRoundRobin({
   });
   if (entriesError) errors.push({ entriesError });
 
-  const {
-    error: seedInitializationError,
-  } = drawEngine.initializeStructureSeedAssignments({
-    structureId,
-    seedsCount,
-  });
+  const { error: seedInitializationError } =
+    drawEngine.initializeStructureSeedAssignments({
+      structureId,
+      seedsCount,
+    });
   if (seedInitializationError) errors.push({ seedInitializationError });
 
   assignSeeds = assignSeeds || seedsCount;

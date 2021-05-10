@@ -18,16 +18,13 @@ import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { completeMatchUp } from '../primitives/verifyMatchUps';
 
 it('can generate and verify double elimination', () => {
-  const {
-    mainStructureId,
-    consolationStructureId,
-    deciderStructureId,
-  } = generateDouble({
-    drawSize: 12,
-    seedsCount: 0,
-    assignSeeds: 0,
-    participantsCount: 12,
-  });
+  const { mainStructureId, consolationStructureId, deciderStructureId } =
+    generateDouble({
+      drawSize: 12,
+      seedsCount: 0,
+      assignSeeds: 0,
+      participantsCount: 12,
+    });
 
   verifyStructure({
     structureId: mainStructureId,

@@ -130,10 +130,8 @@ export function positionActions({
   const validActions = [];
   const { drawId } = drawDefinition;
 
-  const {
-    assignedPositions,
-    positionAssignments,
-  } = structureAssignedDrawPositions({ structure });
+  const { assignedPositions, positionAssignments } =
+    structureAssignedDrawPositions({ structure });
   const positionAssignment = assignedPositions.find(
     (assignment) => assignment.drawPosition === drawPosition
   );

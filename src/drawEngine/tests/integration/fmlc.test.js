@@ -154,9 +154,10 @@ it('can direct winners and losers', () => {
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
-  let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 1
-  )?.participantId;
+  let targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 1
+    )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
@@ -233,9 +234,10 @@ it('can direct winners and losers', () => {
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 8
   );
 
-  targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 16
-  )?.participantId;
+  targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 16
+    )?.participantId;
 
   expect(targetMatchUp.drawPositions).toEqual([23, 24]);
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
@@ -351,9 +353,10 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
-  let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 2
-  )?.participantId;
+  let targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 2
+    )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1

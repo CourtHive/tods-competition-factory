@@ -118,12 +118,14 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     if (result.success) expect(result.matchUp.winningSide).toEqual(winningSide);
   });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
 
   expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
@@ -241,12 +243,14 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     if (result.success) expect(result.matchUp.winningSide).toEqual(winningSide);
   });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 
@@ -360,12 +364,14 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     expect(result.success).toEqual(success);
   });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
   expect(positionAssignmentByesCount).toEqual(16);
   expect(positionAssignmentParticipantidsCount).toEqual(8);
 
@@ -481,12 +487,14 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     expect(result.success).toEqual(success);
   });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(16);
 

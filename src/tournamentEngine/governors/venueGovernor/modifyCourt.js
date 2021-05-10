@@ -33,9 +33,9 @@ export function modifyCourt({
     (attribute) => attribute !== 'courtId'
   );
 
-  const validModificationAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validAttributes.includes(attribute));
+  const validModificationAttributes = Object.keys(modifications).filter(
+    (attribute) => validAttributes.includes(attribute)
+  );
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
@@ -45,9 +45,9 @@ export function modifyCourt({
     (attribute) => !['dateAvailability'].includes(attribute)
   );
 
-  const validReplacementAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validReplacements.includes(attribute));
+  const validReplacementAttributes = Object.keys(modifications).filter(
+    (attribute) => validReplacements.includes(attribute)
+  );
 
   validReplacementAttributes.forEach((attribute) =>
     Object.assign(court, { [attribute]: modifications[attribute] })

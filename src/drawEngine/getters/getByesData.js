@@ -48,15 +48,14 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
   // # Byes = drawSize (positionAssignments) - total entries
   // const { positionAssignments } = structureAssignedDrawPositions({structure});
   // const { positionAssignments, qualifierPositions, byePositions, unassignedPositions } = structureAssignedDrawPositions({structure});
-  const {
-    positionAssignments,
-    unassignedPositions,
-  } = structureAssignedDrawPositions({ structure });
+  const { positionAssignments, unassignedPositions } =
+    structureAssignedDrawPositions({ structure });
   const unassignedDrawPositions = unassignedPositions.map(
     (position) => position.drawPosition
   );
-  const placedByes = positionAssignments.filter((assignment) => assignment.bye)
-    .length;
+  const placedByes = positionAssignments.filter(
+    (assignment) => assignment.bye
+  ).length;
   const placedByePositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);

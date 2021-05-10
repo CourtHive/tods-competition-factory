@@ -41,9 +41,8 @@ export function getDrawPositionsRanges({
         firstRoundDrawPositions,
         firstRoundDrawPositions.length / matchUpsCount
       );
-      const firstRoundDrawPositionsRanges = firstRoundDrawPositionsChunks.map(
-        getRangeString
-      );
+      const firstRoundDrawPositionsRanges =
+        firstRoundDrawPositionsChunks.map(getRangeString);
       const firstRoundOffsetDrawPositionsRanges = firstRoundDrawPositionsChunks
         .map((drawPositions) => {
           return drawPositions.map(

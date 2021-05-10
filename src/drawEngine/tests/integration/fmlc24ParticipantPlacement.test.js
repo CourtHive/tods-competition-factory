@@ -40,12 +40,14 @@ it('can support ITF Consolation participant placement', () => {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
@@ -84,12 +86,14 @@ it('can support USTA Consolation participant placement', () => {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
-  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.participantId
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
+  const positionAssignmentParticipantidsCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.participantId
+    ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });

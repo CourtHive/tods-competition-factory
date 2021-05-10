@@ -360,11 +360,9 @@ function buildFeedRound({
   const initialGroupDrawPosition = drawPosition
     ? drawPosition - feedRoundMatchUpsCount
     : undefined;
-  const drawPositionGroup = generateRange(
-    0,
-    feedRoundMatchUpsCount
-  ).map((value) =>
-    initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
+  const drawPositionGroup = generateRange(0, feedRoundMatchUpsCount).map(
+    (value) =>
+      initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
   );
 
   const roundNodes = [];

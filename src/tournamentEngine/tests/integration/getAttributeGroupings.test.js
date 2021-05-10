@@ -51,9 +51,10 @@ it('can generate groupings accurately', () => {
   Object.keys(groupings).forEach((nationalityCode) => {
     const groupingParticipantIds = groupings[nationalityCode];
     groupingParticipantIds.forEach((participantId) => {
-      const includesNationalityCode = doublesParticipantsNationalityCodes[
-        participantId
-      ].includes(nationalityCode);
+      const includesNationalityCode =
+        doublesParticipantsNationalityCodes[participantId].includes(
+          nationalityCode
+        );
       expect(includesNationalityCode).toEqual(true);
     });
   });

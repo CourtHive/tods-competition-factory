@@ -16,9 +16,8 @@ it('can set and get drawRepresentatitveIds', () => {
     inContext: true,
   });
 
-  const {
-    tournamentParticipants,
-  } = tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } =
+    tournamentEngine.getTournamentParticipants();
   const participantIds = tournamentParticipants.map(
     ({ participantId }) => participantId
   );
@@ -31,9 +30,8 @@ it('can set and get drawRepresentatitveIds', () => {
   });
   expect(result.success).toEqual(true);
 
-  const {
-    representativeParticipantIds: retrievedIds,
-  } = tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
+  const { representativeParticipantIds: retrievedIds } =
+    tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
 
   expect(
     intersection(representativeParticipantIds, retrievedIds).length
@@ -45,9 +43,8 @@ it('can set and get drawRepresentatitveIds', () => {
   });
   expect(result.success).toEqual(true);
 
-  const {
-    representativeParticipantIds: updatedIds,
-  } = tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
+  const { representativeParticipantIds: updatedIds } =
+    tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });
 
   expect(updatedIds.length).toEqual(0);
 });

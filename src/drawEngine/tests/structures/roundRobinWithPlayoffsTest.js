@@ -191,9 +191,8 @@ export function roundRobinWithPlayoffsTest({
   });
   expect(result).toEqual(SUCCESS);
 
-  let {
-    drawDefinition: updatedDrawDefinition,
-  } = tournamentEngine.getDrawDefinition({ drawId });
+  let { drawDefinition: updatedDrawDefinition } =
+    tournamentEngine.getDrawDefinition({ drawId });
 
   const updatedPlayoffStructures = updatedDrawDefinition.structures.reduce(
     (structures, structure) => {

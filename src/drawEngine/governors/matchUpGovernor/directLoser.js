@@ -77,12 +77,11 @@ export function directLoser(props) {
   const validForConsolation =
     loserLinkCondition === FIRST_MATCHUP && loserDrawPositionWins.length === 0;
 
-  const {
-    positionAssignments: sourcePositionAssignments,
-  } = structureAssignedDrawPositions({
-    drawDefinition,
-    structureId: sourceStructureId,
-  });
+  const { positionAssignments: sourcePositionAssignments } =
+    structureAssignedDrawPositions({
+      drawDefinition,
+      structureId: sourceStructureId,
+    });
   const loserParticipantId = sourcePositionAssignments.reduce(
     (participantId, assignment) => {
       return assignment.drawPosition === loserDrawPosition
@@ -93,12 +92,11 @@ export function directLoser(props) {
   );
 
   const targetStructureId = loserTargetLink.target.structureId;
-  const {
-    positionAssignments: targetPositionAssignments,
-  } = structureAssignedDrawPositions({
-    drawDefinition,
-    structureId: targetStructureId,
-  });
+  const { positionAssignments: targetPositionAssignments } =
+    structureAssignedDrawPositions({
+      drawDefinition,
+      structureId: targetStructureId,
+    });
 
   const targetMatchUpPositionAssignments = targetPositionAssignments.filter(
     ({ drawPosition }) => targetMatchUpDrawPositions.includes(drawPosition)
@@ -125,9 +123,8 @@ export function directLoser(props) {
     })
     .map((assignment) => assignment.drawPosition);
 
-  const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions.includes(
-    targetMatchUpDrawPosition
-  );
+  const targetDrawPositionIsUnfilled =
+    unfilledTargetMatchUpDrawPositions.includes(targetMatchUpDrawPosition);
 
   const isFeedRound =
     loserTargetLink.target.roundNumber > 1 &&
@@ -142,9 +139,8 @@ export function directLoser(props) {
     return asssignLoserDrawPosition();
   } else if (isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
-    const fedDrawPosition = unfilledTargetMatchUpDrawPositions.sort(
-      numericSort
-    )[0];
+    const fedDrawPosition =
+      unfilledTargetMatchUpDrawPositions.sort(numericSort)[0];
     return assignDrawPosition({
       drawDefinition,
       structureId: targetStructureId,

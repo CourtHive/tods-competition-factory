@@ -39,10 +39,8 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     matchUpId,
   });
 
-  const {
-    assignedPositions,
-    allPositionsAssigned,
-  } = structureAssignedDrawPositions({ structure });
+  const { assignedPositions, allPositionsAssigned } =
+    structureAssignedDrawPositions({ structure });
   const { drawPositions } = matchUp || {};
   const { structureId } = structure || {};
 

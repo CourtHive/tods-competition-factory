@@ -73,21 +73,19 @@ export function generateEventWithDraw({
     if (result.error) return { error: result.error };
   }
 
-  const {
-    drawDefinition,
-    error: generationError,
-  } = tournamentEngine.generateDrawDefinition({
-    eventId,
-    drawSize,
-    matchUpFormat,
-    drawType,
-    seedsCount,
-    feedPolicy,
-    structureOptions,
-    goesTo,
-    automated,
-    stage,
-  });
+  const { drawDefinition, error: generationError } =
+    tournamentEngine.generateDrawDefinition({
+      eventId,
+      drawSize,
+      matchUpFormat,
+      drawType,
+      seedsCount,
+      feedPolicy,
+      structureOptions,
+      goesTo,
+      automated,
+      stage,
+    });
 
   if (generationError) return { error: generationError };
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });

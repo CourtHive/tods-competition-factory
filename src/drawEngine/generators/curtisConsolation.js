@@ -118,16 +118,14 @@ function consolationFeedStructure({
 }) {
   const consolationDrawPositions = drawSize / (2 * Math.pow(2, roundOffset));
 
-  const {
-    matchUps: consolationMatchUps,
-    roundsCount: consolationRoundsCount,
-  } = feedInMatchUps({
-    feedRounds: 1,
-    baseDrawSize: consolationDrawPositions,
-    isConsolation: true,
-    finishingPositionOffset: consolationDrawPositions,
-    uuids,
-  });
+  const { matchUps: consolationMatchUps, roundsCount: consolationRoundsCount } =
+    feedInMatchUps({
+      feedRounds: 1,
+      baseDrawSize: consolationDrawPositions,
+      isConsolation: true,
+      finishingPositionOffset: consolationDrawPositions,
+      uuids,
+    });
 
   const structureName = `${CONSOLATION} ${index + 1}`;
   const consolationStructure = structureTemplate({

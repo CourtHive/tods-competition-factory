@@ -178,11 +178,10 @@ it('will not add invalid PAIR participants', () => {
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
   expect(result.message).toBeUndefined();
 
-  const {
-    tournamentParticipants: individualParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
-  });
+  const { tournamentParticipants: individualParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
 
   // cannot add 3 individualParticipantIds for PAIR
   const threePrticipantIds = individualParticipants
@@ -226,11 +225,10 @@ it('will not add invalid PAIR participants', () => {
   expect(result.success).toEqual(true);
   const pairParticipantId = result.participant.participantId;
 
-  const {
-    tournamentParticipants: pairParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [PAIR] },
-  });
+  const { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
   const pairParticipantIds = pairParticipants.map(
     (participant) => participant.participantId
   );

@@ -148,13 +148,8 @@ export function generateParticipants({
 }
 
 function generateAddress(addressAttributes) {
-  const {
-    cities,
-    states,
-    postalCodes,
-    nationalityCode,
-    participantIndex,
-  } = addressAttributes;
+  const { cities, states, postalCodes, nationalityCode, participantIndex } =
+    addressAttributes;
   const address = {
     city: cities && cities[participantIndex],
     state: states && states[participantIndex],

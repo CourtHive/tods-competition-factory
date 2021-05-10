@@ -102,18 +102,15 @@ export function getAllStructureMatchUps({
   mappedMatchUps =
     mappedMatchUps || getMatchUpsMap({ drawDefinition, structure });
 
-  const {
-    positionAssignments,
-    allPositionsAssigned,
-  } = structureAssignedDrawPositions({ structure });
+  const { positionAssignments, allPositionsAssigned } =
+    structureAssignedDrawPositions({ structure });
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
-  const {
-    seedAssignments: structureSeedAssignments,
-  } = getStructureSeedAssignments({
-    drawDefinition,
-    mappedMatchUps,
-    structure,
-  });
+  const { seedAssignments: structureSeedAssignments } =
+    getStructureSeedAssignments({
+      drawDefinition,
+      mappedMatchUps,
+      structure,
+    });
 
   // enables passing in seedAssignments rather than using structureSeedAssignments
   seedAssignments = seedAssignments || structureSeedAssignments;
@@ -356,15 +353,14 @@ export function getAllStructureMatchUps({
           }
 
           if (side.participant && side.participant.individualParticipantIds) {
-            const individualParticipants = side.participant.individualParticipantIds.map(
-              (participantId) => {
+            const individualParticipants =
+              side.participant.individualParticipantIds.map((participantId) => {
                 return findParticipant({
                   policyDefinition: appliedPolicies,
                   tournamentParticipants,
                   participantId,
                 });
-              }
-            );
+              });
             Object.assign(side.participant, { individualParticipants });
           }
         });
@@ -384,10 +380,8 @@ export function getAllStructureMatchUps({
     Object.assign(matchUpWithContext, { readyToScore, hasContext: true });
 
     if (hasParticipants) {
-      const {
-        allParticipantsCheckedIn,
-        checkedInParticipantIds,
-      } = getCheckedInParticipantIds({ matchUp: matchUpWithContext });
+      const { allParticipantsCheckedIn, checkedInParticipantIds } =
+        getCheckedInParticipantIds({ matchUp: matchUpWithContext });
 
       Object.assign(matchUpWithContext, {
         allParticipantsCheckedIn,

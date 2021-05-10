@@ -56,12 +56,11 @@ export function modifyParticipant({
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
   if (Array.isArray(individualParticipantIds)) {
-    const {
-      tournamentParticipants: individualParticipants,
-    } = getTournamentParticipants({
-      tournamentRecord,
-      participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
-    });
+    const { tournamentParticipants: individualParticipants } =
+      getTournamentParticipants({
+        tournamentRecord,
+        participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
+      });
     const allIndividualParticipantIds = individualParticipants?.map(
       ({ participantId }) => participantId
     );

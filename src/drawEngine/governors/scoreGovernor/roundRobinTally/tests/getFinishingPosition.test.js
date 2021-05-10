@@ -258,9 +258,10 @@ function generateScenario({ outcomeValues }) {
   });
 
   let { eventData } = tournamentEngine.getEventData({ drawId });
-  let participantResults = eventData.drawsData[0].structures[0].participantResults.sort(
-    (a, b) => a.participantResult.groupOrder - b.participantResult.groupOrder
-  );
+  let participantResults =
+    eventData.drawsData[0].structures[0].participantResults.sort(
+      (a, b) => a.participantResult.groupOrder - b.participantResult.groupOrder
+    );
 
   return { participantResults };
 }

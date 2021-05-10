@@ -116,9 +116,8 @@ it('can generate a tournament with events and draws', () => {
     matchUpId,
     matchUpFormat,
   });
-  const {
-    upcomingMatchUps: modifiedUpcoming,
-  } = tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps: modifiedUpcoming } =
+    tournamentEngine.tournamentMatchUps();
   const modifiedMatchUp = modifiedUpcoming[0];
   expect(modifiedMatchUp.matchUpId).toEqual(matchUpId);
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);

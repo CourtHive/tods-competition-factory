@@ -246,37 +246,29 @@ it('can generate MODIFIED_FEED_IN_CHAMPIONSHIP', () => {
   expect(consolationMatchUps.length).toEqual(23);
 
   expect(mainDrawMatchUps[0].finishingPositionRange.loser).toMatchObject([
-    17,
-    32,
+    17, 32,
   ]);
   expect(mainDrawMatchUps[0].finishingPositionRange.winner).toMatchObject([
-    1,
-    16,
+    1, 16,
   ]);
   expect(consolationMatchUps[0].finishingPositionRange.loser).toMatchObject([
-    25,
-    32,
+    25, 32,
   ]);
   expect(consolationMatchUps[0].finishingPositionRange.winner).toMatchObject([
-    9,
-    24,
+    9, 24,
   ]);
 
   expect(mainDrawMatchUps[30].finishingPositionRange.loser).toMatchObject([
-    2,
-    2,
+    2, 2,
   ]);
   expect(mainDrawMatchUps[30].finishingPositionRange.winner).toMatchObject([
-    1,
-    1,
+    1, 1,
   ]);
   expect(consolationMatchUps[22].finishingPositionRange.loser).toMatchObject([
-    10,
-    10,
+    10, 10,
   ]);
   expect(consolationMatchUps[22].finishingPositionRange.winner).toMatchObject([
-    9,
-    9,
+    9, 9,
   ]);
 });
 

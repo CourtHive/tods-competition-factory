@@ -109,25 +109,23 @@ export function generateDrawDefinition(props) {
     matchUpType,
   });
 
-  const {
-    mappedMatchUps,
-    errors: generatedDrawErrors,
-  } = drawEngine.generateDrawType({
-    stage,
-    drawType,
-    seedingProfile,
-    structureOptions,
-    qualifyingRound,
-    qualifyingPositions,
+  const { mappedMatchUps, errors: generatedDrawErrors } =
+    drawEngine.generateDrawType({
+      stage,
+      drawType,
+      seedingProfile,
+      structureOptions,
+      qualifyingRound,
+      qualifyingPositions,
 
-    uuids,
-    matchUpFormat,
-    playoffMatchUpFormat,
-    finishingPositionNaming,
+      uuids,
+      matchUpFormat,
+      playoffMatchUpFormat,
+      finishingPositionNaming,
 
-    feedPolicy,
-    goesTo: props.goesTo,
-  });
+      feedPolicy,
+      goesTo: props.goesTo,
+    });
 
   const { structures } = drawEngine.getDrawStructures({
     stage,

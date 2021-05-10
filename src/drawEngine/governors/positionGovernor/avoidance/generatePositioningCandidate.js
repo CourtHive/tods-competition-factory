@@ -62,16 +62,13 @@ export function generatePositioningCandidate(props) {
     .map((assignment) => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {
-    const {
-      newGroupKey,
-      selectedParticipantId,
-      targetDrawPosition,
-    } = getParticipantPlacement({
-      ...props,
-      groupKey,
-      idCollections,
-      candidatePositionAssignments,
-    });
+    const { newGroupKey, selectedParticipantId, targetDrawPosition } =
+      getParticipantPlacement({
+        ...props,
+        groupKey,
+        idCollections,
+        candidatePositionAssignments,
+      });
     groupKey = newGroupKey;
 
     candidatePositionAssignments.forEach((assignment) => {

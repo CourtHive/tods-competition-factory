@@ -100,12 +100,11 @@ test.each([
       if (!result.success) {
         const { tournamentRecord } = tournamentEngine.getState();
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
-        const {
-          extension: positionActions,
-        } = tournamentEngine.findDrawDefinitionExtension({
-          drawId,
-          name: 'positionActions',
-        });
+        const { extension: positionActions } =
+          tournamentEngine.findDrawDefinitionExtension({
+            drawId,
+            name: 'positionActions',
+          });
         positionActionErrorScenarios.push({
           positionActions,
           drawType,
