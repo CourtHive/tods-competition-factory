@@ -1,4 +1,4 @@
-import { DateHHMM, timeToDate } from '../../../../utilities/dateTime';
+import { timeToDate, extractTime } from '../../../../utilities/dateTime';
 
 export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
   const timeSlots = [];
@@ -12,7 +12,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
     )
     .forEach((booking) => {
       const timeSlot = {
-        startTime: DateHHMM(startTime, { displaySeconds: false }),
+        startTime: extractTime(startTime.toISOString()),
         endTime: booking.startTime,
       };
       if (timeToDate(booking.startTime) > startTime) {
@@ -24,7 +24,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
     });
 
   const timeSlot = {
-    startTime: DateHHMM(startTime, { displaySeconds: false }),
+    startTime: extractTime(startTime.toISOString()),
     endTime: courtDate.endTime,
   };
   if (timeToDate(courtDate.endTime) > startTime) {

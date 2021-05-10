@@ -28,6 +28,7 @@ it('auto schedules venue if only one venue provided', () => {
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(23);
+
   matchUpFilters.scheduledDate = '2021-05-06';
   result = competitionEngine.competitionScheduleMatchUps({
     matchUpFilters,

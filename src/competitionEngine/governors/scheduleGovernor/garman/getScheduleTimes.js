@@ -1,10 +1,10 @@
 import { generateRange } from '../../../../utilities/arrays';
 import {
-  DateHHMM,
   currentUTCDate,
   timeToDate,
   addMinutes,
   minutesDifference,
+  extractTime,
 } from '../../../../utilities/dateTime';
 import { courtsAvailableAtPeriodStart } from './courtsAvailableAtPeriodStart';
 
@@ -42,7 +42,7 @@ export function getScheduleTimes({
 
   const timingProfile = periods.map((period) => {
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
-    const periodStart = DateHHMM(periodStartTime, { displaySeconds: false });
+    const periodStart = extractTime(periodStartTime.toISOString());
 
     // availableCourts calculated from periodStartTime and averageMatchUpTime
     // a court is only available if it can accommodate matchUps of duration averageMatchUpTime

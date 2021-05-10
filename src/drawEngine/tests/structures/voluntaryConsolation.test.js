@@ -13,6 +13,9 @@ it.only('can add draw with empty voluntary consolation stage', () => {
     {
       eventName: 'Event Flights Test',
       eventType: SINGLES,
+      category: {
+        categoryName: 'U12',
+      },
       matchUpFormat: FORMAT_STANDARD,
       drawProfiles: [
         {

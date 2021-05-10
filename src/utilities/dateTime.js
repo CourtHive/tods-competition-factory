@@ -105,7 +105,7 @@ export function formatDate(date, separator = '-', format = 'YMD') {
 export function offsetDate(date) {
   const targetTime = date ? new Date(date) : new Date();
   const tzDifference = targetTime.getTimezoneOffset();
-  return new Date(targetTime.getTime() + tzDifference * 60 * 1000);
+  return new Date(targetTime.getTime() - tzDifference * 60 * 1000);
 }
 
 export function offsetTime(date) {
@@ -165,11 +165,15 @@ function isTimeString(timeString) {
   return true;
 }
 
+export function tidyTime(timeString) {
+  return timeString.split(':').slice(0, 2).map(zeroPad).join(':');
+}
+
 export function extractTime(dateString) {
   return isISODateString(dateString)
-    ? dateString.split('T').reverse()[0]
+    ? tidyTime(dateString.split('T').reverse()[0])
     : isTimeString(dateString)
-    ? dateString.split(':').slice(0, 2).map(zeroPad).join(':')
+    ? tidyTime(dateString)
     : undefined;
 }
 
@@ -345,10 +349,8 @@ export function ymd2date(ymd) {
 
 export function timeToDate(time, date = undefined) {
   const [hours, minutes] = (time || '00:00').split(':').map(zeroPad);
-  const milliseconds = date
-    ? new Date(date).setHours(hours, minutes, 0, 0)
-    : new Date().setHours(hours, minutes, 0, 0);
-  return new Date(milliseconds);
+  const milliseconds = offsetDate(date).setHours(hours, minutes, 0, 0);
+  return offsetDate(milliseconds);
 }
 
 export function minutesDifference(date2, date1) {
@@ -358,9 +360,15 @@ export function minutesDifference(date2, date1) {
   return Math.abs(Math.round(diff));
 }
 
+export function addMinutesToTimeString(timeString, minutes) {
+  return extractTime(
+    offsetDate(addMinutes(timeToDate(timeString), minutes)).toISOString()
+  );
+}
+
 export function addMinutes(startDate, minutes) {
   const date = new Date(startDate);
-  return date.getTime() + minutes * 60000;
+  return new Date(date.getTime() + minutes * 60000);
 }
 
 export function zeroPad(number) {
@@ -452,4 +460,5 @@ export const dateTime = {
   getTimeZoneOffset,
   isTimeString,
   isISODateString,
+  addMinutesToTimeString,
 };
