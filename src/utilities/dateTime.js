@@ -351,6 +351,18 @@ export function timeToDate(time, date = undefined) {
   return new Date(milliseconds);
 }
 
+export function minutesDifference(date2, date1) {
+  const dt2 = new Date(date2);
+  const dt1 = new Date(date1);
+  const diff = (dt2.getTime() - dt1.getTime()) / 1000 / 60;
+  return Math.abs(Math.round(diff));
+}
+
+export function addMinutes(startDate, minutes) {
+  const date = new Date(startDate);
+  return date.getTime() + minutes * 60000;
+}
+
 export function zeroPad(number) {
   return number.toString()[1] ? number : '0' + number;
 }
