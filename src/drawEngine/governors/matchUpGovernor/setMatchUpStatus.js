@@ -16,8 +16,8 @@ import {
   ABANDONED,
   CANCELLED,
   INCOMPLETE,
-  particicipantsRequiredMatchUpStatuses,
   TO_BE_PLAYED,
+  particicipantsRequiredMatchUpStatuses,
   validMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
 import {
@@ -39,7 +39,13 @@ export function setMatchUpStatus(props) {
 
   // matchUpStatus in props is the new status
   // winningSide in props is new winningSide
-  const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  const {
+    drawDefinition,
+    matchUpId,
+    matchUpStatus,
+    tournamentRecord,
+    winningSide,
+  } = props;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   if (
@@ -77,12 +83,15 @@ export function setMatchUpStatus(props) {
   const { schedule } = props;
   if (schedule) {
     const result = addMatchUpScheduleItems({
+      tournamentRecord,
       disableNotice: true,
       drawDefinition,
       matchUpId,
       schedule,
     });
-    if (result.error) return result;
+    if (result.error) {
+      return result;
+    }
   }
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
