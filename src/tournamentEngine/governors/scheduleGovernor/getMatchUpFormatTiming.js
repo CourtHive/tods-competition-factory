@@ -32,6 +32,10 @@ export function getMatchUpFormatTiming({
 
   // event is optional, so eventType can also be passed in directly
   eventType = eventType || event?.eventType;
+  categoryName =
+    categoryName ||
+    event?.category?.categoryName ||
+    event?.category?.ageCategoryCode;
 
   const { policy } = findPolicy({
     tournamentRecord,
