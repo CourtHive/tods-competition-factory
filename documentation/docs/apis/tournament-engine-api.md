@@ -913,15 +913,15 @@ const drawDefinitionValues = {
   seedingProfile, // optional - used to specify WATERFALL seeding for ROUND_ROBIN
   qualifyingRound, // optional - used to derive roundLimit
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
+  staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
   policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
   qualifyingPositions, // optional - number of positions in draw structure to be filled by qualifiers
   finishingPositionNaming, // optional - map of { [finishingPositionRange]: { name: 'customName', abbreviation: 'A' } }
   enforcePolicyLimits, // optional - defaults to true - constrains seedsCount to policyDefinition limits
 };
 
-const { drawDefinition } = tournamentEngine.generateDrawDefinition(
-  drawDefinitionValues
-);
+const { drawDefinition } =
+  tournamentEngine.generateDrawDefinition(drawDefinitionValues);
 ```
 
 ---
@@ -970,9 +970,8 @@ const {
 } = flightProfile;
 
 Object.assign(drawDefinitionValues, flight);
-const { drawDefinition } = tournamentEngine.generateDrawDefinition(
-  drawDefinitionValues
-);
+const { drawDefinition } =
+  tournamentEngine.generateDrawDefinition(drawDefinitionValues);
 ```
 
 ---
@@ -982,15 +981,14 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition(
 Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make use of a custom function for generating `scaledEntries`.
 
 ```js
-const {
-  scaleItemsWithParticipantIds,
-} = tournamentEngine.generateSeedingScaleItems({
-  scaledEntries,
-  seedsCount,
-  scaleAttributes,
-  scaleName,
-  stageEntries,
-});
+const { scaleItemsWithParticipantIds } =
+  tournamentEngine.generateSeedingScaleItems({
+    scaledEntries,
+    seedsCount,
+    scaleAttributes,
+    scaleName,
+    stageEntries,
+  });
 ```
 
 ---
@@ -1002,13 +1000,12 @@ Uses attributes of individual participnts or persons to generate `{ participantT
 Returns count of # of TEAM participants added;
 
 ```js
-const {
-  participantsAdded,
-} = tournamentEngine.generateTeamsFromParticipantAttribute({
-  participantAttribute,
-  personAttribute, // optional - attribute of person object
-  uuids, // optional - uuids to assign to generated participants
-});
+const { participantsAdded } =
+  tournamentEngine.generateTeamsFromParticipantAttribute({
+    participantAttribute,
+    personAttribute, // optional - attribute of person object
+    uuids, // optional - uuids to assign to generated participants
+  });
 ```
 
 ---
@@ -1065,13 +1062,11 @@ const drawTypes = tournamentEngine.getAllowedMatchUpFormats();
 Returns rounds of a structure which are available for adding playoff structures.
 
 ```js
-const {
-  playoffRounds,
-  playoffRoundsRanges,
-} = tournamentEngine.getAvailablePlayoffRounds({
-  drawId,
-  structureId,
-});
+const { playoffRounds, playoffRoundsRanges } =
+  tournamentEngine.getAvailablePlayoffRounds({
+    drawId,
+    structureId,
+  });
 ```
 
 ...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
@@ -1146,11 +1141,10 @@ const {
 Get the participantIds of participants in the draw who are representing players by observing the creation of the draw.
 
 ```js
-const {
-  representativeParticipantIds,
-} = tournamentEngine.getDrawParticipantRepresentativeIds({
-  drawId,
-});
+const { representativeParticipantIds } =
+  tournamentEngine.getDrawParticipantRepresentativeIds({
+    drawId,
+  });
 ```
 
 ---
@@ -1158,19 +1152,15 @@ const {
 ## getEntriesAndSeedsCount
 
 ```js
-const {
-  error,
-  entries,
-  seedsCount,
-  stageEntries,
-} = tournamentEngine.getEntriesAndSeedsCount({
-  eventId,
-  policyDefinition, // seeding policy which determines # of seeds for # of participants/drawSize
+const { error, entries, seedsCount, stageEntries } =
+  tournamentEngine.getEntriesAndSeedsCount({
+    eventId,
+    policyDefinition, // seeding policy which determines # of seeds for # of participants/drawSize
 
-  drawSize, // optional - overrides number calculaed from entries in either event or draw
-  drawId, // optional - scopes entries to a specific flight/drawDefinition
-  stage, // optional - scopes entries to a specific stage
-});
+    drawSize, // optional - overrides number calculaed from entries in either event or draw
+    drawId, // optional - scopes entries to a specific flight/drawDefinition
+    stage, // optional - scopes entries to a specific stage
+  });
 ```
 
 ---
@@ -1282,18 +1272,16 @@ const {
 Searches for policy definitions or extensions to determine the `averageMinutes` and `recoveryMinutes` for a given `matchUpFormat`. Extensions are considered to be overrides of policy definitions.
 
 ```js
-const {
-  averageMinutes,
-  recoveryMinutes,
-} = tournamentEngine.getMatchUpFormatTiming({
-  defaultAverageMinutes, // optional setting if no matching definition found
-  defaultRecoveryMinutes, // optional setting if no matching definition found
-  matchUpFormat,
-  categoryName, // optional
-  categoryType, // optional
-  eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
-  eventId, // optional - prioritizes policy definition attached to event before tournament record
-});
+const { averageMinutes, recoveryMinutes } =
+  tournamentEngine.getMatchUpFormatTiming({
+    defaultAverageMinutes, // optional setting if no matching definition found
+    defaultRecoveryMinutes, // optional setting if no matching definition found
+    matchUpFormat,
+    categoryName, // optional
+    categoryType, // optional
+    eventType, // optional - defaults to SINGLES; SINGLES, DOUBLES
+    eventId, // optional - prioritizes policy definition attached to event before tournament record
+  });
 ```
 
 ---
@@ -1358,11 +1346,8 @@ const idMap = tournamentEngine.getParticipantIdFinishingPositions({
   byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
 });
 
-const {
-  relevantMatchUps,
-  finishingPositionRanges,
-  finishingPositionRange,
-} = idMap[participantId];
+const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } =
+  idMap[participantId];
 ```
 
 ---

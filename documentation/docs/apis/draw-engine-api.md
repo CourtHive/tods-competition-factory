@@ -488,6 +488,7 @@ drawEngine.generateDrawType({
   matchUpFormat, // optional - default matchUpFormat
   playoffMatchUpFormat, // optional - default playoffMatchUpFormat
 
+  staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
   seedingProfile, // optional - applies only to WATERFALL seeding in ROUND_ROBIN structures
   feedPolicy, // optional - provides fine-grain control for FEED_IN_CONSOLATION feed links
 
@@ -587,12 +588,10 @@ drawEngine.generateVoluntaryConsolationStructure({
 Returns rounds of a structure which are available for adding playoff structures.
 
 ```js
-const {
-  playoffRounds,
-  playoffRoundsRanges,
-} = drawEngine.getAvailablePlayoffRounds({
-  structureId,
-});
+const { playoffRounds, playoffRoundsRanges } =
+  drawEngine.getAvailablePlayoffRounds({
+    structureId,
+  });
 ```
 
 ...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
@@ -646,13 +645,8 @@ const { drawSize } = drawEngine.getEliminationDrawSize({ participantCount });
 Convenience method to find a `matchUp` by `matchUpId` and return "context ids". Does NOT require that drawEngine state be set, but does require an array of "inContext" `matchUps`.
 
 ```js
-const {
-  matchUpId,
-  drawId,
-  eventId,
-  structureId,
-  tournamentId,
-} = drawEngine.getMatchUpContextIds({ matchUps, matchUpId });
+const { matchUpId, drawId, eventId, structureId, tournamentId } =
+  drawEngine.getMatchUpContextIds({ matchUps, matchUpId });
 ```
 
 ---
@@ -662,10 +656,8 @@ const {
 Convenience function; requires inContext matchUp.
 
 ```js
-const {
-  sideParticipantIds,
-  individualParticipantIds,
-} = drawEngine.getMatchUpParticipantIds({ matchUp });
+const { sideParticipantIds, individualParticipantIds } =
+  drawEngine.getMatchUpParticipantIds({ matchUp });
 ```
 
 ---
@@ -733,11 +725,8 @@ const idMap = drawEngine.getParticipantIdFinishingPositions({
   byeAdvancements, // optional boolean - whether or not to consider byeAdvancements
 });
 
-const {
-  relevantMatchUps,
-  finishingPositionRanges,
-  finishingPositionRange,
-} = idMap[participantId];
+const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } =
+  idMap[participantId];
 ```
 
 ---
