@@ -1,8 +1,12 @@
 import { getMatchUpFormatTiming } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpFormatTiming';
 import { competitionScheduleMatchUps } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
-import { extractTime, sameDay } from '../../../utilities/dateTime';
 import { getScheduleTimes } from './garman/getScheduleTimes';
+import {
+  addMinutesToTimeString,
+  extractTime,
+  sameDay,
+} from '../../../utilities/dateTime';
 
 export function calculateScheduleTimes({
   tournamentRecords,
@@ -31,6 +35,7 @@ export function calculateScheduleTimes({
       const comparisonStartTime =
         dateAvailability?.startTime || court.startTime;
 
+      // CHECK THIS ################################# can't create date from time
       return comparisonStartTime &&
         (!minStartTime ||
           new Date(comparisonStartTime) < new Date(minStartTime))
@@ -46,6 +51,7 @@ export function calculateScheduleTimes({
       );
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
+      // CHECK THIS ################################# can't create date from time
       return comparisonEndTime &&
         (!maxEndTime || new Date(comparisonEndTime) > new Date(maxEndTime))
         ? comparisonEndTime
@@ -81,10 +87,15 @@ export function calculateScheduleTimes({
       tournamentRecord,
       event,
     });
+    const { courtId, venueId } = schedule;
+    const startTime = extractTime(schedule.scheduledTime);
+    const endTime = addMinutesToTimeString(startTime, averageMinutes);
     const booking = {
       averageMinutes,
-      scheduledTime: extractTime(schedule.scheduledTime),
-      venueId: schedule.venueId,
+      startTime,
+      endTime,
+      courtId,
+      venueId,
     };
     return booking;
   });
