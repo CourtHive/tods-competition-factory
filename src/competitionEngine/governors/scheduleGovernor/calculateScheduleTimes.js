@@ -1,8 +1,8 @@
+import { getMatchUpFormatTiming } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpFormatTiming';
 import { competitionScheduleMatchUps } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 import { extractTime, sameDay } from '../../../utilities/dateTime';
-import { getScheduleTimes } from './garman/garman';
-import { getMatchUpFormatTiming } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpFormatTiming';
+import { getScheduleTimes } from './garman/getScheduleTimes';
 
 export function calculateScheduleTimes({
   tournamentRecords,
