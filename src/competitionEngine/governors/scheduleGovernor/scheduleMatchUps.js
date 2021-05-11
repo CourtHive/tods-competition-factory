@@ -94,6 +94,7 @@ export function scheduleMatchUps(props) {
       })
   );
 
+  let scheduledMatchUpIds = [];
   Object.keys(matchUpMap).forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     if (tournamentRecord) {
@@ -111,11 +112,13 @@ export function scheduleMatchUps(props) {
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
               const scheduledTime = `${formatDate(date)}T${formatTime}`;
 
-              addMatchUpScheduledTime({
+              const result = addMatchUpScheduledTime({
                 drawDefinition,
                 matchUpId,
                 scheduledTime,
               });
+              if (result.success)
+                scheduledMatchUpIds.push({ matchUpId, scheduleTime });
 
               if (venueId) {
                 assignMatchUpVenue({
@@ -134,5 +137,5 @@ export function scheduleMatchUps(props) {
     }
   });
 
-  return SUCCESS;
+  return Object.assign({}, SUCCESS, { scheduledMatchUpIds });
 }

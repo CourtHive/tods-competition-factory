@@ -1,4 +1,4 @@
-import { courtsAvailableAtPeriodStart } from './courtsAvailableAtPeriodStart';
+import { courtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { generateTimeSlots } from './generateTimeSlots';
 import { getScheduleTimes } from './getScheduleTimes';
 

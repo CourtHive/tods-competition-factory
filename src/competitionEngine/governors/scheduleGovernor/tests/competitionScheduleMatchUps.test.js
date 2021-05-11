@@ -19,12 +19,14 @@ it('auto schedules venue if only one venue provided', () => {
   const { startDate } = tournamentInfo;
   const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
 
-  competitionEngine
+  let result = competitionEngine
     .setState([tournamentRecord])
     .scheduleMatchUps({ date: startDate, matchUpIds });
+  expect(result.success).toEqual(true);
+  expect(result.scheduledMatchUpIds.length).toEqual(23);
 
   const matchUpFilters = { scheduledDate: '2021-05-05' };
-  let result = competitionEngine.competitionScheduleMatchUps({
+  result = competitionEngine.competitionScheduleMatchUps({
     matchUpFilters,
   });
   expect(result.dateMatchUps.length).toEqual(23);
@@ -35,7 +37,6 @@ it('auto schedules venue if only one venue provided', () => {
   });
   expect(result.dateMatchUps.length).toEqual(0);
 
-  competitionEngine.scheduleMatchUps({ date: startDate, matchUpIds });
-  // const { pendingMatchUps } = competitionEngine.competitionMatchUps();
-  // console.log({ pendingMatchUps });
+  result = competitionEngine.scheduleMatchUps({ date: startDate, matchUpIds });
+  console.log(result.scheduledMatchUpIds.length);
 });

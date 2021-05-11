@@ -112,7 +112,7 @@ it('can add events, venues, and schedule matchUps', () => {
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ date, matchUpIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({ tournamentRecords } = competitionEngine.getState());
   tournamentRecord = tournamentRecords[tournamentId];
@@ -388,7 +388,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   result = competitionEngine
     .setState(tournamentRecords)
     .scheduleMatchUps({ date, matchUpIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({ tournamentRecords } = competitionEngine.getState());
   tournamentRecord = tournamentRecords[tournamentId];
