@@ -99,49 +99,49 @@ it('correctly determines courts available at periodStart', () => {
     periodStart: '8:00',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(0);
+  expect(availability.availableToScheduleCount).toEqual(0);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '9:00',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(2);
+  expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '11:00',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(4);
+  expect(availability.availableToScheduleCount).toEqual(4);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '15:30',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(4);
+  expect(availability.availableToScheduleCount).toEqual(4);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '15:31',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(2);
+  expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '16:30',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(2);
+  expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '16:31',
     averageMatchUpTime: 90,
   });
-  expect(availability.count).toEqual(0);
+  expect(availability.availableToScheduleCount).toEqual(0);
 });
 
 it('generates expected output for two locations with differing court availability', () => {

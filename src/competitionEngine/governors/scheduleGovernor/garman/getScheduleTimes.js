@@ -6,7 +6,8 @@ import {
   minutesDifference,
   extractTime,
 } from '../../../../utilities/dateTime';
-import { courtsAvailableAtPeriodStart } from './courtsAvailableAtPeriodStart';
+import { courtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
+import { getVirtualCourtBookings } from './getVirtualCourtBookings';
 
 export function getScheduleTimes({
   startTime = '8:00',
@@ -40,28 +41,31 @@ export function getScheduleTimes({
   const periodCount = Math.floor(dayMinutes / periodLength);
   const periods = generateRange(0, periodCount + 1);
 
+  const { virtualCourts } = getVirtualCourtBookings({ bookings, courts, date });
+
   const timingProfile = periods.map((period) => {
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
     const periodStart = extractTime(periodStartTime.toISOString());
 
-    // availableCourts calculated from periodStartTime and averageMatchUpTime
+    // availableToScheduleCount calculated from periodStartTime and averageMatchUpTime
     // a court is only available if it can accommodate matchUps of duration averageMatchUpTime
-    const availableCourts = courtsAvailableAtPeriodStart({
+    const { availableToScheduleCount } = courtsAvailableAtPeriodStart({
+      courts: virtualCourts,
       averageMatchUpTime,
       periodStart,
-      bookings,
-      courts,
       date,
-    }).count;
+    });
 
     // newCourts are courts which have become available for the start of current time period
     const newCourts =
-      availableCourts > previousAvailableCourts
-        ? availableCourts - previousAvailableCourts
+      availableToScheduleCount > previousAvailableCourts
+        ? availableToScheduleCount - previousAvailableCourts
         : 0;
 
-    cumulativePeriods += period ? availableCourts : 0;
-    const averageCourts = period ? cumulativePeriods / period : availableCourts;
+    cumulativePeriods += period ? availableToScheduleCount : 0;
+    const averageCourts = period
+      ? cumulativePeriods / period
+      : availableToScheduleCount;
 
     // calculatedTotal uses Revised Garman Formula to calculate total number of matchUps
     // which should be possible given a number of periods and an average number of courts
@@ -76,14 +80,14 @@ export function getScheduleTimes({
     // difference between current calculation and previous calculation
     // if no available courts then Zero so that cumulativeMatches does not increase
     // if available courts but no previously available courts then newCourts;
-    const calculationDifference = !availableCourts
+    const calculationDifference = !availableToScheduleCount
       ? 0
       : previousAvailableCourts
       ? calculatedTotal - previousCalculation
       : newCourts;
 
     previousCalculation = calculatedTotal;
-    previousAvailableCourts = availableCourts;
+    previousAvailableCourts = availableToScheduleCount;
     cumulativeMatches += calculationDifference;
 
     const addToSchedule = parseInt(cumulativeMatches) - totalMatchUps;
@@ -92,7 +96,7 @@ export function getScheduleTimes({
     return {
       periodStart,
       add: addToSchedule,
-      availableCourts,
+      availableToScheduleCount,
       newCourts,
       totalMatchUps,
     };
