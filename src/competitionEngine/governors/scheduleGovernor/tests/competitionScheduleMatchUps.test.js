@@ -38,5 +38,5 @@ it('auto schedules venue if only one venue provided', () => {
   expect(result.dateMatchUps.length).toEqual(0);
 
   result = competitionEngine.scheduleMatchUps({ date: startDate, matchUpIds });
-  console.log(result.scheduledMatchUpIds.length);
+  expect(result.error).not.toBeUndefined();
 });

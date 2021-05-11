@@ -1,3 +1,5 @@
+import { courtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
+import { getVirtualCourtBookings } from './getVirtualCourtBookings';
 import { generateRange } from '../../../../utilities/arrays';
 import {
   currentUTCDate,
@@ -6,8 +8,6 @@ import {
   minutesDifference,
   extractTime,
 } from '../../../../utilities/dateTime';
-import { courtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
-import { getVirtualCourtBookings } from './getVirtualCourtBookings';
 
 export function getScheduleTimes({
   startTime = '8:00',

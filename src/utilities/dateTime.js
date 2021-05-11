@@ -361,9 +361,7 @@ export function minutesDifference(date2, date1) {
 }
 
 export function addMinutesToTimeString(timeString, minutes) {
-  return extractTime(
-    offsetDate(addMinutes(timeToDate(timeString), minutes)).toISOString()
-  );
+  return extractTime(addMinutes(timeToDate(timeString), minutes).toISOString());
 }
 
 export function addMinutes(startDate, minutes) {
