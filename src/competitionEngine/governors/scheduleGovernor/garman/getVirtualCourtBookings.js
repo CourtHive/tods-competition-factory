@@ -1,5 +1,6 @@
 import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { getCourtDateFilters } from './courtDateFilters';
+import { generateTimeSlots } from './generateTimeSlots';
 import { makeDeepCopy } from '../../../../utilities';
 
 /**
@@ -31,34 +32,38 @@ export function getVirtualCourtBookings({ bookings, courts, date }) {
 
   unassignedBookings.forEach((unassignedBooking) => {
     const { startTime, endTime } = unassignedBooking;
+    const bookingStartTime = timeToDate(startTime);
+    const bookingEndTime = timeToDate(endTime);
+    const bookingRequiredMinutes = minutesDifference(
+      bookingStartTime,
+      bookingEndTime
+    );
     const { sameDate } = getCourtDateFilters({ date });
 
-    const availableCourt = virtualCourts.find((court) => {
+    virtualCourts.find((court) => {
       if (!Array.isArray(court.dateAvailability)) return false;
       const dateAvailability = court.dateAvailability.filter(sameDate);
-      const available = dateAvailability.find((availability) => {
-        const bookingStartTime = timeToDate(startTime);
-        const bookingEndTime = timeToDate(endTime);
-        const availabilityStartTime = timeToDate(availability.startTime);
-        const availabilityEndTime = timeToDate(availability.endTime);
-        if (availabilityStartTime > bookingStartTime) return false;
-        if (availabilityEndTime < bookingEndTime) return false;
-        const bookingRequiredMinutes = minutesDifference(
-          bookingStartTime,
-          bookingEndTime
-        );
-        const availabilityMinutes = minutesDifference(
-          availabilityStartTime,
-          availabilityEndTime
-        );
-        return availabilityMinutes >= bookingRequiredMinutes;
+      return dateAvailability.find((courtDate) => {
+        const timeSlots = generateTimeSlots({ courtDate });
+        return timeSlots.find((timeSlot) => {
+          const timeSlotStartTime = timeToDate(timeSlot.startTime);
+          const timeSlotEndTime = timeToDate(timeSlot.endTime);
+          if (timeSlotStartTime > bookingStartTime) return false;
+          if (timeSlotEndTime < bookingEndTime) return false;
+          const timeSlotMinutes = minutesDifference(
+            timeSlotStartTime,
+            timeSlotEndTime
+          );
+          const available = timeSlotMinutes >= bookingRequiredMinutes;
+          if (available) {
+            if (!courtDate.bookings) courtDate.bookings = [];
+            const booking = { startTime, endTime, bookingType: 'matchUp' };
+            courtDate.bookings.push(booking);
+          }
+          return available;
+        });
       });
-      return available;
     });
-
-    if (availableCourt) {
-      // assign booking to court
-    }
   });
 
   return { virtualCourts };
