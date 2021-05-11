@@ -6,6 +6,7 @@ import {
   addMinutesToTimeString,
   extractTime,
   sameDay,
+  timeToDate,
 } from '../../../utilities/dateTime';
 
 export function calculateScheduleTimes({
@@ -35,10 +36,9 @@ export function calculateScheduleTimes({
       const comparisonStartTime =
         dateAvailability?.startTime || court.startTime;
 
-      // CHECK THIS ################################# can't create date from time
       return comparisonStartTime &&
         (!minStartTime ||
-          new Date(comparisonStartTime) < new Date(minStartTime))
+          timeToDate(comparisonStartTime) < timeToDate(minStartTime))
         ? comparisonStartTime
         : minStartTime;
     }, undefined);
@@ -51,9 +51,8 @@ export function calculateScheduleTimes({
       );
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
-      // CHECK THIS ################################# can't create date from time
       return comparisonEndTime &&
-        (!maxEndTime || new Date(comparisonEndTime) > new Date(maxEndTime))
+        (!maxEndTime || timeToDate(comparisonEndTime) > timeToDate(maxEndTime))
         ? comparisonEndTime
         : maxEndTime;
     }, undefined);
