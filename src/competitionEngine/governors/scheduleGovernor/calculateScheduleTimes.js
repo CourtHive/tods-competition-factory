@@ -9,6 +9,19 @@ import {
   timeToDate,
 } from '../../../utilities/dateTime';
 
+/**
+ *
+ * @param {object[]} tournamentRecords - passed in by competitionEngine
+ * @param {string} startTime - military time string, time only, e.g. '08:00'
+ * @param {string} endTime - military time string, time only, e.g. '18:00'
+ * @param {string} date - e.g. '2100-01-01'
+ * @param {string[]} venueIds - optional - look for availaiblity only courts at specified venues
+ *
+ * NOTE: not using matchUpFormat here because time per format is defined by policy
+ * @param {number} averageMatchUpTime - number of minutes per match
+ * @param {number} periodLengh - number of minutes in a scheduling period
+ * @returns
+ */
 export function calculateScheduleTimes({
   tournamentRecords,
   startTime,
