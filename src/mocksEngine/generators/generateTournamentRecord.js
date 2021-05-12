@@ -32,7 +32,7 @@ export function generateTournamentRecord({
   randomWinningSide,
   inContext,
   goesTo,
-}) {
+} = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
 

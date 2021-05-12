@@ -8,11 +8,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and remove extensions from tournamentRecords', () => {
-  const drawProfiles = [
-    {
-      drawSize: 32,
-    },
-  ];
+  const drawProfiles = [{ drawSize: 32 }];
   const { drawIds, eventIds, tournamentRecord } = generateTournamentRecord({
     drawProfiles,
     inContext: true,

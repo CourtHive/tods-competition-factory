@@ -88,6 +88,14 @@ competitionEngine.devContext(true);
 
 ---
 
+## findExtension
+
+```js
+const { extension } = competitionEngine.findExtension({ name });
+```
+
+---
+
 ## getState
 
 Returns a deep copy of the current competitionEngine state.

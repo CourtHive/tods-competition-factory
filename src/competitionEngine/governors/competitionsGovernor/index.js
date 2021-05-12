@@ -1,7 +1,12 @@
-import { addExtension, removeExtension } from './competitionExtentions';
+import {
+  addExtension,
+  findExtension,
+  removeExtension,
+} from './competitionExtentions';
 
 const competitionGovernor = {
   addExtension,
+  findExtension,
   removeExtension,
 };
 
