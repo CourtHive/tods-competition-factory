@@ -1,4 +1,7 @@
-import { addTournamentExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import {
+  addTournamentExtension,
+  removeTournamentExtension,
+} from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -17,6 +20,24 @@ export function addExtension({ tournamentRecords, extension }) {
   const success = Object.keys(tournamentRecords).every((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     const result = addTournamentExtension({ tournamentRecord, extension });
+    if (!result.error) {
+      return true;
+    } else {
+      error = result.error;
+    }
+  });
+
+  return success ? SUCCESS : { error };
+}
+
+export function removeExtension({ tournamentRecords, name }) {
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
+
+  let error;
+  const success = Object.keys(tournamentRecords).every((tournamentId) => {
+    const tournamentRecord = tournamentRecords[tournamentId];
+    const result = removeTournamentExtension({ tournamentRecord, name });
     if (!result.error) {
       return true;
     } else {

@@ -3,6 +3,16 @@ name: API
 title: Competition Engine API
 ---
 
+## addExtension
+
+Adds an extension to all `tournamentRecords` loaded into `competitionEngine`.
+
+```js
+competitionEngine.addExtension({ extension });
+```
+
+---
+
 ## allCompetitionMatchUps
 
 ```js
@@ -62,12 +72,8 @@ const matchUpFilters = {
   localPerspective: true,
 };
 
-const {
-  completedMatchUps,
-  dateMatchUps,
-  courtsData,
-  venues,
-} = competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+const { completedMatchUps, dateMatchUps, courtsData, venues } =
+  competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
 ```
 
 ---
@@ -116,6 +122,16 @@ competitionEngine.matchUpScheduleChange({
   targetCourtId,
   courtDayDate: dateSelected,
 });
+```
+
+---
+
+## removeExtension
+
+Removes an extension from all `tournamentRecords` loaded into `competitionEngine`.
+
+```js
+competitionEngine.removeExtension({ name });
 ```
 
 ---
