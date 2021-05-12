@@ -10,7 +10,11 @@ With no parameters the `generateTournamentRecord()` method will generate a tourn
 const { tournamentRecord } = mocksEngine.generateTournamentRecord({});
 ```
 
+## drawProfiles
+
 In testing, very specific scenarios are required. Any number of draws can be added to a generated tournament, and scores for specific `matchUps` within the generated draw structures can be added as well. In the following example a Doubles draw with 32 positions is generated with 30 PAIR participants, leaving two positions to be filled with BYEs. The score is completed for the matchUp found using `{ roundNumber: 1, roundPosition: 2 }`.
+
+### generateOutcomeFromScoreString
 
 `const { outcome } = mocksEngine.generateOutcomeFromScoreString()` is used internally to generate a valid TODS score object.
 
@@ -44,4 +48,42 @@ The `generateTournamentRecord()` method returns an array of the `drawIds` and `e
 tournamentEngine.setState(tournamentRecord);
 
 const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+```
+
+## eventProfiles
+
+```js
+const eventProfiles = [
+  {
+    eventName: 'Event Flights Test',
+    eventType: SINGLES,
+    category: {
+      categoryName: 'U12',
+    },
+    matchUpFormat: FORMAT_STANDARD,
+    drawProfiles: [
+      {
+        drawSize: 16,
+        drawName: 'Qualifying Draw',
+        stage: QUALIFYING,
+      },
+      {
+        drawSize: 32,
+        qualifyingPositions: 4,
+        drawName: 'Main Draw',
+        drawType: COMPASS,
+      },
+      {
+        drawName: 'Consolation Draw',
+        stage: VOLUNTARY_CONSOLATION,
+      },
+    ],
+  },
+];
+const {
+  eventIds: [eventId],
+  drawIds,
+} = mocksEngine.generateTournamentRecord({
+  eventProfiles,
+});
 ```
