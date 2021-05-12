@@ -2,13 +2,13 @@ import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { intersection, UUID } from '../../../utilities';
 
+import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addFlight({
   event,

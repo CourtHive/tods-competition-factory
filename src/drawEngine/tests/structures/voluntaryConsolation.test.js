@@ -2,13 +2,14 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
+  COMPASS,
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
 
-it.only('can add draw with empty voluntary consolation stage', () => {
+it('can add draw with empty voluntary consolation stage', () => {
   const eventProfiles = [
     {
       eventName: 'Event Flights Test',
@@ -27,6 +28,7 @@ it.only('can add draw with empty voluntary consolation stage', () => {
           drawSize: 32,
           qualifyingPositions: 4,
           drawName: 'Main Draw',
+          drawType: COMPASS,
         },
         {
           drawName: 'Consolation Draw',
@@ -37,12 +39,22 @@ it.only('can add draw with empty voluntary consolation stage', () => {
   ];
   const {
     eventIds: [eventId],
+    drawIds,
   } = mocksEngine.generateTournamentRecord({
     eventProfiles,
   });
 
-  const { event } = tournamentEngine.getEvent({ eventId });
-  console.log(event.extensions[0].value.flights);
+  const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  expect(flightProfile.flights[0].drawEntries.length).toEqual(16);
+  expect(flightProfile.flights[1].drawEntries.length).toEqual(28);
+  expect(flightProfile.flights[2].drawEntries.length).toEqual(0);
+
+  expect(drawIds.length).toEqual(3);
+  const { tournamentRecord } = tournamentEngine.getState();
+  expect(tournamentRecord.events[0].drawDefinitions.length).toEqual(3);
+  expect(tournamentRecord.events[0].drawDefinitions[1].drawType).toEqual(
+    COMPASS
+  );
 });
 
 it('can add draw with voluntary consolation stage', () => {

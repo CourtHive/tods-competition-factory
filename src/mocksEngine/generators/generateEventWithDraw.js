@@ -4,14 +4,14 @@ import { intersection } from '../../utilities';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { SINGLES, DOUBLES } from '../../constants/eventConstants';
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { SINGLES, DOUBLES } from '../../constants/eventConstants';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
 
 export function generateEventWithDraw({
   drawProfile,

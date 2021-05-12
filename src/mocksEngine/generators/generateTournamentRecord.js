@@ -3,10 +3,10 @@ import { dateRange, formatDate } from '../../utilities/dateTime';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { tournamentEngine } from '../../tournamentEngine/sync';
 import { generateParticipants } from './generateParticipants';
+import competitionEngine from '../../competitionEngine/sync';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
-import competitionEngine from '../../competitionEngine/sync';
 
 /**
  *
@@ -110,13 +110,13 @@ export function generateTournamentRecord({
 
   if (eventProfiles) {
     eventProfiles.forEach((eventProfile) => {
-      const { eventId, drawIds } = generateEventWithFlights({
-        eventProfile,
-        participants,
+      const { eventId, drawIds: generatedDrawIds } = generateEventWithFlights({
         completeAllMatchUps,
         randomWinningSide,
+        eventProfile,
+        participants,
       });
-      drawIds.push(...drawIds);
+      drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
     });
   }
