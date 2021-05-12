@@ -15,6 +15,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addExtension({ element, extension }) {
   if (!element) return { error: MISSING_VALUE };
   if (!extension) return { error: MISSING_VALUE, message: 'Missing extension' };
+  if (typeof extension !== 'object' || !extension.name)
+    return { error: INVALID_VALUES };
 
   const extensionAttributes = Object.keys(extension);
   const requiredAttributes = ['name', 'value'];

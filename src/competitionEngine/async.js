@@ -86,7 +86,7 @@ export function competitionEngineAsync() {
       const govKeys = Object.keys(governor);
       for (const govKey of govKeys) {
         fx[govKey] = async function (params) {
-          //If and else are doing same thing! Do we need this
+          // if devContext is true then don't trap errors
           if (getDevContext()) {
             const engineResult = await engineInvoke(governor[govKey], params);
             return engineResult;

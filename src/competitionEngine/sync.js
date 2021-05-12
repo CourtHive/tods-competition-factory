@@ -1,3 +1,4 @@
+import competitionGovernor from './governors/competitionsGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
@@ -59,7 +60,7 @@ export const competitionEngine = (function () {
     },
   };
 
-  importGovernors([queryGovernor, scheduleGovernor]);
+  importGovernors([queryGovernor, scheduleGovernor, competitionGovernor]);
 
   fx.version = () => {
     return '@VERSION@';
