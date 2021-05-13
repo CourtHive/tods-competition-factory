@@ -14,18 +14,17 @@ import {
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
-
-import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
+import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { DRAW_PROFILE } from '../../constants/extensionConstants';
+import { RANKING, SEEDING } from '../../constants/scaleConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DRAW_PROFILE } from '../../constants/extensionConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -109,6 +108,9 @@ export function generateDrawDefinition(props) {
     matchUpType,
   });
 
+  if (matchUpFormatError)
+    return { error: matchUpFormatError, message: 'matchUpFormat error' };
+
   const { mappedMatchUps, errors: generatedDrawErrors } =
     drawEngine.generateDrawType({
       stage,
@@ -126,6 +128,9 @@ export function generateDrawDefinition(props) {
       feedPolicy,
       goesTo: props.goesTo,
     });
+
+  if (generatedDrawErrors)
+    return { error: generatedDrawErrors, message: 'generated draw type error' };
 
   const { structures } = drawEngine.getDrawStructures({
     stage,
@@ -320,10 +325,6 @@ export function generateDrawDefinition(props) {
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
 
-  const errors = generatedDrawErrors || [];
-  if (matchUpFormatError) errors.push(matchUpFormat);
-  const error = errors.length && errors;
-
   const drawDetails = {
     drawSize,
     drawType,
@@ -347,6 +348,5 @@ export function generateDrawDefinition(props) {
     structureId,
     drawDefinition,
     conflicts,
-    error,
   });
 }
