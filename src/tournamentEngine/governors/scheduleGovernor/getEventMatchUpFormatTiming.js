@@ -1,11 +1,11 @@
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../policyGovernor/findPolicy';
 
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
