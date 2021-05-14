@@ -347,8 +347,8 @@ export function ymd2date(ymd) {
   return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]);
 }
 
-export function timeToDate(time, date = undefined) {
-  const [hours, minutes] = (time || '00:00').split(':').map(zeroPad);
+export function timeToDate(timeString, date = undefined) {
+  const [hours, minutes] = (timeString || '00:00').split(':').map(zeroPad);
   const milliseconds = offsetDate(date).setHours(hours, minutes, 0, 0);
   return offsetDate(milliseconds);
 }
