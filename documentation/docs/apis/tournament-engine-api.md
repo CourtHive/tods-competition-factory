@@ -429,6 +429,7 @@ const { matchUps } = allEventMatchUps({
   eventId,
   inContext: true, // include contextual details
   nextMatchUps: true, // include winner/loser target matchUp details
+  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```
@@ -442,6 +443,7 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters,
+  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
 ```
 
@@ -784,7 +786,7 @@ const {
 } = tournamentEngine.eventMatchUps({
   eventId,
   nextMatchUps, // optional boolean; include winner/loser target matchUp details
-  matchUpFilters,
+  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
@@ -2274,6 +2276,7 @@ const {
   pendingMatchUps,
   upcomingMatchUps,
 } = tournamentEngine.tournamentMatchUps({
+  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```
