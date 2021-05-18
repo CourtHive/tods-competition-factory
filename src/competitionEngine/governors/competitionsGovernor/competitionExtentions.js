@@ -3,6 +3,7 @@ import {
   addTournamentExtension,
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { validExtension } from '../../../global/validation/validExtension';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -14,9 +15,7 @@ import {
 
 export function addExtension({ tournamentRecords, extension }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!extension) return { error: MISSING_VALUE };
-  if (typeof extension !== 'object' || !extension.name)
-    return { error: INVALID_VALUES };
+  if (!validExtension(extension)) return { error: INVALID_VALUES };
 
   let error;
   const success = Object.keys(tournamentRecords).every((tournamentId) => {

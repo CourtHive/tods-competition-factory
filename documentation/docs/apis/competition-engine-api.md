@@ -157,6 +157,26 @@ competitionEngine.removeMatchUpCourtAssignment({
 
 ---
 
+## removeTournamentRecord
+
+Removes a tournamentRecord from `competitionEngine` state.
+
+```js
+competitionEngine.removeTournamentRecord(tournamentId);
+```
+
+---
+
+## removeUnlinkedTournamentRecords
+
+Removes all tournamentRecords from `competitionEngine` state that are unlinked.
+
+```js
+competitionEngine.removeUnlinkedTournamentRecords();
+```
+
+---
+
 ## reorderUpcomingMatchUps
 
 ```js

@@ -10,12 +10,12 @@ import {
   getDevContext,
   deleteNotices,
 } from '../global/globalState';
-
 import {
-  INVALID_OBJECT,
-  INVALID_RECORDS,
-  INVALID_VALUES,
-} from '../constants/errorConditionConstants';
+  removeTournamentRecord,
+  removeUnlinkedTournamentRecords,
+  setState,
+  setTournamentRecord,
+} from './stateMethods';
 import { SUCCESS } from '../constants/resultConstants';
 
 export function competitionEngineAsync() {
@@ -32,35 +32,49 @@ export function competitionEngineAsync() {
     version: () => {
       return '@VERSION@';
     },
+    reset: () => {
+      tournamentRecords = {};
+      return SUCCESS;
+    },
     devContext: (isDev) => {
       setDevContext(isDev);
       return fx;
     },
-    setState: (tournamentRecords, deepCopyOption) => {
+    setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
-      const result = setState(tournamentRecords);
-      if (result?.error) {
-        fx.error = result.error;
-        fx.success = false;
-      } else {
-        fx.error = undefined;
-        fx.success = true;
-      }
-      return fx;
+      const result = setState(records, tournamentRecords);
+      return processResult(result);
     },
     setTournamentRecord: (tournamentRecord, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
-      const result = setTournamentRecord(tournamentRecord, deepCopyOption);
-      if (result?.error) {
-        fx.error = result.error;
-        fx.success = false;
-      } else {
-        fx.error = undefined;
-        fx.success = true;
-      }
-      return fx;
+      const result = setTournamentRecord(
+        tournamentRecords,
+        tournamentRecord,
+        deepCopyOption
+      );
+      return processResult(result);
+    },
+    removeTournamentRecord: (tournamentId) => {
+      const result = removeTournamentRecord(tournamentRecords, tournamentId);
+      return processResult(result);
+    },
+    removeUnlinkedTournamentRecords: () => {
+      const result = removeUnlinkedTournamentRecords(tournamentRecords);
+      return processResult(result);
     },
   };
+
+  function processResult(result) {
+    if (result?.error) {
+      fx.error = result.error;
+      fx.success = false;
+    } else {
+      fx.error = undefined;
+      fx.success = true;
+      tournamentRecords = result;
+    }
+    return fx;
+  }
 
   createInstanceState();
   importGovernors([queryGovernor, scheduleGovernor]);
@@ -101,32 +115,6 @@ export function competitionEngineAsync() {
         };
       }
     }
-  }
-
-  function setTournamentRecord(record, deepCopyOption = true) {
-    if (typeof record !== 'object') return { error: INVALID_OBJECT };
-    if (!record.tournamentId) return { error: INVALID_VALUES };
-    const tournamentRecord = deepCopyOption ? makeDeepCopy(record) : record;
-    tournamentRecords[tournamentRecord.tournamentId] = tournamentRecord;
-    return SUCCESS;
-  }
-
-  function setState(records, deepCopyOption = true) {
-    if (typeof records !== 'object') return { error: INVALID_OBJECT };
-
-    if (Array.isArray(records)) {
-      const validRecordsArray =
-        records.filter(({ tournamentId }) => tournamentId).length ===
-        records.length;
-      if (!validRecordsArray) return { error: INVALID_RECORDS };
-      records = Object.assign(
-        {},
-        ...records.map((record) => ({ [record.tournamentId]: record }))
-      );
-    }
-
-    tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-    return SUCCESS;
   }
 
   return fx;

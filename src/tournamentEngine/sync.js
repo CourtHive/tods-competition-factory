@@ -10,6 +10,7 @@ import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -18,24 +19,9 @@ import {
   deleteNotices,
 } from '../global/globalState';
 
-import {
-  INVALID_OBJECT,
-  MISSING_TOURNAMENT_ID,
-} from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let tournamentRecord;
-
-function setState(tournament, deepCopyOption) {
-  if (typeof tournament !== 'object') return { error: INVALID_OBJECT };
-  const tournamentId =
-    tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
-  if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
-  tournamentRecord =
-    deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
-
-  return Object.assign({ tournamentId }, SUCCESS);
-}
 
 export const tournamentEngine = (function () {
   const fx = {
@@ -66,19 +52,24 @@ export const tournamentEngine = (function () {
   fx.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
-    if (result?.error) {
-      fx.success = false;
-      fx.error = result.error;
-    } else {
-      fx.success = true;
-      fx.error = undefined;
-    }
-    return fx;
+    return processResult(result);
   };
   fx.devContext = (isDev) => {
     setDevContext(isDev);
     return fx;
   };
+
+  function processResult(result) {
+    if (result?.error) {
+      fx.error = result.error;
+      fx.success = false;
+    } else {
+      fx.error = undefined;
+      fx.success = true;
+      tournamentRecord = result;
+    }
+    return fx;
+  }
 
   importGovernors([
     queryGovernor,

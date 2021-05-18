@@ -12,41 +12,14 @@ import {
 } from '../global/globalState';
 
 import {
-  INVALID_OBJECT,
-  INVALID_RECORDS,
-  INVALID_VALUES,
-} from '../constants/errorConditionConstants';
+  removeTournamentRecord,
+  removeUnlinkedTournamentRecords,
+  setState,
+  setTournamentRecord,
+} from './stateMethods';
 import { SUCCESS } from '../constants/resultConstants';
 
 let tournamentRecords = {};
-
-function setTournamentRecord(record, deepCopyOption = true) {
-  if (typeof record !== 'object') return { error: INVALID_OBJECT };
-  if (!record.tournamentId) return { error: INVALID_VALUES };
-  const tournamentRecord = deepCopyOption ? makeDeepCopy(record) : record;
-
-  tournamentRecords[record.tournamentId] = tournamentRecord;
-  return SUCCESS;
-}
-
-function setState(records, deepCopyOption = true) {
-  if (typeof records !== 'object') return { error: INVALID_OBJECT };
-
-  if (Array.isArray(records)) {
-    const validRecordsArray =
-      records.filter(({ tournamentId }) => tournamentId).length ===
-      records.length;
-    if (!validRecordsArray) return { error: INVALID_RECORDS };
-    records = Object.assign(
-      {},
-      ...records.map((record) => ({ [record.tournamentId]: record }))
-    );
-  }
-
-  tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-
-  return SUCCESS;
-}
 
 export const competitionEngine = (function () {
   const fx = {
@@ -65,36 +38,50 @@ export const competitionEngine = (function () {
   fx.version = () => {
     return '@VERSION@';
   };
+  fx.reset = () => {
+    tournamentRecords = {};
+    return SUCCESS;
+  };
   fx.devContext = (isDev) => {
     setDevContext(isDev);
     return fx;
   };
-  fx.setState = (tournamentRecords, deepCopyOption) => {
+  fx.setState = (records, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
-    const result = setState(tournamentRecords, deepCopyOption);
-    if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
-    } else {
-      fx.error = undefined;
-      fx.success = true;
-    }
-    return fx;
+    const result = setState(tournamentRecords, records, deepCopyOption);
+    return processResult(result);
   };
   fx.setTournamentRecord = (tournamentRecord, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
-    const result = setTournamentRecord(tournamentRecord, deepCopyOption);
+    const result = setTournamentRecord(
+      tournamentRecords,
+      tournamentRecord,
+      deepCopyOption
+    );
+    return processResult(result);
+  };
+  fx.removeTournamentRecord = (tournamentId) => {
+    const result = removeTournamentRecord(tournamentRecords, tournamentId);
+    return processResult(result);
+  };
+  fx.removeUnlinkedTournamentRecords = () => {
+    const result = removeUnlinkedTournamentRecords(tournamentRecords);
+    return processResult(result);
+  };
+
+  return fx;
+
+  function processResult(result) {
     if (result?.error) {
       fx.error = result.error;
       fx.success = false;
     } else {
       fx.error = undefined;
       fx.success = true;
+      tournamentRecords = result;
     }
     return fx;
-  };
-
-  return fx;
+  }
 
   // enable Middleware
   function engineInvoke(fx, params) {
