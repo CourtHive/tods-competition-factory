@@ -100,7 +100,7 @@ export function generateTournamentRecord({
     eventIds = [],
     venueIds = [];
   if (drawProfiles) {
-    drawProfiles.forEach((drawProfile) => {
+    for (const drawProfile of drawProfiles) {
       const { drawId, eventId } = generateEventWithDraw({
         drawProfile,
         participants,
@@ -110,11 +110,11 @@ export function generateTournamentRecord({
       });
       drawIds.push(drawId);
       eventIds.push(eventId);
-    });
+    }
   }
 
   if (eventProfiles) {
-    eventProfiles.forEach((eventProfile) => {
+    for (const eventProfile of eventProfiles) {
       const { eventId, drawIds: generatedDrawIds } = generateEventWithFlights({
         completeAllMatchUps,
         randomWinningSide,
@@ -123,35 +123,34 @@ export function generateTournamentRecord({
       });
       drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
-    });
+    }
   }
 
   if (venueProfiles) {
-    venueProfiles.forEach(
-      ({ venueName, courtsCount, dateAvailability }, index) => {
-        const venue = { venueName: venueName || `Venue ${index + 1}` };
-        const {
-          venue: { venueId },
-        } = tournamentEngine.devContext(true).addVenue({ venue });
-        venueIds.push(venueId);
+    for (const [index, venueProfile] of venueProfiles.entries()) {
+      let { venueName, courtsCount, dateAvailability } = venueProfile;
+      const venue = { venueName: venueName || `Venue ${index + 1}` };
+      const {
+        venue: { venueId },
+      } = tournamentEngine.devContext(true).addVenue({ venue });
+      venueIds.push(venueId);
 
-        const dates = dateRange(startDate, endDate);
-        dateAvailability =
-          (!Array.isArray(dateAvailability) &&
-            dates.map((date) => ({
-              date: formatDate(date),
-              startTime: '07:00',
-              endTime: '19:00',
-            }))) ||
-          dateAvailability;
+      const dates = dateRange(startDate, endDate);
+      dateAvailability =
+        (!Array.isArray(dateAvailability) &&
+          dates.map((date) => ({
+            date: formatDate(date),
+            startTime: '07:00',
+            endTime: '19:00',
+          }))) ||
+        dateAvailability;
 
-        tournamentEngine.addCourts({
-          venueId,
-          courtsCount,
-          dateAvailability,
-        });
-      }
-    );
+      tournamentEngine.addCourts({
+        venueId,
+        courtsCount,
+        dateAvailability,
+      });
+    }
   }
 
   const { tournamentRecord } = tournamentEngine.getState();
