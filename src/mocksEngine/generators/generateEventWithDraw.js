@@ -121,7 +121,7 @@ export function generateEventWithDraw({
       drawId,
       inContext: true,
     });
-    drawProfile.outcomes.forEach((outcomeDef) => {
+    for (const outcomeDef of drawProfile.outcomes) {
       const {
         roundNumber,
         drawPositions,
@@ -173,7 +173,7 @@ export function generateEventWithDraw({
         matchUpFormat,
         drawId,
       });
-    });
+    }
   }
 
   if (result.error) return { error: result.error };

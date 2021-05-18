@@ -1,5 +1,5 @@
-// import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { tournamentEngine } from '../../tournamentEngine/sync';
+import { completeDrawMatchUps } from './completeDrawMatchUps';
 
 import {
   MAIN,
@@ -9,7 +9,6 @@ import {
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import { completeDrawMatchUps } from './completeDrawMatchUps';
 
 export function generateEventWithFlights({
   eventProfile,
@@ -67,7 +66,7 @@ export function generateEventWithFlights({
   } = tournamentEngine.addEvent({ event });
   if (error) return { error };
 
-  drawProfiles.forEach((drawProfile) => {
+  for (const drawProfile of drawProfiles) {
     const { stage, drawName, drawSize, qualifyingPositions } = drawProfile;
     const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
     const drawParticipantIds = (stageParticipants[stage || MAIN] || [])
@@ -93,7 +92,7 @@ export function generateEventWithFlights({
       drawEntries,
       qualifyingPositions,
     });
-  });
+  }
 
   const drawIds = [];
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
