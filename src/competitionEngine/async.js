@@ -17,6 +17,7 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 import { SUCCESS } from '../constants/resultConstants';
+import competitionGovernor from './governors/competitionsGovernor';
 
 export function competitionEngineAsync() {
   let tournamentRecords = {};
@@ -77,7 +78,7 @@ export function competitionEngineAsync() {
   }
 
   createInstanceState();
-  importGovernors([queryGovernor, scheduleGovernor]);
+  importGovernors([queryGovernor, scheduleGovernor, competitionGovernor]);
 
   // enable Middleware
   async function engineInvoke(fx, params) {
