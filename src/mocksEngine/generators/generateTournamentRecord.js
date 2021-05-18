@@ -1,9 +1,10 @@
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { dateRange, formatDate } from '../../utilities/dateTime';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { tournamentEngine } from '../../tournamentEngine/sync';
 import { generateParticipants } from './generateParticipants';
-import competitionEngine from '../../competitionEngine/sync';
+
+import tournamentEngineSync from '../../tournamentEngine/sync';
+import competitionEngineSync from '../../competitionEngine/sync';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
@@ -32,6 +33,10 @@ export function generateTournamentRecord({
   randomWinningSide,
   inContext,
   goesTo,
+
+  // passing in the engines allows for testing suite to pass in async versions
+  competitionEngine = competitionEngineSync,
+  tournamentEngine = tournamentEngineSync,
 } = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
