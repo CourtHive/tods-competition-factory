@@ -42,7 +42,7 @@ export function competitionEngineAsync() {
     },
     setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
-      const result = setState(records, tournamentRecords);
+      const result = setState(tournamentRecords, records, deepCopyOption);
       return processResult(result);
     },
     setTournamentRecord: (tournamentRecord, deepCopyOption) => {
