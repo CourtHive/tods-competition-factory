@@ -25,9 +25,6 @@ export function getSchedulingProfile({ tournamentRecords }) {
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!isValidSchedulingProfile(schedulingProfile))
-    return { error: INVALID_VALUES };
-
   if (!isValidSchedulingProfile({ tournamentRecords, schedulingProfile }))
     return { error: INVALID_VALUES };
 
@@ -48,19 +45,33 @@ export function addSchedulingProfileRound({
   if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
   if (!isValidSchedulingRound(round)) return { error: INVALID_VALUES };
 
-  const { extension, error } = findExtension({
+  const { extension } = findExtension({
     tournamentRecords,
     name: SCHEDULING_PROFILE,
   });
-  if (error) return { error };
 
-  const schedulingProfile = extension.value || [];
-  const dateProfile = schedulingProfile.find((dateProfile) =>
+  const schedulingProfile = extension?.value || [];
+  let dateProfile = schedulingProfile.find((dateProfile) =>
     sameDay(scheduleDate, dateProfile.scheduleDate)
-  ) || { scheduleDate, venues: [] };
-  const venueOnDate =
-    dateProfile.venues.find((venue) => venue.venueId === venueId) || [];
-  console.log({ venueOnDate });
+  );
+
+  if (!dateProfile) {
+    dateProfile = { scheduleDate, venues: [] };
+    schedulingProfile.push(dateProfile);
+  }
+
+  let venueOnDate = dateProfile.venues.find(
+    (venue) => venue.venueId === venueId
+  );
+
+  if (!venueOnDate) {
+    venueOnDate = { venueId, rounds: [] };
+    dateProfile.venues.push(venueOnDate);
+  }
+
+  venueOnDate.rounds.push(round);
+
+  return setSchedulingProfile({ tournamentRecords, schedulingProfile });
 }
 
 export function isValidSchedulingProfile({
@@ -72,12 +83,24 @@ export function isValidSchedulingProfile({
   const { venueIds } = getCompetitionVenues({ tournamentRecords });
   const isValid = schedulingProfile.every((dateSchedule) => {
     const { scheduleDate, venues } = dateSchedule;
-    if (!isValidDateString(scheduleDate)) return false;
+    if (!isValidDateString(scheduleDate)) {
+      console.log('invalid date string');
+      return false;
+    }
     const validVenues = venues.every((venueProfile) => {
       const { venueId, rounds } = venueProfile;
-      if (typeof venueId !== 'string') return false;
-      if (!Array.isArray(rounds)) return false;
-      if (!venueIds.includes(venueId)) return false;
+      if (typeof venueId !== 'string') {
+        console.log('invalid venueId');
+        return false;
+      }
+      if (!Array.isArray(rounds)) {
+        console.log('invalid rounds');
+        return false;
+      }
+      if (!venueIds.includes(venueId)) {
+        console.log('venue not found');
+        return false;
+      }
       return true;
     });
     return validVenues;

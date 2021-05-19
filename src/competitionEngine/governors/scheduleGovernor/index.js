@@ -8,6 +8,7 @@ import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { scheduleMatchUps } from './scheduleMatchUps';
 import {
+  addSchedulingProfileRound,
   getSchedulingProfile,
   isValidSchedulingProfile,
   setSchedulingProfile,
@@ -30,6 +31,7 @@ const scheduleGovernor = {
   getSchedulingProfile,
   setSchedulingProfile,
   isValidSchedulingProfile,
+  addSchedulingProfileRound,
 };
 
 export default scheduleGovernor;

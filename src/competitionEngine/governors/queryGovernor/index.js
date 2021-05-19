@@ -1,13 +1,16 @@
+import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
+import { getCompetitionDateRange } from './getCompetitionDateRange';
+import { credits } from '../../../fixtures/credits';
+import { findExtensions } from './findExtensions';
 import {
   allCompetitionMatchUps,
   competitionMatchUps,
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
-import { credits } from '../../../fixtures/credits';
-import { findExtensions } from './findExtensions';
-import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 
 const queryGovernor = {
+  getCompetitionDateRange,
+
   competitionScheduleMatchUps,
   allCompetitionMatchUps,
   competitionMatchUps,
