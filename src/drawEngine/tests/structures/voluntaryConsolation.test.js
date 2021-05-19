@@ -40,19 +40,23 @@ it('can add draw with empty voluntary consolation stage', () => {
   const {
     eventIds: [eventId],
     drawIds,
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     eventProfiles,
   });
 
-  const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+  const { flightProfile } = tournamentEngine
+    .setState(tournamentRecord)
+    .getFlightProfile({ eventId });
   expect(flightProfile.flights[0].drawEntries.length).toEqual(16);
   expect(flightProfile.flights[1].drawEntries.length).toEqual(28);
   expect(flightProfile.flights[2].drawEntries.length).toEqual(0);
 
   expect(drawIds.length).toEqual(3);
-  const { tournamentRecord } = tournamentEngine.getState();
-  expect(tournamentRecord.events[0].drawDefinitions.length).toEqual(3);
-  expect(tournamentRecord.events[0].drawDefinitions[1].drawType).toEqual(
+  const { tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getState();
+  expect(updatedTournamentRecord.events[0].drawDefinitions.length).toEqual(3);
+  expect(updatedTournamentRecord.events[0].drawDefinitions[1].drawType).toEqual(
     COMPASS
   );
 });
@@ -67,12 +71,15 @@ it('can add draw with voluntary consolation stage', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     participantsCount: 8,
     drawProfiles,
   });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
   expect(drawDefinition.structures[0].positionAssignments.length).toEqual(
     drawSize
   );
@@ -89,15 +96,17 @@ it('can add voluntary consolation structure to an existing draw', () => {
   const {
     drawIds: [drawId],
     eventIds: [eventId],
+    // tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
+  // tournamentEngine.setState(tournamentRecord);
+
   let {
-    flightProfile: {
-      flights: [flight],
-    },
+    flightProfile: { flights },
   } = tournamentEngine.getFlightProfile({ eventId });
+  let flight = flights[0];
 
   const consolationParticipantIds = flight.drawEntries
     .map(({ participantId }) => participantId)
@@ -118,10 +127,10 @@ it('can add voluntary consolation structure to an existing draw', () => {
   expect(result.success).toEqual(true);
 
   ({
-    flightProfile: {
-      flights: [flight],
-    },
+    flightProfile: { flights },
   } = tournamentEngine.getFlightProfile({ eventId }));
+
+  flight = flights[0];
 
   const voluntaryEntries = flight.drawEntries.filter(
     ({ entryStage }) => entryStage === VOLUNTARY_CONSOLATION

@@ -19,6 +19,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
@@ -28,7 +29,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const mainMatchUps = mainStructure.matchUps;
   let finalMatchUp = mainMatchUps.find(

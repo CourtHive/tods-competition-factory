@@ -4,10 +4,10 @@ import tournamentEngine from '../../sync';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 it('can modify flightNames and drawNames', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -56,10 +56,10 @@ it('can modify flightNames and drawNames', () => {
 });
 
 it('can modify flightNames when no drawDefinitions generated', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -92,10 +92,10 @@ it('can modify flightNames when no drawDefinitions generated', () => {
 });
 
 it('can modify drawNames when no flightProfile', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   let event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

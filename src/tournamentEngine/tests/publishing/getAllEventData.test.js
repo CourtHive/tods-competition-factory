@@ -8,7 +8,7 @@ it('can return all event data', () => {
     { drawSize: 32 },
     { drawSize: 16, drawType: ROUND_ROBIN },
   ];
-  mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2021-01-01',
     endDate: '2021-01-01',
     drawProfiles,
@@ -16,6 +16,7 @@ it('can return all event data', () => {
 
   const myCourts = { venueName: 'My Courts' };
   const result = tournamentEngine
+    .setState(tournamentRecord)
     .devContext(true)
     .addVenue({ venue: myCourts });
   const {

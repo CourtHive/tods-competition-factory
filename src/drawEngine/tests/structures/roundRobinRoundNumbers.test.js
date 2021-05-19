@@ -14,11 +14,13 @@ it('generates roundNumbers for all matchUps when odd-sized groups', () => {
       drawType: ROUND_ROBIN,
     },
   ];
-  mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   expect(matchUps.map((m) => m.roundNumber)).toEqual([
     1, 1, 2, 2, 3, 3, 4, 4, 5, 5,
   ]);
@@ -45,11 +47,13 @@ function getRoundRobinRoundNumber({ groupSize }) {
       drawType: ROUND_ROBIN,
     },
   ];
-  mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
   return Object.keys(roundMatchUps).map((n) => parseInt(n));
 }

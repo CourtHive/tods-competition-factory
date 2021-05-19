@@ -1,15 +1,17 @@
-import { generateTournamentRecord } from '../../../../mocksEngine/generators/generateTournamentRecord';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
+import mocksEngine from '../../../../mocksEngine';
 
 const asyncCompetitionEngine = competitionEngineAsync();
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can add and remove extensions from tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
-    // generateTournamentRecord automatically adds new tournamentRecord to competitionEngine state
-    generateTournamentRecord({ competitionEngine });
-    generateTournamentRecord({ competitionEngine });
+    const { tournamentRecord: firstRecord } =
+      mocksEngine.generateTournamentRecord();
+    const { tournamentRecord: secondRecord } =
+      mocksEngine.generateTournamentRecord();
+    await competitionEngine.setState([firstRecord, secondRecord]);
 
     const extensionName = 'extensionName';
     const extensionValue = 'extensionValue';

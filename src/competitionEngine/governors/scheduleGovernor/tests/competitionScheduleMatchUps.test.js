@@ -1,5 +1,5 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 it('auto schedules venue if only one venue provided', () => {
@@ -13,15 +13,18 @@ it('auto schedules venue if only one venue provided', () => {
     venueProfiles,
   });
 
+  tournamentEngine.setState(tournamentRecord);
   const { tournamentInfo } = tournamentEngine.getTournamentInfo();
+  competitionEngine.setState([tournamentRecord]);
   const { upcomingMatchUps } = competitionEngine.competitionMatchUps();
 
   const { startDate } = tournamentInfo;
   const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
 
-  let result = competitionEngine
-    .setState([tournamentRecord])
-    .scheduleMatchUps({ date: startDate, matchUpIds });
+  let result = competitionEngine.scheduleMatchUps({
+    date: startDate,
+    matchUpIds,
+  });
   expect(result.success).toEqual(true);
   expect(result.scheduledMatchUpIds.length).toEqual(23);
 

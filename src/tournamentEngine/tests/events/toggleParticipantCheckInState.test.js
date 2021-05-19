@@ -10,6 +10,7 @@ it('can toggle participant check-in state', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
@@ -17,7 +18,7 @@ it('can toggle participant check-in state', () => {
 
   let {
     upcomingMatchUps: [matchUp],
-  } = tournamentEngine.drawMatchUps({
+  } = tournamentEngine.setState(tournamentRecord).drawMatchUps({
     drawId,
     inContext: true,
   });

@@ -9,8 +9,12 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
   const participantsProfile = {
     participantsCount: 32,
   };
-  mocksEngine.generateTournamentRecord({ participantsProfile });
-  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+  let { tournamentParticipants } = tournamentEngine
+    .setState(tournamentRecord)
+    .getTournamentParticipants();
 
   let participantTypes = unique(
     tournamentParticipants.map(({ participantType }) => participantType)

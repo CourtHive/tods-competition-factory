@@ -11,16 +11,19 @@ it('auto schedules venue if only one venue provided', () => {
     venueProfiles,
   });
 
+  tournamentEngine.setState(tournamentRecord);
   const { tournamentInfo } = tournamentEngine.getTournamentInfo();
+  competitionEngine.setState([tournamentRecord]);
   let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
 
   const { startDate } = tournamentInfo;
   const matchUpIds = upcomingMatchUps.map(({ matchUpId }) => matchUpId);
   expect(matchUpIds.length).toBeGreaterThan(0);
 
-  const result = competitionEngine
-    .setState([tournamentRecord])
-    .scheduleMatchUps({ date: startDate, matchUpIds });
+  const result = competitionEngine.scheduleMatchUps({
+    date: startDate,
+    matchUpIds,
+  });
   expect(result.success).toEqual(true);
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());

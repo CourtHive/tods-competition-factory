@@ -33,9 +33,13 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   const { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -87,9 +91,13 @@ it('removes advanced participant when completed score changes to incomplete resu
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -143,9 +151,13 @@ it('removes advanced participant in FINAL when completed score changes to incomp
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,

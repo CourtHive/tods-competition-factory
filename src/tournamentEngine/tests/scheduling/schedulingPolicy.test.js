@@ -43,6 +43,7 @@ it.each([
   }) => {
     const {
       eventIds: [eventId],
+      tournamentRecord,
     } = mocksEngine.generateTournamentRecord({
       drawProfiles: [
         {
@@ -51,15 +52,17 @@ it.each([
       ],
     });
 
-    let result = tournamentEngine.getMatchUpFormatTiming({
-      defaultAverageMinutes: 87,
-      defaultRecoveryMinutes: 57,
-      matchUpFormat,
-      categoryName,
-      categoryType,
-      eventType,
-      eventId,
-    });
+    let result = tournamentEngine
+      .setState(tournamentRecord)
+      .getMatchUpFormatTiming({
+        defaultAverageMinutes: 87,
+        defaultRecoveryMinutes: 57,
+        matchUpFormat,
+        categoryName,
+        categoryType,
+        eventType,
+        eventId,
+      });
     expect(result.averageMinutes).toEqual(87);
     if (recoveryMinutes) {
       expect(result.recoveryMinutes).toEqual(57);

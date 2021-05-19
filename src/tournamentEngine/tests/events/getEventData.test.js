@@ -16,11 +16,13 @@ it('returns eventData', () => {
   */
 
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];
-  const { eventIds } = mocksEngine.generateTournamentRecord({
+  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
-  const { eventData: generatedEventData } = tournamentEngine.getEventData({
-    eventId: eventIds[0],
-  });
+  const { eventData: generatedEventData } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEventData({
+      eventId: eventIds[0],
+    });
   expect(generatedEventData.drawsData[0].structures.length).toEqual(2);
 });

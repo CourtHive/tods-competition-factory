@@ -9,10 +9,10 @@ import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -89,11 +89,11 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
 });
 
 it('can constrain seedsCount by policyDefinition', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const ageCategoryCode = 'U18';
   const event = { eventName, category: { ageCategoryCode } };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

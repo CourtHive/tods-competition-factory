@@ -20,9 +20,12 @@ it('supports entering CANCELED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -44,9 +47,12 @@ it('supports entering ABANDONED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -68,9 +74,12 @@ it('supports entering INCOMPLETE matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -92,9 +101,12 @@ it('supports entering SUSPENDED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -116,9 +128,12 @@ it('supports entering DEAD_RUBBER matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -140,9 +155,12 @@ it('supports entering NOT_PLAYED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -164,9 +182,12 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -188,9 +209,12 @@ it('supports entering AWAITING_RESULT matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({

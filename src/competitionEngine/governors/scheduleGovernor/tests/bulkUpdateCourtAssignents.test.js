@@ -18,13 +18,15 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
       participantsCount: 6,
     },
   ];
-  let result = mocksEngine.generateTournamentRecord({
+
+  let { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
   });
 
+  tournamentEngine.setState(tournamentRecord);
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -39,7 +41,7 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
   expect(courts.length).toEqual(3);
   const courtIds = courts.map(({ courtId }) => courtId);
 
-  const { tournamentRecord } = tournamentEngine.getState();
+  ({ tournamentRecord } = tournamentEngine.getState());
   const { tournamentId } = tournamentRecord;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();

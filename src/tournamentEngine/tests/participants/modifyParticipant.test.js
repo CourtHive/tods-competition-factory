@@ -11,9 +11,11 @@ it('can retrieve tournament participants', () => {
     participantType: PAIR,
     sex: MALE,
   };
-  mocksEngine.generateTournamentRecord({ participantsProfile });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
 
-  tournamentEngine.devContext(true);
+  tournamentEngine.setState(tournamentRecord).devContext(true);
 
   const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({

@@ -18,9 +18,12 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const [matchUp] = upcomingMatchUps;
   const { matchUpId, roundPosition } = matchUp;
 

@@ -12,10 +12,11 @@ it('can accurately determine initialRoundNumber', () => {
       drawSize: 8,
     },
   ];
-  mocksEngine.generateTournamentRecord({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
+  tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   generateRange(1, 9).forEach((drawPosition) => {

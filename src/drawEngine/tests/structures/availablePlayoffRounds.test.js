@@ -102,9 +102,12 @@ it('can accurately determine available playoff rounds for consolation draw of FI
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -129,9 +132,12 @@ it('can generate only specified playoff rounds and give them custom names', () =
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -167,9 +173,12 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
 
   const {
     structures: [consolationStructure],
@@ -197,9 +206,12 @@ it('can determine available playoff rounds for consolation draw of FEED_IN', () 
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
 
   const {
     structures: [mainStructure],

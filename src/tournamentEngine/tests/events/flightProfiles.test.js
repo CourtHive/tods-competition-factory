@@ -5,10 +5,10 @@ import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -75,10 +75,10 @@ it('can create and return flighProfiles', () => {
 });
 
 it('can create and return flighProfiles with drawDefinitions', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

@@ -464,10 +464,10 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
 });
 
 it('can filter out unpublished draws when publishing event', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

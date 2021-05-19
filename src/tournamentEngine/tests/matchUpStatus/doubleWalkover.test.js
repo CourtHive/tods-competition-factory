@@ -26,10 +26,13 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   // get the first upcoming matchUp, which will be { roundPosition: 2 }
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const [matchUp] = upcomingMatchUps;
   const { matchUpId, roundPosition } = matchUp;
   expect(roundPosition).toEqual(2);
@@ -146,10 +149,13 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   // get the first upcoming matchUp, which will be { roundPosition: 2 }
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const [matchUp] = upcomingMatchUps;
   const { matchUpId, roundPosition } = matchUp;
   expect(roundPosition).toEqual(2);
@@ -234,13 +240,14 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   let {
     drawDefinition: {
       structures: [{ structureId }],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const preWalkover = [
     [1, 2],
@@ -330,13 +337,14 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   let {
     drawDefinition: {
       structures: [{ structureId }],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
   expect(filteredOrderedPairs).toEqual([
@@ -424,13 +432,14 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   let {
     drawDefinition: {
       structures: [{ structureId }],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
   expect(filteredOrderedPairs).toEqual([

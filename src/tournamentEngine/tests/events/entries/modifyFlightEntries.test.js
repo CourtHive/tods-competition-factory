@@ -7,11 +7,13 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const participantsProfile = {
     participantsCount: 40,
   };
-  mocksEngine.generateTournamentRecord({ participantsProfile });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
 
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

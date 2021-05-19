@@ -9,9 +9,11 @@ const asyncTournamentEngine = tournamentEngineAsync();
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'can create flightProfile on addDrawDefinition',
   async (tournamentEngine) => {
-    await mocksEngine.generateTournamentRecord({ tournamentEngine });
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
     const eventName = 'Test Event';
     const event = { eventName };
+
+    await tournamentEngine.setState(tournamentRecord);
     let result = await tournamentEngine.addEvent({ event });
     let { event: eventResult } = result;
     expect(result.success).toEqual(true);

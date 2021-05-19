@@ -11,13 +11,15 @@ it('can set and get drawRepresentatitveIds', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
   });
 
-  const { tournamentParticipants } =
-    tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } = tournamentEngine
+    .setState(tournamentRecord)
+    .getTournamentParticipants();
   const participantIds = tournamentParticipants.map(
     ({ participantId }) => participantId
   );

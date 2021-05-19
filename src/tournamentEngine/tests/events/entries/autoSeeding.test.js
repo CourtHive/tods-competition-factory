@@ -6,12 +6,14 @@ import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can autoSeed by Rankings', () => {
-  mocksEngine.generateTournamentRecord({ participantCount: 32 });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantCount: 32,
+  });
   const event = {
     eventType: SINGLES,
   };
 
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   expect(result.success).toEqual(true);
   const { event: createdEvent } = result;
   const { eventId } = createdEvent;
