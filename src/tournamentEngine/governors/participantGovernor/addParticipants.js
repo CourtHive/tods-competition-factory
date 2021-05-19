@@ -27,6 +27,8 @@ export function addParticipant({
   tournamentRecord,
   participant,
   disableNotice,
+
+  returnParticipant,
   allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -112,7 +114,6 @@ export function addParticipant({
         .filter((f) => f)
         .join('/');
       participant.participantName = participantName;
-      participant.name = participantName; // backwards compatabilty
     }
   } else if (participantType === INDIVIDUAL) {
     if (
@@ -168,14 +169,18 @@ export function addParticipant({
   }
 
   const result = Object.assign({}, SUCCESS);
-  if (getDevContext())
-    Object.assign(result, { participant: makeDeepCopy(participant) });
+  if (getDevContext() || returnParticipant)
+    Object.assign(result, {
+      participant: makeDeepCopy(participant),
+    });
   return result;
 }
 
 export function addParticipants({
   tournamentRecord,
   participants = [],
+
+  returnParticipants,
   allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -218,6 +223,8 @@ export function addParticipants({
         tournamentRecord,
         participant,
         disableNotice: true,
+
+        returnParticipant: returnParticipants,
         allowDuplicateParticipantIdPairs,
       });
       const { success, error, participant: addedParticipant } = result;

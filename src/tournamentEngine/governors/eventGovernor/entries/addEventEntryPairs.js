@@ -16,6 +16,7 @@ import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { UUID } from '../../../../utilities';
 
 /**
  *
@@ -70,7 +71,7 @@ export function addEventEntryPairs({
   // create provisional participant objects
   const provisionalParticipants = participantIdPairs.map(
     (individualParticipantIds) => ({
-      participantId: uuids?.pop(),
+      participantId: uuids?.pop() || UUID(),
       participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
@@ -89,19 +90,29 @@ export function addEventEntryPairs({
       });
 
   let message;
+  let addedParticipants = [];
   if (newParticipants) {
     const result = addParticipants({
       tournamentRecord,
       participants: newParticipants,
+
+      returnParticipants: true,
       allowDuplicateParticipantIdPairs,
     });
-
     if (result.error) return { error: result.error };
+    addedParticipants = result.participants || [];
     message = result.message;
   }
 
   const pairParticipantIds = participantIdPairs
     .map((participantIds) => {
+      const addedParticipant = addedParticipants.find(
+        (addedPair) =>
+          intersection(addedPair.individualParticipantIds, participantIds)
+            .length === 2
+      );
+      if (addedParticipant) return addedParticipant;
+
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,

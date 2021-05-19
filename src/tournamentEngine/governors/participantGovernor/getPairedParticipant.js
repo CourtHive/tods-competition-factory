@@ -17,15 +17,17 @@ export function getPairedParticipant({ tournamentRecord, participantIds }) {
   if (participantIds.length > 2) return { error: INVALID_PARTICIPANT_IDS };
 
   const tournamentParticipants = tournamentRecord.participants || [];
-  const existingPairedParticipant = tournamentParticipants.find(
+  const existingPairedParticipants = tournamentParticipants.filter(
     (participant) =>
       participant.participantType === PAIR &&
       intersection(participantIds, participant.individualParticipantIds)
         .length === 2
   );
+  const existingPairedParticipant = existingPairedParticipants[0];
   if (!existingPairedParticipant) return { error: PARTICIPANT_NOT_FOUND };
 
   return Object.assign({}, SUCCESS, {
     participant: makeDeepCopy(existingPairedParticipant),
+    duplicatedPairParticipants: makeDeepCopy(existingPairedParticipants),
   });
 }
