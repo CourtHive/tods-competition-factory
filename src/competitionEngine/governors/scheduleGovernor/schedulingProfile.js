@@ -1,4 +1,4 @@
-import { getCompetitionVenues } from '../queryGovernor/getCompetitionVenues';
+import { getCompetitionVenues } from '../../getters/venuesAndCourtsGetter';
 import { isISODateString, sameDay } from '../../../utilities/dateTime';
 import { validDateString } from '../../../fixtures/validations/regex';
 import {

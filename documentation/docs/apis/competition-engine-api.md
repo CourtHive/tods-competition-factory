@@ -13,6 +13,18 @@ competitionEngine.addExtension({ extension });
 
 ---
 
+### addSchedulingProfileRound
+
+```js
+competitionEngine.addSchedulingProfileRound({
+  scheduleDate, // string date, e.g. '2022-01-01' or '2022-01-01T00:00'
+  venueId, // id of the venue to which the round has been assigned
+  round, // details of a round to be played on specified date
+});
+```
+
+---
+
 ## allCompetitionMatchUps
 
 ```js
@@ -96,6 +108,22 @@ const { extension } = competitionEngine.findExtension({ name });
 
 ---
 
+## getCompetitionDateRange
+
+```js
+const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
+```
+
+---
+
+## getCompetitionVenues
+
+```js
+const { venues, venueIds } = competitionEngine.getCompetitionVenues();
+```
+
+---
+
 ## getState
 
 Returns a deep copy of the current competitionEngine state.
@@ -108,12 +136,30 @@ const { tournaentRecords } = competition.getState({
 
 ---
 
+## getSchedulingProfile
+
+```js
+const { schedulingProfile } = competitionEngine.getSchedulingProfile();
+```
+
+---
+
 ## getVenuesAndCourts
 
 Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
 
 ```js
 const { courts, venues } = competitionEngine.getVenuesAndCourts();
+```
+
+---
+
+### isValidSchedulingProfile
+
+```js
+const isValid = competitionEngine.isValidSchedulingProfile({
+  schedulingProfile,
+});
 ```
 
 ---
@@ -239,6 +285,12 @@ competitionEngine.setsState(tournamentRecords, deepCopy);
 ```
 
 ---
+
+### setSchedulingProfile
+
+```js
+competitionEngine.setSchedulingProfile({ schedulingProfile });
+```
 
 ## setTournamentRecord
 

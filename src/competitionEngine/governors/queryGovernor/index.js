@@ -1,4 +1,7 @@
-import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
+import {
+  getCompetitionVenues,
+  getVenuesAndCourts,
+} from '../../getters/venuesAndCourtsGetter';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
 import { findExtensions } from './findExtensions';
@@ -15,6 +18,7 @@ const queryGovernor = {
   allCompetitionMatchUps,
   competitionMatchUps,
 
+  getCompetitionVenues,
   getVenuesAndCourts,
   findExtensions,
   credits,

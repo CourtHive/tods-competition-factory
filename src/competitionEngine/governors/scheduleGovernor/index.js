@@ -13,7 +13,6 @@ import {
   isValidSchedulingProfile,
   setSchedulingProfile,
 } from './schedulingProfile';
-import { getCompetitionVenues } from '../queryGovernor/getCompetitionVenues';
 
 const scheduleGovernor = {
   // addTimeItem,
@@ -25,8 +24,6 @@ const scheduleGovernor = {
   bulkUpdateCourtAssignments,
   removeMatchUpCourtAssignment,
   toggleParticipantCheckInState,
-
-  getCompetitionVenues,
 
   getSchedulingProfile,
   setSchedulingProfile,
