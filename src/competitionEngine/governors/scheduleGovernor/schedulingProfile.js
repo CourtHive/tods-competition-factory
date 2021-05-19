@@ -84,21 +84,17 @@ export function isValidSchedulingProfile({
   const isValid = schedulingProfile.every((dateSchedule) => {
     const { scheduleDate, venues } = dateSchedule;
     if (!isValidDateString(scheduleDate)) {
-      console.log('invalid date string');
       return false;
     }
     const validVenues = venues.every((venueProfile) => {
       const { venueId, rounds } = venueProfile;
       if (typeof venueId !== 'string') {
-        console.log('invalid venueId');
         return false;
       }
       if (!Array.isArray(rounds)) {
-        console.log('invalid rounds');
         return false;
       }
       if (!venueIds.includes(venueId)) {
-        console.log('venue not found');
         return false;
       }
       return true;
