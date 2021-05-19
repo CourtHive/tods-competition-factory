@@ -1,9 +1,10 @@
+import { makeDeepCopy } from '../../utilities';
+
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../utilities';
 
 export function getVenues({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

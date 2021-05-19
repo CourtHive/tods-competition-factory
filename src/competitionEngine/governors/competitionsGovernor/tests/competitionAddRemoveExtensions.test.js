@@ -1,6 +1,6 @@
-import { generateTournamentRecord } from '../../mocksEngine/generators/generateTournamentRecord';
-import competitionEngineAsync from '../async';
-import competitionEngineSync from '../sync';
+import { generateTournamentRecord } from '../../../../mocksEngine/generators/generateTournamentRecord';
+import competitionEngineAsync from '../../../async';
+import competitionEngineSync from '../../../sync';
 
 const asyncCompetitionEngine = competitionEngineAsync();
 

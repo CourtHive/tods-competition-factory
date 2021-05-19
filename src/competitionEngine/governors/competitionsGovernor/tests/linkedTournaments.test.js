@@ -1,9 +1,9 @@
-import { generateTournamentRecord } from '../../mocksEngine/generators/generateTournamentRecord';
+import { generateTournamentRecord } from '../../../../mocksEngine/generators/generateTournamentRecord';
 
-import competitionEngineAsync from '../async';
-import competitionEngineSync from '../sync';
+import competitionEngineAsync from '../../../async';
+import competitionEngineSync from '../../../sync';
 
-import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
+import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 
 const asyncCompetitionEngine = competitionEngineAsync();
 

@@ -7,6 +7,12 @@ import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { scheduleMatchUps } from './scheduleMatchUps';
+import {
+  getSchedulingProfile,
+  isValidSchedulingProfile,
+  setSchedulingProfile,
+} from './schedulingProfile';
+import { getCompetitionVenues } from '../queryGovernor/getCompetitionVenues';
 
 const scheduleGovernor = {
   // addTimeItem,
@@ -18,6 +24,12 @@ const scheduleGovernor = {
   bulkUpdateCourtAssignments,
   removeMatchUpCourtAssignment,
   toggleParticipantCheckInState,
+
+  getCompetitionVenues,
+
+  getSchedulingProfile,
+  setSchedulingProfile,
+  isValidSchedulingProfile,
 };
 
 export default scheduleGovernor;

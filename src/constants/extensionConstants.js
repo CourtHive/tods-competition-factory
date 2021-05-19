@@ -7,6 +7,7 @@ export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const SCHEDULE_TIMING = 'scheduleTiming';
+export const SCHEDULING_PROFILE = 'schedulingProfile';
 export const SUB_ORDER = 'subOrder';
 
 export const extensionConstants = {
@@ -19,5 +20,6 @@ export const extensionConstants = {
   LINKED_TOURNAMENTS,
   PARTICIPANT_REPRESENTATIVES,
   SCHEDULE_TIMING,
+  SCHEDULING_PROFILE,
   SUB_ORDER,
 };
