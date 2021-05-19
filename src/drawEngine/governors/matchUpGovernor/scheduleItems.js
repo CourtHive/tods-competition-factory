@@ -61,7 +61,7 @@ export function addMatchUpScheduleItems({
   const { scheduledDate, scheduledTime, startTime, endTime, courtId, venueId } =
     schedule;
 
-  if (scheduledDate) {
+  if (scheduledDate !== undefined) {
     const result = addMatchUpScheduledDate({
       drawDefinition,
       matchUpId,
@@ -70,7 +70,7 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return result;
   }
-  if (scheduledTime) {
+  if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
       drawDefinition,
       matchUpId,
@@ -79,7 +79,7 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return result;
   }
-  if (startTime) {
+  if (startTime !== undefined) {
     const result = addMatchUpStartTime({
       drawDefinition,
       matchUpId,
@@ -88,7 +88,7 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return result;
   }
-  if (endTime) {
+  if (endTime !== undefined) {
     const result = addMatchUpEndTime({
       drawDefinition,
       matchUpId,
@@ -97,7 +97,7 @@ export function addMatchUpScheduleItems({
     });
     if (result?.error) return result;
   }
-  if (courtId && scheduledDate) {
+  if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
       tournamentRecord,
       drawDefinition,
@@ -107,7 +107,7 @@ export function addMatchUpScheduleItems({
       disableNotice: true,
     });
     if (result?.error) return result;
-  } else if (venueId) {
+  } else if (venueId !== undefined) {
     const result = assignMatchUpVenue({
       tournamentRecord,
       drawDefinition,
