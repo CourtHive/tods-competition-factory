@@ -96,7 +96,7 @@ export function generateEventWithFlights({
 
   const drawIds = [];
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
-  const success = flightProfile.flights?.every((flight, index) => {
+  const success = flightProfile?.flights?.every((flight, index) => {
     const { drawId, stage, drawName, drawEntries } = flight;
     const drawType = drawProfiles[index].drawType;
     const automated = drawProfiles[index].automated;

@@ -116,7 +116,7 @@ export function generateTournamentRecord({
         eventProfile,
         participants,
       });
-      drawIds.push(...generatedDrawIds);
+      if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
     }
   }
