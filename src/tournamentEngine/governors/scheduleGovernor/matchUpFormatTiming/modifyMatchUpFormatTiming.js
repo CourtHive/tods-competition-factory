@@ -7,7 +7,10 @@ import {
   findTournamentExtension,
 } from '../../queryGovernor/extensionQueries';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -19,6 +22,10 @@ export function modifyMatchUpFormatTiming({
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (averageTimes && !Array.isArray(averageTimes))
+    return { error: INVALID_VALUES };
+  if (recoveryTimes && !Array.isArray(recoveryTimes))
+    return { error: INVALID_VALUES };
 
   const name = SCHEDULE_TIMING;
 
