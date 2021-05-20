@@ -1,5 +1,4 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 
@@ -13,6 +12,7 @@ import {
 import { TEAM } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 
 export function setMatchUpFormat(props) {
   const errors = [];
@@ -28,10 +28,8 @@ export function setMatchUpFormat(props) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
-  if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
+  if (!isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-  }
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({

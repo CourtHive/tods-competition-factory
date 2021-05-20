@@ -1,3 +1,4 @@
+import { findExtension } from './governors/competitionsGovernor/competitionExtentions';
 import { makeDeepCopy } from '../utilities';
 
 import {
@@ -6,7 +7,6 @@ import {
   INVALID_VALUES,
   NOT_FOUND,
 } from '../constants/errorConditionConstants';
-import { findExtension } from './governors/competitionsGovernor/competitionExtentions';
 import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 
 export function removeTournamentRecord(tournamentRecords, tournamentId) {

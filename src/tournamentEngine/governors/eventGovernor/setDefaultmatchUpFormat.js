@@ -1,5 +1,5 @@
+import { isValidMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 import {
   MISSING_DRAW_DEFINITION,
@@ -21,10 +21,8 @@ export function setEventDefaultMatchUpFormat({
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
   if (!event) return { error: MISSING_EVENT };
 
-  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
-  if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
+  if (!isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-  }
 
   event.matchUpFormat = matchUpFormat;
 
@@ -79,10 +77,8 @@ export function setCollectionDefaultMatchUpFormat({
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
-  if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
+  if (!isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
-  }
 
   return { error: NOT_IMPLEMENTED };
 }

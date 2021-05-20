@@ -1,3 +1,5 @@
+import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
+import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { findPolicy } from '../policyGovernor/findPolicy';
 import {
   findEventExtension,
@@ -71,14 +73,14 @@ export function getMatchUpFormatTiming({
     policy,
   };
 
-  const averageTimes = getMatchUpAverageTimes(timingDetails);
+  const averageTimes = getMatchUpFormatAverageTimes(timingDetails);
   const averageKeys = Object.keys(averageTimes?.minutes || {});
 
   const averageMinutes =
     (averageKeys?.includes(eventType) && averageTimes.minutes[eventType]) ||
     averageTimes?.minutes?.default;
 
-  const recoveryTimes = getMatchUpRecoveryTimes({
+  const recoveryTimes = getMatchUpFormatRecoveryTimes({
     ...timingDetails,
     averageMinutes,
   });
@@ -89,173 +91,4 @@ export function getMatchUpFormatTiming({
     recoveryTimes.minutes.default;
 
   return { averageMinutes, recoveryMinutes };
-}
-
-function getMatchUpRecoveryTimes({
-  matchUpFormat,
-  categoryName,
-  categoryType,
-
-  averageMinutes,
-
-  defaultTiming,
-  tournamentScheduling,
-  eventScheduling,
-  policy,
-}) {
-  const eventRecoveryTimes =
-    eventScheduling?.matchUpRecoveryTimes &&
-    findMatchupFormatRecoveryTimes({
-      ...eventScheduling,
-      averageMinutes,
-      matchUpFormat,
-    });
-
-  const tournamentRecoveryTimes =
-    tournamentScheduling?.matchUpRecoveryTimes &&
-    findMatchupFormatRecoveryTimes({
-      ...tournamentScheduling,
-      averageMinutes,
-      matchUpFormat,
-    });
-
-  const policyRecoveryTimes =
-    policy?.matchUpRecoveryTimes &&
-    findMatchupFormatRecoveryTimes({
-      ...policy,
-      averageMinutes,
-      matchUpFormat,
-    });
-
-  const recoveryTimes = [
-    eventRecoveryTimes,
-    tournamentRecoveryTimes,
-    policyRecoveryTimes,
-    policy?.defaultTimes?.recoveryTimes,
-    defaultTiming?.recoveryTimes,
-  ]
-    .filter((f) => f)
-    .map((recoveryTimes) =>
-      recoveryTimes
-        .sort(
-          (a, b) =>
-            (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
-        )
-        .find(
-          ({ categoryTypes, categoryNames }) =>
-            (!categoryNames?.length && !categoryTypes?.length) ||
-            categoryNames?.includes(categoryName) ||
-            categoryTypes?.includes(categoryType)
-        )
-    )
-    .find((f) => f);
-
-  return recoveryTimes;
-}
-
-function getMatchUpAverageTimes({
-  matchUpFormat,
-  categoryName,
-  categoryType,
-
-  defaultTiming,
-  tournamentScheduling,
-  eventScheduling,
-  policy,
-}) {
-  const eventAverageTimes =
-    eventScheduling?.matchUpAverageTimes &&
-    findMatchupFormatAverageTimes({
-      ...eventScheduling,
-      matchUpFormat,
-    });
-
-  const tournamentAverageTimes =
-    tournamentScheduling?.matchUpAverageTimes &&
-    findMatchupFormatAverageTimes({
-      ...tournamentScheduling,
-      matchUpFormat,
-    });
-
-  const policyAverageTimes =
-    policy?.matchUpAverageTimes &&
-    findMatchupFormatAverageTimes({
-      ...policy,
-      matchUpFormat,
-    });
-
-  const averageTimes = [
-    eventAverageTimes,
-    tournamentAverageTimes,
-    policyAverageTimes,
-    policy?.defaultTimes?.averageTimes,
-    defaultTiming?.averageTimes,
-  ]
-    .filter((f) => f)
-    .map((averageTimes) =>
-      averageTimes
-        .sort(
-          (a, b) =>
-            (b.categoryNames?.length || 0) - (a.categoryNames?.length || 0)
-        )
-        .find(
-          ({ categoryTypes, categoryNames }) =>
-            (!categoryNames?.length && !categoryTypes?.length) ||
-            categoryNames?.includes(categoryName) ||
-            categoryTypes?.includes(categoryType)
-        )
-    )
-    .find((f) => f);
-
-  return averageTimes;
-}
-
-function findMatchupFormatAverageTimes({
-  matchUpAverageTimes,
-  matchUpFormat,
-} = {}) {
-  // first find all matchUpAverageTime definitions which include matchUpFormats...
-  // ... that either exactly match or start with the target matchUpFormat.
-  const codeMatches =
-    matchUpAverageTimes
-      ?.map(({ matchUpFormatCodes }) => {
-        const matching = matchUpFormatCodes?.filter((code) =>
-          code.startsWith(matchUpFormat)
-        );
-        return matching;
-      })
-      .flat()
-      .filter((f) => f)
-      // sort by length; shortest first; prioritize first match
-      .sort((a, b) => (a?.length || 0) - (b?.length || 0)) || [];
-
-  // determine if there is an exact match
-  const exactCodeMatch = codeMatches.includes(matchUpFormat);
-  // select the exact match or the shortest code which matches
-  const targetCode = exactCodeMatch ? matchUpFormat : codeMatches[0];
-  const targetDefinition = matchUpAverageTimes?.find(
-    ({ matchUpFormatCodes, averageTimes }) =>
-      matchUpFormatCodes?.find((code) => targetCode === code) && averageTimes
-  );
-  return targetDefinition?.averageTimes;
-}
-
-function findMatchupFormatRecoveryTimes({
-  matchUpRecoveryTimes,
-  averageMinutes,
-  matchUpFormat,
-} = {}) {
-  return matchUpRecoveryTimes?.find(
-    ({ matchUpFormatCodes, averageTimes, recoveryTimes }) => {
-      if (averageTimes && averageMinutes) {
-        const { greaterThan = 0, lessThan = 360 } = averageTimes;
-        if (averageMinutes > greaterThan && averageMinutes < lessThan)
-          return true;
-      }
-      const codeMatch =
-        matchUpFormatCodes?.find((code) => code.startsWith(matchUpFormat)) &&
-        recoveryTimes;
-      return codeMatch;
-    }
-  )?.recoveryTimes;
 }
