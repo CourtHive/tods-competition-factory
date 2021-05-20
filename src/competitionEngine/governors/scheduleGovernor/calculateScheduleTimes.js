@@ -28,6 +28,7 @@ export function calculateScheduleTimes({
   endTime,
   date,
 
+  defaultRecoveryMinutes = 60,
   averageMatchUpTime = 90,
   periodLength = 30,
 
@@ -95,6 +96,8 @@ export function calculateScheduleTimes({
     const { event, tournamentId } = eventDetails[eventId];
     const tournamentRecord = tournamentRecords[tournamentId];
     const { averageMinutes } = getMatchUpFormatTiming({
+      defaultAverageMinutes: averageMinutes,
+      defaultRecoveryMinutes,
       matchUpFormat,
       tournamentRecord,
       event,
