@@ -1,8 +1,8 @@
-import { isValidMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
+import { isValidMatchUpFormat } from '../../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 import {
   findEventExtension,
   findTournamentExtension,
-} from '../queryGovernor/extensionQueries';
+} from '../../queryGovernor/extensionQueries';
 import {
   findMatchupFormatAverageTimes,
   findMatchupFormatRecoveryTimes,
@@ -11,8 +11,8 @@ import {
 import {
   MISSING_TOURNAMENT_RECORD,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 export function getModifiedMatchUpFormatTiming({
   tournamentRecord,

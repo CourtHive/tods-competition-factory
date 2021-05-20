@@ -1,15 +1,15 @@
 import {
   addEventExtension,
   addTournamentExtension,
-} from '../tournamentGovernor/addRemoveExtensions';
+} from '../../tournamentGovernor/addRemoveExtensions';
 import {
   findEventExtension,
   findTournamentExtension,
-} from '../queryGovernor/extensionQueries';
+} from '../../queryGovernor/extensionQueries';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyMatchUpFormatTiming({
   tournamentRecord,

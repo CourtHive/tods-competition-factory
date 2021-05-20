@@ -1,9 +1,9 @@
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
-import { getEventMatchUpFormatTiming } from './getEventMatchUpFormatTiming';
-import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
-import { getMatchUpFormatTimingUpdate } from './getMatchUpFormatTimingUpdate';
-import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
-import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
+import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
+import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
+import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
+import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';

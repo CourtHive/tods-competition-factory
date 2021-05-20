@@ -1,14 +1,14 @@
 import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
 import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
-import { findPolicy } from '../policyGovernor/findPolicy';
+import { findPolicy } from '../../policyGovernor/findPolicy';
 import {
   findEventExtension,
   findTournamentExtension,
-} from '../queryGovernor/extensionQueries';
+} from '../../queryGovernor/extensionQueries';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 /**
  * find the policy-defined average matchUp time for a given category

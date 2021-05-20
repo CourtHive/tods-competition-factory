@@ -1,9 +1,9 @@
 import {
   findEventExtension,
   findTournamentExtension,
-} from '../queryGovernor/extensionQueries';
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+} from '../../queryGovernor/extensionQueries';
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 export function getMatchUpFormatTimingUpdate({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
