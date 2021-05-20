@@ -15,6 +15,7 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from './scheduleItems';
+import { getModifiedMatchUpFormatTiming } from './getModifiedMatchUpTiming';
 
 const scheduleGovernor = {
   assignMatchUpCourt,
@@ -32,6 +33,7 @@ const scheduleGovernor = {
   getMatchUpFormatTiming,
   getEventMatchUpFormatTiming,
   modifyMatchUpFormatTiming,
+  getModifiedMatchUpFormatTiming,
 
   removeMatchUpCourtAssignment,
 

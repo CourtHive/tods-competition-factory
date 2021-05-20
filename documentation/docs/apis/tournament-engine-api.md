@@ -1320,6 +1320,20 @@ const {
 
 ---
 
+## getModifiedMatchUpFormatTiming
+
+Returns `averageTimes` and `recoveryTimes` configuration objects for specified `matchUpFormat`. Useful before calling `modifyMatchUpFormatTiming` to preserve existing modifications.
+
+```js
+const { matchUpFormat, averageTimes, recoveryTimes } =
+  tournamentEngine.getModifiedMatchUpFormatTiming({
+    matchUpFormat, // TODS matchUpFormat code
+    event, // optional - include event in scope for search
+  });
+```
+
+---
+
 ## getPairedParticipant
 
 Returns the `{ participantType: PAIR }`, if any, which contains the specified `individualParticipantIds`.
@@ -1587,6 +1601,16 @@ const {
   venueAbbreviation,
   courtsInfo, // array of courts and associated attributes
 } = tournamentEngine.getVenueData({ venueId });
+```
+
+---
+
+## isValidMatchUpFormat
+
+Returns boolean indicating whether matchUpFormat code is valid.
+
+```js
+const valid = tournamentEngine.isValidMatchUpFormat(matchUpFormat);
 ```
 
 ---

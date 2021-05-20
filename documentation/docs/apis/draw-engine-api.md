@@ -836,6 +836,16 @@ const structureIsComplete = drawEngine.isCompletedStructure({
 
 ---
 
+## isValidMatchUpFormat
+
+Returns boolean indicating whether matchUpFormat code is valid.
+
+```js
+const valid = drawEngine.isValidMatchUpFormat(matchUpFormat);
+```
+
+---
+
 ## matchUpActions
 
 Return an array of all validActions for a specific matchUp.

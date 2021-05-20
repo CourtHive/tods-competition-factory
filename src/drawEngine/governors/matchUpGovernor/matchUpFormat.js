@@ -1,4 +1,5 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 
@@ -12,7 +13,6 @@ import {
 import { TEAM } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
-import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 
 export function setMatchUpFormat(props) {
   const errors = [];
