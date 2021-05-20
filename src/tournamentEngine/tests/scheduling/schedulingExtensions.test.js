@@ -87,5 +87,8 @@ it.each([
       categoryName: JUNIOR,
     });
     expect(result.averageMinutes).toEqual(127);
+
+    result = tournamentEngine.getModifiedMatchUpFormatTiming({ matchUpFormat });
+    expect(result.averageTimes.length).toEqual(1);
   }
 );
