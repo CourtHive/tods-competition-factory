@@ -96,7 +96,7 @@ export function calculateScheduleTimes({
     const { event, tournamentId } = eventDetails[eventId];
     const tournamentRecord = tournamentRecords[tournamentId];
     const { averageMinutes } = getMatchUpFormatTiming({
-      defaultAverageMinutes: averageMinutes,
+      defaultAverageMinutes: averageMatchUpTime,
       defaultRecoveryMinutes,
       matchUpFormat,
       tournamentRecord,

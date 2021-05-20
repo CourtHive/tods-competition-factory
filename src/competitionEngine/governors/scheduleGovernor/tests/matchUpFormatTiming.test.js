@@ -1,5 +1,6 @@
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 
 // categoryTypes
 const JUNIOR = 'JUNIOR';
@@ -20,6 +21,9 @@ test.each([competitionEngineSync])(
       });
     competitionEngine.setState([firstRecord, secondRecord]);
 
+    let { tournamentRecords } = competitionEngine.getState();
+    const tournamentIds = Object.keys(tournamentRecords);
+
     const matchUpFormat = 'SET3-S:6/TB7';
     let result = competitionEngine.findMatchUpFormatTiming({
       matchUpFormat,
@@ -34,19 +38,26 @@ test.each([competitionEngineSync])(
     });
     expect(result.success).toEqual(true);
 
-    const { tournamentRecords } = competitionEngine.getState();
-    const tournamentIds = Object.keys(tournamentRecords);
+    ({ tournamentRecords } = competitionEngine.getState());
     expect(tournamentIds.length).toEqual(2);
+
     tournamentIds.forEach((tournamentId) => {
+      const tournamentRecord = tournamentRecords[tournamentId];
       expect(
-        tournamentRecords[tournamentId].extensions[0].value.matchUpAverageTimes
-          .length
+        tournamentRecord.extensions[0].value.matchUpAverageTimes.length
       ).toEqual(1);
+      tournamentEngine.setState(tournamentRecord);
+      result = tournamentEngine.getMatchUpFormatTiming({
+        matchUpFormat,
+        categoryType: JUNIOR,
+      });
+      expect(result.averageMinutes).toEqual(127);
     });
 
-    competitionEngine.findMatchUpFormatTiming({
+    result = competitionEngine.findMatchUpFormatTiming({
       matchUpFormat,
       categoryType: JUNIOR,
     });
+    expect(result.averageMinutes).toEqual(127);
   }
 );

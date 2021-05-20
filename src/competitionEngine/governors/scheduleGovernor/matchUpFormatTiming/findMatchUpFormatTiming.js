@@ -37,6 +37,8 @@ export function findMatchUpFormatTiming({
     timing = getMatchUpFormatTiming({
       tournamentRecord,
       event,
+
+      matchUpFormat,
       categoryName,
       categoryType,
       eventType,
