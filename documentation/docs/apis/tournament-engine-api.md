@@ -1688,6 +1688,19 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyEventMatchUpFormatTiming
+
+```js
+tournamentEngine.modifyEventMatchUpFormatTiming({
+  eventId,
+  matchUpFormat,
+  averageMinutes,
+  recoveryMinutes,
+});
+```
+
+---
+
 ## modifyMatchUpFormatTiming
 
 ```js
