@@ -1,5 +1,5 @@
-import { generateTournamentRecord } from '../../../../mocksEngine/generators/generateTournamentRecord';
 import competitionEngineSync from '../../../sync';
+import mocksEngine from '../../../../mocksEngine';
 
 test.each([competitionEngineSync])(
   'it can return all competition venues',
@@ -8,15 +8,17 @@ test.each([competitionEngineSync])(
       { venueName: 'venue 1', courtsCount: 4 },
       { venueName: 'venue 2', courtsCount: 8 },
     ];
-    const { tournamentRecord: firstRecord } = generateTournamentRecord({
-      venueProfiles,
-      startDate: '2022-01-01',
-      endDate: '2022-01-07',
-    });
-    const { tournamentRecord: secondRecord } = generateTournamentRecord({
-      startDate: '2022-01-02',
-      endDate: '2022-01-10',
-    });
+    const { tournamentRecord: firstRecord } =
+      mocksEngine.generateTournamentRecord({
+        venueProfiles,
+        startDate: '2022-01-01',
+        endDate: '2022-01-07',
+      });
+    const { tournamentRecord: secondRecord } =
+      mocksEngine.generateTournamentRecord({
+        startDate: '2022-01-02',
+        endDate: '2022-01-10',
+      });
     competitionEngine.setState([firstRecord, secondRecord]);
 
     let { startDate, endDate } = competitionEngine.getCompetitionDateRange();
