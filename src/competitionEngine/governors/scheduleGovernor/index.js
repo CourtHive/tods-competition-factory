@@ -1,3 +1,5 @@
+import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
+import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
@@ -29,6 +31,8 @@ const scheduleGovernor = {
 
   findMatchUpFormatTiming,
   modifyMatchUpFormatTiming,
+  getMatchUpFormatTimingUpdate,
+  getEventMatchUpFormatTiming,
 
   getSchedulingProfile,
   setSchedulingProfile,

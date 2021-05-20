@@ -9,11 +9,19 @@ const JUNIOR = 'JUNIOR';
 test.each([competitionEngineSync])(
   'it can find matchUpFormat timing across multiple tournament records',
   async (competitionEngine) => {
-    const { tournamentRecord: firstRecord } =
-      mocksEngine.generateTournamentRecord({
-        startDate: '2022-01-01',
-        endDate: '2022-01-07',
-      });
+    const drawProfiles = [
+      {
+        drawSize: 8,
+      },
+    ];
+    const {
+      tournamentRecord: firstRecord,
+      eventIds: [eventId],
+    } = mocksEngine.generateTournamentRecord({
+      drawProfiles,
+      startDate: '2022-01-01',
+      endDate: '2022-01-07',
+    });
     const { tournamentRecord: secondRecord } =
       mocksEngine.generateTournamentRecord({
         startDate: '2022-01-02',
@@ -59,5 +67,14 @@ test.each([competitionEngineSync])(
       categoryType: JUNIOR,
     });
     expect(result.averageMinutes).toEqual(127);
+
+    result = competitionEngine.getMatchUpFormatTimingUpdate();
+    expect(result.methods.length).toEqual(2);
+
+    result = competitionEngine.getEventMatchUpFormatTiming({
+      eventId,
+      matchUpFormats: [matchUpFormat],
+    });
+    console.log(result);
   }
 );
