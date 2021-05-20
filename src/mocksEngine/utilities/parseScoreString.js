@@ -9,7 +9,7 @@ export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
 
   function parseSet({ set, setNumber }) {
     const matchTiebreak =
-      set.startsWith('[') &&
+      set?.startsWith('[') &&
       set
         .split('[')[1]
         .split(']')[0]
