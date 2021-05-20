@@ -47,21 +47,23 @@ export function getEventMatchUpFormatTiming({
   );
 
   const eventMatchUpFormatTiming = relevantMatchUpFormats.map(
-    ({ matchUpFormat, description }) =>
-      Object.assign(
+    (matchUpFormat) => {
+      const timing = getMatchUpFormatTiming({
+        tournamentRecord,
+        matchUpFormat,
+        categoryName,
+        categoryType,
+        eventType,
+        event,
+      });
+      return Object.assign(
         {},
         {
-          ...getMatchUpFormatTiming({
-            tournamentRecord,
-            matchUpFormat,
-            categoryName,
-            categoryType,
-            eventType,
-          }),
-          description,
+          ...timing,
           matchUpFormat,
         }
-      )
+      );
+    }
   );
 
   return { eventMatchUpFormatTiming };

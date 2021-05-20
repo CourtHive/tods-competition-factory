@@ -161,3 +161,98 @@ it('can modify timing for multiple matchUpFormat codes', () => {
   ({ methods } = tournamentEngine.getMatchUpFormatTimingUpdate());
   expect(methods.length).toEqual(2);
 });
+
+it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  tournamentEngine.attachPolicy({
+    policyDefinition: POLICY_SCHEDULING_USTA,
+  });
+
+  let matchUpFormat = 'SET3-S:6/TB7';
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat,
+    averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
+  });
+
+  let result = tournamentEngine.getMatchUpFormatTiming({
+    matchUpFormat,
+    categoryType: JUNIOR,
+  });
+  expect(result.averageMinutes).toEqual(127);
+
+  matchUpFormat = 'SET1-S:4/TB10';
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat,
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 137 } }],
+  });
+
+  result = tournamentEngine.getMatchUpFormatTiming({
+    matchUpFormat,
+    categoryType: ADULT,
+  });
+  expect(result.averageMinutes).toEqual(137);
+
+  matchUpFormat = 'SET3-S:4/TB7';
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat,
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 107 } }],
+  });
+
+  result = tournamentEngine.getMatchUpFormatTiming({
+    matchUpFormat,
+    categoryType: ADULT,
+  });
+  expect(result.averageMinutes).toEqual(107);
+
+  // now make a modification to a specific event
+  matchUpFormat = 'SET1-S:6/TB12';
+  tournamentEngine.modifyMatchUpFormatTiming({
+    eventId,
+    matchUpFormat,
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 107 } }],
+  });
+
+  result = tournamentEngine.getMatchUpFormatTiming({
+    eventId,
+    matchUpFormat,
+    categoryType: ADULT,
+  });
+  expect(result.averageMinutes).toEqual(107);
+
+  let { eventMatchUpFormatTiming } =
+    tournamentEngine.getEventMatchUpFormatTiming({
+      eventId,
+      categoryType: ADULT,
+      matchUpFormats: [
+        'SET1-S:4/TB10',
+        'SET1-S:6/TB12',
+        'SET3-S:4/TB7',
+        'SET3-S:6/TB7',
+      ],
+    });
+  expect(
+    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
+  ).toEqual([137, 107, 107, 120]);
+
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+    categoryType: JUNIOR,
+    matchUpFormats: [
+      'SET1-S:4/TB10',
+      'SET1-S:6/TB12',
+      'SET3-S:4/TB7',
+      'SET3-S:6/TB7',
+    ],
+  }));
+  expect(
+    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
+  ).toEqual([90, 90, 60, 127]);
+});
