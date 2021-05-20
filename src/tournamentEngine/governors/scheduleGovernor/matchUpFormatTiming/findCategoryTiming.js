@@ -4,7 +4,7 @@ export function findCategoryTiming({
   timesBlockArray,
 }) {
   return timesBlockArray
-    .filter((f) => f)
+    .filter((f) => Array.isArray(f))
     .map((times) =>
       times
         .sort(

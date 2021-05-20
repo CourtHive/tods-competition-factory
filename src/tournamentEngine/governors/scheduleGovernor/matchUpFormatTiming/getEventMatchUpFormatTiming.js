@@ -6,6 +6,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
+import { isValidMatchUpFormat } from '../../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
@@ -25,13 +26,18 @@ export function getEventMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
+  let matchUpFormatDefinitions;
   if (!matchUpFormats) {
     const { policy } = findPolicy({
+      policyType: POLICY_TYPE_SCORING,
       tournamentRecord,
       event,
-      policyType: POLICY_TYPE_SCORING,
     });
-    matchUpFormats = policy?.matchUpFormats || [];
+    matchUpFormatDefinitions = policy?.matchUpFormats || [];
+  } else {
+    matchUpFormatDefinitions = matchUpFormats
+      .filter(isValidMatchUpFormat)
+      .map((matchUpFormat) => ({ matchUpFormat }));
   }
 
   const { eventType, eventId, category } = event;
@@ -39,15 +45,8 @@ export function getEventMatchUpFormatTiming({
 
   if (!eventId) return { error: MISSING_EVENT };
 
-  const relevantMatchUpFormats = matchUpFormats.filter(
-    ({ categoryNames, categoryTypes }) =>
-      (!categoryNames?.length && !categoryTypes?.length) ||
-      categoryNames?.includes(categoryName) ||
-      categoryTypes?.includes(categoryType)
-  );
-
-  const eventMatchUpFormatTiming = relevantMatchUpFormats.map(
-    (matchUpFormat) => {
+  const eventMatchUpFormatTiming = matchUpFormatDefinitions.map(
+    ({ matchUpFormat, description }) => {
       const timing = getMatchUpFormatTiming({
         tournamentRecord,
         matchUpFormat,
@@ -60,6 +59,7 @@ export function getEventMatchUpFormatTiming({
         {},
         {
           ...timing,
+          description,
           matchUpFormat,
         }
       );
