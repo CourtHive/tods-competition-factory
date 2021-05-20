@@ -1296,6 +1296,16 @@ const { averageMinutes, recoveryMinutes } =
 
 ---
 
+## getMatchUpFormatTimingUpdate
+
+Returns an array of methods/params necessary for updating a remote instance of a tournamentRecord to match a local instance. This method enables multiple "provisional" updates to be made on a local document without contacting a server; support deployments where a server is considered "master".
+
+```js
+const { methods } = tournamentEngine.getMatchUpFormatTimingUpdate();
+```
+
+---
+
 ## getMatchUpScheduleDetails
 
 Returns the latest values for all `matchUp.timeItems`, along with calculated values, that relate to the scheduling of a `matchUp`.

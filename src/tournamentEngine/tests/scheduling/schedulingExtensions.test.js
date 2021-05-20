@@ -3,9 +3,11 @@ import tournamentEngine from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { SINGLES } from '../../../constants/eventConstants';
+import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
 
 // categoryTypes
 const JUNIOR = 'JUNIOR';
+const ADULT = 'ADULT';
 
 it.each([
   {
@@ -73,7 +75,7 @@ it.each([
 
     result = tournamentEngine.modifyMatchUpFormatTiming({
       matchUpFormat,
-      averageTimes: [{ categoryNames: [JUNIOR], minutes: { default: 127 } }],
+      averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
     });
     expect(result.success).toEqual(true);
 
@@ -84,7 +86,7 @@ it.each([
 
     result = tournamentEngine.getMatchUpFormatTiming({
       matchUpFormat,
-      categoryName: JUNIOR,
+      categoryType: JUNIOR,
     });
     expect(result.averageMinutes).toEqual(127);
 
@@ -92,3 +94,70 @@ it.each([
     expect(result.averageTimes.length).toEqual(1);
   }
 );
+
+it('can modify timing for multiple matchUpFormat codes', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  tournamentEngine.attachPolicy({
+    policyDefinition: POLICY_SCHEDULING_USTA,
+  });
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat: 'SET3-S:6/TB7',
+    averageTimes: [{ categoryTypes: [JUNIOR], minutes: { default: 127 } }],
+  });
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat: 'SET1-S:4/TB10',
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 137 } }],
+  });
+  let { extension } = tournamentEngine.findTournamentExtension({
+    name: SCHEDULE_TIMING,
+  });
+
+  expect(extension.value.matchUpAverageTimes.length).toEqual(2);
+
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat: 'SET1-S:4/TB10',
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 117 } }],
+  });
+
+  ({ extension } = tournamentEngine.findTournamentExtension({
+    name: SCHEDULE_TIMING,
+  }));
+  expect(extension.value.matchUpAverageTimes.length).toEqual(2);
+
+  tournamentEngine.modifyMatchUpFormatTiming({
+    matchUpFormat: 'SET3-S:4/TB7',
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 107 } }],
+  });
+
+  ({ extension } = tournamentEngine.findTournamentExtension({
+    name: SCHEDULE_TIMING,
+  }));
+  expect(extension.value.matchUpAverageTimes.length).toEqual(3);
+
+  let { methods } = tournamentEngine.getMatchUpFormatTimingUpdate();
+  expect(methods.length).toEqual(1);
+
+  // now make a modification to a specific event
+  tournamentEngine.modifyMatchUpFormatTiming({
+    eventId,
+    matchUpFormat: 'SET1-S:6/TB12',
+    averageTimes: [{ categoryTypes: [ADULT], minutes: { default: 107 } }],
+  });
+
+  ({ extension } = tournamentEngine.findEventExtension({
+    eventId,
+    name: SCHEDULE_TIMING,
+  }));
+  expect(extension.value.matchUpAverageTimes.length).toEqual(1);
+
+  ({ methods } = tournamentEngine.getMatchUpFormatTimingUpdate());
+  expect(methods.length).toEqual(2);
+});
