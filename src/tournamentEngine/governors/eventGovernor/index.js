@@ -70,10 +70,18 @@ import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { addFlight } from './addFlight';
+import {
+  setEventDates,
+  setEventEndDate,
+  setEventStartDate,
+} from './setEventDates';
 
 const eventGovernor = {
   addEvent,
   deleteEvents,
+  setEventDates,
+  setEventStartDate,
+  setEventEndDate,
 
   autoSeeding,
   removeSeeding,

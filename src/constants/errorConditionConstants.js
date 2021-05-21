@@ -94,6 +94,7 @@ export const MISSING_DATE_AVAILABILITY = 'Missing dateAvailability';
 // Javascript constant for Date() function
 export const INVALID_DATE = 'Invalid Date';
 export const INVALID_TIME = 'Invalid time';
+export const INVALID_TOURNAMENT_DATES = 'Invalid tournament dates';
 export const INVALID_TIME_ZONE = 'Invalid Time Zone';
 
 export const INVALID_GAME_SCORES = 'Invalid game scores';
@@ -232,6 +233,7 @@ export const errorConditionConstants = {
   INVALID_STOP_TIME,
   INVALID_TIME,
   INVALID_TIME_ITEM,
+  INVALID_TOURNAMENT_DATES,
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,

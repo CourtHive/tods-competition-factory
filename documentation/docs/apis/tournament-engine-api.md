@@ -2127,6 +2127,36 @@ tournamentEngine.setEventDefaultMatchUpFormat({
 
 ---
 
+## setEventDates
+
+Where startDate and/or endDate are strings 'YYYY-MM-DD'.
+
+```js
+tournamentEngine.setEventDates({ eventId, startDate, endDate });
+```
+
+---
+
+## setEventEndDate
+
+Where endDate is a string 'YYYY-MM-DD'.
+
+```js
+tournamentEngine.setEventEndDate({ eventId, endDate });
+```
+
+---
+
+## setEventStartDate
+
+Where startDate is a string 'YYYY-MM-DD'.
+
+```js
+tournamentEngine.setEventStartDate({ eventId, startDate });
+```
+
+---
+
 ## setMatchUpStatus
 
 Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.

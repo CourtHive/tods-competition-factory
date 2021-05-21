@@ -1,4 +1,4 @@
-import { validDateString } from '../fixtures/validations/regex';
+import { dateValidation, validDateString } from '../fixtures/validations/regex';
 import {
   INVALID_DATE,
   INVALID_TIME_ZONE,
@@ -183,13 +183,21 @@ export function extractTime(dateString) {
 }
 
 export function extractDate(dateString) {
-  return isISODateString(dateString) ? dateString.split('T')[0] : undefined;
+  return isISODateString(dateString) || dateValidation.test(dateString)
+    ? dateString.split('T')[0]
+    : undefined;
 }
 
 // returns 2020-01-01T00:00:00.000Z
 export function isoDateString(date) {
   const formattedDate = formatDate(date);
   return new Date(formattedDate).toISOString();
+}
+
+export function dateStringDaysChange(dateString, daysChange) {
+  const date = new Date(dateString);
+  date.setDate(date.getDate() + daysChange);
+  return extractDate(date.toISOString());
 }
 
 function splitTime(value) {
