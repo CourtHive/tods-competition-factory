@@ -1,3 +1,4 @@
+import { validDateString } from '../fixtures/validations/regex';
 import {
   INVALID_DATE,
   INVALID_TIME_ZONE,
@@ -21,6 +22,10 @@ export function isDateObject(value) {
     const datePrototype = Object.prototype.toString.call(value);
     return datePrototype === '[object Date]';
   }
+}
+
+export function isValidDateString(scheduleDate) {
+  return isISODateString(scheduleDate) || validDateString.test(scheduleDate);
 }
 
 export function DateHHMM(date) {
