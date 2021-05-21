@@ -72,7 +72,7 @@ export function modifyEventMatchUpFormatTiming({
     tournamentRecord,
     event,
     matchUpFormat,
-    averageTimes: newAverageTimes,
-    recoveryTimes: newRecoveryTimes,
+    averageTimes: averageMinutes && newAverageTimes,
+    recoveryTimes: recoveryMinutes && newRecoveryTimes,
   });
 }
