@@ -1,6 +1,5 @@
 import { getCompetitionVenues } from '../../getters/venuesAndCourtsGetter';
-import { isISODateString, sameDay } from '../../../utilities/dateTime';
-import { validDateString } from '../../../fixtures/validations/regex';
+import { isValidDateString, sameDay } from '../../../utilities/dateTime';
 import {
   addExtension,
   findExtension,
@@ -12,6 +11,7 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
+import { validSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -78,36 +78,10 @@ export function isValidSchedulingProfile({
   tournamentRecords,
   schedulingProfile,
 }) {
-  if (!Array.isArray(schedulingProfile)) return false;
-
   const { venueIds } = getCompetitionVenues({ tournamentRecords });
-  const isValid = schedulingProfile.every((dateSchedule) => {
-    const { scheduleDate, venues } = dateSchedule;
-    if (!isValidDateString(scheduleDate)) {
-      return false;
-    }
-    const validVenues = venues.every((venueProfile) => {
-      const { venueId, rounds } = venueProfile;
-      if (typeof venueId !== 'string') {
-        return false;
-      }
-      if (!Array.isArray(rounds)) {
-        return false;
-      }
-      if (!venueIds.includes(venueId)) {
-        return false;
-      }
-      return true;
-    });
-    return validVenues;
-  });
-  return isValid;
+  return validSchedulingProfile({ venueIds, schedulingProfile });
 }
 
 export function isValidSchedulingRound(/*{tournamentRecords, round}*/) {
   return true;
-}
-
-function isValidDateString(scheduleDate) {
-  return isISODateString(scheduleDate) || validDateString.test(scheduleDate);
 }

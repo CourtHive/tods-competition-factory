@@ -19,6 +19,11 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from './scheduleItems';
+import {
+  getSchedulingProfile,
+  isValidSchedulingProfile,
+  setSchedulingProfile,
+} from './schedulingProfile';
 
 const scheduleGovernor = {
   assignMatchUpCourt,
@@ -40,6 +45,10 @@ const scheduleGovernor = {
   modifyEventMatchUpFormatTiming,
   removeEventMatchUpFormatTiming,
   getMatchUpFormatTimingUpdate,
+
+  isValidSchedulingProfile,
+  setSchedulingProfile,
+  getSchedulingProfile,
 
   removeMatchUpCourtAssignment,
 
