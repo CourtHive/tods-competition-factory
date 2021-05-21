@@ -1,12 +1,15 @@
+import { isValidMatchUpFormat } from '../../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
+import { findEventExtension } from '../../queryGovernor/extensionQueries';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findPolicy } from '../../policyGovernor/findPolicy';
+import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { isValidMatchUpFormat } from '../../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
@@ -26,18 +29,37 @@ export function getEventMatchUpFormatTiming({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
-  let matchUpFormatDefinitions;
+  let matchUpFormatDefinitions = [];
   if (!matchUpFormats) {
     const { policy } = findPolicy({
       policyType: POLICY_TYPE_SCORING,
       tournamentRecord,
       event,
     });
-    matchUpFormatDefinitions = policy?.matchUpFormats || [];
+    if (policy?.matchUpFormats) {
+      matchUpFormatDefinitions = policy?.matchUpFormats;
+    } else {
+      const { extension } = findEventExtension({
+        event,
+        name: SCHEDULE_TIMING,
+      });
+      if (extension?.value) {
+        matchUpFormatDefinitions = unique(
+          [
+            ...(extension.value.matchUpAverageTimes || []).map(
+              (at) => at.matchUpFormatCodes
+            ),
+            ...(extension.value.matchUpRecoveryTimes || []).map(
+              (at) => at.matchUpFormatCodes
+            ),
+          ].flat()
+        ).map((matchUpFormat) => ({ matchUpFormat }));
+      }
+    }
   } else {
-    matchUpFormatDefinitions = matchUpFormats
-      .filter(isValidMatchUpFormat)
-      .map((matchUpFormat) => ({ matchUpFormat }));
+    matchUpFormatDefinitions = unique(
+      matchUpFormats.filter(isValidMatchUpFormat)
+    ).map((matchUpFormat) => ({ matchUpFormat }));
   }
 
   const { eventType, eventId, category } = event;
