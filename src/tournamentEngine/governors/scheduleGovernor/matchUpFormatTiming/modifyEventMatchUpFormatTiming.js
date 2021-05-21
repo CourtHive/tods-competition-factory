@@ -22,46 +22,36 @@ export function modifyEventMatchUpFormatTiming({
   if (!isValidMatchUpFormat(matchUpFormat)) return { error: INVALID_VALUES };
   if (!event) return { error: MISSING_EVENT };
 
-  const { averageTimes, recoveryTimes } = getModifiedMatchUpFormatTiming({
-    tournamentRecord,
-    matchUpFormat,
-    event,
-  });
+  const { averageTimes = [], recoveryTimes = [] } =
+    getModifiedMatchUpFormatTiming({
+      tournamentRecord,
+      matchUpFormat,
+      event,
+    });
 
   const category = event.category;
-  const categoryName = category.categoryName || category.ageCategory;
+  const categoryName = category?.categoryName || category?.ageCategory;
   const isDoubles = event.eventType === 'DOUBLES';
 
   let currentAverageTime = { categoryNames: [categoryName], minutes: {} };
   let currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
 
-  const newAverageTimes = (averageTimes || [])
-    .map((at) => {
-      if (at.categoryNames.includes(categoryName)) {
-        at.categoryNames = at.categoryNames.filter((c) => c !== categoryName);
-        currentAverageTime = {
-          minutes: at.minutes,
-          categoryNames: [categoryName],
-        };
-        if (!at.categoryNames.length) return;
-      }
-      return at;
-    })
-    .filter((f) => f);
+  const newTiming = (timing) => {
+    if (timing.categoryNames.includes(categoryName)) {
+      timing.categoryNames = timing.categoryNames.filter(
+        (c) => c !== categoryName
+      );
+      currentAverageTime = {
+        minutes: timing.minutes,
+        categoryNames: [categoryName],
+      };
+      if (!timing.categoryNames.length) return;
+    }
+    return timing;
+  };
 
-  const newRecoveryTimes = (recoveryTimes || [])
-    .map((at) => {
-      if (at.categoryNames.includes(categoryName)) {
-        at.categoryNames = at.categoryNames.filter((c) => c !== categoryName);
-        currentRecoveryTime = {
-          minutes: at.minutes,
-          categoryNames: [categoryName],
-        };
-        if (!at.categoryNames.length) return;
-      }
-      return at;
-    })
-    .filter((f) => f);
+  const newAverageTimes = averageTimes.map(newTiming).filter((f) => f);
+  const newRecoveryTimes = recoveryTimes.map(newTiming).filter((f) => f);
 
   if (averageMinutes) {
     Object.assign(currentAverageTime.minutes, {
