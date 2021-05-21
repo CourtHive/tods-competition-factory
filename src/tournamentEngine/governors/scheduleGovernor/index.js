@@ -1,4 +1,5 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
+import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEventMatchUpFormatTiming';
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
@@ -37,6 +38,7 @@ const scheduleGovernor = {
   getModifiedMatchUpFormatTiming,
   getEventMatchUpFormatTiming,
   modifyEventMatchUpFormatTiming,
+  removeEventMatchUpFormatTiming,
   getMatchUpFormatTimingUpdate,
 
   removeMatchUpCourtAssignment,

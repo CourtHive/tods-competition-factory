@@ -2005,6 +2005,14 @@ tournamentEngine.removeEventExtension({ eventId, name });
 
 ---
 
+## removeEventMatchUpFormatTiming
+
+```js
+tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
+```
+
+---
+
 ## removeIndividualParticipantIds
 
 Remove an array of individualParticipantIds from a grouping participant [TEAM, GROUP]
