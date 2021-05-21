@@ -30,7 +30,7 @@ export function modifyEventMatchUpFormatTiming({
     });
 
   const category = event.category;
-  const categoryName = category?.categoryName || category?.ageCategory;
+  const categoryName = category?.categoryName || category?.ageCategoryCode;
   const isDoubles = event.eventType === 'DOUBLES';
 
   let currentAverageTime = { categoryNames: [categoryName], minutes: {} };

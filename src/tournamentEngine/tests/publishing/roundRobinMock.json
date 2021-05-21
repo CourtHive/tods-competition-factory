@@ -255,7 +255,7 @@
     "_id": {
       "$oid": "5f631bc328e3f86774f6d0de"
     },
-    "ageCategory": "U18",
+    "ageCategoryCode": "U18",
     "categoryName": "U18",
     "type": "AGE",
     "extensions": [],
