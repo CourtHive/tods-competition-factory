@@ -36,7 +36,7 @@ export function getDrawPositionsRanges({
     {},
     ...(roundNumbers || []).map((roundNumber) => {
       const { matchUpsCount } = roundProfile[roundNumber];
-      const { drawPositions: firstRoundDrawPositions } = roundProfile[1];
+      const firstRoundDrawPositions = roundProfile[1]?.drawPositions || [];
       const firstRoundDrawPositionsChunks = chunkArray(
         firstRoundDrawPositions,
         firstRoundDrawPositions.length / matchUpsCount

@@ -24,7 +24,7 @@ export function getOrderedDrawPositions({
     targetRoundProfile?.pairedDrawPositions.find(
       (pair) =>
         intersection(
-          pair,
+          pair || [],
           drawPositions.filter((f) => f)
         ).length
     ) || unassignedDrawPositions;
