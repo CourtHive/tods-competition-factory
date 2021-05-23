@@ -10,6 +10,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
+import { tournament } from '../tests/integration/setStateGetState/tournament';
 
 export function allTournamentMatchUps({
   tournamentRecord,
@@ -32,7 +33,8 @@ export function allTournamentMatchUps({
     tournamentRecord,
   });
 
-  const context = { tournamentId };
+  const context = { tournamentId, contextEndDate: tournament.endDate };
+
   const matchUps = events
     .map(
       (event) =>
@@ -109,7 +111,9 @@ export function allEventMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
-  const { eventId, eventName, category, gender, matchUpFormat } = event;
+  const { eventId, eventName, endDate, category, gender, matchUpFormat } =
+    event;
+
   const additionalContext = Object.assign({}, context, {
     eventId,
     eventName,
@@ -117,6 +121,8 @@ export function allEventMatchUps({
     gender,
     matchUpFormat,
   });
+  if (endDate) additionalContext.contextEndDate = endDate;
+
   participants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const drawDefinitions = event.drawDefinitions || [];
@@ -206,9 +212,12 @@ export function eventMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
-  const { eventId, eventName } = event;
+  const { eventId, eventName, endDate } = event;
+
   const context = { eventId, eventName };
-  if (tournamentId) Object.assign(context, { tournamentId });
+  if (endDate) context.contextEndDate = endDate;
+  if (tournamentId) context.tournamentId = tournamentId;
+
   const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
 
@@ -256,9 +265,12 @@ export function drawMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
-  const { eventId, eventName } = event;
+  const { eventId, eventName, endDate } = event;
+
   const context = { eventId, eventName };
-  if (tournamentId) Object.assign(context, { tournamentId });
+  if (endDate) context.contextEndDate = endDate;
+  if (tournamentId) context.tournamentId = tournamentId;
+
   const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   return getDrawMatchUps({
