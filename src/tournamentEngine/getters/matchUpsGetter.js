@@ -10,7 +10,6 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { tournament } from '../tests/integration/setStateGetState/tournament';
 
 export function allTournamentMatchUps({
   tournamentRecord,
@@ -33,7 +32,7 @@ export function allTournamentMatchUps({
     tournamentRecord,
   });
 
-  const context = { tournamentId, contextEndDate: tournament.endDate };
+  const context = { tournamentId, contextEndDate: tournamentRecord.endDate };
 
   const matchUps = events
     .map(
