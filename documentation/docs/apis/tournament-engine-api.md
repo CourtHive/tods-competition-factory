@@ -1544,7 +1544,7 @@ participantFilters imlemented: eventIds, participantTypes, participantRoles, sig
 
 ## getTournamentPersons
 
-Returns **deepCopies** of persons extracted from tournament participants.
+Returns **deepCopies** of persons extracted from tournament participants. Each person includes an array of `participantIds` from which person data was retrieved.
 
 ```js
 const { tournamentPersons } = tournamentEngine.getTournamentPersons({
