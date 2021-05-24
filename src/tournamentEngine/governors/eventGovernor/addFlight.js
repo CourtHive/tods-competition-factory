@@ -51,14 +51,15 @@ export function addFlight({
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
   const flight = {
-    stage,
     drawName,
-    drawSize,
     drawEntries,
     flightNumber,
-    qualifyingPositions,
     drawId: drawId || UUID(),
   };
+
+  if (stage) flight.drawSize = stage;
+  if (drawSize) flight.drawSize = drawSize;
+  if (qualifyingPositions) flight.qualifyingPositions = qualifyingPositions;
 
   const flights = (flightProfile?.flights || []).concat(flight);
 
