@@ -124,6 +124,25 @@ const { venues, venueIds } = competitionEngine.getCompetitionVenues();
 
 ---
 
+## getLinkedTournamentIds
+
+Returns `linkedTournamentIds` for each tournamentRecord loaded in `compeitionEngine`.
+
+Caters for the possibility that, for instance, two "linked" tournaments and one "unlinked" tournament could be loaded.
+
+```js
+const { linkedTournamentIds } = competitionEngine.getLinkedTournamentIds();
+/*
+{
+  'tournamentId-1': ['tournamentId-2', 'tournamentId-3'],
+  'tournamentId-2': ['tournamentId-1', 'touranmentId-3'],
+  'tournamentId-3': ['tournamentId-1', 'tournamentId-2']
+}
+*/
+```
+
+---
+
 ## getState
 
 Returns a deep copy of the current competitionEngine state.
@@ -160,6 +179,16 @@ const { courts, venues } = competitionEngine.getVenuesAndCourts();
 const isValid = competitionEngine.isValidSchedulingProfile({
   schedulingProfile,
 });
+```
+
+---
+
+## linkTournaments
+
+Links all tournaments currently loaded in `competitionEngine`.
+
+```js
+competitionEngine.linkTournaments();
 ```
 
 ---
@@ -311,6 +340,24 @@ Please refer to the [Subscriptions](../concepts/subscriptions) in General Concep
 ## toggleParticipantCheckInState
 
 ---
+
+## unlinkTournament
+
+Unlink the tournament specified by `tournamentId` from other tournaments loaded in `compeitionEngine`.
+
+```js
+competitionEngine.unlinkTournament({ tournamentId });
+```
+
+---
+
+## unlinkTournaments
+
+Removes links between all tournaments currently loaded in `competitionEngine`.
+
+```js
+competitionEngine.unlinkTournaments();
+```
 
 ## version
 
