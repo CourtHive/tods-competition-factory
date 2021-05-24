@@ -1,9 +1,9 @@
+import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { addExtension, removeExtension } from './competitionExtentions';
 import {
   addTournamentExtension,
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
-import { addExtension, removeExtension } from './competitionExtentions';
 
 import {
   CANNOT_LINK_SINGLE_TOURNAMENT,
@@ -12,6 +12,31 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+
+export function getLinkedTournamentIds({ tournamentRecords }) {
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+
+  const linkedTournamentIds = Object.assign(
+    {},
+    ...Object.keys(tournamentRecords).map((tournamentId) => {
+      const tournamentRecord = tournamentRecords[tournamentId];
+      const touranmentId = tournamentRecord?.tournamentId;
+
+      const { extension } = findTournamentExtension({
+        tournamentRecord,
+        name: LINKED_TOURNAMENTS,
+      });
+
+      const tournamentIds = (extension?.value?.tournamentIds || []).filter(
+        (currentTournamentId) => currentTournamentId !== touranmentId
+      );
+
+      return { [tournamentId]: tournamentIds };
+    })
+  );
+
+  return { linkedTournamentIds };
+}
 
 /**
  * Links all tournaments which are currently loaded into competitionEngine state
@@ -80,7 +105,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
     // if there is no extension return SUCCESS because no links exist
     if (!extension) return true;
 
-    let { tournamentIds: linkedTournamentIds } = extension?.value || {};
+    let linkedTournamentIds = extension?.value?.tournamentIds || [];
     // if there are no tournamentIds
     if (
       !linkedTournamentIds?.length ||

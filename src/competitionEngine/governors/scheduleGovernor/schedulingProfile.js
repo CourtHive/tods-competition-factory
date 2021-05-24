@@ -1,5 +1,11 @@
+import { validSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
+import { getEventIdsAndDrawIds } from '../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../getters/venuesAndCourtsGetter';
-import { isValidDateString, sameDay } from '../../../utilities/dateTime';
+import {
+  extractDate,
+  isValidDateString,
+  sameDay,
+} from '../../../utilities/dateTime';
 import {
   addExtension,
   findExtension,
@@ -11,7 +17,6 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
-import { validSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -20,7 +25,30 @@ export function getSchedulingProfile({ tournamentRecords }) {
     tournamentRecords,
     name: SCHEDULING_PROFILE,
   });
-  return { schedulingProfile: extension?.value || [] };
+
+  let schedulingProfile = extension?.value || [];
+
+  if (schedulingProfile.length) {
+    const { venueIds } = getCompetitionVenues({ tournamentRecords });
+    const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
+
+    const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
+      schedulingProfile,
+      venueIds,
+      eventIds,
+      drawIds,
+    });
+
+    if (modified) {
+      schedulingProfile = updatedSchedulingProfile;
+      setSchedulingProfile({
+        tournamentRecords,
+        schedulingProfile,
+      });
+    }
+  }
+
+  return { schedulingProfile };
 }
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
@@ -84,4 +112,46 @@ export function isValidSchedulingProfile({
 
 export function isValidSchedulingRound(/*{tournamentRecords, round}*/) {
   return true;
+}
+
+export function getUpdatedSchedulingProfile({
+  schedulingProfile,
+  venueIds,
+  eventIds,
+  drawIds,
+}) {
+  let modified;
+  const updatedSchedulingProfile = schedulingProfile
+    .map((dateSchedulingProfile) => {
+      const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
+      if (!scheduleDate) modified = true;
+
+      const venues = (dateSchedulingProfile?.venues || [])
+        .map((venue) => {
+          const { rounds, venueId } = venue;
+          const venueExists = venueIds.includes(venueId);
+          if (!venueExists) {
+            modified = true;
+            return;
+          }
+
+          const filteredRounds = rounds.filter((round) => {
+            return (
+              eventIds.includes(round.eventId) && drawIds.includes(round.drawId)
+            );
+          });
+          if (filteredRounds.length !== rounds.length) {
+            modified = true;
+          }
+          if (!filteredRounds.length) return;
+
+          return { venueId, rounds: filteredRounds };
+        })
+        .filter((f) => f);
+
+      return venues.length && scheduleDate && { venues, scheduleDate };
+    })
+    .filter((f) => f);
+
+  return { schedulingProfile: updatedSchedulingProfile, modified };
 }

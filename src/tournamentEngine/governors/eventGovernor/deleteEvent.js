@@ -1,3 +1,4 @@
+import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import { addTournamentTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice } from '../../../global/globalState';
 
@@ -28,6 +29,9 @@ export function deleteEvents({ tournamentRecord, eventIds }) {
     }
     return !eventIds.includes(event.eventId);
   });
+
+  // cleanup references to eventId in schedulingProfile extension
+  checkSchedulingProfile({ tournamentRecord });
 
   if (auditTrail.length) {
     addNotice({ topic: AUDIT, payload: auditTrail });

@@ -4,6 +4,7 @@ import {
   removeExtension,
 } from './competitionExtentions';
 import {
+  getLinkedTournamentIds,
   linkTournaments,
   unlinkTournament,
   unlinkTournaments,
@@ -13,9 +14,11 @@ const competitionGovernor = {
   addExtension,
   findExtension,
   removeExtension,
+
   linkTournaments,
   unlinkTournament,
   unlinkTournaments,
+  getLinkedTournamentIds,
 };
 
 export default competitionGovernor;

@@ -1,8 +1,9 @@
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
+import { intersection } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 
 import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
-import mocksEngine from '../../../../mocksEngine';
 
 const asyncCompetitionEngine = competitionEngineAsync();
 
@@ -33,6 +34,17 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     ({ tournamentIds } = await getLinkedIds(competitionEngine));
     expect(tournamentIds.length).toEqual(3);
     await checkExtensions({ tournamentIds, competitionEngine });
+
+    const { linkedTournamentIds } =
+      await competitionEngine.getLinkedTournamentIds();
+
+    const keys = Object.keys(linkedTournamentIds);
+    expect(intersection(keys, tournamentIds).length).toEqual(3);
+    keys.forEach((tournamentId) => {
+      expect(
+        intersection([tournamentId], linkedTournamentIds[tournamentId]).length
+      ).toEqual(0);
+    });
 
     const tournamentId = tournamentIds.pop();
     result = await competitionEngine.unlinkTournament({ tournamentId });

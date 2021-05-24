@@ -1,3 +1,4 @@
+import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
@@ -49,6 +50,9 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
       }
       return !drawIds.includes(drawDefinition.drawId);
     });
+
+    // cleanup references to drawId in schedulingProfile extension
+    checkSchedulingProfile({ tournamentRecord });
 
     const itemType = `${PUBLISH}.${STATUS}`;
     const publishStatus = getTimeItem({ event, itemType });
