@@ -1,4 +1,7 @@
 import { filterMatchUps } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
+import { getMatchUpFormat } from '../../../tournamentEngine/getters/getMatchUpFormat';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { getSchedulingProfile } from './schedulingProfile';
 import { extractDate } from '../../../utilities/dateTime';
@@ -21,7 +24,7 @@ export function scheduleProfileRounds({ tournamentRecords }) {
 
   for (const dateSchedulingPofile of schedulingProfile) {
     const venues = dateSchedulingPofile?.venues || [];
-    const date = extractDate(dateSchedulingPofile?.dateSchedule);
+    const date = extractDate(dateSchedulingPofile?.scheduleDate);
 
     for (const venue of venues) {
       const { rounds, venueId } = venue;
@@ -42,14 +45,38 @@ export function scheduleProfileRounds({ tournamentRecords }) {
         });
         const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
 
-        console.log({ date, matchUps });
+        const tournamentRecord = tournamentRecords[round.tournamentId];
+        const { drawDefinition, event } = findEvent({
+          tournamentRecord,
+          drawId: round.drawId,
+        });
+        const { matchUpFormat } = getMatchUpFormat({
+          tournamentRecord,
+          structureId: round.structureId,
+          drawDefinition,
+          event,
+        });
+
+        const { eventType, category } = event || {};
+        const { categoryName, ageCategoryCode } = category || {};
+        const { averageMinutes /*, recoveryMinutes */ } =
+          findMatchUpFormatTiming({
+            tournamentRecords,
+            categoryName: categoryName || ageCategoryCode,
+            tournamentId: round.tournamentId,
+            eventId: round.eventId,
+            matchUpFormat,
+            eventType,
+          });
+
         const result = scheduleMatchUps({
           tournamentRecords,
+          averageMatchUpTime: averageMinutes,
           venueIds: [venueId],
           matchUpIds,
           date,
         });
-        console.log(result);
+        if (result.error) return result;
       }
     }
   }
