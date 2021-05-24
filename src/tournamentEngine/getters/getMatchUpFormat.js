@@ -36,14 +36,14 @@ export function getMatchUpFormat({
     matchUpId,
   });
 
-  if (matchUpId && matchUpResult.error) {
+  if (matchUpId && matchUpResult?.error) {
     return matchUpResult;
-  } else if (!drawDefinition && matchUpResult.drawDefinition) {
-    drawDefinition = matchUpResult.drawDefinition;
+  } else if (!drawDefinition && matchUpResult?.drawDefinition) {
+    drawDefinition = matchUpResult?.drawDefinition;
   }
 
-  let structure = matchUpResult.structure;
-  if (structureId && !matchUpId) {
+  let structure = matchUpResult?.structure;
+  if (!structure && structureId && !matchUpId) {
     if (!drawDefinition) return { error: MISSING_DRAW_ID };
     const structureResult = findStructure({ drawDefinition, structureId });
     if (structureResult.error) return structureResult;

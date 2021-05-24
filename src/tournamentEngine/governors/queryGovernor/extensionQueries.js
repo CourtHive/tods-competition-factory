@@ -1,3 +1,4 @@
+import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
@@ -6,7 +7,6 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { findTournamentParticipant } from '../../getters/participants/participantGetter';
 
 export function findExtension({ element, name }) {
   if (!element || !name) return { error: MISSING_VALUE };

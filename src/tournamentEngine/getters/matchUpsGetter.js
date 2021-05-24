@@ -8,6 +8,7 @@ import {
 
 import {
   MATCHUP_NOT_FOUND,
+  MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
 
@@ -307,6 +308,7 @@ export function findMatchUp({
   inContext,
   nextMatchUps,
 }) {
+  if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
     const { matchUps } = allTournamentMatchUps({ tournamentRecord });
