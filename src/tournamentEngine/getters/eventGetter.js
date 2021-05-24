@@ -5,6 +5,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
@@ -43,12 +44,8 @@ export function getEvents({ tournamentRecord, context, inContext }) {
 export function findEvent({ tournamentRecord, eventId, drawId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const events = tournamentRecord?.events || [];
-  if (eventId) {
-    const event = events.reduce((event, candidate) => {
-      return candidate.eventId === eventId ? candidate : event;
-    }, undefined);
-    return { event };
-  } else if (drawId) {
+
+  if (drawId) {
     const { event, drawDefinition } = events.reduce((result, candidate) => {
       const drawDefinitions = (candidate && candidate.drawDefinitions) || [];
       const drawDefinition = drawDefinitions.reduce(
@@ -61,8 +58,14 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
     }, {});
 
     return { event, drawDefinition };
+  } else if (eventId) {
+    const event = events.reduce((event, candidate) => {
+      return candidate.eventId === eventId ? candidate : event;
+    }, undefined);
+    return { event };
   }
-  return {};
+
+  return { error: MISSING_VALUE };
 }
 
 export function getDrawDefinition({ tournamentRecord, drawId }) {
