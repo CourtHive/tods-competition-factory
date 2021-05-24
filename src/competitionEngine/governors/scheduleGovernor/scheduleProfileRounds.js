@@ -37,6 +37,7 @@ export function scheduleProfileRounds({ tournamentRecords }) {
 
         const roundMatchUps = filterMatchUps({
           matchUps,
+          processContext: true,
           ...roundMatchUpFilters,
         });
         const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
