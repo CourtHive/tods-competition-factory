@@ -3,12 +3,17 @@ import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGo
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
-import { formatDate, zeroPad } from '../../../utilities/dateTime';
+import {
+  extractDate,
+  isValidDateString,
+  zeroPad,
+} from '../../../utilities/dateTime';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_TOURNAMENT_ID,
   MISSING_MATCHUP_IDS,
+  INVALID_DATE,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -33,6 +38,7 @@ export function scheduleMatchUps(props) {
 
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
+  if (!isValidDateString) return { error: INVALID_DATE };
 
   let matchUps = props.matchUps;
   if (!matchUps) {
@@ -50,7 +56,7 @@ export function scheduleMatchUps(props) {
     tournamentRecords,
     startTime,
     endTime,
-    date,
+    date: extractDate(date),
     averageMatchUpTime,
     periodLength,
     venueIds,
@@ -110,7 +116,7 @@ export function scheduleMatchUps(props) {
             if (scheduleTime) {
               // must include date being scheduled to generate proper ISO string
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
-              const scheduledTime = `${formatDate(date)}T${formatTime}`;
+              const scheduledTime = `${extractDate(date)}T${formatTime}`;
 
               const result = addMatchUpScheduledTime({
                 drawDefinition,
