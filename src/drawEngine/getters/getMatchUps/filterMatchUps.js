@@ -20,6 +20,13 @@ export function filterMatchUps(props) {
     matchUpStatuses,
     localPerspective,
     isCollectionMatchUp,
+
+    // only applies to inContext matchUps and only when processContext boolean is true
+    processContext,
+    tournamentIds,
+    eventIds,
+    drawIds,
+    structureIds,
   } = props;
   const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
@@ -107,6 +114,27 @@ export function filterMatchUps(props) {
     if (courtIds) {
       const { courtId } = matchUpAssignedCourtId({ matchUp });
       if (!courtIds.includes(courtId)) {
+        return false;
+      }
+    }
+
+    if (processContext) {
+      if (
+        tournamentIds?.length &&
+        !tournamentIds.includes(matchUp.tournamentId)
+      ) {
+        return false;
+      }
+
+      if (eventIds?.length && !eventIds.includes(matchUp.eventId)) {
+        return false;
+      }
+
+      if (drawIds?.length && !drawIds.includes(matchUp.drawId)) {
+        return false;
+      }
+
+      if (structureIds?.length && !structureIds.includes(matchUp.structureId)) {
         return false;
       }
     }
