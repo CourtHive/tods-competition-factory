@@ -33,7 +33,7 @@ export function findMatchUpFormatTiming({
   let timing;
   tournamentIds.find((currentTournamentId) => {
     const tournamentRecord = tournamentRecords[currentTournamentId];
-    const event = eventId && findEvent({ tournamentRecord, eventId });
+    const event = eventId && findEvent({ tournamentRecord, eventId })?.event;
     timing = getMatchUpFormatTiming({
       tournamentRecord,
       event,

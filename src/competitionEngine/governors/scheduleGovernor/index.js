@@ -8,6 +8,7 @@ import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
+import { scheduleProfileRounds } from './scheduleProfileRounds';
 import { scheduleMatchUps } from './scheduleMatchUps';
 // import { getDaySchedule } from './daySchedule';
 // import { addTimeItem } from './timeItems';
@@ -21,7 +22,10 @@ import {
 const scheduleGovernor = {
   // addTimeItem,
   // getDaySchedule,
+
   scheduleMatchUps,
+  scheduleProfileRounds,
+
   matchUpScheduleChange,
   calculateScheduleTimes,
   reorderUpcomingMatchUps,

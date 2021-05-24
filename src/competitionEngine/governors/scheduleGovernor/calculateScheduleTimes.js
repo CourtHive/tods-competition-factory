@@ -126,8 +126,13 @@ export function calculateScheduleTimes({
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 
-  // if no venueIds provided and there is only one venue, use it!
-  const venueId = venues?.length === 1 ? venues[0].venueId : undefined;
+  // if a single venue specified, or only one venue available, return venueId
+  const venueId =
+    venueIds?.length === 1
+      ? venueIds[0]
+      : venues?.length === 1
+      ? venues[0].venueId
+      : undefined;
 
   return { venueId, scheduleTimes };
 }
