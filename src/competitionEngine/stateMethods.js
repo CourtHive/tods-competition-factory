@@ -36,8 +36,11 @@ export function setTournamentRecord(
   record,
   deepCopyOption = true
 ) {
-  if (typeof record !== 'object') return { error: INVALID_OBJECT };
+  if (typeof record !== 'object' || Array.isArray(record))
+    return { error: INVALID_OBJECT };
+
   if (!record.tournamentId) return { error: INVALID_VALUES };
+
   const tournamentRecord = deepCopyOption ? makeDeepCopy(record) : record;
 
   tournamentRecords[record.tournamentId] = tournamentRecord;
