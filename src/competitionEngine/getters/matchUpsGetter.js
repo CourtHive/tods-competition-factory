@@ -1,3 +1,6 @@
+import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile';
+import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
+
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import {
   allTournamentMatchUps,
@@ -38,6 +41,8 @@ export function competitionScheduleMatchUps(props) {
     ...(pendingMatchUps || []),
   ].sort((a, b) => getTime(a) - getTime(b));
 
+  const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
+
   const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
     return {
@@ -50,13 +55,13 @@ export function competitionScheduleMatchUps(props) {
   return { courtsData, completedMatchUps, dateMatchUps, venues };
 
   function getCourtMatchUps({ courtId }) {
-    return dateMatchUps
-      .filter((matchUp) => matchUp.schedule?.courtId === courtId)
-      .sort(
-        (a, b) =>
-          new Date(a.scheduledTime).getTime() -
-          new Date(b.scheduledTime).getTime()
-      );
+    const courtMatchUps = dateMatchUps.filter(
+      (matchUp) => matchUp.schedule?.courtId === courtId
+    );
+    return scheduledSortedMatchUps({
+      matchUps: courtMatchUps,
+      schedulingProfile,
+    });
   }
 
   function getTime(matchUp) {
