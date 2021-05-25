@@ -123,8 +123,11 @@ export function getUpdatedSchedulingProfile({
   let modified;
   const updatedSchedulingProfile = schedulingProfile
     .map((dateSchedulingProfile) => {
-      const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
-      if (!scheduleDate) modified = true;
+      const date = extractDate(dateSchedulingProfile?.scheduleDate);
+      if (!date) {
+        modified = true;
+        return;
+      }
 
       const venues = (dateSchedulingProfile?.venues || [])
         .map((venue) => {
@@ -143,15 +146,17 @@ export function getUpdatedSchedulingProfile({
           if (filteredRounds.length !== rounds.length) {
             modified = true;
           }
-          if (!filteredRounds.length) return;
+          if (!filteredRounds.length) {
+            return;
+          }
 
           return { venueId, rounds: filteredRounds };
         })
         .filter((f) => f);
 
-      return venues.length && scheduleDate && { venues, scheduleDate };
+      return venues.length && date && { ...dateSchedulingProfile, venues };
     })
     .filter((f) => f);
 
-  return { schedulingProfile: updatedSchedulingProfile, modified };
+  return { updatedSchedulingProfile, modified };
 }
