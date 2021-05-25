@@ -59,8 +59,16 @@ export function setState(tournamentRecords, records, deepCopyOption = true) {
       {},
       ...records.map((record) => ({ [record.tournamentId]: record }))
     );
+  } else if (records.tournamentId) {
+    records = [records];
+  } else {
+    const validRecordsObject = Object.keys(records).every(
+      (tournamentId) => records[tournamentId].tournamentId === tournamentId
+    );
+    if (!validRecordsObject) return { error: INVALID_RECORDS };
   }
 
   tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
+
   return tournamentRecords;
 }
