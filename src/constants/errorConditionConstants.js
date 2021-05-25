@@ -3,7 +3,6 @@ export const INVALID_RECORDS =
 export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
 export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
 export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
-export const CANNOT_LINK_SINGLE_TOURNAMENT = 'Cannot link single tournament';
 
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
 export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
@@ -185,7 +184,6 @@ export const NOT_IMPLEMENTED = 'Not implemented';
 export const EXISTING_PROFILE = 'Existing Profile';
 
 export const errorConditionConstants = {
-  CANNOT_LINK_SINGLE_TOURNAMENT,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,

@@ -6,7 +6,6 @@ import {
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import {
-  CANNOT_LINK_SINGLE_TOURNAMENT,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
@@ -46,19 +45,21 @@ export function getLinkedTournamentIds({ tournamentRecords }) {
  */
 export function linkTournaments({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (tournamentRecords.length < 2)
-    return { error: CANNOT_LINK_SINGLE_TOURNAMENT };
 
   const { tournamentIds, error } = getTournamentIds(tournamentRecords);
   if (error) return { error };
 
-  const extension = {
-    name: LINKED_TOURNAMENTS,
-    value: { tournamentIds },
-  };
+  if (tournamentIds?.length > 1) {
+    const extension = {
+      name: LINKED_TOURNAMENTS,
+      value: { tournamentIds },
+    };
 
-  const result = addExtension({ tournamentRecords, extension });
-  return result;
+    const result = addExtension({ tournamentRecords, extension });
+    return result;
+  }
+
+  return SUCCESS;
 }
 
 export function unlinkTournaments({ tournamentRecords }) {
@@ -70,7 +71,7 @@ export function unlinkTournaments({ tournamentRecords }) {
   });
 
   // TODO: check the integrity of the venues attached to each tournment...
-  // get all competitionScheduledMatchUps and insure that each tournamentRecord has all venues for scheduled matchUps
+  // get all competitionScheduleMatchUps and insure that each tournamentRecord has all venues for scheduled matchUps
 
   return result;
 }
@@ -127,9 +128,6 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
 }
 
 function getTournamentIds(tournamentRecords) {
-  const allTournamentIds = Object.keys(tournamentRecords).filter((f) => f);
   const tournamentIds = Object.keys(tournamentRecords).filter((f) => f);
-  if (tournamentIds.length !== allTournamentIds.length)
-    return { error: MISSING_TOURNAMENT_ID };
   return { tournamentIds };
 }
