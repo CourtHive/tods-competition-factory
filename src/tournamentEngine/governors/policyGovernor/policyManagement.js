@@ -24,7 +24,11 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
-export function attachPolicy({ tournamentRecord, policyDefinition }) {
+export function attachPolicy({
+  tournamentRecord,
+  policyDefinition,
+  allowReplacement,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!policyDefinition || typeof policyDefinition !== 'object') {
     return { error: MISSING_POLICY_DEFINITION };
@@ -50,7 +54,9 @@ export function attachPolicy({ tournamentRecord, policyDefinition }) {
     addTournamentExtension({ tournamentRecord, extension });
   }
 
-  return !applied ? { error: EXISTING_POLICY_TYPE } : SUCCESS;
+  return !applied && !allowReplacement
+    ? { error: EXISTING_POLICY_TYPE }
+    : SUCCESS;
 }
 
 export function attachEventPolicy({

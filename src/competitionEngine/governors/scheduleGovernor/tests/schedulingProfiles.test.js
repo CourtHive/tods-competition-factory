@@ -29,17 +29,21 @@ test.each([competitionEngineSync])(
     expect(venues.length).toEqual(2);
     expect(venueIds.length).toEqual(2);
 
-    let { schedulingProfile } = competitionEngine.getSchedulingProfile();
+    let { schedulingProfile, modifications, issues } =
+      competitionEngine.getSchedulingProfile();
     expect(schedulingProfile).toEqual([]);
 
     let result = competitionEngine.addSchedulingProfileRound({
-      scheduleDate: '2020-01-01',
+      scheduleDate: '2022-01-03',
       venueId: venueIds[0],
-      round: { foo: 'boo' },
+      round: { drawId: 'drawId' },
     });
     expect(result.success).toEqual(true);
 
-    ({ schedulingProfile } = competitionEngine.getSchedulingProfile());
-    console.log({ schedulingProfile });
+    ({ schedulingProfile, modifications, issues } =
+      competitionEngine.getSchedulingProfile());
+
+    expect(modifications).toEqual(1);
+    expect(issues.length).toEqual(1);
   }
 );

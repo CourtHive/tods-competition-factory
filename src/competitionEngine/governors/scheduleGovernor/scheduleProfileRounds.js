@@ -1,17 +1,25 @@
 import { filterMatchUps } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../tournamentEngine/getters/getMatchUpFormat';
+import { extractDate, isValidDateString } from '../../../utilities/dateTime';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { getSchedulingProfile } from './schedulingProfile';
-import { extractDate } from '../../../utilities/dateTime';
 import { scheduleMatchUps } from './scheduleMatchUps';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORDS,
+  NO_VALID_DATES,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function scheduleProfileRounds({ tournamentRecords }) {
+export function scheduleProfileRounds({
+  tournamentRecords,
+  scheduleDates = [],
+}) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
   const schedulingProfile =
     getSchedulingProfile({ tournamentRecords })?.schedulingProfile || [];
@@ -22,14 +30,49 @@ export function scheduleProfileRounds({ tournamentRecords }) {
     matchUpFilters: competitionMatchUpFilters,
   });
 
-  for (const dateSchedulingPofile of schedulingProfile) {
-    const venues = dateSchedulingPofile?.venues || [];
-    const date = extractDate(dateSchedulingPofile?.scheduleDate);
+  const validScheduleDates = scheduleDates
+    .map((date) => {
+      if (!isValidDateString(date)) return;
+      return extractDate(date);
+    })
+    .filter((f) => f);
+
+  const profileDates = schedulingProfile
+    .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)
+    .map(
+      (scheduleDate) =>
+        isValidDateString(scheduleDate) && extractDate(scheduleDate)
+    )
+    .filter(
+      (scheduleDate) =>
+        scheduleDate &&
+        (!scheduleDates.length || validScheduleDates.includes(scheduleDate))
+    );
+
+  if (!profileDates.length) {
+    return { error: NO_VALID_DATES };
+  }
+
+  const dateSchedulingProfiles = schedulingProfile.filter(
+    (dateschedulingProfile) => {
+      const date = extractDate(dateschedulingProfile?.scheduleDate);
+      return profileDates.includes(date);
+    }
+  );
+
+  const scheduledMatchUpIds = [];
+  for (const dateschedulingProfile of dateSchedulingProfiles) {
+    const venues = dateschedulingProfile?.venues || [];
+    const date = extractDate(dateschedulingProfile?.scheduleDate);
 
     for (const venue of venues) {
-      const { rounds, venueId } = venue;
+      const { rounds = [], venueId } = venue;
 
-      for (const round of rounds) {
+      const sortedRounds = rounds.sort(
+        (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
+      );
+
+      for (const round of sortedRounds) {
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],
@@ -76,10 +119,17 @@ export function scheduleProfileRounds({ tournamentRecords }) {
           matchUpIds,
           date,
         });
+        const roundScheduledMatchUpIds = result?.scheduledMatchUpIds || [];
+        scheduledMatchUpIds.push(...roundScheduledMatchUpIds);
         if (result.error) return result;
       }
     }
   }
 
-  return SUCCESS;
+  // returns the original form of the dateStrings, before extractDate()
+  const scheduledDates = dateSchedulingProfiles.map(
+    ({ scheduleDate }) => scheduleDate
+  );
+
+  return Object.assign({}, SUCCESS, { scheduledDates, scheduledMatchUpIds });
 }

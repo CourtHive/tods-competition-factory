@@ -32,19 +32,21 @@ export function getSchedulingProfile({ tournamentRecords }) {
     const { venueIds } = getCompetitionVenues({ tournamentRecords });
     const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
 
-    const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
-      schedulingProfile,
-      venueIds,
-      eventIds,
-      drawIds,
-    });
+    const { updatedSchedulingProfile, modifications, issues } =
+      getUpdatedSchedulingProfile({
+        schedulingProfile,
+        venueIds,
+        eventIds,
+        drawIds,
+      });
 
-    if (modified) {
+    if (modifications) {
       schedulingProfile = updatedSchedulingProfile;
       setSchedulingProfile({
         tournamentRecords,
         schedulingProfile,
       });
+      return { schedulingProfile, modifications, issues };
     }
   }
 
@@ -72,6 +74,8 @@ export function addSchedulingProfileRound({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
   if (!isValidSchedulingRound(round)) return { error: INVALID_VALUES };
+
+  // TODO: check that scheduleDate falls within date range of tournaments
 
   const { extension } = findExtension({
     tournamentRecords,
@@ -120,12 +124,12 @@ export function getUpdatedSchedulingProfile({
   eventIds,
   drawIds,
 }) {
-  let modified;
+  let issues = [];
   const updatedSchedulingProfile = schedulingProfile
     .map((dateSchedulingProfile) => {
       const date = extractDate(dateSchedulingProfile?.scheduleDate);
       if (!date) {
-        modified = true;
+        issues.push(`Invalid date: ${dateSchedulingProfile?.scheduledDate}`);
         return;
       }
 
@@ -134,18 +138,20 @@ export function getUpdatedSchedulingProfile({
           const { rounds, venueId } = venue;
           const venueExists = venueIds.includes(venueId);
           if (!venueExists) {
-            modified = true;
+            issues.push(`Missing venueId: ${venueId}`);
             return;
           }
 
           const filteredRounds = rounds.filter((round) => {
-            return (
-              eventIds.includes(round.eventId) && drawIds.includes(round.drawId)
-            );
+            const validEventIdAndDrawId =
+              eventIds.includes(round.eventId) &&
+              drawIds.includes(round.drawId);
+            if (!validEventIdAndDrawId)
+              issues.push(
+                `Invalid eventId: ${round.eventId} or drawId: ${round.drawId}`
+              );
+            return validEventIdAndDrawId;
           });
-          if (filteredRounds.length !== rounds.length) {
-            modified = true;
-          }
           if (!filteredRounds.length) {
             return;
           }
@@ -158,5 +164,5 @@ export function getUpdatedSchedulingProfile({
     })
     .filter((f) => f);
 
-  return { updatedSchedulingProfile, modified };
+  return { updatedSchedulingProfile, modifications: issues.length, issues };
 }

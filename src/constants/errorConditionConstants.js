@@ -86,6 +86,7 @@ export const MISSING_SIDE_NUMBER = 'Missing sideNumber';
 export const MISSING_COURT_ID = 'Missing courtId';
 export const MISSING_VALUE = 'Missing value';
 export const MISSING_DATE = 'Missing date';
+export const NO_VALID_DATES = 'No valid dates';
 
 export const INVALID_BOOKINGS = 'Invalid bookings';
 export const INVALID_DATE_AVAILABILITY = 'Invalid dateAvailability';
@@ -295,6 +296,7 @@ export const errorConditionConstants = {
   NO_PARTICIPANT_REMOVED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,
+  NO_VALID_DATES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
   PARTICIPANT_ASSIGNED_DRAW_POSITION,
