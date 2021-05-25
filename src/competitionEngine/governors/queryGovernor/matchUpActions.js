@@ -1,0 +1,31 @@
+import { matchUpActions as tournamentMatchUpActions } from '../../../tournamentEngine/getters/matchUpActions';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import {
+  INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../constants/errorConditionConstants';
+
+export function matchUpActions({
+  tournamentRecords,
+  tournamentId,
+  matchUpId,
+  eventId,
+  drawId,
+}) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentId !== 'string' ||
+    typeof matchUpId !== 'string' ||
+    typeof drawId !== 'string'
+  )
+    return { error: INVALID_VALUES };
+  const tournamentRecord = tournamentRecords[tournamentId];
+  const { drawDefinition } = findEvent({ tournamentRecord, eventId, drawId });
+
+  return tournamentMatchUpActions({
+    tournamentRecord,
+    drawDefinition,
+    drawId,
+    matchUpId,
+  });
+}
