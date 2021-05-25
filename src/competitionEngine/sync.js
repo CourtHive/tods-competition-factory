@@ -1,6 +1,7 @@
 import competitionGovernor from './governors/competitionsGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -33,7 +34,12 @@ export const competitionEngine = (function () {
     },
   };
 
-  importGovernors([queryGovernor, scheduleGovernor, competitionGovernor]);
+  importGovernors([
+    competitionGovernor,
+    policyGovernor,
+    queryGovernor,
+    scheduleGovernor,
+  ]);
 
   fx.version = () => {
     return '@VERSION@';

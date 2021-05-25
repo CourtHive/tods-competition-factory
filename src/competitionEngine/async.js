@@ -1,4 +1,5 @@
 import { notifySubscribersAsync } from '../global/notifySubscribers';
+import competitionGovernor from './governors/competitionsGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
@@ -17,7 +18,7 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 import { SUCCESS } from '../constants/resultConstants';
-import competitionGovernor from './governors/competitionsGovernor';
+import policyGovernor from './governors/policyGovernor';
 
 export function competitionEngineAsync() {
   let tournamentRecords = {};
@@ -78,7 +79,12 @@ export function competitionEngineAsync() {
   }
 
   createInstanceState();
-  importGovernors([queryGovernor, scheduleGovernor, competitionGovernor]);
+  importGovernors([
+    competitionGovernor,
+    policyGovernor,
+    queryGovernor,
+    scheduleGovernor,
+  ]);
 
   // enable Middleware
   async function engineInvoke(fx, params) {
