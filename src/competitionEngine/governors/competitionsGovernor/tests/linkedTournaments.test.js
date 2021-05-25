@@ -8,7 +8,7 @@ import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 const asyncCompetitionEngine = competitionEngineAsync();
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
-  'can link and unlik tournamentRecords loaded into competitionEngine',
+  'can link and unlink tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
     const { tournamentRecord: firstRecord } =
       mocksEngine.generateTournamentRecord();
@@ -87,6 +87,18 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
 
     ({ tournamentRecords } = await competitionEngine.getState());
     expect(Object.keys(tournamentRecords).length).toEqual(2);
+  }
+);
+
+test.each([competitionEngineSync])(
+  'can set a single tournamentRecord',
+  async (competitionEngine) => {
+    competitionEngine.reset();
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+    let result = await competitionEngine.setTournamentRecord(tournamentRecord);
+    expect(result.success).toEqual(true);
+    result = await competitionEngine.linkTournaments();
+    expect(result.success).toEqual(true);
   }
 );
 
