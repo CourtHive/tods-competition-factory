@@ -53,12 +53,14 @@ export function scheduleProfileRounds({
     return { error: NO_VALID_DATES };
   }
 
-  const dateSchedulingProfiles = schedulingProfile.filter(
-    (dateschedulingProfile) => {
+  const dateSchedulingProfiles = schedulingProfile
+    .filter((dateschedulingProfile) => {
       const date = extractDate(dateschedulingProfile?.scheduleDate);
       return profileDates.includes(date);
-    }
-  );
+    })
+    .sort((a, b) => {
+      new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
+    });
 
   const scheduledMatchUpIds = [];
   for (const dateschedulingProfile of dateSchedulingProfiles) {
