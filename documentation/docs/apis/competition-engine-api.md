@@ -35,6 +35,16 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ---
 
+## attachPolicy
+
+Attaches a `policyDefinition` to all tournamentRecords currently loaded into `competitionEngine`.
+
+```js
+competitionEngine.attachPolicy({ policyDefinition });
+```
+
+---
+
 ## calculateScheduleTimes
 
 Returns an array of available schedule times for a given date (and optional time range).
@@ -189,6 +199,21 @@ Links all tournaments currently loaded in `competitionEngine`.
 
 ```js
 competitionEngine.linkTournaments();
+```
+
+---
+
+## matchUpActions
+
+Convenience pass through to `tournamentEngine.matchUpActions` for use in contexts where multiple tournamentRecords are loaded into `competitionEngine`.
+
+```js
+const { matchUpActions } = competitionEngine.matchUpActions({
+  tournamentId,
+  eventId,
+  drawId,
+  matchUpId,
+});
 ```
 
 ---
