@@ -124,7 +124,7 @@ export function scheduleMatchUps(props) {
                 scheduledTime,
               });
               if (result.success)
-                scheduledMatchUpIds.push({ matchUpId, scheduleTime });
+                scheduledMatchUpIds.push({ drawId, matchUpId, scheduledTime });
 
               if (venueId) {
                 assignMatchUpVenue({
