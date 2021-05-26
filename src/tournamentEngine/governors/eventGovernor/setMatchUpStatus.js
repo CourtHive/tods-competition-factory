@@ -82,18 +82,19 @@ export function setMatchUpStatus(props) {
 
 export function bulkMatchUpStatusUpdate(props) {
   const { tournamentRecord, outcomes } = props;
-  let errors = [];
-  let modified = 0;
   const events = {};
+
+  // group outcomes by events to optimize
   outcomes.forEach((outcome) => {
     const { eventId } = outcome;
     if (!events[eventId]) events[eventId] = [];
     events[eventId].push(outcome);
   });
 
-  Object.keys(events).forEach((eventId) => {
+  for (const eventId of Object.keys(events)) {
     const { event } = findEvent({ tournamentRecord, eventId });
-    events[eventId].forEach((outcome) => {
+
+    for (const outcome of events[eventId]) {
       const { drawId } = outcome;
       const drawDefinition = event.drawDefinitions.find(
         (drawDefinition) => drawDefinition.drawId === drawId
@@ -110,14 +111,12 @@ export function bulkMatchUpStatusUpdate(props) {
           schedule: outcome?.schedule,
           outcome,
         });
-        if (result.errors) {
-          errors = errors.concat(...result.errors);
-        } else {
-          modified++;
+        if (result.error) {
+          return result;
         }
       }
-    });
-  });
+    }
+  }
 
-  return (modified && SUCCESS) || (errors.length && { error: errors });
+  return SUCCESS;
 }

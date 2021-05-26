@@ -56,7 +56,9 @@ export function clearDrawPosition({
   // drawPosition may not be cleared if:
   // 1. drawPosition has been advanced by winning a matchUp
   // 2. drawPosition is paired with another drawPosition which has been advanced by winning a matchUp
-  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
+  if (drawPositionIsActive) {
+    return { error: DRAW_POSITION_ACTIVE };
+  }
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,

@@ -153,8 +153,7 @@ export function setMatchUpStatus(props) {
     const { errors: noDependenciesErrors, message } =
       noDownstreamDependencies(props);
     if (message) messages.push(message);
-    if (noDependenciesErrors)
-      return { error: { errors: noDependenciesErrors } };
+    if (noDependenciesErrors) return { error: noDependenciesErrors[0] };
   } else if (winningSide) {
     const { errors: winnerWithDependencyErrors } =
       winningSideWithDownstreamDependencies(props);

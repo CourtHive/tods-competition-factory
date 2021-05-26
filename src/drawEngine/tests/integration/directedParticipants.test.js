@@ -125,7 +125,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -151,7 +151,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     matchUpId,
     matchUpStatus: 'BYE',
   }));
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   drawEngine.assignDrawPosition({
     structureId,
@@ -435,7 +435,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   ({ error, matchUp, success, matchUpId } = result);
   expect(success).toEqual(undefined);
   // error because matchUp drawPositions are not assigned to participantIds
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error.error).not.toBeUndefined();
 
   // complete matchUp between drawPositions: [5, 6] in mainStructure
   // ...to direct other participants to consolation draw
