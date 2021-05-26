@@ -123,7 +123,13 @@ export function generateTournamentRecord({
 
   if (venueProfiles) {
     for (const [index, venueProfile] of venueProfiles.entries()) {
-      let { venueName, courtsCount, dateAvailability } = venueProfile;
+      let {
+        venueName,
+        courtsCount,
+        dateAvailability,
+        startTime = '07:00',
+        endTime = '19:00',
+      } = venueProfile;
       const venue = { venueName: venueName || `Venue ${index + 1}` };
       const {
         venue: { venueId },
@@ -135,8 +141,8 @@ export function generateTournamentRecord({
         (!Array.isArray(dateAvailability) &&
           dates.map((date) => ({
             date: formatDate(date),
-            startTime: '07:00',
-            endTime: '19:00',
+            startTime,
+            endTime,
           }))) ||
         dateAvailability;
 
