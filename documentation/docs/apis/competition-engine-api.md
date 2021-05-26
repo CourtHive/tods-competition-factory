@@ -363,6 +363,15 @@ Please refer to the [Subscriptions](../concepts/subscriptions) in General Concep
 
 ## toggleParticipantCheckInState
 
+```js
+tournamentEngine.toggleParticipantCheckInState({
+  drawId,
+  matchUpId,
+  tournamentId,
+  participantId,
+});
+```
+
 ---
 
 ## unlinkTournament
