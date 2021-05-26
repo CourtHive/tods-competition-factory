@@ -5030,6 +5030,24 @@ jest-circus@^27.0.1:
     stack-utils "^2.0.3"
     throat "^6.0.1"
 
+jest-cli@27.0.1:
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-27.0.1.tgz#9accc8a505438571ee423438eac526a7ee4654b5"
+  integrity sha512-plDsQQwpkKK1SZ5L5xqMa7v/sTwB5LTIeSJqb+cV+4EMlThdUQfg8jwMfHX8jHuUc9TPGLcdoZeBuZcGGn3Rlg==
+  dependencies:
+    "@jest/core" "^27.0.1"
+    "@jest/test-result" "^27.0.1"
+    "@jest/types" "^27.0.1"
+    chalk "^4.0.0"
+    exit "^0.1.2"
+    graceful-fs "^4.2.4"
+    import-local "^3.0.2"
+    jest-config "^27.0.1"
+    jest-util "^27.0.1"
+    jest-validate "^27.0.1"
+    prompts "^2.0.1"
+    yargs "^16.0.3"
+
 jest-cli@^25.5.4:
   version "25.5.4"
   resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-25.5.4.tgz"
@@ -5049,24 +5067,6 @@ jest-cli@^25.5.4:
     prompts "^2.0.1"
     realpath-native "^2.0.0"
     yargs "^15.3.1"
-
-jest-cli@^27.0.1:
-  version "27.0.1"
-  resolved "https://registry.yarnpkg.com/jest-cli/-/jest-cli-27.0.1.tgz#9accc8a505438571ee423438eac526a7ee4654b5"
-  integrity sha512-plDsQQwpkKK1SZ5L5xqMa7v/sTwB5LTIeSJqb+cV+4EMlThdUQfg8jwMfHX8jHuUc9TPGLcdoZeBuZcGGn3Rlg==
-  dependencies:
-    "@jest/core" "^27.0.1"
-    "@jest/test-result" "^27.0.1"
-    "@jest/types" "^27.0.1"
-    chalk "^4.0.0"
-    exit "^0.1.2"
-    graceful-fs "^4.2.4"
-    import-local "^3.0.2"
-    jest-config "^27.0.1"
-    jest-util "^27.0.1"
-    jest-validate "^27.0.1"
-    prompts "^2.0.1"
-    yargs "^16.0.3"
 
 jest-config@^25.5.4:
   version "25.5.4"
@@ -5210,6 +5210,18 @@ jest-environment-jsdom@^27.0.1:
     jest-util "^27.0.1"
     jsdom "^16.6.0"
 
+jest-environment-node@27.0.1, jest-environment-node@^27.0.1:
+  version "27.0.1"
+  resolved "https://registry.yarnpkg.com/jest-environment-node/-/jest-environment-node-27.0.1.tgz#7d7df7ae191477a823ffb4fcc0772b4c23ec5c87"
+  integrity sha512-/p94lo0hx+hbKUw1opnRFUPPsjncRBEUU+2Dh7BuxX8Nr4rRiTivLYgXzo79FhaeMYV0uiV5WAbHBq6xC11JJg==
+  dependencies:
+    "@jest/environment" "^27.0.1"
+    "@jest/fake-timers" "^27.0.1"
+    "@jest/types" "^27.0.1"
+    "@types/node" "*"
+    jest-mock "^27.0.1"
+    jest-util "^27.0.1"
+
 jest-environment-node@^25.5.0:
   version "25.5.0"
   resolved "https://registry.yarnpkg.com/jest-environment-node/-/jest-environment-node-25.5.0.tgz"
@@ -5221,18 +5233,6 @@ jest-environment-node@^25.5.0:
     jest-mock "^25.5.0"
     jest-util "^25.5.0"
     semver "^6.3.0"
-
-jest-environment-node@^27.0.1:
-  version "27.0.1"
-  resolved "https://registry.yarnpkg.com/jest-environment-node/-/jest-environment-node-27.0.1.tgz#7d7df7ae191477a823ffb4fcc0772b4c23ec5c87"
-  integrity sha512-/p94lo0hx+hbKUw1opnRFUPPsjncRBEUU+2Dh7BuxX8Nr4rRiTivLYgXzo79FhaeMYV0uiV5WAbHBq6xC11JJg==
-  dependencies:
-    "@jest/environment" "^27.0.1"
-    "@jest/fake-timers" "^27.0.1"
-    "@jest/types" "^27.0.1"
-    "@types/node" "*"
-    jest-mock "^27.0.1"
-    jest-util "^27.0.1"
 
 jest-get-type@^25.2.6:
   version "25.2.6"
