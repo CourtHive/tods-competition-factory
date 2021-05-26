@@ -84,9 +84,17 @@ export function assignDrawPositionBye({
     structureId,
   });
 
+  const currentAssignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+
+  if (currentAssignment.bye) return SUCCESS;
+
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
-  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
+  if (drawPositionIsActive) {
+    return { error: DRAW_POSITION_ACTIVE };
+  }
 
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
