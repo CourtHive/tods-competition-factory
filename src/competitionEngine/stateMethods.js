@@ -60,7 +60,7 @@ export function setState(tournamentRecords, records, deepCopyOption = true) {
       ...records.map((record) => ({ [record.tournamentId]: record }))
     );
   } else if (records.tournamentId) {
-    records = [records];
+    records = { [records.tournamentId]: records };
   } else {
     const validRecordsObject = Object.keys(records).every(
       (tournamentId) => records[tournamentId].tournamentId === tournamentId
