@@ -60,6 +60,7 @@ it('can add events, venues, and schedule matchUps', () => {
   } = result;
   expect(result.success).toEqual(true);
 
+  // '2020-01-01' and '2020-01-01T00:00Z' work but '2020-01-01T00:00' does not work
   const date = '2020-01-01T00:00';
   const dateAvailability = [
     {
@@ -336,7 +337,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   } = result;
   expect(result.success).toEqual(true);
 
-  const date = '2020-01-01T00:00';
+  const date = '2020-01-01T00:00Z';
   const dateAvailability = [
     {
       date,

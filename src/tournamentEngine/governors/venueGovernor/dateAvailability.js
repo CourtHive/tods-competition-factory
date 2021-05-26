@@ -41,6 +41,7 @@ export function validDateAvailability({ dateAvailability }) {
           dateAvailability: { date },
           message: dateNote,
         });
+        console.log({ dateAvailability });
       }
       if (!timeValidation.test(startTime)) {
         errors.push({

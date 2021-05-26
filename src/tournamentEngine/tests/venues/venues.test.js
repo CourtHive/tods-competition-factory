@@ -49,7 +49,9 @@ it('can define a new venue', () => {
   expect(venue.courts.length).toEqual(4);
   expect(venue.courts[0].courtName).toEqual(courtName);
   expect(venue.courts[0].dateAvailability).toEqual([]);
-  expect(venue.courts[1].dateAvailability).toEqual(dateAvailability);
+  expect(venue.courts[1].dateAvailability[0].date).toEqual(
+    dateAvailability[0].date.split('T')[0]
+  );
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.venues.length).toEqual(1);

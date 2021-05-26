@@ -1,7 +1,7 @@
 import garman from './garman';
 import { generateRange } from '../../../../utilities';
 
-const date = new Date();
+const date = new Date().toISOString().split('T')[0];
 
 function courtGenerator({
   count = 10,

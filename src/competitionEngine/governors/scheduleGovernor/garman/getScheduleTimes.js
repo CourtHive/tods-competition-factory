@@ -7,6 +7,7 @@ import {
   addMinutes,
   minutesDifference,
   extractTime,
+  extractDate,
 } from '../../../../utilities/dateTime';
 
 export function getScheduleTimes({
@@ -18,6 +19,12 @@ export function getScheduleTimes({
   bookings,
   courts,
 } = {}) {
+  // standardize date as YYYY-MM-DD
+  date = extractDate(date);
+  // standardize time as 00:00
+  startTime = extractTime(startTime);
+  endTime = extractTime(endTime);
+
   // keeps track of value of calculation after previous iteration
   let previousCalculation = 0;
 

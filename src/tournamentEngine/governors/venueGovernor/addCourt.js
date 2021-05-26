@@ -2,6 +2,7 @@ import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { addNotice, getDevContext } from '../../../global/globalState';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';
+import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { findVenue } from '../../getters/venueGetter';
 
 import {
@@ -37,40 +38,50 @@ export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
   if (courtExists) {
     return { error: COURT_EXISTS };
   } else {
-    const errors = [];
-    Object.keys(courtRecord).forEach((attribute) => {
+    // build new dateAvailability object with date/time extraction
+    const dateAvailability = (court?.dateAvailability || []).map(
+      (availabilty) => ({
+        ...availabilty,
+        date: extractDate(availabilty.date),
+        startTime: extractTime(availabilty.startTime),
+        endTime: extractTime(availabilty.endTime),
+        bookings: availabilty.bookings?.map(
+          ({ startTime, endTime, bookingType }) => ({
+            startTime: extractTime(startTime),
+            endTime: extractTime(endTime),
+            bookingType,
+          })
+        ),
+      })
+    );
+
+    for (const attribute of Object.keys(courtRecord)) {
       if (court[attribute]) {
         if (attribute === 'dateAvailability') {
-          const result = validDateAvailability({
-            dateAvailability: court[attribute],
-          });
+          const result = validDateAvailability({ dateAvailability });
           const { valid, error } = result;
           if (valid) {
-            courtRecord[attribute] = court[attribute];
+            courtRecord.dateAvailability = dateAvailability;
           } else {
-            error.errors.forEach((error) => errors.push(error));
+            if (error) return { error };
           }
         } else {
           courtRecord[attribute] = court[attribute];
         }
       }
-    });
+    }
     venue.courts.push(courtRecord);
 
     if (!disableNotice) {
       addNotice({ topic: MODIFY_VENUE, payload: { venue } });
     }
 
-    if (errors.length) {
-      return { error: { errors } };
-    } else {
-      return getDevContext()
-        ? Object.assign({}, SUCCESS, {
-            court: makeDeepCopy(courtRecord),
-            venueId,
-          })
-        : SUCCESS;
-    }
+    return getDevContext()
+      ? Object.assign({}, SUCCESS, {
+          court: makeDeepCopy(courtRecord),
+          venueId,
+        })
+      : SUCCESS;
   }
 }
 
