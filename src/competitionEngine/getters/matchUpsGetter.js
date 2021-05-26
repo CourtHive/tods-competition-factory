@@ -34,14 +34,20 @@ export function allCompetitionMatchUps({
 
 export function competitionScheduleMatchUps(props) {
   const { courts, venues } = getVenuesAndCourts(props);
+  const { sortCourtsMatchUps, sortDateMatchUps = true } = props;
+  const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
+
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
     competitionMatchUps(props);
-  const dateMatchUps = [
+
+  const relevantMatchUps = [
     ...(upcomingMatchUps || []),
     ...(pendingMatchUps || []),
-  ].sort((a, b) => getTime(a) - getTime(b));
+  ];
 
-  const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
+  const dateMatchUps = sortDateMatchUps
+    ? scheduledSortedMatchUps({ matchUps: relevantMatchUps, schedulingProfile })
+    : relevantMatchUps;
 
   const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
@@ -58,14 +64,17 @@ export function competitionScheduleMatchUps(props) {
     const courtMatchUps = dateMatchUps.filter(
       (matchUp) => matchUp.schedule?.courtId === courtId
     );
-    return scheduledSortedMatchUps({
-      matchUps: courtMatchUps,
-      schedulingProfile,
-    });
+    return sortCourtsMatchUps
+      ? scheduledSortedMatchUps({
+          matchUps: courtMatchUps,
+          schedulingProfile,
+        })
+      : courtMatchUps;
   }
 
-  function getTime(matchUp) {
-    const scheduledTime = matchUp?.schedule?.scheduledTime;
+  /*
+  // this was used to float matchUps with checked in participants to the top of the sorted matchUps
+  function getFloatValue(matchUp) {
     const allParticipantsCheckedIn = matchUp?.allParticipantsCheckedIn && 100;
     const checkedInParticipantsCount =
       (matchUp?.checkedInParticipantIds?.length || 0) * 10;
@@ -73,9 +82,9 @@ export function competitionScheduleMatchUps(props) {
     // floatValue insures that allParticipantsCheckedIn always floats to top as millisecond
     // differences are not always enough to differentiate
     const floatValue = checkedInParticipantsCount + allParticipantsCheckedIn;
-
-    return !scheduledTime ? 0 : new Date(scheduledTime).getTime() - floatValue;
+    return floatValue;
   }
+  */
 }
 
 export function competitionMatchUps({
