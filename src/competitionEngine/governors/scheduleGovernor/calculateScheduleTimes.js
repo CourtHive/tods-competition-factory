@@ -90,6 +90,7 @@ export function calculateScheduleTimes({
   const matchUpFilters = { scheduledDate: date };
   const { dateMatchUps } = competitionScheduleMatchUps({
     tournamentRecords,
+    sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
     matchUpFilters,
   });
   const bookings = dateMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
