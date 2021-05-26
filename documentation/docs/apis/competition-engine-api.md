@@ -13,7 +13,7 @@ competitionEngine.addExtension({ extension });
 
 ---
 
-### addSchedulingProfileRound
+## addSchedulingProfileRound
 
 ```js
 competitionEngine.addSchedulingProfileRound({
@@ -187,7 +187,7 @@ const { courts, venues } = competitionEngine.getVenuesAndCourts();
 
 ---
 
-### isValidSchedulingProfile
+## isValidSchedulingProfile
 
 ```js
 const isValid = competitionEngine.isValidSchedulingProfile({
