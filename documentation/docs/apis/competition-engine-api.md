@@ -331,6 +331,18 @@ competitionEngine.scheduleMatchUps({
 
 ---
 
+## scheduleProfileRounds
+
+Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using `competitionEngine.setSchedulingProfile`.
+
+```js
+competitionEngine.scheduleProfileRounds({
+  scheduleDates, // optional array of dates to schedule
+});
+```
+
+---
+
 ## setState
 
 Loads tournament records into competitionEngine; supports both an array of tournamentRecords and an object with tournamentId keys.
