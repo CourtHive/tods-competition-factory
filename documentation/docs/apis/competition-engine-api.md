@@ -95,7 +95,11 @@ const matchUpFilters = {
 };
 
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
-  competitionEngine.competitionScheduleMatchUps({ matchUpFilters });
+  competitionEngine.competitionScheduleMatchUps({
+    matchUpFilters,
+    sortCourtsData, // boolean - optional
+    sortDateMatchUps, // boolean - optional - defaults to `true`
+  });
 ```
 
 ---

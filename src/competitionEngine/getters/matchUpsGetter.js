@@ -34,7 +34,7 @@ export function allCompetitionMatchUps({
 
 export function competitionScheduleMatchUps(props) {
   const { courts, venues } = getVenuesAndCourts(props);
-  const { sortCourtsMatchUps, sortDateMatchUps = true } = props;
+  const { sortCourtsData, sortDateMatchUps = true } = props;
   const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
 
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
@@ -64,7 +64,7 @@ export function competitionScheduleMatchUps(props) {
     const courtMatchUps = dateMatchUps.filter(
       (matchUp) => matchUp.schedule?.courtId === courtId
     );
-    return sortCourtsMatchUps
+    return sortCourtsData
       ? scheduledSortedMatchUps({
           matchUps: courtMatchUps,
           schedulingProfile,
