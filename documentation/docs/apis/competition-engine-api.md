@@ -298,22 +298,6 @@ competitionEngine.reorderUpcomingMatchUps({
 Auto schedule matchUps on a given date using the Garmin formula.
 
 ```js
-const schedulingProfile = [
-  {
-    tournamentId,
-    eventId,
-    drawId,
-    structureId, // optional - will default to first structure of first stage
-    venueId, // optional - target venue for given event/draw/structure
-    roundNumbers, // optional - if not provided will check scheduling policy for # of permitted matchUps / participant / day
-    roundProfile: { // optional - necessary when matchUps within a single structure are split across venues or dates
-      roundNumber,
-      roundPositionStart,
-      roundPositionEnd,
-   }
-  }
-];
-
 competitionEngine.scheduleMatchUps({
   date,
   startTime, // optional - if not provided will be derived from court availability for the tiven date
@@ -322,7 +306,6 @@ competitionEngine.scheduleMatchUps({
   venueIds, // optional - defaults to all known; if a single venueId is provided then all matchUps will be scheduled for that venue
 
   matchUpIds, // array of matchUpIds; if no schedulingProfile provided will be auto-sorted by draw size and roundNumbers
-  schedulingProfile, // optional profile for sorting matchUps to be scheduled
 
   periodLength = 30, // optional - defaults to 30
   averageMatchUpTime = 90, // optional - defaults to 90
@@ -356,7 +339,7 @@ competitionEngine.setsState(tournamentRecords, deepCopy);
 
 ---
 
-### setSchedulingProfile
+## setSchedulingProfile
 
 ```js
 competitionEngine.setSchedulingProfile({ schedulingProfile });
