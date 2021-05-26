@@ -17,6 +17,7 @@ import {
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -101,9 +102,14 @@ export function addSchedulingProfileRound({
     dateProfile.venues.push(venueOnDate);
   }
 
+  // TODO: check that round.eventId, round.drawId, round.structureId and round.roundNumber all exist
+  // if not, throw error...
   venueOnDate.rounds.push(round);
 
-  return setSchedulingProfile({ tournamentRecords, schedulingProfile });
+  const result = setSchedulingProfile({ tournamentRecords, schedulingProfile });
+  if (result.error) return result;
+
+  return SUCCESS;
 }
 
 export function isValidSchedulingProfile({
