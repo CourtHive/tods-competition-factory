@@ -101,11 +101,13 @@ export function bulkMatchUpStatusUpdate(props) {
       if (drawDefinition) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
+          tournamentRecord,
           drawDefinition,
           event,
           drawId,
           matchUpFormat,
           matchUpId,
+          schedule: outcome?.schedule,
           outcome,
         });
         if (result.errors) {
