@@ -30,8 +30,9 @@ it('can set and remove policies from tournamentRecords and events', () => {
   tournamentEngine.setState(newTournamentRecord);
   result = tournamentEngine.attachPolicy({
     policyDefinition: scoringPolicy,
+    allowReplacement: true,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { tournamentRecord } = tournamentEngine.getState();
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
