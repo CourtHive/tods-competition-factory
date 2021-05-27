@@ -17,13 +17,13 @@ export function modifyMatchUpFormatTiming({
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
-  if (tournamentId && !tournamentIds.includes(tournamentId))
-    return { error: INVALID_VALUES };
-
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>
       !tournamentId || tournamentId === currentTournamentId
   );
+
+  if (tournamentId && !tournamentIds.includes(tournamentId))
+    return { error: INVALID_VALUES };
 
   for (const currentTournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[currentTournamentId];
