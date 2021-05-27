@@ -34,7 +34,7 @@ export function modifyEventMatchUpFormatTiming({
     if (event) {
       return modifyEventTiming({
         tournamentRecord,
-        eventId,
+        event,
         matchUpFormat,
         averageMinutes,
         recoveryMinutes,

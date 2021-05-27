@@ -2,10 +2,10 @@ import { modifyMatchUpFormatTiming as modifyTiming } from '../../../../tournamen
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import {
+  EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyMatchUpFormatTiming({
   tournamentRecords,
@@ -29,15 +29,17 @@ export function modifyMatchUpFormatTiming({
     const tournamentRecord = tournamentRecords[currentTournamentId];
     const { event } = findEvent({ tournamentRecord, eventId });
 
-    modifyTiming({
-      tournamentRecord,
-      event,
+    if (event) {
+      return modifyTiming({
+        tournamentRecord,
+        event,
 
-      matchUpFormat,
-      averageTimes,
-      recoveryTimes,
-    });
+        matchUpFormat,
+        averageTimes,
+        recoveryTimes,
+      });
+    }
   }
 
-  return SUCCESS;
+  return { error: EVENT_NOT_FOUND };
 }
