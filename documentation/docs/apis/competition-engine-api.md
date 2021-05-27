@@ -157,6 +157,18 @@ const { linkedTournamentIds } = competitionEngine.getLinkedTournamentIds();
 
 ---
 
+## getMatchUpDailyLimits
+
+Returns player daily match limits for singles/doubles/total matches.
+
+```js
+competitionEngine.getMatchUpDailyLimits({
+  tournamentId, // optional - scope search to specific tournamentRecord
+});
+```
+
+---
+
 ## getState
 
 Returns a deep copy of the current competitionEngine state.

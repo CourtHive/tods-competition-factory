@@ -1,21 +1,24 @@
-import { modifyMatchUpFormatTiming as modifyTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { modifyEventMatchUpFormatTiming as modifyEventTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
 import {
+  EVENT_NOT_FOUND,
   INVALID_VALUES,
+  MISSING_EVENT,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
-export function modifyMatchUpFormatTiming({
+export function modifyEventMatchUpFormatTiming({
   tournamentRecords,
   tournamentId,
   eventId,
+
   matchUpFormat,
-  averageTimes,
-  recoveryTimes,
+  averageMinutes,
+  recoveryMinutes,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!eventId) return { error: MISSING_EVENT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>
@@ -28,17 +31,16 @@ export function modifyMatchUpFormatTiming({
   for (const currentTournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[currentTournamentId];
     const { event } = findEvent({ tournamentRecord, eventId });
-
-    const result = modifyTiming({
-      tournamentRecord,
-      event,
-
-      matchUpFormat,
-      averageTimes,
-      recoveryTimes,
-    });
-    if (result.error) return result;
+    if (event) {
+      return modifyEventTiming({
+        tournamentRecord,
+        event,
+        matchUpFormat,
+        averageMinutes,
+        recoveryMinutes,
+      });
+    }
   }
 
-  return SUCCESS;
+  return { error: EVENT_NOT_FOUND };
 }

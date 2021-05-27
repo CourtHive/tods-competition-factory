@@ -28,7 +28,7 @@ export function getEventMatchUpFormatTiming({
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>
-      !currentTournamentId || currentTournamentId === tournamentId
+      !tournamentId || currentTournamentId === tournamentId
   );
 
   let timing;

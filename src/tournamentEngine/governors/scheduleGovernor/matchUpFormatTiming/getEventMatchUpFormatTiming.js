@@ -5,11 +5,12 @@ import { findPolicy } from '../../policyGovernor/findPolicy';
 import { unique } from '../../../../utilities';
 
 import { POLICY_TYPE_SCORING } from '../../../../constants/policyConstants';
+import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 import {
   MISSING_EVENT,
+  MISSING_SCORING_POLICY,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 /**
  * method requires an array of target matchUpFormats either be defined in scoring policy or passed in as parameter
@@ -30,7 +31,7 @@ export function getEventMatchUpFormatTiming({
   if (!event) return { error: MISSING_EVENT };
 
   let matchUpFormatDefinitions = [];
-  if (!matchUpFormats) {
+  if (!matchUpFormats?.length) {
     const { policy } = findPolicy({
       policyType: POLICY_TYPE_SCORING,
       tournamentRecord,
@@ -54,6 +55,8 @@ export function getEventMatchUpFormatTiming({
             ),
           ].flat()
         ).map((matchUpFormat) => ({ matchUpFormat }));
+      } else {
+        return { error: MISSING_SCORING_POLICY };
       }
     }
   } else {

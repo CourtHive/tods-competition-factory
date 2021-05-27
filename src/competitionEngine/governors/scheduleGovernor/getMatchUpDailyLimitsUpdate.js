@@ -1,8 +1,7 @@
-import { getMatchUpFormatTimingUpdate as getUpdate } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTimingUpdate';
+import { getMatchUpDailyLimitsUpdate as getUpdate } from '../../../tournamentEngine/governors/scheduleGovernor/getMatchUpDailyLimitsUpdate';
+import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
-
-export function getMatchUpFormatTimingUpdate({ tournamentRecords }) {
+export function getMatchUpDailyLimitsUpdate({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);

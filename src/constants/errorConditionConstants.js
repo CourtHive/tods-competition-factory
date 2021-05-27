@@ -76,6 +76,7 @@ export const INVALID_POLICY_DEFINITION = 'Invalid policyDefinition';
 export const EXISTING_POLICY_TYPE = 'existing policyType';
 export const POLICY_NOT_ATTACHED = 'Policy not attached';
 export const POLICY_NOT_FOUND = 'Policy not found';
+export const MISSING_SCORING_POLICY = 'Missing scoring policy / matchUpFormats';
 
 export const INVALID_SIDE_NUMBER = 'Invalid sideNumber';
 export const INVALID_SET_NUMBER = 'Invalid setNumber';
@@ -269,6 +270,7 @@ export const errorConditionConstants = {
   MISSING_POSITION_ASSIGNMENTS,
   MISSING_ROUND_NUMBER,
   MISSING_SCHEDULE,
+  MISSING_SCORING_POLICY,
   MISSING_SEED_ASSIGNMENTS,
   MISSING_SEED_BLOCKS,
   MISSING_SEEDCOUNT_THRESHOLDS,
