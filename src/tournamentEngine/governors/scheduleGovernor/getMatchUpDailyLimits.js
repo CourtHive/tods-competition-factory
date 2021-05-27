@@ -13,6 +13,7 @@ export function getMatchUpDailyLimits({ tournamentRecord }) {
   });
 
   const { extension } = findTournamentExtension({
+    tournamentRecord,
     name: SCHEDULE_LIMITS,
   });
 
