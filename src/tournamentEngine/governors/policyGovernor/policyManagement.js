@@ -15,12 +15,10 @@ import {
   MISSING_EVENT,
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-  // INVALID_POLICY_DEFINITION,
   EXISTING_POLICY_TYPE,
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
   MISSING_VALUE,
-  // INVALID_OBJECT,
 } from '../../../constants/errorConditionConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
@@ -37,26 +35,27 @@ export function attachPolicy({
   if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
-  const applied = Object.keys(policyDefinition).every((policyType) => {
-    if (!appliedPolicies[policyType]) {
-      appliedPolicies[policyType] = policyDefinition[policyType];
-      return true;
-    } else {
-      return false;
-    }
-  });
+  const applied = Object.keys(policyDefinition)
+    .map((policyType) => {
+      if (!appliedPolicies[policyType] || allowReplacement) {
+        appliedPolicies[policyType] = policyDefinition[policyType];
+        return policyType;
+      }
+    })
+    .filter((f) => f);
 
-  if (applied) {
+  if (applied?.length) {
     const extension = {
       name: APPLIED_POLICIES,
       value: appliedPolicies,
     };
-    addTournamentExtension({ tournamentRecord, extension });
+    const result = addTournamentExtension({ tournamentRecord, extension });
+    if (result.error) return result;
   }
 
-  return !applied && !allowReplacement
+  return !applied?.length
     ? { error: EXISTING_POLICY_TYPE }
-    : SUCCESS;
+    : Object.assign({}, SUCCESS, { applied });
 }
 
 export function attachEventPolicy({
