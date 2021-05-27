@@ -92,13 +92,13 @@ it('can modify event timing for matchUpFormat codes', () => {
     90, 90,
   ]);
 
-  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+  result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
-  }));
-  expect(eventMatchUpFormatTiming.length).toEqual(0);
+  });
+  expect(result.error).not.toBeUndefined();
 
   const policyDefinition = POLICY_SCORING_USTA;
-  tournamentEngine.attachPolicy({ policyDefinition });
+  tournamentEngine.attachPolicy({ policyDefinition, allowReplacement: true });
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
