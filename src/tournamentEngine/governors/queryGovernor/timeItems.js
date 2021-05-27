@@ -24,7 +24,7 @@ export function getTimeItem({
     .filter((timeItem) => timeItem?.itemType === itemType)
     .filter(
       (timeItem) =>
-        !itemSubTypes || timeItem?.itemSubTypes?.includes(itemSubTypes)
+        !itemSubTypes?.length || timeItem?.itemSubTypes?.includes(itemSubTypes)
     )
     .sort(
       (a, b) =>
