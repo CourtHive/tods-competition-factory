@@ -9,8 +9,9 @@ export function getMatchUpFormatTimingUpdate({ tournamentRecords }) {
 
   const methods = tournamentIds.map((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
-    const { methods } = getUpdate({ tournamentRecord });
+    const methods = getUpdate({ tournamentRecord })?.methods || [];
     return { tournamentId, methods };
   });
+
   return { methods };
 }

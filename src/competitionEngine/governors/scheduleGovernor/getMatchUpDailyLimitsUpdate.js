@@ -6,10 +6,17 @@ export function getMatchUpDailyLimitsUpdate({ tournamentRecords }) {
 
   const tournamentIds = Object.keys(tournamentRecords);
 
-  const methods = tournamentIds.map((tournamentId) => {
-    const tournamentRecord = tournamentRecords[tournamentId];
-    const { methods } = getUpdate({ tournamentRecord });
-    return { tournamentId, methods };
-  });
+  const methods = tournamentIds
+    .map((tournamentId) => {
+      const tournamentRecord = tournamentRecords[tournamentId];
+      const methods = getUpdate({ tournamentRecord })?.methods || [];
+      methods.foreach((method) =>
+        Object.assign(method.params({ tournamentId }))
+      );
+      return methods;
+    })
+    .flat()
+    .filter((f) => f);
+
   return { methods };
 }
