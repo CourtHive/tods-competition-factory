@@ -1330,6 +1330,16 @@ const {
 
 ---
 
+## getMatchUpDailyLimits
+
+Returns player daily match limits for singles/doubles/total matches.
+
+```js
+tournamentId.getMatchUpDailyLimits();
+```
+
+---
+
 ## getModifiedMatchUpFormatTiming
 
 Returns `averageTimes` and `recoveryTimes` configuration objects for specified `matchUpFormat`. Useful before calling `modifyMatchUpFormatTiming` to preserve existing modifications.
