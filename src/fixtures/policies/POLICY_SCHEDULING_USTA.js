@@ -16,6 +16,11 @@ export const POLICY_SCHEDULING_USTA = {
       averageTimes: [{ categoryNames: [], minutes: { default: 90 } }],
       recoveryTimes: [{ minutes: { [DOUBLES]: 30, default: 60 } }],
     },
+    defaultDailyLimits: {
+      [SINGLES]: 2,
+      [DOUBLES]: 2,
+      total: 3,
+    },
     matchUpAverageTimes: [
       {
         matchUpFormatCodes: ['SET3-S:6/TB7'],
@@ -105,10 +110,10 @@ export const POLICY_SCHEDULING_USTA = {
         ],
       },
     ],
-    perDayMaximums: [
+    matchUpDailyLimits: [
       {
         matchUpFormatCodes: [], // all matchUpFormats
-        maximums: [
+        limits: [
           {
             categoryNames: [], // all categoryNames
             categoryTypes: [], // all categoryTypes
@@ -122,7 +127,7 @@ export const POLICY_SCHEDULING_USTA = {
       },
       {
         matchUpFormatCodes: ['S3-S:TB10'],
-        maximums: [
+        limits: [
           {
             categoryNames: ['12U'],
             matchesCombinations: [
