@@ -69,7 +69,7 @@ test.each([competitionEngineSync])(
     expect(result.averageMinutes).toEqual(127);
 
     result = competitionEngine.getMatchUpFormatTimingUpdate();
-    expect(result.methods.length).toEqual(2);
+    expect(result.methods.length).toEqual(1);
 
     result = competitionEngine.getEventMatchUpFormatTiming({
       eventId,

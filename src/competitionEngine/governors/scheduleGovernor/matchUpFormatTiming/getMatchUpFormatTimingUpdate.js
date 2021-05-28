@@ -7,11 +7,15 @@ export function getMatchUpFormatTimingUpdate({ tournamentRecords }) {
 
   const tournamentIds = Object.keys(tournamentRecords);
 
-  const methods = tournamentIds.map((tournamentId) => {
-    const tournamentRecord = tournamentRecords[tournamentId];
-    const methods = getUpdate({ tournamentRecord })?.methods || [];
-    return { tournamentId, methods };
-  });
+  const methods = tournamentIds
+    .map((tournamentId) => {
+      const tournamentRecord = tournamentRecords[tournamentId];
+      const methods = getUpdate({ tournamentRecord })?.methods || [];
+      return methods.length && { tournamentId, methods };
+    })
+    .filter((f) => f);
 
-  return { methods };
+  return methods.length
+    ? { methods: [{ method: 'tournamentMethods', params: { methods } }] }
+    : { methods: [] };
 }
