@@ -50,29 +50,38 @@ export function modifyEventMatchUpFormatTiming({
     return timing;
   };
 
-  const newAverageTimes = averageTimes.map(newTiming).filter((f) => f);
-  const newRecoveryTimes = recoveryTimes.map(newTiming).filter((f) => f);
+  const validAverageMinutes = !isNaN(parseInt(averageMinutes));
+  const validRecoveryMinutes = !isNaN(parseInt(recoveryMinutes));
 
-  if (averageMinutes) {
+  const newAverageTimes = averageTimes
+    .map(newTiming)
+    .filter((f) => f?.categoryNames?.length);
+  const newRecoveryTimes = recoveryTimes
+    .map(newTiming)
+    .filter((f) => f?.categoryNames?.length);
+
+  if (validAverageMinutes) {
     Object.assign(currentAverageTime.minutes, {
       [isDoubles ? DOUBLES : SINGLES]: averageMinutes,
     });
+    newAverageTimes.push(currentAverageTime);
   }
 
-  if (recoveryMinutes) {
+  if (validRecoveryMinutes) {
     Object.assign(currentRecoveryTime.minutes, {
       [isDoubles ? DOUBLES : SINGLES]: recoveryMinutes,
     });
+    newRecoveryTimes.push(currentRecoveryTime);
   }
 
-  newAverageTimes.push(currentAverageTime);
-  newRecoveryTimes.push(currentRecoveryTime);
+  if (!validAverageMinutes && !validRecoveryMinutes)
+    return { error: INVALID_VALUES };
 
   return modifyMatchUpFormatTiming({
     tournamentRecord,
     event,
     matchUpFormat,
-    averageTimes: averageMinutes && newAverageTimes,
-    recoveryTimes: recoveryMinutes && newRecoveryTimes,
+    averageTimes: validAverageMinutes && newAverageTimes,
+    recoveryTimes: validRecoveryMinutes && newRecoveryTimes,
   });
 }

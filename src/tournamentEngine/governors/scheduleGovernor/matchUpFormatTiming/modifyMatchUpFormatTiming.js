@@ -67,9 +67,13 @@ function modifyScheduling({
   recoveryTimes: formatRecoveryTimes,
   matchUpFormat,
 }) {
+  // don't allow modification without categoryName
+  formatAverageTimes = (formatAverageTimes || []).filter(
+    (averageTime) => averageTime?.categoryNames?.length
+  );
   // if there are formatAverageTimes specified...
   const updatedMatchUpAverageTimes =
-    formatAverageTimes &&
+    formatAverageTimes?.length &&
     matchUpAverageTimes
       .map((definition) =>
         // filter out any existing definitions for this matchUpFormat
@@ -89,9 +93,13 @@ function modifyScheduling({
         averageTimes: formatAverageTimes,
       });
 
+  // don't allow modification without categoryName
+  formatRecoveryTimes = (formatRecoveryTimes || []).filter(
+    (recoveryTime) => recoveryTime?.categoryNames?.length
+  );
   // if there are formatRecoveryTimes specified...
   const updatedMatchUpRecoveryTimes =
-    formatRecoveryTimes &&
+    formatRecoveryTimes?.length &&
     matchUpRecoveryTimes
       .map((definition) =>
         // filter out any existing definitions for this matchUpFormat
@@ -116,8 +124,12 @@ function modifyScheduling({
       });
 
   const updatedScheduling = {
-    matchUpAverageTimes: updatedMatchUpAverageTimes || matchUpAverageTimes,
-    matchUpRecoveryTimes: updatedMatchUpRecoveryTimes || matchUpRecoveryTimes,
+    matchUpAverageTimes:
+      (updatedMatchUpAverageTimes?.length && updatedMatchUpAverageTimes) ||
+      matchUpAverageTimes,
+    matchUpRecoveryTimes:
+      (updatedMatchUpRecoveryTimes?.length && updatedMatchUpRecoveryTimes) ||
+      matchUpRecoveryTimes,
   };
 
   return updatedScheduling;

@@ -7,8 +7,8 @@ export function findMatchupFormatAverageTimes({
   const codeMatches =
     matchUpAverageTimes
       ?.map(({ matchUpFormatCodes }) => {
-        const matching = matchUpFormatCodes?.filter((code) =>
-          code?.startsWith(matchUpFormat)
+        const matching = matchUpFormatCodes?.filter(
+          (code) => code === matchUpFormat
         );
         return matching;
       })
@@ -41,7 +41,7 @@ export function findMatchupFormatRecoveryTimes({
           return true;
       }
       const codeMatch =
-        matchUpFormatCodes?.find((code) => code?.startsWith(matchUpFormat)) &&
+        matchUpFormatCodes?.find((code) => code === matchUpFormat) &&
         recoveryTimes;
       return codeMatch;
     }
