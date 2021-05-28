@@ -15,6 +15,7 @@ export function directParticipants(props) {
     matchUpStatusCodes,
     structure,
     matchUp,
+    matchUpFormat,
     winningSide,
     targetData,
     score,
@@ -35,6 +36,7 @@ export function directParticipants(props) {
   const removeScore = [WALKOVER].includes(matchUpStatus);
   modifyMatchUpScore({
     drawDefinition,
+    matchUpFormat,
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     winningSide,

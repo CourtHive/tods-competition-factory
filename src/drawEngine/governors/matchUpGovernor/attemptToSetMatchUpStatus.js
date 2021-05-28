@@ -29,6 +29,7 @@ export function attemptToSetMatchUpStatus(props) {
     structure,
     targetData,
     matchUpStatus,
+    matchUpFormat,
     mappedMatchUps,
     matchUpStatusCodes,
   } = props;
@@ -55,6 +56,7 @@ export function attemptToSetMatchUpStatus(props) {
         matchUp,
         drawDefinition,
         matchUpStatus,
+        matchUpFormat,
         matchUpStatusCodes,
       });
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
@@ -69,6 +71,7 @@ export function attemptToSetMatchUpStatus(props) {
         notes,
         matchUp,
         drawDefinition,
+        matchUpFormat,
         matchUpStatus: matchUpStatus || TO_BE_PLAYED,
         matchUpStatusCodes,
       });
@@ -80,6 +83,7 @@ export function attemptToSetMatchUpStatus(props) {
     modifyMatchUpScore({
       notes,
       matchUp,
+      matchUpFormat,
       drawDefinition,
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       matchUpStatusCodes,
@@ -96,6 +100,7 @@ export function attemptToSetMatchUpStatus(props) {
           matchUp,
           drawDefinition,
           matchUpStatus,
+          matchUpFormat,
           matchUpStatusCodes,
           removeScore: true,
         });

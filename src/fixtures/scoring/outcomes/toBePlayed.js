@@ -8,5 +8,6 @@ export const toBePlayed = {
     scoreStringSide2: '',
     sets: undefined,
   },
+  matchUpFormat: undefined,
   winningSide: undefined,
 };

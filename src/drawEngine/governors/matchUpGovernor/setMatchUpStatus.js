@@ -242,8 +242,14 @@ function winningSideWithDownstreamDependencies(props) {
         // TESTED
       }
     } else {
-      const { drawDefinition, score } = props;
-      modifyMatchUpScore({ drawDefinition, matchUp, score, notes });
+      const { drawDefinition, score, matchUpFormat } = props;
+      modifyMatchUpScore({
+        drawDefinition,
+        matchUpFormat,
+        matchUp,
+        score,
+        notes,
+      });
     }
   } else {
     return {
@@ -261,17 +267,19 @@ function winningSideWithDownstreamDependencies(props) {
 function applyMatchUpValues(props) {
   const {
     drawDefinition,
-    matchUp,
-    matchUpStatus,
     matchUpStatusCodes,
+    matchUpStatus,
+    matchUpFormat,
+    matchUp,
     score,
     notes,
   } = props;
   modifyMatchUpScore({
     drawDefinition,
-    matchUp,
     matchUpStatus: matchUpStatus || COMPLETED,
     matchUpStatusCodes,
+    matchUpFormat,
+    matchUp,
     score,
     notes,
   });

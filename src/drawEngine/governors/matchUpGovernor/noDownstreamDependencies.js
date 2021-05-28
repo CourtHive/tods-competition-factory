@@ -17,7 +17,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, score, winningSide } = props;
+  const { matchUp, matchUpFormat, score, winningSide } = props;
   let { matchUpStatus } = props;
 
   const doubleWalkoverCleanup =
@@ -61,6 +61,7 @@ export function noDownstreamDependencies(props) {
     modifyMatchUpScore({
       drawDefinition: props.drawDefinition,
       removeScore: true,
+      matchUpFormat,
       matchUp,
     });
     const isCollectionMatchUp = Boolean(matchUp.collectionId);

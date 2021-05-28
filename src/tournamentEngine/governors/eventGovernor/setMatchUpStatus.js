@@ -64,6 +64,7 @@ export function setMatchUpStatus(props) {
     drawDefinition,
     matchUpId,
     matchUpTieId,
+    matchUpFormat,
     matchUpStatus: outcome?.matchUpStatus,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     winningSide: outcome?.winningSide,
