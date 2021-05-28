@@ -74,9 +74,8 @@ test.each([competitionEngineSync])(
     result = competitionEngine.getEventMatchUpFormatTiming({
       eventId,
       categoryType: JUNIOR,
-      eventType: JUNIOR,
       matchUpFormats: [matchUpFormat],
     });
-    console.log(result);
+    expect(result.eventMatchUpFormatTiming[0].averageMinutes).toEqual(127);
   }
 );
