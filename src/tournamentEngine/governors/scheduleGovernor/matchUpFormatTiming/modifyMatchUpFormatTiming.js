@@ -69,7 +69,8 @@ function modifyScheduling({
 }) {
   // don't allow modification without categoryName
   formatAverageTimes = (formatAverageTimes || []).filter(
-    (averageTime) => averageTime?.categoryNames?.length
+    (averageTime) =>
+      averageTime?.categoryNames?.length || averageTime?.categoryTypes?.length
   );
   // if there are formatAverageTimes specified...
   const updatedMatchUpAverageTimes =
@@ -95,7 +96,8 @@ function modifyScheduling({
 
   // don't allow modification without categoryName
   formatRecoveryTimes = (formatRecoveryTimes || []).filter(
-    (recoveryTime) => recoveryTime?.categoryNames?.length
+    (recoveryTime) =>
+      recoveryTime?.categoryNames?.length || recoveryTime?.categoryTypes?.length
   );
   // if there are formatRecoveryTimes specified...
   const updatedMatchUpRecoveryTimes =

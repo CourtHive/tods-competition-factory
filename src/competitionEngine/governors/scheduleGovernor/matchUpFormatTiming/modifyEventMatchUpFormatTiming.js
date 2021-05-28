@@ -13,6 +13,7 @@ export function modifyEventMatchUpFormatTiming({
   tournamentId,
   eventId,
 
+  categoryType,
   matchUpFormat,
   averageMinutes,
   recoveryMinutes,
@@ -35,6 +36,8 @@ export function modifyEventMatchUpFormatTiming({
       return modifyEventTiming({
         tournamentRecord,
         event,
+
+        categoryType,
         matchUpFormat,
         averageMinutes,
         recoveryMinutes,

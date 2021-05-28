@@ -14,6 +14,7 @@ export function modifyEventMatchUpFormatTiming({
   tournamentRecord,
   event,
 
+  categoryType,
   matchUpFormat,
   averageMinutes,
   recoveryMinutes,
@@ -37,7 +38,11 @@ export function modifyEventMatchUpFormatTiming({
   let currentRecoveryTime = { categoryNames: [categoryName], minutes: {} };
 
   const newTiming = (timing) => {
-    if (timing.categoryNames.includes(categoryName)) {
+    if (timing.categoryTypes?.includes(categoryType)) {
+      // TODO
+      console.log('encountered:', { categoryType });
+    }
+    if (timing.categoryNames?.includes(categoryName)) {
       timing.categoryNames = timing.categoryNames.filter(
         (c) => c !== categoryName
       );
