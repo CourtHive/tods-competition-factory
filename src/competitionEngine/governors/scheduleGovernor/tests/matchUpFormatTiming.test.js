@@ -73,6 +73,8 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.getEventMatchUpFormatTiming({
       eventId,
+      categoryType: JUNIOR,
+      eventType: JUNIOR,
       matchUpFormats: [matchUpFormat],
     });
     console.log(result);

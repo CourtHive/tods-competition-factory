@@ -1,3 +1,4 @@
+import { tournamentMethods } from './tournamentMethods';
 import {
   addExtension,
   findExtension,
@@ -19,6 +20,8 @@ const competitionGovernor = {
   unlinkTournament,
   unlinkTournaments,
   getLinkedTournamentIds,
+
+  tournamentMethods,
 };
 
 export default competitionGovernor;
