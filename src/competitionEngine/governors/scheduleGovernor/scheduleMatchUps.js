@@ -38,7 +38,7 @@ export function scheduleMatchUps(props) {
 
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
-  if (!isValidDateString) return { error: INVALID_DATE };
+  if (!isValidDateString(date)) return { error: INVALID_DATE };
 
   let matchUps = props.matchUps;
   if (!matchUps) {
