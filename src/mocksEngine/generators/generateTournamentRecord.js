@@ -1,5 +1,9 @@
 import { generateEventWithFlights } from './generateEventWithFlights';
-import { dateRange, formatDate } from '../../utilities/dateTime';
+import {
+  dateRange,
+  formatDate,
+  isValidDateString,
+} from '../../utilities/dateTime';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
 
@@ -7,6 +11,7 @@ import tournamentEngine from '../../tournamentEngine/sync';
 
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
+import { INVALID_DATE } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -45,9 +50,19 @@ export function generateTournamentRecord({
     sex,
   } = participantsProfile || {};
 
-  if (!startDate && !endDate) {
+  if (
+    (startDate && !isValidDateString(startDate)) ||
+    (endDate && !isValidDateString(endDate))
+  )
+    return { error: INVALID_DATE };
+
+  if (!startDate) {
     const tournamentDate = new Date();
     startDate = formatDate(tournamentDate);
+    endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
+  }
+  if (!endDate) {
+    const tournamentDate = new Date(startDate);
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
