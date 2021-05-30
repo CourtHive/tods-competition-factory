@@ -55,7 +55,7 @@ export function tournamentEngineAsync() {
   fx.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
-    processResult(result);
+    return processResult(result);
   };
   fx.devContext = (isDev) => {
     setDevContext(isDev);
