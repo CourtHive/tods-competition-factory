@@ -27,6 +27,7 @@ import { INVALID_DATE } from '../../constants/errorConditionConstants';
 export function generateTournamentRecord({
   endDate,
   startDate,
+  tournamentName,
 
   participantsProfile,
   drawProfiles,
@@ -66,7 +67,11 @@ export function generateTournamentRecord({
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  const result = tournamentEngine.newTournamentRecord({ startDate, endDate });
+  const result = tournamentEngine.newTournamentRecord({
+    startDate,
+    endDate,
+    tournamentName,
+  });
   if (result.error) return result;
 
   const getEventProfileParticipantsCount = (eventProfile) =>

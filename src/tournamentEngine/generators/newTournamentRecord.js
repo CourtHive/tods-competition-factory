@@ -5,7 +5,7 @@ import { isISODateString } from '../../utilities/dateTime';
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { UUID } from '../../utilities';
 
-export function newTournamentRecord(props) {
+export function newTournamentRecord(props = {}) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
   const template = definitionTemplate(props);
   if (props.startDate) {
