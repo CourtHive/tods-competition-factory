@@ -79,15 +79,23 @@ export function addParticipantContext({
             participantIdMap[relevantParticipantId].events[eventId].drawIds;
           if (!eventDrawIds.includes(drawId)) {
             eventDrawIds.push(drawId);
-            participantIdMap[relevantParticipantId].draws[drawId] = {
-              drawId,
-              eventId,
-              drawName,
-              drawType,
-              entryStage,
-              entryStatus,
-              entryPosition,
-            };
+
+            if (participantIdMap[relevantParticipantId]) {
+              participantIdMap[relevantParticipantId].draws[drawId] = {
+                drawId,
+                eventId,
+                drawName,
+                drawType,
+                entryStage,
+                entryStatus,
+                entryPosition,
+              };
+            } else {
+              console.log('missing participantId', {
+                relevantParticipantId,
+                tournamentId: tournamentRecord.tournamentId,
+              });
+            }
           }
         }
       );
