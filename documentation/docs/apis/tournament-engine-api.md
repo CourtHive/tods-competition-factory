@@ -1335,7 +1335,8 @@ const {
 Returns player daily match limits for singles/doubles/total matches.
 
 ```js
-tournamentId.getMatchUpDailyLimits();
+const { matchUpDailyLimits } = tournamentId.getMatchUpDailyLimits();
+const { DOUBLES, SINGLES, total } = matchUpDailyLimits;
 ```
 
 ---

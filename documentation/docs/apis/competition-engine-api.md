@@ -162,9 +162,10 @@ const { linkedTournamentIds } = competitionEngine.getLinkedTournamentIds();
 Returns player daily match limits for singles/doubles/total matches.
 
 ```js
-competitionEngine.getMatchUpDailyLimits({
+const { matchUpDailyLimits } = competitionEngine.getMatchUpDailyLimits({
   tournamentId, // optional - scope search to specific tournamentRecord
 });
+const { DOUBLES, SINGLES, total } = matchUpDailyLimits;
 ```
 
 ---
