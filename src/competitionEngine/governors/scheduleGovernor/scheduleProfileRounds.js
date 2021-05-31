@@ -27,12 +27,12 @@ export function scheduleProfileRounds({
     getSchedulingProfile({ tournamentRecords })?.schedulingProfile || [];
 
   const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
-  const individualParticipantProfiles = {};
 
   const competitionMatchUpFilters = {};
   const { matchUps } = allCompetitionMatchUps({
     tournamentRecords,
     matchUpFilters: competitionMatchUpFilters,
+    nextMatchUps: true,
   });
 
   const validScheduleDates = scheduleDates
@@ -131,7 +131,6 @@ export function scheduleProfileRounds({
           tournamentRecords,
 
           matchUpDailyLimits,
-          individualParticipantProfiles,
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutes,
 
@@ -159,6 +158,5 @@ export function scheduleProfileRounds({
     scheduledDates,
     scheduledMatchUpIds,
     skippedMatchUpIds,
-    individualParticipantProfiles,
   });
 }
