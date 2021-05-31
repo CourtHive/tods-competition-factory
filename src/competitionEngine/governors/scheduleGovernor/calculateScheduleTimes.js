@@ -88,11 +88,13 @@ export function calculateScheduleTimes({
   // some of them may have courts assigned and some may only have venueIds
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
   const matchUpFilters = { scheduledDate: date };
-  const { dateMatchUps } = competitionScheduleMatchUps({
-    tournamentRecords,
-    sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
-    matchUpFilters,
-  });
+  const dateMatchUps =
+    competitionScheduleMatchUps({
+      tournamentRecords,
+      sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
+      matchUpFilters,
+    })?.dateMatchUps || [];
+
   const bookings = dateMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
     const { event, tournamentId } = eventDetails[eventId];
     const tournamentRecord = tournamentRecords[tournamentId];
@@ -135,5 +137,9 @@ export function calculateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  return { venueId, scheduleTimes };
+  const dateScheduledMatchUpIds = dateMatchUps.map(
+    ({ matchUpId }) => matchUpId
+  );
+
+  return { venueId, scheduleTimes, dateScheduledMatchUpIds };
 }
