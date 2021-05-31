@@ -18,6 +18,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
+  periodLength,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
@@ -79,8 +80,10 @@ export function scheduleProfileRounds({
       );
 
       for (const round of sortedRounds) {
-        const periodLength =
-          round.periodLength || dateSchedulingProfile?.periodLength;
+        periodLength =
+          round.periodLength ||
+          dateSchedulingProfile?.periodLength ||
+          periodLength;
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],

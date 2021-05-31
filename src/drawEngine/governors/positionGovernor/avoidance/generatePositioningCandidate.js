@@ -25,7 +25,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  * @param {object} drawDefinition - drawDefinition object
  * @param {boolean} pairedPriority - flag whether to prioritize positions which already have one opponent placed
  * @param {string} structureId - id of the structure in which participants are to be placed
- * @param {object[]} allGroups - map of values and particpantIds which have those values
+ * @param {object[]} allGroups - map of values and participantIds which have those values
  *
  */
 export function generatePositioningCandidate(props) {

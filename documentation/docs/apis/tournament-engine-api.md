@@ -139,7 +139,7 @@ tournamentEngine.addEventEntryPairs({
   entryStatus: ALTERNATE, // optional
   entryStage: QUALIFYING, // optional
   uuids, // optional - array of UUIDs to use for newly created pairs
-  allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticpantIds
+  allowDuplicateParticipantIdPairs, // optional - boolean - allow multiple pair participants with the same individualParticipantIds
 });
 ```
 
@@ -341,7 +341,7 @@ tournamentEngine.addParticipants({ participants });
 
 ## addPenalty
 
-Add a penaltyItem to one or more particpants.
+Add a penaltyItem to one or more participants.
 
 ```js
 const createdAt = new Date().toISOString();
@@ -1130,7 +1130,7 @@ const {
     drawActive, // boolean - draw has active matchUps
     drawCompleted, // boolean - all draw matchUps are complete
     drawGenerated, // boolean - draw has structures containing matchUps
-    participantPlacements, // boolean - whether any particpants have been placed in the draw
+    participantPlacements, // boolean - whether any participants have been placed in the draw
   },
   structures,
 } = tournamentEngine.getDrawData({ drawDefinition });
@@ -1963,7 +1963,7 @@ tournamentEngine.removeDrawDefintionExtension({ eventId, drawId, name });
 
 ## removeDrawPositionAssignment
 
-Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR particpant into UNPAIRED participants (DOUBLES only).
+Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR participant into UNPAIRED participants (DOUBLES only).
 
 ```js
 removeDrawPositionAssignment({

@@ -94,7 +94,7 @@ function eliminationSwap({
       mappedMatchUps,
     });
   } else {
-    return eliminationParticpantSwap({
+    return eliminationParticipantSwap({
       structure,
       assignments,
       mappedMatchUps,
@@ -154,7 +154,7 @@ function swapParticipantIdWithBYE({
   return result.error ? result : SUCCESS;
 }
 
-function eliminationParticpantSwap({ structure, assignments }) {
+function eliminationParticipantSwap({ structure, assignments }) {
   // preserves order of drawPositions in original positionAssignments array
   // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
   const newAssignments = Object.assign(

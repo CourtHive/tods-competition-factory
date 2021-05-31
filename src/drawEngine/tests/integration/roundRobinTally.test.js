@@ -14,7 +14,7 @@ import {
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
 
-it('can recalculate particpantResults when outcomes are removed', () => {
+it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
     {
       drawSize: 4,

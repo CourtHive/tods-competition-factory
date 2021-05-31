@@ -52,20 +52,21 @@ test.each([competitionEngineSync])(
 );
 
 test.only.each([
-  // [competitionEngineSync, 3],
-  [competitionEngineSync, 4],
+  [competitionEngineSync, 16, 8, 2, true],
+  [competitionEngineSync, 16, 16, 3, false], // sort order will not match because of deferred scheduling
+  [competitionEngineSync, 16, 32, 4, false], // sort order will not match because of deferred scheduling
 ])(
   'sorts scheduled matchUps according to schedulingProfile',
-  async (competitionEngine, courtsCount) => {
+  async (competitionEngine, drawSize1, drawSize2, courtsCount, expectMatch) => {
     const drawProfiles = [
-      { drawSize: 16, drawName: 'Draw 1' },
-      { drawSize: 16, drawName: 'Draw 2' },
+      { drawSize: drawSize1, drawName: 'Draw 1' },
+      { drawSize: drawSize2, drawName: 'Draw 2' },
     ];
     const venueProfiles = [
       {
         venueName: 'venue 1',
         startTime: '08:00',
-        endTime: '18:00',
+        endTime: '20:00',
         courtsCount,
       },
     ];
@@ -147,7 +148,6 @@ test.only.each([
     );
 
     // This proves that the sorted dateMatchUps can faithfully reflect the assigned order
-    console.log({ scheduledTimeOrder, sortedDateMatchUps });
-    expect(scheduledTimeOrder).toEqual(sortedDateMatchUps);
+    if (expectMatch) expect(scheduledTimeOrder).toEqual(sortedDateMatchUps);
   }
 );

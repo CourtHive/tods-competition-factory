@@ -82,7 +82,7 @@ export function getValidSwapAction({
   const participantsAvailable = (tournamentParticipants || []).filter(
     (participant) => availableParticipantIds.includes(participant.participantId)
   );
-  const availableParticpantsMap = Object.assign(
+  const availableParticipantsMap = Object.assign(
     {},
     ...participantsAvailable.map((participant) => ({
       [participant.participantId]: participant,
@@ -91,8 +91,8 @@ export function getValidSwapAction({
 
   const availableAssignments = filteredAssignments.map((assignment) => {
     const participant =
-      availableParticpantsMap &&
-      availableParticpantsMap[assignment.participantId];
+      availableParticipantsMap &&
+      availableParticipantsMap[assignment.participantId];
 
     const sourceDrawPositionRange =
       sourceDrawPositionRangeMap[assignment.drawPosition];

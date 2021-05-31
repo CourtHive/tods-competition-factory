@@ -48,7 +48,7 @@ import { TOTAL } from '../../../constants/scheduleConstants';
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
  * @param {object} individualParticipantProfiles - { [participantId]: { limits }}
  *
- * @returns scheduledMatchUpIds, individualParticpantProfiles
+ * @returns scheduledMatchUpIds, individualParticipantProfiles
  * @modifies individualParticipantProfiles - increments counters
  */
 export function scheduleMatchUps({
@@ -81,6 +81,7 @@ export function scheduleMatchUps({
   if (!matchUps) {
     const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
       tournamentRecords,
+      nextMatchUps: true,
     });
     matchUps = competitionMatchUps.filter(({ matchUpId }) =>
       matchUpIds.includes(matchUpId)
@@ -149,18 +150,19 @@ export function scheduleMatchUps({
   let deferredMatchUps = [];
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
-  const maxIterations = matchUpsToSchedule.length * scheduleTimes.length;
+
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
     scheduleTimes.length &&
     deferredMatchUps.length + matchUpsToSchedule.length &&
-    iterations < maxIterations // failsafe to prevent infinite loop
+    iterations < scheduleTimes.length // failsafe to prevent infinite loop
   ) {
     const insufficientTimeMatchUps = [];
     const { scheduleTime } = scheduleTimes.shift();
+
+    // find a matchUp where all individual participants had enough recovery time
     const candidateMatchUps = [...deferredMatchUps, ...matchUpsToSchedule];
     const scheduledMatchUp = candidateMatchUps.find((matchUp) => {
-      console.log('cl', candidateMatchUps.length);
       const { enoughTime } = checkRecoveryTime(
         matchUp,
         scheduleTime,
@@ -171,25 +173,31 @@ export function scheduleMatchUps({
 
       if (enoughTime) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
+        return true;
       } else {
         insufficientTimeMatchUps.push(matchUp);
       }
     });
-    deferredMatchUps = [insufficientTimeMatchUps].concat(
-      ...deferredMatchUps.filter(
-        ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
-      )
-    );
+
+    // rebuild deferredMatchUps and matchUpsToSchedule arrays
+    deferredMatchUps = insufficientTimeMatchUps
+      .concat(...deferredMatchUps)
+      .filter(({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId);
     matchUpsToSchedule = matchUpsToSchedule.filter(
       ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
     );
+
     if (!scheduledMatchUp) {
       unusedScheduleTimes.push(scheduleTime);
     }
 
     iterations++;
-    console.log({ iterations });
   }
+
+  const matchUpsNotScheduled = deferredMatchUps.concat(...matchUpsToSchedule);
+  matchUpsNotScheduled.forEach((matchUp) => {
+    decrementParticipantMatchUpsCounts(matchUp, individualParticipantProfiles);
+  });
 
   let scheduledMatchUpIds = [];
   Object.keys(matchUpMap).forEach((tournamentId) => {
@@ -289,19 +297,6 @@ export function checkRecoveryTime(
   return { enoughTime };
 }
 
-function getIndividualParticipantIds(matchUp) {
-  const { sides, matchUpType } = matchUp;
-  return (sides || [])
-    .map((side) => {
-      return matchUpType === DOUBLES
-        ? side?.individualParticipantIds || []
-        : side.participantId
-        ? [side.participantId]
-        : [];
-    })
-    .flat();
-}
-
 /**
  *
  * @param {object[]} sides - matchUp.sides
@@ -341,7 +336,7 @@ function checkDailyLimits(
     }
   );
 
-  if (!participantIdsAtLimit.length) {
+  if (!participantIdsAtLimit) {
     individualParticipantIds.forEach((participantId) => {
       const limits = individualParticipantProfiles[participantId].limits;
       if (limits[matchUpType]) limits[matchUpType] += 1;
@@ -352,4 +347,30 @@ function checkDailyLimits(
   }
 
   return participantIdsAtLimit;
+}
+
+function decrementParticipantMatchUpsCounts(
+  matchUp,
+  individualParticipantProfiles
+) {
+  const { matchUpType } = matchUp;
+  const individualParticipantIds = getIndividualParticipantIds(matchUp);
+  individualParticipantIds.forEach((participantId) => {
+    const limits = individualParticipantProfiles[participantId].limits;
+    if (limits[matchUpType]) limits[matchUpType] -= 1;
+    if (limits[TOTAL]) limits[TOTAL] -= 1;
+  });
+}
+
+function getIndividualParticipantIds(matchUp) {
+  const { sides, matchUpType } = matchUp;
+  return (sides || [])
+    .map((side) => {
+      return matchUpType === DOUBLES
+        ? side?.individualParticipantIds || []
+        : side.participantId
+        ? [side.participantId]
+        : [];
+    })
+    .flat();
 }

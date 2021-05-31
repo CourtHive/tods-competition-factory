@@ -217,7 +217,7 @@ export function generateDrawDefinition(props) {
           participantId,
         });
         if (!result.success) {
-          console.log('generateDrawDefinition seededParticpants');
+          console.log('generateDrawDefinition seededParticipants');
           console.log(`%c ${result.error}`, 'color: red');
         }
       });
