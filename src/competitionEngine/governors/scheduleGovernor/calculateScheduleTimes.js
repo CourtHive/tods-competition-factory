@@ -18,7 +18,7 @@ import {
  * @param {string[]} venueIds - optional - look for availaiblity only courts at specified venues
  *
  * NOTE: not using matchUpFormat here because time per format is defined by policy
- * @param {number} averageMatchUpTime - number of minutes per match
+ * @param {number} averageMatchUpMinutes - number of minutes per match
  * @param {number} periodLengh - number of minutes in a scheduling period
  * @returns
  */
@@ -29,7 +29,7 @@ export function calculateScheduleTimes({
   date,
 
   defaultRecoveryMinutes = 60,
-  averageMatchUpTime = 90,
+  averageMatchUpMinutes = 90,
   periodLength = 30,
 
   venueIds,
@@ -97,7 +97,7 @@ export function calculateScheduleTimes({
     const { event, tournamentId } = eventDetails[eventId];
     const tournamentRecord = tournamentRecords[tournamentId];
     const { averageMinutes } = getMatchUpFormatTiming({
-      defaultAverageMinutes: averageMatchUpTime,
+      defaultAverageMinutes: averageMatchUpMinutes,
       defaultRecoveryMinutes,
       matchUpFormat,
       tournamentRecord,
@@ -123,7 +123,7 @@ export function calculateScheduleTimes({
     endTime,
     bookings,
     periodLength,
-    averageMatchUpTime,
+    averageMatchUpMinutes,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 

@@ -56,7 +56,7 @@ const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
 
-  averageMatchUpTime = 90, // optional - defualts to 90
+  averageMatchUpMinutes = 90, // optional - defualts to 90
   periodLength = 30, // optional - defualts to 30
 
   venueIds, // optional - restrict calculation to specified venueIds
@@ -321,7 +321,7 @@ competitionEngine.scheduleMatchUps({
   matchUpIds, // array of matchUpIds; if no schedulingProfile provided will be auto-sorted by draw size and roundNumbers
 
   periodLength = 30, // optional - defaults to 30
-  averageMatchUpTime = 90, // optional - defaults to 90
+  averageMatchUpMinutes = 90, // optional - defaults to 90
 });
 ```
 

@@ -1,9 +1,9 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
-import competitionEngineAsync from '../../../async';
 
-const asyncCompetitionEngine = competitionEngineAsync();
+// import competitionEngineAsync from '../../../async';
+// const asyncCompetitionEngine = competitionEngineAsync();
 
 test.each([competitionEngineSync])(
   'auto schedules venue if only one venue provided',
@@ -51,11 +51,14 @@ test.each([competitionEngineSync])(
   }
 );
 
-test.each([competitionEngineSync, asyncCompetitionEngine])(
+test.only.each([
+  // [competitionEngineSync, 3],
+  [competitionEngineSync, 4],
+])(
   'sorts scheduled matchUps according to schedulingProfile',
-  async (competitionEngine) => {
+  async (competitionEngine, courtsCount) => {
     const drawProfiles = [
-      { drawSize: 8, drawName: 'Draw 1' },
+      { drawSize: 16, drawName: 'Draw 1' },
       { drawSize: 16, drawName: 'Draw 2' },
     ];
     const venueProfiles = [
@@ -63,7 +66,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
         venueName: 'venue 1',
         startTime: '08:00',
         endTime: '18:00',
-        courtsCount: 6,
+        courtsCount,
       },
     ];
 
@@ -129,7 +132,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     );
     expect(result.success).toEqual(true);
     expect(result.scheduledDates).toEqual([startDate]);
-    expect(result.scheduledMatchUpIds.length).toEqual(18);
+    // expect(result.scheduledMatchUpIds.length).toEqual(18);
 
     const matchUpFilters = { scheduledDate: startDate };
     result = await competitionEngine.competitionScheduleMatchUps({
@@ -144,6 +147,7 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     );
 
     // This proves that the sorted dateMatchUps can faithfully reflect the assigned order
+    console.log({ scheduledTimeOrder, sortedDateMatchUps });
     expect(scheduledTimeOrder).toEqual(sortedDateMatchUps);
   }
 );

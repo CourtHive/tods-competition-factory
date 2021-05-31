@@ -366,11 +366,11 @@ export function timeToDate(timeString, date = undefined) {
   return offsetDate(milliseconds);
 }
 
-export function minutesDifference(date2, date1) {
-  const dt2 = new Date(date2);
+export function minutesDifference(date1, date2, absolute = true) {
   const dt1 = new Date(date1);
+  const dt2 = new Date(date2);
   const diff = (dt2.getTime() - dt1.getTime()) / 1000 / 60;
-  return Math.abs(Math.round(diff));
+  return absolute ? Math.abs(Math.round(diff)) : Math.round(diff);
 }
 
 export function addMinutesToTimeString(timeString, minutes) {

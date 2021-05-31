@@ -15,7 +15,7 @@ export function getScheduleTimes({
   endTime = '19:00',
   date = currentUTCDate(),
   periodLength = 30,
-  averageMatchUpTime = 90,
+  averageMatchUpMinutes = 90,
   bookings,
   courts,
 } = {}) {
@@ -54,11 +54,11 @@ export function getScheduleTimes({
     const periodStartTime = addMinutes(dayStartTime, period * periodLength);
     const periodStart = extractTime(periodStartTime.toISOString());
 
-    // availableToScheduleCount calculated from periodStartTime and averageMatchUpTime
-    // a court is only available if it can accommodate matchUps of duration averageMatchUpTime
+    // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
+    // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes
     const { availableToScheduleCount } = courtsAvailableAtPeriodStart({
       courts: virtualCourts,
-      averageMatchUpTime,
+      averageMatchUpMinutes,
       periodStart,
       date,
     });
@@ -78,7 +78,7 @@ export function getScheduleTimes({
     // which should be possible given a number of periods and an average number of courts
     // available over the accumulated time
     const accumulatedTime = periodLength * averageCourts;
-    const matchesCalculation = accumulatedTime / averageMatchUpTime;
+    const matchesCalculation = accumulatedTime / averageMatchUpMinutes;
     const calculatedTotal = period
       ? matchesCalculation * (period - 1) + averageCourts
       : averageCourts;
