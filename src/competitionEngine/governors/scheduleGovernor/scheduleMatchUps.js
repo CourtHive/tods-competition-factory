@@ -66,8 +66,6 @@ export function scheduleMatchUps({
   recoveryMinutes = 0,
 
   matchUpDailyLimits = {},
-  matchUpTimingProfiles = {},
-  individualParticipantProfiles = {},
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -89,16 +87,38 @@ export function scheduleMatchUps({
     );
   }
 
-  const { venueId, scheduleTimes } = calculateScheduleTimes({
-    tournamentRecords,
-    startTime: extractTime(startTime),
-    endTime: extractTime(endTime),
-    date: extractDate(date),
-    averageMatchUpMinutes,
-    periodLength,
-    venueIds,
+  const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
+    calculateScheduleTimes({
+      tournamentRecords,
+      startTime: extractTime(startTime),
+      endTime: extractTime(endTime),
+      date: extractDate(date),
+      averageMatchUpMinutes,
+      periodLength,
+      venueIds,
+    });
+
+  const matchUpNotBeforeTimes = {}; // this should be built from existing matchUps scheduled on the date
+  const individualParticipantProfiles = {}; // this should be built from existing matchUps scheduled on the date
+  const dateScheduledMatchUps = matchUps.filter(({ matchUpId }) =>
+    dateScheduledMatchUpIds.includes(matchUpId)
+  );
+  dateScheduledMatchUps.forEach((matchUp) => {
+    // TODO: pre-populate individualParticipantProfiles from already scheduled matchUps
+    const scheduleTime = matchUp.schedule?.scheduledTime;
+    if (scheduleTime) {
+      const timeAfterRecovery = addMinutesToTimeString(
+        scheduleTime,
+        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+      );
+      if (matchUp.winnerTo?.matchUpId)
+        matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
+      if (matchUp.loserTo?.matchUpId)
+        matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+    }
   });
 
+  // TODO: Also filter out matchUps which are already scheduled on the date
   // matchUps are assumed to be in the desired order for scheduling
   let matchUpsToSchedule = matchUps.filter((matchUp) => {
     const doNotSchedule = [
@@ -151,11 +171,16 @@ export function scheduleMatchUps({
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
+  let iterations = 0;
+  const failSafe = scheduleTimes.length;
+
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
     scheduleTimes.length &&
-    deferredMatchUps.length + matchUpsToSchedule.length
+    deferredMatchUps.length + matchUpsToSchedule.length &&
+    iterations <= failSafe
   ) {
+    iterations++;
     const insufficientTimeMatchUps = [];
     const { scheduleTime } = scheduleTimes.shift();
 
@@ -167,7 +192,8 @@ export function scheduleMatchUps({
         scheduleTime,
         recoveryMinutes,
         averageMatchUpMinutes,
-        individualParticipantProfiles
+        individualParticipantProfiles,
+        matchUpNotBeforeTimes
       );
 
       if (enoughTime) {
@@ -246,7 +272,7 @@ export function scheduleMatchUps({
   return Object.assign({}, SUCCESS, {
     skippedMatchUpIds,
     scheduledMatchUpIds,
-    matchUpTimingProfiles,
+    matchUpNotBeforeTimes,
     individualParticipantProfiles,
   });
 }
@@ -256,10 +282,11 @@ export function checkRecoveryTime(
   scheduleTime,
   recoveryMinutes,
   averageMatchUpMinutes,
+  matchUpNotBeforeTimes,
   individualParticipantProfiles
 ) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  const enoughTime = individualParticipantIds.reduce(
+  const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
     (isSufficient, participantId) => {
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
@@ -280,6 +307,19 @@ export function checkRecoveryTime(
     },
     true
   );
+
+  const notBeforeTime = matchUpNotBeforeTimes[matchUp.matchUpId];
+  const timeBetweenMatchUps = notBeforeTime
+    ? minutesDifference(
+        timeToDate(notBeforeTime),
+        timeToDate(scheduleTime),
+        false
+      )
+    : 0;
+  const sufficientTimeBetweenMatchUps = timeBetweenMatchUps >= 0;
+
+  const enoughTime =
+    sufficientTimeForIndiiduals && sufficientTimeBetweenMatchUps;
 
   if (enoughTime) {
     individualParticipantIds.forEach((participantId) => {
