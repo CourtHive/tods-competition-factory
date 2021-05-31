@@ -61,7 +61,7 @@ INDIVIDUAL participants may be members of PAIR, TEAM and GROUP participants; the
 - teamParticipantIds
 - groupParticipantIds
 
-Specifying that PAIR, TEAM or GROUP particpants should be considered for avoidance is achieved via 'directives' rather than keys because the value are handled differently.
+Specifying that PAIR, TEAM or GROUP participants should be considered for avoidance is achieved via 'directives' rather than keys because the value are handled differently.
 
 ```js
 const pairAvoidancePolicy = {

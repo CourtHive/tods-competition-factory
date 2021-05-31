@@ -22,7 +22,7 @@ After initial separation of participants by `matchUpsWon`,
 the implementation is configurable by supplying an array of `tallyDirectives` in the `tallyPolicy`.
 
 The algorithm relies on the values avaialble in the calculated `participantResults` and works as follows:
-• separate particpants into groups by a given attribute
+• separate participants into groups by a given attribute
 • a group with a single participant is 'resolved'
 • groups of two participants are resolved by head-to-head (if not disabled/if participants faced each other)
 • groups of three or more search for an attribute that will separate them into smaller groups

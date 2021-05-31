@@ -3,17 +3,17 @@ import { getCourtDateFilters } from './courtDateFilters';
 
 export function courtsAvailableAtPeriodStart({
   includeBookingTypes,
-  averageMatchUpTime,
+  averageMatchUpMinutes,
   periodStart,
   courts,
   date,
 }) {
   const periodStartTime = timeToDate(periodStart);
-  const periodEndTime = addMinutes(periodStartTime, averageMatchUpTime);
+  const periodEndTime = addMinutes(periodStartTime, averageMatchUpMinutes);
 
   const { sameDate, enoughTime } = getCourtDateFilters({
     includeBookingTypes,
-    averageMatchUpTime,
+    averageMatchUpMinutes,
     periodStartTime,
     periodEndTime,
     date,

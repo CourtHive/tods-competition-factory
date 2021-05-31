@@ -4,7 +4,7 @@ import { intersection } from '../../../../utilities/arrays';
  *
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
  * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
- * @param {object[]} positionAssignments - array of assignment objects { drawPosition, particpantId }
+ * @param {object[]} positionAssignments - array of assignment objects { drawPosition, participantId }
  *
  */
 function getPositionProfiles({
@@ -36,7 +36,7 @@ function getPositionProfiles({
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
  * @param {string[]} groupsToAvoid - names of groups which contain the participantId currently being placed
  * @param {number[]} unfilledPositions - drawPositions which have not been assigned a participantid
- * @param {object[]} positionAssignments - array of assignment objects { drawPosition, particpantId }
+ * @param {object[]} positionAssignments - array of assignment objects { drawPosition, participantId }
  * @param {object[]} chunkedDrawPositions - array of arrays of drawPositions
  *
  * Returns different types of placement options.

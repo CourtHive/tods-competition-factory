@@ -98,7 +98,7 @@ it('can add events, venues, and schedule matchUps', () => {
     startTime: '8:00',
     endTime: ' 19:00',
     periodLength: 30,
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(19);
@@ -374,7 +374,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     startTime: '8:00',
     endTime: ' 19:00',
     periodLength: 30,
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
   expect(scheduleTimes.length).toEqual(19);

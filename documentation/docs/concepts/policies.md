@@ -19,7 +19,7 @@ The structure of an **_policyDefinition_** is as follows:
 
 ### [Avoidance Policy](../policies/avoidance)
 
-Can be attached to drawDefinitions to specify the attriubutes by which particpants should be separated
+Can be attached to drawDefinitions to specify the attriubutes by which participants should be separated
 
 ### [Feed Policy](../policies/feedPolicy)
 

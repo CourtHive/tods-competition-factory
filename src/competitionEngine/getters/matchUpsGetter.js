@@ -13,6 +13,7 @@ export function allCompetitionMatchUps({
   tournamentRecords,
   matchUpFilters,
   contextFilters,
+  nextMatchUps,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
@@ -24,6 +25,7 @@ export function allCompetitionMatchUps({
         tournamentRecord,
         matchUpFilters,
         contextFilters,
+        nextMatchUps,
       });
       return matchUps;
     })

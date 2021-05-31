@@ -4,6 +4,7 @@ import { getMatchUpFormat } from '../../../tournamentEngine/getters/getMatchUpFo
 import { extractDate, isValidDateString } from '../../../utilities/dateTime';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
+import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
 import { scheduleMatchUps } from './scheduleMatchUps';
 
@@ -17,12 +18,16 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
+  periodLength,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
   const schedulingProfile =
     getSchedulingProfile({ tournamentRecords })?.schedulingProfile || [];
+
+  const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
+  const individualParticipantProfiles = {};
 
   const competitionMatchUpFilters = {};
   const { matchUps } = allCompetitionMatchUps({
@@ -62,10 +67,11 @@ export function scheduleProfileRounds({
       new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
+  const skippedMatchUpIds = [];
   const scheduledMatchUpIds = [];
-  for (const dateschedulingProfile of dateSchedulingProfiles) {
-    const venues = dateschedulingProfile?.venues || [];
-    const date = extractDate(dateschedulingProfile?.scheduleDate);
+  for (const dateSchedulingProfile of dateSchedulingProfiles) {
+    const date = extractDate(dateSchedulingProfile?.scheduleDate);
+    const venues = dateSchedulingProfile?.venues || [];
 
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
@@ -75,6 +81,10 @@ export function scheduleProfileRounds({
       );
 
       for (const round of sortedRounds) {
+        periodLength =
+          round.periodLength ||
+          dateSchedulingProfile?.periodLength ||
+          periodLength;
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],
@@ -104,26 +114,38 @@ export function scheduleProfileRounds({
 
         const { eventType, category } = event || {};
         const { categoryName, ageCategoryCode } = category || {};
-        const { averageMinutes /*, recoveryMinutes */ } =
-          findMatchUpFormatTiming({
-            tournamentRecords,
-            categoryName: categoryName || ageCategoryCode,
-            tournamentId: round.tournamentId,
-            eventId: round.eventId,
-            matchUpFormat,
-            eventType,
-          });
+        const { averageMinutes, recoveryMinutes } = findMatchUpFormatTiming({
+          tournamentRecords,
+          categoryName: categoryName || ageCategoryCode,
+          tournamentId: round.tournamentId,
+          eventId: round.eventId,
+          matchUpFormat,
+          eventType,
+        });
+
+        // a potential optimization is to check the matchUpFormatTiming for sequential rounds
+        // use an aggregator `roundScheduleDetails` and then bulk schedule rounds with equivalent averageMinutes
+        // roundScheduleDetails = [{ averageMinutes, recoveryMinutes, periodLength, matchUpIds }]
 
         const result = scheduleMatchUps({
           tournamentRecords,
-          averageMatchUpTime: averageMinutes,
+
+          matchUpDailyLimits,
+          individualParticipantProfiles,
+          averageMatchUpMinutes: averageMinutes,
+          recoveryMinutes,
+
           venueIds: [venueId],
+          periodLength,
           matchUpIds,
           date,
         });
+        if (result.error) return result;
+
         const roundScheduledMatchUpIds = result?.scheduledMatchUpIds || [];
         scheduledMatchUpIds.push(...roundScheduledMatchUpIds);
-        if (result.error) return result;
+        const roundSkippedMatchUpIds = result?.skippedMatchUpIds || [];
+        skippedMatchUpIds.push(...roundSkippedMatchUpIds);
       }
     }
   }
@@ -133,5 +155,10 @@ export function scheduleProfileRounds({
     ({ scheduleDate }) => scheduleDate
   );
 
-  return Object.assign({}, SUCCESS, { scheduledDates, scheduledMatchUpIds });
+  return Object.assign({}, SUCCESS, {
+    scheduledDates,
+    scheduledMatchUpIds,
+    skippedMatchUpIds,
+    individualParticipantProfiles,
+  });
 }

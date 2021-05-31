@@ -87,7 +87,7 @@ export function addDrawEntry({
  * @param {object} drawDefinition - drawDefinition object
  * @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
  * @param {string} entryStatus - entry status to be applied to all draw Entries, e.g. DIRECT ACCEPTANCE
- * @param {string} stage - entry stage for particpants (QUALIFYING, MAIN)
+ * @param {string} stage - entry stage for participants (QUALIFYING, MAIN)
  *
  */
 export function addDrawEntries({

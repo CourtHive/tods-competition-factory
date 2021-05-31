@@ -38,7 +38,7 @@ it('replcates revised garman spreadsheet funcationality', () => {
     endTime: '19:00',
     date,
     periodLength: 30,
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
     courts,
   });
   expect(timingProfile.length).toEqual(23);
@@ -52,7 +52,7 @@ it('replcates revised garman spreadsheet funcationality', () => {
     endTime: '19:00',
     date,
     periodLength: 30,
-    averageMatchUpTime: 80,
+    averageMatchUpMinutes: 80,
     courts,
   }));
   expect(timingProfile[21].add).toEqual(5);
@@ -65,7 +65,7 @@ it('replcates revised garman spreadsheet funcationality', () => {
     endTime: '19:00',
     date,
     periodLength: 30,
-    averageMatchUpTime: 75,
+    averageMatchUpMinutes: 75,
     courts,
   }));
   expect(timingProfile[21].add).toEqual(2);
@@ -97,49 +97,49 @@ it('correctly determines courts available at periodStart', () => {
     courts,
     date,
     periodStart: '8:00',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(0);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '9:00',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '11:00',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(4);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '15:30',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(4);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '15:31',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '16:30',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(2);
   availability = garman.courtsAvailableAtPeriodStart({
     courts,
     date,
     periodStart: '16:31',
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
   });
   expect(availability.availableToScheduleCount).toEqual(0);
 });
@@ -157,7 +157,7 @@ it('generates expected output for two locations with differing court availabilit
     endTime: '18:00',
     date,
     periodLength: 30,
-    averageMatchUpTime: 90,
+    averageMatchUpMinutes: 90,
     courts,
   });
   expect(timingProfile[20].add).toEqual(0);

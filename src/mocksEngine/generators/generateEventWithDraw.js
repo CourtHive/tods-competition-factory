@@ -32,8 +32,9 @@ export function generateEventWithDraw({
     automated,
     stage,
   } = drawProfile;
-  let { participantsCount = 32, seedsCount } = drawProfile;
-  if (participantsCount > drawSize) participantsCount = drawSize;
+  let { participantsCount, seedsCount } = drawProfile;
+  if (!participantsCount || participantsCount > drawSize)
+    participantsCount = drawSize;
 
   const event = { eventName, eventType, category };
   let result = tournamentEngine.addEvent({ event });

@@ -45,7 +45,7 @@ The **getScheduleTimes** function works for a single day and has the following p
     startTime='8:00',
     endTime='19:00',
     periodLength=30
-    averageMatchUpTime=90
+    averageMatchUpMinutes=90
     courts                  // array of courts using court availability schema
 
 The output of this function is an array of periods which includes the number of matches which can be expected to be put on court at the start of each period:

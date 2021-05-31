@@ -7,7 +7,7 @@ import {
 
 export function getCourtDateFilters({
   includeBookingTypes,
-  averageMatchUpTime,
+  averageMatchUpMinutes,
   periodStartTime,
   periodEndTime,
   date,
@@ -28,7 +28,7 @@ export function getCourtDateFilters({
     if (slotEndTime < periodEndTime) return false;
 
     const timeSlotMinutes = minutesDifference(periodStartTime, slotEndTime);
-    return timeSlotMinutes >= averageMatchUpTime;
+    return timeSlotMinutes >= averageMatchUpMinutes;
   }
 
   return { sameDate, enoughTime };
