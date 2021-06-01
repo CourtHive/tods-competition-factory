@@ -104,7 +104,7 @@ test.each([competitionEngineSync])(
 test.each([
   [competitionEngineSync, 16, 8, 2, [15]],
   [competitionEngineSync, 16, 16, 3, [21]],
-  [competitionEngineSync, 16, 32, 4, [31, 32, 33, 34, 35]],
+  [competitionEngineSync, 16, 32, 4, [30]],
 ])(
   'sorts scheduled matchUps according to schedulingProfile',
   async (

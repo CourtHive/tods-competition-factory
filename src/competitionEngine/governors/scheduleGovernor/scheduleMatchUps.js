@@ -173,7 +173,6 @@ export function scheduleMatchUps({
     ({ matchUpId }) => !skippedMatchUpIds.includes(matchUpId)
   );
 
-  let deferredMatchUps = [];
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
@@ -183,16 +182,14 @@ export function scheduleMatchUps({
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
     scheduleTimes.length &&
-    deferredMatchUps.length + matchUpsToSchedule.length &&
+    matchUpsToSchedule.length &&
     iterations <= failSafe
   ) {
     iterations++;
-    const insufficientTimeMatchUps = [];
     const { scheduleTime } = scheduleTimes.shift();
 
     // find a matchUp where all individual participants had enough recovery time
-    const candidateMatchUps = [...deferredMatchUps, ...matchUpsToSchedule];
-    const scheduledMatchUp = candidateMatchUps.find((matchUp) => {
+    const scheduledMatchUp = matchUpsToSchedule.find((matchUp) => {
       const { enoughTime } = checkRecoveryTime({
         matchUp,
         scheduleTime,
@@ -205,15 +202,9 @@ export function scheduleMatchUps({
       if (enoughTime) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
         return true;
-      } else {
-        insufficientTimeMatchUps.push(matchUp);
       }
     });
 
-    // rebuild deferredMatchUps and matchUpsToSchedule arrays
-    deferredMatchUps = insufficientTimeMatchUps
-      .concat(...deferredMatchUps)
-      .filter(({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId);
     matchUpsToSchedule = matchUpsToSchedule.filter(
       ({ matchUpId }) => matchUpId !== scheduledMatchUp?.matchUpId
     );
@@ -224,8 +215,7 @@ export function scheduleMatchUps({
   }
 
   // cleanup limits counters for matchUps which could not be scheduled due to recovery times
-  const matchUpsNotScheduled = deferredMatchUps.concat(...matchUpsToSchedule);
-  matchUpsNotScheduled.forEach((matchUp) => {
+  matchUpsToSchedule.forEach((matchUp) => {
     modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, -1);
   });
 
