@@ -12,7 +12,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     if (structure?.finishingPosition === WIN_RATIO) {
       const { roundNumber } = matchUp;
       const nextRoundNumber = roundNumber && parseInt(roundNumber) + 1;
-      const matchUps = structure?.matchUps || [];
+      const matchUps = structure.matchUps || [];
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
       if (nextRoundNumber && roundMatchUps[nextRoundNumber]) {
         const sidesTo = drawPositions.sort().map((drawPosition, index) => {
@@ -21,8 +21,10 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           );
           return {
             matchUpId: nextRoundMatchUp?.matchUpId,
+            roundNumber: nextRoundNumber,
             schedule: nextRoundMatchUp?.schedule,
             sideNumber: index + 1,
+            structureName: structure.structureName,
           };
         });
         Object.assign(matchUp, { sidesTo });

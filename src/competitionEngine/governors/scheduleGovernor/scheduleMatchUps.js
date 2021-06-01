@@ -46,7 +46,7 @@ import { TOTAL } from '../../../constants/scheduleConstants';
  * @param {number} averageMatchUpMinutes - how long the expected matchUps are expected to last, in minutes, on average
  * @param {number} recoveryMinutes - time in minutes that should be alloted for participants to recover between matches
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
- * @param {object} individualParticipantProfiles - { [participantId]: { limits }}
+ * @param {object} individualParticipantProfiles - { [participantId]: { counters }}
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
  * @modifies individualParticipantProfiles - increments counters
@@ -111,10 +111,11 @@ export function scheduleMatchUps({
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
-      if (matchUp.winnerTo?.matchUpId)
-        matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
-      if (matchUp.loserTo?.matchUpId)
-        matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+      setNextMatchUpsNotBeforeTimes(
+        matchUp,
+        matchUpNotBeforeTimes,
+        timeAfterRecovery
+      );
     }
   });
 
@@ -139,34 +140,37 @@ export function scheduleMatchUps({
 
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps
   // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-  const { matchUpMap, skippedMatchUpIds } = matchUpsToSchedule.reduce(
-    (aggregator, matchUp) => {
-      const { drawId, tournamentId } = matchUp;
+  const { matchUpMap, skippedMatchUpIds, participantIdsAtLimit } =
+    matchUpsToSchedule.reduce(
+      (aggregator, matchUp) => {
+        const { drawId, tournamentId } = matchUp;
 
-      const participantIdsAtLimit = checkDailyLimits(
-        matchUp,
-        matchUpDailyLimits,
-        individualParticipantProfiles
-      );
-      if (participantIdsAtLimit?.length) {
-        aggregator.skippedMatchUpIds.push({
-          matchUpId: matchUp.matchUpId,
-          participantIdsAtLimit,
-        });
+        const participantIdsAtLimit = checkDailyLimits(
+          matchUp,
+          matchUpDailyLimits,
+          individualParticipantProfiles
+        );
+        if (participantIdsAtLimit?.length) {
+          aggregator.skippedMatchUpIds.push(matchUp.matchUpId);
+          aggregator.participantIdsAtLimit.push(...participantIdsAtLimit);
+          return aggregator;
+        }
+
+        if (!aggregator.matchUpMap[tournamentId])
+          aggregator.matchUpMap[tournamentId] = {};
+        if (!aggregator.matchUpMap[tournamentId][drawId]) {
+          aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
+        } else {
+          aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
+        }
+
         return aggregator;
-      }
+      },
+      { matchUpMap: {}, skippedMatchUpIds: [], participantIdsAtLimit: [] }
+    );
 
-      if (!aggregator.matchUpMap[tournamentId])
-        aggregator.matchUpMap[tournamentId] = {};
-      if (!aggregator.matchUpMap[tournamentId][drawId]) {
-        aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
-      } else {
-        aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
-      }
-
-      return aggregator;
-    },
-    { matchUpMap: {}, skippedMatchUpIds: [] }
+  matchUpsToSchedule = matchUpsToSchedule.filter(
+    ({ matchUpId }) => !skippedMatchUpIds.includes(matchUpId)
   );
 
   let deferredMatchUps = [];
@@ -189,14 +193,14 @@ export function scheduleMatchUps({
     // find a matchUp where all individual participants had enough recovery time
     const candidateMatchUps = [...deferredMatchUps, ...matchUpsToSchedule];
     const scheduledMatchUp = candidateMatchUps.find((matchUp) => {
-      const { enoughTime } = checkRecoveryTime(
+      const { enoughTime } = checkRecoveryTime({
         matchUp,
         scheduleTime,
         recoveryMinutes,
         averageMatchUpMinutes,
         individualParticipantProfiles,
-        matchUpNotBeforeTimes
-      );
+        matchUpNotBeforeTimes,
+      });
 
       if (enoughTime) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
@@ -219,6 +223,7 @@ export function scheduleMatchUps({
     }
   }
 
+  // cleanup limits counters for matchUps which could not be scheduled due to recovery times
   const matchUpsNotScheduled = deferredMatchUps.concat(...matchUpsToSchedule);
   matchUpsNotScheduled.forEach((matchUp) => {
     modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, -1);
@@ -275,18 +280,19 @@ export function scheduleMatchUps({
     skippedMatchUpIds,
     scheduledMatchUpIds,
     matchUpNotBeforeTimes,
+    participantIdsAtLimit,
     individualParticipantProfiles,
   });
 }
 
-export function checkRecoveryTime(
+export function checkRecoveryTime({
   matchUp,
   scheduleTime,
   recoveryMinutes,
   averageMatchUpMinutes,
+  individualParticipantProfiles,
   matchUpNotBeforeTimes,
-  individualParticipantProfiles
-) {
+}) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
     (isSufficient, participantId) => {
@@ -324,10 +330,20 @@ export function checkRecoveryTime(
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
-      if (!individualParticipantProfiles[participantId])
-        individualParticipantProfiles[participantId] = { limits: {} };
-      individualParticipantProfiles[participantId].timeAfterRecovery =
-        timeAfterRecovery;
+      if (!individualParticipantProfiles[participantId]) {
+        individualParticipantProfiles[participantId] = {
+          timeAfterRecovery,
+        };
+      } else {
+        individualParticipantProfiles[participantId].timeAfterRecovery =
+          timeAfterRecovery;
+      }
+
+      setNextMatchUpsNotBeforeTimes(
+        matchUp,
+        matchUpNotBeforeTimes,
+        timeAfterRecovery
+      );
     });
   }
 
@@ -339,7 +355,7 @@ export function checkRecoveryTime(
  * @param {object[]} sides - matchUp.sides
  * @param {string} matchUpType - SINGLES, DOUBLES, TEAM
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - counters
- * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { limits: { SINGLES, DOUBLES, TOTAL }}}
+ * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
  * @returns {string[]} participantIdsAtLimit - array of participantIds who are at or beyond daily matchUp limit
  * @modifies individualParticipantProfiles - increments counters
  */
@@ -357,7 +373,7 @@ function checkDailyLimits(
       if (profile) {
         const limitReached = [matchUpType, TOTAL].find((counterName) => {
           const participantCount =
-            (profile.limits && profile.limits[counterName]) || 0;
+            (profile.counters && profile.counters[counterName]) || 0;
           const dailyLimit = matchUpDailyLimits[counterName];
           return (
             participantCount && dailyLimit && participantCount >= dailyLimit
@@ -371,16 +387,34 @@ function checkDailyLimits(
   if (!participantIdsAtLimit.length) {
     individualParticipantIds.forEach((participantId) => {
       if (!individualParticipantProfiles[participantId])
-        individualParticipantProfiles[participantId] = { limits: {} };
-      const limits = individualParticipantProfiles[participantId].limits;
-      if (limits[matchUpType]) limits[matchUpType] += 1;
-      else limits[matchUpType] = 1;
-      if (limits[TOTAL]) limits[TOTAL] += 1;
-      else limits[TOTAL] = 1;
+        individualParticipantProfiles[participantId] = { counters: {} };
+      const counters = individualParticipantProfiles[participantId].counters;
+      if (counters[matchUpType]) counters[matchUpType] += 1;
+      else counters[matchUpType] = 1;
+      if (counters[TOTAL]) counters[TOTAL] += 1;
+      else counters[TOTAL] = 1;
     });
   }
 
   return participantIdsAtLimit;
+}
+
+function setNextMatchUpsNotBeforeTimes(
+  matchUp,
+  matchUpNotBeforeTimes,
+  timeAfterRecovery
+) {
+  if (matchUp.winnerTo?.matchUpId) {
+    matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
+  }
+  if (matchUp.loserTo?.matchUpId) {
+    matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+  }
+  if (matchUp.sidesTo?.length) {
+    matchUp.sidesTo.forEach(({ matchUpId }) => {
+      if (matchUpId) matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
+    });
+  }
 }
 
 function modifyParticipantMatchUpsCount(
@@ -392,13 +426,13 @@ function modifyParticipantMatchUpsCount(
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   individualParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
-      individualParticipantProfiles[participantId] = { limits: {} };
+      individualParticipantProfiles[participantId] = { counters: {} };
     }
-    const limits = individualParticipantProfiles[participantId].limits;
-    if (limits[matchUpType]) limits[matchUpType] += value;
-    else if (value > 0) limits[matchUpType] = value;
-    if (limits[TOTAL]) limits[TOTAL] += value;
-    else if (value > 0) limits[TOTAL] = value;
+    const counters = individualParticipantProfiles[participantId].counters;
+    if (counters[matchUpType]) counters[matchUpType] += value;
+    else if (value > 0) counters[matchUpType] = value;
+    if (counters[TOTAL]) counters[TOTAL] += value;
+    else if (value > 0) counters[TOTAL] = value;
   });
 }
 
