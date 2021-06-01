@@ -59,15 +59,13 @@ export function scheduleMatchUps({
   date,
   startTime,
   endTime,
-  matchUps, // optional - pass in copmetitionMatchUps to avoid repetitive fetch on recursive use
 
   periodLength = 30,
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
 
   matchUpDailyLimits = {},
-  matchUpTimingProfiles = {},
-  individualParticipantProfiles = {},
+  preserveScheduling,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -79,28 +77,52 @@ export function scheduleMatchUps({
   )
     return { error: INVALID_VALUES };
 
-  if (!matchUps) {
-    const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
-      tournamentRecords,
-      nextMatchUps: true,
-    });
-    matchUps = competitionMatchUps.filter(({ matchUpId }) =>
-      matchUpIds.includes(matchUpId)
-    );
-  }
-
-  const { venueId, scheduleTimes } = calculateScheduleTimes({
+  const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
     tournamentRecords,
-    startTime: extractTime(startTime),
-    endTime: extractTime(endTime),
-    date: extractDate(date),
-    averageMatchUpMinutes,
-    periodLength,
-    venueIds,
+    nextMatchUps: true,
+  });
+  const targetMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
+    matchUpIds.includes(matchUpId)
+  );
+
+  // determines court availability taking into account already scheduled matchUps on the date
+  // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
+  const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
+    calculateScheduleTimes({
+      tournamentRecords,
+      startTime: extractTime(startTime),
+      endTime: extractTime(endTime),
+      date: extractDate(date),
+      averageMatchUpMinutes,
+      periodLength,
+      venueIds,
+    });
+
+  const matchUpNotBeforeTimes = {}; // built from existing matchUps scheduled on the date
+  const individualParticipantProfiles = {}; // built from existing matchUps scheduled on the date
+  const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
+    dateScheduledMatchUpIds.includes(matchUpId)
+  );
+  dateScheduledMatchUps.forEach((matchUp) => {
+    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, 1);
+    const scheduleTime = matchUp.schedule?.scheduledTime;
+    if (scheduleTime) {
+      const timeAfterRecovery = addMinutesToTimeString(
+        scheduleTime,
+        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
+      );
+      if (matchUp.winnerTo?.matchUpId)
+        matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
+      if (matchUp.loserTo?.matchUpId)
+        matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+    }
   });
 
   // matchUps are assumed to be in the desired order for scheduling
-  let matchUpsToSchedule = matchUps.filter((matchUp) => {
+  let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
+    const alreadyScheduled =
+      preserveScheduling && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
+
     const doNotSchedule = [
       BYE,
       DEFAULTED,
@@ -109,7 +131,7 @@ export function scheduleMatchUps({
       RETIRED,
       WALKOVER,
     ].includes(matchUp?.matchUpStatus);
-    return !matchUp?.winningSide && !doNotSchedule;
+    return !alreadyScheduled && !matchUp?.winningSide && !doNotSchedule;
   });
 
   if (!matchUpsToSchedule?.length) return { error: 'Nothing to schedule' };
@@ -151,11 +173,16 @@ export function scheduleMatchUps({
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
+  let iterations = 0;
+  const failSafe = scheduleTimes.length;
+
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
     scheduleTimes.length &&
-    deferredMatchUps.length + matchUpsToSchedule.length
+    deferredMatchUps.length + matchUpsToSchedule.length &&
+    iterations <= failSafe
   ) {
+    iterations++;
     const insufficientTimeMatchUps = [];
     const { scheduleTime } = scheduleTimes.shift();
 
@@ -167,7 +194,8 @@ export function scheduleMatchUps({
         scheduleTime,
         recoveryMinutes,
         averageMatchUpMinutes,
-        individualParticipantProfiles
+        individualParticipantProfiles,
+        matchUpNotBeforeTimes
       );
 
       if (enoughTime) {
@@ -193,7 +221,7 @@ export function scheduleMatchUps({
 
   const matchUpsNotScheduled = deferredMatchUps.concat(...matchUpsToSchedule);
   matchUpsNotScheduled.forEach((matchUp) => {
-    decrementParticipantMatchUpsCounts(matchUp, individualParticipantProfiles);
+    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, -1);
   });
 
   let scheduledMatchUpIds = [];
@@ -246,7 +274,7 @@ export function scheduleMatchUps({
   return Object.assign({}, SUCCESS, {
     skippedMatchUpIds,
     scheduledMatchUpIds,
-    matchUpTimingProfiles,
+    matchUpNotBeforeTimes,
     individualParticipantProfiles,
   });
 }
@@ -256,10 +284,11 @@ export function checkRecoveryTime(
   scheduleTime,
   recoveryMinutes,
   averageMatchUpMinutes,
+  matchUpNotBeforeTimes,
   individualParticipantProfiles
 ) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  const enoughTime = individualParticipantIds.reduce(
+  const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
     (isSufficient, participantId) => {
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
@@ -270,16 +299,24 @@ export function checkRecoveryTime(
           false
         );
         if (timeBetween < 0) return false;
-      } else {
-        individualParticipantProfiles[participantId] = {
-          limits: {},
-          timeAfterRecovery: undefined,
-        };
       }
       return isSufficient;
     },
     true
   );
+
+  const notBeforeTime = matchUpNotBeforeTimes[matchUp.matchUpId];
+  const timeBetweenMatchUps = notBeforeTime
+    ? minutesDifference(
+        timeToDate(notBeforeTime),
+        timeToDate(scheduleTime),
+        false
+      )
+    : 0;
+  const sufficientTimeBetweenMatchUps = timeBetweenMatchUps >= 0;
+
+  const enoughTime =
+    sufficientTimeForIndiiduals && sufficientTimeBetweenMatchUps;
 
   if (enoughTime) {
     individualParticipantIds.forEach((participantId) => {
@@ -287,6 +324,8 @@ export function checkRecoveryTime(
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
+      if (!individualParticipantProfiles[participantId])
+        individualParticipantProfiles[participantId] = { limits: {} };
       individualParticipantProfiles[participantId].timeAfterRecovery =
         timeAfterRecovery;
     });
@@ -325,17 +364,14 @@ function checkDailyLimits(
           );
         });
         return limitReached;
-      } else {
-        individualParticipantProfiles[participantId] = {
-          limits: {},
-          timeAfterRecovery: undefined,
-        };
       }
     }
   );
 
-  if (!participantIdsAtLimit) {
+  if (!participantIdsAtLimit.length) {
     individualParticipantIds.forEach((participantId) => {
+      if (!individualParticipantProfiles[participantId])
+        individualParticipantProfiles[participantId] = { limits: {} };
       const limits = individualParticipantProfiles[participantId].limits;
       if (limits[matchUpType]) limits[matchUpType] += 1;
       else limits[matchUpType] = 1;
@@ -347,16 +383,22 @@ function checkDailyLimits(
   return participantIdsAtLimit;
 }
 
-function decrementParticipantMatchUpsCounts(
+function modifyParticipantMatchUpsCount(
   matchUp,
-  individualParticipantProfiles
+  individualParticipantProfiles,
+  value
 ) {
   const { matchUpType } = matchUp;
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   individualParticipantIds.forEach((participantId) => {
+    if (!individualParticipantProfiles[participantId]) {
+      individualParticipantProfiles[participantId] = { limits: {} };
+    }
     const limits = individualParticipantProfiles[participantId].limits;
-    if (limits[matchUpType]) limits[matchUpType] -= 1;
-    if (limits[TOTAL]) limits[TOTAL] -= 1;
+    if (limits[matchUpType]) limits[matchUpType] += value;
+    else if (value > 0) limits[matchUpType] = value;
+    if (limits[TOTAL]) limits[TOTAL] += value;
+    else if (value > 0) limits[TOTAL] = value;
   });
 }
 
@@ -365,7 +407,7 @@ function getIndividualParticipantIds(matchUp) {
   return (sides || [])
     .map((side) => {
       return matchUpType === DOUBLES
-        ? side?.individualParticipantIds || []
+        ? side?.participant?.individualParticipantIds || []
         : side.participantId
         ? [side.participantId]
         : [];
