@@ -80,22 +80,18 @@ export function addParticipantContext({
           if (!eventDrawIds.includes(drawId)) {
             eventDrawIds.push(drawId);
 
-            if (participantIdMap[relevantParticipantId]) {
-              participantIdMap[relevantParticipantId].draws[drawId] = {
-                drawId,
-                eventId,
-                drawName,
-                drawType,
-                entryStage,
-                entryStatus,
-                entryPosition,
-              };
-            } else {
-              console.log('missing participantId', {
-                relevantParticipantId,
-                tournamentId: tournamentRecord.tournamentId,
-              });
+            if (!participantIdMap[relevantParticipantId]?.draws) {
+              participantIdMap[relevantParticipantId].draws = {};
             }
+            participantIdMap[relevantParticipantId].draws[drawId] = {
+              drawId,
+              eventId,
+              drawName,
+              drawType,
+              entryStage,
+              entryStatus,
+              entryPosition,
+            };
           }
         }
       );
@@ -171,6 +167,9 @@ export function addParticipantContext({
         relevantParticipantIds.forEach(
           ({ relevantParticipantId, participantType }) => {
             const { entryStage, entryStatus, entryPosition } = drawEntry || {};
+            if (!participantIdMap[relevantParticipantId]?.draws) {
+              participantIdMap[relevantParticipantId].draws = {};
+            }
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawName,
               drawType,
