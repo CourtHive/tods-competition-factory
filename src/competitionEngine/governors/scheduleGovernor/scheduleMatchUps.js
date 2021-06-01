@@ -32,6 +32,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import { TOTAL } from '../../../constants/scheduleConstants';
+import { intersection } from '../../../utilities';
 
 /**
  *
@@ -98,24 +99,33 @@ export function scheduleMatchUps({
       venueIds,
     });
 
-  const matchUpNotBeforeTimes = {}; // built from existing matchUps scheduled on the date
-  const individualParticipantProfiles = {}; // built from existing matchUps scheduled on the date
+  // built from existing matchUps scheduled on the date
+  const matchUpNotBeforeTimes = {};
+  const individualParticipantProfiles = {};
+  const matchUpPotentialParticipantIds = {};
+
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
   dateScheduledMatchUps.forEach((matchUp) => {
-    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, 1);
+    modifyParticipantMatchUpsCount({
+      matchUpPotentialParticipantIds,
+      individualParticipantProfiles,
+      matchUp,
+      value: 1,
+    });
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
       const timeAfterRecovery = addMinutesToTimeString(
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
-      setNextMatchUpsNotBeforeTimes(
+      processNextMatchUps({
         matchUp,
+        timeAfterRecovery,
         matchUpNotBeforeTimes,
-        timeAfterRecovery
-      );
+        matchUpPotentialParticipantIds,
+      });
     }
   });
 
@@ -197,6 +207,7 @@ export function scheduleMatchUps({
         averageMatchUpMinutes,
         individualParticipantProfiles,
         matchUpNotBeforeTimes,
+        matchUpPotentialParticipantIds,
       });
 
       if (enoughTime) {
@@ -216,7 +227,12 @@ export function scheduleMatchUps({
 
   // cleanup limits counters for matchUps which could not be scheduled due to recovery times
   matchUpsToSchedule.forEach((matchUp) => {
-    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, -1);
+    modifyParticipantMatchUpsCount({
+      individualParticipantProfiles,
+      matchUpPotentialParticipantIds,
+      value: -1,
+      matchUp,
+    });
   });
 
   let scheduledMatchUpIds = [];
@@ -282,6 +298,7 @@ export function checkRecoveryTime({
   averageMatchUpMinutes,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
+  matchUpPotentialParticipantIds,
 }) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
@@ -329,11 +346,12 @@ export function checkRecoveryTime({
           timeAfterRecovery;
       }
 
-      setNextMatchUpsNotBeforeTimes(
+      processNextMatchUps({
         matchUp,
+        timeAfterRecovery,
         matchUpNotBeforeTimes,
-        timeAfterRecovery
-      );
+        matchUpPotentialParticipantIds,
+      });
     });
   }
 
@@ -389,32 +407,71 @@ function checkDailyLimits(
   return participantIdsAtLimit;
 }
 
-function setNextMatchUpsNotBeforeTimes(
+function processNextMatchUps({
   matchUp,
+  timeAfterRecovery,
   matchUpNotBeforeTimes,
-  timeAfterRecovery
-) {
+  matchUpPotentialParticipantIds,
+}) {
+  const individualParticipantIds = getIndividualParticipantIds(matchUp);
+
+  const addPotentialParticipantIds = (targetMatchUpId) => {
+    if (!matchUpPotentialParticipantIds[targetMatchUpId])
+      matchUpPotentialParticipantIds[targetMatchUpId] = [];
+
+    // push potentials as an array so that if any have progressed to target matchUp
+    // others in the array can be identfied as no longer potentials
+    matchUpPotentialParticipantIds[targetMatchUpId].push(
+      individualParticipantIds
+    );
+  };
+
   if (matchUp.winnerTo?.matchUpId) {
     matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
+    addPotentialParticipantIds(matchUp.winnerTo.matchUpId);
   }
   if (matchUp.loserTo?.matchUpId) {
     matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+    addPotentialParticipantIds(matchUp.loserTo.matchUpId);
   }
   if (matchUp.sidesTo?.length) {
     matchUp.sidesTo.forEach(({ matchUpId }) => {
-      if (matchUpId) matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
+      if (matchUpId) {
+        matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
+        addPotentialParticipantIds(matchUpId);
+      }
     });
   }
 }
 
-function modifyParticipantMatchUpsCount(
-  matchUp,
+function modifyParticipantMatchUpsCount({
+  matchUpPotentialParticipantIds,
   individualParticipantProfiles,
-  value
-) {
+  matchUp,
+  value,
+}) {
   const { matchUpType } = matchUp;
+
+  // individualParticipantIds represent those participants already present
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  individualParticipantIds.forEach((participantId) => {
+  // potentialParticipantIds are those who could progress to this matchUp
+  const potentialParticipantIds =
+    matchUpPotentialParticipantIds[matchUp.matchUpId] || [];
+
+  // filteredPotentials exclude potentials if any of the participantIds
+  // are present in individualParticipantIds which ensures that source match losers
+  // do not get considered when incrementing or decrementing matchUp counters
+  const filterdPotentials = potentialParticipantIds
+    .filter(
+      (potentials) => !intersection(potentials, individualParticipantIds).length
+    )
+    .flat();
+  const consideredParticipantIds = [
+    ...individualParticipantIds,
+    ...filterdPotentials,
+  ];
+
+  consideredParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = { counters: {} };
     }

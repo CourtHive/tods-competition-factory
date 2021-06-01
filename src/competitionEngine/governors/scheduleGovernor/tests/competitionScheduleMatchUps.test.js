@@ -102,9 +102,9 @@ test.each([competitionEngineSync])(
 );
 
 test.each([
-  [competitionEngineSync, 16, 8, 2, [15]],
-  [competitionEngineSync, 16, 16, 3, [21]],
-  [competitionEngineSync, 16, 32, 4, [30]],
+  [competitionEngineSync, 16, 8, 2, [12]],
+  [competitionEngineSync, 16, 16, 3, [18]],
+  [competitionEngineSync, 16, 32, 4, [26]],
 ])(
   'sorts scheduled matchUps according to schedulingProfile',
   async (
@@ -185,6 +185,7 @@ test.each([
 
     expect(result.success).toEqual(true);
     expect(result.scheduledDates).toEqual([startDate]);
+    // console.log(result.scheduledMatchUpIds.length);
     expect(scheduledRange.includes(result.scheduledMatchUpIds.length)).toEqual(
       true
     );
