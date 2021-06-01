@@ -59,13 +59,13 @@ export function scheduleMatchUps({
   date,
   startTime,
   endTime,
-  matchUps, // optional - pass in copmetitionMatchUps to avoid repetitive fetch on recursive use
 
   periodLength = 30,
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
 
   matchUpDailyLimits = {},
+  preserveScheduling,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -77,16 +77,16 @@ export function scheduleMatchUps({
   )
     return { error: INVALID_VALUES };
 
-  if (!matchUps) {
-    const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
-      tournamentRecords,
-      nextMatchUps: true,
-    });
-    matchUps = competitionMatchUps.filter(({ matchUpId }) =>
-      matchUpIds.includes(matchUpId)
-    );
-  }
+  const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
+    tournamentRecords,
+    nextMatchUps: true,
+  });
+  const targetMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
+    matchUpIds.includes(matchUpId)
+  );
 
+  // determines court availability taking into account already scheduled matchUps on the date
+  // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
@@ -98,13 +98,13 @@ export function scheduleMatchUps({
       venueIds,
     });
 
-  const matchUpNotBeforeTimes = {}; // this should be built from existing matchUps scheduled on the date
-  const individualParticipantProfiles = {}; // this should be built from existing matchUps scheduled on the date
-  const dateScheduledMatchUps = matchUps.filter(({ matchUpId }) =>
+  const matchUpNotBeforeTimes = {}; // built from existing matchUps scheduled on the date
+  const individualParticipantProfiles = {}; // built from existing matchUps scheduled on the date
+  const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
   dateScheduledMatchUps.forEach((matchUp) => {
-    // TODO: pre-populate individualParticipantProfiles from already scheduled matchUps
+    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, 1);
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
       const timeAfterRecovery = addMinutesToTimeString(
@@ -118,9 +118,11 @@ export function scheduleMatchUps({
     }
   });
 
-  // TODO: Also filter out matchUps which are already scheduled on the date
   // matchUps are assumed to be in the desired order for scheduling
-  let matchUpsToSchedule = matchUps.filter((matchUp) => {
+  let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
+    const alreadyScheduled =
+      preserveScheduling && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
+
     const doNotSchedule = [
       BYE,
       DEFAULTED,
@@ -129,7 +131,7 @@ export function scheduleMatchUps({
       RETIRED,
       WALKOVER,
     ].includes(matchUp?.matchUpStatus);
-    return !matchUp?.winningSide && !doNotSchedule;
+    return !alreadyScheduled && !matchUp?.winningSide && !doNotSchedule;
   });
 
   if (!matchUpsToSchedule?.length) return { error: 'Nothing to schedule' };
@@ -219,7 +221,7 @@ export function scheduleMatchUps({
 
   const matchUpsNotScheduled = deferredMatchUps.concat(...matchUpsToSchedule);
   matchUpsNotScheduled.forEach((matchUp) => {
-    decrementParticipantMatchUpsCounts(matchUp, individualParticipantProfiles);
+    modifyParticipantMatchUpsCount(matchUp, individualParticipantProfiles, -1);
   });
 
   let scheduledMatchUpIds = [];
@@ -297,11 +299,6 @@ export function checkRecoveryTime(
           false
         );
         if (timeBetween < 0) return false;
-      } else {
-        individualParticipantProfiles[participantId] = {
-          limits: {},
-          timeAfterRecovery: undefined,
-        };
       }
       return isSufficient;
     },
@@ -327,6 +324,8 @@ export function checkRecoveryTime(
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
+      if (!individualParticipantProfiles[participantId])
+        individualParticipantProfiles[participantId] = { limits: {} };
       individualParticipantProfiles[participantId].timeAfterRecovery =
         timeAfterRecovery;
     });
@@ -365,17 +364,14 @@ function checkDailyLimits(
           );
         });
         return limitReached;
-      } else {
-        individualParticipantProfiles[participantId] = {
-          limits: {},
-          timeAfterRecovery: undefined,
-        };
       }
     }
   );
 
-  if (!participantIdsAtLimit) {
+  if (!participantIdsAtLimit.length) {
     individualParticipantIds.forEach((participantId) => {
+      if (!individualParticipantProfiles[participantId])
+        individualParticipantProfiles[participantId] = { limits: {} };
       const limits = individualParticipantProfiles[participantId].limits;
       if (limits[matchUpType]) limits[matchUpType] += 1;
       else limits[matchUpType] = 1;
@@ -387,16 +383,22 @@ function checkDailyLimits(
   return participantIdsAtLimit;
 }
 
-function decrementParticipantMatchUpsCounts(
+function modifyParticipantMatchUpsCount(
   matchUp,
-  individualParticipantProfiles
+  individualParticipantProfiles,
+  value
 ) {
   const { matchUpType } = matchUp;
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   individualParticipantIds.forEach((participantId) => {
+    if (!individualParticipantProfiles[participantId]) {
+      individualParticipantProfiles[participantId] = { limits: {} };
+    }
     const limits = individualParticipantProfiles[participantId].limits;
-    if (limits[matchUpType]) limits[matchUpType] -= 1;
-    if (limits[TOTAL]) limits[TOTAL] -= 1;
+    if (limits[matchUpType]) limits[matchUpType] += value;
+    else if (value > 0) limits[matchUpType] = value;
+    if (limits[TOTAL]) limits[TOTAL] += value;
+    else if (value > 0) limits[TOTAL] = value;
   });
 }
 
@@ -405,7 +407,7 @@ function getIndividualParticipantIds(matchUp) {
   return (sides || [])
     .map((side) => {
       return matchUpType === DOUBLES
-        ? side?.individualParticipantIds || []
+        ? side?.participant?.individualParticipantIds || []
         : side.participantId
         ? [side.participantId]
         : [];
