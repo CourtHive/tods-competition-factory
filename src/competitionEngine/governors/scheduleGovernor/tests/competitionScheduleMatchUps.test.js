@@ -36,7 +36,7 @@ test.each([competitionEngineSync])(
     });
     Object.values(result.individualParticipantProfiles).forEach(
       (participantProfile) =>
-        expect(participantProfile).toEqual({ limits: { DOUBLES: 1, total: 1 } })
+        expect(participantProfile.counters).toEqual({ DOUBLES: 1, total: 1 })
     );
     expect(result.scheduledMatchUpIds.length).toEqual(8);
     expect(result.success).toEqual(true);
@@ -77,7 +77,7 @@ test.each([competitionEngineSync])(
     expect(
       Object.values(result.individualParticipantProfiles).some(
         (profile) =>
-          profile.limits.DOUBLES === 1 && profile.limits.SINGLES === 1
+          profile.counters.DOUBLES === 1 && profile.counters.SINGLES === 1
       )
     ).toEqual(true);
 
