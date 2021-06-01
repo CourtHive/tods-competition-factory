@@ -17,6 +17,16 @@ export function addParticipantContext({
   withDraws = true,
 }) {
   const participantIdMap = {};
+  const initializeParticipantId = (participantId) => {
+    participantIdMap[participantId] = {
+      opponents: {},
+      matchUps: {},
+      events: {},
+      draws: {},
+      wins: 0,
+      losses: 0,
+    };
+  };
 
   // first loop through all filtered events and capture events played
   tournamentEvents.forEach((rawEvent) => {
@@ -50,15 +60,9 @@ export function addParticipantContext({
         // relevantParticipantId is a reference to an individual
         allRelevantParticipantIds(participantId).forEach(
           ({ relevantParticipantId }) => {
-            if (!participantIdMap[relevantParticipantId])
-              participantIdMap[relevantParticipantId] = {
-                opponents: {},
-                matchUps: {},
-                events: {},
-                draws: {},
-                wins: 0,
-                losses: 0,
-              };
+            if (!participantIdMap[relevantParticipantId]) {
+              initializeParticipantId(relevantParticipantId);
+            }
             participantIdMap[relevantParticipantId].events[eventId] = {
               ...filteredEventInfo,
               entryStage,
@@ -80,8 +84,8 @@ export function addParticipantContext({
           if (!eventDrawIds.includes(drawId)) {
             eventDrawIds.push(drawId);
 
-            if (!participantIdMap[relevantParticipantId]?.draws) {
-              participantIdMap[relevantParticipantId].draws = {};
+            if (!participantIdMap[relevantParticipantId]) {
+              initializeParticipantId(relevantParticipantId);
             }
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawId,
@@ -167,8 +171,8 @@ export function addParticipantContext({
         relevantParticipantIds.forEach(
           ({ relevantParticipantId, participantType }) => {
             const { entryStage, entryStatus, entryPosition } = drawEntry || {};
-            if (!participantIdMap[relevantParticipantId]?.draws) {
-              participantIdMap[relevantParticipantId].draws = {};
+            if (!participantIdMap[relevantParticipantId]) {
+              initializeParticipantId(relevantParticipantId);
             }
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawName,
@@ -299,9 +303,9 @@ export function addParticipantContext({
           .filter(
             (participantId) =>
               participantId &&
-              !participantIdMap[participantId].events[eventId].drawIds.includes(
-                drawId
-              )
+              !participantIdMap[participantId]?.events[
+                eventId
+              ]?.drawIds?.includes(drawId)
           );
         const missingDrawEntries = eventEntries.filter(({ participantId }) =>
           missingParticipantIds.includes(participantId)
