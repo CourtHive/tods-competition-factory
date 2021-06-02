@@ -60,13 +60,21 @@ export function getEventMatchUpFormatTiming({
       }
     }
   } else {
+    const uniqueMatchUpFormats = [];
     matchUpFormatDefinitions = matchUpFormats
-      .map((definition) =>
-        typeof definition === 'string'
-          ? { matchUpFormat: definition }
-          : definition
-      )
-      .filter((definition) => isValidMatchUpFormat(definition.matchUpFormat));
+      .map((definition) => {
+        let definitionObject =
+          typeof definition === 'string'
+            ? { matchUpFormat: definition }
+            : definition;
+
+        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat))
+          return;
+        if (!isValidMatchUpFormat(definitionObject?.matchUpFormat)) return;
+        uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
+        return definitionObject;
+      })
+      .filter((f) => f);
   }
 
   const { eventType, eventId, category } = event;

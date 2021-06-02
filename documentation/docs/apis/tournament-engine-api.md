@@ -1243,7 +1243,7 @@ const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 
 Method is used internally in advanced scheduling to determine averageMatchUp times for matchUps within an event.
 
-Requires an array of `matchUpFormats` either be defined in scoring policy that is attached to the tournamentRecord or an event, or passed in as parameter. `matchUpFormats` can be passed either as an array of strings, or an array of `[{ matchUpFormat, description }]`.
+Requires an array of `matchUpFormats` either be defined in scoring policy that is attached to the tournamentRecord or an event, or passed in as parameter. `matchUpFormats` can be passed either as an array of strings, or an array of `[{ matchUpFormat }]`.
 
 ```js
 const { eventMatchUpFormatTiming } = getEventMatchUpFormatTiming({
