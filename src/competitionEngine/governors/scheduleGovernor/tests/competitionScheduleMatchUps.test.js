@@ -92,13 +92,10 @@ test.each([competitionEngineSync])(
     });
     expect(result.dateMatchUps.length).toEqual(0);
 
-    console.log('BOOOOOOOOOOOOOOOO');
     result = competitionEngine.scheduleMatchUps({
       date: startDate,
       matchUpIds,
     });
-    console.log(Object.keys(result));
-    console.log(result.matchUpNotBeforeTimes);
     expect(result.scheduledMatchUpIds.length).toEqual(0);
   }
 );
