@@ -1,0 +1,44 @@
+---
+title: Advanced Scheduling
+slug: /pseudocode/scheduling
+---
+
+import ReactJson from 'react-json-view';
+import SchedulingProfile from './schedulingProfile.json';
+
+export const Highlight = ({ children, color }) => (
+  <span
+    style={{
+      backgroundColor: color,
+      borderRadius: '2px',
+      color: '#fff',
+      padding: '0.2rem',
+    }}
+  >
+    {children}
+  </span>
+);
+
+export const JSONVIEW = () => (
+  <span>
+    <ReactJson
+      collapsed={true}
+      style={{ fontSize: 18 }}
+      src={SchedulingProfile}
+      name="schedulingProfile"
+      theme="summerfruit:inverted"
+      collapseStringsAfterLength={15}
+      displayDataTypes={false}
+    />
+  </span>
+);
+
+## Iterative Garman Scheduling
+
+The `competitionEngine` supports <Highlight color="#24c2a0">Garman</Highlight> scheduling of `matchUps` from multiple tournaments across shared `venues`. The Garman formula calculates the times at which `matchUps` may be scheduled, taking into consideration court availability and average minutes per match, but it does not inherently support **average minutes** per `matchUp` being **_different_** across blocks of `matchUps`. To support the use of the Garman formula for scheduling `matchUps` from different events, `competitionEngine` makes use of a `schedulingProfile` to define the order `rounds` of `drawDefinitions` to be scheduled on specific days, and then iteratively calls the Garman formula.
+
+## schedulingProfile
+
+The `scheulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record. `competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached via `setSchedulingProfile()`.
+
+<JSONVIEW>a</JSONVIEW>
