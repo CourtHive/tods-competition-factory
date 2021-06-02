@@ -1,14 +1,24 @@
 ---
-title: MatchUp Formats
+title: matchUpFormat Codes
 ---
 
-In TODS, a **drawDefinition** is a collection of **structures**. For example a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another. USTA's TDM, its predecessor TMS, and CourtHive TMX Classic do not represent the relationship between structures as hierarchical, whereas in TODS there is a nesting of elements:
+A **matchUpFormat** code describes the scoring method used for a specific **matchUp**, for all matchUps within a **structure**, for all matchUps within a **drawDefinition**, or for all matchUps within an **event**.
+
+:::info
+Try the interactive [matchUpFormat code generator](https://courthive.github.io/tods-matchup-format-code/example)
+
+Check out the [Repository](https://github.com/CourtHive/tods-matchup-format-code) and [NPM Package](https://www.npmjs.com/package/tods-matchup-format-code) specifically for generating and parsing ITF TODS MatchUp Format Codes.
+:::
+
+## matchUpFormat discovery
+
+In TODS, a **drawDefinition** is a collection of **structures**. For example, a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another.
 
 ```js
  tournament.events[].drawDefinitions[].structures[].matchUps[]
 ```
 
-An application using the Competition Factory can request the **matchUpFormat** for a given **matchUp** and the **tournamentEngine** will traverse the hierarchy from bottom up looking to see at what level a **matchUpFormat** has been set. This method will also return any **matchUpFormat** codes encountered in the hierarchy within which a matchUp is found:
+An application using the Competition Factory can request the **matchUpFormat** for a given **matchUp** and the **tournamentEngine** will traverse the hierarchy from bottom up looking to see at what level a **matchUpFormat** has been defined. This method will also return any **matchUpFormat** codes encountered in the hierarchy within which a **matchUp** is found:
 
 ```js
 const { matchUpFormat } = tournamentEngine.getMatchUpFormat({
@@ -39,7 +49,3 @@ tournamentEngine.setMatchUpStatus({
   outcome,
 });
 ```
-
-## GitHub repository
-
-There is a [Repository](https://github.com/CourtHive/tods-matchup-format-code) and [NPM Package](https://www.npmjs.com/package/tods-matchup-format-code) specifically for generating and parsing ITF TODS MatchUp Format Codes. The documentation includes examples with an interactive application.

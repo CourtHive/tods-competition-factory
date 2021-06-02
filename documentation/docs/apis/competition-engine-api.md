@@ -308,7 +308,7 @@ competitionEngine.reorderUpcomingMatchUps({
 
 ## scheduleMatchUps
 
-Auto schedule matchUps on a given date using the Garmin formula.
+Auto schedule matchUps on a given date using the Garman formula.
 
 ```js
 competitionEngine.scheduleMatchUps({

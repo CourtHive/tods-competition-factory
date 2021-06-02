@@ -3,12 +3,13 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['overview', 'installation'],
+      items: ['introduction', 'features', 'installation'],
     },
     {
       type: 'category',
       label: 'Concepts',
       items: [
+        'concepts/context',
         {
           Policies: [
             'concepts/policies',
@@ -25,7 +26,6 @@ module.exports = {
         'concepts/timeItems',
         'concepts/scaleItems',
         'concepts/matchUpFormat',
-        'concepts/context',
         'concepts/subscriptions',
       ],
     },
@@ -37,7 +37,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Engine',
-      items: ['apis/competition-engine-api'],
+      items: ['pseudocode/scheduling', 'apis/competition-engine-api'],
     },
     {
       type: 'category',
@@ -47,7 +47,11 @@ module.exports = {
     {
       type: 'category',
       label: 'Draw Engine',
-      items: ['engines/draw-engine-introduction', 'apis/draw-engine-api'],
+      items: [
+        'engines/draw-engine-introduction',
+        'engines/draw-types',
+        'apis/draw-engine-api',
+      ],
     },
   ],
 };

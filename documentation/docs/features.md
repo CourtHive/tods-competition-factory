@@ -1,0 +1,95 @@
+---
+title: Features
+slug: /features
+---
+
+## TODS Sandbox
+
+The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
+
+```js
+// Simple example.  Generates tournament record with 32 participants.
+const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+
+// Expanded example
+const drawProfiles = [
+  { drawSize: 16, eventType: DOUBLES },
+  { drawSize: 32, drawFormat: ROUND_ROBIN },
+];
+const venueProfiles = [{ courtsCount: 3 }];
+const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  startDate: '2021-05-05',
+  endDate: '2021-05-07',
+  venueProfiles,
+  drawProfiles,
+  completeAllMatchUps: true,
+});
+```
+
+:::note
+For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
+
+For free access to a public RESTful API, contact <support@courthive.com>.
+:::
+
+## Draw Generation
+
+Draws are the centerpiece of any tournament. While TODS strives to be agnostic about the specific type of draw represented by a `drawDefinition`, **Competition Factory** includes a convenience method which exercises other methods to generate a wide range of recognized [draw types](engines/draw-types).
+
+```js
+const playoffGroups = [
+  {
+    finishingPositions: [1, 2],
+    structureName: 'Gold Flight',
+    drawType: SINGLE_ELIMINATION,
+  },
+  {
+    finishingPositions: [3, 4],
+    structureName: 'Silver Flight',
+    drawType: SINGLE_ELIMINATION,
+  },
+];
+const structureOptions = {
+  groupSize: 4,
+  playoffGroups,
+};
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId,
+  drawSize: 64,
+  drawType: ROUND_ROBIN_WITH_PLAYOFFS,
+  matchUpFormat: 'SET3-S:6/TB7',
+  seedingProfile: WATERFALL,
+  structureOptions,
+});
+```
+
+:::info
+
+### Generating Multiple Flights
+
+`generateFlightProfile()` generates flighted draw details which can be fed into `generateDrawDefinition()`.
+:::
+
+<!--
+## Score Entry and matchUpStatus
+
+## Participant Movement
+
+## Tournament Queries
+-->
+
+## Scheduling
+
+In addition to individual and bulk manual scheduling methods, the **Competition Factory** supports automated **Garman Scheduling** and surfaces the Garman calculations at various levels of abstraction, all of which are dependent on a tournament record including `venues` with `courts` with defined `dateAvailability`, as well as an expected `averageMatchUpMinutes`. Scheduling methods are surfaced via the `competitionEngine` to enable scheduling multiple tournaments with shared `venues`.
+
+### calculateScheduleTimes()
+
+At the lowest level there is `calculateScheduleTimes()` which returns an array of available schedule times for a given date (and optional time range).
+
+### scheduleMatchUps()
+
+`scheduleMatchUps()` takes an ordered array of `matchUpIds` and target `venueIds` and assigns a `scheduledTime` to each `matchUp`.
+
+### scheduleProfileRounds()
+
+The ordering of `matchUps` is handled automatically by `scheduleProfileRounds()` which uses a `schedulingProfile` to not only automatically determine the order of `matchUps` from specified `rounds`, but also considers per-player (and per-format) daily matchUp limmits and scheduling policies which are attached to the tournament record(s). Scheduling policies can define both **average minutes** and **recovery mintes** for each `matchUpFormat`, and policy defaults can be overridden by event-level settings. For a full explanation see [Advanced Scheduling Pseudocode](pseudocode/scheduling).
