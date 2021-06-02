@@ -246,15 +246,18 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
     eventId,
     categoryType: ADULT,
     matchUpFormats: [
-      { matchUpFormat: 'SET1-S:4/TB10' },
-      { matchUpFormat: 'SET1-S:6/TB12' },
-      { matchUpFormat: 'SET3-S:4/TB7' },
-      { matchUpFormat: 'SET3-S:6/TB7' },
+      { matchUpFormat: 'SET1-S:4/TB10', description: '1' },
+      { matchUpFormat: 'SET1-S:6/TB12', description: '2' },
+      { matchUpFormat: 'SET3-S:4/TB7', description: '3' },
+      { matchUpFormat: 'SET3-S:6/TB7', description: '4' },
     ],
   }));
   expect(
     eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
   ).toEqual([137, 107, 107, 120]);
+  expect(
+    eventMatchUpFormatTiming.map(({ description }) => description)
+  ).toEqual(['1', '2', '3', '4']);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
