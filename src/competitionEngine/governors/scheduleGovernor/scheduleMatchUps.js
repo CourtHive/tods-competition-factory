@@ -145,12 +145,9 @@ export function scheduleMatchUps({
     return !alreadyScheduled && !matchUp?.winningSide && !doNotSchedule;
   });
 
-  if (!matchUpsToSchedule?.length) return { error: 'Nothing to schedule' };
-  if (!scheduleTimes?.length) return { error: 'No schedule times available' };
-
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps
   // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-  const { matchUpMap, skippedMatchUpIds, participantIdsAtLimit } =
+  const { matchUpMap, overLimitMatchUpIds, participantIdsAtLimit } =
     matchUpsToSchedule.reduce(
       (aggregator, matchUp) => {
         const { drawId, tournamentId } = matchUp;
@@ -161,7 +158,7 @@ export function scheduleMatchUps({
           individualParticipantProfiles
         );
         if (participantIdsAtLimit?.length) {
-          aggregator.skippedMatchUpIds.push(matchUp.matchUpId);
+          aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
           aggregator.participantIdsAtLimit.push(...participantIdsAtLimit);
           return aggregator;
         }
@@ -176,22 +173,22 @@ export function scheduleMatchUps({
 
         return aggregator;
       },
-      { matchUpMap: {}, skippedMatchUpIds: [], participantIdsAtLimit: [] }
+      { matchUpMap: {}, overLimitMatchUpIds: [], participantIdsAtLimit: [] }
     );
 
   matchUpsToSchedule = matchUpsToSchedule.filter(
-    ({ matchUpId }) => !skippedMatchUpIds.includes(matchUpId)
+    ({ matchUpId }) => !overLimitMatchUpIds.includes(matchUpId)
   );
 
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
   let iterations = 0;
-  const failSafe = scheduleTimes.length;
+  const failSafe = scheduleTimes?.length || 0;
 
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
-    scheduleTimes.length &&
+    scheduleTimes?.length &&
     matchUpsToSchedule.length &&
     iterations <= failSafe
   ) {
@@ -282,8 +279,11 @@ export function scheduleMatchUps({
     }
   });
 
+  const noTimeMatchUpIds = matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
+
   return Object.assign({}, SUCCESS, {
-    skippedMatchUpIds,
+    noTimeMatchUpIds,
+    overLimitMatchUpIds,
     scheduledMatchUpIds,
     matchUpNotBeforeTimes,
     participantIdsAtLimit,

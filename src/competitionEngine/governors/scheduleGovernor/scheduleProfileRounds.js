@@ -67,7 +67,8 @@ export function scheduleProfileRounds({
       new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
-  const skippedMatchUpIds = [];
+  const noTimeMatchUpIds = [];
+  const overLimitMatchUpIds = [];
   const scheduledMatchUpIds = [];
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
@@ -141,10 +142,12 @@ export function scheduleProfileRounds({
         });
         if (result.error) return result;
 
+        const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
+        noTimeMatchUpIds.push(...roundNoTimeMatchUpIds);
         const roundScheduledMatchUpIds = result?.scheduledMatchUpIds || [];
         scheduledMatchUpIds.push(...roundScheduledMatchUpIds);
-        const roundSkippedMatchUpIds = result?.skippedMatchUpIds || [];
-        skippedMatchUpIds.push(...roundSkippedMatchUpIds);
+        const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
+        overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
       }
     }
   }
@@ -157,6 +160,6 @@ export function scheduleProfileRounds({
   return Object.assign({}, SUCCESS, {
     scheduledDates,
     scheduledMatchUpIds,
-    skippedMatchUpIds,
+    overLimitMatchUpIds,
   });
 }

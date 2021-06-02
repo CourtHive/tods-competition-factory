@@ -374,7 +374,12 @@ export function minutesDifference(date1, date2, absolute = true) {
 }
 
 export function addMinutesToTimeString(timeString, minutes) {
-  return extractTime(addMinutes(timeToDate(timeString), minutes).toISOString());
+  const validTimeString = extractTime(timeString);
+  if (!validTimeString) return '00:00';
+  const minutesToAdd = isNaN(minutes) ? 0 : minutes;
+  return extractTime(
+    addMinutes(timeToDate(validTimeString), minutesToAdd).toISOString()
+  );
 }
 
 export function addMinutes(startDate, minutes) {
