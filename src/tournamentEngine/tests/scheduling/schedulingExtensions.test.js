@@ -244,6 +244,20 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
+    categoryType: ADULT,
+    matchUpFormats: [
+      { matchUpFormat: 'SET1-S:4/TB10' },
+      { matchUpFormat: 'SET1-S:6/TB12' },
+      { matchUpFormat: 'SET3-S:4/TB7' },
+      { matchUpFormat: 'SET3-S:6/TB7' },
+    ],
+  }));
+  expect(
+    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
+  ).toEqual([137, 107, 107, 120]);
+
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
     categoryType: JUNIOR,
     matchUpFormats: [
       'SET1-S:4/TB10',

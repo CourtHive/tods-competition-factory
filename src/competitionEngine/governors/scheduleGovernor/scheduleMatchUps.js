@@ -4,6 +4,7 @@ import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { getDevContext } from '../../../global/globalState';
+import { intersection } from '../../../utilities';
 import {
   addMinutesToTimeString,
   extractDate,
@@ -32,7 +33,6 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 import { TOTAL } from '../../../constants/scheduleConstants';
-import { intersection } from '../../../utilities';
 
 /**
  *

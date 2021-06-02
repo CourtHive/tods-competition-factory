@@ -60,9 +60,13 @@ export function getEventMatchUpFormatTiming({
       }
     }
   } else {
-    matchUpFormatDefinitions = unique(
-      matchUpFormats.filter(isValidMatchUpFormat)
-    ).map((matchUpFormat) => ({ matchUpFormat }));
+    matchUpFormatDefinitions = matchUpFormats
+      .map((definition) =>
+        typeof definition === 'string'
+          ? { matchUpFormat: definition }
+          : definition
+      )
+      .filter((definition) => isValidMatchUpFormat(definition.matchUpFormat));
   }
 
   const { eventType, eventId, category } = event;
