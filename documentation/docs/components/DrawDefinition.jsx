@@ -1,5 +1,5 @@
 import React from 'react';
-import RenderJSON from './renderJSON';
+import RenderJSON from './RenderJSON';
 
 export const DrawDefinition = ({ data }) => {
   return (
