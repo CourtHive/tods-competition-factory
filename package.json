@@ -89,7 +89,7 @@
     "typescript": "4.3.2"
   },
   "dependencies": {
-    "tods-matchup-format-code": "1.1.2"
+    "tods-matchup-format-code": "1.1.3"
   },
   "resolutions": {
     "marked": "^0.7.0 "
