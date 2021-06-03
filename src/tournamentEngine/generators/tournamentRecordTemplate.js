@@ -23,6 +23,8 @@ export const tournamentRecordTemplate = ({ tournamentId }) => ({
   indoorOutdoor: undefined,
   surfaceCategory: undefined,
 
+  parentOrganisationId: undefined,
+
   registrationProfile: {
     entriesOpen: undefined,
     entriesClose: undefined,

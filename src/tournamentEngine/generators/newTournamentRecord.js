@@ -1,4 +1,3 @@
-import definitionTemplate from '../../drawEngine/generators/drawDefinitionTemplate';
 import { validDateString } from '../../fixtures/validations/regex';
 import { isISODateString } from '../../utilities/dateTime';
 
@@ -7,7 +6,6 @@ import { UUID } from '../../utilities';
 
 export function newTournamentRecord(props = {}) {
   if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-  const template = definitionTemplate(props);
   if (props.startDate) {
     if (
       !isISODateString(props.startDate) &&
@@ -19,5 +17,5 @@ export function newTournamentRecord(props = {}) {
     if (!isISODateString(props.endDate) && !validDateString.test(props.endDate))
       return { error: INVALID_DATE };
   }
-  return Object.assign({}, template, props);
+  return Object.assign({}, props);
 }
