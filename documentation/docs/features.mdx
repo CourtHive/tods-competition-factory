@@ -3,15 +3,25 @@ title: Features
 slug: /features
 ---
 
-## TODS Sandbox
+## Mock Tournament Generation
 
 The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
 
-See [Generating Tournaments](engines/mocks-engine-examples) for live/interactive examples of tournament generation.
+```jsx live
+function MocksEngineDemo(props) {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
 
-:::note
+  return <Tournament data={tournamentRecord} />;
+}
+```
+
+See [Generating Tournaments](engines/mocks-engine-examples) for more examples of mock tournament generation,
+
+:::note Live Visualizations
 For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
+:::
 
+:::tip RESTful API Available
 For free access to a public RESTful API, contact <support@courthive.com>.
 :::
 
@@ -21,21 +31,8 @@ Draws are the centerpiece of any tournament. While TODS strives to be agnostic a
 
 ```jsx live
 function DrawDefinitionDemo(props) {
-  // generate a mock tournament
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  tournamentEngine.setState(tournamentRecord);
-
-  // add an event
-  const { event } = tournamentEngine.addEvent({ eventName: 'Demo' });
-
-  // enter all participants into the event
-  const participantIds = tournamentRecord.participants.map(
-    (p) => p.participantId
-  );
-  tournamentEngine.addEventEntries({ eventId: event.eventId, participantIds });
-
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    eventId: event.eventId,
+    drawSize: 32,
     drawName: 'Demo Draw',
     drawType: 'COMPASS',
   });
