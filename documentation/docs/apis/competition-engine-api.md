@@ -251,6 +251,27 @@ competitionEngine.matchUpScheduleChange({
 
 ---
 
+## modifyMatchUpFormatTiming
+
+```js
+competitionEngine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  averageTimes: [
+    {
+      categoryNames: [U12, U14],
+      minutes: { [DOUBLES]: 110, default: 130 },
+    },
+    {
+      categoryNames: [U16, U18],
+      minutes: { [DOUBLES]: 100, default: 120 },
+    },
+  ],
+  recoveryTimes: [
+    { categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } },
+  ],
+});
+```
+
 ## removeExtension
 
 Removes an extension from all `tournamentRecords` loaded into `competitionEngine`.
@@ -334,6 +355,17 @@ Auto-schedules all rounds which have been specified in a `schedulingProfile` whi
 ```js
 competitionEngine.scheduleProfileRounds({
   scheduleDates, // optional array of dates to schedule
+});
+```
+
+---
+
+## setMatchUpDailyLimits
+
+```js
+competitionEngine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+  tournamentId, // optional - scope to a specific tournamentId
 });
 ```
 

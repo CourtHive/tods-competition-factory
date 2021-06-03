@@ -81,7 +81,7 @@ test.each([
     }
 
     result = await competitionEngine.scheduleProfileRounds({
-      date: startDate,
+      scheduleDates: [startDate],
     });
 
     expect(result.success).toEqual(true);

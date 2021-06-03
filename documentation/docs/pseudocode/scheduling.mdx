@@ -5,8 +5,9 @@ slug: /pseudocode/scheduling
 
 import RenderJSON from '../components/RenderJSON';
 import SchedulingProfile from './schedulingProfile.json';
+import SchedulingPolicy from './schedulingPolicy.json';
 
-## Iterative Garman Scheduling
+## Iterative Garman scheduling
 
 The `competitionEngine` supports Garman scheduling of `matchUps` from multiple tournaments across shared `venues`.
 
@@ -28,4 +29,72 @@ The `schedulingProfile` is an array of profiles for the `dates` to be scheduled;
   invertTheme={true}
 />
 
-## matchUpFormatTiming
+## Scheduling policy
+
+A "Scheduling Policy" defines the average matchUp times and mandated recovery times for each `matchUpFormat`,
+and sets limits on the number of matchUps that may be played per-player per-day.
+
+<RenderJSON
+  data={SchedulingPolicy}
+  root={'scheduling'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+/>
+
+## Overriding policies
+
+Average `matchUpFormat` times and recovery times can be defined, or established policies can be overridden
+
+```js
+// set averageTimes for a specific matchUpFormat
+competitionEngine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  averageTimes: [
+    {
+      categoryNames: ['U12', 'U14'],
+      minutes: { ['DOUBLES']: 110, default: 130 },
+    },
+    {
+      categoryNames: ['U16', 'U18'],
+      minutes: { ['DOUBLES']: 100, default: 120 },
+    },
+  ],
+  recoveryTimes: [
+    { categoryNames: [], minutes: { default: 15, ['DOUBLES']: 15 } },
+  ],
+});
+
+// set dailyLimits
+competitionEngine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+});
+```
+
+## Automated Scheduling
+
+Once the `schedulingProfile`, `matchUpFormatTiming` and `dailyLimits` have been defined, automated assignment of **scheduleTimes** to `matchUps` is straightforward.
+
+```js
+competitionEngine.scheduleProfileRounds({
+  scheduleDates, // optional array of dates to be scheduled
+});
+```
+
+## pseudocode
+
+Scheduling operates with an array of all competition matchUps "inContext".
+After building up a mapping of matchUpIds to scheduleTimes, the assignments are made.
+
+1. Loop through `scheduleDates` ...
+2. Loop through venues for current `scheduleDate` ...
+3. Insure `rounds` specified for `scheduleDate` are sorted as specified
+4. Generate ordered array of `matchUpIds` derived from specified `rounds`
+5. Group ordered `matchUpIds` by **averageMatchUpMinutes|recoveryMinutes**
+6. Loop through groups of `matchUpIds` ...
+7. Calculate Available scheduleTimes, considering court availability and already scheduled matchUps
+8. Construct per-participant hash tables of `matchUps` played and `timeAfterRecovery`
+9. Filter out `matchUps` which are not appropriate for scheduling
+10. Filter out `matchUps` which include participants who have reached daily limits
+11. Loop through available `scheduleTimes` and build up mapping of `matchUpIds` to `scheduleTimes`
+    - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
+12. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`

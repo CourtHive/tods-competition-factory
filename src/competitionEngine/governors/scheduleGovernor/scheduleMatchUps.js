@@ -207,6 +207,9 @@ export function scheduleMatchUps({
         matchUpPotentialParticipantIds,
       });
 
+      // TODO: if the round optimization is applied in scheduleProfileRounds
+      // ... then we must checkDailyLimits each time
+
       if (enoughTime) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
         return true;

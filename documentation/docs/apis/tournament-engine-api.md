@@ -2168,6 +2168,16 @@ tournamentEngine.setEventStartDate({ eventId, startDate });
 
 ---
 
+## setMatchUpDailyLimits
+
+```js
+tournamentEngine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+});
+```
+
+---
+
 ## setMatchUpStatus
 
 Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.

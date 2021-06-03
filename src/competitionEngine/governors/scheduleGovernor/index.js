@@ -41,8 +41,8 @@ const scheduleGovernor = {
   getMatchUpFormatTimingUpdate,
   getEventMatchUpFormatTiming,
 
-  getMatchUpDailyLimits, // document
-  setMatchUpDailyLimits, // document
+  getMatchUpDailyLimits,
+  setMatchUpDailyLimits,
   getMatchUpDailyLimitsUpdate, // document
 
   getSchedulingProfile,
