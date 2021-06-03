@@ -2,7 +2,6 @@ export const definitionTemplate = () => ({
   drawId: undefined,
   drawName: undefined,
   entries: [],
-  events: [],
   links: [],
   structures: [],
 });

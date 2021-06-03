@@ -7,24 +7,7 @@ slug: /features
 
 The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
 
-```js
-// Simple example. Generates tournament record with 32 participants.
-const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-
-// Expanded example
-const drawProfiles = [
-  { drawSize: 16, eventType: DOUBLES },
-  { drawSize: 32, drawFormat: ROUND_ROBIN },
-];
-const venueProfiles = [{ courtsCount: 3 }];
-const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-  startDate: '2021-05-05',
-  endDate: '2021-05-07',
-  venueProfiles,
-  drawProfiles,
-  completeAllMatchUps: true,
-});
-```
+See [Generating Tournaments](engines/mocks-engine-examples) for live/interactive examples of tournament generation.
 
 :::note
 For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
@@ -36,31 +19,29 @@ For free access to a public RESTful API, contact <support@courthive.com>.
 
 Draws are the centerpiece of any tournament. While TODS strives to be agnostic about the specific type of draw represented by a `drawDefinition`, **Competition Factory** includes a convenience method which exercises other methods to generate a wide range of recognized [draw types](engines/draw-types).
 
-```js
-const playoffGroups = [
-  {
-    finishingPositions: [1, 2],
-    structureName: 'Gold Flight',
-    drawType: SINGLE_ELIMINATION,
-  },
-  {
-    finishingPositions: [3, 4],
-    structureName: 'Silver Flight',
-    drawType: SINGLE_ELIMINATION,
-  },
-];
-const structureOptions = {
-  groupSize: 4,
-  playoffGroups,
-};
-const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-  eventId,
-  drawSize: 64,
-  drawType: ROUND_ROBIN_WITH_PLAYOFFS,
-  matchUpFormat: 'SET3-S:6/TB7',
-  seedingProfile: WATERFALL,
-  structureOptions,
-});
+```jsx live
+function DrawDefinitionDemo(props) {
+  // generate a mock tournament
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  tournamentEngine.setState(tournamentRecord);
+
+  // add an event
+  const { event } = tournamentEngine.addEvent({ eventName: 'Demo' });
+
+  // enter all participants into the event
+  const participantIds = tournamentRecord.participants.map(
+    (p) => p.participantId
+  );
+  tournamentEngine.addEventEntries({ eventId: event.eventId, participantIds });
+
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    eventId: event.eventId,
+    drawName: 'Demo Draw',
+    drawType: 'COMPASS',
+  });
+
+  return <Draw data={drawDefinition} />;
+}
 ```
 
 :::info

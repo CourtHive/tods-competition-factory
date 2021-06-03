@@ -39,12 +39,19 @@ const renderValue = (raw) => {
   return raw;
 };
 
-export const TreeView = ({
+export const RenderJSON = ({
   data,
   root = 'root',
-  colorScheme = 'shapeshifter',
+  colorScheme = 'summerfruit',
   invertTheme = true,
+  hideRoot = false,
+  expandRoot = true,
+  expandToLevel = 1,
 }) => {
+  const shouldExpandNode = (keyPath, data, level) => {
+    if (!expandRoot) return false;
+    if (level < expandToLevel) return true;
+  };
   return (
     <JSONTree
       theme={{
@@ -58,8 +65,10 @@ export const TreeView = ({
       data={data}
       keyPath={[root]}
       invertTheme={invertTheme}
+      hideRoot={hideRoot}
+      shouldExpandNode={shouldExpandNode}
     />
   );
 };
 
-export default TreeView;
+export default RenderJSON;

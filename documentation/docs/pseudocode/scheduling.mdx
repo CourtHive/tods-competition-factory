@@ -3,7 +3,7 @@ title: Advanced Scheduling
 slug: /pseudocode/scheduling
 ---
 
-import TreeView from '../components/TreeView';
+import RenderJSON from '../components/RenderJSON';
 import SchedulingProfile from './schedulingProfile.json';
 
 ## Iterative Garman Scheduling
@@ -14,7 +14,7 @@ The `competitionEngine` supports Garman scheduling of `matchUps` from multiple t
 
 The `scheulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record. `competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached via `setSchedulingProfile()`.
 
-<TreeView
+<RenderJSON
   data={SchedulingProfile}
   root={'schedulingProfile'}
   colorScheme={'summerfruit'}
