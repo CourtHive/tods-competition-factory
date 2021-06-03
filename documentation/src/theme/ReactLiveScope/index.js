@@ -13,6 +13,7 @@ import {
   drawEngine,
   mocksEngine,
   tournamentEngine,
+  competitionEngine,
 } from 'tods-competition-factory';
 
 // Add react-live imports you need here
@@ -23,6 +24,7 @@ const ReactLiveScope = {
   mocksEngine,
   drawEngine,
   tournamentEngine,
+  competitionEngine,
   Tournament,
   Draw,
 };
