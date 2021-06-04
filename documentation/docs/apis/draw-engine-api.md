@@ -196,7 +196,7 @@ const { matchUps } = drawEngine.allDrawMatchUps({
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   roundFilter, // filter to target matchUps from specified rounds
-  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
   includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
@@ -218,7 +218,7 @@ const { matchUps } = drawEngine.allStructureMatchUps({
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   roundFilter, // filter to target matchUps from specified rounds
-  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
   includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
@@ -448,7 +448,7 @@ const {
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   roundFilter, // filter to target matchUps from specified rounds
-  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
   includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }
@@ -501,7 +501,7 @@ drawEngine.generateDrawType({
     groupSizeLimit: 8,
   },
 
-  goesTo, // optional - generate winnerGoesTo and loserGoesTo attributes
+  goesTo, // optional - generate winnerMatchUpId and loserMatchUpId attributes
   uuids, // optional - array of UUIDs to be used for structureIds and matchUpIds
 
   stage, // optional - defaults to MAIN
@@ -1136,7 +1136,7 @@ const {
   context, // optional context to be added into matchUps
   inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
   roundFilter, // filter to target matchUps from specified rounds
-  nextMatchUps, // optioanl - boolean - to include winnerGoesTo and loserGoesTo
+  nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
   matchUpFilters, // attribute filters
   contextFilters, // filters based on context attributes
   includeByeMatchUps, // return matchUps with { matchUpStatus: BYE }

@@ -9,7 +9,7 @@ import {
 import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 
-it('accurately determines winnerGoesTo and loserGoesTo for FIC matchUps', () => {
+it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', () => {
   const participantsProfile = {
     participantsCount: 8,
     sex: MALE,
@@ -61,7 +61,7 @@ function checkGoesTo(matchUps, expectation) {
     loserRoundPosition,
   ] = expectation;
 
-  let { winnerGoesTo, loserGoesTo } = findTargetMatchUpByAttributes({
+  let { winnerMatchUpId, loserMatchUpId } = findTargetMatchUpByAttributes({
     matchUps,
     stage,
     roundNumber,
@@ -80,8 +80,8 @@ function checkGoesTo(matchUps, expectation) {
     roundPosition: loserRoundPosition,
   });
 
-  expect(winnerGoesTo).toEqual(expectedWinnerMatchUp.matchUpId);
-  expect(loserGoesTo).toEqual(expectedloserMatchUp.matchUpId);
+  expect(winnerMatchUpId).toEqual(expectedWinnerMatchUp.matchUpId);
+  expect(loserMatchUpId).toEqual(expectedloserMatchUp.matchUpId);
 
   function findTargetMatchUpByAttributes({
     matchUps,

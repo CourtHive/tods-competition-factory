@@ -27,13 +27,18 @@ export function addGoesTo({
       inContextDrawMatchUps,
     });
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
-    const winnerGoesTo = winnerMatchUp?.matchUpId;
-    const loserGoesTo = loserMatchUp?.matchUpId;
+    const winnerMatchUpId = winnerMatchUp?.matchUpId;
+    const loserMatchUpId = loserMatchUp?.matchUpId;
     const { matchUp } = findMatchUp({
       drawDefinition,
       mappedMatchUps,
       matchUpId,
     });
-    Object.assign(matchUp, { winnerGoesTo, loserGoesTo });
+    if (winnerMatchUpId) {
+      Object.assign(matchUp, { winnerMatchUpId });
+    }
+    if (loserMatchUpId) {
+      Object.assign(matchUp, { loserMatchUpId });
+    }
   });
 }

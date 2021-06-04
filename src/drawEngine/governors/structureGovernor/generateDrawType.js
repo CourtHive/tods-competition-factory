@@ -59,7 +59,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function generateDrawType(props = {}) {
   const {
     uuids,
-    goesTo,
+    goesTo = true,
     stage = MAIN,
     structureName,
     staggeredEntry,
