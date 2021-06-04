@@ -1,7 +1,7 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
 
-it('accurately determines winnerGoesTo and loserGoesTo for FIC matchUps', () => {
+it('attached delegated outcomes to matchUps', () => {
   const drawSize = 8;
   const drawProfiles = [{ drawSize }];
   let {
