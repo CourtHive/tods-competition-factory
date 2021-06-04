@@ -20,7 +20,7 @@ In testing, very specific scenarios are required. Any number of draws can be add
 function MocksEngineDemo(props) {
   const drawProfiles = [
     { drawSize: 16, eventType: 'DOUBLES' },
-    { drawSize: 32, drawFormat: 'ROUND_ROBIN' },
+    { drawSize: 32, drawType: 'ROUND_ROBIN' },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
