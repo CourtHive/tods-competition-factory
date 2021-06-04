@@ -52,22 +52,34 @@ export function getAllStructureMatchUps({
     };
   }
 
-  const thisEvent =
+  const selectedEventIds = Array.isArray(matchUpFilters?.eventIds)
+    ? matchUpFilters.eventIds.filter((f) => f)
+    : [];
+
+  const selectedStructureIds = Array.isArray(matchUpFilters?.structureIds)
+    ? matchUpFilters.structureIds.filter((f) => f)
+    : [];
+
+  const selectedDrawIds = Array.isArray(matchUpFilters?.drawIds)
+    ? matchUpFilters.drawIds.filter((f) => f)
+    : [];
+
+  const targetEvent =
     !context?.eventId ||
-    (!matchUpFilters?.eventIds?.filter((f) => f).length &&
+    (!selectedEventIds.length &&
       !contextFilters?.eventIds?.filter((f) => f).length) ||
-    matchUpFilters?.eventIds?.includes(context.eventId) ||
+    selectedEventIds.includes(context.eventId) ||
     contextFilters?.eventIds?.includes(context.eventId);
-  const thisStructure =
-    !matchUpFilters?.structureIds?.filter((f) => f).length ||
-    matchUpFilters.structureIds.includes(structure.structureId);
-  const thisDraw =
+  const targetStructure =
+    !selectedStructureIds.length ||
+    selectedStructureIds.includes(structure.structureId);
+  const targetDraw =
     !drawDefinition ||
-    !matchUpFilters?.drawIds?.filter((f) => f).length ||
-    matchUpFilters.drawIds.includes(drawDefinition.drawId);
+    !selectedDrawIds.length ||
+    selectedDrawIds.includes(drawDefinition.drawId);
 
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
-  if (!thisEvent || !thisStructure || !thisDraw) {
+  if (!targetEvent || !targetStructure || !targetDraw) {
     return {
       matchUps: [],
       collectionPositionMatchUps,
