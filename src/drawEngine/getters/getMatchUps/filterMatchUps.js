@@ -59,7 +59,7 @@ export function filterMatchUps(props) {
   const targetScheduledDates = Array.isArray(scheduledDates)
     ? scheduledDates.filter((f) => f)
     : typeof scheduledDate === 'string'
-    ? [scheduledDate]
+    ? scheduledDate && [scheduledDate]
     : [];
 
   const targetTournamentIds = Array.isArray(tournamentIds)
