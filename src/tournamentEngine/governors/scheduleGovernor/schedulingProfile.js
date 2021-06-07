@@ -1,4 +1,4 @@
-import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile';
+import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { validSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';

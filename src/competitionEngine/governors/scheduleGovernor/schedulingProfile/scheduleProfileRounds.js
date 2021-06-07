@@ -1,19 +1,19 @@
-import { filterMatchUps } from '../../../drawEngine/getters/getMatchUps/filterMatchUps';
-import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
-import { getMatchUpFormat } from '../../../tournamentEngine/getters/getMatchUpFormat';
-import { extractDate, isValidDateString } from '../../../utilities/dateTime';
-import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
-import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
-import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
+import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
+import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
+import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
+import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
+import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
-import { scheduleMatchUps } from './scheduleMatchUps';
+import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
 
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function scheduleProfileRounds({
   tournamentRecords,

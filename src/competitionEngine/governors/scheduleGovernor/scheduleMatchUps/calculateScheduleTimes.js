@@ -1,13 +1,13 @@
-import { getMatchUpFormatTiming } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { competitionScheduleMatchUps } from '../../getters/matchUpsGetter';
-import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
-import { getScheduleTimes } from './garman/getScheduleTimes';
+import { getMatchUpFormatTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
+import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { getScheduleTimes } from '../garman/getScheduleTimes';
 import {
   addMinutesToTimeString,
   extractTime,
   sameDay,
   timeToDate,
-} from '../../../utilities/dateTime';
+} from '../../../../utilities/dateTime';
 
 /**
  *

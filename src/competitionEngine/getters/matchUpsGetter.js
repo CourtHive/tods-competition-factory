@@ -1,4 +1,4 @@
-import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile';
+import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
 
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';

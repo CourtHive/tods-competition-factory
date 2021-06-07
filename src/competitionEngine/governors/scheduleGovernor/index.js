@@ -8,19 +8,19 @@ import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
-import { calculateScheduleTimes } from './calculateScheduleTimes';
+import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
-import { scheduleProfileRounds } from './scheduleProfileRounds';
+import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
-import { scheduleMatchUps } from './scheduleMatchUps';
+import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 // import { addTimeItem } from './timeItems';
 import {
   addSchedulingProfileRound,
   getSchedulingProfile,
   isValidSchedulingProfile,
   setSchedulingProfile,
-} from './schedulingProfile';
+} from './schedulingProfile/schedulingProfile';
 
 const scheduleGovernor = {
   // addTimeItem,

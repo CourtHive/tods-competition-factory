@@ -1,23 +1,23 @@
-import { validSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
-import { getEventIdsAndDrawIds } from '../../getters/getEventIdsAndDrawIds';
-import { getCompetitionVenues } from '../../getters/venuesAndCourtsGetter';
+import { validSchedulingProfile } from '../../../../global/validation/validSchedulingProfile';
+import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
+import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
 import {
   extractDate,
   isValidDateString,
   sameDay,
-} from '../../../utilities/dateTime';
+} from '../../../../utilities/dateTime';
 import {
   addExtension,
   findExtension,
-} from '../competitionsGovernor/competitionExtentions';
+} from '../../competitionsGovernor/competitionExtentions';
 
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
-import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };

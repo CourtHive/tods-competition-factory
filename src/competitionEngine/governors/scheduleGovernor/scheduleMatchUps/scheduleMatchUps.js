@@ -1,19 +1,22 @@
-import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
-import { addMatchUpScheduledTime } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
-import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
+import { assignMatchUpVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
+import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
+import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
+import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
-import { getDevContext } from '../../../global/globalState';
-import { intersection } from '../../../utilities';
+import { checkRequestConflicts } from './checkRequestConflicts';
+import { getDevContext } from '../../../../global/globalState';
+import { getParticipantRequests } from './participantRequests';
+import { processNextMatchUps } from './processNextMatchUps';
+import { checkRecoveryTime } from './checkRecoveryTime';
+import { checkDailyLimits } from './checkDailyLimits';
 import {
   addMinutesToTimeString,
   extractDate,
   extractTime,
   isValidDateString,
-  minutesDifference,
-  timeToDate,
   zeroPad,
-} from '../../../utilities/dateTime';
+} from '../../../../utilities/dateTime';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -21,8 +24,8 @@ import {
   MISSING_MATCHUP_IDS,
   INVALID_DATE,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+} from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   BYE,
   ABANDONED,
@@ -30,9 +33,7 @@ import {
   RETIRED,
   WALKOVER,
   COMPLETED,
-} from '../../../constants/matchUpStatusConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { TOTAL } from '../../../constants/scheduleConstants';
+} from '../../../../constants/matchUpStatusConstants';
 
 /**
  *
@@ -186,6 +187,8 @@ export function scheduleMatchUps({
   let iterations = 0;
   const failSafe = scheduleTimes?.length || 0;
 
+  const { participantRequests } = getParticipantRequests({ tournamentRecords });
+
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
     scheduleTimes?.length &&
@@ -207,10 +210,16 @@ export function scheduleMatchUps({
         matchUpPotentialParticipantIds,
       });
 
+      const { requestConflicts } = checkRequestConflicts({
+        matchUp,
+        scheduleTime,
+        participantRequests,
+      });
+
       // TODO: if the round optimization is applied in scheduleProfileRounds
       // ... then we must checkDailyLimits each time
 
-      if (enoughTime) {
+      if (enoughTime && !requestConflicts?.length) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
         return true;
       }
@@ -292,209 +301,4 @@ export function scheduleMatchUps({
     participantIdsAtLimit,
     individualParticipantProfiles,
   });
-}
-
-export function checkRecoveryTime({
-  matchUp,
-  scheduleTime,
-  recoveryMinutes,
-  averageMatchUpMinutes,
-  individualParticipantProfiles,
-  matchUpNotBeforeTimes,
-  matchUpPotentialParticipantIds,
-}) {
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
-    (isSufficient, participantId) => {
-      const profile = individualParticipantProfiles[participantId];
-      if (profile) {
-        if (!profile.timeAfterRecovery) return isSufficient && true;
-        const timeBetween = minutesDifference(
-          timeToDate(profile.timeAfterRecovery),
-          timeToDate(scheduleTime),
-          false
-        );
-        if (timeBetween < 0) return false;
-      }
-      return isSufficient;
-    },
-    true
-  );
-
-  const notBeforeTime = matchUpNotBeforeTimes[matchUp.matchUpId];
-  const timeBetweenMatchUps = notBeforeTime
-    ? minutesDifference(
-        timeToDate(notBeforeTime),
-        timeToDate(scheduleTime),
-        false
-      )
-    : 0;
-  const sufficientTimeBetweenMatchUps = timeBetweenMatchUps >= 0;
-
-  const enoughTime =
-    sufficientTimeForIndiiduals && sufficientTimeBetweenMatchUps;
-
-  if (enoughTime) {
-    individualParticipantIds.forEach((participantId) => {
-      const timeAfterRecovery = addMinutesToTimeString(
-        scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
-      );
-      if (!individualParticipantProfiles[participantId]) {
-        individualParticipantProfiles[participantId] = {
-          timeAfterRecovery,
-        };
-      } else {
-        individualParticipantProfiles[participantId].timeAfterRecovery =
-          timeAfterRecovery;
-      }
-
-      processNextMatchUps({
-        matchUp,
-        timeAfterRecovery,
-        matchUpNotBeforeTimes,
-        matchUpPotentialParticipantIds,
-      });
-    });
-  }
-
-  return { enoughTime };
-}
-
-/**
- *
- * @param {object[]} sides - matchUp.sides
- * @param {string} matchUpType - SINGLES, DOUBLES, TEAM
- * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - counters
- * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
- * @returns {string[]} participantIdsAtLimit - array of participantIds who are at or beyond daily matchUp limit
- * @modifies individualParticipantProfiles - increments counters
- */
-function checkDailyLimits(
-  matchUp,
-  matchUpDailyLimits,
-  individualParticipantProfiles
-) {
-  const { matchUpType } = matchUp;
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-
-  const participantIdsAtLimit = individualParticipantIds.filter(
-    (participantId) => {
-      const profile = individualParticipantProfiles[participantId];
-      if (profile) {
-        const limitReached = [matchUpType, TOTAL].find((counterName) => {
-          const participantCount =
-            (profile.counters && profile.counters[counterName]) || 0;
-          const dailyLimit = matchUpDailyLimits[counterName];
-          return (
-            participantCount && dailyLimit && participantCount >= dailyLimit
-          );
-        });
-        return limitReached;
-      }
-    }
-  );
-
-  if (!participantIdsAtLimit.length) {
-    individualParticipantIds.forEach((participantId) => {
-      if (!individualParticipantProfiles[participantId])
-        individualParticipantProfiles[participantId] = { counters: {} };
-      const counters = individualParticipantProfiles[participantId].counters;
-      if (counters[matchUpType]) counters[matchUpType] += 1;
-      else counters[matchUpType] = 1;
-      if (counters[TOTAL]) counters[TOTAL] += 1;
-      else counters[TOTAL] = 1;
-    });
-  }
-
-  return participantIdsAtLimit;
-}
-
-function processNextMatchUps({
-  matchUp,
-  timeAfterRecovery,
-  matchUpNotBeforeTimes,
-  matchUpPotentialParticipantIds,
-}) {
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-
-  const addPotentialParticipantIds = (targetMatchUpId) => {
-    if (!matchUpPotentialParticipantIds[targetMatchUpId])
-      matchUpPotentialParticipantIds[targetMatchUpId] = [];
-
-    // push potentials as an array so that if any have progressed to target matchUp
-    // others in the array can be identfied as no longer potentials
-    matchUpPotentialParticipantIds[targetMatchUpId].push(
-      individualParticipantIds
-    );
-  };
-
-  if (matchUp.winnerTo?.matchUpId) {
-    matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
-    addPotentialParticipantIds(matchUp.winnerTo.matchUpId);
-  }
-  if (matchUp.loserTo?.matchUpId) {
-    matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
-    addPotentialParticipantIds(matchUp.loserTo.matchUpId);
-  }
-  if (matchUp.sidesTo?.length) {
-    matchUp.sidesTo.forEach(({ matchUpId }) => {
-      if (matchUpId) {
-        matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
-        addPotentialParticipantIds(matchUpId);
-      }
-    });
-  }
-}
-
-function modifyParticipantMatchUpsCount({
-  matchUpPotentialParticipantIds,
-  individualParticipantProfiles,
-  matchUp,
-  value,
-}) {
-  const { matchUpType } = matchUp;
-
-  // individualParticipantIds represent those participants already present
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  // potentialParticipantIds are those who could progress to this matchUp
-  const potentialParticipantIds =
-    matchUpPotentialParticipantIds[matchUp.matchUpId] || [];
-
-  // filteredPotentials exclude potentials if any of the participantIds
-  // are present in individualParticipantIds which ensures that source match losers
-  // do not get considered when incrementing or decrementing matchUp counters
-  const filterdPotentials = potentialParticipantIds
-    .filter(
-      (potentials) => !intersection(potentials, individualParticipantIds).length
-    )
-    .flat();
-  const consideredParticipantIds = [
-    ...individualParticipantIds,
-    ...filterdPotentials,
-  ];
-
-  consideredParticipantIds.forEach((participantId) => {
-    if (!individualParticipantProfiles[participantId]) {
-      individualParticipantProfiles[participantId] = { counters: {} };
-    }
-    const counters = individualParticipantProfiles[participantId].counters;
-    if (counters[matchUpType]) counters[matchUpType] += value;
-    else if (value > 0) counters[matchUpType] = value;
-    if (counters[TOTAL]) counters[TOTAL] += value;
-    else if (value > 0) counters[TOTAL] = value;
-  });
-}
-
-function getIndividualParticipantIds(matchUp) {
-  const { sides, matchUpType } = matchUp;
-  return (sides || [])
-    .map((side) => {
-      return matchUpType === DOUBLES
-        ? side?.participant?.individualParticipantIds || []
-        : side.participantId
-        ? [side.participantId]
-        : [];
-    })
-    .flat();
 }
