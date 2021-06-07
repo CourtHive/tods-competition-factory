@@ -10,7 +10,7 @@ import {
 import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
-export function getPersonRequests({ tournamentRecords }) {
+export function getPersonRequests({ tournamentRecords, requestType }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const personRequests = {};
@@ -30,16 +30,10 @@ export function getPersonRequests({ tournamentRecords }) {
     for (const requestObject of requestObjects) {
       const { personId, requests } = requestObject || {};
 
-      /*
-      request = {
-        date,
-        startTime,
-        endTime,
-      }
-      */
-
       if (!personRequests[personId]) personRequests[personId] = [];
       for (const request of requests) {
+        if (requestType && request.requestType !== requestType) continue;
+
         personRequests[personId].push({
           tournamentId,
           request,
@@ -79,6 +73,15 @@ export function savePersonRequests({ tournamentRecords, personRequests }) {
 
   return SUCCESS;
 }
+
+/*
+  request = {
+    date,
+    startTime,
+    endTime,
+    requestType: 'DO_NOT_SCHEDULE'
+  }
+*/
 
 export function addPersonRequest({ tournamentRecords, personId, request }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
