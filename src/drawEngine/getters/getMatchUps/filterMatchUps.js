@@ -58,8 +58,8 @@ export function filterMatchUps(props) {
     : [];
   const targetScheduledDates = Array.isArray(scheduledDates)
     ? scheduledDates.filter((f) => f)
-    : typeof scheduledDate === 'string'
-    ? scheduledDate && [scheduledDate]
+    : typeof scheduledDate === 'string' && scheduledDate.length
+    ? [scheduledDate]
     : [];
 
   const targetTournamentIds = Array.isArray(tournamentIds)
@@ -129,7 +129,7 @@ export function filterMatchUps(props) {
       return false;
     }
 
-    if (targetScheduledDates.length) {
+    if (targetScheduledDates?.length) {
       const { scheduledTime } = scheduledMatchUpTime({
         matchUp,
         localTimeZone,
