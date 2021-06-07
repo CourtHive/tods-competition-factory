@@ -18,6 +18,8 @@ import {
   zeroPad,
 } from '../../../../utilities/dateTime';
 
+import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_TOURNAMENT_ID,
@@ -25,7 +27,6 @@ import {
   INVALID_DATE,
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   BYE,
   ABANDONED,
@@ -187,7 +188,10 @@ export function scheduleMatchUps({
   let iterations = 0;
   const failSafe = scheduleTimes?.length || 0;
 
-  const { personRequests } = getPersonRequests({ tournamentRecords });
+  const { personRequests } = getPersonRequests({
+    tournamentRecords,
+    requestType: DO_NOT_SCHEDULE,
+  });
 
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
