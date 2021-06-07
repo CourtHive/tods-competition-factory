@@ -6,7 +6,7 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { getDevContext } from '../../../../global/globalState';
-import { getParticipantRequests } from './participantRequests';
+import { getPersonRequests } from './personRequests';
 import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
@@ -187,7 +187,7 @@ export function scheduleMatchUps({
   let iterations = 0;
   const failSafe = scheduleTimes?.length || 0;
 
-  const { participantRequests } = getParticipantRequests({ tournamentRecords });
+  const { personRequests } = getPersonRequests({ tournamentRecords });
 
   // while there are still matchUps to schedule and scheduleTimes, assign scheduleTimes to matchUps;
   while (
@@ -213,7 +213,7 @@ export function scheduleMatchUps({
       const { requestConflicts } = checkRequestConflicts({
         matchUp,
         scheduleTime,
-        participantRequests,
+        personRequests,
       });
 
       // TODO: if the round optimization is applied in scheduleProfileRounds

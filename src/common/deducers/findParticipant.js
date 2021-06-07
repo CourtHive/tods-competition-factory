@@ -11,7 +11,9 @@ export function findParticipant({
       (participantId && candidate.participantId === participantId) ||
       (personId && candidate.person && candidate.person.personId === personId)
   );
+
   const participantAttributes = policyDefinition.participant;
+
   if (participantAttributes) {
     const participantCopy = attributeFilter({
       source: participant,

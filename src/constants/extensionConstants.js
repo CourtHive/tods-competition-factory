@@ -6,7 +6,7 @@ export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
-export const PARTICIPANT_REQUESTS = 'participantRequests';
+export const PERSON_REQUESTS = 'personRequests';
 export const SCHEDULE_LIMITS = 'scheduleLimits';
 export const SCHEDULE_TIMING = 'scheduleTiming';
 export const SCHEDULING_PROFILE = 'schedulingProfile';
@@ -21,7 +21,7 @@ export const extensionConstants = {
   GROUPING_ATTRIBUTE,
   LINKED_TOURNAMENTS,
   PARTICIPANT_REPRESENTATIVES,
-  PARTICIPANT_REQUESTS,
+  PERSON_REQUESTS,
   SCHEDULE_LIMITS,
   SCHEDULE_TIMING,
   SCHEDULING_PROFILE,

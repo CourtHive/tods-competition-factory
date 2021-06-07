@@ -1,9 +1,9 @@
 export function checkRequestConflicts({
   matchUp,
   scheduleTime,
-  participantReuests,
+  personRequests,
 }) {
-  if (matchUp && scheduleTime && participantReuests) {
+  if (matchUp && scheduleTime && personRequests) {
     //
   }
   return [];
