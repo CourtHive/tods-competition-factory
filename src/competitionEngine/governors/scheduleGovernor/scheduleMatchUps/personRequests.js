@@ -1,5 +1,6 @@
 import { addTournamentExtension } from '../../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { findExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { findTournamentExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { findParticipant } from '../../../../common/deducers/findParticipant';
 import { generateTimeCode } from '../../../../utilities';
 
@@ -20,7 +21,7 @@ export function getPersonRequests({ tournamentRecords, requestType }) {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { tournamentId } = tournamentRecord;
 
-    const { extension } = findExtension({
+    const { extension } = findTournamentExtension({
       tournamentRecord,
       name: PERSON_REQUESTS,
     });
@@ -92,14 +93,13 @@ export function addPersonRequest({ tournamentRecords, personId, request }) {
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { tournamentId } = tournamentRecord;
-    const participants = tournamentRecord.participants || [];
-    if (findParticipant({ participants, personId })) {
+    const tournamentParticipants = tournamentRecord.participants || [];
+    if (findParticipant({ tournamentParticipants, personId })) {
       /*
       const existingPersonRequests = personRequests[personId];
       // check whether there is a request for the date with overlapping startTime/endTime and extend rather than creating multiple
       */
-      const requestId = generateTimeCode();
-      Object.assign(request, requestId);
+      request.requestId = generateTimeCode();
       personRequests[personId].push({ tournamentId, request });
     }
   }
@@ -107,6 +107,7 @@ export function addPersonRequest({ tournamentRecords, personId, request }) {
   return savePersonRequests({ tournamentRecords, personRequests });
 }
 
+// personRequests can be removed by date or requestId
 export function removePersonRequest({
   tournamentRecords,
   requestId,
@@ -114,10 +115,10 @@ export function removePersonRequest({
   date,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!personId) return { error: MISSING_VALUE };
+  if (!requestId && !date) return { error: MISSING_VALUE };
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
-  if (personRequests[personId]) {
+  const filterRequests = (personId) => {
     personRequests[personId] = personRequests[personId].filter(
       ({ request }) => {
         return (
@@ -126,8 +127,20 @@ export function removePersonRequest({
         );
       }
     );
-    return savePersonRequests({ tournamentRecords, personRequests });
+    if (!personRequests[personId].length) delete personRequests[personId];
+  };
+
+  if (personId && personRequests[personId]) {
+    filterRequests(personId);
+  } else {
+    for (const personId of Object.keys(personRequests)) {
+      filterRequests(personId);
+    }
   }
 
-  return SUCCESS;
+  if (!Object.keys(personRequests).length) {
+    return removeExtension({ tournamentRecords, name: PERSON_REQUESTS });
+  } else {
+    return savePersonRequests({ tournamentRecords, personRequests });
+  }
 }

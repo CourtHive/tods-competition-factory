@@ -53,18 +53,13 @@ export function removeExtension({ tournamentRecords, name }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
 
-  let error,
-    removed = 0;
-  const success = Object.keys(tournamentRecords).every((tournamentId) => {
+  let removed = 0;
+  for (const tournamentId of Object.keys(tournamentRecords)) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const result = removeTournamentExtension({ tournamentRecord, name });
-    if (!result.error) {
-      removed++;
-      return true;
-    } else {
-      error = result.error;
-    }
-  });
+    if (result.error) return result;
+    if (result.message !== NOT_FOUND) removed++;
+  }
 
-  return success ? Object.assign({}, SUCCESS, { removed }) : { error };
+  return Object.assign({}, SUCCESS, { removed });
 }
