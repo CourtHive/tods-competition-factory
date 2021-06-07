@@ -12,7 +12,8 @@ export function getCourtDateFilters({
   periodEndTime,
   date,
 }) {
-  const sameDate = (courtDate) => sameDay(courtDate.date, date);
+  const sameDate = (courtDate) =>
+    !courtDate.date || sameDay(courtDate.date, date);
 
   const enoughTime = (courtDate) => {
     const timeSlots = generateTimeSlots({ courtDate, includeBookingTypes });

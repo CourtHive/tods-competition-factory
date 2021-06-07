@@ -44,8 +44,9 @@ export function calculateScheduleTimes({
 
   if (!startTime) {
     startTime = courts.reduce((minStartTime, court) => {
-      const dateAvailability = court.dateAvailability?.find((availability) =>
-        sameDay(date, availability.date)
+      const dateAvailability = court.dateAvailability?.find(
+        // if no date is specified consider it to be default for all tournament dates
+        (availability) => !availability.date || sameDay(date, availability.date)
       );
       const comparisonStartTime =
         dateAvailability?.startTime || court.startTime;
@@ -60,8 +61,9 @@ export function calculateScheduleTimes({
 
   if (!endTime) {
     endTime = courts.reduce((maxEndTime, court) => {
-      const dateAvailability = court.dateAvailability?.find((availability) =>
-        sameDay(date, availability.date)
+      const dateAvailability = court.dateAvailability?.find(
+        // if no date is specified consider it to be default for all tournament dates
+        (availability) => !availability.date || sameDay(date, availability.date)
       );
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
