@@ -3,17 +3,17 @@ import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFo
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
+import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
+import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
+import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
-import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
-import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
-import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 // import { addTimeItem } from './timeItems';
 import {
   addSchedulingProfileRound,
@@ -22,8 +22,9 @@ import {
   setSchedulingProfile,
 } from './schedulingProfile/schedulingProfile';
 import {
-  addPersonRequest,
+  addPersonRequests,
   getPersonRequests,
+  modifyPersonRequests,
   removePersonRequest,
 } from './scheduleMatchUps/personRequests';
 
@@ -55,8 +56,9 @@ const scheduleGovernor = {
   isValidSchedulingProfile,
   addSchedulingProfileRound,
 
+  addPersonRequests, // document
   getPersonRequests, // document
-  addPersonRequest, // document
+  modifyPersonRequests, // document
   removePersonRequest, // document
 };
 

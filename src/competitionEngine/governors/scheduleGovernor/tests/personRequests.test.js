@@ -12,7 +12,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   const personId = tournament1.participants[0].person.personId;
 
   competitionEngine.setState([tournament1, tournament2]);
-  const { startDate } = competitionEngine.getCompetitionDateRange();
+  const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
 
   const request = {
     date: startDate,
@@ -20,7 +20,10 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
     endTime: '10:00',
     requestType: DO_NOT_SCHEDULE,
   };
-  let result = competitionEngine.addPersonRequest({ personId, request });
+  let result = competitionEngine.addPersonRequests({
+    personId,
+    requests: [request],
+  });
   expect(result.success).toEqual(true);
 
   let { personRequests } = competitionEngine.getPersonRequests();
@@ -31,7 +34,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   expect(Object.values(tournamentRecords)[0].extensions.length).toEqual(1);
   expect(Object.values(tournamentRecords)[1].extensions).toBeUndefined();
 
-  let requestId = personRequests[personId][0].request.requestId;
+  let requestId = personRequests[personId][0].requestId;
   expect(requestId).not.toBeUndefined();
 
   result = competitionEngine.removePersonRequest({ personId, requestId });
@@ -42,11 +45,33 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   expect(Object.values(tournamentRecords)[0].extensions.length).toEqual(0);
 
   // now remove a request using only the requestId
-  result = competitionEngine.addPersonRequest({ personId, request });
+  result = competitionEngine.addPersonRequests({
+    personId,
+    requests: [request],
+  });
   expect(result.success).toEqual(true);
   ({ personRequests } = competitionEngine.getPersonRequests());
-  requestId = personRequests[personId][0].request.requestId;
+  let requestObject = personRequests[personId][0];
+  requestId = requestObject.requestId;
   result = competitionEngine.removePersonRequest({ requestId });
   expect(result.success).toEqual(true);
   expect(result.removed).toEqual(1);
+
+  // now modify a request
+  result = competitionEngine.addPersonRequests({
+    personId,
+    requests: [request],
+  });
+  expect(result.success).toEqual(true);
+  ({ personRequests } = competitionEngine.getPersonRequests());
+  requestObject = personRequests[personId][0];
+  expect(requestObject.date).toEqual(startDate);
+  requestObject.date = endDate;
+  result = competitionEngine.modifyPersonRequests({
+    requests: [requestObject],
+  });
+  expect(result.success).toEqual(true);
+  ({ personRequests } = competitionEngine.getPersonRequests());
+  requestObject = personRequests[personId][0];
+  expect(requestObject.date).toEqual(endDate);
 });
