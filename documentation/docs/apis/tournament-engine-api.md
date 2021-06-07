@@ -36,7 +36,7 @@ Convenience function to bulk add courts to a Venue. Only adds **dataAvailability
 ```js
 const dateAvailability = [
   {
-    date: '2020-01-01T00:00',
+    date: '2020-01-01T00:00', // if no date is provided then this profile will be used as default
     startTime: '07:00',
     endTime: '19:00',
     bookings: [
