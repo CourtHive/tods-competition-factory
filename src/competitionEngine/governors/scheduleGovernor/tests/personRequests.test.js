@@ -75,3 +75,53 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   requestObject = personRequests[personId][0];
   expect(requestObject.date).toEqual(endDate);
 });
+
+it('can identify conflicts with person requests', () => {
+  // insure that tournament has exactly 16 participants
+  // so that conflict can be assured for testing purposes
+  const participantsCount = 16;
+  const drawProfiles = [{ drawSize: participantsCount }];
+  const venueProfiles = [{ courtsCount: 6 }];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    venueProfiles,
+    participantsProfile: { participantsCount },
+  });
+
+  expect(tournamentRecord.participants.length).toEqual(participantsCount);
+
+  const personId = tournamentRecord.participants[0].person.personId;
+
+  competitionEngine.setState([tournamentRecord]);
+  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const { startDate } = competitionEngine.getCompetitionDateRange();
+
+  const request = {
+    date: startDate,
+    startTime: '08:00',
+    endTime: '10:00',
+    requestType: DO_NOT_SCHEDULE,
+  };
+  let result = competitionEngine.addPersonRequests({
+    personId,
+    requests: [request],
+  });
+  expect(result.success).toEqual(true);
+
+  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+
+  result = competitionEngine.scheduleMatchUps({
+    date: startDate,
+    matchUpIds,
+  });
+  expect(result.requestConflicts.length).toBeGreaterThan(0);
+  expect(result.noTimeMatchUpIds.length).toEqual(0);
+  expect(result.scheduledMatchUpIds.length).toEqual(15);
+
+  // individuals will have late recovery times due to defered scheduling / conflict avoidance
+  const lateRecoveryTimes = Object.values(result.individualParticipantProfiles)
+    .map(({ timeAfterRecovery }) => timeAfterRecovery)
+    .filter((time) => time > '11:00');
+  expect(lateRecoveryTimes.length).toEqual(2);
+});

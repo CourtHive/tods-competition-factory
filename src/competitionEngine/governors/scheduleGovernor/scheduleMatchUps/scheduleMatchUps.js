@@ -49,10 +49,10 @@ import {
  * @param {number} averageMatchUpMinutes - how long the expected matchUps are expected to last, in minutes, on average
  * @param {number} recoveryMinutes - time in minutes that should be alloted for participants to recover between matches
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
- * @param {object} individualParticipantProfiles - { [participantId]: { counters }}
+ * @param {boolean} checkPotentialConflicts - check personRequests when person is only potentially in matchUp being scheduled
+ * @param {boolean} preserveScheduling - don't remove existing scheduled matchUps
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
- * @modifies individualParticipantProfiles - increments counters
  */
 export function scheduleMatchUps({
   tournamentRecords,
@@ -68,6 +68,7 @@ export function scheduleMatchUps({
   recoveryMinutes = 0,
 
   matchUpDailyLimits = {},
+  checkPotentialConflicts = true,
   preserveScheduling,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -182,6 +183,7 @@ export function scheduleMatchUps({
     ({ matchUpId }) => !overLimitMatchUpIds.includes(matchUpId)
   );
 
+  const requestConflicts = {};
   const unusedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
@@ -214,16 +216,20 @@ export function scheduleMatchUps({
         matchUpPotentialParticipantIds,
       });
 
-      const { requestConflicts } = checkRequestConflicts({
-        matchUp,
-        scheduleTime,
+      const { conflicts } = checkRequestConflicts({
+        potentials: checkPotentialConflicts,
+        averageMatchUpMinutes,
+        requestConflicts,
         personRequests,
+        scheduleTime,
+        matchUp,
+        date,
       });
 
       // TODO: if the round optimization is applied in scheduleProfileRounds
       // ... then we must checkDailyLimits each time
 
-      if (enoughTime && !requestConflicts?.length) {
+      if (enoughTime && !conflicts?.length) {
         matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
         return true;
       }
@@ -298,6 +304,7 @@ export function scheduleMatchUps({
   const noTimeMatchUpIds = matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
 
   return Object.assign({}, SUCCESS, {
+    requestConflicts: Object.values(requestConflicts),
     noTimeMatchUpIds,
     overLimitMatchUpIds,
     scheduledMatchUpIds,

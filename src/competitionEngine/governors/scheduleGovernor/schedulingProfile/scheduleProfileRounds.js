@@ -19,6 +19,9 @@ export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
   periodLength,
+
+  preserveScheduling = false,
+  checkPotentialConflicts = true,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
@@ -70,6 +73,7 @@ export function scheduleProfileRounds({
   const noTimeMatchUpIds = [];
   const overLimitMatchUpIds = [];
   const scheduledMatchUpIds = [];
+  const requestConflicts = [];
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
@@ -135,6 +139,9 @@ export function scheduleProfileRounds({
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutes,
 
+          checkPotentialConflicts,
+          preserveScheduling,
+
           venueIds: [venueId],
           periodLength,
           matchUpIds,
@@ -148,6 +155,8 @@ export function scheduleProfileRounds({
         scheduledMatchUpIds.push(...roundScheduledMatchUpIds);
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
+        const conflicts = result?.requestConflicts || [];
+        requestConflicts.push({ date, conflicts });
       }
     }
   }
@@ -161,5 +170,6 @@ export function scheduleProfileRounds({
     scheduledDates,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
+    requestConflicts,
   });
 }

@@ -1,4 +1,4 @@
-import { getIndividualParticipantIds } from './getIndividualParticipants';
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 
 export function processNextMatchUps({
   matchUp,

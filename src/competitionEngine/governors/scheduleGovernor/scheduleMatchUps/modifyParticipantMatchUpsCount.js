@@ -1,4 +1,4 @@
-import { getIndividualParticipantIds } from './getIndividualParticipants';
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { intersection } from '../../../../utilities';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';

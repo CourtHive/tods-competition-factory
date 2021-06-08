@@ -1,4 +1,4 @@
-import { getIndividualParticipantIds } from './getIndividualParticipants';
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,

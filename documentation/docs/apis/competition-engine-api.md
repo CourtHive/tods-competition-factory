@@ -336,13 +336,14 @@ competitionEngine.scheduleMatchUps({
   date,
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
-
   venueIds, // optional - defaults to all known; if a single venueId is provided then all matchUps will be scheduled for that venue
-
   matchUpIds, // array of matchUpIds; if no schedulingProfile provided will be auto-sorted by draw size and roundNumbers
-
-  periodLength = 30, // optional - defaults to 30
+  periodLength = 30, // optional - size of scheduling blocks
   averageMatchUpMinutes = 90, // optional - defaults to 90
+  recoveryMinutes = 0, // optional - amount of time participants are given to recover between matchUps
+  matchUpDailyLimits, // optional - policy declaration; SINGLES, DOUBLES and total limits per individual participant
+  checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
+  preserveScheduling, // boolean - defaults to false - do not overwrite and consider existing scheduled matchUp times
 });
 ```
 
@@ -355,6 +356,10 @@ Auto-schedules all rounds which have been specified in a `schedulingProfile` whi
 ```js
 competitionEngine.scheduleProfileRounds({
   scheduleDates, // optional array of dates to schedule
+  periodLength = 30, // optional - size of scheduling blocks
+
+  checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
+  preserveScheduling, // boolean - defaults to false - do not overwrite and consider existing scheduled matchUp times
 });
 ```
 

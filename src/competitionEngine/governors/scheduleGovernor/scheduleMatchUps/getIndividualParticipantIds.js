@@ -1,13 +1,13 @@
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 
-export function getIndividualParticipants(matchUp) {
+export function getIndividualParticipantIds(matchUp) {
   const { sides, matchUpType } = matchUp || {};
   return (sides || [])
     .map((side) => {
       return matchUpType === DOUBLES
-        ? side?.participant?.individualParticipants || []
-        : side?.participant
-        ? [side.participant]
+        ? side?.participant?.individualParticipantIds || []
+        : side?.participantId
+        ? [side.participantId]
         : [];
     })
     .flat();
