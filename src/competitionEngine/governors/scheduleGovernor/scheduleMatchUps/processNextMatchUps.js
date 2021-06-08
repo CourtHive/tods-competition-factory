@@ -19,18 +19,32 @@ export function processNextMatchUps({
     );
   };
 
+  // It is necessary to only update timeAfterRecovery if value is greater...
+  // ...to account for source matchUps having earlier timeAfterRecovery
+  // e.g. roundPosition 1 matchUp timeAfterRecovery is 11:00 but
+  // roundPosition 2 matchUp timeAfterRecover is 9:30
+  // and the last one to be processed shouldn't overwrite later value
+  const updateTimeAfterRecovery = (matchUpId) => {
+    if (
+      !matchUpNotBeforeTimes[matchUpId] ||
+      timeAfterRecovery > matchUpNotBeforeTimes[matchUpId]
+    ) {
+      matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
+    }
+  };
+
   if (matchUp.winnerTo?.matchUpId) {
-    matchUpNotBeforeTimes[matchUp.winnerTo.matchUpId] = timeAfterRecovery;
+    updateTimeAfterRecovery(matchUp.winnerTo.matchUpId);
     addPotentialParticipantIds(matchUp.winnerTo.matchUpId);
   }
   if (matchUp.loserTo?.matchUpId) {
-    matchUpNotBeforeTimes[matchUp.loserTo.matchUpId] = timeAfterRecovery;
+    updateTimeAfterRecovery(matchUp.loserTo.matchUpId);
     addPotentialParticipantIds(matchUp.loserTo.matchUpId);
   }
   if (matchUp.sidesTo?.length) {
     matchUp.sidesTo.forEach(({ matchUpId }) => {
       if (matchUpId) {
-        matchUpNotBeforeTimes[matchUpId] = timeAfterRecovery;
+        updateTimeAfterRecovery(matchUpId);
         addPotentialParticipantIds(matchUpId);
       }
     });

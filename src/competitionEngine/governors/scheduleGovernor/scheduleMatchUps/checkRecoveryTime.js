@@ -7,13 +7,13 @@ import {
 } from '../../../../utilities/dateTime';
 
 export function checkRecoveryTime({
-  matchUp,
-  scheduleTime,
-  recoveryMinutes,
-  averageMatchUpMinutes,
+  matchUpPotentialParticipantIds,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
-  matchUpPotentialParticipantIds,
+  averageMatchUpMinutes,
+  recoveryMinutes,
+  scheduleTime,
+  matchUp,
 }) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
