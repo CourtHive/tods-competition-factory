@@ -2,15 +2,16 @@ import { addTournamentExtension } from '../../../../tournamentEngine/governors/t
 import { findTournamentExtension } from '../../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { removeExtension } from '../../competitionsGovernor/competitionExtentions';
 import { findParticipant } from '../../../../common/deducers/findParticipant';
+import { extractDate, extractTime } from '../../../../utilities/dateTime';
 import { generateTimeCode } from '../../../../utilities';
 
+import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
-  MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
-import { PERSON_REQUESTS } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function getPersonRequests({ tournamentRecords, requestType }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -87,9 +88,17 @@ export function addPersonRequests({ tournamentRecords, personId, requests }) {
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
 
-  mergePersonRequests({ personRequests, personId, requests });
+  const { mergeCount } = mergePersonRequests({
+    personRequests,
+    personId,
+    requests,
+  });
 
-  return savePersonRequests({ tournamentRecords, personRequests });
+  if (mergeCount) {
+    return savePersonRequests({ tournamentRecords, personRequests });
+  } else {
+    return { error: INVALID_VALUES };
+  }
 }
 
 // check whether there is a request for the date with overlapping times
@@ -101,16 +110,35 @@ function mergePersonRequests({ personRequests, personId, requests }) {
     const existingPersonRequests = personRequests[personId];
   */
 
-  const filteredRequests = requests.filter(({ requestType }) => requestType);
+  const filteredRequests = requests
+    .filter(({ requestType }) => requestType)
+    .map((request) => {
+      let { date, requestType, startTime, endTime } = request;
+
+      // validate requestType
+      if (requestType === DO_NOT_SCHEDULE) {
+        date = extractDate(date);
+        startTime = extractTime(startTime);
+        endTime = extractTime(endTime);
+        if (date && startTime && endTime) {
+          return { date, startTime, endTime, requestType };
+        }
+      }
+      return request;
+    })
+    .filter((f) => f);
+
   // Do not add any request that is missing requestType
   for (const request of filteredRequests) {
     request.requestId = generateTimeCode();
     personRequests[personId].push(request);
   }
+
+  return { mergeCount: filteredRequests.length };
 }
 
-// personRequests can be removed by date or requestId
-export function removePersonRequest({
+// personRequests can be removed by date, requestId, or requestType
+export function removePersonRequests({
   tournamentRecords,
   requestType,
   requestId,
@@ -118,7 +146,6 @@ export function removePersonRequest({
   date,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!requestId && !date) return { error: MISSING_VALUE };
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const filterRequests = (personId) => {
@@ -132,15 +159,19 @@ export function removePersonRequest({
     if (!personRequests[personId].length) delete personRequests[personId];
   };
 
-  if (personId && personRequests[personId]) {
-    filterRequests(personId);
-  } else {
-    for (const personId of Object.keys(personRequests)) {
+  const removeAll = !requestType && !requestId && !personId && !date;
+
+  if (!removeAll) {
+    if (personId && personRequests[personId]) {
       filterRequests(personId);
+    } else {
+      for (const personId of Object.keys(personRequests)) {
+        filterRequests(personId);
+      }
     }
   }
 
-  if (!Object.keys(personRequests).length) {
+  if (removeAll || !Object.keys(personRequests).length) {
     return removeExtension({ tournamentRecords, name: PERSON_REQUESTS });
   } else {
     return savePersonRequests({ tournamentRecords, personRequests });
@@ -166,13 +197,17 @@ export function modifyPersonRequests({
   const modifyRequests = (personId) => {
     personRequests[personId] = personRequests[personId]
       .map((request) => {
+        // if requestId not in requestIds then return unmodified
         if (!requestIds.includes(request.requestId)) return request;
-        const newValue = requests.find(
+
+        // find the updatedRequest
+        const modification = requests.find(
           (updatedRequest) => updatedRequest.requestId === request.requestId
         );
         // FEATURE: returning an updatedRequest without a requestType will remove it
-        if (!newValue.requestType) return;
-        return newValue;
+        if (!modification.requestType) return;
+
+        return Object.assign(request, modification);
       })
       .filter((f) => f);
   };

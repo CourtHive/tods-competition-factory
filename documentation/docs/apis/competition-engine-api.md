@@ -13,6 +13,24 @@ competitionEngine.addExtension({ extension });
 
 ---
 
+## addPersonRequests
+
+Validates and adds person requests.
+
+```js
+const requests = [
+  {
+    date, // 'YYYY-MM-DD' date string
+    startTime, // '00:00' time string
+    endTime, // '00:00' time string
+    requestType: 'DO_NOT_SCHEDULE',
+  },
+];
+competitionEngine.addPersonRequests({ personId, requests });
+```
+
+---
+
 ## addSchedulingProfileRound
 
 ```js
@@ -170,6 +188,20 @@ const { DOUBLES, SINGLES, total } = matchUpDailyLimits;
 
 ---
 
+## getPersonRequests
+
+Returns an object with array of requests for each relevant `personId`. Request objects are returned with a `requestId` which can be used to call [modifyPersonRequests](competition-engine-api#modifypersonrequests).
+
+See [addPersonRequests](competition-engine-api#addpersonrequests) for request object structure.
+
+```js
+const { personRequests } = competitionEngine.getPersonRequests({
+  requestType, // optional filter
+});
+```
+
+---
+
 ## getState
 
 Returns a deep copy of the current competitionEngine state.
@@ -272,6 +304,31 @@ competitionEngine.modifyMatchUpFormatTiming({
 });
 ```
 
+---
+
+## modifyPersonRequests
+
+Modifies existing person requests.
+
+Any requests without a `requestId` will be **added**. Any requests without `requestType` will be **removed**.
+
+```js
+competitionEngine.modifyPersonRequests({
+  personId, // optional - scope to single personId; avoid brute-force updates
+  requests: [
+    {
+      requestType,
+      requestId, // if requestId is not present, will attempt to added
+      startTime,
+      endTime,
+      date,
+    },
+  ],
+});
+```
+
+---
+
 ## removeExtension
 
 Removes an extension from all `tournamentRecords` loaded into `competitionEngine`.
@@ -290,6 +347,21 @@ competitionEngine.removeMatchUpCourtAssignment({
   matchUpId,
   tournamentId,
   courtDayDate,
+});
+```
+
+---
+
+## removePersonRequests
+
+Removes person requests matching passed values. If no paramaters are provided, removes **all** person requests.
+
+```js
+result = competitionEngine.removePersonRequests({
+  personId, // optional - scope to personId
+  requestType, // optioanl - scope to requestType
+  requestId, // optional - scope to a single requestId
+  date, // optional - scope to a specific date
 });
 ```
 

@@ -25,7 +25,7 @@ import {
   addPersonRequests,
   getPersonRequests,
   modifyPersonRequests,
-  removePersonRequest,
+  removePersonRequests,
 } from './scheduleMatchUps/personRequests';
 
 const scheduleGovernor = {
@@ -56,10 +56,10 @@ const scheduleGovernor = {
   isValidSchedulingProfile,
   addSchedulingProfileRound,
 
-  addPersonRequests, // document
-  getPersonRequests, // document
-  modifyPersonRequests, // document
-  removePersonRequest, // document
+  addPersonRequests,
+  getPersonRequests,
+  modifyPersonRequests,
+  removePersonRequests,
 };
 
 export default scheduleGovernor;

@@ -37,7 +37,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   let requestId = personRequests[personId][0].requestId;
   expect(requestId).not.toBeUndefined();
 
-  result = competitionEngine.removePersonRequest({ personId, requestId });
+  result = competitionEngine.removePersonRequests({ personId, requestId });
   expect(result.success).toEqual(true);
   expect(result.removed).toEqual(1);
 
@@ -53,7 +53,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
   ({ personRequests } = competitionEngine.getPersonRequests());
   let requestObject = personRequests[personId][0];
   requestId = requestObject.requestId;
-  result = competitionEngine.removePersonRequest({ requestId });
+  result = competitionEngine.removePersonRequests({ requestId });
   expect(result.success).toEqual(true);
   expect(result.removed).toEqual(1);
 

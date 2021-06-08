@@ -7,6 +7,19 @@ import {
 } from '../../../../utilities/dateTime';
 import { getIndividualParticipants } from './getIndividualParticipants';
 
+/**
+ *
+ * @param {string} date - 'YYYY-MM-DD' date string
+ * @param {object} matchUp - matchUp being checked
+ * @param {string} scheduleTime - time being checked
+ * @param {number} averageMatchUpMinutes - number of minutes matchUp is expected to last
+ *
+ * @param {object} requestConflicts - trackis per-matchUp conflicts { [requestId]: { scheduleTimes, matchUpIds }}
+ * @param {boolean} potentials - whether to consdier potential participants when determining conflicts
+ * @param {object} personRequests - contains personRequests { [personId]: [request] }
+ *
+ * @returns
+ */
 export function checkRequestConflicts({
   averageMatchUpMinutes,
   requestConflicts = {},
