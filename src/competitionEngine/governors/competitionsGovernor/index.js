@@ -10,6 +10,7 @@ import {
   unlinkTournament,
   unlinkTournaments,
 } from './tournamentLinks';
+import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 
 const competitionGovernor = {
   addExtension,
@@ -20,6 +21,9 @@ const competitionGovernor = {
   unlinkTournament,
   unlinkTournaments,
   getLinkedTournamentIds,
+
+  setMatchUpStatus,
+  bulkMatchUpStatusUpdate,
 
   tournamentMethods,
 };
