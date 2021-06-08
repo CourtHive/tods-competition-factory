@@ -22,8 +22,8 @@ const competitionGovernor = {
   unlinkTournaments,
   getLinkedTournamentIds,
 
-  setMatchUpStatus,
-  bulkMatchUpStatusUpdate,
+  setMatchUpStatus, // document
+  bulkMatchUpStatusUpdate, // document
 
   tournamentMethods,
 };
