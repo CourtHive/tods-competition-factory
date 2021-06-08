@@ -415,7 +415,6 @@ competitionEngine.scheduleMatchUps({
   recoveryMinutes = 0, // optional - amount of time participants are given to recover between matchUps
   matchUpDailyLimits, // optional - policy declaration; SINGLES, DOUBLES and total limits per individual participant
   checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
-  preserveScheduling, // boolean - defaults to false - do not overwrite and consider existing scheduled matchUp times
 });
 ```
 
@@ -431,7 +430,6 @@ competitionEngine.scheduleProfileRounds({
   periodLength = 30, // optional - size of scheduling blocks
 
   checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
-  preserveScheduling, // boolean - defaults to false - do not overwrite and consider existing scheduled matchUp times
 });
 ```
 

@@ -50,7 +50,6 @@ import {
  * @param {number} recoveryMinutes - time in minutes that should be alloted for participants to recover between matches
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
  * @param {boolean} checkPotentialConflicts - check personRequests when person is only potentially in matchUp being scheduled
- * @param {boolean} preserveScheduling - don't remove existing scheduled matchUps
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
  */
@@ -69,7 +68,6 @@ export function scheduleMatchUps({
 
   matchUpDailyLimits = {},
   checkPotentialConflicts = true,
-  preserveScheduling,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -131,11 +129,11 @@ export function scheduleMatchUps({
       });
     }
   });
-
   // matchUps are assumed to be in the desired order for scheduling
   let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
-    const alreadyScheduled =
-      preserveScheduling && dateScheduledMatchUpIds.includes(matchUp.matchUpId);
+    const alreadyScheduled = dateScheduledMatchUpIds.includes(
+      matchUp.matchUpId
+    );
 
     const doNotSchedule = [
       BYE,

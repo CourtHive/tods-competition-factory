@@ -4,23 +4,22 @@ import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchU
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
-import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
   periodLength,
 
-  preserveScheduling = false,
   checkPotentialConflicts = true,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -140,7 +139,6 @@ export function scheduleProfileRounds({
           recoveryMinutes,
 
           checkPotentialConflicts,
-          preserveScheduling,
 
           venueIds: [venueId],
           periodLength,
