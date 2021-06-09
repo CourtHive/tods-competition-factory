@@ -37,3 +37,44 @@ it('can return event matchUps with potential participants', () => {
     roundMatchUps[1][1].sides.map(({ participant }) => participant)
   ).toEqual(roundMatchUps[2][0].potentialParticipants[0]);
 });
+
+it('removes potential participants when side participant is known', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  const { drawIds, tournamentRecord } = generateTournamentRecord({
+    drawProfiles,
+    inContext: true,
+    goesTo: true,
+  });
+
+  const drawId = drawIds[0];
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allDrawMatchUps({
+    drawId,
+    nextMatchUps: true,
+  });
+
+  const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
+  expect(
+    roundMatchUps[2][0].sides.filter(({ sideNumber }) => sideNumber).length
+  ).toEqual(1);
+  expect(roundMatchUps[2][0].potentialParticipants.length).toEqual(1);
+
+  expect(
+    roundMatchUps[2][1].sides.filter(({ sideNumber }) => sideNumber).length
+  ).toEqual(0);
+  expect(roundMatchUps[2][1].potentialParticipants.length).toEqual(2);
+});

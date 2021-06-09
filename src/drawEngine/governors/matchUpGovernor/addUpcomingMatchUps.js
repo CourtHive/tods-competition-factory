@@ -82,12 +82,14 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
           const loserParticipantIds = getParticipantIds(loserMatchUp);
-          const winnerPotentials = participants.filter(
-            ({ participantId }) => !winnerParticipantIds.includes(participantId)
+          const winnerDetermined = participants.find(({ participantId }) =>
+            winnerParticipantIds.includes(participantId)
           );
-          const loserPotentials = participants.filter(
-            ({ participantId }) => !loserParticipantIds.includes(participantId)
+          const winnerPotentials = !winnerDetermined && participants;
+          const loserDetermined = participants.find(({ participantId }) =>
+            loserParticipantIds.includes(participantId)
           );
+          const loserPotentials = !loserDetermined && participants;
           if (winnerPotentials && winnerMatchUp) {
             if (!winnerMatchUp.potentialParticipants)
               winnerMatchUp.potentialParticipants = [];
