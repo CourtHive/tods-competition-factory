@@ -1,4 +1,5 @@
 import { assignMatchUpVenue as assignVenue } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { assignMatchUpCourt as assignCourt } from '../../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import {
   addMatchUpScheduledDate as addScheduledDate,
   addMatchUpScheduledTime as addScheduledTime,
@@ -42,12 +43,12 @@ export function addMatchUpScheduledTime(props) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = props;
+  const { disableNotice, scheduledTime, matchUpId } = props;
   return addScheduledTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
-    scheduledDate,
+    scheduledTime,
     matchUpId,
   });
 }
@@ -56,12 +57,12 @@ export function addMatchUpStartTime(props) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = props;
+  const { disableNotice, startTime, matchUpId } = props;
   return addStartTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
-    scheduledDate,
+    startTime,
     matchUpId,
   });
 }
@@ -70,12 +71,12 @@ export function addMatchUpEndTime(props) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = props;
+  const { disableNotice, endTime, matchUpId } = props;
   return addEndTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
-    scheduledDate,
+    endTime,
     matchUpId,
   });
 }
@@ -84,12 +85,12 @@ export function addMatchUpStopTime(props) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = props;
+  const { disableNotice, stopTime, matchUpId } = props;
   return addStopTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
-    scheduledDate,
+    stopTime,
     matchUpId,
   });
 }
@@ -98,12 +99,12 @@ export function addMatchUpResumeTime(props) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  const { disableNotice, scheduledDate, matchUpId } = props;
+  const { disableNotice, resumeTime, matchUpId } = props;
   return addResumeTime({
     tournamentRecord,
     drawDefinition,
     disableNotice,
-    scheduledDate,
+    resumeTime,
     matchUpId,
   });
 }
@@ -135,6 +136,22 @@ export function assignMatchUpVenue(props) {
     disableNotice,
     matchUpId,
     venueId,
+  });
+}
+
+export function assignMatchUpCourt(props) {
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
+  if (error) return { error };
+
+  const { matchUpId, courtId, courtDayDate, disableNotice } = props;
+
+  return assignCourt({
+    tournamentRecord,
+    disableNotice,
+    drawDefinition,
+    courtDayDate,
+    matchUpId,
+    courtId,
   });
 }
 

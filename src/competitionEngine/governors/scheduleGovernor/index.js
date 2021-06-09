@@ -36,6 +36,7 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
   assignMatchUpVenue,
+  assignMatchUpCourt,
 } from './scheduleMatchUps/addScheduleItems';
 
 const scheduleGovernor = {
@@ -60,13 +61,14 @@ const scheduleGovernor = {
   getMatchUpDailyLimitsUpdate, // document
 
   assignMatchUpVenue,
+  assignMatchUpCourt,
   addMatchUpScheduleItems, // test
-  addMatchUpScheduledDate, // test
-  addMatchUpScheduledTime, // test
-  addMatchUpStartTime, // test
-  addMatchUpStopTime, // test
-  addMatchUpResumeTime, // test
-  addMatchUpEndTime, // test
+  addMatchUpScheduledDate,
+  addMatchUpScheduledTime,
+  addMatchUpStartTime,
+  addMatchUpStopTime,
+  addMatchUpResumeTime,
+  addMatchUpEndTime,
   addMatchUpOfficial, // test
 
   getSchedulingProfile,

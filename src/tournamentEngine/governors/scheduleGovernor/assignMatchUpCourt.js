@@ -1,4 +1,5 @@
 import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGovernor/timeItems';
+import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { findCourt } from '../../getters/courtGetter';
 
 import {
@@ -6,7 +7,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
-import { assignMatchUpVenue } from './assignMatchUpVenue';
 
 export function assignMatchUpCourt({
   tournamentRecord,

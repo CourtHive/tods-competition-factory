@@ -229,6 +229,20 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ---
 
+## assignMatchUpCourt
+
+```js
+competitionEngine.assignMatchUpCourt({
+  tournamentId,
+  drawId, // drawId where matchUp is found
+  matchUpId,
+  courtId,
+  courtDayDate, // ISO Date String or 'YYYY-MM-DD'
+});
+```
+
+---
+
 ## assignMatchUpVenue
 
 ```js

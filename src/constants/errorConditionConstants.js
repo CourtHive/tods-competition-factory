@@ -153,7 +153,7 @@ export const MISSING_VENUE_ID = 'Missing venueId';
 
 export const INVALID_END_TIME = 'Invalid endTime';
 export const EXISTING_END_TIME = 'Existing endTime';
-export const INVALID_STOP_TIME = 'Existing stopTime';
+export const INVALID_STOP_TIME = 'Invalid stopTime';
 export const INVALID_START_TIME = 'Invalid startTime';
 export const INVALID_RESUME_TIME = 'Invalid resumeTime';
 

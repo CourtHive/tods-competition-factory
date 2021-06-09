@@ -135,7 +135,7 @@ export function addMatchUpOfficial({
     },
   });
 
-  const { participant } = findParticipant({
+  const participant = findParticipant({
     tournamentParticipants,
     participantId,
   });
