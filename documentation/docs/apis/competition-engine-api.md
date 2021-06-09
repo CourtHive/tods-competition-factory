@@ -3,6 +3,22 @@ name: API
 title: Competition Engine API
 ---
 
+## addDrawDefinition
+
+Adds a drawDefinition to an event in a tournamentRecord.
+
+```js
+if (!error) {
+  const result = competitionEngine.addDrawDefinition({
+    tournamentId,
+    eventId,
+    drawDefinition,
+  });
+}
+```
+
+---
+
 ## addExtension
 
 Adds an extension to all `tournamentRecords` loaded into `competitionEngine`.

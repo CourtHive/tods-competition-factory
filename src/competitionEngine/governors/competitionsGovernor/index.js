@@ -2,8 +2,9 @@ import { removeEventMatchUpFormatTiming } from '../scheduleGovernor/removeEventM
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { modifyVenue } from './venueManagement/modifyVenue';
-import { addVenue } from './venueManagement/addVenue';
+import { addDrawDefinition } from './addDrawDefinition';
 import { tournamentMethods } from './tournamentMethods';
+import { addVenue } from './venueManagement/addVenue';
 import {
   addExtension,
   findExtension,
@@ -31,6 +32,8 @@ const competitionGovernor = {
   unlinkTournament,
   unlinkTournaments,
   getLinkedTournamentIds,
+
+  addDrawDefinition, // test
 
   setMatchUpStatus, // test
   bulkMatchUpStatusUpdate, // test

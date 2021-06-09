@@ -61,7 +61,8 @@ tournamentEngine.addCourts({
 Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](#generatedrawdefinition).
 
 ```js
-const { drawDefinition, error } = generateDrawDefinition(drawDefinitionValues);
+const { drawDefinition, error } =
+  tournamentEngine.generateDrawDefinition(drawDefinitionValues);
 if (!error) {
   const result = tournamentEngine.addDrawDefinition({
     eventId,
@@ -73,6 +74,8 @@ if (!error) {
 ---
 
 ## addDrawDefinitionExtension
+
+Add an extension to a drawDefinition.
 
 ```js
 tournamentEngine.addDrawDefinitionExtension({
