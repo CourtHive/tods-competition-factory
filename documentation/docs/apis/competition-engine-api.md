@@ -213,6 +213,19 @@ const { matchUps } = competitionEngine.allCompetitionMatchUps({
 
 ---
 
+## assignMatchUpVenue
+
+```js
+competitionEngine.assignMatchUVenue({
+  tournamentId,
+  matchUpId,
+  drawId, // drawId where matchUp is found
+  venueId,
+});
+```
+
+---
+
 ## attachPolicy
 
 Attaches a `policyDefinition` to all tournamentRecords currently loaded into `competitionEngine`.
