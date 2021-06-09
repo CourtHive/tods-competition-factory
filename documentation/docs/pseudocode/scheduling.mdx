@@ -97,4 +97,5 @@ After building up a mapping of matchUpIds to scheduleTimes, the assignments are 
 10. Filter out `matchUps` which include participants who have reached daily limits
 11. Loop through available `scheduleTimes` and build up mapping of `matchUpIds` to `scheduleTimes`
     - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
+    - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NO_SCHEDULE }` conflicts
 12. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
