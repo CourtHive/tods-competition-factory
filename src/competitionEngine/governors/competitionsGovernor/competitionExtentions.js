@@ -1,9 +1,9 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
+import { validExtension } from '../../../global/validation/validExtension';
 import {
   addTournamentExtension,
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-import { validExtension } from '../../../global/validation/validExtension';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

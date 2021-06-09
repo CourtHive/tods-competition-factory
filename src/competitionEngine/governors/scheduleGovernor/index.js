@@ -14,7 +14,6 @@ import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
-// import { addTimeItem } from './timeItems';
 import {
   addSchedulingProfileRound,
   getSchedulingProfile,
@@ -27,10 +26,17 @@ import {
   modifyPersonRequests,
   removePersonRequests,
 } from './scheduleMatchUps/personRequests';
+import {
+  addMatchUpScheduledDate,
+  addMatchUpScheduledTime,
+  addMatchUpStartTime,
+  addMatchUpEndTime,
+  addMatchUpStopTime,
+  addMatchUpResumeTime,
+  addMatchUpOfficial,
+} from './scheduleMatchUps/addScheduleItems';
 
 const scheduleGovernor = {
-  // addTimeItem,
-
   scheduleMatchUps,
   scheduleProfileRounds,
 
@@ -50,6 +56,14 @@ const scheduleGovernor = {
   getMatchUpDailyLimits,
   setMatchUpDailyLimits,
   getMatchUpDailyLimitsUpdate, // document
+
+  addMatchUpScheduledDate, // document
+  addMatchUpScheduledTime, // document
+  addMatchUpStartTime, // document
+  addMatchUpStopTime, // document
+  addMatchUpResumeTime, // document
+  addMatchUpEndTime, // document
+  addMatchUpOfficial, // document
 
   getSchedulingProfile,
   setSchedulingProfile,

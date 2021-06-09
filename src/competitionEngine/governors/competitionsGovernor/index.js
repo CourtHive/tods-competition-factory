@@ -1,8 +1,8 @@
 import { removeEventMatchUpFormatTiming } from '../scheduleGovernor/removeEventMatchUpFormatTiming';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
-import { modifyVenue } from '../scheduleGovernor/venueManagement/modifyVenue';
-import { addVenue } from '../scheduleGovernor/venueManagement/addVenue';
+import { modifyVenue } from './venueManagement/modifyVenue';
+import { addVenue } from './venueManagement/addVenue';
 import { tournamentMethods } from './tournamentMethods';
 import {
   addExtension,
@@ -15,6 +15,12 @@ import {
   unlinkTournament,
   unlinkTournaments,
 } from './tournamentLinks';
+import {
+  addPenalty,
+  removePenalty,
+  modifyPenalty,
+  getCompetitionPenalties,
+} from './participantPenalties';
 
 const competitionGovernor = {
   addExtension,
@@ -34,6 +40,11 @@ const competitionGovernor = {
 
   addVenue, // document
   modifyVenue, // document
+
+  addPenalty, // document
+  removePenalty, // document
+  modifyPenalty, // document
+  getCompetitionPenalties, // document
 
   tournamentMethods,
 };
