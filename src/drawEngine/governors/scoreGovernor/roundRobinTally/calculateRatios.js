@@ -25,20 +25,13 @@ export function calculateRatios({
     if (matchUpsRatio === Infinity || isNaN(matchUpsRatio))
       matchUpsRatio = matchesNumerator;
 
-    const gamesNumerator = participantResults[participantId].gamesWon;
-    const gamesDenominator = participantResults[participantId].gamesLost;
-    const gamesTotal =
-      perPlayer * (bracketSetsToWin || 0) * (bracketGamesForSet || 0) ||
-      gamesNumerator;
-    let gamesRatio =
-      Math.round((gamesNumerator / gamesDenominator) * 1000) / 1000;
-    if (gamesRatio === Infinity || isNaN(gamesRatio)) {
-      gamesRatio = gamesTotal;
-    }
-    const gamesDifference =
-      gamesDenominator >= gamesNumerator
-        ? 0
-        : gamesNumerator - gamesDenominator;
+    const gamesWon = participantResults[participantId].gamesWon || 0;
+    const gamesLost = participantResults[participantId].gamesLost || 0;
+    const minimumExpectedGames =
+      (perPlayer || 0) * (bracketSetsToWin || 0) * (bracketGamesForSet || 0);
+    const gamesTotal = Math.max(minimumExpectedGames, gamesWon + gamesLost);
+    let gamesRatio = Math.round((gamesWon / gamesTotal) * 1000) / 1000;
+    if (gamesRatio === Infinity || isNaN(gamesRatio)) gamesRatio = 0;
 
     let pointsRatio =
       Math.round(
@@ -51,7 +44,6 @@ export function calculateRatios({
     participantResults[participantId].setsRatio = setsRatio;
     participantResults[participantId].matchUpsRatio = matchUpsRatio;
     participantResults[participantId].gamesRatio = gamesRatio;
-    participantResults[participantId].gamesDifference = gamesDifference;
     participantResults[participantId].pointsRatio = pointsRatio;
     participantResults[
       participantId
