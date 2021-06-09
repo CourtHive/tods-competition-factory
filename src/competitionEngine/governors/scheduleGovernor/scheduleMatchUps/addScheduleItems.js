@@ -18,18 +18,19 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function addMatchUpScheduleItems(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
-  return addScheduleItems({ ...props, drawDefinition });
+  return addScheduleItems({ ...props, tournamentRecord, drawDefinition });
 }
 
 export function addMatchUpScheduledDate(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addScheduledDate({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -38,11 +39,12 @@ export function addMatchUpScheduledDate(props) {
 }
 
 export function addMatchUpScheduledTime(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addScheduledTime({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -51,11 +53,12 @@ export function addMatchUpScheduledTime(props) {
 }
 
 export function addMatchUpStartTime(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addStartTime({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -64,11 +67,12 @@ export function addMatchUpStartTime(props) {
 }
 
 export function addMatchUpEndTime(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addEndTime({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -77,11 +81,12 @@ export function addMatchUpEndTime(props) {
 }
 
 export function addMatchUpStopTime(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addStopTime({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -90,11 +95,12 @@ export function addMatchUpStopTime(props) {
 }
 
 export function addMatchUpResumeTime(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, scheduledDate, matchUpId } = props;
   return addResumeTime({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     scheduledDate,
@@ -103,11 +109,12 @@ export function addMatchUpResumeTime(props) {
 }
 
 export function addMatchUpOfficial(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { disableNotice, participantId, officialType, matchUpId } = props;
   return addOfficial({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     participantId,
@@ -117,11 +124,13 @@ export function addMatchUpOfficial(props) {
 }
 
 export function assignMatchUpVenue(props) {
-  const { drawDefinition, error } = getDrawDefinition(props);
+  const { tournamentRecord, drawDefinition, error } = getDrawDefinition(props);
   if (error) return { error };
 
   const { matchUpId, venueId, disableNotice } = props;
+
   return assignVenue({
+    tournamentRecord,
     drawDefinition,
     disableNotice,
     matchUpId,
@@ -136,5 +145,6 @@ function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  return findEvent({ tournamentRecord, drawId });
+  const { drawDefinition, error } = findEvent({ tournamentRecord, drawId });
+  return { drawDefinition, error, tournamentRecord };
 }
