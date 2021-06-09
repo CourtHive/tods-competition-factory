@@ -13,6 +13,156 @@ competitionEngine.addExtension({ extension });
 
 ---
 
+## addMatchUpEndTime
+
+```js
+const endTime = '2020-01-01T09:05:00Z';
+competitionEngine.addMatchUpEndTime({
+  drawId,
+  matchUpId,
+  tournamentId,
+  endTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpOfficial
+
+```js
+competitionEngine.addMatchUpOfficial({
+  drawId,
+  matchUpId,
+  tournamentId,
+  participantId,
+  officialType,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpResumeTime
+
+```js
+const resumeTime = '2020-01-01T09:00:00Z';
+competitionEngine.addMatchUpResumeTime({
+  drawId,
+  matchUpId,
+  resumeTime,
+  tournamentId,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpScheduledDate
+
+```js
+const scheduledDate = '2020-01-01';
+competitionEngine.addMatchUpScheduledDate({
+  drawId,
+  matchUpId,
+  tournamentId,
+  scheduledDate,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpScheduledTime
+
+```js
+const scheduledTime = '08:00';
+competitionEngine.addMatchUpScheduledTime({
+  drawId,
+  matchUpId,
+  tournamentId,
+  scheduledTime,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpScheduleItems
+
+Convenience function to add several schedule items at once.
+
+```js
+competitionEngine.addMatchUpScheduleItems({
+  drawId,
+  matchUpId,
+  tournamentId,
+  schedule: {
+    courtId, // requires scheduledDate
+    venueId,
+    scheduledTime,
+    scheduledDate,
+    startTime,
+    endTime,
+  },
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpStartTime
+
+```js
+const startTime = '2020-01-01T08:05:00Z';
+competitionEngine.addMatchUpStartTime({
+  drawId,
+  matchUpId,
+  startTime,
+  tournamentId,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addMatchUpStopTime
+
+```js
+const stopTime = '2020-01-01T08:15:00Z';
+competitionEngine.addMatchUpStopTime({
+  drawId,
+  matchUpId,
+  stopTime,
+  tournamentId,
+  disableNotice, // when disabled subscribers will not be notified
+});
+```
+
+---
+
+## addPenalty
+
+Add a penaltyItem to one or more participants.
+
+```js
+const createdAt = new Date().toISOString();
+const penaltyData = {
+  tournamentId, // required
+  refereeParticipantId, // optional
+  participantIds: [participantId],
+  penaltyType: BALL_ABUSE,
+  penaltyCode: 'Organization specific code', // optional
+  matchUpId,
+  issuedAt, // optional ISO timeStamp for time issued to participant
+  createdAt,
+  notes: 'Hit ball into sea',
+};
+let result = competitionEngine.addPenalty(penaltyData);
+```
+
+---
+
 ## addPersonRequests
 
 Validates and adds person requests.
@@ -43,6 +193,16 @@ competitionEngine.addSchedulingProfileRound({
 
 ---
 
+## addVenue
+
+Adds **venueId** if not provided.
+
+```js
+competitionEngine.addVenue({ venue: { venueName } });
+```
+
+---
+
 ## allCompetitionMatchUps
 
 ```js
@@ -62,6 +222,40 @@ competitionEngine.attachPolicy({ policyDefinition });
 ```
 
 ---
+
+## bulkMatchUpStatusUpdate
+
+Provides the ability to update the outcomes of multiple matchUps at once.
+
+```js
+const outcomes = [
+  {
+    tournamentId,
+    eventId,
+    drawId,
+    matchUpId,
+    matchUpFormat,
+    matchUpStatus,
+    winningSide,
+    score,
+  },
+];
+competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
+```
+
+---
+
+## bulkScheduleMatchUps
+
+```js
+const schedule = {
+  scheduledTime: '08:00',
+  scheduledDate: '2021-01-01T00:00', // best practice to provide ISO date string
+  venueId,
+};
+const matchUpContextIds = [{ tournamentId, matchUpId }];
+competitionEngine.bulkScheduleMatchUps({ matchUpContextIds, schedule });
+```
 
 ## calculateScheduleTimes
 
@@ -144,6 +338,16 @@ const { extension } = competitionEngine.findExtension({ name });
 
 ```js
 const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
+```
+
+---
+
+## getCompetitionPenalties
+
+Returns an array of all penalties issued for all tournaments loaded into competitionEngine.
+
+```js
+const { penalties } = competitionEngine.getCompetitionPenalties();
 ```
 
 ---
@@ -329,6 +533,49 @@ competitionEngine.modifyPersonRequests({
 
 ---
 
+## modifyPenalty
+
+```js
+const notes = 'Hit ball into spectator';
+const modifications = { notes };
+competitionEngine.modifyPenalty({ penaltyId, tournamentId, modifications });
+```
+
+---
+
+## modifyVenue
+
+```js
+const modifications = {
+  venueName,
+  venueAbbreviation,
+  courts: [
+    {
+      courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+      courtName: 'Custom Court 1',
+      dateAvailability: [
+        {
+          date: '2020-01-01',
+          startTime: '16:30',
+          endTime: '17:30',
+        },
+      ],
+    },
+  ],
+};
+competitionEngine.modifyVenue({ venueId, modifications });
+```
+
+---
+
+## removeEventMatchUpFormatTiming
+
+```js
+competitionEngine.removeEventMatchUpFormatTiming({ eventId });
+```
+
+---
+
 ## removeExtension
 
 Removes an extension from all `tournamentRecords` loaded into `competitionEngine`.
@@ -363,6 +610,16 @@ result = competitionEngine.removePersonRequests({
   requestId, // optional - scope to a single requestId
   date, // optional - scope to a specific date
 });
+```
+
+---
+
+## removePenalty
+
+Removes a penalty from all relevant tournament participants.
+
+```js
+competitionEngine.removePenalty({ penaltyId, tournamentId });
 ```
 
 ---
@@ -446,6 +703,38 @@ competitionEngine.setMatchUpDailyLimits({
 
 ---
 
+## setMatchUpStatus
+
+Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
+
+```js
+const outcome = {
+  score,
+  winningSide,
+  matchUpStatus,
+};
+
+competitionEngine.setMatchUpStatus({
+  drawId,
+  matchUpId,
+  tournamentId,
+  matchUpTieId, // optional - if part of a TIE matchUp
+  outcome,
+  schedule: {
+    // optional - set schedule items
+    courtId, // requires scheduledDate
+    venueId,
+    scheduledDate,
+    scheduledTime,
+    startTime,
+    endTime,
+  },
+  notes, // optional - add note (string) to matchUp object
+});
+```
+
+---
+
 ## setState
 
 Loads tournament records into competitionEngine; supports both an array of tournamentRecords and an object with tournamentId keys.
@@ -484,7 +773,7 @@ Please refer to the [Subscriptions](../concepts/subscriptions) in General Concep
 ## toggleParticipantCheckInState
 
 ```js
-tournamentEngine.toggleParticipantCheckInState({
+competitionEngine.toggleParticipantCheckInState({
   drawId,
   matchUpId,
   tournamentId,

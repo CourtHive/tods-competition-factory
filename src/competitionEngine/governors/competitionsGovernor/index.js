@@ -32,19 +32,19 @@ const competitionGovernor = {
   unlinkTournaments,
   getLinkedTournamentIds,
 
-  setMatchUpStatus, // document
-  bulkMatchUpStatusUpdate, // document
+  setMatchUpStatus, // test
+  bulkMatchUpStatusUpdate, // test
 
-  bulkScheduleMatchUps, // document
-  removeEventMatchUpFormatTiming, // document
+  bulkScheduleMatchUps, // test
+  removeEventMatchUpFormatTiming, // test
 
-  addVenue, // document
-  modifyVenue, // document
+  addVenue, // test
+  modifyVenue, // test
 
-  addPenalty, // document
-  removePenalty, // document
-  modifyPenalty, // document
-  getCompetitionPenalties, // document
+  addPenalty, // test
+  removePenalty, // test
+  modifyPenalty, // test
+  getCompetitionPenalties, // test
 
   tournamentMethods,
 };

@@ -1699,6 +1699,18 @@ const result = tournamentEngine.modifyCourtAvailability({
 
 ---
 
+## modifyDrawName
+
+```js
+tournamentEngine.modifyDrawName({
+  eventId,
+  drawId,
+  drawName,
+});
+```
+
+---
+
 ## modifyEventMatchUpFormatTiming
 
 ```js
@@ -1730,18 +1742,6 @@ tournamentEngine.modifyMatchUpFormatTiming({
   recoveryTimes: [
     { categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } },
   ],
-});
-```
-
----
-
-## modifyDrawName
-
-```js
-tournamentEngine.modifyDrawName({
-  eventId,
-  drawId,
-  drawName,
 });
 ```
 
@@ -1851,6 +1851,31 @@ tournamentEngine.modifySeedAssignment({
   participantId,
   seedValue, // display representation such as '5-8'
 });
+```
+
+---
+
+## modifyVenue
+
+```js
+const modifications = {
+  venueName,
+  venueAbbreviation,
+  courts: [
+    {
+      courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+      courtName: 'Custom Court 1',
+      dateAvailability: [
+        {
+          date: '2020-01-01',
+          startTime: '16:30',
+          endTime: '17:30',
+        },
+      ],
+    },
+  ],
+};
+tournamentEngine.modifyVenue({ venueId, modifications });
 ```
 
 ---

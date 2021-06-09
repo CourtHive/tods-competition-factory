@@ -34,6 +34,7 @@ import {
   addMatchUpStopTime,
   addMatchUpResumeTime,
   addMatchUpOfficial,
+  addMatchUpScheduleItems,
 } from './scheduleMatchUps/addScheduleItems';
 
 const scheduleGovernor = {
@@ -57,13 +58,14 @@ const scheduleGovernor = {
   setMatchUpDailyLimits,
   getMatchUpDailyLimitsUpdate, // document
 
-  addMatchUpScheduledDate, // document
-  addMatchUpScheduledTime, // document
-  addMatchUpStartTime, // document
-  addMatchUpStopTime, // document
-  addMatchUpResumeTime, // document
-  addMatchUpEndTime, // document
-  addMatchUpOfficial, // document
+  addMatchUpScheduleItems, // test
+  addMatchUpScheduledDate, // test
+  addMatchUpScheduledTime, // test
+  addMatchUpStartTime, // test
+  addMatchUpStopTime, // test
+  addMatchUpResumeTime, // test
+  addMatchUpEndTime, // test
+  addMatchUpOfficial, // test
 
   getSchedulingProfile,
   setSchedulingProfile,

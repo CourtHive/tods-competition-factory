@@ -7,6 +7,7 @@ import {
   addMatchUpResumeTime as addResumeTime,
   addMatchUpStopTime as addStopTime,
   addMatchUpOfficial as addOfficial,
+  addMatchUpScheduleItems as addScheduleItems,
 } from '../../../../tournamentEngine/governors/scheduleGovernor/scheduleItems';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 
@@ -15,6 +16,13 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+
+export function addMatchUpScheduleItems(props) {
+  const { drawDefinition, error } = getDrawDefinition(props);
+  if (error) return { error };
+
+  return addScheduleItems({ ...props, drawDefinition });
+}
 
 export function addMatchUpScheduledDate(props) {
   const { drawDefinition, error } = getDrawDefinition(props);

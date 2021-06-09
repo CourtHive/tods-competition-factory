@@ -16,12 +16,14 @@ export function addPenalty(props) {
   penaltyAdd({ tournamentRecord, ...props });
 }
 export function modifyPenalty(props) {
+  // TODO: this could be refactored to attempt to modify across all tournaments
   const { tournamentRecord, error } = getTournamentRecord(props);
   if (error) return { error };
   penaltyModify({ tournamentRecord, ...props });
 }
 
 export function removePenalty(props) {
+  // TODO: this could be refactored to attempt to remove from all tournaments
   const { tournamentRecord, error } = getTournamentRecord(props);
   if (error) return { error };
   penaltyRemove({ tournamentRecord, ...props });
