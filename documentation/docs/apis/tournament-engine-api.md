@@ -1249,11 +1249,12 @@ Method is used internally in advanced scheduling to determine averageMatchUp tim
 Requires an array of `matchUpFormats` either be defined in scoring policy that is attached to the tournamentRecord or an event, or passed in as parameter. `matchUpFormats` can be passed either as an array of strings, or an array of `[{ matchUpFormat }]`.
 
 ```js
-const { eventMatchUpFormatTiming } = getEventMatchUpFormatTiming({
-  matchUpFormats, // optional - can be retrieved from policy
-  categoryType, // optional - categoryType is not part of TODS or event attributes, but can be defined in a policy
-  eventId,
-});
+const { eventMatchUpFormatTiming } =
+  tournamentEngine.getEventMatchUpFormatTiming({
+    matchUpFormats, // optional - can be retrieved from policy
+    categoryType, // optional - categoryType is not part of TODS or event attributes, but can be defined in a policy
+    eventId,
+  });
 ```
 
 ---

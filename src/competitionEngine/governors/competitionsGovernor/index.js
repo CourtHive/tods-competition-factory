@@ -1,4 +1,3 @@
-import { removeEventMatchUpFormatTiming } from '../scheduleGovernor/removeEventMatchUpFormatTiming';
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { modifyVenue } from './venueManagement/modifyVenue';
@@ -40,7 +39,6 @@ const competitionGovernor = {
   bulkMatchUpStatusUpdate,
 
   bulkScheduleMatchUps,
-  removeEventMatchUpFormatTiming, // test
 
   addVenue,
   modifyVenue,

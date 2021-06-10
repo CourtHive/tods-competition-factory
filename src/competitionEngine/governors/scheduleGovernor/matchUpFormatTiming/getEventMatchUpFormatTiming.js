@@ -32,20 +32,24 @@ export function getEventMatchUpFormatTiming({
   );
 
   let timing;
+  let timingError;
   tournamentIds.find((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { event } = findEvent({ tournamentRecord, eventId });
     if (!event) return false;
 
-    const { eventMatchUpFormatTiming } = getTiming({
+    const { eventMatchUpFormatTiming, error } = getTiming({
       tournamentRecord,
       matchUpFormats,
       categoryType,
       event,
     });
+    if (error) timingError = error;
     timing = eventMatchUpFormatTiming;
     return true;
   });
 
-  return { eventMatchUpFormatTiming: timing };
+  return timingError
+    ? { error: timingError }
+    : { eventMatchUpFormatTiming: timing };
 }

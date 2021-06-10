@@ -418,6 +418,23 @@ const { venues, venueIds } = competitionEngine.getCompetitionVenues();
 
 ---
 
+## getEventMatchUpFormatTiming
+
+Method is used internally in advanced scheduling to determine averageMatchUp times for matchUps within an event.
+
+Requires an array of `matchUpFormats` either be defined in scoring policy that is attached to the tournamentRecord or an event, or passed in as parameter. `matchUpFormats` can be passed either as an array of strings, or an array of `[{ matchUpFormat }]`.
+
+```js
+const { eventMatchUpFormatTiming } =
+  competitionEngine.getEventMatchUpFormatTiming({
+    matchUpFormats, // optional - can be retrieved from policy
+    categoryType, // optional - categoryType is not part of TODS or event attributes, but can be defined in a policy
+    eventId,
+  });
+```
+
+---
+
 ## getLinkedTournamentIds
 
 Returns `linkedTournamentIds` for each tournamentRecord loaded in `compeitionEngine`.
@@ -540,6 +557,19 @@ competitionEngine.matchUpScheduleChange({
   sourceCourtId,
   targetCourtId,
   courtDayDate: dateSelected,
+});
+```
+
+---
+
+## modifyEventMatchUpFormatTiming
+
+```js
+competitionEngine.modifyEventMatchUpFormatTiming({
+  eventId,
+  matchUpFormat,
+  averageMinutes,
+  recoveryMinutes,
 });
 ```
 

@@ -23,6 +23,14 @@ it('can modify event timing for matchUpFormat codes', () => {
     policyDefinition: POLICY_SCHEDULING_USTA,
   });
 
+  let { eventMatchUpFormatTiming, error } =
+    tournamentEngine.getEventMatchUpFormatTiming({
+      eventId,
+    });
+
+  expect(eventMatchUpFormatTiming).toBeUndefined();
+  expect(error).not.toBeUndefined();
+
   let result = tournamentEngine.modifyEventMatchUpFormatTiming({
     eventId,
     matchUpFormat: 'SET3-S:6/TB7',
@@ -45,10 +53,9 @@ it('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { eventMatchUpFormatTiming } =
-    tournamentEngine.getEventMatchUpFormatTiming({
-      eventId,
-    });
+  ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+  }));
   expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
     127, 117,
   ]);
