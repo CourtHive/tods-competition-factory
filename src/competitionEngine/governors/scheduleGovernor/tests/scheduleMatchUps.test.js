@@ -2,17 +2,8 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
-
-/*
-import { SINGLES } from '../../../../constants/matchUpTypes';
-import {
-  ASSIGN_COURT,
-  SCHEDULED_DATE,
-  SCHEDULED_TIME,
-  ASSIGN_VENUE,
-  START_TIME,
-} from '../../../../constants/timeItemConstants';
-*/
+import { OFFICIAL } from '../../../../constants/participantRoles';
+import { INDIVIDUAL } from '../../../../constants/participantTypes';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -50,9 +41,26 @@ it('can add events, venues, and schedule matchUps', () => {
     drawProfiles,
     venueProfiles,
   });
+
   let result = competitionEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
+
   const { tournamentId } = tournamentRecord;
+
+  const participant = {
+    participantRole: OFFICIAL,
+    participantType: INDIVIDUAL,
+    person: {
+      standardFamilyName: 'Family',
+      standardGivenName: 'Given',
+      extensions: [{ name: 'someExtension', value: 'extensionValue' }],
+    },
+    extensions: [{ name: 'anotherExtension', value: 'anotherExtensionValue' }],
+  };
+
+  result = competitionEngine.addParticipant({ tournamentId, participant });
+  expect(result.success).toEqual(true);
+  const officialParticipantId = result.participant.participantId;
 
   const { courts, venues } = competitionEngine.getVenuesAndCourts();
   expect(courts.length).toEqual(3);
@@ -63,9 +71,6 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(upcoming.length).toEqual(16);
   expect(pendingMatchUps.length).toEqual(15);
 
-  /*
-  const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
-  */
   const courtIds = courts.map((court) => court.courtId);
   const courtId = courtIds[0];
   let [matchUp] = upcoming;
@@ -158,16 +163,11 @@ it('can add events, venues, and schedule matchUps', () => {
   });
   expect(result).toEqual(SUCCESS);
 
-  /*
-  // TODO: add mock officials to mocksEngine.generateTournamentRecord
-  const officalParticipantId = 'someId';
   result = competitionEngine.addMatchUpOfficial({
     tournamentId,
     matchUpId,
     drawId,
-    participantId: officalParticipantId,
-    officialType: 'Bogus Official',
+    participantId: officialParticipantId,
   });
   expect(result).toEqual(SUCCESS);
-  */
 });

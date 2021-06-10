@@ -81,9 +81,10 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
   let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
 
   const matchUpContextIds = upcomingMatchUps.map(
-    ({ tournamentId, matchUpId }) => ({
+    ({ tournamentId, drawId, matchUpId }) => ({
       tournamentId,
       matchUpId,
+      drawId,
     })
   );
 
@@ -97,6 +98,11 @@ test('competitionEngine can bulkScheduleMatchUps', () => {
     schedule,
   });
   expect(result.success).toEqual(true);
+
+  matchUpContextIds.forEach((contextIds) => {
+    const { validActions } = competitionEngine.matchUpActions(contextIds);
+    expect(validActions.length).toBeGreaterThan(0);
+  });
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
 

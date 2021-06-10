@@ -5,6 +5,7 @@ import { addCourts } from './venueManagement/addCourts';
 import { addDrawDefinition } from './addDrawDefinition';
 import { tournamentMethods } from './tournamentMethods';
 import { addVenue } from './venueManagement/addVenue';
+import { addParticipant } from './addParticipant';
 import {
   getCopmetitionParticipants,
   publicFindParticipant,
@@ -39,6 +40,7 @@ const competitionGovernor = {
 
   addDrawDefinition, // test
   getCopmetitionParticipants,
+  addParticipant,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
