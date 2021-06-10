@@ -7,6 +7,29 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
+export function getCopmetitionParticipants(props) {
+  const { tournamentRecords } = props || {};
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  const competitionParticipants = [];
+  const competitionParticipantIds = [];
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const { tournamentParticipants } = getTournamentParticipants({
+      tournamentRecord,
+      ...props,
+    });
+    for (const tournamentParticipant of tournamentParticipants) {
+      const { participantId } = tournamentParticipant;
+      if (!competitionParticipantIds.includes(participantId)) {
+        competitionParticipantIds.push(participantId);
+        competitionParticipants.push(tournamentParticipant);
+      }
+    }
+  }
+
+  return { competitionParticipants };
+}
+
 export function publicFindParticipant({
   tournamentRecords,
   participantId,
@@ -31,7 +54,7 @@ export function publicFindParticipant({
       personId,
       policyDefinition,
     });
-    if (participant) continue;
+    if (participant) break;
   }
 
   return { participant: makeDeepCopy(participant) };

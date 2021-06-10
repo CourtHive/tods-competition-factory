@@ -179,7 +179,6 @@ Add a penaltyItem to one or more participants.
 ```js
 const createdAt = new Date().toISOString();
 const penaltyData = {
-  tournamentId, // required
   refereeParticipantId, // optional
   participantIds: [participantId],
   penaltyType: BALL_ABUSE,
@@ -413,6 +412,31 @@ const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
 
 ---
 
+## getCompetitionParticipants
+
+Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values.
+
+```js
+const participantFilters = {
+  accessorValues,
+  eventEntriesOnly, // boolean
+  participantTypes: [INDIVIDUAL],
+  participantRoles, [COMPETITOR],
+  signInStatus, // specific signIn status
+  eventIds, // events in which participants appear
+};
+const { competitionParticipants } =
+  competitionEngine.getCompetitionParticipants({
+    inContext, // optional - adds individualParticipants for all individualParticipantIds
+    withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
+    withOpponents, // optional - include opponent participantIds
+    withMatchUps, // optional - include all matchUps in which the participant appears
+    convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
+    policyDefinition, // optional - can accept a privacy policy to filter participant attributes
+    participantFilters, // optional - filters
+  });
+```
+
 ## getCompetitionPenalties
 
 Returns an array of all penalties issued for all tournaments loaded into competitionEngine.
@@ -639,7 +663,7 @@ competitionEngine.modifyPersonRequests({
 ```js
 const notes = 'Hit ball into spectator';
 const modifications = { notes };
-competitionEngine.modifyPenalty({ penaltyId, tournamentId, modifications });
+competitionEngine.modifyPenalty({ penaltyId, modifications });
 ```
 
 ---
@@ -720,7 +744,7 @@ result = competitionEngine.removePersonRequests({
 Removes a penalty from all relevant tournament participants.
 
 ```js
-competitionEngine.removePenalty({ penaltyId, tournamentId });
+competitionEngine.removePenalty({ penaltyId });
 ```
 
 ---

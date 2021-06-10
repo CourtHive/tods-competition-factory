@@ -1531,7 +1531,7 @@ const { tournamentRecord } = tournamentEngine.getState({
 
 ## getTournamentParticipants
 
-Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
+Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
 
 ```js
 const participantFilters = {

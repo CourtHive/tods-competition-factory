@@ -6,6 +6,10 @@ import { addDrawDefinition } from './addDrawDefinition';
 import { tournamentMethods } from './tournamentMethods';
 import { addVenue } from './venueManagement/addVenue';
 import {
+  getCopmetitionParticipants,
+  publicFindParticipant,
+} from '../../getters/participantGetter';
+import {
   addExtension,
   findExtension,
   removeExtension,
@@ -34,6 +38,7 @@ const competitionGovernor = {
   getLinkedTournamentIds,
 
   addDrawDefinition, // test
+  getCopmetitionParticipants,
 
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
@@ -48,6 +53,7 @@ const competitionGovernor = {
   removePenalty, // test
   modifyPenalty, // test
   getCompetitionPenalties, // test
+  findParticipant: publicFindParticipant,
 
   tournamentMethods,
 };
