@@ -392,6 +392,19 @@ const { extension } = competitionEngine.findExtension({ name });
 
 ---
 
+## findParticipant
+
+Find tournament participant by either `participantId` or `personId`.
+
+```js
+const { participant } = competitionEngine.findParticipant({
+  participantId,
+  personId, // required only if no participantId provided
+});
+```
+
+---
+
 ## getCompetitionDateRange
 
 ```js
