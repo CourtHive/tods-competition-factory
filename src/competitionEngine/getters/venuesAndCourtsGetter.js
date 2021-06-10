@@ -19,6 +19,7 @@ export function getVenuesAndCourts({ tournamentRecords }) {
     tournamentRecord.venues?.forEach((venue) => {
       if (!uniqueVenueIds.includes(venue.venueId)) {
         venues.push(makeDeepCopy(venue));
+        uniqueVenueIds.push(venue.venueId);
       }
       venue.courts?.forEach((court) => {
         if (!uniqueCourtIds.includes(court.courtId)) {
@@ -26,6 +27,7 @@ export function getVenuesAndCourts({ tournamentRecords }) {
             venueId: venue.venueId,
           });
           courts.push(inContextCourt);
+          uniqueCourtIds.push(court.courtId);
         }
       });
     });
