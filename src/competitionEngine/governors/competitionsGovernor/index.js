@@ -36,8 +36,8 @@ const competitionGovernor = {
 
   addDrawDefinition, // test
 
-  setMatchUpStatus, // test
-  bulkMatchUpStatusUpdate, // test
+  setMatchUpStatus,
+  bulkMatchUpStatusUpdate,
 
   bulkScheduleMatchUps, // test
   removeEventMatchUpFormatTiming, // test
