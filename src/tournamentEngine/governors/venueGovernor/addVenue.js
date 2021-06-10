@@ -10,7 +10,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ADD_VENUE } from '../../../constants/topicConstants';
 
-export function addVenue({ tournamentRecord, venue }) {
+export function addVenue({ tournamentRecord, venue, returnDetails }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!venue) return { error: MISSING_VALUE };
 
@@ -27,7 +27,7 @@ export function addVenue({ tournamentRecord, venue }) {
     tournamentRecord.venues.push(venueRecord);
     addNotice({ topic: ADD_VENUE, payload: { venue: venueRecord } });
 
-    return getDevContext()
+    return getDevContext() || returnDetails
       ? Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS)
       : SUCCESS;
   } else {

@@ -28,7 +28,7 @@ export function modifyVenue({
     });
     if (result.success) success = true;
     if (result.error) error = result.error;
-    if (result.error !== VENUE_NOT_FOUND) return result;
+    if (result.error && result.error !== VENUE_NOT_FOUND) return result;
   }
   return success ? SUCCESS : { error };
 }

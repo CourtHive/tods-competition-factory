@@ -3,6 +3,21 @@ name: API
 title: Competition Engine API
 ---
 
+## addCourts
+
+Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**.
+
+```js
+competitionEngine.addCourts({
+  venueId,
+  courtsCount: 3, // optional, can be added/modified later
+  courtNames: ['Court 1', 'Court 2', 'Court 3'], // optional
+  dateAvailability, // optional -- see definition in Tournament Engine API
+});
+```
+
+---
+
 ## addDrawDefinition
 
 Adds a drawDefinition to an event in a tournamentRecord.

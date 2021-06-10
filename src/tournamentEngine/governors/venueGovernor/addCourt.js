@@ -20,7 +20,13 @@ import { MODIFY_VENUE } from '../../../constants/topicConstants';
  * @param {object} court - court object
  * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
  */
-export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
+export function addCourt({
+  tournamentRecord,
+  venueId,
+  court,
+  disableNotice,
+  returnDetails,
+}) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
@@ -76,7 +82,7 @@ export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
       addNotice({ topic: MODIFY_VENUE, payload: { venue } });
     }
 
-    return getDevContext()
+    return getDevContext() || returnDetails
       ? Object.assign({}, SUCCESS, {
           court: makeDeepCopy(courtRecord),
           venueId,
@@ -111,7 +117,13 @@ export function addCourts({
   });
 
   const result = courts.map((court) =>
-    addCourt({ tournamentRecord, venueId, court, disableNotice: true })
+    addCourt({
+      tournamentRecord,
+      venueId,
+      court,
+      disableNotice: true,
+      returnDetails: true,
+    })
   );
   const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
 

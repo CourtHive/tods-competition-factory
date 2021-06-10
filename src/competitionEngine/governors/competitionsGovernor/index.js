@@ -22,6 +22,7 @@ import {
   modifyPenalty,
   getCompetitionPenalties,
 } from './participantPenalties';
+import { addCourts } from './venueManagement/addCourts';
 
 const competitionGovernor = {
   addExtension,
@@ -41,8 +42,9 @@ const competitionGovernor = {
   bulkScheduleMatchUps, // test
   removeEventMatchUpFormatTiming, // test
 
-  addVenue, // test
-  modifyVenue, // test
+  addVenue,
+  modifyVenue,
+  addCourts,
 
   addPenalty, // test
   removePenalty, // test
