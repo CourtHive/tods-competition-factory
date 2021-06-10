@@ -61,3 +61,44 @@ test('competitionEngine can setMatchUpStatus', () => {
     expect(schedule.scheduledDate).toEqual(startDate);
   });
 });
+
+test.only('competitionEngine can bulkScheduleMatchUps', () => {
+  const drawProfiles = [{ drawSize: 32 }];
+  const venueProfiles = [{ courtsCount: 3 }];
+  const {
+    tournamentRecord,
+    venueIds: [venueId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    venueProfiles,
+  });
+
+  competitionEngine.setState(tournamentRecord);
+  const { startDate } = competitionEngine.getCompetitionDateRange();
+
+  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+
+  const matchUpContextIds = upcomingMatchUps.map(
+    ({ tournamentId, matchUpId }) => ({
+      tournamentId,
+      matchUpId,
+    })
+  );
+
+  const schedule = {
+    scheduledTime: '08:00',
+    scheduledDate: startDate,
+    venueId,
+  };
+  let result = competitionEngine.bulkScheduleMatchUps({
+    matchUpContextIds,
+    schedule,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+
+  upcomingMatchUps.forEach(({ schedule }) => {
+    expect(schedule.scheduledDate).toEqual(startDate);
+  });
+});

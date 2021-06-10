@@ -39,7 +39,7 @@ const competitionGovernor = {
   setMatchUpStatus,
   bulkMatchUpStatusUpdate,
 
-  bulkScheduleMatchUps, // test
+  bulkScheduleMatchUps,
   removeEventMatchUpFormatTiming, // test
 
   addVenue,

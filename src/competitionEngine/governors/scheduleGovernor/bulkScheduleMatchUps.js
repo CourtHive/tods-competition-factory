@@ -2,20 +2,17 @@ import { bulkScheduleMatchUps as bulkSchedule } from '../../../tournamentEngine/
 
 import {
   INVALID_VALUES,
-  MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function bulkScheduleMatchUps({
   tournamentRecords,
-  tournamentId,
 
   matchUpContextIds,
   schedule,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };
   if (!Array.isArray(matchUpContextIds)) return { error: INVALID_VALUES };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -26,7 +23,7 @@ export function bulkScheduleMatchUps({
 
     if (matchUpIds?.length) {
       const result = bulkSchedule({
-        tournamentId,
+        tournamentRecord,
         matchUpIds,
         schedule,
       });
