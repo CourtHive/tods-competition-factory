@@ -8,7 +8,6 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
 
-// TODO: should not require drawDefinition
 export function deleteVenue({
   tournamentRecord,
   drawDefinition,
@@ -37,16 +36,17 @@ export function deleteVenue({
     return deletionMessage({ matchUpsCount: matchUpsToUnschedule.length });
   }
 
-  tournamentRecord.venues = tournamentRecord.venues.filter(
-    (venue) => venue.venueId !== venueId
-  );
+  let deleted;
+  tournamentRecord.venues = tournamentRecord.venues.filter((venue) => {
+    if (venue.venueId !== venueId) return true;
+    deleted = true;
+  });
 
-  addNotice({ topic: DELETE_VENUE, payload: { venueId } });
+  if (deleted) addNotice({ topic: DELETE_VENUE, payload: { venueId } });
 
   return SUCCESS;
 }
 
-// TODO: add force option
 export function deleteVenues({ tournamentRecord, venueIds, force }) {
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 

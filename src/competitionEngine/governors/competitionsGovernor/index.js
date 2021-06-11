@@ -1,6 +1,7 @@
 import { bulkScheduleMatchUps } from '../scheduleGovernor/bulkScheduleMatchUps';
 import { bulkMatchUpStatusUpdate, setMatchUpStatus } from './setMatchUpStatus';
 import { modifyVenue } from './venueManagement/modifyVenue';
+import { deleteVenue } from './venueManagement/deleteVenue';
 import { addCourts } from './venueManagement/addCourts';
 import { addDrawDefinition } from './addDrawDefinition';
 import { tournamentMethods } from './tournamentMethods';
@@ -48,6 +49,7 @@ const competitionGovernor = {
   bulkScheduleMatchUps,
 
   addVenue,
+  deleteVenue,
   modifyVenue,
   addCourts,
 

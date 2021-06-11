@@ -94,4 +94,11 @@ test('competitionEngine can add drawDefinitions to tournaments', () => {
   result = competitionEngine.getVenuesAndCourts();
   expect(result.courts.length).toEqual(2);
   expect(result.venues.length).toEqual(1);
+
+  result = competitionEngine.deleteVenue({ venueId });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.getVenuesAndCourts();
+  expect(result.venues.length).toEqual(0);
+  expect(result.courts.length).toEqual(0);
 });

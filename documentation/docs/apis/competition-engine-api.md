@@ -373,6 +373,16 @@ const { completedMatchUps, dateMatchUps, courtsData, venues } =
 
 ---
 
+## deleteVenue
+
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+```js
+tournamentEngine.deleteVenue({ venueId, force });
+```
+
+---
+
 ## devContext
 
 Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables enhanced logging

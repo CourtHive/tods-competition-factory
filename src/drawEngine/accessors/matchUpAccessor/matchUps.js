@@ -1,7 +1,8 @@
 export function getMatchUp({ matchUps, matchUpId }) {
-  const matchUp = (matchUps || []).reduce((matchUp, current) => {
-    return current.matchUpId === matchUpId ? current : matchUp;
-  }, undefined);
+  const matchUp = (matchUps || []).find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+
   return { matchUp };
 }
 
