@@ -40,8 +40,8 @@ export function getValidLuckyLosersAction({
   const { sourceStructureIds, targetStructureIds } =
     drawDefinition.links?.reduce(
       (ids, link) => {
-        const sourceStructureId = link.source.structureId;
-        const targetStructureId = link.target.structureId;
+        const sourceStructureId = link.source?.structureId;
+        const targetStructureId = link.target?.structureId;
         if (!ids.sourceStructureIds.includes(sourceStructureId))
           ids.sourceStructureIds.push(sourceStructureId);
         if (!ids.targetStructureIds.includes(targetStructureId))
@@ -77,10 +77,10 @@ export function getValidLuckyLosersAction({
     });
     relevantLink = drawDefinition.links?.find(
       (link) =>
-        link.target?.structureId === structure.structureId &&
+        link.target?.structureId === structure?.structureId &&
         link.target.roundNumber === initialRoundNumber
     );
-    const sourceRoundNumber = relevantLink.source.roundNumber;
+    const sourceRoundNumber = relevantLink?.source?.roundNumber;
     matchUpFilters.roundNumbers = [sourceRoundNumber];
   }
 
