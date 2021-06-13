@@ -1,4 +1,3 @@
-import { addDrawDefinitionExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
@@ -17,7 +16,6 @@ import {
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
-import { DRAW_PROFILE } from '../../constants/extensionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
@@ -294,33 +292,6 @@ export function generateDrawDefinition(props) {
   }
 
   const { drawDefinition } = drawEngine.getState();
-
-  const drawProfile = {
-    stage,
-    drawId,
-    drawSize,
-    drawType,
-    automated,
-    drawName,
-    seedsCount,
-
-    tieFormat,
-    matchUpType,
-
-    structureOptions,
-    qualifyingRound,
-    qualifyingPositions,
-
-    category: event?.category,
-  };
-
-  if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
-
-  const extension = {
-    name: DRAW_PROFILE,
-    value: drawProfile,
-  };
-  addDrawDefinitionExtension({ drawDefinition, extension });
 
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });

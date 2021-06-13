@@ -7,7 +7,6 @@ import matchUpGovernor from './governors/matchUpGovernor';
 import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
-import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import definitionTemplate from './generators/drawDefinitionTemplate';
 import { notifySubscribers } from '../global/notifySubscribers';
 import { UUID, makeDeepCopy } from '../utilities';
@@ -20,22 +19,13 @@ import {
   deleteNotices,
 } from '../global/globalState';
 
-import { DRAW_PROFILE } from '../constants/extensionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
 let tournamentParticipants = [];
 
-function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
+function newDrawDefinition({ drawId, drawType } = {}) {
   const drawDefinition = definitionTemplate();
-  if (drawProfile) {
-    const extension = {
-      name: DRAW_PROFILE,
-      value: drawProfile,
-    };
-    addDrawDefinitionExtension({ drawDefinition, extension });
-  }
-
   return Object.assign(drawDefinition, { drawId, drawType });
 }
 
