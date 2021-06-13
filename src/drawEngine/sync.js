@@ -8,7 +8,10 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import definitionTemplate from './generators/drawDefinitionTemplate';
 import { notifySubscribers } from '../global/notifySubscribers';
+import { UUID, makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
   setSubscriptions,
   setDeepCopy,
@@ -16,19 +19,9 @@ import {
   getDevContext,
   deleteNotices,
 } from '../global/globalState';
-import definitionTemplate, {
-  keyValidation,
-} from './generators/drawDefinitionTemplate';
 
-import { UUID, makeDeepCopy } from '../utilities';
-import { SUCCESS } from '../constants/resultConstants';
-import {
-  INVALID_OBJECT,
-  MISSING_DRAW_ID,
-  INVALID_DRAW_DEFINITION,
-  MISSING_DRAW_DEFINITION,
-} from '../constants/errorConditionConstants';
 import { DRAW_PROFILE } from '../constants/extensionConstants';
+import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
 let tournamentParticipants = [];
@@ -44,29 +37,6 @@ function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
   }
 
   return Object.assign(drawDefinition, { drawId, drawType });
-}
-
-// TASK: add verify/validate structure as option in setState
-function setState(definition, deepCopyOption = true) {
-  if (!definition) return { error: MISSING_DRAW_DEFINITION };
-  if (typeof definition !== 'object') return { error: INVALID_OBJECT };
-  if (!definition.drawId) return { error: MISSING_DRAW_ID, method: 'setState' };
-
-  if (!validDefinitionKeys(definition))
-    return { error: INVALID_DRAW_DEFINITION };
-
-  drawDefinition = deepCopyOption ? makeDeepCopy(definition) : definition;
-
-  return Object.assign({ drawId: definition.drawId }, SUCCESS);
-}
-
-function validDefinitionKeys(definition) {
-  const definitionKeys = Object.keys(definition);
-  const valid = keyValidation.reduce(
-    (p, key) => (!definitionKeys.includes(key) ? false : p),
-    true
-  );
-  return valid;
 }
 
 export const drawEngine = (function () {
@@ -94,6 +64,19 @@ export const drawEngine = (function () {
     },
   };
 
+  function processResult(result) {
+    if (result?.error) {
+      fx.error = result.error;
+      fx.success = false;
+    } else {
+      fx.error = undefined;
+      fx.success = true;
+      drawDefinition = result;
+      fx.drawId = result.drawId;
+    }
+    return fx;
+  }
+
   importGovernors([
     linkGovernor,
     queryGovernor,
@@ -116,8 +99,7 @@ export const drawEngine = (function () {
   fx.setState = (definition, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(definition);
-    if (result.error) return result;
-    return fx;
+    return processResult(result);
   };
 
   return fx;
