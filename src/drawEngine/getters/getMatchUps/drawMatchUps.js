@@ -59,7 +59,8 @@ export function getDrawMatchUps({
   let allCompletedMatchUps = [];
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.prticipants;
+    (tournamentParticipants?.length && tournamentParticipants) ||
+    tournamentRecord?.participants;
   const { structures } = getDrawStructures({ drawDefinition });
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
 
