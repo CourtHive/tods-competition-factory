@@ -114,9 +114,9 @@ export const drawEngine = (function () {
 
   function invoke({ params, governor, key }) {
     const result = governor[key]({
-      ...params,
-      drawDefinition,
       tournamentParticipants,
+      drawDefinition,
+      ...params,
     });
 
     if (result?.success) {
