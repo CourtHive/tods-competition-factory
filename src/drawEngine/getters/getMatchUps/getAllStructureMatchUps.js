@@ -375,16 +375,12 @@ export function getAllStructureMatchUps({
     if (matchUp.collectionId) {
       // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
-      const collectionDefinition = collectionDefinitions.reduce(
-        (definition, candidate) => {
-          return candidate.collectionId === matchUp.colectionId
-            ? candidate
-            : definition;
-        },
-        undefined
+      const collectionDefinition = collectionDefinitions.find(
+        (definition) => definition.collectionId === matchUp.collectionId
       );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
+
       if (!matchUp.matchUpFormat && matchUpFormat) {
         Object.assign(matchUpWithContext, { matchUpFormat });
       }
