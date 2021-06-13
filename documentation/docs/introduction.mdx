@@ -15,10 +15,16 @@ Engines manage different concerns within a document structure representing a tou
 2. **tournamentEngine** - for managing tournament participants and general tournament information.
 3. **drawEngine** - generates drawDefinitions and matchUp results, managing participant movement within and between structures.
 
-## Mocks Engine
+## Interactive Live Code Examples
 
-The **mocksEngine** - generates tournaments, participants, events and drawDefinitions for testing purposes; it was developed for and is used by many of the Competition Factory tests suites.
+:::tip
+This documentation includes Live Code Editors to enable direct interaction with the APIs. The `drawEngine`, `tournamentEngine`, `competitionEngine`, and `mocksEngine` can be accessed in any **LIVE EDITOR**.
+:::
 
-### IMPORTANT
+```jsx live
+function GiveThanks(props) {
+  const thanks = tournamentEngine.credits();
 
-**Competition Factory** is based on a combination of TODS v0.8 and elements which have been proposed for TODS v1.0. Until the v1.0 specification has been released there could be significant volatility in the JSON output of the methods included in this package.
+  return <pre>{thanks}</pre>;
+}
+```
