@@ -204,9 +204,38 @@ export function getAllStructureMatchUps({
 
   return { matchUps, roundMatchUps, collectionPositionMatchUps };
 
+  function getDrawPositionCollectionAssignment({
+    collectionId,
+    collectionPosition,
+    drawPositions = [],
+    sideLineUps,
+  }) {
+    if (!collectionId || !collectionPosition || !sideLineUps) return {};
+    const drawPositionCollectionAssignment = drawPositions
+      ?.map((drawPosition) => {
+        const lineUp = sideLineUps.find(
+          (lineUp) => lineUp.drawPosition === drawPosition
+        )?.lineUp;
+        const relevantCompetitor = lineUp?.find((teamCompetitor) => {
+          const collectionAssignment =
+            teamCompetitor.collectionAssignments.find(
+              (assignment) => assignment.collectionId === collectionId
+            );
+          return (
+            collectionAssignment?.collectionPosition === collectionPosition
+          );
+        });
+        const participantId = relevantCompetitor?.participantId;
+        return participantId && { [drawPosition]: participantId };
+      })
+      .filter((f) => f);
+    return Object.assign({}, ...drawPositionCollectionAssignment);
+  }
+
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
     matchUp,
+    sideLineUps,
     matchUpTieId,
     isRoundRobin,
     roundProfile,
@@ -222,7 +251,21 @@ export function getAllStructureMatchUps({
       scheduleVisibilityFilters,
       matchUp,
     });
-    const { drawPositions, roundNumber, roundPosition } = matchUp;
+    const {
+      drawPositions,
+      collectionPosition,
+      collectionId,
+      roundNumber,
+      roundPosition,
+    } = matchUp;
+
+    const drawPositionCollectionAssignment =
+      getDrawPositionCollectionAssignment({
+        collectionId,
+        collectionPosition,
+        sideLineUps,
+        drawPositions,
+      });
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
     const feedRound =
@@ -259,11 +302,19 @@ export function getAllStructureMatchUps({
 
     if (matchUpWithContext.tieMatchUps) {
       const isCollectionBye = matchUpWithContext.matchUpStatus === BYE;
+      const lineUps = matchUp.sides?.map(
+        ({ sideNumber, lineUp, drawPosition }) => ({
+          drawPosition,
+          sideNumber,
+          lineUp,
+        })
+      );
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
           return addMatchUpContext({
             matchUp,
+            sideLineUps: lineUps,
             matchUpTieId,
             isRoundRobin,
             roundProfile,
@@ -294,6 +345,7 @@ export function getAllStructureMatchUps({
           ? 3 - sideNumber
           : sideNumber;
         const side = getSide({
+          drawPositionCollectionAssignment,
           positionAssignments,
           displaySideNumber,
           seedAssignments,
@@ -302,6 +354,10 @@ export function getAllStructureMatchUps({
           isFeedRound,
         });
 
+        const existingSide = matchUp.sides?.find(
+          (existing) => existing.sideNumber === sideNumber
+        );
+
         // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
         // columnPosition gives an ordered position value relative to a single column
         const columnPosition = (roundPosition - 1) * 2 + index + 1;
@@ -309,7 +365,9 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRoundRanges &&
           sourceDrawPositionRoundRanges[columnPosition];
 
-        return Object.assign({}, side, { sourceDrawPositionRange });
+        return Object.assign({}, side, existingSide, {
+          sourceDrawPositionRange,
+        });
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
     }

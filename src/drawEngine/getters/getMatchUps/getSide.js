@@ -1,4 +1,5 @@
 export function getSide({
+  drawPositionCollectionAssignment,
   positionAssignments,
   displaySideNumber,
   seedAssignments,
@@ -6,20 +7,22 @@ export function getSide({
   isFeedRound,
   sideNumber,
 }) {
-  const sideValue = positionAssignments.reduce((side, assignment) => {
-    const participantId = assignment.participantId;
-    const sideValue =
-      assignment.drawPosition === drawPosition
-        ? getSideValue({
-            displaySideNumber,
-            seedAssignments,
-            participantId,
-            assignment,
-            sideNumber,
-          })
-        : side;
-    return sideValue;
-  }, {});
+  const assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  const participantId =
+    (drawPositionCollectionAssignment &&
+      drawPositionCollectionAssignment[drawPosition]) ||
+    assignment?.participantId;
+  const sideValue = assignment
+    ? getSideValue({
+        displaySideNumber,
+        seedAssignments,
+        participantId,
+        assignment,
+        sideNumber,
+      })
+    : {};
 
   if (isFeedRound) {
     if (sideNumber === 1) {
