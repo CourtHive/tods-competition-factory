@@ -1,4 +1,5 @@
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
@@ -203,34 +204,6 @@ export function getAllStructureMatchUps({
     );
 
   return { matchUps, roundMatchUps, collectionPositionMatchUps };
-
-  function getDrawPositionCollectionAssignment({
-    collectionId,
-    collectionPosition,
-    drawPositions = [],
-    sideLineUps,
-  }) {
-    if (!collectionId || !collectionPosition || !sideLineUps) return {};
-    const drawPositionCollectionAssignment = drawPositions
-      ?.map((drawPosition) => {
-        const lineUp = sideLineUps.find(
-          (lineUp) => lineUp.drawPosition === drawPosition
-        )?.lineUp;
-        const relevantCompetitor = lineUp?.find((teamCompetitor) => {
-          const collectionAssignment =
-            teamCompetitor.collectionAssignments.find(
-              (assignment) => assignment.collectionId === collectionId
-            );
-          return (
-            collectionAssignment?.collectionPosition === collectionPosition
-          );
-        });
-        const participantId = relevantCompetitor?.participantId;
-        return participantId && { [drawPosition]: participantId };
-      })
-      .filter((f) => f);
-    return Object.assign({}, ...drawPositionCollectionAssignment);
-  }
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
