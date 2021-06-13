@@ -1,3 +1,14 @@
+/**
+ *
+ * @param {object} drawPositionCollectionAssignment - mapping of drawPositions to participantIds derived from collectionAssignments
+ * @param {object[]} positionAssignments - mapping of drawPositions to participantIds (in TIES this is TEAM participantId)
+ * @param {number} displaySideNumber - accounts for both top and bottom feed arm positioning
+ * @param {object[]} seedAssignments - mapping of participantIds to seedNumber and seedValue
+ * @param {number} drawPosition -
+ * @param {boolean} isFeedRound - whether a round includes fed drawPositions
+ * @param {number} sideNumber - 1 or 2
+ * @returns {object} properties require for side attribute of matchUp.sides array
+ */
 export function getSide({
   drawPositionCollectionAssignment,
   positionAssignments,
