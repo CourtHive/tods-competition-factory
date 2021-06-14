@@ -1,4 +1,3 @@
-import { venueTemplate } from '../../generators/venueTemplate';
 import { addNotice, getDevContext } from '../../../global/globalState';
 import { UUID, makeDeepCopy } from '../../../utilities';
 
@@ -20,22 +19,25 @@ export function addVenue({
   if (!venue) return { error: MISSING_VALUE };
 
   if (!tournamentRecord.venues) tournamentRecord.venues = [];
+  if (!venue.venueId) venue.venueId = UUID();
 
-  const venueRecord = Object.assign({}, venueTemplate(), venue);
-  if (!venueRecord.venueId) venueRecord.venueId = UUID();
-
-  const venueExists = tournamentRecord.venues.reduce((exists, venue) => {
-    return exists || venue.venueId === venueRecord.venueId;
-  }, undefined);
+  const venueExists = tournamentRecord.venues.reduce(
+    (exists, existingVenue) => {
+      return exists || existingVenue.venueId === venue.venueId;
+    },
+    undefined
+  );
 
   if (!venueExists) {
-    tournamentRecord.venues.push(venueRecord);
+    tournamentRecord.venues.push(venue);
     if (!disableNotice) {
-      addNotice({ topic: ADD_VENUE, payload: { venue: venueRecord } });
+      addNotice({ topic: ADD_VENUE, payload: { venue } });
     }
 
-    return getDevContext() || returnDetails
-      ? Object.assign({}, { venue: makeDeepCopy(venueRecord) }, SUCCESS)
+    return getDevContext()
+      ? Object.assign({}, { venue: makeDeepCopy(venue) }, SUCCESS)
+      : returnDetails
+      ? venue
       : SUCCESS;
   } else {
     return { error: VENUE_EXISTS };

@@ -55,7 +55,7 @@ export function modifyVenue({
   );
 
   const errors = [];
-  const existingCourtIds = venue.courts.map((court) => court.courtId);
+  const existingCourtIds = venue?.courts?.map((court) => court.courtId) || [];
   const courtIdsToModify =
     modifications.courts?.map((court) => court.courtId) || [];
   const courtIdsToDelete = existingCourtIds.filter(
