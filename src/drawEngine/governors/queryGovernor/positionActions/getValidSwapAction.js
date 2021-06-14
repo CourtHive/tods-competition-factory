@@ -42,11 +42,12 @@ export function getValidSwapAction({
       !(isByePosition && byeDrawPositions.includes(position))
   );
   // filteredAssignments are all assignements which are availble and pass assignmentCheck
-  const filteredAssignments = positionAssignments.filter(
-    (assignment) =>
-      assignmentCheck(assignment) &&
-      availableDrawPositions?.includes(assignment.drawPosition)
-  );
+  const filteredAssignments =
+    positionAssignments?.filter(
+      (assignment) =>
+        assignmentCheck(assignment) &&
+        availableDrawPositions?.includes(assignment.drawPosition)
+    ) || [];
 
   // get relevant drawPositions => relevantMatchUps => sides => sourceDrawPositionRanges
   const filteredDrawPositions = filteredAssignments.map(
