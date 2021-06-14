@@ -28,12 +28,13 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  *
  */
 export function randomUnseededSeparation({
-  avoidance,
-  structureId,
-  participants,
-  mappedMatchUps,
-  drawDefinition,
   unseededParticipantIds,
+  drawDefinition,
+  mappedMatchUps,
+  participants,
+  structureId,
+  avoidance,
+  entries, // entries for the specific stage of drawDefinition
 }) {
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
@@ -43,10 +44,11 @@ export function randomUnseededSeparation({
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
 
-  const participantsWithContext = addParticipantContext({ participants });
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({ structure, mappedMatchUps });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
+
+  const participantsWithContext = addParticipantContext({ participants });
 
   const unassignedPositions = positionAssignments.filter(
     (assignment) => !assignment.participantId
@@ -94,6 +96,7 @@ export function randomUnseededSeparation({
       drawPositionGroups,
       allGroups,
 
+      entries,
       policyAttributes,
       pairedPriority: true,
     })

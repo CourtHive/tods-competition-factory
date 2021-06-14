@@ -35,6 +35,7 @@ export function generatePositioningCandidate(props) {
     opponentsToPlaceCount,
     drawPositionGroups,
     policyAttributes,
+    // entries,
   } = props;
 
   const errors = [],
@@ -43,6 +44,19 @@ export function generatePositioningCandidate(props) {
 
   const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
   const isRoundRobin = groupSize > 2;
+
+  // scope the idCollections to entered participants to reduce processing
+  /*
+  const enteredParticipantIds =
+    entries?.map(({ participantId }) => participantId) || [];
+  const enteredParticipantFilter = (participant) =>
+    participant.individualParticipantIds?.length &&
+    intersection(participant.individualParticipantIds, enteredParticipantIds)
+      .length;
+  const relevantContextParticipants = participantsWithContext.filter(
+    enteredParticipantFilter
+  );
+  */
 
   idCollections.groupParticipants = participantsWithContext
     .filter((participant) => participant.participantType === GROUP)

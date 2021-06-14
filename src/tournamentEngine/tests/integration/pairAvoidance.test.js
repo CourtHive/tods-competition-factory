@@ -6,10 +6,10 @@ import { PAIR } from '../../../constants/participantTypes';
 const { SINGLES } = eventConstants;
 
 const pairAvoidancePolicy = {
+  candidatesCount: 20,
   roundsToSeparate: undefined,
   policyName: 'Doubles Partner Avoidance',
   policyAttributes: [{ directive: 'pairParticipants' }],
-  // candidatesCount: 1, // force generation of only one candidate for logging during testing
 };
 
 it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Doubles participants', () => {

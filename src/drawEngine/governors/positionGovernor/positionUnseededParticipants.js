@@ -83,31 +83,32 @@ export function positionUnseededParticipants({
 
   if (avoidance && participants) {
     return randomUnseededSeparation({
-      avoidance,
-      structureId,
-      participants,
+      unseededParticipantIds,
+      candidatesCount,
       mappedMatchUps,
       drawDefinition,
-      candidatesCount,
-      unseededParticipantIds,
+      participants,
+      structureId,
+      avoidance,
+      entries,
     });
   } else {
     return randomUnseededDistribution({
-      structureId,
-      drawDefinition,
-      mappedMatchUps,
       unseededParticipantIds,
       unfilledDrawPositions,
+      drawDefinition,
+      mappedMatchUps,
+      structureId,
     });
   }
 }
 
 function randomUnseededDistribution({
-  structureId,
-  drawDefinition,
-  mappedMatchUps,
   unseededParticipantIds,
   unfilledDrawPositions,
+  drawDefinition,
+  mappedMatchUps,
+  structureId,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {

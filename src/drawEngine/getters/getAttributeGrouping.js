@@ -109,6 +109,9 @@ export function extractAttributeValues({
           }
         });
       }
+
+      // extractedValues are values to be avoided
+      // e.g. for { directive: 'pairParticipants' } the extractedValues would be [ 'partnerParticipantId' ]
     } else if (groupings) {
       Object.keys(groupings).forEach((key) => {
         if (groupings[key].includes(participant.participantId)) {
