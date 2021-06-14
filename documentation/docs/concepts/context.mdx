@@ -1,0 +1,45 @@
+---
+title: Context
+---
+
+When **matchUps** and **tournamentParticipants** are returned **inContext** it means that they include contextual information that is not part of the TODS document structure from which they originated.
+
+## matchUps
+
+All API calls which return **matchUps** return deep copies with context.
+Attributes that are added for **matchUps** include: structureId, structureName, drawId, eventId, eventName, tournamentId and tournamentName.
+
+In the **Live Editor** example below, `inContext: false` overrides the default behavior.
+Change the value to `true` and compare the `matchUp` objects to see the difference when context is added.
+
+```jsx live
+function ContextDemo(props) {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4 }],
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps({
+    inContext: false,
+  });
+
+  return <MatchUps data={matchUps} />;
+}
+```
+
+## tournamentParticipants
+
+For **tournamentParticipants**, individualParticipants are added from individualParticipantIds.
+
+```js
+const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+  participantFilters: {
+    inContext: true,
+    participantTypes: [PAIR],
+  },
+});
+```
+
+## Converted Extensions
+
+All elements that are returned **inContext** include converted extensions. See **makeDeepCopy** in [Utilities](../engines/makedeepcopy).
