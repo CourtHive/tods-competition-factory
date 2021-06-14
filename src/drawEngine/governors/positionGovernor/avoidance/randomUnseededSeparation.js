@@ -38,11 +38,7 @@ export function randomUnseededSeparation({
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
   }
-  const {
-    policyAttributes,
-    roundsToSeparate,
-    candidatesCount = 20,
-  } = avoidance;
+  const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
