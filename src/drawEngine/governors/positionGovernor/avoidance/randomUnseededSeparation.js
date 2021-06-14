@@ -1,14 +1,11 @@
-import { assignDrawPosition } from '../positionAssignment';
-import { findStructure } from '../../../getters/findStructure';
-import { addParticipantContext } from './addParticipantContext';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
-
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
-
 import { generatePositioningCandidate } from './generatePositioningCandidate';
-
+import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
+import { addParticipantContext } from './addParticipantContext';
+import { findStructure } from '../../../getters/findStructure';
+import { assignDrawPosition } from '../positionAssignment';
 import {
   chunkArray,
   generateRange,
@@ -16,9 +13,9 @@ import {
   numericSort,
 } from '../../../../utilities';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *

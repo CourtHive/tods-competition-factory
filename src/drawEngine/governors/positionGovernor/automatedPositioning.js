@@ -1,9 +1,9 @@
-import { positionByes } from './byePositioning/positionByes';
-import { positionSeedBlocks } from './positionSeeds';
-import { positionQualifiers } from './positionQualifiers';
 import { positionUnseededParticipants } from './positionUnseededParticipants';
+import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
+import { positionQualifiers } from './positionQualifiers';
+import { positionSeedBlocks } from './positionSeeds';
 
 import {
   WILDCARD,

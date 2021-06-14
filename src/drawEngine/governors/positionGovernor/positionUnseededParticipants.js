@@ -1,11 +1,11 @@
-import { shuffleArray } from '../../../utilities';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { assignDrawPosition } from './positionAssignment';
+import { shuffleArray } from '../../../utilities';
 
 import {
   WILDCARD,

@@ -1,5 +1,5 @@
-import { getPlayoffStructures } from '../../getters/structureGetter';
 import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { getPlayoffStructures } from '../../getters/structureGetter';
 
 import {
   DRAW_DEFINITION_NOT_FOUND,
