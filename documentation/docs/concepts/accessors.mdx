@@ -1,0 +1,51 @@
+---
+title: Accessors
+---
+
+import RenderJSON from '../components/RenderJSON';
+
+Accessors are used to specify the location of data values in JSON objects. Avoidance policies and participant filters are examples of accessors being used to target values.
+
+<RenderJSON
+  data={{ participantType: 'INDIVIDUAL', person: { sex: 'MALE' } }}
+  root={'participant'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandRoot={true}
+  expandToLevel={3}
+/>
+
+In the **Live Editor** example below, the accessor `"person.sex"` is used to target `FEMALE` participants.
+Change the accessor value in the `participantFilters` to `MALE` or uncomment the `person.nationalityCode`
+filter to see the **Participants Count** change.
+
+```jsx live
+function AccessorsDemo(props) {
+  // Generate a tournament record with some MALE participants
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { sex: 'MALE' },
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  // Now generate some FEMALE participants...
+  const { participants } = mocksEngine.generateParticipants({
+    participantsCount: 16,
+    sex: 'FEMALE',
+  });
+  // ... and add them to the tournament
+  tournamentEngine.addParticipants({ participants });
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: {
+        accessorValues: [
+          { accessor: 'person.sex', value: 'FEMALE' },
+          // { accessor: 'person.nationalityCode', value: 'FRA' },
+        ],
+      },
+    }
+  );
+
+  return <Participants data={tournamentParticipants} />;
+}
+```

@@ -1535,7 +1535,7 @@ Returns **deepCopies** of tournament participants filtered by participantFilters
 
 ```js
 const participantFilters = {
-  accessorValues,
+  accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
   eventEntriesOnly, // boolean
   participantTypes: [INDIVIDUAL],
   participantRoles, [COMPETITOR],

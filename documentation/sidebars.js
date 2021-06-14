@@ -10,6 +10,7 @@ module.exports = {
       label: 'Concepts',
       items: [
         'concepts/context',
+        'concepts/accessors',
         {
           Policies: [
             'concepts/policies',

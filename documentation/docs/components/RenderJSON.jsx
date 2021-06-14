@@ -53,21 +53,23 @@ export const RenderJSON = ({
     if (level < expandToLevel) return true;
   };
   return (
-    <JSONTree
-      theme={{
-        extend: themes[colorScheme],
-        value: getBoolStyle,
-        valueLabel: getValueLabelStyle,
-        nestedNodeLabel: getLabelStyle,
-      }}
-      valueRenderer={renderValue}
-      getItemString={getItemString}
-      data={data}
-      keyPath={[root]}
-      invertTheme={invertTheme}
-      hideRoot={hideRoot}
-      shouldExpandNode={shouldExpandNode}
-    />
+    <div style={{ marginBottom: '1em' }}>
+      <JSONTree
+        theme={{
+          extend: themes[colorScheme],
+          value: getBoolStyle,
+          valueLabel: getValueLabelStyle,
+          nestedNodeLabel: getLabelStyle,
+        }}
+        valueRenderer={renderValue}
+        getItemString={getItemString}
+        data={data}
+        keyPath={[root]}
+        invertTheme={invertTheme}
+        hideRoot={hideRoot}
+        shouldExpandNode={shouldExpandNode}
+      />
+    </div>
   );
 };
 

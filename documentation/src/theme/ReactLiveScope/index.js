@@ -6,9 +6,10 @@
  */
 
 import React from 'react';
-import RenderJSON from '../../../docs/components/RenderJSON';
 import Draw from '../../../docs/components/DrawDefinition';
+import RenderJSON from '../../../docs/components/RenderJSON';
 import Tournament from '../../../docs/components/TournamentRecord';
+import Participants from '../../../docs/components/Participants';
 import {
   drawEngine,
   mocksEngine,
@@ -20,12 +21,13 @@ import {
 const ReactLiveScope = {
   React,
   ...React,
-  RenderJSON,
-  mocksEngine,
   drawEngine,
+  mocksEngine,
   tournamentEngine,
   competitionEngine,
+  Participants,
   Tournament,
+  RenderJSON,
   Draw,
 };
 
