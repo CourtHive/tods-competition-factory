@@ -1,5 +1,6 @@
 import { addVenue as venueAdd } from '../../../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addNotice } from '../../../../global/globalState';
+import { UUID } from '../../../../utilities';
 
 import {
   INVALID_VALUES,
@@ -12,23 +13,19 @@ export function addVenue({ tournamentRecords, venue, disableNotice }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof venue !== 'object') return { error: INVALID_VALUES };
 
-  let venueRecord;
-  let venueId = venue?.venueId;
+  if (!venue.venueId) venue.venueId = UUID();
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    Object.assign(venue, { venueId });
     const result = venueAdd({
       tournamentRecord,
-      venue,
       returnDetails: true,
       disableNotice: true,
+      venue,
     });
-    venueId = venueId || result.venue?.venueId;
-    venueRecord = venueRecord || result.venue;
     if (result?.error) return result;
   }
 
-  if (!disableNotice && venueRecord) {
-    addNotice({ topic: ADD_VENUE, payload: { venue: venueRecord } });
+  if (!disableNotice) {
+    addNotice({ topic: ADD_VENUE, payload: { venue } });
   }
 
   return SUCCESS;
