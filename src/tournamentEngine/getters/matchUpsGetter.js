@@ -189,7 +189,7 @@ export function tournamentMatchUps({
       keys.forEach((key) => {
         if (!matchUps[key]) matchUps[key] = [];
         matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
-        matchUps.matchUpsCount += matchUps[key].length;
+        matchUps.matchUpsCount += matchUps[key].eventMatchUps[key];
       });
 
       return matchUps;
