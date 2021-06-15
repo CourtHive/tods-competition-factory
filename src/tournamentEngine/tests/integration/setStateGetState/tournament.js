@@ -285,7 +285,7 @@ export const tournament = {
   participants: [
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776522',
       participantRole: 'COMPETITOR',
       participantName: 'Jaxxx Bickerstxxx',
@@ -358,7 +358,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776523',
       participantRole: 'COMPETITOR',
       participantName: 'Axxx Michelxxx',
@@ -431,7 +431,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776524',
       participantRole: 'COMPETITOR',
       participantName: 'Nicoxxx Kotxxx',
@@ -504,7 +504,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776525',
       participantRole: 'COMPETITOR',
       participantName: 'Zachxxx Fosxxx',
@@ -577,7 +577,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776526',
       participantRole: 'COMPETITOR',
       participantName: 'Exxx xxx',
@@ -650,7 +650,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776527',
       participantRole: 'COMPETITOR',
       participantName: 'Theodxxx Dxxx',
@@ -723,7 +723,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776528',
       participantRole: 'COMPETITOR',
       participantName: 'Quxxx Vandecastexxx',
@@ -796,7 +796,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776529',
       participantRole: 'COMPETITOR',
       participantName: 'DAxxx MAMAxxx',
@@ -869,7 +869,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652a',
       participantRole: 'COMPETITOR',
       participantName: 'Georxxx Samxxx',
@@ -942,7 +942,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652b',
       participantRole: 'COMPETITOR',
       participantName: 'Stexxx Johnxxx',
@@ -1015,7 +1015,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652c',
       participantRole: 'COMPETITOR',
       participantName: 'Sebastxxx xxx',
@@ -1088,7 +1088,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652d',
       participantRole: 'COMPETITOR',
       participantName: 'Wxxx Ecklxxx',
@@ -1161,7 +1161,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652e',
       participantRole: 'COMPETITOR',
       participantName: 'Spenxxx Johnxxx',
@@ -1234,7 +1234,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c777652f',
       participantRole: 'COMPETITOR',
       participantName: 'Axxx xxx',
@@ -1307,7 +1307,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776530',
       participantRole: 'COMPETITOR',
       participantName: 'Danxxx Labraxxx',
@@ -1380,7 +1380,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776531',
       participantRole: 'COMPETITOR',
       participantName: 'Alexanxxx Karxxx',
@@ -1453,7 +1453,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776532',
       participantRole: 'COMPETITOR',
       participantName: 'Masxxx Perxxx',
@@ -1526,7 +1526,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776533',
       participantRole: 'COMPETITOR',
       participantName: 'Jexxx Barxxx',
@@ -1599,7 +1599,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776534',
       participantRole: 'COMPETITOR',
       participantName: 'Brxxx Anderxxx',
@@ -1672,7 +1672,7 @@ export const tournament = {
     },
     {
       individualParticipantIds: [],
-      participantRoleResponsabilities: [],
+      participantRoleResponsibilities: [],
       _id: '5fd36b6c6b5f8f65c7776535',
       participantRole: 'COMPETITOR',
       participantName: 'Pexxx Kuzmexxx',
