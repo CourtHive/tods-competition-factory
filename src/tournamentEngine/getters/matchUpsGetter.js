@@ -185,7 +185,9 @@ export function tournamentMatchUps({
 
   const matchUpGroupings = eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {
-      const keys = Object.keys(eventMatchUps);
+      const keys = Object.keys(eventMatchUps).filter(
+        (key) => key !== 'success'
+      );
       keys.forEach((key) => {
         if (!matchUps[key]) matchUps[key] = [];
         matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
