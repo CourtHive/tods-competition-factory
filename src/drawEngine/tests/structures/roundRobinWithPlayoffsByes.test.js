@@ -166,7 +166,7 @@ it('can generate Playoffs for Round Robins when BYEs are present (5)', () => {
       structureName: 'Playoff 4',
       positionAssignmentsCount: 4,
       participantIdsCount: 1,
-      byesCount: 2,
+      byesCount: 3,
     },
   ];
 
