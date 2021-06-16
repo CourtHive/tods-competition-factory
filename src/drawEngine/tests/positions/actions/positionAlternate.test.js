@@ -134,5 +134,10 @@ it('can generate drawSize: 8 with only 2 participants', () => {
   const secondRoundMatchUpStatuses = unique(
     roundMatchUps[2].map((m) => m.matchUpStatus)
   );
-  expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
+  expect(secondRoundMatchUpStatuses).toEqual([BYE]);
+
+  const thirdRoundMatchUpStatuses = unique(
+    roundMatchUps[3].map((m) => m.matchUpStatus)
+  );
+  expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 });
