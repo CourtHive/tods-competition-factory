@@ -39,7 +39,7 @@
     "release": "np",
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "tsdx test --maxWorkers=50%",
     "lint": "tsdx eslint src",
     "prepare": "tsdx build",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
