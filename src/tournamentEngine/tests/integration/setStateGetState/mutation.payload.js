@@ -679,6 +679,7 @@ export const mutation = {
               value: {
                 seeding: {
                   policyName: 'USTA',
+                  seedingProfile: 'SEPARATE',
                   duplicateSeedNumbers: true,
                   validSeedPositions: {
                     ignore: true,

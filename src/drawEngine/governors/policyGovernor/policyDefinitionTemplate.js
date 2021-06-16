@@ -1,6 +1,5 @@
 export const policyTemplate = () => ({
   seeding: {
-    seedBlocks: {},
     seedCountThresholds: [],
     duplicateSeedNumbers: true,
   },

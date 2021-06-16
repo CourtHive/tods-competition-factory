@@ -156,12 +156,9 @@ export function generateDrawDefinition(props) {
     }) || {};
 
   const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
-  if (!appliedPolicies?.seeding) {
-    if (eventSeedingPolicy) {
-      drawEngine.attachPolicy({ policyDefinition: eventSeedingPolicy });
-    } else {
-      drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-    }
+  if (!appliedPolicies?.seeding && !eventSeedingPolicy) {
+    // if there is no seeding policy then use default seeing policy
+    drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
   }
 
   if (!appliedPolicies?.avoidance && eventAvoidancePolicy) {

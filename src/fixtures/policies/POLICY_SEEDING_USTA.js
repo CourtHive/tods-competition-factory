@@ -1,8 +1,10 @@
+import { SEPARATE } from '../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 
 export const POLICY_SEEDING_USTA = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'USTA',
+    seedingProfile: SEPARATE,
     duplicateSeedNumbers: true,
     validSeedPositions: { ignore: true },
     seedsCountThresholds: [

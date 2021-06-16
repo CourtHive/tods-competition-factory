@@ -21,6 +21,11 @@ export const stageOrder = {
   [VOLUNTARY_CONSOLATION]: 4,
 };
 
+// seedingProfile
+export const CLUSTER = 'CLUSTER';
+export const SEPARATE = 'SEPARATE';
+export const WATERFALL = 'WATERFALL';
+
 // structureType
 export const ITEM = 'ITEM';
 export const CONTAINER = 'CONTAINER';
@@ -30,7 +35,6 @@ export const DRAW = 'DRAW';
 export const RANDOM = 'RANDOM';
 export const TOP_DOWN = 'TOP_DOWN';
 export const BOTTOM_UP = 'BOTTOM_UP';
-export const WATERFALL = 'WATERFALL';
 
 // Match and Link types
 export const POSITION = 'POSITION'; // participant advances based on their finishing position

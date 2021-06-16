@@ -97,6 +97,7 @@ export function getUnseededByePositions({
     return orderedDrawPositions;
   };
 
+  // The goal here is to get an order for assigning bye positions which is well distributed
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
@@ -104,14 +105,18 @@ export function getUnseededByePositions({
     appliedPolicies,
     allPositions: true,
   });
+
   const validBlockDrawPositions = validSeedBlocks.map((block) =>
     block.drawPositions?.map(
       (drawPosition) => drawPosition + drawPositionOffset
     )
   );
+
   let unfilledSeedBlocks = validBlockDrawPositions
     .map(quarterSeparateBlock)
     .filter((block) => block.length);
+
+  //   console.log({ validSeedBlocks, validBlockDrawPositions, unfilledSeedBlocks });
 
   if (isFeedIn) {
     // FEED_IN structures calculate seedDrawPositions uniquely

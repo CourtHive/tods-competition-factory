@@ -1,15 +1,20 @@
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
+import { getSeedBlocks } from '../governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
 import { generateRange, powerOf2, shuffleArray } from '../../utilities';
 import { structureAssignedDrawPositions } from './positionsGetter';
 import { findStructure } from './findStructure';
 
-import { CONTAINER, WATERFALL } from '../../constants/drawDefinitionConstants';
+import {
+  CLUSTER,
+  CONTAINER,
+  WATERFALL,
+} from '../../constants/drawDefinitionConstants';
 import {
   INVALID_SEED_POSITION,
   MISSING_SEEDING_POLICY,
-  MISSING_SEED_BLOCKS,
+  // MISSING_SEED_BLOCKS,
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
@@ -61,6 +66,7 @@ export function getValidSeedBlocks({
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
   const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
+  const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
 
   if (!seedBlocks) {
     return {
@@ -82,7 +88,11 @@ export function getValidSeedBlocks({
   if (structure.structureType === CONTAINER) {
     isContainer = true;
 
-    ({ validSeedBlocks } = constructContainerBlocks({ structure, seedBlocks }));
+    ({ validSeedBlocks } = constructContainerBlocks({
+      seedingProfile,
+      seedBlocks,
+      structure,
+    }));
   } else if (uniqueDrawPositionsByRound.length) {
     isFeedIn = true;
 
@@ -111,6 +121,7 @@ export function getValidSeedBlocks({
     const { blocks, error } = constructPower2Blocks({
       seedBlocks,
       baseDrawSize,
+      seedingProfile,
       seedCountGoal: firstRoundSeedsCount,
       seedNumberOffset: fedSeedNumberOffset,
       drawPositionOffset: firstRoundDrawPositionOffset,
@@ -152,7 +163,7 @@ export function getValidSeedBlocks({
   };
 }
 
-function constructContainerBlocks({ structure, seedBlocks }) {
+function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   const errors = [];
   const containedStructures = structure.structures || [];
 
@@ -171,6 +182,7 @@ function constructContainerBlocks({ structure, seedBlocks }) {
       ({ blocks, error } = constructPower2Blocks({
         seedBlocks,
         baseDrawSize,
+        seedingProfile,
         drawPositionOffset,
         seedCountGoal: baseDrawSize,
       }));
@@ -253,14 +265,16 @@ function constructContainerBlocks({ structure, seedBlocks }) {
 
 function constructPower2Blocks({
   baseDrawSize,
-  seedBlocks = {},
   seedCountGoal,
+  seedingProfile,
+  // seedBlocks = {},
   drawPositionOffset = 0,
   seedNumberOffset = 0,
 }) {
   let count = 1;
   const blocks = [];
 
+  /*
   // sorted for good measure, shouldn't really be necessary
   const seedBlockKeys = Object.keys(seedBlocks).sort((a, b) => +a - +b);
   if (!seedBlockKeys.length) return { blocks, error: MISSING_SEED_BLOCKS };
@@ -287,15 +301,36 @@ function constructPower2Blocks({
       count += drawPositions.length;
     }
   });
+  */
+
+  const { seedBlocks } = getSeedBlocks({
+    participantsCount: baseDrawSize,
+    cluster: seedingProfile === CLUSTER,
+  });
+
+  count = 0;
+  for (const seedBlock of seedBlocks) {
+    if (count + 1 > seedCountGoal) break;
+    const drawPositions = seedBlock.map(
+      (drawPosition) => drawPosition + drawPositionOffset
+    );
+    const seedNumbers = getSeeds(count + 1, seedBlock.length).map(
+      (seedNumber) => +seedNumber + seedNumberOffset
+    );
+    count += seedBlock.length;
+    blocks.push({ drawPositions, seedNumbers });
+  }
 
   return { blocks };
 
   function getSeeds(s, n) {
     return Array.from(new Array(n), (val, i) => i + s);
   }
+  /*
   function getSeedDrawPositions(seedBlock, drawSize) {
     return seedBlock.map((d) => +d[0] + drawSize * d[1]);
   }
+  */
 }
 
 function constructBlocks({
@@ -315,6 +350,8 @@ function constructBlocks({
     [3, 4],
     [5, 6, 7, 8],
     [9, 10, 11, 12, 13, 14, 15, 16],
+    generateRange(17, 33),
+    generateRange(33, 65),
   ];
 
   seedNumberBlocks.forEach((seedNumbers) => {
