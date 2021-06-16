@@ -25,12 +25,11 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
 
   const isRoundRobin = structure?.structureType === CONTAINER;
   const relevantMatchUps = isRoundRobin ? matchUps : firstRoundMatchUps;
-  const relevantMatchUpsCount = relevantMatchUps.length;
 
   // maxByes for RR can only be the number of structures... no more than one bye per structure
   const maxByes = isRoundRobin
     ? structure?.structures?.length || 0
-    : relevantMatchUpsCount;
+    : matchUps.length;
 
   // get stage/stageSequence Entries and qualifiers
   const { structureId, stage, stageSequence } = structure;
@@ -75,8 +74,6 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
     .flat(Infinity)
     .filter((drawPosition) => unassignedDrawPositions.includes(drawPosition));
 
-  // maxByes limitation applies only to stageSequence #1
-  // when doubleByes are supported may do away with maxByes
   const drawSize = positionAssignments.length;
   let byesCount = drawSize - entriesCount;
   if (
