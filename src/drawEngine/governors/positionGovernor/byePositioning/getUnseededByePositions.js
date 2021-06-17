@@ -116,11 +116,10 @@ export function getUnseededByePositions({
     .map(quarterSeparateBlock)
     .filter((block) => block.length);
 
-  //   console.log({ validSeedBlocks, validBlockDrawPositions, unfilledSeedBlocks });
-
   if (isFeedIn) {
     // FEED_IN structures calculate seedDrawPositions uniquely
     // and require a special case to properly calculate bye positions
+    // TODO: convert to using getSeedBlocks
     const baseDrawSize = relevantDrawPositions.length;
     const blockDrawPositions = Object.keys(seedBlocks)
       .filter((key) => key < baseDrawSize / 2)
