@@ -107,7 +107,6 @@ export function getValidSeedBlocks({
 
   if (!isContainer) {
     const { blocks, error } = constructPower2Blocks({
-      // seedBlocks,
       baseDrawSize,
       seedingProfile,
       seedCountGoal: firstRoundSeedsCount,
