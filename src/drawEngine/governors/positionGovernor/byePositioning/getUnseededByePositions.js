@@ -1,7 +1,7 @@
-import { getValidSeedBlocks } from '../../../getters/seedGetter';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-
+import { getValidSeedBlocks } from '../../../getters/seedGetter';
+import { getSeedBlocks } from '../getSeedBlocks';
 import {
   chunkArray,
   numericSort,
@@ -9,14 +9,18 @@ import {
   unique,
 } from '../../../../utilities';
 
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import {
+  CLUSTER,
+  CONTAINER,
+} from '../../../../constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
   structure,
   appliedPolicies,
   isFeedIn,
 }) {
-  const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
+  const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
+
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
     .filter((assignment) => assignment.participantId)
@@ -119,18 +123,14 @@ export function getUnseededByePositions({
   if (isFeedIn) {
     // FEED_IN structures calculate seedDrawPositions uniquely
     // and require a special case to properly calculate bye positions
-    // TODO: convert to using getSeedBlocks
     const baseDrawSize = relevantDrawPositions.length;
-    const blockDrawPositions = Object.keys(seedBlocks)
-      .filter((key) => key < baseDrawSize / 2)
-      .map((key) => {
-        const seedDrawPositions = seedBlocks[key].map(
-          (d) => +d[0] + baseDrawSize * d[1]
-        );
-        return seedDrawPositions.map(
-          (drawPosition) => drawPosition + drawPositionOffset
-        );
-      });
+    const { seedBlocks } = getSeedBlocks({
+      participantsCount: baseDrawSize,
+      cluster: seedingProfile === CLUSTER,
+    });
+    const blockDrawPositions = seedBlocks.map((seedBlock) =>
+      seedBlock.map((drawPosition) => drawPosition + drawPositionOffset)
+    );
 
     unfilledSeedBlocks = blockDrawPositions
       .map(quarterSeparateBlock)
