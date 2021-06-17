@@ -13,8 +13,6 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import {
   INVALID_SEED_POSITION,
-  MISSING_SEEDING_POLICY,
-  // MISSING_SEED_BLOCKS,
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
@@ -65,17 +63,7 @@ export function getValidSeedBlocks({
   const firstRoundDrawPositionOffset =
     (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
-  const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
   const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
-
-  if (!seedBlocks) {
-    return {
-      error: MISSING_SEEDING_POLICY,
-      validSeedBlocks: [],
-      isContainer,
-      isFeedIn,
-    };
-  }
   const baseDrawSize = firstRoundDrawPositions?.length || 0;
 
   // firstRoundDrawPositions have been popped
@@ -90,7 +78,7 @@ export function getValidSeedBlocks({
 
     ({ validSeedBlocks } = constructContainerBlocks({
       seedingProfile,
-      seedBlocks,
+      // seedBlocks,
       structure,
     }));
   } else if (uniqueDrawPositionsByRound.length) {
@@ -119,7 +107,7 @@ export function getValidSeedBlocks({
 
   if (!isContainer) {
     const { blocks, error } = constructPower2Blocks({
-      seedBlocks,
+      // seedBlocks,
       baseDrawSize,
       seedingProfile,
       seedCountGoal: firstRoundSeedsCount,
@@ -231,12 +219,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
       seedCounter++;
     });
   }
-  const seedBlockProfile = [
-    [2],
-    [3, 4],
-    [5, 6, 7, 8],
-    [9, 10, 11, 12, 13, 14, 15, 16],
-  ];
+  const seedBlockProfile = [[2], [3, 4], [5, 6, 7, 8], generateRange(9, 17)];
   seedBlockProfile.forEach((profile) => {
     const drawPositions = [].concat(
       ...profile.map((key) => drawPositionsGroups[key] || [])
@@ -267,41 +250,11 @@ function constructPower2Blocks({
   baseDrawSize,
   seedCountGoal,
   seedingProfile,
-  // seedBlocks = {},
   drawPositionOffset = 0,
   seedNumberOffset = 0,
 }) {
   let count = 1;
   const blocks = [];
-
-  /*
-  // sorted for good measure, shouldn't really be necessary
-  const seedBlockKeys = Object.keys(seedBlocks).sort((a, b) => +a - +b);
-  if (!seedBlockKeys.length) return { blocks, error: MISSING_SEED_BLOCKS };
-
-  // seedBlocks are expected to be well constructed; keys are the sum of all
-  // blocks which have come before + 1;
-  // e.g. { 1: [[]], 2: [[]], 3: [[], []], 5: [[], [], [], []] }
-  seedBlockKeys.forEach((key) => {
-    if (count === +key) {
-      const seedBlock = seedBlocks[key];
-      // array of possible placement drawPositions
-      const drawPositions = getSeedDrawPositions(seedBlock, baseDrawSize).map(
-        (drawPosition) => drawPosition + drawPositionOffset
-      );
-
-      const seedNumbers = getSeeds(count, drawPositions.length).map(
-        (seedNumber) => +seedNumber + seedNumberOffset
-      );
-
-      const block = { seedNumbers, drawPositions };
-      if (count <= seedCountGoal) {
-        blocks.push(block);
-      }
-      count += drawPositions.length;
-    }
-  });
-  */
 
   const { seedBlocks } = getSeedBlocks({
     participantsCount: baseDrawSize,
@@ -326,11 +279,6 @@ function constructPower2Blocks({
   function getSeeds(s, n) {
     return Array.from(new Array(n), (val, i) => i + s);
   }
-  /*
-  function getSeedDrawPositions(seedBlock, drawSize) {
-    return seedBlock.map((d) => +d[0] + drawSize * d[1]);
-  }
-  */
 }
 
 function constructBlocks({
@@ -349,7 +297,7 @@ function constructBlocks({
     [2],
     [3, 4],
     [5, 6, 7, 8],
-    [9, 10, 11, 12, 13, 14, 15, 16],
+    generateRange(9, 17),
     generateRange(17, 33),
     generateRange(33, 65),
   ];
