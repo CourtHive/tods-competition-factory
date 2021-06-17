@@ -1,0 +1,61 @@
+---
+title: Positioning Seeds
+---
+
+import RenderJSON from '../components/RenderJSON';
+import SeedAssignments from './seedAssignments.json';
+import PolicySeeding from './policySeeding.json';
+
+A **seeding policy** specifies how many seeds to allow per draw size and how seeds are to be positioned within a draw structure;
+it may also instruct the `drawEngine` to disallow the placement of seed numbers in positions which are not defined as seeded positions,
+as well as indicate that duplicate seed numbers may be used.
+
+<RenderJSON
+  data={PolicySeeding}
+  root={'seeding'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandToLevel={1}
+/>
+
+## Seed Blocks
+
+A Seed Block is a grouping of positions used for placement of seeded participants.
+For a typical **ITF** elimination structure with a draw size of 32, the seed blocks follow the pattern:
+
+```js
+[1], [32], [9, 24], [8, 16, 17, 25], ...
+```
+
+The first and second seeds are always in their own seed block, which means participants with these seed assignments have fixed positions.
+The third and fourth seeds are in a seed block together; the positions within the block are assigned at random to the seeded participants.
+The fifth through eighth seeds have a block of four possible positions, and so forth.
+
+## Seeding Profiles
+
+There are two **seedingProfiles** supported by the `drawEngine` for elimination structures: "CLUSTER" and "SEPARATE".
+The `seedingProfile` determines which draw positions appear in **seedBlocks**.
+
+"CLUSTER" indicates the pattern used by the **ITF**, while "SEPARATE" indicates the pattern used by the **USTA**.
+
+In **ITF** draws, seeded posiitions can appear next to each other (though the positions are part
+of different eights, for instance). In **USTA** draws there is always an even separation, with seeded positions in
+the top half of of a draw at the top of position groups, and seeded positions in the bottom half of a draw
+at the bottom of position groups.
+
+## Seed Assignments
+
+Every elimination structure has a `seedAssignments` attribute which associates unique `participantIds` with unique `seedNumbers`.
+Only one `participantId` may be assigned to each `seedNumber`, but each seed assignment may have a custom `seedValue`. This supports
+scenarios where, for instance, the fifth throught the eighth seeds appear with a value of **'5-8'**; some providers even choose
+to display numerous participants with the same seed number on a draw... if five particpants have equivalent rankings they could all appear
+as seed **"4"**, even though one of those five would get a position from the 3-4 seedblock and four of the five would be assigned
+positions from the 5-8 seed block.
+
+<RenderJSON
+  data={SeedAssignments}
+  root={'seedAssignments'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandToLevel={3}
+/>
