@@ -10,27 +10,19 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const { structures } = getDrawStructures({
+  let { structures } = getDrawStructures({
     drawDefinition,
     stage: MAIN,
     stageSeqence: 1,
   });
   // mainStructure is necessary to get the full range of finishingPositions
   const mainStructure = structures && structures[0];
-
-  const { structure } = findStructure({ drawDefinition, structureId });
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
-  if (structure.structureType === CONTAINER)
-    return { playoffSourceRounds: [], playoffRoundsRanges: [] };
 
   const positionAssignments = mainStructure.positionAssignments || [];
   const drawPositions = positionAssignments?.map(
@@ -45,6 +37,53 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
     (drawPosition) => !positionsPlayedOff.includes(drawPosition)
   );
 
+  ({ structures } = getDrawStructures({ drawDefinition }));
+  const filteredStructures = structures.filter(
+    (structure) => !structureId || structure.structureId === structureId
+  );
+
+  const available = {};
+  for (const structure of filteredStructures) {
+    const structureId = structure?.structureId;
+    const {
+      playoffSourceRounds: playoffRounds,
+      playoffRoundsRanges,
+      error,
+    } = getavailablePlayoffRounds({
+      drawDefinition,
+      playoffPositions,
+      structureId,
+    });
+    if (error) return { error };
+
+    available[structureId] = {
+      structureId,
+      playoffRounds,
+      playoffRoundsRanges,
+    };
+  }
+
+  if (structureId) {
+    return { positionsPlayedOff, ...available[structureId] };
+  } else {
+    return {
+      positionsPlayedOff,
+      availablePlayoffRounds: Object.values(available),
+    };
+  }
+}
+
+function getavailablePlayoffRounds({
+  drawDefinition,
+  playoffPositions,
+  structureId,
+}) {
+  const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  if (structure.structureType === CONTAINER)
+    return { playoffSourceRounds: [], playoffRoundsRanges: [] };
+
   const { links } = getStructureLinks({ drawDefinition, structureId });
   const linkSourceRoundNumbers =
     links?.source
@@ -52,16 +91,10 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
       ?.filter((link) => link.linkCondition !== FIRST_MATCHUP)
       .map((link) => link.source?.roundNumber) || [];
 
-  const { playoffSourceRounds, playoffRoundsRanges } = getSourceRounds({
+  return getSourceRounds({
     drawDefinition,
     structureId,
     playoffPositions,
     excludeRoundNumbers: linkSourceRoundNumbers,
   });
-
-  return {
-    playoffRounds: playoffSourceRounds,
-    playoffRoundsRanges,
-    positionsPlayedOff,
-  };
 }

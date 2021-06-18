@@ -8,6 +8,7 @@ import {
   CONSOLATION,
   FEED_IN,
   FEED_IN_CHAMPIONSHIP,
+  FEED_IN_CHAMPIONSHIP_TO_R16,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
@@ -311,4 +312,29 @@ it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () 
     structureId,
   });
   expect(playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
+});
+
+it('can determine playoff structures available from playoff structures', () => {
+  const drawProfiles = [
+    {
+      drawSize: 64,
+      drawType: FEED_IN_CHAMPIONSHIP_TO_R16,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { positionsPlayedOff, availablePlayoffRounds } =
+    tournamentEngine.getAvailablePlayoffRounds({
+      drawId,
+    });
+
+  expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
+  expect(availablePlayoffRounds.length).toEqual(2);
+  expect(availablePlayoffRounds[0].playoffRounds).toEqual([4, 5]);
+  expect(availablePlayoffRounds[1].playoffRounds).toEqual([1, 2, 3, 4, 5, 6]);
 });

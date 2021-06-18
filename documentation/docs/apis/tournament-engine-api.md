@@ -1064,17 +1064,17 @@ const drawTypes = tournamentEngine.getAllowedMatchUpFormats();
 
 ## getAvailablePlayoffRounds
 
-Returns rounds of a structure which are available for adding playoff structures.
+If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.
 
 ```js
-const { playoffRounds, playoffRoundsRanges } =
+const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
   tournamentEngine.getAvailablePlayoffRounds({
     drawId,
     structureId,
   });
 ```
 
-...For a SINGLE_ELIMINATION struture with drawSize: 16 would return:
+...For a SINGLE_ELIMINATION struture with drawSize: 16 this would return:
 
 ```js
     {
@@ -1086,6 +1086,13 @@ const { playoffRounds, playoffRoundsRanges } =
       ]
     }
 
+```
+
+When no `structureId` is provided, returns an array of `availablePlayoffRounds` with entries for each structure in a specified `drawDefinition`.
+
+```js
+const { availablePlayoffRounds, positionsPlayedOff } =
+  tournamentEngine.getAvailablePlayoffRounds({ drawId });
 ```
 
 ---
