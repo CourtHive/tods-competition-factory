@@ -40,7 +40,7 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   const linkSourceRoundNumbers =
     links?.source
       // TODO: perhaps this should be enabled by a policyDefinition
-      ?.filter((link) => !link.linkCondition === FIRST_MATCHUP)
+      ?.filter((link) => link.linkCondition !== FIRST_MATCHUP)
       .map((link) => link.source?.roundNumber) || [];
 
   const { playoffSourceRounds, playoffRoundsRanges } = getSourceRounds({
