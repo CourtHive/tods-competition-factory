@@ -93,7 +93,37 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   */
 });
 
-it('can accurately determine available playoff rounds for consolation draw of FIC', () => {
+it('can accurately determine no playoff rounds available for MAIN draw of FIC', () => {
+  const drawProfiles = [
+    {
+      drawSize: 64,
+      drawType: FEED_IN_CHAMPIONSHIP,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
+
+  const {
+    structures: [mainStructure],
+  } = drawEngine
+    .setState(drawDefinition)
+    .getDrawStructures({ stage: MAIN, stageSequence: 1 });
+
+  const { structureId } = mainStructure;
+  const result = tournamentEngine.getAvailablePlayoffRounds({
+    drawDefinition,
+    structureId,
+  });
+  expect(result.playoffRounds).toEqual([]);
+});
+
+it('can accurately determine available playoff rounds for CONSOLATION draw of FIC', () => {
   const drawProfiles = [
     {
       drawSize: 64,
@@ -116,11 +146,11 @@ it('can accurately determine available playoff rounds for consolation draw of FI
     .getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
   const { structureId } = consolationStructure;
-  const { playoffRounds } = tournamentEngine.getAvailablePlayoffRounds({
+  const result = tournamentEngine.getAvailablePlayoffRounds({
     drawDefinition,
     structureId,
   });
-  expect(playoffRounds).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
+  expect(result.playoffRounds).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
 
 it('can generate only specified playoff rounds and give them custom names', () => {
@@ -188,16 +218,72 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
 
   const { structureId } = consolationStructure;
 
+  // in this case a playoff structure is being added to a consolstion structure
   const result = tournamentEngine.devContext(true).addPlayoffStructures({
     drawId,
     structureId,
     exitProfileLimit: true,
     roundProfiles: [{ 2: 1 }],
   });
+  expect(result.drawDefinition.structures.length).toEqual(3);
   expect(result.drawDefinition.links.length).toEqual(7);
 });
 
-it('can determine available playoff rounds for consolation draw of FEED_IN', () => {
+it('can determine playoff structures available from playoff structures', () => {
+  // generate a standard elimination draw
+  const drawProfiles = [
+    {
+      drawSize: 64,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  const mainStructure = drawDefinition.structures[0];
+  let { structureId } = mainStructure;
+
+  let { playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffRounds({
+    drawId,
+    structureId,
+  });
+
+  const fourthRound = playoffRoundsRanges.find(
+    ({ roundNumber }) => roundNumber === 4
+  );
+  expect(fourthRound.finishingPositionRange).toEqual('5-8');
+
+  const result = tournamentEngine.addPlayoffStructures({
+    drawId,
+    structureId,
+    exitProfileLimit: true,
+    roundProfiles: [{ 4: 1 }],
+  });
+  expect(result.success).toEqual(true);
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  expect(drawDefinition.structures.length).toEqual(2);
+  expect(drawDefinition.structures[1].structureName).toEqual('5-8');
+
+  ({ structureId } = drawDefinition.structures[1]);
+
+  ({ playoffRoundsRanges } = tournamentEngine
+    .devContext(true)
+    .getAvailablePlayoffRounds({
+      drawId,
+      structureId,
+    }));
+
+  expect(playoffRoundsRanges.length).toEqual(1);
+  expect(playoffRoundsRanges[0].finishingPositionRange).toEqual('7-8');
+});
+
+it('can determine available playoff rounds for CONSOLATION draw of FEED_IN', () => {
   const drawProfiles = [
     {
       drawSize: 56,

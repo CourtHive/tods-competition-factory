@@ -1,11 +1,12 @@
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { getStructureLinks } from '../../getters/linkGetter';
-import { findStructure } from '../../getters/findStructure';
+import { findStructure, getDrawStructures } from '../../getters/findStructure';
 import { getSourceRounds } from './getSourceRounds';
 
 import {
   CONTAINER,
   FIRST_MATCHUP,
+  MAIN,
 } from '../../../constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -17,13 +18,21 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
+  const { structures } = getDrawStructures({
+    drawDefinition,
+    stage: MAIN,
+    stageSeqence: 1,
+  });
+  // mainStructure is necessary to get the full range of finishingPositions
+  const mainStructure = structures && structures[0];
+
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (structure.structureType === CONTAINER)
     return { playoffSourceRounds: [], playoffRoundsRanges: [] };
 
-  const { positionAssignments } = structure;
+  const positionAssignments = mainStructure.positionAssignments || [];
   const drawPositions = positionAssignments?.map(
     (assignment) => assignment.drawPosition
   );
