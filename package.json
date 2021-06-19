@@ -12,6 +12,7 @@
   "license": "MIT",
   "private": false,
   "jest": {
+    "coverageDirectory": "./benchmarks",
     "watchPathIgnorePatterns": [
       "generated"
     ]
@@ -40,6 +41,7 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --maxWorkers=50%",
+    "coverage": "tsdx test --maxWorkers=50% --collect-coverage",
     "lint": "tsdx eslint src",
     "prepare": "tsdx build",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
