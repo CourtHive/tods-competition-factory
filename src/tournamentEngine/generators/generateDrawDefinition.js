@@ -36,7 +36,7 @@ export function generateDrawDefinition(props) {
     stage = MAIN,
     seedingProfile,
     qualifyingRound,
-    automated = true,
+    automated = true, // can be true/false or "truthy" { seedsOnly: true }
     policyDefinitions,
     qualifyingPositions,
     enforcePolicyLimits = true,
@@ -282,6 +282,7 @@ export function generateDrawDefinition(props) {
   let conflicts = [];
   if (automated !== false) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
+    // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     ({ conflicts } = drawEngine.automatedPositioning({
       mappedMatchUps,
       participants,

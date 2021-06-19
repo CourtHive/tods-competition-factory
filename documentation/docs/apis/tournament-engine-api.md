@@ -901,6 +901,9 @@ tournamentEngine.findVenue({ venueId });
 
 This is a convenience method which handles most use cases for draw generation.
 
+The `automated` parameter is "truthy" and supports placing only seeded participants and any byes which are adjacent to seeded positions.
+Support for this scenario is provided to enable some unique positioning strategies where unseeded participants have some agency in the selection process.
+
 ```js
 const drawDefinitionValues = {
   eventId, // optional - used to find any avoidance policies to be applied
