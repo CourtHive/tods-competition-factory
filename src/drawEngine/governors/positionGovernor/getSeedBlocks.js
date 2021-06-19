@@ -2,7 +2,7 @@ import {
   chunkArray,
   generateRange,
   intersection,
-  nearestPowerOf2,
+  nextPowerOf2,
 } from '../../../utilities';
 
 /**
@@ -18,7 +18,7 @@ import {
  */
 
 export function getSeedBlocks({ participantsCount, cluster }) {
-  const drawSize = nearestPowerOf2(participantsCount);
+  const drawSize = nextPowerOf2(participantsCount);
   const range = generateRange(1, drawSize + 1);
 
   let positions = [];
