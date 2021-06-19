@@ -304,6 +304,7 @@ export function generateDrawDefinition(props) {
     seedingScaleName,
     drawId: drawDefinition.drawId,
     category: event?.category,
+    eventId: event?.eventId,
   };
 
   const timeItem = {
