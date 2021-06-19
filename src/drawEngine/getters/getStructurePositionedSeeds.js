@@ -17,7 +17,7 @@ export function getStructurePositionedSeeds({ drawDefinition, structure }) {
     .map((assignment) => {
       return !seedMap[assignment.participantId]
         ? ''
-        : Object.assign(assignment, {
+        : Object.assign({}, assignment, {
             seedNumber: seedMap[assignment.participantId].seedNumber,
             seedValue: seedMap[assignment.participantId].seedValue,
           });

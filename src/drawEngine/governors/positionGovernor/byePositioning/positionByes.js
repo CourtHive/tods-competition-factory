@@ -8,11 +8,12 @@ import { getByesData } from '../../../getters/getByesData';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function positionByes({
+  blockOrdered = false,
   drawDefinition,
   mappedMatchUps,
-  structure,
   structureId,
-  blockOrdered = false,
+  structure,
+  seedsOnly,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -50,7 +51,7 @@ export function positionByes({
   // derived from theoretical seeding of firstRoundParticipants/2
   const byePositions = [].concat(
     ...seedOrderByePositions,
-    ...unseededByePositions
+    ...(seedsOnly ? [] : unseededByePositions)
   );
 
   // then take only the number of required byes

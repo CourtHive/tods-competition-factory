@@ -13,10 +13,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
  * @param {string} structureId - structure within which positioning should occur
  */
 export function automatedPositioning({
-  event,
-  structureId,
-  drawDefinition,
   tournamentRecord,
+  drawDefinition,
+  structureId,
+  seedsOnly,
+  event,
 }) {
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
@@ -26,6 +27,7 @@ export function automatedPositioning({
     drawDefinition,
     participants,
     structureId,
+    seedsOnly,
   });
 
   return result?.errors?.length ? { error: result.errors } : SUCCESS;
@@ -36,6 +38,7 @@ export function automatedPlayoffPositioning({
   tournamentRecord,
   drawDefinition,
   structureId,
+  seedsOnly,
   event,
 }) {
   if (!event) return { error: EVENT_NOT_FOUND };
@@ -52,10 +55,11 @@ export function automatedPlayoffPositioning({
     playoffStructures.forEach((structure) => {
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
-        participants,
-        drawDefinition,
-        candidatesCount,
         structureId: playoffStructureId,
+        candidatesCount,
+        drawDefinition,
+        participants,
+        seedsOnly,
       });
       result.errors?.forEach((error) => errors.push(error));
     });

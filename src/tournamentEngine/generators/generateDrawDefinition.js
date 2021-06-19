@@ -216,10 +216,10 @@ export function generateDrawDefinition(props) {
           console.log(`%c ${result.error}`, 'color: red');
         }
       });
-  } else if (event?.category) {
+  } else if (event?.category || seedingScaleName) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
-    const { categoryName, ageCategoryCode } = event.category;
+    const { categoryName, ageCategoryCode } = event?.category || {};
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
@@ -267,24 +267,26 @@ export function generateDrawDefinition(props) {
           // TODO: attach basis of seeding information to seedAssignment
           const { participantId } = scaledEntry;
           const result = drawEngine.assignSeed({
+            participantId,
             structureId,
             seedNumber,
             seedValue,
-            participantId,
           });
           if (!result.success) {
             console.log('generateDrawDefinition scaledEntries');
-            console.log(`%c ${result.error}`, 'color: red');
+            console.log(`%c ${result.error} ${seedNumber}`, 'color: red');
           }
         });
   }
 
   let conflicts = [];
   if (automated !== false) {
+    const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     ({ conflicts } = drawEngine.automatedPositioning({
       mappedMatchUps,
-      structureId,
       participants,
+      structureId,
+      seedsOnly,
     }));
   }
 

@@ -1,6 +1,6 @@
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { tournamentEngine } from '../../tournamentEngine/sync';
-import { intersection } from '../../utilities';
+import { generateRange, intersection } from '../../utilities';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -12,12 +12,14 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { SEEDING } from '../../constants/timeItemConstants';
 
 export function generateEventWithDraw({
-  drawProfile,
-  participants,
   completeAllMatchUps,
   randomWinningSide,
+  participants,
+  drawProfile,
+  startDate,
   goesTo,
 }) {
   const {
@@ -74,17 +76,41 @@ export function generateEventWithDraw({
     if (result.error) return { error: result.error };
   }
 
+  // now add seeding information for seedsCount participants
+  const seedingScaleName =
+    event.category?.ageCategoryCode ||
+    event.category?.categoryName ||
+    eventName;
+  if (seedsCount && seedsCount < participantIds.length) {
+    const scaleValues = generateRange(1, seedsCount + 1);
+    scaleValues.forEach((scaleValue, index) => {
+      let scaleItem = {
+        scaleValue,
+        scaleName: seedingScaleName,
+        scaleType: SEEDING,
+        eventType,
+        scaleDate: startDate,
+      };
+      const participantId = participantIds[index];
+      tournamentEngine.setParticipantScaleItem({
+        participantId,
+        scaleItem,
+      });
+    });
+  }
+
   const { drawDefinition, error: generationError } =
     tournamentEngine.generateDrawDefinition({
-      eventId,
-      drawSize,
+      seedingScaleName,
+      structureOptions,
       matchUpFormat,
-      drawType,
       seedsCount,
       feedPolicy,
-      structureOptions,
-      goesTo,
       automated,
+      drawType,
+      drawSize,
+      eventId,
+      goesTo,
       stage,
     });
 

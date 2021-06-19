@@ -117,10 +117,11 @@ export function generateTournamentRecord({
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId } = generateEventWithDraw({
-        drawProfile,
-        participants,
         completeAllMatchUps,
         randomWinningSide,
+        participants,
+        drawProfile,
+        startDate,
         goesTo,
       });
       drawIds.push(drawId);

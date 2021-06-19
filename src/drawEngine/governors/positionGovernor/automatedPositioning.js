@@ -18,6 +18,7 @@ export function automatedPositioning({
   candidatesCount,
   participants,
   structureId,
+  seedsOnly,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { errors: [error] };
@@ -45,6 +46,7 @@ export function automatedPositioning({
       drawDefinition,
       mappedMatchUps,
       structure,
+      seedsOnly,
     }));
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
@@ -65,30 +67,37 @@ export function automatedPositioning({
       drawDefinition,
       mappedMatchUps,
       structure,
+      seedsOnly,
     }));
   }
 
-  const { error: unseededPositionError, conflicts: unseededConflicts } =
-    positionUnseededParticipants({
-      candidatesCount,
-      drawDefinition,
-      mappedMatchUps,
-      participants,
-      structure,
-    });
-  const { error: qualifierPositionError, conflicts: qualifierConflicts } =
-    positionQualifiers({
-      drawDefinition,
-      mappedMatchUps,
-      participants,
-      structure,
-    });
+  const conflicts = {};
 
-  if (seedBlockErrors) errors = errors.concat(...seedBlockErrors);
-  if (byePositionError) errors.push(byePositionError);
-  if (qualifierPositionError) errors.push(qualifierPositionError);
-  if (unseededPositionError) errors.push(unseededPositionError);
+  if (!seedsOnly) {
+    const { error: unseededPositionError, conflicts: unseededConflicts } =
+      positionUnseededParticipants({
+        candidatesCount,
+        drawDefinition,
+        mappedMatchUps,
+        participants,
+        structure,
+      });
+    if (unseededConflicts) conflicts.unseededConflicts = unseededConflicts;
 
-  const conflicts = { unseededConflicts, qualifierConflicts };
+    const { error: qualifierPositionError, conflicts: qualifierConflicts } =
+      positionQualifiers({
+        drawDefinition,
+        mappedMatchUps,
+        participants,
+        structure,
+      });
+    if (qualifierConflicts) conflicts.qualifierConflicts = qualifierConflicts;
+
+    if (seedBlockErrors) errors = errors.concat(...seedBlockErrors);
+    if (byePositionError) errors.push(byePositionError);
+    if (qualifierPositionError) errors.push(qualifierPositionError);
+    if (unseededPositionError) errors.push(unseededPositionError);
+  }
+
   return { errors, conflicts };
 }
