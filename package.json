@@ -15,6 +15,9 @@
     "coverageDirectory": "./benchmarks",
     "watchPathIgnorePatterns": [
       "generated"
+    ],
+    "testPathIgnorePatterns": [
+      "benchmarks"
     ]
   },
   "homepage": "https://github.com/CourtHive/tods-competition-factory",
