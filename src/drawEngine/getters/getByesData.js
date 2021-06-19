@@ -45,7 +45,6 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
   const entriesCount = entries.length + qualifiersCount;
 
   // # Byes = drawSize (positionAssignments) - total entries
-  // const { positionAssignments } = structureAssignedDrawPositions({structure});
   // const { positionAssignments, qualifierPositions, byePositions, unassignedPositions } = structureAssignedDrawPositions({structure});
   const { positionAssignments, unassignedPositions } =
     structureAssignedDrawPositions({ structure });
