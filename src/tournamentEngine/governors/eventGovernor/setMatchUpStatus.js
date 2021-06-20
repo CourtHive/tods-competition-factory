@@ -10,6 +10,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
 /**
@@ -82,6 +83,7 @@ export function setMatchUpStatus(props) {
 }
 
 export function bulkMatchUpStatusUpdate(props) {
+  if (!props.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const { tournamentRecord, outcomes } = props;
   const events = {};
 

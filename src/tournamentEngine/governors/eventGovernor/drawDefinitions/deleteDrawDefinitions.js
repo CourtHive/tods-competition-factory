@@ -5,8 +5,12 @@ import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
 
+import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import {
   HIDDEN,
   PUBLIC,
@@ -17,9 +21,9 @@ import {
   AUDIT,
   DELETED_MATCHUPIDS,
 } from '../../../../constants/topicConstants';
-import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawId = Array.isArray(drawIds) && drawIds[0];
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
   const auditTrail = [];

@@ -1,16 +1,19 @@
-import { matchUpEndTime } from './endTime';
-import { matchUpStartTime } from './startTime';
-import { matchUpDuration } from './matchUpDuration';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from './courtAssignment';
 import { matchUpAssignedVenueId } from './venueAssignment';
 import { extractDate } from '../../../utilities/dateTime';
+import { matchUpDuration } from './matchUpDuration';
+import { matchUpStartTime } from './startTime';
+import { matchUpEndTime } from './endTime';
+
+import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
 export function getMatchUpScheduleDetails({
   scheduleVisibilityFilters,
   matchUp,
 }) {
+  if (!matchUp) return { error: MISSING_MATCHUP };
   if (scheduleVisibilityFilters) console.log({ scheduleVisibilityFilters });
 
   const { milliseconds, time } = matchUpDuration({ matchUp });

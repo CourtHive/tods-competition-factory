@@ -1,4 +1,6 @@
 import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScaleItem';
+
+import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
 
 /**
@@ -22,6 +24,7 @@ export function getScaledEntries({
   scaleSortMethod,
   sortDescending = false,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   entries = entries || event?.entries || [];
 
   const stageEntries = entries.filter(

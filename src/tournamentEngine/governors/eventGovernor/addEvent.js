@@ -1,10 +1,14 @@
 import { eventTemplate } from '../../../tournamentEngine/generators/eventTemplate';
 
-import { EVENT_EXISTS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { UUID } from '../../../utilities';
+import {
+  EVENT_EXISTS,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 
 export function addEvent({ tournamentRecord, event }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) tournamentRecord.events = [];
 
   // set default startDate, endDate based on tournamentRecord

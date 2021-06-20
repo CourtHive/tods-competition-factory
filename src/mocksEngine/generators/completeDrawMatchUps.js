@@ -39,7 +39,7 @@ export function completeDrawMatchUps({
         matchUpId,
       });
       const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
-      if (targetMatchUp.readyToScore) {
+      if (targetMatchUp?.readyToScore) {
         const result = completeMatchUp({
           tournamentEngine,
           targetMatchUp,

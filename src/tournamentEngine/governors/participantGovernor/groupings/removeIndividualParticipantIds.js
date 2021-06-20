@@ -1,5 +1,9 @@
 import { addNotice } from '../../../../global/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { GROUP, TEAM } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
@@ -7,10 +11,6 @@ import {
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { GROUP, TEAM } from '../../../../constants/participantTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -89,6 +89,7 @@ export function removeParticipantIdsFromAllTeams({
   tournamentRecord,
   individualParticipantIds = [],
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentParticipants = tournamentRecord.participants || [];
 
   let modifications = 0;

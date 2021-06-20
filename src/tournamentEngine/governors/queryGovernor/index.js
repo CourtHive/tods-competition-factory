@@ -39,7 +39,10 @@ import {
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
-function getDrawDefinition({ drawDefinition }) {
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+
+function getDrawDefinition({ tournamentRecord, drawDefinition }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
 

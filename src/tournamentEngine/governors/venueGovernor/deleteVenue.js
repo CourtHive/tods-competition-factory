@@ -4,9 +4,12 @@ import { addNotice } from '../../../global/globalState';
 import { getCourts } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  VENUE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 export function deleteVenue({
   tournamentRecord,
@@ -14,6 +17,7 @@ export function deleteVenue({
   venueId,
   force,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   const { courts } = getCourts({ tournamentRecord, venueId });
@@ -48,6 +52,7 @@ export function deleteVenue({
 }
 
 export function deleteVenues({ tournamentRecord, venueIds, force }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   tournamentRecord.venues.forEach((venue) => {

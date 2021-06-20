@@ -5,6 +5,7 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionParticipantAction({
@@ -15,6 +16,7 @@ export function positionParticipantAction({
   positionActionName,
   participantIdAttributeName,
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structureId,

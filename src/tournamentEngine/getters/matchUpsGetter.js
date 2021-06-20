@@ -8,6 +8,7 @@ import {
 
 import {
   MATCHUP_NOT_FOUND,
+  MISSING_EVENT,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
@@ -69,6 +70,7 @@ export function allDrawMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, category, gender, matchUpFormat } = event;
   const additionalContext = Object.assign({}, context, {
     eventId,
@@ -111,6 +113,7 @@ export function allEventMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate, category, gender, matchUpFormat } =
     event;
 
@@ -157,6 +160,7 @@ export function tournamentMatchUps({
   policyDefinition,
   scheduleVisibilityFilters,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentId =
     tournamentRecord.unifiedTournamentId?.tournamentId ||
     tournamentRecord.tournamentId;
@@ -215,6 +219,7 @@ export function eventMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event;
 
   const context = { eventId, eventName };
@@ -268,6 +273,7 @@ export function drawMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
+  if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event;
 
   const context = { eventId, eventName };
@@ -299,7 +305,8 @@ function getParticipants({ tournamentRecord }) {
 
 export function publicFindMatchUp(props) {
   Object.assign(props, { inContext: true });
-  return { matchUp: makeDeepCopy(findMatchUp(props).matchUp) };
+  const { matchUp, error } = findMatchUp(props);
+  return { matchUp: makeDeepCopy(matchUp), error };
 }
 
 export function findMatchUp({
@@ -311,6 +318,7 @@ export function findMatchUp({
   inContext,
   nextMatchUps,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force

@@ -4,40 +4,43 @@ import { UUID } from '../../../utilities/UUID';
 
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantTypes';
-import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { DOUBLES } from '../../../constants/matchUpTypes';
+import {
+  EVENT_NOT_FOUND,
+  MATCHUP_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
 
 export function assignTieMatchUpParticipantId(props) {
-  const errors = [];
-
   let { individualParticipants } = props;
   const { tournamentRecord, drawDefinition, drawId, event } = props;
   const { participantId, sideNumber, sideMember, tieMatchUpId } = props;
+
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!event) return { error: EVENT_NOT_FOUND };
 
   const { matchUp: tieMatchUp } = findMatchUp({
     drawDefinition,
     matchUpId: tieMatchUpId,
   });
-  if (event && tieMatchUp) {
-    const side = tieMatchUp.sides[sideNumber - 1];
-    if (tieMatchUp.matchUpType === DOUBLES) {
-      if (participantId) {
-        const result = addParticipantIdToPair({ side, sideMember });
-        if (result.success) updateDrawDefinition();
-      } else {
-        const result = removeParticipantIdFromPair({ side, sideMember });
-        if (result.success) updateDrawDefinition();
-      }
+  if (!tieMatchUp) return { error: MATCHUP_NOT_FOUND };
+
+  const side = tieMatchUp.sides[sideNumber - 1];
+  if (tieMatchUp.matchUpType === DOUBLES) {
+    if (participantId) {
+      const result = addParticipantIdToPair({ side, sideMember });
+      if (result.success) updateDrawDefinition();
     } else {
-      side.participantId = participantId;
-      updateDrawDefinition();
+      const result = removeParticipantIdFromPair({ side, sideMember });
+      if (result.success) updateDrawDefinition();
     }
   } else {
-    errors.push({ error: EVENT_NOT_FOUND });
+    side.participantId = participantId;
+    updateDrawDefinition();
   }
 
-  return errors && errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
 
   function addParticipantIdToPair({ side, sideMember }) {
     if (!side.participant)
