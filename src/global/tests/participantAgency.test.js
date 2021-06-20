@@ -1,7 +1,12 @@
+import { resolveDrawPositions } from '../../drawEngine/generators/drawPositionsResolver';
 import tournamentEngine from '../../tournamentEngine/sync';
-import { makeDeepCopy, nextPowerOf2, randomPop } from '../../utilities';
 import mocksEngine from '../../mocksEngine';
-import { randomInt } from '../../utilities/math';
+import {
+  generateRange,
+  nextPowerOf2,
+  randomPop,
+  unique,
+} from '../../utilities';
 
 // these tests were written in preparation for enabling automated draw positioning
 // using "participant agency" protocols including drawPosition preferences for non-seeded particpants
@@ -11,8 +16,8 @@ it.each([
   { participantsCount: 63, seedsCount: 16, automated: true },
   { participantsCount: 63, seedsCount: 16, automated: false },
   { participantsCount: 63, seedsCount: 16, automated: { seedsOnly: true } },
-  // { participantsCount: 45, seedsCount: 16, automated: { seedsOnly: true } }, // only places byes for seeded participants
-  // { participantsCount: 50, seedsCount: 16, automated: { seedsOnly: true } },
+  { participantsCount: 45, seedsCount: 16, automated: { seedsOnly: true } }, // only places byes for seeded participants
+  { participantsCount: 50, seedsCount: 16, automated: { seedsOnly: true } },
 ])(
   'mocksEngine can generate seedsCount seeded participants',
   ({ participantsCount, seedsCount, automated }) => {
@@ -85,8 +90,9 @@ it.each([
 
       const participantFactors = Object.assign(
         ...participantIdsWithAgency.map((participantId) => {
+          const range = generateRange(0, unassignedDrawPositions.length - 1);
           const preferences = [1, 2, 3].map(() => {
-            const index = randomInt(0, unassignedDrawPositions.length - 1);
+            const index = randomPop(range);
             const drawPosition = unassignedDrawPositions[index];
             return drawPosition;
           });
@@ -94,89 +100,22 @@ it.each([
         })
       );
 
-      participantAgency({ participantFactors, unassignedDrawPositions });
+      const { drawPositionResolutions, report } = resolveDrawPositions({
+        participantFactors,
+        positionAssignments,
+      });
+      expect(typeof report === 'object').toEqual(true);
+      // logging for diagnostics
+      // console.log({ report });
+
+      const resolvedDrawPositions = Object.keys(drawPositionResolutions);
+      expect(unassignedDrawPositions.length).toEqual(
+        resolvedDrawPositions.length
+      );
+
+      expect(unique(resolvedDrawPositions).length).toEqual(
+        unique(Object.values(drawPositionResolutions)).length
+      );
     }
   }
 );
-
-function participantAgency({ participantFactors, unassignedDrawPositions }) {
-  let participantPreferences = makeDeepCopy(participantFactors, false, true);
-
-  let drawPositionResolutions;
-  let remainingPreferences = true;
-  while (remainingPreferences) {
-    ({ drawPositionResolutions, remainingPreferences, participantPreferences } =
-      resolvePreferences({
-        participantPreferences,
-        drawPositionResolutions,
-      }));
-  }
-
-  const resolvedDrawPositions = Object.keys(drawPositionResolutions).map((dp) =>
-    parseInt(dp)
-  );
-  const remainingDrawPositions = unassignedDrawPositions.filter(
-    (drawPosition) => !resolvedDrawPositions.includes(drawPosition)
-  );
-  const unresolvedParticipantIds = Object.keys(participantPreferences);
-
-  console.log({
-    drawPositionResolutions,
-    unresolvedParticipantIds,
-    remainingDrawPositions,
-  });
-}
-
-function resolvePreferences({
-  participantPreferences,
-  drawPositionResolutions = {},
-}) {
-  const drawPositionsMap = Object.keys(participantPreferences).reduce(
-    (dpm, participantId) => {
-      const pp = participantPreferences[participantId];
-      const firstPreference = pp.preferences[0];
-      // there may be no preferences left!
-      if (firstPreference) {
-        if (!dpm[firstPreference]) dpm[firstPreference] = [];
-        dpm[firstPreference].push(participantId);
-      }
-      return dpm;
-    },
-    {}
-  );
-  const minimumContentionCount = Math.min(
-    ...Object.values(drawPositionsMap)
-      .filter((f) => f.length)
-      .map((v) => v.length)
-  );
-  const minimumContentionPositions = Object.keys(drawPositionsMap).filter(
-    (drawPosition) =>
-      drawPositionsMap[drawPosition].length &&
-      minimumContentionCount &&
-      drawPositionsMap[drawPosition].length === minimumContentionCount
-  );
-
-  minimumContentionPositions.forEach((position) => {
-    const candidates = drawPositionsMap[position];
-    const selectedParticipantId = randomPop(candidates);
-    drawPositionResolutions[position] = selectedParticipantId;
-    // remove resolved participants from preferences
-    delete participantPreferences[selectedParticipantId];
-  });
-
-  // now filter resolved positions from every participant's preferences
-  let remainingPreferences;
-  Object.values(participantPreferences).forEach((pd) => {
-    pd.preferences = pd.preferences.filter((dp) => {
-      const notResolved = !minimumContentionPositions.includes(dp.toString());
-      if (notResolved) remainingPreferences = true;
-      return notResolved;
-    });
-  });
-
-  return {
-    drawPositionResolutions,
-    remainingPreferences,
-    participantPreferences,
-  };
-}
