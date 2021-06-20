@@ -18,8 +18,10 @@ import {
  * and resolving drawPositions for each group in a sequence which gives preference to higher ranked/rated participants
  *
  * @param {object} participantFactors - { [participantId]: { preferences: [1, 2, 3] }} - the length of the preference array is arbitrary
- * @param {object[]} positionAssignments - object from target structure containing already assigned positions
+ * @param {object[]} positionAssignments - object from target structure containing any already assigned positions
  * @returns {object} drawPositionResolutions = { [drawPosition]: participantId }
+ *
+ * ACKNOWLEDGEMENT: Inspired by commentary from Shannon Wrege relating to the ITA Kickoff Weekend draft
  */
 
 export function resolveDrawPositions({
