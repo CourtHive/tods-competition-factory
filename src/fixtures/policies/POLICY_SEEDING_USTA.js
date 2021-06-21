@@ -16,6 +16,7 @@ export const POLICY_SEEDING_USTA = {
       { drawSize: 64, minimumParticipantCount: 33, seedsCount: 16 },
       { drawSize: 128, minimumParticipantCount: 65, seedsCount: 16 },
       { drawSize: 128, minimumParticipantCount: 97, seedsCount: 32 },
+      { drawSize: 256, minimumParticipantCount: 192, seedsCount: 64 },
     ],
   },
 };
