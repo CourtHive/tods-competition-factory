@@ -1,3 +1,4 @@
+import { keyValueConstants } from '../drawEngine/governors/scoreGovernor/keyValueScore/constants';
 import { auditConstants } from './auditConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
 import { entryStatusConstants } from './entryStatusConstants';
@@ -31,6 +32,7 @@ export const factoryConstants = {
   extensionConstants,
   flightConstants,
   genderConstants,
+  keyValueConstants,
   matchUpActionConstants,
   matchUpStatusConstants,
   matchUpTypes,
