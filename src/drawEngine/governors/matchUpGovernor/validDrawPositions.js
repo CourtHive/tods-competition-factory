@@ -1,6 +1,9 @@
 import { getDevContext } from '../../../global/globalState';
 
+import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
+
 export function validDrawPositions({ matchUps }) {
+  if (!matchUps) return { error: MISSING_MATCHUPS };
   const drawPositions = matchUps.map((matchUp) => matchUp.drawPositions).flat();
 
   if (getDevContext()) {

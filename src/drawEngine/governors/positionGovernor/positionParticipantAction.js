@@ -25,7 +25,7 @@ export function positionParticipantAction({
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  if (positionAssignment.participantId) {
+  if (positionAssignment?.participantId) {
     let result = assignDrawPosition({
       drawDefinition,
       structureId,

@@ -12,12 +12,12 @@ import { stageOrder } from '../../constants/drawDefinitionConstants';
 export function matchUpSort(a, b) {
   return (
     stageDifference(a, b) ||
-    (a.stageSequence || 0) - (b.stageSequence || 0) ||
-    a.roundNumber - b.roundNumber ||
-    (a.roundPosition || 0) - (b.roundPosition || 0)
+    (a?.stageSequence || 0) - (b?.stageSequence || 0) ||
+    a?.roundNumber - b?.roundNumber ||
+    (a?.roundPosition || 0) - (b?.roundPosition || 0)
   );
 }
 
 function stageDifference(a, b) {
-  return (stageOrder[a.stage] || 0) - (stageOrder[b.stage] || 0);
+  return (stageOrder[a?.stage] || 0) - (stageOrder[b?.stage] || 0);
 }

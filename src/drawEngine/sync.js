@@ -19,6 +19,7 @@ import {
   deleteNotices,
 } from '../global/globalState';
 
+import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
@@ -48,7 +49,8 @@ export const drawEngine = (function () {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
-    setDrawDescription: ({ description }) => {
+    setDrawDescription: ({ description } = {}) => {
+      if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = description;
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
@@ -82,7 +84,7 @@ export const drawEngine = (function () {
     setDevContext(isDev);
     return fx;
   };
-  fx.setParticipants = (participants) => {
+  fx.setParticipants = (participants = []) => {
     tournamentParticipants = participants;
     return fx;
   };

@@ -23,6 +23,7 @@ export function getAvailablePlayoffRounds({ drawDefinition, structureId }) {
   });
   // mainStructure is necessary to get the full range of finishingPositions
   const mainStructure = structures && structures[0];
+  if (!mainStructure) return { error: STRUCTURE_NOT_FOUND };
 
   const positionAssignments = mainStructure.positionAssignments || [];
   const drawPositions = positionAssignments?.map(

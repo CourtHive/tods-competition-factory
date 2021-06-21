@@ -12,10 +12,10 @@ test('can properly analyze standard advantage sets with tiebreak', () => {
   const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
 
   let analysis = analyzeSet({ matchUpScoringFormat });
-  let { setError: error, isValidSetOutcome } = analysis;
-  expect(isValidSetOutcome).toEqual(false);
-  expect(analysis.isValidSet).toEqual(false);
+  let { error, isValidSetOutcome } = analysis;
   expect(error).toEqual(MISSING_SET_OBJECT);
+  expect(isValidSetOutcome).toEqual(undefined);
+  expect(analysis.isValidSet).toEqual(undefined);
 
   let setObject = { setNumber: 1, side1Score: 6, side2Score: 3 };
   analysis = analyzeSet({ setObject, matchUpScoringFormat });

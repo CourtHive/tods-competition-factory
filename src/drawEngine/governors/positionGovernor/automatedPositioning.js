@@ -21,7 +21,7 @@ export function automatedPositioning({
   seedsOnly,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
-  if (error) return { errors: [error] };
+  if (error) return { error };
 
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({

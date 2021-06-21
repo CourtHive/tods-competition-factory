@@ -17,6 +17,7 @@ import {
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -70,6 +71,8 @@ export function assignDrawPositionBye({
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { structure } = findStructure({ drawDefinition, structureId });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
   mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
 
   pushGlobalLog({

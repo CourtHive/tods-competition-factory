@@ -1,4 +1,7 @@
+import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+
 export function generateTieMatchUpScoreString({ matchUp, separator = '-' }) {
+  if (!matchUp) return { error: MISSING_MATCHUP };
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];

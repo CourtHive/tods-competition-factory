@@ -1,3 +1,4 @@
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -28,6 +29,8 @@ export function generateScoreString(props) {
     winnerFirst = true,
     addOutcomeString,
   } = props;
+  if (!sets) return { error: MISSING_VALUE };
+
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;
 

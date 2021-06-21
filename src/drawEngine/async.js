@@ -8,17 +8,19 @@ import positionGovernor from './governors/positionGovernor';
 import structureGovernor from './governors/structureGovernor';
 
 import { notifySubscribersAsync } from '../global/notifySubscribers';
+import definitionTemplate from './generators/drawDefinitionTemplate';
+import { UUID, makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
   setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  createInstanceState,
 } from '../global/globalState';
-import definitionTemplate from './generators/drawDefinitionTemplate';
-import { UUID, makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
 
+import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
@@ -29,7 +31,8 @@ function newDrawDefinition({ drawId, drawType } = {}) {
   return Object.assign(drawDefinition, { drawId, drawType });
 }
 
-export const drawEngineAsync = (async function () {
+export function drawEngineAsync() {
+  createInstanceState();
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
@@ -48,7 +51,8 @@ export const drawEngineAsync = (async function () {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
-    setDrawDescription: ({ description }) => {
+    setDrawDescription: ({ description } = {}) => {
+      if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = description;
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
@@ -67,7 +71,7 @@ export const drawEngineAsync = (async function () {
     return fx;
   }
 
-  await importGovernors([
+  importGovernors([
     linkGovernor,
     queryGovernor,
     scoreGovernor,
@@ -82,7 +86,7 @@ export const drawEngineAsync = (async function () {
     setDevContext(isDev);
     return fx;
   };
-  fx.setParticipants = (participants) => {
+  fx.setParticipants = (participants = []) => {
     tournamentParticipants = participants;
     return fx;
   };
@@ -133,6 +137,6 @@ export const drawEngineAsync = (async function () {
 
     return result;
   }
-})();
+}
 
 export default drawEngineAsync;

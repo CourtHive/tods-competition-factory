@@ -1,5 +1,8 @@
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+
 export const getSetComplement = (props) => {
   const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = props;
+  if (lowValue === undefined) return { error: MISSING_VALUE };
   let valueAsNumber = parseInt(lowValue);
   if (valueAsNumber?.toString().length > 2) {
     valueAsNumber = parseInt(valueAsNumber.toString().slice(0, 2));
@@ -31,6 +34,7 @@ export const getSetComplement = (props) => {
 
 export const getTiebreakComplement = (props) => {
   const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = props;
+  if (lowValue === undefined) return { error: MISSING_VALUE };
   let valueAsNumber = parseInt(lowValue);
 
   // do not accept low values greater than two digits;

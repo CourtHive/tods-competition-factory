@@ -1,6 +1,7 @@
 import { getPlayoffStructures } from '../../../tournamentEngine/getters/structureGetter';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 
 /**
@@ -11,6 +12,7 @@ import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants
  */
 export function structureActions(props) {
   const actions = [];
+  if (!props?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const isComplete = isCompletedStructure(props);
   const hasPlayoffPositionsFilled = allPlayoffPositionsFilled(props);
   return { actions, state: { isComplete, hasPlayoffPositionsFilled } };
@@ -22,6 +24,7 @@ export function structureActions(props) {
  * @param {string} structureId
  */
 export function isCompletedStructure(props) {
+  if (!props?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const structureMatchUps = getStructureMatchUps(props);
 
   const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
@@ -43,6 +46,8 @@ export function isCompletedStructure(props) {
  */
 export function allPlayoffPositionsFilled(props) {
   const { drawDefinition, structureId } = props;
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
   const { playoffStructures } = getPlayoffStructures({
     drawDefinition,
     structureId,

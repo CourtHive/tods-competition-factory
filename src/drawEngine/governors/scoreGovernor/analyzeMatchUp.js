@@ -1,7 +1,8 @@
 import { analyzeSet } from './analyzeSet';
 import { instanceCount } from '../../../utilities/arrays';
-
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+
+import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 
@@ -9,6 +10,7 @@ export function analyzeMatchUp(props) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } =
     props || {};
   let { matchUpFormat } = props || {};
+  if (!matchUp) return { error: MISSING_MATCHUP };
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;
   const matchUpScoringFormat = matchUpFormatCode?.parse(matchUpFormat);
@@ -43,14 +45,15 @@ export function analyzeMatchUp(props) {
   const setObject =
     setNumber <= setsCount &&
     matchUp?.sets.find((set) => set.setNumber === setNumber);
-  const specifiedSetAnalysis = analyzeSet({ setObject, matchUpScoringFormat });
+  const specifiedSetAnalysis =
+    setObject && analyzeSet({ setObject, matchUpScoringFormat });
 
   const {
     isCompletedSet,
     sideGameScores,
     // sidePointScores,
     sideTiebreakScores,
-  } = specifiedSetAnalysis;
+  } = specifiedSetAnalysis || {};
   const isActiveSet = !!(
     (setObject && !isCompletedSet && isLastSetWithValues) ||
     (setNumber && setNumber === setsCount + 1 && !isCompletedMatchUp)

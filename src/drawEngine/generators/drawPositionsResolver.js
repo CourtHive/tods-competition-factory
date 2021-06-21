@@ -1,3 +1,4 @@
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 import {
   makeDeepCopy,
   generateRange,
@@ -28,6 +29,8 @@ export function resolveDrawPositions({
   participantFactors,
   positionAssignments,
 }) {
+  if (!participantFactors || !positionAssignments)
+    return { error: MISSING_VALUE };
   // make a copy so that the original can be referenced
   let participantPreferences = makeDeepCopy(participantFactors, false, true);
 

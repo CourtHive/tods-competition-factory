@@ -1,12 +1,15 @@
+import { getSetWinningSide } from './getSetWinningSide';
+
 import {
   INVALID_GAME_SCORES,
   INVALID_WINNING_SIDE,
   MISSING_SET_OBJECT,
 } from '../../../constants/errorConditionConstants';
-import { getSetWinningSide } from './getSetWinningSide';
 
 export function analyzeSet(props) {
   const { setObject, matchUpScoringFormat } = props;
+  if (!setObject) return { error: MISSING_SET_OBJECT };
+
   const { setNumber } = setObject || {};
   const { bestOf } = matchUpScoringFormat || {};
   const isDecidingSet = !!(setNumber && setNumber === bestOf);
@@ -102,10 +105,6 @@ export function analyzeSet(props) {
     sideTiebreakScoresCount,
     winningSide,
   };
-
-  if (!setObject) {
-    analysis.setError = MISSING_SET_OBJECT;
-  }
 
   if (setObject?.winningSide !== undefined) {
     if (isTiebreakSet) {
