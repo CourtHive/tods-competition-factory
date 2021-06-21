@@ -8,6 +8,7 @@ import {
   sameDay,
   timeToDate,
 } from '../../../../utilities/dateTime';
+import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -34,6 +35,12 @@ export function calculateScheduleTimes({
 
   venueIds,
 }) {
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
   const { courts: allCourts, venues } = getVenuesAndCourts({
     tournamentRecords,
   });

@@ -10,7 +10,11 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionCon
  * @returns
  */
 export function getMatchUpDailyLimits({ tournamentRecords, tournamentId }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
     (currentTournamentId) =>

@@ -1,12 +1,13 @@
 import { makeDeepCopy } from '../../utilities';
 import { getVenues } from '../../tournamentEngine/getters/venueGetter';
-import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function getVenuesAndCourts({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const venues = [];
   const courts = [];
@@ -37,8 +38,11 @@ export function getVenuesAndCourts({ tournamentRecords }) {
 }
 
 export function getCompetitionVenues({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   return tournamentIds.reduce(

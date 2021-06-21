@@ -4,7 +4,11 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionCon
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attachPolicy({ tournamentRecords, policyDefinition }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = attachTournamentPolicy({

@@ -13,7 +13,11 @@ import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getLinkedTournamentIds({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const linkedTournamentIds = Object.assign(
     {},
@@ -44,7 +48,11 @@ export function getLinkedTournamentIds({ tournamentRecords }) {
  * @returns { success, error }
  */
 export function linkTournaments({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { tournamentIds, error } = getTournamentIds(tournamentRecords);
   if (error) return { error };
@@ -63,7 +71,11 @@ export function linkTournaments({ tournamentRecords }) {
 }
 
 export function unlinkTournaments({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const result = removeExtension({
     tournamentRecords,

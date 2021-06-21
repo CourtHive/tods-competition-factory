@@ -5,6 +5,7 @@ import {
   INVALID_OBJECT,
   INVALID_RECORDS,
   INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORDS,
   NOT_FOUND,
 } from '../constants/errorConditionConstants';
 import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
@@ -17,6 +18,12 @@ export function removeTournamentRecord(tournamentRecords, tournamentId) {
 }
 
 export function removeUnlinkedTournamentRecords(tournamentRecords) {
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
   const { extension } = findExtension({
     tournamentRecords,
     name: LINKED_TOURNAMENTS,

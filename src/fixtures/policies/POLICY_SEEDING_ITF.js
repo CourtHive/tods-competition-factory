@@ -5,7 +5,6 @@ export const POLICY_SEEDING_ITF = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF',
     seedingProfile: CLUSTER,
-    drawSizeProgression: true,
     duplicateSeedNumbers: true,
   },
 };

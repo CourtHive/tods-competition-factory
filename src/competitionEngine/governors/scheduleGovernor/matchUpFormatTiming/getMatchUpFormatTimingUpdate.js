@@ -3,7 +3,11 @@ import { getMatchUpFormatTimingUpdate as getUpdate } from '../../../../tournamen
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 
 export function getMatchUpFormatTimingUpdate({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
 

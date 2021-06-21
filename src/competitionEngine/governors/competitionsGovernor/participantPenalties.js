@@ -45,6 +45,11 @@ export function addPenalty(props) {
 
 export function modifyPenalty(props) {
   const { tournamentRecords } = props;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -58,6 +63,11 @@ export function modifyPenalty(props) {
 
 export function removePenalty(props) {
   const { tournamentRecords } = props;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -70,7 +80,11 @@ export function removePenalty(props) {
 }
 
 export function getCompetitionPenalties({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const allPenalties = [];
   for (const tournamentRecord of Object.values(tournamentRecords)) {

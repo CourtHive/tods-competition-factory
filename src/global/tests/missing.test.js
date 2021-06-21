@@ -1,10 +1,42 @@
+import competitionEngineAsync from '../../competitionEngine/async';
+import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
 import tournamentEngineSync from '../../tournamentEngine/sync';
 // import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
 
+const asyncCompetitionEngine = competitionEngineAsync();
 const asyncTournamentEngine = tournamentEngineAsync();
 // const asyncDrawEngine = drawEngineAsync();
+
+it.each([competitionEngineSync, asyncCompetitionEngine])(
+  'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
+  async (competitionEngine) => {
+    const competitionEngineMethods = Object.keys(competitionEngine);
+    for (const method of competitionEngineMethods) {
+      await competitionEngine.reset();
+      const result = await competitionEngine[method]();
+      if (!result) {
+        // covers methods which are expected to return boolean
+        expect(result).toEqual(false);
+      } else if (['credits', 'version'].includes(method)) {
+        expect(result).not.toBeUndefined();
+      } else if (method === 'getState') {
+        expect(result.tournamentRecord).toBeUndefined();
+      } else if (method === 'setSubscriptions') {
+        expect(result.setState).not.toBeUndefined();
+      } else if (result.success) {
+        expect(['reset'].includes(method)).toEqual(true);
+      } else {
+        if (['devContext'].includes(method)) {
+          expect(result.version).not.toBeUndefined();
+        } else {
+          expect(result.error).not.toBeUndefined();
+        }
+      }
+    }
+  }
+);
 
 it.each([asyncTournamentEngine, tournamentEngineSync])(
   'will return MISSING_TOURNAMENT_RECORD for most methods if no state has been set',

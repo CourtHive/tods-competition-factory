@@ -15,7 +15,11 @@ export function allCompetitionMatchUps({
   contextFilters,
   nextMatchUps,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const competitionMatchUps = tournamentIds
@@ -35,6 +39,11 @@ export function allCompetitionMatchUps({
 }
 
 export function competitionScheduleMatchUps(props) {
+  if (
+    typeof props?.tournamentRecords !== 'object' ||
+    !Object.keys(props?.tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
   const { courts, venues } = getVenuesAndCourts(props);
   const { sortCourtsData, sortDateMatchUps = true } = props;
   const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
@@ -95,7 +104,11 @@ export function competitionMatchUps({
   matchUpFilters,
   contextFilters,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const tournamentsMatchUps = tournamentIds.map((tournamentId) => {

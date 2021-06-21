@@ -14,7 +14,11 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function getPersonRequests({ tournamentRecords, requestType }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const personRequests = {};
 
@@ -145,7 +149,11 @@ export function removePersonRequests({
   personId,
   date,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const filterRequests = (personId) => {

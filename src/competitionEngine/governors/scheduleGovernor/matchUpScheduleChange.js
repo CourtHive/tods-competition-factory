@@ -1,11 +1,20 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 
-import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  NO_MODIFICATIONS_APPLIED,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
   const { tournamentRecords } = params;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
   const {
     sourceMatchUpContextIds,
     targetMatchUpContextIds,
