@@ -1,6 +1,7 @@
 {
   "policyName": "My Org Policy",
   "seedingProfile": "CLUSTER",
+  "drawSizeProgression": "true",
   "duplicateSeedNumbers": "true",
   "validSeedPositions": { "ignore": "true" },
   "seedsCountThresholds": [
