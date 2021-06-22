@@ -39,7 +39,10 @@ export function resolveDrawPositions({
     ({ drawPosition }) => drawPosition
   );
   const unassignedDrawPositions = positionAssignments
-    .filter((assignment) => !assignment.participantId && !assignment.bye)
+    .filter(
+      (assignment) =>
+        !assignment.participantId && !assignment.bye && !assignment.qualifier
+    )
     .map(({ drawPosition }) => drawPosition);
 
   let drawPositionResolutions;
