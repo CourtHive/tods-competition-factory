@@ -16,10 +16,6 @@ export function directWinner({
     const targetMatchUpDrawPosition =
       targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
 
-    console.log('%c winner is targeted to another structure', 'color: pink', {
-      targetMatchUpDrawPositions,
-    });
-
     const sourceStructureId = winnerTargetLink.source.structureId;
     const { positionAssignments: sourcePositionAssignments } =
       structureAssignedDrawPositions({
