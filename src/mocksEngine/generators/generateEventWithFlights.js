@@ -110,6 +110,7 @@ export function generateEventWithFlights({
       automated,
       drawEntries,
       matchUpFormat,
+      matchUpType: eventType,
     });
     const result = tournamentEngine.addDrawDefinition({
       eventId,
