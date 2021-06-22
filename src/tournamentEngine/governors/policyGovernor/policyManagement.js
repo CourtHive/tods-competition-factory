@@ -3,7 +3,6 @@ import {
   addTournamentExtension,
   removeEventExtension,
 } from '../tournamentGovernor/addRemoveExtensions';
-// import policyTemplate from './policyDefinitionTemplate';
 
 import {
   getAppliedPolicies,

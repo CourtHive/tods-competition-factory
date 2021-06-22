@@ -1,15 +1,12 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
-// import policyTemplate from './policyDefinitionTemplate';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  // INVALID_OBJECT,
   EXISTING_POLICY_TYPE,
   MISSING_DRAW_DEFINITION,
   MISSING_POLICY_DEFINITION,
-  // INVALID_POLICY_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
 function addPolicyProfile({ drawDefinition, policyDefinition }) {
