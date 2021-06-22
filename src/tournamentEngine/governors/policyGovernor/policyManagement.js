@@ -111,15 +111,3 @@ export function removeEventPolicy({ tournamentRecord, event, policyType }) {
   }
   return policyRemoved ? SUCCESS : { error: POLICY_NOT_FOUND };
 }
-
-/*
-function validDefinitionKeys(definition) {
-  const definitionKeys = Object.keys(definition);
-  const validKeys = Object.keys(policyTemplate());
-  const valid = definitionKeys.reduce(
-    (p, key) => (!validKeys.includes(key) ? false : p),
-    true
-  );
-  return valid;
-}
-*/

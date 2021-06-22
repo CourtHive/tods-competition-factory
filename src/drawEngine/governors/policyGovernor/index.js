@@ -49,18 +49,6 @@ function attachPolicy({ drawDefinition, policyDefinition }) {
   return SUCCESS;
 }
 
-/*
-function validDefinitionKeys(definition) {
-  const definitionKeys = Object.keys(definition);
-  const validKeys = Object.keys(policyTemplate());
-  const valid = definitionKeys.reduce(
-    (p, key) => (!validKeys.includes(key) ? false : p),
-    true
-  );
-  return valid;
-}
-*/
-
 const policyGovernor = {
   attachPolicy,
 };
