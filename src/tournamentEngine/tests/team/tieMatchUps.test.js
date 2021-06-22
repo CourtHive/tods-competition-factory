@@ -20,9 +20,10 @@ it('can generate draws in TEAM events with tieFormat', () => {
     },
   ];
 
+  const nationalityCodesCount = 10;
   const participantsProfile = {
     participantsCount: 100,
-    nationalityCodesCount: 10,
+    nationalityCodesCount,
   };
 
   const {
@@ -37,6 +38,18 @@ it('can generate draws in TEAM events with tieFormat', () => {
   expect(drawId).not.toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord);
+
+  const result = tournamentEngine.generateTeamsFromParticipantAttribute({
+    personAttribute: 'nationalityCode',
+  });
+  expect(result.success).toEqual(true);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    { participantFilters: { participantTypes: [TEAM] } }
+  );
+  // since teams are generated from nationalityCodes expect there to be
+  // the same number of teams as nationalityCodes
+  expect(tournamentParticipants.length).toEqual(nationalityCodesCount);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   // 31 matchUps and 279 tieMatchUps = 310
