@@ -13,6 +13,9 @@
   "private": false,
   "jest": {
     "coverageDirectory": "./benchmarks",
+    "coveragePathIgnorePatterns": [
+      "benchmarks"
+    ],
     "watchPathIgnorePatterns": [
       "generated"
     ],
