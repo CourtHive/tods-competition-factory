@@ -1,13 +1,13 @@
 import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
-import { filterMatchUps } from './filterMatchUps';
 import { findStructure } from '../findStructure';
 
 import {
   ABANDONED,
   upcomingMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined
@@ -61,7 +61,12 @@ export function getStructureMatchUps({
   const completedMatchUps = [];
 
   matchUps
-    .filter((matchUp) => !matchUp.collectionId) // filter out collection matchUps
+    .filter((matchUp) => {
+      const teamsMatchUpsOnly =
+        matchUpFilters?.matchUpTypes?.length === 1 &&
+        matchUpFilters.matchUpTypes[0] === TEAM;
+      return matchUp.matchUpType !== TEAM && teamsMatchUpsOnly ? false : true;
+    })
     .forEach((matchUp) => {
       if (matchUp.matchUpStatus === ABANDONED) {
         abandonedMatchUps.push(matchUp);
@@ -110,29 +115,9 @@ export function getStructureMatchUps({
             (!roundFilter || roundFilterEquality) &&
             (!requireParticipants || drawPositionsAssigned)));
 
-      const isTieMatchUp = Array.isArray(matchUp.tieMatchUps);
-
-      if (isTieMatchUp) {
-        const filteredTieMatchUps = filterMatchUps({
-          matchUps: matchUp.tieMatchUps,
-          ...matchUpFilters,
-        });
-        filteredTieMatchUps.forEach((tieMatchUp) => {
-          if (isByeMatchUp) return byeMatchUps.push(tieMatchUp);
-          if (isUpcomingMatchUp) return upcomingMatchUps.push(tieMatchUp);
-          if (matchUp.winningSide) {
-            if (tieMatchUp.winningSide)
-              return completedMatchUps.push(tieMatchUp);
-            return abandonedMatchUps.push(tieMatchUp);
-          }
-          return pendingMatchUps.push(tieMatchUp);
-        });
-      }
-
       if (isByeMatchUp) return byeMatchUps.push(matchUp);
       if (matchUpIsComplete(matchUp)) return completedMatchUps.push(matchUp);
       if (isUpcomingMatchUp) return upcomingMatchUps.push(matchUp);
-
       return pendingMatchUps.push(matchUp);
     });
 

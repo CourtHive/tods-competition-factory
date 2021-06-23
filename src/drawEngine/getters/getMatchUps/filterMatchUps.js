@@ -4,6 +4,8 @@ import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAss
 import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
+import { TEAM } from '../../../constants/matchUpTypes';
+
 export function filterMatchUps(props) {
   const {
     stages,
@@ -42,8 +44,9 @@ export function filterMatchUps(props) {
   const targetRoundNumbers = Array.isArray(roundNumbers)
     ? roundNumbers.filter((f) => f)
     : [];
+
   const targetMatchUpTypes = Array.isArray(matchUpTypes)
-    ? matchUpTypes.filter((f) => f)
+    ? matchUpTypes.filter((f) => f && f !== TEAM)
     : [];
   const targetCourtIds = Array.isArray(courtIds)
     ? courtIds.filter((f) => f)
