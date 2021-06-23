@@ -1988,10 +1988,6 @@ const { eventData } = tournamentEngine.publishEvent({
 
 ---
 
-## regenerateDrawDefinition
-
----
-
 ## removeDrawDefinitionExtension
 
 ```js

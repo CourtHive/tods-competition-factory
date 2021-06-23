@@ -24,7 +24,6 @@ import {
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 
-import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import {
   setDrawDefaultMatchUpFormat,
@@ -151,7 +150,6 @@ const eventGovernor = {
   toggleParticipantCheckInState,
 
   generateDrawDefinition,
-  regenerateDrawDefinition,
   addDrawDefinitionTimeItem,
 
   assignTieMatchUpParticipantId,
