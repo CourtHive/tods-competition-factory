@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
-import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+// import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -16,6 +16,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
+import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 
 /**
  *
@@ -90,14 +91,17 @@ export function addEventEntries(props) {
       });
     }
   });
+
   if (drawId) {
-    addDrawEntries({
-      drawId,
-      drawDefinition,
+    const result = addDrawEntries({
       participantIds: validParticipantIds,
+      drawDefinition,
       entryStatus,
       entryStage,
+      drawId,
+      event,
     });
+    if (result.error) return result;
   }
 
   // now remove any unpaired participantIds which exist as part of added paired participants

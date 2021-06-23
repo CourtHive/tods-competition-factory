@@ -5,6 +5,7 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import {
   EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
+  MISSING_ENTRIES,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -20,6 +21,15 @@ export function addDrawEntries({
 }) {
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: EVENT_NOT_FOUND };
+
+  if (!event.entries) event.entries = [];
+  const eventEnteredParticipantIds = event.entries.map(
+    ({ participantId }) => participantId
+  );
+  const missingEventEntries = participantIds.filter(
+    (participantId) => !eventEnteredParticipantIds.includes(participantId)
+  );
+  if (missingEventEntries.length) return { error: MISSING_ENTRIES };
 
   if (drawDefinition) {
     const result = addEntries({
@@ -49,6 +59,7 @@ export function addDrawEntries({
         });
       }
     });
+
     if (autoEntryPositions) {
       flight.drawEntries = refreshEntryPositions({
         entries: flight.drawEntries,

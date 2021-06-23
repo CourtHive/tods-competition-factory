@@ -46,7 +46,17 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const drawId = drawIds[0];
 
   const participantIdsToAdd = participantIds.slice(36, 38);
+
+  // adding draw entries will fail becuase the participantIds are not in event.entries
   result = tournamentEngine.addDrawEntries({
+    eventId,
+    drawId,
+    participantIds: participantIdsToAdd,
+  });
+  expect(result.error).not.toBeUndefined();
+
+  // participants can be added to the event and draw at the same time
+  result = tournamentEngine.addEventEntries({
     eventId,
     drawId,
     participantIds: participantIdsToAdd,

@@ -90,7 +90,7 @@ tournamentEngine.addDrawDefinitionExtension({
 
 ## addDrawEntries
 
-Bulk add an array of **participantIds** to a specific draw **stage** with a specific **entryStatus**.
+Bulk add an array of `participantIds` to a specific **stage** of a draw with a specific **entryStatus**. Will fail if `participantIds` are not already present in `event.entries`. Use `addEventEntries` to add to both `event` and `drawDefinition` at the same time.
 
 ```js
 tournamentEngine.addDrawEntries({
@@ -117,7 +117,7 @@ tournamentEngine.addEvent({ event });
 
 ## addEventEntries
 
-Adds participantIds to the entries array in an event
+Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `drawDefinition.entries` at the same time.
 
 ```js
 tournamentEngine.addEventEntries({
@@ -126,6 +126,7 @@ tournamentEngine.addEventEntries({
   stage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  drawId, // optional - will add participantIds to specified drawDefinition.entries and flightProfile.flight[].drawEntries
 });
 ```
 
