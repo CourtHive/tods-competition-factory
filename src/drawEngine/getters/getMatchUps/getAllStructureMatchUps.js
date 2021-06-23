@@ -152,16 +152,12 @@ export function getAllStructureMatchUps({
     matchUps,
   });
 
-  const matchUpTies = matchUps?.filter((matchUp) =>
-    Array.isArray(matchUp.tieMatchUps)
-  );
-  matchUpTies.forEach((matchUpTie) => {
-    const tieMatchUps = matchUpTie.tieMatchUps;
-    matchUps = matchUps.concat(...tieMatchUps);
-  });
-
   if (matchUpFilters) {
-    matchUps = filterMatchUps({ matchUps, ...matchUpFilters });
+    matchUps = filterMatchUps({
+      matchUps,
+      ...matchUpFilters,
+      filterMatchUpTypes: false,
+    });
   }
 
   if (inContext) {
@@ -188,9 +184,34 @@ export function getAllStructureMatchUps({
         scheduleVisibilityFilters,
       })
     );
+
+    const matchUpTies = matchUps?.filter((matchUp) =>
+      Array.isArray(matchUp.tieMatchUps)
+    );
+    matchUpTies.forEach((matchUpTie) => {
+      const tieMatchUps = matchUpTie.tieMatchUps;
+      matchUps = matchUps.concat(...tieMatchUps);
+    });
+
     if (contextFilters) {
       matchUps = filterMatchUps({ matchUps, ...contextFilters });
     }
+  } else {
+    const matchUpTies = matchUps?.filter((matchUp) =>
+      Array.isArray(matchUp.tieMatchUps)
+    );
+    matchUpTies.forEach((matchUpTie) => {
+      const tieMatchUps = matchUpTie.tieMatchUps;
+      matchUps = matchUps.concat(...tieMatchUps);
+    });
+  }
+
+  // now filter again if there are any matchUpTypes
+  if (matchUpFilters?.matchUpTypes) {
+    matchUps = filterMatchUps({
+      matchUps,
+      matchUpTypes: matchUpFilters.matchUpTypes,
+    });
   }
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
