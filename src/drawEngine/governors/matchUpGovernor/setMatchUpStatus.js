@@ -71,11 +71,12 @@ export function setMatchUpStatus(props) {
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const assignedDrawPositions = matchUp.drawPositions.filter((f) => f);
+  const assignedDrawPositions = matchUp.drawPositions?.filter((f) => f);
+
   if (
     matchUpStatus &&
     particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
-    assignedDrawPositions.length < 2
+    assignedDrawPositions?.length < 2
   ) {
     return { error: INVALID_MATCHUP_STATUS };
   }

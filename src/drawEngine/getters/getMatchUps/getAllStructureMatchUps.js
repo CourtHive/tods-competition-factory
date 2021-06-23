@@ -214,6 +214,7 @@ export function getAllStructureMatchUps({
     roundProfile,
     appliedPolicies,
     isCollectionBye,
+    tieDrawPositions,
     roundNamingProfile,
     drawPositionsRanges,
     scheduleVisibilityFilters,
@@ -224,19 +225,15 @@ export function getAllStructureMatchUps({
       scheduleVisibilityFilters,
       matchUp,
     });
-    const {
-      drawPositions,
-      collectionPosition,
-      collectionId,
-      roundNumber,
-      roundPosition,
-    } = matchUp;
+    const drawPositions = matchUp.drawPositions || tieDrawPositions;
+    const { collectionPosition, collectionId, roundNumber, roundPosition } =
+      matchUp;
 
     const drawPositionCollectionAssignment =
       getDrawPositionCollectionAssignment({
+        sideLineUps,
         collectionId,
         collectionPosition,
-        sideLineUps,
         drawPositions,
       });
 
@@ -267,6 +264,7 @@ export function getAllStructureMatchUps({
         matchUpStatus,
         structureName,
         stageSequence,
+        drawPositions,
         drawPositionsRange,
       },
       context,
@@ -287,7 +285,6 @@ export function getAllStructureMatchUps({
           const matchUpTieId = matchUpWithContext.matchUpId;
           return addMatchUpContext({
             matchUp,
-            sideLineUps: lineUps,
             matchUpTieId,
             isRoundRobin,
             roundProfile,
@@ -295,8 +292,10 @@ export function getAllStructureMatchUps({
             isCollectionBye,
             roundNamingProfile,
             drawPositionsRanges,
+            sideLineUps: lineUps,
             sourceDrawPositionRanges,
             scheduleVisibilityFilters,
+            tieDrawPositions: drawPositions,
           });
         }
       );

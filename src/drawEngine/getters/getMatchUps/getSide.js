@@ -21,10 +21,9 @@ export function getSide({
   const assignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
-  const participantId =
-    (drawPositionCollectionAssignment &&
-      drawPositionCollectionAssignment[drawPosition]) ||
-    assignment?.participantId;
+  const participantId = drawPositionCollectionAssignment
+    ? drawPositionCollectionAssignment[drawPosition]
+    : assignment?.participantId;
   const sideValue = assignment
     ? getSideValue({
         displaySideNumber,
