@@ -182,6 +182,7 @@ export const VALUE_UNCHANGED = 'Value unchanged';
 export const NOT_FOUND = 'Not found';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
+export const EXISTING_FLIGHT = 'Existing flight';
 export const EXISTING_PROFILE = 'Existing Profile';
 
 export const errorConditionConstants = {
@@ -197,6 +198,7 @@ export const errorConditionConstants = {
   EVENT_EXISTS,
   EVENT_NOT_FOUND,
   EXISTING_END_TIME,
+  EXISTING_FLIGHT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,

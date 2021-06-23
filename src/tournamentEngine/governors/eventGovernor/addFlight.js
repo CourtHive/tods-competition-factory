@@ -4,6 +4,7 @@ import { intersection, UUID } from '../../../utilities';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import {
+  EXISTING_FLIGHT,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
@@ -59,6 +60,11 @@ export function addFlight({
   if (stage) flight.drawSize = stage;
   if (drawSize) flight.drawSize = drawSize;
   if (qualifyingPositions) flight.qualifyingPositions = qualifyingPositions;
+
+  const flightExists = (flightProfile?.flights || []).find(
+    ({ drawId }) => drawId === flight.drawId
+  );
+  if (flightExists) return { error: EXISTING_FLIGHT };
 
   const flights = (flightProfile?.flights || []).concat(flight);
 
