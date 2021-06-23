@@ -1,4 +1,4 @@
-import { generateTieMatchUpScoreString } from '../../accessors/matchUpAccessor';
+import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
@@ -13,13 +13,16 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP };
 
-  const matchUp = findMatchUp({ drawDefinition, matchUpId });
+  const { matchUp, error } = findMatchUp({ drawDefinition, matchUpId });
+  if (error) return { error };
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const scoreString = generateTieMatchUpScoreString({ matchUp });
-  const scoreObject = {};
+  const { set, scoreString } = generateTieMatchUpScore({
+    matchUp,
+  });
+  const scoreObject = { sets: [set] };
   const { winningSide } = matchUp;
-  const reverseScoreString = scoreString.split('-').reverse().join('-');
+  const reverseScoreString = scoreString.split(' - ').reverse().join(' - ');
 
   if (winningSide) {
     const winnerPerspective = scoreString;

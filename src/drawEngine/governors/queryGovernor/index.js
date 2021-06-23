@@ -1,6 +1,6 @@
 import { matchUpActions } from './matchUpActions';
 import {
-  generateTieMatchUpScoreString,
+  generateTieMatchUpScore,
   matchUpDuration,
   getMatchUpScheduleDetails,
   getMatchUpContextIds,
@@ -72,7 +72,7 @@ const queryGovernor = {
   getMatchUpParticipantIds,
   getMatchUpScheduleDetails,
 
-  generateTieMatchUpScoreString,
+  generateTieMatchUpScore,
   matchUpDuration,
   credits,
 };

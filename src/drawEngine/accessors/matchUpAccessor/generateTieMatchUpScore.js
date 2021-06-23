@@ -1,6 +1,6 @@
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
-export function generateTieMatchUpScoreString({ matchUp, separator = '-' }) {
+export function generateTieMatchUpScore({ matchUp, separator = '-' }) {
   if (!matchUp) return { error: MISSING_MATCHUP };
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
@@ -44,7 +44,8 @@ export function generateTieMatchUpScoreString({ matchUp, separator = '-' }) {
   });
 
   const scoreString = sidePoints.join(` ${separator} `);
-  return scoreString;
+  const set = { side1Score: sidePoints[0], side2Score: sidePoints[1] };
+  return { set, scoreString };
 }
 
 function getCollectionPositionValue({

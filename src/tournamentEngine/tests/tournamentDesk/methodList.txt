@@ -6,7 +6,7 @@ competitionEngine
 * scheduleMatchUps
 
 drawEngine
-- generateTieMatchUpScoreString
+- generateTieMatchUpScore
 - checkSetIsComplete
 - getMatchUpContextIds
 - getNextUnfilledDrawPositions

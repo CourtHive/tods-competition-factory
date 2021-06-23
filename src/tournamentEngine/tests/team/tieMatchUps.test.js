@@ -5,7 +5,7 @@ import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 
-it('can generate draws in TEAM events with tieFormat', () => {
+it.only('can generate draws in TEAM events with tieFormat', () => {
   const nationalityCodesCount = 10;
   const participantsProfile = {
     participantsCount: 100,
@@ -129,10 +129,11 @@ it('can generate draws in TEAM events with tieFormat', () => {
     winningSide: 1,
     matchUpStatus: COMPLETED,
   });
-  const { matchUpId } = singlesMatchUps[0];
+  const { matchUpId, matchUpTieId } = singlesMatchUps[0];
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
+    matchUpTieId,
     outcome,
   });
   expect(result.success).toEqual(true);

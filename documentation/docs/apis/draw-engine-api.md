@@ -558,12 +558,12 @@ let result = drawEngine.generateScoreString({
 
 ---
 
-## generateTieMatchUpScoreString
+## generateTieMatchUpScore
 
 Returns string representation of current tieMatchUp score.
 
 ```js
-drawEngine.generateTieMatchUpScoreString({
+drawEngine.generateTieMatchUpScore({
   matchUp,
   separator, // optional - defaults to '-'
 });
