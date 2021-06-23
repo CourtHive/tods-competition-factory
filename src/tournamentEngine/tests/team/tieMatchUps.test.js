@@ -5,7 +5,7 @@ import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 
-it.only('can generate draws in TEAM events with tieFormat', () => {
+it('can generate draws in TEAM events with tieFormat', () => {
   const nationalityCodesCount = 10;
   const participantsProfile = {
     participantsCount: 100,
