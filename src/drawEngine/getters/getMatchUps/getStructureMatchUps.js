@@ -1,6 +1,7 @@
 import { matchUpIsComplete } from '../../governors/scoreGovernor/matchUpIsComplete';
 import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
+import { filterMatchUps } from './filterMatchUps';
 import { findStructure } from '../findStructure';
 
 import {
@@ -112,7 +113,11 @@ export function getStructureMatchUps({
       const isTieMatchUp = Array.isArray(matchUp.tieMatchUps);
 
       if (isTieMatchUp) {
-        matchUp.tieMatchUps.forEach((tieMatchUp) => {
+        const filteredTieMatchUps = filterMatchUps({
+          matchUps: matchUp.tieMatchUps,
+          ...matchUpFilters,
+        });
+        filteredTieMatchUps.forEach((tieMatchUp) => {
           if (isByeMatchUp) return byeMatchUps.push(tieMatchUp);
           if (isUpcomingMatchUp) return upcomingMatchUps.push(tieMatchUp);
           if (matchUp.winningSide) {
