@@ -17,24 +17,14 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (error) return { error };
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const { set, scoreString } = generateTieMatchUpScore({
-    matchUp,
-  });
+  const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
+    generateTieMatchUpScore({ matchUp });
   const scoreObject = { sets: [set] };
-  const { winningSide } = matchUp;
-  const reverseScoreString = scoreString.split(' - ').reverse().join(' - ');
 
-  if (winningSide) {
-    const winnerPerspective = scoreString;
-    const loserPerspective = reverseScoreString;
-    scoreObject.scoreStringSide1 =
-      winningSide === 1 ? winnerPerspective : loserPerspective;
-    scoreObject.scoreStringSide2 =
-      winningSide === 2 ? winnerPerspective : loserPerspective;
-  } else {
-    scoreObject.scoreStringSide1 = scoreString;
-    scoreObject.scoreStringSide2 = reverseScoreString;
-  }
+  scoreObject.scoreStringSide1 = scoreStringSide1;
+  scoreObject.scoreStringSide2 = scoreStringSide2;
+
+  console.log(scoreObject, { winningSide });
 
   modifyMatchUpScore({
     drawDefinition,

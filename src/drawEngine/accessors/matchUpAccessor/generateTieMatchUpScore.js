@@ -1,7 +1,12 @@
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
-export function generateTieMatchUpScore({ matchUp, separator = '-' }) {
+export function generateTieMatchUpScore({
+  matchUp,
+  tieFormat,
+  separator = '-',
+}) {
   if (!matchUp) return { error: MISSING_MATCHUP };
+
   const sidePoints = [0, 0];
   const tieMatchUps = matchUp?.tieMatchUps || [];
   const collectionDefinitions = matchUp?.tieFormat?.collectionDefinitions || [];
@@ -43,9 +48,29 @@ export function generateTieMatchUpScore({ matchUp, separator = '-' }) {
     }
   });
 
-  const scoreString = sidePoints.join(` ${separator} `);
+  const scoreStringSide1 = sidePoints.join(separator);
+  const scoreStringSide2 = sidePoints.reverse().join(separator);
   const set = { side1Score: sidePoints[0], side2Score: sidePoints[1] };
-  return { set, scoreString };
+
+  // now calculate if there is a winningSide
+  let winningSide;
+  const format = matchUp.tieFormat || tieFormat;
+  if (format) {
+    const valueGoal = format.winCriteria?.valueGoal;
+    if (valueGoal) {
+      const sideThatWon = sidePoints
+        .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))
+        .find(({ points }) => points >= valueGoal);
+      winningSide = sideThatWon?.sideNumber;
+    }
+  }
+
+  return {
+    set,
+    winningSide,
+    scoreStringSide1,
+    scoreStringSide2,
+  };
 }
 
 function getCollectionPositionValue({

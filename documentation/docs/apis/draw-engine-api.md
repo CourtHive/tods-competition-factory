@@ -563,10 +563,11 @@ let result = drawEngine.generateScoreString({
 Returns string representation of current tieMatchUp score.
 
 ```js
-drawEngine.generateTieMatchUpScore({
-  matchUp,
-  separator, // optional - defaults to '-'
-});
+const { scoreStringSide1, scoreStringSide2, set, winningSide } =
+  drawEngine.generateTieMatchUpScore({
+    matchUp,
+    separator, // optional - defaults to '-'
+  });
 ```
 
 ---
