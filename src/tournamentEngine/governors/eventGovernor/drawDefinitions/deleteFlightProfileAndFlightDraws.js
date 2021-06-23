@@ -19,12 +19,14 @@ export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
     const drawIds = flightProfile.flights
       ?.map(({ drawId }) => drawId)
       .filter((f) => f);
-    deleteDrawDefinitions({
+    const result = deleteDrawDefinitions({
       tournamentRecord,
       eventId: event.eventId,
       drawIds,
     });
-    removeEventExtension({ event, name: FLIGHT_PROFILE });
+    if (result.error) return result;
+
+    return removeEventExtension({ event, name: FLIGHT_PROFILE });
   }
 
   return SUCCESS;

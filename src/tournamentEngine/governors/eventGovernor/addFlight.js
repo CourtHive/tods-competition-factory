@@ -3,7 +3,6 @@ import { getFlightProfile } from '../../getters/getFlightProfile';
 import { intersection, UUID } from '../../../utilities';
 
 import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_EVENT,
@@ -71,7 +70,5 @@ export function addFlight({
     },
   };
 
-  addEventExtension({ event, extension });
-
-  return SUCCESS;
+  return addEventExtension({ event, extension });
 }
