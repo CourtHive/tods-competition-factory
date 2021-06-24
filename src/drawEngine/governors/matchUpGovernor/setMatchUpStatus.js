@@ -119,7 +119,6 @@ export function setMatchUpStatus(props) {
 
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
-    // matchUpId,
     structure,
     drawDefinition,
     mappedMatchUps,
