@@ -71,16 +71,6 @@ export function setMatchUpStatus(props) {
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
-  const assignedDrawPositions = matchUp.drawPositions?.filter((f) => f);
-
-  if (
-    matchUpStatus &&
-    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
-    assignedDrawPositions?.length < 2
-  ) {
-    return { error: INVALID_MATCHUP_STATUS };
-  }
-
   const { schedule } = props;
   if (schedule) {
     const result = addMatchUpScheduleItems({
@@ -104,6 +94,21 @@ export function setMatchUpStatus(props) {
 
   Object.assign(props, { mappedMatchUps, inContextDrawMatchUps });
 
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(
+    (f) => f
+  );
+
+  if (
+    matchUpStatus &&
+    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
+    (!assignedDrawPositions || assignedDrawPositions?.length < 2)
+  ) {
+    return { error: INVALID_MATCHUP_STATUS };
+  }
+
   const targetData = positionTargets({
     matchUpId,
     structure,
@@ -119,9 +124,6 @@ export function setMatchUpStatus(props) {
 
   // if neither loserMatchUp or winnerMatchUp have winningSide
   // => score matchUp and advance participants along links
-  const inContextMatchUp = inContextDrawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
   const matchUpParticipantIds =
     inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
   const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
