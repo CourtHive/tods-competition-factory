@@ -4,8 +4,9 @@ import tournamentEngine from '../../sync';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { UUID } from '../../../utilities';
 
-it('can generate draws in TEAM events with tieFormat', () => {
+it('can generate TEAM events', () => {
   const nationalityCodesCount = 10;
   const participantsProfile = {
     participantsCount: 100,
@@ -15,11 +16,9 @@ it('can generate draws in TEAM events with tieFormat', () => {
   const drawSize = 8;
   const eventProfiles = [
     {
-      eventName: 'Test Team Event',
       eventType: TEAM,
-      category: {
-        categoryName: 'U12',
-      },
+      eventName: 'Test Team Event',
+      category: { categoryName: 'Junior' },
       drawProfiles: [
         {
           drawSize,
@@ -90,11 +89,6 @@ it('can generate draws in TEAM events with tieFormat', () => {
     structureId,
   });
 
-  /*
-  const { pendingMatchUps } = tournamentEngine.tournamentMatchUps();
-  expect(pendingMatchUps.length).toEqual(70);
-  */
-
   const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [TEAM] },
   });
@@ -103,6 +97,8 @@ it('can generate draws in TEAM events with tieFormat', () => {
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
   });
+  // since no tieFormat was provided the default # of matchUps is 6 SINGLES, 3 DOUBLES
+  // there are 7 standard elimination TEAM matchUps * 9 = 63
   expect(matchUps.length).toEqual(63);
 
   const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
@@ -140,39 +136,152 @@ it('can generate draws in TEAM events with tieFormat', () => {
 
   const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(1);
+
+  // only the 4 first round TEAM matchUps are considered upcoming
+  // because the collectionAssignments have not yet been made for the SINGLES/DOUBLES matchUps
+  const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(upcomingMatchUps.length).toEqual(4);
+  expect(upcomingMatchUps[0].score.sets).toEqual([
+    { side1Score: 1, side2Score: 0 },
+  ]);
+  expect(upcomingMatchUps[0].score.scoreStringSide1).toEqual('1-0');
+
+  // all other SINGLES/DOUBLES/TEAM matchUps are pending
+  const { pendingMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(pendingMatchUps.length).toEqual(65);
 });
 
-it('can generate drawDefinition for TEAM event', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
+it('can generate draws in TEAM events with tieFormat', () => {
+  const nationalityCodesCount = 10;
+  const participantsProfile = {
+    participantsCount: 100,
+    nationalityCodesCount,
+  };
+
+  const valueGoal = 2;
+  const tieFormat = {
+    winCriteria: { valueGoal },
+    collectionDefinitions: [
+      {
+        collectionId: UUID(),
+        collectionName: 'Doubles',
+        matchUpType: 'DOUBLES',
+        matchUpCount: 1,
+        matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+        matchUpValue: 1,
+      },
+      {
+        collectionId: UUID(),
+        collectionName: 'Singles',
+        matchUpType: SINGLES,
+        matchUpCount: 2,
+        matchUpFormat: 'SET3-S:6/TB7',
+        matchUpValue: 1,
+      },
+    ],
+  };
+
+  const drawSize = 8;
+  const eventProfiles = [
+    {
+      eventType: TEAM,
+      eventName: 'Test Team Event',
+      category: { categoryName: 'Junior' },
+      tieFormat,
+      drawProfiles: [
+        {
+          drawSize,
+          tieFormat,
+          drawName: 'Main Draw',
+        },
+      ],
+    },
+  ];
+
+  const {
+    eventIds: [eventId],
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+    eventProfiles,
   });
+  expect(eventId).not.toBeUndefined();
+  expect(drawId).not.toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord);
 
-  const eventName = 'Test Event';
-  const event = {
-    eventName,
-    eventType: TEAM,
-  };
+  let result = tournamentEngine.generateTeamsFromParticipantAttribute({
+    personAttribute: 'nationalityCode',
+  });
+  expect(result.success).toEqual(true);
 
-  let result = tournamentEngine.addEvent({ event });
-  const { event: eventResult, success } = result;
-  const { eventId } = eventResult;
-  expect(success).toEqual(true);
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    { participantFilters: { participantTypes: [TEAM] } }
+  );
+  // since teams are generated from nationalityCodes expect there to be
+  // the same number of teams as nationalityCodes
+  expect(tournamentParticipants.length).toEqual(nationalityCodesCount);
 
-  /*
-  const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
-  */
+  const participantIds = tournamentParticipants
+    .map((p) => p.participantId)
+    .slice(0, drawSize);
 
-  const values = {
-    automated: true,
-    drawSize: 32,
+  // can add to event and draw at same time
+  result = tournamentEngine.addEventEntries({
+    participantIds,
     eventId,
-    event: eventResult,
-    matchUpType: TEAM,
-  };
-  tournamentEngine.generateDrawDefinition(values);
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  expect(event.tieFormat.winCriteria.valueGoal).toEqual(valueGoal);
+
+  const structureId = drawDefinition.structures[0].structureId;
+  result = tournamentEngine.automatedPositioning({
+    drawId,
+    structureId,
+  });
+
+  const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [SINGLES] },
+  });
+
+  ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
+  const { positionAssignments } = drawDefinition.structures[0];
+  expect(positionAssignments.length).toEqual(drawSize);
+
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-1',
+    winningSide: 1,
+    matchUpStatus: COMPLETED,
+  });
+
+  singlesMatchUps.forEach(({ matchUpId, matchUpTieId, drawPositions }) => {
+    result = tournamentEngine.setMatchUpStatus({
+      drawId,
+      matchUpId,
+      matchUpTieId,
+      outcome,
+    });
+    if (drawPositions.filter((f) => f).length === 2) {
+      expect(result.success).toEqual(true);
+    } else {
+      expect(result.error).not.toBeUndefined();
+    }
+  });
+
+  const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  });
+  expect(teamMatchUps[0].score.winningSide).toEqual(1);
+  expect(teamMatchUps[0].score.sets[0].side1Score).toEqual(2);
+
+  // expect that all 4 first round matchUps are complete
+  expect(
+    teamMatchUps.map((m) => m.score?.winningSide).filter((f) => f).length
+  ).toEqual(4);
+
+  // console.log(teamMatchUps[0].sides);
 });
