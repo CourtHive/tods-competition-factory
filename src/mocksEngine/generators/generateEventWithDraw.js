@@ -24,13 +24,14 @@ export function generateEventWithDraw({
 }) {
   const {
     category,
-    eventName = 'Generated Event',
     eventType = SINGLES,
+    eventName = 'Generated Event',
     matchUpFormat = FORMAT_STANDARD,
-    drawSize = 32,
     drawType = SINGLE_ELIMINATION,
-    feedPolicy,
     structureOptions,
+    drawSize = 32,
+    tieFormat,
+    feedPolicy,
     automated,
     stage,
   } = drawProfile;
@@ -38,7 +39,7 @@ export function generateEventWithDraw({
   if (!participantsCount || participantsCount > drawSize)
     participantsCount = drawSize;
 
-  const event = { eventName, eventType, category };
+  const event = { eventName, eventType, category, tieFormat };
   let result = tournamentEngine.addEvent({ event });
   if (result.error) return { error: result.error };
 
@@ -106,6 +107,7 @@ export function generateEventWithDraw({
       matchUpFormat,
       seedsCount,
       feedPolicy,
+      tieFormat,
       automated,
       drawType,
       drawSize,

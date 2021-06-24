@@ -22,6 +22,7 @@ export function generateEventWithFlights({
     eventType = SINGLES,
     // matchUpFormat = FORMAT_STANDARD,
     drawProfiles,
+    tieFormat: eventTieFormat,
   } = eventProfile;
 
   const stageParticipantsCount = drawProfiles.reduce(
@@ -59,7 +60,7 @@ export function generateEventWithFlights({
       ),
   };
 
-  const event = { eventName, eventType, category };
+  const event = { eventName, eventType, category, tieFormat: eventTieFormat };
   let {
     event: { eventId },
     error,
@@ -101,6 +102,7 @@ export function generateEventWithFlights({
     const drawType = drawProfiles[index].drawType;
     const automated = drawProfiles[index].automated;
     const matchUpFormat = drawProfiles[index].matchUpFormat;
+    const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
       stage,
       drawId,
@@ -109,6 +111,7 @@ export function generateEventWithFlights({
       drawType,
       drawName,
       automated,
+      tieFormat,
       drawEntries,
       matchUpFormat,
       matchUpType: eventType,

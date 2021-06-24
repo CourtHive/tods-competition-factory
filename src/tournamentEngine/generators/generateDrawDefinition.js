@@ -77,8 +77,8 @@ export function generateDrawDefinition(props) {
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
   if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
-  if (tieFormat || (matchUpType === TEAM && !tieFormat)) {
-    tieFormat = tieFormatDefaults();
+  if (matchUpType === TEAM) {
+    tieFormat = tieFormat || tieFormatDefaults();
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;
