@@ -46,7 +46,7 @@ it('supports transitive BYE removal in large structures', () => {
   let finalMatchUp = matchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
+  expect(finalMatchUp.drawPositions.filter((f) => f)).toEqual([]);
   let { orderedPairs } = getOrderedDrawPositionPairs();
   expect(orderedPairs).toEqual([
     [1, 2],

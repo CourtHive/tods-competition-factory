@@ -364,19 +364,25 @@ function advanceWinner({
   );
 
   let drawPositionAssigned = isByeAdvancedBye;
-  const drawPositions = (noContextWinnerMatchUp.drawPositions || [])?.map(
-    (position) => {
-      if (!position && !drawPositionAssigned) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else if (position === drawPositionToAdvance) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else {
-        return position;
-      }
+  // always insure there are two drawPositions to iterate over
+  const twoDrawPositions = []
+    .concat(
+      ...(noContextWinnerMatchUp.drawPositions || []).filter((f) => f),
+      undefined,
+      undefined
+    )
+    .slice(0, 2);
+  const drawPositions = twoDrawPositions.map((position) => {
+    if (!position && !drawPositionAssigned) {
+      drawPositionAssigned = true;
+      return drawPositionToAdvance;
+    } else if (position === drawPositionToAdvance) {
+      drawPositionAssigned = true;
+      return drawPositionToAdvance;
+    } else {
+      return position;
     }
-  );
+  });
 
   if (!drawPositionAssigned) {
     console.log('@@@@@@@', {

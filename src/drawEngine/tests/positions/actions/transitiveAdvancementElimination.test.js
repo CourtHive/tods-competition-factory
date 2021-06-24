@@ -32,8 +32,20 @@ it('can advance participants when double BYEs are created', () => {
   let finalMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
+  expect(finalMatchUp.drawPositions.filter((f) => f)).toEqual([]);
   ({ orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId }));
+
+  /*
+  expect(orderedPairs.map((op) => op.filter((f) => f))).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1], // drawPosition 1 is BYE-advanced
+    [8], // drawPosition 8 is BYE-advanced
+    [],
+  ]);
+  */
   expect(orderedPairs).toEqual([
     [1, 2],
     [3, 4],
@@ -51,6 +63,18 @@ it('can advance participants when double BYEs are created', () => {
     replaceWithBye: true,
   });
   ({ orderedPairs } = getOrderedDrawPositionPairs({ structureId }));
+  /*
+  expect(orderedPairs.map((op) => op.filter((f) => f))).toEqual([
+    [1, 2],
+    [3, 4],
+    [5, 6],
+    [7, 8],
+    [1, 4], // drawPositions 1 and 4 are both BYE-advanced
+    [8], // drawPosition 8 is BYE-advanced
+    [],
+  ]);
+  */
+
   expect(orderedPairs).toEqual([
     [1, 2],
     [3, 4],
