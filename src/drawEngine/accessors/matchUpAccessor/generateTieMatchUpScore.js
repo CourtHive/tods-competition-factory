@@ -48,9 +48,9 @@ export function generateTieMatchUpScore({
     }
   });
 
-  const scoreStringSide1 = sidePoints.join(separator);
-  const scoreStringSide2 = sidePoints.reverse().join(separator);
   const set = { side1Score: sidePoints[0], side2Score: sidePoints[1] };
+  const scoreStringSide1 = sidePoints.join(separator);
+  const scoreStringSide2 = sidePoints.slice().reverse().join(separator);
 
   // now calculate if there is a winningSide
   let winningSide;

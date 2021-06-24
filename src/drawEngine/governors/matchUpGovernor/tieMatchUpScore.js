@@ -19,12 +19,13 @@ export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
 
   const { winningSide, set, scoreStringSide1, scoreStringSide2 } =
     generateTieMatchUpScore({ matchUp });
-  const scoreObject = { sets: [set] };
 
-  scoreObject.scoreStringSide1 = scoreStringSide1;
-  scoreObject.scoreStringSide2 = scoreStringSide2;
-
-  console.log(scoreObject, { winningSide });
+  const scoreObject = {
+    sets: [set],
+    winningSide,
+    scoreStringSide1,
+    scoreStringSide2,
+  };
 
   modifyMatchUpScore({
     drawDefinition,
