@@ -1,10 +1,32 @@
-import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_MATCHUP,
+} from '../../../constants/errorConditionConstants';
 
+/**
+ * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`
+ * will calculate prjected score and winningSide which is necessary for checking validity of score
+ *
+ * @param {object} matchUp - TODS matchUp: { matchUpType: 'TEAM', tieMatchUps: [] }
+ * @param {object} tieFormat - TODS tieFormat which defines the winCriteria for determining a winningSide
+ * @param {string} separator - used to separate the two side scores in a scoreString
+ * @param {number[]} sideAdjustments - used for projecting the score of a TEAM matchUp
+ *
+ * @returns scoreObject: { sets, winningSide, scoreStringSide1, scoreStringSide 2 }
+ */
 export function generateTieMatchUpScore({
   matchUp,
   tieFormat,
   separator = '-',
+  sideAdjustments = [0, 0],
 }) {
+  if (
+    !Array.isArray(sideAdjustments) ||
+    sideAdjustments.length !== 2 ||
+    isNaN(sideAdjustments.reduce((a, b) => a + b))
+  ) {
+    return { error: INVALID_VALUES };
+  }
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   const sidePoints = [0, 0];
@@ -48,9 +70,13 @@ export function generateTieMatchUpScore({
     }
   });
 
-  const set = { side1Score: sidePoints[0], side2Score: sidePoints[1] };
-  const scoreStringSide1 = sidePoints.join(separator);
-  const scoreStringSide2 = sidePoints.slice().reverse().join(separator);
+  const sideScores = sidePoints.map(
+    (sideValue, i) => sideValue + sideAdjustments[i]
+  );
+
+  const set = { side1Score: sideScores[0], side2Score: sideScores[1] };
+  const scoreStringSide1 = sideScores.join(separator);
+  const scoreStringSide2 = sideScores.slice().reverse().join(separator);
 
   // now calculate if there is a winningSide
   let winningSide;
@@ -58,7 +84,7 @@ export function generateTieMatchUpScore({
   if (format) {
     const valueGoal = format.winCriteria?.valueGoal;
     if (valueGoal) {
-      const sideThatWon = sidePoints
+      const sideThatWon = sideScores
         .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))
         .find(({ points }) => points >= valueGoal);
       winningSide = sideThatWon?.sideNumber;
