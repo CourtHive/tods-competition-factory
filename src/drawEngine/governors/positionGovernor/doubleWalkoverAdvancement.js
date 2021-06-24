@@ -61,6 +61,7 @@ export function doubleWalkoverAdvancement({
       drawDefinition,
       structure,
 
+      matchUpId: winnerMatchUp.matchUpId,
       sourceMatchUp,
       mappedMatchUps,
       winnerMatchUp,
@@ -76,6 +77,7 @@ function conditionallyAdvanceDrawPosition({
   drawDefinition,
   structure,
 
+  matchUpId,
   sourceMatchUp,
   mappedMatchUps,
   winnerMatchUp,
@@ -147,6 +149,7 @@ function conditionallyAdvanceDrawPosition({
         });
         if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
         modifyMatchUpScore({
+          matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUp: noContextNextWinnerMatchUp,
           drawDefinition,
           matchUpStatus: DOUBLE_WALKOVER,
@@ -158,6 +161,7 @@ function conditionallyAdvanceDrawPosition({
           structure,
           mappedMatchUps,
           targetData,
+          matchUpId,
         });
       }
     }

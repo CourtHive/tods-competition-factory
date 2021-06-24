@@ -5,7 +5,6 @@ import { clearDrawPosition } from '../positionGovernor/positionClear';
 import { includesMatchUpStatuses } from './includesMatchUpStatuses';
 import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
@@ -17,6 +16,7 @@ export function removeDirectedParticipants(props) {
     drawDefinition,
     structure,
     matchUp,
+    matchUpId,
     matchUpStatus,
     matchUpFormat,
     matchUpStatusCodes,
@@ -25,24 +25,6 @@ export function removeDirectedParticipants(props) {
     removeScore = true,
     score,
   } = props;
-
-  const isCollectionMatchUp = Boolean(matchUp.collectionId);
-  if (isCollectionMatchUp) {
-    modifyMatchUpScore({
-      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-      drawDefinition: props.drawDefinition,
-      matchUpStatusCodes,
-      matchUpFormat,
-      removeScore,
-      matchUp,
-      score,
-    });
-
-    const { matchUpTieId } = props;
-    updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-
-    return SUCCESS;
-  }
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
@@ -81,6 +63,7 @@ export function removeDirectedParticipants(props) {
       matchUpStatusCodes,
       matchUpFormat,
       removeScore,
+      matchUpId,
       matchUp,
       score,
     });

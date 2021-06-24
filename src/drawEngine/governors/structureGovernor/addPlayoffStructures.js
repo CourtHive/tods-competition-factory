@@ -176,6 +176,7 @@ export function addPlayoffStructures(props) {
       structure,
       targetData,
       winningSide,
+      matchUpId,
       matchUp,
       score,
     });

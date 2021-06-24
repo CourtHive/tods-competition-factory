@@ -247,9 +247,7 @@ it('can direct winners and losers', () => {
   );
   // fed position should be a bye
   expect(consolationStructure.positionAssignments[8].bye).toEqual(true);
-});
 
-it('can change matchUpStatus', () => {
   const { completedMatchUps } = drawEngine.drawMatchUps({
     requireParticipants: false,
   });
@@ -258,7 +256,7 @@ it('can change matchUpStatus', () => {
 
   const [matchUp] = completedMatchUps;
   const { matchUpId } = matchUp;
-  let result = drawEngine.setMatchUpStatus({
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BOGUS',
   });

@@ -125,11 +125,10 @@ it('can generate TEAM events', () => {
     winningSide: 1,
     matchUpStatus: COMPLETED,
   });
-  const { matchUpId, matchUpTieId } = singlesMatchUps[0];
+  const { matchUpId } = singlesMatchUps[0];
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
-    matchUpTieId,
     outcome,
   });
   expect(result.success).toEqual(true);
@@ -258,11 +257,10 @@ it('can generate draws in TEAM events with tieFormat', () => {
     matchUpStatus: COMPLETED,
   });
 
-  singlesMatchUps.forEach(({ matchUpId, matchUpTieId, drawPositions }) => {
+  singlesMatchUps.forEach(({ matchUpId, drawPositions }) => {
     result = tournamentEngine.setMatchUpStatus({
       drawId,
       matchUpId,
-      matchUpTieId,
       outcome,
     });
     if (drawPositions.filter((f) => f).length === 2) {

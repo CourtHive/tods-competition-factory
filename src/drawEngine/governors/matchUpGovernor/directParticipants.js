@@ -15,6 +15,7 @@ export function directParticipants(props) {
     matchUpStatusCodes,
     structure,
     matchUp,
+    matchUpId,
     matchUpFormat,
     winningSide,
     targetData,
@@ -41,6 +42,7 @@ export function directParticipants(props) {
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     winningSide,
     removeScore,
+    matchUpId,
     matchUp,
     score,
   });

@@ -23,14 +23,15 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetMatchUpStatus(props) {
   const {
-    drawDefinition,
     notes,
     matchUp,
+    matchUpId,
     structure,
     targetData,
     matchUpStatus,
     matchUpFormat,
     mappedMatchUps,
+    drawDefinition,
     matchUpStatusCodes,
   } = props;
 
@@ -54,9 +55,10 @@ export function attemptToSetMatchUpStatus(props) {
       modifyMatchUpScore({
         notes,
         matchUp,
-        drawDefinition,
+        matchUpId,
         matchUpStatus,
         matchUpFormat,
+        drawDefinition,
         matchUpStatusCodes,
       });
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
@@ -70,8 +72,9 @@ export function attemptToSetMatchUpStatus(props) {
       modifyMatchUpScore({
         notes,
         matchUp,
-        drawDefinition,
+        matchUpId,
         matchUpFormat,
+        drawDefinition,
         matchUpStatus: matchUpStatus || TO_BE_PLAYED,
         matchUpStatusCodes,
       });
@@ -83,11 +86,12 @@ export function attemptToSetMatchUpStatus(props) {
     modifyMatchUpScore({
       notes,
       matchUp,
+      matchUpId,
+      removeScore,
       matchUpFormat,
       drawDefinition,
-      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
       matchUpStatusCodes,
-      removeScore,
+      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
     });
   } else if (matchUpStatus === BYE) {
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
@@ -98,11 +102,12 @@ export function attemptToSetMatchUpStatus(props) {
         modifyMatchUpScore({
           notes,
           matchUp,
-          drawDefinition,
+          matchUpId,
           matchUpStatus,
           matchUpFormat,
-          matchUpStatusCodes,
+          drawDefinition,
           removeScore: true,
+          matchUpStatusCodes,
         });
 
         doubleWalkoverAdvancement(props);

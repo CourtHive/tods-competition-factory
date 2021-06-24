@@ -4,7 +4,6 @@ import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { removeDoubleWalkover } from './removeDoubleWalkover';
-import { updateTieMatchUpScore } from './tieMatchUpScore';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { scoreHasValue } from './scoreHasValue';
 
@@ -17,7 +16,7 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, matchUpFormat, score, winningSide } = props;
+  const { matchUp, matchUpId, matchUpFormat, score, winningSide } = props;
   let { matchUpStatus } = props;
 
   const doubleWalkoverCleanup =
@@ -62,13 +61,9 @@ export function noDownstreamDependencies(props) {
       drawDefinition: props.drawDefinition,
       removeScore: true,
       matchUpFormat,
+      matchUpId,
       matchUp,
     });
-    const isCollectionMatchUp = Boolean(matchUp.collectionId);
-    if (isCollectionMatchUp) {
-      const { drawDefinition, matchUpTieId } = props;
-      updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
-    }
   } else {
     console.log('unknown condition');
   }

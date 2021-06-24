@@ -33,6 +33,7 @@ import {
   matchUpStatusConstants,
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 export function setMatchUpStatus(props) {
   let messages = [];
@@ -46,6 +47,7 @@ export function setMatchUpStatus(props) {
     tournamentRecord,
     winningSide,
   } = props;
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   if (
@@ -59,7 +61,6 @@ export function setMatchUpStatus(props) {
   }
 
   const mappedMatchUps = getMatchUpsMap({ drawDefinition });
-  Object.assign(props, { mappedMatchUps });
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
@@ -68,6 +69,11 @@ export function setMatchUpStatus(props) {
     mappedMatchUps,
     matchUpId,
   });
+
+  if (matchUp.matchUpType === TEAM) {
+    // do not direclty set team score... unless walkover/default/double walkover/Retirement
+    return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
+  }
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
@@ -92,11 +98,13 @@ export function setMatchUpStatus(props) {
     includeByeMatchUps: true,
   });
 
-  Object.assign(props, { mappedMatchUps, inContextDrawMatchUps });
-
   const inContextMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
+  const matchUpTieId = inContextMatchUp.matchUpTieId;
+
+  Object.assign(props, { mappedMatchUps, inContextDrawMatchUps, matchUpTieId });
+
   const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(
     (f) => f
   );
@@ -110,12 +118,15 @@ export function setMatchUpStatus(props) {
   }
 
   const targetData = positionTargets({
-    matchUpId,
+    matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
+    // matchUpId,
     structure,
     drawDefinition,
     mappedMatchUps,
     inContextDrawMatchUps,
   });
+
+  // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
   Object.assign(props, { matchUp, structure, targetData });
 
   const {
@@ -222,7 +233,7 @@ function attemptStatusChange(props) {
 }
 
 function winningSideWithDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, winningSide, notes } = props;
+  const { matchUp, matchUpStatus, winningSide, notes, matchUpId } = props;
 
   if (winningSide === matchUp.winningSide) {
     if (matchUpStatus) {
@@ -245,13 +256,15 @@ function winningSideWithDownstreamDependencies(props) {
         // TESTED
       }
     } else {
-      const { drawDefinition, score, matchUpFormat } = props;
+      const { drawDefinition, score, matchUpFormat, matchUpTieId } = props;
       modifyMatchUpScore({
         drawDefinition,
         matchUpFormat,
+        matchUpId,
         matchUp,
         score,
         notes,
+        matchUpTieId,
       });
     }
   } else {
@@ -273,6 +286,7 @@ function applyMatchUpValues(props) {
     matchUpStatusCodes,
     matchUpStatus,
     matchUpFormat,
+    matchUpId,
     matchUp,
     score,
     notes,
@@ -282,8 +296,10 @@ function applyMatchUpValues(props) {
     matchUpStatus: matchUpStatus || COMPLETED,
     matchUpStatusCodes,
     matchUpFormat,
+    matchUpId,
     matchUp,
     score,
     notes,
+    matchUpTieId: props.matchUpTieId,
   });
 }

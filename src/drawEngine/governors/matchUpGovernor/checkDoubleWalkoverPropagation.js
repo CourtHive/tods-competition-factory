@@ -13,7 +13,7 @@ export function checkDoubleWalkoverPropagation(props) {
     targetMatchUps: { winnerMatchUp },
   } = props.targetData;
   if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-    const { drawDefinition, mappedMatchUps } = props;
+    const { drawDefinition, mappedMatchUps, matchUpId } = props;
     const { matchUp: noContextWinnerMatchUp } = findMatchUp({
       drawDefinition,
       mappedMatchUps,
@@ -21,6 +21,7 @@ export function checkDoubleWalkoverPropagation(props) {
     });
     if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
     modifyMatchUpScore({
+      matchUpId,
       drawDefinition,
       removeScore: true,
       matchUpStatus: TO_BE_PLAYED,
