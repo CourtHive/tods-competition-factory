@@ -72,7 +72,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     (assignedBoolean, drawPosition) =>
       participantAssignedDrawPositions.includes(drawPosition) &&
       assignedBoolean,
-    true
+    drawPositions?.length === 2
   );
 
   if (isByeMatchUp) {

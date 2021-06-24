@@ -35,7 +35,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   let finalMatchUp = mainMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
+  expect(finalMatchUp.drawPositions.filter((f) => f)).toEqual([]);
 
   let { orderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
