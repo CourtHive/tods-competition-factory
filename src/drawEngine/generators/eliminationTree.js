@@ -147,6 +147,8 @@ function buildRound({ roundNumber, nodes, matchUps, uuids }) {
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
+      // TODO: undefined drawPositions can be filtered; several tests will have to be updated
+      // drawPositions: node.children.map((c) => c.drawPosition).filter(f=>f),
       drawPositions: node.children.map((c) => c.drawPosition),
     });
     index += 2;
