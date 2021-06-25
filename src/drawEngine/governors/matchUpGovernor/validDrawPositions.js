@@ -19,9 +19,8 @@ export function validDrawPositions({ matchUps }) {
       });
     });
   }
-  const allPositionsValid = drawPositions.reduce((valid, drawPosition) => {
-    return validDrawPosition(drawPosition) && valid;
-  }, true);
+
+  const allPositionsValid = drawPositions.every(validDrawPosition);
 
   const matchUpDrawPositionsNotArray = matchUps.find(
     (matchUp) => !Array.isArray(matchUp.drawPositions)
