@@ -95,18 +95,13 @@ function getOrderedByePositions({
 
   // sort seededMatchUps so that pairedPositions represent seed order
   const seedOrderSortedDrawPositionPairs = orderedSeedDrawPositions
-    .map((drawPosition) => {
-      return consideredDrawPositionPairs.reduce(
-        (drawPositionPair, drawPositions) => {
-          if (drawPositionPair) return drawPositionPair; // take the first occurrence
-          return drawPositions?.includes(drawPosition)
-            ? drawPositions
-            : drawPositionPair;
-        },
-        undefined
-      );
-    })
+    .map((drawPosition) =>
+      consideredDrawPositionPairs.find((drawPositions) =>
+        drawPositions?.includes(drawPosition)
+      )
+    )
     .filter((f) => f);
+
   const orderedByePositions = seedOrderSortedDrawPositionPairs
     .map((drawPositions) => {
       return drawPositions?.reduce((byePosition, drawPosition) => {

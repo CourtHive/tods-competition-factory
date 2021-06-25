@@ -32,13 +32,10 @@ export function clearDrawPosition({
     structure,
   });
 
-  const existingAssignment = positionAssignments.reduce(
-    (value, assignment) =>
+  const existingAssignment = positionAssignments.find(
+    (assignment) =>
       (participantId && assignment.participantId === participantId) ||
       (drawPosition && assignment.drawPosition === drawPosition)
-        ? assignment
-        : value,
-    undefined
   );
 
   if (participantId && !drawPosition) {
