@@ -1,4 +1,5 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
@@ -101,9 +102,6 @@ export function setMatchUpStatus(props) {
   const inContextMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
-  const matchUpTieId = inContextMatchUp.matchUpTieId;
-
-  Object.assign(props, { mappedMatchUps, inContextDrawMatchUps, matchUpTieId });
 
   const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(
     (f) => f
@@ -117,6 +115,7 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
+  const matchUpTieId = inContextMatchUp.matchUpTieId;
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
     structure,
@@ -125,8 +124,50 @@ export function setMatchUpStatus(props) {
     inContextDrawMatchUps,
   });
 
+  if (matchUpTieId) {
+    const { matchUp: teamMatchUp } = findMatchUp({
+      drawDefinition,
+      mappedMatchUps,
+      matchUpId: matchUpTieId,
+    });
+    const existingTieMatchUpWinningSide = matchUp.winningSide;
+    let sideAdjustments = [0, 0];
+    if (winningSide === 1 && existingTieMatchUpWinningSide === 2) {
+      sideAdjustments = [-1, 1];
+    } else if (winningSide === 2 && existingTieMatchUpWinningSide === 1) {
+      sideAdjustments = [1, -1];
+    } else if (winningSide && !existingTieMatchUpWinningSide) {
+      if (winningSide === 1) {
+        sideAdjustments = [1, 0];
+      } else {
+        sideAdjustments = [0, 1];
+      }
+      // !winningSide is insufficient for recognizing if a winningSide is being removed
+      // matchUpStatus is not a completed status?
+    } else if (existingTieMatchUpWinningSide && !winningSide) {
+      //
+    }
+
+    const existingTeamMatchUpWinningSide = teamMatchUp.winningSide;
+    const tieFormat = teamMatchUp.tieFormat || drawDefinition.tieFormat;
+    const { winningSide: projectedWinningSide } = generateTieMatchUpScore({
+      matchUp: teamMatchUp,
+      tieFormat,
+      sideAdjustments,
+    });
+    if (projectedWinningSide !== existingTeamMatchUpWinningSide) {
+      console.log('teamMatchUp', { projectedWinningSide });
+    }
+  }
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
-  Object.assign(props, { matchUp, structure, targetData });
+  Object.assign(props, {
+    matchUp,
+    mappedMatchUps,
+    inContextDrawMatchUps,
+    matchUpTieId,
+    structure,
+    targetData,
+  });
 
   const {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
