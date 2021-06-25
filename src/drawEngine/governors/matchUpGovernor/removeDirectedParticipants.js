@@ -148,16 +148,6 @@ export function removeDirectedWinner({
       (assignment) => assignment.participantId === winnerParticipantId
     );
     const winnerDrawPosition = relevantAssignment?.drawPosition;
-    /*
-    const winnerDrawPosition = positionAssignments.reduce(
-      (winnerDrawPosition, assignment) => {
-        return assignment.participantId === winnerParticipantId
-          ? assignment.drawPosition
-          : winnerDrawPosition;
-      },
-      undefined
-    );
-    */
 
     const { matchUps } = getAllStructureMatchUps({ drawDefinition, structure });
     const allDrawPositionInstances = matchUps

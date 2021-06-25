@@ -38,18 +38,14 @@ export function drawPositionRemovals({
     structure,
   });
 
-  const drawPositionCleared = positionAssignments.reduce(
-    (cleared, assignment) => {
-      if (assignment.drawPosition === drawPosition) {
-        delete assignment.participantId;
-        delete assignment.qualifier;
-        delete assignment.bye;
-        return true;
-      }
-      return cleared;
-    },
-    false
-  );
+  const drawPositionCleared = positionAssignments.some((assignment) => {
+    if (assignment.drawPosition === drawPosition) {
+      delete assignment.participantId;
+      delete assignment.qualifier;
+      delete assignment.bye;
+      return true;
+    }
+  });
 
   if (structure.structureType === CONTAINER) {
     modifyRoundRobinMatchUpsStatus({

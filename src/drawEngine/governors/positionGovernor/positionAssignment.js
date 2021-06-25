@@ -36,14 +36,10 @@ export function assignDrawPosition({
     structure,
   });
 
-  const participantSeedNumber = seedAssignments.reduce(
-    (seedNumber, assignment) => {
-      return assignment.participantId === participantId
-        ? assignment.seedNumber
-        : seedNumber;
-    },
-    undefined
+  const relevantAssignment = seedAssignments.find(
+    (assignment) => assignment.participantId === participantId
   );
+  const participantSeedNumber = relevantAssignment?.seedNumber;
 
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
