@@ -1,9 +1,10 @@
+import { intersection } from '../../../utilities';
+
 import {
   BYE,
   DEFAULTED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { intersection } from '../../../utilities';
 
 export function includesMatchUpStatuses({
   sourceMatchUps,

@@ -39,22 +39,19 @@ export function removeDirectedParticipants(props) {
     const losingIndex = 1 - winningIndex;
     const winningDrawPosition = matchUp.drawPositions[winningIndex];
     const loserDrawPosition = matchUp.drawPositions[losingIndex];
-    const loserParticipantId = positionAssignments.reduce(
-      (participantId, assignment) => {
-        return assignment.drawPosition === loserDrawPosition
-          ? assignment.participantId
-          : participantId;
-      },
-      undefined
-    );
-    const winnerParticipantId = positionAssignments.reduce(
-      (participantId, assignment) => {
-        return assignment.drawPosition === winningDrawPosition
-          ? assignment.participantId
-          : participantId;
-      },
-      undefined
-    );
+
+    // use redue for single pass resolution of both
+    const { winnerParticipantId, loserParticipantId } =
+      positionAssignments.reduce(
+        (assignments, assignment) => {
+          if (assignment.drawPosition === loserDrawPosition)
+            assignments.loserParticipantId = assignment.participantId;
+          if (assignment.drawPosition === winningDrawPosition)
+            assignments.winnerParticipantId = assignment.participantId;
+          return assignments;
+        },
+        { winnerParticipantId: undefined, loserParticipantId: undefined }
+      );
 
     modifyMatchUpScore({
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
