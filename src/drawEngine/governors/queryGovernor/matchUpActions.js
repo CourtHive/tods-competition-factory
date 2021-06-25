@@ -125,11 +125,10 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       validActions.push({ type: STATUS });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      const { matchUpId, matchUpTieId, matchUpFormat } = matchUp;
+      const { matchUpId, matchUpFormat } = matchUp;
       const payload = {
         drawId,
         matchUpId,
-        matchUpTieId,
         matchUpFormat,
         outcome: {
           scoreStringSide1: undefined,

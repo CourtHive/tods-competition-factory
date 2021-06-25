@@ -19,7 +19,6 @@ import {
  *
  * @param {string} drawId - id of draw within which matchUp is found
  * @param {string} matchUpId - id of matchUp to be modified
- * @param {string} matchUpTieId - id of matchUpTie, if relevant
  * @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
  * @param {object} outcome - { score, winningSide, matchUpStatus }
  *
@@ -28,7 +27,6 @@ export function setMatchUpStatus(props) {
   const {
     drawDefinition,
     matchUpId,
-    matchUpTieId,
     matchUpFormat,
     schedule,
     tournamentRecord,
@@ -64,7 +62,6 @@ export function setMatchUpStatus(props) {
     tournamentRecord,
     drawDefinition,
     matchUpId,
-    matchUpTieId,
     matchUpFormat,
     matchUpStatus: outcome?.matchUpStatus,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
