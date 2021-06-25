@@ -13,6 +13,7 @@ export function feedInChampionship(props = {}) {
   const {
     uuids,
     feedRounds,
+    matchUpType,
     stage = MAIN,
     structureName,
     drawDefinition,
@@ -26,8 +27,8 @@ export function feedInChampionship(props = {}) {
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
 
   const mainStructure = structureTemplate({
     structureName: structureName || MAIN,

@@ -24,6 +24,7 @@ import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
   uuids,
+  matchUpType,
   stage = MAIN,
   stageSequence = 1,
   structureName = MAIN,
@@ -45,7 +46,11 @@ export function generateRoundRobin({
       structureType: ITEM,
       structureId: uuids?.pop(),
       structureName: `Group ${structureOrder}`,
-      matchUps: roundRobinMatchUps({ groupSize: groupSize, structureOrder }),
+      matchUps: roundRobinMatchUps({
+        matchUpType,
+        groupSize: groupSize,
+        structureOrder,
+      }),
     })
   );
 
@@ -71,6 +76,7 @@ export function generateRoundRobin({
 export function generateRoundRobinWithPlayOff(props) {
   const {
     uuids,
+    matchUpType,
     drawDefinition,
     playoffMatchUpFormat,
     stageSequence = 1,
@@ -127,6 +133,7 @@ export function generateRoundRobinWithPlayOff(props) {
       if (playoffDrawType === SINGLE_ELIMINATION) {
         const { matchUps } = treeMatchUps({
           drawSize,
+          matchUpType,
           finishingPositionOffset,
         });
 
@@ -162,6 +169,7 @@ export function generateRoundRobinWithPlayOff(props) {
         } = feedInChampionship({
           drawSize,
           fmlc: true,
+          matchUpType,
           feedRounds: 1,
           stage: PLAY_OFF,
           uuids: uuidsFMLC,
@@ -245,7 +253,7 @@ function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
   });
 }
 
-function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
+function roundRobinMatchUps({ matchUpType, groupSize, structureOrder, uuids }) {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
   const drawPositions = generateRange(
     1 + drawPositionOffset,
@@ -283,6 +291,7 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
       drawPositions.slice(0, drawPositions.length - 1)
     );
     const matchUp = {
+      matchUpType,
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,

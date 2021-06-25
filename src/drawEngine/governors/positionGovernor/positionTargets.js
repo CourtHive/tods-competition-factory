@@ -19,12 +19,20 @@ export function positionTargets({
   mappedMatchUps,
   inContextDrawMatchUps = [],
 }) {
-  const { matchUp } = findMatchUp({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpId,
-    inContext: true,
-  });
+  let matchUp;
+  if (inContextDrawMatchUps.length) {
+    matchUp = inContextDrawMatchUps.find((m) => m.matchUpId === matchUpId);
+  }
+
+  if (!matchUp) {
+    ({ matchUp } = findMatchUp({
+      drawDefinition,
+      mappedMatchUps,
+      matchUpId,
+      inContext: true,
+    }));
+  }
+
   const { finishingPosition } = structure;
   if (finishingPosition === ROUND_OUTCOME) {
     return targetByRoundOutcome({

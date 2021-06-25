@@ -17,6 +17,7 @@ export function firstRoundLoserConsolation(props) {
   let { drawSize, consolationStructureName } = props;
   const {
     uuids,
+    matchUpType,
     stage = MAIN,
     structureName,
     drawDefinition,
@@ -27,8 +28,8 @@ export function firstRoundLoserConsolation(props) {
 
   drawSize = drawSize || getStageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
   const mainStructure = structureTemplate({
     stage,
     matchUps,

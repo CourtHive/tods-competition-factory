@@ -34,6 +34,7 @@ export function playoff(props) {
 function playoffStructures({
   uuids,
   drawSize,
+  matchUpType,
   stage = MAIN,
   sequenceLimit,
   drawDefinition,
@@ -77,8 +78,8 @@ function playoffStructures({
     customNaming?.abbreviation || attributeProfile?.abbreviation;
 
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
 
   const structure = structureTemplate({
     stage,

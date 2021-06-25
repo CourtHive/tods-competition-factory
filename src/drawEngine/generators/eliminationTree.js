@@ -11,6 +11,7 @@ import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 export function treeMatchUps({
   drawSize,
   roundLimit,
+  matchUpType,
   qualifyingRound, // round at which participants qualify
   qualifyingPositions,
   finishingPositionOffset,
@@ -32,8 +33,9 @@ export function treeMatchUps({
 
   ({ roundNodes, matchUps } = buildRound({
     roundNumber,
-    nodes,
+    matchUpType,
     matchUps,
+    nodes,
     uuids,
   }));
   roundNumber++;
@@ -123,7 +125,7 @@ function addFinishingRounds({
   return matchUps;
 }
 
-function buildRound({ roundNumber, nodes, matchUps, uuids }) {
+function buildRound({ roundNumber, nodes, matchUps, matchUpType, uuids }) {
   let index = 0;
   const roundNodes = [];
   let roundPosition = 1;
@@ -144,6 +146,7 @@ function buildRound({ roundNumber, nodes, matchUps, uuids }) {
     roundNodes.push(node);
     matchUps.push({
       matchUpId: node.matchUpId,
+      matchUpType,
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
@@ -185,6 +188,7 @@ function roundMatchCounts({ drawSize }) {
 export function feedInMatchUps({
   uuids,
   drawSize,
+  matchUpType,
   feedRounds = 0,
   skipRounds = 0,
   baseDrawSize,
@@ -285,6 +289,7 @@ export function feedInMatchUps({
   for (const baseDrawRound of baseDrawRounds) {
     ({ roundNodes, matchUps } = buildRound({
       roundNumber,
+      matchUpType,
       matchUps,
       nodes,
       uuids,
@@ -306,6 +311,7 @@ export function feedInMatchUps({
           nodes: roundNodes,
           roundIteration, // meaningless; avoids eslint value never used
           roundNumber,
+          matchUpType,
           matchUps,
           uuids,
           fed,
@@ -351,12 +357,13 @@ export function feedInMatchUps({
 }
 
 function buildFeedRound({
+  drawPosition,
+  matchUpType,
+  roundNumber,
+  matchUps,
   uuids,
   nodes,
-  drawPosition,
   fed,
-  matchUps,
-  roundNumber,
 }) {
   const feedRoundMatchUpsCount = nodes.length;
   const initialGroupDrawPosition = drawPosition
@@ -381,6 +388,7 @@ function buildFeedRound({
     position.roundNumber = roundNumber - 1;
     matchUps.push({
       roundNumber,
+      matchUpType,
       matchUpId: uuids?.pop() || UUID(),
       roundPosition: position.roundPosition,
       drawPositions: [undefined, feedDrawPosition],

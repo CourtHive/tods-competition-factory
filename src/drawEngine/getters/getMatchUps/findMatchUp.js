@@ -32,7 +32,8 @@ export function findMatchUp({
   if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };
 
   const { structures } = getDrawStructures({ drawDefinition });
-  const { matchUp, structure } = structures.reduce((result, structure) => {
+
+  for (const structure of structures) {
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
@@ -41,10 +42,8 @@ export function findMatchUp({
       structure,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
-    return matchUp ? { matchUp, structure } : result;
-  }, {});
 
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-
-  return { matchUp, structure };
+    if (matchUp) return { matchUp, structure };
+  }
+  return { error: MATCHUP_NOT_FOUND };
 }

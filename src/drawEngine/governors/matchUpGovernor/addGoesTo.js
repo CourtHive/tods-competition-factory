@@ -1,6 +1,6 @@
 import { findStructure } from '../../getters/findStructure';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
@@ -29,11 +29,13 @@ export function addGoesTo({
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
     const winnerMatchUpId = winnerMatchUp?.matchUpId;
     const loserMatchUpId = loserMatchUp?.matchUpId;
-    const { matchUp } = findMatchUp({
-      drawDefinition,
+
+    const matchUps = getMappedStructureMatchUps({
       mappedMatchUps,
-      matchUpId,
+      structureId,
     });
+    const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+
     if (winnerMatchUpId) {
       Object.assign(matchUp, { winnerMatchUpId });
     }

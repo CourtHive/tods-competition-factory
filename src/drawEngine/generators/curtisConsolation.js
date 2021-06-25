@@ -16,6 +16,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateCurtisConsolation({
   uuids,
+  matchUpType,
   staggeredEntry,
   drawDefinition,
   stageSequence = 1,
@@ -25,8 +26,8 @@ export function generateCurtisConsolation({
   const drawSize = getStageDrawPositionsCount({ stage: MAIN, drawDefinition });
 
   const { matchUps, roundsCount: mainDrawRoundsCount } = staggeredEntry
-    ? feedInMatchUps({ drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
 
   const mainStructure = structureTemplate({
     matchUps,
