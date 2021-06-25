@@ -28,6 +28,7 @@ export function analyzeMatchUp(props) {
   const isLastSetWithValues = !!(
     setsCount &&
     setNumber &&
+    // EVERY: is this a candidate for .every?
     setsFollowingCurrent?.reduce((noValues, set) => {
       return (
         (!set ||

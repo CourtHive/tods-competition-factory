@@ -105,6 +105,7 @@ export function positionActions({
 
   let sourceStructuresCompleted;
   if (positionSourceStructureIds?.length) {
+    // EVERY: this can probably be changed to .every
     sourceStructuresCompleted = positionSourceStructureIds.reduce(
       (ready, sourceStructureId) => {
         const completed = isCompletedStructure({
