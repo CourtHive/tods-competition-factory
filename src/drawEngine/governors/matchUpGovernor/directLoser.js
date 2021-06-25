@@ -82,14 +82,11 @@ export function directLoser(props) {
       drawDefinition,
       structureId: sourceStructureId,
     });
-  const loserParticipantId = sourcePositionAssignments.reduce(
-    (participantId, assignment) => {
-      return assignment.drawPosition === loserDrawPosition
-        ? assignment.participantId
-        : participantId;
-    },
-    undefined
+
+  const relevantAssignment = sourcePositionAssignments.find(
+    (assignment) => assignment.drawPosition === loserDrawPosition
   );
+  const loserParticipantId = relevantAssignment?.participantId;
 
   const targetStructureId = loserTargetLink.target.structureId;
   const { positionAssignments: targetPositionAssignments } =
@@ -102,12 +99,10 @@ export function directLoser(props) {
     ({ drawPosition }) => targetMatchUpDrawPositions.includes(drawPosition)
   );
 
-  const loserAlreadyDirected = targetMatchUpPositionAssignments.reduce(
-    (alreadyDirected, assignment) => {
-      return alreadyDirected || assignment.participantId === loserParticipantId;
-    },
-    false
+  const loserAlreadyDirected = targetMatchUpPositionAssignments.some(
+    (assignment) => assignment.participantId === loserParticipantId
   );
+
   if (loserAlreadyDirected) {
     return SUCCESS;
   }

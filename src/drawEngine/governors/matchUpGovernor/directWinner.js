@@ -22,14 +22,11 @@ export function directWinner({
         drawDefinition,
         structureId: sourceStructureId,
       });
-    const winnerParticipantId = sourcePositionAssignments.reduce(
-      (participantId, assignment) => {
-        return assignment.drawPosition === winningDrawPosition
-          ? assignment.participantId
-          : participantId;
-      },
-      undefined
+
+    const relevantSourceAssignment = sourcePositionAssignments.find(
+      (assignment) => assignment.drawPosition === winningDrawPosition
     );
+    const winnerParticipantId = relevantSourceAssignment?.participantId;
 
     const targetStructureId = winnerTargetLink.target.structureId;
     const { positionAssignments: targetPositionAssignments } =
@@ -38,14 +35,10 @@ export function directWinner({
         structureId: targetStructureId,
       });
 
-    const winnerExistingDrawPosition = targetPositionAssignments.reduce(
-      (drawPosition, assignment) => {
-        return assignment.participantId === winnerParticipantId
-          ? assignment.drawPosition
-          : drawPosition;
-      },
-      undefined
+    const relevantAssignment = targetPositionAssignments.find(
+      (assignment) => assignment.participantId === winnerParticipantId
     );
+    const winnerExistingDrawPosition = relevantAssignment?.drawPosition;
 
     const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
       .filter((assignment) => {

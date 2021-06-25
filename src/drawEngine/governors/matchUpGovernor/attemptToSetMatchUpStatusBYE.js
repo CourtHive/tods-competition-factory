@@ -25,11 +25,9 @@ export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   const byeAssignedDrawPositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
-  const matchUpIncludesBye = matchUp.drawPositions?.reduce(
-    (includesBye, position) => {
-      return byeAssignedDrawPositions.includes(position) ? true : includesBye;
-    },
-    undefined
+
+  const matchUpIncludesBye = matchUp.drawPositions?.some((position) =>
+    byeAssignedDrawPositions.includes(position)
   );
 
   if (matchUpIncludesBye) {
