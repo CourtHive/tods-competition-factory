@@ -67,11 +67,10 @@ function getSideValue({
 
   return side;
 }
+
 function getSeeding({ seedAssignments, participantId }) {
-  return seedAssignments.reduce((seeding, assignment) => {
-    // seedProxy is used for playoff positioning only and should not be displayed as seeding
-    return !assignment.seedProxy && assignment.participantId === participantId
-      ? assignment
-      : seeding;
-  }, undefined);
+  return seedAssignments.find(
+    (assignment) =>
+      !assignment.seedProxy && assignment.participantId === participantId
+  );
 }
