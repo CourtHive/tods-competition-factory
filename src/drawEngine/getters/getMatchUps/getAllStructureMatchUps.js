@@ -113,8 +113,8 @@ export function getAllStructureMatchUps({
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition, structure });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition, structure });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
 
   const { positionAssignments, allPositionsAssigned } =

@@ -31,8 +31,8 @@ export function assignMatchUpDrawPosition({
   iterative,
 }) {
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,

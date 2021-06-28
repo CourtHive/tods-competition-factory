@@ -64,8 +64,8 @@ export function getDrawMatchUps({
   const { structures } = getDrawStructures({ drawDefinition });
 
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
 
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments

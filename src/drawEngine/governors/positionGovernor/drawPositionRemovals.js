@@ -178,8 +178,8 @@ function removeDrawPosition({
   drawPosition,
 }) {
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({
@@ -295,8 +295,8 @@ export function removeSubsequentRoundsParticipant({
   if (structure.structureType === CONTAINER) return;
 
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
   const matchUps = mappedMatchUps[structureId].matchUps;
 

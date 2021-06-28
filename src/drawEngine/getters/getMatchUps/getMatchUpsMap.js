@@ -5,7 +5,7 @@ function isValidMatchUp(matchUp) {
 }
 
 export function getMatchUpsMap({ drawDefinition, structure }) {
-  const matchUpsMap = {};
+  const mappedMatchUps = {};
   const drawMatchUps = [];
 
   (drawDefinition?.structures || [structure])
@@ -15,7 +15,7 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
         const filteredMatchUps = matchUps.filter(isValidMatchUp);
-        matchUpsMap[structureId] = { matchUps: filteredMatchUps };
+        mappedMatchUps[structureId] = { matchUps: filteredMatchUps };
         drawMatchUps.push(...filteredMatchUps);
       } else if (isRoundRobin) {
         structures.forEach((itemStructure) => {
@@ -23,22 +23,22 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
           const filteredMatchUps =
             itemStructure.matchUps.filter(isValidMatchUp);
 
-          matchUpsMap[itemStructure.structureId] = {
+          mappedMatchUps[itemStructure.structureId] = {
             matchUps: filteredMatchUps,
             structureName,
           };
           drawMatchUps.push(...filteredMatchUps);
-          if (!matchUpsMap[structureId]) matchUpsMap[structureId] = {};
-          if (!matchUpsMap[structureId].itemStructureIds)
-            matchUpsMap[structureId].itemStructureIds = [];
-          matchUpsMap[structureId].itemStructureIds.push(
+          if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
+          if (!mappedMatchUps[structureId].itemStructureIds)
+            mappedMatchUps[structureId].itemStructureIds = [];
+          mappedMatchUps[structureId].itemStructureIds.push(
             itemStructure.structureId
           );
         });
       }
     });
 
-  return { matchUpsMap, drawMatchUps };
+  return { mappedMatchUps, drawMatchUps };
 }
 
 export function getMappedStructureMatchUps({

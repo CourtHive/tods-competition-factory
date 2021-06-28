@@ -28,8 +28,8 @@ export function doubleWalkoverAdvancement({
   targetData,
 }) {
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
 

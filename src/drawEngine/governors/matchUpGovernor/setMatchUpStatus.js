@@ -61,7 +61,7 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
-  const { matchUpsMap: mappedMatchUps } = getMatchUpsMap({ drawDefinition });
+  const { mappedMatchUps } = getMatchUpsMap({ drawDefinition });
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records

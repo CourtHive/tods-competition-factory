@@ -20,8 +20,8 @@ export function removeSubsequentRoundsParticipant({
   }
 
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
   const matchUps = mappedMatchUps[structureId].matchUps;
 

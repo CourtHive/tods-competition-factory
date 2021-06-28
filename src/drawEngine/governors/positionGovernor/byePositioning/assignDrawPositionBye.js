@@ -74,8 +74,8 @@ export function assignDrawPositionBye({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   if (!mappedMatchUps) {
-    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap;
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap.mappedMatchUps;
   }
 
   pushGlobalLog({

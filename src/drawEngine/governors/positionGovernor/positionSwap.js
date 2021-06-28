@@ -26,7 +26,7 @@ export function swapDrawPositionAssignments({
     return { error: INVALID_VALUES, drawPositions };
   }
 
-  const { matchUpsMap: mappedMatchUps } = getMatchUpsMap({ drawDefinition });
+  const { mappedMatchUps } = getMatchUpsMap({ drawDefinition });
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
