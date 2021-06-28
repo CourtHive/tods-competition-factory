@@ -4,6 +4,7 @@ import { calculateRatios } from './calculateRatios';
 
 import {
   DEFAULTED,
+  RETIRED,
   WALKOVER,
 } from '../../../../constants/matchUpStatusConstants';
 
@@ -14,7 +15,6 @@ export function getParticipantResults({
   perPlayer,
   matchUps,
 }) {
-  const disqualified = [];
   const participantResults = {};
 
   const filteredMatchUps = matchUps.filter((matchUp) => {
@@ -54,14 +54,16 @@ export function getParticipantResults({
     checkInitializeParticipant(winningParticipantId);
     checkInitializeParticipant(losingParticipantId);
 
-    if ([WALKOVER, DEFAULTED].includes(matchUpStatus)) {
-      if (tallyPolicy?.disqualifyDefaults) {
-        disqualified.push(losingParticipantId);
-      }
-      if (tallyPolicy?.disqualifyWalkovers) {
-        disqualified.push(losingParticipantId);
-      }
-    }
+    if (matchUpStatus === WALKOVER)
+      participantResults[losingParticipantId].walkovers += 1;
+    if (matchUpStatus === DEFAULTED)
+      participantResults[losingParticipantId].defaults += 1;
+    if (matchUpStatus === RETIRED)
+      participantResults[losingParticipantId].retirements += 1;
+
+    // attribute to catch all scenarios where participant terminated matchUp irregularly
+    if ([DEFAULTED, RETIRED, WALKOVER].includes(matchUpStatus))
+      participantResults[losingParticipantId].allDefaults += 1;
 
     participantResults[winningParticipantId].matchUpsWon += 1;
     participantResults[losingParticipantId].matchUpsLost += 1;
@@ -116,6 +118,10 @@ export function getParticipantResults({
   function checkInitializeParticipant(participantId) {
     if (!participantResults[participantId])
       participantResults[participantId] = {
+        allDefaults: 0,
+        defaults: 0,
+        retirements: 0,
+        walkovers: 0,
         matchUpsWon: 0,
         matchUpsLost: 0,
         victories: [],
@@ -132,7 +138,7 @@ export function getParticipantResults({
 
   calculateRatios({ participantResults, perPlayer, matchUpFormat });
 
-  return { participantResults, disqualified };
+  return { participantResults };
 }
 
 function getWinningSideId(matchUp) {
