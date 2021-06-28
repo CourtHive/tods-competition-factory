@@ -32,6 +32,7 @@ export function setTournamentNotes({ tournamentRecord, notes }) {
 }
 
 // TODO: check for matchUps that must be unscheduled with change in date
+// TODO: check all courts in all venues for dateAvailability that is outside of tournament date range
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!dateValidation.test(startDate)) return { error: INVALID_DATE };
@@ -46,6 +47,7 @@ export function setTournamentStartDate({ tournamentRecord, startDate }) {
 }
 
 // TODO: check for matchUps that must be unscheduled with change in date
+// TODO: check all courts in all venues for dateAvailability that is outside of tournament date range
 export function setTournamentEndDate({ tournamentRecord, endDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!dateValidation.test(endDate)) return { error: INVALID_DATE };
