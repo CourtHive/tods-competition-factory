@@ -62,7 +62,11 @@ export function getDrawMatchUps({
     (tournamentParticipants?.length && tournamentParticipants) ||
     tournamentRecord?.participants;
   const { structures } = getDrawStructures({ drawDefinition });
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
 
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
   // ...optionally pass these seedAssignments to other stage structures

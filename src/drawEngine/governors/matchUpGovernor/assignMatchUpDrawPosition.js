@@ -30,13 +30,24 @@ export function assignMatchUpDrawPosition({
   drawPosition,
   iterative,
 }) {
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
     mappedMatchUps,
     includeByeMatchUps: true,
   });
+
+  /*
+  let matchUps = getMappedStructureMatchUps({
+    mappedMatchUps,
+    structureId,
+    inContext,
+  });
+  */
 
   const { matchUp, structure } = findMatchUp({
     drawDefinition,

@@ -27,7 +27,10 @@ export function doubleWalkoverAdvancement({
   mappedMatchUps,
   targetData,
 }) {
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
 
   if (structure.structureType === CONTAINER) {

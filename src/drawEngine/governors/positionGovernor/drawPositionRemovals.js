@@ -177,7 +177,10 @@ function removeDrawPosition({
   targetMatchUp,
   drawPosition,
 }) {
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({
     drawPosition,
@@ -291,7 +294,10 @@ export function removeSubsequentRoundsParticipant({
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.structureType === CONTAINER) return;
 
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
   const matchUps = mappedMatchUps[structureId].matchUps;
 
   const { initialRoundNumber } = getInitialRoundNumber({

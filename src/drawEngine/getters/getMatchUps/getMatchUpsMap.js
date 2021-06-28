@@ -6,22 +6,28 @@ function isValidMatchUp(matchUp) {
 
 export function getMatchUpsMap({ drawDefinition, structure }) {
   const matchUpsMap = {};
+  const drawMatchUps = [];
+
   (drawDefinition?.structures || [structure])
     .filter((structure) => structure && typeof structure === 'object')
     .forEach((structure) => {
       const { structureId, matchUps, structures } = structure;
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
-        matchUpsMap[structureId] = {
-          matchUps: matchUps.filter(isValidMatchUp),
-        };
+        const filteredMatchUps = matchUps.filter(isValidMatchUp);
+        matchUpsMap[structureId] = { matchUps: filteredMatchUps };
+        drawMatchUps.push(...filteredMatchUps);
       } else if (isRoundRobin) {
         structures.forEach((itemStructure) => {
           const { structureName } = itemStructure;
+          const filteredMatchUps =
+            itemStructure.matchUps.filter(isValidMatchUp);
+
           matchUpsMap[itemStructure.structureId] = {
-            matchUps: itemStructure.matchUps.filter(isValidMatchUp),
+            matchUps: filteredMatchUps,
             structureName,
           };
+          drawMatchUps.push(...filteredMatchUps);
           if (!matchUpsMap[structureId]) matchUpsMap[structureId] = {};
           if (!matchUpsMap[structureId].itemStructureIds)
             matchUpsMap[structureId].itemStructureIds = [];
@@ -31,7 +37,8 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
         });
       }
     });
-  return matchUpsMap;
+
+  return { matchUpsMap, drawMatchUps };
 }
 
 export function getMappedStructureMatchUps({

@@ -19,7 +19,10 @@ export function removeSubsequentRoundsParticipant({
     return;
   }
 
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!mappedMatchUps) {
+    const { matchUpsMap } = getMatchUpsMap({ drawDefinition });
+    mappedMatchUps = matchUpsMap;
+  }
   const matchUps = mappedMatchUps[structureId].matchUps;
 
   // determine the initial round where drawPosition appears
