@@ -636,7 +636,7 @@ it('recognize when participants are tied with position order', () => {
   );
 });
 
-it.only('properly handles walkovers in calculating participant positions', () => {
+it('properly handles walkovers in calculating participant positions', () => {
   // the default tallyPolicy tallyDirectives pushes a participant who is tied with other participants
   // but has defaulted/walkedover/retired to the last position in the group
   // in this scenario there are three participants with a 3/1 match record; the participant who
