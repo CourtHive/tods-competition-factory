@@ -90,6 +90,27 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
   }
 );
 
+test.each([competitionEngineSync, asyncCompetitionEngine])(
+  'will properly hydrate all competition matchUps with persons',
+  async (competitionEngine) => {
+    competitionEngine.reset();
+    const drawProfiles = [{ drawSize: 8 }];
+    const { tournamentRecord: firstRecord } =
+      mocksEngine.generateTournamentRecord({ drawProfiles });
+    const { tournamentRecord: secondRecord } =
+      mocksEngine.generateTournamentRecord({ drawProfiles });
+    await competitionEngine.setState([firstRecord, secondRecord]);
+
+    const { upcomingMatchUps } = await competitionEngine.competitionMatchUps();
+
+    upcomingMatchUps.forEach(({ sides }) =>
+      sides.forEach((side) => {
+        expect(side.participant.person).not.toBeUndefined();
+      })
+    );
+  }
+);
+
 test.each([competitionEngineSync])(
   'can set a single tournamentRecord',
   async (competitionEngine) => {
