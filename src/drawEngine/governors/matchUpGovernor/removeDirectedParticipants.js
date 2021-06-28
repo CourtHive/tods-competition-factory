@@ -13,6 +13,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(props) {
   const {
+    tournamentRecord,
     drawDefinition,
     structure,
     matchUp,
@@ -24,6 +25,7 @@ export function removeDirectedParticipants(props) {
     targetData,
     removeScore = true,
     score,
+    event,
   } = props;
 
   const {
@@ -58,11 +60,13 @@ export function removeDirectedParticipants(props) {
       drawDefinition: props.drawDefinition,
       removeWinningSide: true,
       matchUpStatusCodes,
+      tournamentRecord,
       matchUpFormat,
       removeScore,
       matchUpId,
       matchUp,
       score,
+      event,
     });
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({

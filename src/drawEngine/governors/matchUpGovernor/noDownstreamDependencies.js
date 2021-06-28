@@ -16,7 +16,15 @@ import {
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function noDownstreamDependencies(props) {
-  const { matchUp, matchUpId, matchUpFormat, score, winningSide } = props;
+  const {
+    matchUp,
+    matchUpId,
+    matchUpFormat,
+    score,
+    winningSide,
+    tournamentRecord,
+    event,
+  } = props;
   let { matchUpStatus } = props;
 
   const doubleWalkoverCleanup =
@@ -63,6 +71,8 @@ export function noDownstreamDependencies(props) {
       matchUpFormat,
       matchUpId,
       matchUp,
+      tournamentRecord,
+      event,
     });
   } else {
     console.log('unknown condition');

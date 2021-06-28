@@ -33,6 +33,8 @@ export function attemptToSetMatchUpStatus(props) {
     mappedMatchUps,
     drawDefinition,
     matchUpStatusCodes,
+    tournamentRecord,
+    event,
   } = props;
 
   if (matchUp.winningSide) {
@@ -60,6 +62,8 @@ export function attemptToSetMatchUpStatus(props) {
         matchUpFormat,
         drawDefinition,
         matchUpStatusCodes,
+        tournamentRecord,
+        event,
       });
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
       // only possible to remove winningSide if neither winner
@@ -77,6 +81,8 @@ export function attemptToSetMatchUpStatus(props) {
         drawDefinition,
         matchUpStatus: matchUpStatus || TO_BE_PLAYED,
         matchUpStatusCodes,
+        tournamentRecord,
+        event,
       });
     } else {
       return { error: UNRECOGNIZED_MATCHUP_STATUS };
@@ -92,6 +98,8 @@ export function attemptToSetMatchUpStatus(props) {
       drawDefinition,
       matchUpStatusCodes,
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+      tournamentRecord,
+      event,
     });
   } else if (matchUpStatus === BYE) {
     const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
@@ -108,6 +116,8 @@ export function attemptToSetMatchUpStatus(props) {
           drawDefinition,
           removeScore: true,
           matchUpStatusCodes,
+          tournamentRecord,
+          event,
         });
 
         doubleWalkoverAdvancement(props);

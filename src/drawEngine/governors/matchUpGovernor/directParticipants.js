@@ -10,6 +10,8 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function directParticipants(props) {
   const {
+    tournamentRecord,
+    event,
     drawDefinition,
     matchUpStatus,
     matchUpStatusCodes,
@@ -40,11 +42,13 @@ export function directParticipants(props) {
     matchUpFormat,
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
+    tournamentRecord,
     winningSide,
     removeScore,
     matchUpId,
     matchUp,
     score,
+    event,
   });
 
   if (isCollectionMatchUp) {

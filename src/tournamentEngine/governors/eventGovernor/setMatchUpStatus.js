@@ -30,6 +30,7 @@ export function setMatchUpStatus(props) {
     matchUpFormat,
     schedule,
     tournamentRecord,
+    event,
     notes,
   } = props;
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
@@ -69,6 +70,7 @@ export function setMatchUpStatus(props) {
     score: outcome?.score,
     schedule,
     notes,
+    event,
   });
   if (setMatchUpStatusError) {
     return { error: setMatchUpStatusError };

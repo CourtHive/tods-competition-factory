@@ -273,7 +273,15 @@ function attemptStatusChange(props) {
 }
 
 function winningSideWithDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, winningSide, notes, matchUpId } = props;
+  const {
+    matchUp,
+    matchUpStatus,
+    winningSide,
+    notes,
+    matchUpId,
+    tournamentRecord,
+    event,
+  } = props;
 
   if (winningSide === matchUp.winningSide) {
     if (matchUpStatus) {
@@ -298,12 +306,14 @@ function winningSideWithDownstreamDependencies(props) {
     } else {
       const { drawDefinition, score, matchUpFormat, matchUpTieId } = props;
       modifyMatchUpScore({
+        tournamentRecord,
         drawDefinition,
         matchUpFormat,
         matchUpId,
         matchUp,
         score,
         notes,
+        event,
         matchUpTieId,
       });
     }
@@ -322,22 +332,26 @@ function winningSideWithDownstreamDependencies(props) {
 
 function applyMatchUpValues(props) {
   const {
+    tournamentRecord,
     drawDefinition,
     matchUpStatusCodes,
     matchUpStatus,
     matchUpFormat,
     matchUpId,
     matchUp,
+    event,
     score,
     notes,
   } = props;
   modifyMatchUpScore({
+    tournamentRecord,
     drawDefinition,
     matchUpStatus: matchUpStatus || COMPLETED,
     matchUpStatusCodes,
     matchUpFormat,
     matchUpId,
     matchUp,
+    event,
     score,
     notes,
     matchUpTieId: props.matchUpTieId,
