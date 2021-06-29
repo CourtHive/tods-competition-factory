@@ -145,8 +145,6 @@ function addDrawPositionToMatchUps({
   matchUpsMap,
   inContextDrawMatchUps,
 }) {
-  // OPTIMIZE: use mathcUpsMap to get matchUps;
-  // filter is unnecessary as tieMatchUps are not included...
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -155,7 +153,6 @@ function addDrawPositionToMatchUps({
 
     matchUpsMap,
   });
-  // END_OPTIMIZE
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
   const { initialRoundNumber } = getInitialRoundNumber({
