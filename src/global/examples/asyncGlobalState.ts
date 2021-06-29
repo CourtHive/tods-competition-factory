@@ -1,6 +1,6 @@
 import { executionAsyncId, createHook } from 'async_hooks';
 
-export const INVALID_VALUES = 'Invalid values';
+const INVALID_VALUES = 'Invalid values';
 
 /**
  * This code enables "global" state for each async execution context.
