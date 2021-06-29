@@ -45,6 +45,10 @@ export function tournamentEngineAsync() {
       tournamentId = result.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
     },
+    setTournamentId: (newTournamentId) => {
+      // TODO: add globalState method to insure that tournamentRecords[tournamentId] is valid
+      tournamentId = newTournamentId;
+    },
   };
 
   fx.version = () => factoryVersion();
