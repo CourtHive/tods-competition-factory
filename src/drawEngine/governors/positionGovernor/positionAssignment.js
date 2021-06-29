@@ -29,6 +29,7 @@ export function assignDrawPosition({
   automaticPlacement,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -66,6 +67,7 @@ export function assignDrawPosition({
 
   const { containsParticipant, containsBye } =
     drawPositionFilled(positionAssignment);
+
   if (
     containsParticipant &&
     positionAssignment.participantId !== participantId
@@ -100,6 +102,7 @@ export function assignDrawPosition({
       automaticPlacement,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     modifyRoundRobinMatchUpsStatus({
@@ -140,7 +143,10 @@ function addDrawPositionToMatchUps({
   automaticPlacement,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
+  // OPTIMIZE: use mathcUpsMap to get matchUps;
+  // filter is unnecessary as tieMatchUps are not included...
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -149,6 +155,7 @@ function addDrawPositionToMatchUps({
 
     matchUpsMap,
   });
+  // END_OPTIMIZE
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
   const { initialRoundNumber } = getInitialRoundNumber({
@@ -168,6 +175,7 @@ function addDrawPositionToMatchUps({
       matchUpId: matchUp.matchUpId,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }

@@ -29,17 +29,21 @@ export function assignMatchUpDrawPosition({
   iterative,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    includeByeMatchUps: true,
 
-    matchUpsMap,
-  });
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
+
+      matchUpsMap,
+    }));
+  }
 
   const inContextMatchUp = inContextDrawMatchUps.find(
     (m) => m.matchUpId === matchUpId
@@ -124,6 +128,7 @@ export function assignMatchUpDrawPosition({
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       } else {
@@ -163,6 +168,7 @@ export function assignMatchUpDrawPosition({
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightred',
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       }

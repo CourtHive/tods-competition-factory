@@ -9,7 +9,6 @@ import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { playoff } from '../../generators/playoffStructures';
-import { getDevContext } from '../../../global/globalState';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { powerOf2 } from '../../../utilities';
 import {
@@ -195,11 +194,16 @@ export function generateDrawType(props = {}) {
     });
   }
 
-  if (goesTo) addGoesTo({ drawDefinition, matchUpsMap });
+  let inContextDrawMatchUps;
+  if (goesTo)
+    ({ inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap }));
 
   const result = Object.assign({}, SUCCESS, { matchUps });
 
-  if (getDevContext()) Object.assign(result, generatorResult, { matchUpsMap });
+  Object.assign(result, generatorResult, {
+    matchUpsMap,
+    inContextDrawMatchUps,
+  });
 
   return result;
 }
