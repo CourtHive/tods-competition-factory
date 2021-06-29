@@ -1,17 +1,16 @@
 import { generateEventWithFlights } from './generateEventWithFlights';
+import { generateEventWithDraw } from './generateEventWithDraw';
+import { generateParticipants } from './generateParticipants';
+import tournamentEngine from '../../tournamentEngine/sync';
 import {
   dateRange,
   formatDate,
   isValidDateString,
 } from '../../utilities/dateTime';
-import { generateEventWithDraw } from './generateEventWithDraw';
-import { generateParticipants } from './generateParticipants';
 
-import tournamentEngine from '../../tournamentEngine/sync';
-
+import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
-import { INVALID_DATE } from '../../constants/errorConditionConstants';
 
 /**
  *

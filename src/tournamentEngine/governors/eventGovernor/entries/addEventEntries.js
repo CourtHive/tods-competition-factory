@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
-// import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -16,7 +16,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 
 /**
  *
@@ -95,6 +94,7 @@ export function addEventEntries(props) {
   if (drawId) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
+      autoEntryPositions,
       drawDefinition,
       entryStatus,
       entryStage,

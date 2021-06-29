@@ -22,6 +22,7 @@ export function positionUnseededParticipants({
   structure,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -93,6 +94,7 @@ export function positionUnseededParticipants({
       entries,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     return randomUnseededDistribution({
@@ -102,6 +104,7 @@ export function positionUnseededParticipants({
       structureId,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 }
@@ -113,6 +116,7 @@ function randomUnseededDistribution({
   structureId,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {
@@ -125,6 +129,7 @@ function randomUnseededDistribution({
       automaticPlacement: true,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result && result.error) return result;
   }

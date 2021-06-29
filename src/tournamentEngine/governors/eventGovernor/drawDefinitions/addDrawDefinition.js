@@ -1,7 +1,7 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addNotice, getTopics } from '../../../../global/globalState';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
-import { addNotice } from '../../../../global/globalState';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -87,8 +87,11 @@ export function addDrawDefinition({ drawDefinition, event }) {
   Object.assign(drawDefinition, { drawOrder });
   event.drawDefinitions.push(drawDefinition);
 
-  const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  const { topics } = getTopics();
+  if (topics.includes(ADD_MATCHUPS)) {
+    const { matchUps } = allDrawMatchUps({ drawDefinition, event });
+    addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  }
 
   return SUCCESS;
 }

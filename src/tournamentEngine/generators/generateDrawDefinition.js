@@ -1,10 +1,9 @@
-import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
-import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { addNotice } from '../../global/globalState';
 import drawEngine from '../../drawEngine/sync';
 
 import {
@@ -23,6 +22,7 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
+import { AUDIT } from '../../constants/topicConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
@@ -109,23 +109,26 @@ export function generateDrawDefinition(props) {
   if (matchUpFormatError)
     return { error: matchUpFormatError, message: 'matchUpFormat error' };
 
-  const { matchUpsMap, errors: generatedDrawErrors } =
-    drawEngine.generateDrawType({
-      stage,
-      drawType,
-      seedingProfile,
-      structureOptions,
-      qualifyingRound,
-      qualifyingPositions,
+  const {
+    matchUpsMap,
+    inContextDrawMatchUps,
+    errors: generatedDrawErrors,
+  } = drawEngine.generateDrawType({
+    stage,
+    drawType,
+    seedingProfile,
+    structureOptions,
+    qualifyingRound,
+    qualifyingPositions,
 
-      uuids,
-      matchUpFormat,
-      playoffMatchUpFormat,
-      finishingPositionNaming,
+    uuids,
+    matchUpFormat,
+    playoffMatchUpFormat,
+    finishingPositionNaming,
 
-      feedPolicy,
-      goesTo: props.goesTo,
-    });
+    feedPolicy,
+    goesTo: props.goesTo,
+  });
 
   if (generatedDrawErrors)
     return { error: generatedDrawErrors, message: 'generated draw type error' };
@@ -146,25 +149,27 @@ export function generateDrawDefinition(props) {
   const { policyDefinition: eventAvoidancePolicy } =
     getPolicyDefinition({
       event,
+      tournamentRecord,
       policyType: POLICY_TYPE_AVOIDANCE,
     }) || {};
 
   const { policyDefinition: eventSeedingPolicy } =
     getPolicyDefinition({
       event,
+      tournamentRecord,
       policyType: POLICY_TYPE_SEEDING,
     }) || {};
 
-  const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
-  if (!appliedPolicies?.seeding && !eventSeedingPolicy) {
+  if (!policyDefinitions?.seeding && !eventSeedingPolicy) {
     // if there is no seeding policy then use default seeing policy
     drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
   }
 
-  if (!appliedPolicies?.avoidance && eventAvoidancePolicy) {
+  if (!policyDefinitions?.avoidance && eventAvoidancePolicy) {
     drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
   }
 
+  // OPTIMIZE: use drawEngine.addDrawEntries
   entries.forEach((entry) => {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = Object.assign({}, entry, {
@@ -172,6 +177,7 @@ export function generateDrawDefinition(props) {
     });
     drawEngine.addDrawEntry(entryData);
   });
+
   const enteredParticipantIds = entries.map(
     ({ participantId }) => participantId
   );
@@ -288,6 +294,7 @@ export function generateDrawDefinition(props) {
       structureId,
       seedsOnly,
 
+      inContextDrawMatchUps,
       matchUpsMap,
     }));
   }
@@ -311,11 +318,7 @@ export function generateDrawDefinition(props) {
     eventId: event?.eventId,
   };
 
-  const timeItem = {
-    itemType: 'generateDrawDefinition',
-    itemValue: drawDetails,
-  };
-  addTournamentTimeItem({ tournamentRecord, timeItem });
+  addNotice({ topic: AUDIT, payload: drawDetails });
 
   return Object.assign({}, SUCCESS, {
     structureId,

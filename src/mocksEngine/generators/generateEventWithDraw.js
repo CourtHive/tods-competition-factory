@@ -61,6 +61,7 @@ export function generateEventWithDraw({
     eventId,
     participantIds,
     entryStage: stage,
+    autoEntryPositions: false,
   });
   if (result.error) return { error: result.error };
 
@@ -73,6 +74,7 @@ export function generateEventWithDraw({
       eventId,
       entryStatus: ALTERNATE,
       participantIds: alternatesParticipantIds,
+      autoEntryPositions: false,
     });
     if (result.error) return { error: result.error };
   }

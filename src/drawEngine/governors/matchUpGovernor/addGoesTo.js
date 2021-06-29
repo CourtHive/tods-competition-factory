@@ -9,17 +9,17 @@ export function addGoesTo({
 
   matchUpsMap,
 }) {
-  const { matchUps: inContextMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    includeByeMatchUps: true,
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
 
-    matchUpsMap,
-  });
+      matchUpsMap,
+    }));
+  }
 
-  inContextDrawMatchUps = inContextDrawMatchUps || inContextMatchUps || [];
-
-  inContextDrawMatchUps.forEach((inContextMatchUp) => {
+  (inContextDrawMatchUps || []).forEach((inContextMatchUp) => {
     const { matchUpId, structureId } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
     const targetData = positionTargets({
@@ -45,4 +45,6 @@ export function addGoesTo({
       Object.assign(matchUp, { loserMatchUpId });
     }
   });
+
+  return { inContextDrawMatchUps };
 }

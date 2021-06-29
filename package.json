@@ -47,6 +47,8 @@
     "start": "tsdx watch",
     "build": "tsdx build",
     "test": "tsdx test --maxWorkers=50%",
+    "benchmark": "tsdx test --runInBand benchmark",
+    "benchmark-coverage": "tsdx test --runInBand benchmark --collect-coverage",
     "coverage": "tsdx test --maxWorkers=50% --collect-coverage",
     "lint": "tsdx eslint src",
     "prepare": "tsdx build",

@@ -78,6 +78,7 @@ export function generateEventWithFlights({
         eventId,
         stage: stage || MAIN,
         participantIds: drawParticipantIds,
+        autoEntryPositions: false,
       });
     }
     const drawEntries = drawParticipantIds.map(({ participantId }) => ({
