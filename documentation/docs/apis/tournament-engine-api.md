@@ -2004,7 +2004,6 @@ Clear draw position and optionally replace with a BYE, change entryStatus, or de
 ```js
 removeDrawPositionAssignment({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   drawPosition,
   replaceWithBye, // optional
@@ -2458,7 +2457,6 @@ Thin wrapper around [removeDrawPositionAssignment](#removeDrawPositionAssignment
 ```js
 withdrawParticipantAtDrawPosition({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   drawPosition,
   replaceWithBye, // optional
