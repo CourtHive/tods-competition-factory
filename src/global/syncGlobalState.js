@@ -1,6 +1,7 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 
 const syncGlobalState = {
+  tournamentRecords: {},
   subscriptions: {},
   notices: [],
 };
@@ -12,7 +13,27 @@ export default {
   deleteNotices,
   getTopics,
   callListener,
+  getTournamentRecord,
+  setTournamentRecord,
+  removeTournamentRecord,
 };
+
+export function getTournamentRecord(tournamentId) {
+  return syncGlobalState.tournamentRecords[tournamentId];
+}
+
+export function setTournamentRecord(tournamentRecord) {
+  const tournamentId = tournamentRecord?.tournamentId;
+  if (tournamentId) {
+    syncGlobalState.tournamentRecords[tournamentId] = tournamentRecord;
+  }
+}
+
+export function removeTournamentRecord(tournamentId) {
+  return typeof tournamentId === 'string'
+    ? delete syncGlobalState.tournamentRecords[tournamentId]
+    : false;
+}
 
 export function setSubscriptions({ subscriptions = {} } = {}) {
   if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };

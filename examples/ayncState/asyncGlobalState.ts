@@ -37,6 +37,7 @@ export default {
 
 function createInstanceState() {
   const instanceState = {
+    tournamentRecords: {},
     subscriptions: {},
     notices: [],
   };
@@ -52,6 +53,26 @@ function getInstanceState() {
     throw new Error(`Can not get instance state for async task ${asyncTaskId}`);
 
   return instanceState;
+}
+
+export function getTournamentRecord(tournamentId) {
+  const instanceState = getInstanceState();
+  return instanceState.tournamentRecords[tournamentId];
+}
+
+export function setTournamentRecord(tournamentRecord) {
+  const tournamentId = tournamentRecord?.tournamentId;
+  if (tournamentId) {
+    const instanceState = getInstanceState();
+    instanceState.tournamentRecords[tournamentId] = tournamentRecord;
+  }
+}
+
+export function removeTournamentRecord(tournamentId) {
+  const instanceState = getInstanceState();
+  return typeof tournamentId === 'string'
+    ? delete instanceState.tournamentRecords[tournamentId]
+    : false;
 }
 
 function setSubscriptions({ subscriptions = {} } = {}) {

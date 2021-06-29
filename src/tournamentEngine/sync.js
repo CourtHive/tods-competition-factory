@@ -9,25 +9,26 @@ import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { findEvent } from './getters/eventGetter';
-import { makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
+import { factoryVersion, getState, setState } from './stateMethods';
 import {
   setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  setTournamentRecord,
+  removeTournamentRecord,
+  getTournamentRecord,
 } from '../global/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
 
-let tournamentRecord;
+let tournamentId;
 
 export const tournamentEngine = (function () {
   const fx = {
-    getState: ({ convertExtensions } = {}) => ({
-      tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
-    }),
+    getState: ({ convertExtensions } = {}) =>
+      getState({ convertExtensions, tournamentId }),
     setSubscriptions: (subscriptions) => {
       if (typeof subscriptions === 'object')
         setSubscriptions({ subscriptions });
@@ -36,17 +37,16 @@ export const tournamentEngine = (function () {
     newTournamentRecord: (props = {}) => {
       const result = newTournamentRecord(props);
       if (result.error) return result;
-      tournamentRecord = result;
-      const tournamentId = tournamentRecord.tournamentId;
+      setTournamentRecord(result);
+      tournamentId = result.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
     },
   };
 
-  fx.version = () => {
-    return '@VERSION@';
-  };
+  fx.version = () => factoryVersion();
   fx.reset = () => {
-    tournamentRecord = undefined;
+    removeTournamentRecord(tournamentId);
+    tournamentId = undefined;
     return SUCCESS;
   };
   fx.setState = (tournament, deepCopyOption) => {
@@ -66,7 +66,7 @@ export const tournamentEngine = (function () {
     } else {
       fx.error = undefined;
       fx.success = true;
-      tournamentRecord = result;
+      tournamentId = result.tournamentId;
     }
     return fx;
   }
@@ -86,6 +86,8 @@ export const tournamentEngine = (function () {
 
   // enable Middleware
   function engineInvoke(fx, params /*, method*/) {
+    const tournamentRecord = getTournamentRecord(tournamentId);
+
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 

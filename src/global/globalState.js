@@ -2,8 +2,6 @@ import syncStateEngine from './syncGlobalState';
 const globalState = {
   devContext: false,
   deepCopy: true,
-  subscriptions: {},
-  notices: [],
 };
 
 let _globalStateProvider = syncStateEngine;
@@ -62,4 +60,16 @@ export function getTopics() {
 
 export async function callListener(payload) {
   return _globalStateProvider.callListener(payload);
+}
+
+export function getTournamentRecord(tournamentId) {
+  return _globalStateProvider.getTournamentRecord(tournamentId);
+}
+
+export function setTournamentRecord(tournamentRecord) {
+  return _globalStateProvider.setTournamentRecord(tournamentRecord);
+}
+
+export function removeTournamentRecord(tournamentId) {
+  return _globalStateProvider.removeTournamentRecord(tournamentId);
 }

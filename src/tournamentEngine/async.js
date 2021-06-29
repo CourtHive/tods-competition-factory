@@ -1,5 +1,6 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
+import { factoryVersion, setState, getState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
@@ -10,14 +11,15 @@ import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { findEvent } from './getters/eventGetter';
-import { makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
 import {
+  deleteNotices,
   setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
-  deleteNotices,
+  getTournamentRecord,
+  removeTournamentRecord,
+  setTournamentRecord,
 } from '../global/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
@@ -25,12 +27,11 @@ import { SUCCESS } from '../constants/resultConstants';
 export function tournamentEngineAsync() {
   createInstanceState();
 
-  let tournamentRecord;
+  let tournamentId;
 
   const fx = {
-    getState: ({ convertExtensions } = {}) => ({
-      tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
-    }),
+    getState: ({ convertExtensions } = {}) =>
+      getState({ convertExtensions, tournamentId }),
     setSubscriptions: (subscriptions) => {
       if (typeof subscriptions === 'object')
         setSubscriptions({ subscriptions });
@@ -39,17 +40,16 @@ export function tournamentEngineAsync() {
     newTournamentRecord: (props = {}) => {
       const result = newTournamentRecord(props);
       if (result.error) return result;
-      tournamentRecord = result;
-      const tournamentId = tournamentRecord.tournamentId;
+      setTournamentRecord(result);
+      tournamentId = result.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
     },
   };
 
-  fx.version = () => {
-    return '@VERSION@';
-  };
+  fx.version = () => factoryVersion();
   fx.reset = () => {
-    tournamentRecord = undefined;
+    removeTournamentRecord(tournamentId);
+    tournamentId = undefined;
     return SUCCESS;
   };
   fx.setState = (tournament, deepCopyOption) => {
@@ -69,7 +69,7 @@ export function tournamentEngineAsync() {
     } else {
       fx.error = undefined;
       fx.success = true;
-      tournamentRecord = result;
+      tournamentId = result.tournamentId;
     }
     return fx;
   }
@@ -89,6 +89,8 @@ export function tournamentEngineAsync() {
 
   // enable Middleware
   async function engineInvoke(fx, params /*, method*/) {
+    const tournamentRecord = getTournamentRecord(tournamentId);
+
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
