@@ -891,7 +891,7 @@ competitionEngine.setSchedulingProfile({ schedulingProfile });
 
 ## setTournamentRecord
 
-Adds a tournamentRecord to `competitionEngine` state.
+Adds a tournamentRecord to `competitionEngine` state, or overwrite/replace an existing `tournamentRecord` with the same `tournamentId`.
 
 ```js
 competitionEngine.setTournamentRecord(tournamentRecord);
