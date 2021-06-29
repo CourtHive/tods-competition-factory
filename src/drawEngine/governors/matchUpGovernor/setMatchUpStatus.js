@@ -6,6 +6,7 @@ import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, makeDeepCopy } from '../../../utilities';
 import { getDevContext } from '../../../global/globalState';
+import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import {
@@ -65,14 +66,19 @@ export function setMatchUpStatus(props) {
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
-  // structure can be found by using inContextDrawMatchUp.structureId
-  // OPTIMIZATION: matchUp can be found in matchUpsMap.drawMatchUps
+
+  const matchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+
+  /*
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
     matchUpId,
 
     matchUpsMap,
   });
+  */
 
   if (matchUp.matchUpType === TEAM) {
     // do not direclty set team score... unless walkover/default/double walkover/Retirement
@@ -120,6 +126,9 @@ export function setMatchUpStatus(props) {
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
     structure,
