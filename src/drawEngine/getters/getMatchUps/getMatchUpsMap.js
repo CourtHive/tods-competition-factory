@@ -1,9 +1,5 @@
 import { makeDeepCopy } from '../../../utilities';
 
-function isValidMatchUp(matchUp) {
-  return typeof matchUp === 'object';
-}
-
 export function getMatchUpsMap({ drawDefinition, structure }) {
   const mappedMatchUps = {};
   const drawMatchUps = [];
@@ -14,20 +10,26 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
       const { structureId, matchUps, structures } = structure;
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
-        const filteredMatchUps = matchUps.filter(isValidMatchUp);
+        const filteredMatchUps = matchUps;
         mappedMatchUps[structureId] = { matchUps: filteredMatchUps };
-        drawMatchUps.push(...filteredMatchUps);
+        filteredMatchUps.forEach((matchUp) => {
+          drawMatchUps.push(matchUp);
+          if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
+        });
       } else if (isRoundRobin) {
         structures.forEach((itemStructure) => {
           const { structureName } = itemStructure;
-          const filteredMatchUps =
-            itemStructure.matchUps.filter(isValidMatchUp);
+          const filteredMatchUps = itemStructure.matchUps;
 
           mappedMatchUps[itemStructure.structureId] = {
             matchUps: filteredMatchUps,
             structureName,
           };
           drawMatchUps.push(...filteredMatchUps);
+          filteredMatchUps.forEach((matchUp) => {
+            drawMatchUps.push(matchUp);
+            if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
+          });
           if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
           if (!mappedMatchUps[structureId].itemStructureIds)
             mappedMatchUps[structureId].itemStructureIds = [];

@@ -1,4 +1,3 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
@@ -16,13 +15,12 @@ export function checkDoubleWalkoverPropagation(props) {
     const { tournamentRecord, event, drawDefinition, matchUpId, matchUpsMap } =
       props;
 
-    // OPTIMIZATION: use matchUpsMap.drawMatchUps to findMatchUp
-    const { matchUp: noContextWinnerMatchUp } = findMatchUp({
-      drawDefinition,
-      matchUpsMap,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
+    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    );
+
     if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
+
     modifyMatchUpScore({
       matchUpId,
       drawDefinition,

@@ -6,7 +6,6 @@ import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../getters/findStructure';
 import { intersection } from '../../../utilities';
 import { positionTargets } from './positionTargets';
@@ -89,13 +88,9 @@ function conditionallyAdvanceDrawPosition({
 
   matchUpsMap,
 }) {
-  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
-  const { matchUp: noContextWinnerMatchUp } = findMatchUp({
-    drawDefinition,
-    matchUpId: winnerMatchUp.matchUpId,
-
-    matchUpsMap,
-  });
+  const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+  );
   if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
   const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
@@ -150,12 +145,9 @@ function conditionallyAdvanceDrawPosition({
       );
       const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
       if (pairedPreviousMatchUpStatus === DOUBLE_WALKOVER) {
-        // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
-        const { matchUp: noContextNextWinnerMatchUp } = findMatchUp({
-          drawDefinition,
-          matchUpId: winnerMatchUp.matchUpId,
-          matchUpsMap,
-        });
+        const noContextNextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
+          (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+        );
         if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
         modifyMatchUpScore({
           matchUpId: noContextNextWinnerMatchUp.matchUpId,

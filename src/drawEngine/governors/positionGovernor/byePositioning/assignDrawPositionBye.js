@@ -5,7 +5,6 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
 import { addNotice } from '../../../../global/globalState';
 import { positionTargets } from '../positionTargets';
@@ -235,15 +234,14 @@ function advanceDrawPosition({
 
   matchUpsMap,
 }) {
-  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
-  // use inContextMatchUp.structureId to find structure
-  const { matchUp, structure } = findMatchUp({
-    drawDefinition,
-    matchUpId,
-
-    matchUpsMap,
-  });
-
+  const matchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const structureId = inContextMatchUp?.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = getPositionAssignments({
     structure,
   });
@@ -331,14 +329,14 @@ function advanceWinner({
 
   matchUpsMap,
 }) {
-  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
-  // use inContextMatchUp.structureId to get structure
-  const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
-    drawDefinition,
-    matchUpId: winnerMatchUp.matchUpId,
-
-    matchUpsMap,
-  });
+  const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+  );
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+  );
+  const structureId = inContextMatchUp?.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = getPositionAssignments({ structure });
   const drawPositionToAdvanceAssigment = positionAssignments.find(
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
