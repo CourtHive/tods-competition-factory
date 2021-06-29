@@ -58,9 +58,11 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   const instanceState = getInstanceState();
 
   if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };
+
   Object.keys(subscriptions).forEach((subscription) => {
     instanceState.subscriptions[subscription] = subscriptions[subscription];
   });
+  return true;
 }
 
 function addNotice({ topic, payload }) {
