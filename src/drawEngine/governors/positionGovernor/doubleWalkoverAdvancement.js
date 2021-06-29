@@ -23,13 +23,12 @@ import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 export function doubleWalkoverAdvancement({
   drawDefinition,
   structure,
-
-  mappedMatchUps,
   targetData,
+
+  matchUpsMap,
 }) {
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
 
@@ -43,8 +42,9 @@ export function doubleWalkoverAdvancement({
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
-    mappedMatchUps,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   if (loserMatchUp) {
@@ -54,7 +54,8 @@ export function doubleWalkoverAdvancement({
       loserMatchUp,
       loserTargetLink,
       loserTargetDrawPosition,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
     if (result.error) return result;
   }
@@ -66,9 +67,10 @@ export function doubleWalkoverAdvancement({
 
       matchUpId: winnerMatchUp.matchUpId,
       sourceMatchUp,
-      mappedMatchUps,
       winnerMatchUp,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
     if (result.error) return result;
   }
@@ -82,14 +84,17 @@ function conditionallyAdvanceDrawPosition({
 
   matchUpId,
   sourceMatchUp,
-  mappedMatchUps,
   winnerMatchUp,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
+  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
   const { matchUp: noContextWinnerMatchUp } = findMatchUp({
     drawDefinition,
-    mappedMatchUps,
     matchUpId: winnerMatchUp.matchUpId,
+
+    matchUpsMap,
   });
   if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
@@ -136,8 +141,8 @@ function conditionallyAdvanceDrawPosition({
       const offset = sourceRoundPosition % 2 ? 1 : -1;
       const pairedRoundPosition = sourceRoundPosition + offset;
       const structureMatchUps = getMappedStructureMatchUps({
-        mappedMatchUps,
         structureId: structure.structureId,
+        matchUpsMap,
       });
       const pairedPreviousMatchUp = structureMatchUps.find(
         ({ roundNumber, roundPosition }) =>
@@ -145,10 +150,11 @@ function conditionallyAdvanceDrawPosition({
       );
       const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
       if (pairedPreviousMatchUpStatus === DOUBLE_WALKOVER) {
+        // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
         const { matchUp: noContextNextWinnerMatchUp } = findMatchUp({
           drawDefinition,
-          mappedMatchUps,
           matchUpId: winnerMatchUp.matchUpId,
+          matchUpsMap,
         });
         if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
         modifyMatchUpScore({
@@ -162,9 +168,9 @@ function conditionallyAdvanceDrawPosition({
         doubleWalkoverAdvancement({
           drawDefinition,
           structure,
-          mappedMatchUps,
           targetData,
           matchUpId,
+          matchUpsMap,
         });
       }
     }
@@ -177,7 +183,7 @@ function conditionallyAdvanceDrawPosition({
       loserMatchUp: nextLoserMatchUp,
       loserTargetLink,
       loserTargetDrawPosition: nextLoserTargetDrawPosition,
-      mappedMatchUps,
+      matchUpsMap,
     });
     if (result.error) return result;
   }
@@ -190,7 +196,7 @@ function advanceByeToLoserMatchUp(props) {
     drawDefinition,
     loserTargetLink,
     loserTargetDrawPosition,
-    mappedMatchUps,
+    matchUpsMap,
   } = props;
   const structureId = loserTargetLink?.target?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -198,8 +204,8 @@ function advanceByeToLoserMatchUp(props) {
 
   return assignDrawPositionBye({
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition: loserTargetDrawPosition,
+    matchUpsMap,
   });
 }

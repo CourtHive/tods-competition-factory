@@ -9,11 +9,12 @@ import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstant
 
 export function positionSeedBlocks({
   drawDefinition,
-  mappedMatchUps,
   participants,
   groupsCount,
   structureId,
   structure,
+
+  matchUpsMap,
 }) {
   const errors = [];
   let placedSeedBlocks = 0;
@@ -36,9 +37,10 @@ export function positionSeedBlocks({
     if (placedSeedBlocks < groupsCount) {
       const result = positionSeedBlock({
         drawDefinition,
-        mappedMatchUps,
         participants,
         structureId,
+
+        matchUpsMap,
       });
       if (result && result.success) placedSeedBlocks++;
       if (result.error) {
@@ -51,9 +53,10 @@ export function positionSeedBlocks({
 
 function positionSeedBlock({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   participants,
+
+  matchUpsMap,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     drawDefinition,
@@ -72,11 +75,12 @@ function positionSeedBlock({
     if (!drawPosition) return { error: MISSING_DRAW_POSITION };
     const result = assignDrawPosition({
       drawDefinition,
-      mappedMatchUps,
       structureId,
       drawPosition,
       participantId,
       automaticPlacement: true,
+
+      matchUpsMap,
     });
     if (!result.success) return result;
   }

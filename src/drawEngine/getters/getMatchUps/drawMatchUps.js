@@ -20,7 +20,8 @@ export function getAllDrawMatchUps(props) {
     upcomingMatchUps,
     pendingMatchUps,
     byeMatchUps,
-    mappedMatchUps,
+
+    matchUpsMap,
   } = getDrawMatchUps(props);
   const matchUps = [].concat(
     ...abandonedMatchUps,
@@ -30,7 +31,7 @@ export function getAllDrawMatchUps(props) {
     ...byeMatchUps
   );
 
-  return { matchUps, mappedMatchUps };
+  return { matchUps, matchUpsMap };
 }
 
 export function getDrawMatchUps({
@@ -41,7 +42,6 @@ export function getDrawMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
-  mappedMatchUps,
   policyDefinition,
   tournamentRecord,
   includeByeMatchUps,
@@ -49,6 +49,8 @@ export function getDrawMatchUps({
   tournamentParticipants,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
+
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -63,9 +65,8 @@ export function getDrawMatchUps({
     tournamentRecord?.participants;
   const { structures } = getDrawStructures({ drawDefinition });
 
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
 
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
@@ -82,7 +83,6 @@ export function getDrawMatchUps({
       context,
       structure,
       roundFilter,
-      mappedMatchUps,
       drawDefinition,
       matchUpFilters,
       contextFilters,
@@ -93,6 +93,8 @@ export function getDrawMatchUps({
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,
       inContext: inContext || nextMatchUps,
+
+      matchUpsMap,
     });
 
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
@@ -103,7 +105,8 @@ export function getDrawMatchUps({
   });
 
   const matchUpGroups = {
-    mappedMatchUps,
+    matchUpsMap,
+
     byeMatchUps: allByeMatchUps,
     pendingMatchUps: allPendingMatchUps,
     upcomingMatchUps: allUpcomingMatchUps,

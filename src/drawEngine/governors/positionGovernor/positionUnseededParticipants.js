@@ -16,11 +16,12 @@ import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
-  mappedMatchUps,
   candidatesCount,
   participants,
   structureId,
   structure,
+
+  matchUpsMap,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -85,20 +86,22 @@ export function positionUnseededParticipants({
     return randomUnseededSeparation({
       unseededParticipantIds,
       candidatesCount,
-      mappedMatchUps,
       drawDefinition,
       participants,
       structureId,
       avoidance,
       entries,
+
+      matchUpsMap,
     });
   } else {
     return randomUnseededDistribution({
       unseededParticipantIds,
       unfilledDrawPositions,
       drawDefinition,
-      mappedMatchUps,
       structureId,
+
+      matchUpsMap,
     });
   }
 }
@@ -107,8 +110,9 @@ function randomUnseededDistribution({
   unseededParticipantIds,
   unfilledDrawPositions,
   drawDefinition,
-  mappedMatchUps,
   structureId,
+
+  matchUpsMap,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {
@@ -116,10 +120,11 @@ function randomUnseededDistribution({
     const result = assignDrawPosition({
       structureId,
       drawPosition,
-      mappedMatchUps,
       participantId,
       drawDefinition,
       automaticPlacement: true,
+
+      matchUpsMap,
     });
     if (result && result.error) return result;
   }

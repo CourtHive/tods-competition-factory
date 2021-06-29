@@ -5,14 +5,16 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
   const { matchUps: inContextMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
-    mappedMatchUps,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   inContextDrawMatchUps = inContextDrawMatchUps || inContextMatchUps || [];
@@ -31,7 +33,7 @@ export function addGoesTo({
     const loserMatchUpId = loserMatchUp?.matchUpId;
 
     const matchUps = getMappedStructureMatchUps({
-      mappedMatchUps,
+      matchUpsMap,
       structureId,
     });
     const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);

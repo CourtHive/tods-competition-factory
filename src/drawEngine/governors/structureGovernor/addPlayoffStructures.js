@@ -150,12 +150,11 @@ export function addPlayoffStructures(props) {
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
 
-  const { matchUps: inContextDrawMatchUps, mappedMatchUps } =
-    getAllDrawMatchUps({
-      drawDefinition,
-      inContext: true,
-      includeByeMatchUps: true,
-    });
+  const { matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
 
   // now advance any players from completed matchUps into the newly added structures
   const completedMatchUps = inContextDrawMatchUps.filter(
@@ -184,7 +183,11 @@ export function addPlayoffStructures(props) {
   });
 
   if (props.goesTo)
-    addGoesTo({ drawDefinition, mappedMatchUps, inContextDrawMatchUps });
+    addGoesTo({
+      drawDefinition,
+      inContextDrawMatchUps,
+      matchUpsMap,
+    });
 
   return getDevContext()
     ? Object.assign({}, SUCCESS, {

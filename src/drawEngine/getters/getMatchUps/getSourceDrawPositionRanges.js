@@ -17,7 +17,7 @@ import {
 export function getSourceDrawPositionRanges({
   drawDefinition,
   structureId,
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -40,7 +40,7 @@ export function getSourceDrawPositionRanges({
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
       const structureMatchUps = getMappedStructureMatchUps({
-        mappedMatchUps,
+        matchUpsMap,
         structureId: sourceStructureId,
       });
       const { roundProfile } = getRoundMatchUps({
@@ -52,7 +52,7 @@ export function getSourceDrawPositionRanges({
   );
 
   const structureMatchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
     structureId,
   });
   const { roundProfile: targetStructureProfile } = getRoundMatchUps({

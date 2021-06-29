@@ -128,6 +128,8 @@ function getNextToBePlayedMatchUp({
   if (!matchUp || !structureId || matchUp?.matchUpStatus === TO_BE_PLAYED)
     return { matchUp };
   if (matchUpStatus === BYE) {
+    // TODO: positionTargets is only used to get winnerMatchUp
+    // OPTIMIZATION: which can be found using matchUp.winnerMatchUpId and inContextDrawMatchUps
     const { structure } = findStructure({ drawDefinition, structureId });
     const targetData =
       structure &&

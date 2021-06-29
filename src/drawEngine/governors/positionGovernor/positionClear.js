@@ -21,10 +21,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function clearDrawPosition({
   drawDefinition,
-  mappedMatchUps,
   drawPosition,
   participantId,
   structureId,
+
+  matchUpsMap,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -59,17 +60,19 @@ export function clearDrawPosition({
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
-    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   const { drawPositionCleared, error } = drawPositionRemovals({
     inContextDrawMatchUps,
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition,
+
+    matchUpsMap,
   });
   if (error) return { error };
 

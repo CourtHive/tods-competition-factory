@@ -78,12 +78,13 @@ export function removeDrawPositionAssignment(props) {
       method: 'replaceWithBye',
       drawPosition,
     });
-    const { mappedMatchUps } = props;
+    const { matchUpsMap } = props;
     const result = assignDrawPositionBye({
       drawDefinition,
-      mappedMatchUps,
       structureId,
       drawPosition,
+
+      matchUpsMap,
     });
     if (result.error) return result;
   }

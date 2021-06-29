@@ -14,11 +14,12 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function automatedPositioning({
   drawDefinition,
-  mappedMatchUps,
   candidatesCount,
   participants,
   structureId,
   seedsOnly,
+
+  matchUpsMap,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
@@ -44,30 +45,34 @@ export function automatedPositioning({
     // BYEs must be placed first to insure lower seeds get BYEs
     ({ error: byePositionError } = positionByes({
       drawDefinition,
-      mappedMatchUps,
       structure,
       seedsOnly,
+
+      matchUpsMap,
     }));
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
-      mappedMatchUps,
       participants,
       structure,
+
+      matchUpsMap,
     }));
   } else {
     // otherwise... seeds need to be placed first so that BYEs
     // can follow the seedValues of placed seeds
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
-      mappedMatchUps,
       participants,
       structure,
+
+      matchUpsMap,
     }));
     ({ error: byePositionError } = positionByes({
       drawDefinition,
-      mappedMatchUps,
       structure,
       seedsOnly,
+
+      matchUpsMap,
     }));
   }
 
@@ -78,18 +83,20 @@ export function automatedPositioning({
       positionUnseededParticipants({
         candidatesCount,
         drawDefinition,
-        mappedMatchUps,
         participants,
         structure,
+
+        matchUpsMap,
       });
     if (unseededConflicts) conflicts.unseededConflicts = unseededConflicts;
 
     const { error: qualifierPositionError, conflicts: qualifierConflicts } =
       positionQualifiers({
         drawDefinition,
-        mappedMatchUps,
         participants,
         structure,
+
+        matchUpsMap,
       });
     if (qualifierConflicts) conflicts.qualifierConflicts = qualifierConflicts;
 

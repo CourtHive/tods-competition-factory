@@ -25,12 +25,13 @@ export function getStructureMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
-  mappedMatchUps,
   policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
   requireParticipants = true,
   scheduleVisibilityFilters,
+
+  matchUpsMap,
 }) {
   if (!structure && structureId) {
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -42,11 +43,12 @@ export function getStructureMatchUps({
     drawDefinition,
     matchUpFilters,
     contextFilters,
-    mappedMatchUps,
     policyDefinition,
     tournamentParticipants,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
+
+    matchUpsMap,
   });
   if (error) return { error };
   const { assignedPositions } = structureAssignedDrawPositions({ structure });

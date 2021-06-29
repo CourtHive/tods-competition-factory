@@ -21,11 +21,12 @@ export function removeDirectedParticipants(props) {
     matchUpStatus,
     matchUpFormat,
     matchUpStatusCodes,
-    mappedMatchUps,
     targetData,
     removeScore = true,
     score,
     event,
+
+    matchUpsMap,
   } = props;
 
   const {
@@ -71,9 +72,9 @@ export function removeDirectedParticipants(props) {
 
     const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
       inContext: true,
-      mappedMatchUps,
       drawDefinition,
       structure,
+      matchUpsMap,
     });
 
     const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
@@ -83,11 +84,12 @@ export function removeDirectedParticipants(props) {
     if (winnerMatchUp) {
       const { error } = removeDirectedWinner({
         winnerMatchUp,
-        mappedMatchUps,
         drawDefinition,
         winnerTargetLink,
         winnerParticipantId,
         winningDrawPosition,
+
+        matchUpsMap,
       });
       if (error) return { errors: [error] };
     }
@@ -106,19 +108,19 @@ export function removeDirectedParticipants(props) {
         const drawPosition = Math.min(...loserMatchUp.drawPositions);
         const { error } = removeDirectedBye({
           drawDefinition,
-          mappedMatchUps,
           drawPosition,
           targetLink: loserTargetLink,
+          matchUpsMap,
         });
         if (error) return { errors: [error] };
       }
 
       const { error } = removeDirectedLoser({
         loserMatchUp,
-        mappedMatchUps,
         drawDefinition,
         loserTargetLink,
         loserParticipantId,
+        matchUpsMap,
       });
       if (error) return { errors: [error] };
     }
@@ -131,11 +133,12 @@ export function removeDirectedParticipants(props) {
 
 export function removeDirectedWinner({
   winnerMatchUp,
-  mappedMatchUps,
   drawDefinition,
   winnerTargetLink,
   winnerParticipantId,
   winningDrawPosition,
+
+  matchUpsMap,
 }) {
   let error;
 
@@ -178,10 +181,10 @@ export function removeDirectedWinner({
   // Remove participant's drawPosition from current and subsequent round matchUps
   removeSubsequentRoundsParticipant({
     drawDefinition,
-    mappedMatchUps,
     structureId,
     roundNumber,
     targetDrawPosition: winningDrawPosition,
+    matchUpsMap,
   });
 
   return { error };
@@ -210,8 +213,8 @@ export function removeDirectedBye({
   targetLink,
   drawPosition,
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps,
+  matchUpsMap,
 }) {
   let error;
 
@@ -220,9 +223,9 @@ export function removeDirectedBye({
   clearDrawPosition({
     drawDefinition,
     inContextDrawMatchUps,
-    mappedMatchUps,
     structureId,
     drawPosition,
+    matchUpsMap,
   });
 
   return { error };

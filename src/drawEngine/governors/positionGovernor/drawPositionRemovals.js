@@ -19,7 +19,7 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 /**
  *
  * @param {object} drawDefinition
- * @param {object} mappedMatchUps
+ * @param {object} matchUpsMap
  * @param {object[]} inContextDrawMatchUps
  * @param {string} structureId
  * @param {number} drawPosition
@@ -27,10 +27,11 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
  */
 export function drawPositionRemovals({
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps,
   structureId,
   drawPosition,
+
+  matchUpsMap,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -59,9 +60,10 @@ export function drawPositionRemovals({
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps: structureMatchUps } = getAllStructureMatchUps({
     drawDefinition,
-    mappedMatchUps,
     matchUpFilters,
     structure,
+
+    matchUpsMap,
   });
   const { roundProfile, roundMatchUps } = getRoundMatchUps({
     matchUps: structureMatchUps,
@@ -150,19 +152,21 @@ export function drawPositionRemovals({
     }
     removeSubsequentRoundsParticipant({
       drawDefinition,
-      mappedMatchUps,
       inContextDrawMatchUps,
       structureId,
       roundNumber,
       targetDrawPosition,
+
+      matchUpsMap,
     });
     removeDrawPosition({
       drawDefinition,
       structure,
-      mappedMatchUps,
       inContextDrawMatchUps,
       targetMatchUp,
       drawPosition,
+
+      matchUpsMap,
     });
   });
 
@@ -172,15 +176,16 @@ export function drawPositionRemovals({
 function removeDrawPosition({
   drawDefinition,
   structure,
-  mappedMatchUps,
   inContextDrawMatchUps,
   targetMatchUp,
   drawPosition,
+
+  matchUpsMap,
 }) {
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
+  const mappedMatchUps = matchUpsMap.mappedMatchUps;
   const matchUps = mappedMatchUps[structure.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({
     drawPosition,
@@ -199,7 +204,6 @@ function removeDrawPosition({
     matchUpId: targetMatchUp.matchUpId,
     structure,
     drawDefinition,
-    mappedMatchUps,
     inContextDrawMatchUps,
   });
   const {
@@ -241,9 +245,10 @@ function removeDrawPosition({
         drawPositionRemovals({
           inContextDrawMatchUps,
           drawDefinition,
-          mappedMatchUps,
           structureId: loserMatchUp.structureId,
           drawPosition: loserMatchUpDrawPosition,
+
+          matchUpsMap,
         });
       } else {
         // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
@@ -251,9 +256,11 @@ function removeDrawPosition({
         const loserMatchUpDrawPosition = Math.min(
           ...drawPositions.filter((f) => f)
         );
+
+        const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
         const loserStructureMatchUps =
-          // mappedMatchUps[loserMatchUp.structureId].matchUps;
           mappedMatchUps[loserMatchUp.structureId].matchUps;
+
         const { initialRoundNumber } = getInitialRoundNumber({
           drawPosition: loserMatchUpDrawPosition,
           matchUps: loserStructureMatchUps,
@@ -263,9 +270,10 @@ function removeDrawPosition({
           drawPositionRemovals({
             inContextDrawMatchUps,
             drawDefinition,
-            mappedMatchUps,
             structureId: loserMatchUp.structureId,
             drawPosition: loserMatchUpDrawPosition,
+
+            matchUpsMap,
           });
         }
       }
@@ -285,19 +293,20 @@ function removeDrawPosition({
 
 export function removeSubsequentRoundsParticipant({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   roundNumber,
   inContextDrawMatchUps,
   targetDrawPosition,
+
+  matchUpsMap,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   if (structure.structureType === CONTAINER) return;
 
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
+  const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const matchUps = mappedMatchUps[structureId].matchUps;
 
   const { initialRoundNumber } = getInitialRoundNumber({
@@ -316,10 +325,11 @@ export function removeSubsequentRoundsParticipant({
     removeDrawPosition({
       drawDefinition,
       structure,
-      mappedMatchUps,
       inContextDrawMatchUps,
       targetMatchUp: matchUp,
       drawPosition: targetDrawPosition,
+
+      matchUpsMap,
     })
   );
 }

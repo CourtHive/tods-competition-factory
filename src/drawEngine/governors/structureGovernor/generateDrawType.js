@@ -184,7 +184,9 @@ export function generateDrawType(props = {}) {
     return { error: UNRECOGNIZED_DRAW_TYPE };
   }
 
-  const { matchUps, mappedMatchUps } = getAllDrawMatchUps({ drawDefinition });
+  const { matchUps, matchUpsMap } = getAllDrawMatchUps({
+    drawDefinition,
+  });
 
   if (tieFormat) {
     matchUps.forEach((matchUp) => {
@@ -193,12 +195,11 @@ export function generateDrawType(props = {}) {
     });
   }
 
-  if (goesTo) addGoesTo({ drawDefinition, mappedMatchUps });
+  if (goesTo) addGoesTo({ drawDefinition, matchUpsMap });
 
   const result = Object.assign({}, SUCCESS, { matchUps });
 
-  if (getDevContext())
-    Object.assign(result, generatorResult, { mappedMatchUps });
+  if (getDevContext()) Object.assign(result, generatorResult, { matchUpsMap });
 
   return result;
 }

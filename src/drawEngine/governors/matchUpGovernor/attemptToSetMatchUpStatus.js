@@ -30,11 +30,12 @@ export function attemptToSetMatchUpStatus(props) {
     targetData,
     matchUpStatus,
     matchUpFormat,
-    mappedMatchUps,
     drawDefinition,
     matchUpStatusCodes,
     tournamentRecord,
     event,
+
+    matchUpsMap,
   } = props;
 
   if (matchUp.winningSide) {
@@ -49,7 +50,7 @@ export function attemptToSetMatchUpStatus(props) {
         }
         const result = checkDoubleWalkoverPropagation({
           drawDefinition,
-          mappedMatchUps,
+          matchUpsMap,
           targetData,
         });
         if (result.error) return result;

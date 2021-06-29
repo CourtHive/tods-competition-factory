@@ -109,7 +109,7 @@ export function generateDrawDefinition(props) {
   if (matchUpFormatError)
     return { error: matchUpFormatError, message: 'matchUpFormat error' };
 
-  const { mappedMatchUps, errors: generatedDrawErrors } =
+  const { matchUpsMap, errors: generatedDrawErrors } =
     drawEngine.generateDrawType({
       stage,
       drawType,
@@ -284,10 +284,11 @@ export function generateDrawDefinition(props) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     ({ conflicts } = drawEngine.automatedPositioning({
-      mappedMatchUps,
       participants,
       structureId,
       seedsOnly,
+
+      matchUpsMap,
     }));
   }
 

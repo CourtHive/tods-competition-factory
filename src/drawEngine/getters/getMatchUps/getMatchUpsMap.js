@@ -43,9 +43,12 @@ export function getMatchUpsMap({ drawDefinition, structure }) {
 
 export function getMappedStructureMatchUps({
   mappedMatchUps,
+  matchUpsMap,
+
   structureId,
   inContext,
 }) {
+  mappedMatchUps = matchUpsMap?.mappedMatchUps || mappedMatchUps;
   let structureMatchUpsMap = mappedMatchUps[structureId];
   const itemStructureMatchUps = (structureMatchUpsMap?.itemStructureIds || [])
     .map((itemStructureId) => {

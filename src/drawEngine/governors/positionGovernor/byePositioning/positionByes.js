@@ -10,10 +10,11 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 export function positionByes({
   blockOrdered = false,
   drawDefinition,
-  mappedMatchUps,
   structureId,
   structure,
   seedsOnly,
+
+  matchUpsMap,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -21,8 +22,9 @@ export function positionByes({
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
     drawDefinition,
-    mappedMatchUps,
     structure,
+
+    matchUpsMap,
   });
 
   const byesToPlace = byesCount - placedByes;
@@ -60,9 +62,10 @@ export function positionByes({
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
       drawDefinition,
-      mappedMatchUps,
       structureId,
       drawPosition,
+
+      matchUpsMap,
     });
     if (result?.error) return result;
   }

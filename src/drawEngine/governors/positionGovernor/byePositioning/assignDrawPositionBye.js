@@ -64,18 +64,18 @@ import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   drawPosition,
   iterative,
+
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
 
   pushGlobalLog({
@@ -120,17 +120,19 @@ export function assignDrawPositionBye({
   // ########## gather reusable data for performance optimization ###########
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
-    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    mappedMatchUps,
     matchUpFilters,
     structure,
+
+    matchUpsMap,
   });
 
   // modifies the structure's positionAssignments
@@ -183,7 +185,8 @@ export function assignDrawPositionBye({
       inContextDrawMatchUps,
       drawPositionToAdvance,
       drawDefinition,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
     if (result.error) return result;
   }
@@ -227,14 +230,18 @@ function advanceDrawPosition({
   drawPositionToAdvance,
   inContextDrawMatchUps,
   drawDefinition,
-  mappedMatchUps,
   matchUpId,
   iterative,
+
+  matchUpsMap,
 }) {
+  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
+  // use inContextMatchUp.structureId to find structure
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
-    mappedMatchUps,
     matchUpId,
+
+    matchUpsMap,
   });
 
   const { positionAssignments } = getPositionAssignments({
@@ -257,7 +264,6 @@ function advanceDrawPosition({
   } = positionTargets({
     matchUpId,
     structure,
-    mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
   });
@@ -276,11 +282,12 @@ function advanceDrawPosition({
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
     advanceWinner({
       drawDefinition,
-      mappedMatchUps,
       winnerMatchUp,
       drawPositionToAdvance,
       sourceDrawPositions,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
   }
 
@@ -305,8 +312,9 @@ function advanceDrawPosition({
         drawDefinition,
         loserMatchUp,
         loserTargetLink,
-        mappedMatchUps,
         loserTargetDrawPosition,
+
+        matchUpsMap,
       });
     }
   }
@@ -316,16 +324,20 @@ function advanceDrawPosition({
 
 function advanceWinner({
   drawDefinition,
-  mappedMatchUps,
   winnerMatchUp,
   drawPositionToAdvance,
   sourceDrawPositions,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
+  // OPTIMIZATION: use matchUpsMap.drawMatchUps to find matchUp
+  // use inContextMatchUp.structureId to get structure
   const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
     drawDefinition,
-    mappedMatchUps,
     matchUpId: winnerMatchUp.matchUpId,
+
+    matchUpsMap,
   });
   const { positionAssignments } = getPositionAssignments({ structure });
   const drawPositionToAdvanceAssigment = positionAssignments.find(
@@ -438,8 +450,9 @@ function advanceWinner({
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawDefinition,
-        mappedMatchUps,
         iterative: 'brightmagenta',
+
+        matchUpsMap,
       });
     } else if (drawPositionIsBye) {
       const {
@@ -448,7 +461,6 @@ function advanceWinner({
       } = positionTargets({
         matchUpId: winnerMatchUp.matchUpId,
         structure,
-        mappedMatchUps,
         drawDefinition,
         inContextDrawMatchUps,
       });
@@ -458,8 +470,9 @@ function advanceWinner({
             drawDefinition,
             loserMatchUp,
             loserTargetLink,
-            mappedMatchUps,
             loserTargetDrawPosition,
+
+            matchUpsMap,
           });
         } else {
           const sourceStructureRoundPosition = winnerMatchUp.roundPosition;
@@ -494,8 +507,9 @@ function assignFedDrawPositionBye({
   drawDefinition,
   loserMatchUp,
   loserTargetLink,
-  mappedMatchUps,
   loserTargetDrawPosition,
+
+  matchUpsMap,
 }) {
   const { roundNumber } = loserMatchUp;
 
@@ -504,6 +518,8 @@ function assignFedDrawPositionBye({
     color: 'brightcyan',
     loserTargetDrawPosition,
   });
+
+  const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const loserStructureMatchUps =
     mappedMatchUps[loserMatchUp.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({

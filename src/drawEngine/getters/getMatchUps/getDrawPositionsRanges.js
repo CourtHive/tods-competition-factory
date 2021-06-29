@@ -12,13 +12,13 @@ import {
 export function getDrawPositionsRanges({
   drawDefinition,
   structureId,
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
   const structureMatchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
     structureId,
   });
   const { roundProfile } = getRoundMatchUps({

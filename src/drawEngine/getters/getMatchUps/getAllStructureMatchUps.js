@@ -39,7 +39,7 @@ export function getAllStructureMatchUps({
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   let collectionPositionMatchUps = {},
     roundMatchUps = {};
@@ -112,9 +112,8 @@ export function getAllStructureMatchUps({
     stageSpecificPolicies?.requireAllPositionsAssigned ||
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
-  if (!mappedMatchUps) {
-    const matchUpsMap = getMatchUpsMap({ drawDefinition, structure });
-    mappedMatchUps = matchUpsMap.mappedMatchUps;
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition, structure });
   }
 
   const { positionAssignments, allPositionsAssigned } =
@@ -123,7 +122,7 @@ export function getAllStructureMatchUps({
   const { seedAssignments: structureSeedAssignments } =
     getStructureSeedAssignments({
       drawDefinition,
-      mappedMatchUps,
+      matchUpsMap,
       structure,
     });
 
@@ -140,7 +139,8 @@ export function getAllStructureMatchUps({
   const isRoundRobin = structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
+
     structureId,
     inContext,
   });
@@ -164,12 +164,14 @@ export function getAllStructureMatchUps({
 
   if (inContext) {
     const { sourceDrawPositionRanges } = getSourceDrawPositionRanges({
-      mappedMatchUps,
+      matchUpsMap,
+
       drawDefinition,
       structureId,
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
-      mappedMatchUps,
+      matchUpsMap,
+
       drawDefinition,
       structureId,
     });

@@ -1,4 +1,3 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
@@ -16,21 +15,12 @@ export function positionTargets({
   matchUpId,
   structure,
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps = [],
+  inContextMatchUp,
 }) {
-  let matchUp;
-  if (inContextDrawMatchUps.length) {
+  let matchUp = inContextMatchUp;
+  if (inContextDrawMatchUps.length && !matchUp) {
     matchUp = inContextDrawMatchUps.find((m) => m.matchUpId === matchUpId);
-  }
-
-  if (!matchUp) {
-    ({ matchUp } = findMatchUp({
-      drawDefinition,
-      mappedMatchUps,
-      matchUpId,
-      inContext: true,
-    }));
   }
 
   const { finishingPosition } = structure;

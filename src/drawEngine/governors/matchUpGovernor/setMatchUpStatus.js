@@ -61,14 +61,17 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
-  const { mappedMatchUps } = getMatchUpsMap({ drawDefinition });
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   // cannot take matchUpStatus from existing matchUp records
   // cannot take winningSide from existing matchUp records
+  // structure can be found by using inContextDrawMatchUp.structureId
+  // OPTIMIZATION: matchUp can be found in matchUpsMap.drawMatchUps
   const { matchUp, structure } = findMatchUp({
     drawDefinition,
-    mappedMatchUps,
     matchUpId,
+
+    matchUpsMap,
   });
 
   if (matchUp.matchUpType === TEAM) {
@@ -95,8 +98,9 @@ export function setMatchUpStatus(props) {
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
-    mappedMatchUps,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   const inContextMatchUp = inContextDrawMatchUps.find(
@@ -120,15 +124,15 @@ export function setMatchUpStatus(props) {
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
     structure,
     drawDefinition,
-    mappedMatchUps,
     inContextDrawMatchUps,
   });
 
   if (matchUpTieId) {
     const { matchUp: teamMatchUp } = findMatchUp({
       drawDefinition,
-      mappedMatchUps,
       matchUpId: matchUpTieId,
+
+      matchUpsMap,
     });
     const existingTieMatchUpWinningSide = matchUp.winningSide;
     let sideAdjustments = [0, 0];
@@ -162,11 +166,12 @@ export function setMatchUpStatus(props) {
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
   Object.assign(props, {
     matchUp,
-    mappedMatchUps,
     inContextDrawMatchUps,
     matchUpTieId,
     structure,
     targetData,
+
+    matchUpsMap,
   });
 
   const {
