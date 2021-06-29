@@ -4,12 +4,13 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
+import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
+import { getState, setState } from './stateMethods';
 import { findEvent } from './getters/eventGetter';
-import { factoryVersion, getState, setState } from './stateMethods';
 import {
   setSubscriptions,
   setDeepCopy,

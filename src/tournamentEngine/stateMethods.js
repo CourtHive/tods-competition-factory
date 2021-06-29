@@ -21,10 +21,6 @@ export function setState(tournament, deepCopyOption) {
   return tournamentRecord;
 }
 
-export function factoryVersion() {
-  return '@VERSION@';
-}
-
 export function getState({ convertExtensions, tournamentId } = {}) {
   if (typeof tournamentId !== 'string') return {};
   const tournamentRecord = getTournamentRecord(tournamentId);

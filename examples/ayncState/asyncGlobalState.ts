@@ -60,12 +60,22 @@ export function getTournamentRecord(tournamentId) {
   return instanceState.tournamentRecords[tournamentId];
 }
 
+export function getTournamentRecords() {
+  const instanceState = getInstanceState();
+  return instanceState.tournamentRecords;
+}
+
 export function setTournamentRecord(tournamentRecord) {
   const tournamentId = tournamentRecord?.tournamentId;
   if (tournamentId) {
     const instanceState = getInstanceState();
     instanceState.tournamentRecords[tournamentId] = tournamentRecord;
   }
+}
+
+export function setTournamentRecords(tournamentRecords) {
+  const instanceState = getInstanceState();
+  instanceState.tournamentRecords = tournamentRecords;
 }
 
 export function removeTournamentRecord(tournamentId) {

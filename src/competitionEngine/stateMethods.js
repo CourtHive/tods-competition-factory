@@ -1,28 +1,27 @@
 import { findExtension } from './governors/competitionsGovernor/competitionExtentions';
 import { makeDeepCopy } from '../utilities';
+import {
+  getTournamentRecords,
+  setTournamentRecords,
+  setTournamentRecord as globalSetTournamentRecord,
+} from '../global/globalState';
 
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
   INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
-  NOT_FOUND,
 } from '../constants/errorConditionConstants';
 import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 
-export function removeTournamentRecord(tournamentRecords, tournamentId) {
-  if (typeof tournamentId !== 'string') return { error: INVALID_VALUES };
-  if (!tournamentRecords[tournamentId]) return { error: NOT_FOUND };
-  delete tournamentRecords[tournamentId];
-  return tournamentRecords;
+export function getState({ convertExtensions }) {
+  const tournamentRecords = getTournamentRecords();
+  return {
+    tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
+  };
 }
 
-export function removeUnlinkedTournamentRecords(tournamentRecords) {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
-    return { error: MISSING_TOURNAMENT_RECORDS };
+export function removeUnlinkedTournamentRecords() {
+  const tournamentRecords = getTournamentRecords();
 
   const { extension } = findExtension({
     tournamentRecords,
@@ -35,26 +34,21 @@ export function removeUnlinkedTournamentRecords(tournamentRecords) {
       delete tournamentRecords[tournamentId];
   });
 
-  return tournamentRecords;
+  return setTournamentRecords(tournamentRecords);
 }
 
-export function setTournamentRecord(
-  tournamentRecords,
-  record,
-  deepCopyOption = true
-) {
+export function setTournamentRecord(record, deepCopyOption = true) {
   if (typeof record !== 'object' || Array.isArray(record))
     return { error: INVALID_OBJECT };
 
   if (!record.tournamentId) return { error: INVALID_VALUES };
 
-  const tournamentRecord = deepCopyOption ? makeDeepCopy(record) : record;
-
-  tournamentRecords[record.tournamentId] = tournamentRecord;
-  return tournamentRecords;
+  return globalSetTournamentRecord(
+    deepCopyOption ? makeDeepCopy(record) : record
+  );
 }
 
-export function setState(tournamentRecords, records, deepCopyOption = true) {
+export function setState(records, deepCopyOption = true) {
   if (typeof records !== 'object') return { error: INVALID_OBJECT };
 
   if (Array.isArray(records)) {
@@ -75,7 +69,5 @@ export function setState(tournamentRecords, records, deepCopyOption = true) {
     if (!validRecordsObject) return { error: INVALID_RECORDS };
   }
 
-  tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-
-  return tournamentRecords;
+  return setTournamentRecords(deepCopyOption ? makeDeepCopy(records) : records);
 }

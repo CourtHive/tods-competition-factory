@@ -1,4 +1,5 @@
 import syncStateEngine from './syncGlobalState';
+
 const globalState = {
   devContext: false,
   deepCopy: true,
@@ -66,8 +67,16 @@ export function getTournamentRecord(tournamentId) {
   return _globalStateProvider.getTournamentRecord(tournamentId);
 }
 
+export function getTournamentRecords() {
+  return _globalStateProvider.getTournamentRecords();
+}
+
 export function setTournamentRecord(tournamentRecord) {
   return _globalStateProvider.setTournamentRecord(tournamentRecord);
+}
+
+export function setTournamentRecords(tournamentRecords) {
+  return _globalStateProvider.setTournamentRecords(tournamentRecords);
 }
 
 export function removeTournamentRecord(tournamentId) {
