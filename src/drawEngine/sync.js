@@ -115,10 +115,9 @@ export const drawEngine = (function () {
       ...params,
     });
 
-    if (result?.success) {
-      notifySubscribers();
-    }
-    deleteNotices();
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) notifySubscribers();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }

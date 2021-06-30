@@ -87,7 +87,7 @@ export function tournamentEngineAsync() {
   return fx;
 
   // enable Middleware
-  async function engineInvoke(fx, params /*, method*/) {
+  async function engineInvoke(fx, params) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
     if (params) {
@@ -116,9 +116,9 @@ export function tournamentEngineAsync() {
       tournamentRecord,
     });
 
-    if (result?.success) await notifySubscribersAsync();
-
-    deleteNotices();
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) await notifySubscribersAsync();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }

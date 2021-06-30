@@ -123,11 +123,9 @@ export function drawEngineAsync() {
       ...params,
     });
 
-    if (result?.success) {
-      await notifySubscribersAsync();
-    }
-
-    deleteNotices();
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) await notifySubscribersAsync();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }

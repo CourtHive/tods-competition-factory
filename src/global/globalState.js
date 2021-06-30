@@ -39,8 +39,8 @@ export function deepCopyEnabled() {
   return globalState.deepCopy;
 }
 
-export function setSubscriptions(subscription) {
-  _globalStateProvider.setSubscriptions(subscription);
+export function setSubscriptions(subscriptions) {
+  _globalStateProvider.setSubscriptions(subscriptions);
 }
 
 export function addNotice(notice) {
