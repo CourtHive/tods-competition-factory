@@ -2358,6 +2358,16 @@ tournamentEngine.setTournamentEndDate({ endDate });
 
 ---
 
+## setTournamentId
+
+Points `tournamentEngine` to a tournamentRecord that is in shared state, e.g. loaded by `competitionEngine`.
+
+```js
+tournamentEngine.setTournamentId(tournamentId);
+```
+
+---
+
 ## setTournamentName
 
 ```js
