@@ -19,6 +19,7 @@ export function automatedPositioning({
   structureId,
   seedsOnly,
 
+  inContextDrawMatchUps,
   matchUpsMap,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
@@ -87,6 +88,7 @@ export function automatedPositioning({
         structure,
 
         matchUpsMap,
+        inContextDrawMatchUps,
       });
     if (unseededConflicts) conflicts.unseededConflicts = unseededConflicts;
 
@@ -97,6 +99,7 @@ export function automatedPositioning({
         structure,
 
         matchUpsMap,
+        inContextDrawMatchUps,
       });
     if (qualifierConflicts) conflicts.qualifierConflicts = qualifierConflicts;
 

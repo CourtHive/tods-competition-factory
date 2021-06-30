@@ -79,6 +79,7 @@ export function addDrawEntry({
     entryPosition,
   });
   drawDefinition.entries.push(entry);
+
   return SUCCESS;
 }
 
