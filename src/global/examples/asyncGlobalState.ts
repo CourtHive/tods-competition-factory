@@ -46,13 +46,18 @@ function getInstanceState() {
 }
 
 export default {
-  createInstanceState,
-  setSubscriptions,
   addNotice,
-  getNotices,
-  deleteNotices,
-  getTopics,
   callListener,
+  createInstanceState,
+  deleteNotices,
+  getNotices,
+  getTopics,
+  getTournamentRecord,
+  getTournamentRecords,
+  removeTournamentRecord,
+  setSubscriptions,
+  setTournamentRecord,
+  setTournamentRecords,
 };
 
 export function getTournamentRecord(tournamentId) {
