@@ -23,6 +23,10 @@ import {
 } from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 export function competitionEngineAsync(test) {
   const result = createInstanceState();
@@ -58,6 +62,9 @@ export function competitionEngineAsync(test) {
       return processResult(result);
     },
   };
+
+  fx.executionQueue = (directives, rollBackOnError) =>
+    executionQueueAsync(fx, directives, rollBackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -118,6 +125,38 @@ export function competitionEngineAsync(test) {
         };
       }
     }
+  }
+
+  async function executionQueueAsync(fx, directives, rollBackOnError) {
+    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentRecords = getTournamentRecords();
+
+    const snapshot =
+      rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+
+    const results = [];
+    for (const directive of directives) {
+      if (typeof directive !== 'object') return { error: INVALID_VALUES };
+
+      const { method, params } = directive;
+      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+
+      const result = await fx[method]({
+        ...params,
+        tournamentRecords,
+      });
+
+      if (result?.error && snapshot) {
+        setState(snapshot);
+        return result;
+      }
+      results.push(result);
+    }
+
+    await notifySubscribersAsync();
+    deleteNotices();
+
+    return results;
   }
 
   return fx;

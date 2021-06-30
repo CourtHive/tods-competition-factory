@@ -6,12 +6,12 @@ import {
   setTournamentRecord as globalSetTournamentRecord,
 } from '../global/globalState';
 
+import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 import {
   INVALID_OBJECT,
   INVALID_RECORDS,
   INVALID_VALUES,
 } from '../constants/errorConditionConstants';
-import { LINKED_TOURNAMENTS } from '../constants/extensionConstants';
 
 export function getState({ convertExtensions }) {
   const tournamentRecords = getTournamentRecords();

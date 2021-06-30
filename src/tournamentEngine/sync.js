@@ -1,4 +1,5 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
+import { getState, paramsMiddleWare, setState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
@@ -19,14 +20,12 @@ import {
   removeTournamentRecord,
   getTournamentRecord,
 } from '../global/globalState';
-import {
-  executeFunction,
-  executionQueue,
-  getState,
-  setState,
-} from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 let tournamentId;
 
@@ -92,6 +91,16 @@ export const tournamentEngine = (function () {
 
   return fx;
 
+  function executeFunction(tournamentRecord, fx, params) {
+    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+    const result = fx({
+      ...augmentedParams,
+      tournamentRecord,
+    });
+
+    return result;
+  }
+
   function engineInvoke(fx, params) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
@@ -125,6 +134,35 @@ export const tournamentEngine = (function () {
         };
       });
     });
+  }
+
+  function executionQueue(fx, tournamentId, directives, rollBackOnError) {
+    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentRecord = getTournamentRecord(tournamentId);
+
+    const snapshot =
+      rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+
+    const results = [];
+    for (const directive of directives) {
+      if (typeof directive !== 'object') return { error: INVALID_VALUES };
+
+      const { method, params } = directive;
+      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+
+      const result = executeFunction(tournamentRecord, fx[method], params);
+
+      if (result?.error && snapshot) {
+        setState(snapshot);
+        return result;
+      }
+      results.push(result);
+    }
+
+    notifySubscribers();
+    deleteNotices();
+
+    return results;
   }
 })();
 

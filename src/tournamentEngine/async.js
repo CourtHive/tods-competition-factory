@@ -1,4 +1,5 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
+import { setState, getState, paramsMiddleWare } from './stateMethods';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
@@ -20,14 +21,12 @@ import {
   removeTournamentRecord,
   setTournamentRecord,
 } from '../global/globalState';
-import {
-  executeFunction,
-  setState,
-  getState,
-  executionQueue,
-} from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 export function tournamentEngineAsync(test) {
   const result = createInstanceState();
@@ -69,7 +68,7 @@ export function tournamentEngineAsync(test) {
   };
 
   fx.executionQueue = (directives, rollBackOnError) =>
-    executionQueue(fx, tournamentId, directives, rollBackOnError);
+    executionQueueAsync(fx, tournamentId, directives, rollBackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -96,14 +95,24 @@ export function tournamentEngineAsync(test) {
 
   return fx;
 
-  // enable Middleware
+  async function executeFunctionAsync(tournamentRecord, fx, params) {
+    const augmentedParams = paramsMiddleWare(tournamentRecord, params);
+
+    const result = await fx({
+      ...augmentedParams,
+      tournamentRecord,
+    });
+
+    return result;
+  }
+
   async function engineInvoke(fx, params) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
     const snapshot =
       params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = executeFunction(tournamentRecord, fx, params);
+    const result = executeFunctionAsync(tournamentRecord, fx, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -140,6 +149,44 @@ export function tournamentEngineAsync(test) {
         };
       }
     }
+  }
+
+  async function executionQueueAsync(
+    fx,
+    tournamentId,
+    directives,
+    rollBackOnError
+  ) {
+    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentRecord = getTournamentRecord(tournamentId);
+
+    const snapshot =
+      rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+
+    const results = [];
+    for (const directive of directives) {
+      if (typeof directive !== 'object') return { error: INVALID_VALUES };
+
+      const { method, params } = directive;
+      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+
+      const result = await executeFunctionAsync(
+        tournamentRecord,
+        fx[method],
+        params
+      );
+
+      if (result?.error && snapshot) {
+        setState(snapshot);
+        return result;
+      }
+      results.push(result);
+    }
+
+    await notifySubscribersAsync();
+    deleteNotices();
+
+    return results;
   }
 }
 

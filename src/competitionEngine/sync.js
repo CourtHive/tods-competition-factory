@@ -22,6 +22,10 @@ import {
 } from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 export const competitionEngine = (function () {
   const fx = {
@@ -63,6 +67,9 @@ export const competitionEngine = (function () {
     return processResult(result);
   };
 
+  fx.executionQueue = (directives, rollBackOnError) =>
+    executionQueue(fx, directives, rollBackOnError);
+
   return fx;
 
   function processResult(result) {
@@ -76,7 +83,6 @@ export const competitionEngine = (function () {
     return fx;
   }
 
-  // enable Middleware
   function engineInvoke(fx, params) {
     const tournamentRecords = getTournamentRecords();
 
@@ -113,6 +119,38 @@ export const competitionEngine = (function () {
         };
       });
     });
+  }
+
+  function executionQueue(fx, directives, rollBackOnError) {
+    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentRecords = getTournamentRecords();
+
+    const snapshot =
+      rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+
+    const results = [];
+    for (const directive of directives) {
+      if (typeof directive !== 'object') return { error: INVALID_VALUES };
+
+      const { method, params } = directive;
+      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+
+      const result = fx[method]({
+        ...params,
+        tournamentRecords,
+      });
+
+      if (result?.error && snapshot) {
+        setState(snapshot);
+        return result;
+      }
+      results.push(result);
+    }
+
+    notifySubscribers();
+    deleteNotices();
+
+    return results;
   }
 })();
 
