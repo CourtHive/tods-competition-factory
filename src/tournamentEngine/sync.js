@@ -1,4 +1,5 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
+import { executeFunction, getState, setState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
@@ -9,8 +10,7 @@ import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
-import { getState, setState } from './stateMethods';
-import { findEvent } from './getters/eventGetter';
+// import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -92,34 +92,9 @@ export const tournamentEngine = (function () {
     const snapshot =
       params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    if (params) {
-      const { drawId } = params || (params.matchUp && params.matchUp.drawId);
+    const result = executeFunction(tournamentRecord, fx, params);
 
-      if (drawId) {
-        const { event, drawDefinition } = findEvent({
-          tournamentRecord,
-          drawId,
-        });
-        params = Object.assign({}, params, { event, drawDefinition });
-      }
-
-      if (params.eventId && !params.event) {
-        const { event } = findEvent({
-          tournamentRecord,
-          eventId: params.eventId,
-        });
-        if (event) {
-          params = Object.assign({}, params, { event });
-        }
-      }
-    }
-
-    const result = fx({
-      ...params,
-      tournamentRecord,
-    });
-
-    if (result.error && snapshot) setState(snapshot);
+    if (result?.error && snapshot) setState(snapshot);
 
     const notify = result?.success && !params?.delayNotify;
     if (notify) notifySubscribers();

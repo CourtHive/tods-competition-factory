@@ -88,7 +88,7 @@ export const competitionEngine = (function () {
       tournamentRecords,
     });
 
-    if (result.error && snapshot) setState(snapshot);
+    if (result?.error && snapshot) setState(snapshot);
 
     const notify = result?.success && !params?.delayNotify;
     if (notify) notifySubscribers();
