@@ -26,7 +26,8 @@ export function setStateProvider(globalStateProvider) {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {
     const providerMethods = intersection(
-      Object.keys(globalStateProvider, requiredStateProviderMethods)
+      Object.keys(globalStateProvider),
+      requiredStateProviderMethods
     );
     if (providerMethods.length !== requiredStateProviderMethods.length) {
       throw new Error('Global state provider is missing required methods');

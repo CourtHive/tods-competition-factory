@@ -82,6 +82,7 @@ export function arrayIndices(val, arr) {
   }, []);
 }
 export function intersection(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
   return a
     .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);

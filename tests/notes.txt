@@ -1,1 +1,5 @@
-Tests to be run against compiled versions of factory components in `./dist` directory
+IMPORTANT!! 
+
+`yarn build` before running these tests.
+
+Tests are run against compiled versions of factory components in `./dist` directory
