@@ -2,6 +2,7 @@ import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { setSubscriptions } from '../../../global/globalState';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [
@@ -26,7 +27,9 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
       expect(notices[0].matchUpIds.length).toEqual(31);
     },
   };
-  tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);
+
+  setSubscriptions(subscriptions);
+  tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine.deleteDrawDefinitions({
     eventId,

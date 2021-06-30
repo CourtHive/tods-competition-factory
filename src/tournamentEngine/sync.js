@@ -39,6 +39,7 @@ export const tournamentEngine = (function () {
     setTournamentId: (newTournamentId) => {
       // TODO: add globalState method to insure that tournamentRecords[tournamentId] is valid
       tournamentId = newTournamentId;
+      return SUCCESS;
     },
   };
 

@@ -4,7 +4,7 @@ import tournamentEngineAsync from '../../async';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 
-const asyncTournamentEngine = tournamentEngineAsync();
+const asyncTournamentEngine = tournamentEngineAsync(true);
 
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'can create flightProfile on addDrawDefinition',

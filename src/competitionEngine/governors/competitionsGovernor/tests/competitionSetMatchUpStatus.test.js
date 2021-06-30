@@ -2,7 +2,7 @@ import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 
-const asyncCompetitionEngine = competitionEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can set matchUpStatus via competitionEngine for multiple tournament records',

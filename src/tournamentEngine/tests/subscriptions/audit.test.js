@@ -1,5 +1,7 @@
-import tournamentEngine from '../../sync';
+import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
+
 import { DELETE_DRAW_DEFINITIONS } from '../../../constants/auditConstants';
 
 it('can notify subscriber when audit information is added', () => {
@@ -25,7 +27,8 @@ it('can notify subscriber when audit information is added', () => {
       expect(notices[0][0].payload.drawDefinitions).not.toBeUndefined();
     },
   };
-  tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);
+  setSubscriptions(subscriptions);
+  tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine.deleteDrawDefinitions({
     eventId,

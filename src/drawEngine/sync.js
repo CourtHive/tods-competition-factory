@@ -1,14 +1,15 @@
-import linkGovernor from './governors/linkGovernor';
+import structureGovernor from './governors/structureGovernor';
+import positionGovernor from './governors/positionGovernor';
+import matchUpGovernor from './governors/matchUpGovernor';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
-import policyGovernor from './governors/policyGovernor';
-import matchUpGovernor from './governors/matchUpGovernor';
-import positionGovernor from './governors/positionGovernor';
-import structureGovernor from './governors/structureGovernor';
+import linkGovernor from './governors/linkGovernor';
 
 import definitionTemplate from './generators/drawDefinitionTemplate';
 import { notifySubscribers } from '../global/notifySubscribers';
+import { factoryVersion } from '../global/factoryVersion';
 import { UUID, makeDeepCopy } from '../utilities';
 import { setState } from './stateMethods';
 import {
@@ -34,7 +35,7 @@ export const drawEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
     }),
-    version: () => '@VERSION@',
+    version: () => factoryVersion(),
     reset: () => {
       drawDefinition = undefined;
       return SUCCESS;
