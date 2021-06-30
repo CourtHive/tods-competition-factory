@@ -899,12 +899,6 @@ competitionEngine.setTournamentRecord(tournamentRecord);
 
 ---
 
-## setSubscriptions
-
-Please refer to the [Subscriptions](../concepts/subscriptions) in General Concepts.
-
----
-
 ## toggleParticipantCheckInState
 
 ```js

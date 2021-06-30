@@ -2324,12 +2324,6 @@ tournamentEngine.setSubOrder({
 
 ---
 
-## setSubscriptions
-
-Please refer to the [Subscriptions](../concepts/subscriptions) in General Concepts.
-
----
-
 ## setTournamentCategories
 
 Define categories to be used in event creation for tournament record.

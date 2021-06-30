@@ -5,9 +5,9 @@ import tournamentEngineSync from '../../tournamentEngine/sync';
 // import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
 
-const asyncCompetitionEngine = competitionEngineAsync();
-const asyncTournamentEngine = tournamentEngineAsync();
-// const asyncDrawEngine = drawEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync(true);
+const asyncTournamentEngine = tournamentEngineAsync(true);
+// const asyncDrawEngine = drawEngineAsync(true);
 
 it.each([competitionEngineSync, asyncCompetitionEngine])(
   'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
@@ -23,10 +23,14 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
-      } else if (method === 'setSubscriptions') {
-        expect(result.setState).not.toBeUndefined();
       } else if (result.success) {
-        expect(['reset'].includes(method)).toEqual(true);
+        expect(
+          [
+            'removeUnlinkedTournamentRecords',
+            'reset',
+            'getTournamentIds',
+          ].includes(method)
+        ).toEqual(true);
       } else {
         if (['devContext'].includes(method)) {
           expect(result.version).not.toBeUndefined();
@@ -52,13 +56,14 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
-      } else if (method === 'setSubscriptions') {
-        expect(result.setState).not.toBeUndefined();
       } else if (result.success) {
         expect(
-          ['newTournamentRecord', 'generateDrawDefinition', 'reset'].includes(
-            method
-          )
+          [
+            'newTournamentRecord',
+            'generateDrawDefinition',
+            'reset',
+            'setTournamentId',
+          ].includes(method)
         ).toEqual(true);
       } else {
         expect(result.error).not.toBeUndefined();
@@ -90,8 +95,6 @@ it.each([/*asyncDrawEngine,*/ drawEngineSync])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.drawDefinition).toBeUndefined();
-      } else if (method === 'setSubscriptions') {
-        expect(result.setState).not.toBeUndefined();
       } else if (!result.error) {
         if (['setParticipants', 'devContext'].includes(method)) {
           expect(result.version).not.toBeUndefined();

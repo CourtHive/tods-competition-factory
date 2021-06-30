@@ -5,7 +5,7 @@ import mocksEngine from '../../../../mocksEngine';
 
 import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 
-const asyncCompetitionEngine = competitionEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can link and unlink tournamentRecords loaded into competitionEngine',

@@ -1,41 +1,38 @@
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import competitionGovernor from './governors/competitionsGovernor';
 import scheduleGovernor from './governors/scheduleGovernor';
+import { factoryVersion } from '../global/factoryVersion';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  removeTournamentRecord,
+  setTournamentRecords,
+  getTournamentRecords,
 } from '../global/globalState';
 import {
-  removeTournamentRecord,
+  getState,
   removeUnlinkedTournamentRecords,
   setState,
   setTournamentRecord,
 } from './stateMethods';
-import { SUCCESS } from '../constants/resultConstants';
-import policyGovernor from './governors/policyGovernor';
 
-export function competitionEngineAsync() {
-  let tournamentRecords = {};
+import { SUCCESS } from '../constants/resultConstants';
+
+export function competitionEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
+
   const fx = {
-    getState: ({ convertExtensions } = {}) => ({
-      tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
-    }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
-    version: () => {
-      return '@VERSION@';
-    },
+    getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
+    version: () => factoryVersion(),
     reset: () => {
-      tournamentRecords = {};
+      setTournamentRecords({});
       return SUCCESS;
     },
     devContext: (isDev) => {
@@ -44,24 +41,20 @@ export function competitionEngineAsync() {
     },
     setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
-      const result = setState(tournamentRecords, records, deepCopyOption);
+      const result = setState(records, deepCopyOption);
       return processResult(result);
     },
     setTournamentRecord: (tournamentRecord, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
-      const result = setTournamentRecord(
-        tournamentRecords,
-        tournamentRecord,
-        deepCopyOption
-      );
+      const result = setTournamentRecord(tournamentRecord, deepCopyOption);
       return processResult(result);
     },
     removeTournamentRecord: (tournamentId) => {
-      const result = removeTournamentRecord(tournamentRecords, tournamentId);
+      const result = removeTournamentRecord(tournamentId);
       return processResult(result);
     },
     removeUnlinkedTournamentRecords: () => {
-      const result = removeUnlinkedTournamentRecords(tournamentRecords);
+      const result = removeUnlinkedTournamentRecords();
       return processResult(result);
     },
   };
@@ -73,12 +66,10 @@ export function competitionEngineAsync() {
     } else {
       fx.error = undefined;
       fx.success = true;
-      tournamentRecords = result;
     }
     return fx;
   }
 
-  createInstanceState();
   importGovernors([
     competitionGovernor,
     policyGovernor,
@@ -88,16 +79,21 @@ export function competitionEngineAsync() {
 
   // enable Middleware
   async function engineInvoke(fx, params) {
+    const tournamentRecords = getTournamentRecords();
+
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+
     const result = await fx({
       ...params,
       tournamentRecords,
     });
 
-    if (result?.success) {
-      await notifySubscribersAsync();
-    }
+    if (result.error && snapshot) setState(snapshot);
 
-    deleteNotices();
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) await notifySubscribersAsync();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }

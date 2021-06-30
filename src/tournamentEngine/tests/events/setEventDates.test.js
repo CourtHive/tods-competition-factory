@@ -5,7 +5,7 @@ import tournamentEngineAsync from '../../async';
 import tournamentEngineSync from '../../sync';
 import { INVALID_DATE } from '../../../constants/errorConditionConstants';
 
-const asyncTournamentEngine = tournamentEngineAsync();
+const asyncTournamentEngine = tournamentEngineAsync(true);
 
 test.each([tournamentEngineSync, asyncTournamentEngine])(
   'can modify event.startDate and event.endDate',

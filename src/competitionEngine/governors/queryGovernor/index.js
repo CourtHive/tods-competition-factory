@@ -11,9 +11,16 @@ import {
   competitionMatchUps,
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
+import { SUCCESS } from '../../../constants/resultConstants';
+
+function getTournamentIds({ tournamentRecords }) {
+  const tournamentIds = Object.keys(tournamentRecords);
+  return Object.assign({}, SUCCESS, { tournamentIds });
+}
 
 const queryGovernor = {
   getCompetitionDateRange,
+  getTournamentIds,
 
   competitionScheduleMatchUps,
   allCompetitionMatchUps,

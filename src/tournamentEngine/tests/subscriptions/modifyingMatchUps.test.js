@@ -1,5 +1,6 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { setSubscriptions } from '../../../global/globalState';
 
 it('can notify subscriber when matchUps are modified', () => {
   const drawProfiles = [
@@ -21,7 +22,9 @@ it('can notify subscriber when matchUps are modified', () => {
       expect(results.length).toEqual(2);
     },
   };
-  tournamentEngine.setState(tournamentRecord).setSubscriptions(subscriptions);
+  setSubscriptions(subscriptions);
+
+  tournamentEngine.setState(tournamentRecord);
 
   const {
     upcomingMatchUps: [{ matchUpId }],

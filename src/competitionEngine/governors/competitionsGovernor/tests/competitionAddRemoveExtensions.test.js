@@ -2,7 +2,7 @@ import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 
-const asyncCompetitionEngine = competitionEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync(true);
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can add and remove extensions from tournamentRecords loaded into competitionEngine',

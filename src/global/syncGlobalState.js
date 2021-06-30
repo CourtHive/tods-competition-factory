@@ -1,6 +1,10 @@
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 const syncGlobalState = {
+  tournamentRecords: {},
   subscriptions: {},
   notices: [],
 };
@@ -12,7 +16,39 @@ export default {
   deleteNotices,
   getTopics,
   callListener,
+  getTournamentRecord,
+  getTournamentRecords,
+  setTournamentRecord,
+  setTournamentRecords,
+  removeTournamentRecord,
 };
+
+export function getTournamentRecord(tournamentId) {
+  return syncGlobalState.tournamentRecords[tournamentId];
+}
+
+export function getTournamentRecords() {
+  return syncGlobalState.tournamentRecords;
+}
+
+export function setTournamentRecord(tournamentRecord) {
+  const tournamentId = tournamentRecord?.tournamentId;
+  if (tournamentId) {
+    syncGlobalState.tournamentRecords[tournamentId] = tournamentRecord;
+  }
+}
+
+export function setTournamentRecords(tournamentRecords) {
+  syncGlobalState.tournamentRecords = tournamentRecords;
+}
+
+export function removeTournamentRecord(tournamentId) {
+  if (typeof tournamentId !== 'string') return { error: INVALID_VALUES };
+  if (!syncGlobalState.tournamentRecords[tournamentId])
+    return { error: NOT_FOUND };
+
+  return delete syncGlobalState.tournamentRecords[tournamentId];
+}
 
 export function setSubscriptions({ subscriptions = {} } = {}) {
   if (typeof subscriptions !== 'object') return { error: INVALID_VALUES };

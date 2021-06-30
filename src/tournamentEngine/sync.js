@@ -4,49 +4,50 @@ import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
+import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
+import { getState, setState } from './stateMethods';
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  setTournamentRecord,
+  removeTournamentRecord,
+  getTournamentRecord,
 } from '../global/globalState';
 
 import { SUCCESS } from '../constants/resultConstants';
 
-let tournamentRecord;
+let tournamentId;
 
 export const tournamentEngine = (function () {
   const fx = {
-    getState: ({ convertExtensions } = {}) => ({
-      tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
-    }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
+    getState: ({ convertExtensions } = {}) =>
+      getState({ convertExtensions, tournamentId }),
     newTournamentRecord: (props = {}) => {
       const result = newTournamentRecord(props);
       if (result.error) return result;
-      tournamentRecord = result;
-      const tournamentId = tournamentRecord.tournamentId;
+      setTournamentRecord(result);
+      tournamentId = result.tournamentId;
       return Object.assign({ tournamentId }, SUCCESS);
+    },
+    setTournamentId: (newTournamentId) => {
+      // TODO: add globalState method to insure that tournamentRecords[tournamentId] is valid
+      tournamentId = newTournamentId;
+      return SUCCESS;
     },
   };
 
-  fx.version = () => {
-    return '@VERSION@';
-  };
+  fx.version = () => factoryVersion();
   fx.reset = () => {
-    tournamentRecord = undefined;
+    removeTournamentRecord(tournamentId);
+    tournamentId = undefined;
     return SUCCESS;
   };
   fx.setState = (tournament, deepCopyOption) => {
@@ -66,7 +67,7 @@ export const tournamentEngine = (function () {
     } else {
       fx.error = undefined;
       fx.success = true;
-      tournamentRecord = result;
+      tournamentId = result.tournamentId;
     }
     return fx;
   }
@@ -85,7 +86,12 @@ export const tournamentEngine = (function () {
   return fx;
 
   // enable Middleware
-  function engineInvoke(fx, params /*, method*/) {
+  function engineInvoke(fx, params) {
+    const tournamentRecord = getTournamentRecord(tournamentId);
+
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
@@ -113,10 +119,11 @@ export const tournamentEngine = (function () {
       tournamentRecord,
     });
 
-    if (result?.success) {
-      notifySubscribers();
-    }
-    deleteNotices();
+    if (result.error && snapshot) setState(snapshot);
+
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) notifySubscribers();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }

@@ -1,18 +1,18 @@
-import linkGovernor from './governors/linkGovernor';
+import structureGovernor from './governors/structureGovernor';
+import positionGovernor from './governors/positionGovernor';
+import matchUpGovernor from './governors/matchUpGovernor';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
-import policyGovernor from './governors/policyGovernor';
-import matchUpGovernor from './governors/matchUpGovernor';
-import positionGovernor from './governors/positionGovernor';
-import structureGovernor from './governors/structureGovernor';
+import linkGovernor from './governors/linkGovernor';
 
 import definitionTemplate from './generators/drawDefinitionTemplate';
 import { notifySubscribers } from '../global/notifySubscribers';
+import { factoryVersion } from '../global/factoryVersion';
 import { UUID, makeDeepCopy } from '../utilities';
 import { setState } from './stateMethods';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -35,15 +35,10 @@ export const drawEngine = (function () {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
     }),
-    version: () => '@VERSION@',
+    version: () => factoryVersion(),
     reset: () => {
       drawDefinition = undefined;
       return SUCCESS;
-    },
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
@@ -115,16 +110,20 @@ export const drawEngine = (function () {
   }
 
   function invoke({ params, governor, key }) {
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(drawDefinition, false, true);
+
     const result = governor[key]({
       tournamentParticipants,
       drawDefinition,
       ...params,
     });
 
-    if (result?.success) {
-      notifySubscribers();
-    }
-    deleteNotices();
+    if (result.error && snapshot) setState(snapshot);
+
+    const notify = result?.success && !params?.delayNotify;
+    if (notify) notifySubscribers();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }
