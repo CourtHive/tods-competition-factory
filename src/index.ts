@@ -84,6 +84,6 @@ export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
 // END-: constants ---------------------------------------------------------------
 
-// START- overrides
-export { setStateProvider } from './global/globalState';
+// START- Global State methods
+export { setStateProvider, setSubscriptions } from './global/globalState';
 // END
