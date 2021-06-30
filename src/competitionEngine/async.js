@@ -6,7 +6,6 @@ import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import {
   createInstanceState,
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -27,11 +26,6 @@ import { SUCCESS } from '../constants/resultConstants';
 export function competitionEngineAsync() {
   const fx = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});

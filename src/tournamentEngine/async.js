@@ -14,7 +14,6 @@ import { setState, getState } from './stateMethods';
 import { findEvent } from './getters/eventGetter';
 import {
   deleteNotices,
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -33,11 +32,6 @@ export function tournamentEngineAsync() {
   const fx = {
     getState: ({ convertExtensions } = {}) =>
       getState({ convertExtensions, tournamentId }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
     newTournamentRecord: (props = {}) => {
       const result = newTournamentRecord(props);
       if (result.error) return result;

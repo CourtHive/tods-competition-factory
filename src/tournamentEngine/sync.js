@@ -12,7 +12,6 @@ import venueGovernor from './governors/venueGovernor';
 import { getState, setState } from './stateMethods';
 import { findEvent } from './getters/eventGetter';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -30,11 +29,6 @@ export const tournamentEngine = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) =>
       getState({ convertExtensions, tournamentId }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
     newTournamentRecord: (props = {}) => {
       const result = newTournamentRecord(props);
       if (result.error) return result;

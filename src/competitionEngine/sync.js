@@ -5,7 +5,6 @@ import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -26,11 +25,6 @@ import { SUCCESS } from '../constants/resultConstants';
 export const competitionEngine = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
   };
 
   importGovernors([

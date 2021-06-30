@@ -25,10 +25,10 @@ const subscriptions = {
 };
 ```
 
-Subscriptions can be defined for the following engines.
+Subscriptions are defined once for all engines.
 
 ```js
-drawEngine.setSubscriptions(subscriptions);
-tournamentEngine.setSubscriptions(subscriptions);
-competitionEngine.setSubscriptions(subscriptions);
+import { setSubcriptions } from 'tods-competition-factory';
+
+setSubscriptions(subscriptions);
 ```

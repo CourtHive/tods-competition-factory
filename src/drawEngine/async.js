@@ -12,7 +12,6 @@ import definitionTemplate from './generators/drawDefinitionTemplate';
 import { UUID, makeDeepCopy } from '../utilities';
 import { setState } from './stateMethods';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
@@ -41,11 +40,6 @@ export function drawEngineAsync() {
     reset: () => {
       drawDefinition = undefined;
       return SUCCESS;
-    },
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
