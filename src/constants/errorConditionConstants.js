@@ -185,6 +185,8 @@ export const NOT_IMPLEMENTED = 'Not implemented';
 export const EXISTING_FLIGHT = 'Existing flight';
 export const EXISTING_PROFILE = 'Existing Profile';
 
+export const METHOD_NOT_FOUND = 'Method not found';
+
 export const errorConditionConstants = {
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
@@ -239,6 +241,7 @@ export const errorConditionConstants = {
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,
+  METHOD_NOT_FOUND,
   MISSING_ASSIGNMENTS,
   MISSING_AVOIDANCE_POLICY,
   MISSING_COURT_ID,

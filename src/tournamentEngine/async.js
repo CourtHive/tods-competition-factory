@@ -1,5 +1,4 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
-import { executeFunction, setState, getState } from './stateMethods';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
@@ -21,6 +20,12 @@ import {
   removeTournamentRecord,
   setTournamentRecord,
 } from '../global/globalState';
+import {
+  executeFunction,
+  setState,
+  getState,
+  executionQueue,
+} from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
 
@@ -62,6 +67,9 @@ export function tournamentEngineAsync(test) {
     setDevContext(isDev);
     return fx;
   };
+
+  fx.executionQueue = (directives, rollBackOnError) =>
+    executionQueue(fx, tournamentId, directives, rollBackOnError);
 
   function processResult(result) {
     if (result?.error) {

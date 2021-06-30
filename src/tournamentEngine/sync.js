@@ -1,5 +1,4 @@
 import { newTournamentRecord } from './generators/newTournamentRecord';
-import { executeFunction, getState, setState } from './stateMethods';
 import participantGovernor from './governors/participantGovernor';
 import publishingGovernor from './governors/publishingGovernor';
 import tournamentGovernor from './governors/tournamentGovernor';
@@ -10,7 +9,6 @@ import policyGovernor from './governors/policyGovernor';
 import eventGovernor from './governors/eventGovernor';
 import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
-// import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
@@ -21,6 +19,12 @@ import {
   removeTournamentRecord,
   getTournamentRecord,
 } from '../global/globalState';
+import {
+  executeFunction,
+  executionQueue,
+  getState,
+  setState,
+} from './stateMethods';
 
 import { SUCCESS } from '../constants/resultConstants';
 
@@ -60,6 +64,9 @@ export const tournamentEngine = (function () {
     return fx;
   };
 
+  fx.executionQueue = (directives, rollBackOnError) =>
+    executionQueue(fx, tournamentId, directives, rollBackOnError);
+
   function processResult(result) {
     if (result?.error) {
       fx.error = result.error;
@@ -85,7 +92,6 @@ export const tournamentEngine = (function () {
 
   return fx;
 
-  // enable Middleware
   function engineInvoke(fx, params) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
