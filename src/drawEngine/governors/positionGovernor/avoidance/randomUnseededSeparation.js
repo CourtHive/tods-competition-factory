@@ -36,6 +36,7 @@ export function randomUnseededSeparation({
   entries, // entries for the specific stage of drawDefinition
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
@@ -147,7 +148,9 @@ export function randomUnseededSeparation({
           automaticPlacement: true,
           drawDefinition,
           structureId,
+
           matchUpsMap,
+          inContextDrawMatchUps,
 
           ...assignment,
         });
