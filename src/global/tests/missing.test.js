@@ -25,7 +25,11 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success) {
         expect(
-          ['removeUnlinkedTournamentRecords', 'reset'].includes(method)
+          [
+            'removeUnlinkedTournamentRecords',
+            'reset',
+            'getTournamentIds',
+          ].includes(method)
         ).toEqual(true);
       } else {
         if (['devContext'].includes(method)) {
