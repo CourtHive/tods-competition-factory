@@ -24,8 +24,9 @@ import {
 
 import { SUCCESS } from '../constants/resultConstants';
 
-export function tournamentEngineAsync() {
-  createInstanceState();
+export function tournamentEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
 
   let tournamentId;
 
@@ -42,6 +43,7 @@ export function tournamentEngineAsync() {
     setTournamentId: (newTournamentId) => {
       // TODO: add globalState method to insure that tournamentRecords[tournamentId] is valid
       tournamentId = newTournamentId;
+      return SUCCESS;
     },
   };
 

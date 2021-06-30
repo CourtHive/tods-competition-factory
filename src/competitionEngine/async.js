@@ -23,7 +23,10 @@ import {
 
 import { SUCCESS } from '../constants/resultConstants';
 
-export function competitionEngineAsync() {
+export function competitionEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
+
   const fx = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
     version: () => factoryVersion(),
@@ -66,7 +69,6 @@ export function competitionEngineAsync() {
     return fx;
   }
 
-  createInstanceState();
   importGovernors([
     competitionGovernor,
     policyGovernor,
