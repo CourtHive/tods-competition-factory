@@ -25,16 +25,6 @@ const asyncHook = createHook({
 
 asyncHook.enable();
 
-export default {
-  createInstanceState,
-  setSubscriptions,
-  addNotice,
-  getNotices,
-  deleteNotices,
-  getTopics,
-  callListener,
-};
-
 function createInstanceState() {
   const instanceState = {
     tournamentRecords: {},
@@ -54,6 +44,16 @@ function getInstanceState() {
 
   return instanceState;
 }
+
+export default {
+  createInstanceState,
+  setSubscriptions,
+  addNotice,
+  getNotices,
+  deleteNotices,
+  getTopics,
+  callListener,
+};
 
 export function getTournamentRecord(tournamentId) {
   const instanceState = getInstanceState();
