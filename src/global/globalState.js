@@ -1,3 +1,4 @@
+import { intersection } from '../utilities';
 import syncStateEngine from './syncGlobalState';
 
 const globalState = {
@@ -7,16 +8,43 @@ const globalState = {
 
 let _globalStateProvider = syncStateEngine;
 
+const requiredStateProviderMethods = [
+  'addNotice',
+  'getNotices',
+  'deleteNotices',
+  'getTopics',
+  'callListener',
+  'getTournamentRecord',
+  'getTournamentRecords',
+  'setTournamentRecord',
+  'setTournamentRecords',
+  'removeTournamentRecord',
+];
+
 export function setStateProvider(globalStateProvider) {
-  if (!globalStateProvider)
+  if (!globalStateProvider) {
     throw new Error(`Global state provider can not be undefined or null`);
-  _globalStateProvider = globalStateProvider;
+  } else {
+    const providerMethods = intersection(
+      Object.keys(globalStateProvider, requiredStateProviderMethods)
+    );
+    if (providerMethods.length !== requiredStateProviderMethods.length) {
+      throw new Error('Global state provider is missing required methods');
+    } else {
+      _globalStateProvider = globalStateProvider;
+      return { success: true };
+    }
+  }
 }
 
 export function createInstanceState() {
   //Only applicable for async
-  if (_globalStateProvider.createInstanceState)
+  if (_globalStateProvider.createInstanceState) {
     _globalStateProvider.createInstanceState();
+    return { success: true };
+  } else {
+    return { error: 'Missing async state provider' };
+  }
 }
 
 export function getDevContext() {
