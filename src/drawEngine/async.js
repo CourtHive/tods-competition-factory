@@ -120,11 +120,16 @@ export function drawEngineAsync(test) {
   }
 
   async function invoke({ params, governor, key }) {
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(drawDefinition, false, true);
+
     const result = governor[key]({
       tournamentParticipants,
       drawDefinition,
       ...params,
     });
+
+    if (result.error && snapshot) setState(snapshot);
 
     const notify = result?.success && !params?.delayNotify;
     if (notify) await notifySubscribersAsync();

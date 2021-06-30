@@ -4,6 +4,7 @@ import scheduleGovernor from './governors/scheduleGovernor';
 import { factoryVersion } from '../global/factoryVersion';
 import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
+import { makeDeepCopy } from '../utilities';
 import {
   createInstanceState,
   setDeepCopy,
@@ -80,10 +81,15 @@ export function competitionEngineAsync(test) {
   async function engineInvoke(fx, params) {
     const tournamentRecords = getTournamentRecords();
 
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+
     const result = await fx({
       ...params,
       tournamentRecords,
     });
+
+    if (result.error && snapshot) setState(snapshot);
 
     const notify = result?.success && !params?.delayNotify;
     if (notify) await notifySubscribersAsync();

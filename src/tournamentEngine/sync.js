@@ -11,6 +11,7 @@ import queryGovernor from './governors/queryGovernor';
 import venueGovernor from './governors/venueGovernor';
 import { getState, setState } from './stateMethods';
 import { findEvent } from './getters/eventGetter';
+import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
   setDevContext,
@@ -88,6 +89,9 @@ export const tournamentEngine = (function () {
   function engineInvoke(fx, params) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
+    const snapshot =
+      params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+
     if (params) {
       const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
@@ -114,6 +118,8 @@ export const tournamentEngine = (function () {
       ...params,
       tournamentRecord,
     });
+
+    if (result.error && snapshot) setState(snapshot);
 
     const notify = result?.success && !params?.delayNotify;
     if (notify) notifySubscribers();
