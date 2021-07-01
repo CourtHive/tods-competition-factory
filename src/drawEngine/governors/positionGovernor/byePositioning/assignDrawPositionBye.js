@@ -79,7 +79,9 @@ export function assignDrawPositionBye({
 
   pushGlobalLog({
     color: iterative || 'yellow',
-    keyColors: { stage: structure.stage === CONSOLATION && 'brightcyan' },
+    keyColors: {
+      structureName: structure.stage === CONSOLATION && 'brightcyan',
+    },
     method: 'assignDrawPositionBye',
     structureName: structure.structureName,
     drawPosition,

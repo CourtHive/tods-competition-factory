@@ -19,7 +19,23 @@ import {
 
 it('can run stress tests when JEST_STRESS=true', () => {
   if (process.env.JEST_STRESS !== true) {
-    console.log('JEST_STRESS =', process.env.JEST_STRESS);
+    ['brightyellow', 'brightgreen', 'brightmagenta', 'brightblue'].forEach(
+      (color) => {
+        pushGlobalLog(
+          {
+            color,
+            keyColors: {
+              stage: 'brightcyan',
+            },
+            stage: 'MAIN',
+            method: 'Global Log Tests',
+          },
+          true
+        );
+      }
+    );
+    printGlobalLog(true);
+    purgeGlobalLog();
   }
 });
 
