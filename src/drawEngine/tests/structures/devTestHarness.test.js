@@ -3,6 +3,7 @@ import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../utilities';
 import fs from 'fs';
 import {
+  popGlobalLog,
   printGlobalLog,
   purgeGlobalLog,
   pushGlobalLog,
@@ -34,6 +35,9 @@ it('can run stress tests when JEST_STRESS=true', () => {
         );
       }
     );
+    pushGlobalLog('logTest', true);
+    const result = popGlobalLog();
+    expect(result.method).toEqual('logTest');
     printGlobalLog(true);
     purgeGlobalLog();
   }

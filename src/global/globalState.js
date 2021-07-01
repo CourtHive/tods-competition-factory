@@ -11,19 +11,20 @@ let _globalStateProvider = syncStateEngine;
 
 const requiredStateProviderMethods = [
   'addNotice',
-  'getNotices',
-  'deleteNotices',
-  'getTopics',
   'callListener',
+  'deleteNotices',
+  'getNotices',
+  'getTopics',
   'getTournamentRecord',
   'getTournamentRecords',
+  'removeTournamentRecord',
+  'setSubscriptions',
   'setTournamentRecord',
   'setTournamentRecords',
-  'removeTournamentRecord',
 ];
 
 export function setStateProvider(globalStateProvider) {
-  if (!globalStateProvider) {
+  if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
   } else {
     const providerMethods = intersection(
@@ -41,6 +42,7 @@ export function setStateProvider(globalStateProvider) {
 
 export function createInstanceState() {
   //Only applicable for async
+  // global test coverage doesn't appear becuase this is run against built package
   if (_globalStateProvider.createInstanceState) {
     _globalStateProvider.createInstanceState();
     return { success: true };
