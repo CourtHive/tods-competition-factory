@@ -84,4 +84,18 @@ it('can setStateProvier', async () => {
   expect(allNotices.length).toEqual(2);
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
   expect(allParticipants.length).toEqual(participantsCount);
+
+  let { tournamentRecords } = await asyncCompetitionEngine.getState();
+  expect(Object.keys(tournamentRecords).length).toEqual(2);
+
+  result = await asyncCompetitionEngine.removeTournamentRecord(
+    tournamentRecord.tournamentId
+  );
+  expect(result.success).toEqual(true);
+
+  ({ tournamentRecord } = await asyncTournamentEngine.getState());
+  expect(tournamentRecord).toBeUndefined();
+
+  ({ tournamentRecords } = await asyncCompetitionEngine.getState());
+  expect(Object.keys(tournamentRecords).length).toEqual(1);
 });
