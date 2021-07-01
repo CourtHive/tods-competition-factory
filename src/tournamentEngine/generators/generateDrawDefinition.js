@@ -318,7 +318,10 @@ export function generateDrawDefinition(props) {
     eventId: event?.eventId,
   };
 
-  addNotice({ topic: AUDIT, payload: drawDetails });
+  addNotice({
+    topic: AUDIT,
+    payload: { action: 'generateDrawDefinition', payload: drawDetails },
+  });
 
   return Object.assign({}, SUCCESS, {
     structureId,

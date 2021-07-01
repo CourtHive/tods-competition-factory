@@ -98,7 +98,7 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   Object.keys(subscriptions).forEach((subscription) => {
     instanceState.subscriptions[subscription] = subscriptions[subscription];
   });
-  return true;
+  return { success: true };
 }
 
 function addNotice({ topic, payload }) {
@@ -110,6 +110,8 @@ function addNotice({ topic, payload }) {
 
   if (!instanceState.subscriptions[topic]) return;
   instanceState.notices.push({ topic, payload });
+
+  return { success: true };
 }
 
 function getNotices({ topic }) {
@@ -120,7 +122,7 @@ function getNotices({ topic }) {
   const notices = instanceState.notices
     .filter((notice) => notice.topic === topic)
     .map((notice) => notice.payload);
-  return notices.length && notices;
+  return notices?.length && notices;
 }
 
 function deleteNotices() {

@@ -112,11 +112,11 @@ export function tournamentEngineAsync(test) {
     const snapshot =
       params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = executeFunctionAsync(tournamentRecord, fx, params);
+    const result = await executeFunctionAsync(tournamentRecord, fx, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const notify = result?.success && !params?.delayNotify;
+    const notify = result?.success && params?.delayNotify !== true;
     if (notify) await notifySubscribersAsync();
     if (notify || !result?.success) deleteNotices();
 

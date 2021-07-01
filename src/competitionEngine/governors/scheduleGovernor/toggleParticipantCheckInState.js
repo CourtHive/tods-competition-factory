@@ -5,11 +5,16 @@ import {
   checkInParticipant,
   checkOutParticipant,
 } from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
 
 export function toggleParticipantCheckInState(params) {
   const { tournamentRecords } = params;
   const { participantId, tournamentId, matchUpId, drawId } = params;
+  if (!tournamentRecords || !tournamentId || !participantId || !matchUpId)
+    return { error: MISSING_VALUE };
 
   const tournamentRecord = tournamentRecords[tournamentId];
   const tournamentParticipants = tournamentRecord?.participants;

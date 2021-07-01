@@ -96,7 +96,6 @@ export function addEventEntryPairs({
       tournamentRecord,
       participants: newParticipants,
 
-      returnParticipants: true,
       allowDuplicateParticipantIdPairs,
     });
     if (result.error) return { error: result.error };

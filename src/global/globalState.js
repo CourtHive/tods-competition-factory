@@ -1,6 +1,7 @@
-import { intersection } from '../utilities';
+import { intersection } from '../utilities/arrays';
 import syncStateEngine from './syncGlobalState';
 
+import { MISSING_VALUE } from '../constants/errorConditionConstants';
 const globalState = {
   devContext: false,
   deepCopy: true,
@@ -68,12 +69,13 @@ export function deepCopyEnabled() {
   return globalState.deepCopy;
 }
 
-export function setSubscriptions(subscriptions) {
-  _globalStateProvider.setSubscriptions(subscriptions);
+export function setSubscriptions({ subscriptions } = {}) {
+  if (!subscriptions) return { error: MISSING_VALUE };
+  return _globalStateProvider.setSubscriptions({ subscriptions });
 }
 
 export function addNotice(notice) {
-  _globalStateProvider.addNotice(notice);
+  return _globalStateProvider.addNotice(notice);
 }
 
 export function getNotices(topic) {
@@ -81,7 +83,7 @@ export function getNotices(topic) {
 }
 
 export function deleteNotices() {
-  _globalStateProvider.deleteNotices();
+  return _globalStateProvider.deleteNotices();
 }
 
 export function getTopics() {

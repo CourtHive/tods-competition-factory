@@ -1,3 +1,4 @@
+import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -15,6 +16,8 @@ it('can toggle participant check-in state', () => {
     drawProfiles,
     inContext: true,
   });
+
+  const { tournamentId } = tournamentRecord;
 
   let {
     upcomingMatchUps: [matchUp],
@@ -69,4 +72,21 @@ it('can toggle participant check-in state', () => {
     drawEngine.getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(2);
+
+  result = competitionEngine.toggleParticipantCheckInState({
+    tournamentId,
+    drawId,
+    matchUpId: matchUp.matchUpId,
+    participantId: participantIds[1],
+  });
+  expect(result.success).toEqual(true);
+
+  // do it a second time for testing code coverage
+  result = competitionEngine.toggleParticipantCheckInState({
+    tournamentId,
+    drawId,
+    matchUpId: matchUp.matchUpId,
+    participantId: participantIds[1],
+  });
+  expect(result.success).toEqual(true);
 });

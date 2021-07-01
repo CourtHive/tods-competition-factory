@@ -86,6 +86,52 @@ test.each([competitionEngineSync])(
     });
     expect(result.dateMatchUps.length).toEqual(23);
 
+    const matchUpsContextIds = result.dateMatchUps
+      .slice(3, 6)
+      .map(({ tournamentId, drawId, matchUpId, schedule }) => ({
+        tournamentId,
+        drawId,
+        matchUpId,
+        schedule,
+      }));
+
+    result = competitionEngine.reorderUpcomingMatchUps({
+      matchUpsContextIds,
+      firstToLast: true,
+    });
+    expect(result.success).toEqual(true);
+
+    result = competitionEngine.competitionScheduleMatchUps({
+      matchUpFilters,
+    });
+
+    const reorderedMatchUpContextIds = result.dateMatchUps
+      .slice(3, 6)
+      .map(({ matchUpId, schedule }) => ({
+        matchUpId,
+        scheduledTime: schedule.scheduledTime,
+      }));
+
+    // confirm that the first is now the last...
+    expect(matchUpsContextIds[0].matchUpId).toEqual(
+      reorderedMatchUpContextIds[2].matchUpId
+    );
+
+    // the matchUps order has changed but the times are still in the same order
+    expect(matchUpsContextIds.map((m) => m.schedule.scheduledTime)).toEqual(
+      reorderedMatchUpContextIds.map((m) => m.scheduledTime)
+    );
+
+    result = competitionEngine.reorderUpcomingMatchUps({
+      matchUpsContextIds: undefined,
+    });
+    expect(result.error).not.toBeUndefined();
+
+    result = competitionEngine.reorderUpcomingMatchUps({
+      matchUpsContextIds: [],
+    });
+    expect(result.success).toEqual(true);
+
     matchUpFilters.scheduledDate = '2021-05-06';
     result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,

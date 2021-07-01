@@ -98,7 +98,7 @@ export function competitionEngineAsync(test) {
 
     if (result?.error && snapshot) setState(snapshot);
 
-    const notify = result?.success && !params?.delayNotify;
+    const notify = result?.success && params?.delayNotify !== true;
     if (notify) await notifySubscribersAsync();
     if (notify || !result?.success) deleteNotices();
 

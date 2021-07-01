@@ -1,6 +1,9 @@
 import {
   setStateProvider,
+  setSubscriptions,
   tournamentEngineAsync,
+  competitionEngineAsync,
+  mocksEngine,
 } from '../dist/tods-competition-factory.esm';
 
 import asyncGlobalState from '../src/global/examples/asyncGlobalState';
@@ -11,12 +14,74 @@ import asyncGlobalState from '../src/global/examples/asyncGlobalState';
 
 const ssp = setStateProvider(asyncGlobalState);
 const asyncTournamentEngine = tournamentEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync();
 
 it('can setStateProvier', async () => {
   // expect setting state provider to have succeeded
   expect(ssp.success).toEqual(true);
 
+  const allNotices = [];
+  const allMatchUps = [];
+  const allParticipants = [];
+  const allDeletedMatchUpIds = [];
+
+  const subscriptions = {
+    audit: (notices) => allNotices.push(...notices),
+    addMatchUps: (addedMatchUps) => {
+      addedMatchUps.forEach(({ matchUps }) => {
+        allMatchUps.push(...matchUps);
+      });
+    },
+    deletedMatchUpIds: (deletedMatchUpIds) => {
+      deletedMatchUpIds.forEach(({ matchUpIds }) => {
+        allDeletedMatchUpIds.push(...matchUpIds);
+      });
+    },
+    addParticipants: (addedParticipants) => {
+      addedParticipants.forEach(({ participants }) => {
+        allParticipants.push(...participants);
+      });
+    },
+  };
+  setSubscriptions({ subscriptions });
+
   let result = await asyncTournamentEngine.newTournamentRecord();
   expect(result.success).toEqual(true);
   expect(result.tournamentId).not.toBeUndefined();
+
+  let { tournamentRecord } = await asyncTournamentEngine.getState();
+  result = await asyncCompetitionEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  let drawId, eventId;
+  const drawSize = 8;
+  const participantsCount = 37;
+  ({
+    tournamentRecord,
+    drawIds: [drawId],
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize }],
+    participantsProfile: { participantsCount },
+  }));
+
+  expect(allMatchUps.length).toEqual(drawSize - 1);
+
+  result = await asyncCompetitionEngine.setTournamentRecord(tournamentRecord);
+  expect(result.success).toEqual(true);
+
+  result = await asyncTournamentEngine.setTournamentId(
+    tournamentRecord.tournamentId
+  );
+  expect(result.success).toEqual(true);
+
+  result = await asyncTournamentEngine.deleteDrawDefinitions({
+    eventId,
+    drawIds: [drawId],
+  });
+  expect(result.success).toEqual(true);
+
+  expect(allNotices.length).toEqual(2);
+  expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
+  expect(allParticipants.length).toEqual(participantsCount);
 });

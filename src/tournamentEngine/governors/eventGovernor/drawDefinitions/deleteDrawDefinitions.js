@@ -19,7 +19,7 @@ import {
 } from '../../../../constants/timeItemConstants';
 import {
   AUDIT,
-  DELETED_MATCHUPIDS,
+  DELETED_MATCHUP_IDS,
 } from '../../../../constants/topicConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
@@ -90,7 +90,11 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     const result = addEventTimeItem({ event, timeItem });
     if (result.error) return { error: result.error };
   }
-  if (matchUpIds.length)
-    addNotice({ topic: DELETED_MATCHUPIDS, payload: { matchUpIds } });
+  if (matchUpIds.length) {
+    addNotice({
+      topic: DELETED_MATCHUP_IDS,
+      payload: { matchUpIds },
+    });
+  }
   return SUCCESS;
 }
