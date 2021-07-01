@@ -1,15 +1,16 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
-import competitionEngineSync from '../../../sync';
+import competitionEngine from '../../../sync';
+
+import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 
 test.each([
-  [competitionEngineSync, 16, 8, 2, [12]],
-  [competitionEngineSync, 16, 16, 3, [18]],
-  [competitionEngineSync, 16, 32, 4, [26]],
+  [16, 8, 2, [12]],
+  [16, 16, 3, [18]],
+  [16, 32, 4, [26]],
 ])(
   'sorts scheduled matchUps according to schedulingProfile',
   async (
-    competitionEngine,
     drawSize1,
     drawSize2,
     courtsCount
@@ -42,10 +43,19 @@ test.each([
       drawIds,
       venueIds: [venueId],
     } = result;
-    await competitionEngine.setState(tournamentRecord);
+    competitionEngine.setState(tournamentRecord);
+
+    result = competitionEngine.attachPolicy({
+      policyDefinition: POLICY_SCHEDULING_USTA,
+    });
+    expect(result.success).toEqual(true);
+
+    let { matchUpDailyLimits } = tournamentEngine.getMatchUpDailyLimits();
+    expect(matchUpDailyLimits).not.toBeUndefined();
+    ({ matchUpDailyLimits } = competitionEngine.getMatchUpDailyLimits());
+    expect(matchUpDailyLimits).not.toBeUndefined();
 
     // tournamentEngine is used to retreive the events
-    tournamentEngine.setState(tournamentRecord);
     const { tournamentId } = tournamentRecord;
 
     // add first round of each draw to scheduling profile
@@ -56,7 +66,7 @@ test.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      result = await competitionEngine.addSchedulingProfileRound({
+      result = competitionEngine.addSchedulingProfileRound({
         scheduleDate: startDate,
         venueId,
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
@@ -72,7 +82,7 @@ test.each([
           structures: [{ structureId }],
         },
       } = tournamentEngine.getEvent({ drawId });
-      result = await competitionEngine.addSchedulingProfileRound({
+      result = competitionEngine.addSchedulingProfileRound({
         scheduleDate: startDate,
         venueId,
         round: { tournamentId, eventId, drawId, structureId, roundNumber: 2 },
@@ -80,7 +90,7 @@ test.each([
       expect(result.success).toEqual(true);
     }
 
-    result = await competitionEngine.scheduleProfileRounds({
+    result = competitionEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
     });
 
@@ -94,7 +104,7 @@ test.each([
     */
 
     const matchUpFilters = { scheduledDate: startDate };
-    result = await competitionEngine.competitionScheduleMatchUps({
+    result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
 
