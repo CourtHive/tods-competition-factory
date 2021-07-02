@@ -130,4 +130,10 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   expect(
     splitEntries[2].map(({ scaleValue }) => scaleValue).filter((f) => f)
   ).toEqual([3, 4, 9, 10, 15]);
+
+  result = tournamentEngine.deleteFlightProfileAndFlightDraws();
+  expect(result.error).not.toBeUndefined();
+
+  result = tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+  expect(result.success).toEqual(true);
 });
