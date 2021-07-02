@@ -2,6 +2,11 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import {
+  EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
+  MISSING_DRAW_ID,
+  MISSING_PARTICIPANT_IDS,
+} from '../../../../constants/errorConditionConstants';
 
 it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const participantsProfile = {
@@ -66,7 +71,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
   expect(flightProfile.flights[0].drawEntries.length).toEqual(14);
 
-  const firstFlightParticipantIds = flightProfile.flights[0].drawEntries.map(
+  let firstFlightParticipantIds = flightProfile.flights[0].drawEntries.map(
     ({ participantId }) => participantId
   );
   const participantIdsToRemove = firstFlightParticipantIds.slice(0, 2);
@@ -78,5 +83,41 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  expect(flightProfile.flights[0].drawEntries.length).toEqual(12);
+  const firstFlightEntries = flightProfile.flights[0].drawEntries;
+  expect(firstFlightEntries.length).toEqual(12);
+
+  flightProfile.flights?.forEach((flight) => {
+    const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+      eventId,
+      drawId: flight.drawId,
+      drawEntries: flight.drawEntries,
+    });
+    result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+    expect(result.success).toEqual(true);
+  });
+
+  firstFlightParticipantIds = firstFlightEntries
+    .map(({ participantId }) => participantId)
+    .filter((f) => f);
+
+  // confirm error when missing { drawId }
+  result = tournamentEngine.removeDrawEntries({
+    eventId,
+    participantIds: firstFlightParticipantIds,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_ID);
+
+  // confirm error when missing { participantIds }
+  result = tournamentEngine.removeDrawEntries({
+    eventId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_IDS);
+
+  result = tournamentEngine.removeDrawEntries({
+    eventId,
+    drawId,
+    participantIds: firstFlightParticipantIds,
+  });
+  expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
 });

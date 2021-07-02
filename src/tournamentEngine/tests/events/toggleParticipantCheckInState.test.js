@@ -73,6 +73,29 @@ it('can toggle participant check-in state', () => {
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds.length).toEqual(2);
 
+  result = tournamentEngine.toggleParticipantCheckInState({
+    drawId,
+    matchUpId: matchUp.matchUpId,
+    participantId: participantIds[1],
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.toggleParticipantCheckInState({
+    drawId,
+    matchUpId: matchUp.matchUpId,
+    participantId: participantIds[1],
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.toggleParticipantCheckInState({
+    tournamentId,
+    drawId,
+    matchUpId: matchUp.matchUpId,
+    participantId: participantIds[1],
+  });
+  expect(result.success).toEqual(true);
+
+  // do it a second time for testing code coverage
   result = competitionEngine.toggleParticipantCheckInState({
     tournamentId,
     drawId,
