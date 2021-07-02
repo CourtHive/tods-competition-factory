@@ -157,7 +157,7 @@ export function getTargetMatchUp({
       element: relevantAssignment,
       name: DISABLE_LINKS,
     });
-    if (extension?.value && getDevContext()) {
+    if (extension?.value) {
       return { disabledDrawPosition: targetDrawPosition };
     }
   }
