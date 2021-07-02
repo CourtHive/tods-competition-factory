@@ -71,15 +71,6 @@ export function setMatchUpStatus(props) {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  /*
-  const { matchUp, structure } = findMatchUp({
-    drawDefinition,
-    matchUpId,
-
-    matchUpsMap,
-  });
-  */
-
   if (matchUp.matchUpType === TEAM) {
     // do not direclty set team score... unless walkover/default/double walkover/Retirement
     return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
