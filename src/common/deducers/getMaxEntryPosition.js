@@ -4,7 +4,7 @@ export function getMaxEntryPosition({ entries = [], entryStatus, stage }) {
       .filter(
         (entry) =>
           (!stage || stage === entry.entryStage) &&
-          entry.entryStatus === entryStatus &&
+          (!entryStatus || entry.entryStatus === entryStatus) &&
           !isNaN(entry.entryPosition)
       )
       .map(({ entryPosition }) => parseInt(entryPosition || 0)),

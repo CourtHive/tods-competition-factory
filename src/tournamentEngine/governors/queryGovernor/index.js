@@ -1,5 +1,6 @@
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
 import { isValidMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
+import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
@@ -68,6 +69,8 @@ const queryGovernor = {
   getEventProperties,
   getPositionAssignments,
   isValidMatchUpFormat,
+
+  getMaxEntryPosition,
 
   getVenues,
   findVenue,
