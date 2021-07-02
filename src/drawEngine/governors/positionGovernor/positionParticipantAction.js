@@ -14,7 +14,7 @@ export function positionParticipantAction({
   drawPosition,
   structureId,
   positionActionName,
-  participantIdAttributeName,
+  participantIdAttributeName = 'participantId',
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { positionAssignments } = getPositionAssignments({
