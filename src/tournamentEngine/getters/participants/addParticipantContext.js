@@ -7,8 +7,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 export function addParticipantContext({
-  tournamentParticipants,
-  tournamentRecord,
+  tournamentParticipants = [],
   tournamentEvents,
   withMatchUps,
   withStatistics,
@@ -27,6 +26,26 @@ export function addParticipantContext({
       losses: 0,
     };
   };
+
+  const relevantParticipantIdsMap = Object.assign(
+    {},
+    ...tournamentParticipants.map(
+      ({ participantId, participantType, individualParticipantIds }) => {
+        const individualParticipantIdObjects = (
+          individualParticipantIds || []
+        ).map((relevantParticipantId) => ({
+          relevantParticipantId,
+          participantType: INDIVIDUAL,
+        }));
+        return {
+          [participantId]: individualParticipantIdObjects.concat({
+            relevantParticipantId: participantId,
+            participantType,
+          }),
+        };
+      }
+    )
+  );
 
   // first loop through all filtered events and capture events played
   tournamentEvents.forEach((rawEvent) => {
@@ -63,14 +82,12 @@ export function addParticipantContext({
 
         // include all individual participants that are part of teams & pairs
         // relevantParticipantId is a reference to an individual
-        allRelevantParticipantIds(participantId).forEach(
+        relevantParticipantIdsMap[participantId].forEach(
           ({ relevantParticipantId }) => {
             if (!participantIdMap[relevantParticipantId]) {
               initializeParticipantId(relevantParticipantId);
             }
             participantIdMap[relevantParticipantId].events[eventId] = {
-              // ...filteredEventInfo,
-              // drawIds: [],
               ...eventDetails,
               entryStage,
               entryStatus,
@@ -83,7 +100,7 @@ export function addParticipantContext({
     const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
       const { participantId, entryStage, entryStatus, entryPosition } =
         drawEntry;
-      allRelevantParticipantIds(participantId).forEach(
+      relevantParticipantIdsMap[participantId].forEach(
         ({ relevantParticipantId }) => {
           if (!participantIdMap[relevantParticipantId]) {
             initializeParticipantId(relevantParticipantId);
@@ -169,14 +186,13 @@ export function addParticipantContext({
         );
         const opponentParticipantId = opponent?.participantId;
         const relevantOpponents =
-          (opponentParticipantId &&
-            allRelevantParticipantIds(opponentParticipantId)) ||
+          (opponentParticipantId && relevantParticipantIdsMap[participantId]) ||
           [];
         const finishingPositionRange =
           winningSide && (participantWon ? winner : loser);
 
         const relevantParticipantIds =
-          (participantId && allRelevantParticipantIds(participantId)) || [];
+          (participantId && relevantParticipantIdsMap[participantId]) || [];
 
         const drawEntry = drawEntries.find(
           (entry) => entry.participantId === participantId
@@ -389,26 +405,4 @@ export function addParticipantContext({
       if (withStatistics) participant.statistics = [winRatioStat];
     });
   });
-
-  function allRelevantParticipantIds(participantId) {
-    if (!participantId) return [];
-    const participant = tournamentRecord.participants?.find(
-      (participant) => participant?.participantId === participantId
-    );
-    if (!participant) return [];
-
-    const { participantId: relevantParticipantId, participantType } =
-      participant;
-
-    const individualParticipantIdObjects = (
-      participant.individualParticipantIds || []
-    ).map((relevantParticipantId) => ({
-      relevantParticipantId,
-      participantType: INDIVIDUAL,
-    }));
-    return individualParticipantIdObjects.concat({
-      relevantParticipantId,
-      participantType,
-    });
-  }
 }
