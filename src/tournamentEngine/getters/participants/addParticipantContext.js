@@ -51,6 +51,11 @@ export function addParticipantContext({
         return obj;
       }, {});
 
+    const eventDetails = {
+      ...filteredEventInfo,
+      drawIds: [],
+    };
+
     eventEntries
       .filter((entry) => entry?.participantId)
       .forEach((entry) => {
@@ -64,11 +69,12 @@ export function addParticipantContext({
               initializeParticipantId(relevantParticipantId);
             }
             participantIdMap[relevantParticipantId].events[eventId] = {
-              ...filteredEventInfo,
+              // ...filteredEventInfo,
+              // drawIds: [],
+              ...eventDetails,
               entryStage,
               entryStatus,
               entryPosition,
-              drawIds: [],
             };
           }
         );
@@ -79,14 +85,23 @@ export function addParticipantContext({
         drawEntry;
       allRelevantParticipantIds(participantId).forEach(
         ({ relevantParticipantId }) => {
+          if (!participantIdMap[relevantParticipantId]) {
+            initializeParticipantId(relevantParticipantId);
+          }
+          if (!participantIdMap[relevantParticipantId].events[eventId]) {
+            // if this code is encountered it means a participant was removed from event.entries AFTER drawDefinition was generated
+            participantIdMap[relevantParticipantId].events[eventId] = {
+              ...eventDetails,
+              entryStage,
+              entryStatus,
+              entryPosition,
+            };
+          }
           const eventDrawIds =
             participantIdMap[relevantParticipantId].events[eventId].drawIds;
-          if (!eventDrawIds.includes(drawId)) {
+          if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
             eventDrawIds.push(drawId);
 
-            if (!participantIdMap[relevantParticipantId]) {
-              initializeParticipantId(relevantParticipantId);
-            }
             participantIdMap[relevantParticipantId].draws[drawId] = {
               drawId,
               eventId,
