@@ -2,7 +2,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { PARTICIPANT_PRIVACY_DEFAULT } from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

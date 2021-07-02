@@ -18,7 +18,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
       const result = await competitionEngine[method]();
       if (!result) {
         // covers methods which are expected to return boolean
-        expect(result).toEqual(false);
+        expect([false, 0].includes(result)).toEqual(true);
       } else if (['credits', 'version'].includes(method)) {
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
@@ -51,7 +51,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       const result = await tournamentEngine[method]();
       if (!result) {
         // covers methods which are expected to return boolean
-        expect(result).toEqual(false);
+        expect([false, 0].includes(result)).toEqual(true);
       } else if (['credits', 'version'].includes(method)) {
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {

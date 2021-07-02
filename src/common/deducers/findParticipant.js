@@ -14,7 +14,7 @@ export function findParticipant({
 
   const participantAttributes = policyDefinition.participant;
 
-  if (participantAttributes) {
+  if (participantAttributes?.participant) {
     const participantCopy = attributeFilter({
       source: participant,
       template: participantAttributes.participant,

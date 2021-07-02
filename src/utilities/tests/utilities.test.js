@@ -15,4 +15,7 @@ it('can count values and determine active drawPositions', () => {
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);
   expect(csv).not.toBeUndefined;
+
+  const result = JSON2CSV();
+  expect(result.error).not.toBeUndefined();
 });

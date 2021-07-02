@@ -1,8 +1,9 @@
 import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
-import { COMPETITOR } from '../../../constants/participantRoles';
+import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { COMPETITOR } from '../../../constants/participantRoles';
 
 it('can retrieve and modify tournament persons', () => {
   const participantsProfile = {
@@ -46,12 +47,20 @@ it('can retrieve and modify tournament persons', () => {
     updatedParticipant.person.personId
   );
 
+  const policyDefinition = Object.assign({}, PARTICIPANT_PRIVACY_DEFAULT);
+
   const personId = updatedParticipant.person.personId;
   result = tournamentEngine.findParticipant({
     personId,
   });
 
   expect(result.participant.person.personId).toEqual(personId);
+
+  result = tournamentEngine.findParticipant({
+    policyDefinition,
+    personId,
+  });
+  expect(result.participant.person.personId).toBeUndefined();
 
   result = tournamentEngine.findParticipant({
     personId: undefined,
