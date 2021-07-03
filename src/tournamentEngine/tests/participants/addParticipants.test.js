@@ -25,8 +25,7 @@ it('can add multiple participants at once', () => {
   result = tournamentEngine.addParticipants({
     participants: [participant],
   });
-  expect(result.error.length).toEqual(1);
-  expect(result.error[0]).toEqual(INVALID_PARTICIPANT_TYPE);
+  expect(result.error).toEqual(INVALID_PARTICIPANT_TYPE);
 
   participant = {
     participantId,
@@ -40,8 +39,7 @@ it('can add multiple participants at once', () => {
   result = tournamentEngine.addParticipants({
     participants: [participant],
   });
-  expect(result.error.length).toEqual(1);
-  expect(result.error[0]).toEqual(MISSING_PARTICIPANT_ROLE);
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ROLE);
 
   participant = {
     participantId,
@@ -55,8 +53,7 @@ it('can add multiple participants at once', () => {
   result = tournamentEngine.addParticipants({
     participants: [participant],
   });
-  expect(result.error.length).toEqual(1);
-  expect(result.error[0]).toEqual(MISSING_PERSON_DETAILS);
+  expect(result.error).toEqual(MISSING_PERSON_DETAILS);
 
   participant = {
     participantId,

@@ -98,7 +98,7 @@ export function addEventEntryPairs({
 
       allowDuplicateParticipantIdPairs,
     });
-    if (result.error) return { error: result.error };
+    if (result.error) return result;
     addedParticipants = result.participants || [];
     message = result.message;
   }

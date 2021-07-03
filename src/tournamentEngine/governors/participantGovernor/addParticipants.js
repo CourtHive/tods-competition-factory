@@ -56,7 +56,6 @@ export function addParticipant({
     )
     .map((individualParticipant) => individualParticipant.participantId);
 
-  const errors = [];
   if (participantType === PAIR) {
     if (participant.person)
       return { error: INVALID_VALUES, person: participant.person };
@@ -133,28 +132,24 @@ export function addParticipant({
       return { error: INVALID_VALUES, person: participant.person };
 
     const { individualParticipantIds } = participant;
-    (individualParticipantIds || []).forEach((individualParticipantId) => {
-      if (typeof individualParticipantId !== 'string') {
-        errors.push({
-          error: INVALID_VALUES,
-          participantId: individualParticipantId,
-        });
-        return;
+    if (individualParticipantIds?.length) {
+      for (const individualParticipantId of individualParticipantIds) {
+        if (typeof individualParticipantId !== 'string') {
+          return {
+            error: INVALID_VALUES,
+            participantId: individualParticipantId,
+          };
+        }
+        if (
+          !tournamentIndividualParticipantIds.includes(individualParticipantId)
+        ) {
+          return {
+            error: PARTICIPANT_NOT_FOUND,
+            participantId: individualParticipantId,
+          };
+        }
       }
-      if (
-        !tournamentIndividualParticipantIds.includes(individualParticipantId)
-      ) {
-        errors.push({
-          error: PARTICIPANT_NOT_FOUND,
-          participantId: individualParticipantId,
-        });
-        return;
-      }
-    });
-  }
-
-  if (errors.length) {
-    return { error: errors };
+    }
   }
 
   tournamentRecord.participants.push(participant);
@@ -211,9 +206,9 @@ export function addParticipants({
   );
 
   if (participantsToAdd.length) {
-    const errors = [];
     const addedParticipants = [];
-    participantsToAdd.forEach((participant) => {
+
+    for (const participant of participantsToAdd) {
       const result = addParticipant({
         tournamentRecord,
         participant,
@@ -223,24 +218,20 @@ export function addParticipants({
       });
       const { success, error, participant: addedParticipant } = result;
       if (success) addedParticipants.push(addedParticipant);
-      if (error) errors.push(error);
-    });
-
-    if (errors.length) {
-      return { error: errors };
-    } else {
-      addNotice({
-        topic: ADD_PARTICIPANTS,
-        payload: { participants: addedParticipants },
-      });
-      const result = Object.assign({}, SUCCESS, {
-        participants: makeDeepCopy(addedParticipants),
-      });
-      if (notAdded.length) {
-        Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
-      }
-      return result;
+      if (error) return { error };
     }
+
+    addNotice({
+      topic: ADD_PARTICIPANTS,
+      payload: { participants: addedParticipants },
+    });
+    const result = Object.assign({}, SUCCESS, {
+      participants: makeDeepCopy(addedParticipants),
+    });
+    if (notAdded.length) {
+      Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
+    }
+    return result;
   } else {
     return Object.assign({}, SUCCESS, {
       message: 'No new participants to add',

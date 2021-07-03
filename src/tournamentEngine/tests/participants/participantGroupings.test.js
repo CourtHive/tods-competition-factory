@@ -30,8 +30,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
       individualParticipantIds: participantIds,
     },
   });
-  expect(result.error).not.toBeUndefined();
-  expect(result.error[0].error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   // test adding non-existent individualParticipantIds
   result = tournamentEngine.addParticipant({
@@ -41,8 +40,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
       individualParticipantIds: ['abc', '123'],
     },
   });
-  expect(result.error).not.toBeUndefined();
-  expect(result.error[0].error).toEqual(PARTICIPANT_NOT_FOUND);
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   // first three individual participants belong to groupParticipant
   participantIds = tournamentParticipants

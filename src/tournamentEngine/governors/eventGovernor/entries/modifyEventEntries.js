@@ -82,7 +82,7 @@ export function modifyEventEntries({
     participants: newParticipants,
   });
 
-  if (result.error) return { error: result.error };
+  if (result.error) return result;
 
   // get all participantIds for PAIR participants
   const pairParticipantEntries = participantIdPairs
