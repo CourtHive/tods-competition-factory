@@ -37,7 +37,7 @@ it('can define and modify a venue', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error.errors.length).toEqual(2);
+  expect(result.error).not.toBeUndefined();
 
   modifications = {
     venueName,

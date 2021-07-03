@@ -7,6 +7,8 @@ import { makeDeepCopy } from '../../../utilities';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   INVALID_OBJECT,
@@ -14,8 +16,6 @@ import {
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyVenue({
   tournamentRecord,
@@ -54,7 +54,6 @@ export function modifyVenue({
     Object.assign(venue, { [attribute]: modifications[attribute] })
   );
 
-  const errors = [];
   const existingCourtIds = venue?.courts?.map((court) => court.courtId) || [];
   const courtIdsToModify =
     modifications.courts?.map((court) => court.courtId) || [];
@@ -85,12 +84,12 @@ export function modifyVenue({
       const message = deletionMessage({
         matchUpsCount: scheduleDeletionsCount,
       });
-      errors.push(message);
+      return { error: message };
     }
   }
 
-  modifications.courts &&
-    modifications.courts.forEach((court) => {
+  if (modifications.courts) {
+    for (const court of modifications.courts) {
       const { courtId } = court || {};
       let result = modifyCourt({
         tournamentRecord,
@@ -108,15 +107,10 @@ export function modifyVenue({
         });
       }
       if (result.error) {
-        if (result.error.errors) {
-          result.error.errors.forEach((error) => errors.push(error));
-        } else {
-          errors.push(result);
-        }
+        return result;
       }
-    });
-
-  if (errors.length) return { error: { errors } };
+    }
+  }
 
   addNotice({ topic: MODIFY_VENUE, payload: { venue } });
 

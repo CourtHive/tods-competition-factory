@@ -1,12 +1,13 @@
+import { validDateAvailability } from './dateAvailability';
 import { addNotice } from '../../../global/globalState';
 import { findCourt } from '../../getters/courtGetter';
 
+import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_VENUE } from '../../../constants/topicConstants';
 
 export function modifyCourtAvailability({
   tournamentRecord,
@@ -17,6 +18,9 @@ export function modifyCourtAvailability({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!courtId) return { error: MISSING_COURT_ID };
+
+  const result = validDateAvailability({ dateAvailability });
+  if (result.error) return result;
 
   const { court, venue, error } = findCourt({ tournamentRecord, courtId });
   if (error) return { error };

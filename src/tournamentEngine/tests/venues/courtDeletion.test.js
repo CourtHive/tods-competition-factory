@@ -168,7 +168,7 @@ it('can add events, venues, and schedule matchUps', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error.errors.length).toEqual(1);
+  expect(result.error).not.toBeUndefined();
 
   result = tournamentEngine.modifyVenue({
     venueId,

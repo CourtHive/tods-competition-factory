@@ -53,7 +53,6 @@ export function modifyCourt({
     Object.assign(court, { [attribute]: modifications[attribute] })
   );
 
-  const errors = [];
   if (modifications.dateAvailability) {
     const result = modifyCourtAvailability({
       tournamentRecord,
@@ -62,7 +61,7 @@ export function modifyCourt({
       courtId,
       force,
     });
-    if (result.error) errors.push(result);
+    if (result.error) return result;
   }
 
   if (!disableNotice) {
