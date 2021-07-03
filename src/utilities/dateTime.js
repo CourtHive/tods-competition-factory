@@ -4,17 +4,6 @@ import {
   INVALID_TIME_ZONE,
 } from '../constants/errorConditionConstants';
 
-export function isDate(dateArg) {
-  if (typeof dateArg == 'boolean') return false;
-  const t =
-    dateArg instanceof Date
-      ? dateArg
-      : !isNaN(dateArg)
-      ? new Date(dateArg)
-      : false;
-  return t && !isNaN(t.valueOf());
-}
-
 export function isDateObject(value) {
   if (typeof value !== 'object' || Array.isArray(value)) {
     return false;
@@ -58,15 +47,8 @@ export const currentUTCDate = () => {
   )}`;
 };
 
-export const currentUTCDateWithTime = () => {
-  const date = new Date();
-  const utcHours = date.getUTCHours();
-  const utcMinutes = date.getMinutes();
-  return `${currentUTCDate()}T${utcHours}:${utcMinutes}`;
-};
-
 export function timeUTC(date) {
-  const dateDate = new Date(date);
+  const dateDate = isDate(date) ? new Date(date) : new Date();
   return Date.UTC(
     dateDate.getFullYear(),
     dateDate.getMonth(),
@@ -74,7 +56,9 @@ export function timeUTC(date) {
   );
 }
 
-export function localizeDate(date, dateLocalization, locale) {
+export function localizeDate(submittedDate, dateLocalization, locale) {
+  const date = new Date(submittedDate);
+  if (!isDate(date)) return false;
   const defaultLocalization = {
     weekday: 'long',
     year: 'numeric',
@@ -117,6 +101,19 @@ export function offsetTime(date) {
   return offsetDate(date).getTime();
 }
 
+// only returns true for valid date objects
+// dateArg = new Date('xxx') produces 'Invalid Date', which return false
+export function isDate(dateArg) {
+  if (typeof dateArg == 'boolean') return false;
+  const t =
+    dateArg instanceof Date
+      ? dateArg
+      : !isNaN(dateArg)
+      ? new Date(dateArg)
+      : false;
+  return t && !isNaN(t.valueOf());
+}
+
 export function dateRange(startDt, endDt) {
   const startDate = new Date(startDt);
   const endDate = new Date(endDt);
@@ -126,19 +123,12 @@ export function dateRange(startDt, endDt) {
       : true;
   const between = [];
   let iterations = 0;
-  let keepLooping = true;
 
-  if (error) {
-    console.log('error occured!!!... Please Enter Valid Dates');
-  } else {
+  if (!error) {
     const currentDate = offsetDate(startDate);
     const end = offsetDate(endDate);
-    while (currentDate <= end && keepLooping) {
+    while (currentDate <= end && iterations < 300) {
       iterations += 1;
-      if (iterations > 300) {
-        console.log('excessive while loop');
-        keepLooping = false;
-      }
       // must be a *new* Date otherwise it is an array of the same object
       between.push(new Date(currentDate));
       currentDate.setDate(currentDate.getDate() + 1);
@@ -186,12 +176,6 @@ export function extractDate(dateString) {
   return isISODateString(dateString) || dateValidation.test(dateString)
     ? dateString.split('T')[0]
     : undefined;
-}
-
-// returns 2020-01-01T00:00:00.000Z
-export function isoDateString(date) {
-  const formattedDate = formatDate(date);
-  return new Date(formattedDate).toISOString();
 }
 
 export function dateStringDaysChange(dateString, daysChange) {
@@ -247,48 +231,6 @@ export function convertTime(value, time24) {
   return time24 ? militaryTime(value) : regularTime(value);
 }
 
-export function futureDate(days = 1) {
-  const currentDate = new Date();
-  currentDate.setDate(currentDate.getDate() + days);
-  return currentDate;
-}
-
-export function getWeek(date, dowOffset = 2) {
-  date = new Date(+date);
-  dowOffset = safeParseInt(dowOffset) ? dowOffset : 0;
-  const newYear = new Date(date.getFullYear(), 0, 1);
-  let day = newYear.getDay() - dowOffset;
-  day = day >= 0 ? day : day + 7;
-  const daynum =
-    Math.floor(
-      (date.getTime() -
-        newYear.getTime() -
-        (date.getTimezoneOffset() - newYear.getTimezoneOffset()) * 60000) /
-        86400000
-    ) + 1;
-
-  let weeknum;
-
-  //if the year starts before the middle of a week
-  if (day < 4) {
-    weeknum = Math.floor((daynum + day - 1) / 7) + 1;
-    if (weeknum > 52) {
-      const nYear = new Date(date.getFullYear() + 1, 0, 1);
-      let nday = nYear.getDay() - dowOffset;
-      nday = nday >= 0 ? nday : nday + 7;
-      weeknum = nday < 4 ? 1 : 53;
-    }
-  } else {
-    weeknum = Math.floor((daynum + day - 1) / 7);
-  }
-  return weeknum;
-}
-
-function safeParseInt(value) {
-  const result = parseInt(value);
-  return isNaN(result) ? undefined : result;
-}
-
 export function timeSort(a, b) {
   const as = splitTime(a);
   const bs = splitTime(b);
@@ -301,63 +243,44 @@ export function timeSort(a, b) {
   return 0;
 }
 
-export function weekDays(date) {
-  const dates = [0, 1, 2, 3, 4, 5, 6].map((i) => dayOfWeek(date, i));
+export function weekDays(date = new Date(), firstDayOfWeek = 0) {
+  if (!isDate(date)) return [];
+  const dates = [0, 1, 2, 3, 4, 5, 6].map((i) =>
+    dayOfWeek(date, i + firstDayOfWeek)
+  );
   return dates;
 
   function dayOfWeek(date, index) {
     const d = new Date(date);
     const day = d.getDay();
     const diff = index - day;
-    return new Date(d.setDate(d.getDate() + diff));
+
+    const nextDate = new Date(d.setDate(d.getDate() + diff));
+    return formatDate(nextDate);
   }
 }
 
-export function addWeek(date) {
+export function addWeek(date, dateFormat) {
   const now = new Date(date);
-  return now.setDate(now.getDate() + 7);
+  return formatDate(now.setDate(now.getDate() + 7), dateFormat);
 }
-export function subtractWeek(date) {
+export function subtractWeek(date, dateFormat) {
   const now = new Date(date);
-  return now.setDate(now.getDate() - 7);
+  return formatDate(now.setDate(now.getDate() - 7), dateFormat);
 }
-export function getDateByWeek(week, year) {
+
+export function getDateByWeek(week, year, dateFormat) {
   const d = new Date(year, 0, 1);
   const dayNum = d.getDay();
   let requiredDate = --week * 7;
   if (dayNum !== 0 || dayNum > 4) requiredDate += 7;
   d.setDate(1 - d.getDay() + ++requiredDate);
-  return d;
+  return formatDate(d, dateFormat);
 }
 
-export function validDate(datestring, range) {
-  if (!datestring) return false;
-  const dateparts = formatDate(datestring).split('-');
-  if (isNaN(dateparts.join(''))) return false;
-  if (dateparts.length !== 3) return false;
-  if (dateparts[0].length !== 4) return false;
-  if (+dateparts[1] > 12 || +dateparts[1] < 1) return false;
-  if (+dateparts[2] > 31 || +dateparts[2] < 1) return false;
-  if (range && range.start) {
-    if (offsetDate(datestring) < offsetDate(range.start)) return false;
-  }
-  if (range && range.end) {
-    if (offsetDate(datestring) > offsetDate(range.end)) return false;
-  }
-  if (new Date(datestring) === INVALID_DATE) return false;
-  return true;
-}
-
-export function dateFromDay(year, day) {
+export function dateFromDay(year, day, dateFormat) {
   const date = new Date(year, 0); // initialize a date in `year-01-01`
-  return new Date(date.setDate(day)); // add the number of days
-}
-
-export function ymd2date(ymd) {
-  const parts = ymd.split('-');
-  if (!parts || parts.length !== 3) return new Date(ymd);
-  if (isNaN(parseInt(parts[1]))) return new Date(ymd);
-  return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]);
+  return formatDate(new Date(date.setDate(day)), dateFormat); // add the number of days
 }
 
 export function timeToDate(timeString, date = undefined) {
@@ -457,18 +380,95 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
   };
 }
 
+/*
+export const currentUTCDateWithTime = () => {
+  const date = new Date();
+  const utcHours = date.getUTCHours();
+  const utcMinutes = date.getMinutes();
+  return `${currentUTCDate()}T${utcHours}:${utcMinutes}`;
+};
+
+export function validDate(datestring, range) {
+  if (!datestring) return false;
+  const dateparts = formatDate(datestring).split('-');
+  if (isNaN(dateparts.join(''))) return false;
+  if (dateparts.length !== 3) return false;
+  if (dateparts[0].length !== 4) return false;
+  if (+dateparts[1] > 12 || +dateparts[1] < 1) return false;
+  if (+dateparts[2] > 31 || +dateparts[2] < 1) return false;
+  if (range && range.start) {
+    if (offsetDate(datestring) < offsetDate(range.start)) return false;
+  }
+  if (range && range.end) {
+    if (offsetDate(datestring) > offsetDate(range.end)) return false;
+  }
+  if (new Date(datestring) === INVALID_DATE) return false;
+  return true;
+}
+export function futureDate(days = 1) {
+  const currentDate = new Date();
+  currentDate.setDate(currentDate.getDate() + days);
+  return currentDate;
+}
+
+// get the week number 1-52 in the year for the given date
+export function getWeek(date, dowOffset = 2) {
+  date = new Date(+date);
+  dowOffset = safeParseInt(dowOffset) ? dowOffset : 0;
+  const newYear = new Date(date.getFullYear(), 0, 1);
+  let day = newYear.getDay() - dowOffset;
+  day = day >= 0 ? day : day + 7;
+  const daynum =
+    Math.floor(
+      (date.getTime() -
+        newYear.getTime() -
+        (date.getTimezoneOffset() - newYear.getTimezoneOffset()) * 60000) /
+        86400000
+    ) + 1;
+
+  let weeknum;
+
+  //if the year starts before the middle of a week
+  if (day < 4) {
+    weeknum = Math.floor((daynum + day - 1) / 7) + 1;
+    if (weeknum > 52) {
+      const nYear = new Date(date.getFullYear() + 1, 0, 1);
+      let nday = nYear.getDay() - dowOffset;
+      nday = nday >= 0 ? nday : nday + 7;
+      weeknum = nday < 4 ? 1 : 53;
+    }
+  } else {
+    weeknum = Math.floor((daynum + day - 1) / 7);
+  }
+  return weeknum;
+}
+
+function safeParseInt(value) {
+  const result = parseInt(value);
+  return isNaN(result) ? undefined : result;
+}
+export function ymd2date(ymd) {
+  const parts = ymd.split('-');
+  if (!parts || parts.length !== 3) return new Date(ymd);
+  if (isNaN(parseInt(parts[1]))) return new Date(ymd);
+  return new Date(parts[0], parseInt(parts[1]) - 1, parts[2]);
+}
+// returns 2020-01-01T00:00:00.000Z
+export function isoDateString(date) {
+  const formattedDate = formatDate(date);
+  return new Date(formattedDate).toISOString();
+}
+*/
+
 export const dateTime = {
   sameDay,
   timeUTC,
   DateHHMM,
   extractTime,
   extractDate,
-  ymd2date,
-  validDate,
   formatDate,
   offsetDate,
   offsetTime,
-  futureDate,
   timeToDate,
   convertTime,
   getDateByWeek,
