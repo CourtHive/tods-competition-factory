@@ -263,11 +263,11 @@ export function positionActions({
         type: SEED_VALUE,
         method: SEED_VALUE_METHOD,
         participant,
+        seedNumber,
         payload: {
           drawId,
           structureId,
           participantId,
-          seedNumber,
           seedValue,
         },
       });

@@ -112,6 +112,9 @@ it('adds partitipants to stage until stage drawPositions filled', () => {
     entryStage: MAIN,
   });
   expect(result).toHaveProperty(ERROR);
+
+  result = drawEngine.removeEntry({ participantId: 'uuuid8' });
+  expect(result.success).toEqual(true);
 });
 
 it('can add bulk entries', () => {

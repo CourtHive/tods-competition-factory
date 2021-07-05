@@ -1,22 +1,26 @@
-import { numericSort } from '../../../utilities';
-import { drawEngine } from '../../sync';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
+import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { getDrawStructures } from '../../getters/structureGetter';
+import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
-import { getValidSeedBlocks } from '../../getters/seedGetter';
-import { getDrawStructures } from '../../getters/structureGetter';
-import { mainDrawWithEntries } from '../../tests/primitives/primitives';
-import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { numericSort } from '../../../utilities';
+import { drawEngine } from '../../sync';
 
+import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
+import {
+  MISSING_STRUCTURE_ID,
+  STRUCTURE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
-import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
@@ -317,6 +321,29 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
+  // modify the seedValue for an existing seed assignment
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    seedValue: 'xxx',
+  });
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    structureId: 'bogusId',
+    seedValue: 'xxx',
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
+  result = drawEngine.modifySeedAssignment({
+    participantId: participantId3,
+    structureId,
+    seedValue: 'xxx',
+  });
+  expect(result).toMatchObject(SUCCESS);
+  let { seedAssignments } = drawEngine.getStructureSeedAssignments({
+    structureId,
+  });
+  expect(seedAssignments[3].seedValue).toEqual('xxx');
+
   drawPosition = unfilledPositions.pop();
   expect(drawPosition).toEqual(48);
   result = drawEngine.assignDrawPosition({
@@ -332,14 +359,28 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   expect(unplacedSeedNumbers).toMatchObject([3]);
   expect(unfilledPositions).toMatchObject([17]);
 
-  const { seedAssignments } = drawEngine.getStructureSeedAssignments({
+  ({ seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId,
-  });
+  }));
   expect(seedAssignments.length).toEqual(16);
   const assignedSeedPositions = seedAssignments.filter(
     (assignment) => assignment.participantId
   );
   expect(assignedSeedPositions.length).toEqual(3);
+
+  // will add a seedNumber and new seedAssignment if participantId is not recognized
+  // drawEngine does not have access to participants and cannot verify validity of participantId
+  result = drawEngine.modifySeedAssignment({
+    participantId: 'additional participant',
+    structureId,
+    seedValue: 'yyy',
+  });
+  expect(result).toMatchObject(SUCCESS);
+  ({ seedAssignments } = drawEngine.getStructureSeedAssignments({
+    structureId,
+  }));
+  expect(seedAssignments.length).toEqual(17);
+  expect(seedAssignments[16].seedValue).toEqual('yyy');
 });
 
 function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {

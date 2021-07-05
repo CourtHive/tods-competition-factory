@@ -1,5 +1,10 @@
 import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../../../drawEngine/governors/entryGovernor/modifySeedAssignment';
 
+import {
+  INVALID_PARTICIPANT_ID,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../constants/errorConditionConstants';
+
 /**
  *
  * @param {string} drawId - id of drawDefinition within which structure occurs
@@ -10,11 +15,18 @@ import { modifySeedAssignment as drawEngineModifySeedAssignment } from '../../..
  *
  */
 export function modifySeedAssignment({
+  tournamentRecord,
   drawDefinition,
   participantId,
   structureId,
   seedValue,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const participant = (tournamentRecord.participants || []).find(
+    (participant) => participant.participantId === participantId
+  );
+  if (!participant) return { error: INVALID_PARTICIPANT_ID };
+
   return drawEngineModifySeedAssignment({
     drawDefinition,
     participantId,
