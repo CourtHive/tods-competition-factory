@@ -54,7 +54,8 @@ export function addParticipantContext({
     const event = makeDeepCopy(rawEvent, true, true);
     const { eventId, eventName, eventType, category } = event;
     const eventInfo = { eventId, eventName, eventType, category };
-    const extensionKeys = Object.keys(event).filter((key) => key[0] === '_');
+    const extensionKeys =
+      event && Object.keys(event).filter((key) => key[0] === '_');
     extensionKeys?.forEach(
       (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
     );
@@ -338,7 +339,7 @@ export function addParticipantContext({
                 eventId
               ]?.drawIds?.includes(drawId)
           );
-        const missingDrawEntries = eventEntries.filter(({ participantId }) =>
+        const missingDrawEntries = eventEntries?.filter(({ participantId }) =>
           missingParticipantIds.includes(participantId)
         );
         missingDrawEntries?.forEach((drawEntry) =>
@@ -382,9 +383,11 @@ export function addParticipantContext({
         participant.matchUps = Object.values(matchUps);
         participantDraws?.forEach((draw) => {
           const drawMatchUps =
-            Object.values(matchUps)?.filter(
-              (matchUp) => matchUp.drawId === draw.drawId
-            ) || [];
+            (matchUps &&
+              Object.values(matchUps).filter(
+                (matchUp) => matchUp.drawId === draw.drawId
+              )) ||
+            [];
           const diff = (range) => Math.abs(range[0] - range[1]);
           const finishingPositionRange = drawMatchUps.reduce(
             (finishingPositionRange, matchUp) => {
