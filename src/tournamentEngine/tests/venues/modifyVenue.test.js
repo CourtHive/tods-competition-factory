@@ -1,4 +1,14 @@
+import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/deleteVenue';
+import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/modifyVenue';
+import { deleteVenue as tournamentEngineDeleteVenue } from '../../governors/venueGovernor/deleteVenue';
+import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venueGovernor/modifyVenue';
 import { tournamentEngine } from '../../sync';
+
+import {
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
+  VENUE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 it('can define and modify a venue', () => {
   let result = tournamentEngine.newTournamentRecord();
@@ -231,4 +241,23 @@ it('can define and modify a venue', () => {
   expect(venue.venueName).toEqual(venueName);
   expect(venue.venueAbbreviation).toEqual(venueAbbreviation);
   expect(venue.courts.length).toEqual(2);
+});
+
+test('miscellaneous items for coverage', () => {
+  let result = tournamentEngineDeleteVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+
+  result = competitionEngineDeleteVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
+  result = competitionEngineDeleteVenue({
+    tournamentRecords: {},
+    venueId: '12345',
+  });
+  expect(result.error).toEqual(VENUE_NOT_FOUND);
+
+  result = tournamentEngineModifyVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+
+  result = competitionEngineModifyVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
 });

@@ -8,6 +8,7 @@ import { DELETE_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
@@ -18,6 +19,7 @@ export function deleteVenue({
   force,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
   if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
 
   const { courts } = getCourts({ tournamentRecord, venueId });

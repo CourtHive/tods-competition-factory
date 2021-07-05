@@ -3,8 +3,9 @@ import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleG
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { tournamentEngine } from '../../sync';
 
-import { SINGLES } from '../../../constants/eventConstants';
+import { MISSING_VENUE_ID } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   ASSIGN_COURT,
   SCHEDULED_DATE,
@@ -263,6 +264,15 @@ it('can add events, venues, and schedule matchUps', () => {
 
   let { venues } = tournamentEngine.getVenues();
   expect(venues.length).toEqual(1);
+
+  result = tournamentEngine.deleteVenue();
+  expect(result.error).toEqual(MISSING_VENUE_ID);
+  result = competitionEngine.deleteVenue();
+  expect(result.error).toEqual(MISSING_VENUE_ID);
+  result = tournamentEngine.deleteVenue({ venueId: '12345' });
+  expect(result.error).not.toBeUndefined();
+  result = competitionEngine.deleteVenue({ venueId: '12345' });
+  expect(result.error).not.toBeUndefined();
 
   result = tournamentEngine.deleteVenue({ venueId });
   expect(result.success).toBeUndefined();
