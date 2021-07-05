@@ -40,6 +40,69 @@ it('can configure drawSize for all stages', () => {
   expect(result).toMatchObject(SUCCESS);
   result = drawEngine.setStageDrawSize({ stage: 'INVALID', drawSize: 8 });
   expect(result).toHaveProperty(ERROR);
+
+  result = drawEngine.setStageAlternatesCount({
+    stage: QUALIFYING,
+    alternatesCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageAlternatesCount({
+    stage: MAIN,
+    alternatesCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageAlternatesCount({
+    stage: CONSOLATION,
+    alternatesCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageAlternatesCount({
+    stage: 'INVALID',
+    alternatesCount: 8,
+  });
+  expect(result).toHaveProperty(ERROR);
+
+  result = drawEngine.setStageWildcardsCount({
+    stage: QUALIFYING,
+    wildcardsCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageWildcardsCount({
+    stage: MAIN,
+    wildcardsCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageWildcardsCount({
+    stage: CONSOLATION,
+    wildcardsCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageWildcardsCount({
+    stage: 'INVALID',
+    wildcardsCount: 8,
+  });
+  expect(result).toHaveProperty(ERROR);
+
+  result = drawEngine.setStageQualifiersCount({
+    stage: QUALIFYING,
+    qualifiersCount: 8,
+  });
+  expect(result).toHaveProperty(ERROR);
+  result = drawEngine.setStageQualifiersCount({
+    stage: MAIN,
+    qualifiersCount: 8,
+  });
+  expect(result).toMatchObject(SUCCESS);
+  result = drawEngine.setStageQualifiersCount({
+    stage: CONSOLATION,
+    qualifiersCount: 8,
+  });
+  expect(result).toHaveProperty(ERROR);
+  result = drawEngine.setStageQualifiersCount({
+    stage: 'INVALID',
+    qualifiersCount: 8,
+  });
+  expect(result).toHaveProperty(ERROR);
 });
 
 it('can initialize, setState, and query', () => {
