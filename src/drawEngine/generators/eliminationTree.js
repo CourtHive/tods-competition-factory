@@ -46,6 +46,7 @@ export function treeMatchUps({
       roundLimit = roundNumber - 1;
     ({ roundNodes, matchUps } = buildRound({
       roundNumber,
+      matchUpType,
       nodes: roundNodes,
       matchUps,
       uuids,
