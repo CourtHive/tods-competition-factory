@@ -9,7 +9,7 @@ export const structureTemplate = ({
   stageOrder,
   roundLimit,
   roundOffset,
-  matchUpType,
+  // matchUpType, // unnecessary; factory propagates to this point in case it is ever necessary
   matchUpFormat,
   structureType,
   structureAbbreviation,
@@ -23,7 +23,7 @@ export const structureTemplate = ({
   const structure = {
     structureAbbreviation,
     structureName,
-    matchUpType,
+    // matchUpType,
     matchUpFormat,
     stageSequence,
     finishingPosition,
