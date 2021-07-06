@@ -86,7 +86,7 @@
     "eslint-plugin-jest": "24.3.6",
     "eslint-plugin-prettier": "3.4.0",
     "eslint-plugin-react": "7.24.0",
-    "husky": "7.0.0",
+    "husky": "7.0.1",
     "jest-cli": "27.0.1",
     "jest-environment-node": "27.0.1",
     "np": "7.5.0",
