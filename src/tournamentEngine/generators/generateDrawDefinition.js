@@ -6,33 +6,32 @@ import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/globalState';
 import drawEngine from '../../drawEngine/sync';
 
+import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
+import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { RANKING, SEEDING } from '../../constants/scaleConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { AUDIT } from '../../constants/topicConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   MAIN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
-import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
-import { RANKING, SEEDING } from '../../constants/scaleConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
 import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { AUDIT } from '../../constants/topicConstants';
 
 export function generateDrawDefinition(props) {
   const { tournamentRecord, event } = props;
-  let { drawName, structureOptions } = props;
+  let { drawName, matchUpType, structureOptions } = props;
 
   const {
     uuids,
     drawId,
     drawEntries,
-    matchUpType,
     stage = MAIN,
     seedingProfile,
     qualifyingRound,
@@ -87,6 +86,8 @@ export function generateDrawDefinition(props) {
 
   const entries = drawEntries || event?.entries || [];
   const eventType = event?.eventType;
+  matchUpType = matchUpType || (eventType !== TEAM && eventType);
+
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
