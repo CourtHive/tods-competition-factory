@@ -117,7 +117,15 @@ tournamentEngine.addEvent({ event });
 
 ## addEventEntries
 
-Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `drawDefinition.entries` at the same time.
+Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.drawEntries` at the same time.
+
+:::note
+
+Will **_not_** throw an error if unable to add entries into specified `flightProfile.drawEntries`,
+which can occur if a `drawDefinition` has already been generated and an attempt is made to add
+a participant with `entryStatus: DIRECT_ACCEPTANCE`.
+
+:::
 
 ```js
 tournamentEngine.addEventEntries({
@@ -126,7 +134,7 @@ tournamentEngine.addEventEntries({
   stage: MAIN, // optional
   entryStatus: ALTERNATE, // optional
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
-  drawId, // optional - will add participantIds to specified drawDefinition.entries and flightProfile.flight[].drawEntries
+  drawId, // optional - will add participantIds to specified flightProfile.flight[].drawEntries and drawDefinition.entries (if possible)
 });
 ```
 

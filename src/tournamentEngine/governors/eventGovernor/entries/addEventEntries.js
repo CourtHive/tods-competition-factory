@@ -19,8 +19,11 @@ import {
 
 /**
  *
+ * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
+ *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} eventId - tournamentEngine automatically retrieves event
+ * @param {string} drawId - optional - also add to drawDefinition.entries & flightProfile.drawEntries (if possible)
  * @param {string[]} participantIds - ids of all participants to add to event
  * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
  * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
@@ -91,6 +94,7 @@ export function addEventEntries(props) {
     }
   });
 
+  let message;
   if (drawId) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
@@ -101,7 +105,12 @@ export function addEventEntries(props) {
       drawId,
       event,
     });
-    if (result.error) return result;
+
+    // Ignore errors if drawId is included but entry can't be added to drawDefinition/flightProfile
+    // return errors as message to client
+    if (result.error) {
+      message = result.error;
+    }
   }
 
   // now remove any unpaired participantIds which exist as part of added paired participants
@@ -144,5 +153,7 @@ export function addEventEntries(props) {
     });
   }
 
-  return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
+  return !invalidParticipantIds
+    ? Object.assign({ message }, SUCCESS)
+    : { error: INVALID_PARTICIPANT_IDS };
 }

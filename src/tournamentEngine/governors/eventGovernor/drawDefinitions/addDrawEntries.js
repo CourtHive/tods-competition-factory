@@ -2,12 +2,12 @@ import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/e
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_ENTRIES,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function addDrawEntries({
   drawDefinition,
