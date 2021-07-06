@@ -398,8 +398,6 @@ export function getAllStructureMatchUps({
           structure.matchUpType || drawDefinition?.matchUpType;
         if (matchUpType) {
           Object.assign(matchUpWithContext, { matchUpType });
-        } else {
-          console.log('missing matchUpType');
         }
       }
     }
