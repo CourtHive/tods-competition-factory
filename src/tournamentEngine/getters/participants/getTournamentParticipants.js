@@ -55,7 +55,7 @@ export function getTournamentParticipants({
     });
 
   if (inContext) {
-    tournamentParticipants.forEach((participant) => {
+    tournamentParticipants?.forEach((participant) => {
       if ([PAIR, TEAM].includes(participant.participantType)) {
         participant.individualParticipants =
           participant.individualParticipantIds.map((participantId) => {

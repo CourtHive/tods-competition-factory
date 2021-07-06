@@ -33,7 +33,7 @@ export function filterParticipants({
     }, true);
   };
 
-  participants = participants.filter((participant) => {
+  participants = participants?.filter((participant) => {
     const participantSignInStatus = getTimeItem({
       element: participant,
       itemType: SIGN_IN_STATUS,
@@ -54,7 +54,7 @@ export function filterParticipants({
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
-      tournamentRecord.events.filter((event) =>
+      tournamentRecord.events?.filter((event) =>
         eventIds.includes(event.eventId)
       )) ||
     tournamentRecord.events ||
@@ -68,7 +68,7 @@ export function filterParticipants({
           (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
-        const individualParticipantIds = tournamentRecord.participants
+        const individualParticipantIds = (tournamentRecord.participants || [])
           .filter((participant) =>
             enteredParticipantIds.includes(participant.participantId)
           )
@@ -77,7 +77,7 @@ export function filterParticipants({
         return enteredParticipantIds.concat(...individualParticipantIds);
       })
       .flat(1);
-    participants = participants.filter((participant) =>
+    participants = participants?.filter((participant) =>
       participantIds.includes(participant.participantId)
     );
   }

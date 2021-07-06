@@ -66,12 +66,14 @@ export function addParticipantContext({
       (constant) => `_${constant}`
     );
     // don't allow system extensions to be copied to participants
-    const filteredEventInfo = Object.keys(eventInfo)
-      .filter((key) => !disallowedKeys.includes(key))
-      .reduce((obj, key) => {
-        obj[key] = eventInfo[key];
-        return obj;
-      }, {});
+    const filteredEventInfo =
+      eventInfo &&
+      Object.keys(eventInfo)
+        .filter((key) => !disallowedKeys.includes(key))
+        .reduce((obj, key) => {
+          obj[key] = eventInfo[key];
+          return obj;
+        }, {});
 
     const eventDetails = {
       ...filteredEventInfo,
@@ -380,7 +382,7 @@ export function addParticipantContext({
         });
       }
       if (withMatchUps) {
-        participant.matchUps = Object.values(matchUps);
+        participant.matchUps = matchUps && Object.values(matchUps);
         participantDraws?.forEach((draw) => {
           const drawMatchUps =
             (matchUps &&

@@ -189,10 +189,10 @@ export function tournamentMatchUps({
 
   const matchUpGroupings = eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {
-      const keys = Object.keys(eventMatchUps).filter(
-        (key) => key !== 'success'
-      );
-      keys.forEach((key) => {
+      const keys =
+        eventMatchUps &&
+        Object.keys(eventMatchUps).filter((key) => key !== 'success');
+      keys?.forEach((key) => {
         if (!matchUps[key]) matchUps[key] = [];
         matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
         matchUps.matchUpsCount += eventMatchUps[key].length;
@@ -246,7 +246,7 @@ export function eventMatchUps({
         scheduleVisibilityFilters,
       });
       const keys = Object.keys(drawMatchUps);
-      keys.forEach((key) => {
+      keys?.forEach((key) => {
         if (!matchUps[key]) matchUps[key] = [];
         matchUps[key] = matchUps[key].concat(drawMatchUps[key]);
       });
