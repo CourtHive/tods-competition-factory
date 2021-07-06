@@ -1,7 +1,7 @@
+import { feedInMatchUps, treeMatchUps } from './eliminationTree';
 import { structureSort } from '../getters/structureSort';
 import { addNotice } from '../../global/globalState';
 import structureTemplate from './structureTemplate';
-import { feedInMatchUps, treeMatchUps } from './eliminationTree';
 import { generateRange } from '../../utilities';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
@@ -61,6 +61,8 @@ function playoffStructures({
     (sequenceLimit && stageSequence > sequenceLimit)
   )
     return {};
+
+  matchUpType = matchUpType || drawDefinition?.matchUpType;
 
   const finishingPositionsFrom = finishingPositionOffset + 1;
   const finishingPositionsTo = finishingPositionOffset + drawSize;
@@ -122,6 +124,7 @@ function playoffStructures({
     } = playoffStructures({
       uuids,
       stage,
+      matchUpType,
       sequenceLimit,
       drawDefinition,
       exitProfileLimit,

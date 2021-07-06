@@ -1,4 +1,6 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { unique } from '../../../../utilities';
+
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
 /**
@@ -13,12 +15,24 @@ import { TOTAL } from '../../../../constants/scheduleConstants';
 export function checkDailyLimits(
   matchUp,
   matchUpDailyLimits,
-  individualParticipantProfiles
+  individualParticipantProfiles,
+  matchUpPotentialParticipantIds
 ) {
-  const { matchUpType } = matchUp;
+  const { matchUpId, matchUpType } = matchUp;
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
 
-  const participantIdsAtLimit = individualParticipantIds.filter(
+  // don't include potentials if matchUp is in round robin
+  // this is because potentials uses { sidesTo } attribute which must be present for other calculations
+  const potentialParticipantIds = (
+    (matchUp.roundPosition && matchUpPotentialParticipantIds[matchUpId]) ||
+    []
+  ).flat();
+
+  const relevantParticipantids = unique(
+    individualParticipantIds.concat(...potentialParticipantIds)
+  );
+
+  const participantIdsAtLimit = relevantParticipantids.filter(
     (participantId) => {
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
@@ -36,7 +50,7 @@ export function checkDailyLimits(
   );
 
   if (!participantIdsAtLimit.length) {
-    individualParticipantIds.forEach((participantId) => {
+    relevantParticipantids.forEach((participantId) => {
       if (!individualParticipantProfiles[participantId])
         individualParticipantProfiles[participantId] = { counters: {} };
       const counters = individualParticipantProfiles[participantId].counters;

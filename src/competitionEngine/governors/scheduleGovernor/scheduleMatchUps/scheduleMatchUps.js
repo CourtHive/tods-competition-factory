@@ -105,6 +105,8 @@ export function scheduleMatchUps({
   const individualParticipantProfiles = {};
   const matchUpPotentialParticipantIds = {};
 
+  // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
+  // based on already scheduled matchUps
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
@@ -129,6 +131,7 @@ export function scheduleMatchUps({
       });
     }
   });
+
   // matchUps are assumed to be in the desired order for scheduling
   let matchUpsToSchedule = targetMatchUps.filter((matchUp) => {
     const alreadyScheduled = dateScheduledMatchUpIds.includes(
@@ -156,7 +159,8 @@ export function scheduleMatchUps({
         const participantIdsAtLimit = checkDailyLimits(
           matchUp,
           matchUpDailyLimits,
-          individualParticipantProfiles
+          individualParticipantProfiles,
+          matchUpPotentialParticipantIds
         );
         if (participantIdsAtLimit?.length) {
           aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
@@ -171,6 +175,13 @@ export function scheduleMatchUps({
         } else {
           aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
         }
+
+        // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
+        processNextMatchUps({
+          matchUp,
+          matchUpNotBeforeTimes,
+          matchUpPotentialParticipantIds,
+        });
 
         return aggregator;
       },

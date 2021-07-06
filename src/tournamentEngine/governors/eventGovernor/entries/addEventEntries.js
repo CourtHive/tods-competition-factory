@@ -2,14 +2,14 @@ import { refreshEntryPositions } from '../../../../common/producers/refreshEntry
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
 import { removeEventEntries } from './removeEventEntries';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DIRECT_ACCEPTANCE,
   UNPAIRED,
 } from '../../../../constants/entryStatusConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,

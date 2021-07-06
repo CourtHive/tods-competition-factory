@@ -47,6 +47,7 @@ import {
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -72,7 +73,7 @@ export function generateDrawType(props = {}) {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const { tieFormat, matchUpType } = drawDefinition || {};
+  const { tieFormat, matchUpType } = drawDefinition || { matchUpType: SINGLES };
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   Object.assign(props, { drawSize, matchUpType, tieFormat });

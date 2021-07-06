@@ -43,6 +43,7 @@ export function feedInChampionship(props = {}) {
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     feedRounds,
+    matchUpType,
     baseDrawSize,
     feedsFromFinal,
     isConsolation: true,

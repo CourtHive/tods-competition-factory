@@ -358,7 +358,6 @@ const {
 const matchUpFilters = {
   isMatchUpTie: false,
   scheduledDate, // scheduled date of matchUps to return
-
   localTimeZone, // optional - used to convert scheduleDate
   localPerspective: true,
 };

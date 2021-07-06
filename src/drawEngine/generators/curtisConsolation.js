@@ -1,10 +1,12 @@
-import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
+import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
 import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
+import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
   treeMatchUps,
   feedInMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
-import { structureTemplate } from '../../drawEngine/generators/structureTemplate';
+
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
@@ -12,7 +14,6 @@ import {
   TOP_DOWN,
   LOSER,
 } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function generateCurtisConsolation({
   uuids,
@@ -43,8 +44,9 @@ export function generateCurtisConsolation({
   const consolationItems = feedRoundOffsets.map((roundOffset, index) => {
     const stageSequence = index + 1;
     const { consolationStructure } = consolationFeedStructure({
-      drawSize,
       index,
+      drawSize,
+      matchUpType,
       roundOffset,
       stageSequence,
       structureId: uuids?.pop(),
@@ -73,6 +75,7 @@ export function generateCurtisConsolation({
   if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
     const { matchUps: playoffMatchUps } = treeMatchUps({
       drawSize: 2,
+      matchUpType,
       finishingPositionOffset: 2,
     });
     const playoffStructure = structureTemplate({
@@ -110,8 +113,9 @@ export function generateCurtisConsolation({
 }
 
 function consolationFeedStructure({
-  drawSize,
   index,
+  drawSize,
+  matchUpType,
   structureId,
   roundOffset = 0,
   stageSequence = 1,
@@ -122,6 +126,7 @@ function consolationFeedStructure({
   const { matchUps: consolationMatchUps, roundsCount: consolationRoundsCount } =
     feedInMatchUps({
       feedRounds: 1,
+      matchUpType,
       baseDrawSize: consolationDrawPositions,
       isConsolation: true,
       finishingPositionOffset: consolationDrawPositions,

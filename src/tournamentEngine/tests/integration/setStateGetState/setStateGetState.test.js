@@ -1,9 +1,9 @@
-import tournamentEngine from '../../../sync';
-import drawEngine from '../../../../drawEngine/sync';
 import { validDrawPositions } from '../../../../drawEngine/governors/matchUpGovernor/validDrawPositions';
+import drawEngine from '../../../../drawEngine/sync';
+import tournamentEngine from '../../../sync';
 
-import { tournament } from './tournament';
 import { mutation } from './mutation.payload';
+import { tournament } from './tournament';
 
 it('can recognize invalid matchUps', () => {
   tournamentEngine.setState(tournament);

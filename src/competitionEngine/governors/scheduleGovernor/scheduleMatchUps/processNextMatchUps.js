@@ -33,18 +33,21 @@ export function processNextMatchUps({
     }
   };
 
-  if (matchUp.winnerTo?.matchUpId) {
-    updateTimeAfterRecovery(matchUp.winnerTo.matchUpId);
-    addPotentialParticipantIds(matchUp.winnerTo.matchUpId);
+  const winnerMatchUpId =
+    matchUp.winnerTo?.matchUpId || matchUp.winnerMatchUpId;
+  if (winnerMatchUpId) {
+    timeAfterRecovery && updateTimeAfterRecovery(winnerMatchUpId);
+    addPotentialParticipantIds(winnerMatchUpId);
   }
-  if (matchUp.loserTo?.matchUpId) {
-    updateTimeAfterRecovery(matchUp.loserTo.matchUpId);
-    addPotentialParticipantIds(matchUp.loserTo.matchUpId);
+  const loserMatchUpId = matchUp.loserTo?.matchUpId || matchUp.loserMatchUpId;
+  if (loserMatchUpId) {
+    timeAfterRecovery && updateTimeAfterRecovery(loserMatchUpId);
+    addPotentialParticipantIds(loserMatchUpId);
   }
   if (matchUp.sidesTo?.length) {
     matchUp.sidesTo.forEach(({ matchUpId }) => {
       if (matchUpId) {
-        updateTimeAfterRecovery(matchUpId);
+        timeAfterRecovery && updateTimeAfterRecovery(matchUpId);
         addPotentialParticipantIds(matchUpId);
       }
     });
