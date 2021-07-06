@@ -3,6 +3,7 @@ import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/gov
 
 import {
   MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -34,6 +35,8 @@ export function matchUpScheduleChange(params) {
     matchUpId: targetMatchUpId,
     tournamentId: targetTournamentId,
   } = targetMatchUpContextIds || {};
+
+  if (!sourceMatchUpId && !targetMatchUpId) return { error: MISSING_VALUE };
 
   let matchUpsModified = 0;
 
