@@ -25,11 +25,13 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
 
   const eventIdsMap = outcomes.reduce((eventIdsMap, outcome) => {
     const { drawId, eventId } = outcome;
-    if (!eventIdsMap[eventId]) {
-      eventIdsMap[eventId] = [drawId];
-    } else {
-      if (!eventIdsMap[eventId].includes(drawId)) {
-        eventIdsMap[eventId].push(drawId);
+    if (eventId && drawId) {
+      if (!eventIdsMap[eventId]) {
+        eventIdsMap[eventId] = [drawId];
+      } else {
+        if (!eventIdsMap[eventId].includes(drawId)) {
+          eventIdsMap[eventId].push(drawId);
+        }
       }
     }
     return eventIdsMap;

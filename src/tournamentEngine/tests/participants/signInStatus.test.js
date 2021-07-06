@@ -5,6 +5,10 @@ import {
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
+import {
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 it('can sign participants in and out', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -37,6 +41,14 @@ it('can sign participants in and out', () => {
     participantId,
   });
   expect(result).toEqual(SIGNED_IN);
+
+  result = tournamentEngine.getParticipantSignInStatus({});
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  result = tournamentEngine.getParticipantSignInStatus({
+    participantId: 'unknownId',
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   let { timeItem, previousItems } = tournamentEngine.getParticipantTimeItem({
     participantId,

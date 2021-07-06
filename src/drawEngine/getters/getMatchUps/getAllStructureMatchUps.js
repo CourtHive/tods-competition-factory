@@ -431,7 +431,7 @@ export function getAllStructureMatchUps({
         });
 
       if (!matchUpWithContext.matchUpType) {
-        const matchUpType = getMatchUpType({ matchUp: matchUpWithContext });
+        const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
     }

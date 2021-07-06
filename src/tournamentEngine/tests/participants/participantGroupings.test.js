@@ -1,6 +1,8 @@
-import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
+import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
+import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -8,8 +10,6 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { OTHER } from '../../../constants/participantRoles';
-import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
 
 it('can add a GROUP participant and add individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -158,6 +158,16 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.removed).toEqual(2);
+
+  result = tournamentEngine.removeIndividualParticipantIds({
+    individualParticipantIds: individualParticipantIds.slice(2),
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = tournamentEngine.removeIndividualParticipantIds({
+    groupingParticipantId: 'bogusId',
+    individualParticipantIds: individualParticipantIds.slice(2),
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 });
 
 it('can modify individualParticipantIds of a grouping participant', () => {
@@ -218,4 +228,45 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   expect(newIndividualParticipantIds).toEqual(
     participant.individualParticipantIds
   );
+});
+
+it('can remove individualParticipantIds from a grouping participant', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+
+  // first four individual participants belong to groupParticipant
+  const individualParticipantIds = tournamentParticipants.map(
+    (participant) => participant.participantId
+  );
+
+  let result = tournamentEngine.devContext(true).addParticipant({
+    participant: {
+      participantType: GROUP,
+      participantRole: COMPETITOR,
+      individualParticipantIds,
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  const groupingParticipant = result.participant;
+  const { participantId: groupingParticipantId } = groupingParticipant;
+
+  let { participant } = tournamentEngine.findParticipant({
+    participantId: groupingParticipantId,
+  });
+  expect(individualParticipantIds).toEqual(
+    participant.individualParticipantIds
+  );
+
+  result = tournamentEngine.removeParticipantIdsFromAllTeams({
+    groupingType: GROUP,
+    individualParticipantIds,
+  });
+  expect(result.success).toEqual(true);
 });

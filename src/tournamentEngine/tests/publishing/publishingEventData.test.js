@@ -17,6 +17,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -461,6 +462,19 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
     eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0]
       .sourceDrawPositionRange
   ).not.toBeUndefined();
+
+  result = tournamentEngine.bulkUpdatePublishedEventIds();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = tournamentEngine.bulkUpdatePublishedEventIds({ outcomes: [] });
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = tournamentEngine.bulkUpdatePublishedEventIds({ outcomes: [{}] });
+  expect(result.publishedEventIds).toEqual([]);
+  expect(result.eventIdPublishedDrawIdsMap).toEqual({});
+  result = tournamentEngine.bulkUpdatePublishedEventIds({
+    outcomes: [{ eventId, drawId }],
+  });
+  expect(result.publishedEventIds).toEqual([eventId]);
+  expect(result.eventIdPublishedDrawIdsMap).toEqual({ [eventId]: [drawId] });
 });
 
 it('can filter out unpublished draws when publishing event', () => {

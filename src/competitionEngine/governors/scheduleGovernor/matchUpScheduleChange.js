@@ -76,7 +76,8 @@ export function matchUpScheduleChange(params) {
     if (targetResult.success) matchUpsModified++;
     if (targetResult.error) return targetResult;
   } else {
-    console.log('matcUpScheduleChange', params);
+    // no modification
+    // console.log('matcUpScheduleChange', params);
   }
 
   return matchUpsModified ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };

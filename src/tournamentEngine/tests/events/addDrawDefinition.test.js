@@ -3,6 +3,9 @@ import tournamentEngineSync from '../../sync';
 import tournamentEngineAsync from '../../async';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { getMatchUpType } from '../../../drawEngine/accessors/matchUpAccessor';
+import { SINGLES } from '../../../constants/matchUpTypes';
+import drawEngine from '../../../drawEngine/sync';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 
@@ -44,5 +47,27 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
       eventId,
     });
     expect(flightProfile.flights.length).toEqual(1);
+
+    result = await tournamentEngine.tournamentMatchUps();
+    const matchUp = result.upcomingMatchUps[0];
+    let { matchUpType } = getMatchUpType({ matchUp });
+    expect(matchUpType).toEqual(SINGLES);
+
+    // now test that matchUpType can be inferred from only sides with participants
+    ({ matchUpType } = getMatchUpType({
+      matchUp: {
+        sides: matchUp.sides,
+      },
+    }));
+    expect(matchUpType).toEqual(SINGLES);
+
+    result = drawEngine.getMatchUpContextIds({
+      matchUps: result.upcomingMatchUps,
+      matchUpId: matchUp.matchUpId,
+    });
+    expect(result.drawId).not.toBeUndefined();
+    expect(result.eventId).not.toBeUndefined();
+    expect(result.structureId).not.toBeUndefined();
+    expect(result.tournamentId).not.toBeUndefined();
   }
 );

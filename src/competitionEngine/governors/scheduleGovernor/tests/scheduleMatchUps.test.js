@@ -4,6 +4,10 @@ import competitionEngine from '../../../sync';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { OFFICIAL } from '../../../../constants/participantRoles';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import {
+  MISSING_VALUE,
+  NO_MODIFICATIONS_APPLIED,
+} from '../../../../constants/errorConditionConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -170,4 +174,67 @@ it('can add events, venues, and schedule matchUps', () => {
     participantId: officialParticipantId,
   });
   expect(result).toEqual(SUCCESS);
+
+  let { upcomingMatchUps } = competitionEngine.competitionMatchUps();
+  expect(upcomingMatchUps[0].timeItems.length).toEqual(12);
+
+  result = competitionEngine.matchUpScheduleChange();
+  expect(result.error).toEqual(MISSING_VALUE);
+
+  result = competitionEngine.matchUpScheduleChange({
+    sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
+  });
+  expect(result.error).toEqual(NO_MODIFICATIONS_APPLIED);
+
+  result = competitionEngine.matchUpScheduleChange({
+    sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
+    targetCourtId: courtId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  expect(upcomingMatchUps[0].timeItems.length).toEqual(13);
+
+  // duplicating the modification does NOT add a new timeItem
+  result = competitionEngine.matchUpScheduleChange({
+    sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
+    targetCourtId: courtId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  expect(upcomingMatchUps[0].timeItems.length).toEqual(13);
+
+  result = competitionEngine.assignMatchUpCourt({
+    tournamentId,
+    matchUpId: upcoming[1].matchUpId,
+    courtId: courts[1].courtId,
+    drawId,
+    courtDayDate: startDate,
+  });
+  expect(result).toEqual(SUCCESS);
+
+  result = competitionEngine.matchUpScheduleChange({
+    sourceMatchUpContextIds: { drawId, matchUpId, tournamentId },
+    targetMatchUpContextIds: {
+      drawId,
+      matchUpId: upcoming[1].matchUpId,
+      tournamentId,
+    },
+    targetCourtId: courts[1].courtId,
+    sourceCourtId: courtId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  expect(upcomingMatchUps[0].timeItems.length).toEqual(14);
+
+  result = competitionEngine.removeMatchUpCourtAssignment({
+    tournamentId,
+    matchUpId,
+    drawId,
+  });
+
+  ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
+  expect(upcomingMatchUps[0].timeItems.length).toEqual(15);
 });

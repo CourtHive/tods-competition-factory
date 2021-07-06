@@ -3,7 +3,12 @@ import tournamentEngine from '../../sync';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
+import {
+  EVENT_NOT_FOUND,
+  MISSING_EVENT,
+} from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import competitionEngine from '../../../competitionEngine/sync';
 
 // categoryTypes
 // const JUNIOR = 'JUNIOR';
@@ -84,6 +89,16 @@ it('can modify event timing for matchUpFormat codes', () => {
   expect(methods[0].params.extension.value.matchUpAverageTimes.length).toEqual(
     2
   );
+
+  result = tournamentEngine.removeEventMatchUpFormatTiming({
+    eventId: 'unknownEventId',
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = competitionEngine.removeEventMatchUpFormatTiming({
+    eventId: 'unknownEventId',
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
   expect(result.success).toEqual(true);

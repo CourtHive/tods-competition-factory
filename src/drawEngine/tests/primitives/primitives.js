@@ -11,6 +11,8 @@ import {
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getMatchUpType } from '../../accessors/matchUpAccessor';
+import { SINGLES } from '../../../constants/matchUpTypes';
 
 let result;
 
@@ -111,9 +113,14 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
   const { upcomingMatchUps: upcomingStructureMatchUps } = getStructureMatchUps({
     structure,
     drawDefinition,
+    inContext: true,
     requireParticipants: true,
   });
   expect(upcomingStructureMatchUps.length).toEqual(drawSize / 2);
+  let { matchUpType } = getMatchUpType({
+    matchUp: upcomingStructureMatchUps[0],
+  });
+  expect(matchUpType).toEqual(SINGLES);
 
   const { upcomingMatchUps, pendingMatchUps, completedMatchUps } =
     drawEngine.drawMatchUps();

@@ -86,6 +86,7 @@ function removeParticipantIdsFromGroupingParticipant({
 
 export function removeParticipantIdsFromAllTeams({
   groupingType = TEAM,
+  participantRole = COMPETITOR,
   tournamentRecord,
   individualParticipantIds = [],
 }) {
@@ -96,7 +97,7 @@ export function removeParticipantIdsFromAllTeams({
   tournamentParticipants
     .filter((participant) => {
       return (
-        (participant.participantRole === COMPETITOR ||
+        (participant.participantRole === participantRole ||
           !participant.participantRole) &&
         participant.participantType === groupingType
       );

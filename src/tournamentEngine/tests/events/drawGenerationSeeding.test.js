@@ -84,7 +84,15 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     expect(drawDefinition.structures[0].seedAssignments.length).toEqual(
       seedsCount
     );
-    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.getEntriesAndSeedsCount({
+      eventId,
+      drawId: flight.drawId,
+      policyDefinition: SEEDING_USTA,
+    });
+    expect(result.seedsCount).toEqual(seedsCount);
+    expect(result.entries.length).toEqual(drawSize);
+    expect(result.stageEntries.length).toEqual(drawSize);
   });
 });
 

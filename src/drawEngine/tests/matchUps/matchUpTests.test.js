@@ -1,11 +1,11 @@
-import { drawEngine } from '../../sync';
-import { getDrawStructures } from '../../getters/findStructure';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';
-import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
-
-import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';
+import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
+import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getMatchUpType } from '../../accessors/matchUpAccessor';
+import { getDrawStructures } from '../../getters/findStructure';
+import { drawEngine } from '../../sync';
 
 import {
   reset,
@@ -26,13 +26,18 @@ it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   const { structure } = drawEngine.devContext(true).generateDrawType({
     drawType: SINGLE_ELIMINATION,
   });
-  const { matchUps } = getAllStructureMatchUps({ structure });
+  const { matchUps } = getAllStructureMatchUps({ structure, inContext: true });
   expect(matchUps.length).toEqual(15);
   const { upcomingMatchUps } = getStructureMatchUps({
     structure,
     requireParticipants: false,
   });
   expect(upcomingMatchUps.length).toEqual(8);
+
+  let { matchUpType } = getMatchUpType({
+    matchUp: matchUps[0],
+  });
+  expect(matchUpType).toEqual(undefined);
 });
 
 it('matchUps returned with context cannot modify original', () => {
