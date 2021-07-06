@@ -9,6 +9,7 @@ export const mutation = {
         drawDefinition: {
           drawId: '31ffccbb-be42-4f57-8b98-cf89e96adaaa',
           drawName: 'SINGLE_ELIMINATION',
+          matchUpType: 'SINGLES',
           entries: [
             {
               participantId: '69D53E88-8921-4135-BE08-7D3955E9D905',

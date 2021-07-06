@@ -32,6 +32,7 @@ export function generateCurtisConsolation({
 
   const mainStructure = structureTemplate({
     matchUps,
+    matchUpType,
     stage: MAIN,
     structureName,
     stageSequence,
@@ -83,6 +84,7 @@ export function generateCurtisConsolation({
       matchUps: playoffMatchUps,
       structureName: PLAY_OFF,
       stageSequence: 2,
+      matchUpType,
       stage: MAIN,
     });
 
@@ -139,6 +141,7 @@ function consolationFeedStructure({
     stage: CONSOLATION,
     structureName,
     stageSequence,
+    matchUpType,
     structureId,
   });
 

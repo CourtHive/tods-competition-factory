@@ -41,6 +41,7 @@ export function generateRoundRobin({
 
   const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
     structureTemplate({
+      matchUpType,
       structureOrder,
       finishingPosition,
       structureType: ITEM,
@@ -57,6 +58,7 @@ export function generateRoundRobin({
   const structure = structureTemplate({
     stage,
     structures,
+    matchUpType,
     structureName,
     stageSequence,
     seedingProfile,
@@ -140,6 +142,7 @@ export function generateRoundRobinWithPlayOff(props) {
         const playoffStructure = structureTemplate({
           matchUps,
           stageOrder,
+          matchUpType,
           stageSequence,
           stage: PLAY_OFF,
           structureId: uuids?.pop(),
@@ -291,7 +294,7 @@ function roundRobinMatchUps({ matchUpType, groupSize, structureOrder, uuids }) {
       drawPositions.slice(0, drawPositions.length - 1)
     );
     const matchUp = {
-      matchUpType,
+      matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,

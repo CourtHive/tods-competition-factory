@@ -30,6 +30,7 @@ export function generateDoubleElimination({
     structureId: uuids?.pop(),
     stageSequence: 1,
     stage: MAIN,
+    matchUpType,
     matchUps,
   });
 
@@ -50,6 +51,7 @@ export function generateDoubleElimination({
     structureId: uuids?.pop(),
     structureName: BACKDRAW,
     stageSequence: 2,
+    matchUpType,
     stage: MAIN,
   });
 
@@ -65,6 +67,7 @@ export function generateDoubleElimination({
     structureName: DECIDER,
     stageSequence: 3,
     stage: MAIN,
+    matchUpType,
   });
 
   drawDefinition.structures.push(deciderStructure);

@@ -28,6 +28,7 @@ export function generateVoluntaryConsolationStructure({
   const structure = structureTemplate({
     stage,
     matchUps,
+    matchUpType,
     structureName,
     structureAbbreviation,
     structureId,

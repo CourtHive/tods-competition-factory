@@ -86,6 +86,7 @@ function playoffStructures({
   const structure = structureTemplate({
     stage,
     matchUps,
+    matchUpType,
     roundOffset,
     stageSequence,
     structureName,

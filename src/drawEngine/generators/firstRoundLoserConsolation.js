@@ -34,6 +34,7 @@ export function firstRoundLoserConsolation(props) {
   const mainStructure = structureTemplate({
     stage,
     matchUps,
+    matchUpType,
     stageSequence,
     structureId: uuids?.pop(),
     structureName: structureName || MAIN,
@@ -56,6 +57,7 @@ export function firstRoundLoserConsolation(props) {
     (structureName ? `${structureName} ${CONSOLATION}` : CONSOLATION);
 
   const consolationStructure = structureTemplate({
+    matchUpType,
     stageSequence: 1,
     stage: CONSOLATION,
     structureId: uuids?.pop(),

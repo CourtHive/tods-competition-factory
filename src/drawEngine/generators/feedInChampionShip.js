@@ -35,6 +35,7 @@ export function feedInChampionship(props = {}) {
     structureId: uuids?.pop(),
     stageSequence,
     stage: MAIN,
+    matchUpType,
     matchUps,
   });
 
@@ -53,6 +54,7 @@ export function feedInChampionship(props = {}) {
   });
 
   const consolationStructure = structureTemplate({
+    matchUpType,
     stageSequence: 1,
     stage: CONSOLATION,
     structureId: uuids?.pop(),

@@ -126,7 +126,14 @@ function addFinishingRounds({
   return matchUps;
 }
 
-function buildRound({ roundNumber, nodes, matchUps, matchUpType, uuids }) {
+function buildRound({
+  roundNumber,
+  nodes,
+  matchUps,
+  matchUpType,
+  uuids,
+  includeMatchUpType,
+}) {
   let index = 0;
   const roundNodes = [];
   let roundPosition = 1;
@@ -145,16 +152,19 @@ function buildRound({ roundNumber, nodes, matchUps, matchUpType, uuids }) {
       matchUpId: uuids?.pop() || UUID(),
     };
     roundNodes.push(node);
-    matchUps.push({
+    const matchUp = {
       matchUpId: node.matchUpId,
-      matchUpType,
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
       // TODO: undefined drawPositions can be filtered; several tests will have to be updated
       // drawPositions: node.children.map((c) => c.drawPosition).filter(f=>f),
       drawPositions: node.children.map((c) => c.drawPosition),
-    });
+    };
+
+    // matchUpType is derived for inContext matchUps from structure or drawDefinition
+    if (includeMatchUpType) matchUp.matchUpType = matchUpType;
+    matchUps.push(matchUp);
     index += 2;
     roundPosition++;
   }
@@ -358,6 +368,7 @@ export function feedInMatchUps({
 }
 
 function buildFeedRound({
+  includeMatchUpType,
   drawPosition,
   matchUpType,
   roundNumber,
@@ -387,13 +398,16 @@ function buildFeedRound({
 
     const position = nodes[nodeIndex];
     position.roundNumber = roundNumber - 1;
-    matchUps.push({
+    const newMatchUp = {
       roundNumber,
-      matchUpType,
       matchUpId: uuids?.pop() || UUID(),
       roundPosition: position.roundPosition,
       drawPositions: [undefined, feedDrawPosition],
-    });
+    };
+
+    // matchUpType is derived for inContext matchUps from structure or drawDefinition
+    if (includeMatchUpType) newMatchUp.matchUpType = matchUpType;
+    matchUps.push(newMatchUp);
 
     const matchUp = { children: [position, feedArm] };
     roundNodes.push(matchUp);

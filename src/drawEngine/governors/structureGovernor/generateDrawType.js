@@ -118,6 +118,7 @@ export function generateDrawType(props = {}) {
       const structure = structureTemplate({
         stage,
         matchUps,
+        matchUpType,
         stageSequence,
         qualifyingRound,
         structureId: uuids?.pop(),
@@ -152,6 +153,7 @@ export function generateDrawType(props = {}) {
         structureName: structureName || stage,
         structureId: uuids?.pop(),
         stageSequence,
+        matchUpType,
         matchUps,
         stage,
       });
