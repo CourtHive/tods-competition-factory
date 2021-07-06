@@ -40,6 +40,10 @@ it('can set and honor matchUpDailyLimits', () => {
   });
   expect(result.success).toEqual(true);
 
+  result = competitionEngine.getMatchUpDailyLimitsUpdate();
+  expect(result.methods.length).toEqual(1);
+  expect(result.methods[0].method).toEqual('tournamentMethods');
+
   const {
     extension: {
       value: { dailyLimits: matchUpDailyLimits },
