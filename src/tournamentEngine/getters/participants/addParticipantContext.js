@@ -1,4 +1,3 @@
-import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -75,11 +74,6 @@ export function addParticipantContext({
           return obj;
         }, {});
 
-    const eventDetails = {
-      ...filteredEventInfo,
-      drawIds: [],
-    };
-
     eventEntries
       ?.filter((entry) => entry?.participantId)
       .forEach((entry) => {
@@ -93,10 +87,11 @@ export function addParticipantContext({
             initializeParticipantId(relevantParticipantId);
           }
           participantIdMap[relevantParticipantId].events[eventId] = {
-            ...eventDetails,
+            ...filteredEventInfo,
             entryStage,
             entryStatus,
             entryPosition,
+            drawIds: [],
           };
         });
       });
@@ -110,36 +105,43 @@ export function addParticipantContext({
           initializeParticipantId(relevantParticipantId);
         }
         if (!participantIdMap[relevantParticipantId].events[eventId]) {
-          // if this code is encountered it means a participant was removed from event.entries AFTER drawDefinition was generated
           participantIdMap[relevantParticipantId].events[eventId] = {
-            ...eventDetails,
+            ...filteredEventInfo,
             entryStage,
             entryStatus,
             entryPosition,
+            drawIds: [],
           };
         }
+
+        participantIdMap[relevantParticipantId].draws[drawId] = {
+          drawName,
+          drawType,
+          entryStage,
+          entryStatus,
+          entryPosition,
+          eventId,
+          drawId,
+        };
         const eventDrawIds =
           participantIdMap[relevantParticipantId].events[eventId].drawIds;
-        if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
-          eventDrawIds.push(drawId);
 
-          participantIdMap[relevantParticipantId].draws[drawId] = {
-            drawId,
-            eventId,
-            drawName,
-            drawType,
-            entryStage,
-            entryStatus,
-            entryPosition,
-          };
+        if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
+          participantIdMap[relevantParticipantId].events[eventId].drawIds.push(
+            drawId
+          );
         }
       });
     };
 
     // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
+    const drawIdsWithDefinitions =
+      event.drawDefinitions?.map(({ drawId }) => drawId) || [];
     eventInfo._flightProfile?.flights?.forEach((flight) => {
       const { drawId, drawEntries } = flight;
-      drawEntries?.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
+      if (!drawIdsWithDefinitions.includes(drawId)) {
+        drawEntries?.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
+      }
     });
 
     const { matchUps } = allEventMatchUps({
@@ -150,13 +152,26 @@ export function addParticipantContext({
 
     const drawDetails = Object.assign(
       {},
-      ...(event.drawDefinitions || []).map((drawDefinition) => ({
-        [drawDefinition.drawId]: {
-          drawType: drawDefinition.drawType,
-          drawEntries: drawDefinition.entries,
-        },
-      }))
+      ...(event.drawDefinitions || []).map((drawDefinition) => {
+        const entriesMap = Object.assign(
+          {},
+          ...eventEntries
+            .filter((entry) => entry.participantId)
+            .map((entry) => ({ [entry.participantId]: entry })),
+          ...drawDefinition.entries
+            .filter((entry) => entry.participantId)
+            .map((entry) => ({ [entry.participantId]: entry }))
+        );
+        const drawEntries = Object.values(entriesMap);
+        return {
+          [drawDefinition.drawId]: {
+            drawType: drawDefinition.drawType,
+            drawEntries,
+          },
+        };
+      })
     );
+
     matchUps?.forEach((matchUp) => {
       const {
         drawId,
@@ -196,7 +211,6 @@ export function addParticipantContext({
 
         const relevantParticipantIds =
           (participantId && relevantParticipantIdsMap[participantId]) || [];
-
         const drawEntry = drawEntries.find(
           (entry) => entry.participantId === participantId
         );
@@ -205,6 +219,7 @@ export function addParticipantContext({
         relevantParticipantIds?.forEach(
           ({ relevantParticipantId, participantType }) => {
             const { entryStage, entryStatus, entryPosition } = drawEntry || {};
+
             if (!participantIdMap[relevantParticipantId]) {
               initializeParticipantId(relevantParticipantId);
             }
@@ -217,6 +232,15 @@ export function addParticipantContext({
               eventId,
               drawId,
             };
+
+            const eventDrawIds =
+              participantIdMap[relevantParticipantId].events[eventId].drawIds;
+
+            if (eventDrawIds && !eventDrawIds?.includes(drawId)) {
+              participantIdMap[relevantParticipantId].events[
+                eventId
+              ].drawIds.push(drawId);
+            }
 
             let partnerParticipantId;
             if (participantType === INDIVIDUAL) {
@@ -317,38 +341,6 @@ export function addParticipantContext({
         );
       });
     });
-
-    // iterate through drawDefinitiosn to insure that draw entries are captured if no flightProfile is present
-    event.drawDefinitions?.forEach(
-      ({ drawId, drawName, drawType, entries, structures }) => {
-        entries?.forEach((drawEntry) => addDrawData({ drawId, drawEntry }));
-
-        // now pick up any participants in the draw that are not represented in entries
-        const missingParticipantIds = structures
-          ?.map((structure) => {
-            const { positionAssignments } = getPositionAssignments({
-              structure,
-            });
-            return positionAssignments.map(
-              ({ participantId }) => participantId
-            );
-          })
-          .flat()
-          .filter(
-            (participantId) =>
-              participantId &&
-              !participantIdMap[participantId]?.events[
-                eventId
-              ]?.drawIds?.includes(drawId)
-          );
-        const missingDrawEntries = eventEntries?.filter(({ participantId }) =>
-          missingParticipantIds.includes(participantId)
-        );
-        missingDrawEntries?.forEach((drawEntry) =>
-          addDrawData({ drawId, drawEntry, drawName, drawType })
-        );
-      }
-    );
 
     tournamentParticipants?.forEach((participant) => {
       const participantId = participant?.participantId;
