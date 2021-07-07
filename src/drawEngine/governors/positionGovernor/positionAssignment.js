@@ -12,6 +12,7 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
 
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -19,14 +20,13 @@ import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
   drawDefinition,
   structureId,
   drawPosition,
   participantId,
-  automaticPlacement,
+  automaticPlacement, // internal use to override public behaviors
 
   matchUpsMap,
   inContextDrawMatchUps,

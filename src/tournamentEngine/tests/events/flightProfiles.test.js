@@ -71,6 +71,7 @@ it('can create and return flighProfiles', () => {
     withOpponents: true,
     withMatchUps: true,
   }));
+
   expect(tournamentParticipants[0].events[0].drawIds.length).toBeGreaterThan(0);
 });
 

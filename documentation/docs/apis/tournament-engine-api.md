@@ -1572,7 +1572,7 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
 });
 ```
 
-participantFilters imlemented: eventIds, participantTypes, participantRoles, signInStatus
+participantFilters imlemented: eventIds, participantIds, participantTypes, participantRoles, signInStatus
 
 ---
 

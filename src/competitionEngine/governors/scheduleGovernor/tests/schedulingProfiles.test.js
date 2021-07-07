@@ -1,3 +1,4 @@
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 
@@ -81,5 +82,20 @@ test.each([competitionEngineSync])(
 
     result = competitionEngine.setSchedulingProfile({});
     expect(result.error).toEqual(INVALID_VALUES);
+
+    result = competitionEngine.setSchedulingProfile({ schedulingProfile: {} });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = competitionEngine.setSchedulingProfile({ schedulingProfile: [] });
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.setSchedulingProfile({});
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = tournamentEngine.setSchedulingProfile({ schedulingProfile: {} });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = tournamentEngine.setSchedulingProfile({ schedulingProfile: [] });
+    expect(result.success).toEqual(true);
   }
 );

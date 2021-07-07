@@ -1,8 +1,8 @@
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 
-import { SINGLES } from '../../../constants/eventConstants';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 export function filterParticipants({
   tournamentRecord,
@@ -15,6 +15,7 @@ export function filterParticipants({
     eventEntriesOnly,
     participantRoles,
     participantTypes,
+    participantIds,
     signInStatus,
   } = participantFilters;
 
@@ -39,6 +40,7 @@ export function filterParticipants({
       itemType: SIGN_IN_STATUS,
     });
     return (
+      (!participantIds || participantIds.includes(participant.participantId)) &&
       (!signInStatus || participantSignInStatus === signInStatus) &&
       (!participantTypes ||
         (isValidFilterArray(participantTypes) &&

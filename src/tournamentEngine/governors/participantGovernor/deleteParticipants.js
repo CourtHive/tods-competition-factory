@@ -1,3 +1,4 @@
+import { getTournamentParticipants } from '../../getters/participants/getTournamentParticipants';
 import { removeParticipantIdsFromAllTeams } from './groupings/removeIndividualParticipantIds';
 import { addNotice } from '../../../global/globalState';
 
@@ -5,20 +6,31 @@ import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
-  NO_PARTICIPANTS,
+  PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { DELETE_PARTICIPANTS } from '../../../constants/topicConstants';
 
-// TODO: don't remove participants who are active in draws
-// If not active in draws, remove participantIds from all entries
-
 export function deleteParticipants({ tournamentRecord, participantIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
-  if (!tournamentRecord.participants) tournamentRecord.participants = [];
-  const participantsCount = tournamentRecord.participants?.length;
-  if (!participantsCount) return { error: NO_PARTICIPANTS };
+  const participantsCount = tournamentRecord.participants?.length || 0;
+
+  if (!participantsCount) return SUCCESS;
+
+  const { tournamentParticipants } = getTournamentParticipants({
+    participantFilters: { participantIds },
+    withStatistics: true,
+    tournamentRecord,
+  });
+
+  const participantsInDraws = tournamentParticipants.filter(
+    (participant) => participant.draws?.length
+  );
+  if (participantsInDraws.length)
+    return { error: PARTICIPANT_ASSIGNED_DRAW_POSITION };
+
+  // If not active in draws, remove participantIds from all entries
 
   tournamentRecord.participants = tournamentRecord.participants.filter(
     (participant) => !participantIds.includes(participant.participantId)

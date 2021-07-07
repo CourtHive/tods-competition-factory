@@ -446,6 +446,8 @@ const { competitionParticipants } =
   });
 ```
 
+participantFilters imlemented: eventIds, participantIds, participantTypes, participantRoles, signInStatus
+
 ## getCompetitionPenalties
 
 Returns an array of all penalties issued for all tournaments loaded into competitionEngine.

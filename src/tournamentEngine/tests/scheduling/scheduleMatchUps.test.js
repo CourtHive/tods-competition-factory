@@ -3,7 +3,10 @@ import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleG
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { tournamentEngine } from '../../sync';
 
-import { MISSING_VENUE_ID } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_MATCHUP_ID,
+  MISSING_VENUE_ID,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -173,6 +176,14 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
   });
   expect(result).toEqual(SUCCESS);
+
+  result = tournamentEngine.assignMatchUpCourt({
+    tournamentRecord,
+    courtId,
+    drawId,
+    courtDayDate: scheduledDate,
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
 
   result = tournamentEngine.assignMatchUpCourt({
     tournamentRecord,
