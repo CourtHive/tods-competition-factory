@@ -1,15 +1,22 @@
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
 
+import {
+  INVALID_DATE,
+  INVALID_VALUES,
+} from '../../../../constants/errorConditionConstants';
+
 test.each([competitionEngineSync])(
-  'it can return all competition venues',
+  'it can set scheulingProfile',
   async (competitionEngine) => {
+    const drawProfiles = [{ drawSize: 16 }];
     const venueProfiles = [
       { venueName: 'venue 1', courtsCount: 4 },
       { venueName: 'venue 2', courtsCount: 8 },
     ];
     const { tournamentRecord: firstRecord } =
       mocksEngine.generateTournamentRecord({
+        drawProfiles,
         venueProfiles,
         startDate: '2022-01-01',
         endDate: '2022-01-07',
@@ -38,12 +45,41 @@ test.each([competitionEngineSync])(
       venueId: venueIds[0],
       round: { drawId: 'drawId' },
     });
-    expect(result.success).toEqual(true);
+    expect(result.error).toEqual(INVALID_VALUES);
 
     ({ schedulingProfile, modifications, issues } =
       competitionEngine.getSchedulingProfile());
 
-    expect(modifications).toEqual(1);
-    expect(issues.length).toEqual(1);
+    expect(schedulingProfile).toEqual([]);
+    expect(modifications).toEqual(0);
+    expect(issues).toEqual(undefined);
+
+    const { matchUps } = competitionEngine.allCompetitionMatchUps();
+    const { tournamentId, eventId, drawId, structureId, roundNumber } =
+      matchUps[0];
+
+    result = competitionEngine.addSchedulingProfileRound({
+      scheduleDate: '2022-01-13',
+      venueId: venueIds[0],
+      round: { eventId, drawId },
+    });
+    expect(result.error).toEqual(INVALID_DATE);
+
+    result = competitionEngine.addSchedulingProfileRound({
+      scheduleDate: '2022-01-03',
+      venueId: venueIds[0],
+      round: { eventId, drawId },
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = competitionEngine.addSchedulingProfileRound({
+      scheduleDate: '2022-01-03',
+      venueId: venueIds[0],
+      round: { tournamentId, eventId, drawId, structureId, roundNumber },
+    });
+    expect(result.success).toEqual(true);
+
+    result = competitionEngine.setSchedulingProfile({});
+    expect(result.error).toEqual(INVALID_VALUES);
   }
 );

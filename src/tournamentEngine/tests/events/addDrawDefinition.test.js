@@ -1,11 +1,12 @@
+import { getMatchUpType } from '../../../drawEngine/accessors/matchUpAccessor';
+import drawEngine from '../../../drawEngine/sync';
+import tournamentEngineAsync from '../../async';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngineSync from '../../sync';
-import tournamentEngineAsync from '../../async';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { getMatchUpType } from '../../../drawEngine/accessors/matchUpAccessor';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import drawEngine from '../../../drawEngine/sync';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 
@@ -69,5 +70,18 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
     expect(result.eventId).not.toBeUndefined();
     expect(result.structureId).not.toBeUndefined();
     expect(result.tournamentId).not.toBeUndefined();
+
+    result = await tournamentEngine.deleteEvents();
+    expect(result.error).toEqual(MISSING_VALUE);
+
+    result = await tournamentEngine.deleteEvents({ eventIds: [] });
+    expect(result.success).toEqual(true);
+
+    // successful because not found
+    result = await tournamentEngine.deleteEvents({ eventIds: ['bogus'] });
+    expect(result.success).toEqual(true);
+
+    result = await tournamentEngine.deleteEvents({ eventIds: [eventId] });
+    expect(result.success).toEqual(true);
   }
 );

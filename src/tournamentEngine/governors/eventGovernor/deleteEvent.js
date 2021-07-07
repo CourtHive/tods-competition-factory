@@ -8,11 +8,14 @@ import { AUDIT } from '../../../constants/topicConstants';
 import {
   EVENT_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
+  MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
 export function deleteEvents({ tournamentRecord, eventIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
+  if (!Array.isArray(eventIds)) return { error: MISSING_VALUE };
+
   const auditTrail = [];
   const deletedEventDetails = [];
 

@@ -1,4 +1,5 @@
-import { validSchedulingProfile } from '../../../../global/validation/validSchedulingProfile';
+import { isValidSchedulingProfile } from '../../../../global/validation/validSchedulingProfile';
+import { getCompetitionDateRange } from '../../queryGovernor/getCompetitionDateRange';
 import { getEventIdsAndDrawIds } from '../../../getters/getEventIdsAndDrawIds';
 import { getCompetitionVenues } from '../../../getters/venuesAndCourtsGetter';
 import {
@@ -11,13 +12,13 @@ import {
   findExtension,
 } from '../../competitionsGovernor/competitionExtentions';
 
+import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
-import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function getSchedulingProfile({ tournamentRecords }) {
   if (
@@ -55,7 +56,7 @@ export function getSchedulingProfile({ tournamentRecords }) {
     }
   }
 
-  return { schedulingProfile };
+  return { schedulingProfile, modifications: 0 };
 }
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
@@ -78,9 +79,6 @@ export function addSchedulingProfileRound({
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
-  if (!isValidSchedulingRound(round)) return { error: INVALID_VALUES };
-
-  // TODO: check that scheduleDate falls within date range of tournaments
 
   const { extension } = findExtension({
     tournamentRecords,
@@ -93,6 +91,13 @@ export function addSchedulingProfileRound({
   );
 
   if (!dateProfile) {
+    const { startDate, endDate } = getCompetitionDateRange({
+      tournamentRecords,
+    });
+    const dateObject = new Date(scheduleDate);
+    if (dateObject < new Date(startDate) || dateObject > new Date(endDate))
+      return { error: INVALID_DATE };
+
     dateProfile = { scheduleDate, venues: [] };
     schedulingProfile.push(dateProfile);
   }
@@ -106,26 +111,12 @@ export function addSchedulingProfileRound({
     dateProfile.venues.push(venueOnDate);
   }
 
-  // TODO: check that round.eventId, round.drawId, round.structureId and round.roundNumber all exist
-  // if not, throw error...
   venueOnDate.rounds.push(round);
 
   const result = setSchedulingProfile({ tournamentRecords, schedulingProfile });
   if (result.error) return result;
 
   return SUCCESS;
-}
-
-export function isValidSchedulingProfile({
-  tournamentRecords,
-  schedulingProfile,
-}) {
-  const { venueIds } = getCompetitionVenues({ tournamentRecords });
-  return validSchedulingProfile({ venueIds, schedulingProfile });
-}
-
-export function isValidSchedulingRound(/*{tournamentRecords, round}*/) {
-  return true;
 }
 
 export function getUpdatedSchedulingProfile({

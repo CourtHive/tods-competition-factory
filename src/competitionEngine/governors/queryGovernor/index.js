@@ -1,6 +1,5 @@
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
-import { findExtensions } from './findExtensions';
 import { matchUpActions } from './matchUpActions';
 import {
   getCompetitionVenues,
@@ -29,7 +28,6 @@ const queryGovernor = {
 
   getCompetitionVenues,
   getVenuesAndCourts,
-  findExtensions,
   credits,
 };
 

@@ -1,6 +1,7 @@
 import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
 import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
+import { isValidSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
@@ -18,7 +19,6 @@ import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import {
   addSchedulingProfileRound,
   getSchedulingProfile,
-  isValidSchedulingProfile,
   setSchedulingProfile,
 } from './schedulingProfile/schedulingProfile';
 import {
@@ -75,8 +75,8 @@ const scheduleGovernor = {
 
   getSchedulingProfile,
   setSchedulingProfile,
-  isValidSchedulingProfile,
   addSchedulingProfileRound,
+  isValidSchedulingProfile,
 
   addPersonRequests,
   getPersonRequests,
