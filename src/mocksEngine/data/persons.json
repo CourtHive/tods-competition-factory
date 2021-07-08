@@ -2,2395 +2,2395 @@
   {
     "firstName": "Novak",
     "lastName": "Djokovic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Rafael",
     "lastName": "Nadal",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Dominic",
     "lastName": "Thiem",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUT"
   },
   {
     "firstName": "Roger",
     "lastName": "Federer",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Stefanos",
     "lastName": "Tsitsipas",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GRE"
   },
   {
     "firstName": "Daniil",
     "lastName": "Medvedev",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Alexander",
     "lastName": "Zverev",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Andrey",
     "lastName": "Rublev",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Diego",
     "lastName": "Schwartzman",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Matteo",
     "lastName": "Berrettini",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Gael",
     "lastName": "Monfils",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Denis",
     "lastName": "Shapovalov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Roberto",
     "lastName": "Bautista Agut",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "David",
     "lastName": "Goffin",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Pablo",
     "lastName": "Carreno Busta",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Fabio",
     "lastName": "Fognini",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Milos",
     "lastName": "Raonic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Karen",
     "lastName": "Khachanov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Stan",
     "lastName": "Wawrinka",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Grigor",
     "lastName": "Dimitrov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BUL"
   },
   {
     "firstName": "Felix",
     "lastName": "Auger-Aliassime",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Cristian",
     "lastName": "Garin",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHI"
   },
   {
     "firstName": "John",
     "lastName": "Isner",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Borna",
     "lastName": "Coric",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Alex",
     "lastName": "de Minaur",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Dusan",
     "lastName": "Lajovic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Casper",
     "lastName": "Ruud",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "NOR"
   },
   {
     "firstName": "Benoit",
     "lastName": "Paire",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Taylor",
     "lastName": "Fritz",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Filip",
     "lastName": "Krajinovic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Hubert",
     "lastName": "Hurkacz",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Ugo",
     "lastName": "Humbert",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Daniel",
     "lastName": "Evans",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Jan-Lennard",
     "lastName": "Struff",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Reilly",
     "lastName": "Opelka",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Nikoloz",
     "lastName": "Basilashvili",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GEO"
   },
   {
     "firstName": "Kei",
     "lastName": "Nishikori",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Guido",
     "lastName": "Pella",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Adrian",
     "lastName": "Mannarino",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Miomir",
     "lastName": "Kecmanovic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Marin",
     "lastName": "Cilic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Lorenzo",
     "lastName": "Sonego",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Jannik",
     "lastName": "Sinner",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Nick",
     "lastName": "Kyrgios",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "John",
     "lastName": "Millman",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Albert",
     "lastName": "Ramos-Vinolas",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Kyle",
     "lastName": "Edmund",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Tennys",
     "lastName": "Sandgren",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Alexander",
     "lastName": "Bublik",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "KAZ"
   },
   {
     "firstName": "Sam",
     "lastName": "Querrey",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Yoshihito",
     "lastName": "Nishioka",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Marton",
     "lastName": "Fucsovics",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "HUN"
   },
   {
     "firstName": "Aljaz",
     "lastName": "Bedene",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Laslo",
     "lastName": "Djere",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Richard",
     "lastName": "Gasquet",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Pablo",
     "lastName": "Andujar",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Jo-Wilfried",
     "lastName": "Tsonga",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Gilles",
     "lastName": "Simon",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Tommy",
     "lastName": "Paul",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Jordan",
     "lastName": "Thompson",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Fernando",
     "lastName": "Verdasco",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Alejandro",
     "lastName": "Davidovich Fokina",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Feliciano",
     "lastName": "Lopez",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Frances",
     "lastName": "Tiafoe",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Dominik",
     "lastName": "Koepfer",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Jiri",
     "lastName": "Vesely",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Pablo",
     "lastName": "Cuevas",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "URU"
   },
   {
     "firstName": "Ricardas",
     "lastName": "Berankis",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "LTU"
   },
   {
     "firstName": "Lucas",
     "lastName": "Pouille",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Cameron",
     "lastName": "Norrie",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Steve",
     "lastName": "Johnson",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Jeremy",
     "lastName": "Chardy",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Stefano",
     "lastName": "Travaglia",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Corentin",
     "lastName": "Moutet",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Juan",
     "lastName": "Ignacio Londero",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Federico",
     "lastName": "Delbonis",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Marco",
     "lastName": "Cecchinato",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Thiago",
     "lastName": "Monteiro",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BRA"
   },
   {
     "firstName": "Salvatore",
     "lastName": "Caruso",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Lloyd",
     "lastName": "Harris",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RSA"
   },
   {
     "firstName": "Vasek",
     "lastName": "Pospisil",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Pierre-Hugues",
     "lastName": "Herbert",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Egor",
     "lastName": "Gerasimov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Joao",
     "lastName": "Sousa",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "POR"
   },
   {
     "firstName": "Radu",
     "lastName": "Albot",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "MDA"
   },
   {
     "firstName": "Marcos",
     "lastName": "Giron",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Mikael",
     "lastName": "Ymer",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SWE"
   },
   {
     "firstName": "Attila",
     "lastName": "Balazs",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "HUN"
   },
   {
     "firstName": "Federico",
     "lastName": "Coria",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Soonwoo",
     "lastName": "Kwon",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "KOR"
   },
   {
     "firstName": "Mikhail",
     "lastName": "Kukushkin",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "KAZ"
   },
   {
     "firstName": "Dennis",
     "lastName": "Novak",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUT"
   },
   {
     "firstName": "Pedro",
     "lastName": "Martinez",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Philipp",
     "lastName": "Kohlschreiber",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Yannick",
     "lastName": "Hanfmann",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Gianluca",
     "lastName": "Mager",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "James",
     "lastName": "Duckworth",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Emil",
     "lastName": "Ruusuvuori",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FIN"
   },
   {
     "firstName": "Yasutaka",
     "lastName": "Uchiyama",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Roberto",
     "lastName": "Carballes Baena",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Ashleigh",
     "lastName": "Barty",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Simona",
     "lastName": "Halep",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Naomi",
     "lastName": "Osaka",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Sofia",
     "lastName": "Kenin",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Elina",
     "lastName": "Svitolina",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Karolina",
     "lastName": "Pliskova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Bianca",
     "lastName": "Andreescu",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Petra",
     "lastName": "Kvitova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Kiki",
     "lastName": "Bertens",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "NED"
   },
   {
     "firstName": "Serena",
     "lastName": "Williams",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Aryna",
     "lastName": "Sabalenka",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Belinda",
     "lastName": "Bencic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Victoria",
     "lastName": "Azarenka",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Johanna",
     "lastName": "Konta",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Garbine",
     "lastName": "Muguruza",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Madison",
     "lastName": "Keys",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Iga",
     "lastName": "Swiatek",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Petra",
     "lastName": "Martic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Elena",
     "lastName": "Rybakina",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KAZ"
   },
   {
     "firstName": "Marketa",
     "lastName": "Vondrousova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Elise",
     "lastName": "Mertens",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Maria",
     "lastName": "Sakkari",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GRE"
   },
   {
     "firstName": "Anett",
     "lastName": "Kontaveit",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "EST"
   },
   {
     "firstName": "Jennifer",
     "lastName": "Brady",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Angelique",
     "lastName": "Kerber",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Alison",
     "lastName": "Riske",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Karolina",
     "lastName": "Muchova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Yulia",
     "lastName": "Putintseva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KAZ"
   },
   {
     "firstName": "Dayana",
     "lastName": "Yastremska",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Amanda",
     "lastName": "Anisimova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Ons",
     "lastName": "Jabeur",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "TUN"
   },
   {
     "firstName": "Donna",
     "lastName": "Vekic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Ekaterina",
     "lastName": "Alexandrova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Qiang",
     "lastName": "Wang",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Shuai",
     "lastName": "Zhang",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Svetlana",
     "lastName": "Kuznetsova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Barbora",
     "lastName": "Strycova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Anastasia",
     "lastName": "Pavlyuchenkova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Sloane",
     "lastName": "Stephens",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Magda",
     "lastName": "Linette",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Saisai",
     "lastName": "Zheng",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Fiona",
     "lastName": "Ferro",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Caroline",
     "lastName": "Garcia",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Jelena",
     "lastName": "Ostapenko",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "LAT"
   },
   {
     "firstName": "Danielle",
     "lastName": "Collins",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Veronika",
     "lastName": "Kudermetova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Cori",
     "lastName": "Gauff",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Nadia",
     "lastName": "Podoroska",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Kristina",
     "lastName": "Mladenovic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Laura",
     "lastName": "Siegemund",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Marie",
     "lastName": "Bouzkova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Polona",
     "lastName": "Hercog",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Alize",
     "lastName": "Cornet",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Anastasija",
     "lastName": "Sevastova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "LAT"
   },
   {
     "firstName": "Rebecca",
     "lastName": "Peterson",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SWE"
   },
   {
     "firstName": "Patricia",
     "lastName": "Maria Tig",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Jil",
     "lastName": "Teichmann",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Shelby",
     "lastName": "Rogers",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Heather",
     "lastName": "Watson",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Anna",
     "lastName": "Blinkova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Bernarda",
     "lastName": "Pera",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Jessica",
     "lastName": "Pegula",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Alison",
     "lastName": "Van Uytvanck",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Katerina",
     "lastName": "Siniakova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Sara",
     "lastName": "Sorribes Tormo",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Su-Wei",
     "lastName": "Hsieh",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "TPE"
   },
   {
     "firstName": "Ajla",
     "lastName": "Tomljanovic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Kristyna",
     "lastName": "Pliskova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Paula",
     "lastName": "Badosa",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Daria",
     "lastName": "Kasatkina",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Nao",
     "lastName": "Hibino",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Arantxa",
     "lastName": "Rus",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "NED"
   },
   {
     "firstName": "Lauren",
     "lastName": "Davis",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Barbora",
     "lastName": "Krejcikova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Camila",
     "lastName": "Giorgi",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Irina-Camelia",
     "lastName": "Begu",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Danka",
     "lastName": "Kovinic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "MNE"
   },
   {
     "firstName": "Venus",
     "lastName": "Williams",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Zarina",
     "lastName": "Diyas",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KAZ"
   },
   {
     "firstName": "Christina",
     "lastName": "Mchale",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Madison",
     "lastName": "Brengle",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Carla",
     "lastName": "Suarez Navarro",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Martina",
     "lastName": "Trevisan",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Kirsten",
     "lastName": "Flipkens",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Misaki",
     "lastName": "Doi",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Tamara",
     "lastName": "Zidansek",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Sorana",
     "lastName": "Cirstea",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Leylah",
     "lastName": "Fernandez",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Taylor",
     "lastName": "Townsend",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Lin",
     "lastName": "Zhu",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Ana",
     "lastName": "Bogdan",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Aliaksandra",
     "lastName": "Sasnovich",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Yafan",
     "lastName": "Wang",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Jasmine",
     "lastName": "Paolini",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Varvara",
     "lastName": "Gracheva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Viktoria",
     "lastName": "Kuzmova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SVK"
   },
   {
     "firstName": "Nina",
     "lastName": "Stojanovic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Anastasia",
     "lastName": "Potapova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Andrea",
     "lastName": "Petkovic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Kaja",
     "lastName": "Juvan",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Elsa",
     "lastName": "Jacquemot",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Victoria",
     "lastName": "Jimenez Kasintseva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AND"
   },
   {
     "firstName": "Alexandra",
     "lastName": "Eala",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "PHI"
   },
   {
     "firstName": "Diane",
     "lastName": "Parry",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Daria",
     "lastName": "Snigur",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Polina",
     "lastName": "Kudermetova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Robin",
     "lastName": "Montgomery",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Alexandra",
     "lastName": "Vecic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Kristina",
     "lastName": "Dmitruk",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Alexa",
     "lastName": "Noel",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Kamilla",
     "lastName": "Bartone",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "LAT"
   },
   {
     "firstName": "Weronika",
     "lastName": "Baszak",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Oksana",
     "lastName": "Selekhmeteva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Alina",
     "lastName": "Charaeva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Maria",
     "lastName": "Bondarenko",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Priska",
     "lastName": "Madelyn Nugroho",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "INA"
   },
   {
     "firstName": "Linda",
     "lastName": "Fruhvirtova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Dana",
     "lastName": "Guzman",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "PER"
   },
   {
     "firstName": "Linda",
     "lastName": "Noskova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Hong",
     "lastName": "Yi Cody Wong",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "HKG"
   },
   {
     "firstName": "Zhuoxuan",
     "lastName": "Bai",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Mell",
     "lastName": "Reasco Gonzalez",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ECU"
   },
   {
     "firstName": "Matilda",
     "lastName": "Mutavdzic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Diana",
     "lastName": "Shnaider",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Qinwen",
     "lastName": "Zheng",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Alexandra",
     "lastName": "Yepifanova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Matilde",
     "lastName": "Paoletti",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Melania",
     "lastName": "Delai",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Jana",
     "lastName": "Kolodynska",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Guillermina",
     "lastName": "Grant",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "URU"
   },
   {
     "firstName": "Darja",
     "lastName": "Vidmanova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Melodie",
     "lastName": "Collard",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Elvina",
     "lastName": "Kalieva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Sofia",
     "lastName": "Costoulas",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Aliona",
     "lastName": "Falei",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Mai",
     "lastName": "Nirundorn",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "THA"
   },
   {
     "firstName": "Elizabeth",
     "lastName": "Coleman",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Aubane",
     "lastName": "Droguet",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Madison",
     "lastName": "Sieg",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Natsumi",
     "lastName": "Kawaguchi",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Leyre",
     "lastName": "Romero Gormaz",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Elina",
     "lastName": "Avanesyan",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Oceane",
     "lastName": "Babel",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Ziva",
     "lastName": "Falkner",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Julia",
     "lastName": "Garcia",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "MEX"
   },
   {
     "firstName": "Natalia",
     "lastName": "Szabanin",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "HUN"
   },
   {
     "firstName": "Erika",
     "lastName": "Andreeva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Celia",
     "lastName": "Belle Mohr",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Ane",
     "lastName": "Mintegi Del Olmo",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Sebastianna",
     "lastName": "Scilipoti",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Ana",
     "lastName": "Geller",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Dayeon",
     "lastName": "Back",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KOR"
   },
   {
     "firstName": "Selena",
     "lastName": "Janicijevic",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Romana",
     "lastName": "Cisovska",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SVK"
   },
   {
     "firstName": "Amarissa",
     "lastName": "Kiara Toth",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "HUN"
   },
   {
     "firstName": "Mara",
     "lastName": "Guth",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Evialina",
     "lastName": "Laskevich",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BLR"
   },
   {
     "firstName": "Julia",
     "lastName": "Avdeeva",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Beatrice",
     "lastName": "Ricci",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Eleonora",
     "lastName": "Alvisi",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Jessica",
     "lastName": "Bouzas Maneiro",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Julie",
     "lastName": "Belgraver",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "NED"
   },
   {
     "firstName": "Lisa",
     "lastName": "Pigato",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Ya",
     "lastName": "Yi Yang",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "TPE"
   },
   {
     "firstName": "Eva",
     "lastName": "Lys",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Talia",
     "lastName": "Gibson",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Yeon",
     "lastName": "Ku",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KOR"
   },
   {
     "firstName": "Katrina",
     "lastName": "Scott",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Barbora",
     "lastName": "Palicova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Alina",
     "lastName": "Shcherbinina",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Giulia",
     "lastName": "Morlet",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Tina",
     "lastName": "Nadine Smith",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Sohyun",
     "lastName": "Park",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "KOR"
   },
   {
     "firstName": "Tara",
     "lastName": "Wurth",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Polina",
     "lastName": "Iatcenko",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Lauren",
     "lastName": "Anzalotta Kynoch",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "PUR"
   },
   {
     "firstName": "Savannah",
     "lastName": "Broadus",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Angelina",
     "lastName": "Wirges",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Amarni",
     "lastName": "Banks",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Hanne",
     "lastName": "Vandewinkel",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Jada",
     "lastName": "Bui",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Sabina",
     "lastName": "Zeynalova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Pia",
     "lastName": "Lovric",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SLO"
   },
   {
     "firstName": "Erika",
     "lastName": "Matsuda",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Lyubov",
     "lastName": "Kostenko",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Anaelle",
     "lastName": "Leclercq",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Alessandra",
     "lastName": "Simone",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Darja",
     "lastName": "Semenistaja",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "LAT"
   },
   {
     "firstName": "Daria",
     "lastName": "Frayman",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Nastasja",
     "lastName": "Schunk",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Olivia",
     "lastName": "Gadecki",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "India",
     "lastName": "Houghton",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Maria",
     "lastName": "Sholokhova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Julia",
     "lastName": "Middendorf",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Petra",
     "lastName": "Marcinko",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CRO"
   },
   {
     "firstName": "Radka",
     "lastName": "Zelnickova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "SVK"
   },
   {
     "firstName": "Lucie",
     "lastName": "Nguyen Tan",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Tatiana",
     "lastName": "Barkova",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Annabelle",
     "lastName": "Xu",
-    "sex": "F",
+    "sex": "FEMALE",
     "nationalityCode": "CAN"
   },
   {
     "firstName": "Harold",
     "lastName": "Mayot",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Holger",
     "lastName": "Vitus Nodskov Rune",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "DEN"
   },
   {
     "firstName": "Dominic",
     "lastName": "Stephan Stricker",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Shintaro",
     "lastName": "Mochizuki",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Arthur",
     "lastName": "Cazaux",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Leandro",
     "lastName": "Riedi",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Martin",
     "lastName": "Damm",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Natan",
     "lastName": "Rodrigues",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BRA"
   },
   {
     "firstName": "Karlis",
     "lastName": "Ozolins",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "LAT"
   },
   {
     "firstName": "Luciano",
     "lastName": "Darderi",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Hanwen",
     "lastName": "Li",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Arthur",
     "lastName": "Fery",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Juan",
     "lastName": "Bautista Torres",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Khololwam",
     "lastName": "Montsi",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RSA"
   },
   {
     "firstName": "Jeffrey",
     "lastName": "Von Der Schulenburg",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Timo",
     "lastName": "Legout",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Gustavo",
     "lastName": "Heide",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BRA"
   },
   {
     "firstName": "Flavio",
     "lastName": "Cobolli",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Guy",
     "lastName": "Den Ouden",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "NED"
   },
   {
     "firstName": "Martin",
     "lastName": "Breysach",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Toby",
     "lastName": "Kodat",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Lilian",
     "lastName": "Marmousez",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Roman",
     "lastName": "Andres Burruchaga",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Alex",
     "lastName": "Barrena",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Dalibor",
     "lastName": "Svrcina",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Martin",
     "lastName": "Krumich",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CZE"
   },
   {
     "firstName": "Peter",
     "lastName": "Fajta",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "HUN"
   },
   {
     "firstName": "Lukas",
     "lastName": "Neumayer",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUT"
   },
   {
     "firstName": "Raphael",
     "lastName": "Collignon",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Dali",
     "lastName": "Blanch",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Terence",
     "lastName": "Atmane",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Felix",
     "lastName": "Gill",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Eliakim",
     "lastName": "Coulibaly",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CIV"
   },
   {
     "firstName": "Hamad",
     "lastName": "Medjedovic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Jerome",
     "lastName": "Kym",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Nicholas",
     "lastName": "David Ionel",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Shunsuke",
     "lastName": "Mitsui",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Giovanni",
     "lastName": "Mpetshi Perricard",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Bu",
     "lastName": "Yunchaokete",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Jack",
     "lastName": "Pinnington Jones",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Alexander",
     "lastName": "Hoogmartens",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Bruno",
     "lastName": "Oliveira",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BRA"
   },
   {
     "firstName": "Maks",
     "lastName": "Kasnikowski",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Mikolaj",
     "lastName": "Lorens",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Chak",
     "lastName": "Lam Coleman Wong",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "HKG"
   },
   {
     "firstName": "Egor",
     "lastName": "Agafonov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Mans",
     "lastName": "Dahlberg",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SWE"
   },
   {
     "firstName": "Marat",
     "lastName": "Sharipov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Luca",
     "lastName": "Nardi",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Sean",
     "lastName": "Cuenin",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Pedro",
     "lastName": "Boscardin Dias",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BRA"
   },
   {
     "firstName": "Samuel",
     "lastName": "Vincent Ruggeri",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Bruno",
     "lastName": "Kuzuhara",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Romain",
     "lastName": "Faucon",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Elmer",
     "lastName": "Moller",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "DEN"
   },
   {
     "firstName": "Mario",
     "lastName": "Mansilla Diez",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Leonardo",
     "lastName": "Malgaroli",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Pierre",
     "lastName": "Yves Bailly",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Sebastian",
     "lastName": "Gima",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ROU"
   },
   {
     "firstName": "Ilya",
     "lastName": "Snitari",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "MDA"
   },
   {
     "firstName": "Diego",
     "lastName": "Augusto Barreto Sanchez",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Alexander",
     "lastName": "Bernard",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Pengyu",
     "lastName": "Lu",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Max",
     "lastName": "Wiskandt",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GER"
   },
   {
     "firstName": "Max",
     "lastName": "Westphal",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Lorenzo",
     "lastName": "Claverie",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "VEN"
   },
   {
     "firstName": "Axel",
     "lastName": "Garcian",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Aleksander",
     "lastName": "Orlikowski",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "POL"
   },
   {
     "firstName": "Maxwell",
     "lastName": "Mckennon",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Rafael",
     "lastName": "Alfonso De Alba Valdes",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "MEX"
   },
   {
     "firstName": "Dev",
     "lastName": "Javia",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "IND"
   },
   {
     "firstName": "Kokoro",
     "lastName": "Isomura",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "JPN"
   },
   {
     "firstName": "Matteo",
     "lastName": "Gigante",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Jack",
     "lastName": "Anthrop",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Pablo",
     "lastName": "Llamas Ruiz",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Biagio",
     "lastName": "Gramaticopolo",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Patorn",
     "lastName": "Hanchaikul",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "THA"
   },
   {
     "firstName": "Marko",
     "lastName": "Topo",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SRB"
   },
   {
     "firstName": "Carlos",
     "lastName": "Alcaraz",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Juncheng",
     "lastName": "Shang",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Toby",
     "lastName": "Samuel",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "GBR"
   },
   {
     "firstName": "Petr",
     "lastName": "Nesterov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BUL"
   },
   {
     "firstName": "Mehdi",
     "lastName": "Sadaoui",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Max",
     "lastName": "Alcala Gurri",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ESP"
   },
   {
     "firstName": "Nikita",
     "lastName": "Kashirin",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Aidan",
     "lastName": "Mayo",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   },
   {
     "firstName": "Yu",
     "lastName": "Zhang",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "CHN"
   },
   {
     "firstName": "Philip",
     "lastName": "Sekulic",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Lorenzo",
     "lastName": "Rottoli",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Michal",
     "lastName": "Novansky",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SVK"
   },
   {
     "firstName": "Maikel",
     "lastName": "De Boes",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BEL"
   },
   {
     "firstName": "Chen",
     "lastName": "Dong",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "AUS"
   },
   {
     "firstName": "Evgeny",
     "lastName": "Philippov",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "RUS"
   },
   {
     "firstName": "Damien",
     "lastName": "Salvestre",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "FRA"
   },
   {
     "firstName": "Francesco",
     "lastName": "Maestrelli",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ITA"
   },
   {
     "firstName": "Viacheslav",
     "lastName": "Bielinskyi",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "UKR"
   },
   {
     "firstName": "Jean",
     "lastName": "Marc Malkowski",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "SUI"
   },
   {
     "firstName": "Santiago",
     "lastName": "De La Fuente",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "ARG"
   },
   {
     "firstName": "Simeon",
     "lastName": "Terziev",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "BUL"
   },
   {
     "firstName": "Benjamin",
     "lastName": "Kittay",
-    "sex": "M",
+    "sex": "MALE",
     "nationalityCode": "USA"
   }
 ]

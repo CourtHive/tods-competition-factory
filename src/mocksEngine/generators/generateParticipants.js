@@ -1,11 +1,11 @@
-import { countries } from '../../fixtures/countryData';
-import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
-import { teamMocks } from '../utilities/team';
-import { personMocks } from '../utilities/person';
+import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { countries } from '../../fixtures/countryData';
+import { personMocks } from '../utilities/personMocks';
+import { teamMocks } from '../utilities/teamMocks';
 
-import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
 
 /**
@@ -35,16 +35,20 @@ export function generateParticipants({
   sex,
 
   inContext,
+  personData,
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const { persons: mockedPersons } = personMocks({
-    sex,
+  const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
+    personData,
+    sex,
   });
+  if (error) return { error };
+
   const isoCountries = countries.filter((country) => country.iso);
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 

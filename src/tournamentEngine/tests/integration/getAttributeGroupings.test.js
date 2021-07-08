@@ -1,11 +1,11 @@
 import { getAttributeGroupings } from '../../../drawEngine/getters/getAttributeGrouping';
 import { fixtures, participantTypes } from '../../..';
-import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
+import mocksEngine from '../../../mocksEngine';
 
 const { PAIR } = participantTypes;
 
 it('can generate groupings accurately', () => {
-  const { participants } = generateParticipants({
+  const { participants } = mocksEngine.generateParticipants({
     nationalityCodesCount: 10,
     addressProps: {
       citiesCount: 10,

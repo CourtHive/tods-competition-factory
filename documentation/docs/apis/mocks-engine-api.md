@@ -49,6 +49,7 @@ const { participants } = mocksEngine.generateParticipants({
   valuesInstanceLimit, // optional - maximum number of values which can be the same
 
   inContext: true, // optional - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
+  personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
 });
 
 tournamentEngine.addParticipants({ participants });
