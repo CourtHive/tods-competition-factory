@@ -119,6 +119,7 @@ export function generateParticipants({
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
     const {
+      sex,
       firstName,
       lastName,
       extensions,

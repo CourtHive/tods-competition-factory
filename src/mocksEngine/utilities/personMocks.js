@@ -7,7 +7,9 @@ import { MALE, FEMALE } from '../../constants/genderConstants';
 export function personMocks({ count = 1, sex, personData } = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
-  let validPersonData = defaultPersonData;
+  let validPersonData = defaultPersonData.filter(
+    (person) => !sex || person.sex === sex
+  );
   if (Array.isArray(personData)) {
     const validatedPersonData = personData.filter((person) => {
       if (typeof person.firstName !== 'string') return false;
@@ -83,13 +85,10 @@ export function personMocks({ count = 1, sex, personData } = {}) {
     });
   }
 
-  const persons = shuffledPersons
-    .filter((person) => !sex || person.sex === sex[0].toUpperCase())
-    .slice(0, count)
-    .map((person, i) => {
-      return Object.assign(person, {
-        extensions: [{ name: 'regionCode', value: i + 1 }],
-      });
+  const persons = shuffledPersons.slice(0, count).map((person, i) => {
+    return Object.assign(person, {
+      extensions: [{ name: 'regionCode', value: i + 1 }],
     });
+  });
   return { persons: (persons.length && persons) || shuffledPersons[0] };
 }

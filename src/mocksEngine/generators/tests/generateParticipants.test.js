@@ -1,7 +1,9 @@
 import defaultPersonData from '../../data/persons.json';
 import mocksEngine from '../..';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { PAIR } from '../../../constants/participantTypes';
 
 it('can generate unique participants', () => {
   const participantsCount = defaultPersonData.length + 10;
@@ -11,6 +13,97 @@ it('can generate unique participants', () => {
   expect(participants[participants.length - 1].person.firstName).not.toEqual(
     'GivenName'
   );
+});
+
+it.only('can generate sexed participants', () => {
+  let { participants } = mocksEngine.generateParticipants({
+    participantsCount: 10,
+    sex: FEMALE,
+  });
+  let sexes = participants.reduce((sexes, participant) => {
+    const { sex } = participant.person;
+    if (!sexes.includes(sex)) sexes.push(sex);
+    return sexes;
+  }, []);
+  expect(sexes).toEqual([FEMALE]);
+
+  ({ participants } = mocksEngine.generateParticipants({
+    participantsCount: 10,
+    sex: MALE,
+  }));
+  sexes = participants.reduce((sexes, participant) => {
+    const { sex } = participant.person;
+    if (!sexes.includes(sex)) sexes.push(sex);
+    return sexes;
+  }, []);
+  expect(sexes).toEqual([MALE]);
+
+  ({ participants } = mocksEngine.generateParticipants({
+    participantsCount: 100,
+  }));
+  sexes = participants.reduce((sexes, participant) => {
+    const { sex } = participant.person;
+    if (!sexes.includes(sex)) sexes.push(sex);
+    return sexes;
+  }, []);
+  expect(sexes.sort()).toEqual([FEMALE, MALE]);
+
+  ({ participants } = mocksEngine.generateParticipants({
+    participantsCount: 20,
+    participantType: PAIR,
+    inContext: true,
+    sex: MALE,
+  }));
+  sexes = participants
+    .filter((p) => p.participantType === PAIR)
+    .reduce((sexes, participant) => {
+      const pairSexes = participant.individualParticipants
+        .map((p) => p.person.sex)
+        .sort()
+        .join('/');
+      if (!sexes.includes(pairSexes)) sexes.push(pairSexes);
+      return sexes;
+    }, []);
+  expect(sexes).toEqual([`${MALE}/${MALE}`]);
+
+  ({ participants } = mocksEngine.generateParticipants({
+    participantsCount: 20,
+    participantType: PAIR,
+    inContext: true,
+    sex: FEMALE,
+  }));
+  sexes = participants
+    .filter((p) => p.participantType === PAIR)
+    .reduce((sexes, participant) => {
+      const pairSexes = participant.individualParticipants
+        .map((p) => p.person.sex)
+        .sort()
+        .join('/');
+      if (!sexes.includes(pairSexes)) sexes.push(pairSexes);
+      return sexes;
+    }, []);
+  expect(sexes).toEqual([`${FEMALE}/${FEMALE}`]);
+
+  ({ participants } = mocksEngine.generateParticipants({
+    participantsCount: 200,
+    participantType: PAIR,
+    inContext: true,
+  }));
+  sexes = participants
+    .filter((p) => p.participantType === PAIR)
+    .reduce((sexes, participant) => {
+      const pairSexes = participant.individualParticipants
+        .map((p) => p.person.sex)
+        .sort()
+        .join('/');
+      if (!sexes.includes(pairSexes)) sexes.push(pairSexes);
+      return sexes;
+    }, []);
+  expect(sexes.sort()).toEqual([
+    `${FEMALE}/${FEMALE}`,
+    `${FEMALE}/${MALE}`,
+    `${MALE}/${MALE}`,
+  ]);
 });
 
 it('can accept custom personData', () => {
