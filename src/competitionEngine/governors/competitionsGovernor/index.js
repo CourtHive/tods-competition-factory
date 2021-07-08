@@ -8,7 +8,7 @@ import { tournamentMethods } from './tournamentMethods';
 import { addVenue } from './venueManagement/addVenue';
 import { addParticipant } from './addParticipant';
 import {
-  getCopmetitionParticipants,
+  getCompetitionParticipants,
   publicFindParticipant,
 } from '../../getters/participantGetter';
 import {
@@ -40,7 +40,7 @@ const competitionGovernor = {
   getLinkedTournamentIds,
 
   addDrawDefinition, // test
-  getCopmetitionParticipants,
+  getCompetitionParticipants,
   addParticipant,
 
   setMatchUpStatus,

@@ -7,7 +7,7 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-export function getCopmetitionParticipants(props) {
+export function getCompetitionParticipants(props) {
   const { tournamentRecords } = props || {};
   if (
     typeof tournamentRecords !== 'object' ||

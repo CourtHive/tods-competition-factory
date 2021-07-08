@@ -16,7 +16,7 @@ test('penalties can be administered via competitionEngine', () => {
     });
   competitionEngine.setState([firstTournament, secondTournament]);
 
-  let result = competitionEngine.getCopmetitionParticipants();
+  let result = competitionEngine.getCompetitionParticipants();
   expect(result.competitionParticipants.length).toEqual(2 * participantsCount);
 
   const { participantId } = result.competitionParticipants[0];
