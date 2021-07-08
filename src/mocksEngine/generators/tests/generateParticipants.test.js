@@ -15,7 +15,7 @@ it('can generate unique participants', () => {
   );
 });
 
-it.only('can generate sexed participants', () => {
+it('can generate sexed participants', () => {
   let { participants } = mocksEngine.generateParticipants({
     participantsCount: 10,
     sex: FEMALE,
