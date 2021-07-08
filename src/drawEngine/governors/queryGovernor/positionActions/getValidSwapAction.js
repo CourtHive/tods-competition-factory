@@ -98,10 +98,11 @@ export function getValidSwapAction({
     const sourceDrawPositionRange =
       sourceDrawPositionRangeMap[assignment.drawPosition];
 
-    return Object.assign({}, assignment, {
+    return {
+      ...assignment,
       participant: makeDeepCopy(participant),
       sourceDrawPositionRange,
-    });
+    };
   });
 
   if (availableAssignments.length) {

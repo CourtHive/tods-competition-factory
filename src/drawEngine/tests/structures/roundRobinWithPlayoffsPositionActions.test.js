@@ -351,7 +351,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   // now test with seed position enforced (default behavior)
   drawPosition = 1;
-  policyDefinition = Object.assign({}, POLICY_POSITION_ACTIONS_UNRESTRICTED);
+  policyDefinition = POLICY_POSITION_ACTIONS_UNRESTRICTED;
   result = tournamentEngine.positionActions({
     drawId,
     structureId: playoffStructureIds[0],

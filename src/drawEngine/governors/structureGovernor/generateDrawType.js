@@ -201,7 +201,7 @@ export function generateDrawType(props = {}) {
   if (goesTo)
     ({ inContextDrawMatchUps } = addGoesTo({ drawDefinition, matchUpsMap }));
 
-  const result = Object.assign({}, SUCCESS, { matchUps });
+  const result = { ...SUCCESS, matchUps };
 
   Object.assign(result, generatorResult, {
     matchUpsMap,

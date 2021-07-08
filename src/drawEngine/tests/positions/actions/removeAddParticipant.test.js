@@ -58,7 +58,7 @@ it('can remove drawPosition assignment and add it back', () => {
   expect(option.participantsAvailable.length).toEqual(1);
 
   const participantId = option.availableParticipantIds[0];
-  const payload = Object.assign({}, option.payload, { participantId });
+  const payload = { ...option.payload, participantId };
 
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);

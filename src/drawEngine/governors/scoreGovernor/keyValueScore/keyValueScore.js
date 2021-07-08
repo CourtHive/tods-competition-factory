@@ -58,7 +58,8 @@ export function keyValueMatchUpScore(props) {
   let updatedMatchUp;
   if (result?.updated) {
     const { sets, scoreString, winningSide, matchUpStatus } = result;
-    updatedMatchUp = Object.assign({}, matchUp, {
+    updatedMatchUp = {
+      ...matchUp,
       sets, // required for present test suites
       scoreString, // required for present test suites
       winningSide,
@@ -66,7 +67,7 @@ export function keyValueMatchUpScore(props) {
       // TODO: this should use the autocomplete function of matchUpScore
       // and the expected behavior is therefore different than keyValueScore
       score: { sets, scoreStringSide1: scoreString },
-    });
+    };
   }
   return {
     updated: result.updated,

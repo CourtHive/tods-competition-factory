@@ -312,7 +312,8 @@ export function scheduleMatchUps({
 
   const noTimeMatchUpIds = matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     requestConflicts: Object.values(requestConflicts),
     noTimeMatchUpIds,
     overLimitMatchUpIds,
@@ -320,5 +321,5 @@ export function scheduleMatchUps({
     matchUpNotBeforeTimes,
     participantIdsAtLimit,
     individualParticipantProfiles,
-  });
+  };
 }

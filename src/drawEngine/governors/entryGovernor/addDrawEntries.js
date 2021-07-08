@@ -72,12 +72,13 @@ export function addDrawEntry({
     return { error: EXISTING_PARTICIPANT };
   }
 
-  const entry = Object.assign({}, participant, {
+  const entry = {
+    ...participant,
     participantId,
     entryStage,
     entryStatus,
     entryPosition,
-  });
+  };
   drawDefinition.entries.push(entry);
 
   return SUCCESS;

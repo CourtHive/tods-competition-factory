@@ -28,7 +28,7 @@ export function addEvent({ tournamentRecord, event }) {
 
   if (!eventExists) {
     tournamentRecord.events.push(eventRecord);
-    return Object.assign({}, { event: eventRecord }, SUCCESS);
+    return { ...SUCCESS, event: eventRecord };
   } else {
     return { error: EVENT_EXISTS };
   }

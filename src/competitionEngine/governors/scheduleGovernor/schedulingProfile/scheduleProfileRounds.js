@@ -164,10 +164,11 @@ export function scheduleProfileRounds({
     ({ scheduleDate }) => scheduleDate
   );
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     scheduledDates,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
     requestConflicts,
-  });
+  };
 }

@@ -99,5 +99,5 @@ export function modifyIndividualParticipantIds({
     });
   }
 
-  return Object.assign({}, addResult, removeResult);
+  return { ...addResult, ...removeResult };
 }

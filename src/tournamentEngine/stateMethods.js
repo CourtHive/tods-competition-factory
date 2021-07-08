@@ -39,7 +39,7 @@ export function paramsMiddleWare(tournamentRecord, params) {
         tournamentRecord,
         drawId,
       });
-      params = Object.assign({}, params, { event, drawDefinition });
+      params = { ...params, event, drawDefinition };
     }
 
     if (params.eventId && !params.event) {
@@ -48,7 +48,7 @@ export function paramsMiddleWare(tournamentRecord, params) {
         eventId: params.eventId,
       });
       if (event) {
-        params = Object.assign({}, params, { event });
+        params = { ...params, event };
       }
     }
   }

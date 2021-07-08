@@ -138,10 +138,11 @@ it('can generate a tournament with events and draws', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
-  const expectedScore = Object.assign({}, score, {
+  const expectedScore = {
+    ...score,
     scoreStringSide1: '6-3',
     scoreStringSide2: '3-6',
-  });
+  };
   expect(targetMatchUp.score).toEqual(expectedScore);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });

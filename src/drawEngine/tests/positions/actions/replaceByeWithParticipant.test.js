@@ -46,10 +46,11 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
-  let payload = Object.assign({}, option.payload, {
+  let payload = {
+    ...option.payload,
     replaceWithBye: true,
     entryStatus: ALTERNATE,
-  });
+  };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
@@ -78,7 +79,7 @@ it('supports replacing a BYE with a participant (DA or ALT)', () => {
   );
 
   const alternateParticipantId = option.availableAlternatesParticipantIds[0];
-  payload = Object.assign({}, option.payload, { alternateParticipantId });
+  payload = { ...option.payload, alternateParticipantId };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 });

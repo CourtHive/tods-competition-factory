@@ -173,9 +173,10 @@ export function generateDrawDefinition(props) {
   // OPTIMIZE: use drawEngine.addDrawEntries
   entries.forEach((entry) => {
     // convenience: assume MAIN as entryStage if none provided
-    const entryData = Object.assign({}, entry, {
+    const entryData = {
+      ...entry,
       entryStage: entry.entryStage || MAIN,
-    });
+    };
     drawEngine.addDrawEntry(entryData);
   });
 
@@ -324,9 +325,10 @@ export function generateDrawDefinition(props) {
     payload: { action: 'generateDrawDefinition', payload: drawDetails },
   });
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     structureId,
     drawDefinition,
     conflicts,
-  });
+  };
 }

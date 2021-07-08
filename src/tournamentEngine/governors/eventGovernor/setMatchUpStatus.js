@@ -77,7 +77,7 @@ export function setMatchUpStatus(props) {
   }
 
   return matchUp && getDevContext()
-    ? Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) })
+    ? { ...SUCCESS, matchUp: makeDeepCopy(matchUp) }
     : SUCCESS;
 }
 

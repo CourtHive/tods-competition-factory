@@ -24,9 +24,10 @@ export function getVenuesAndCourts({ tournamentRecords }) {
       }
       venue.courts?.forEach((court) => {
         if (!uniqueCourtIds.includes(court.courtId)) {
-          const inContextCourt = Object.assign({}, makeDeepCopy(court), {
+          const inContextCourt = {
+            ...makeDeepCopy(court),
             venueId: venue.venueId,
-          });
+          };
           courts.push(inContextCourt);
           uniqueCourtIds.push(court.courtId);
         }

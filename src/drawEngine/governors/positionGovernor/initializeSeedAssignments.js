@@ -59,5 +59,5 @@ export function initializeStructureSeedAssignments({
     })
   );
 
-  return Object.assign({}, SUCCESS, { seedLimit: seedsCount });
+  return { ...SUCCESS, seedLimit: seedsCount };
 }

@@ -19,10 +19,11 @@ export function generateOutcomeFromScoreString({
 }) {
   if (!scoreString)
     return {
-      outcome: Object.assign({}, toBePlayed, {
+      outcome: {
+        ...toBePlayed,
         winningSide,
         matchUpStatus,
-      }),
+      },
     };
   if (winningSide && ![1, 2, undefined].includes(winningSide))
     return { error: INVALID_VALUES, winningSide };

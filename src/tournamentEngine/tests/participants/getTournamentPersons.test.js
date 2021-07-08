@@ -28,11 +28,10 @@ it('can retrieve and modify tournament persons', () => {
     }
   );
 
-  const updatedParticipant = Object.assign({}, targetedParticipant, {
-    person: Object.assign({}, targetedParticipant.person, {
-      personId: 'new-person-id',
-    }),
-  });
+  const updatedParticipant = {
+    ...targetedParticipant,
+    person: { ...targetedParticipant.person, personId: 'new-person-id' },
+  };
 
   let result = tournamentEngine.modifyParticipant({
     participant: updatedParticipant,
@@ -47,7 +46,7 @@ it('can retrieve and modify tournament persons', () => {
     updatedParticipant.person.personId
   );
 
-  const policyDefinition = Object.assign({}, PARTICIPANT_PRIVACY_DEFAULT);
+  const policyDefinition = { ...PARTICIPANT_PRIVACY_DEFAULT };
 
   const personId = updatedParticipant.person.personId;
   result = tournamentEngine.findParticipant({

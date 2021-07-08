@@ -204,10 +204,11 @@ export function getDrawData({
     true
   );
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     drawInfo: makeDeepCopy(drawInfo),
     structures: makeDeepCopy(structures),
-  });
+  };
 }
 
 /**

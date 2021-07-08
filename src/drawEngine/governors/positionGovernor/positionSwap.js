@@ -169,9 +169,7 @@ function eliminationParticipantSwap({ structure, assignments }) {
     {},
     ...assignments.map((assignment, index) => {
       const { drawPosition } = assignment;
-      const newAssignment = Object.assign({}, assignments[1 - index], {
-        drawPosition,
-      });
+      const newAssignment = { ...assignments[1 - index], drawPosition };
       return { [drawPosition]: newAssignment };
     })
   );

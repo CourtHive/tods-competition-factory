@@ -190,8 +190,9 @@ export function addPlayoffStructures(props) {
     });
 
   return getDevContext()
-    ? Object.assign({}, SUCCESS, {
+    ? {
+        ...SUCCESS,
         drawDefinition: makeDeepCopy(drawDefinition),
-      })
+      }
     : SUCCESS;
 }

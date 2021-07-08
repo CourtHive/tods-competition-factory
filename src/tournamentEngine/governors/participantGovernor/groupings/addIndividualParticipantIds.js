@@ -99,8 +99,9 @@ export function addIndividualParticipantIds({
     });
   }
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     groupingParticipant: makeDeepCopy(groupingParticipant),
     added: participantIdsToAdd.length,
-  });
+  };
 }

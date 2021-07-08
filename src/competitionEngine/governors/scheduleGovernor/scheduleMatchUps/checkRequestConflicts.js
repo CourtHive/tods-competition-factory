@@ -41,9 +41,7 @@ export function checkRequestConflicts({
 
   const relevantPersonRequests = personIds
     .map((personId) =>
-      personRequests[personId]?.map((request) =>
-        Object.assign({}, request, { personId })
-      )
+      personRequests[personId]?.map((request) => ({ ...request, personId }))
     )
     .filter((f) => f)
     .flat()

@@ -123,8 +123,9 @@ export function generateFlightProfile({
 
   addEventExtension({ event, extension });
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     flightProfile: makeDeepCopy({ flights, scaleAttributes, splitMethod }),
     splitEntries: (getDevContext() && splitEntries) || undefined,
-  });
+  };
 }

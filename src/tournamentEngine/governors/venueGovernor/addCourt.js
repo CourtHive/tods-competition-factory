@@ -32,7 +32,7 @@ export function addCourt({
 
   if (!venue.courts) venue.courts = [];
 
-  const courtRecord = Object.assign({}, courtTemplate(), { venueId });
+  const courtRecord = { ...courtTemplate(), venueId };
   if (!courtRecord.courtId) {
     courtRecord.courtId = UUID();
   }
@@ -83,11 +83,12 @@ export function addCourt({
     }
 
     return getDevContext() || returnDetails
-      ? Object.assign({}, SUCCESS, {
+      ? {
+          ...SUCCESS,
           court: makeDeepCopy(courtRecord),
           venueId,
-        })
-      : SUCCESS;
+        }
+      : { ...SUCCESS };
   }
 }
 
@@ -130,7 +131,7 @@ export function addCourts({
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });
     addNotice({ topic: MODIFY_VENUE, payload: { venue } });
-    return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
+    return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
   } else {
     return Object.assign(
       {},

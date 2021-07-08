@@ -42,7 +42,7 @@ export function getScaledEntries({
         scaleAttributes,
       });
       // return a new object so original entry is untouched
-      return Object.assign({}, entry, scaleItem);
+      return { ...entry, ...scaleItem };
     })
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;

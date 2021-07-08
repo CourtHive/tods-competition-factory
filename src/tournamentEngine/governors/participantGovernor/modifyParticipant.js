@@ -126,12 +126,13 @@ export function modifyParticipant({
   });
 
   if (getDevContext()) {
-    return Object.assign({}, SUCCESS, {
+    return {
+      ...SUCCESS,
       participant: makeDeepCopy(existingParticipant),
-    });
+    };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function generatePairParticipantName({ individualParticipants, newValues }) {

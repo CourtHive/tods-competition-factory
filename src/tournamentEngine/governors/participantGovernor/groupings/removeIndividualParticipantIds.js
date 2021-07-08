@@ -56,7 +56,7 @@ export function removeIndividualParticipantIds({
 
   if (error) return { error };
 
-  return Object.assign({}, SUCCESS, { removed });
+  return { ...SUCCESS, removed };
 }
 
 // TODO: consider situations where it would be invalid to remove an individualParticipantId

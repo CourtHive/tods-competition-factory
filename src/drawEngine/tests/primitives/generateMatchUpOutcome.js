@@ -44,9 +44,10 @@ export function generateMatchUpOutcome({
   let scoreStringSide1;
   let scoreStringSide2;
   const winnerPerspective = drawEngine.generateScoreString(outcome);
-  const loserPerspective = drawEngine.generateScoreString(
-    Object.assign({}, outcome, { reversed: true })
-  );
+  const loserPerspective = drawEngine.generateScoreString({
+    ...outcome,
+    reversed: true,
+  });
   if (winningSide) {
     scoreStringSide1 = winningSide === 1 ? winnerPerspective : loserPerspective;
     scoreStringSide2 = winningSide === 1 ? loserPerspective : winnerPerspective;

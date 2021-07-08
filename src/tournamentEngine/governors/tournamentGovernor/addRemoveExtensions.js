@@ -36,8 +36,7 @@ export function addExtension({ element, extension }) {
 export function removeExtension({ element, name }) {
   if (!element) return { error: MISSING_VALUE };
   if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
-  if (!element.extensions)
-    return Object.assign({}, SUCCESS, { message: NOT_FOUND });
+  if (!element.extensions) return { ...SUCCESS, message: NOT_FOUND };
 
   element.extensions = element.extensions.filter(
     (extension) => extension?.name !== name

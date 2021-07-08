@@ -10,11 +10,12 @@ import {
   competitionMatchUps,
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
+
 import { SUCCESS } from '../../../constants/resultConstants';
 
 function getTournamentIds({ tournamentRecords }) {
   const tournamentIds = Object.keys(tournamentRecords);
-  return Object.assign({}, SUCCESS, { tournamentIds });
+  return { ...SUCCESS, tournamentIds };
 }
 
 const queryGovernor = {

@@ -133,5 +133,5 @@ export function addEventEntryPairs({
     addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
   }
 
-  return Object.assign({}, result, { message });
+  return { ...result, message };
 }

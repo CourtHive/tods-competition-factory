@@ -26,8 +26,9 @@ export function getPairedParticipant({ tournamentRecord, participantIds }) {
   const existingPairedParticipant = existingPairedParticipants[0];
   if (!existingPairedParticipant) return { error: PARTICIPANT_NOT_FOUND };
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     participant: makeDeepCopy(existingPairedParticipant),
     duplicatedPairParticipants: makeDeepCopy(existingPairedParticipants),
-  });
+  };
 }

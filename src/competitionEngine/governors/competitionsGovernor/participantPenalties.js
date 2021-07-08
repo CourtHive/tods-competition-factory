@@ -39,7 +39,7 @@ export function addPenalty(props) {
   }
 
   return penaltyId
-    ? Object.assign({}, SUCCESS, { penaltyId })
+    ? { ...SUCCESS, penaltyId }
     : { error: PARTICIPANT_NOT_FOUND };
 }
 

@@ -72,13 +72,14 @@ export function allDrawMatchUps({
 }) {
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, category, gender, matchUpFormat } = event;
-  const additionalContext = Object.assign({}, context, {
+  const additionalContext = {
+    ...context,
     eventId,
     eventName,
     category,
     gender,
     matchUpFormat,
-  });
+  };
   const tournamentParticipants =
     participants ||
     (tournamentRecord && getParticipants({ tournamentRecord })) ||
@@ -117,13 +118,14 @@ export function allEventMatchUps({
   const { eventId, eventName, endDate, category, gender, matchUpFormat } =
     event;
 
-  const additionalContext = Object.assign({}, context, {
+  const additionalContext = {
+    ...context,
     eventId,
     eventName,
     category,
     gender,
     matchUpFormat,
-  });
+  };
   if (endDate) additionalContext.contextEndDate = endDate;
 
   participants =

@@ -95,7 +95,7 @@ export function addParticipant({
 
     if (existingPairParticipant) {
       if (!allowDuplicateParticipantIdPairs) {
-        return Object.assign({}, SUCCESS);
+        return { ...SUCCESS };
       }
     }
 
@@ -161,9 +161,10 @@ export function addParticipant({
     });
   }
 
-  const result = Object.assign({}, SUCCESS, {
+  const result = {
+    ...SUCCESS,
     participant: makeDeepCopy(participant),
-  });
+  };
   return result;
 }
 
@@ -225,16 +226,18 @@ export function addParticipants({
       topic: ADD_PARTICIPANTS,
       payload: { participants: addedParticipants },
     });
-    const result = Object.assign({}, SUCCESS, {
+    const result = {
+      ...SUCCESS,
       participants: makeDeepCopy(addedParticipants),
-    });
+    };
     if (notAdded.length) {
       Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
     }
     return result;
   } else {
-    return Object.assign({}, SUCCESS, {
+    return {
+      ...SUCCESS,
       message: 'No new participants to add',
-    });
+    };
   }
 }

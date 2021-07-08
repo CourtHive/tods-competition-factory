@@ -18,7 +18,7 @@ it('can initialize', () => {
 it('can load definition', () => {
   result = drawEngine.setState(definitionTemplate());
   expect(result).toHaveProperty(ERROR);
-  const template = Object.assign({}, definitionTemplate(), { drawId: 'foo' });
+  const template = { ...definitionTemplate(), drawId: 'foo' };
   drawEngine.setState(template);
   ({ drawDefinition: result } = drawEngine.getState());
   expect(result).toHaveProperty('drawId');

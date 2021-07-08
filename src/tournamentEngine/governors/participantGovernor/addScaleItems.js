@@ -120,7 +120,7 @@ export function setParticipantScaleItems({
 
   return errors.length
     ? { error: errors }
-    : Object.assign({}, SUCCESS, { modificationsApplied, message });
+    : { ...SUCCESS, modificationsApplied, message };
 }
 
 function isValidScaleItem({ scaleItem }) {

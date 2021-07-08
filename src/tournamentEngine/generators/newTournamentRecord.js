@@ -17,5 +17,5 @@ export function newTournamentRecord(props = {}) {
     if (!isISODateString(props.endDate) && !validDateString.test(props.endDate))
       return { error: INVALID_DATE };
   }
-  return Object.assign({}, props);
+  return { ...props };
 }

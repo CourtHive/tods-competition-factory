@@ -72,6 +72,6 @@ export function positionParticipantAction({
 
     addPositionActionTelemetry({ drawDefinition, positionAction });
 
-    return Object.assign({}, SUCCESS, { removedParticipantId });
+    return { ...SUCCESS, removedParticipantId };
   }
 }

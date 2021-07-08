@@ -68,5 +68,5 @@ export function modifyCourt({
     addNotice({ topic: MODIFY_VENUE, payload: { venue } });
   }
 
-  return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
+  return { ...SUCCESS, court: makeDeepCopy(court) };
 }

@@ -72,7 +72,5 @@ export function createGroupParticipant({
     });
   }
 
-  return Object.assign({}, SUCCESS, {
-    participant: makeDeepCopy(groupParticipant),
-  });
+  return { ...SUCCESS, participant: makeDeepCopy(groupParticipant) };
 }

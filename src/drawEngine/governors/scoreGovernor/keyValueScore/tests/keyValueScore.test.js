@@ -111,12 +111,11 @@ it('can delete values', () => {
 
   expect(result.scoreString).toEqual('0-6 0-');
 
-  const nextResult = enterKeyValues(
-    Object.assign({}, result, {
-      valuePairs: [{ lowSide: 1, value: '6' }],
-      shiftFirst: false,
-    })
-  );
+  const nextResult = enterKeyValues({
+    ...result,
+    valuePairs: [{ lowSide: 1, value: '6' }],
+    shiftFirst: false,
+  });
 
   expect(nextResult.scoreString.trim()).toEqual('0-6 0-6');
 });
@@ -182,15 +181,14 @@ it('can properly backspace in timed sets', () => {
 
   expect(result.scoreString).toEqual('1-1');
 
-  const nextResult = enterKeyValues(
-    Object.assign({}, result, {
-      valuePairs: [
-        { lowSide: 1, value: 'backspace' },
-        { lowSide: 1, value: '8' },
-      ],
-      shiftFirst: false,
-    })
-  );
+  const nextResult = enterKeyValues({
+    ...result,
+    valuePairs: [
+      { lowSide: 1, value: 'backspace' },
+      { lowSide: 1, value: '8' },
+    ],
+    shiftFirst: false,
+  });
 
   expect(nextResult.scoreString.trim()).toEqual('1-8');
 });
@@ -213,15 +211,14 @@ it('can properly backspace in timed sets', () => {
 
   expect(result.scoreString).toEqual('0-0');
 
-  const nextResult = enterKeyValues(
-    Object.assign({}, result, {
-      valuePairs: [
-        { lowSide: 1, value: 'backspace' },
-        { lowSide: 1, value: '8' },
-      ],
-      shiftFirst: false,
-    })
-  );
+  const nextResult = enterKeyValues({
+    ...result,
+    valuePairs: [
+      { lowSide: 1, value: 'backspace' },
+      { lowSide: 1, value: '8' },
+    ],
+    shiftFirst: false,
+  });
 
   expect(nextResult.scoreString.trim()).toEqual('0-8');
 });

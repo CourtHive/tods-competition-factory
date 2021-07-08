@@ -89,7 +89,7 @@ export function generateTeamsFromParticipantAttribute(props) {
   }
 
   if (participantsAdded) {
-    return Object.assign({}, SUCCESS, { participantsAdded });
+    return { ...SUCCESS, participantsAdded };
   } else {
     return { error: 'No matching participants found' };
   }

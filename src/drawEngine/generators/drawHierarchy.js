@@ -188,7 +188,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
             structureId,
           },
         ];
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     }
@@ -225,13 +225,13 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
           previousRound[i],
         ];
 
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     } else if (matchRound) {
       roundMatchUps.forEach((matchUp, i) => {
         const children = [previousRound[i * 2], previousRound[i * 2 + 1]];
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     }

@@ -35,10 +35,10 @@ export function addVenue({
     }
 
     return getDevContext()
-      ? Object.assign({}, { venue: makeDeepCopy(venue) }, SUCCESS)
+      ? { ...SUCCESS, venue: makeDeepCopy(venue) }
       : returnDetails
       ? venue
-      : SUCCESS;
+      : { ...SUCCESS };
   } else {
     return { error: VENUE_EXISTS };
   }

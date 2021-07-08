@@ -234,10 +234,11 @@ export function setMatchUpStatus(props) {
   }
 
   return getDevContext()
-    ? Object.assign({}, SUCCESS, {
+    ? {
+        ...SUCCESS,
         matchUp: makeDeepCopy(matchUp),
         messages,
-      })
+      }
     : SUCCESS;
 }
 

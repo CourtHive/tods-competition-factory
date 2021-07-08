@@ -61,5 +61,5 @@ export function removeExtension({ tournamentRecords, name }) {
     if (result.message !== NOT_FOUND) removed++;
   }
 
-  return Object.assign({}, SUCCESS, { removed });
+  return { ...SUCCESS, removed };
 }

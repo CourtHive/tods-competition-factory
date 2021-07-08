@@ -54,7 +54,7 @@ export function attachPolicy({
 
   return !applied?.length
     ? { error: EXISTING_POLICY_TYPE }
-    : Object.assign({}, SUCCESS, { applied });
+    : { ...SUCCESS, applied };
 }
 
 export function attachEventPolicy({

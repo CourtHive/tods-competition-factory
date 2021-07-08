@@ -78,5 +78,5 @@ export function clearDrawPosition({
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
-  return Object.assign({}, SUCCESS, { participantId });
+  return { ...SUCCESS, participantId };
 }

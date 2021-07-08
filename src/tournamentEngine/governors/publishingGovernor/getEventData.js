@@ -92,5 +92,5 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     createdAt: timeItem?.createdAt,
   };
 
-  return Object.assign({}, SUCCESS, { eventData: makeDeepCopy(eventData) });
+  return { ...SUCCESS, eventData: makeDeepCopy(eventData) };
 }
