@@ -6,6 +6,7 @@ import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { structureSort } from '../../getters/structureSort';
 import { generateDrawType } from './generateDrawType';
+import { removeStructure } from './removeStructure';
 import { getSourceRounds } from './getSourceRounds';
 
 import {
@@ -20,6 +21,7 @@ const structureGovernor = {
   getStructureQualifiersCount,
   getAvailablePlayoffRounds,
   addPlayoffStructures,
+  removeStructure,
 
   structureSort,
   generateDrawType,

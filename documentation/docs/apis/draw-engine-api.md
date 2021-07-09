@@ -955,6 +955,18 @@ drawEngine.removeEntry({
 
 ---
 
+## removeStructure
+
+Removes targeted `drawDefinition.structure` and all other child `structures` along with all associated `drawDefinition.links`.
+
+```js
+const { removedMatchUpIds } = drawEngine.removeStructure({
+  structureId,
+});
+```
+
+---
+
 ## reset
 
 Clears the drawEngine state.

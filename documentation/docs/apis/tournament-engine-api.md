@@ -2138,6 +2138,19 @@ tournamentEngine.removeSeeding({
 
 ---
 
+## removeStructure
+
+Removes targeted `drawDefinition.structure` and all other child `structures` along with all associated `drawDefinition.links`.
+
+```js
+const { removedMatchUpIds } = tournamentEngine.removeStructure({
+  drawId,
+  structureId,
+});
+```
+
+---
+
 ## removeTournamentExtension
 
 ```js

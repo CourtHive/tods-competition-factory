@@ -59,6 +59,7 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
+import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
 import { generateVoluntaryConsolationStructure } from './generateVoluntaryConsolationStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
@@ -93,6 +94,7 @@ const eventGovernor = {
   addPlayoffStructures,
   deleteDrawDefinitions,
   getAvailablePlayoffRounds,
+  removeStructure,
 
   generateSeedingScaleItems,
 

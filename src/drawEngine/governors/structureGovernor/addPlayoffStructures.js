@@ -97,10 +97,11 @@ export function addPlayoffStructures(props) {
     : playoffRoundsRanges;
 
   const newLinks = [];
-  sourceRounds.forEach((roundNumber) => {
+  for (const roundNumber of sourceRounds) {
     const roundInfo = roundsRanges.find(
       (roundInfo) => roundInfo.roundNumber === roundNumber
     );
+    if (!roundInfo) return { error: INVALID_VALUES, message: { roundNumber } };
     const drawSize = roundInfo.finishingPositions.length;
     const finishingPositionOffset =
       Math.min(...roundInfo.finishingPositions) - 1;
@@ -146,7 +147,7 @@ export function addPlayoffStructures(props) {
 
       newLinks.push(link);
     }
-  });
+  }
 
   drawDefinition.links = (drawDefinition.links || []).concat(...newLinks);
 
