@@ -6,6 +6,8 @@ import tournamentEngineSync from '../sync';
 import mocksEngine from '../../mocksEngine';
 
 import { METHOD_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
+import { DOUBLES } from '../../constants/eventConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 const asyncCompetitionEngine = competitionEngineAsync(true);
@@ -49,5 +51,51 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
       { method: 'getCompetitionDateRange' },
     ]);
     expect(result.error).toEqual(METHOD_NOT_FOUND);
+  }
+);
+
+it.each([tournamentEngineSync, asyncTournamentEngine])(
+  'tournamentEngine processes executionQueue params',
+  async (tournamentEngine) => {
+    const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];
+    const { tournamentRecord } = await mocksEngine.generateTournamentRecord({
+      drawProfiles,
+    });
+    await tournamentEngine.setState(tournamentRecord);
+    let result = await tournamentEngine.executionQueue([
+      {
+        method: 'getTournamentParticipants',
+        params: { participantFilters: { participantTypes: [PAIR] } },
+      },
+      {
+        method: 'getTournamentParticipants',
+        params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
+      },
+    ]);
+    expect(result[0].tournamentParticipants.length).toEqual(32);
+    expect(result[1].tournamentParticipants.length).toEqual(64);
+  }
+);
+
+it.only.each([competitionEngineSync, asyncCompetitionEngine])(
+  'competitionEngine processes executionQueue params',
+  async (competitionEngine) => {
+    const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];
+    const { tournamentRecord } = await mocksEngine.generateTournamentRecord({
+      drawProfiles,
+    });
+    await competitionEngine.setState(tournamentRecord);
+    let result = await competitionEngine.executionQueue([
+      {
+        method: 'getCompetitionParticipants',
+        params: { participantFilters: { participantTypes: [PAIR] } },
+      },
+      {
+        method: 'getCompetitionParticipants',
+        params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
+      },
+    ]);
+    expect(result[0].competitionParticipants.length).toEqual(32);
+    expect(result[1].competitionParticipants.length).toEqual(64);
   }
 );
