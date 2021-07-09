@@ -77,7 +77,7 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
   }
 );
 
-it.only.each([competitionEngineSync, asyncCompetitionEngine])(
+it.each([competitionEngineSync, asyncCompetitionEngine])(
   'competitionEngine processes executionQueue params',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 32, eventType: DOUBLES }];
