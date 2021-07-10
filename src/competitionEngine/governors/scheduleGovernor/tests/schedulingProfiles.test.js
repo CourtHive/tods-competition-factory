@@ -89,6 +89,28 @@ test.each([competitionEngineSync])(
     result = competitionEngine.setSchedulingProfile({ schedulingProfile: [] });
     expect(result.success).toEqual(true);
 
+    result = competitionEngine.getVenuesAndCourts();
+    expect(result.venues.length).toEqual(2);
+    expect(result.courts.length).toEqual(12);
+
+    result = tournamentEngine.setTournamentId(firstRecord.tournamentId);
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.deleteVenues();
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = tournamentEngine.deleteVenues({});
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = tournamentEngine.deleteVenues({ venueIds: 'foo' });
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = tournamentEngine.deleteVenues({ venueIds: [] });
+    expect(result.success).toEqual(true);
+    result = tournamentEngine.deleteVenues({ venueIds });
+    expect(result.success).toEqual(true);
+
+    result = competitionEngine.getVenuesAndCourts();
+    expect(result.venues.length).toEqual(0);
+    expect(result.courts.length).toEqual(0);
+
     result = tournamentEngine.setSchedulingProfile({});
     expect(result.error).toEqual(INVALID_VALUES);
 

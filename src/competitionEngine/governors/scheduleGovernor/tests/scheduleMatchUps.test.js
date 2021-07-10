@@ -5,6 +5,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import { OFFICIAL } from '../../../../constants/participantRoles';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import {
+  MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../../constants/errorConditionConstants';
@@ -62,6 +63,11 @@ it('can add events, venues, and schedule matchUps', () => {
     extensions: [{ name: 'anotherExtension', value: 'anotherExtensionValue' }],
   };
 
+  result = competitionEngine.addParticipant({
+    tournamentId: 'bogusId',
+    participant,
+  });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
   result = competitionEngine.addParticipant({ tournamentId, participant });
   expect(result.success).toEqual(true);
   const officialParticipantId = result.participant.participantId;

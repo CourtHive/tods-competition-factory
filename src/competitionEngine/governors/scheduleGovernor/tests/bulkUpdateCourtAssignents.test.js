@@ -21,7 +21,6 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
 
   let { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
-    inContext: true,
   });
 
   tournamentEngine.setState(tournamentRecord);

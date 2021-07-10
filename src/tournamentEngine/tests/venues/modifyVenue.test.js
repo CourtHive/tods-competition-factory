@@ -5,6 +5,10 @@ import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venu
 import { tournamentEngine } from '../../sync';
 
 import {
+  COURT_NOT_FOUND,
+  INVALID_DATE_AVAILABILITY,
+  MISSING_COURT_ID,
+  MISSING_DATE_AVAILABILITY,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   VENUE_NOT_FOUND,
@@ -198,12 +202,13 @@ it('can define and modify a venue', () => {
   ({ venue } = tournamentEngine.findVenue({ venueId }));
   expect(venue.courts.length).toEqual(1);
 
+  const courtId = 'b9df6177-e430-4a70-ba47-9b9ff60258cb';
   modifications = {
     venueName,
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+        courtId,
         courtName: 'Custom Court 1',
         dateAvailability: [
           {
@@ -241,6 +246,21 @@ it('can define and modify a venue', () => {
   expect(venue.venueName).toEqual(venueName);
   expect(venue.venueAbbreviation).toEqual(venueAbbreviation);
   expect(venue.courts.length).toEqual(2);
+
+  result = tournamentEngine.modifyCourtAvailability();
+  expect(result.error).toEqual(MISSING_COURT_ID);
+  result = tournamentEngine.modifyCourtAvailability({ courtId: 'someId' });
+  expect(result.error).toEqual(MISSING_DATE_AVAILABILITY);
+  result = tournamentEngine.modifyCourtAvailability({
+    courtId: 'someId',
+    dateAvailability: [],
+  });
+  expect(result.error).toEqual(COURT_NOT_FOUND);
+  result = tournamentEngine.modifyCourtAvailability({
+    courtId,
+    dateAvailability: [{ foo: 'foo' }],
+  });
+  expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
 });
 
 test('miscellaneous items for coverage', () => {

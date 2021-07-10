@@ -1,14 +1,19 @@
 import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
+import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { tournamentEngine } from '../../sync';
 
-import {
-  MISSING_MATCHUP_ID,
-  MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_COURT_ID,
+  MISSING_DRAW_ID,
+  MISSING_MATCHUP_ID,
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
+} from '../../../constants/errorConditionConstants';
 import {
   ASSIGN_COURT,
   SCHEDULED_DATE,
@@ -51,7 +56,7 @@ it('can add events, venues, and schedule matchUps', () => {
     participants,
     event: eventResult,
   };
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
@@ -273,6 +278,13 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(schedule.venueId).toEqual(venueId);
   expect(schedule.scheduledTime).toEqual(scheduledTime);
 
+  result = tournamentEngine.deleteCourt();
+  expect(result.error).toEqual(MISSING_COURT_ID);
+  result = tournamentEngine.getVenues();
+  result = tournamentEngine.deleteCourt({ courtId });
+  expect(result.error).not.toBeUndefined();
+  expect(result.message).not.toBeUndefined();
+
   let { venues } = tournamentEngine.getVenues();
   expect(venues.length).toEqual(1);
 
@@ -309,6 +321,18 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
   }));
   expect(schedule.scheduledTime).toBeUndefined();
+
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  result = removeCourtAssignment({ drawDefinition });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+  result = removeCourtAssignment({ matchUpId });
+  expect(result.error).toEqual(MISSING_DRAW_ID);
+  result = removeCourtAssignment({ matchUpId, drawId });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+  result = removeCourtAssignment({ drawDefinition, matchUpId: 'foo' });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+  result = removeCourtAssignment({ drawDefinition, matchUpId });
+  expect(result.success).toEqual(true);
 });
 
 it('adds venueId to matchUp.schedule when court is assigned', () => {

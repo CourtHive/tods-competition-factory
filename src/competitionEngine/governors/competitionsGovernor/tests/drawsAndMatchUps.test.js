@@ -1,7 +1,61 @@
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
-import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
+import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
+
+import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
+import {
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
+
+test('competitionEngine can addDrawDefinitions', () => {
+  const drawSize = 32;
+  const secondDrawSize = 16;
+  const totalExpectedMatchUps = drawSize - 1 + secondDrawSize - 1;
+
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize }],
+  });
+  const { tournamentId } = tournamentRecord;
+  competitionEngine.setState(tournamentRecord);
+
+  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  expect(matchUps.length).toEqual(31);
+
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawSize: secondDrawSize,
+    eventId,
+  });
+  let result = competitionEngine.addDrawDefinition({
+    tournamentId,
+    drawDefinition,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+  result = competitionEngine.addDrawDefinition({
+    tournamentId: 'bogusId',
+    eventId,
+    drawDefinition,
+  });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+  result = competitionEngine.addDrawDefinition({
+    tournamentId,
+    eventId: 'bogusId',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+  result = competitionEngine.addDrawDefinition({
+    tournamentId,
+    eventId,
+    drawDefinition,
+  });
+  expect(result.success).toEqual(true);
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  expect(matchUps.length).toEqual(totalExpectedMatchUps);
+});
 
 test('competitionEngine can setMatchUpStatus', () => {
   const drawProfiles = [{ drawSize: 32 }];

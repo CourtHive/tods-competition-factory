@@ -1,7 +1,7 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
-test('competitionEngine can add drawDefinitions to tournaments', () => {
+test('competitionEngine can modify venues', () => {
   const startDate = '2020-01-01';
   const { tournamentRecord: firstTournament } =
     mocksEngine.generateTournamentRecord({ startDate });

@@ -20,7 +20,11 @@ import { DOUBLES } from '../../constants/eventConstants';
  * @param {string} endDate - optional - ISO string date
  * @param {object} participantsProfile - { participantsCount, participantType }
  * @param {object[]} drawProfiles - [{ category, drawSize, drawType, eventType, matchUpFormat }]
+ * @param {object[]} venueProfiles - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
  * @param {object[]} outcomes - [{ roundNumber, roundPosition, scoreString, winningSide, ... }]
+ * @param {boolean} completeAllMatchUps
+ * @param {boolean} randomWinningSide
+ * @param {boolean} inContext
  *
  */
 export function generateTournamentRecord({
@@ -35,20 +39,11 @@ export function generateTournamentRecord({
 
   completeAllMatchUps,
   randomWinningSide,
-  inContext,
+  // inContext,
   goesTo,
 } = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
-
-  const {
-    addressProps,
-    nationalityCodes,
-    nationalityCodesCount,
-    valuesInstanceLimit,
-
-    sex,
-  } = participantsProfile || {};
 
   if (
     (startDate && !isValidDateString(startDate)) ||
@@ -95,6 +90,16 @@ export function generateTournamentRecord({
   if (participantsCount < minPartcipantsCount)
     participantsCount = minPartcipantsCount;
   if (participantType === PAIR) participantsCount = participantsCount / 2;
+
+  const {
+    addressProps,
+    nationalityCodes,
+    nationalityCodesCount,
+    valuesInstanceLimit,
+    inContext,
+
+    sex,
+  } = participantsProfile || {};
 
   const { participants } = generateParticipants({
     nationalityCodesCount,
