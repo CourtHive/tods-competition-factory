@@ -1,11 +1,25 @@
-import tournamentEngine from '../../sync';
 import { generateTournamentRecord } from '../../../mocksEngine/generators/generateTournamentRecord';
+import tournamentEngine from '../../sync';
 
-import {
-  MISSING_DRAW_DEFINITION,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
+  MISSING_PARTICIPANT_ID,
+  MISSING_VALUE,
+  NOT_FOUND,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
+import {
+  addExtension,
+  addParticipantExtension,
+  removeExtension,
+  removeParticipantExtension,
+} from '../../governors/tournamentGovernor/addRemoveExtensions';
+import {
+  addNotes,
+  removeNotes,
+} from '../../governors/tournamentGovernor/addRemoveNotes';
 
 it('can add and remove extensions from tournamentRecords', () => {
   const drawProfiles = [{ drawSize: 32 }];
@@ -145,4 +159,51 @@ it('can add and remove extensions from tournamentRecords', () => {
     drawId,
   });
   expect(result.message).toEqual(NOT_FOUND);
+});
+
+test('add and remove primitives throw appropriate errors', () => {
+  let result = addExtension();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = addExtension({ element: 'bogus' });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = addExtension({ element: {} });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = addExtension({ element: {}, extension: 'bogus' });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = addExtension({
+    element: {},
+    extension: { name: 'name', value: 'value' },
+  });
+  expect(result.success).toEqual(true);
+
+  result = removeExtension();
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = removeExtension({ element: 'bogus' });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = removeExtension({ element: {} });
+  expect(result.error).toEqual(MISSING_VALUE);
+  result = removeExtension({ element: {}, name: 'something' });
+  expect(result.success).toEqual(true);
+
+  result = addParticipantExtension();
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+  result = addParticipantExtension({ participantId: 'bogus' });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+
+  result = removeParticipantExtension();
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+  result = removeParticipantExtension({ participantId: 'bogus' });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+
+  result = addNotes();
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = addNotes({ element: 'bogus' });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = addNotes({ element: {} });
+  expect(result.error).toEqual(MISSING_VALUE);
+
+  result = removeNotes();
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = removeNotes({ element: {} });
+  expect(result.success).toEqual(true);
 });

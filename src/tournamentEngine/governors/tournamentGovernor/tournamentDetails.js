@@ -1,4 +1,5 @@
 import { dateValidation } from '../../../fixtures/validations/regex';
+import { addNotes } from './addRemoveNotes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -27,8 +28,7 @@ export function setTournamentName({
 
 export function setTournamentNotes({ tournamentRecord, notes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  tournamentRecord.notes = notes;
-  return SUCCESS;
+  return addNotes({ element: tournamentRecord, notes });
 }
 
 // TODO: check for matchUps that must be unscheduled with change in date
@@ -40,7 +40,14 @@ export function setTournamentStartDate({ tournamentRecord, startDate }) {
     tournamentRecord.startDate &&
     new Date(startDate) > new Date(tournamentRecord.startDate)
   ) {
-    console.log('TODO: check for events to be unscheduled');
+    // console.log('TODO: check for events to be unscheduled');
+  }
+
+  if (
+    tournamentRecord.endDate &&
+    new Date(startDate) > new Date(tournamentRecord.endDate)
+  ) {
+    tournamentRecord.endDate = startDate;
   }
   tournamentRecord.startDate = startDate;
   return SUCCESS;
@@ -55,7 +62,13 @@ export function setTournamentEndDate({ tournamentRecord, endDate }) {
     tournamentRecord.endDate &&
     new Date(endDate) < new Date(tournamentRecord.endDate)
   ) {
-    console.log('TODO: check for events to be unscheduled');
+    // console.log('TODO: check for events to be unscheduled');
+  }
+  if (
+    tournamentRecord.startDate &&
+    new Date(endDate) < new Date(tournamentRecord.startDate)
+  ) {
+    tournamentRecord.startDate = endDate;
   }
   tournamentRecord.endDate = endDate;
   return SUCCESS;

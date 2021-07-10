@@ -211,8 +211,11 @@ it('can set tournament categories', () => {
     },
   ];
   result = tournamentEngine.setTournamentCategories({ categories });
-  expect(result?.success).toEqual(true);
+  expect(result.success).toEqual(true);
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.tournamentCategories.length).toEqual(3);
+
+  result = tournamentEngine.setTournamentCategories();
+  expect(result.success).toEqual(true);
 });

@@ -6,6 +6,7 @@ import {
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import {
+  INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
@@ -63,8 +64,7 @@ export function linkTournaments({ tournamentRecords }) {
       value: { tournamentIds },
     };
 
-    const result = addExtension({ tournamentRecords, extension });
-    return result;
+    return addExtension({ tournamentRecords, extension });
   }
 
   return SUCCESS;
@@ -89,11 +89,14 @@ export function unlinkTournaments({ tournamentRecords }) {
 }
 
 export function unlinkTournament({ tournamentRecords, tournamentId }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
   const { tournamentIds, error } = getTournamentIds(tournamentRecords);
   if (error) return { error };
+
+  if (!tournamentIds.includes(tournamentId))
+    return { error: MISSING_TOURNAMENT_ID };
 
   // not using bulk update function here to handle scenario where
   // tournamentRecords loaded into state are not all linked
@@ -124,7 +127,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
       !linkedTournamentIds?.length ||
       !linkedTournamentIds.includes(tournamentId)
     )
-      return SUCCESS;
+      return true;
 
     const tournamentIds = linkedTournamentIds.filter(
       (linkedTournamentId) => linkedTournamentId !== tournamentId

@@ -1,23 +1,61 @@
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
-import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 
+import { intersection } from '../../../../utilities';
+import { unlinkTournament } from '../tournamentLinks';
+
 import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_TOURNAMENT_ID,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../../constants/errorConditionConstants';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
+
+test('unlinkTournament coverage', () => {
+  let result = unlinkTournament({});
+  expect(result.error).not.toBeUndefined();
+  result = unlinkTournament({ tournamentRecords: 'bogus' });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = unlinkTournament({ tournamentRecords: {} });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+  result = unlinkTournament({ tournamentRecords: {}, tournamentId: 'bogus' });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+  result = unlinkTournament({
+    tournamentRecords: { tournamentId: {} },
+    tournamentId: 'tournamentId',
+  });
+  expect(result.success).toEqual(true);
+});
+
+test('', () => {
+  let result = competitionEngineSync.unlinkTournament({
+    tournamentId: 'bogusId',
+  });
+  expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+
+  result = competitionEngineSync.linkTournaments();
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
+});
 
 test.each([competitionEngineSync, asyncCompetitionEngine])(
   'can link and unlink tournamentRecords loaded into competitionEngine',
   async (competitionEngine) => {
     const { tournamentRecord: firstRecord } =
       mocksEngine.generateTournamentRecord();
+    await competitionEngine.setState(firstRecord);
+
+    let result = await competitionEngine.linkTournaments();
+    expect(result.success).toEqual(true);
+
     const { tournamentRecord: secondRecord } =
       mocksEngine.generateTournamentRecord();
     await competitionEngine.setState([firstRecord, secondRecord]);
 
     // two tournamentRecords are in competitionEngine state... now link them
-    let result = await competitionEngine.linkTournaments();
+    result = await competitionEngine.linkTournaments();
     expect(result.success).toEqual(true);
 
     let { tournamentIds } = await getLinkedIds(competitionEngine);
