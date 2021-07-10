@@ -26,8 +26,11 @@ export function getCheckedInParticipantIds({ matchUp }) {
     return { error: INVALID_MATCHUP };
   }
 
-  const { sideParticipantIds, nestedIndividualParticipantIds } =
-    getMatchUpParticipantIds({ matchUp });
+  const {
+    sideParticipantIds,
+    nestedIndividualParticipantIds,
+    allRelevantParticipantIds,
+  } = getMatchUpParticipantIds({ matchUp });
 
   const timeItems = matchUp.timeItems || [];
   const checkInItems = timeItems
@@ -94,5 +97,9 @@ export function getCheckedInParticipantIds({ matchUp }) {
     true
   );
 
-  return { allParticipantsCheckedIn, checkedInParticipantIds };
+  return {
+    allParticipantsCheckedIn,
+    checkedInParticipantIds,
+    allRelevantParticipantIds,
+  };
 }

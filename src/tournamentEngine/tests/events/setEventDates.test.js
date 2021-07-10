@@ -3,7 +3,10 @@ import mocksEngine from '../../../mocksEngine';
 
 import tournamentEngineAsync from '../../async';
 import tournamentEngineSync from '../../sync';
-import { INVALID_DATE } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_DATE,
+  MISSING_EVENT,
+} from '../../../constants/errorConditionConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 
@@ -28,6 +31,14 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 
     const newEventStartDate = dateStringDaysChange(startDate, 1);
     let result = await tournamentEngine.setEventStartDate({
+      startDate: newEventStartDate,
+    });
+    expect(result.error).toEqual(MISSING_EVENT);
+    result = await tournamentEngine.setEventStartDate({
+      eventId,
+    });
+    expect(result.error).toEqual(INVALID_DATE);
+    result = await tournamentEngine.setEventStartDate({
       eventId,
       startDate: newEventStartDate,
     });
@@ -37,12 +48,26 @@ test.each([tournamentEngineSync, asyncTournamentEngine])(
 
     const newEventEndDate = dateStringDaysChange(endDate, -1);
     result = await tournamentEngine.setEventEndDate({
+      endDate: newEventEndDate,
+    });
+    expect(result.error).toEqual(MISSING_EVENT);
+    result = await tournamentEngine.setEventEndDate({
+      eventId,
+    });
+    expect(result.error).toEqual(INVALID_DATE);
+    result = await tournamentEngine.setEventEndDate({
       eventId,
       endDate: newEventEndDate,
     });
     expect(result.success).toEqual(true);
     ({ event } = await tournamentEngine.getEvent({ eventId }));
     expect(event.endDate).toEqual(newEventEndDate);
+
+    result = await tournamentEngine.setEventEndDate({
+      eventId,
+      endDate: startDate,
+    });
+    expect(result.success).toEqual(true);
   }
 );
 

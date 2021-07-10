@@ -7,6 +7,12 @@ import { DOUBLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
 import { PAIR } from '../../../constants/participantTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_PARTICIPANT_ID,
+  MISSING_MATCHUP_ID,
+  MISSING_PARTICIPANT_ID,
+  PARTICIPANT_NOT_CHECKED_IN,
+} from '../../../constants/errorConditionConstants';
 
 it('can check participants in and out', () => {
   const participantsProfile = {
@@ -57,6 +63,18 @@ it('can check participants in and out', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
+  result = tournamentEngine.checkInParticipant({
+    matchUp,
+    participantId: individualParticipantIds[0],
+  });
+  expect(result).toMatchObject(SUCCESS);
+
+  result = tournamentEngine.checkInParticipant({
+    matchUp,
+    participantId: 'bogusId',
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_ID);
+
   ({
     upcomingMatchUps: [matchUp],
   } = tournamentEngine.drawMatchUps({
@@ -68,8 +86,6 @@ it('can check participants in and out', () => {
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds.length).toEqual(1);
 
-  // attempt to check in participant already checked in
-  // perhaps this should not return error?
   result = tournamentEngine.checkInParticipant({
     drawId,
     matchUpId: matchUp.matchUpId,
@@ -170,6 +186,21 @@ it('can check participants in and out', () => {
     participantId: checkedInParticipantIds[0],
   });
   expect(result).toMatchObject(SUCCESS);
+
+  result = tournamentEngine.checkOutParticipant({
+    drawId,
+    participantId: checkedInParticipantIds[0],
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+  result = tournamentEngine.checkOutParticipant({
+    matchUp,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+  result = tournamentEngine.checkOutParticipant({
+    matchUp,
+    participantId: checkedInParticipantIds[0],
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_CHECKED_IN);
 
   ({
     upcomingMatchUps: [matchUp],
