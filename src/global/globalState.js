@@ -44,7 +44,11 @@ export function createInstanceState() {
   //Only applicable for async
   // global test coverage doesn't appear becuase this is run against built package
   if (_globalStateProvider.createInstanceState) {
-    _globalStateProvider.createInstanceState();
+    try {
+      _globalStateProvider.createInstanceState();
+    } catch (error) {
+      return { error };
+    }
     return { success: true };
   } else {
     return { error: 'Missing async state provider' };

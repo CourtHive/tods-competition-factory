@@ -4,9 +4,6 @@ import competitionEngineSync from '../../../sync';
 
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 
-// import competitionEngineAsync from '../../../async';
-// const asyncCompetitionEngine = competitionEngineAsync();
-
 test.each([competitionEngineSync])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
   async (competitionEngine) => {

@@ -875,6 +875,10 @@ competitionEngine.setMatchUpStatus({
 
 Loads tournament records into competitionEngine; supports both an array of tournamentRecords and an object with tournamentId keys.
 
+:::info
+By default a deep copy of the `tournamentRecords` is made so that mutations made by `competitionEngine` do not affect the source objects. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+:::
+
 ```js
 const tournamentRecords = [tournamentRecord];
 // or const tournamentRecords = { [tournamentId]: tournamentRecord }

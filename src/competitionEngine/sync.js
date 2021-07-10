@@ -67,8 +67,8 @@ export const competitionEngine = (function () {
     return processResult(result);
   };
 
-  fx.executionQueue = (directives, rollBackOnError) =>
-    executionQueue(fx, directives, rollBackOnError);
+  fx.executionQueue = (directives, rollbackOnError) =>
+    executionQueue(fx, directives, rollbackOnError);
 
   return fx;
 
@@ -87,7 +87,7 @@ export const competitionEngine = (function () {
     const tournamentRecords = getTournamentRecords();
 
     const snapshot =
-      params?.rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+      params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
     const result = fx({
       ...params,
@@ -121,12 +121,12 @@ export const competitionEngine = (function () {
     });
   }
 
-  function executionQueue(fx, directives, rollBackOnError) {
+  function executionQueue(fx, directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
 
     const snapshot =
-      rollBackOnError && makeDeepCopy(tournamentRecords, false, true);
+      rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
     const results = [];
     for (const directive of directives) {
@@ -140,9 +140,9 @@ export const competitionEngine = (function () {
         tournamentRecords,
       });
 
-      if (result?.error && snapshot) {
-        setState(snapshot);
-        return result;
+      if (result?.error) {
+        if (snapshot) setState(snapshot);
+        return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
     }
@@ -150,7 +150,7 @@ export const competitionEngine = (function () {
     notifySubscribers();
     deleteNotices();
 
-    return results;
+    return { results };
   }
 })();
 

@@ -111,7 +111,7 @@ export const drawEngine = (function () {
 
   function invoke({ params, governor, key }) {
     const snapshot =
-      params?.rollBackOnError && makeDeepCopy(drawDefinition, false, true);
+      params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
     const result = governor[key]({
       tournamentParticipants,

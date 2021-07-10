@@ -5,12 +5,54 @@ import tournamentEngineSync from '../sync';
 
 import mocksEngine from '../../mocksEngine';
 
-import { METHOD_NOT_FOUND } from '../../constants/errorConditionConstants';
+import {
+  METHOD_NOT_FOUND,
+  MISSING_EVENT,
+  MISSING_VALUE,
+} from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES } from '../../constants/eventConstants';
 
 const asyncTournamentEngine = tournamentEngineAsync(true);
 const asyncCompetitionEngine = competitionEngineAsync(true);
+
+it.each([tournamentEngineSync, asyncTournamentEngine])(
+  'supports rollbackOnError',
+  async (tournamentEngine) => {
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+    await tournamentEngine.setState(tournamentRecord);
+    let result = await tournamentEngine.executionQueue([
+      { method: 'getEvent' },
+    ]);
+    expect(result.error).toEqual(MISSING_EVENT);
+    expect(result.rolledBack).toEqual(false);
+    result = await tournamentEngine.executionQueue(
+      [{ method: 'getEvent' }],
+      true
+    );
+    expect(result.error).toEqual(MISSING_EVENT);
+    expect(result.rolledBack).toEqual(true);
+  }
+);
+
+it.each([competitionEngineSync, asyncCompetitionEngine])(
+  'supports rollbackOnError',
+  async (competitionEngine) => {
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+    await competitionEngine.setState(tournamentRecord);
+    let result = await competitionEngine.executionQueue([
+      { method: 'toggleParticipantCheckInState' },
+    ]);
+    expect(result.error).toEqual(MISSING_VALUE);
+    expect(result.rolledBack).toEqual(false);
+    result = await competitionEngine.executionQueue(
+      [{ method: 'toggleParticipantCheckInState' }],
+      true
+    );
+    expect(result.error).toEqual(MISSING_VALUE);
+    expect(result.rolledBack).toEqual(true);
+  }
+);
 
 it.each([tournamentEngineSync, asyncTournamentEngine])(
   'tournamentEngine can execute methods in a queue',
@@ -21,8 +63,8 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
     result = await tournamentEngine.executionQueue([
       { method: 'getTournamentInfo' },
     ]);
-    expect(result.length).toEqual(1);
-    expect(result[0].tournamentInfo.tournamentId).not.toBeUndefined();
+    expect(result.results.length).toEqual(1);
+    expect(result.results[0].tournamentInfo.tournamentId).not.toBeUndefined();
 
     result = await tournamentEngine.executionQueue([
       { method: 'nonExistingMethod' },
@@ -42,9 +84,9 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
     result = await competitionEngine.executionQueue([
       { method: 'getCompetitionDateRange' },
     ]);
-    expect(result.length).toEqual(1);
-    expect(result[0].startDate).not.toBeUndefined();
-    expect(result[0].endDate).not.toBeUndefined();
+    expect(result.results.length).toEqual(1);
+    expect(result.results[0].startDate).not.toBeUndefined();
+    expect(result.results[0].endDate).not.toBeUndefined();
 
     result = await competitionEngine.executionQueue([
       { method: 'nonExistingMethod' },
@@ -72,8 +114,8 @@ it.each([tournamentEngineSync, asyncTournamentEngine])(
         params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
       },
     ]);
-    expect(result[0].tournamentParticipants.length).toEqual(32);
-    expect(result[1].tournamentParticipants.length).toEqual(64);
+    expect(result.results[0].tournamentParticipants.length).toEqual(32);
+    expect(result.results[1].tournamentParticipants.length).toEqual(64);
   }
 );
 
@@ -95,7 +137,7 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
       },
     ]);
-    expect(result[0].competitionParticipants.length).toEqual(32);
-    expect(result[1].competitionParticipants.length).toEqual(64);
+    expect(result.results[0].competitionParticipants.length).toEqual(32);
+    expect(result.results[1].competitionParticipants.length).toEqual(64);
   }
 );

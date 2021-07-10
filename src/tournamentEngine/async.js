@@ -67,8 +67,8 @@ export function tournamentEngineAsync(test) {
     return fx;
   };
 
-  fx.executionQueue = (directives, rollBackOnError) =>
-    executionQueueAsync(fx, tournamentId, directives, rollBackOnError);
+  fx.executionQueue = (directives, rollbackOnError) =>
+    executionQueueAsync(fx, tournamentId, directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -110,7 +110,7 @@ export function tournamentEngineAsync(test) {
     const tournamentRecord = getTournamentRecord(tournamentId);
 
     const snapshot =
-      params?.rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+      params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
     const result = await executeFunctionAsync(tournamentRecord, fx, params);
 
@@ -155,13 +155,13 @@ export function tournamentEngineAsync(test) {
     fx,
     tournamentId,
     directives,
-    rollBackOnError
+    rollbackOnError
   ) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecord = getTournamentRecord(tournamentId);
 
     const snapshot =
-      rollBackOnError && makeDeepCopy(tournamentRecord, false, true);
+      rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
     const results = [];
     for (const directive of directives) {
@@ -176,9 +176,9 @@ export function tournamentEngineAsync(test) {
         params
       );
 
-      if (result?.error && snapshot) {
-        setState(snapshot);
-        return result;
+      if (result?.error) {
+        if (snapshot) setState(snapshot);
+        return { ...result, rolledBack: !!snapshot };
       }
       results.push(result);
     }
@@ -186,7 +186,7 @@ export function tournamentEngineAsync(test) {
     await notifySubscribersAsync();
     deleteNotices();
 
-    return results;
+    return { results };
   }
 }
 
