@@ -1,15 +1,16 @@
-import mocksEngine from '../../mocksEngine';
-import tournamentEngine from '../../tournamentEngine/sync';
 import { dateStringDaysChange } from '../../utilities/dateTime';
+import competitionEngine from '../../competitionEngine/sync';
+import tournamentEngine from '../../tournamentEngine/sync';
+import mocksEngine from '../../mocksEngine';
 
 test('setting deepCopy option to false will allow source objects to be modified', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const { startDate } = tournamentRecord;
+  const { startDate, endDate } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord, false);
 
   const newStartDate = dateStringDaysChange(startDate, 1);
-  const result = tournamentEngine.setTournamentStartDate({
+  let result = tournamentEngine.setTournamentStartDate({
     startDate: newStartDate,
   });
   expect(result.success).toEqual(true);
@@ -19,5 +20,15 @@ test('setting deepCopy option to false will allow source objects to be modified'
   expect(tournamentRecord.startDate).toEqual(newStartDate);
   expect(startDate).not.toEqual(newStartDate);
 
-  // now for competitionEngine and drawEngine
+  const dates = competitionEngine.getCompetitionDateRange();
+  expect(dates.endDate).toEqual(endDate);
+
+  expect(tournamentRecord.extensions).toBeUndefined();
+
+  result = competitionEngine.addExtension({
+    extension: { name: 'test', value: 'test' },
+  });
+  expect(result.success).toEqual(true);
+
+  expect(tournamentRecord.extensions.length).toEqual(1);
 });
