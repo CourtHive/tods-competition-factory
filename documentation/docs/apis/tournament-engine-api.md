@@ -761,6 +761,22 @@ tournamentEngine.deleteVenues({ venueIds, force });
 
 ---
 
+## destroyGroupEntry
+
+Removes a "grouping" entry from a event and adds the `individualParticipantIds` to entries. Grouping entries are `participantType` **TEAM** and **PAIR**, both of which include `individualParticipantIds`.
+
+```js
+tournamentEngine.destroyGroupEntry({
+  participantId,
+  eventId,
+
+  entryStatus, // optional - new entryStatus for individualParticipantIds (defaults to UNPAIRED for TEAM events)
+  removeGroupParticipant, // optional - removes group participant from tournament participants
+});
+```
+
+---
+
 ## destroyPairEntry
 
 Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
@@ -2325,7 +2341,6 @@ Loads a tournament record into tournamentEngine.
 :::info
 By default a deep copy of the `tournamentRecord` is made so that mutations made by `tournamentEngine` do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 :::
-
 
 ```js
 tournamentEngine.setsState(tournamentRecord, deepCopy);

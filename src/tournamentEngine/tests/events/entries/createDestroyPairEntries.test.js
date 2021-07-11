@@ -141,8 +141,8 @@ it('can destroy pair entries in doubles events', () => {
 
   const pairParticipantId = updatedEvent.entries[0].participantId;
   result = tournamentEngine.destroyPairEntry({
-    eventId,
     participantId: pairParticipantId,
+    eventId,
   });
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
@@ -178,6 +178,26 @@ it('can destroy pair entries in doubles events', () => {
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(32);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+  let participantIds = tournamentParticipants.map(
+    ({ participantId }) => participantId
+  );
+  const participantsCount = participantIds.length;
+
+  result = tournamentEngine.destroyPairEntry({
+    participantId: pairParticipantId,
+    removeGroupParticipant: true,
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.participantRemoved).toEqual(true);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  participantIds = tournamentParticipants.map(
+    ({ participantId }) => participantId
+  );
+  expect(participantIds.length).toEqual(participantsCount - 1);
 });
 
 it('can create pair entries in doubles events', () => {

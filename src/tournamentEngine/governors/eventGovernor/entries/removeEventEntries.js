@@ -3,13 +3,13 @@ import { refreshEntryPositions } from '../../../../common/producers/refreshEntry
 import { removeDrawEntries } from '../drawDefinitions/removeDrawEntries';
 import { intersection } from '../../../../utilities';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   EVENT_NOT_FOUND,
   MISSING_PARTICIPANT_IDS,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function removeEventEntries({
   participantIds,
@@ -47,6 +47,7 @@ export function removeEventEntries({
   }
 
   if (drawId) {
+    // TODO: shouldn't require drawId... derive it if participantIds are included in any flightProfiles
     removeDrawEntries({ participantIds, drawId, drawDefinition, event });
   }
 
