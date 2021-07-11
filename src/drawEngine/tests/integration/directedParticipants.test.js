@@ -494,7 +494,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpStatus: BYE,
     score: '6-1',
   }));
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUpStatus to TO_BE_PLAYED
   ({
@@ -509,7 +509,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpId,
     matchUpStatus: TO_BE_PLAYED,
   }));
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUpStatus, but not winner...
   result = drawEngine.setMatchUpStatus({

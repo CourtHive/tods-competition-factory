@@ -217,9 +217,8 @@ export function setMatchUpStatus(props) {
     const result = winningSideWithDownstreamDependencies(props);
     if (result.error) return result;
   } else if (matchUpStatus) {
-    const { errors: statusChangeErrors, message } = attemptStatusChange(props);
-    if (message) messages.push(message);
-    if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
+    const result = attemptStatusChange(props);
+    if (result.error) return result;
   } else {
     if (getDevContext()) {
       console.log('no valid actions');
@@ -240,7 +239,7 @@ function attemptStatusChange(props) {
   const { matchUp, matchUpStatus } = props;
 
   if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
-    return { errors: [{ error: INVALID_MATCHUP_STATUS, matchUpStatus }] };
+    return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
   }
 
   // if no winningSide is given and matchUp has winningSide
@@ -251,21 +250,13 @@ function attemptStatusChange(props) {
       // TESTED
     } else {
       return {
-        errors: [
-          {
-            error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
-          },
-        ],
+        error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
       };
       // TESTED
     }
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
     return {
-      errors: [
-        {
-          error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
-        },
-      ],
+      error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
     };
     // TESTED
   }

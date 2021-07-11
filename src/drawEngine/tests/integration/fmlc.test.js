@@ -267,14 +267,14 @@ it('can direct winners and losers', () => {
     matchUpId,
     matchUpStatus: BYE,
   });
-  hasErrors = Boolean(result?.error?.errors?.length);
+  hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  hasErrors = Boolean(result?.error?.errors?.length);
+  hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(false);
 
   const { matchUp: fetchedMatchUp } = drawEngine.findMatchUp({ matchUpId });
