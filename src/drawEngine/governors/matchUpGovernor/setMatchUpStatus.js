@@ -160,7 +160,7 @@ export function setMatchUpStatus(props) {
       sideAdjustments,
     });
     if (projectedWinningSide !== existingTeamMatchUpWinningSide) {
-      console.log('teamMatchUp', { projectedWinningSide });
+      if (getDevContext()) console.log('teamMatchUp', { projectedWinningSide });
     }
   }
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??

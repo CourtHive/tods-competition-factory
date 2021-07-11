@@ -3,6 +3,7 @@ import { getMatchUpsMap } from '../../../drawEngine/getters/getMatchUps/getMatch
 import { getPositionAssignments } from '../../../drawEngine/getters/positionsGetter';
 // import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 // import { UUID } from '../../../utilities/UUID';
 
@@ -79,13 +80,10 @@ export function assignTieMatchUpParticipantId(props) {
   if (!participantToAssign) return { error: PARTICIPANT_NOT_FOUND };
   const { individualParticipantIds, participantType } = participantToAssign;
 
-  if (
-    (matchUpType === SINGLES && participantType !== INDIVIDUAL) ||
-    (matchUpType === DOUBLES && participantType !== PAIR)
-  ) {
+  // check that the participantToAssign is the correct participantType for matchUp.matchUpType
+  if (matchUpType === SINGLES && participantType !== INDIVIDUAL) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }
-  // check that the participantToAssign is the correct participantType for matchUp.matchUpType
 
   const relevantParticipantIds =
     participantType === INDIVIDUAL ? [participantId] : individualParticipantIds;
@@ -122,6 +120,14 @@ export function assignTieMatchUpParticipantId(props) {
   const dualMatchUpSide = dualMatchUp.sides.find(
     (side) => side.sideNumber === sideNumber
   );
+
+  if (matchUpType === DOUBLES && participantType !== PAIR) {
+    if (getDevContext()) console.log('ADDING INDIVIDUAL INTO PAIR MATCHUP');
+    // is there a lineUp for this side that includes collectionId/collectionPosition?
+    // if not, need to create a pair participant that includes current individualParticipantId
+    return { error: INVALID_PARTICIPANT_TYPE };
+  }
+
   const participantCompetitiorProfile = dualMatchUpSide.lineUp.find(
     (teamCompetitor) => teamCompetitor.participantId === participantId
   );
@@ -145,22 +151,6 @@ export function assignTieMatchUpParticipantId(props) {
   const collection = tieFormat.collectionDefinitions?.find(
     (collectionDefinition) => collectionDefinition.collectionId === collectionId
   );
-  */
-
-  /*
-
-  const side = tieMatchUp.sides[sideNumber - 1];
-  if (tieMatchUp.matchUpType === DOUBLES) {
-    if (participantId) {
-      const result = addParticipantIdToPair({ side, sideMember });
-      if (result.error) return result;
-    } else {
-      const result = removeParticipantIdFromPair({ side, sideMember });
-      if (result.error) return result;
-    }
-  } else {
-    // assign participantId to collectionPosition
-  }
   */
 
   return SUCCESS;
