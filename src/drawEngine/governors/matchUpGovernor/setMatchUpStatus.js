@@ -209,7 +209,6 @@ export function setMatchUpStatus(props) {
   if (!activeDownstream) {
     // not activeDownstream also handles changing the winner of a finalRound
     // as long as the matchUp is not the finalRound of a qualifying structure
-    // const { errors: noDependenciesErrors, message } =
     const result = noDownstreamDependencies(props);
     if (result.error) return result;
   } else if (winningSide) {
