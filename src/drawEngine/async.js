@@ -119,17 +119,20 @@ export function drawEngineAsync(test) {
     }
   }
 
-  async function invoke({ params, governor, key }) {
+  async function invoke({ params, governor, governorMethod }) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
-    const result = governor[key]({
+    const result = governor[governorMethod]({
       tournamentParticipants,
       drawDefinition,
       ...params,
     });
 
-    if (result?.error && snapshot) setState(snapshot);
+    if (result?.error) {
+      if (snapshot) setState(snapshot);
+      return { ...result, rolledBack: !!snapshot };
+    }
 
     const notify = result?.success && params?.delayNotify !== true;
     if (notify) await notifySubscribersAsync();

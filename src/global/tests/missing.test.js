@@ -2,12 +2,12 @@ import competitionEngineAsync from '../../competitionEngine/async';
 import competitionEngineSync from '../../competitionEngine/sync';
 import tournamentEngineAsync from '../../tournamentEngine/async';
 import tournamentEngineSync from '../../tournamentEngine/sync';
-// import drawEngineAsync from '../../drawEngine/async';
+import drawEngineAsync from '../../drawEngine/async';
 import drawEngineSync from '../../drawEngine/sync';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 const asyncTournamentEngine = tournamentEngineAsync(true);
-// const asyncDrawEngine = drawEngineAsync(true);
+const asyncDrawEngine = drawEngineAsync(true);
 
 it.each([competitionEngineSync, asyncCompetitionEngine])(
   'will return MISSING_TOURNAMENT_RECORDS for most methods if no state has been set',
@@ -72,10 +72,9 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
   }
 );
 
-it.each([/*asyncDrawEngine,*/ drawEngineSync])(
+it.each([asyncDrawEngine, drawEngineSync])(
   'will return MISSING_DRAW_DEFINITION for most methods if no state has been set',
   async (drawEngine) => {
-    // it('will return MISSING_DRAW_DEFINITION for most methods if no state has been set', () => {
     const drawEngineMethods = Object.keys(drawEngine);
     for (const method of drawEngineMethods) {
       await drawEngine.reset();

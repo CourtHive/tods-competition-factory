@@ -119,7 +119,10 @@ export const drawEngine = (function () {
       ...params,
     });
 
-    if (result?.error && snapshot) setState(snapshot);
+    if (result?.error) {
+      if (snapshot) setState(snapshot);
+      return { ...result, rolledBack: !!snapshot };
+    }
 
     const notify = result?.success && params?.delayNotify !== true;
     if (notify) notifySubscribers();
