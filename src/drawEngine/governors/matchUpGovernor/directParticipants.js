@@ -23,15 +23,13 @@ export function directParticipants(props) {
     targetData,
     score,
   } = props;
-  const errors = [];
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const validToScore =
     isCollectionMatchUp ||
     drawPositionsAssignedParticipantIds({ structure, matchUp });
   if (!validToScore) {
-    errors.push({ error: 'drawPositions are not all assigned participantIds' });
-    return { errors };
+    return { error: 'drawPositions are not all assigned participantIds' };
   }
 
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
@@ -74,17 +72,17 @@ export function directParticipants(props) {
     } = targetData;
 
     if (winnerMatchUp) {
-      const { error } = directWinner({
+      const result = directWinner({
         drawDefinition,
         winnerTargetLink,
         winningDrawPosition,
         winnerMatchUp,
         winnerMatchUpDrawPositionIndex,
       });
-      if (error) errors.push(error);
+      if (result.error) return result;
     }
     if (loserMatchUp) {
-      const { error } = directLoser({
+      const result = directLoser({
         drawDefinition,
         loserTargetLink,
         loserDrawPosition,
@@ -92,13 +90,13 @@ export function directParticipants(props) {
         loserMatchUpDrawPositionIndex,
         matchUpStatus,
       });
-      if (error) errors.push(error);
+      if (result.error) return result;
     }
   } else {
-    errors.push({ error: 'machUp is missing drawPositions ' });
+    return { error: 'machUp is missing drawPositions' };
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
 }
 
 function drawPositionsAssignedParticipantIds({ structure, matchUp }) {

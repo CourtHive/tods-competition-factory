@@ -24,11 +24,8 @@ export function attemptToSetWinningSide(props) {
     if (result.error) return result;
   }
 
-  const { errors: participantDirectionErrors } = directParticipants(props);
-
-  if (participantDirectionErrors) {
-    return { error: participantDirectionErrors };
-  }
+  const result = directParticipants(props);
+  if (result.error) return result;
 
   return { ...SUCCESS };
 }
