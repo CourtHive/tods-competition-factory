@@ -14,7 +14,8 @@
   "jest": {
     "coverageDirectory": "./benchmarks",
     "coveragePathIgnorePatterns": [
-      "benchmarks"
+      "benchmarks",
+      "index.ts"
     ],
     "watchPathIgnorePatterns": [
       "generated"
