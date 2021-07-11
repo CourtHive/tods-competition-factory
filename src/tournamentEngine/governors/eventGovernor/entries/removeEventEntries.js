@@ -1,7 +1,6 @@
-import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
+import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
-import { removeDrawEntries } from '../drawDefinitions/removeDrawEntries';
-import { intersection } from '../../../../utilities';
+import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -12,9 +11,8 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function removeEventEntries({
+  tournamentRecord,
   participantIds,
-  drawId,
-  drawDefinition,
   event,
   autoEntryPositions = true,
 }) {
@@ -24,15 +22,25 @@ export function removeEventEntries({
 
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
   if (!event.entries) event.entries = [];
+  const { eventId } = event;
 
-  const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
-  const someAssignedParticipantIds = intersection(
-    participantIds,
-    assignedParticipantIds
-  ).length;
+  const { tournamentParticipants } = getTournamentParticipants({
+    participantFilters: { participantIds },
+    withStatistics: true,
+    tournamentRecord,
+  });
 
-  if (someAssignedParticipantIds)
+  const enteredParticipantIds = tournamentParticipants.every((participant) => {
+    const eventObject = participant.events.find(
+      (event) => event.eventId === eventId
+    );
+    const enteredInDraw = eventObject?.drawIds?.length;
+    return enteredInDraw;
+  });
+
+  if (enteredParticipantIds) {
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+  }
 
   event.entries = event.entries.filter((entry) => {
     const entryId =
@@ -40,16 +48,26 @@ export function removeEventEntries({
       (entry.participant && entry.participant.participantId);
     return participantIds.includes(entryId) ? false : true;
   });
+
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({
       entries: event.entries,
     });
   }
 
-  if (drawId) {
-    // TODO: shouldn't require drawId... derive it if participantIds are included in any flightProfiles
-    removeDrawEntries({ participantIds, drawId, drawDefinition, event });
-  }
+  // also remove entry from all flights and drawDefinitions
+  const { flightProfile } = getFlightProfile({ event });
+  flightProfile?.flights?.forEach((flight) => {
+    flight.drawEntries = (flight.drawEntries || []).filter(
+      (entry) => !participantIds.includes(entry.participantId)
+    );
+  });
+
+  event.drawDefinitions?.forEach((drawDefinition) => {
+    drawDefinition.entries = (drawDefinition.entries || []).filter(
+      (entry) => !participantIds.includes(entry.participantId)
+    );
+  });
 
   return SUCCESS;
 }
