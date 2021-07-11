@@ -82,7 +82,7 @@ export function removeDirectedParticipants(props) {
     );
 
     if (winnerMatchUp) {
-      const { error } = removeDirectedWinner({
+      const result = removeDirectedWinner({
         winnerMatchUp,
         drawDefinition,
         winnerTargetLink,
@@ -91,7 +91,7 @@ export function removeDirectedParticipants(props) {
 
         matchUpsMap,
       });
-      if (error) return { errors: [error] };
+      if (result.error) return result;
     }
     if (loserMatchUp) {
       const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
@@ -106,26 +106,26 @@ export function removeDirectedParticipants(props) {
       if (winnerHadBye && firstMatchUpLoss) {
         // The fed drawPosition is always the lowest number
         const drawPosition = Math.min(...loserMatchUp.drawPositions);
-        const { error } = removeDirectedBye({
+        const removeByeResult = removeDirectedBye({
           drawDefinition,
           drawPosition,
           targetLink: loserTargetLink,
           matchUpsMap,
         });
-        if (error) return { errors: [error] };
+        if (removeByeResult.error) return removeByeResult;
       }
 
-      const { error } = removeDirectedLoser({
+      const removeLoserResult = removeDirectedLoser({
         loserMatchUp,
         drawDefinition,
         loserTargetLink,
         loserParticipantId,
         matchUpsMap,
       });
-      if (error) return { errors: [error] };
+      if (removeLoserResult) return removeLoserResult;
     }
   } else {
-    return { errors: [{ error: 'matchUp missing drawPositions' }] };
+    return { error: 'matchUp missing drawPositions' };
   }
 
   return SUCCESS;

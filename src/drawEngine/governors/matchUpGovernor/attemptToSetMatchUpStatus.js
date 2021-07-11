@@ -43,12 +43,9 @@ export function attemptToSetMatchUpStatus(props) {
       return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
-        const { errors: participantDirectionErrors } =
-          removeDirectedParticipants(props);
-        if (participantDirectionErrors) {
-          return { error: participantDirectionErrors };
-        }
-        const result = checkDoubleWalkoverPropagation({
+        let result = removeDirectedParticipants(props);
+        if (result.error) return result;
+        result = checkDoubleWalkoverPropagation({
           drawDefinition,
           matchUpsMap,
           targetData,
@@ -69,11 +66,8 @@ export function attemptToSetMatchUpStatus(props) {
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
       // only possible to remove winningSide if neither winner
       // nor loser has been directed further into target structures
-      const { errors: participantDirectionErrors } =
-        removeDirectedParticipants(props);
-      if (participantDirectionErrors) {
-        return { error: participantDirectionErrors };
-      }
+      const result = removeDirectedParticipants(props);
+      if (result.error) return result;
       modifyMatchUpScore({
         notes,
         matchUp,

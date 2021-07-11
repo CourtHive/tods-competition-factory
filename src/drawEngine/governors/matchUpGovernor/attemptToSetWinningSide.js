@@ -20,12 +20,8 @@ export function attemptToSetWinningSide(props) {
       matchUp,
     });
 
-    const { errors: participantDirectionErrors } =
-      removeDirectedParticipants(props);
-
-    if (participantDirectionErrors) {
-      return { error: participantDirectionErrors };
-    }
+    const result = removeDirectedParticipants(props);
+    if (result.error) return result;
   }
 
   const { errors: participantDirectionErrors } = directParticipants(props);
