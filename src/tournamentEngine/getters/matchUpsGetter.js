@@ -193,7 +193,9 @@ export function tournamentMatchUps({
     (matchUps, eventMatchUps) => {
       const keys =
         eventMatchUps &&
-        Object.keys(eventMatchUps).filter((key) => key !== 'success');
+        Object.keys(eventMatchUps).filter(
+          (key) => !['success', 'matchUpsMap'].includes(key)
+        );
       keys?.forEach((key) => {
         if (!matchUps[key]) matchUps[key] = [];
         matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
