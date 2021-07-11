@@ -435,7 +435,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   ({ error, matchUp, success, matchUpId } = result);
   expect(success).toEqual(undefined);
   // error because matchUp drawPositions are not assigned to participantIds
-  expect(error.error).not.toBeUndefined();
+  expect(error).not.toBeUndefined();
 
   // complete matchUp between drawPositions: [5, 6] in mainStructure
   // ...to direct other participants to consolation draw

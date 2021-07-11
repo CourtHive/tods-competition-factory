@@ -41,25 +41,27 @@ export function noDownstreamDependencies(props) {
     checkConnectedStructures({ drawDefinition, structure, matchUp });
     Object.assign(props, { removeScore });
     const { errors } = removeDirectedParticipants(props);
-    return { errors };
+    return { error: errors };
   };
 
   if (winningSide) {
     const { errors: winningSideErrors } = attemptToSetWinningSide(props);
-    if (winningSideErrors?.length) return { errors: winningSideErrors };
+    if (winningSideErrors?.length) return { error: winningSideErrors };
   } else if (!winningSide && scoreHasValue({ score }) && !doubleWalkover) {
     if (!matchUpStatus) matchUpStatus = INCOMPLETE;
     const removeScore = ![INCOMPLETE, ABANDONED].includes(matchUpStatus);
     const { errors: participantDirectionErrors } = removeDirected({
       removeScore,
     });
-    if (participantDirectionErrors) return participantDirectionErrors;
+    if (participantDirectionErrors)
+      return { error: participantDirectionErrors };
   } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
     const { error } = attemptToSetMatchUpStatus(props);
-    if (error) return { errors: [error] };
+    if (error) return { error };
   } else if (!winningSide && matchUp.winningSide && !scoreHasValue({ score })) {
     const { errors: participantDirectionErrors } = removeDirected();
-    if (participantDirectionErrors) return participantDirectionErrors;
+    if (participantDirectionErrors)
+      return { error: participantDirectionErrors };
   } else if (matchUp) {
     if (matchUp.matchUpStatus === DOUBLE_WALKOVER) {
       const result = checkDoubleWalkoverPropagation(props);
