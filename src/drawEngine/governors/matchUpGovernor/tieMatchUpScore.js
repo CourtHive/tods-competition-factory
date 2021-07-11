@@ -2,12 +2,12 @@ import { generateTieMatchUpScore } from '../../accessors/matchUpAccessor';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateTieMatchUpScore({ drawDefinition, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
