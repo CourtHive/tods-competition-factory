@@ -214,21 +214,15 @@ export function setMatchUpStatus(props) {
     if (message) messages.push(message);
     if (noDependenciesErrors) return { error: noDependenciesErrors[0] };
   } else if (winningSide) {
-    const { errors: winnerWithDependencyErrors } =
-      winningSideWithDownstreamDependencies(props);
-    if (winnerWithDependencyErrors)
-      return { error: { errors: winnerWithDependencyErrors } };
+    const result = winningSideWithDownstreamDependencies(props);
+    if (result.error) return result;
   } else if (matchUpStatus) {
     const { errors: statusChangeErrors, message } = attemptStatusChange(props);
     if (message) messages.push(message);
     if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
   } else {
     if (getDevContext()) {
-      console.log('no valid actions', {
-        props,
-        loserMatchUpParticipantIds,
-        winnerMatchUpParticipantIds,
-      });
+      console.log('no valid actions');
     }
     return { error: NO_VALID_ACTIONS };
   }
@@ -300,12 +294,8 @@ function winningSideWithDownstreamDependencies(props) {
       } else {
         // matchUpStatus can't be changed to something non-directing
         return {
-          errors: [
-            {
-              error:
-                'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
-            },
-          ],
+          error:
+            'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
         };
         // TESTED
       }
@@ -324,9 +314,7 @@ function winningSideWithDownstreamDependencies(props) {
       });
     }
   } else {
-    return {
-      errors: [{ error: 'Cannot change winner with advanced participants' }],
-    };
+    return { error: 'Cannot change winner with advanced participants' };
     // TODO POLICY:
     // check whether winningSide can be changed
     // or change winning side with rippple effect to all downstream matchUps

@@ -526,7 +526,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     winningSide: 1,
     score: '6-1',
   });
-  expect(result.error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(result.error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
   ({ error } = drawEngine.setMatchUpStatus({
@@ -535,7 +535,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpStatus: COMPLETED,
     score: '6-0 6-0',
   }));
-  expect(error.errors.length).toBeGreaterThanOrEqual(1);
+  expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,
