@@ -2,9 +2,14 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { UUID } from '../../../utilities';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_DRAW_ID,
+  MISSING_ENTRIES,
+  PARTICIPANT_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 it('can generate TEAM events', () => {
   const nationalityCodesCount = 10;
@@ -157,12 +162,14 @@ it('can generate draws in TEAM events with tieFormat', () => {
     nationalityCodesCount,
   };
 
+  const singlesCollectionId = UUID();
+  const doublesCollectionId = UUID();
   const valueGoal = 2;
   const tieFormat = {
     winCriteria: { valueGoal },
     collectionDefinitions: [
       {
-        collectionId: UUID(),
+        collectionId: doublesCollectionId,
         collectionName: 'Doubles',
         matchUpType: 'DOUBLES',
         matchUpCount: 1,
@@ -170,7 +177,7 @@ it('can generate draws in TEAM events with tieFormat', () => {
         matchUpValue: 1,
       },
       {
-        collectionId: UUID(),
+        collectionId: singlesCollectionId,
         collectionName: 'Singles',
         matchUpType: SINGLES,
         matchUpCount: 2,
@@ -243,13 +250,81 @@ it('can generate draws in TEAM events with tieFormat', () => {
     structureId,
   });
 
-  const { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
+  let { matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES] },
   });
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
   const { positionAssignments } = drawDefinition.structures[0];
   expect(positionAssignments.length).toEqual(drawSize);
+
+  const sideNumber = 1;
+  const singlesMatchUp = singlesMatchUps[0];
+  const { matchUpTieId, matchUpId } = singlesMatchUp;
+  const side1 = singlesMatchUp.sides.find(
+    (side) => side.sideNumber === sideNumber
+  );
+  const teamParticipantIdSide1 = positionAssignments.find(
+    (assignment) => assignment.drawPosition === side1.drawPosition
+  ).participantId;
+  const {
+    tournamentParticipants: [teamParticipant],
+  } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantIds: [teamParticipantIdSide1] },
+  });
+  const individualParticipantId = teamParticipant.individualParticipantIds[0];
+
+  result = tournamentEngine.assignTieMatchUpParticipantId();
+  expect(result.error).toEqual(MISSING_DRAW_ID);
+
+  result = tournamentEngine.assignTieMatchUpParticipantId({
+    drawId,
+    participantId: individualParticipantId,
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+
+  result = tournamentEngine.assignTieMatchUpParticipantId({
+    drawId,
+    tieMatchUpId: matchUpId,
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+
+  result = tournamentEngine.assignTieMatchUpParticipantId({
+    drawId,
+    sideNumber,
+    tieMatchUpId: matchUpId,
+    participantId: individualParticipantId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps: singlesMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [SINGLES] },
+  }));
+
+  const modifiedTieMatchUp = singlesMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const targetSide = modifiedTieMatchUp.sides.find(
+    (side) => side.sideNumber === sideNumber
+  );
+  expect(targetSide.participantId).toEqual(individualParticipantId);
+
+  const { matchUps: dualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM] },
+  });
+  const dualMatchUp = dualMatchUps.find(
+    (dualMatchUp) => (dualMatchUp.matchUpId = matchUpTieId)
+  );
+  const dualMatchUpTargetSide = dualMatchUp.sides.find(
+    (side) => (side.sideNumber = sideNumber)
+  );
+  expect(dualMatchUpTargetSide.lineUp.length).toEqual(1);
+  expect(dualMatchUpTargetSide.lineUp[0].participantId).toEqual(
+    individualParticipantId
+  );
+  expect(
+    dualMatchUpTargetSide.lineUp[0].collectionAssignments[0].collectionId
+  ).toEqual(singlesMatchUp.collectionId);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
