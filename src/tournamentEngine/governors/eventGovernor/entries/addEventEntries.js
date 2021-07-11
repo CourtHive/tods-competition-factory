@@ -136,6 +136,7 @@ export function addEventEntries(props) {
       );
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({
+        tournamentRecord,
         participantIds: unpairedParticipantIdsToRemove,
         autoEntryPositions: false, // because the method will be called below if necessary
         event,
