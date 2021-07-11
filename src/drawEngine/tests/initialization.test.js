@@ -1,4 +1,5 @@
-import drawEngine from '../sync';
+import drawEngineAsync from '../../drawEngine/async';
+import drawEngine from '../../drawEngine/sync';
 import { reset, initialize } from './primitives/primitives';
 import definitionTemplate from '../generators/drawDefinitionTemplate';
 
@@ -9,21 +10,25 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import { ERROR, SUCCESS } from '../../constants/resultConstants';
 
+const asyncDrawEngine = drawEngineAsync(true);
 let result;
 
 it('can initialize', () => {
   initialize();
 });
 
-it('can load definition', () => {
-  result = drawEngine.setState(definitionTemplate());
-  expect(result).toHaveProperty(ERROR);
-  const template = { ...definitionTemplate(), drawId: 'foo' };
-  drawEngine.setState(template);
-  ({ drawDefinition: result } = drawEngine.getState());
-  expect(result).toHaveProperty('drawId');
-  expect(result.drawId).toEqual('foo');
-});
+it.each([drawEngine, asyncDrawEngine])(
+  'can load definition',
+  async (drawEngine) => {
+    result = await drawEngine.setState(definitionTemplate());
+    expect(result).toHaveProperty(ERROR);
+    const template = { ...definitionTemplate(), drawId: 'foo' };
+    drawEngine.setState(template);
+    ({ drawDefinition: result } = await drawEngine.getState());
+    expect(result).toHaveProperty('drawId');
+    expect(result.drawId).toEqual('foo');
+  }
+);
 
 it('can reset state', () => {
   reset();
@@ -118,9 +123,14 @@ it('can initialize, setState, and query', () => {
   expect(drawId).toEqual('uuid-xyz');
 });
 
-it('can set draw description', () => {
-  const drawDescription = 'Draw Description';
-  drawEngine.setDrawDescription({ description: drawDescription });
-  const { drawDefinition: state } = drawEngine.getState();
-  expect(state.description).toEqual(drawDescription);
-});
+it.each([drawEngine, asyncDrawEngine])(
+  'can set draw description',
+  async (drawEngine) => {
+    const drawDescription = 'Draw Description';
+    await drawEngine
+      .devContext(true)
+      .setDrawDescription({ description: drawDescription });
+    const { drawDefinition: state } = await drawEngine.getState();
+    expect(state.description).toEqual(drawDescription);
+  }
+);
