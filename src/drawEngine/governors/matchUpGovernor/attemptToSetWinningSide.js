@@ -3,15 +3,13 @@ import { checkConnectedStructures } from './checkConnectedStructures';
 import { directParticipants } from './directParticipants';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetWinningSide(props) {
   const { drawDefinition, winningSide, structure, matchUp } = props;
-  let errors = [];
 
   if ([BYE].includes(matchUp.matchUpStatus)) {
-    return {
-      errors: [{ error: 'Cannot set winningSide for BYE matchUpStatus' }],
-    };
+    return { error: 'Cannot set winningSide for BYE matchUpStatus' };
   }
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
@@ -26,16 +24,15 @@ export function attemptToSetWinningSide(props) {
       removeDirectedParticipants(props);
 
     if (participantDirectionErrors) {
-      errors = errors.concat(participantDirectionErrors);
-      return { errors };
+      return { error: participantDirectionErrors };
     }
   }
 
   const { errors: participantDirectionErrors } = directParticipants(props);
 
   if (participantDirectionErrors) {
-    errors = errors.concat(participantDirectionErrors);
+    return { error: participantDirectionErrors };
   }
 
-  return { errors };
+  return { ...SUCCESS };
 }

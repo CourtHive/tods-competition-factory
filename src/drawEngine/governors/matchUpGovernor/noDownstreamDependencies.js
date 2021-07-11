@@ -45,8 +45,8 @@ export function noDownstreamDependencies(props) {
   };
 
   if (winningSide) {
-    const { errors: winningSideErrors } = attemptToSetWinningSide(props);
-    if (winningSideErrors?.length) return { error: winningSideErrors };
+    const result = attemptToSetWinningSide(props);
+    if (result.error) return result;
   } else if (!winningSide && scoreHasValue({ score }) && !doubleWalkover) {
     if (!matchUpStatus) matchUpStatus = INCOMPLETE;
     const removeScore = ![INCOMPLETE, ABANDONED].includes(matchUpStatus);
