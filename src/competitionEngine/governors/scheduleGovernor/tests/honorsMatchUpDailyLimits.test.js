@@ -1,10 +1,10 @@
 import mocksEngine from '../../../../mocksEngine';
+import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
 
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
 import { INVALID_OBJECT } from '../../../../constants/errorConditionConstants';
-import { unique } from '../../../../utilities';
 
 it('can set and honor matchUpDailyLimits', () => {
   // insure that tournament has exactly 16 participants
@@ -42,7 +42,12 @@ it('can set and honor matchUpDailyLimits', () => {
 
   result = competitionEngine.getMatchUpDailyLimitsUpdate();
   expect(result.methods.length).toEqual(1);
-  expect(result.methods[0].method).toEqual('tournamentMethods');
+  expect(result.methods[0].method).toEqual('addExtension');
+
+  result.methods.forEach((method) => {
+    const { success } = competitionEngine[method.method](method.params);
+    expect(success).toEqual(true);
+  });
 
   const {
     extension: {
@@ -68,4 +73,7 @@ it('can set and honor matchUpDailyLimits', () => {
 
   const scheduledRounds = unique(dateMatchUps.map((m) => m.roundName));
   expect(scheduledRounds.includes('QF')).toEqual(false);
+
+  result = competitionEngine.getMatchUpFormatTimingUpdate();
+  expect(result.methods.length).toEqual(0);
 });

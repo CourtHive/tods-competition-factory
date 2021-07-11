@@ -1,25 +1,28 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { validExtension } from '../../../global/validation/validExtension';
 import {
+  addEventExtension as addExtensionToEvent,
   addTournamentExtension,
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
+  EVENT_NOT_FOUND,
   INVALID_VALUES,
+  MISSING_EVENT,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
 export function addExtension({ tournamentRecords, extension }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!validExtension(extension)) return { error: INVALID_VALUES };
 
   let error;
-  const success = Object.keys(tournamentRecords).every((tournamentId) => {
-    const tournamentRecord = tournamentRecords[tournamentId];
+  const success = Object.values(tournamentRecords).every((tournamentRecord) => {
     const result = addTournamentExtension({ tournamentRecord, extension });
     if (!result.error) {
       return true;
@@ -62,4 +65,19 @@ export function removeExtension({ tournamentRecords, name }) {
   }
 
   return { ...SUCCESS, removed };
+}
+
+export function addEventExtension({ tournamentRecords, eventId, extension }) {
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (typeof eventId !== 'string') return { error: MISSING_EVENT };
+  if (!validExtension(extension)) return { error: INVALID_VALUES };
+
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
+    const { event } = findEvent({ tournamentRecord, eventId });
+    if (event) {
+      return addExtensionToEvent({ event, extension });
+    }
+  }
+
+  return { error: EVENT_NOT_FOUND };
 }

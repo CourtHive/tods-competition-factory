@@ -4,7 +4,6 @@ import { modifyVenue } from './venueManagement/modifyVenue';
 import { deleteVenue } from './venueManagement/deleteVenue';
 import { addCourts } from './venueManagement/addCourts';
 import { addDrawDefinition } from './addDrawDefinition';
-import { tournamentMethods } from './tournamentMethods';
 import { addVenue } from './venueManagement/addVenue';
 import { addParticipant } from './addParticipant';
 import {
@@ -12,6 +11,7 @@ import {
   publicFindParticipant,
 } from '../../getters/participantGetter';
 import {
+  addEventExtension,
   addExtension,
   findExtension,
   removeExtension,
@@ -33,6 +33,7 @@ const competitionGovernor = {
   addExtension,
   findExtension,
   removeExtension,
+  addEventExtension,
 
   linkTournaments,
   unlinkTournament,
@@ -58,8 +59,6 @@ const competitionGovernor = {
   modifyPenalty, // test
   getCompetitionPenalties, // test
   findParticipant: publicFindParticipant,
-
-  tournamentMethods,
 };
 
 export default competitionGovernor;
