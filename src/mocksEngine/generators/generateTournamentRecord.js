@@ -158,7 +158,7 @@ export function generateTournamentRecord({
       const venue = { venueName: venueName || `Venue ${index + 1}` };
       const {
         venue: { venueId },
-      } = tournamentEngine.devContext(true).addVenue({ venue });
+      } = tournamentEngine.devContext({ addVenue: true }).addVenue({ venue });
       venueIds.push(venueId);
 
       const dates = dateRange(startDate, endDate);

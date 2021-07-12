@@ -55,14 +55,23 @@ export function createInstanceState() {
   }
 }
 
-export function getDevContext() {
-  return globalState.devContext;
+/**
+ * if no contextCriteria is provided just provide boolean whether devContext has been set
+ * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
+ */
+export function getDevContext(contextCriteria) {
+  if (!contextCriteria || typeof contextCriteria !== 'object') {
+    return !!globalState.devContext;
+  } else {
+    if (typeof globalState.devContext !== 'object') return false;
+    return Object.keys(contextCriteria).every(
+      (key) => globalState.devContext[key] === contextCriteria[key]
+    );
+  }
 }
 
 export function setDevContext(value) {
-  if (typeof value === 'boolean') {
-    globalState.devContext = value;
-  }
+  globalState.devContext = value;
 }
 
 export function setDeepCopy(value) {

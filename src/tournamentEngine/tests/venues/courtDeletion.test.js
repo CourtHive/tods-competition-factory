@@ -45,7 +45,9 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result).toEqual(SUCCESS);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

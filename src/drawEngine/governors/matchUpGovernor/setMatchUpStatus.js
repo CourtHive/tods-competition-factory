@@ -198,14 +198,15 @@ export function setMatchUpStatus(params) {
     return { error: INCOMPATIBLE_MATCHUP_STATUS };
   }
 
-  /*
   const validWinningSideChange =
     matchUp.matchUpType !== TEAM &&
     winningSide &&
     matchUp.winningSide &&
     !dualWinningSideChange;
-  if (getDevContext()) console.log({ validWinningSideChange });
-  */
+
+  if (getDevContext({ winningSideChange: true }) && validWinningSideChange) {
+    console.log({ validWinningSideChange });
+  }
 
   const result = (!activeDownStream && noDownstreamDependencies(params)) ||
     (winningSide && winningSideWithDownstreamDependencies(params)) ||

@@ -19,7 +19,9 @@ it('can define and modify a venue', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

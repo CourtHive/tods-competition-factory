@@ -25,7 +25,9 @@ it('can update matchUp court assignments accross multiple events/draws', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  let result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

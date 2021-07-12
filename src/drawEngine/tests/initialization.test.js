@@ -128,7 +128,7 @@ it.each([drawEngine, asyncDrawEngine])(
   async (drawEngine) => {
     const drawDescription = 'Draw Description';
     await drawEngine
-      .devContext(true)
+      .devContext(true) // true to test coverage
       .setDrawDescription({ description: drawDescription });
     const { drawDefinition: state } = await drawEngine.getState();
     expect(state.description).toEqual(drawDescription);

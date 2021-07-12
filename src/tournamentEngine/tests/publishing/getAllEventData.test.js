@@ -17,7 +17,7 @@ it('can return all event data', () => {
   const myCourts = { venueName: 'My Courts' };
   const result = tournamentEngine
     .setState(tournamentRecord)
-    .devContext(true)
+    .devContext({ addVenue: true })
     .addVenue({ venue: myCourts });
   const {
     venue: { venueId },

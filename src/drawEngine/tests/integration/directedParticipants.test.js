@@ -121,7 +121,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 1,
   }));
   let { matchUpId } = matchUp;
-  let { error } = drawEngine.devContext(true).setMatchUpStatus({
+  let { error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
@@ -135,7 +135,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   let { matchUpStatus } = matchUp;
   expect(matchUpStatus).toEqual(BYE);
 
-  ({ error } = drawEngine.devContext(true).setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BOGUS',
   }));
@@ -147,7 +147,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     roundPosition: 2,
   }));
   ({ matchUpId } = matchUp);
-  ({ error } = drawEngine.devContext(true).setMatchUpStatus({
+  ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BYE',
   }));

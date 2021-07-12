@@ -85,7 +85,7 @@ test('competitionEngine can modify venues', () => {
       },
     ],
   };
-  result = competitionEngine.devContext(true).modifyVenue({
+  result = competitionEngine.modifyVenue({
     venueId,
     modifications,
   });

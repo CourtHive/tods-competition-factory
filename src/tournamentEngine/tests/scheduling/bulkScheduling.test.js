@@ -23,7 +23,9 @@ it('can bulk schedule matchUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  let result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

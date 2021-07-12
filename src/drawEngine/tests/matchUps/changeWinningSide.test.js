@@ -40,10 +40,12 @@ test('changing winningSide can propagate changes through multiple structures', (
 
   expect(firstMatchUpLoserParticipantId).toEqual(westFinalWinnerParticipantId);
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
-    matchUpId: firstMatchUp.matchUpId,
-    drawId,
-    outcome: { winningSide: 2 },
-  });
+  let result = tournamentEngine
+    .devContext({ winningSideChange: true })
+    .setMatchUpStatus({
+      matchUpId: firstMatchUp.matchUpId,
+      drawId,
+      outcome: { winningSide: 2 },
+    });
   console.log(result.error);
 });

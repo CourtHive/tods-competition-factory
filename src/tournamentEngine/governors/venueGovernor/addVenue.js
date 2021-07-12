@@ -34,7 +34,7 @@ export function addVenue({
       addNotice({ topic: ADD_VENUE, payload: { venue } });
     }
 
-    return getDevContext()
+    return getDevContext({ addVenue: true })
       ? { ...SUCCESS, venue: makeDeepCopy(venue) }
       : returnDetails
       ? venue
