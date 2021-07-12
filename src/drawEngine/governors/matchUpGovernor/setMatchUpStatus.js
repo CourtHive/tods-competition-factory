@@ -15,6 +15,9 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
+import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
   CANCELLED,
@@ -29,14 +32,8 @@ import {
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
   INVALID_VALUES,
+  INCOMPATIBLE_MATCHUP_STATUS,
 } from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  COMPLETED,
-  matchUpStatusConstants,
-} from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -95,6 +92,11 @@ export function setMatchUpStatus(params) {
   );
 
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
+
+  // const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+  if (matchUp.winningSide && matchUpStatus === BYE) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
@@ -174,7 +176,6 @@ export function setMatchUpStatus(params) {
 
   // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
   const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
-  // const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
 
   const result = (!activeDownStream && noDownstreamDependencies(params)) ||
     (winningSide && winningSideWithDownstreamDependencies(params)) ||
@@ -194,26 +195,14 @@ export function setMatchUpStatus(params) {
 }
 
 function attemptStatusChange(params) {
-  const { matchUp, matchUpStatus } = params;
-
-  if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
-    return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-  }
+  const { matchUpStatus } = params;
 
   // if no winningSide is given and matchUp has winningSide
   // check whether intent is to remove winningSide
   if (isDirectingMatchUpStatus({ matchUpStatus })) {
-    if (matchUp.winningSide && matchUpStatus !== BYE) {
-      applyMatchUpValues(params);
-    } else {
-      return {
-        error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
-      };
-    }
+    applyMatchUpValues(params);
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    return {
-      error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
-    };
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
   }
   return SUCCESS;
 }
