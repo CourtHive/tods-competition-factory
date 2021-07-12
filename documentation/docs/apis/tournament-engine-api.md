@@ -770,7 +770,7 @@ tournamentEngine.destroyGroupEntry({
   participantId,
   eventId,
 
-  entryStatus, // optional - new entryStatus for individualParticipantIds (defaults to UNPAIRED for TEAM events)
+  entryStatus, // optional - new entryStatus for individualParticipantIds
   removeGroupParticipant, // optional - removes group participant from tournament participants
 });
 ```
@@ -779,7 +779,7 @@ tournamentEngine.destroyGroupEntry({
 
 ## destroyPairEntry
 
-Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNPAIRED
+Removes a `{ participantType: PAIR }` entry from an event and adds the individualParticipantIds to entries as entryStatus: UNGROUPED
 
 ```js
 tournamentEngine.destroyPairEntry({
@@ -2023,7 +2023,7 @@ tournamentEngine.removeDrawDefintionExtension({ eventId, drawId, name });
 
 ## removeDrawPositionAssignment
 
-Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR participant into UNPAIRED participants (DOUBLES only).
+Clear draw position and optionally replace with a BYE, change entryStatus, or decompose a PAIR participant into UNGROUPED participants (DOUBLES only).
 
 ```js
 removeDrawPositionAssignment({
@@ -2032,7 +2032,7 @@ removeDrawPositionAssignment({
   drawPosition,
   replaceWithBye, // optional
   entryStatus, // optional - change the entryStatus of the removed participant
-  destroyPair, // optional - decompose PAIR participant into UNPAIRED participants
+  destroyPair, // optional - decompose PAIR participant into UNGROUPED participants
 });
 ```
 
