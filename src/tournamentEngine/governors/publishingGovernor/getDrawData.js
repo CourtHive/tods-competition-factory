@@ -254,7 +254,7 @@ export function getStructureGroups({ drawDefinition }) {
 
   // if a drawDefinition contains no links the no structure groups will exist
   // filter out undefined when there are no links in a drawDefinition
-  const structureGroups = [groupedStructures].filter((f) => f);
+  const structureGroups = [groupedStructures].filter(Boolean);
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];

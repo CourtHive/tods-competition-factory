@@ -18,7 +18,7 @@ export function feedInLinks({
 }) {
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
-    const drawPositions = (matchUp.drawPositions || []).filter((f) => f);
+    const drawPositions = (matchUp.drawPositions || []).filter(Boolean);
     return drawPositions.length && !p.includes(matchUp.roundNumber)
       ? p.concat(matchUp.roundNumber)
       : p;
@@ -67,7 +67,7 @@ export function feedInLinks({
       }
       return roundsFed.includes(targetRound) ? link : undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   return links;
 }

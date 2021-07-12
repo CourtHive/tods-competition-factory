@@ -68,13 +68,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   });
   expect(flightProfile.flights.length).toEqual(3);
   expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([12, 13, 14, 15]);
   expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
@@ -86,13 +86,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
   expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([12, 13, 14, 15]);
   expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
@@ -104,13 +104,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([1, 4, 7, 10, 13]);
   expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([2, 5, 8, 11, 14]);
   expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([3, 6, 9, 12, 15]);
 
   ({ flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
@@ -122,13 +122,13 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   }));
   expect(flightProfile.flights.length).toEqual(3);
   expect(
-    splitEntries[0].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[0].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([1, 6, 7, 12, 13]);
   expect(
-    splitEntries[1].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[1].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([2, 5, 8, 11, 14]);
   expect(
-    splitEntries[2].map(({ scaleValue }) => scaleValue).filter((f) => f)
+    splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([3, 4, 9, 10, 15]);
 
   result = tournamentEngine.deleteFlightProfileAndFlightDraws();

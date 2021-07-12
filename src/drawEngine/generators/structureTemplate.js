@@ -41,7 +41,7 @@ export const structureTemplate = ({
 
   const positionAssignments = []
     .concat(...matchUps.map((matchUp) => matchUp.drawPositions))
-    .filter((f) => f);
+    .filter(Boolean);
 
   if (structures) {
     structure.structures = structures;

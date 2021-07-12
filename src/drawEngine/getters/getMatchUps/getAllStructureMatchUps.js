@@ -54,21 +54,21 @@ export function getAllStructureMatchUps({
   }
 
   const selectedEventIds = Array.isArray(matchUpFilters?.eventIds)
-    ? matchUpFilters.eventIds.filter((f) => f)
+    ? matchUpFilters.eventIds.filter(Boolean)
     : [];
 
   const selectedStructureIds = Array.isArray(matchUpFilters?.structureIds)
-    ? matchUpFilters.structureIds.filter((f) => f)
+    ? matchUpFilters.structureIds.filter(Boolean)
     : [];
 
   const selectedDrawIds = Array.isArray(matchUpFilters?.drawIds)
-    ? matchUpFilters.drawIds.filter((f) => f)
+    ? matchUpFilters.drawIds.filter(Boolean)
     : [];
 
   const targetEvent =
     !context?.eventId ||
     (!selectedEventIds.length &&
-      !contextFilters?.eventIds?.filter((f) => f).length) ||
+      !contextFilters?.eventIds?.filter(Boolean).length) ||
     selectedEventIds.includes(context.eventId) ||
     contextFilters?.eventIds?.includes(context.eventId);
   const targetStructure =
@@ -405,32 +405,30 @@ export function getAllStructureMatchUps({
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
-      matchUpWithContext.sides
-        .filter((f) => f)
-        .forEach((side) => {
-          if (side.participantId) {
-            const participant = findParticipant({
-              tournamentParticipants,
-              policyDefinition: appliedPolicies,
-              participantId: side.participantId,
-            });
-            if (participant) {
-              Object.assign(side, { participant });
-            }
+      matchUpWithContext.sides.filter(Boolean).forEach((side) => {
+        if (side.participantId) {
+          const participant = findParticipant({
+            tournamentParticipants,
+            policyDefinition: appliedPolicies,
+            participantId: side.participantId,
+          });
+          if (participant) {
+            Object.assign(side, { participant });
           }
+        }
 
-          if (side.participant && side.participant.individualParticipantIds) {
-            const individualParticipants =
-              side.participant.individualParticipantIds.map((participantId) => {
-                return findParticipant({
-                  policyDefinition: appliedPolicies,
-                  tournamentParticipants,
-                  participantId,
-                });
+        if (side.participant && side.participant.individualParticipantIds) {
+          const individualParticipants =
+            side.participant.individualParticipantIds.map((participantId) => {
+              return findParticipant({
+                policyDefinition: appliedPolicies,
+                tournamentParticipants,
+                participantId,
               });
-            Object.assign(side.participant, { individualParticipants });
-          }
-        });
+            });
+          Object.assign(side.participant, { individualParticipants });
+        }
+      });
 
       if (!matchUpWithContext.matchUpType) {
         const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });

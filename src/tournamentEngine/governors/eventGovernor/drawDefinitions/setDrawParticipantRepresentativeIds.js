@@ -17,7 +17,7 @@ export function setDrawParticipantRepresentativeIds({
 
   const enteredParticipantIds = (drawDefinition?.entries || [])
     ?.map(({ participantId }) => participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   // An empty array is valid; if ids provided...
   // check that all representativeParticipantIds are enteredParticipantIds

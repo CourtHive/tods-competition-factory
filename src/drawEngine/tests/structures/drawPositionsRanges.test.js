@@ -71,7 +71,7 @@ it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION str
       );
     }
 
-    const filteredDrawPositions = drawPositions.filter((f) => f);
+    const filteredDrawPositions = drawPositions.filter(Boolean);
     const overlap = intersection(
       filteredDrawPositions,
       drawPositionsRange.possibleDrawPositions
@@ -127,7 +127,7 @@ it('can add drawPositionsRange to inContext matchUps in a FEED_IN_CHAMPIONSHIP_T
       );
     }
 
-    const filteredDrawPositions = drawPositions.filter((f) => f);
+    const filteredDrawPositions = drawPositions.filter(Boolean);
     const overlap = intersection(
       filteredDrawPositions,
       drawPositionsRange.possibleDrawPositions

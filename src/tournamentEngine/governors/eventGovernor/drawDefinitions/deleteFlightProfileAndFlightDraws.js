@@ -18,7 +18,7 @@ export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
   if (flightProfile) {
     const drawIds = flightProfile.flights
       ?.map(({ drawId }) => drawId)
-      .filter((f) => f);
+      .filter(Boolean);
     const result = deleteDrawDefinitions({
       tournamentRecord,
       eventId: event.eventId,

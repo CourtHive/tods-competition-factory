@@ -64,7 +64,7 @@ export function assignSeedPositions(props) {
   const updatedAssignments = Object.values(mergeObject);
   const participantIds = updatedAssignments
     .map((assignment) => assignment?.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   if (participantIds.length !== uniqueValues(participantIds).length) {
     return {

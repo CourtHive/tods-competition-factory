@@ -135,7 +135,7 @@ export function drawPositionRemovals({
       relevantPair: pairedDrawPositionByeAdvancedPair,
       subsequentRoundRemoval: true,
     };
-    const newTasks = [roundRemoval, byeAdvancedRemoval].filter((f) => f);
+    const newTasks = [roundRemoval, byeAdvancedRemoval].filter(Boolean);
     return tasks.concat(...newTasks);
   }, []);
 
@@ -143,8 +143,8 @@ export function drawPositionRemovals({
     const targetMatchUp = roundMatchUps[roundNumber].find(
       (matchUp) =>
         intersection(
-          matchUp.drawPositions.filter((f) => f),
-          relevantPair.filter((f) => f)
+          matchUp.drawPositions.filter(Boolean),
+          relevantPair.filter(Boolean)
         ).length
     );
     if (!targetMatchUp) {
@@ -254,7 +254,7 @@ function removeDrawPosition({
         // for fed rounds the loserMatchUpDrawPosiiton is always the fed drawPosition
         // which is always the lowest numerical drawPosition
         const loserMatchUpDrawPosition = Math.min(
-          ...drawPositions.filter((f) => f)
+          ...drawPositions.filter(Boolean)
         );
 
         const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};

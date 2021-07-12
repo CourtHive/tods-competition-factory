@@ -74,7 +74,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
         const { roundPosition, drawPositions } = matchUp;
         if (!roundPosition) return drawPositions;
-        const filteredDrawPositions = drawPositions?.filter((f) => f) || [];
+        const filteredDrawPositions = drawPositions?.filter(Boolean) || [];
 
         if (!filteredDrawPositions?.length) return [undefined, undefined];
 

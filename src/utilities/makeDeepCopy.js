@@ -43,5 +43,5 @@ function extensionsToAttributes(extensions) {
       const { name, value } = extension;
       return name && value && { [`_${name}`]: value };
     })
-    .filter((f) => f);
+    .filter(Boolean);
 }

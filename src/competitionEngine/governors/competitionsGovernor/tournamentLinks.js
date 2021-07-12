@@ -143,6 +143,6 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
 }
 
 function getTournamentIds(tournamentRecords) {
-  const tournamentIds = Object.keys(tournamentRecords).filter((f) => f);
+  const tournamentIds = Object.keys(tournamentRecords).filter(Boolean);
   return { tournamentIds };
 }

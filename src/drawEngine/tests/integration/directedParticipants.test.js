@@ -287,7 +287,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
     roundNumber: 2,
     roundPosition: 1,
   });
-  expect(matchUp.drawPositions.filter((f) => f)).toMatchObject([]);
+  expect(matchUp.drawPositions.filter(Boolean)).toMatchObject([]);
   drawEngine.assignDrawPositionBye({
     structureId,
     drawPosition: unassignedPositions[1].drawPosition,
@@ -322,7 +322,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
     roundNumber: 2,
     roundPosition: 2,
   }));
-  expect(matchUp.drawPositions.filter((f) => f)).toMatchObject([]);
+  expect(matchUp.drawPositions.filter(Boolean)).toMatchObject([]);
   drawEngine.assignDrawPositionBye({
     structureId,
     drawPosition: unassignedPositions[6].drawPosition,

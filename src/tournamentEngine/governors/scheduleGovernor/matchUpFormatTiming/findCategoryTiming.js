@@ -18,5 +18,5 @@ export function findCategoryTiming({
             categoryTypes?.includes(categoryType)
         )
     )
-    .find((f) => f);
+    .find(Boolean);
 }

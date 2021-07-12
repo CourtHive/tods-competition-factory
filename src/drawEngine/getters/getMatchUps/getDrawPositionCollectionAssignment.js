@@ -22,6 +22,6 @@ export function getDrawPositionCollectionAssignment({
       const participantId = relevantCompetitor?.participantId;
       return participantId && { [drawPosition]: participantId };
     })
-    .filter((f) => f);
+    .filter(Boolean);
   return Object.assign({}, ...drawPositionCollectionAssignment);
 }

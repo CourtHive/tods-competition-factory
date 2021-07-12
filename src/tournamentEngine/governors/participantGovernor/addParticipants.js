@@ -108,7 +108,7 @@ export function addParticipant({
       );
       const participantName = individualParticipants
         .map((participant) => participant.person?.standardFamilyName)
-        .filter((f) => f)
+        .filter(Boolean)
         .join('/');
       participant.participantName = participantName;
     }

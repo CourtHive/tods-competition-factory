@@ -13,7 +13,7 @@ export function findMatchupFormatAverageTimes({
         return matching;
       })
       .flat()
-      .filter((f) => f)
+      .filter(Boolean)
       // sort by length; shortest first; prioritize first match
       .sort((a, b) => (a?.length || 0) - (b?.length || 0)) || [];
 

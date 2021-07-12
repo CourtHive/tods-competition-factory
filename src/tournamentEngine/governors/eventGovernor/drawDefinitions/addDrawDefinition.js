@@ -30,7 +30,7 @@ export function addDrawDefinition({ drawDefinition, event }) {
   const drawOrders =
     event.drawDefinitions
       .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   const { flightProfile } = getFlightProfile({ event });
   const flight = flightProfile?.flights?.find(
@@ -42,7 +42,7 @@ export function addDrawDefinition({ drawDefinition, event }) {
       ?.map(
         ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
       )
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
 

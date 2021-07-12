@@ -13,7 +13,7 @@ export function createSubOrderMap({ positionAssignments }) {
       const subOrder = !isNaN(value) && value;
       return subOrder && { participantId: assignment.participantId, subOrder };
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   // we only want subOrders that are unique, and we want them sorted and re-assigned to ordered values
   const subOrders = subOrderArray.map(({ subOrder }) => subOrder);

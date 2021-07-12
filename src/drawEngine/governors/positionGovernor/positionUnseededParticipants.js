@@ -36,7 +36,7 @@ export function positionUnseededParticipants({
 
   const assignedSeedParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];

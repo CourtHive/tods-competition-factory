@@ -20,14 +20,14 @@ export function getUnfilledPositions({
   const unpairedPositions = drawPositionGroups
     .map((drawPositions) => {
       const unfilled = drawPositions
-        .filter((f) => f)
+        .filter(Boolean)
         .map((drawPosition) => assignmentMap[drawPosition])
         .filter((assignment) => !assignment.participantId && !assignment.bye)
         .map((assignment) => assignment.drawPosition);
       return unfilled;
     })
     .flat()
-    .filter((f) => f);
+    .filter(Boolean);
 
   return unpairedPositions;
 }

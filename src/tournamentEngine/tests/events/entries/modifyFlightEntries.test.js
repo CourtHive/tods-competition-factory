@@ -103,7 +103,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
 
   firstFlightParticipantIds = firstFlightEntries
     .map(({ participantId }) => participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   // confirm error when missing { drawId }
   result = tournamentEngine.removeDrawEntries({

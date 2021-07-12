@@ -74,7 +74,7 @@ export function getEventMatchUpFormatTiming({
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })
-      .filter((f) => f);
+      .filter(Boolean);
   }
   const { eventType, eventId, category } = event;
   const categoryName = category?.categoryName;

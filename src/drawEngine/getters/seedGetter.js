@@ -49,7 +49,7 @@ export function getValidSeedBlocks({
       const roundDrawPositions = roundMatchUps[roundNumber]
         .map((matchUp) => matchUp.drawPositions)
         .flat(Infinity)
-        .filter((f) => f);
+        .filter(Boolean);
       const uniqueRoundDrawPositions = roundDrawPositions.filter(
         (drawPosition) => !allDrawPositions.includes(drawPosition)
       );
@@ -304,7 +304,7 @@ function constructBlocks({
   seedNumberBlocks.forEach((seedNumbers) => {
     const drawPositions = seedNumbers
       .map(() => blockPositions.reverse().pop())
-      .filter((f) => f);
+      .filter(Boolean);
     seedNumbers = seedNumbers.slice(0, drawPositions.length);
 
     const block = { seedNumbers, drawPositions };
@@ -372,7 +372,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
   );
   const assignedDrawPositions = positionsWithParticipants
     .map((assignment) => assignment.drawPosition)
-    .filter((f) => f);
+    .filter(Boolean);
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { validSeedBlocks } = getValidSeedBlocks({
@@ -390,10 +390,10 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
 
   const assignedSeedParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   const assignedPositionParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   const placedSeedParticipantIds = assignedSeedParticipantIds.filter(
     (participantId) => assignedPositionParticipantIds.includes(participantId)
   );
@@ -430,7 +430,7 @@ export function getNextSeedBlock({ drawDefinition, structureId, randomize }) {
       if (participantId) selectedParticipantIds.push(participantId);
       return participantId;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   const placedSeedNumbers = seedAssignments
     .filter((assignment) =>

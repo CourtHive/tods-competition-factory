@@ -67,7 +67,7 @@ export function generateTeamsFromParticipantAttribute(props) {
       }
       return undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   const newParticipants = [];
   let participantsAdded = 0;

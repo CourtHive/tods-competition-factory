@@ -142,7 +142,7 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
       individualParticipantIds.includes(participantId)
     )
     .map(({ person }) => person?.standardFamilyName)
-    .filter((f) => f)
+    .filter(Boolean)
     .sort()
     .join('/');
 }

@@ -23,6 +23,6 @@ export function getStructurePositionedSeeds({ drawDefinition, structure }) {
             seedValue: seedMap[assignment.participantId].seedValue,
           };
     })
-    .filter((f) => f);
+    .filter(Boolean);
   return positionedSeeds;
 }

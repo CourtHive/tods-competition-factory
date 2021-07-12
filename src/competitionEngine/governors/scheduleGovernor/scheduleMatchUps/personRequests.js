@@ -130,7 +130,7 @@ function mergePersonRequests({ personRequests, personId, requests }) {
       }
       return request;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   // Do not add any request that is missing requestType
   for (const request of filteredRequests) {
@@ -197,9 +197,7 @@ export function modifyPersonRequests({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(requests)) return { error: INVALID_VALUES };
 
-  const requestIds = requests
-    .map(({ requestId }) => requestId)
-    .filter((f) => f);
+  const requestIds = requests.map(({ requestId }) => requestId).filter(Boolean);
 
   const { personRequests } = getPersonRequests({ tournamentRecords });
   const modifyRequests = (personId) => {
@@ -217,7 +215,7 @@ export function modifyPersonRequests({
 
         return Object.assign(request, modification);
       })
-      .filter((f) => f);
+      .filter(Boolean);
   };
   if (personId && personRequests[personId]) {
     modifyRequests(personId);

@@ -137,7 +137,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
         consolationFirstRoundDrawPositions.includes(assignment.drawPosition)
       )
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
 
   // expect that no first round positions have been assigned
   expect(consolationFirstRoundAssignments.length).toEqual(0);
@@ -162,7 +162,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
       consolationFirstRoundDrawPositions.includes(assignment.drawPosition)
     )
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   expect(consolationFirstRoundAssignments.length).toEqual(1);
 });

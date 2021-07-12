@@ -32,11 +32,11 @@ it('can advance participants when double BYEs are created', () => {
   let finalMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions.filter((f) => f)).toEqual([]);
+  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   ({ orderedPairs, matchUps } = getOrderedDrawPositionPairs({ structureId }));
 
   /*
-  expect(orderedPairs.map((op) => op.filter((f) => f))).toEqual([
+  expect(orderedPairs.map((op) => op.filter(Boolean))).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -64,7 +64,7 @@ it('can advance participants when double BYEs are created', () => {
   });
   ({ orderedPairs } = getOrderedDrawPositionPairs({ structureId }));
   /*
-  expect(orderedPairs.map((op) => op.filter((f) => f))).toEqual([
+  expect(orderedPairs.map((op) => op.filter(Boolean))).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],

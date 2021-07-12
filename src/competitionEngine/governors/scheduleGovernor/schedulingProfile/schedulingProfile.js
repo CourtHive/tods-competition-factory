@@ -159,11 +159,11 @@ export function getUpdatedSchedulingProfile({
 
           return { venueId, rounds: filteredRounds };
         })
-        .filter((f) => f);
+        .filter(Boolean);
 
       return venues.length && date && { ...dateSchedulingProfile, venues };
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   return { updatedSchedulingProfile, modifications: issues.length, issues };
 }

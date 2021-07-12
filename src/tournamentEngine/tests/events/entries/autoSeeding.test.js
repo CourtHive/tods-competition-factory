@@ -70,7 +70,7 @@ it('can autoSeed by Rankings', () => {
   });
   let scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
   result = tournamentEngine.setParticipantScaleItems({
@@ -103,7 +103,7 @@ it('can autoSeed by Rankings', () => {
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([3, 4, 5, 1, 2, 6, 7, 8]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
@@ -124,7 +124,7 @@ it('can autoSeed by Rankings', () => {
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([8, 3, 2, 1, 7, 6, 5, 4]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,

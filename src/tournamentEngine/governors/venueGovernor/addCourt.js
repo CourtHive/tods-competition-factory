@@ -126,7 +126,7 @@ export function addCourts({
       returnDetails: true,
     })
   );
-  const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
+  const courtRecords = result.map((outcome) => outcome.court).filter(Boolean);
 
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });

@@ -196,7 +196,7 @@ export function generateRoundRobinWithPlayOff(props) {
 
       return undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(

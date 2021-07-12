@@ -79,7 +79,7 @@ export function getValidSwapAction({
   // which have a participant assginment so the client/UI has all relevant drawPosition details
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   const participantsAvailable = (tournamentParticipants || []).filter(
     (participant) => availableParticipantIds.includes(participant.participantId)
   );

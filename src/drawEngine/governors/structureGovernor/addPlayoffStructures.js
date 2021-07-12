@@ -68,7 +68,7 @@ export function addPlayoffStructures(props) {
 
   const validRoundNumbers =
     targetRoundNumbers &&
-    targetRoundNumbers.map((p) => !isNaN(p) && parseInt(p)).filter((f) => f);
+    targetRoundNumbers.map((p) => !isNaN(p) && parseInt(p)).filter(Boolean);
 
   if (validRoundNumbers) {
     if (!Array.isArray(validRoundNumbers))

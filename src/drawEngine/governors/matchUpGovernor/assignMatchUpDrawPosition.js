@@ -178,7 +178,7 @@ export function assignMatchUpDrawPosition({
   // if FIRST_MATCH_LOSER_CONSOLATION, check whether a BYE should be placed in consolation feed
   if (
     loserTargetLink?.linkCondition === FIRST_MATCHUP &&
-    updatedDrawPositions.filter((f) => f).length === 2 &&
+    updatedDrawPositions.filter(Boolean).length === 2 &&
     !isByeMatchUp
   ) {
     const structureMatchUps = getMappedStructureMatchUps({

@@ -42,7 +42,7 @@ export function generateScoreString(props) {
     sets
       ?.sort(setSort)
       .map(setString)
-      .filter((f) => f) // handle situation where there are multiple empty set objects
+      .filter(Boolean) // handle situation where there are multiple empty set objects
       .join(' ') || '';
 
   if (!outcomeString) return setScores;

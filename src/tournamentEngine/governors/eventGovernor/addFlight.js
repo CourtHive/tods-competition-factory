@@ -27,10 +27,10 @@ export function addFlight({
     const enteredParticipantIds =
       event.entries
         ?.map(({ participantId }) => participantId)
-        .filter((f) => f) || [];
+        .filter(Boolean) || [];
     const flightParticipantIds = drawEntries
       .map(({ participantId }) => participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     if (
       intersection(flightParticipantIds, enteredParticipantIds).length !==
       flightParticipantIds.length
@@ -46,7 +46,7 @@ export function addFlight({
       ?.map(
         ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
       )
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 

@@ -382,7 +382,7 @@ function advanceWinner({
   // always insure there are two drawPositions to iterate over
   const twoDrawPositions = []
     .concat(
-      ...(noContextWinnerMatchUp.drawPositions || []).filter((f) => f),
+      ...(noContextWinnerMatchUp.drawPositions || []).filter(Boolean),
       undefined,
       undefined
     )

@@ -69,7 +69,7 @@ export function getValidAssignmentActions({
   if (isWinRatioFedStructure && ignoreSeedPositions) {
     const assignedParticipantIds = positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
 
     const matchUpFilters = { structureIds: positionSourceStructureIds };
     const { completedMatchUps } = getDrawMatchUps({

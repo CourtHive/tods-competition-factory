@@ -422,7 +422,7 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
       matchUpId,
       outcome,
     });
-    if (drawPositions.filter((f) => f).length === 2) {
+    if (drawPositions.filter(Boolean).length === 2) {
       expect(result.success).toEqual(true);
     } else {
       expect(result.error).not.toBeUndefined();
@@ -437,6 +437,6 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
 
   // expect that all 4 first round matchUps are complete
   expect(
-    teamMatchUps.map((m) => m.score?.winningSide).filter((f) => f).length
+    teamMatchUps.map((m) => m.score?.winningSide).filter(Boolean).length
   ).toEqual(4);
 });

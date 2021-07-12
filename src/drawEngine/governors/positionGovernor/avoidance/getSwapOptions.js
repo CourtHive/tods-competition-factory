@@ -63,7 +63,7 @@ export function getSwapOptions({
 
           return undefined;
         })
-        .filter((f) => f);
+        .filter(Boolean);
 
       return swapOptions;
     })

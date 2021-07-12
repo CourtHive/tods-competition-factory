@@ -100,7 +100,7 @@ function getOrderedByePositions({
         drawPositions?.includes(drawPosition)
       )
     )
-    .filter((f) => f);
+    .filter(Boolean);
 
   const orderedByePositions = seedOrderSortedDrawPositionPairs
     .map((drawPositions) => {
@@ -110,7 +110,7 @@ function getOrderedByePositions({
           : drawPosition;
       }, undefined);
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   return orderedByePositions;
 }

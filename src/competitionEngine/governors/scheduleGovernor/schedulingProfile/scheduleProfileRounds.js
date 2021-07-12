@@ -42,7 +42,7 @@ export function scheduleProfileRounds({
       if (!isValidDateString(date)) return;
       return extractDate(date);
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   const profileDates = schedulingProfile
     .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)

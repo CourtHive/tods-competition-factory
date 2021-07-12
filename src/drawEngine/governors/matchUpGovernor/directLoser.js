@@ -35,7 +35,7 @@ export function directLoser(props) {
   const fedDrawPositionFMLC =
     loserLinkCondition === FIRST_MATCHUP &&
     loserMatchUp.roundNumber === 2 &&
-    Math.min(...targetMatchUpDrawPositions.filter((f) => f));
+    Math.min(...targetMatchUpDrawPositions.filter(Boolean));
 
   const targetMatchUpDrawPosition =
     fedDrawPositionFMLC ||

@@ -86,7 +86,7 @@ export function getStructureMatchUps({
 
       const drawPositionsFilled =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.filter((f) => f).length === 2;
+        matchUp.drawPositions?.filter(Boolean).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
         matchUp.drawPositions?.reduce((assigned, drawPosition) => {

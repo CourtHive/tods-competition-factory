@@ -154,7 +154,7 @@ export function getUnseededByePositions({
   const unseededByePositions = unfilledSeedBlocks
     .map((block) => block.map(findDrawPositionPair))
     .flat(Infinity)
-    .filter((f) => f);
+    .filter(Boolean);
 
   return { unseededByePositions };
 }

@@ -160,7 +160,7 @@ export function removeDirectedWinner({
     const allDrawPositionInstances = matchUps
       .map((matchUp) => matchUp.drawPositions)
       .flat(Infinity)
-      .filter((f) => f);
+      .filter(Boolean);
     const drawPositionInstanceCount = instanceCount(allDrawPositionInstances);
     const winnerDrawPositionInstances =
       drawPositionInstanceCount[winnerDrawPosition];

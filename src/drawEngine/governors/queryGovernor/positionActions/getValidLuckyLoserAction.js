@@ -93,7 +93,7 @@ export function getValidLuckyLosersAction({
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   const availableLuckyLoserParticipantIds = completedMatchUps
     ?.map(({ winningSide, sides }) => sides[1 - (winningSide - 1)])

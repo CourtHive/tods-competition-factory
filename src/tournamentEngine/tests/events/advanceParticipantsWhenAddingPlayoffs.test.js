@@ -59,7 +59,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
 
   const consolationAssignedParticipantIds = structures[1].positionAssignments
     .map(({ participantId }) => participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(consolationAssignedParticipantIds.length).toEqual(2);
 });
 

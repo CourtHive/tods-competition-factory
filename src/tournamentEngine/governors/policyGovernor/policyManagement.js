@@ -41,7 +41,7 @@ export function attachPolicy({
         return policyType;
       }
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   if (applied?.length) {
     const extension = {

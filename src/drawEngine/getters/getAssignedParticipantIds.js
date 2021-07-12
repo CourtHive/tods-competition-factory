@@ -14,7 +14,7 @@ export function getAssignedParticipantIds({ drawDefinition, stages }) {
       });
       return positionAssignments
         .map(({ participantId }) => participantId)
-        .filter((f) => f);
+        .filter(Boolean);
     })
     .flat();
 }

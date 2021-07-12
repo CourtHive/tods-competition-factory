@@ -22,7 +22,7 @@ export function getCheckedInParticipantIds({ matchUp }) {
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
-  if (!matchUp.sides || matchUp.sides.filter((f) => f).length !== 2) {
+  if (!matchUp.sides || matchUp.sides.filter(Boolean).length !== 2) {
     return { error: INVALID_MATCHUP };
   }
 

@@ -77,7 +77,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       }
       Object.assign(matchUp, { winnerTo, loserTo });
 
-      if (matchUp.drawPositions.filter((f) => f).length) {
+      if (matchUp.drawPositions.filter(Boolean).length) {
         const participants = getParticipants(matchUp);
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
@@ -108,14 +108,13 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
 
 function getParticipantIds(matchUp) {
   return (
-    matchUp?.sides
-      ?.map(({ participantId }) => participantId)
-      .filter((f) => f) || []
+    matchUp?.sides?.map(({ participantId }) => participantId).filter(Boolean) ||
+    []
   );
 }
 function getParticipants(matchUp) {
   return (
-    matchUp?.sides?.map(({ participant }) => participant).filter((f) => f) || []
+    matchUp?.sides?.map(({ participant }) => participant).filter(Boolean) || []
   );
 }
 

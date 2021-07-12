@@ -60,14 +60,14 @@ export function getDrawPositionsRanges({
             drawPositions.length / matchUpsCount
           );
         })
-        .filter((f) => f);
+        .filter(Boolean);
 
       const possibleDrawPositions = generateRange(0, matchUpsCount)
         .map((index) => {
           return currentRoundDrawPositionChunks
             .map((chunk) => chunk[index])
             .flat()
-            .filter((f) => f)
+            .filter(Boolean)
             .sort(numericSort);
         })
         .map((possible) => unique(possible));

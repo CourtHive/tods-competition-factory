@@ -34,47 +34,47 @@ export function filterMatchUps(props) {
   } = props;
 
   const targetMatchUpStatuses = Array.isArray(matchUpStatuses)
-    ? matchUpStatuses.filter((f) => f)
+    ? matchUpStatuses.filter(Boolean)
     : [];
 
-  const targetStages = Array.isArray(stages) ? stages.filter((f) => f) : [];
+  const targetStages = Array.isArray(stages) ? stages.filter(Boolean) : [];
   const targetCollectionIds = Array.isArray(collectionIds)
-    ? collectionIds.filter((f) => f)
+    ? collectionIds.filter(Boolean)
     : [];
   const targetRoundNumbers = Array.isArray(roundNumbers)
-    ? roundNumbers.filter((f) => f)
+    ? roundNumbers.filter(Boolean)
     : [];
 
   const targetMatchUpTypes =
     Array.isArray(matchUpTypes) && filterMatchUpTypes
-      ? matchUpTypes.filter((f) => f)
+      ? matchUpTypes.filter(Boolean)
       : [];
   const targetCourtIds = Array.isArray(courtIds)
-    ? courtIds.filter((f) => f)
+    ? courtIds.filter(Boolean)
     : [];
   const targetVenueIds = Array.isArray(venueIds)
-    ? venueIds.filter((f) => f)
+    ? venueIds.filter(Boolean)
     : [];
   const targetMatchUpFormats = Array.isArray(matchUpFormats)
-    ? matchUpFormats.filter((f) => f)
+    ? matchUpFormats.filter(Boolean)
     : typeof matchUpFormat === 'string'
     ? [matchUpFormat]
     : [];
   const targetScheduledDates = Array.isArray(scheduledDates)
-    ? scheduledDates.filter((f) => f)
+    ? scheduledDates.filter(Boolean)
     : typeof scheduledDate === 'string' && scheduledDate.length
     ? [scheduledDate]
     : [];
 
   const targetTournamentIds = Array.isArray(tournamentIds)
-    ? tournamentIds.filter((f) => f)
+    ? tournamentIds.filter(Boolean)
     : [];
   const targetEventIds = Array.isArray(eventIds)
-    ? eventIds.filter((f) => f)
+    ? eventIds.filter(Boolean)
     : [];
-  const targetDrawIds = Array.isArray(drawIds) ? drawIds.filter((f) => f) : [];
+  const targetDrawIds = Array.isArray(drawIds) ? drawIds.filter(Boolean) : [];
   const targetStructureIds = Array.isArray(structureIds)
-    ? structureIds.filter((f) => f)
+    ? structureIds.filter(Boolean)
     : [];
 
   const filteredMatchUps = matchUps.filter((matchUp) => {
@@ -157,14 +157,14 @@ export function filterMatchUps(props) {
 
     if (targetCourtIds.length) {
       const { courtId } = matchUpAssignedCourtId({ matchUp });
-      if (!courtIds.filter((f) => f).includes(courtId)) {
+      if (!courtIds.filter(Boolean).includes(courtId)) {
         return false;
       }
     }
 
     if (targetVenueIds.length) {
       const { venueId } = matchUpAssignedVenueId({ matchUp });
-      if (!venueIds.filter((f) => f).includes(venueId)) {
+      if (!venueIds.filter(Boolean).includes(venueId)) {
         return false;
       }
     }

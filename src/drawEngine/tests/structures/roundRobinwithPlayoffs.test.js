@@ -337,7 +337,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -585,7 +585,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup

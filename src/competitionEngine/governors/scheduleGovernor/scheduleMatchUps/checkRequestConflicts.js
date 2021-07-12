@@ -43,7 +43,7 @@ export function checkRequestConflicts({
     .map((personId) =>
       personRequests[personId]?.map((request) => ({ ...request, personId }))
     )
-    .filter((f) => f)
+    .filter(Boolean)
     .flat()
     .filter(
       (request) =>

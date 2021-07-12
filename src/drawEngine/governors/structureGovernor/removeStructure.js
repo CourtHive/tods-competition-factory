@@ -22,7 +22,7 @@ export function removeStructure({ drawDefinition, structureId }) {
         (link) =>
           link.source.structureId === structureId && link.target.structureId
       )
-      .filter((f) => f);
+      .filter(Boolean);
 
   const structureIds =
     drawDefinition.structures?.map(({ structureId }) => structureId) || [];

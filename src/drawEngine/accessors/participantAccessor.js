@@ -28,12 +28,12 @@ export function getMatchUpParticipantIds({ matchUp }) {
       .map(
         (side) => side.participant && side.participant.individualParticipants
       )
-      .filter((f) => f);
+      .filter(Boolean);
 
     nestedIndividualParticipantIds = nestedIndividualParticipants.map(
       (participants) =>
         participants
-          .filter((f) => f)
+          .filter(Boolean)
           .map((participant) => participant.participantId)
     );
 
