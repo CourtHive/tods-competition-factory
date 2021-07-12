@@ -1,15 +1,13 @@
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
+import { isUngrouped } from '../../../../global/isUngrouped';
 import { removeEventEntries } from './removeEventEntries';
 
+import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  UNPAIRED,
-} from '../../../../constants/entryStatusConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
@@ -25,8 +23,8 @@ import {
  * @param {string} eventId - tournamentEngine automatically retrieves event
  * @param {string} drawId - optional - also add to drawDefinition.entries & flightProfile.drawEntries (if possible)
  * @param {string[]} participantIds - ids of all participants to add to event
- * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
- * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ * @param {string} enryStatus - entryStatus enum
+ * @param {string} entryStage - entryStage enum
  *
  */
 export function addEventEntries(props) {
@@ -64,7 +62,7 @@ export function addEventEntries(props) {
       if (
         event.eventType === DOUBLES &&
         participant.participantType === INDIVIDUAL &&
-        entryStatus === UNPAIRED
+        isUngrouped(entryStatus)
       ) {
         return true;
       }
@@ -119,7 +117,7 @@ export function addEventEntries(props) {
       (entry) => entry.participantId
     );
     const unpairedIndividualParticipantIds = event.entries
-      .filter((entry) => entry.entryStatus === UNPAIRED)
+      .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord.participants || [];
     const pairedIndividualParticipantIds = tournamentParticipants

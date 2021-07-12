@@ -6,6 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 
 it('DISALLOWS entry of incomplete result if active downsream', () => {
   const drawProfiles = [
@@ -57,7 +58,7 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
     matchUpId,
     outcome,
   });
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
   expect(filteredOrderedPairs).toEqual([

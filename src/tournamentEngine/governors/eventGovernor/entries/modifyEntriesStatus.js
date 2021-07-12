@@ -3,6 +3,9 @@ import { refreshEntryPositions } from '../../../../common/producers/refreshEntry
 import { findParticipant } from '../../../../common/deducers/findParticipant';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { PAIR } from '../../../../constants/participantTypes';
+import { isUngrouped } from '../../../../global/isUngrouped';
 import {
   INVALID_ENTRY_STATUS,
   INVALID_PARTICIPANT_ID,
@@ -10,12 +13,9 @@ import {
   PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../../constants/errorConditionConstants';
 import {
-  UNPAIRED,
   VALID_ENTERED_TYPES,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 
 export function modifyEntriesStatus({
   tournamentRecord,
@@ -41,9 +41,9 @@ export function modifyEntriesStatus({
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
 
   // build up an array of participantIds which are assigned positions in structures
-  // disallow changing entryStatus to WITHDRAWN or UNPAIRED for assignedParticipants
+  // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
   const assignedParticipantIds = [];
-  if ([WITHDRAWN, UNPAIRED].includes(entryStatus)) {
+  if (entryStatus === WITHDRAWN || isUngrouped(entryStatus)) {
     event.drawDefinitions?.forEach((drawDefinition) => {
       const participantIds = getAssignedParticipantIds({ drawDefinition });
       assignedParticipantIds.push(...participantIds);
@@ -58,7 +58,7 @@ export function modifyEntriesStatus({
         tournamentParticipants,
         participantId,
       });
-      return !(participantType === PAIR && entryStatus === UNPAIRED);
+      return !(participantType === PAIR && isUngrouped(entryStatus));
     }
   );
 

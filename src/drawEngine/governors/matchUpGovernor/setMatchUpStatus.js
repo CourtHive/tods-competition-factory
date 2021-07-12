@@ -93,8 +93,8 @@ export function setMatchUpStatus(params) {
 
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
-  // const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
-  if (matchUp.winningSide && matchUpStatus === BYE) {
+  // if (matchUp.winningSide && matchUpStatus === BYE) {
+  if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
     return { error: INCOMPATIBLE_MATCHUP_STATUS };
   }
 
@@ -126,6 +126,7 @@ export function setMatchUpStatus(params) {
     inContextDrawMatchUps,
   });
 
+  let dualWinningSideChange;
   if (matchUpTieId) {
     const { matchUp: dualMatchUp } = findMatchUp({
       drawDefinition,
@@ -143,7 +144,10 @@ export function setMatchUpStatus(params) {
     });
 
     const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
-    if (projectedWinningSide !== existingDualMatchUpWinningSide) {
+    dualWinningSideChange =
+      projectedWinningSide !== existingDualMatchUpWinningSide;
+
+    if (dualWinningSideChange) {
       if (getDevContext()) console.log('dualMatchUp', { projectedWinningSide });
     }
   }
@@ -176,10 +180,34 @@ export function setMatchUpStatus(params) {
 
   // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
   const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
+  if (
+    activeDownStream &&
+    !winningSide &&
+    isNonDirectingMatchUpStatus({ matchUpStatus })
+  ) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
+
+  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+  if (
+    winningSide &&
+    winningSide === matchUp.winningSide &&
+    matchUpStatus &&
+    !directingMatchUpStatus
+  ) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
+
+  const validWinningSideChange =
+    matchUp.matchUpType !== TEAM &&
+    winningSide &&
+    matchUp.winningSide &&
+    !dualWinningSideChange;
+  if (getDevContext()) console.log({ validWinningSideChange });
 
   const result = (!activeDownStream && noDownstreamDependencies(params)) ||
     (winningSide && winningSideWithDownstreamDependencies(params)) ||
-    (matchUpStatus && attemptStatusChange(params)) || {
+    (directingMatchUpStatus && applyMatchUpValues(params)) || {
       error: NO_VALID_ACTIONS,
     };
 
@@ -192,19 +220,6 @@ export function setMatchUpStatus(params) {
         messages,
       }
     : SUCCESS;
-}
-
-function attemptStatusChange(params) {
-  const { matchUpStatus } = params;
-
-  // if no winningSide is given and matchUp has winningSide
-  // check whether intent is to remove winningSide
-  if (isDirectingMatchUpStatus({ matchUpStatus })) {
-    applyMatchUpValues(params);
-  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    return { error: INCOMPATIBLE_MATCHUP_STATUS };
-  }
-  return SUCCESS;
 }
 
 function winningSideWithDownstreamDependencies(params) {
@@ -220,18 +235,7 @@ function winningSideWithDownstreamDependencies(params) {
 
   if (winningSide === matchUp.winningSide) {
     if (matchUpStatus) {
-      if (
-        isDirectingMatchUpStatus({ matchUpStatus }) &&
-        matchUpStatus !== BYE
-      ) {
-        applyMatchUpValues(params);
-      } else {
-        // matchUpStatus can't be changed to something non-directing
-        return {
-          error:
-            'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
-        };
-      }
+      return applyMatchUpValues(params);
     } else {
       const { drawDefinition, score, matchUpFormat, matchUpTieId } = params;
       modifyMatchUpScore({
@@ -248,9 +252,6 @@ function winningSideWithDownstreamDependencies(params) {
     }
   } else {
     return { error: 'Cannot change winner with advanced participants' };
-    // TODO POLICY:
-    // check whether winningSide can be changed
-    // or change winning side with rippple effect to all downstream matchUps
   }
 
   return SUCCESS;
@@ -269,7 +270,7 @@ function applyMatchUpValues(params) {
     score,
     notes,
   } = params;
-  modifyMatchUpScore({
+  return modifyMatchUpScore({
     tournamentRecord,
     drawDefinition,
     matchUpStatus: matchUpStatus || COMPLETED,

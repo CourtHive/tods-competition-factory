@@ -4,12 +4,6 @@ import { getPairedParticipant } from '../../participantGovernor/getPairedPartici
 import { addNotice } from '../../../../global/globalState';
 import { addEventEntries } from './addEventEntries';
 
-import {
-  INVALID_EVENT_TYPE,
-  INVALID_PARTICIPANT_IDS,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
@@ -17,6 +11,12 @@ import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 import { UUID } from '../../../../utilities';
+import {
+  INVALID_EVENT_TYPE,
+  INVALID_PARTICIPANT_IDS,
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -26,8 +26,8 @@ import { UUID } from '../../../../utilities';
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} eventId - tournamentEngine automatically retrieves event
  * @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
- * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
- * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ * @param {string} enryStatus - entryStatus enum
+ * @param {string} entryStage - entryStage enum
  *
  */
 export function addEventEntryPairs({

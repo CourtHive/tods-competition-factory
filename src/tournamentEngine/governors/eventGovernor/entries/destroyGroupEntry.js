@@ -2,7 +2,7 @@ import { deleteParticipants } from '../../participantGovernor/deleteParticipants
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
-import { UNPAIRED } from '../../../../constants/entryStatusConstants';
+import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
@@ -59,7 +59,7 @@ export function destroyGroupEntry({
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 
-  const defaultEntryStatus = UNPAIRED; // TODO: entryStatus for destroyed TEAM participants should be different
+  const defaultEntryStatus = UNGROUPED;
 
   const eventEntries = event.entries || [];
   const entry = eventEntries.find(

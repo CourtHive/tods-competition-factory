@@ -1,16 +1,14 @@
-import { tournamentEngine } from '../../../sync';
-import { chunkArray } from '../../../../utilities';
 import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
+import { isUngrouped } from '../../../../global/isUngrouped';
+import { chunkArray } from '../../../../utilities';
+import { tournamentEngine } from '../../../sync';
 
+import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
+import { COMPETITOR } from '../../../../constants/participantRoles';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import {
-  ALTERNATE,
-  UNPAIRED,
-} from '../../../../constants/entryStatusConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 
 let result;
 
@@ -148,8 +146,8 @@ it('can destroy pair entries in doubles events', () => {
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(33);
 
-  const unpairedEntries = updatedEvent.entries.filter(
-    (entry) => entry.entryStatus === UNPAIRED
+  const unpairedEntries = updatedEvent.entries.filter((entry) =>
+    isUngrouped(entry.entryStatus)
   );
   expect(unpairedEntries.length).toEqual(2);
   const individualParticipantIds = unpairedEntries.map(

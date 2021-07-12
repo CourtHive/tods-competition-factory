@@ -1,6 +1,6 @@
 import { destroyGroupEntry } from './destroyGroupEntry';
 
-import { UNPAIRED } from '../../../../constants/entryStatusConstants';
+import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 
 /**
  *
@@ -24,7 +24,7 @@ export function destroyPairEntry({
 }) {
   return destroyGroupEntry({
     removeGroupParticipant,
-    individualEntryStatus: UNPAIRED,
+    individualEntryStatus: UNGROUPED,
     tournamentRecord,
     drawDefinition,
     participantId,
