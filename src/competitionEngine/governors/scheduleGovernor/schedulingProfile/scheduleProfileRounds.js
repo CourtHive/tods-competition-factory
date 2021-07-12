@@ -89,6 +89,11 @@ export function scheduleProfileRounds({
           round.periodLength ||
           dateSchedulingProfile?.periodLength ||
           periodLength;
+
+        // TODO: capture range of matchUps within a round
+        // e.g. a round has been split between two venues
+        // for elimation roundPositionRange could work..., but not for RR
+        // for Round Robins you want to keep the groups together at a venue
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],

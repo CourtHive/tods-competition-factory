@@ -18,9 +18,12 @@ across blocks of `matchUps`.
 ## schedulingProfile
 
 To support the use of the Garman formula for scheduling `matchUps` from different events,
-`competitionEngine` makes use of a `schedulingProfile` to define the order `rounds` of `drawDefinitions` to be scheduled on specific days, and then iteratively calls the Garman formula.
+`competitionEngine` makes use of a `schedulingProfile` to define the order of `rounds` of structures within `drawDefinitions`
+to be scheduled on specific days, and then iteratively calls the Garman formula.
 
-The `schedulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record. `competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached via `setSchedulingProfile()`.
+The `schedulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record.
+`competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached
+via `setSchedulingProfile()`.
 
 <RenderJSON
   data={SchedulingProfile}
