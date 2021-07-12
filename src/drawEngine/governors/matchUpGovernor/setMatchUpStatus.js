@@ -48,21 +48,23 @@ import { TEAM } from '../../../constants/matchUpTypes';
  * @returns
  */
 
-export function setMatchUpStatus(props) {
+export function setMatchUpStatus(params) {
   let messages = [];
 
-  // matchUpStatus in props is the new status
-  // winningSide in props is new winningSide
+  // matchUpStatus in params is the new status
+  // winningSide in params is new winningSide
   const {
     drawDefinition,
     matchUpId,
     matchUpStatus,
     tournamentRecord,
     winningSide,
-  } = props;
+  } = params;
 
+  // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  // Check matchUpStatus, matchUpStatus/winningSide validity ------------------
   if (
     [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
     winningSide
@@ -73,22 +75,8 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
+  // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
-
-  // cannot take matchUpStatus from existing matchUp records
-  // cannot take winningSide from existing matchUp records
-
-  const matchUp = matchUpsMap.drawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
-
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-
-  if (matchUp.matchUpType === TEAM) {
-    // do not direclty set team score... unless walkover/default/double walkover/Retirement
-    return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
-  }
-
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
     inContext: true,
@@ -97,13 +85,19 @@ export function setMatchUpStatus(props) {
     matchUpsMap,
   });
 
+  // Find target matchUp ------------------------------------------------------
+  const matchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+
   const inContextMatchUp = inContextDrawMatchUps.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
 
-  const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(
-    (f) => f
-  );
+  if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
+
+  // Check validity of matchUpStatus considering assigned drawPositions -------
+  const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
 
   if (
     matchUpStatus &&
@@ -113,10 +107,16 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
+  if (matchUp.matchUpType === TEAM) {
+    // do not direclty set team score... unless walkover/default/double walkover/Retirement
+    return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
+  }
+
   const matchUpTieId = inContextMatchUp.matchUpTieId;
   const structureId = inContextMatchUp.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
 
+  // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
     structure,
@@ -144,24 +144,25 @@ export function setMatchUpStatus(props) {
     if (projectedWinningSide !== existingDualMatchUpWinningSide) {
       if (getDevContext()) console.log('dualMatchUp', { projectedWinningSide });
     }
-  } else {
-    const { schedule } = props;
-    if (schedule) {
-      const result = addMatchUpScheduleItems({
-        tournamentRecord,
-        disableNotice: true,
-        drawDefinition,
-        matchUpId,
-        schedule,
-      });
-      if (result.error) {
-        return result;
-      }
+  }
+
+  // Add scheduling information to matchUp ------------------------------------
+  const { schedule } = params;
+  if (schedule) {
+    const result = addMatchUpScheduleItems({
+      tournamentRecord,
+      disableNotice: true,
+      drawDefinition,
+      matchUpId,
+      schedule,
+    });
+    if (result.error) {
+      return result;
     }
   }
 
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
-  Object.assign(props, {
+  Object.assign(params, {
     matchUp,
     inContextDrawMatchUps,
     matchUpTieId,
@@ -179,13 +180,13 @@ export function setMatchUpStatus(props) {
   if (!isActiveDownstream({ inContextMatchUp, targetData })) {
     // not activeDownstream also handles changing the winner of a finalRound
     // as long as the matchUp is not the finalRound of a qualifying structure
-    const result = noDownstreamDependencies(props);
+    const result = noDownstreamDependencies(params);
     if (result.error) return result;
   } else if (winningSide) {
-    const result = winningSideWithDownstreamDependencies(props);
+    const result = winningSideWithDownstreamDependencies(params);
     if (result.error) return result;
   } else if (matchUpStatus) {
-    const result = attemptStatusChange(props);
+    const result = attemptStatusChange(params);
     if (result.error) return result;
   } else {
     if (getDevContext()) {
@@ -203,8 +204,8 @@ export function setMatchUpStatus(props) {
     : SUCCESS;
 }
 
-function attemptStatusChange(props) {
-  const { matchUp, matchUpStatus } = props;
+function attemptStatusChange(params) {
+  const { matchUp, matchUpStatus } = params;
 
   if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
     return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
@@ -214,7 +215,7 @@ function attemptStatusChange(props) {
   // check whether intent is to remove winningSide
   if (isDirectingMatchUpStatus({ matchUpStatus })) {
     if (matchUp.winningSide && matchUpStatus !== BYE) {
-      applyMatchUpValues(props);
+      applyMatchUpValues(params);
     } else {
       return {
         error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
@@ -228,7 +229,7 @@ function attemptStatusChange(props) {
   return SUCCESS;
 }
 
-function winningSideWithDownstreamDependencies(props) {
+function winningSideWithDownstreamDependencies(params) {
   const {
     matchUp,
     matchUpStatus,
@@ -237,7 +238,7 @@ function winningSideWithDownstreamDependencies(props) {
     matchUpId,
     tournamentRecord,
     event,
-  } = props;
+  } = params;
 
   if (winningSide === matchUp.winningSide) {
     if (matchUpStatus) {
@@ -245,7 +246,7 @@ function winningSideWithDownstreamDependencies(props) {
         isDirectingMatchUpStatus({ matchUpStatus }) &&
         matchUpStatus !== BYE
       ) {
-        applyMatchUpValues(props);
+        applyMatchUpValues(params);
       } else {
         // matchUpStatus can't be changed to something non-directing
         return {
@@ -254,7 +255,7 @@ function winningSideWithDownstreamDependencies(props) {
         };
       }
     } else {
-      const { drawDefinition, score, matchUpFormat, matchUpTieId } = props;
+      const { drawDefinition, score, matchUpFormat, matchUpTieId } = params;
       modifyMatchUpScore({
         tournamentRecord,
         drawDefinition,
@@ -277,7 +278,7 @@ function winningSideWithDownstreamDependencies(props) {
   return SUCCESS;
 }
 
-function applyMatchUpValues(props) {
+function applyMatchUpValues(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -289,7 +290,7 @@ function applyMatchUpValues(props) {
     event,
     score,
     notes,
-  } = props;
+  } = params;
   modifyMatchUpScore({
     tournamentRecord,
     drawDefinition,
@@ -301,6 +302,6 @@ function applyMatchUpValues(props) {
     event,
     score,
     notes,
-    matchUpTieId: props.matchUpTieId,
+    matchUpTieId: params.matchUpTieId,
   });
 }
