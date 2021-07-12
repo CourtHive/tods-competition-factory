@@ -172,28 +172,17 @@ export function setMatchUpStatus(params) {
     matchUpsMap,
   });
 
-  // if either lowerMatchUp or winnerMatchUp have winningSide
-  // => see if either matchUp has active players
-  // => if active players are present then outcome cannot change
-  // => if outcome is NOT different, apply new result information
+  // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
+  const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
+  // const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
 
-  if (!isActiveDownstream({ inContextMatchUp, targetData })) {
-    // not activeDownstream also handles changing the winner of a finalRound
-    // as long as the matchUp is not the finalRound of a qualifying structure
-    const result = noDownstreamDependencies(params);
-    if (result.error) return result;
-  } else if (winningSide) {
-    const result = winningSideWithDownstreamDependencies(params);
-    if (result.error) return result;
-  } else if (matchUpStatus) {
-    const result = attemptStatusChange(params);
-    if (result.error) return result;
-  } else {
-    if (getDevContext()) {
-      console.log('no valid actions');
-    }
-    return { error: NO_VALID_ACTIONS };
-  }
+  const result = (!activeDownStream && noDownstreamDependencies(params)) ||
+    (winningSide && winningSideWithDownstreamDependencies(params)) ||
+    (matchUpStatus && attemptStatusChange(params)) || {
+      error: NO_VALID_ACTIONS,
+    };
+
+  if (result.error) return result;
 
   return getDevContext()
     ? {
