@@ -2,6 +2,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
+import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
 
 // This should only apply when eventType is SINGLES or DOUBLES, NOT WHEN TEAM!
 test('changing winningSide can propagate changes through multiple structures', () => {
@@ -44,8 +45,19 @@ test('changing winningSide can propagate changes through multiple structures', (
     .devContext({ winningSideChange: true })
     .setMatchUpStatus({
       matchUpId: firstMatchUp.matchUpId,
-      drawId,
+      allowChangePropagation: false,
       outcome: { winningSide: 2 },
+      drawId,
     });
-  console.log(result.error);
+  expect(result.error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
+
+  result = tournamentEngine
+    .devContext({ winningSideChange: true })
+    .setMatchUpStatus({
+      matchUpId: firstMatchUp.matchUpId,
+      allowChangePropagation: true,
+      outcome: { winningSide: 2 },
+      drawId,
+    });
+  expect(result.success).toEqual(true);
 });

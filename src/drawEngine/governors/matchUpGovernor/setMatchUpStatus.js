@@ -9,6 +9,7 @@ import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { isActiveDownstream } from './isActiveDownstream';
+import { swapWinnerLoser } from './swapWinnerLoser';
 import { makeDeepCopy } from '../../../utilities';
 import {
   isDirectingMatchUpStatus,
@@ -33,6 +34,7 @@ import {
   NO_VALID_ACTIONS,
   INVALID_VALUES,
   INCOMPATIBLE_MATCHUP_STATUS,
+  CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
 
 /**
@@ -56,6 +58,7 @@ export function setMatchUpStatus(params) {
     matchUpStatus,
     tournamentRecord,
     winningSide,
+    allowChangePropagation = true, // factory default
   } = params;
 
   // Check for missing parameters ---------------------------------------------
@@ -93,7 +96,6 @@ export function setMatchUpStatus(params) {
 
   if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
 
-  // if (matchUp.winningSide && matchUpStatus === BYE) {
   if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
     return { error: INCOMPATIBLE_MATCHUP_STATUS };
   }
@@ -170,6 +172,7 @@ export function setMatchUpStatus(params) {
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
   Object.assign(params, {
     matchUp,
+    inContextMatchUp,
     inContextDrawMatchUps,
     matchUpTieId,
     structure,
@@ -200,12 +203,17 @@ export function setMatchUpStatus(params) {
 
   const validWinningSideChange =
     matchUp.matchUpType !== TEAM &&
+    !dualWinningSideChange &&
     winningSide &&
     matchUp.winningSide &&
-    !dualWinningSideChange;
+    matchUp.winningSide !== winningSide;
 
-  if (getDevContext({ winningSideChange: true }) && validWinningSideChange) {
-    console.log({ validWinningSideChange });
+  if (
+    allowChangePropagation &&
+    validWinningSideChange &&
+    matchUp.roundPosition // not round robin if matchUp.roundPosition
+  ) {
+    return swapWinnerLoser(params);
   }
 
   const result = (!activeDownStream && noDownstreamDependencies(params)) ||
@@ -254,7 +262,7 @@ function winningSideWithDownstreamDependencies(params) {
       });
     }
   } else {
-    return { error: 'Cannot change winner with advanced participants' };
+    return { error: CANNOT_CHANGE_WINNINGSIDE };
   }
 
   return SUCCESS;

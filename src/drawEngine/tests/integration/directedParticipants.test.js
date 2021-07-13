@@ -30,6 +30,7 @@ import {
 } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -222,7 +223,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     winningSide: 2,
     matchUpStatus: DEFAULTED,
   });
-  expect(result).toMatchObject(SUCCESS);
+  expect(result.success).toEqual(true);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
@@ -232,8 +233,6 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   ({ matchUpStatus, winningSide, score } = matchUp);
   expect(matchUpStatus).toEqual(DEFAULTED);
   expect(winningSide).toEqual(2);
-  expect(score.scoreStringSide1).toEqual('');
-  expect(score.scoreStringSide2).toEqual('');
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
@@ -529,13 +528,15 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(result.error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
+  // when { allowChangePropagation: false }
   ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     winningSide: 2,
     matchUpStatus: COMPLETED,
     score: '6-0 6-0',
+    allowChangePropagation: false,
   }));
-  expect(error).not.toBeUndefined();
+  expect(error).toEqual(CANNOT_CHANGE_WINNINGSIDE);
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId: mainStructureId,

@@ -103,6 +103,7 @@ export const INVALID_WINNING_SIDE = 'Invalid winningSide';
 
 export const NO_PARTICIPANTS = 'Tournament has no participants';
 export const CANNOT_REMOVE_PARTICIPANTS = 'Cannot remove participants';
+export const CANNOT_CHANGE_WINNINGSIDE = 'Cannot change winningSide';
 export const INVALID_PARTICIPANT = 'Invalid participant';
 export const INVALID_PARTICIPANT_ID = 'Invalid participantId';
 export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
@@ -188,6 +189,7 @@ export const EXISTING_PROFILE = 'Existing Profile';
 export const METHOD_NOT_FOUND = 'Method not found';
 
 export const errorConditionConstants = {
+  CANNOT_CHANGE_WINNINGSIDE,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,

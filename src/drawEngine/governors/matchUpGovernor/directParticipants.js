@@ -8,7 +8,7 @@ import { directLoser } from './directLoser';
 import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function directParticipants(props) {
+export function directParticipants(params) {
   const {
     tournamentRecord,
     event,
@@ -22,7 +22,7 @@ export function directParticipants(props) {
     winningSide,
     targetData,
     score,
-  } = props;
+  } = params;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const validToScore =
@@ -50,7 +50,7 @@ export function directParticipants(props) {
   });
 
   if (isCollectionMatchUp) {
-    const { matchUpTieId } = props;
+    const { matchUpTieId } = params;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
     return SUCCESS;
   }

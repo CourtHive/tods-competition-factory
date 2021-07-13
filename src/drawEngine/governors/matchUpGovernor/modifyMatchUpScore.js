@@ -104,5 +104,6 @@ export function modifyMatchUpScore({
   }
 
   addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+
   return SUCCESS;
 }

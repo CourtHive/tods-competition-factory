@@ -15,7 +15,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function noDownstreamDependencies(props) {
+export function noDownstreamDependencies(params) {
   const {
     matchUp,
     matchUpId,
@@ -24,27 +24,27 @@ export function noDownstreamDependencies(props) {
     winningSide,
     tournamentRecord,
     event,
-  } = props;
-  let { matchUpStatus } = props;
+  } = params;
+  let { matchUpStatus } = params;
 
   const doubleWalkoverCleanup =
     matchUp?.matchUpStatus === DOUBLE_WALKOVER &&
     matchUpStatus !== DOUBLE_WALKOVER;
   if (doubleWalkoverCleanup) {
-    const result = removeDoubleWalkover(props);
+    const result = removeDoubleWalkover(params);
     if (result.error) return result;
   }
   const doubleWalkover = matchUpStatus === DOUBLE_WALKOVER;
 
   const removeDirected = ({ removeScore } = {}) => {
-    const { structure, drawDefinition } = props;
+    const { structure, drawDefinition } = params;
     checkConnectedStructures({ drawDefinition, structure, matchUp });
-    Object.assign(props, { removeScore });
-    return removeDirectedParticipants(props);
+    Object.assign(params, { removeScore });
+    return removeDirectedParticipants(params);
   };
 
   if (winningSide) {
-    const result = attemptToSetWinningSide(props);
+    const result = attemptToSetWinningSide(params);
     if (result.error) return result;
   } else if (!winningSide && scoreHasValue({ score }) && !doubleWalkover) {
     if (!matchUpStatus) matchUpStatus = INCOMPLETE;
@@ -52,18 +52,18 @@ export function noDownstreamDependencies(props) {
     const result = removeDirected({ removeScore });
     if (result.error) return result;
   } else if (matchUpStatus && matchUpStatus !== TO_BE_PLAYED) {
-    const { error } = attemptToSetMatchUpStatus(props);
+    const { error } = attemptToSetMatchUpStatus(params);
     if (error) return { error };
   } else if (!winningSide && matchUp.winningSide && !scoreHasValue({ score })) {
     const result = removeDirected();
     if (result.error) return result;
   } else if (matchUp) {
     if (matchUp.matchUpStatus === DOUBLE_WALKOVER) {
-      const result = checkDoubleWalkoverPropagation(props);
+      const result = checkDoubleWalkoverPropagation(params);
       if (result.error) return result;
     }
     modifyMatchUpScore({
-      drawDefinition: props.drawDefinition,
+      drawDefinition: params.drawDefinition,
       removeScore: true,
       matchUpFormat,
       matchUpId,

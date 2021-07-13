@@ -40,9 +40,9 @@ export function getMatchUpFormatTiming({
     event?.category?.ageCategoryCode;
 
   const { policy } = findPolicy({
+    policyType: POLICY_TYPE_SCHEDULING,
     tournamentRecord,
     event,
-    policyType: POLICY_TYPE_SCHEDULING,
   });
 
   const defaultTiming = {
