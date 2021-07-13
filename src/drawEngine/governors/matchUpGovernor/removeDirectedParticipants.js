@@ -7,6 +7,7 @@ import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { instanceCount } from '../../../utilities';
 
+import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -29,6 +30,8 @@ export function removeDirectedParticipants(params) {
     matchUpsMap,
   } = params;
 
+  if (!matchUp.drawPositions) return { error: MISSING_DRAW_POSITIONS };
+
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp },
@@ -36,99 +39,96 @@ export function removeDirectedParticipants(params) {
 
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  if (matchUp.drawPositions) {
-    const winningSide = matchUp.winningSide;
-    const winningIndex = winningSide - 1;
-    const losingIndex = 1 - winningIndex;
-    const winningDrawPosition = matchUp.drawPositions[winningIndex];
-    const loserDrawPosition = matchUp.drawPositions[losingIndex];
+  const winningSide = matchUp.winningSide;
+  const winningIndex = winningSide - 1;
+  const losingIndex = 1 - winningIndex;
+  const winningDrawPosition = matchUp.drawPositions[winningIndex];
+  const loserDrawPosition = matchUp.drawPositions[losingIndex];
 
-    // use redue for single pass resolution of both
-    const { winnerParticipantId, loserParticipantId } =
-      positionAssignments.reduce(
-        (assignments, assignment) => {
-          if (assignment.drawPosition === loserDrawPosition)
-            assignments.loserParticipantId = assignment.participantId;
-          if (assignment.drawPosition === winningDrawPosition)
-            assignments.winnerParticipantId = assignment.participantId;
-          return assignments;
-        },
-        { winnerParticipantId: undefined, loserParticipantId: undefined }
-      );
-
-    modifyMatchUpScore({
-      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-      drawDefinition: params.drawDefinition,
-      removeWinningSide: true,
-      matchUpStatusCodes,
-      tournamentRecord,
-      matchUpFormat,
-      removeScore,
-      matchUpId,
-      matchUp,
-      score,
-      event,
-    });
-
-    const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
-      inContext: true,
-      drawDefinition,
-      structure,
-      matchUpsMap,
-    });
-
-    const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
-      matchUp.drawPositions.includes(loserDrawPosition)
+  // use redue for single pass resolution of both
+  const { winnerParticipantId, loserParticipantId } =
+    positionAssignments.reduce(
+      (assignments, assignment) => {
+        if (assignment.drawPosition === loserDrawPosition)
+          assignments.loserParticipantId = assignment.participantId;
+        if (assignment.drawPosition === winningDrawPosition)
+          assignments.winnerParticipantId = assignment.participantId;
+        return assignments;
+      },
+      { winnerParticipantId: undefined, loserParticipantId: undefined }
     );
 
-    if (winnerMatchUp) {
-      const result = removeDirectedWinner({
-        winnerMatchUp,
-        drawDefinition,
-        winnerTargetLink,
-        winnerParticipantId,
-        winningDrawPosition,
+  const result = modifyMatchUpScore({
+    matchUpStatus: matchUpStatus || TO_BE_PLAYED,
+    drawDefinition: params.drawDefinition,
+    removeWinningSide: true,
+    matchUpStatusCodes,
+    tournamentRecord,
+    matchUpFormat,
+    removeScore,
+    matchUpId,
+    matchUp,
+    score,
+    event,
+  });
+  if (result.error) return result;
 
+  const { matchUps: sourceMatchUps } = getAllStructureMatchUps({
+    inContext: true,
+    drawDefinition,
+    structure,
+    matchUpsMap,
+  });
+
+  const drawPositionMatchUps = sourceMatchUps.filter((matchUp) =>
+    matchUp.drawPositions.includes(loserDrawPosition)
+  );
+
+  if (winnerMatchUp) {
+    const result = removeDirectedWinner({
+      winnerMatchUp,
+      drawDefinition,
+      winnerTargetLink,
+      winnerParticipantId,
+      winningDrawPosition,
+
+      matchUpsMap,
+    });
+    if (result.error) return result;
+  }
+  if (loserMatchUp) {
+    const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
+      sourceMatchUps,
+      loserDrawPosition,
+      drawPositionMatchUps,
+    });
+
+    const loserLinkCondition = loserTargetLink.linkCondition;
+    const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
+
+    if (winnerHadBye && firstMatchUpLoss) {
+      // The fed drawPosition is always the lowest number
+      const drawPosition = Math.min(...loserMatchUp.drawPositions);
+      const removeByeResult = removeDirectedBye({
+        drawDefinition,
+        drawPosition,
+        targetLink: loserTargetLink,
         matchUpsMap,
       });
-      if (result.error) return result;
+      if (removeByeResult.error) return removeByeResult;
     }
-    if (loserMatchUp) {
-      const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
-        sourceMatchUps,
-        loserDrawPosition,
-        drawPositionMatchUps,
-      });
 
-      const loserLinkCondition = loserTargetLink.linkCondition;
-      const firstMatchUpLoss = loserLinkCondition === FIRST_MATCHUP;
-
-      if (winnerHadBye && firstMatchUpLoss) {
-        // The fed drawPosition is always the lowest number
-        const drawPosition = Math.min(...loserMatchUp.drawPositions);
-        const removeByeResult = removeDirectedBye({
-          drawDefinition,
-          drawPosition,
-          targetLink: loserTargetLink,
-          matchUpsMap,
-        });
-        if (removeByeResult.error) return removeByeResult;
-      }
-
-      const removeLoserResult = removeDirectedLoser({
-        loserMatchUp,
-        drawDefinition,
-        loserTargetLink,
-        loserParticipantId,
-        matchUpsMap,
-      });
-      if (removeLoserResult) return removeLoserResult;
-    }
-  } else {
-    return { error: 'matchUp missing drawPositions' };
+    const removeLoserResult = removeDirectedLoser({
+      loserMatchUp,
+      drawDefinition,
+      loserTargetLink,
+      loserParticipantId,
+      matchUpsMap,
+    });
+    if (removeLoserResult) return removeLoserResult;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function removeDirectedWinner({
@@ -140,8 +140,6 @@ export function removeDirectedWinner({
 
   matchUpsMap,
 }) {
-  let error;
-
   const { structureId, roundNumber } = winnerMatchUp;
 
   if (winnerTargetLink) {
@@ -187,7 +185,7 @@ export function removeDirectedWinner({
     matchUpsMap,
   });
 
-  return { error };
+  return { ...SUCCESS };
 }
 
 function removeDirectedLoser({
@@ -195,8 +193,6 @@ function removeDirectedLoser({
   loserTargetLink,
   loserParticipantId,
 }) {
-  let error;
-
   const structureId = loserTargetLink.target.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -206,7 +202,7 @@ function removeDirectedLoser({
     }
   });
 
-  return { error };
+  return { ...SUCCESS };
 }
 
 export function removeDirectedBye({
@@ -216,8 +212,6 @@ export function removeDirectedBye({
   inContextDrawMatchUps,
   matchUpsMap,
 }) {
-  let error;
-
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({
@@ -228,5 +222,5 @@ export function removeDirectedBye({
     matchUpsMap,
   });
 
-  return { error };
+  return { ...SUCCESS };
 }

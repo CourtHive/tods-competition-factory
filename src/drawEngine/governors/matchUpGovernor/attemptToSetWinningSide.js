@@ -9,6 +9,7 @@ export function attemptToSetWinningSide(params) {
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // TODO: return a message if there are effects in connected structures
+    // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF
     checkConnectedStructures({
       drawDefinition,
       structure,

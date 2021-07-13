@@ -22,7 +22,7 @@ export function checkDoubleWalkoverPropagation(params) {
 
     if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
 
-    modifyMatchUpScore({
+    return modifyMatchUpScore({
       matchUpId,
       drawDefinition,
       removeScore: true,

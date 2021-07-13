@@ -41,7 +41,7 @@ export function noDownstreamDependencies(params) {
 
   const removeDirected = ({ removeScore } = {}) => {
     const { structure, drawDefinition } = params;
-    checkConnectedStructures({ drawDefinition, structure, matchUp });
+    checkConnectedStructures({ drawDefinition, structure, matchUp }); // only relevant to WIN_RATIO progression
     Object.assign(params, { removeScore });
     return removeDirectedParticipants(params);
   };

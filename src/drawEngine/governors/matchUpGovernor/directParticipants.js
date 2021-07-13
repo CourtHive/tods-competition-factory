@@ -7,6 +7,10 @@ import { directLoser } from './directLoser';
 
 import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_ASSIGNMENTS,
+  MISSING_DRAW_POSITIONS,
+} from '../../../constants/errorConditionConstants';
 
 export function directParticipants(params) {
   const {
@@ -28,14 +32,15 @@ export function directParticipants(params) {
   const validToScore =
     isCollectionMatchUp ||
     drawPositionsAssignedParticipantIds({ structure, matchUp });
+
   if (!validToScore) {
-    return { error: 'drawPositions are not all assigned participantIds' };
+    return { error: MISSING_ASSIGNMENTS };
   }
 
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
-  modifyMatchUpScore({
+  const result = modifyMatchUpScore({
     drawDefinition,
     matchUpFormat,
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
@@ -48,6 +53,7 @@ export function directParticipants(params) {
     score,
     event,
   });
+  if (result.error) return result;
 
   if (isCollectionMatchUp) {
     const { matchUpTieId } = params;
@@ -93,7 +99,7 @@ export function directParticipants(params) {
       if (result.error) return result;
     }
   } else {
-    return { error: 'machUp is missing drawPositions' };
+    return { error: MISSING_DRAW_POSITIONS };
   }
 
   return SUCCESS;
