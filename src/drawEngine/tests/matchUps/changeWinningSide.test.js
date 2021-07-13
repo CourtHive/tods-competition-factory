@@ -19,7 +19,7 @@ test('changing winningSide can propagate changes through multiple structures', (
 
   tournamentEngine.setState(tournamentRecord);
 
-  const matchUps = tournamentEngine.tournamentMatchUps();
+  let matchUps = tournamentEngine.tournamentMatchUps();
   const { completedMatchUps, matchUpsCount } = matchUps;
   expect(completedMatchUps.length).toEqual(expectedMatchUpsCount);
   expect(matchUpsCount).toEqual(expectedMatchUpsCount);
@@ -28,6 +28,9 @@ test('changing winningSide can propagate changes through multiple structures', (
     ({ roundNumber, roundPosition, structureName }) =>
       roundNumber === 1 && roundPosition === 1 && structureName === 'EAST'
   );
+  const firstMatchUpWinnerParticipantId = firstMatchUp.sides.find(
+    ({ sideNumber }) => sideNumber === firstMatchUp.winningSide
+  ).participantId;
   const firstMatchUpLoserParticipantId = firstMatchUp.sides.find(
     ({ sideNumber }) => sideNumber !== firstMatchUp.winningSide
   ).participantId;
@@ -60,4 +63,16 @@ test('changing winningSide can propagate changes through multiple structures', (
       drawId,
     });
   expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.tournamentMatchUps();
+  const updatedWestFinal = matchUps.completedMatchUps.find(
+    ({ matchUpId }) => matchUpId === westFinal.matchUpId
+  );
+  const updatedWestFinalWinnerParticipantId = updatedWestFinal.sides.find(
+    ({ sideNumber }) => sideNumber === westFinal.winningSide
+  ).participantId;
+
+  expect(firstMatchUpWinnerParticipantId).toEqual(
+    updatedWestFinalWinnerParticipantId
+  );
 });
