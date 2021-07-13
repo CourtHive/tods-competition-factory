@@ -15,10 +15,12 @@ const requiredStateProviderMethods = [
   'deleteNotices',
   'getNotices',
   'getTopics',
+  'getTournamentId',
   'getTournamentRecord',
   'getTournamentRecords',
   'removeTournamentRecord',
   'setSubscriptions',
+  'setTournamentId',
   'setTournamentRecord',
   'setTournamentRecords',
 ];
@@ -109,6 +111,10 @@ export async function callListener(payload) {
   return _globalStateProvider.callListener(payload);
 }
 
+export function getTournamentId() {
+  return _globalStateProvider.getTournamentId();
+}
+
 export function getTournamentRecord(tournamentId) {
   return _globalStateProvider.getTournamentRecord(tournamentId);
 }
@@ -123,6 +129,10 @@ export function setTournamentRecord(tournamentRecord) {
 
 export function setTournamentRecords(tournamentRecords) {
   return _globalStateProvider.setTournamentRecords(tournamentRecords);
+}
+
+export function setTournamentId(tournamentId) {
+  return _globalStateProvider.setTournamentId(tournamentId);
 }
 
 export function removeTournamentRecord(tournamentId) {

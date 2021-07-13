@@ -17,8 +17,10 @@ import {
   setDeepCopy,
   setDevContext,
   getDevContext,
+  getTournamentId,
   getTournamentRecord,
   removeTournamentRecord,
+  setTournamentId,
   setTournamentRecord,
 } from '../global/globalState';
 
@@ -32,29 +34,23 @@ export function tournamentEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
-  let tournamentId;
-
   const fx = {
     getState: ({ convertExtensions } = {}) =>
-      getState({ convertExtensions, tournamentId }),
+      getState({ convertExtensions, tournamentId: getTournamentId() }),
     newTournamentRecord: (params = {}) => {
       const result = newTournamentRecord(params);
       if (result.error) return result;
+
       setTournamentRecord(result);
-      tournamentId = result.tournamentId;
-      return Object.assign({ tournamentId }, SUCCESS);
+      setTournamentId(result.tournamentId);
+      return Object.assign({ tournamentId: result.tournamentId }, SUCCESS);
     },
-    setTournamentId: (newTournamentId) => {
-      // TODO: add globalState method to insure that tournamentRecords[tournamentId] is valid
-      tournamentId = newTournamentId;
-      return SUCCESS;
-    },
+    setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };
 
   fx.version = () => factoryVersion();
   fx.reset = () => {
-    removeTournamentRecord(tournamentId);
-    tournamentId = undefined;
+    removeTournamentRecord(getTournamentId());
     return SUCCESS;
   };
   fx.setState = (tournament, deepCopyOption) => {
@@ -68,7 +64,7 @@ export function tournamentEngineAsync(test) {
   };
 
   fx.executionQueue = (directives, rollbackOnError) =>
-    executionQueueAsync(fx, tournamentId, directives, rollbackOnError);
+    executionQueueAsync(fx, directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -77,7 +73,6 @@ export function tournamentEngineAsync(test) {
     } else {
       fx.error = undefined;
       fx.success = true;
-      tournamentId = result.tournamentId;
     }
     return fx;
   }
@@ -107,7 +102,7 @@ export function tournamentEngineAsync(test) {
   }
 
   async function engineInvoke(fx, params) {
-    const tournamentRecord = getTournamentRecord(tournamentId);
+    const tournamentRecord = getTournamentRecord(getTournamentId());
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
@@ -151,13 +146,9 @@ export function tournamentEngineAsync(test) {
     }
   }
 
-  async function executionQueueAsync(
-    fx,
-    tournamentId,
-    directives,
-    rollbackOnError
-  ) {
+  async function executionQueueAsync(fx, directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentId = getTournamentId();
     const tournamentRecord = getTournamentRecord(tournamentId);
 
     const snapshot =

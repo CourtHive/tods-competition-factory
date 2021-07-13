@@ -3,6 +3,7 @@ import { makeDeepCopy } from '../utilities';
 import {
   setTournamentRecord,
   getTournamentRecord,
+  setTournamentId,
 } from '../global/globalState';
 
 import {
@@ -15,9 +16,12 @@ export function setState(tournament, deepCopyOption) {
   const tournamentId =
     tournament.unifiedTournamentId?.tournamentId || tournament.tournamentId;
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
+
   const tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
+
   setTournamentRecord(tournamentRecord);
+  setTournamentId(tournamentId); // must be set AFTER tournamentRecord
 
   return tournamentRecord;
 }

@@ -1,6 +1,9 @@
 import { executionAsyncId, createHook } from 'async_hooks';
 
+const NOT_FOUND = 'Not found';
 const INVALID_VALUES = 'Invalid values';
+const INVALID_TOURNAMENT_RECORD = 'Invalid Tournament Record';
+const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 
 /**
  * This code enables "global" state for each async execution context.
@@ -27,6 +30,7 @@ asyncHook.enable();
 
 function createInstanceState() {
   const instanceState = {
+    tournamentId: undefined,
     tournamentRecords: {},
     subscriptions: {},
     notices: [],
@@ -52,13 +56,20 @@ export default {
   deleteNotices,
   getNotices,
   getTopics,
+  getTournamentId,
   getTournamentRecord,
   getTournamentRecords,
   removeTournamentRecord,
   setSubscriptions,
+  setTournamentId,
   setTournamentRecord,
   setTournamentRecords,
 };
+
+export function getTournamentId() {
+  const instanceState = getInstanceState();
+  return instanceState.tournamentId;
+}
 
 export function getTournamentRecord(tournamentId) {
   const instanceState = getInstanceState();
@@ -75,19 +86,47 @@ export function setTournamentRecord(tournamentRecord) {
   if (tournamentId) {
     const instanceState = getInstanceState();
     instanceState.tournamentRecords[tournamentId] = tournamentRecord;
+    return { success: true };
+  } else {
+    return { error: INVALID_TOURNAMENT_RECORD };
+  }
+}
+
+export function setTournamentId(tournamentId) {
+  const instanceState = getInstanceState();
+  if (instanceState.tournamentRecords[tournamentId]) {
+    instanceState.tournamentId = tournamentId;
+    return { success: true };
+  } else {
+    return { error: MISSING_TOURNAMENT_RECORD };
   }
 }
 
 export function setTournamentRecords(tournamentRecords) {
   const instanceState = getInstanceState();
   instanceState.tournamentRecords = tournamentRecords;
+  const tournamentIds = Object.keys(tournamentRecords);
+  if (tournamentIds.length === 1) {
+    instanceState.tournamentId = tournamentIds[0];
+  } else if (!tournamentIds.length) {
+    instanceState.tournamentId = undefined;
+  }
 }
 
 export function removeTournamentRecord(tournamentId) {
   const instanceState = getInstanceState();
-  return typeof tournamentId === 'string'
-    ? delete instanceState.tournamentRecords[tournamentId]
-    : false;
+  if (typeof tournamentId !== 'string') return { error: INVALID_VALUES };
+  if (!instanceState.tournamentRecords[tournamentId])
+    return { error: NOT_FOUND };
+
+  delete instanceState.tournamentRecords[tournamentId];
+  const tournamentIds = Object.keys(instanceState.tournamentRecords);
+  if (tournamentIds.length === 1) {
+    instanceState.tournamentId = tournamentIds[0];
+  } else if (!tournamentIds.length) {
+    instanceState.tournamentId = undefined;
+  }
+  return { success: true };
 }
 
 function setSubscriptions({ subscriptions = {} } = {}) {
