@@ -180,7 +180,7 @@ export function generateTournamentRecord({
   }
 
   const { tournamentRecord } = tournamentEngine.getState();
-  // tournamentEngine.reset();
+  tournamentEngine.reset();
 
   return { tournamentRecord, drawIds, eventIds, venueIds };
 }
