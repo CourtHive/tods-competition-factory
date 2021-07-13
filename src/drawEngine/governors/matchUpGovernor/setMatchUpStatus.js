@@ -58,7 +58,7 @@ export function setMatchUpStatus(params) {
     matchUpStatus,
     tournamentRecord,
     winningSide,
-    allowChangePropagation = true, // factory default
+    allowChangePropagation = undefined, // factory default
   } = params;
 
   // Check for missing parameters ---------------------------------------------
