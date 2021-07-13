@@ -9,3 +9,12 @@
    - IF matchUpType === TEAM, get targets for TEAM, not INDIVIDUAL/PAIR matchUp
 7. IF matchUp is part of TEAM matchUp, check for TEAM projected winning side to determine if scoring INDIVIDUAL/PAIR matchUp would have downstream effects
 8. Modify matchUp scheduling information (if any schedule information is part of parameters)
+
+## Double Walkovers
+
+1. When a DOUBLE_WALKOVER matchUpStatus is assigned the subsequent matchUp receives a WALKOVER matchUpStatus
+   - This implies that the factory must allow a matchUp with NO drawPositions to have a matchUpStatus other than TO_BE_PLAYED
+2. When a participant is advanced into a matchUp which already has a WALKOVER matchUpStatus:
+   a. IF there are no other drawPositions, the participant is advanced further
+   b. IF there is already a drawPosition, then it must be assumed that a DOUBLE_WALKOVER has been removed and the WALKOVER should become TO_BE_PLAYED
+3. A DOUBLE_WALKOVER may NOT be removed if there is a downstream matchUp with a score

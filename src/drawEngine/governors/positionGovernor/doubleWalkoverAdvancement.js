@@ -1,6 +1,5 @@
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { findStructure } from '../../getters/findStructure';
 import { intersection } from '../../../utilities';
@@ -24,6 +23,7 @@ export function doubleWalkoverAdvancement({
   structure,
   targetData,
 
+  inContextDrawMatchUps,
   matchUpsMap,
 }) {
   if (structure.structureType === CONTAINER) return SUCCESS;
@@ -32,14 +32,6 @@ export function doubleWalkoverAdvancement({
 
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
     targetMatchUps;
-
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    includeByeMatchUps: true,
-
-    matchUpsMap,
-  });
 
   if (loserMatchUp) {
     const { loserTargetLink } = targetLinks;
@@ -159,6 +151,8 @@ function conditionallyAdvanceDrawPosition({
           structure,
           targetData,
           matchUpId,
+
+          inContextDrawMatchUps,
           matchUpsMap,
         });
         if (advancementResult.error) return advancementResult;

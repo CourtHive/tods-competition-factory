@@ -8,6 +8,29 @@ import tournamentEngine from '../../sync';
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 
+test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
+  const drawProfiles = [{ drawSize: 16 }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  const {
+    upcomingMatchUps: [matchUp],
+  } = tournamentEngine.tournamentMatchUps();
+  const { matchUpId } = matchUp;
+
+  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(result.success).toEqual(true);
+});
+
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
