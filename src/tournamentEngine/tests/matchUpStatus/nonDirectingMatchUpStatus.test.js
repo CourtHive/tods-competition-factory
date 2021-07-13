@@ -9,6 +9,7 @@ import {
   IN_PROGRESS,
   NOT_PLAYED,
   DEAD_RUBBER,
+  AWAITING_RESULT,
 } from '../../../constants/matchUpStatusConstants';
 
 it('supports entering CANCELED matchUpStatus', () => {
@@ -19,9 +20,12 @@ it('supports entering CANCELED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -43,9 +47,12 @@ it('supports entering ABANDONED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -67,9 +74,12 @@ it('supports entering INCOMPLETE matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -91,9 +101,12 @@ it('supports entering SUSPENDED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -115,9 +128,12 @@ it('supports entering DEAD_RUBBER matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -139,9 +155,12 @@ it('supports entering NOT_PLAYED matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -163,9 +182,12 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.devContext(true).setMatchUpStatus({
@@ -177,4 +199,31 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
 
   const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
   expect(matchUp.matchUpStatus).toEqual(IN_PROGRESS);
+});
+
+it('supports entering AWAITING_RESULT matchUpStatus', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+    },
+  ];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+    drawId,
+    matchUpId,
+    outcome: { matchUpStatus: AWAITING_RESULT },
+  });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
+  expect(matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
 });

@@ -1,13 +1,15 @@
 import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { generateRange, makeDeepCopy, unique, UUID } from '../../utilities';
 
-import { BYE } from '../../constants/matchUpStatusConstants';
+import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
+import { BYE } from '../../constants/matchUpStatusConstants';
 
 /*
     matchUps should contain sufficient information for a draw hierarchy to be reconstructed
 */
 export function buildDrawHierarchy({ matchUps, matchUpType }) {
+  if (!matchUps) return { error: MISSING_MATCHUPS };
   let feedRoundNumber = 0;
   let previousRound = [];
   let missingMatchUps = [];
@@ -36,7 +38,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
     matchUps
       .map((matchUp) => matchUp.drawPositions)
       .flat()
-      .filter((f) => f)
+      .filter(Boolean)
   ).sort(drawPositionSort);
   const expectedDrawPositions = generateRange(
     1,
@@ -164,7 +166,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
     });
     const previousRoundWinnerIds = previousRoundMatchUps
       .map(getAdvancingParticipantId)
-      .filter((f) => f);
+      .filter(Boolean);
 
     const feedRound = roundMatchUps?.length === previousRound?.length;
     const matchRound = roundMatchUps?.length === previousRound?.length / 2;
@@ -186,7 +188,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
             structureId,
           },
         ];
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     }
@@ -196,14 +198,14 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
         const drawPositions = matchUp.drawPositions || [];
         const { matchUpId, structureId } = matchUp;
         const fedDrawPosition = drawPositions
-          .filter((f) => f) // first filter out undefined if no advanced participant
+          .filter(Boolean) // first filter out undefined if no advanced participant
           .reduce((fed, position) => {
             // fed position is not included in first round
             return firstRoundDrawPositions.includes(position) ? fed : position;
           }, undefined);
 
         const fedSide = matchUp.sides
-          .filter((f) => f)
+          .filter(Boolean)
           .reduce((fedSide, side) => {
             return side.participantId &&
               !previousRoundWinnerIds.includes(side.participantId)
@@ -223,13 +225,13 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
           previousRound[i],
         ];
 
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     } else if (matchRound) {
       roundMatchUps.forEach((matchUp, i) => {
         const children = [previousRound[i * 2], previousRound[i * 2 + 1]];
-        const node = Object.assign({}, matchUp, { children });
+        const node = { ...matchUp, children };
         newRound.push(node);
       });
     }

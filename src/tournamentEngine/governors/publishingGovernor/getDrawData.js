@@ -4,6 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 import { findStructure } from '../../../drawEngine/getters/findStructure';
 import { structureSort } from '../../../drawEngine/getters/structureSort';
 import { findExtension } from '../queryGovernor/extensionQueries';
+import { getDevContext } from '../../../global/globalState';
 import {
   generateRange,
   intersection,
@@ -186,7 +187,9 @@ export function getDrawData({
   });
 
   if (groupedStructures.length > 1) {
-    return { error: 'drawDefinition contains unlinked structures' };
+    const error = { error: 'drawDefinition contains unlinked structures' };
+    if (getDevContext()) console.log(error);
+    return error;
   }
 
   const structures = groupedStructures.flat();
@@ -201,10 +204,11 @@ export function getDrawData({
     true
   );
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     drawInfo: makeDeepCopy(drawInfo),
     structures: makeDeepCopy(structures),
-  });
+  };
 }
 
 /**
@@ -250,7 +254,7 @@ export function getStructureGroups({ drawDefinition }) {
 
   // if a drawDefinition contains no links the no structure groups will exist
   // filter out undefined when there are no links in a drawDefinition
-  const structureGroups = [groupedStructures].filter((f) => f);
+  const structureGroups = [groupedStructures].filter(Boolean);
 
   // iterate through all structures to add missing structureIds
   const structures = drawDefinition.structures || [];

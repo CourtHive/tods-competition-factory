@@ -1,0 +1,102 @@
+---
+title: Generating Tournaments
+---
+
+The **mocksEngine** generates tournament records for many of the tests used in the development of the Competition Factory.
+
+### Simple Example
+
+Generates a tournament record with 32 participants.
+
+```js
+const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+```
+
+## drawProfiles
+
+In testing, very specific scenarios are required. Any number of draws can be added to a generated tournament, and scores for specific `matchUps` within the generated draw structures can be added as well.
+
+```jsx live
+function MocksEngineDemo(props) {
+  const drawProfiles = [
+    { drawSize: 16, eventType: 'DOUBLES' },
+    { drawSize: 32, drawType: 'ROUND_ROBIN' },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles,
+  });
+
+  return <Tournament data={tournamentRecord} />;
+}
+```
+
+### score completion
+
+In the following example a Doubles draw with 32 positions is generated with 30 PAIR participants, leaving two positions to be filled with BYEs. The score for the second `matchUp` in the first round is completed.
+
+```jsx live
+function MocksEngineDemo(props) {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      participantsCount: 30,
+      participantType: 'PAIR',
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          scoreString: '6-1 6-2',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  return <Tournament data={tournamentRecord} />;
+}
+```
+
+## eventProfiles
+
+**eventProfiles** enable multiple draws to be generated in a single event.
+
+```js
+const eventProfiles = [
+  {
+    eventName: 'Event Flights Test',
+    eventType: SINGLES,
+    category: {
+      categoryName: 'U12',
+    },
+    matchUpFormat: FORMAT_STANDARD,
+    drawProfiles: [
+      {
+        drawSize: 16,
+        drawName: 'Qualifying Draw',
+        stage: QUALIFYING,
+      },
+      {
+        drawSize: 32,
+        qualifyingPositions: 4,
+        drawName: 'Main Draw',
+        drawType: COMPASS,
+      },
+      {
+        drawName: 'Consolation Draw',
+        stage: VOLUNTARY_CONSOLATION,
+      },
+    ],
+  },
+];
+const {
+  eventIds: [eventId],
+  drawIds,
+} = mocksEngine.generateTournamentRecord({
+  eventProfiles,
+});
+```

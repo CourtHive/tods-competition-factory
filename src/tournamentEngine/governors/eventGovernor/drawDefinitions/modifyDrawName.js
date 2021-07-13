@@ -5,7 +5,7 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function modifyDrawName({ event, drawId, drawDefinition, drawName }) {

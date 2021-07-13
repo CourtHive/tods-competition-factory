@@ -7,44 +7,56 @@ import { directLoser } from './directLoser';
 
 import { COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  MISSING_ASSIGNMENTS,
+  MISSING_DRAW_POSITIONS,
+} from '../../../constants/errorConditionConstants';
 
-export function directParticipants(props) {
+export function directParticipants(params) {
   const {
+    tournamentRecord,
+    event,
     drawDefinition,
     matchUpStatus,
     matchUpStatusCodes,
     structure,
     matchUp,
+    matchUpId,
+    matchUpFormat,
     winningSide,
     targetData,
     score,
-  } = props;
-  const errors = [];
+  } = params;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const validToScore =
     isCollectionMatchUp ||
     drawPositionsAssignedParticipantIds({ structure, matchUp });
+
   if (!validToScore) {
-    errors.push({ error: 'drawPositions are not all assigned participantIds' });
-    return { errors };
+    return { error: MISSING_ASSIGNMENTS };
   }
 
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
-  modifyMatchUpScore({
+  const result = modifyMatchUpScore({
     drawDefinition,
+    matchUpFormat,
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
+    tournamentRecord,
     winningSide,
     removeScore,
+    matchUpId,
     matchUp,
     score,
+    event,
   });
+  if (result.error) return result;
 
   if (isCollectionMatchUp) {
-    const { matchUpTieId } = props;
+    const { matchUpTieId } = params;
     updateTieMatchUpScore({ drawDefinition, matchUpId: matchUpTieId });
     return SUCCESS;
   }
@@ -66,17 +78,17 @@ export function directParticipants(props) {
     } = targetData;
 
     if (winnerMatchUp) {
-      const { error } = directWinner({
+      const result = directWinner({
         drawDefinition,
         winnerTargetLink,
         winningDrawPosition,
         winnerMatchUp,
         winnerMatchUpDrawPositionIndex,
       });
-      if (error) errors.push(error);
+      if (result.error) return result;
     }
     if (loserMatchUp) {
-      const { error } = directLoser({
+      const result = directLoser({
         drawDefinition,
         loserTargetLink,
         loserDrawPosition,
@@ -84,13 +96,13 @@ export function directParticipants(props) {
         loserMatchUpDrawPositionIndex,
         matchUpStatus,
       });
-      if (error) errors.push(error);
+      if (result.error) return result;
     }
   } else {
-    errors.push({ error: 'machUp is missing drawPositions ' });
+    return { error: MISSING_DRAW_POSITIONS };
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return SUCCESS;
 }
 
 function drawPositionsAssignedParticipantIds({ structure, matchUp }) {

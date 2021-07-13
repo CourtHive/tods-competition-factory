@@ -1,5 +1,9 @@
 import { addNotice } from '../../../../global/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { GROUP, TEAM } from '../../../../constants/participantTypes';
+import { COMPETITOR } from '../../../../constants/participantRoles';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
@@ -7,10 +11,6 @@ import {
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { GROUP, TEAM } from '../../../../constants/participantTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 /**
  *
@@ -56,7 +56,7 @@ export function removeIndividualParticipantIds({
 
   if (error) return { error };
 
-  return Object.assign({}, SUCCESS, { removed });
+  return { ...SUCCESS, removed };
 }
 
 // TODO: consider situations where it would be invalid to remove an individualParticipantId
@@ -71,15 +71,13 @@ function removeParticipantIdsFromGroupingParticipant({
   if (!groupingParticipant.individualParticipantIds)
     groupingParticipant.individualParticipantIds = [];
 
-  groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.filter(
-    (participantId) => {
-      const removeParticipant = individualParticipantIds?.includes(
-        participantId
-      );
+  groupingParticipant.individualParticipantIds =
+    groupingParticipant.individualParticipantIds.filter((participantId) => {
+      const removeParticipant =
+        individualParticipantIds?.includes(participantId);
       if (removeParticipant) removed++;
       return !removeParticipant;
-    }
-  );
+    });
   if (notRemoved.length)
     return { error: 'Participants not removed', notRemoved };
 
@@ -88,16 +86,18 @@ function removeParticipantIdsFromGroupingParticipant({
 
 export function removeParticipantIdsFromAllTeams({
   groupingType = TEAM,
+  participantRole = COMPETITOR,
   tournamentRecord,
   individualParticipantIds = [],
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const tournamentParticipants = tournamentRecord.participants || [];
 
   let modifications = 0;
   tournamentParticipants
     .filter((participant) => {
       return (
-        (participant.participantRole === COMPETITOR ||
+        (participant.participantRole === participantRole ||
           !participant.participantRole) &&
         participant.participantType === groupingType
       );

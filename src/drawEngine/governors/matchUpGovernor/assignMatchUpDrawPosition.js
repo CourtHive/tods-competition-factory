@@ -2,7 +2,6 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { intersection, numericSort } from '../../../utilities';
 import { pushGlobalLog } from '../../../global/globalLog';
 import { addNotice } from '../../../global/globalState';
@@ -25,24 +24,38 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
-  mappedMatchUps,
   matchUpId,
   drawPosition,
   iterative,
-}) {
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    mappedMatchUps,
-    includeByeMatchUps: true,
-  });
 
-  const { matchUp, structure } = findMatchUp({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpId,
-  });
+  matchUpsMap,
+  inContextDrawMatchUps,
+}) {
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
+  }
+
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
+
+      matchUpsMap,
+    }));
+  }
+
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (m) => m.matchUpId === matchUpId
+  );
+  const structureId = inContextMatchUp?.structureId;
+  const structure = drawDefinition?.structures?.find(
+    (structure) => structure.structureId === structureId
+  );
+
+  const matchUp = matchUpsMap?.drawMatchUps?.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
 
   pushGlobalLog({
     color: iterative || 'magenta',
@@ -99,8 +112,8 @@ export function assignMatchUpDrawPosition({
     matchUpId,
     structure,
     drawDefinition,
-    mappedMatchUps,
     inContextDrawMatchUps,
+    inContextMatchUp,
   });
   const {
     targetMatchUps: { winnerMatchUp, loserMatchUp, loserTargetDrawPosition },
@@ -115,6 +128,7 @@ export function assignMatchUpDrawPosition({
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       } else {
@@ -131,8 +145,9 @@ export function assignMatchUpDrawPosition({
       matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
     if (previousRoundNumber && winnerMatchUp) {
       const structureMatchUps = getMappedStructureMatchUps({
-        mappedMatchUps,
         structureId: structure.structureId,
+
+        matchUpsMap,
       });
       const sourceMatchUp = structureMatchUps.find(
         ({ drawPositions, roundNumber }) =>
@@ -153,6 +168,7 @@ export function assignMatchUpDrawPosition({
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightred',
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       }
@@ -162,12 +178,13 @@ export function assignMatchUpDrawPosition({
   // if FIRST_MATCH_LOSER_CONSOLATION, check whether a BYE should be placed in consolation feed
   if (
     loserTargetLink?.linkCondition === FIRST_MATCHUP &&
-    updatedDrawPositions.filter((f) => f).length === 2 &&
+    updatedDrawPositions.filter(Boolean).length === 2 &&
     !isByeMatchUp
   ) {
     const structureMatchUps = getMappedStructureMatchUps({
-      mappedMatchUps,
       structureId: structure.structureId,
+
+      matchUpsMap,
     });
     const firstRoundMatchUps = structureMatchUps.filter(
       ({ drawPositions, roundNumber }) =>
@@ -181,9 +198,10 @@ export function assignMatchUpDrawPosition({
       const { structureId } = loserMatchUp;
       const result = assignDrawPositionBye({
         drawDefinition,
-        mappedMatchUps,
         structureId,
         drawPosition: loserTargetDrawPosition,
+
+        matchUpsMap,
       });
       if (result.error) return result;
     }

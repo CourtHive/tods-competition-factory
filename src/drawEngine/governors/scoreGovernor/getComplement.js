@@ -1,5 +1,8 @@
-export const getSetComplement = (props) => {
-  const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = props;
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+
+export const getSetComplement = (params) => {
+  const { isSide1, lowValue, setTo, tiebreakAt, NoAD } = params;
+  if (lowValue === undefined) return { error: MISSING_VALUE };
   let valueAsNumber = parseInt(lowValue);
   if (valueAsNumber?.toString().length > 2) {
     valueAsNumber = parseInt(valueAsNumber.toString().slice(0, 2));
@@ -29,8 +32,9 @@ export const getSetComplement = (props) => {
   return [side1Result, side2Result];
 };
 
-export const getTiebreakComplement = (props) => {
-  const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = props;
+export const getTiebreakComplement = (params) => {
+  const { isSide1, lowValue, tiebreakTo, tiebreakNoAd } = params;
+  if (lowValue === undefined) return { error: MISSING_VALUE };
   let valueAsNumber = parseInt(lowValue);
 
   // do not accept low values greater than two digits;
@@ -53,8 +57,8 @@ export const getTiebreakComplement = (props) => {
   return [side1Result, side2Result];
 };
 
-function getHighTiebreakValue(props) {
-  const { lowValue, NoAD, tiebreakTo } = props;
+function getHighTiebreakValue(params) {
+  const { lowValue, NoAD, tiebreakTo } = params;
   const winBy = NoAD ? 1 : 2;
   if (lowValue + 1 >= tiebreakTo) {
     return lowValue + winBy;

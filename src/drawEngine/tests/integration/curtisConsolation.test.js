@@ -16,16 +16,13 @@ it('can generate and verify curtis structures', () => {
     consolation2ndStructureId,
     playoffStructureId;
 
-  ({
-    mainStructureId,
-    consolation1stStructureId,
-    consolation2ndStructureId,
-  } = generateCurtis({
-    drawSize: 32,
-    seedsCount: 8,
-    assignSeeds: 8,
-    participantsCount: 30,
-  }));
+  ({ mainStructureId, consolation1stStructureId, consolation2ndStructureId } =
+    generateCurtis({
+      drawSize: 32,
+      seedsCount: 8,
+      assignSeeds: 8,
+      participantsCount: 30,
+    }));
 
   const { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId: mainStructureId,

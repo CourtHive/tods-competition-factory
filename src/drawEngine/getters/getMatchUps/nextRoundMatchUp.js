@@ -13,16 +13,15 @@ export function nextRoundMatchUp({ structureMatchUps, matchUp }) {
   if (nextRoundMatchUps.length) {
     let nextMatchUp;
     if (nextRoundMatchUps.length === currentRoundMatchUps.length) {
-      nextMatchUp = nextRoundMatchUps.reduce((matchUp, current) => {
-        return current.roundPosition === roundPosition ? current : matchUp;
-      }, undefined);
+      nextMatchUp = nextRoundMatchUps.find(
+        (matchUp) => matchUp.roundPosition === roundPosition
+      );
     } else if (nextRoundMatchUps.length === currentRoundMatchUps.length / 2) {
-      nextMatchUp = nextRoundMatchUps.reduce((matchUp, current) => {
-        return current.roundPosition === Math.ceil(roundPosition / 2)
-          ? current
-          : matchUp;
-      }, undefined);
+      nextMatchUp = nextRoundMatchUps.find(
+        (matchUp) => matchUp.roundPosition === Math.ceil(roundPosition / 2)
+      );
     }
+
     return { matchUp: nextMatchUp };
   }
   return { error: 'no progression found' };

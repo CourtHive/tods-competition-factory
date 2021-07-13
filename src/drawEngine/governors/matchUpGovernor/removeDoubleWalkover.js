@@ -16,11 +16,12 @@ import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstan
 
 export function removeDoubleWalkover({
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps,
   targetData,
   structure,
   matchUp: sourceMatchUp,
+
+  matchUpsMap,
 }) {
   const {
     targetLinks: { loserTargetLink },
@@ -32,8 +33,9 @@ export function removeDoubleWalkover({
       targetLink: loserTargetLink,
       drawPosition: loserTargetDrawPosition,
       drawDefinition,
-      mappedMatchUps,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
   }
 
@@ -44,8 +46,9 @@ export function removeDoubleWalkover({
       structure,
       sourceMatchUp,
       winnerMatchUp,
-      mappedMatchUps,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
   }
 
@@ -57,8 +60,9 @@ function removePropagatedDoubleWalkover({
   structure,
   sourceMatchUp,
   winnerMatchUp,
-  mappedMatchUps,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
   const targetData = positionTargets({
     matchUpId: winnerMatchUp.matchUpId,
@@ -80,7 +84,8 @@ function removePropagatedDoubleWalkover({
     const { pairedPreviousMatchUp } = getPairedPreviousMatchUp({
       matchUp: sourceMatchUp,
       structureId: structure.structureId,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
     const pairedPreviousMatchUpComplete =
       completedMatchUpStatuses.includes(pairedPreviousMatchUp?.matchUpStatus) ||
@@ -121,9 +126,10 @@ function removePropagatedDoubleWalkover({
 
         const result = removeDirectedWinner({
           winnerMatchUp: targetWinnerMatchUp,
-          mappedMatchUps,
           drawDefinition,
           winningDrawPosition: drawPositionToRemove,
+
+          matchUpsMap,
         });
         if (result.error) return result;
       }
@@ -135,8 +141,9 @@ function removePropagatedDoubleWalkover({
       targetLink: nextLoserTargetLink,
       drawPosition: nextLoserTargetDrawPosition,
       drawDefinition,
-      mappedMatchUps,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
   }
 }

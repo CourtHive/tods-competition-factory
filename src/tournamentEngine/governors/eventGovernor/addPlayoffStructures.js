@@ -8,8 +8,11 @@ export function addPlayoffStructures({
   drawDefinition,
 
   playoffStructureNameBase,
+  playoffAttributes,
   playoffPositions,
+  exitProfileLimit,
   roundNumbers,
+  roundProfiles,
   structureId,
   uuids,
 }) {
@@ -19,8 +22,11 @@ export function addPlayoffStructures({
     drawDefinition,
     structureId,
     roundNumbers,
+    roundProfiles,
     playoffPositions,
+    playoffAttributes,
     playoffStructureNameBase,
+    exitProfileLimit,
     uuids,
   });
 

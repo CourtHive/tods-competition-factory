@@ -33,7 +33,7 @@ tournamentEngine.devContext(true).setMatchUpStatus({
 Generate mock participants. This method is used within `generateTournamentRecord`
 
 ```js
-const { participants } = generateParticipants({
+const { participants } = mocksEngine.generateParticipants({
   participantsCount: 32, //  number of participants to generate
   participantType: PAIR, // [INDIVIDUAL, PAIR, TEAM]
   matchUpType: SINGLES, // optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
@@ -49,6 +49,7 @@ const { participants } = generateParticipants({
   valuesInstanceLimit, // optional - maximum number of values which can be the same
 
   inContext: true, // optional - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
+  personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
 });
 
 tournamentEngine.addParticipants({ participants });
@@ -77,6 +78,13 @@ const drawProfiles = [
     outcomes,
   },
 ];
+const venueProfiles = [
+  {
+    venueName: 'Venue 1', // optional - will auto-generate names
+    courtsCount: 3,
+    dateAvailability, // optional - will use tournament start and end dates and default times
+  },
+];
 
 const {
   tournamentRecord,
@@ -87,6 +95,7 @@ const {
   startDate, // optional - ISO string date
   participantsProfile, // optional - { participantCount, participantType }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
+  venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts
 });
 
 tournamentEngine.setState(tournamentRecord);
@@ -99,7 +108,7 @@ tournamentEngine.setState(tournamentRecord);
 Produces TODS sets objects.
 
 ```js
-const sets = parseScoreString({ scoreString: '1-6 1-6' });
+const sets = mocksEngine.parseScoreString({ scoreString: '1-6 1-6' });
 
 /*
 console.log(sets)

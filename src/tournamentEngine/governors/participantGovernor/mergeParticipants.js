@@ -1,5 +1,6 @@
 import { addNotice, getTopics } from '../../../global/globalState';
 
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ADD_PARTICIPANTS,
@@ -10,6 +11,7 @@ export function mergeParticipants({
   tournamentRecord,
   participants: incomingParticipants = [],
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
   incomingParticipants = incomingParticipants.filter(

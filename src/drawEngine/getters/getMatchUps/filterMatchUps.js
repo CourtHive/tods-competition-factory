@@ -1,11 +1,13 @@
-import { sameDay } from '../../../utilities/dateTime';
 import { scheduledMatchUpTime } from '../../accessors/matchUpAccessor/scheduledMatchUpTime';
 import { scheduledMatchUpDate } from '../../accessors/matchUpAccessor/scheduledMatchUpDate';
 import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAssignment';
+import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
+import { extractDate, sameDay } from '../../../utilities/dateTime';
 
-export function filterMatchUps(props) {
+export function filterMatchUps(params) {
   const {
     stages,
+    venueIds,
     courtIds,
     matchUps,
     matchUpTypes,
@@ -13,13 +15,68 @@ export function filterMatchUps(props) {
     matchUpFormat,
     collectionIds,
     scheduledDate,
+    scheduledDates,
     isMatchUpTie,
     localTimeZone,
     matchUpFormats,
     matchUpStatuses,
     localPerspective,
     isCollectionMatchUp,
-  } = props;
+
+    // only applies to inContext matchUps and only when processContext boolean is true
+    processContext,
+    tournamentIds,
+    eventIds,
+    drawIds,
+    structureIds,
+
+    filterMatchUpTypes = true,
+  } = params;
+
+  const targetMatchUpStatuses = Array.isArray(matchUpStatuses)
+    ? matchUpStatuses.filter(Boolean)
+    : [];
+
+  const targetStages = Array.isArray(stages) ? stages.filter(Boolean) : [];
+  const targetCollectionIds = Array.isArray(collectionIds)
+    ? collectionIds.filter(Boolean)
+    : [];
+  const targetRoundNumbers = Array.isArray(roundNumbers)
+    ? roundNumbers.filter(Boolean)
+    : [];
+
+  const targetMatchUpTypes =
+    Array.isArray(matchUpTypes) && filterMatchUpTypes
+      ? matchUpTypes.filter(Boolean)
+      : [];
+  const targetCourtIds = Array.isArray(courtIds)
+    ? courtIds.filter(Boolean)
+    : [];
+  const targetVenueIds = Array.isArray(venueIds)
+    ? venueIds.filter(Boolean)
+    : [];
+  const targetMatchUpFormats = Array.isArray(matchUpFormats)
+    ? matchUpFormats.filter(Boolean)
+    : typeof matchUpFormat === 'string'
+    ? [matchUpFormat]
+    : [];
+  const targetScheduledDates = Array.isArray(scheduledDates)
+    ? scheduledDates.filter(Boolean)
+    : typeof scheduledDate === 'string' && scheduledDate.length
+    ? [scheduledDate]
+    : [];
+
+  const targetTournamentIds = Array.isArray(tournamentIds)
+    ? tournamentIds.filter(Boolean)
+    : [];
+  const targetEventIds = Array.isArray(eventIds)
+    ? eventIds.filter(Boolean)
+    : [];
+  const targetDrawIds = Array.isArray(drawIds) ? drawIds.filter(Boolean) : [];
+  const targetStructureIds = Array.isArray(structureIds)
+    ? structureIds.filter(Boolean)
+    : [];
+
   const filteredMatchUps = matchUps.filter((matchUp) => {
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieFormat) {
@@ -41,34 +98,42 @@ export function filterMatchUps(props) {
         return false;
       }
     }
-    if (stages?.length && !stages.includes(matchUp.stage)) {
+
+    if (targetStages.length && !targetStages.includes(matchUp.stage)) {
       return false;
     }
     if (
-      collectionIds?.length &&
-      !collectionIds.includes(matchUp.collectionId)
+      targetCollectionIds.length &&
+      !targetCollectionIds.includes(matchUp.collectionId)
     ) {
-      return false;
-    }
-    if (roundNumbers?.length && !roundNumbers.includes(matchUp.roundNumber)) {
       return false;
     }
     if (
-      matchUpStatuses?.length &&
-      !matchUpStatuses.includes(matchUp.matchUpStatus)
+      targetRoundNumbers.length &&
+      !roundNumbers.includes(matchUp.roundNumber)
     ) {
-      return false;
-    }
-    if (matchUpTypes?.length && !matchUpTypes.includes(matchUp.matchUpType)) {
       return false;
     }
     if (
-      matchUpFormats?.length &&
-      !matchUpFormats.includes(matchUp.matchUpFormat)
+      targetMatchUpStatuses.length &&
+      !targetMatchUpStatuses.includes(matchUp.matchUpStatus)
     ) {
       return false;
     }
-    if (scheduledDate) {
+    if (
+      targetMatchUpTypes.length &&
+      !targetMatchUpTypes.includes(matchUp.matchUpType)
+    ) {
+      return false;
+    }
+    if (
+      targetMatchUpFormats.length &&
+      !targetMatchUpFormats.includes(matchUp.matchUpFormat)
+    ) {
+      return false;
+    }
+
+    if (targetScheduledDates?.length) {
       const { scheduledTime } = scheduledMatchUpTime({
         matchUp,
         localTimeZone,
@@ -79,20 +144,51 @@ export function filterMatchUps(props) {
         localTimeZone,
         localPerspective,
       });
-      const scheduledTimeDate =
-        scheduledTime &&
-        scheduledTime.indexOf('-') > 0 &&
-        scheduledTime.indexOf('T') > 0 &&
-        scheduledTime.split('T')[0];
+      const scheduledTimeDate = extractDate(scheduledTime);
       const comparisonDate = scheduledTimeDate || matchUpDate;
-      if (!sameDay(scheduledDate, comparisonDate)) return false;
+
+      if (
+        !targetScheduledDates.find((scheduledDate) =>
+          sameDay(scheduledDate, comparisonDate)
+        )
+      )
+        return false;
     }
-    if (matchUpFormat && matchUp.matchUpFormat !== matchUpFormat) {
-      return false;
-    }
-    if (courtIds) {
+
+    if (targetCourtIds.length) {
       const { courtId } = matchUpAssignedCourtId({ matchUp });
-      if (!courtIds.includes(courtId)) {
+      if (!courtIds.filter(Boolean).includes(courtId)) {
+        return false;
+      }
+    }
+
+    if (targetVenueIds.length) {
+      const { venueId } = matchUpAssignedVenueId({ matchUp });
+      if (!venueIds.filter(Boolean).includes(venueId)) {
+        return false;
+      }
+    }
+
+    if (processContext) {
+      if (
+        targetTournamentIds.length &&
+        !targetTournamentIds.includes(matchUp.tournamentId)
+      ) {
+        return false;
+      }
+
+      if (targetEventIds.length && !targetEventIds.includes(matchUp.eventId)) {
+        return false;
+      }
+
+      if (targetDrawIds.length && !targetDrawIds.includes(matchUp.drawId)) {
+        return false;
+      }
+
+      if (
+        targetStructureIds.length &&
+        !targetStructureIds.includes(matchUp.structureId)
+      ) {
         return false;
       }
     }

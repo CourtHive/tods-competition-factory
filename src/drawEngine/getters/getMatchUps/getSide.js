@@ -1,4 +1,16 @@
+/**
+ *
+ * @param {object} drawPositionCollectionAssignment - mapping of drawPositions to participantIds derived from collectionAssignments
+ * @param {object[]} positionAssignments - mapping of drawPositions to participantIds (in TIES this is TEAM participantId)
+ * @param {number} displaySideNumber - accounts for both top and bottom feed arm positioning
+ * @param {object[]} seedAssignments - mapping of participantIds to seedNumber and seedValue
+ * @param {number} drawPosition -
+ * @param {boolean} isFeedRound - whether a round includes fed drawPositions
+ * @param {number} sideNumber - 1 or 2
+ * @returns {object} properties require for side attribute of matchUp.sides array
+ */
 export function getSide({
+  drawPositionCollectionAssignment,
   positionAssignments,
   displaySideNumber,
   seedAssignments,
@@ -6,20 +18,21 @@ export function getSide({
   isFeedRound,
   sideNumber,
 }) {
-  const sideValue = positionAssignments.reduce((side, assignment) => {
-    const participantId = assignment.participantId;
-    const sideValue =
-      assignment.drawPosition === drawPosition
-        ? getSideValue({
-            displaySideNumber,
-            seedAssignments,
-            participantId,
-            assignment,
-            sideNumber,
-          })
-        : side;
-    return sideValue;
-  }, {});
+  const assignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+  const participantId = drawPositionCollectionAssignment
+    ? drawPositionCollectionAssignment[drawPosition]
+    : assignment?.participantId;
+  const sideValue = assignment
+    ? getSideValue({
+        displaySideNumber,
+        seedAssignments,
+        participantId,
+        assignment,
+        sideNumber,
+      })
+    : {};
 
   if (isFeedRound) {
     if (sideNumber === 1) {
@@ -54,11 +67,10 @@ function getSideValue({
 
   return side;
 }
+
 function getSeeding({ seedAssignments, participantId }) {
-  return seedAssignments.reduce((seeding, assignment) => {
-    // seedProxy is used for playoff positioning only and should not be displayed as seeding
-    return !assignment.seedProxy && assignment.participantId === participantId
-      ? assignment
-      : seeding;
-  }, undefined);
+  return seedAssignments.find(
+    (assignment) =>
+      !assignment.seedProxy && assignment.participantId === participantId
+  );
 }

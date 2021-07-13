@@ -4,18 +4,17 @@ import { addNotice } from '../../../global/globalState';
 import { getCourts } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DELETE_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_VALUES,
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VENUE_ID,
+} from '../../../constants/errorConditionConstants';
 
-// TODO: should not require drawDefinition
-export function deleteVenue({
-  tournamentRecord,
-  drawDefinition,
-  venueId,
-  force,
-}) {
-  if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
+export function deleteVenue({ tournamentRecord, venueId, force }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (typeof venueId !== 'string') return { error: MISSING_VENUE_ID };
 
   const { courts } = getCourts({ tournamentRecord, venueId });
   const courtIds = courts.map((court) => court.courtId);
@@ -26,37 +25,42 @@ export function deleteVenue({
   });
 
   if (!matchUpsToUnschedule.length || force) {
-    matchUpsToUnschedule.forEach((matchUp) => {
-      removeCourtAssignment({
+    // if no matchUpsToUnschedule this does nothing but avoid the deletionMessage
+    for (const matchUp of matchUpsToUnschedule) {
+      const result = removeCourtAssignment({
         tournamentRecord,
-        drawDefinition,
+        drawId: matchUp.drawId,
         matchUpId: matchUp.matchUpId,
       });
-    });
+      if (result.error) return result;
+    }
   } else {
     return deletionMessage({ matchUpsCount: matchUpsToUnschedule.length });
   }
 
-  tournamentRecord.venues = tournamentRecord.venues.filter(
-    (venue) => venue.venueId !== venueId
-  );
+  let deleted;
+  tournamentRecord.venues = (tournamentRecord.venues || []).filter((venue) => {
+    if (venue.venueId !== venueId) return true;
+    deleted = true;
+  });
 
-  addNotice({ topic: DELETE_VENUE, payload: { venueId } });
+  if (deleted) addNotice({ topic: DELETE_VENUE, payload: { venueId } });
 
   return SUCCESS;
 }
 
-// TODO: add force option
 export function deleteVenues({ tournamentRecord, venueIds, force }) {
-  if (!tournamentRecord.venues) return { error: VENUE_NOT_FOUND };
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Array.isArray(venueIds)) return { error: INVALID_VALUES };
 
-  tournamentRecord.venues.forEach((venue) => {
+  for (const venue of tournamentRecord.venues || []) {
     const { venueId } = venue;
     if (venueIds.includes(venueId)) {
       const { venueId } = venue;
-      deleteVenue({ tournamentRecord, venueId, force });
+      const result = deleteVenue({ tournamentRecord, venueId, force });
+      if (result.error) return result;
     }
-  });
+  }
 
   return SUCCESS;
 }

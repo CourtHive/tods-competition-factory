@@ -56,7 +56,7 @@ it('can generate a tournament with events and draws', () => {
   drawEngine.setState(drawDefinition);
 
   const { extensions } = drawDefinition;
-  expect(extensions.length).toEqual(3);
+  expect(extensions.length).toEqual(2);
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   expect(appliedPolicies.seeding.policyName).toEqual('ITF');
 
@@ -116,9 +116,8 @@ it('can generate a tournament with events and draws', () => {
     matchUpId,
     matchUpFormat,
   });
-  const {
-    upcomingMatchUps: modifiedUpcoming,
-  } = tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps: modifiedUpcoming } =
+    tournamentEngine.tournamentMatchUps();
   const modifiedMatchUp = modifiedUpcoming[0];
   expect(modifiedMatchUp.matchUpId).toEqual(matchUpId);
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
@@ -139,10 +138,11 @@ it('can generate a tournament with events and draws', () => {
     (matchUp) => matchUp.matchUpId === matchUpId
   );
   expect(targetMatchUp.matchUpFormat).toEqual(secondMatchUpFormat);
-  const expectedScore = Object.assign({}, score, {
+  const expectedScore = {
+    ...score,
     scoreStringSide1: '6-3',
     scoreStringSide2: '3-6',
-  });
+  };
   expect(targetMatchUp.score).toEqual(expectedScore);
   expect(targetMatchUp.winningSide).toBeUndefined();
 });
@@ -211,8 +211,11 @@ it('can set tournament categories', () => {
     },
   ];
   result = tournamentEngine.setTournamentCategories({ categories });
-  expect(result?.success).toEqual(true);
+  expect(result.success).toEqual(true);
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.tournamentCategories.length).toEqual(3);
+
+  result = tournamentEngine.setTournamentCategories();
+  expect(result.success).toEqual(true);
 });

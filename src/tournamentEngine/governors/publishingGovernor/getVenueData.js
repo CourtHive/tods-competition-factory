@@ -2,11 +2,11 @@ import { findVenue } from '../../getters/venueGetter';
 import { makeDeepCopy } from '../../../utilities';
 import { getCourtInfo } from './getCourtInfo';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 // The only difference from finding a venue is that information is filtered from both venue and courts
 // e.g. dataAvailability objects are not returned.
@@ -35,7 +35,7 @@ export function getVenueData({ tournamentRecord, venueId }) {
     venueAbbreviation,
   }))(venue);
 
-  const venueData = Object.assign({}, venueInfo, { courtsInfo });
+  const venueData = { ...venueInfo, courtsInfo };
 
-  return Object.assign({}, SUCCESS, { venueData: makeDeepCopy(venueData) });
+  return { ...SUCCESS, venueData: makeDeepCopy(venueData) };
 }

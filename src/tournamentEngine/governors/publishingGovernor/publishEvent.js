@@ -64,5 +64,5 @@ export function publishEvent({
 
   addNotice({ topic: PUBLISH_EVENT, payload: { eventData } });
 
-  return Object.assign({}, SUCCESS, { eventData });
+  return { ...SUCCESS, eventData };
 }

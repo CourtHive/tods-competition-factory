@@ -6,6 +6,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 
 it('DISALLOWS entry of incomplete result if active downsream', () => {
   const drawProfiles = [
@@ -33,9 +34,13 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   const { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -53,7 +58,7 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
     matchUpId,
     outcome,
   });
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
   expect(filteredOrderedPairs).toEqual([
@@ -87,9 +92,13 @@ it('removes advanced participant when completed score changes to incomplete resu
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -143,9 +152,13 @@ it('removes advanced participant in FINAL when completed score changes to incomp
       ],
     },
   ];
-  mocksEngine.generateTournamentRecord({ drawProfiles });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,

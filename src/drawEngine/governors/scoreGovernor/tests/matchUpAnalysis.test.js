@@ -1,42 +1,14 @@
 import { analyzeMatchUp } from '../analyzeMatchUp';
+
+import { MISSING_MATCHUP } from '../../../../constants/errorConditionConstants';
 import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from './formatConstants';
 
 test('can handle empty matchUp', () => {
   let analysis = analyzeMatchUp();
-  expect(analysis.matchUpScoringFormat).toEqual(undefined);
-  expect(analysis.isCompletedMatchUp).toEqual(false);
-  expect(analysis.completedSetsCount).toEqual(0);
-  expect(analysis.expectTiebreakSet).toEqual(false);
-  expect(analysis.expectTimedSet).toEqual(false);
-  expect(analysis.isExistingSet).toEqual(false);
-  expect(analysis.isCompletedSet).toEqual(false);
-  expect(analysis.isActiveSet).toEqual(false);
-  expect(analysis.isDecidingSet).toEqual(false);
-  expect(analysis.isLastSetWithValues).toEqual(false);
-  expect(analysis.sideGameScoresCount).toEqual(0);
-  expect(analysis.sidePointScoresCount).toEqual(0);
-  expect(analysis.sideTiebreakScoresCount).toEqual(0);
-  expect(analysis.hasExistingValue).toEqual(false);
-  expect(analysis.existingValue).toEqual(false);
-  expect(analysis.validMatchUpOutcome).toEqual(false);
+  expect(analysis.error).toEqual(MISSING_MATCHUP);
 
   analysis = analyzeMatchUp({});
-  expect(analysis.matchUpScoringFormat).toEqual(undefined);
-  expect(analysis.isCompletedMatchUp).toEqual(false);
-  expect(analysis.completedSetsCount).toEqual(0);
-  expect(analysis.expectTiebreakSet).toEqual(false);
-  expect(analysis.expectTimedSet).toEqual(false);
-  expect(analysis.isExistingSet).toEqual(false);
-  expect(analysis.isCompletedSet).toEqual(false);
-  expect(analysis.isActiveSet).toEqual(false);
-  expect(analysis.isDecidingSet).toEqual(false);
-  expect(analysis.isLastSetWithValues).toEqual(false);
-  expect(analysis.sideGameScoresCount).toEqual(0);
-  expect(analysis.sidePointScoresCount).toEqual(0);
-  expect(analysis.sideTiebreakScoresCount).toEqual(0);
-  expect(analysis.hasExistingValue).toEqual(false);
-  expect(analysis.existingValue).toEqual(false);
-  expect(analysis.validMatchUpOutcome).toEqual(false);
+  expect(analysis.error).toEqual(MISSING_MATCHUP);
 });
 
 test('can properly analyze completed standard format matchUp', () => {
@@ -61,10 +33,10 @@ test('can properly analyze completed standard format matchUp', () => {
   expect(analysis.completedSetsCount).toEqual(3);
   expect(analysis.isActiveSet).toEqual(false);
   expect(analysis.isExistingSet).toEqual(false);
-  expect(analysis.isCompletedSet).toEqual(false);
+  expect(analysis.isCompletedSet).toEqual(undefined);
   expect(analysis.hasExistingValue).toEqual(false);
   expect(analysis.isCompletedMatchUp).toEqual(true);
-  expect(analysis.isValidSetOutcome).toEqual(false);
+  expect(analysis.isValidSetOutcome).toEqual(undefined);
   expect(analysis.validMatchUpOutcome).toEqual(true);
 
   analysis = analyzeMatchUp({ matchUp, setNumber: 1 });
@@ -156,9 +128,9 @@ test('can properly analyze completed standard doubles matchUp', () => {
   expect(analysis.completedSetsCount).toEqual(3);
   expect(analysis.isActiveSet).toEqual(false);
   expect(analysis.isExistingSet).toEqual(false);
-  expect(analysis.expectTiebreakSet).toEqual(false);
-  expect(analysis.isTiebreakSet).toEqual(false);
-  expect(analysis.isCompletedSet).toEqual(false);
+  expect(analysis.expectTiebreakSet).toEqual(undefined);
+  expect(analysis.isTiebreakSet).toEqual(undefined);
+  expect(analysis.isCompletedSet).toEqual(undefined);
   expect(analysis.hasExistingValue).toEqual(false);
   expect(analysis.isCompletedMatchUp).toEqual(true);
   expect(analysis.isLastSetWithValues).toEqual(false);
@@ -204,7 +176,7 @@ test('can properly analyze completed Best of 3 tiebreak sets', () => {
   expect(analysis.completedSetsCount).toEqual(3);
   expect(analysis.isActiveSet).toEqual(false);
   expect(analysis.isExistingSet).toEqual(false);
-  expect(analysis.isCompletedSet).toEqual(false);
+  expect(analysis.isCompletedSet).toEqual(undefined);
   expect(analysis.hasExistingValue).toEqual(false);
   expect(analysis.isCompletedMatchUp).toEqual(true);
   expect(analysis.validMatchUpOutcome).toEqual(true);

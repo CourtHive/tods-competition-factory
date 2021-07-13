@@ -2,7 +2,7 @@ export const ADD_MATCHUPS = 'addMatchUps';
 export const ADD_PARTICIPANTS = 'addParticipants';
 export const ADD_VENUE = 'addVenue';
 export const AUDIT = 'audit';
-export const DELETED_MATCHUPIDS = 'deletedMatchUpIds';
+export const DELETED_MATCHUP_IDS = 'deletedMatchUpIds';
 export const DELETE_PARTICIPANTS = 'deleteParticipants';
 export const DELETE_VENUE = 'deleteVenue';
 export const MODIFY_MATCHUP = 'modifyMatchUp';
@@ -16,7 +16,7 @@ export const topicConstants = [
   ADD_PARTICIPANTS,
   ADD_VENUE,
   AUDIT,
-  DELETED_MATCHUPIDS,
+  DELETED_MATCHUP_IDS,
   DELETE_PARTICIPANTS,
   DELETE_VENUE,
   MODIFY_MATCHUP,

@@ -50,9 +50,10 @@ export function getSeedOrderByePositions({
     },
     []
   );
-  const orderedSortedFirstRoundSeededDrawPositions = valueOrderedBlockSortedPositionedSeeds.map(
-    (positionedSeed) => positionedSeed.drawPosition
-  );
+  const orderedSortedFirstRoundSeededDrawPositions =
+    valueOrderedBlockSortedPositionedSeeds.map(
+      (positionedSeed) => positionedSeed.drawPosition
+    );
 
   // returns list of bye positions which strictly follows where seeds
   // have been placed according to sorted seedNumbers
@@ -94,18 +95,13 @@ function getOrderedByePositions({
 
   // sort seededMatchUps so that pairedPositions represent seed order
   const seedOrderSortedDrawPositionPairs = orderedSeedDrawPositions
-    .map((drawPosition) => {
-      return consideredDrawPositionPairs.reduce(
-        (drawPositionPair, drawPositions) => {
-          if (drawPositionPair) return drawPositionPair; // take the first occurrence
-          return drawPositions?.includes(drawPosition)
-            ? drawPositions
-            : drawPositionPair;
-        },
-        undefined
-      );
-    })
-    .filter((f) => f);
+    .map((drawPosition) =>
+      consideredDrawPositionPairs.find((drawPositions) =>
+        drawPositions?.includes(drawPosition)
+      )
+    )
+    .filter(Boolean);
+
   const orderedByePositions = seedOrderSortedDrawPositionPairs
     .map((drawPositions) => {
       return drawPositions?.reduce((byePosition, drawPosition) => {
@@ -114,7 +110,7 @@ function getOrderedByePositions({
           : drawPosition;
       }, undefined);
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   return orderedByePositions;
 }

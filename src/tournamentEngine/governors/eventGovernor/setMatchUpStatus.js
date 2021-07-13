@@ -1,16 +1,18 @@
+import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
+import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
 import { getDevContext } from '../../../global/globalState';
+import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
 import { makeDeepCopy } from '../../../utilities';
-
-import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
-import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
+  MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 
 /**
  *
@@ -18,25 +20,37 @@ import {
  *
  * @param {string} drawId - id of draw within which matchUp is found
  * @param {string} matchUpId - id of matchUp to be modified
- * @param {string} matchUpTieId - id of matchUpTie, if relevant
  * @param {string} matchUpFormat - optional - matchUpFormat if different from draw/event default
  * @param {object} outcome - { score, winningSide, matchUpStatus }
  *
  */
-export function setMatchUpStatus(props) {
+export function setMatchUpStatus(params) {
   const {
     drawDefinition,
     matchUpId,
-    matchUpTieId,
     matchUpFormat,
     schedule,
-  } = props;
+    tournamentRecord,
+    event,
+    notes,
+  } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  let { outcome } = props;
+  const { policy } = findPolicy({
+    policyType: POLICY_TYPE_SCORING,
+    tournamentRecord,
+    event,
+  });
 
-  let errors = [];
+  const allowChangePropagation =
+    params.allowChangePropagation !== undefined
+      ? params.allowChangePropagation
+      : policy?.allowChangePropagation !== undefined
+      ? policy.allowChangePropagation
+      : undefined;
+
+  let { outcome } = params;
 
   if (matchUpFormat) {
     const result = setMatchUpFormat({
@@ -60,39 +74,45 @@ export function setMatchUpStatus(props) {
   }
 
   const { error: setMatchUpStatusError, matchUp } = drawEngineSetMatchUpStatus({
+    tournamentRecord,
     drawDefinition,
+    event,
+
     matchUpId,
-    matchUpTieId,
-    matchUpStatus: outcome?.matchUpStatus,
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
+    matchUpStatus: outcome?.matchUpStatus,
+    matchUpFormat,
+
+    allowChangePropagation,
     winningSide: outcome?.winningSide,
     score: outcome?.score,
     schedule,
+    notes,
   });
-  if (setMatchUpStatusError?.errors)
-    errors = errors.concat(setMatchUpStatusError.errors);
 
-  return errors && errors.length
-    ? { error: errors }
-    : matchUp && getDevContext()
-    ? Object.assign({}, SUCCESS, { matchUp: makeDeepCopy(matchUp) })
+  if (setMatchUpStatusError) return { error: setMatchUpStatusError };
+
+  return matchUp && getDevContext()
+    ? { ...SUCCESS, matchUp: makeDeepCopy(matchUp) }
     : SUCCESS;
 }
 
-export function bulkMatchUpStatusUpdate(props) {
-  const { tournamentRecord, outcomes } = props;
-  let errors = [];
-  let modified = 0;
+export function bulkMatchUpStatusUpdate(params) {
+  if (!params.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const { tournamentRecord, outcomes } = params;
   const events = {};
+
+  // group outcomes by events to optimize
   outcomes.forEach((outcome) => {
     const { eventId } = outcome;
     if (!events[eventId]) events[eventId] = [];
     events[eventId].push(outcome);
   });
 
-  Object.keys(events).forEach((eventId) => {
+  for (const eventId of Object.keys(events)) {
     const { event } = findEvent({ tournamentRecord, eventId });
-    events[eventId].forEach((outcome) => {
+
+    for (const outcome of events[eventId]) {
       const { drawId } = outcome;
       const drawDefinition = event.drawDefinitions.find(
         (drawDefinition) => drawDefinition.drawId === drawId
@@ -100,21 +120,21 @@ export function bulkMatchUpStatusUpdate(props) {
       if (drawDefinition) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({
+          tournamentRecord,
           drawDefinition,
           event,
           drawId,
           matchUpFormat,
           matchUpId,
+          schedule: outcome?.schedule,
           outcome,
         });
-        if (result.errors) {
-          errors = errors.concat(...result.errors);
-        } else {
-          modified++;
+        if (result.error) {
+          return result;
         }
       }
-    });
-  });
+    }
+  }
 
-  return (modified && SUCCESS) || (errors.length && { error: errors });
+  return SUCCESS;
 }

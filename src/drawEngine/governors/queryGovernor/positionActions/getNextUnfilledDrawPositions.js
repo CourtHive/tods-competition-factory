@@ -1,6 +1,6 @@
+import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { findStructure } from '../../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 
 import {
   MISSING_DRAW_DEFINITION,

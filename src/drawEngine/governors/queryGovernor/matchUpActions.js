@@ -39,10 +39,8 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     matchUpId,
   });
 
-  const {
-    assignedPositions,
-    allPositionsAssigned,
-  } = structureAssignedDrawPositions({ structure });
+  const { assignedPositions, allPositionsAssigned } =
+    structureAssignedDrawPositions({ structure });
   const { drawPositions } = matchUp || {};
   const { structureId } = structure || {};
 
@@ -74,7 +72,7 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
     (assignedBoolean, drawPosition) =>
       participantAssignedDrawPositions.includes(drawPosition) &&
       assignedBoolean,
-    true
+    drawPositions?.length === 2
   );
 
   if (isByeMatchUp) {
@@ -127,11 +125,10 @@ export function matchUpActions({ drawDefinition, matchUpId }) {
       validActions.push({ type: STATUS });
     }
     if (scoringActive && readyToScore && !isByeMatchUp) {
-      const { matchUpId, matchUpTieId, matchUpFormat } = matchUp;
+      const { matchUpId, matchUpFormat } = matchUp;
       const payload = {
         drawId,
         matchUpId,
-        matchUpTieId,
         matchUpFormat,
         outcome: {
           scoreStringSide1: undefined,

@@ -4,18 +4,19 @@ import { getPairedParticipant } from '../../participantGovernor/getPairedPartici
 import { addNotice } from '../../../../global/globalState';
 import { addEventEntries } from './addEventEntries';
 
-import {
-  INVALID_EVENT_TYPE,
-  INVALID_PARTICIPANT_IDS,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../../constants/errorConditionConstants';
 import { DOUBLES } from '../../../../constants/matchUpTypes';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
+import { UUID } from '../../../../utilities';
+import {
+  INVALID_EVENT_TYPE,
+  INVALID_PARTICIPANT_IDS,
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 
 /**
  *
@@ -25,8 +26,8 @@ import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} eventId - tournamentEngine automatically retrieves event
  * @param {string[][]} participantIdPairs - array paired id arrays for all participants to add to event
- * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
- * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ * @param {string} enryStatus - entryStatus enum
+ * @param {string} entryStage - entryStage enum
  *
  */
 export function addEventEntryPairs({
@@ -70,7 +71,7 @@ export function addEventEntryPairs({
   // create provisional participant objects
   const provisionalParticipants = participantIdPairs.map(
     (individualParticipantIds) => ({
-      participantId: uuids?.pop(),
+      participantId: uuids?.pop() || UUID(),
       participantType: PAIR,
       participantRole: COMPETITOR,
       individualParticipantIds,
@@ -89,19 +90,28 @@ export function addEventEntryPairs({
       });
 
   let message;
+  let addedParticipants = [];
   if (newParticipants) {
     const result = addParticipants({
       tournamentRecord,
       participants: newParticipants,
+
       allowDuplicateParticipantIdPairs,
     });
-
-    if (result.error) return { error: result.error };
+    if (result.error) return result;
+    addedParticipants = result.participants || [];
     message = result.message;
   }
 
   const pairParticipantIds = participantIdPairs
     .map((participantIds) => {
+      const addedParticipant = addedParticipants.find(
+        (addedPair) =>
+          intersection(addedPair.individualParticipantIds, participantIds)
+            .length === 2
+      );
+      if (addedParticipant) return addedParticipant;
+
       const { participant } = getPairedParticipant({
         tournamentRecord,
         participantIds,
@@ -123,5 +133,5 @@ export function addEventEntryPairs({
     addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
   }
 
-  return Object.assign({}, result, { message });
+  return { ...result, message };
 }

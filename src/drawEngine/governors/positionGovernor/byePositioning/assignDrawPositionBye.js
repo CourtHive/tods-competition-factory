@@ -5,7 +5,6 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
-import { findMatchUp } from '../../../getters/getMatchUps/findMatchUp';
 import { findStructure } from '../../../getters/findStructure';
 import { addNotice } from '../../../../global/globalState';
 import { positionTargets } from '../positionTargets';
@@ -16,6 +15,8 @@ import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
+  MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -62,17 +63,25 @@ import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 
 export function assignDrawPositionBye({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   drawPosition,
   iterative,
+
+  matchUpsMap,
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { structure } = findStructure({ drawDefinition, structureId });
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
+  }
 
   pushGlobalLog({
     color: iterative || 'yellow',
-    keyColors: { stage: structure.stage === CONSOLATION && 'brightcyan' },
+    keyColors: {
+      structureName: structure.stage === CONSOLATION && 'brightcyan',
+    },
     method: 'assignDrawPositionBye',
     structureName: structure.structureName,
     drawPosition,
@@ -84,9 +93,17 @@ export function assignDrawPositionBye({
     structureId,
   });
 
+  const currentAssignment = positionAssignments.find(
+    (assignment) => assignment.drawPosition === drawPosition
+  );
+
+  if (currentAssignment.bye) return SUCCESS;
+
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
-  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
+  if (drawPositionIsActive) {
+    return { error: DRAW_POSITION_ACTIVE };
+  }
 
   const positionAssignment = positionAssignments.find(
     (assignment) => assignment.drawPosition === drawPosition
@@ -104,17 +121,19 @@ export function assignDrawPositionBye({
   // ########## gather reusable data for performance optimization ###########
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
-    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    mappedMatchUps,
     matchUpFilters,
     structure,
+
+    matchUpsMap,
   });
 
   // modifies the structure's positionAssignments
@@ -167,7 +186,8 @@ export function assignDrawPositionBye({
       inContextDrawMatchUps,
       drawPositionToAdvance,
       drawDefinition,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
     if (result.error) return result;
   }
@@ -211,16 +231,19 @@ function advanceDrawPosition({
   drawPositionToAdvance,
   inContextDrawMatchUps,
   drawDefinition,
-  mappedMatchUps,
   matchUpId,
   iterative,
-}) {
-  const { matchUp, structure } = findMatchUp({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpId,
-  });
 
+  matchUpsMap,
+}) {
+  const matchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  const structureId = inContextMatchUp?.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = getPositionAssignments({
     structure,
   });
@@ -232,9 +255,8 @@ function advanceDrawPosition({
   const losingDrawPosition = matchUp.drawPositions.find(
     (drawPosition) => drawPosition !== drawPositionToAdvance
   );
-  const losingDrawPosiitonIsBye = byeAssignedDrawPositions.includes(
-    losingDrawPosition
-  );
+  const losingDrawPosiitonIsBye =
+    byeAssignedDrawPositions.includes(losingDrawPosition);
 
   const {
     targetLinks: { loserTargetLink },
@@ -242,7 +264,6 @@ function advanceDrawPosition({
   } = positionTargets({
     matchUpId,
     structure,
-    mappedMatchUps,
     drawDefinition,
     inContextDrawMatchUps,
   });
@@ -261,11 +282,12 @@ function advanceDrawPosition({
   if (winnerMatchUp && winnerMatchUp.structureId === structure.structureId) {
     advanceWinner({
       drawDefinition,
-      mappedMatchUps,
       winnerMatchUp,
       drawPositionToAdvance,
       sourceDrawPositions,
       inContextDrawMatchUps,
+
+      matchUpsMap,
     });
   }
 
@@ -290,8 +312,9 @@ function advanceDrawPosition({
         drawDefinition,
         loserMatchUp,
         loserTargetLink,
-        mappedMatchUps,
         loserTargetDrawPosition,
+
+        matchUpsMap,
       });
     }
   }
@@ -301,17 +324,21 @@ function advanceDrawPosition({
 
 function advanceWinner({
   drawDefinition,
-  mappedMatchUps,
   winnerMatchUp,
   drawPositionToAdvance,
   sourceDrawPositions,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
-  const { matchUp: noContextWinnerMatchUp, structure } = findMatchUp({
-    drawDefinition,
-    mappedMatchUps,
-    matchUpId: winnerMatchUp.matchUpId,
-  });
+  const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+  );
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+  );
+  const structureId = inContextMatchUp?.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = getPositionAssignments({ structure });
   const drawPositionToAdvanceAssigment = positionAssignments.find(
     ({ drawPosition }) => drawPosition === drawPositionToAdvance
@@ -352,19 +379,25 @@ function advanceWinner({
   );
 
   let drawPositionAssigned = isByeAdvancedBye;
-  const drawPositions = (noContextWinnerMatchUp.drawPositions || [])?.map(
-    (position) => {
-      if (!position && !drawPositionAssigned) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else if (position === drawPositionToAdvance) {
-        drawPositionAssigned = true;
-        return drawPositionToAdvance;
-      } else {
-        return position;
-      }
+  // always insure there are two drawPositions to iterate over
+  const twoDrawPositions = []
+    .concat(
+      ...(noContextWinnerMatchUp.drawPositions || []).filter(Boolean),
+      undefined,
+      undefined
+    )
+    .slice(0, 2);
+  const drawPositions = twoDrawPositions.map((position) => {
+    if (!position && !drawPositionAssigned) {
+      drawPositionAssigned = true;
+      return drawPositionToAdvance;
+    } else if (position === drawPositionToAdvance) {
+      drawPositionAssigned = true;
+      return drawPositionToAdvance;
+    } else {
+      return position;
     }
-  );
+  });
 
   if (!drawPositionAssigned) {
     console.log('@@@@@@@', {
@@ -417,8 +450,9 @@ function advanceWinner({
         matchUpId: winnerMatchUp.matchUpId,
         inContextDrawMatchUps,
         drawDefinition,
-        mappedMatchUps,
         iterative: 'brightmagenta',
+
+        matchUpsMap,
       });
     } else if (drawPositionIsBye) {
       const {
@@ -427,7 +461,6 @@ function advanceWinner({
       } = positionTargets({
         matchUpId: winnerMatchUp.matchUpId,
         structure,
-        mappedMatchUps,
         drawDefinition,
         inContextDrawMatchUps,
       });
@@ -437,8 +470,9 @@ function advanceWinner({
             drawDefinition,
             loserMatchUp,
             loserTargetLink,
-            mappedMatchUps,
             loserTargetDrawPosition,
+
+            matchUpsMap,
           });
         } else {
           const sourceStructureRoundPosition = winnerMatchUp.roundPosition;
@@ -473,8 +507,9 @@ function assignFedDrawPositionBye({
   drawDefinition,
   loserMatchUp,
   loserTargetLink,
-  mappedMatchUps,
   loserTargetDrawPosition,
+
+  matchUpsMap,
 }) {
   const { roundNumber } = loserMatchUp;
 
@@ -483,6 +518,8 @@ function assignFedDrawPositionBye({
     color: 'brightcyan',
     loserTargetDrawPosition,
   });
+
+  const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const loserStructureMatchUps =
     mappedMatchUps[loserMatchUp.structureId].matchUps;
   const { initialRoundNumber } = getInitialRoundNumber({

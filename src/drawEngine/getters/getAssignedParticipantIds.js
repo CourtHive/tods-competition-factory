@@ -1,7 +1,7 @@
 import { getPositionAssignments } from './positionsGetter';
 
 // build up an array of participantIds which are assigned positions in structures
-// disallow changing entryStatus to WITHDRAWN or UNPAIRED for assignedParticipants
+// optionally filter to included only specified stages
 
 export function getAssignedParticipantIds({ drawDefinition, stages }) {
   const stageStructures = (drawDefinition?.structures || []).filter(
@@ -14,7 +14,7 @@ export function getAssignedParticipantIds({ drawDefinition, stages }) {
       });
       return positionAssignments
         .map(({ participantId }) => participantId)
-        .filter((f) => f);
+        .filter(Boolean);
     })
     .flat();
 }

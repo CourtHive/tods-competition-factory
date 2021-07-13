@@ -2,15 +2,23 @@ import { addEventExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { intersection, UUID } from '../../../utilities';
 
+import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
 import {
+  EXISTING_FLIGHT,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../constants/flightConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addFlight({ event, drawName, drawEntries = [], drawId }) {
+export function addFlight({
+  event,
+  stage,
+  drawId,
+  drawName,
+  drawSize,
+  drawEntries = [],
+  qualifyingPositions,
+}) {
   if (!event) return { error: MISSING_EVENT };
   if (!drawName) return { error: MISSING_VALUE };
 
@@ -19,10 +27,10 @@ export function addFlight({ event, drawName, drawEntries = [], drawId }) {
     const enteredParticipantIds =
       event.entries
         ?.map(({ participantId }) => participantId)
-        .filter((f) => f) || [];
+        .filter(Boolean) || [];
     const flightParticipantIds = drawEntries
       .map(({ participantId }) => participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     if (
       intersection(flightParticipantIds, enteredParticipantIds).length !==
       flightParticipantIds.length
@@ -38,7 +46,7 @@ export function addFlight({ event, drawName, drawEntries = [], drawId }) {
       ?.map(
         ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
       )
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   const flightNumber = Math.max(0, ...flightNumbers) + 1;
 
@@ -48,6 +56,15 @@ export function addFlight({ event, drawName, drawEntries = [], drawId }) {
     flightNumber,
     drawId: drawId || UUID(),
   };
+
+  if (stage) flight.drawSize = stage;
+  if (drawSize) flight.drawSize = drawSize;
+  if (qualifyingPositions) flight.qualifyingPositions = qualifyingPositions;
+
+  const flightExists = (flightProfile?.flights || []).find(
+    ({ drawId }) => drawId === flight.drawId
+  );
+  if (flightExists) return { error: EXISTING_FLIGHT };
 
   const flights = (flightProfile?.flights || []).concat(flight);
 
@@ -59,7 +76,5 @@ export function addFlight({ event, drawName, drawEntries = [], drawId }) {
     },
   };
 
-  addEventExtension({ event, extension });
-
-  return SUCCESS;
+  return addEventExtension({ event, extension });
 }

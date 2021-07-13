@@ -43,10 +43,11 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
-  let payload = Object.assign({}, option.payload, {
+  let payload = {
+    ...option.payload,
     replaceWithBye: true,
     entryStatus: ALTERNATE,
-  });
+  };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
@@ -71,7 +72,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
     (action) => action.type === REMOVE_ASSIGNMENT
   );
 
-  payload = Object.assign({}, option.payload);
+  payload = { ...option.payload };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
@@ -93,7 +94,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   });
 
   option = result.validActions.find((action) => action.type === ASSIGN_BYE);
-  payload = Object.assign({}, option.payload);
+  payload = { ...option.payload };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 
@@ -161,10 +162,11 @@ it('can withdraw and replace positioned participant with a bye', () => {
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
   let option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
-  let payload = Object.assign({}, option.payload, {
+  let payload = {
+    ...option.payload,
     replaceWithBye: true,
     entryStatus: WITHDRAWN,
-  });
+  };
   result = tournamentEngine[option.method](payload);
   expect(result.success).toEqual(true);
 

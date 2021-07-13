@@ -1,44 +1,56 @@
 import { makeDeepCopy } from '../../../utilities';
 
-function isValidMatchUp(matchUp) {
-  return typeof matchUp === 'object';
-}
-
 export function getMatchUpsMap({ drawDefinition, structure }) {
-  const matchUpsMap = {};
+  const mappedMatchUps = {};
+  const drawMatchUps = [];
+
   (drawDefinition?.structures || [structure])
     .filter((structure) => structure && typeof structure === 'object')
     .forEach((structure) => {
       const { structureId, matchUps, structures } = structure;
       const isRoundRobin = Array.isArray(structures);
       if (!isRoundRobin) {
-        matchUpsMap[structureId] = {
-          matchUps: matchUps.filter(isValidMatchUp),
-        };
+        const filteredMatchUps = matchUps;
+        mappedMatchUps[structureId] = { matchUps: filteredMatchUps };
+        filteredMatchUps.forEach((matchUp) => {
+          drawMatchUps.push(matchUp);
+          if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
+        });
       } else if (isRoundRobin) {
         structures.forEach((itemStructure) => {
           const { structureName } = itemStructure;
-          matchUpsMap[itemStructure.structureId] = {
-            matchUps: itemStructure.matchUps.filter(isValidMatchUp),
+          const filteredMatchUps = itemStructure.matchUps;
+
+          mappedMatchUps[itemStructure.structureId] = {
+            matchUps: filteredMatchUps,
             structureName,
           };
-          if (!matchUpsMap[structureId]) matchUpsMap[structureId] = {};
-          if (!matchUpsMap[structureId].itemStructureIds)
-            matchUpsMap[structureId].itemStructureIds = [];
-          matchUpsMap[structureId].itemStructureIds.push(
+          drawMatchUps.push(...filteredMatchUps);
+          filteredMatchUps.forEach((matchUp) => {
+            drawMatchUps.push(matchUp);
+            if (matchUp.tieMatchUps) drawMatchUps.push(...matchUp.tieMatchUps);
+          });
+          if (!mappedMatchUps[structureId]) mappedMatchUps[structureId] = {};
+          if (!mappedMatchUps[structureId].itemStructureIds)
+            mappedMatchUps[structureId].itemStructureIds = [];
+          mappedMatchUps[structureId].itemStructureIds.push(
             itemStructure.structureId
           );
         });
       }
     });
-  return matchUpsMap;
+
+  return { mappedMatchUps, drawMatchUps };
 }
 
 export function getMappedStructureMatchUps({
   mappedMatchUps,
+  matchUpsMap,
+
   structureId,
   inContext,
 }) {
+  mappedMatchUps = matchUpsMap?.mappedMatchUps || mappedMatchUps;
   let structureMatchUpsMap = mappedMatchUps[structureId];
   const itemStructureMatchUps = (structureMatchUpsMap?.itemStructureIds || [])
     .map((itemStructureId) => {

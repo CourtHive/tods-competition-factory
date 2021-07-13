@@ -21,10 +21,13 @@ export function findStructure({ drawDefinition, structureId }) {
         : structure;
     })
     .flat();
-  const structure = allStructures.reduce((target, current) => {
-    return current.structureId === structureId ? current : target;
-  }, undefined);
+
+  const structure = allStructures.find(
+    (structure) => structure.structureId === structureId
+  );
+
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
   return { structure };
 }
 

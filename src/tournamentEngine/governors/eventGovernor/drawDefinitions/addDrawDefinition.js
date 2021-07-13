@@ -1,7 +1,7 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
+import { addNotice, getTopics } from '../../../../global/globalState';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
-import { addNotice } from '../../../../global/globalState';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -9,7 +9,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 
 export function addDrawDefinition({ drawDefinition, event }) {
@@ -30,7 +30,7 @@ export function addDrawDefinition({ drawDefinition, event }) {
   const drawOrders =
     event.drawDefinitions
       .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   const { flightProfile } = getFlightProfile({ event });
   const flight = flightProfile?.flights?.find(
@@ -42,7 +42,7 @@ export function addDrawDefinition({ drawDefinition, event }) {
       ?.map(
         ({ flightNumber }) => !isNaN(flightNumber) && parseInt(flightNumber)
       )
-      ?.filter((f) => f) || [];
+      ?.filter(Boolean) || [];
 
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
 
@@ -87,8 +87,11 @@ export function addDrawDefinition({ drawDefinition, event }) {
   Object.assign(drawDefinition, { drawOrder });
   event.drawDefinitions.push(drawDefinition);
 
-  const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  const { topics } = getTopics();
+  if (topics.includes(ADD_MATCHUPS)) {
+    const { matchUps } = allDrawMatchUps({ drawDefinition, event });
+    addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  }
 
   return SUCCESS;
 }

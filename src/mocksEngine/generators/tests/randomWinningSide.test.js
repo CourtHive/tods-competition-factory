@@ -49,13 +49,16 @@ function generateScenario({ drawSize, structureOptions, drawType }) {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     completeAllMatchUps: true,
     randomWinningSide: true,
   });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   return { drawDefinition, matchUps };
 }

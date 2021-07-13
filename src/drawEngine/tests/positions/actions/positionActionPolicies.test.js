@@ -31,6 +31,7 @@ it('supports policyDefinitions in positionActions', () => {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
@@ -40,7 +41,7 @@ it('supports policyDefinitions in positionActions', () => {
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const allActions = [
     REMOVE_ASSIGNMENT,

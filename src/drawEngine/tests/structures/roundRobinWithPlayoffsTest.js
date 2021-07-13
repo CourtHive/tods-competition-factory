@@ -191,9 +191,8 @@ export function roundRobinWithPlayoffsTest({
   });
   expect(result).toEqual(SUCCESS);
 
-  let {
-    drawDefinition: updatedDrawDefinition,
-  } = tournamentEngine.getDrawDefinition({ drawId });
+  let { drawDefinition: updatedDrawDefinition } =
+    tournamentEngine.getDrawDefinition({ drawId });
 
   const updatedPlayoffStructures = updatedDrawDefinition.structures.reduce(
     (structures, structure) => {
@@ -207,13 +206,13 @@ export function roundRobinWithPlayoffsTest({
   updatedPlayoffStructures.forEach((structure, index) => {
     const participantIds = structure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     expect(participantIds.length).toEqual(
       playoffGroups[index].participantIdsCount
     );
     const byes = structure.positionAssignments
       .map((assignment) => assignment.bye)
-      .filter((f) => f);
+      .filter(Boolean);
     expect(byes.length).toEqual(playoffGroups[index].byesCount);
   });
 

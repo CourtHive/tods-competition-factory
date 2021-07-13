@@ -10,8 +10,8 @@ import {
 import { analyzeMatchUp } from './analyzeMatchUp';
 import { analyzeSet } from './analyzeSet';
 
-export function submitScoreChange(props) {
-  const { matchUp, sideNumber, setNumber, value } = props || {};
+export function submitScoreChange(params) {
+  const { matchUp, sideNumber, setNumber, value } = params || {};
 
   if (!matchUp) {
     return { result: false, error: MISSING_MATCHUP };
@@ -26,12 +26,12 @@ export function submitScoreChange(props) {
     return { result: false, error: MISSING_VALUE };
   }
 
-  const analysis = analyzeMatchUp(props);
+  const analysis = analyzeMatchUp(params);
 
   if (!analysis.isValidSideNumber)
     return { result: false, error: INVALID_SIDE_NUMBER };
 
-  const { modifiedSet, isValidSet, winnerChanged } = getModifiedSet(props);
+  const { modifiedSet, isValidSet, winnerChanged } = getModifiedSet(params);
   if (!isValidSet) return { result: false, error: INVALID_SET_NUMBER };
 
   if (winnerChanged) {
@@ -46,7 +46,7 @@ export function submitScoreChange(props) {
   return { result: true };
 }
 
-function getModifiedSet(props) {
+function getModifiedSet(params) {
   const {
     matchUp,
     sideNumber,
@@ -54,9 +54,9 @@ function getModifiedSet(props) {
     isTiebreakValue,
     isGameValue,
     value,
-  } = props || {};
-  let { matchUpFormat } = props || {};
-  const analysis = analyzeMatchUp(props);
+  } = params || {};
+  let { matchUpFormat } = params || {};
+  const analysis = analyzeMatchUp(params);
 
   const setObject = matchUp?.sets.find((set) => set.setNumber === setNumber);
   const modifiedSet = Object.assign({}, setObject || { setNumber });
@@ -97,10 +97,8 @@ function getModifiedSet(props) {
   const { isValidSet } = modifiedSetAnalysis;
   if (!isValidSet) {
     // check modifications which might make it a valid set
-    const {
-      hasTiebreakCondition,
-      sideTiebreakScoresCount,
-    } = modifiedSetAnalysis;
+    const { hasTiebreakCondition, sideTiebreakScoresCount } =
+      modifiedSetAnalysis;
 
     if (hasTiebreakCondition && sideTiebreakScoresCount) {
       modifiedSet.side1TiebreakScore = undefined;

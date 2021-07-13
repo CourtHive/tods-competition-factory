@@ -6,7 +6,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/flightConstants';
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
@@ -18,13 +18,15 @@ export function deleteFlightProfileAndFlightDraws({ tournamentRecord, event }) {
   if (flightProfile) {
     const drawIds = flightProfile.flights
       ?.map(({ drawId }) => drawId)
-      .filter((f) => f);
-    deleteDrawDefinitions({
+      .filter(Boolean);
+    const result = deleteDrawDefinitions({
       tournamentRecord,
       eventId: event.eventId,
       drawIds,
     });
-    removeEventExtension({ event, name: FLIGHT_PROFILE });
+    if (result.error) return result;
+
+    return removeEventExtension({ event, name: FLIGHT_PROFILE });
   }
 
   return SUCCESS;

@@ -1,9 +1,20 @@
-import { getDeepCopy } from '../global/globalState';
+import { deepCopyEnabled } from '../global/globalState';
 import { isDateObject } from './dateTime';
 
-export function makeDeepCopy(sourceObject, convertExtensions) {
-  const deepCopy = getDeepCopy();
-  if (!deepCopy || typeof sourceObject !== 'object' || sourceObject === null) {
+/**
+ *
+ * @param {object} sourceObject - arbitrary JSON object; functions not supported.
+ * @param {boolean} convertExtensions - optional - all extension objects converted to attributes ._key
+ * @param {boolean} internalUse - disregard deepCopy being disabled within the engine - necessary for query results
+ * @returns
+ */
+export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
+  const deepCopy = deepCopyEnabled();
+  if (
+    (!deepCopy && !internalUse) ||
+    typeof sourceObject !== 'object' ||
+    sourceObject === null
+  ) {
     return sourceObject;
   }
 
@@ -32,5 +43,5 @@ function extensionsToAttributes(extensions) {
       const { name, value } = extension;
       return name && value && { [`_${name}`]: value };
     })
-    .filter((f) => f);
+    .filter(Boolean);
 }

@@ -105,6 +105,7 @@ export function positionActions({
 
   let sourceStructuresCompleted;
   if (positionSourceStructureIds?.length) {
+    // EVERY: this can probably be changed to .every
     sourceStructuresCompleted = positionSourceStructureIds.reduce(
       (ready, sourceStructureId) => {
         const completed = isCompletedStructure({
@@ -130,10 +131,8 @@ export function positionActions({
   const validActions = [];
   const { drawId } = drawDefinition;
 
-  const {
-    assignedPositions,
-    positionAssignments,
-  } = structureAssignedDrawPositions({ structure });
+  const { assignedPositions, positionAssignments } =
+    structureAssignedDrawPositions({ structure });
   const positionAssignment = assignedPositions.find(
     (assignment) => assignment.drawPosition === drawPosition
   );
@@ -264,11 +263,11 @@ export function positionActions({
         type: SEED_VALUE,
         method: SEED_VALUE_METHOD,
         participant,
+        seedNumber,
         payload: {
           drawId,
           structureId,
           participantId,
-          seedNumber,
           seedValue,
         },
       });

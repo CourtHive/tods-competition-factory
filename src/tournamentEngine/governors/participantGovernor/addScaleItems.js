@@ -1,7 +1,9 @@
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { addNotice, getTopics } from '../../../global/globalState';
 
-import { SCALE } from '../../../constants/scaleConstants';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SCALE } from '../../../constants/scaleConstants';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
@@ -11,8 +13,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '../../../constants/errorConditionConstants';
-import { addNotice, getTopics } from '../../../global/globalState';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function setParticipantScaleItem({
   tournamentRecord,
@@ -21,7 +21,7 @@ export function setParticipantScaleItem({
 }) {
   let equivalentValue, participant;
 
-  const scaleItemAttributes = scaleItem && Object.keys(scaleItem);
+  const scaleItemAttributes = (scaleItem && Object.keys(scaleItem)) || [];
   const requiredAttributes = ['scaleType', 'eventType', 'scaleName'];
   const validScaleItem =
     requiredAttributes.filter((attribute) =>
@@ -120,7 +120,7 @@ export function setParticipantScaleItems({
 
   return errors.length
     ? { error: errors }
-    : Object.assign({}, SUCCESS, { modificationsApplied, message });
+    : { ...SUCCESS, modificationsApplied, message };
 }
 
 function isValidScaleItem({ scaleItem }) {

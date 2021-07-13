@@ -35,24 +35,22 @@ it('can generate and verify qualifying structures', () => {
 });
 
 it('can generate qualifying and linked elimination structure', () => {
-  const {
-    qualifyingStructureId,
-    mainStructureId,
-  } = generateEliminationWithQualifying({
-    qualifyingDrawSize: 16,
-    qualifyingPositions: 8,
-    qualifyingSeedsCount: 4,
-    qualifyingParticipantsCount: 15,
-    qualifyingSeedAssignmentProfile: {},
+  const { qualifyingStructureId, mainStructureId } =
+    generateEliminationWithQualifying({
+      qualifyingDrawSize: 16,
+      qualifyingPositions: 8,
+      qualifyingSeedsCount: 4,
+      qualifyingParticipantsCount: 15,
+      qualifyingSeedAssignmentProfile: {},
 
-    alternatesCount: 5,
+      alternatesCount: 5,
 
-    drawSize: 32,
-    mainSeedsCount: 8,
-    assignMainSeeds: 8,
-    mainParticipantsCount: 32,
-    mainSeedAssignmentProfile: {},
-  });
+      drawSize: 32,
+      mainSeedsCount: 8,
+      assignMainSeeds: 8,
+      mainParticipantsCount: 32,
+      mainSeedAssignmentProfile: {},
+    });
 
   verifyStructure({
     structureId: qualifyingStructureId,

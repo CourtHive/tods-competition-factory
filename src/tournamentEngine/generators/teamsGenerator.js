@@ -1,21 +1,19 @@
 import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
 import { addNotice } from '../../global/globalState';
-
-import { SUCCESS } from '../../constants/resultConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { TEAM } from '../../constants/participantTypes';
 import { UUID } from '../../utilities';
+
+import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
+import { COMPETITOR } from '../../constants/participantRoles';
+import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM } from '../../constants/participantTypes';
 
-export function generateTeamsFromParticipantAttribute(props) {
-  const {
-    tournamentRecord,
-    participantAttribute,
-    personAttribute,
-    uuids,
-  } = props;
+export function generateTeamsFromParticipantAttribute(params) {
+  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const { tournamentRecord, participantAttribute, personAttribute, uuids } =
+    params;
 
   const teams = {};
   const participants = tournamentRecord.participants || [];
@@ -69,7 +67,7 @@ export function generateTeamsFromParticipantAttribute(props) {
       }
       return undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   const newParticipants = [];
   let participantsAdded = 0;
@@ -91,7 +89,7 @@ export function generateTeamsFromParticipantAttribute(props) {
   }
 
   if (participantsAdded) {
-    return Object.assign({}, SUCCESS, { participantsAdded });
+    return { ...SUCCESS, participantsAdded };
   } else {
     return { error: 'No matching participants found' };
   }

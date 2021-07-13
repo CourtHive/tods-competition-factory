@@ -1,7 +1,12 @@
-import fs from 'fs';
-
-import { drawEngine } from '../../sync';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { verifyLinks } from '../../tests/primitives/verifyLinks';
+import { completeMatchUp } from '../primitives/verifyMatchUps';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateRange } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
+import { drawEngine } from '../../sync';
+
+import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {
   MAIN,
   DOUBLE_ELIMINATION,
@@ -11,23 +16,29 @@ import {
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
 
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { verifyLinks } from '../../tests/primitives/verifyLinks';
-
-import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
+it('can complete double elimination draw', () => {
+  const drawProfiles = [{ drawSize: 12, drawType: DOUBLE_ELIMINATION }];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    completeAllMatchUps: true,
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const { upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(upcomingMatchUps.length).toEqual(1);
+  const { roundName, feedRound, finishingRound } = upcomingMatchUps[0];
+  expect(roundName).toEqual('F');
+  expect(feedRound).toEqual(true);
+  expect(finishingRound).toEqual(1);
+});
 
 it('can generate and verify double elimination', () => {
-  const {
-    mainStructureId,
-    consolationStructureId,
-    deciderStructureId,
-  } = generateDouble({
-    drawSize: 12,
-    seedsCount: 0,
-    assignSeeds: 0,
-    participantsCount: 12,
-  });
+  const { mainStructureId, consolationStructureId, deciderStructureId } =
+    generateDouble({
+      drawSize: 12,
+      seedsCount: 0,
+      assignSeeds: 0,
+      participantsCount: 12,
+    });
 
   verifyStructure({
     structureId: mainStructureId,
@@ -149,18 +160,6 @@ it('can generate and verify double elimination', () => {
   }));
 
   expect(matchUps[3].sides[1].participantId).not.toBeUndefined();
-});
-
-it('can write to the file system', () => {
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-
-  const drawType = DOUBLE_ELIMINATION;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 function generateDouble({

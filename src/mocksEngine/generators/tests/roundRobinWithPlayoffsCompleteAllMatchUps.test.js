@@ -31,12 +31,15 @@ function generateScenario({ drawSize, structureOptions }) {
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     completeAllMatchUps: true,
   });
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { drawDefinition } = tournamentEngine
+    .setState(tournamentRecord)
+    .getEvent({ drawId });
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   return { drawDefinition, matchUps };
 }

@@ -1,9 +1,10 @@
+import { makeDeepCopy } from '../../utilities';
+
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../utilities';
 
 export function getVenues({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -22,6 +23,6 @@ export function findVenue({ tournamentRecord, venueId }) {
   return (venue && { venue }) || { error: VENUE_NOT_FOUND };
 }
 
-export function publicFindVenue(props) {
-  return makeDeepCopy(findVenue(props));
+export function publicFindVenue(params) {
+  return makeDeepCopy(findVenue(params));
 }

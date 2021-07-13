@@ -20,7 +20,7 @@ export function getParticipantIdMatchUps({
   const participantIds = unique(
     allMatchUps.reduce((participantIds, matchUp) => {
       return participantIds.concat(
-        ...matchUp.sides.map((side) => side.participantId).filter((f) => f)
+        ...matchUp.sides.map((side) => side.participantId).filter(Boolean)
       );
     }, [])
   );
@@ -31,7 +31,7 @@ export function getParticipantIdMatchUps({
       const matchUps = allMatchUps.filter((matchUp) => {
         const participantIds = matchUp.sides
           .map((side) => side.participantId)
-          .filter((f) => f);
+          .filter(Boolean);
         return participantIds.includes(participantId);
       });
       return { [participantId]: matchUps };

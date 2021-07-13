@@ -8,11 +8,13 @@ import { getByesData } from '../../../getters/getByesData';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function positionByes({
-  drawDefinition,
-  mappedMatchUps,
-  structure,
-  structureId,
   blockOrdered = false,
+  drawDefinition,
+  structureId,
+  structure,
+  seedsOnly,
+
+  matchUpsMap,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -20,24 +22,22 @@ export function positionByes({
 
   const { byesCount, placedByes, relevantMatchUps } = getByesData({
     drawDefinition,
-    mappedMatchUps,
     structure,
+
+    matchUpsMap,
   });
 
   const byesToPlace = byesCount - placedByes;
   if (byesToPlace <= 0) return SUCCESS;
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
-  const {
-    isFeedIn,
-    strictSeedOrderByePositions,
-    blockSeedOrderByePositions,
-  } = getSeedOrderByePositions({
-    structure,
-    drawDefinition,
-    appliedPolicies,
-    relevantMatchUps,
-  });
+  const { isFeedIn, strictSeedOrderByePositions, blockSeedOrderByePositions } =
+    getSeedOrderByePositions({
+      structure,
+      drawDefinition,
+      appliedPolicies,
+      relevantMatchUps,
+    });
 
   const seedOrderByePositions = blockOrdered
     ? blockSeedOrderByePositions
@@ -53,7 +53,7 @@ export function positionByes({
   // derived from theoretical seeding of firstRoundParticipants/2
   const byePositions = [].concat(
     ...seedOrderByePositions,
-    ...unseededByePositions
+    ...(seedsOnly ? [] : unseededByePositions)
   );
 
   // then take only the number of required byes
@@ -62,9 +62,10 @@ export function positionByes({
   for (const drawPosition of byeDrawPositions) {
     const result = assignDrawPositionBye({
       drawDefinition,
-      mappedMatchUps,
       structureId,
       drawPosition,
+
+      matchUpsMap,
     });
     if (result?.error) return result;
   }

@@ -9,6 +9,7 @@ export const structureTemplate = ({
   stageOrder,
   roundLimit,
   roundOffset,
+  // matchUpType, // unnecessary; factory propagates to this point in case it is ever necessary
   matchUpFormat,
   structureType,
   structureAbbreviation,
@@ -22,6 +23,7 @@ export const structureTemplate = ({
   const structure = {
     structureAbbreviation,
     structureName,
+    // matchUpType,
     matchUpFormat,
     stageSequence,
     finishingPosition,
@@ -39,7 +41,7 @@ export const structureTemplate = ({
 
   const positionAssignments = []
     .concat(...matchUps.map((matchUp) => matchUp.drawPositions))
-    .filter((f) => f);
+    .filter(Boolean);
 
   if (structures) {
     structure.structures = structures;

@@ -35,6 +35,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
+  // TODO: review
   const venuesData = venues.map((venue) =>
     (({ venueData }) => ({
       ...venueData,
@@ -91,5 +92,5 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     createdAt: timeItem?.createdAt,
   };
 
-  return Object.assign({}, SUCCESS, { eventData: makeDeepCopy(eventData) });
+  return { ...SUCCESS, eventData: makeDeepCopy(eventData) };
 }

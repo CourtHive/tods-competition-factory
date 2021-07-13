@@ -71,7 +71,7 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
   let finalMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
+  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(orderedPairs).toEqual([
     [1, 2],
     [3, 4],
@@ -302,7 +302,7 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   let finalMatchUp = structureMatchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
   );
-  expect(finalMatchUp.drawPositions).toEqual([undefined, undefined]);
+  expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(orderedPairs).toEqual([
     [1, 2],
     [3, 4],

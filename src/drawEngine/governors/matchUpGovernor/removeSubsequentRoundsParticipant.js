@@ -9,17 +9,21 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 // TODO: Consolidate with duplicated version of this function
 export function removeSubsequentRoundsParticipant({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   roundNumber,
   targetDrawPosition,
+
+  matchUpsMap,
 }) {
-  if (!mappedMatchUps && !drawDefinition) {
+  if (!matchUpsMap && !drawDefinition) {
     console.log('ERROR: missing params');
     return;
   }
 
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
+  }
+  const mappedMatchUps = matchUpsMap?.mappedMatchUps;
   const matchUps = mappedMatchUps[structureId].matchUps;
 
   // determine the initial round where drawPosition appears

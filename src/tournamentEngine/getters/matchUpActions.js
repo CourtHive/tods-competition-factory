@@ -1,7 +1,10 @@
 import { allTournamentMatchUps } from './matchUpsGetter';
 import { matchUpActions as drawEngineMatchupActions } from '../../drawEngine/governors/queryGovernor/matchUpActions';
 
-import { DRAW_DEFINITION_NOT_FOUND } from '../../constants/errorConditionConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -19,6 +22,7 @@ export function matchUpActions({
   matchUpId,
   drawId,
 }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
     const { matchUps } = allTournamentMatchUps({ tournamentRecord });

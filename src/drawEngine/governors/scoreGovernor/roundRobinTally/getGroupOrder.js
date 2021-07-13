@@ -22,7 +22,7 @@ After initial separation of participants by `matchUpsWon`,
 the implementation is configurable by supplying an array of `tallyDirectives` in the `tallyPolicy`.
 
 The algorithm relies on the values avaialble in the calculated `participantResults` and works as follows:
-• separate particpants into groups by a given attribute
+• separate participants into groups by a given attribute
 • a group with a single participant is 'resolved'
 • groups of two participants are resolved by head-to-head (if not disabled/if participants faced each other)
 • groups of three or more search for an attribute that will separate them into smaller groups
@@ -31,6 +31,10 @@ The algorithm relies on the values avaialble in the calculated `participantResul
 
 const defaultTallyDirectives = [
   { attribute: 'matchUpsRatio', idsFilter: false },
+  { attribute: 'allDefaults', reversed: true, idsFilter: false },
+  { attribute: 'defaults', reversed: true, idsFilter: false },
+  { attribute: 'walkovers', reversed: true, idsFilter: false },
+  { attribute: 'retirements', reversed: true, idsFilter: false },
   { attribute: 'setsRatio', idsFilter: false },
   { attribute: 'gamesRatio', idsFilter: false },
   { attribute: 'pointsRatio', idsFilter: false },
@@ -44,28 +48,27 @@ const defaultTallyDirectives = [
  *
  * @param {object[]} participantResults - calculated results for each participant
  * @param {number} participantsCount - number of participants in round robin group
- * @param {string[]} disqualified - participantIds which have been disqualified
+ * @param {string[]} matchUpStatuses - matchUpStatuses participantIds
  *
  * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
 
-export function getGroupOrder(props) {
-  const { participantResults, disqualified, subOrderMap } = props;
+export function getGroupOrder(params) {
+  const { participantResults, subOrderMap } = params;
 
   // if not all opponents have completed their matchUps, no orders are assigned
-  if (!isComplete(props)) return;
+  if (!isComplete(params)) return;
 
   const matchUpsWonGroups = getGroups({
     attribute: 'matchUpsWon',
     participantResults,
-    disqualified,
   });
 
   const groupOrder = Object.keys(matchUpsWonGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
     .map((key) => matchUpsWonGroups[key])
-    .map((participantIds) => groupSubSort({ participantIds, ...props }))
+    .map((participantIds) => groupSubSort({ participantIds, ...params }))
     .flat(Infinity);
 
   let groupPosition = 1;
@@ -148,8 +151,9 @@ function processAttribute({
   attribute,
   idsFilter,
   matchUps,
+  reversed, // reverses default which is greatest to least
 }) {
-  const { participantResults, disqualified } = getParticipantResults({
+  const { participantResults, matchUpStatuses } = getParticipantResults({
     participantIds: idsFilter && participantIds,
     matchUpFormat,
     tallyPolicy,
@@ -158,19 +162,19 @@ function processAttribute({
   const groups = getGroups({
     participantResults,
     participantIds,
-    disqualified,
     attribute,
   });
   if (Object.keys(groups).length > 1) {
     // separation by attribute was successful
     return Object.keys(groups)
       .map((key) => parseFloat(key))
-      .sort((a, b) => b - a)
+      .sort((a, b) => (reversed ? a - b : b - a))
       .map((key) => groups[key])
       .map((participantIds) =>
         groupSubSort({
           participantResults,
           disableHeadToHead,
+          matchUpStatuses,
           participantIds,
           matchUpFormat,
           tallyPolicy,
@@ -205,7 +209,7 @@ function groupSubSort({
 
   let result;
   (tallyPolicy?.tallyDirectives || defaultTallyDirectives).every(
-    ({ attribute, idsFilter, disableHeadToHead }) => {
+    ({ attribute, reversed, idsFilter, disableHeadToHead }) => {
       result = processAttribute({
         disableHeadToHead,
         participantIds,
@@ -214,6 +218,7 @@ function groupSubSort({
         attribute,
         idsFilter,
         matchUps,
+        reversed,
       });
       return result ? false : true;
     }
@@ -240,20 +245,12 @@ function headToHeadWinner({ participantIds, participantResults }) {
   }
 }
 
-function getGroups({
-  participantResults,
-  participantIds,
-  disqualified,
-  attribute,
-}) {
+function getGroups({ participantResults, participantIds, attribute }) {
   const resultsArray = getResultsArray({ participantResults, participantIds });
   const groups = resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
     const value = results[attribute];
-    if (disqualified.includes(participantId)) {
-      if (!groups[9999]) groups[9999] = [];
-      groups[9999].push(participantId);
-    } else if (groups[value]) {
+    if (groups[value]) {
       groups[value].push(participantId);
     } else {
       groups[value] = [participantId];

@@ -1,100 +1,74 @@
-import linkGovernor from './governors/linkGovernor';
+import structureGovernor from './governors/structureGovernor';
+import positionGovernor from './governors/positionGovernor';
+import matchUpGovernor from './governors/matchUpGovernor';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
-import policyGovernor from './governors/policyGovernor';
-import matchUpGovernor from './governors/matchUpGovernor';
-import positionGovernor from './governors/positionGovernor';
-import structureGovernor from './governors/structureGovernor';
+import linkGovernor from './governors/linkGovernor';
 
-import { addDrawDefinitionExtension } from '../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
+import definitionTemplate from './generators/drawDefinitionTemplate';
+import { factoryVersion } from '../global/factoryVersion';
+import { UUID, makeDeepCopy } from '../utilities';
+import { setState } from './stateMethods';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  createInstanceState,
 } from '../global/globalState';
-import definitionTemplate, {
-  keyValidation,
-} from './generators/drawDefinitionTemplate';
 
-import { UUID, makeDeepCopy } from '../utilities';
+import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
-import {
-  INVALID_OBJECT,
-  MISSING_DRAW_ID,
-  INVALID_DRAW_DEFINITION,
-  MISSING_DRAW_DEFINITION,
-} from '../constants/errorConditionConstants';
-import { DRAW_PROFILE } from '../constants/extensionConstants';
 
 let drawDefinition;
 let tournamentParticipants = [];
 
-function newDrawDefinition({ drawId, drawType, drawProfile } = {}) {
+function newDrawDefinition({ drawId, drawType } = {}) {
   const drawDefinition = definitionTemplate();
-  if (drawProfile) {
-    const extension = {
-      name: DRAW_PROFILE,
-      value: drawProfile,
-    };
-    addDrawDefinitionExtension({ drawDefinition, extension });
-  }
-
   return Object.assign(drawDefinition, { drawId, drawType });
 }
 
-// TASK: add verify/validate structure as option in setState
-function setState(definition, deepCopyOption = true) {
-  if (!definition) return { error: MISSING_DRAW_DEFINITION };
-  if (typeof definition !== 'object') return { error: INVALID_OBJECT };
-  if (!definition.drawId) return { error: MISSING_DRAW_ID, method: 'setState' };
+export function drawEngineAsync(test) {
+  const result = createInstanceState();
+  if (result.error && !test) return result;
 
-  if (!validDefinitionKeys(definition))
-    return { error: INVALID_DRAW_DEFINITION };
-
-  drawDefinition = deepCopyOption ? makeDeepCopy(definition) : definition;
-
-  return Object.assign({ drawId: definition.drawId }, SUCCESS);
-}
-
-function validDefinitionKeys(definition) {
-  const definitionKeys = Object.keys(definition);
-  const valid = keyValidation.reduce(
-    (p, key) => (!definitionKeys.includes(key) ? false : p),
-    true
-  );
-  return valid;
-}
-
-export const drawEngineAsync = (async function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
     }),
-    version: () => '@VERSION@',
+    version: () => factoryVersion(),
     reset: () => {
       drawDefinition = undefined;
       return SUCCESS;
-    },
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
-    setDrawDescription: ({ description }) => {
+    setDrawDescription: ({ description } = {}) => {
+      if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = description;
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
   };
 
-  await importGovernors([
+  function processResult(result) {
+    if (result?.error) {
+      fx.error = result.error;
+      fx.success = false;
+    } else {
+      fx.error = undefined;
+      fx.success = true;
+      drawDefinition = result;
+      fx.drawId = result.drawId;
+    }
+    return fx;
+  }
+
+  importGovernors([
     linkGovernor,
     queryGovernor,
     scoreGovernor,
@@ -109,15 +83,14 @@ export const drawEngineAsync = (async function () {
     setDevContext(isDev);
     return fx;
   };
-  fx.setParticipants = (participants) => {
+  fx.setParticipants = (participants = []) => {
     tournamentParticipants = participants;
     return fx;
   };
   fx.setState = (definition, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(definition);
-    if (result.error) return result;
-    return fx;
+    return processResult(result);
   };
 
   return fx;
@@ -146,21 +119,27 @@ export const drawEngineAsync = (async function () {
     }
   }
 
-  async function invoke({ params, governor, key }) {
-    const result = governor[key]({
-      ...params,
-      drawDefinition,
+  async function invoke({ params, governor, governorMethod }) {
+    const snapshot =
+      params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
+
+    const result = governor[governorMethod]({
       tournamentParticipants,
+      drawDefinition,
+      ...params,
     });
 
-    if (result?.success) {
-      await notifySubscribersAsync();
+    if (result?.error) {
+      if (snapshot) setState(snapshot);
+      return { ...result, rolledBack: !!snapshot };
     }
 
-    deleteNotices();
+    const notify = result?.success && params?.delayNotify !== true;
+    if (notify) await notifySubscribersAsync();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }
-})();
+}
 
 export default drawEngineAsync;

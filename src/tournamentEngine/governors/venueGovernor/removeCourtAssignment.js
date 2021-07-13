@@ -1,28 +1,39 @@
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
+import { tournamentMatchUps } from '../../getters/matchUpsGetter';
+import { findEvent } from '../../getters/eventGetter';
 
+import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
-  DRAW_DEFINITION_NOT_FOUND,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
 
-import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-
 export function removeCourtAssignment({
   tournamentRecord,
   drawDefinition,
-  matchUpId,
   drawId,
+  matchUpId,
 }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (!drawId) return { error: MISSING_DRAW_ID };
-  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
+  if (!drawDefinition && !drawId) return { error: MISSING_DRAW_ID };
 
-  const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
+  let matchUp;
+  if (!drawDefinition) {
+    if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+    ({ drawDefinition } = findEvent({ tournamentRecord, drawId }));
+  }
+
+  if (drawDefinition) {
+    ({ matchUp } = findMatchUp({ drawDefinition, matchUpId }));
+  } else {
+    if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+    const { matchUps } = tournamentMatchUps({ tournamentRecord });
+    ({ matchUp } = getMatchUp({ matchUps, matchUpId }));
+  }
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 
   if (matchUp.timeItems) {

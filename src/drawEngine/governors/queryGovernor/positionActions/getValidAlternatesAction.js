@@ -28,7 +28,7 @@ export function getValidAlternatesAction({
 
   const assignedParticipantIds = positionAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   const eventEntries = event.entries || [];
   const availableAlternatesParticipantIds = eventEntries
     .filter(

@@ -1,12 +1,11 @@
 import { getParticipantResults } from './getParticipantResults';
+import { matchUpIsComplete } from '../matchUpIsComplete';
 import { unique } from '../../../../utilities/arrays';
 import { getGroupOrder } from './getGroupOrder';
 
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
 import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../../constants/matchUpStatusConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 export function tallyParticipantResults({
   policyDefinition,
@@ -27,19 +26,17 @@ export function tallyParticipantResults({
     unique(relevantMatchUps.map(({ drawPositions }) => drawPositions).flat())
       .length;
 
-  const matchUpComplete = (matchUp) =>
-    completedMatchUpStatuses.includes(matchUp?.matchUpStatus) ||
-    matchUp?.winningSide;
-
   const bracketComplete =
-    relevantMatchUps.filter(matchUpComplete).length === relevantMatchUps.length;
+    relevantMatchUps.filter(matchUpIsComplete).length ===
+    relevantMatchUps.length;
   // if bracket is incomplete don't use expected matchUps perPlayer for calculating
   if (!bracketComplete) perPlayer = 0;
 
-  const tallyPolicy = policyDefinition?.POLICY_TYPE_ROUND_ROBIN_TALLY;
+  const tallyPolicy =
+    policyDefinition && policyDefinition[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
-  const completedMatchUps = matchUps.filter(matchUpComplete);
-  const { participantResults, disqualified } = getParticipantResults({
+  const completedMatchUps = matchUps.filter(matchUpIsComplete);
+  const { participantResults, matchUpStatuses } = getParticipantResults({
     matchUps: completedMatchUps,
     matchUpFormat,
     tallyPolicy,
@@ -50,8 +47,8 @@ export function tallyParticipantResults({
     matchUps: completedMatchUps,
     participantResults,
     participantsCount,
+    matchUpStatuses,
     matchUpFormat,
-    disqualified,
     tallyPolicy,
     subOrderMap,
   });

@@ -1,7 +1,7 @@
-import { getValidSeedBlocks } from '../../../getters/seedGetter';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
-
+import { getValidSeedBlocks } from '../../../getters/seedGetter';
+import { getSeedBlocks } from '../getSeedBlocks';
 import {
   chunkArray,
   numericSort,
@@ -9,14 +9,18 @@ import {
   unique,
 } from '../../../../utilities';
 
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import {
+  CLUSTER,
+  CONTAINER,
+} from '../../../../constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
   structure,
   appliedPolicies,
   isFeedIn,
 }) {
-  const seedBlocks = appliedPolicies?.seeding?.seedBlocks;
+  const seedingProfile = appliedPolicies?.seeding?.seedingProfile;
+
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const filledDrawPositions = positionAssignments
     .filter((assignment) => assignment.participantId)
@@ -60,10 +64,8 @@ export function getUnseededByePositions({
   };
   const getNextDrawPosition = (chunks) => {
     const { greaterHalf, lesserHalf } = getHalves(chunks);
-    const {
-      greaterHalf: greaterQuarter,
-      lesserHalf: lesserQuarter,
-    } = getHalves(greaterHalf);
+    const { greaterHalf: greaterQuarter, lesserHalf: lesserQuarter } =
+      getHalves(greaterHalf);
     const shuffledQuarter = shuffleArray(greaterQuarter.flat(Infinity));
     const drawPosition = shuffledQuarter.pop();
     const diminishedQuarter = greaterQuarter
@@ -86,19 +88,20 @@ export function getUnseededByePositions({
     let filteredChunks = sortedChunked.map((chunk) =>
       chunk.filter(unfilledDrawPosition)
     );
-    const drawPositionCount = [].concat(...filteredChunks.flat(Infinity))
-      .length;
+    const drawPositionCount = [].concat(
+      ...filteredChunks.flat(Infinity)
+    ).length;
     const orderedDrawPositions = [];
     for (let i = 0; i < drawPositionCount; i++) {
-      const { newlyFilteredChunks, drawPosition } = getNextDrawPosition(
-        filteredChunks
-      );
+      const { newlyFilteredChunks, drawPosition } =
+        getNextDrawPosition(filteredChunks);
       orderedDrawPositions.push(drawPosition);
       filteredChunks = newlyFilteredChunks;
     }
     return orderedDrawPositions;
   };
 
+  // The goal here is to get an order for assigning bye positions which is well distributed
   // setting allPositions: true returns seedBlocks for all positions
   // overriding the default which returns only seedBlocks for seedsCount
   const { validSeedBlocks } = getValidSeedBlocks({
@@ -106,11 +109,13 @@ export function getUnseededByePositions({
     appliedPolicies,
     allPositions: true,
   });
+
   const validBlockDrawPositions = validSeedBlocks.map((block) =>
     block.drawPositions?.map(
       (drawPosition) => drawPosition + drawPositionOffset
     )
   );
+
   let unfilledSeedBlocks = validBlockDrawPositions
     .map(quarterSeparateBlock)
     .filter((block) => block.length);
@@ -119,16 +124,13 @@ export function getUnseededByePositions({
     // FEED_IN structures calculate seedDrawPositions uniquely
     // and require a special case to properly calculate bye positions
     const baseDrawSize = relevantDrawPositions.length;
-    const blockDrawPositions = Object.keys(seedBlocks)
-      .filter((key) => key < baseDrawSize / 2)
-      .map((key) => {
-        const seedDrawPositions = seedBlocks[key].map(
-          (d) => +d[0] + baseDrawSize * d[1]
-        );
-        return seedDrawPositions.map(
-          (drawPosition) => drawPosition + drawPositionOffset
-        );
-      });
+    const { seedBlocks } = getSeedBlocks({
+      participantsCount: baseDrawSize,
+      cluster: seedingProfile === CLUSTER,
+    });
+    const blockDrawPositions = seedBlocks.map((seedBlock) =>
+      seedBlock.map((drawPosition) => drawPosition + drawPositionOffset)
+    );
 
     unfilledSeedBlocks = blockDrawPositions
       .map(quarterSeparateBlock)
@@ -152,7 +154,7 @@ export function getUnseededByePositions({
   const unseededByePositions = unfilledSeedBlocks
     .map((block) => block.map(findDrawPositionPair))
     .flat(Infinity)
-    .filter((f) => f);
+    .filter(Boolean);
 
   return { unseededByePositions };
 }

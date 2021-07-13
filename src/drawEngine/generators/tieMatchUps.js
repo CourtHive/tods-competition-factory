@@ -25,7 +25,7 @@ export function generateTieMatchUps({ tieFormat, uuids }) {
 
       return matchUps;
     })
-    .filter((f) => f)
+    .filter(Boolean)
     .flat();
   return { tieMatchUps };
 }

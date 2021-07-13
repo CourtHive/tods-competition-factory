@@ -1,23 +1,25 @@
 import { findStructure } from '../../getters/findStructure';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
   drawDefinition,
-  mappedMatchUps,
   inContextDrawMatchUps,
+
+  matchUpsMap,
 }) {
-  const { matchUps: inContextMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    mappedMatchUps,
-    includeByeMatchUps: true,
-  });
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
 
-  inContextDrawMatchUps = inContextDrawMatchUps || inContextMatchUps || [];
+      matchUpsMap,
+    }));
+  }
 
-  inContextDrawMatchUps.forEach((inContextMatchUp) => {
+  (inContextDrawMatchUps || []).forEach((inContextMatchUp) => {
     const { matchUpId, structureId } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
     const targetData = positionTargets({
@@ -27,13 +29,22 @@ export function addGoesTo({
       inContextDrawMatchUps,
     });
     const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
-    const winnerGoesTo = winnerMatchUp?.matchUpId;
-    const loserGoesTo = loserMatchUp?.matchUpId;
-    const { matchUp } = findMatchUp({
-      drawDefinition,
-      mappedMatchUps,
-      matchUpId,
+    const winnerMatchUpId = winnerMatchUp?.matchUpId;
+    const loserMatchUpId = loserMatchUp?.matchUpId;
+
+    const matchUps = getMappedStructureMatchUps({
+      matchUpsMap,
+      structureId,
     });
-    Object.assign(matchUp, { winnerGoesTo, loserGoesTo });
+    const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+
+    if (winnerMatchUpId) {
+      Object.assign(matchUp, { winnerMatchUpId });
+    }
+    if (loserMatchUpId) {
+      Object.assign(matchUp, { loserMatchUpId });
+    }
   });
+
+  return { inContextDrawMatchUps };
 }

@@ -55,13 +55,13 @@ const AVOIDANCE_COUNTRY = {
 
 **policyAttributes** can have an additional attribute **_significantCharacters_** which specifies the number of characters which will be considered when creating values for each key.
 
-INDIVIDUAL participants may be mebmers of PAIR, TEAM and GROUP participants; the INDIVIDUAL participant object does not contain these attributes, so they must be added as "context" before avoidance processing can proceed. Three additional attributes are therefore added to the INDIVIDUAL partcipant objects:
+INDIVIDUAL participants may be members of PAIR, TEAM and GROUP participants; the INDIVIDUAL participant object does not contain these attributes, so they must be added as "context" before avoidance processing can proceed. Three additional attributes are therefore added to the INDIVIDUAL partcipant objects:
 
 - pairParticipantIds
 - teamParticipantIds
 - groupParticipantIds
 
-Specifying that PAIR, TEAM or GROUP particpants should be considered for avoidance is achieved via 'directives' rather than keys because the value are handled differently.
+Specifying that PAIR, TEAM or GROUP participants should be considered for avoidance is achieved via 'directives' rather than keys because the value are handled differently.
 
 ```js
 const pairAvoidancePolicy = {

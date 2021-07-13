@@ -68,9 +68,8 @@ export function addIndividualParticipantIds({
 
   const participantIdsToAdd = individualParticipantIds.filter(
     (participantId) => {
-      const participantIsMember = existingIndividualParticipantIds.includes(
-        participantId
-      );
+      const participantIsMember =
+        existingIndividualParticipantIds.includes(participantId);
       return !participantIsMember;
     }
   );
@@ -82,9 +81,10 @@ export function addIndividualParticipantIds({
         individualParticipantIds: participantIdsToAdd,
       });
     }
-    groupingParticipant.individualParticipantIds = groupingParticipant.individualParticipantIds.concat(
-      ...participantIdsToAdd
-    );
+    groupingParticipant.individualParticipantIds =
+      groupingParticipant.individualParticipantIds.concat(
+        ...participantIdsToAdd
+      );
   }
 
   const { topics } = getTopics();
@@ -99,8 +99,9 @@ export function addIndividualParticipantIds({
     });
   }
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     groupingParticipant: makeDeepCopy(groupingParticipant),
     added: participantIdsToAdd.length,
-  });
+  };
 }

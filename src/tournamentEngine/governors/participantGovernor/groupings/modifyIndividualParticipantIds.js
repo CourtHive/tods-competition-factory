@@ -68,11 +68,10 @@ export function modifyIndividualParticipantIds({
     }
   );
 
-  const individualParticipantIdsToRemove = existingIndividualParticipantIds.filter(
-    (participantId) => {
+  const individualParticipantIdsToRemove =
+    existingIndividualParticipantIds.filter((participantId) => {
       return !individualParticipantIds.includes(participantId);
-    }
-  );
+    });
 
   const addResult = addIndividualParticipantIds({
     tournamentRecord,
@@ -100,5 +99,5 @@ export function modifyIndividualParticipantIds({
     });
   }
 
-  return Object.assign({}, addResult, removeResult);
+  return { ...addResult, ...removeResult };
 }

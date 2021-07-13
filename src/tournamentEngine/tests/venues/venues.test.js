@@ -5,7 +5,9 @@ it('can define a new venue', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -13,9 +15,7 @@ it('can define a new venue', () => {
 
   const initialCourtName = 'Grand Stand';
   const firstCourt = { courtName: initialCourtName };
-  result = tournamentEngine
-    .devContext(true)
-    .addCourt({ venueId, court: firstCourt });
+  result = tournamentEngine.addCourt({ venueId, court: firstCourt });
   expect(result.court.courtName).toEqual(initialCourtName);
 
   const dateAvailability = [
@@ -49,7 +49,9 @@ it('can define a new venue', () => {
   expect(venue.courts.length).toEqual(4);
   expect(venue.courts[0].courtName).toEqual(courtName);
   expect(venue.courts[0].dateAvailability).toEqual([]);
-  expect(venue.courts[1].dateAvailability).toEqual(dateAvailability);
+  expect(venue.courts[1].dateAvailability[0].date).toEqual(
+    dateAvailability[0].date.split('T')[0]
+  );
 
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.venues.length).toEqual(1);

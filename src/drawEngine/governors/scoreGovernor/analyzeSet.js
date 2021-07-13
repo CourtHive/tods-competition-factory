@@ -1,12 +1,15 @@
+import { getSetWinningSide } from './getSetWinningSide';
+
 import {
   INVALID_GAME_SCORES,
   INVALID_WINNING_SIDE,
   MISSING_SET_OBJECT,
 } from '../../../constants/errorConditionConstants';
-import { getSetWinningSide } from './getSetWinningSide';
 
-export function analyzeSet(props) {
-  const { setObject, matchUpScoringFormat } = props;
+export function analyzeSet(params) {
+  const { setObject, matchUpScoringFormat } = params;
+  if (!setObject) return { error: MISSING_SET_OBJECT };
+
   const { setNumber } = setObject || {};
   const { bestOf } = matchUpScoringFormat || {};
   const isDecidingSet = !!(setNumber && setNumber === bestOf);
@@ -39,8 +42,9 @@ export function analyzeSet(props) {
   ).length;
 
   const gameScoresCount = sideGameScores?.filter((s) => !isNaN(s)).length;
-  const tiebreakScoresCount = sideTiebreakScores?.filter((s) => !isNaN(s))
-    .length;
+  const tiebreakScoresCount = sideTiebreakScores?.filter(
+    (s) => !isNaN(s)
+  ).length;
 
   const { tiebreakAt } = setFormat || {};
   const hasTiebreakCondition =
@@ -50,24 +54,20 @@ export function analyzeSet(props) {
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
   const isCompletedSet = !!(setObject && setObject?.winningSide);
-  const {
-    error: standardSetError,
-    result: isValidStandardSetOutcome,
-  } = checkValidStandardSetOutcome({
-    setObject,
-    setFormat,
-    sideGameScores,
-    sideTiebreakScores,
-  });
+  const { error: standardSetError, result: isValidStandardSetOutcome } =
+    checkValidStandardSetOutcome({
+      setObject,
+      setFormat,
+      sideGameScores,
+      sideTiebreakScores,
+    });
 
-  const {
-    error: tiebreakSetError,
-    result: isValidTiebreakSetOutcome,
-  } = checkValidTiebreakSetOutcome({
-    setObject,
-    setFormat,
-    sideTiebreakScores,
-  });
+  const { error: tiebreakSetError, result: isValidTiebreakSetOutcome } =
+    checkValidTiebreakSetOutcome({
+      setObject,
+      setFormat,
+      sideTiebreakScores,
+    });
 
   const isValidSetOutcome =
     (expectStandardSet && !isTiebreakSet && isValidStandardSetOutcome) ||
@@ -105,10 +105,6 @@ export function analyzeSet(props) {
     sideTiebreakScoresCount,
     winningSide,
   };
-
-  if (!setObject) {
-    analysis.setError = MISSING_SET_OBJECT;
-  }
 
   if (setObject?.winningSide !== undefined) {
     if (isTiebreakSet) {

@@ -76,7 +76,7 @@ export function addPenalty({
     payload: { participants: relevantParticipants },
   });
 
-  return Object.assign({}, SUCCESS, { penaltyId: penaltyItem.penaltyId });
+  return { ...SUCCESS, penaltyId: penaltyItem.penaltyId };
 }
 
 /**
@@ -116,7 +116,7 @@ export function removePenalty({ tournamentRecord, penaltyId }) {
   }
 
   return removedPenalty
-    ? Object.assign({}, SUCCESS, { penalty: removedPenalty })
+    ? { ...SUCCESS, penalty: removedPenalty }
     : { error: PENALTY_NOT_FOUND };
 }
 
@@ -130,9 +130,10 @@ export function getTournamentPenalties({ tournamentRecord }) {
       if (penalties[penaltyId]) {
         penalties[penaltyId].participants.push(participantId);
       } else {
-        penalties[penaltyId] = Object.assign({}, penalty, {
+        penalties[penaltyId] = {
+          ...penalty,
           participantIds: [participantId],
-        });
+        };
       }
     });
     return penalties;
@@ -152,9 +153,9 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
     (attribute) => attribute !== 'penaltyId'
   );
 
-  const validModificationAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validAttributes.includes(attribute));
+  const validModificationAttributes = Object.keys(modifications).filter(
+    (attribute) => validAttributes.includes(attribute)
+  );
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
@@ -186,6 +187,6 @@ export function modifyPenalty({ tournamentRecord, penaltyId, modifications }) {
   }
 
   return updatedPenalty
-    ? Object.assign({}, SUCCESS, { penalty: updatedPenalty })
+    ? { ...SUCCESS, penalty: updatedPenalty }
     : { error: PENALTY_NOT_FOUND };
 }

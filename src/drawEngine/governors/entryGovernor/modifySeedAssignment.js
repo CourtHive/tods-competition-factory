@@ -1,14 +1,17 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { findStructure } from '../../getters/findStructure';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
+ * method is made available to clients via positionActions
+ * modifies the seedValue of an existing seedAssignment for a given participantId
+ * --or-- adds an additional seedAssignment for an unrecognized participantId (this behavior may be unnecessary)
  *
  * @param {object} drawDefinition
  * @param {string} participantId
@@ -34,6 +37,7 @@ export function modifySeedAssignment({
   const seedNumbers = seedAssignments.map(
     (assignment) => assignment.seedNumber
   );
+
   const existingAssginment = seedAssignments.find(
     (assignment) => assignment.participantId === participantId
   );

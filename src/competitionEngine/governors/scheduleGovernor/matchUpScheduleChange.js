@@ -1,11 +1,21 @@
 import { getDrawDefinition } from '../../../tournamentEngine/getters/eventGetter';
 import { assignMatchUpCourt as assignCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 
-import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
+  NO_MODIFICATIONS_APPLIED,
+} from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function matchUpScheduleChange(params) {
   const { tournamentRecords } = params;
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+
   const {
     sourceMatchUpContextIds,
     targetMatchUpContextIds,
@@ -25,6 +35,8 @@ export function matchUpScheduleChange(params) {
     matchUpId: targetMatchUpId,
     tournamentId: targetTournamentId,
   } = targetMatchUpContextIds || {};
+
+  if (!sourceMatchUpId && !targetMatchUpId) return { error: MISSING_VALUE };
 
   let matchUpsModified = 0;
 
@@ -64,7 +76,8 @@ export function matchUpScheduleChange(params) {
     if (targetResult.success) matchUpsModified++;
     if (targetResult.error) return targetResult;
   } else {
-    console.log('matcUpScheduleChange', params);
+    // no modification
+    // console.log('matcUpScheduleChange', params);
   }
 
   return matchUpsModified ? SUCCESS : { error: NO_MODIFICATIONS_APPLIED };

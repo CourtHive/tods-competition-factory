@@ -10,9 +10,10 @@ import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function treeMatchUps({
   drawSize,
-  qualifyingPositions,
   roundLimit,
-  qualifyingRound,
+  matchUpType,
+  qualifyingRound, // round at which participants qualify
+  qualifyingPositions,
   finishingPositionOffset,
   uuids,
 }) {
@@ -32,8 +33,9 @@ export function treeMatchUps({
 
   ({ roundNodes, matchUps } = buildRound({
     roundNumber,
-    nodes,
+    matchUpType,
     matchUps,
+    nodes,
     uuids,
   }));
   roundNumber++;
@@ -44,6 +46,7 @@ export function treeMatchUps({
       roundLimit = roundNumber - 1;
     ({ roundNodes, matchUps } = buildRound({
       roundNumber,
+      matchUpType,
       nodes: roundNodes,
       matchUps,
       uuids,
@@ -68,10 +71,12 @@ export function treeMatchUps({
 }
 
 function addFinishingRounds({
-  matchUps,
+  finishingPositionOffset = 0,
+  positionsFed,
   roundsCount,
   roundLimit,
-  finishingPositionOffset = 0,
+  matchUps,
+  fmlc,
 }) {
   // object containing # of matchUps (value) for each round (attribute)
   const roundMatchCounts = matchUps.reduce((p, matchUp) => {
@@ -95,8 +100,13 @@ function addFinishingRounds({
     matchUp.finishingRound =
       roundsCount + 1 - matchUp.roundNumber - finishingRoundOffset;
 
-    const rangeOffset = 1 + finishingPositionOffset;
+    // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
+    const fmlcException = fmlc && matchUp.roundNumber !== 1;
+    const rangeOffset =
+      1 + finishingPositionOffset + (fmlcException ? positionsFed : 0);
+
     const currentMatchUps = roundMatchCounts[matchUp.roundNumber];
+
     const upcomingMatchUps = roundMatchCountArray
       .slice(matchUp.roundNumber - 1)
       .reduce((a, b) => a + b, 0);
@@ -106,6 +116,7 @@ function addFinishingRounds({
       rangeOffset,
       upcomingMatchUps + rangeOffset + finalPosition
     );
+
     const slicer = upcomingMatchUps + finalPosition - currentMatchUps;
     const loser = finishingRange(finishingPositionRange.slice(slicer));
     const winner = finishingRange(finishingPositionRange.slice(0, slicer));
@@ -115,7 +126,14 @@ function addFinishingRounds({
   return matchUps;
 }
 
-function buildRound({ roundNumber, nodes, matchUps, uuids }) {
+function buildRound({
+  roundNumber,
+  nodes,
+  matchUps,
+  matchUpType,
+  uuids,
+  includeMatchUpType,
+}) {
   let index = 0;
   const roundNodes = [];
   let roundPosition = 1;
@@ -134,13 +152,19 @@ function buildRound({ roundNumber, nodes, matchUps, uuids }) {
       matchUpId: uuids?.pop() || UUID(),
     };
     roundNodes.push(node);
-    matchUps.push({
+    const matchUp = {
       matchUpId: node.matchUpId,
       roundNumber,
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
+      // TODO: undefined drawPositions can be filtered; several tests will have to be updated
+      // drawPositions: node.children.map((c) => c.drawPosition).filter(f=>f),
       drawPositions: node.children.map((c) => c.drawPosition),
-    });
+    };
+
+    // matchUpType is derived for inContext matchUps from structure or drawDefinition
+    if (includeMatchUpType) matchUp.matchUpType = matchUpType;
+    matchUps.push(matchUp);
     index += 2;
     roundPosition++;
   }
@@ -175,12 +199,15 @@ function roundMatchCounts({ drawSize }) {
 export function feedInMatchUps({
   uuids,
   drawSize,
+  matchUpType,
   feedRounds = 0,
   skipRounds = 0,
   baseDrawSize,
   isConsolation,
   feedsFromFinal,
   feedRoundsProfile = [],
+
+  fmlc,
   finishingPositionOffset,
 
   linkFedRoundNumbers = [],
@@ -273,6 +300,7 @@ export function feedInMatchUps({
   for (const baseDrawRound of baseDrawRounds) {
     ({ roundNodes, matchUps } = buildRound({
       roundNumber,
+      matchUpType,
       matchUps,
       nodes,
       uuids,
@@ -294,6 +322,7 @@ export function feedInMatchUps({
           nodes: roundNodes,
           roundIteration, // meaningless; avoids eslint value never used
           roundNumber,
+          matchUpType,
           matchUps,
           uuids,
           fed,
@@ -307,18 +336,21 @@ export function feedInMatchUps({
 
   if (roundsCount !== roundNumber - 1) console.log('ERROR');
 
-  // if this is a feed-in consolation then finishing drawPositions must be offset
-  // by the number of drawPositions which will be fed into the consolation draw
+  // if this is a feed-in consolation then finishing drawPositions must be offset ...
+  // ... by the number of drawPositions which will be fed into the consolation draw
   // final drawPositions will be played off twice up until the final feed round
+
   const consolationFinish = baseDrawSize - positionsFed;
   const modifiedFinishingPositionOffset = isConsolation
     ? consolationFinish
     : finishingPositionOffset;
 
   matchUps = addFinishingRounds({
-    matchUps,
-    roundsCount,
     finishingPositionOffset: modifiedFinishingPositionOffset,
+    positionsFed,
+    roundsCount,
+    matchUps,
+    fmlc,
   });
 
   const draw = roundNodes && roundNodes.length ? roundNodes[0] : roundNodes;
@@ -336,22 +368,22 @@ export function feedInMatchUps({
 }
 
 function buildFeedRound({
+  includeMatchUpType,
+  drawPosition,
+  matchUpType,
+  roundNumber,
+  matchUps,
   uuids,
   nodes,
-  drawPosition,
   fed,
-  matchUps,
-  roundNumber,
 }) {
   const feedRoundMatchUpsCount = nodes.length;
   const initialGroupDrawPosition = drawPosition
     ? drawPosition - feedRoundMatchUpsCount
     : undefined;
-  const drawPositionGroup = generateRange(
-    0,
-    feedRoundMatchUpsCount
-  ).map((value) =>
-    initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
+  const drawPositionGroup = generateRange(0, feedRoundMatchUpsCount).map(
+    (value) =>
+      initialGroupDrawPosition ? initialGroupDrawPosition + value : undefined
   );
 
   const roundNodes = [];
@@ -366,12 +398,16 @@ function buildFeedRound({
 
     const position = nodes[nodeIndex];
     position.roundNumber = roundNumber - 1;
-    matchUps.push({
+    const newMatchUp = {
       roundNumber,
       matchUpId: uuids?.pop() || UUID(),
       roundPosition: position.roundPosition,
       drawPositions: [undefined, feedDrawPosition],
-    });
+    };
+
+    // matchUpType is derived for inContext matchUps from structure or drawDefinition
+    if (includeMatchUpType) newMatchUp.matchUpType = matchUpType;
+    matchUps.push(newMatchUp);
 
     const matchUp = { children: [position, feedArm] };
     roundNodes.push(matchUp);

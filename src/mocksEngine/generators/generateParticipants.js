@@ -1,11 +1,11 @@
-import { countries } from '../../fixtures/countryData';
-import { generateRange, shuffleArray, UUID } from '../../utilities';
 import { cityMocks, stateMocks, postalCodeMocks } from '../utilities/address';
-import { teamMocks } from '../utilities/team';
-import { personMocks } from '../utilities/person';
+import { generateRange, shuffleArray, UUID } from '../../utilities';
+import { countries } from '../../fixtures/countryData';
+import { personMocks } from '../utilities/personMocks';
+import { teamMocks } from '../utilities/teamMocks';
 
-import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
+import { COMPETITOR } from '../../constants/participantRoles';
 import { DOUBLES } from '../../constants/matchUpTypes';
 
 /**
@@ -35,16 +35,20 @@ export function generateParticipants({
   sex,
 
   inContext,
+  personData,
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
   const individualParticipantsCount =
     participantsCount * (doubles ? 2 : team ? 8 : 1);
 
-  const { persons: mockedPersons } = personMocks({
-    sex,
+  const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
+    personData,
+    sex,
   });
+  if (error) return { error };
+
   const isoCountries = countries.filter((country) => country.iso);
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
@@ -114,19 +118,27 @@ export function generateParticipants({
 
   function generateIndividualParticipant(participantIndex) {
     const person = mockedPersons[participantIndex];
-    const { firstName, lastName, extensions, nationalityCode } = person || {};
+    const {
+      sex,
+      firstName,
+      lastName,
+      extensions,
+      nationalityCode: personNationalityCode,
+    } = person || {};
     const standardGivenName = firstName || 'GivenName';
     const standardFamilyName = lastName || 'FamilyName';
     const participantName = `${standardGivenName} ${standardFamilyName}`;
     const country = countriesList[participantIndex];
-    const mockedNationalityCode = country && (country.ioc || country.iso);
-    if (countriesList?.length && !nationalityCode && !mockedNationalityCode) {
+    const nationalityCode =
+      (country && (country.ioc || country.iso)) || personNationalityCode;
+
+    if (countriesList?.length && !nationalityCode && !personNationalityCode) {
       console.log('%c Invalid Nationality Code', { participantIndex, country });
     }
     const address = generateAddress({
       ...addressValues,
       participantIndex,
-      nationalityCode: mockedNationalityCode || nationalityCode,
+      nationalityCode,
     });
     const participant = {
       participantId: UUID(),
@@ -143,18 +155,14 @@ export function generateParticipants({
         sex,
       },
     };
+
     return participant;
   }
 }
 
 function generateAddress(addressAttributes) {
-  const {
-    cities,
-    states,
-    postalCodes,
-    nationalityCode,
-    participantIndex,
-  } = addressAttributes;
+  const { cities, states, postalCodes, nationalityCode, participantIndex } =
+    addressAttributes;
   const address = {
     city: cities && cities[participantIndex],
     state: states && states[participantIndex],

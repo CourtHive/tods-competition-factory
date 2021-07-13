@@ -2,41 +2,26 @@ import { removeDirectedParticipants } from './removeDirectedParticipants';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { directParticipants } from './directParticipants';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
-export function attemptToSetWinningSide(props) {
-  const { drawDefinition, winningSide, structure, matchUp } = props;
-  let errors = [];
-
-  if ([BYE].includes(matchUp.matchUpStatus)) {
-    return {
-      errors: [{ error: 'Cannot set winningSide for BYE matchUpStatus' }],
-    };
-  }
+export function attemptToSetWinningSide(params) {
+  const { drawDefinition, winningSide, structure, matchUp } = params;
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // TODO: return a message if there are effects in connected structures
+    // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF
     checkConnectedStructures({
       drawDefinition,
       structure,
       matchUp,
     });
 
-    const { errors: participantDirectionErrors } = removeDirectedParticipants(
-      props
-    );
-
-    if (participantDirectionErrors) {
-      errors = errors.concat(participantDirectionErrors);
-      return { errors };
-    }
+    const result = removeDirectedParticipants(params);
+    if (result.error) return result;
   }
 
-  const { errors: participantDirectionErrors } = directParticipants(props);
+  const result = directParticipants(params);
+  if (result.error) return result;
 
-  if (participantDirectionErrors) {
-    errors = errors.concat(participantDirectionErrors);
-  }
-
-  return { errors };
+  return { ...SUCCESS };
 }

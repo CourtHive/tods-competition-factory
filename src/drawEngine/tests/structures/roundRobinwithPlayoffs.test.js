@@ -238,12 +238,11 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const { drawId } = drawDefinition;
-  const {
-    matchUps: allStructureMatchUps,
-  } = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: { structureIds: [mainStructure.structureId] },
-    inContext: true,
-  });
+  const { matchUps: allStructureMatchUps } =
+    tournamentEngine.allTournamentMatchUps({
+      matchUpFilters: { structureIds: [mainStructure.structureId] },
+      inContext: true,
+    });
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
@@ -321,9 +320,9 @@ it('can advance players in Round Robin with Playoffs', () => {
     });
 
     // verify that positioning participants are expected
-    const {
-      drawDefinition: updatedDrawDefinition,
-    } = tournamentEngine.getEvent({ drawId });
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
+      { drawId }
+    );
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,
@@ -338,7 +337,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -569,9 +568,9 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     });
 
     // verify that positioning participants are expected
-    const {
-      drawDefinition: updatedDrawDefinition,
-    } = tournamentEngine.getEvent({ drawId });
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
+      { drawId }
+    );
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,
@@ -586,7 +585,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -623,28 +622,28 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   expect(
     playoffStructures[0].matchUps[0].finishingPositionRange.winner
   ).toEqual([1, 4]);
-  expect(
-    playoffStructures[0].matchUps[0].finishingPositionRange.loser
-  ).toEqual([5, 8]);
+  expect(playoffStructures[0].matchUps[0].finishingPositionRange.loser).toEqual(
+    [5, 8]
+  );
 
   expect(
     playoffStructures[1].matchUps[0].finishingPositionRange.winner
   ).toEqual([6, 9]);
-  expect(
-    playoffStructures[1].matchUps[0].finishingPositionRange.loser
-  ).toEqual([10, 13]);
+  expect(playoffStructures[1].matchUps[0].finishingPositionRange.loser).toEqual(
+    [10, 13]
+  );
 
   expect(
     playoffStructures[2].matchUps[0].finishingPositionRange.winner
   ).toEqual([11, 14]);
-  expect(
-    playoffStructures[2].matchUps[0].finishingPositionRange.loser
-  ).toEqual([15, 18]);
+  expect(playoffStructures[2].matchUps[0].finishingPositionRange.loser).toEqual(
+    [15, 18]
+  );
 
   expect(
     playoffStructures[3].matchUps[0].finishingPositionRange.winner
   ).toEqual([16, 19]);
-  expect(
-    playoffStructures[3].matchUps[0].finishingPositionRange.loser
-  ).toEqual([20, 23]);
+  expect(playoffStructures[3].matchUps[0].finishingPositionRange.loser).toEqual(
+    [20, 23]
+  );
 });

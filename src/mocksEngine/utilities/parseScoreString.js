@@ -4,12 +4,12 @@ import { getTiebreakComplement } from '../../drawEngine/governors/scoreGovernor/
 export function parseScoreString({ scoreString, tiebreakTo = 7 }) {
   return scoreString
     .split(' ')
-    .filter((f) => f)
+    .filter(Boolean)
     .map((set, index) => parseSet({ set, setNumber: index + 1 }));
 
   function parseSet({ set, setNumber }) {
     const matchTiebreak =
-      set.startsWith('[') &&
+      set?.startsWith('[') &&
       set
         .split('[')[1]
         .split(']')[0]

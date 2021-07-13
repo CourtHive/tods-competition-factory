@@ -64,15 +64,12 @@ export function verifyMatchUps({
 }) {
   const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
-  const {
-    completedMatchUps,
-    pendingMatchUps,
-    upcomingMatchUps,
-  } = getStructureMatchUps({
-    drawDefinition,
-    structure,
-    requireParticipants,
-  });
+  const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
+    getStructureMatchUps({
+      drawDefinition,
+      structure,
+      requireParticipants,
+    });
 
   const { roundMatchUps: pendingRoundMatchUps } = getRoundMatchUps({
     matchUps: pendingMatchUps,

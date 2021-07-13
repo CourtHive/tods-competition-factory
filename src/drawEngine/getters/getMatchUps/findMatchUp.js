@@ -12,9 +12,9 @@ import {
 /*
   public version of findMatchUp
 */
-export function publicFindMatchUp(props) {
-  Object.assign(props, { inContext: true });
-  return { matchUp: makeDeepCopy(findMatchUp(props).matchUp) };
+export function publicFindMatchUp(params) {
+  Object.assign(params, { inContext: true });
+  return { matchUp: makeDeepCopy(findMatchUp(params).matchUp) };
 }
 
 /*
@@ -23,28 +23,28 @@ export function publicFindMatchUp(props) {
 export function findMatchUp({
   drawDefinition,
   tournamentParticipants,
-  mappedMatchUps,
   matchUpId,
   inContext,
+
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };
 
   const { structures } = getDrawStructures({ drawDefinition });
-  const { matchUp, structure } = structures.reduce((result, structure) => {
+
+  for (const structure of structures) {
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
-      mappedMatchUps,
       inContext,
       structure,
+      matchUpsMap,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
-    return matchUp ? { matchUp, structure } : result;
-  }, {});
 
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-
-  return { matchUp, structure };
+    if (matchUp) return { matchUp, structure };
+  }
+  return { error: MATCHUP_NOT_FOUND };
 }

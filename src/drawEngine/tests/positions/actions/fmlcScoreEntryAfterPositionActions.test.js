@@ -20,6 +20,7 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     inContext: true,
@@ -29,7 +30,7 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
     drawDefinition: {
       structures: [mainStructure, consolationStructure],
     },
-  } = tournamentEngine.getEvent({ drawId });
+  } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const consolationStructureId = consolationStructure.structureId;
   const policyDefinition = POLICY_POSITION_ACTIONS_UNRESTRICTED;

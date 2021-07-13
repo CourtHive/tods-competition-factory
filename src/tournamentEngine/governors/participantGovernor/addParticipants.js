@@ -1,7 +1,8 @@
-import { addNotice, getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities/arrays';
+import { addNotice } from '../../../global/globalState';
 import { makeDeepCopy, UUID } from '../../../utilities';
 
+import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INDIVIDUAL,
@@ -21,7 +22,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   EXISTING_PARTICIPANT,
 } from '../../../constants/errorConditionConstants';
-import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function addParticipant({
   tournamentRecord,
@@ -56,7 +56,6 @@ export function addParticipant({
     )
     .map((individualParticipant) => individualParticipant.participantId);
 
-  const errors = [];
   if (participantType === PAIR) {
     if (participant.person)
       return { error: INVALID_VALUES, person: participant.person };
@@ -96,7 +95,7 @@ export function addParticipant({
 
     if (existingPairParticipant) {
       if (!allowDuplicateParticipantIdPairs) {
-        return Object.assign({}, SUCCESS);
+        return { ...SUCCESS };
       }
     }
 
@@ -109,10 +108,9 @@ export function addParticipant({
       );
       const participantName = individualParticipants
         .map((participant) => participant.person?.standardFamilyName)
-        .filter((f) => f)
+        .filter(Boolean)
         .join('/');
       participant.participantName = participantName;
-      participant.name = participantName; // backwards compatabilty
     }
   } else if (participantType === INDIVIDUAL) {
     if (
@@ -134,28 +132,24 @@ export function addParticipant({
       return { error: INVALID_VALUES, person: participant.person };
 
     const { individualParticipantIds } = participant;
-    (individualParticipantIds || []).forEach((individualParticipantId) => {
-      if (typeof individualParticipantId !== 'string') {
-        errors.push({
-          error: INVALID_VALUES,
-          participantId: individualParticipantId,
-        });
-        return;
+    if (individualParticipantIds?.length) {
+      for (const individualParticipantId of individualParticipantIds) {
+        if (typeof individualParticipantId !== 'string') {
+          return {
+            error: INVALID_VALUES,
+            participantId: individualParticipantId,
+          };
+        }
+        if (
+          !tournamentIndividualParticipantIds.includes(individualParticipantId)
+        ) {
+          return {
+            error: PARTICIPANT_NOT_FOUND,
+            participantId: individualParticipantId,
+          };
+        }
       }
-      if (
-        !tournamentIndividualParticipantIds.includes(individualParticipantId)
-      ) {
-        errors.push({
-          error: PARTICIPANT_NOT_FOUND,
-          participantId: individualParticipantId,
-        });
-        return;
-      }
-    });
-  }
-
-  if (errors.length) {
-    return { error: errors };
+    }
   }
 
   tournamentRecord.participants.push(participant);
@@ -167,15 +161,17 @@ export function addParticipant({
     });
   }
 
-  const result = Object.assign({}, SUCCESS);
-  if (getDevContext())
-    Object.assign(result, { participant: makeDeepCopy(participant) });
+  const result = {
+    ...SUCCESS,
+    participant: makeDeepCopy(participant),
+  };
   return result;
 }
 
 export function addParticipants({
   tournamentRecord,
   participants = [],
+
   allowDuplicateParticipantIdPairs,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -211,38 +207,37 @@ export function addParticipants({
   );
 
   if (participantsToAdd.length) {
-    const errors = [];
     const addedParticipants = [];
-    participantsToAdd.forEach((participant) => {
+
+    for (const participant of participantsToAdd) {
       const result = addParticipant({
         tournamentRecord,
         participant,
         disableNotice: true,
+
         allowDuplicateParticipantIdPairs,
       });
       const { success, error, participant: addedParticipant } = result;
       if (success) addedParticipants.push(addedParticipant);
-      if (error) errors.push(error);
-    });
-
-    if (errors.length) {
-      return { error: errors };
-    } else {
-      addNotice({
-        topic: ADD_PARTICIPANTS,
-        payload: { participants: addedParticipants },
-      });
-      const result = Object.assign({}, SUCCESS, {
-        participants: makeDeepCopy(addedParticipants),
-      });
-      if (notAdded.length) {
-        Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
-      }
-      return result;
+      if (error) return { error };
     }
-  } else {
-    return Object.assign({}, SUCCESS, {
-      message: 'No new participants to add',
+
+    addNotice({
+      topic: ADD_PARTICIPANTS,
+      payload: { participants: addedParticipants },
     });
+    const result = {
+      ...SUCCESS,
+      participants: makeDeepCopy(addedParticipants),
+    };
+    if (notAdded.length) {
+      Object.assign(result, { notAdded, message: EXISTING_PARTICIPANT });
+    }
+    return result;
+  } else {
+    return {
+      ...SUCCESS,
+      message: 'No new participants to add',
+    };
   }
 }

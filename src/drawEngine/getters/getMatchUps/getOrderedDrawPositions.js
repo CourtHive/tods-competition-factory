@@ -22,11 +22,7 @@ export function getOrderedDrawPositions({
   const targetRoundProfile = roundProfile[roundNumber];
   const displayOrder =
     targetRoundProfile?.pairedDrawPositions.find(
-      (pair) =>
-        intersection(
-          pair,
-          drawPositions.filter((f) => f)
-        ).length
+      (pair) => intersection(pair || [], drawPositions.filter(Boolean)).length
     ) || unassignedDrawPositions;
 
   // ############# IMPORTANT DO NOT CHANGE #################

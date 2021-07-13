@@ -1,47 +1,44 @@
-import { addDrawDefinitionExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
-import { getAppliedPolicies } from '../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
 import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
-import { addTournamentTimeItem } from '../governors/tournamentGovernor/addTimeItem';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
+import { addNotice } from '../../global/globalState';
 import drawEngine from '../../drawEngine/sync';
 
+import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
+import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import { RANKING, SEEDING } from '../../constants/scaleConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+import { AUDIT } from '../../constants/topicConstants';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   MAIN,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
-import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
-
-import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import { RANKING, SEEDING } from '../../constants/scaleConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
-import { TEAM } from '../../constants/matchUpTypes';
 import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DRAW_PROFILE } from '../../constants/extensionConstants';
 
-export function generateDrawDefinition(props) {
-  const { tournamentRecord, event } = props;
-  let { drawName, structureOptions } = props;
+export function generateDrawDefinition(params) {
+  const { tournamentRecord, event } = params;
+  let { drawName, matchUpType, structureOptions } = params;
 
   const {
     uuids,
     drawId,
     drawEntries,
-    matchUpType,
     stage = MAIN,
     seedingProfile,
     qualifyingRound,
-    automated = true,
+    automated = true, // can be true/false or "truthy" { seedsOnly: true }
     policyDefinitions,
     qualifyingPositions,
+    enforcePolicyLimits = true,
     drawType = SINGLE_ELIMINATION,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
@@ -51,7 +48,7 @@ export function generateDrawDefinition(props) {
     seededParticipants,
     seedByRanking = true,
     seedingScaleName,
-  } = props;
+  } = params;
 
   const participants = tournamentRecord?.participants;
 
@@ -73,14 +70,14 @@ export function generateDrawDefinition(props) {
     return { error: INVALID_DRAW_TYPE };
   }
 
-  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
+  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = params;
 
   // coersion
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
   if (typeof seedsCount !== 'number') seedsCount = parseInt(seedsCount || 0);
 
-  if (tieFormat || (matchUpType === TEAM && !tieFormat)) {
-    tieFormat = tieFormatDefaults();
+  if (matchUpType === TEAM) {
+    tieFormat = tieFormat || tieFormatDefaults();
     matchUpFormat = undefined;
   } else if (!matchUpFormat) {
     tieFormat = undefined;
@@ -89,6 +86,8 @@ export function generateDrawDefinition(props) {
 
   const entries = drawEntries || event?.entries || [];
   const eventType = event?.eventType;
+  matchUpType = matchUpType || (eventType !== TEAM && eventType);
+
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
@@ -108,29 +107,12 @@ export function generateDrawDefinition(props) {
     matchUpType,
   });
 
-  const drawProfile = {
-    stage,
-    drawId,
-    drawSize,
-    drawType,
-    automated,
-    drawName,
-    seedsCount,
-
-    tieFormat,
-    matchUpType,
-
-    structureOptions,
-    qualifyingRound,
-    qualifyingPositions,
-
-    category: event?.category,
-  };
-
-  if (!matchUpFormatError) drawProfile.matchUpFormat = matchUpFormat;
+  if (matchUpFormatError)
+    return { error: matchUpFormatError, message: 'matchUpFormat error' };
 
   const {
-    mappedMatchUps,
+    matchUpsMap,
+    inContextDrawMatchUps,
     errors: generatedDrawErrors,
   } = drawEngine.generateDrawType({
     stage,
@@ -146,8 +128,11 @@ export function generateDrawDefinition(props) {
     finishingPositionNaming,
 
     feedPolicy,
-    goesTo: props.goesTo,
+    goesTo: params.goesTo,
   });
+
+  if (generatedDrawErrors)
+    return { error: generatedDrawErrors, message: 'generated draw type error' };
 
   const { structures } = drawEngine.getDrawStructures({
     stage,
@@ -165,42 +150,51 @@ export function generateDrawDefinition(props) {
   const { policyDefinition: eventAvoidancePolicy } =
     getPolicyDefinition({
       event,
+      tournamentRecord,
       policyType: POLICY_TYPE_AVOIDANCE,
     }) || {};
 
   const { policyDefinition: eventSeedingPolicy } =
     getPolicyDefinition({
       event,
+      tournamentRecord,
       policyType: POLICY_TYPE_SEEDING,
     }) || {};
 
-  const { appliedPolicies } = getAppliedPolicies(drawEngine.getState());
-  if (!appliedPolicies?.seeding) {
-    if (eventSeedingPolicy) {
-      drawEngine.attachPolicy({ policyDefinition: eventSeedingPolicy });
-    } else {
-      drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
-    }
+  if (!policyDefinitions?.seeding && !eventSeedingPolicy) {
+    // if there is no seeding policy then use default seeing policy
+    drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
   }
 
-  if (!appliedPolicies?.avoidance && eventAvoidancePolicy) {
+  if (!policyDefinitions?.avoidance && eventAvoidancePolicy) {
     drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
   }
 
+  // OPTIMIZE: use drawEngine.addDrawEntries
   entries.forEach((entry) => {
     // convenience: assume MAIN as entryStage if none provided
-    const entryData = Object.assign({}, entry, {
+    const entryData = {
+      ...entry,
       entryStage: entry.entryStage || MAIN,
-    });
+    };
     drawEngine.addDrawEntry(entryData);
   });
+
   const enteredParticipantIds = entries.map(
     ({ participantId }) => participantId
   );
 
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
-  drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
+
+  const { seedLimit } = drawEngine.initializeStructureSeedAssignments({
+    participantCount: stageEntries.length,
+    enforcePolicyLimits,
+    structureId,
+    seedsCount,
+  });
+
+  if (seedLimit && seedLimit < seedsCount) seedsCount = seedLimit;
 
   if (seededParticipants) {
     seededParticipants
@@ -226,14 +220,14 @@ export function generateDrawDefinition(props) {
           participantId,
         });
         if (!result.success) {
-          console.log('generateDrawDefinition seededParticpants');
+          console.log('generateDrawDefinition seededParticipants');
           console.log(`%c ${result.error}`, 'color: red');
         }
       });
-  } else if (event?.category) {
+  } else if (event?.category || seedingScaleName) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
 
-    const { categoryName, ageCategoryCode } = event.category;
+    const { categoryName, ageCategoryCode } = event?.category || {};
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
@@ -281,41 +275,36 @@ export function generateDrawDefinition(props) {
           // TODO: attach basis of seeding information to seedAssignment
           const { participantId } = scaledEntry;
           const result = drawEngine.assignSeed({
+            participantId,
             structureId,
             seedNumber,
             seedValue,
-            participantId,
           });
           if (!result.success) {
             console.log('generateDrawDefinition scaledEntries');
-            console.log(`%c ${result.error}`, 'color: red');
+            console.log(`%c ${result.error} ${seedNumber}`, 'color: red');
           }
         });
   }
 
   let conflicts = [];
   if (automated !== false) {
+    const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
+    // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     ({ conflicts } = drawEngine.automatedPositioning({
-      mappedMatchUps,
-      structureId,
       participants,
+      structureId,
+      seedsOnly,
+
+      inContextDrawMatchUps,
+      matchUpsMap,
     }));
   }
 
   const { drawDefinition } = drawEngine.getState();
 
-  const extension = {
-    name: DRAW_PROFILE,
-    value: drawProfile,
-  };
-  addDrawDefinitionExtension({ drawDefinition, extension });
-
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });
-
-  const errors = generatedDrawErrors || [];
-  if (matchUpFormatError) errors.push(matchUpFormat);
-  const error = errors.length && errors;
 
   const drawDetails = {
     drawSize,
@@ -328,18 +317,18 @@ export function generateDrawDefinition(props) {
     seedingScaleName,
     drawId: drawDefinition.drawId,
     category: event?.category,
+    eventId: event?.eventId,
   };
 
-  const timeItem = {
-    itemType: 'generateDrawDefinition',
-    itemValue: drawDetails,
-  };
-  addTournamentTimeItem({ tournamentRecord, timeItem });
+  addNotice({
+    topic: AUDIT,
+    payload: { action: 'generateDrawDefinition', payload: drawDetails },
+  });
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     structureId,
     drawDefinition,
     conflicts,
-    error,
-  });
+  };
 }

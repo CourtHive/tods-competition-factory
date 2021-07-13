@@ -1,35 +1,42 @@
-import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import { getStageDrawPositionsCount } from '../../drawEngine/getters/stageGetter';
 import structureTemplate from '../../drawEngine/generators/structureTemplate';
+import { feedInLinks } from '../../drawEngine/generators/feedInLinks';
 import {
   treeMatchUps,
   feedInMatchUps,
 } from '../../drawEngine/generators/eliminationTree';
 
-export function feedInChampionship(props = {}) {
+import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
+
+export function feedInChampionship(params = {}) {
   const {
     uuids,
     feedRounds,
+    matchUpType,
     stage = MAIN,
     structureName,
     drawDefinition,
     feedsFromFinal,
     stageSequence = 1,
-    feedPolicy,
     finishingPositionOffset,
+    staggeredEntry,
+    feedPolicy,
     fmlc,
-  } = props;
+  } = params;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const { matchUps } = treeMatchUps({ drawSize, finishingPositionOffset });
+  const { matchUps } = staggeredEntry
+    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
+    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
+
   const mainStructure = structureTemplate({
-    matchUps,
-    stage: MAIN,
-    stageSequence,
-    structureId: uuids?.pop(),
     structureName: structureName || MAIN,
+    structureId: uuids?.pop(),
+    stageSequence,
+    stage: MAIN,
+    matchUpType,
+    matchUps,
   });
 
   drawDefinition.structures.push(mainStructure);
@@ -37,14 +44,17 @@ export function feedInChampionship(props = {}) {
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
     feedRounds,
+    matchUpType,
     baseDrawSize,
     feedsFromFinal,
     isConsolation: true,
     finishingPositionOffset: baseDrawSize,
     uuids,
+    fmlc,
   });
 
   const consolationStructure = structureTemplate({
+    matchUpType,
     stageSequence: 1,
     stage: CONSOLATION,
     structureId: uuids?.pop(),

@@ -1,30 +1,35 @@
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-export function checkDoubleWalkoverPropagation(props) {
+export function checkDoubleWalkoverPropagation(params) {
   const {
     targetMatchUps: { winnerMatchUp },
-  } = props.targetData;
+  } = params.targetData;
+
   if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-    const { drawDefinition, mappedMatchUps } = props;
-    const { matchUp: noContextWinnerMatchUp } = findMatchUp({
-      drawDefinition,
-      mappedMatchUps,
-      matchUpId: winnerMatchUp.matchUpId,
-    });
+    const { tournamentRecord, event, drawDefinition, matchUpId, matchUpsMap } =
+      params;
+
+    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    );
+
     if (!noContextWinnerMatchUp) return { error: MISSING_MATCHUP };
-    modifyMatchUpScore({
+
+    return modifyMatchUpScore({
+      matchUpId,
       drawDefinition,
       removeScore: true,
       matchUpStatus: TO_BE_PLAYED,
       matchUp: noContextWinnerMatchUp,
+      tournamentRecord,
+      event,
     });
   }
   return SUCCESS;

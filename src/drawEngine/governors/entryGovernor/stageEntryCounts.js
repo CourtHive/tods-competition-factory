@@ -29,10 +29,11 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
   });
   const totalStageDrawPositions = directAcceptanceEntries + qualifyingPositions;
 
-  if (drawSize < totalStageDrawPositions)
+  if (drawSize < totalStageDrawPositions) {
     return {
       error: 'Cannot set drawSize to be less than existing entries',
     };
+  }
 
   modifyEntryProfile({
     drawDefinition,

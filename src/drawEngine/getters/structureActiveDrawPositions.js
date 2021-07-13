@@ -34,7 +34,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const drawPositions = unique(
     []
       .concat(...matchUps.map((matchUp) => matchUp.drawPositions || []))
-      .filter((f) => f)
+      .filter(Boolean)
   ).sort(numericSort);
 
   // determine which positions are BYEs
@@ -45,7 +45,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const drawPositionsInActiveMatchUps = unique(
     []
       .concat(...activeMatchUps.map((matchUp) => matchUp.drawPositions || []))
-      .filter((f) => f)
+      .filter(Boolean)
       .sort(numericSort)
   );
 

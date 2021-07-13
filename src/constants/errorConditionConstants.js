@@ -2,6 +2,7 @@ export const INVALID_RECORDS =
   'records must be an object with tournamentId keys';
 export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
 export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
+export const INVALID_TOURNAMENT_RECORD = 'Invalid tournamentRecord';
 export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
 
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
@@ -76,6 +77,7 @@ export const INVALID_POLICY_DEFINITION = 'Invalid policyDefinition';
 export const EXISTING_POLICY_TYPE = 'existing policyType';
 export const POLICY_NOT_ATTACHED = 'Policy not attached';
 export const POLICY_NOT_FOUND = 'Policy not found';
+export const MISSING_SCORING_POLICY = 'Missing scoring policy / matchUpFormats';
 
 export const INVALID_SIDE_NUMBER = 'Invalid sideNumber';
 export const INVALID_SET_NUMBER = 'Invalid setNumber';
@@ -85,6 +87,7 @@ export const MISSING_SIDE_NUMBER = 'Missing sideNumber';
 export const MISSING_COURT_ID = 'Missing courtId';
 export const MISSING_VALUE = 'Missing value';
 export const MISSING_DATE = 'Missing date';
+export const NO_VALID_DATES = 'No valid dates';
 
 export const INVALID_BOOKINGS = 'Invalid bookings';
 export const INVALID_DATE_AVAILABILITY = 'Invalid dateAvailability';
@@ -93,6 +96,7 @@ export const MISSING_DATE_AVAILABILITY = 'Missing dateAvailability';
 // Javascript constant for Date() function
 export const INVALID_DATE = 'Invalid Date';
 export const INVALID_TIME = 'Invalid time';
+export const INVALID_TOURNAMENT_DATES = 'Invalid tournament dates';
 export const INVALID_TIME_ZONE = 'Invalid Time Zone';
 
 export const INVALID_GAME_SCORES = 'Invalid game scores';
@@ -100,6 +104,7 @@ export const INVALID_WINNING_SIDE = 'Invalid winningSide';
 
 export const NO_PARTICIPANTS = 'Tournament has no participants';
 export const CANNOT_REMOVE_PARTICIPANTS = 'Cannot remove participants';
+export const CANNOT_CHANGE_WINNINGSIDE = 'Cannot change winningSide';
 export const INVALID_PARTICIPANT = 'Invalid participant';
 export const INVALID_PARTICIPANT_ID = 'Invalid participantId';
 export const INVALID_PARTICIPANT_IDS = 'Invalid participantIds';
@@ -150,7 +155,7 @@ export const MISSING_VENUE_ID = 'Missing venueId';
 
 export const INVALID_END_TIME = 'Invalid endTime';
 export const EXISTING_END_TIME = 'Existing endTime';
-export const INVALID_STOP_TIME = 'Existing stopTime';
+export const INVALID_STOP_TIME = 'Invalid stopTime';
 export const INVALID_START_TIME = 'Invalid startTime';
 export const INVALID_RESUME_TIME = 'Invalid resumeTime';
 
@@ -179,9 +184,13 @@ export const VALUE_UNCHANGED = 'Value unchanged';
 export const NOT_FOUND = 'Not found';
 export const NOT_IMPLEMENTED = 'Not implemented';
 
+export const EXISTING_FLIGHT = 'Existing flight';
 export const EXISTING_PROFILE = 'Existing Profile';
 
+export const METHOD_NOT_FOUND = 'Method not found';
+
 export const errorConditionConstants = {
+  CANNOT_CHANGE_WINNINGSIDE,
   CANNOT_REMOVE_PARTICIPANTS,
   COURT_EXISTS,
   COURT_NOT_FOUND,
@@ -194,6 +203,7 @@ export const errorConditionConstants = {
   EVENT_EXISTS,
   EVENT_NOT_FOUND,
   EXISTING_END_TIME,
+  EXISTING_FLIGHT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,
@@ -230,9 +240,12 @@ export const errorConditionConstants = {
   INVALID_STOP_TIME,
   INVALID_TIME,
   INVALID_TIME_ITEM,
+  INVALID_TOURNAMENT_DATES,
+  INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,
+  METHOD_NOT_FOUND,
   MISSING_ASSIGNMENTS,
   MISSING_AVOIDANCE_POLICY,
   MISSING_COURT_ID,
@@ -266,6 +279,7 @@ export const errorConditionConstants = {
   MISSING_POSITION_ASSIGNMENTS,
   MISSING_ROUND_NUMBER,
   MISSING_SCHEDULE,
+  MISSING_SCORING_POLICY,
   MISSING_SEED_ASSIGNMENTS,
   MISSING_SEED_BLOCKS,
   MISSING_SEEDCOUNT_THRESHOLDS,
@@ -291,6 +305,7 @@ export const errorConditionConstants = {
   NO_PARTICIPANT_REMOVED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,
+  NO_VALID_DATES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
   PARTICIPANT_ASSIGNED_DRAW_POSITION,

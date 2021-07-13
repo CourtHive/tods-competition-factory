@@ -2,6 +2,7 @@ import { refreshEntryPositions } from '../../../common/producers/refreshEntryPos
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DIRECT_ACCEPTANCE,
   LUCKY_LOSER,
@@ -16,7 +17,6 @@ import {
   MISSING_PARTICIPANT_ID,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   VOLUNTARY_CONSOLATION,
@@ -72,13 +72,15 @@ export function addDrawEntry({
     return { error: EXISTING_PARTICIPANT };
   }
 
-  const entry = Object.assign({}, participant, {
+  const entry = {
+    ...participant,
     participantId,
     entryStage,
     entryStatus,
     entryPosition,
-  });
+  };
   drawDefinition.entries.push(entry);
+
   return SUCCESS;
 }
 
@@ -87,7 +89,7 @@ export function addDrawEntry({
  * @param {object} drawDefinition - drawDefinition object
  * @param {string[]} participantIds - ids of participants to add to drawDefinition.entries
  * @param {string} entryStatus - entry status to be applied to all draw Entries, e.g. DIRECT ACCEPTANCE
- * @param {string} stage - entry stage for particpants (QUALIFYING, MAIN)
+ * @param {string} stage - entry stage for participants (QUALIFYING, MAIN)
  *
  */
 export function addDrawEntries({
@@ -145,6 +147,7 @@ export function addDrawEntries({
     );
     drawDefinition.entries.push(entry);
   });
+
   if (autoEntryPositions) {
     drawDefinition.entries = refreshEntryPositions({
       entries: drawDefinition.entries,

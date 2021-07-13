@@ -1,21 +1,27 @@
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 
-import { SINGLES } from '../../../constants/eventConstants';
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 
 export function filterParticipants({
   tournamentRecord,
   participantFilters,
   participants,
 }) {
+  let { eventIds } = participantFilters;
   const {
-    eventIds,
-    signInStatus,
-    participantTypes,
-    participantRoles,
     accessorValues,
+    eventEntriesOnly,
+    participantRoles,
+    participantTypes,
+    participantIds,
+    signInStatus,
   } = participantFilters;
+
+  if (!eventIds?.length && eventEntriesOnly) {
+    eventIds = tournamentRecord.events?.map(({ eventId }) => eventId);
+  }
 
   const participantHasAccessorValues = (participant) => {
     return accessorValues.reduce((hasValues, keyValue) => {
@@ -28,12 +34,13 @@ export function filterParticipants({
     }, true);
   };
 
-  participants = participants.filter((participant) => {
+  participants = participants?.filter((participant) => {
     const participantSignInStatus = getTimeItem({
       element: participant,
       itemType: SIGN_IN_STATUS,
     });
     return (
+      (!participantIds || participantIds.includes(participant.participantId)) &&
       (!signInStatus || participantSignInStatus === signInStatus) &&
       (!participantTypes ||
         (isValidFilterArray(participantTypes) &&
@@ -49,7 +56,7 @@ export function filterParticipants({
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
-      tournamentRecord.events.filter((event) =>
+      tournamentRecord.events?.filter((event) =>
         eventIds.includes(event.eventId)
       )) ||
     tournamentRecord.events ||
@@ -63,7 +70,7 @@ export function filterParticipants({
           (entry) => entry.participantId
         );
         if (event.eventType === SINGLES) return enteredParticipantIds;
-        const individualParticipantIds = tournamentRecord.participants
+        const individualParticipantIds = (tournamentRecord.participants || [])
           .filter((participant) =>
             enteredParticipantIds.includes(participant.participantId)
           )
@@ -72,7 +79,7 @@ export function filterParticipants({
         return enteredParticipantIds.concat(...individualParticipantIds);
       })
       .flat(1);
-    participants = participants.filter((participant) =>
+    participants = participants?.filter((participant) =>
       participantIds.includes(participant.participantId)
     );
   }

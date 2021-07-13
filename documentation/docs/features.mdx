@@ -1,0 +1,112 @@
+---
+title: Features
+slug: /features
+---
+
+## Mock Tournament Generation
+
+The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
+
+```jsx live
+function MocksEngineDemo(props) {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+
+  return <Tournament data={tournamentRecord} />;
+}
+```
+
+See [Generating Tournaments](engines/mocks-engine-examples) for more examples of mock tournament generation,
+
+:::note Live Visualizations
+For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
+:::
+
+:::tip RESTful API Available
+For free access to a public RESTful API, contact <support@courthive.com>.
+:::
+
+## Draw Generation
+
+Draws are the centerpiece of any tournament. While TODS strives to be agnostic about the specific type of draw represented by a `drawDefinition`, **Competition Factory** includes a convenience method which exercises other methods to generate a wide range of recognized [draw types](engines/draw-types).
+
+```jsx live
+function DrawDefinitionDemo(props) {
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawSize: 32,
+    drawName: 'Demo Draw',
+    drawType: 'COMPASS',
+  });
+
+  return <Draw data={drawDefinition} />;
+}
+```
+
+:::info
+
+### Generating Multiple Flights
+
+`generateFlightProfile()` generates flighted draw details which can be fed into `generateDrawDefinition()`.
+:::
+
+<!--
+## Score Entry and matchUpStatus
+
+## Participant Movement
+
+## Tournament Queries
+-->
+
+## Scheduling
+
+In addition to individual and bulk manual scheduling methods, the **Competition Factory** supports automated
+**Garman Scheduling** and surfaces the Garman calculations at various levels of abstraction, all of which are
+dependent on a tournament record including `venues` with `courts` with defined `dateAvailability`, as well as an
+expected `averageMatchUpMinutes`. Scheduling methods are surfaced via the `competitionEngine` to enable scheduling
+multiple tournaments with shared `venues`.
+
+### scheduleTimes
+
+At the lowest level there is `calculateScheduleTimes()`, which returns an array of available schedule times for a
+given date (and optional time range). In the example below there are 3 courts with a startTime of **08:00**.
+In the generated **scheduleTimes** you can see that the first three available times are **08:00**, and after that
+the times are produced by the Garman formula.
+
+```jsx live
+function ScheduleTimesDemo(props) {
+  const venueProfiles = [
+    {
+      startTime: '08:00',
+      endTime: '20:00',
+      courtsCount: 3,
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    venueProfiles,
+  });
+  competitionEngine.setState(tournamentRecord);
+  const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
+  const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
+    date: startDate,
+  });
+
+  return (
+    <RenderJSON
+      data={scheduleTimes}
+      root={'scheduleTimes'}
+      expandRoot={false}
+    />
+  );
+}
+```
+
+### scheduleMatchUps
+
+`scheduleMatchUps()` takes an ordered array of `matchUpIds` and target `venueIds` and assigns a `scheduledTime` to each `matchUp`.
+
+### scheduleProfileRounds()
+
+The ordering of `matchUps` is handled automatically by `scheduleProfileRounds()` which uses a `schedulingProfile`
+to not only automatically determine the order of `matchUps` from specified `rounds`, but also considers per-player
+(and per-format) daily matchUp limmits and scheduling policies which are attached to the tournament record(s).
+Scheduling policies can define both **average minutes** and **recovery mintes** for each `matchUpFormat`, and policy
+defaults can be overridden by event-level settings. For a full explanation see [Advanced Scheduling](pseudocode/scheduling).

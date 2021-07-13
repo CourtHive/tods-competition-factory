@@ -1,33 +1,79 @@
+import { intersection } from '../utilities/arrays';
 import syncStateEngine from './syncGlobalState';
+
+import { MISSING_VALUE } from '../constants/errorConditionConstants';
 const globalState = {
   devContext: false,
   deepCopy: true,
-  subscriptions: {},
-  notices: [],
 };
 
 let _globalStateProvider = syncStateEngine;
 
+const requiredStateProviderMethods = [
+  'addNotice',
+  'callListener',
+  'deleteNotices',
+  'getNotices',
+  'getTopics',
+  'getTournamentId',
+  'getTournamentRecord',
+  'getTournamentRecords',
+  'removeTournamentRecord',
+  'setSubscriptions',
+  'setTournamentId',
+  'setTournamentRecord',
+  'setTournamentRecords',
+];
+
 export function setStateProvider(globalStateProvider) {
-  if (!globalStateProvider)
+  if (typeof globalStateProvider !== 'object') {
     throw new Error(`Global state provider can not be undefined or null`);
-  _globalStateProvider = globalStateProvider;
+  } else {
+    const providerMethods = intersection(
+      Object.keys(globalStateProvider),
+      requiredStateProviderMethods
+    );
+    if (providerMethods.length !== requiredStateProviderMethods.length) {
+      throw new Error('Global state provider is missing required methods');
+    } else {
+      _globalStateProvider = globalStateProvider;
+      return { success: true };
+    }
+  }
 }
 
 export function createInstanceState() {
   //Only applicable for async
-  if (_globalStateProvider.createInstanceState)
-    _globalStateProvider.createInstanceState();
+  // global test coverage doesn't appear becuase this is run against built package
+  if (_globalStateProvider.createInstanceState) {
+    try {
+      _globalStateProvider.createInstanceState();
+    } catch (error) {
+      return { error };
+    }
+    return { success: true };
+  } else {
+    return { error: 'Missing async state provider' };
+  }
 }
 
-export function getDevContext() {
-  return globalState.devContext;
+/**
+ * if no contextCriteria is provided just provide boolean whether devContext has been set
+ * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
+ */
+export function getDevContext(contextCriteria) {
+  if (!contextCriteria || typeof contextCriteria !== 'object') {
+    return !!globalState.devContext;
+  } else {
+    if (typeof globalState.devContext !== 'object') return false;
+    return Object.keys(contextCriteria).every(
+      (key) => globalState.devContext[key] === contextCriteria[key]
+    );
+  }
 }
 
 export function setDevContext(value) {
-  if (typeof value === 'boolean') {
-    globalState.devContext = value;
-  }
+  globalState.devContext = value;
 }
 
 export function setDeepCopy(value) {
@@ -36,16 +82,17 @@ export function setDeepCopy(value) {
   }
 }
 
-export function getDeepCopy() {
+export function deepCopyEnabled() {
   return globalState.deepCopy;
 }
 
-export function setSubscriptions(subscription) {
-  _globalStateProvider.setSubscriptions(subscription);
+export function setSubscriptions({ subscriptions } = {}) {
+  if (!subscriptions) return { error: MISSING_VALUE };
+  return _globalStateProvider.setSubscriptions({ subscriptions });
 }
 
 export function addNotice(notice) {
-  _globalStateProvider.addNotice(notice);
+  return _globalStateProvider.addNotice(notice);
 }
 
 export function getNotices(topic) {
@@ -53,7 +100,7 @@ export function getNotices(topic) {
 }
 
 export function deleteNotices() {
-  _globalStateProvider.deleteNotices();
+  return _globalStateProvider.deleteNotices();
 }
 
 export function getTopics() {
@@ -62,4 +109,32 @@ export function getTopics() {
 
 export async function callListener(payload) {
   return _globalStateProvider.callListener(payload);
+}
+
+export function getTournamentId() {
+  return _globalStateProvider.getTournamentId();
+}
+
+export function getTournamentRecord(tournamentId) {
+  return _globalStateProvider.getTournamentRecord(tournamentId);
+}
+
+export function getTournamentRecords() {
+  return _globalStateProvider.getTournamentRecords();
+}
+
+export function setTournamentRecord(tournamentRecord) {
+  return _globalStateProvider.setTournamentRecord(tournamentRecord);
+}
+
+export function setTournamentRecords(tournamentRecords) {
+  return _globalStateProvider.setTournamentRecords(tournamentRecords);
+}
+
+export function setTournamentId(tournamentId) {
+  return _globalStateProvider.setTournamentId(tournamentId);
+}
+
+export function removeTournamentRecord(tournamentId) {
+  return _globalStateProvider.removeTournamentRecord(tournamentId);
 }

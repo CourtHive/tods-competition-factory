@@ -1,7 +1,17 @@
+import { deleteVenue as competitionEngineDeleteVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/deleteVenue';
+import { modifyVenue as competitionEngineModifyVenue } from '../../../competitionEngine/governors/competitionsGovernor/venueManagement/modifyVenue';
+import { deleteVenue as tournamentEngineDeleteVenue } from '../../governors/venueGovernor/deleteVenue';
+import { modifyVenue as tournamentEngineModifyVenue } from '../../governors/venueGovernor/modifyVenue';
 import { tournamentEngine } from '../../sync';
+
 import {
-  INVALID_DATE,
-  INVALID_TIME,
+  COURT_NOT_FOUND,
+  INVALID_DATE_AVAILABILITY,
+  MISSING_COURT_ID,
+  MISSING_DATE_AVAILABILITY,
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_TOURNAMENT_RECORDS,
+  VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
 it('can define and modify a venue', () => {
@@ -9,7 +19,9 @@ it('can define and modify a venue', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -41,15 +53,7 @@ it('can define and modify a venue', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error.errors.length).toEqual(9);
-  expect(result.error.errors[0].error).toEqual(INVALID_DATE);
-  expect(result.error.errors[1].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[2].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[3].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[4].error).toEqual(INVALID_DATE);
-  expect(result.error.errors[5].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[6].error).toEqual(INVALID_TIME);
-  expect(result.error.errors[7].error).toEqual(INVALID_TIME);
+  expect(result.error).not.toBeUndefined();
 
   modifications = {
     venueName,
@@ -200,12 +204,13 @@ it('can define and modify a venue', () => {
   ({ venue } = tournamentEngine.findVenue({ venueId }));
   expect(venue.courts.length).toEqual(1);
 
+  const courtId = 'b9df6177-e430-4a70-ba47-9b9ff60258cb';
   modifications = {
     venueName,
     venueAbbreviation,
     courts: [
       {
-        courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
+        courtId,
         courtName: 'Custom Court 1',
         dateAvailability: [
           {
@@ -243,4 +248,38 @@ it('can define and modify a venue', () => {
   expect(venue.venueName).toEqual(venueName);
   expect(venue.venueAbbreviation).toEqual(venueAbbreviation);
   expect(venue.courts.length).toEqual(2);
+
+  result = tournamentEngine.modifyCourtAvailability();
+  expect(result.error).toEqual(MISSING_COURT_ID);
+  result = tournamentEngine.modifyCourtAvailability({ courtId: 'someId' });
+  expect(result.error).toEqual(MISSING_DATE_AVAILABILITY);
+  result = tournamentEngine.modifyCourtAvailability({
+    courtId: 'someId',
+    dateAvailability: [],
+  });
+  expect(result.error).toEqual(COURT_NOT_FOUND);
+  result = tournamentEngine.modifyCourtAvailability({
+    courtId,
+    dateAvailability: [{ foo: 'foo' }],
+  });
+  expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
+});
+
+test('miscellaneous items for coverage', () => {
+  let result = tournamentEngineDeleteVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+
+  result = competitionEngineDeleteVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
+  result = competitionEngineDeleteVenue({
+    tournamentRecords: {},
+    venueId: '12345',
+  });
+  expect(result.error).toEqual(VENUE_NOT_FOUND);
+
+  result = tournamentEngineModifyVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
+
+  result = competitionEngineModifyVenue({});
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORDS);
 });

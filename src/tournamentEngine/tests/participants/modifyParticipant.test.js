@@ -11,15 +11,16 @@ it('can retrieve tournament participants', () => {
     participantType: PAIR,
     sex: MALE,
   };
-  mocksEngine.generateTournamentRecord({ participantsProfile });
-
-  tournamentEngine.devContext(true);
-
-  const {
-    tournamentParticipants: individualParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
   });
+
+  tournamentEngine.setState(tournamentRecord).devContext(true);
+
+  const { tournamentParticipants: individualParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
   expect(individualParticipants.length).toEqual(10);
   const individualParticipant = individualParticipants[0];
   const person = {
@@ -40,11 +41,10 @@ it('can retrieve tournament participants', () => {
     `${person.standardGivenName} ${person.standardFamilyName}`
   );
 
-  const {
-    tournamentParticipants: pairParticipants,
-  } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [PAIR] },
-  });
+  const { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
   expect(pairParticipants.length).toEqual(5);
   const pairParticipant = pairParticipants[0];
 

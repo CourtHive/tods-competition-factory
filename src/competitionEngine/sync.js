@@ -1,54 +1,78 @@
+import competitionGovernor from './governors/competitionsGovernor';
 import { notifySubscribers } from '../global/notifySubscribers';
 import scheduleGovernor from './governors/scheduleGovernor';
+import { factoryVersion } from '../global/factoryVersion';
+import policyGovernor from './governors/policyGovernor';
 import queryGovernor from './governors/queryGovernor';
 import { makeDeepCopy } from '../utilities';
 import {
-  setSubscriptions,
   setDeepCopy,
   setDevContext,
   getDevContext,
   deleteNotices,
+  removeTournamentRecord,
+  getTournamentRecords,
 } from '../global/globalState';
 
 import {
-  INVALID_OBJECT,
-  INVALID_RECORDS,
-} from '../constants/errorConditionConstants';
+  getState,
+  removeUnlinkedTournamentRecords,
+  setState,
+  setTournamentRecord,
+} from './stateMethods';
+
 import { SUCCESS } from '../constants/resultConstants';
-
-let tournamentRecords;
-
-function setState(records, deepCopyOption = true) {
-  if (typeof records !== 'object') return { error: INVALID_OBJECT };
-  if (Array.isArray(records)) return { error: INVALID_RECORDS };
-  tournamentRecords = deepCopyOption ? makeDeepCopy(records) : records;
-  return SUCCESS;
-}
+import {
+  INVALID_VALUES,
+  METHOD_NOT_FOUND,
+} from '../constants/errorConditionConstants';
 
 export const competitionEngine = (function () {
   const fx = {
-    getState: ({ convertExtensions } = {}) => ({
-      tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
-    }),
-    setSubscriptions: (subscriptions) => {
-      if (typeof subscriptions === 'object')
-        setSubscriptions({ subscriptions });
-      return fx;
-    },
+    getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
   };
 
-  importGovernors([queryGovernor, scheduleGovernor]);
+  importGovernors([
+    competitionGovernor,
+    policyGovernor,
+    queryGovernor,
+    scheduleGovernor,
+  ]);
 
-  fx.version = () => {
-    return '@VERSION@';
+  fx.version = () => factoryVersion();
+  fx.reset = () => {
+    setTournamentRecord({});
+    return SUCCESS;
   };
   fx.devContext = (isDev) => {
     setDevContext(isDev);
     return fx;
   };
-  fx.setState = (tournamentRecords, deepCopyOption) => {
+  fx.setState = (records, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
-    const result = setState(tournamentRecords);
+    const result = setState(records, deepCopyOption);
+    return processResult(result);
+  };
+  fx.setTournamentRecord = (tournamentRecord, deepCopyOption) => {
+    setDeepCopy(deepCopyOption);
+    const result = setTournamentRecord(tournamentRecord, deepCopyOption);
+    return processResult(result);
+  };
+  fx.removeTournamentRecord = (tournamentId) => {
+    const result = removeTournamentRecord(tournamentId);
+    return processResult(result);
+  };
+  fx.removeUnlinkedTournamentRecords = () => {
+    const result = removeUnlinkedTournamentRecords();
+    return processResult(result);
+  };
+
+  fx.executionQueue = (directives, rollbackOnError) =>
+    executionQueue(fx, directives, rollbackOnError);
+
+  return fx;
+
+  function processResult(result) {
     if (result?.error) {
       fx.error = result.error;
       fx.success = false;
@@ -57,21 +81,24 @@ export const competitionEngine = (function () {
       fx.success = true;
     }
     return fx;
-  };
+  }
 
-  return fx;
-
-  // enable Middleware
   function engineInvoke(fx, params) {
+    const tournamentRecords = getTournamentRecords();
+
+    const snapshot =
+      params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
+
     const result = fx({
       ...params,
       tournamentRecords,
     });
 
-    if (result?.success) {
-      notifySubscribers();
-    }
-    deleteNotices();
+    if (result?.error && snapshot) setState(snapshot);
+
+    const notify = result?.success && params?.delayNotify !== true;
+    if (notify) notifySubscribers();
+    if (notify || !result?.success) deleteNotices();
 
     return result;
   }
@@ -92,6 +119,38 @@ export const competitionEngine = (function () {
         };
       });
     });
+  }
+
+  function executionQueue(fx, directives, rollbackOnError) {
+    if (!Array.isArray(directives)) return { error: INVALID_VALUES };
+    const tournamentRecords = getTournamentRecords();
+
+    const snapshot =
+      rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
+
+    const results = [];
+    for (const directive of directives) {
+      if (typeof directive !== 'object') return { error: INVALID_VALUES };
+
+      const { method, params } = directive;
+      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+
+      const result = fx[method]({
+        ...params,
+        tournamentRecords,
+      });
+
+      if (result?.error) {
+        if (snapshot) setState(snapshot);
+        return { ...result, rolledBack: !!snapshot };
+      }
+      results.push(result);
+    }
+
+    notifySubscribers();
+    deleteNotices();
+
+    return { results };
   }
 })();
 

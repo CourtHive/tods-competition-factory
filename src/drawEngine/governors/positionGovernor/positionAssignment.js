@@ -12,6 +12,7 @@ import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
 
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_DRAW_POSITION,
@@ -19,15 +20,16 @@ import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function assignDrawPosition({
   drawDefinition,
-  mappedMatchUps,
   structureId,
   drawPosition,
   participantId,
-  automaticPlacement,
+  automaticPlacement, // internal use to override public behaviors
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
@@ -36,14 +38,10 @@ export function assignDrawPosition({
     structure,
   });
 
-  const participantSeedNumber = seedAssignments.reduce(
-    (seedNumber, assignment) => {
-      return assignment.participantId === participantId
-        ? assignment.seedNumber
-        : seedNumber;
-    },
-    undefined
+  const relevantAssignment = seedAssignments.find(
+    (assignment) => assignment.participantId === participantId
   );
+  const participantSeedNumber = relevantAssignment?.seedNumber;
 
   if (participantSeedNumber) {
     const isValidDrawPosition = isValidSeedPosition({
@@ -67,9 +65,9 @@ export function assignDrawPosition({
   if (participantExists)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
-  const { containsParticipant, containsBye } = drawPositionFilled(
-    positionAssignment
-  );
+  const { containsParticipant, containsBye } =
+    drawPositionFilled(positionAssignment);
+
   if (
     containsParticipant &&
     positionAssignment.participantId !== participantId
@@ -98,11 +96,13 @@ export function assignDrawPosition({
   if (structure.structureType !== CONTAINER) {
     addDrawPositionToMatchUps({
       drawDefinition,
-      mappedMatchUps,
       structure,
       drawPosition,
       positionAssignments,
       automaticPlacement,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     modifyRoundRobinMatchUpsStatus({
@@ -138,17 +138,20 @@ export function assignDrawPosition({
 
 function addDrawPositionToMatchUps({
   drawDefinition,
-  mappedMatchUps,
   structure,
   drawPosition,
   automaticPlacement,
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
-    mappedMatchUps,
     matchUpFilters,
     structure,
+
+    matchUpsMap,
   });
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
@@ -164,10 +167,12 @@ function addDrawPositionToMatchUps({
   if (matchUp) {
     const result = assignMatchUpDrawPosition({
       drawDefinition,
-      mappedMatchUps,
       drawPosition,
       automaticPlacement,
       matchUpId: matchUp.matchUpId,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }

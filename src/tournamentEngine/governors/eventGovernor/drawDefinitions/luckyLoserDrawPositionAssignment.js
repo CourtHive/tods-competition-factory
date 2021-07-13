@@ -8,6 +8,6 @@ import { luckyLoserDrawPositionAssignment as positionLuckyLoser } from '../../..
  * @param {string} luckyLoserParticipantId - id of participant
  *
  */
-export function luckyLoserDrawPositionAssignment(props) {
-  return positionLuckyLoser(props);
+export function luckyLoserDrawPositionAssignment(params) {
+  return positionLuckyLoser(params);
 }

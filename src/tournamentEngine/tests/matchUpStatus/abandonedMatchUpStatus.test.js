@@ -15,9 +15,12 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
   ];
   const {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   let result;

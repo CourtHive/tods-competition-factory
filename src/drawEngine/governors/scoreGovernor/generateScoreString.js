@@ -1,3 +1,4 @@
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -18,7 +19,7 @@ import { isNumeric } from '../../../utilities/math';
  * @param {boolean} - autoComplete - whether to convert undefined values to 0
  *
  */
-export function generateScoreString(props) {
+export function generateScoreString(params) {
   const {
     sets,
     winningSide,
@@ -27,7 +28,9 @@ export function generateScoreString(props) {
     reversed = false,
     winnerFirst = true,
     addOutcomeString,
-  } = props;
+  } = params;
+  if (!sets) return { error: MISSING_VALUE };
+
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;
   const reverseScores = reversed || !scoresInSideOrder;
 
@@ -39,7 +42,7 @@ export function generateScoreString(props) {
     sets
       ?.sort(setSort)
       .map(setString)
-      .filter((f) => f) // handle situation where there are multiple empty set objects
+      .filter(Boolean) // handle situation where there are multiple empty set objects
       .join(' ') || '';
 
   if (!outcomeString) return setScores;
@@ -55,12 +58,8 @@ export function generateScoreString(props) {
     const isTiebreakSet =
       !hasGameScores(currentSet) && hasTiebreakScores(currentSet);
 
-    const {
-      side1Score,
-      side2Score,
-      side1TiebreakScore,
-      side2TiebreakScore,
-    } = currentSet;
+    const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } =
+      currentSet;
 
     const t1 =
       side1TiebreakScore ||

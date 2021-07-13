@@ -209,9 +209,9 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     });
 
     // verify that positioning participants are expected
-    const {
-      drawDefinition: updatedDrawDefinition,
-    } = tournamentEngine.getEvent({ drawId });
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
+      { drawId }
+    );
     // const { drawDefinition: updatedDrawDefinition } = drawEngine.getState();
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
@@ -227,7 +227,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup
@@ -444,9 +444,9 @@ it('can advance players in Round Robin with Playoffs', () => {
     });
 
     // verify that positioning participants are expected
-    const {
-      drawDefinition: updatedDrawDefinition,
-    } = tournamentEngine.getEvent({ drawId });
+    const { drawDefinition: updatedDrawDefinition } = tournamentEngine.getEvent(
+      { drawId }
+    );
     const { structure: updatedStructure } = findStructure({
       drawDefinition: updatedDrawDefinition,
       structureId,
@@ -461,7 +461,7 @@ it('can advance players in Round Robin with Playoffs', () => {
       .flat();
     const structureParticipantIds = updatedStructure.positionAssignments
       .map((assignment) => assignment.participantId)
-      .filter((f) => f);
+      .filter(Boolean);
     const expectedParticipantIds = intersection(
       structureParticipantIds,
       finishingPositionGroup

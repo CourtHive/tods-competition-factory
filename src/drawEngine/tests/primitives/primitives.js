@@ -11,6 +11,8 @@ import {
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { getMatchUpType } from '../../accessors/matchUpAccessor';
+import { SINGLES } from '../../../constants/matchUpTypes';
 
 let result;
 
@@ -94,9 +96,8 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
     });
     expect(result).toMatchObject(SUCCESS);
     ({ drawDefinition } = drawEngine.getState());
-    const {
-      unassignedPositions: stillUnassigned,
-    } = structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } =
+      structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -112,15 +113,17 @@ export function eliminationMatchUpsWithParticipants({ drawSize }) {
   const { upcomingMatchUps: upcomingStructureMatchUps } = getStructureMatchUps({
     structure,
     drawDefinition,
+    inContext: true,
     requireParticipants: true,
   });
   expect(upcomingStructureMatchUps.length).toEqual(drawSize / 2);
+  let { matchUpType } = getMatchUpType({
+    matchUp: upcomingStructureMatchUps[0],
+  });
+  expect(matchUpType).toEqual(SINGLES);
 
-  const {
-    upcomingMatchUps,
-    pendingMatchUps,
-    completedMatchUps,
-  } = drawEngine.drawMatchUps();
+  const { upcomingMatchUps, pendingMatchUps, completedMatchUps } =
+    drawEngine.drawMatchUps();
   expect(upcomingMatchUps.length).toEqual(drawSize / 2);
   expect(pendingMatchUps.length).toEqual(drawSize / 2 - 1);
   expect(completedMatchUps.length).toEqual(0);

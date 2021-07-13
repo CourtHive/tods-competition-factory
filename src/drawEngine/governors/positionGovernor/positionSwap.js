@@ -26,7 +26,7 @@ export function swapDrawPositionAssignments({
     return { error: INVALID_VALUES, drawPositions };
   }
 
-  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
@@ -38,7 +38,8 @@ export function swapDrawPositionAssignments({
       drawDefinition,
       structure,
       drawPositions,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
@@ -46,7 +47,7 @@ export function swapDrawPositionAssignments({
       drawDefinition,
       structure,
       drawPositions,
-      mappedMatchUps,
+      matchUpsMap,
     });
   }
 
@@ -67,7 +68,8 @@ function eliminationSwap({
   drawDefinition,
   structure,
   drawPositions,
-  mappedMatchUps,
+
+  matchUpsMap,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
   const assignments = structure?.positionAssignments.filter((assignment) =>
@@ -91,13 +93,15 @@ function eliminationSwap({
       drawDefinition,
       structure,
       assignments,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
   } else {
-    return eliminationParticpantSwap({
+    return eliminationParticipantSwap({
       structure,
       assignments,
-      mappedMatchUps,
+
+      matchUpsMap,
     });
   }
 }
@@ -106,7 +110,8 @@ function swapParticipantIdWithBYE({
   drawDefinition,
   structure,
   assignments,
-  mappedMatchUps,
+
+  matchUpsMap,
 }) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
@@ -114,34 +119,35 @@ function swapParticipantIdWithBYE({
     ({ participantId }) => participantId
   );
   const originalByeDrawPosition = originalByeAssignment.drawPosition;
-  const {
-    participantId,
-    drawPosition: originalParticipantIdDrawPosition,
-  } = originalParticipantIdAssignment;
+  const { participantId, drawPosition: originalParticipantIdDrawPosition } =
+    originalParticipantIdAssignment;
   const { structureId } = structure;
 
   // remove both drawPosition assignments
   let result = removeDrawPositionAssignment({
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition: originalByeDrawPosition,
+
+    matchUpsMap,
   });
   if (result.error) return result;
 
   result = removeDrawPositionAssignment({
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition: originalParticipantIdDrawPosition,
+
+    matchUpsMap,
   });
   if (result.error) return result;
 
   result = assignDrawPositionBye({
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition: originalParticipantIdDrawPosition,
+
+    matchUpsMap,
   });
 
   // replace the original byeAssignment with participantId
@@ -156,16 +162,14 @@ function swapParticipantIdWithBYE({
   return result.error ? result : SUCCESS;
 }
 
-function eliminationParticpantSwap({ structure, assignments }) {
+function eliminationParticipantSwap({ structure, assignments }) {
   // preserves order of drawPositions in original positionAssignments array
   // while insuring that all attributes are faithfully copied over and only drawPosition is swapped
   const newAssignments = Object.assign(
     {},
     ...assignments.map((assignment, index) => {
       const { drawPosition } = assignment;
-      const newAssignment = Object.assign({}, assignments[1 - index], {
-        drawPosition,
-      });
+      const newAssignment = { ...assignments[1 - index], drawPosition };
       return { [drawPosition]: newAssignment };
     })
   );
@@ -178,9 +182,10 @@ function eliminationParticpantSwap({ structure, assignments }) {
 
 function roundRobinSwap({
   drawDefinition,
-  mappedMatchUps,
   drawPositions,
   structure,
+
+  matchUpsMap,
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
@@ -197,9 +202,10 @@ function roundRobinSwap({
   if (isByeSwap) {
     swapParticipantIdWithBYE({
       drawDefinition,
-      mappedMatchUps,
       assignments,
       structure,
+
+      matchUpsMap,
     });
   } else {
     const participantIds = assignments.map(

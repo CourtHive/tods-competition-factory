@@ -120,10 +120,8 @@ function compassByesTest({
   } else {
     console.log('matchUps:', matchUps.length);
   }
-  const {
-    byeMatchUps,
-    completedMatchUps,
-  } = tournamentEngine.tournamentMatchUps();
+  const { byeMatchUps, completedMatchUps } =
+    tournamentEngine.tournamentMatchUps();
   if (byeMatchUpsCount !== undefined) {
     expect(byeMatchUps.length).toEqual(byeMatchUpsCount);
     expect(completedMatchUps.length).toEqual(matchUpsCount - byeMatchUpsCount);

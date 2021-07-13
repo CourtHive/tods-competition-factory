@@ -22,6 +22,6 @@ export function getPositionedParticipants({
       idCollections,
       participants: participantsWithContext,
     });
-    return Object.assign({}, assignment, { values });
+    return { ...assignment, values };
   });
 }

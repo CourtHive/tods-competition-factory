@@ -1,8 +1,11 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/participantTypes';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_FORMAT,
@@ -10,11 +13,8 @@ import {
   UNRECOGNIZED_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { TEAM } from '../../../constants/participantTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
-export function setMatchUpFormat(props) {
+export function setMatchUpFormat(params) {
   const errors = [];
   const {
     drawDefinition,
@@ -23,15 +23,19 @@ export function setMatchUpFormat(props) {
     matchUpType,
     matchUpFormat,
     tieFormat,
-  } = props;
+  } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
+  if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  const parsedFormat = matchUpFormatCode.parse(matchUpFormat);
-  if (matchUpFormatCode.stringify(parsedFormat) !== matchUpFormat) {
+  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+
+  /*
+  TODO: if (tieFormat && !isValidTieFormat(tieFormat)) {
+    return { error: INVALID_TIE_FORMAT }
   }
+  */
 
   if (matchUpId) {
     const { matchUp, error } = findMatchUp({

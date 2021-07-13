@@ -45,7 +45,9 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result).toEqual(SUCCESS);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine.devContext(true).addVenue({ venue: myCourts });
+  result = tournamentEngine
+    .devContext({ addVenue: true })
+    .addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -72,10 +74,8 @@ it('can add events, venues, and schedule matchUps', () => {
   const { tournamentRecord } = tournamentEngine.getState();
   expect(tournamentRecord.venues.length).toEqual(1);
 
-  const {
-    upcomingMatchUps: upcoming,
-    pendingMatchUps,
-  } = tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps: upcoming, pendingMatchUps } =
+    tournamentEngine.tournamentMatchUps();
   expect(upcoming.length).toEqual(16);
   expect(pendingMatchUps.length).toEqual(15);
 
@@ -170,7 +170,7 @@ it('can add events, venues, and schedule matchUps', () => {
   };
 
   result = tournamentEngine.modifyVenue({ venueId, modifications });
-  expect(result.error.errors.length).toEqual(1);
+  expect(result.error).not.toBeUndefined();
 
   result = tournamentEngine.modifyVenue({
     venueId,

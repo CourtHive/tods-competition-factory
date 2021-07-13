@@ -8,12 +8,20 @@
     "competition",
     "tennis"
   ],
-  "version": "0.5.65",
+  "version": "0.7.21",
   "license": "MIT",
   "private": false,
   "jest": {
+    "coverageDirectory": "./benchmarks",
+    "coveragePathIgnorePatterns": [
+      "benchmarks",
+      "index.ts"
+    ],
     "watchPathIgnorePatterns": [
       "generated"
+    ],
+    "testPathIgnorePatterns": [
+      "benchmarks"
     ]
   },
   "homepage": "https://github.com/CourtHive/tods-competition-factory",
@@ -39,7 +47,10 @@
     "release": "np",
     "start": "tsdx watch",
     "build": "tsdx build",
-    "test": "tsdx test",
+    "test": "tsdx test --maxWorkers=50%",
+    "benchmark": "tsdx test --runInBand benchmark",
+    "benchmark-coverage": "tsdx test --runInBand benchmark --collect-coverage",
+    "coverage": "tsdx test --maxWorkers=50% --collect-coverage",
     "lint": "tsdx eslint src",
     "prepare": "tsdx build",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
@@ -47,7 +58,6 @@
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true yarn deploy"
   },
-  "peerDependencies": {},
   "husky": {
     "hooks": {
       "pre-commit": "yarn eslint src"
@@ -62,40 +72,37 @@
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
-    "@babel/core": "7.13.15",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "7.13.8",
-    "@babel/plugin-proposal-optional-chaining": "7.13.12",
-    "@babel/preset-env": "7.13.15",
-    "@babel/preset-typescript": "7.13.0",
-    "@types/jest": "26.0.22",
-    "@types/node": "14.14.41",
-    "@typescript-eslint/eslint-plugin": "4.22.0",
-    "@typescript-eslint/parser": "4.22.0",
+    "@babel/core": "7.14.6",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "7.14.5",
+    "@babel/plugin-proposal-optional-chaining": "7.14.5",
+    "@babel/preset-env": "7.14.7",
+    "@babel/preset-typescript": "7.14.5",
+    "@types/jest": "26.0.24",
+    "@types/node": "14.17.5",
+    "@typescript-eslint/eslint-plugin": "4.28.3",
+    "@typescript-eslint/parser": "4.28.3",
     "babel-jest": "26.6.3",
-    "eslint": "7.24.0",
-    "eslint-config-prettier": "8.2.0",
-    "eslint-plugin-jest": "24.3.5",
+    "eslint": "7.30.0",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-jest": "24.3.6",
     "eslint-plugin-prettier": "3.4.0",
-    "eslint-plugin-react": "7.23.2",
-    "highlight.js": "10.7.2",
-    "husky": "6.0.0",
-    "jest-environment-jsdom": "26.6.2",
-    "np": "7.4.0",
+    "eslint-plugin-react": "7.24.0",
+    "husky": "7.0.1",
+    "jest-cli": "27.0.1",
+    "jest-environment-node": "27.0.1",
+    "np": "7.5.0",
     "pinst": "2.1.6",
-    "prettier": "2.2.1",
+    "prettier": "2.3.2",
     "prettier-eslint": "12.0.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
     "source-map-resolve": "0.6.0",
     "tsdx": "0.14.1",
-    "tslib": "2.2.0",
-    "typescript": "4.2.4"
+    "tslib": "2.3.0",
+    "typescript": "4.3.5"
   },
   "dependencies": {
-    "tods-matchup-format-code": "^1.1.0"
+    "tods-matchup-format-code": "1.1.4"
   },
   "resolutions": {
-    "axios": "^0.21.1",
     "marked": "^0.7.0 "
   }
 }

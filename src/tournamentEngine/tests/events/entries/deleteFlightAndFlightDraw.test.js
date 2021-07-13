@@ -4,10 +4,10 @@ import tournamentEngine from '../../../sync';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 
 it('can delete flight and flightDrawDefinition', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -54,10 +54,10 @@ it('can delete flight and flightDrawDefinition', () => {
 });
 
 it('can delete drawDefinition when there is no flight', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

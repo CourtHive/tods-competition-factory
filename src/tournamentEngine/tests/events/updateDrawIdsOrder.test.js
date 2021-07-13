@@ -4,10 +4,10 @@ import tournamentEngine from '../../sync';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 it('can modify the drawOrder of flightProfile.flights and drawDefniitions within an event', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({});
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -65,10 +65,10 @@ it('can modify the drawOrder of flightProfile.flights and drawDefniitions within
 });
 
 it('can modify the drawOrder of flightProfile.flights', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

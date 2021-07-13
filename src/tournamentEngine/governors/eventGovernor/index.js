@@ -24,7 +24,6 @@ import {
 import { setDrawParticipantRepresentativeIds } from './drawDefinitions/setDrawParticipantRepresentativeIds';
 import { getDrawParticipantRepresentativeIds } from './drawDefinitions/getDrawParticipantRepresentativeIds';
 
-import { regenerateDrawDefinition } from '../../generators/regenerateDrawDefinition';
 import { generateDrawDefinition } from '../../generators/generateDrawDefinition';
 import {
   setDrawDefaultMatchUpFormat,
@@ -60,6 +59,7 @@ import { removeSeeding } from './entries/removeSeeding';
 import { autoSeeding } from './entries/autoSeeding';
 
 import { deleteFlightProfileAndFlightDraws } from './drawDefinitions/deleteFlightProfileAndFlightDraws';
+import { removeStructure } from '../../../drawEngine/governors/structureGovernor/removeStructure';
 import { generateVoluntaryConsolationStructure } from './generateVoluntaryConsolationStructure';
 import { toggleParticipantCheckInState } from './drawDefinitions/toggleParticipantCheckInState';
 import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlightDraw';
@@ -70,10 +70,18 @@ import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
 import { addFlight } from './addFlight';
+import {
+  setEventDates,
+  setEventEndDate,
+  setEventStartDate,
+} from './setEventDates';
 
 const eventGovernor = {
   addEvent,
   deleteEvents,
+  setEventDates,
+  setEventStartDate,
+  setEventEndDate,
 
   autoSeeding,
   removeSeeding,
@@ -86,6 +94,7 @@ const eventGovernor = {
   addPlayoffStructures,
   deleteDrawDefinitions,
   getAvailablePlayoffRounds,
+  removeStructure,
 
   generateSeedingScaleItems,
 
@@ -143,7 +152,6 @@ const eventGovernor = {
   toggleParticipantCheckInState,
 
   generateDrawDefinition,
-  regenerateDrawDefinition,
   addDrawDefinitionTimeItem,
 
   assignTieMatchUpParticipantId,

@@ -29,5 +29,5 @@ it('can correctly determin positions playedOff for FIRST_MATCH_LOSER_CONSOLATION
   const { drawDefinition } = drawEngine.getState();
 
   const { positionsPlayedOff } = getPositionsPlayedOff({ drawDefinition });
-  expect(positionsPlayedOff).toEqual([1, 2, 5, 6]);
+  expect(positionsPlayedOff).toEqual([1, 2, 9, 10]);
 });

@@ -3,13 +3,13 @@ import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUp
 export function getPairedPreviousMatchUp({
   matchUp,
   structureId,
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   const sourceRoundPosition = matchUp?.roundPosition;
   const offset = sourceRoundPosition % 2 ? 1 : -1;
   const pairedRoundPosition = sourceRoundPosition + offset;
   const structureMatchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
     structureId,
   });
   const pairedPreviousMatchUp = structureMatchUps.find(

@@ -54,13 +54,11 @@ it('can add and read timeItems from events', () => {
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result).toEqual(SUCCESS);
 
-  let {
-    timeItem: retrievedTimeItem,
-    message,
-  } = tournamentEngine.getEventTimeItem({
-    eventId,
-    itemType: 'RETRIEVAL.RATING.SINGLES.U18',
-  });
+  let { timeItem: retrievedTimeItem, message } =
+    tournamentEngine.getEventTimeItem({
+      eventId,
+      itemType: 'RETRIEVAL.RATING.SINGLES.U18',
+    });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(message).toEqual(undefined);
 

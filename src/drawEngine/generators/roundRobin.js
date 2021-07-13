@@ -24,6 +24,7 @@ import { INVALID_CONFIGURATION } from '../../constants/errorConditionConstants';
 
 export function generateRoundRobin({
   uuids,
+  matchUpType,
   stage = MAIN,
   stageSequence = 1,
   structureName = MAIN,
@@ -40,18 +41,24 @@ export function generateRoundRobin({
 
   const structures = generateRange(1, groupCount + 1).map((structureOrder) =>
     structureTemplate({
+      matchUpType,
       structureOrder,
       finishingPosition,
       structureType: ITEM,
       structureId: uuids?.pop(),
       structureName: `Group ${structureOrder}`,
-      matchUps: roundRobinMatchUps({ groupSize: groupSize, structureOrder }),
+      matchUps: roundRobinMatchUps({
+        matchUpType,
+        groupSize: groupSize,
+        structureOrder,
+      }),
     })
   );
 
   const structure = structureTemplate({
     stage,
     structures,
+    matchUpType,
     structureName,
     stageSequence,
     seedingProfile,
@@ -68,18 +75,19 @@ export function generateRoundRobin({
 // first iteration only links to a single playoff structure
 // future iteration should allow structureOptions to specify
 // groups of finishing drawPositions which playoff
-export function generateRoundRobinWithPlayOff(props) {
+export function generateRoundRobinWithPlayOff(params) {
   const {
     uuids,
+    matchUpType,
     drawDefinition,
     playoffMatchUpFormat,
     stageSequence = 1,
     structureOptions,
-  } = props;
+  } = params;
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
-    props,
+    params,
     { stage: MAIN }
   );
   const {
@@ -127,12 +135,14 @@ export function generateRoundRobinWithPlayOff(props) {
       if (playoffDrawType === SINGLE_ELIMINATION) {
         const { matchUps } = treeMatchUps({
           drawSize,
+          matchUpType,
           finishingPositionOffset,
         });
 
         const playoffStructure = structureTemplate({
           matchUps,
           stageOrder,
+          matchUpType,
           stageSequence,
           stage: PLAY_OFF,
           structureId: uuids?.pop(),
@@ -162,6 +172,7 @@ export function generateRoundRobinWithPlayOff(props) {
         } = feedInChampionship({
           drawSize,
           fmlc: true,
+          matchUpType,
           feedRounds: 1,
           stage: PLAY_OFF,
           uuids: uuidsFMLC,
@@ -185,7 +196,7 @@ export function generateRoundRobinWithPlayOff(props) {
 
       return undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   // mainStructure, playoffStructures and links are only returned for tests
   return Object.assign(
@@ -245,7 +256,7 @@ function calculateValidGroupSizes({ drawSize, groupSizeLimit = 10 }) {
   });
 }
 
-function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
+function roundRobinMatchUps({ matchUpType, groupSize, structureOrder, uuids }) {
   const drawPositionOffset = (structureOrder - 1) * groupSize;
   const drawPositions = generateRange(
     1 + drawPositionOffset,
@@ -283,6 +294,7 @@ function roundRobinMatchUps({ groupSize, structureOrder, uuids }) {
       drawPositions.slice(0, drawPositions.length - 1)
     );
     const matchUp = {
+      matchUpType, // does not (perhaps) need to be included; but because structures[].structure unsure about derivation inContext
       drawPositions,
       matchUpId: uuids?.pop() || UUID(),
       matchUpStatus: roundNumber ? TO_BE_PLAYED : BYE,

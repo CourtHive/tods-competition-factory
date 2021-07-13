@@ -5,6 +5,7 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionParticipantAction({
@@ -13,8 +14,9 @@ export function positionParticipantAction({
   drawPosition,
   structureId,
   positionActionName,
-  participantIdAttributeName,
+  participantIdAttributeName = 'participantId',
 }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structureId,
@@ -23,7 +25,7 @@ export function positionParticipantAction({
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  if (positionAssignment.participantId) {
+  if (positionAssignment?.participantId) {
     let result = assignDrawPosition({
       drawDefinition,
       structureId,
@@ -70,6 +72,6 @@ export function positionParticipantAction({
 
     addPositionActionTelemetry({ drawDefinition, positionAction });
 
-    return Object.assign({}, SUCCESS, { removedParticipantId });
+    return { ...SUCCESS, removedParticipantId };
   }
 }

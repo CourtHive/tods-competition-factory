@@ -8,6 +8,7 @@ export enum EntryStatusEnum {
 
   // applies only to { participantType: INDIVIDUAL } entries in { eventType: DOUBLES }
   UNPAIRED = 'UNPAIRED',
+  UNGROUPED = 'UNGROUPED',
 
   // These entryStatus enums apply only to draw.entries
   LUCKY_LOSER = 'LUCKY_LOSER',
@@ -26,6 +27,7 @@ export const LUCKY_LOSER = EntryStatusEnum.LUCKY_LOSER;
 export const ORGANISER_ACCEPTANCE = EntryStatusEnum.ORGANISER_ACCEPTANCE;
 export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
 export const UNPAIRED = EntryStatusEnum.UNPAIRED;
+export const UNGROUPED = EntryStatusEnum.UNGROUPED;
 
 export const STRUCTURE_ENTERED_TYPES = [
   FEED_IN,
@@ -41,6 +43,7 @@ export const VALID_ENTERED_TYPES = [
   WITHDRAWN,
   FEED_IN,
   UNPAIRED,
+  UNGROUPED,
   QUALIFIER,
   WILDCARD,
   DIRECT_ACCEPTANCE,

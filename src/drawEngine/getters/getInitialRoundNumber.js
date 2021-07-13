@@ -6,7 +6,7 @@ export function getInitialRoundNumber({ drawPosition, matchUps = [] }) {
   const initialRoundNumber = matchUps
     .filter(
       ({ drawPositions }) =>
-        drawPosition && drawPositions.includes(drawPosition)
+        drawPosition && drawPositions?.includes(drawPosition)
     )
     .map(({ roundNumber }) => parseInt(roundNumber))
     .sort(numericSort)[0];

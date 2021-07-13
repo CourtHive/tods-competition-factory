@@ -22,13 +22,14 @@ export function getCheckedInParticipantIds({ matchUp }) {
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
-  if (!matchUp.sides || matchUp.sides.filter((f) => f).length !== 2) {
+  if (!matchUp.sides || matchUp.sides.filter(Boolean).length !== 2) {
     return { error: INVALID_MATCHUP };
   }
 
   const {
     sideParticipantIds,
     nestedIndividualParticipantIds,
+    allRelevantParticipantIds,
   } = getMatchUpParticipantIds({ matchUp });
 
   const timeItems = matchUp.timeItems || [];
@@ -96,5 +97,9 @@ export function getCheckedInParticipantIds({ matchUp }) {
     true
   );
 
-  return { allParticipantsCheckedIn, checkedInParticipantIds };
+  return {
+    allParticipantsCheckedIn,
+    checkedInParticipantIds,
+    allRelevantParticipantIds,
+  };
 }

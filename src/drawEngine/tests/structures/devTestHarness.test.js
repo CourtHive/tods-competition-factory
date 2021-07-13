@@ -3,6 +3,7 @@ import { replacementTest } from './byeReplacementStressTest';
 import { generateRange } from '../../../utilities';
 import fs from 'fs';
 import {
+  popGlobalLog,
   printGlobalLog,
   purgeGlobalLog,
   pushGlobalLog,
@@ -19,7 +20,26 @@ import {
 
 it('can run stress tests when JEST_STRESS=true', () => {
   if (process.env.JEST_STRESS !== true) {
-    console.log('JEST_STRESS =', process.env.JEST_STRESS);
+    ['brightyellow', 'brightgreen', 'brightmagenta', 'brightblue'].forEach(
+      (color) => {
+        pushGlobalLog(
+          {
+            color,
+            keyColors: {
+              stage: 'brightcyan',
+            },
+            stage: 'MAIN',
+            method: 'Global Log Tests',
+          },
+          true
+        );
+      }
+    );
+    pushGlobalLog('logTest', true);
+    const result = popGlobalLog();
+    expect(result.method).toEqual('logTest');
+    printGlobalLog(true);
+    purgeGlobalLog();
   }
 });
 
@@ -100,12 +120,11 @@ test.each([
       if (!result.success) {
         const { tournamentRecord } = tournamentEngine.getState();
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
-        const {
-          extension: positionActions,
-        } = tournamentEngine.findDrawDefinitionExtension({
-          drawId,
-          name: 'positionActions',
-        });
+        const { extension: positionActions } =
+          tournamentEngine.findDrawDefinitionExtension({
+            drawId,
+            name: 'positionActions',
+          });
         positionActionErrorScenarios.push({
           positionActions,
           drawType,

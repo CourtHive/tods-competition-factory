@@ -1,3 +1,4 @@
+import { keyValueConstants } from '../drawEngine/governors/scoreGovernor/keyValueScore/constants';
 import { auditConstants } from './auditConstants';
 import { drawDefinitionConstants } from './drawDefinitionConstants';
 import { entryStatusConstants } from './entryStatusConstants';
@@ -15,6 +16,7 @@ import { participantTypes } from './participantTypes';
 import { penaltyConstants } from './penaltyConstants';
 import { policyConstants } from './policyConstants';
 import { positionActionConstants } from './positionActionConstants';
+import { requestConstants } from './requestConstants';
 import { resultConstants } from './resultConstants';
 import { scaleConstants } from './scaleConstants';
 import { scheduleConstants } from './scheduleConstants';
@@ -30,6 +32,7 @@ export const factoryConstants = {
   extensionConstants,
   flightConstants,
   genderConstants,
+  keyValueConstants,
   matchUpActionConstants,
   matchUpStatusConstants,
   matchUpTypes,
@@ -39,6 +42,7 @@ export const factoryConstants = {
   penaltyConstants,
   policyConstants,
   positionActionConstants,
+  requestConstants,
   resultConstants,
   scaleConstants,
   scheduleConstants,

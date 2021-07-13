@@ -56,12 +56,11 @@ export function modifyParticipant({
   if (participantName && typeof participantName === 'string')
     newValues.participantName = participantName;
   if (Array.isArray(individualParticipantIds)) {
-    const {
-      tournamentParticipants: individualParticipants,
-    } = getTournamentParticipants({
-      tournamentRecord,
-      participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
-    });
+    const { tournamentParticipants: individualParticipants } =
+      getTournamentParticipants({
+        tournamentRecord,
+        participantFilters: { participantTypes: [participantTypes.INDIVIDUAL] },
+      });
     const allIndividualParticipantIds = individualParticipants?.map(
       ({ participantId }) => participantId
     );
@@ -127,12 +126,13 @@ export function modifyParticipant({
   });
 
   if (getDevContext()) {
-    return Object.assign({}, SUCCESS, {
+    return {
+      ...SUCCESS,
       participant: makeDeepCopy(existingParticipant),
-    });
+    };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function generatePairParticipantName({ individualParticipants, newValues }) {
@@ -142,7 +142,7 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
       individualParticipantIds.includes(participantId)
     )
     .map(({ person }) => person?.standardFamilyName)
-    .filter((f) => f)
+    .filter(Boolean)
     .sort()
     .join('/');
 }

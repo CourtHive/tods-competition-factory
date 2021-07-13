@@ -6,16 +6,8 @@ export const toBePlayed = {
   score: {
     scoreStringSide1: '',
     scoreStringSide2: '',
-    sets: [
-      {
-        setNumber: 1,
-        side1Score: undefined,
-        side1TiebreakScore: undefined,
-        side2Score: undefined,
-        side2TiebreakScore: undefined,
-        winningSide: undefined,
-      },
-    ],
+    sets: undefined,
   },
+  matchUpFormat: undefined,
   winningSide: undefined,
 };

@@ -1,11 +1,11 @@
-import { shuffleArray } from '../../../utilities';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { randomUnseededSeparation } from './avoidance/randomUnseededSeparation';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
 import { assignDrawPosition } from './positionAssignment';
+import { shuffleArray } from '../../../utilities';
 
 import {
   WILDCARD,
@@ -16,11 +16,13 @@ import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
-  mappedMatchUps,
   candidatesCount,
   participants,
   structureId,
   structure,
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!structure)
     ({ structure } = findStructure({ drawDefinition, structureId }));
@@ -34,7 +36,7 @@ export function positionUnseededParticipants({
 
   const assignedSeedParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
 
   const { stage, stageSequence } = structure;
   const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
@@ -83,31 +85,38 @@ export function positionUnseededParticipants({
 
   if (avoidance && participants) {
     return randomUnseededSeparation({
-      avoidance,
-      structureId,
-      participants,
-      mappedMatchUps,
-      drawDefinition,
-      candidatesCount,
       unseededParticipantIds,
+      candidatesCount,
+      drawDefinition,
+      participants,
+      structureId,
+      avoidance,
+      entries,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     return randomUnseededDistribution({
-      structureId,
-      drawDefinition,
-      mappedMatchUps,
       unseededParticipantIds,
       unfilledDrawPositions,
+      drawDefinition,
+      structureId,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 }
 
 function randomUnseededDistribution({
-  structureId,
-  drawDefinition,
-  mappedMatchUps,
   unseededParticipantIds,
   unfilledDrawPositions,
+  drawDefinition,
+  structureId,
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const shuffledDrawPositions = shuffleArray(unfilledDrawPositions);
   for (const participantId of unseededParticipantIds) {
@@ -115,10 +124,12 @@ function randomUnseededDistribution({
     const result = assignDrawPosition({
       structureId,
       drawPosition,
-      mappedMatchUps,
       participantId,
       drawDefinition,
       automaticPlacement: true,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result && result.error) return result;
   }

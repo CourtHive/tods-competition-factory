@@ -60,12 +60,6 @@ export function randomMember(arr) {
   return arr[index];
 }
 
-export function numArr(count) {
-  return [...Array(count)].map((_, i) => i);
-}
-export function arrayOfLength(count) {
-  return [...Array(count)].map((_, i) => i);
-}
 export function generateRange(start, end) {
   return Array.from({ length: end - start }, (v, k) => k + start);
 }
@@ -82,6 +76,7 @@ export function arrayIndices(val, arr) {
   }, []);
 }
 export function intersection(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return 0;
   return a
     .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
@@ -101,7 +96,6 @@ export function subSort(arr, i, n, sortFx) {
     ...arr.slice(i + n, arr.length)
   );
 }
-/*
 export function inPlaceSubSort(arr, i, n, sortFx) {
   const newarray = [].concat(
     ...arr.slice(0, i),
@@ -112,7 +106,6 @@ export function inPlaceSubSort(arr, i, n, sortFx) {
   arr.push.apply(arr, newarray); // use spread operator instead?
   return arr;
 }
-*/
 export function chunkArray(arr, chunksize) {
   return arr.reduce((all, one, i) => {
     const ch = Math.floor(i / chunksize);
@@ -120,6 +113,8 @@ export function chunkArray(arr, chunksize) {
     return all;
   }, []);
 }
+
+// will break an array of items into chunks following pattern [size1, size2, ...]
 export function chunkSizeProfile(arr, [size, ...otherSizes]) {
   return arr.length
     ? [
@@ -190,3 +185,9 @@ export function chunkByNth(arr, chunksCount, shuttle) {
     return chunks;
   }, []);
 }
+
+/*
+export function numArr(count) {
+  return [...Array(count)].map((_, i) => i);
+}
+*/

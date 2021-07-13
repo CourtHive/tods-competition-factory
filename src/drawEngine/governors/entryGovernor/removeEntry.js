@@ -1,12 +1,12 @@
 import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeEntry({
   participantId,

@@ -19,7 +19,7 @@ it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with 
     avoidance: avoidancePolicy,
     participantType: PAIR,
     eventType: DOUBLES,
-    sex: 'M',
+    sex: 'MALE',
   });
   if (error) console.log({ error });
   if (conflicts?.unseededConflicts) {
@@ -30,7 +30,7 @@ it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with 
     avoidance: avoidancePolicy,
     participantType: PAIR,
     eventType: DOUBLES,
-    sex: 'F',
+    sex: 'FEMALE',
   }));
   if (error) console.log({ error });
   if (conflicts?.unseededConflicts) {

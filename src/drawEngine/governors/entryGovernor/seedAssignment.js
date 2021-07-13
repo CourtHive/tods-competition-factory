@@ -39,14 +39,10 @@ export function assignSeed({
       method: 'assignSeed',
     };
 
-  const assignedDrawPosition = positionAssignments.reduce(
-    (drawPosition, assignment) => {
-      return assignment.participantId === participantId
-        ? assignment.drawPosition
-        : drawPosition;
-    },
-    undefined
+  const relevantAssignment = positionAssignments.find(
+    (assignment) => assignment.participantId === participantId
   );
+  const assignedDrawPosition = relevantAssignment?.drawPosition;
 
   if (assignedDrawPosition) {
     const positionIsValid = isValidSeedPosition({

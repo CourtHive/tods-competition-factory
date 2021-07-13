@@ -1,4 +1,5 @@
 import { getTimeZoneOffset } from '../../../utilities/dateTime';
+
 import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
 
 export function scheduledMatchUpTime({
@@ -6,7 +7,7 @@ export function scheduledMatchUpTime({
   localTimeZone,
   localPerspective,
 }) {
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
   const lastScheduledTimeItem = timeItems

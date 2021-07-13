@@ -50,7 +50,7 @@ export function getRoundContextProfile({
         const suffix = preFeedRound ? `-${roundNamePrefix.preFeedRound}` : '';
         const profileSize = `${sizeName}${suffix}`;
         const roundName = [stageConstant, structureAbbreviation, profileSize]
-          .filter((f) => f)
+          .filter(Boolean)
           .join('-');
         return { [round]: roundName };
       })

@@ -174,6 +174,7 @@ it('can add statistics to tournament participants', () => {
   const individualParticipant = tournamentParticipants.find(
     (participant) => participant.participantId === individualParticipantId
   );
+  expect(individualParticipant.events[0].drawIds.length).toBeGreaterThan(0);
   expect(individualParticipant.statistics[0].statValue).toBeGreaterThan(0);
   expect(individualParticipant.events[0]._ustaLevel).toEqual(1);
 

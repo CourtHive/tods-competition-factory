@@ -65,6 +65,7 @@ export { errorConditionConstants } from './constants/errorConditionConstants';
 export { eventConstants } from './constants/eventConstants';
 export { flightConstants } from './constants/flightConstants';
 export { genderConstants } from './constants/genderConstants';
+export { keyValueConstants } from './drawEngine/governors/scoreGovernor/keyValueScore/constants';
 export { matchUpActionConstants } from './constants/matchUpActionConstants';
 export { matchUpStatusConstants } from './constants/matchUpStatusConstants';
 export { matchUpTypes } from './constants/matchUpTypes';
@@ -83,6 +84,6 @@ export { timeItemConstants } from './constants/timeItemConstants';
 export { venueConstants } from './constants/venueConstants';
 // END-: constants ---------------------------------------------------------------
 
-// START- overrides
-export { setStateProvider } from './global/globalState';
+// START- Global State methods
+export { setStateProvider, setSubscriptions } from './global/globalState';
 // END

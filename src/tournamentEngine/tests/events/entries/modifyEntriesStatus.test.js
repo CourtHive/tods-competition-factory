@@ -21,14 +21,15 @@ it('can modify entryStatus within event.entries', () => {
   const {
     eventIds: [eventId],
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     participantsProfile,
   });
 
-  const {
-    tournamentParticipants,
-  } = tournamentEngine.getTournamentParticipants();
+  const { tournamentParticipants } = tournamentEngine
+    .setState(tournamentRecord)
+    .getTournamentParticipants();
   const participantIds = tournamentParticipants.map((p) => p.participantId);
 
   let result = tournamentEngine.addEventEntries({ eventId, participantIds });

@@ -21,10 +21,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
  */
 export function clearDrawPosition({
   drawDefinition,
-  mappedMatchUps,
   drawPosition,
   participantId,
   structureId,
+
+  matchUpsMap,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -32,13 +33,10 @@ export function clearDrawPosition({
     structure,
   });
 
-  const existingAssignment = positionAssignments.reduce(
-    (value, assignment) =>
+  const existingAssignment = positionAssignments.find(
+    (assignment) =>
       (participantId && assignment.participantId === participantId) ||
       (drawPosition && assignment.drawPosition === drawPosition)
-        ? assignment
-        : value,
-    undefined
   );
 
   if (participantId && !drawPosition) {
@@ -56,25 +54,29 @@ export function clearDrawPosition({
   // drawPosition may not be cleared if:
   // 1. drawPosition has been advanced by winning a matchUp
   // 2. drawPosition is paired with another drawPosition which has been advanced by winning a matchUp
-  if (drawPositionIsActive) return { error: DRAW_POSITION_ACTIVE };
+  if (drawPositionIsActive) {
+    return { error: DRAW_POSITION_ACTIVE };
+  }
 
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
-    mappedMatchUps,
     inContext: true,
     includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
   const { drawPositionCleared, error } = drawPositionRemovals({
     inContextDrawMatchUps,
     drawDefinition,
-    mappedMatchUps,
     structureId,
     drawPosition,
+
+    matchUpsMap,
   });
   if (error) return { error };
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
 
-  return Object.assign({}, SUCCESS, { participantId });
+  return { ...SUCCESS, participantId };
 }

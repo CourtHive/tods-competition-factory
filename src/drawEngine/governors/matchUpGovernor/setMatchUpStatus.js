@@ -1,22 +1,30 @@
+import { getProjectedDualWinningWide } from './getProjectedDualWinningSide';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { intersection, makeDeepCopy } from '../../../utilities';
 import { getDevContext } from '../../../global/globalState';
+import { findStructure } from '../../getters/findStructure';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
+import { isActiveDownstream } from './isActiveDownstream';
+import { swapWinnerLoser } from './swapWinnerLoser';
+import { makeDeepCopy } from '../../../utilities';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
+import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
   CANCELLED,
   INCOMPLETE,
   TO_BE_PLAYED,
+  particicipantsRequiredMatchUpStatuses,
   validMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
 import {
@@ -25,22 +33,38 @@ import {
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
   INVALID_VALUES,
+  INCOMPATIBLE_MATCHUP_STATUS,
+  CANNOT_CHANGE_WINNINGSIDE,
 } from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  COMPLETED,
-  matchUpStatusConstants,
-} from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-export function setMatchUpStatus(props) {
+/**
+ *
+ * @param {string} drawDefinition - required to collect all draw matchUps for scenario analysis
+ * @param {string} matchUpId - id of the matchUp to be modified
+ * @param {string} matchUpStatus - optional - new matchUpStatus
+ * @param {number} winningSide - optional - new winningSide; 1 or 2
+ * @param {object} tournamentRecord - optional - used to discover relevant policyDefinitions or to modify scheduling information (integrity checks)
+ * @returns
+ */
+
+export function setMatchUpStatus(params) {
   let messages = [];
 
-  // matchUpStatus in props is the new status
-  // winningSide in props is new winningSide
-  const { drawDefinition, matchUpId, matchUpStatus, winningSide } = props;
+  // matchUpStatus in params is the new status
+  // winningSide in params is new winningSide
+  const {
+    drawDefinition,
+    matchUpId,
+    matchUpStatus,
+    tournamentRecord,
+    winningSide,
+    allowChangePropagation = undefined, // factory default
+  } = params;
+
+  // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  // Check matchUpStatus, matchUpStatus/winningSide validity ------------------
   if (
     [CANCELLED, INCOMPLETE, ABANDONED, TO_BE_PLAYED].includes(matchUpStatus) &&
     winningSide
@@ -51,210 +75,176 @@ export function setMatchUpStatus(props) {
     return { error: INVALID_MATCHUP_STATUS };
   }
 
-  const mappedMatchUps = getMatchUpsMap({ drawDefinition });
-  Object.assign(props, { mappedMatchUps });
-
-  // cannot take matchUpStatus from existing matchUp records
-  // cannot take winningSide from existing matchUp records
-  const { matchUp, structure } = findMatchUp({
+  // Get map of all drawMatchUps and inContextDrawMatchUPs ---------------------
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     drawDefinition,
-    mappedMatchUps,
-    matchUpId,
+    inContext: true,
+    includeByeMatchUps: true,
+
+    matchUpsMap,
   });
 
-  if (!matchUp) return { error: MATCHUP_NOT_FOUND };
+  // Find target matchUp ------------------------------------------------------
+  const matchUp = matchUpsMap.drawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
 
-  const { schedule } = props;
+  const inContextMatchUp = inContextDrawMatchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+
+  if (!matchUp || !inContextDrawMatchUps) return { error: MATCHUP_NOT_FOUND };
+
+  if ((matchUp.winningSide || winningSide) && matchUpStatus === BYE) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
+
+  // Check validity of matchUpStatus considering assigned drawPositions -------
+  const assignedDrawPositions = inContextMatchUp.drawPositions?.filter(Boolean);
+
+  if (
+    matchUpStatus &&
+    particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) &&
+    (!assignedDrawPositions || assignedDrawPositions?.length < 2)
+  ) {
+    return { error: INVALID_MATCHUP_STATUS };
+  }
+
+  if (matchUp.matchUpType === TEAM) {
+    // do not direclty set team score... unless walkover/default/double walkover/Retirement
+    return { error: 'DIRECT SCORING of TEAM matchUp not implemented' };
+  }
+
+  const matchUpTieId = inContextMatchUp.matchUpTieId;
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
+  // Get winner/loser position targets ----------------------------------------
+  const targetData = positionTargets({
+    matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
+    structure,
+    drawDefinition,
+    inContextDrawMatchUps,
+  });
+
+  let dualWinningSideChange;
+  if (matchUpTieId) {
+    const { matchUp: dualMatchUp } = findMatchUp({
+      drawDefinition,
+      matchUpId: matchUpTieId,
+
+      matchUpsMap,
+    });
+    const tieFormat = dualMatchUp.tieFormat || drawDefinition.tieFormat;
+
+    const { projectedWinningSide } = getProjectedDualWinningWide({
+      matchUp,
+      winningSide,
+      dualMatchUp,
+      tieFormat,
+    });
+
+    const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
+    dualWinningSideChange =
+      projectedWinningSide !== existingDualMatchUpWinningSide;
+
+    if (dualWinningSideChange) {
+      if (getDevContext()) console.log('dualMatchUp', { projectedWinningSide });
+    }
+  }
+
+  // Add scheduling information to matchUp ------------------------------------
+  const { schedule } = params;
   if (schedule) {
     const result = addMatchUpScheduleItems({
+      tournamentRecord,
       disableNotice: true,
       drawDefinition,
       matchUpId,
       schedule,
     });
-    if (result.error) return result;
-  }
-
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    mappedMatchUps,
-    includeByeMatchUps: true,
-  });
-
-  Object.assign(props, { mappedMatchUps, inContextDrawMatchUps });
-
-  const targetData = positionTargets({
-    matchUpId,
-    structure,
-    drawDefinition,
-    mappedMatchUps,
-    inContextDrawMatchUps,
-  });
-  Object.assign(props, { matchUp, structure, targetData });
-
-  const {
-    targetMatchUps: { loserMatchUp, winnerMatchUp },
-  } = targetData;
-
-  // if neither loserMatchUp or winnerMatchUp have winningSide
-  // => score matchUp and advance participants along links
-  const inContextMatchUp = inContextDrawMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
-  const matchUpParticipantIds =
-    inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
-  const loserMatchUpParticipantIds =
-    loserMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const loserMatchUpParticipantIntersection = !!intersection(
-    matchUpParticipantIds,
-    loserMatchUpParticipantIds
-  ).length;
-  const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
-  const winnerMatchUpParticipantIds =
-    winnerMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const winnerMatchUpParticipantIntersection = !!intersection(
-    matchUpParticipantIds,
-    winnerMatchUpParticipantIds
-  ).length;
-
-  const activeDownstream =
-    (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
-    (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
-
-  // if either lowerMatchUp or winnerMatchUp have winningSide
-  // => see if either matchUp has active players
-  // => if active players are present then outcome cannot change
-  // => if outcome is NOT different, apply new result information
-
-  if (!activeDownstream) {
-    // not activeDownstream also handles changing the winner of a finalRound
-    // as long as the matchUp is not the finalRound of a qualifying structure
-    const { errors: noDependenciesErrors, message } = noDownstreamDependencies(
-      props
-    );
-    if (message) messages.push(message);
-    if (noDependenciesErrors)
-      return { error: { errors: noDependenciesErrors } };
-  } else if (winningSide) {
-    const {
-      errors: winnerWithDependencyErrors,
-    } = winningSideWithDownstreamDependencies(props);
-    if (winnerWithDependencyErrors)
-      return { error: { errors: winnerWithDependencyErrors } };
-  } else if (matchUpStatus) {
-    const { errors: statusChangeErrors, message } = attemptStatusChange(props);
-    if (message) messages.push(message);
-    if (statusChangeErrors) return { error: { errors: statusChangeErrors } };
-  } else {
-    if (getDevContext()) {
-      console.log('no valid actions', {
-        props,
-        loserMatchUpParticipantIds,
-        winnerMatchUpParticipantIds,
-      });
+    if (result.error) {
+      return result;
     }
-    return { error: { errors: [{ error: NO_VALID_ACTIONS }] } };
   }
+
+  // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
+  Object.assign(params, {
+    matchUp,
+    inContextMatchUp,
+    inContextDrawMatchUps,
+    matchUpTieId,
+    structure,
+    targetData,
+
+    matchUpsMap,
+  });
+
+  // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
+  const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
+  if (
+    activeDownStream &&
+    !winningSide &&
+    isNonDirectingMatchUpStatus({ matchUpStatus })
+  ) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
+
+  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+  if (
+    winningSide &&
+    winningSide === matchUp.winningSide &&
+    matchUpStatus &&
+    !directingMatchUpStatus
+  ) {
+    return { error: INCOMPATIBLE_MATCHUP_STATUS };
+  }
+
+  const validWinningSideChange =
+    matchUp.matchUpType !== TEAM &&
+    !dualWinningSideChange &&
+    winningSide &&
+    matchUp.winningSide &&
+    matchUp.winningSide !== winningSide;
+
+  if (
+    allowChangePropagation &&
+    validWinningSideChange &&
+    matchUp.roundPosition // not round robin if matchUp.roundPosition
+  ) {
+    return swapWinnerLoser(params);
+  }
+
+  const result = (!activeDownStream && noDownstreamDependencies(params)) ||
+    (winningSide && winningSideWithDownstreamDependencies(params)) ||
+    (directingMatchUpStatus && applyMatchUpValues(params)) || {
+      error: NO_VALID_ACTIONS,
+    };
+
+  if (result.error) return result;
 
   return getDevContext()
-    ? Object.assign({}, SUCCESS, {
+    ? {
+        ...SUCCESS,
         matchUp: makeDeepCopy(matchUp),
         messages,
-      })
+      }
     : SUCCESS;
 }
 
-function attemptStatusChange(props) {
-  const { matchUp, matchUpStatus } = props;
-
-  if (!Object.values(matchUpStatusConstants).includes(matchUpStatus)) {
-    return { errors: [{ error: INVALID_MATCHUP_STATUS, matchUpStatus }] };
-  }
-
-  // if no winningSide is given and matchUp has winningSide
-  // check whether intent is to remove winningSide
-  if (isDirectingMatchUpStatus({ matchUpStatus })) {
-    if (matchUp.winningSide && matchUpStatus !== BYE) {
-      applyMatchUpValues(props);
-      // TESTED
-    } else {
-      return {
-        errors: [
-          {
-            error: 'matchUp with winningSide cannot have matchUpStatus: BYE',
-          },
-        ],
-      };
-      // TESTED
-    }
-  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    return {
-      errors: [
-        {
-          error: 'matchUp has winner; cannot apply non-directing matchUpStatus',
-        },
-      ],
-    };
-    // TESTED
-  }
-  return SUCCESS;
-}
-
-function winningSideWithDownstreamDependencies(props) {
-  const { matchUp, matchUpStatus, winningSide } = props;
-
+function winningSideWithDownstreamDependencies(params) {
+  const { matchUp, winningSide } = params;
   if (winningSide === matchUp.winningSide) {
-    if (matchUpStatus) {
-      if (
-        isDirectingMatchUpStatus({ matchUpStatus }) &&
-        matchUpStatus !== BYE
-      ) {
-        applyMatchUpValues(props);
-        // TESTED
-      } else {
-        // matchUpStatus can't be changed to something non-directing
-        return {
-          errors: [
-            {
-              error:
-                'Cannot change matchUpStatus to nonDirecting outcome with winningSide',
-            },
-          ],
-        };
-        // TESTED
-      }
-    } else {
-      const { drawDefinition, score } = props;
-      modifyMatchUpScore({ drawDefinition, matchUp, score });
-    }
+    return applyMatchUpValues(params);
   } else {
-    return {
-      errors: [{ error: 'Cannot change winner with advanced participants' }],
-    };
-    // TODO POLICY:
-    // check whether winningSide can be changed
-    // or change winning side with rippple effect to all downstream matchUps
-    // TESTED
+    return { error: CANNOT_CHANGE_WINNINGSIDE };
   }
-
-  return SUCCESS;
 }
 
-function applyMatchUpValues(props) {
-  const {
-    drawDefinition,
-    matchUp,
-    matchUpStatus,
-    matchUpStatusCodes,
-    score,
-  } = props;
-  modifyMatchUpScore({
-    drawDefinition,
-    matchUp,
-    matchUpStatus: matchUpStatus || COMPLETED,
-    matchUpStatusCodes,
-    score,
+function applyMatchUpValues(params) {
+  return modifyMatchUpScore({
+    ...params,
+    matchUpStatus: params.matchUpStatus || COMPLETED,
   });
 }

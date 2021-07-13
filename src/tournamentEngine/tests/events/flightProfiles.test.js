@@ -5,10 +5,10 @@ import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
@@ -16,11 +16,9 @@ it('can create and return flighProfiles', () => {
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile).toBeUndefined();
 
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
   const participantIds = tournamentParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -67,13 +65,21 @@ it('can create and return flighProfiles', () => {
     'Flight 4',
   ]);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    convertExtensions: true,
+    withStatistics: true,
+    withOpponents: true,
+    withMatchUps: true,
+  }));
+
+  expect(tournamentParticipants[0].events[0].drawIds.length).toBeGreaterThan(0);
 });
 
 it('can create and return flighProfiles with drawDefinitions', () => {
-  mocksEngine.generateTournamentRecord({});
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const event = { eventName };
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   let { event: eventResult } = result;
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);

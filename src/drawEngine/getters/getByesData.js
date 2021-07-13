@@ -11,13 +11,14 @@ import {
   CONTAINER,
 } from '../../constants/drawDefinitionConstants';
 
-export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
+export function getByesData({ drawDefinition, matchUpsMap, structure }) {
   const matchUpFilters = { isCollectionMatchUp: false };
   const { matchUps, roundMatchUps } = getAllStructureMatchUps({
     drawDefinition,
-    mappedMatchUps,
     matchUpFilters,
     structure,
+
+    matchUpsMap,
   });
   const firstRoundMatchUps = (roundMatchUps && roundMatchUps[1]) || [];
 
@@ -25,12 +26,11 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
 
   const isRoundRobin = structure?.structureType === CONTAINER;
   const relevantMatchUps = isRoundRobin ? matchUps : firstRoundMatchUps;
-  const relevantMatchUpsCount = relevantMatchUps.length;
 
   // maxByes for RR can only be the number of structures... no more than one bye per structure
   const maxByes = isRoundRobin
     ? structure?.structures?.length || 0
-    : relevantMatchUpsCount;
+    : matchUps.length;
 
   // get stage/stageSequence Entries and qualifiers
   const { structureId, stage, stageSequence } = structure;
@@ -46,17 +46,15 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
   const entriesCount = entries.length + qualifiersCount;
 
   // # Byes = drawSize (positionAssignments) - total entries
-  // const { positionAssignments } = structureAssignedDrawPositions({structure});
   // const { positionAssignments, qualifierPositions, byePositions, unassignedPositions } = structureAssignedDrawPositions({structure});
-  const {
-    positionAssignments,
-    unassignedPositions,
-  } = structureAssignedDrawPositions({ structure });
+  const { positionAssignments, unassignedPositions } =
+    structureAssignedDrawPositions({ structure });
   const unassignedDrawPositions = unassignedPositions.map(
     (position) => position.drawPosition
   );
-  const placedByes = positionAssignments.filter((assignment) => assignment.bye)
-    .length;
+  const placedByes = positionAssignments.filter(
+    (assignment) => assignment.bye
+  ).length;
   const placedByePositions = positionAssignments
     .filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
@@ -76,8 +74,6 @@ export function getByesData({ drawDefinition, mappedMatchUps, structure }) {
     .flat(Infinity)
     .filter((drawPosition) => unassignedDrawPositions.includes(drawPosition));
 
-  // maxByes limitation applies only to stageSequence #1
-  // when doubleByes are supported may do away with maxByes
   const drawSize = positionAssignments.length;
   let byesCount = drawSize - entriesCount;
   if (

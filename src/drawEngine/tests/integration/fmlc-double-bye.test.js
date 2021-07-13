@@ -303,10 +303,12 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 
   let {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
+  tournamentEngine.setState(tournamentRecord);
   const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[1].matchUpId;
 
@@ -347,7 +349,6 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     false,
   ]);
 
-  // tournamentEngine.devContext(true);
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
   expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
@@ -379,9 +380,12 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 
   let {
     drawIds: [drawId],
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
+
+  tournamentEngine.setState(tournamentRecord);
 
   const {
     drawDefinition: {
@@ -405,11 +409,9 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     false,
   ]);
 
-  // tournamentEngine.devContext(true);
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
 
-  // tournamentEngine.devContext(false);
   const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 

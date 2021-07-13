@@ -110,7 +110,7 @@ it('can score a matchUp using params provided in validActions', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
 
   let drawPosition = 3;
   let targetMatchUp = matchUps.find(
@@ -128,8 +128,13 @@ it('can score a matchUp using params provided in validActions', () => {
 
   Object.assign(payload, { outcome });
 
-  tournamentEngine.devContext(true);
   let result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
-  expect(result.matchUp.winningSide).toEqual(2);
+
+  ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
+
+  const updatedMatchUp = matchUps.find(
+    ({ matchUpId }) => matchUpId === targetMatchUp.matchUpId
+  );
+  expect(updatedMatchUp.winningSide).toEqual(2);
 });

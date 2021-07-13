@@ -1,4 +1,5 @@
 import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
@@ -36,8 +37,9 @@ export function getAllStructureMatchUps({
   policyDefinition,
   tournamentParticipants,
   tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
 
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   let collectionPositionMatchUps = {},
     roundMatchUps = {};
@@ -51,22 +53,34 @@ export function getAllStructureMatchUps({
     };
   }
 
-  const thisEvent =
+  const selectedEventIds = Array.isArray(matchUpFilters?.eventIds)
+    ? matchUpFilters.eventIds.filter(Boolean)
+    : [];
+
+  const selectedStructureIds = Array.isArray(matchUpFilters?.structureIds)
+    ? matchUpFilters.structureIds.filter(Boolean)
+    : [];
+
+  const selectedDrawIds = Array.isArray(matchUpFilters?.drawIds)
+    ? matchUpFilters.drawIds.filter(Boolean)
+    : [];
+
+  const targetEvent =
     !context?.eventId ||
-    (!matchUpFilters?.eventIds?.filter((f) => f).length &&
-      !contextFilters?.eventIds?.filter((f) => f).length) ||
-    matchUpFilters?.eventIds?.includes(context.eventId) ||
+    (!selectedEventIds.length &&
+      !contextFilters?.eventIds?.filter(Boolean).length) ||
+    selectedEventIds.includes(context.eventId) ||
     contextFilters?.eventIds?.includes(context.eventId);
-  const thisStructure =
-    !matchUpFilters?.structureIds?.filter((f) => f).length ||
-    matchUpFilters.structureIds.includes(structure.structureId);
-  const thisDraw =
+  const targetStructure =
+    !selectedStructureIds.length ||
+    selectedStructureIds.includes(structure.structureId);
+  const targetDraw =
     !drawDefinition ||
-    !matchUpFilters?.drawIds?.filter((f) => f).length ||
-    matchUpFilters.drawIds.includes(drawDefinition.drawId);
+    !selectedDrawIds.length ||
+    selectedDrawIds.includes(drawDefinition.drawId);
 
   // don't process this structure if filters and filters don't include eventId, drawId or structureId
-  if (!thisEvent || !thisStructure || !thisDraw) {
+  if (!targetEvent || !targetStructure || !targetDraw) {
     return {
       matchUps: [],
       collectionPositionMatchUps,
@@ -98,21 +112,19 @@ export function getAllStructureMatchUps({
     stageSpecificPolicies?.requireAllPositionsAssigned ||
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
 
-  mappedMatchUps =
-    mappedMatchUps || getMatchUpsMap({ drawDefinition, structure });
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition, structure });
+  }
 
-  const {
-    positionAssignments,
-    allPositionsAssigned,
-  } = structureAssignedDrawPositions({ structure });
+  const { positionAssignments, allPositionsAssigned } =
+    structureAssignedDrawPositions({ structure });
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
-  const {
-    seedAssignments: structureSeedAssignments,
-  } = getStructureSeedAssignments({
-    drawDefinition,
-    mappedMatchUps,
-    structure,
-  });
+  const { seedAssignments: structureSeedAssignments } =
+    getStructureSeedAssignments({
+      drawDefinition,
+      matchUpsMap,
+      structure,
+    });
 
   // enables passing in seedAssignments rather than using structureSeedAssignments
   seedAssignments = seedAssignments || structureSeedAssignments;
@@ -127,7 +139,8 @@ export function getAllStructureMatchUps({
   const isRoundRobin = structure.structures;
 
   let matchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
+
     structureId,
     inContext,
   });
@@ -141,26 +154,24 @@ export function getAllStructureMatchUps({
     matchUps,
   });
 
-  const matchUpTies = matchUps?.filter((matchUp) =>
-    Array.isArray(matchUp.tieMatchUps)
-  );
-  matchUpTies.forEach((matchUpTie) => {
-    const tieMatchUps = matchUpTie.tieMatchUps;
-    matchUps = matchUps.concat(...tieMatchUps);
-  });
-
   if (matchUpFilters) {
-    matchUps = filterMatchUps({ matchUps, ...matchUpFilters });
+    matchUps = filterMatchUps({
+      matchUps,
+      ...matchUpFilters,
+      filterMatchUpTypes: false,
+    });
   }
 
   if (inContext) {
     const { sourceDrawPositionRanges } = getSourceDrawPositionRanges({
-      mappedMatchUps,
+      matchUpsMap,
+
       drawDefinition,
       structureId,
     });
     const { drawPositionsRanges } = getDrawPositionsRanges({
-      mappedMatchUps,
+      matchUpsMap,
+
       drawDefinition,
       structureId,
     });
@@ -174,11 +185,37 @@ export function getAllStructureMatchUps({
         roundNamingProfile,
         drawPositionsRanges,
         sourceDrawPositionRanges,
+        scheduleVisibilityFilters,
       })
     );
+
+    const matchUpTies = matchUps?.filter((matchUp) =>
+      Array.isArray(matchUp.tieMatchUps)
+    );
+    matchUpTies.forEach((matchUpTie) => {
+      const tieMatchUps = matchUpTie.tieMatchUps;
+      matchUps = matchUps.concat(...tieMatchUps);
+    });
+
     if (contextFilters) {
       matchUps = filterMatchUps({ matchUps, ...contextFilters });
     }
+  } else {
+    const matchUpTies = matchUps?.filter((matchUp) =>
+      Array.isArray(matchUp.tieMatchUps)
+    );
+    matchUpTies.forEach((matchUpTie) => {
+      const tieMatchUps = matchUpTie.tieMatchUps;
+      matchUps = matchUps.concat(...tieMatchUps);
+    });
+  }
+
+  // now filter again if there are any matchUpTypes
+  if (matchUpFilters?.matchUpTypes) {
+    matchUps = filterMatchUps({
+      matchUps,
+      matchUpTypes: matchUpFilters.matchUpTypes,
+    });
   }
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
@@ -196,18 +233,34 @@ export function getAllStructureMatchUps({
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
     matchUp,
+    sideLineUps,
     matchUpTieId,
     isRoundRobin,
     roundProfile,
     appliedPolicies,
     isCollectionBye,
+    tieDrawPositions,
     roundNamingProfile,
     drawPositionsRanges,
+    scheduleVisibilityFilters,
     sourceDrawPositionRanges,
   }) {
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
-    const { schedule } = getMatchUpScheduleDetails({ matchUp });
-    const { drawPositions, roundNumber, roundPosition } = matchUp;
+    const { schedule } = getMatchUpScheduleDetails({
+      scheduleVisibilityFilters,
+      matchUp,
+    });
+    const drawPositions = matchUp.drawPositions || tieDrawPositions;
+    const { collectionPosition, collectionId, roundNumber, roundPosition } =
+      matchUp;
+
+    const drawPositionCollectionAssignment =
+      getDrawPositionCollectionAssignment({
+        sideLineUps,
+        collectionId,
+        collectionPosition,
+        drawPositions,
+      });
 
     const roundName = roundNamingProfile && roundNamingProfile[roundNumber];
     const feedRound =
@@ -236,6 +289,7 @@ export function getAllStructureMatchUps({
         matchUpStatus,
         structureName,
         stageSequence,
+        drawPositions,
         drawPositionsRange,
       },
       context,
@@ -244,6 +298,13 @@ export function getAllStructureMatchUps({
 
     if (matchUpWithContext.tieMatchUps) {
       const isCollectionBye = matchUpWithContext.matchUpStatus === BYE;
+      const lineUps = matchUp.sides?.map(
+        ({ sideNumber, lineUp, drawPosition }) => ({
+          drawPosition,
+          sideNumber,
+          lineUp,
+        })
+      );
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
@@ -256,7 +317,10 @@ export function getAllStructureMatchUps({
             isCollectionBye,
             roundNamingProfile,
             drawPositionsRanges,
+            sideLineUps: lineUps,
             sourceDrawPositionRanges,
+            scheduleVisibilityFilters,
+            tieDrawPositions: drawPositions,
           });
         }
       );
@@ -278,6 +342,7 @@ export function getAllStructureMatchUps({
           ? 3 - sideNumber
           : sideNumber;
         const side = getSide({
+          drawPositionCollectionAssignment,
           positionAssignments,
           displaySideNumber,
           seedAssignments,
@@ -286,6 +351,10 @@ export function getAllStructureMatchUps({
           isFeedRound,
         });
 
+        const existingSide = matchUp.sides?.find(
+          (existing) => existing.sideNumber === sideNumber
+        );
+
         // drawPositions for consolation structures are offset by the number of fed positions in subsequent rounds
         // columnPosition gives an ordered position value relative to a single column
         const columnPosition = (roundPosition - 1) * 2 + index + 1;
@@ -293,7 +362,11 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRoundRanges &&
           sourceDrawPositionRoundRanges[columnPosition];
 
-        return Object.assign({}, side, { sourceDrawPositionRange });
+        return {
+          ...side,
+          ...existingSide,
+          sourceDrawPositionRange,
+        };
       });
       Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
     }
@@ -301,16 +374,12 @@ export function getAllStructureMatchUps({
     if (matchUp.collectionId) {
       // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
-      const collectionDefinition = collectionDefinitions.reduce(
-        (definition, candidate) => {
-          return candidate.collectionId === matchUp.colectionId
-            ? candidate
-            : definition;
-        },
-        undefined
+      const collectionDefinition = collectionDefinitions.find(
+        (definition) => definition.collectionId === matchUp.collectionId
       );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
+
       if (!matchUp.matchUpFormat && matchUpFormat) {
         Object.assign(matchUpWithContext, { matchUpFormat });
       }
@@ -329,41 +398,40 @@ export function getAllStructureMatchUps({
       if (!matchUp.matchUpType) {
         const matchUpType =
           structure.matchUpType || drawDefinition?.matchUpType;
-        if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
+        if (matchUpType) {
+          Object.assign(matchUpWithContext, { matchUpType });
+        }
       }
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
-      matchUpWithContext.sides
-        .filter((f) => f)
-        .forEach((side) => {
-          if (side.participantId) {
-            const participant = findParticipant({
-              tournamentParticipants,
-              policyDefinition: appliedPolicies,
-              participantId: side.participantId,
-            });
-            if (participant) {
-              Object.assign(side, { participant });
-            }
+      matchUpWithContext.sides.filter(Boolean).forEach((side) => {
+        if (side.participantId) {
+          const participant = findParticipant({
+            tournamentParticipants,
+            policyDefinition: appliedPolicies,
+            participantId: side.participantId,
+          });
+          if (participant) {
+            Object.assign(side, { participant });
           }
+        }
 
-          if (side.participant && side.participant.individualParticipantIds) {
-            const individualParticipants = side.participant.individualParticipantIds.map(
-              (participantId) => {
-                return findParticipant({
-                  policyDefinition: appliedPolicies,
-                  tournamentParticipants,
-                  participantId,
-                });
-              }
-            );
-            Object.assign(side.participant, { individualParticipants });
-          }
-        });
+        if (side.participant && side.participant.individualParticipantIds) {
+          const individualParticipants =
+            side.participant.individualParticipantIds.map((participantId) => {
+              return findParticipant({
+                policyDefinition: appliedPolicies,
+                tournamentParticipants,
+                participantId,
+              });
+            });
+          Object.assign(side.participant, { individualParticipants });
+        }
+      });
 
       if (!matchUpWithContext.matchUpType) {
-        const matchUpType = getMatchUpType({ matchUp: matchUpWithContext });
+        const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });
         if (matchUpType) Object.assign(matchUpWithContext, { matchUpType });
       }
     }
@@ -377,10 +445,8 @@ export function getAllStructureMatchUps({
     Object.assign(matchUpWithContext, { readyToScore, hasContext: true });
 
     if (hasParticipants) {
-      const {
-        allParticipantsCheckedIn,
-        checkedInParticipantIds,
-      } = getCheckedInParticipantIds({ matchUp: matchUpWithContext });
+      const { allParticipantsCheckedIn, checkedInParticipantIds } =
+        getCheckedInParticipantIds({ matchUp: matchUpWithContext });
 
       Object.assign(matchUpWithContext, {
         allParticipantsCheckedIn,

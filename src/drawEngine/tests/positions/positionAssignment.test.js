@@ -78,9 +78,8 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     });
     expect(result).toMatchObject(SUCCESS);
     ({ drawDefinition } = drawEngine.getState());
-    const {
-      unassignedPositions: stillUnassigned,
-    } = structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } =
+      structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -136,9 +135,8 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
     });
     expect(result).toMatchObject(SUCCESS);
     ({ drawDefinition } = drawEngine.getState());
-    const {
-      unassignedPositions: stillUnassigned,
-    } = structureAssignedDrawPositions({ drawDefinition, structureId });
+    const { unassignedPositions: stillUnassigned } =
+      structureAssignedDrawPositions({ drawDefinition, structureId });
     expect(stillUnassigned.length).toEqual(participantIds.length - 1 - i);
   });
 
@@ -178,9 +176,8 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   const { structure: elimination } = drawEngine
     .devContext(true)
     .generateDrawType();
-  const {
-    positionAssignments: eliminationAssignments,
-  } = structureAssignedDrawPositions({ structure: elimination });
+  const { positionAssignments: eliminationAssignments } =
+    structureAssignedDrawPositions({ structure: elimination });
   expect(eliminationAssignments.length).toEqual(16);
 
   reset();
@@ -190,8 +187,7 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   const { structure: roundRobin } = drawEngine
     .devContext(true)
     .generateDrawType({ drawType });
-  const {
-    positionAssignments: roundRobinAssignments,
-  } = structureAssignedDrawPositions({ structure: roundRobin });
+  const { positionAssignments: roundRobinAssignments } =
+    structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments.length).toEqual(16);
 });

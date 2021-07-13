@@ -188,7 +188,7 @@ export function playoffEntries({ drawDefinition, structureId }) {
               }).extension?.value;
               return results ? { [participantId]: results } : undefined;
             })
-            .filter((f) => f)
+            .filter(Boolean)
         );
         Object.keys(results)
           .filter((key) => {

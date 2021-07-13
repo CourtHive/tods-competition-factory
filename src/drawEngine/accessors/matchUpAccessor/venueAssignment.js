@@ -1,7 +1,7 @@
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 
 export function matchUpAssignedVenueId({ matchUp }) {
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
   const lastCourtAssignmentItem = timeItems

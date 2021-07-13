@@ -1,3 +1,22 @@
+import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
+import { isValidMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
+import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
+import { getPositionAssignments } from '../../getters/getPositionAssignments';
+import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { getCourts, publicFindCourt } from '../../getters/courtGetter';
+import { getParticipantScaleItem } from './getParticipantScaleItem';
+import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
+import { getVenues, findVenue } from '../../getters/venueGetter';
+import { publicFindMatchUp } from '../../getters/matchUpsGetter';
+import { getEvent, getEvents } from '../../getters/eventGetter';
+import { matchUpActions } from '../../getters/matchUpActions';
+import { bulkUpdatePublishedEventIds } from './publishState';
+import { getParticipantSignInStatus } from './signInStatus';
+import { getPolicyDefinition } from './getPolicyDefinition';
+import { getEventProperties } from './getEventProperties';
+import { credits } from '../../../fixtures/credits';
+import { positionActions } from './positionQueries';
+import { makeDeepCopy } from '../../../utilities';
 import {
   allTournamentMatchUps,
   tournamentMatchUps,
@@ -7,15 +26,6 @@ import {
   drawMatchUps,
 } from '../../getters/matchUpsGetter';
 
-import { getParticipantScaleItem } from './getParticipantScaleItem';
-import { getEventProperties } from './getEventProperties';
-import { getParticipantSignInStatus } from './signInStatus';
-import { bulkUpdatePublishedEventIds } from './publishState';
-import { matchUpActions } from '../../getters/matchUpActions';
-import { getEvent, getEvents } from '../../getters/eventGetter';
-import { getVenues, findVenue } from '../../getters/venueGetter';
-import { getCourts, publicFindCourt } from '../../getters/courtGetter';
-import { participantScaleItem } from '../../accessors/participantScaleItem';
 import {
   findEventExtension,
   findTournamentExtension,
@@ -30,17 +40,10 @@ import {
   getDrawDefinitionTimeItem,
 } from './timeItems';
 
-import { publicFindMatchUp } from '../../getters/matchUpsGetter';
-import { getPolicyDefinition } from './getPolicyDefinition';
-import { makeDeepCopy } from '../../../utilities';
-import { credits } from '../../../fixtures/credits';
-import { positionActions } from './positionQueries';
-import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
-import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
-import { getPositionAssignments } from '../../getters/getPositionAssignments';
-
-function getDrawDefinition({ drawDefinition }) {
+function getDrawDefinition({ tournamentRecord, drawDefinition }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return { drawDefinition: makeDeepCopy(drawDefinition) };
 }
 
@@ -65,6 +68,9 @@ const queryGovernor = {
   getDrawDefinition,
   getEventProperties,
   getPositionAssignments,
+  isValidMatchUpFormat,
+
+  getMaxEntryPosition,
 
   getVenues,
   findVenue,

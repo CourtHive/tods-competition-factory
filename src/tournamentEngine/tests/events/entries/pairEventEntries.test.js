@@ -2,13 +2,11 @@ import { generateTournamentWithParticipants } from '../../../../mocksEngine/gene
 import drawEngine from '../../../../drawEngine/sync';
 import { tournamentEngine } from '../../../sync';
 
-import { DOUBLES } from '../../../../constants/eventConstants';
+import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { DOUBLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantTypes';
-import {
-  UNPAIRED,
-  WITHDRAWN,
-} from '../../../../constants/entryStatusConstants';
+import { isUngrouped } from '../../../../global/isUngrouped';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = generateTournamentWithParticipants({
@@ -50,8 +48,8 @@ it('can add doubles events to a tournament record', () => {
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(33);
 
-  const unpairedEntries = updatedEvent.entries.filter(
-    (entry) => entry.entryStatus === UNPAIRED
+  const unpairedEntries = updatedEvent.entries.filter((entry) =>
+    isUngrouped(entry.entryStatus)
   );
   const unpairedParticipantIds = unpairedEntries.map(
     (entry) => entry.participantId
@@ -70,10 +68,8 @@ it('can add doubles events to a tournament record', () => {
     eventId,
     event: eventResult,
   };
-  const {
-    success: drawGenrationSuccess,
-    drawDefinition,
-  } = tournamentEngine.generateDrawDefinition(values);
+  const { success: drawGenrationSuccess, drawDefinition } =
+    tournamentEngine.generateDrawDefinition(values);
   expect(drawGenrationSuccess).toEqual(true);
 
   const { matchUps } = drawEngine.setState(drawDefinition).allDrawMatchUps();

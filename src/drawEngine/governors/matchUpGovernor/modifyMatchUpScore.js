@@ -1,3 +1,4 @@
+import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
@@ -5,8 +6,9 @@ import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { TEAM } from '../../../constants/matchUpTypes';
 
 /**
  *
@@ -32,12 +34,25 @@ export function modifyMatchUpScore({
   matchUpStatusCodes,
   matchUpFormat,
   winningSide,
+  matchUpId,
   matchUp,
   score,
+  notes,
 
   removeScore,
   removeWinningSide,
 }) {
+  if (matchUp.matchUpType === TEAM) {
+    if (matchUpId && matchUp.matchUpId !== matchUpId) {
+      // the modification is to be applied to a tieMatchUp
+      ({ matchUp } = findMatchUp({ drawDefinition, matchUpId }));
+    } else {
+      // the modification is to be applied to the TEAM matchUp
+    }
+  } else {
+    if (matchUp.matchUpId !== matchUpId) console.log('!!!!!');
+  }
+
   if (removeScore) {
     Object.assign(matchUp, toBePlayed);
   } else if (score) {
@@ -49,43 +64,46 @@ export function modifyMatchUpScore({
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
 
-  // middleware methods
-  if (drawDefinition) {
-    const { matchUpId } = matchUp;
-    const { structure } = findMatchUp({
-      drawDefinition,
-      matchUpId,
+  // TODO: can this find be avoided by passing inContext matchUp details?
+  const { structure } = findMatchUp({
+    drawDefinition,
+    matchUpId,
+  });
+
+  if (structure?.structureType === CONTAINER) {
+    matchUpFormat =
+      matchUpFormat ||
+      matchUp.matchUpFormat ||
+      structure?.matchUpFormat ||
+      drawDefinition.matchUpFormat;
+
+    const itemStructure = structure.structures.find((itemStructure) => {
+      return itemStructure?.matchUps.find(
+        (matchUp) => matchUp.matchUpId === matchUpId
+      );
     });
 
-    if (structure?.structureType === CONTAINER) {
-      matchUpFormat =
-        matchUpFormat ||
-        matchUp.matchUpFormat ||
-        structure?.matchUpFormat ||
-        drawDefinition.matchUpFormat;
+    const { matchUps } = getAllStructureMatchUps({
+      structure: itemStructure,
+      inContext: true,
+    });
 
-      const itemStructure = structure.structures.find((itemStructure) => {
-        return itemStructure?.matchUps.find(
-          (matchUp) => matchUp.matchUpId === matchUpId
-        );
-      });
-      const { matchUps } = getAllStructureMatchUps({
-        structure: itemStructure,
-        inContext: true,
-      });
+    updateAssignmentParticipantResults({
+      tournamentRecord,
+      drawDefinition,
+      event,
 
-      updateAssignmentParticipantResults({
-        tournamentRecord,
-        drawDefinition,
-        event,
+      positionAssignments: itemStructure.positionAssignments,
+      matchUpFormat,
+      matchUps,
+    });
+  }
 
-        positionAssignments: itemStructure.positionAssignments,
-        matchUpFormat,
-        matchUps,
-      });
-    }
+  if (notes) {
+    addNotes({ element: matchUp, notes });
   }
 
   addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+
   return SUCCESS;
 }

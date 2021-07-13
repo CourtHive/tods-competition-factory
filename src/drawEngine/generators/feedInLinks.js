@@ -1,4 +1,6 @@
 import { generateRange } from '../../utilities';
+import { getDevContext } from '../../global/globalState';
+
 import {
   BOTTOM_UP,
   TOP_DOWN,
@@ -16,7 +18,7 @@ export function feedInLinks({
 }) {
   const consolationMatchUps = consolationStructure.matchUps;
   const roundsFed = consolationMatchUps.reduce((p, matchUp) => {
-    const drawPositions = (matchUp.drawPositions || []).filter((f) => f);
+    const drawPositions = (matchUp.drawPositions || []).filter(Boolean);
     return drawPositions.length && !p.includes(matchUp.roundNumber)
       ? p.concat(matchUp.roundNumber)
       : p;
@@ -49,18 +51,23 @@ export function feedInLinks({
         },
         target: {
           feedProfile,
-          groupedOrder: roundGroupedOrder[roundNumber - 1],
           roundNumber: targetRound,
           structureId: consolationStructure.structureId,
         },
       };
+      const groupedOrder = roundGroupedOrder[roundNumber - 1];
+      if (groupedOrder) link.target.groupedOrder = groupedOrder;
+      if (getDevContext()) {
+        link.source.structureName = mainStructure.structureName;
+        link.target.structureName = consolationStructure.structureName;
+      }
       if (roundNumber === 2 && fmlc) {
         link.linkCondition = FIRST_MATCHUP;
         link.target.feedProfile = TOP_DOWN;
       }
       return roundsFed.includes(targetRound) ? link : undefined;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   return links;
 }

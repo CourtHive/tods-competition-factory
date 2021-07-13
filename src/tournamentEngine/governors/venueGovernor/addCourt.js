@@ -2,6 +2,7 @@ import { UUID, generateRange, makeDeepCopy } from '../../../utilities';
 import { addNotice, getDevContext } from '../../../global/globalState';
 import { courtTemplate } from '../../generators/courtTemplate';
 import { validDateAvailability } from './dateAvailability';
+import { extractDate, extractTime } from '../../../utilities/dateTime';
 import { findVenue } from '../../getters/venueGetter';
 
 import {
@@ -19,13 +20,19 @@ import { MODIFY_VENUE } from '../../../constants/topicConstants';
  * @param {object} court - court object
  * { courtId, courtName, altitude, latitude, longitude, surfaceCategory, surfaceType, surfaceDate, dateAvailability, onlineResources, courtDimensions, notes }
  */
-export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
+export function addCourt({
+  tournamentRecord,
+  venueId,
+  court,
+  disableNotice,
+  returnDetails,
+}) {
   const { venue } = findVenue({ tournamentRecord, venueId });
   if (!venue) return { error: VENUE_NOT_FOUND };
 
   if (!venue.courts) venue.courts = [];
 
-  const courtRecord = Object.assign({}, courtTemplate(), { venueId });
+  const courtRecord = { ...courtTemplate(), venueId };
   if (!courtRecord.courtId) {
     courtRecord.courtId = UUID();
   }
@@ -37,40 +44,51 @@ export function addCourt({ tournamentRecord, venueId, court, disableNotice }) {
   if (courtExists) {
     return { error: COURT_EXISTS };
   } else {
-    const errors = [];
-    Object.keys(courtRecord).forEach((attribute) => {
+    // build new dateAvailability object with date/time extraction
+    const dateAvailability = (court?.dateAvailability || []).map(
+      (availabilty) => ({
+        ...availabilty,
+        date: extractDate(availabilty.date),
+        startTime: extractTime(availabilty.startTime),
+        endTime: extractTime(availabilty.endTime),
+        bookings: availabilty.bookings?.map(
+          ({ startTime, endTime, bookingType }) => ({
+            startTime: extractTime(startTime),
+            endTime: extractTime(endTime),
+            bookingType,
+          })
+        ),
+      })
+    );
+
+    for (const attribute of Object.keys(courtRecord)) {
       if (court[attribute]) {
         if (attribute === 'dateAvailability') {
-          const result = validDateAvailability({
-            dateAvailability: court[attribute],
-          });
+          const result = validDateAvailability({ dateAvailability });
           const { valid, error } = result;
           if (valid) {
-            courtRecord[attribute] = court[attribute];
+            courtRecord.dateAvailability = dateAvailability;
           } else {
-            error.errors.forEach((error) => errors.push(error));
+            if (error) return { error };
           }
         } else {
           courtRecord[attribute] = court[attribute];
         }
       }
-    });
+    }
     venue.courts.push(courtRecord);
 
     if (!disableNotice) {
       addNotice({ topic: MODIFY_VENUE, payload: { venue } });
     }
 
-    if (errors.length) {
-      return { error: { errors } };
-    } else {
-      return getDevContext()
-        ? Object.assign({}, SUCCESS, {
-            court: makeDeepCopy(courtRecord),
-            venueId,
-          })
-        : SUCCESS;
-    }
+    return getDevContext() || returnDetails
+      ? {
+          ...SUCCESS,
+          court: makeDeepCopy(courtRecord),
+          venueId,
+        }
+      : { ...SUCCESS };
   }
 }
 
@@ -100,14 +118,20 @@ export function addCourts({
   });
 
   const result = courts.map((court) =>
-    addCourt({ tournamentRecord, venueId, court, disableNotice: true })
+    addCourt({
+      tournamentRecord,
+      venueId,
+      court,
+      disableNotice: true,
+      returnDetails: true,
+    })
   );
-  const courtRecords = result.map((outcome) => outcome.court).filter((f) => f);
+  const courtRecords = result.map((outcome) => outcome.court).filter(Boolean);
 
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });
     addNotice({ topic: MODIFY_VENUE, payload: { venue } });
-    return Object.assign({}, { courts: makeDeepCopy(courtRecords) }, SUCCESS);
+    return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
   } else {
     return Object.assign(
       {},

@@ -10,7 +10,7 @@ import {
 
 import {
   DIRECT_ACCEPTANCE,
-  UNPAIRED,
+  UNGROUPED,
 } from '../../../../constants/entryStatusConstants';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
@@ -82,7 +82,7 @@ export function modifyEventEntries({
     participants: newParticipants,
   });
 
-  if (result.error) return { error: result.error };
+  if (result.error) return result;
 
   // get all participantIds for PAIR participants
   const pairParticipantEntries = participantIdPairs
@@ -101,7 +101,7 @@ export function modifyEventEntries({
 
   const unpairedParticipantEntries = unpairedParticipantIds.map(
     (participantId) => ({
-      entryStatus: UNPAIRED,
+      entryStatus: UNGROUPED,
       participantId,
       entryStage,
     })

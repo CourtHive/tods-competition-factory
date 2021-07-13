@@ -9,10 +9,10 @@ import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConsta
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
-export function getAllDrawMatchUps(props) {
-  if (!props.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+export function getAllDrawMatchUps(params) {
+  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  Object.assign(props, { requireParticipants: false });
+  Object.assign(params, { requireParticipants: false });
 
   const {
     abandonedMatchUps,
@@ -20,8 +20,9 @@ export function getAllDrawMatchUps(props) {
     upcomingMatchUps,
     pendingMatchUps,
     byeMatchUps,
-    mappedMatchUps,
-  } = getDrawMatchUps(props);
+
+    matchUpsMap,
+  } = getDrawMatchUps(params);
   const matchUps = [].concat(
     ...abandonedMatchUps,
     ...completedMatchUps,
@@ -30,7 +31,7 @@ export function getAllDrawMatchUps(props) {
     ...byeMatchUps
   );
 
-  return { matchUps, mappedMatchUps };
+  return { matchUps, matchUpsMap };
 }
 
 export function getDrawMatchUps({
@@ -41,12 +42,15 @@ export function getDrawMatchUps({
   drawDefinition,
   matchUpFilters,
   contextFilters,
-  mappedMatchUps,
+  policyDefinition,
   tournamentRecord,
   includeByeMatchUps,
   requireParticipants,
   tournamentParticipants,
   tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
+
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -57,9 +61,13 @@ export function getDrawMatchUps({
   let allCompletedMatchUps = [];
 
   tournamentParticipants =
-    tournamentParticipants || tournamentRecord?.prticipants;
+    (tournamentParticipants?.length && tournamentParticipants) ||
+    tournamentRecord?.participants;
   const { structures } = getDrawStructures({ drawDefinition });
-  mappedMatchUps = mappedMatchUps || getMatchUpsMap({ drawDefinition });
+
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
+  }
 
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
   // ...optionally pass these seedAssignments to other stage structures
@@ -75,15 +83,18 @@ export function getDrawMatchUps({
       context,
       structure,
       roundFilter,
-      mappedMatchUps,
       drawDefinition,
       matchUpFilters,
       contextFilters,
+      policyDefinition,
       includeByeMatchUps,
       requireParticipants,
       tournamentParticipants,
       tournamentAppliedPolicies,
+      scheduleVisibilityFilters,
       inContext: inContext || nextMatchUps,
+
+      matchUpsMap,
     });
 
     allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
@@ -94,7 +105,8 @@ export function getDrawMatchUps({
   });
 
   const matchUpGroups = {
-    mappedMatchUps,
+    matchUpsMap,
+
     byeMatchUps: allByeMatchUps,
     pendingMatchUps: allPendingMatchUps,
     upcomingMatchUps: allUpcomingMatchUps,

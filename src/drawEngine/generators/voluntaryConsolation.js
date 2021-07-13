@@ -10,6 +10,7 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function generateVoluntaryConsolationStructure({
   drawDefinition,
   participants,
+  matchUpType,
   event,
 
   structureName = VOLUNTARY_CONSOLATION,
@@ -20,12 +21,14 @@ export function generateVoluntaryConsolationStructure({
   const stage = VOLUNTARY_CONSOLATION;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
+  matchUpType = matchUpType || drawDefinition.matchUpType;
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const { matchUps } = treeMatchUps({ drawSize });
+  const { matchUps } = treeMatchUps({ drawSize, matchUpType });
 
   const structure = structureTemplate({
     stage,
     matchUps,
+    matchUpType,
     structureName,
     structureAbbreviation,
     structureId,

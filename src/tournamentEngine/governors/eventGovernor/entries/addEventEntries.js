@@ -1,15 +1,13 @@
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
-import { addDrawEntries } from '../../../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
+import { isUngrouped } from '../../../../global/isUngrouped';
 import { removeEventEntries } from './removeEventEntries';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import {
-  DIRECT_ACCEPTANCE,
-  UNPAIRED,
-} from '../../../../constants/entryStatusConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantTypes';
+import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
@@ -19,14 +17,17 @@ import {
 
 /**
  *
+ * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
+ *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string} eventId - tournamentEngine automatically retrieves event
+ * @param {string} drawId - optional - also add to drawDefinition.entries & flightProfile.drawEntries (if possible)
  * @param {string[]} participantIds - ids of all participants to add to event
- * @param {string} enryStatus - entryStatus enum, e.g. DIRECT_ACCEPTANCE, ALTERNATE, UNPAIRED
- * @param {string} entryStage - entryStage enum, e.g. QUALIFYING, MAIN
+ * @param {string} enryStatus - entryStatus enum
+ * @param {string} entryStage - entryStage enum
  *
  */
-export function addEventEntries(props) {
+export function addEventEntries(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -38,7 +39,7 @@ export function addEventEntries(props) {
     entryStage = MAIN,
 
     autoEntryPositions = true,
-  } = props;
+  } = params;
 
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length) {
@@ -61,7 +62,7 @@ export function addEventEntries(props) {
       if (
         event.eventType === DOUBLES &&
         participant.participantType === INDIVIDUAL &&
-        entryStatus === UNPAIRED
+        isUngrouped(entryStatus)
       ) {
         return true;
       }
@@ -90,14 +91,24 @@ export function addEventEntries(props) {
       });
     }
   });
+
+  let message;
   if (drawId) {
-    addDrawEntries({
-      drawId,
-      drawDefinition,
+    const result = addDrawEntries({
       participantIds: validParticipantIds,
+      autoEntryPositions,
+      drawDefinition,
       entryStatus,
       entryStage,
+      drawId,
+      event,
     });
+
+    // Ignore errors if drawId is included but entry can't be added to drawDefinition/flightProfile
+    // return errors as message to client
+    if (result.error) {
+      message = result.error;
+    }
   }
 
   // now remove any unpaired participantIds which exist as part of added paired participants
@@ -106,7 +117,7 @@ export function addEventEntries(props) {
       (entry) => entry.participantId
     );
     const unpairedIndividualParticipantIds = event.entries
-      .filter((entry) => entry.entryStatus === UNPAIRED)
+      .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord.participants || [];
     const pairedIndividualParticipantIds = tournamentParticipants
@@ -117,11 +128,13 @@ export function addEventEntries(props) {
       )
       .map((participant) => participant.individualParticipantIds)
       .flat(Infinity);
-    const unpairedParticipantIdsToRemove = unpairedIndividualParticipantIds.filter(
-      (participantId) => pairedIndividualParticipantIds.includes(participantId)
-    );
+    const unpairedParticipantIdsToRemove =
+      unpairedIndividualParticipantIds.filter((participantId) =>
+        pairedIndividualParticipantIds.includes(participantId)
+      );
     if (unpairedParticipantIdsToRemove.length) {
       removeEventEntries({
+        tournamentRecord,
         participantIds: unpairedParticipantIdsToRemove,
         autoEntryPositions: false, // because the method will be called below if necessary
         event,
@@ -139,5 +152,7 @@ export function addEventEntries(props) {
     });
   }
 
-  return !invalidParticipantIds ? SUCCESS : { error: INVALID_PARTICIPANT_IDS };
+  return !invalidParticipantIds
+    ? Object.assign({ message }, SUCCESS)
+    : { error: INVALID_PARTICIPANT_IDS };
 }

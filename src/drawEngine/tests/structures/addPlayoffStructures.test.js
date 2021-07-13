@@ -8,8 +8,8 @@ import {
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({
-    drawSize: 16,
     playoffPositions: [3, 4],
+    drawSize: 16,
   });
   expect(success).toEqual(true);
   const { links, structures } = drawDefinition;
@@ -102,8 +102,8 @@ function drawEngineAddStructuresTest({
   );
   result = drawEngine.devContext(true).addPlayoffStructures({
     structureId: mainStructure.structureId,
-    roundNumbers,
     playoffPositions,
+    roundNumbers,
   });
   return result;
 }

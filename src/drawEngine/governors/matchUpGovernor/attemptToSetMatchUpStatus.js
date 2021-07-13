@@ -9,102 +9,80 @@ import {
 } from './checkStatusType';
 
 import {
+  INVALID_MATCHUP_STATUS,
+  UNRECOGNIZED_MATCHUP_STATUS,
+} from '../../../constants/errorConditionConstants';
+import {
   BYE,
   CANCELLED,
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  UNRECOGNIZED_MATCHUP_STATUS,
-} from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
-export function attemptToSetMatchUpStatus(props) {
-  const {
-    drawDefinition,
-    matchUp,
-    structure,
-    targetData,
-    matchUpStatus,
-    mappedMatchUps,
-    matchUpStatusCodes,
-  } = props;
+export function attemptToSetMatchUpStatus(params) {
+  const { matchUp, structure, matchUpStatus } = params;
 
-  if (matchUp.winningSide) {
-    if (matchUpStatus === BYE) {
-      return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-    } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      if (matchUpStatus === DOUBLE_WALKOVER) {
-        const {
-          errors: participantDirectionErrors,
-        } = removeDirectedParticipants(props);
-        if (participantDirectionErrors) {
-          return { error: participantDirectionErrors };
-        }
-        const result = checkDoubleWalkoverPropagation({
-          drawDefinition,
-          mappedMatchUps,
-          targetData,
-        });
-        if (result.error) return result;
-      }
-      modifyMatchUpScore({
-        matchUp,
-        drawDefinition,
-        matchUpStatus,
-        matchUpStatusCodes,
-      });
-    } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-      // only possible to remove winningSide if neither winner
-      // nor loser has been directed further into target structures
-      const { errors: participantDirectionErrors } = removeDirectedParticipants(
-        props
-      );
-      if (participantDirectionErrors) {
-        return { error: participantDirectionErrors };
-      }
-      modifyMatchUpScore({
-        matchUp,
-        drawDefinition,
-        matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-        matchUpStatusCodes,
-      });
-    } else {
-      return { error: UNRECOGNIZED_MATCHUP_STATUS };
-    }
-  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    const removeScore = [CANCELLED, WALKOVER].includes(matchUpStatus);
+  const isBYE = matchUpStatus === BYE;
+  const WOWO = matchUpStatus === DOUBLE_WALKOVER;
+  const existingWinningSide = matchUp.winningSide;
+  const directing = isDirectingMatchUpStatus({ matchUpStatus });
+  const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
+
+  const clearScore = () =>
     modifyMatchUpScore({
-      matchUp,
-      drawDefinition,
-      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-      matchUpStatusCodes,
-      removeScore,
+      ...params,
+      removeScore: [CANCELLED, WALKOVER].includes(matchUpStatus),
+      matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
     });
-  } else if (matchUpStatus === BYE) {
-    const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
-    if (result.error) return result;
-  } else {
-    if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      if (matchUpStatus === DOUBLE_WALKOVER) {
-        modifyMatchUpScore({
-          matchUp,
-          drawDefinition,
-          matchUpStatus,
-          matchUpStatusCodes,
-          removeScore: true,
-        });
 
-        doubleWalkoverAdvancement(props);
-      } else {
-        return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-      }
-    } else {
-      return { error: UNRECOGNIZED_MATCHUP_STATUS };
+  return (
+    (!directing && !nonDirecting && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
+    (existingWinningSide && removeWinningSide(params, directing, WOWO)) ||
+    (nonDirecting && clearScore()) ||
+    (isBYE && attemptToSetMatchUpStatusBYE({ matchUp, structure })) ||
+    (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
+    (WOWO && modifyScoreAndAdvanceWOWO(params)) || {
+      error: INVALID_MATCHUP_STATUS,
     }
-  }
+  );
+}
 
-  return SUCCESS;
+function removeWinningSide(params, directing, WOWO) {
+  return (
+    (directing && WOWO && removeDoubleWalkover(params)) ||
+    (directing && modifyMatchUpScore(params)) ||
+    removeAndModifyScore(params)
+  );
+}
+
+function removeDoubleWalkover(params) {
+  const { drawDefinition, matchUpsMap, targetData } = params;
+  let result = removeDirectedParticipants(params);
+  if (result.error) return result;
+
+  result = checkDoubleWalkoverPropagation({
+    drawDefinition,
+    matchUpsMap,
+    targetData,
+  });
+  if (result.error) return result;
+
+  return modifyMatchUpScore(params);
+}
+
+function removeAndModifyScore(params) {
+  const result = removeDirectedParticipants(params);
+  if (result.error) return result;
+
+  return modifyMatchUpScore({
+    ...params,
+    matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
+  });
+}
+
+function modifyScoreAndAdvanceWOWO(params) {
+  const result = modifyMatchUpScore({ ...params, removeScore: true });
+  if (result.error) return result;
+  return doubleWalkoverAdvancement(params);
 }

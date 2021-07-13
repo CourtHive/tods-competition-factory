@@ -1,3 +1,4 @@
+import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import { SEEDING } from '../../../../constants/scaleConstants';
 
 export function generateSeedingScaleItems({
@@ -7,6 +8,8 @@ export function generateSeedingScaleItems({
   scaleName,
   stageEntries,
 }) {
+  if (!scaleAttributes) return { error: MISSING_VALUE };
+
   const seededEntries = Object.assign(
     {},
     ...(scaledEntries || [])

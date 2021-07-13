@@ -1,7 +1,15 @@
+import { modifyEventMatchUpFormatTiming } from './matchUpFormatTiming/modifyEventMatchUpFormatTiming';
+import { removeEventMatchUpFormatTiming } from './matchUpFormatTiming/removeEventMatchUpFormatTiming';
+import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
+import { getModifiedMatchUpFormatTiming } from './matchUpFormatTiming/getModifiedMatchUpTiming';
+import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFormatTimingUpdate';
+import { isValidSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
+import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
-import { getEventMatchUpFormatTiming } from './getEventMatchUpFormatTiming';
-import { modifyMatchUpFormatTiming } from './modifyMatchUpFormatTiming';
-import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
+import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
+import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
+import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
@@ -15,6 +23,10 @@ import {
   addMatchUpOfficial,
   addMatchUpScheduleItems,
 } from './scheduleItems';
+import {
+  getSchedulingProfile,
+  setSchedulingProfile,
+} from './schedulingProfile';
 
 const scheduleGovernor = {
   assignMatchUpCourt,
@@ -30,8 +42,20 @@ const scheduleGovernor = {
   addMatchUpOfficial,
 
   getMatchUpFormatTiming,
-  getEventMatchUpFormatTiming,
   modifyMatchUpFormatTiming,
+  getModifiedMatchUpFormatTiming,
+  getEventMatchUpFormatTiming,
+  modifyEventMatchUpFormatTiming,
+  removeEventMatchUpFormatTiming,
+  getMatchUpFormatTimingUpdate,
+
+  getMatchUpDailyLimits, // document
+  setMatchUpDailyLimits, // document
+  getMatchUpDailyLimitsUpdate, // document
+  isValidSchedulingProfile,
+
+  setSchedulingProfile,
+  getSchedulingProfile,
 
   removeMatchUpCourtAssignment,
 

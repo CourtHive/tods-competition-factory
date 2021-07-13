@@ -40,7 +40,5 @@ export function getTournamentInfo({ tournamentRecord }) {
     tournamentAddresses,
   }))(tournamentRecord);
 
-  return Object.assign({}, SUCCESS, {
-    tournamentInfo: makeDeepCopy(tournamentInfo),
-  });
+  return { ...SUCCESS, tournamentInfo: makeDeepCopy(tournamentInfo) };
 }

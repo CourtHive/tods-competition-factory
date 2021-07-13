@@ -27,20 +27,15 @@ export function keyValueTimedSetScore({
     } else if (analysis.isIncompleteSetScore) {
       message = 'incomplete set scoreString';
     } else if (!analysis.isIncompleteSetScore) {
-      ({
-        sets,
-        scoreString,
-        winningSide,
-        matchUpStatus,
-        updated,
-      } = processOutcome({
-        lowSide,
-        value,
-        sets,
-        scoreString,
-        matchUpStatus,
-        winningSide,
-      }));
+      ({ sets, scoreString, winningSide, matchUpStatus, updated } =
+        processOutcome({
+          lowSide,
+          value,
+          sets,
+          scoreString,
+          matchUpStatus,
+          winningSide,
+        }));
     }
   } else if (value === BACKSPACE) {
     ({ scoreString, sets, outcomeRemoved } = removeFromScore({

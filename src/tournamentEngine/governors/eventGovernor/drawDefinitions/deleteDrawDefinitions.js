@@ -1,11 +1,16 @@
+import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile';
 import { addEventTimeItem } from '../../tournamentGovernor/addTimeItem';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
 
+import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { DRAW_DEFINITION_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 import {
   HIDDEN,
   PUBLIC,
@@ -14,11 +19,11 @@ import {
 } from '../../../../constants/timeItemConstants';
 import {
   AUDIT,
-  DELETED_MATCHUPIDS,
+  DELETED_MATCHUP_IDS,
 } from '../../../../constants/topicConstants';
-import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawId = Array.isArray(drawIds) && drawIds[0];
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
   const auditTrail = [];
@@ -49,6 +54,9 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
       }
       return !drawIds.includes(drawDefinition.drawId);
     });
+
+    // cleanup references to drawId in schedulingProfile extension
+    checkSchedulingProfile({ tournamentRecord });
 
     const itemType = `${PUBLISH}.${STATUS}`;
     const publishStatus = getTimeItem({ event, itemType });
@@ -82,7 +90,11 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     const result = addEventTimeItem({ event, timeItem });
     if (result.error) return { error: result.error };
   }
-  if (matchUpIds.length)
-    addNotice({ topic: DELETED_MATCHUPIDS, payload: { matchUpIds } });
+  if (matchUpIds.length) {
+    addNotice({
+      topic: DELETED_MATCHUP_IDS,
+      payload: { matchUpIds },
+    });
+  }
   return SUCCESS;
 }

@@ -6,12 +6,14 @@ import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can autoSeed by Rankings', () => {
-  mocksEngine.generateTournamentRecord({ participantCount: 32 });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantCount: 32,
+  });
   const event = {
     eventType: SINGLES,
   };
 
-  let result = tournamentEngine.addEvent({ event });
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
   expect(result.success).toEqual(true);
   const { event: createdEvent } = result;
   const { eventId } = createdEvent;
@@ -68,7 +70,7 @@ it('can autoSeed by Rankings', () => {
   });
   let scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([8, 7, 6, 5, 4, 3, 1, 2]);
 
   result = tournamentEngine.setParticipantScaleItems({
@@ -101,7 +103,7 @@ it('can autoSeed by Rankings', () => {
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([3, 4, 5, 1, 2, 6, 7, 8]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,
@@ -122,7 +124,7 @@ it('can autoSeed by Rankings', () => {
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
-    .filter((f) => f);
+    .filter(Boolean);
   expect(scaleValues).toEqual([8, 3, 2, 1, 7, 6, 5, 4]);
   result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds: result.scaleItemsWithParticipantIds,

@@ -1,3 +1,6 @@
+import { validExtension } from '../../../global/validation/validExtension';
+import { findParticipant } from '../../../common/deducers/findParticipant';
+
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
@@ -9,20 +12,11 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { findParticipant } from '../../../common/deducers/findParticipant';
 
-export function addExtension({ element, extension }) {
+export function addExtension({ element, extension } = {}) {
   if (!element) return { error: MISSING_VALUE };
-  if (!extension) return { error: MISSING_VALUE, message: 'Missing extension' };
-
-  const extensionAttributes = Object.keys(extension);
-  const requiredAttributes = ['name', 'value'];
-  const validExtension =
-    requiredAttributes.filter((attribute) =>
-      extensionAttributes.includes(attribute)
-    ).length === requiredAttributes.length;
-
-  if (!validExtension) return { error: INVALID_VALUES };
+  if (typeof element !== 'object') return { error: INVALID_VALUES };
+  if (!validExtension(extension)) return { error: INVALID_VALUES };
 
   if (!element.extensions) element.extensions = [];
   const createdAt = new Date().toISOString();
@@ -40,11 +34,11 @@ export function addExtension({ element, extension }) {
   return SUCCESS;
 }
 
-export function removeExtension({ element, name }) {
+export function removeExtension({ element, name } = {}) {
   if (!element) return { error: MISSING_VALUE };
+  if (typeof element !== 'object') return { error: INVALID_VALUES };
   if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
-  if (!element.extensions)
-    return Object.assign({}, SUCCESS, { message: NOT_FOUND });
+  if (!element.extensions) return { ...SUCCESS, message: NOT_FOUND };
 
   element.extensions = element.extensions.filter(
     (extension) => extension?.name !== name
@@ -53,17 +47,17 @@ export function removeExtension({ element, name }) {
   return SUCCESS;
 }
 
-export function addTournamentExtension({ tournamentRecord, extension }) {
+export function addTournamentExtension({ tournamentRecord, extension } = {}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return addExtension({ element: tournamentRecord, extension });
 }
 
-export function addDrawDefinitionExtension({ drawDefinition, extension }) {
+export function addDrawDefinitionExtension({ drawDefinition, extension } = {}) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   return addExtension({ element: drawDefinition, extension });
 }
 
-export function addEventExtension({ event, extension }) {
+export function addEventExtension({ event, extension } = {}) {
   if (!event) return { error: EVENT_NOT_FOUND };
   return addExtension({ element: event, extension });
 }
@@ -72,10 +66,10 @@ export function addParticipantExtension({
   tournamentRecord,
   participantId,
   extension,
-}) {
+} = {}) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-  const tournamentParticipants = tournamentRecord.participants || [];
-  const { participant } = findParticipant({
+  const tournamentParticipants = tournamentRecord?.participants || [];
+  const participant = findParticipant({
     tournamentParticipants,
     participantId,
   });
@@ -83,17 +77,17 @@ export function addParticipantExtension({
   return addExtension({ element: participant, extension });
 }
 
-export function removeTournamentExtension({ tournamentRecord, name }) {
+export function removeTournamentExtension({ tournamentRecord, name } = {}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return removeExtension({ element: tournamentRecord, name });
 }
 
-export function removeDrawDefinitionExtension({ drawDefinition, name }) {
+export function removeDrawDefinitionExtension({ drawDefinition, name } = {}) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
   return removeExtension({ element: drawDefinition, name });
 }
 
-export function removeEventExtension({ event, name }) {
+export function removeEventExtension({ event, name } = {}) {
   if (!event) return { error: EVENT_NOT_FOUND };
   return removeExtension({ element: event, name });
 }
@@ -102,10 +96,10 @@ export function removeParticipantExtension({
   tournamentRecord,
   participantId,
   name,
-}) {
+} = {}) {
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
-  const tournamentParticipants = tournamentRecord.participants || [];
-  const { participant } = findParticipant({
+  const tournamentParticipants = tournamentRecord?.participants || [];
+  const participant = findParticipant({
     tournamentParticipants,
     participantId,
   });

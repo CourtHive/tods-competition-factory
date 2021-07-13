@@ -1,9 +1,14 @@
+import { setDevContext } from '../global/globalState';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {
   const fx = {
     version: () => {
       return '@VERSION@';
+    },
+    devContext: (isDev) => {
+      setDevContext(isDev);
+      return fx;
     },
   };
 

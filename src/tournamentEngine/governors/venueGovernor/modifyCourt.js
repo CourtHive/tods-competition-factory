@@ -33,9 +33,9 @@ export function modifyCourt({
     (attribute) => attribute !== 'courtId'
   );
 
-  const validModificationAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validAttributes.includes(attribute));
+  const validModificationAttributes = Object.keys(modifications).filter(
+    (attribute) => validAttributes.includes(attribute)
+  );
 
   if (!validModificationAttributes.length)
     return { error: NO_VALID_ATTRIBUTES };
@@ -45,15 +45,14 @@ export function modifyCourt({
     (attribute) => !['dateAvailability'].includes(attribute)
   );
 
-  const validReplacementAttributes = Object.keys(
-    modifications
-  ).filter((attribute) => validReplacements.includes(attribute));
+  const validReplacementAttributes = Object.keys(modifications).filter(
+    (attribute) => validReplacements.includes(attribute)
+  );
 
   validReplacementAttributes.forEach((attribute) =>
     Object.assign(court, { [attribute]: modifications[attribute] })
   );
 
-  const errors = [];
   if (modifications.dateAvailability) {
     const result = modifyCourtAvailability({
       tournamentRecord,
@@ -62,12 +61,12 @@ export function modifyCourt({
       courtId,
       force,
     });
-    if (result.error) errors.push(result);
+    if (result.error) return result;
   }
 
   if (!disableNotice) {
     addNotice({ topic: MODIFY_VENUE, payload: { venue } });
   }
 
-  return Object.assign({}, SUCCESS, { court: makeDeepCopy(court) });
+  return { ...SUCCESS, court: makeDeepCopy(court) };
 }

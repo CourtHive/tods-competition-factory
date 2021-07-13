@@ -37,8 +37,8 @@ import {
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function keyValueMatchUpScore(props) {
-  const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = props;
+export function keyValueMatchUpScore(params) {
+  const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = params;
   const { score, winningSide, matchUpStatus, matchUpFormat } = matchUp;
   const scoreString = matchUp.scoreString || score?.scoreStringSide1;
   const sets = matchUp.sets || score?.sets;
@@ -58,7 +58,8 @@ export function keyValueMatchUpScore(props) {
   let updatedMatchUp;
   if (result?.updated) {
     const { sets, scoreString, winningSide, matchUpStatus } = result;
-    updatedMatchUp = Object.assign({}, matchUp, {
+    updatedMatchUp = {
+      ...matchUp,
       sets, // required for present test suites
       scoreString, // required for present test suites
       winningSide,
@@ -66,7 +67,7 @@ export function keyValueMatchUpScore(props) {
       // TODO: this should use the autocomplete function of matchUpScore
       // and the expected behavior is therefore different than keyValueScore
       score: { sets, scoreStringSide1: scoreString },
-    });
+    };
   }
   return {
     updated: result.updated,
@@ -76,10 +77,10 @@ export function keyValueMatchUpScore(props) {
 }
 
 /* shiftFirst indicates that SHIFT key refers to first opponent, rather than second */
-export function keyValueScore(props) {
-  let { lowSide = 1, value } = props;
-  let { scoreString, sets, winningSide, matchUpStatus } = props;
-  const { matchUpFormat, shiftFirst, auto = true } = props;
+export function keyValueScore(params) {
+  let { lowSide = 1, value } = params;
+  let { scoreString, sets, winningSide, matchUpStatus } = params;
+  const { matchUpFormat, shiftFirst, auto = true } = params;
 
   let updated, message;
   const isShifted =
@@ -136,40 +137,29 @@ export function keyValueScore(props) {
   }
 
   if (analysis.isTimedSet) {
-    ({
-      message,
-      sets,
-      scoreString,
-      updated,
-      matchUpStatus,
-      winningSide,
-    } = keyValueTimedSetScore({
-      analysis,
-      lowSide,
-      scoreString,
-      sets,
-      matchUpStatus,
-      winningSide,
-      value,
-    }));
-  } else if (OUTCOMEKEYS.includes(value)) {
-    if (analysis.finalSetIsComplete || winningSide) {
-      message = 'final set is already complete';
-    } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
-      ({
-        sets,
-        scoreString,
-        matchUpStatus,
-        winningSide,
-        updated,
-      } = processOutcome({
+    ({ message, sets, scoreString, updated, matchUpStatus, winningSide } =
+      keyValueTimedSetScore({
+        analysis,
         lowSide,
-        sets,
         scoreString,
+        sets,
         matchUpStatus,
         winningSide,
         value,
       }));
+  } else if (OUTCOMEKEYS.includes(value)) {
+    if (analysis.finalSetIsComplete || winningSide) {
+      message = 'final set is already complete';
+    } else if (!analysis.isTiebreakEntry && !analysis.isIncompleteSetScore) {
+      ({ sets, scoreString, matchUpStatus, winningSide, updated } =
+        processOutcome({
+          lowSide,
+          sets,
+          scoreString,
+          matchUpStatus,
+          winningSide,
+          value,
+        }));
     } else if (analysis.isTiebreakEntry || analysis.isIncompleteSetScore) {
       message = 'incomplete set scoreString or tiebreak entry';
     } else {
@@ -316,7 +306,7 @@ export function keyValueScore(props) {
         value: parseInt(value),
       });
       if (set) set.setNumber = sets?.length + 1 || 1;
-      sets = sets?.concat(set).filter((f) => f) || [set];
+      sets = sets?.concat(set).filter(Boolean) || [set];
       scoreString = newScore || undefined;
     } else {
       console.log('error: unknown outcome');
@@ -324,7 +314,7 @@ export function keyValueScore(props) {
   }
 
   if (updated) {
-    sets = sets?.filter((f) => f);
+    sets = sets?.filter(Boolean);
     const { matchUpWinningSide } = getMatchUpWinner({
       sets,
       winningSide,

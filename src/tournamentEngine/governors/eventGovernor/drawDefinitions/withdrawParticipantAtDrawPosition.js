@@ -11,7 +11,7 @@ import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
  *
  */
 
-export function withdrawParticipantAtDrawPosition(props) {
-  Object.assign(props, { entryStatus: WITHDRAWN });
-  return removeDrawPositionAssignment(props);
+export function withdrawParticipantAtDrawPosition(params) {
+  Object.assign(params, { entryStatus: WITHDRAWN });
+  return removeDrawPositionAssignment(params);
 }

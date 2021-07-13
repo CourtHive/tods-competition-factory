@@ -1,4 +1,5 @@
 import { getTournamentParticipants } from '../../../getters/participants/getTournamentParticipants';
+import { addNotice, getTopics } from '../../../../global/globalState';
 import { makeDeepCopy, UUID } from '../../../../utilities';
 import { addParticipant } from '../addParticipants';
 
@@ -11,7 +12,6 @@ import {
   MISSING_VALUE,
 } from '../../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { addNotice, getTopics } from '../../../../global/globalState';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 
 // TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
@@ -72,7 +72,5 @@ export function createGroupParticipant({
     });
   }
 
-  return Object.assign({}, SUCCESS, {
-    participant: makeDeepCopy(groupParticipant),
-  });
+  return { ...SUCCESS, participant: makeDeepCopy(groupParticipant) };
 }

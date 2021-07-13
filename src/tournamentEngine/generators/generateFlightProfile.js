@@ -14,10 +14,10 @@ import {
   EXISTING_PROFILE,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
-  FLIGHT_PROFILE,
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
 } from '../../constants/flightConstants';
@@ -123,8 +123,9 @@ export function generateFlightProfile({
 
   addEventExtension({ event, extension });
 
-  return Object.assign({}, SUCCESS, {
+  return {
+    ...SUCCESS,
     flightProfile: makeDeepCopy({ flights, scaleAttributes, splitMethod }),
     splitEntries: (getDevContext() && splitEntries) || undefined,
-  });
+  };
 }

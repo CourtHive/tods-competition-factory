@@ -35,11 +35,8 @@ it('can generate drawSize: 8 with 6 participants', () => {
   );
   expect(directAcceptanceEntries.length).toEqual(6);
 
-  const {
-    upcomingMatchUps,
-    pendingMatchUps,
-    byeMatchUps,
-  } = tournamentEngine.tournamentMatchUps();
+  const { upcomingMatchUps, pendingMatchUps, byeMatchUps } =
+    tournamentEngine.tournamentMatchUps();
   expect(upcomingMatchUps.length).toEqual(2);
   expect(pendingMatchUps.length).toEqual(3);
   expect(byeMatchUps.length).toEqual(2);
@@ -57,11 +54,8 @@ it('can generate drawSize: 8 with 6 participants', () => {
   let alternateOption = result.validActions.find(
     ({ type }) => type === ALTERNATE
   );
-  const {
-    method,
-    payload,
-    availableAlternatesParticipantIds,
-  } = alternateOption;
+  const { method, payload, availableAlternatesParticipantIds } =
+    alternateOption;
   const alternateParticipantId = availableAlternatesParticipantIds[0];
   Object.assign(payload, { alternateParticipantId });
   result = tournamentEngine[method](payload);
@@ -140,5 +134,10 @@ it('can generate drawSize: 8 with only 2 participants', () => {
   const secondRoundMatchUpStatuses = unique(
     roundMatchUps[2].map((m) => m.matchUpStatus)
   );
-  expect(secondRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
+  expect(secondRoundMatchUpStatuses).toEqual([BYE]);
+
+  const thirdRoundMatchUpStatuses = unique(
+    roundMatchUps[3].map((m) => m.matchUpStatus)
+  );
+  expect(thirdRoundMatchUpStatuses).toEqual([TO_BE_PLAYED]);
 });

@@ -14,7 +14,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
- * NOTE: some of these parameters are passed directly through to other functions via ...props
+ * NOTE: some of these parameters are passed directly through to other functions via ...params
  *
  * @param {object[]} initialPositionAssignments - positionAssignments before any new participants placed
  * @param {object[]} participantsWithContext - participants with added team/group/pair participantIds arrays
@@ -25,17 +25,18 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  * @param {object} drawDefinition - drawDefinition object
  * @param {boolean} pairedPriority - flag whether to prioritize positions which already have one opponent placed
  * @param {string} structureId - id of the structure in which participants are to be placed
- * @param {object[]} allGroups - map of values and particpantIds which have those values
+ * @param {object[]} allGroups - map of values and participantIds which have those values
  *
  */
-export function generatePositioningCandidate(props) {
+export function generatePositioningCandidate(params) {
   const {
     initialPositionAssignments,
     participantsWithContext,
     opponentsToPlaceCount,
     drawPositionGroups,
     policyAttributes,
-  } = props;
+    // entries,
+  } = params;
 
   const errors = [],
     idCollections = {};
@@ -43,6 +44,19 @@ export function generatePositioningCandidate(props) {
 
   const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
   const isRoundRobin = groupSize > 2;
+
+  // scope the idCollections to entered participants to reduce processing
+  /*
+  const enteredParticipantIds =
+    entries?.map(({ participantId }) => participantId) || [];
+  const enteredParticipantFilter = (participant) =>
+    participant.individualParticipantIds?.length &&
+    intersection(participant.individualParticipantIds, enteredParticipantIds)
+      .length;
+  const relevantContextParticipants = participantsWithContext.filter(
+    enteredParticipantFilter
+  );
+  */
 
   idCollections.groupParticipants = participantsWithContext
     .filter((participant) => participant.participantType === GROUP)
@@ -62,16 +76,13 @@ export function generatePositioningCandidate(props) {
     .map((assignment) => assignment.drawPosition);
 
   generateRange(0, opponentsToPlaceCount).forEach(() => {
-    const {
-      newGroupKey,
-      selectedParticipantId,
-      targetDrawPosition,
-    } = getParticipantPlacement({
-      ...props,
-      groupKey,
-      idCollections,
-      candidatePositionAssignments,
-    });
+    const { newGroupKey, selectedParticipantId, targetDrawPosition } =
+      getParticipantPlacement({
+        ...params,
+        groupKey,
+        idCollections,
+        candidatePositionAssignments,
+      });
     groupKey = newGroupKey;
 
     candidatePositionAssignments.forEach((assignment) => {

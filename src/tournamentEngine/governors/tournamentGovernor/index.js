@@ -1,3 +1,5 @@
+import { addNotes, removeNotes } from './addRemoveNotes';
+
 import {
   setTournamentName,
   setTournamentNotes,
@@ -24,6 +26,9 @@ import {
 } from './addRemoveExtensions';
 
 const tournamentGovernor = {
+  addNotes,
+  removeNotes,
+
   setTournamentName,
   setTournamentNotes,
   setTournamentEndDate,

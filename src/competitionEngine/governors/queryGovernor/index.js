@@ -1,19 +1,34 @@
+import { getCompetitionDateRange } from './getCompetitionDateRange';
+import { credits } from '../../../fixtures/credits';
+import { matchUpActions } from './matchUpActions';
+import {
+  getCompetitionVenues,
+  getVenuesAndCourts,
+} from '../../getters/venuesAndCourtsGetter';
 import {
   allCompetitionMatchUps,
   competitionMatchUps,
   competitionScheduleMatchUps,
 } from '../../getters/matchUpsGetter';
-import { credits } from '../../../fixtures/credits';
-import { findExtensions } from './findExtensions';
-import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
+
+import { SUCCESS } from '../../../constants/resultConstants';
+
+function getTournamentIds({ tournamentRecords }) {
+  const tournamentIds = Object.keys(tournamentRecords);
+  return { ...SUCCESS, tournamentIds };
+}
 
 const queryGovernor = {
+  getCompetitionDateRange,
+  getTournamentIds,
+
   competitionScheduleMatchUps,
   allCompetitionMatchUps,
   competitionMatchUps,
+  matchUpActions,
 
+  getCompetitionVenues,
   getVenuesAndCourts,
-  findExtensions,
   credits,
 };
 

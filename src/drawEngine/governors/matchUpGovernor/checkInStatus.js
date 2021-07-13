@@ -1,9 +1,11 @@
-import { addMatchUpTimeItem } from './timeItems';
-import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
 import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
+import { getCheckedInParticipantIds } from '../../getters/matchUpTimeItems';
+import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { addMatchUpTimeItem } from './timeItems';
 
+import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 import {
+  INVALID_PARTICIPANT_ID,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
@@ -11,7 +13,6 @@ import {
   PARTICIPANT_ALREADY_CHECKED_IN,
   PARTICIPANT_NOT_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
-import { CHECK_IN, CHECK_OUT } from '../../../constants/timeItemConstants';
 
 /*
   function is only able to check whether participant is alredy checked in 
@@ -35,9 +36,13 @@ export function checkInParticipant({
       inContext: true,
     });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-    const { error, checkedInParticipantIds } = getCheckedInParticipantIds({
-      matchUp,
-    });
+    const { error, checkedInParticipantIds, allRelevantParticipantIds } =
+      getCheckedInParticipantIds({
+        matchUp,
+      });
+
+    if (!allRelevantParticipantIds.includes(participantId))
+      return { error: INVALID_PARTICIPANT_ID };
     if (error) return { error };
     if (checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_ALREADY_CHECKED_IN };
@@ -70,15 +75,16 @@ export function checkOutParticipant({
       matchUpId,
       inContext: true,
     });
-    const { checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
+    const { checkedInParticipantIds, allRelevantParticipantIds } =
+      getCheckedInParticipantIds({ matchUp });
+    if (!allRelevantParticipantIds.includes(participantId))
+      return { error: INVALID_PARTICIPANT_ID };
     if (!checkedInParticipantIds.includes(participantId)) {
       return { error: PARTICIPANT_NOT_CHECKED_IN };
     }
 
-    const {
-      sideParticipantIds,
-      nestedIndividualParticipantIds,
-    } = getMatchUpParticipantIds({ matchUp });
+    const { sideParticipantIds, nestedIndividualParticipantIds } =
+      getMatchUpParticipantIds({ matchUp });
     const sideIndex = sideParticipantIds.indexOf(participantId);
     if ([0, 1].includes(sideIndex)) {
       (nestedIndividualParticipantIds[sideIndex] || []).forEach(

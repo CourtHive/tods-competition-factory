@@ -1,14 +1,11 @@
-import { assignDrawPosition } from '../positionAssignment';
-import { findStructure } from '../../../getters/findStructure';
-import { addParticipantContext } from './addParticipantContext';
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../../../getters/positionsGetter';
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
-
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
-
 import { generatePositioningCandidate } from './generatePositioningCandidate';
-
+import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
+import { addParticipantContext } from './addParticipantContext';
+import { findStructure } from '../../../getters/findStructure';
+import { assignDrawPosition } from '../positionAssignment';
 import {
   chunkArray,
   generateRange,
@@ -16,9 +13,9 @@ import {
   numericSort,
 } from '../../../../utilities';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
@@ -31,29 +28,32 @@ import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionCo
  *
  */
 export function randomUnseededSeparation({
-  avoidance,
-  structureId,
-  participants,
-  mappedMatchUps,
-  drawDefinition,
   unseededParticipantIds,
+  drawDefinition,
+  participants,
+  structureId,
+  avoidance,
+  entries, // entries for the specific stage of drawDefinition
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!avoidance) {
     return { error: MISSING_AVOIDANCE_POLICY };
   }
-  const {
-    policyAttributes,
-    roundsToSeparate,
-    candidatesCount = 20,
-  } = avoidance;
+  const { policyAttributes, roundsToSeparate, candidatesCount = 1 } = avoidance;
 
   // policyAttributes determines participant attributes which are to be used for avoidance
   // roundsToSeparate determines desired degree of separation between players with matching attribute values
 
-  const participantsWithContext = addParticipantContext({ participants });
   const { structure } = findStructure({ drawDefinition, structureId });
-  const { matchUps } = getAllStructureMatchUps({ structure, mappedMatchUps });
+  const { matchUps } = getAllStructureMatchUps({
+    structure,
+    matchUpsMap,
+  });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
+
+  const participantsWithContext = addParticipantContext({ participants });
 
   const unassignedPositions = positionAssignments.filter(
     (assignment) => !assignment.participantId
@@ -65,13 +65,13 @@ export function randomUnseededSeparation({
 
   const isRoundRobin = structure.structureType === CONTAINER;
 
-  const props = isRoundRobin
+  const params = isRoundRobin
     ? { structure, matchUps, allDrawPositions, roundsToSeparate }
     : { matchUps, allDrawPositions, roundsToSeparate };
 
   const { drawPositionGroups, drawPositionChunks } = isRoundRobin
-    ? roundRobinParticipantGroups(props)
-    : eliminationParticipantGroups(props);
+    ? roundRobinParticipantGroups(params)
+    : eliminationParticipantGroups(params);
 
   const allGroups = getAttributeGroupings({
     policyAttributes,
@@ -101,6 +101,7 @@ export function randomUnseededSeparation({
       drawPositionGroups,
       allGroups,
 
+      entries,
       policyAttributes,
       pairedPriority: true,
     })
@@ -146,8 +147,11 @@ export function randomUnseededSeparation({
         const result = assignDrawPosition({
           automaticPlacement: true,
           drawDefinition,
-          mappedMatchUps,
           structureId,
+
+          matchUpsMap,
+          inContextDrawMatchUps,
+
           ...assignment,
         });
         if (!result?.success) {
@@ -167,10 +171,10 @@ export function randomUnseededSeparation({
       );
 }
 
-function roundRobinParticipantGroups(props) {
+function roundRobinParticipantGroups(params) {
   const {
     structure: { structures },
-  } = props;
+  } = params;
   const drawPositionGroups = structures.map((structure) =>
     structure.positionAssignments.map((assignment) => assignment.drawPosition)
   );

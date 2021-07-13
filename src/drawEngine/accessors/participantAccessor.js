@@ -4,11 +4,13 @@ import {
   INVALID_MATCHUP,
 } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../constants/participantTypes';
+import { unique } from '../../utilities';
 
 export function getMatchUpParticipantIds({ matchUp }) {
   let error;
   let sideParticipantIds = [];
   let individualParticipantIds = [];
+  let allRelevantParticipantIds = [];
   let nestedIndividualParticipantIds = [];
 
   if (!matchUp) error = MISSING_MATCHUP;
@@ -26,12 +28,12 @@ export function getMatchUpParticipantIds({ matchUp }) {
       .map(
         (side) => side.participant && side.participant.individualParticipants
       )
-      .filter((f) => f);
+      .filter(Boolean);
 
     nestedIndividualParticipantIds = nestedIndividualParticipants.map(
       (participants) =>
         participants
-          .filter((f) => f)
+          .filter(Boolean)
           .map((participant) => participant.participantId)
     );
 
@@ -39,12 +41,17 @@ export function getMatchUpParticipantIds({ matchUp }) {
       ...sideIndividualParticipantIds,
       ...nestedIndividualParticipantIds.flat()
     );
+
+    allRelevantParticipantIds = unique(
+      individualParticipantIds.concat(sideParticipantIds)
+    );
   }
 
   return {
     error,
     sideParticipantIds,
-    nestedIndividualParticipantIds,
     individualParticipantIds,
+    allRelevantParticipantIds,
+    nestedIndividualParticipantIds,
   };
 }

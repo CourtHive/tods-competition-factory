@@ -1,10 +1,11 @@
-import { addParticipantScaleItem } from './addScaleItems';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { addNotice, getTopics } from '../../../global/globalState';
+import { addParticipantScaleItem } from './addScaleItems';
 
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { RANKING, RATING } from '../../../constants/scaleConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { addNotice, getTopics } from '../../../global/globalState';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 // TODO: should be refactored to take scaleAttributes instead of { category, eventType }
 export function rankByRatings({
@@ -13,9 +14,10 @@ export function rankByRatings({
   category,
   eventType,
 }) {
-  const relevantParticipants = (
-    tournamentRecord.participants || []
-  ).filter((p) => participantIds.includes(p.participantId));
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const relevantParticipants = (tournamentRecord.participants || []).filter(
+    (p) => participantIds.includes(p.participantId)
+  );
 
   const participantRating = (participant) => {
     const scaleAttributes = {

@@ -31,12 +31,8 @@ export function participantScaleItem({
     const timeItem = filteredTimeItems.pop();
 
     if (timeItem) {
-      const [
-        itemSubject,
-        scaleType,
-        eventType,
-        scaleName,
-      ] = timeItem.itemType.split('.');
+      const [itemSubject, scaleType, eventType, scaleName] =
+        timeItem.itemType.split('.');
 
       if (itemSubject !== SCALE) return { error: INVALID_SCALE_ITEM };
 

@@ -1,3 +1,6 @@
+import { getSchedulingProfile } from '../governors/scheduleGovernor/schedulingProfile/schedulingProfile';
+import { scheduledSortedMatchUps } from '../../global/sorting/scheduledSortedMatchUps';
+
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import {
   allTournamentMatchUps,
@@ -10,8 +13,13 @@ export function allCompetitionMatchUps({
   tournamentRecords,
   matchUpFilters,
   contextFilters,
+  nextMatchUps,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const competitionMatchUps = tournamentIds
@@ -21,6 +29,7 @@ export function allCompetitionMatchUps({
         tournamentRecord,
         matchUpFilters,
         contextFilters,
+        nextMatchUps,
       });
       return matchUps;
     })
@@ -29,17 +38,27 @@ export function allCompetitionMatchUps({
   return { matchUps: competitionMatchUps };
 }
 
-export function competitionScheduleMatchUps(props) {
-  const { courts, venues } = getVenuesAndCourts(props);
-  const {
-    completedMatchUps,
-    upcomingMatchUps,
-    pendingMatchUps,
-  } = competitionMatchUps(props);
-  const dateMatchUps = [
+export function competitionScheduleMatchUps(params) {
+  if (
+    typeof params?.tournamentRecords !== 'object' ||
+    !Object.keys(params?.tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  const { courts, venues } = getVenuesAndCourts(params);
+  const { sortCourtsData, sortDateMatchUps = true } = params;
+  const schedulingProfile = getSchedulingProfile(params).schedulingProfile;
+
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
+    competitionMatchUps(params);
+
+  const relevantMatchUps = [
     ...(upcomingMatchUps || []),
     ...(pendingMatchUps || []),
-  ].sort((a, b) => getTime(a) - getTime(b));
+  ];
+
+  const dateMatchUps = sortDateMatchUps
+    ? scheduledSortedMatchUps({ matchUps: relevantMatchUps, schedulingProfile })
+    : relevantMatchUps;
 
   const courtsData = courts.map((court) => {
     const matchUps = getCourtMatchUps(court);
@@ -53,17 +72,20 @@ export function competitionScheduleMatchUps(props) {
   return { courtsData, completedMatchUps, dateMatchUps, venues };
 
   function getCourtMatchUps({ courtId }) {
-    return dateMatchUps
-      .filter((matchUp) => matchUp.schedule?.courtId === courtId)
-      .sort(
-        (a, b) =>
-          new Date(a.scheduledTime).getTime() -
-          new Date(b.scheduledTime).getTime()
-      );
+    const courtMatchUps = dateMatchUps.filter(
+      (matchUp) => matchUp.schedule?.courtId === courtId
+    );
+    return sortCourtsData
+      ? scheduledSortedMatchUps({
+          matchUps: courtMatchUps,
+          schedulingProfile,
+        })
+      : courtMatchUps;
   }
 
-  function getTime(matchUp) {
-    const scheduledTime = matchUp?.schedule?.scheduledTime;
+  /*
+  // this was used to float matchUps with checked in participants to the top of the sorted matchUps
+  function getFloatValue(matchUp) {
     const allParticipantsCheckedIn = matchUp?.allParticipantsCheckedIn && 100;
     const checkedInParticipantsCount =
       (matchUp?.checkedInParticipantIds?.length || 0) * 10;
@@ -71,22 +93,28 @@ export function competitionScheduleMatchUps(props) {
     // floatValue insures that allParticipantsCheckedIn always floats to top as millisecond
     // differences are not always enough to differentiate
     const floatValue = checkedInParticipantsCount + allParticipantsCheckedIn;
-
-    return !scheduledTime ? 0 : new Date(scheduledTime).getTime() - floatValue;
+    return floatValue;
   }
+  */
 }
 
 export function competitionMatchUps({
+  scheduleVisibilityFilters,
   tournamentRecords,
   matchUpFilters,
   contextFilters,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+  if (
+    typeof tournamentRecords !== 'object' ||
+    !Object.keys(tournamentRecords).length
+  )
+    return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords);
   const tournamentsMatchUps = tournamentIds.map((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     return tournamentMatchUps({
+      scheduleVisibilityFilters,
       tournamentRecord,
       matchUpFilters,
       contextFilters,
@@ -94,11 +122,11 @@ export function competitionMatchUps({
   });
 
   const matchUpGroupings = tournamentsMatchUps.reduce(
-    (groupings, tournamentMatchUps) => {
-      const keys = Object.keys(tournamentMatchUps);
+    (groupings, matchUpGroupings) => {
+      const keys = Object.keys(matchUpGroupings);
       keys.forEach((key) => {
         if (!groupings[key]) groupings[key] = [];
-        groupings[key] = groupings[key].concat(tournamentMatchUps[key]);
+        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
       });
 
       return groupings;

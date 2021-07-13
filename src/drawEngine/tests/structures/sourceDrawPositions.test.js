@@ -91,13 +91,8 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
 
 function validateSourceDrawPositionRanges({ matchUps, validations }) {
   validations.forEach((validation) => {
-    const [
-      roundNumber,
-      roundPosition,
-      sideNumber,
-      range,
-      roundName,
-    ] = validation;
+    const [roundNumber, roundPosition, sideNumber, range, roundName] =
+      validation;
     const matchUp = matchUps.find(
       (matchUp) =>
         matchUp.roundNumber === roundNumber &&

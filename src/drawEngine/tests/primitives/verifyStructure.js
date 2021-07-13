@@ -64,7 +64,7 @@ export function verifyStructure({
 
   const seededParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
+    .filter(Boolean);
   const seedAssignedDrawPositions = positionAssignments
     .filter((assignment) =>
       seededParticipantIds.includes(assignment.participantId)
@@ -101,7 +101,7 @@ export function verifyStructure({
       });
       return pairedDrawPosition;
     })
-    .filter((f) => f);
+    .filter(Boolean);
 
   const seedPairedDrawPositionsWithBye = seedPairedDrawPositions.filter(
     (drawPosition) => byeAssignedDrawPositions.includes(drawPosition)

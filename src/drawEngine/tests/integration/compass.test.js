@@ -206,7 +206,7 @@ function checkByeAdvancedDrawPositions({
   function pendingWithOneParticipant(matchUp) {
     return (
       matchUp.roundNumber === 2 &&
-      matchUp.drawPositions.filter((f) => f).length === 1
+      matchUp.drawPositions.filter(Boolean).length === 1
     );
   }
 }

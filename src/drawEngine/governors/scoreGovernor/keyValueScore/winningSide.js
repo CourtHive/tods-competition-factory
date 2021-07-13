@@ -1,3 +1,5 @@
+import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+
 export function getWinningSide({ analysis, set }) {
   const leadingSide = getLeadingSide({ set });
   const { isDecidingSet, isTiebreakSet, matchUpScoringFormat } = analysis;
@@ -17,9 +19,10 @@ export function checkSetIsComplete({
   matchUpScoringFormat,
   ignoreTiebreak = false,
 }) {
+  if (!set) return { error: MISSING_VALUE };
   const setFormat =
     (isDecidingSet && matchUpScoringFormat.finalSetFormat) ||
-    matchUpScoringFormat.setFormat;
+    matchUpScoringFormat?.setFormat;
   const { side1Score, side2Score } = set;
 
   const { NoAD, setTo, tiebreakAt, tiebreakFormat } = setFormat;

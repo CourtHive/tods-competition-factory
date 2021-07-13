@@ -164,11 +164,10 @@ it('can properly generate feed in championship links', () => {
     contextFilters: { stages: [CONSOLATION] },
   });
 
-  const {
-    roundMatchUps: consolationRoundMatchUps,
-  } = drawEngine.getRoundMatchUps({
-    matchUps: consolationMatchUps,
-  });
+  const { roundMatchUps: consolationRoundMatchUps } =
+    drawEngine.getRoundMatchUps({
+      matchUps: consolationMatchUps,
+    });
 
   const sourceRangeExpectations = [
     [1, 1, '1-2', '3-4'],

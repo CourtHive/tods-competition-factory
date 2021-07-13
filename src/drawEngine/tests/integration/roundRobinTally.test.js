@@ -13,8 +13,9 @@ import {
   FORMAT_SHORT_SETS,
   FORMAT_STANDARD,
 } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
-it('can recalculate particpantResults when outcomes are removed', () => {
+it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [
     {
       drawSize: 4,
@@ -161,7 +162,6 @@ it('calculate participantResult values are present for all drawPositions', () =>
       expect(isNaN(result.setsRatio)).toEqual(false);
       expect(isNaN(result.matchUpsRatio)).toEqual(false);
       expect(isNaN(result.gamesRatio)).toEqual(false);
-      expect(isNaN(result.gamesDifference)).toEqual(false);
       expect(isNaN(result.pointsRatio)).toEqual(false);
       expect(isNaN(result.groupOrder)).toEqual(false);
     });
@@ -634,4 +634,112 @@ it('recognize when participants are tied with position order', () => {
   expect(tally.subOrder).toEqual(
     participantResults[0].participantResult.subOrder
   );
+});
+
+it('properly handles walkovers in calculating participant positions', () => {
+  // the default tallyPolicy tallyDirectives pushes a participant who is tied with other participants
+  // but has defaulted/walkedover/retired to the last position in the group
+  // in this scenario there are three participants with a 3/1 match record; the participant who
+  // walked over is last in the group, #3 of the 5 total participants; the remaining participants
+  // with 3/1 win/loss record are then ordered by the head to head.
+  const drawProfiles = [
+    {
+      drawSize: 5,
+      eventType: SINGLES,
+      participantsCount: 5,
+      matchUpFormat: 'SET3-S:4/TB7-F:TB7',
+      drawType: ROUND_ROBIN,
+      structureOptions: { groupSize: 5 },
+      outcomes: [
+        {
+          drawPositions: [1, 2],
+          scoreString: '1-4 1-4',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [1, 3],
+          scoreString: '3-4 1-4',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [1, 4],
+          scoreString: '4-1 4-3',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [1, 5],
+          scoreString: '3-4 1-4',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [2, 3],
+          scoreString: '4-2 3-4 [7-5]',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [2, 4],
+          scoreString: '1-0 RET',
+          matchUpStatus: RETIRED,
+          winningSide: 1,
+        },
+        {
+          drawPositions: [2, 5],
+          scoreString: '1-4 0-4',
+          winningSide: 2,
+        },
+        {
+          drawPositions: [3, 4],
+          scoreString: '4-1 4-1',
+          winningSide: 1,
+        },
+        {
+          drawPositions: [3, 5],
+          scoreString: 'WO',
+          matchUpStatus: WALKOVER,
+          winningSide: 1,
+        },
+        {
+          drawPositions: [4, 5],
+          scoreString: '3-4 0-4',
+          winningSide: 2,
+        },
+      ],
+    },
+  ];
+  let {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let structure = drawDefinition.structures[0];
+  let { positionAssignments } = getPositionAssignments({
+    structure,
+  });
+
+  const expectations = [
+    { result: '1/3', groupOrder: 4 },
+    { result: '3/1', groupOrder: 1 },
+    { result: '3/1', groupOrder: 2 },
+    { result: '0/4', groupOrder: 5 },
+    { result: '3/1', groupOrder: 3 },
+  ];
+
+  positionAssignments.forEach((assignment, i) => {
+    const {
+      extension: { value: participantResult },
+    } = findExtension({
+      element: assignment,
+      name: 'tally',
+    });
+
+    expect(assignment.drawPosition).toEqual(i + 1);
+    const expectation = expectations[i];
+    Object.keys(expectation).forEach((key) => {
+      expect(participantResult[key]).toEqual(expectation[key]);
+    });
+  });
 });

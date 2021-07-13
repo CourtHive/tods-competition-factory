@@ -11,6 +11,7 @@ export function alternateDrawPositionAssignment({
     drawDefinition,
     drawPosition,
     structureId,
+    participantIdAttributeName: 'alternateParticipantid',
     positionActionName: 'alternateDrawPositionAssignment',
   });
 }

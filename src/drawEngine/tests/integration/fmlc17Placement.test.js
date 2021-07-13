@@ -74,9 +74,10 @@ it('can support ITF Consolation BYE placement', () => {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
   const assignedParticipantIds = consolationStructure.positionAssignments
     .filter((assignment) => !!assignment.participantId)
     .map((assignment) => assignment.participantId);
@@ -154,9 +155,10 @@ it('can support USTA Consolation BYE placement', () => {
     structures: [consolationStructure],
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
 
-  const positionAssignmentByesCount = consolationStructure.positionAssignments.filter(
-    (assignment) => !!assignment.bye
-  ).length;
+  const positionAssignmentByesCount =
+    consolationStructure.positionAssignments.filter(
+      (assignment) => !!assignment.bye
+    ).length;
   const assignedParticipantIds = consolationStructure.positionAssignments
     .filter((assignment) => !!assignment.participantId)
     .map((assignment) => assignment.participantId);

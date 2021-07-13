@@ -1,7 +1,7 @@
 import { END_TIME } from '../../../constants/timeItemConstants';
 
 export function matchUpEndTime({ matchUp }) {
-  const timeItems = matchUp.timeItems || [];
+  const timeItems = matchUp?.timeItems || [];
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
   const endTimeItem = timeItems.reduce((endTimeItem, timeItem) => {
@@ -13,7 +13,7 @@ export function matchUpEndTime({ matchUp }) {
     return earlierStartTimeItem ? endTimeCandidate : endTimeItem;
   }, undefined);
 
-  const startTime = endTimeItem && endTimeItem.itemValue;
+  const endTime = endTimeItem && endTimeItem.itemValue;
 
-  return { startTime };
+  return { endTime };
 }

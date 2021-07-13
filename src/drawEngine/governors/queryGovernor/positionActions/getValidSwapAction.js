@@ -42,11 +42,12 @@ export function getValidSwapAction({
       !(isByePosition && byeDrawPositions.includes(position))
   );
   // filteredAssignments are all assignements which are availble and pass assignmentCheck
-  const filteredAssignments = positionAssignments.filter(
-    (assignment) =>
-      assignmentCheck(assignment) &&
-      availableDrawPositions?.includes(assignment.drawPosition)
-  );
+  const filteredAssignments =
+    positionAssignments?.filter(
+      (assignment) =>
+        assignmentCheck(assignment) &&
+        availableDrawPositions?.includes(assignment.drawPosition)
+    ) || [];
 
   // get relevant drawPositions => relevantMatchUps => sides => sourceDrawPositionRanges
   const filteredDrawPositions = filteredAssignments.map(
@@ -78,13 +79,11 @@ export function getValidSwapAction({
   // which have a participant assginment so the client/UI has all relevant drawPosition details
   const availableParticipantIds = filteredAssignments
     .map((assignment) => assignment.participantId)
-    .filter((f) => f);
-  const participantsAvailable = (
-    tournamentParticipants || []
-  ).filter((participant) =>
-    availableParticipantIds.includes(participant.participantId)
+    .filter(Boolean);
+  const participantsAvailable = (tournamentParticipants || []).filter(
+    (participant) => availableParticipantIds.includes(participant.participantId)
   );
-  const availableParticpantsMap = Object.assign(
+  const availableParticipantsMap = Object.assign(
     {},
     ...participantsAvailable.map((participant) => ({
       [participant.participantId]: participant,
@@ -93,16 +92,17 @@ export function getValidSwapAction({
 
   const availableAssignments = filteredAssignments.map((assignment) => {
     const participant =
-      availableParticpantsMap &&
-      availableParticpantsMap[assignment.participantId];
+      availableParticipantsMap &&
+      availableParticipantsMap[assignment.participantId];
 
     const sourceDrawPositionRange =
       sourceDrawPositionRangeMap[assignment.drawPosition];
 
-    return Object.assign({}, assignment, {
+    return {
+      ...assignment,
       participant: makeDeepCopy(participant),
       sourceDrawPositionRange,
-    });
+    };
   });
 
   if (availableAssignments.length) {

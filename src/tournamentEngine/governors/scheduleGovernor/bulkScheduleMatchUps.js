@@ -1,10 +1,10 @@
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
+import { getDrawDefinition } from '../../getters/eventGetter';
+import { assignMatchUpVenue } from './assignMatchUpVenue';
 import {
   addMatchUpScheduledDate,
   addMatchUpScheduledTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
-import { getDrawDefinition } from '../../getters/eventGetter';
-import { assignMatchUpVenue } from './assignMatchUpVenue';
 
 import {
   MISSING_SCHEDULE,

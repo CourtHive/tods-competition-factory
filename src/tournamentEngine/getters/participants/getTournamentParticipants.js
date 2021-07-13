@@ -32,6 +32,8 @@ export function getTournamentParticipants({
   withStatistics,
   withOpponents,
   withMatchUps,
+  withEvents,
+  withDraws,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
@@ -53,16 +55,15 @@ export function getTournamentParticipants({
     });
 
   if (inContext) {
-    tournamentParticipants.forEach((participant) => {
+    tournamentParticipants?.forEach((participant) => {
       if ([PAIR, TEAM].includes(participant.participantType)) {
-        participant.individualParticipants = participant.individualParticipantIds.map(
-          (participantId) => {
+        participant.individualParticipants =
+          participant.individualParticipantIds.map((participantId) => {
             const individualParticipant = tournamentRecord.participants.find(
               (p) => p.participantId === participantId
             );
-            return makeDeepCopy(individualParticipant, convertExtensions);
-          }
-        );
+            return makeDeepCopy(individualParticipant, convertExtensions, true);
+          });
       }
     });
   }
@@ -75,6 +76,8 @@ export function getTournamentParticipants({
       withStatistics,
       withOpponents,
       withMatchUps,
+      withEvents,
+      withDraws,
     });
   }
 

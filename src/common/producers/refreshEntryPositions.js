@@ -1,5 +1,10 @@
 import { MAIN } from '../../constants/drawDefinitionConstants';
 
+/**
+ *
+ * @param {object[]} entries - array of entry objects
+ * @returns entries - with updated entryPosition values
+ */
 export function refreshEntryPositions({ entries = [] } = {}) {
   const stagedEntries = entries.reduce((stages, entry) => {
     const { entryStage, entryStatus } = entry;
@@ -8,6 +13,7 @@ export function refreshEntryPositions({ entries = [] } = {}) {
     stages[entryHash].push(entry);
     return stages;
   }, {});
+
   const positionedEntries = Object.keys(stagedEntries)
     .map((entryHash) => {
       return stagedEntries[entryHash]
@@ -18,5 +24,6 @@ export function refreshEntryPositions({ entries = [] } = {}) {
         });
     })
     .flat();
+
   return positionedEntries;
 }

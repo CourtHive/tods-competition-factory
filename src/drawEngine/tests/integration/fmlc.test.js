@@ -154,9 +154,10 @@ it('can direct winners and losers', () => {
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
-  let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 1
-  )?.participantId;
+  let targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 1
+    )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1
@@ -233,9 +234,10 @@ it('can direct winners and losers', () => {
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 8
   );
 
-  targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 16
-  )?.participantId;
+  targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 16
+    )?.participantId;
 
   expect(targetMatchUp.drawPositions).toEqual([23, 24]);
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
@@ -245,9 +247,7 @@ it('can direct winners and losers', () => {
   );
   // fed position should be a bye
   expect(consolationStructure.positionAssignments[8].bye).toEqual(true);
-});
 
-it('can change matchUpStatus', () => {
   const { completedMatchUps } = drawEngine.drawMatchUps({
     requireParticipants: false,
   });
@@ -256,7 +256,7 @@ it('can change matchUpStatus', () => {
 
   const [matchUp] = completedMatchUps;
   const { matchUpId } = matchUp;
-  let result = drawEngine.setMatchUpStatus({
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'BOGUS',
   });
@@ -267,14 +267,14 @@ it('can change matchUpStatus', () => {
     matchUpId,
     matchUpStatus: BYE,
   });
-  hasErrors = Boolean(result?.error?.errors?.length);
+  hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(true);
 
   result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  hasErrors = Boolean(result?.error?.errors?.length);
+  hasErrors = Boolean(result?.error);
   expect(hasErrors).toEqual(false);
 
   const { matchUp: fetchedMatchUp } = drawEngine.findMatchUp({ matchUpId });
@@ -351,9 +351,10 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
   )?.participantId;
   expect(sourceMatchUp.drawPositions.includes(1)).toEqual(true);
 
-  let targetDrawPositionParticipantId = consolationStructure.positionAssignments.find(
-    (assignment) => assignment.drawPosition === 2
-  )?.participantId;
+  let targetDrawPositionParticipantId =
+    consolationStructure.positionAssignments.find(
+      (assignment) => assignment.drawPosition === 2
+    )?.participantId;
 
   let targetMatchUp = consolationStructure.matchUps.find(
     (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 1

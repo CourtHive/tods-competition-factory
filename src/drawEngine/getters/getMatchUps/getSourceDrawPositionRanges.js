@@ -17,7 +17,7 @@ import {
 export function getSourceDrawPositionRanges({
   drawDefinition,
   structureId,
-  mappedMatchUps,
+  matchUpsMap,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -40,7 +40,7 @@ export function getSourceDrawPositionRanges({
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
       const structureMatchUps = getMappedStructureMatchUps({
-        mappedMatchUps,
+        matchUpsMap,
         structureId: sourceStructureId,
       });
       const { roundProfile } = getRoundMatchUps({
@@ -52,7 +52,7 @@ export function getSourceDrawPositionRanges({
   );
 
   const structureMatchUps = getMappedStructureMatchUps({
-    mappedMatchUps,
+    matchUpsMap,
     structureId,
   });
   const { roundProfile: targetStructureProfile } = getRoundMatchUps({
@@ -61,10 +61,8 @@ export function getSourceDrawPositionRanges({
 
   const sourceDrawPositionRanges = {};
   relevantLinks?.forEach((link) => {
-    const {
-      structureId: sourceStructureId,
-      roundNumber: sourceRoundNumber,
-    } = link.source;
+    const { structureId: sourceStructureId, roundNumber: sourceRoundNumber } =
+      link.source;
     const {
       feedProfile,
       groupedOrder,
@@ -149,9 +147,8 @@ export function getSourceDrawPositionRanges({
       // because sideNumber: 1 maps to index: 0 in matchUp.drawPositions
       const columnPosition = 1 + index * increment;
       if (!sourceDrawPositionRanges[targetRoundNumber][columnPosition]) {
-        sourceDrawPositionRanges[targetRoundNumber][
-          columnPosition
-        ] = getRangeString(block);
+        sourceDrawPositionRanges[targetRoundNumber][columnPosition] =
+          getRangeString(block);
       }
     });
   });

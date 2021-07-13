@@ -1,6 +1,9 @@
 import { getDevContext } from '../../../global/globalState';
 
+import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
+
 export function validDrawPositions({ matchUps }) {
+  if (!matchUps) return { error: MISSING_MATCHUPS };
   const drawPositions = matchUps.map((matchUp) => matchUp.drawPositions).flat();
 
   if (getDevContext()) {
@@ -16,9 +19,8 @@ export function validDrawPositions({ matchUps }) {
       });
     });
   }
-  const allPositionsValid = drawPositions.reduce((valid, drawPosition) => {
-    return validDrawPosition(drawPosition) && valid;
-  }, true);
+
+  const allPositionsValid = drawPositions.every(validDrawPosition);
 
   const matchUpDrawPositionsNotArray = matchUps.find(
     (matchUp) => !Array.isArray(matchUp.drawPositions)

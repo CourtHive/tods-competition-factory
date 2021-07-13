@@ -37,7 +37,7 @@ export function removeDrawEntries({
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
   const filterEntry = (entry) => {
-    const entryId = entry.participantId || entry.participant?.participantId;
+    const entryId = entry.participantId;
     return participantIds.includes(entryId) ? false : true;
   };
 

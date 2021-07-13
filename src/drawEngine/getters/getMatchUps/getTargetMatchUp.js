@@ -140,7 +140,7 @@ export function getTargetMatchUp({
     // ...because fed drawPositions are always numerically smaller than advanced drawPositions
     matchUpDrawPositionIndex = 0;
     targetDrawPosition = Math.min(
-      ...(matchUp.drawPositions || []).filter((f) => f)
+      ...(matchUp.drawPositions || []).filter(Boolean)
     );
   } else {
     // when not a feedRound targetDrawPosition can only be determined when both drawPositions present
@@ -158,10 +158,6 @@ export function getTargetMatchUp({
       name: DISABLE_LINKS,
     });
     if (extension?.value) {
-      console.log({
-        drawPositionDisabled: targetDrawPosition,
-        relevantAssignment,
-      });
       return { disabledDrawPosition: targetDrawPosition };
     }
   }

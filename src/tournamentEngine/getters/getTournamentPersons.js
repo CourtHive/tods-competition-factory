@@ -23,9 +23,10 @@ export function getTournamentPersons({ tournamentRecord, participantFilters }) {
           participant.participantId
         );
       } else {
-        tournamentPersons[personId] = Object.assign({}, participant.person, {
+        tournamentPersons[personId] = {
+          ...participant.person,
           participantIds: [participant.participantId],
-        });
+        };
       }
     }
   };

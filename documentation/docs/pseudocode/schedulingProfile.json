@@ -1,0 +1,65 @@
+[
+  {
+    "scheduleDate": "2020-04-30",
+    "venues": [
+      {
+        "venueId": "a37dfa4f-e6a0-4ebd-bdbd-d22c8870bfd5",
+        "rounds": [
+          {
+            "id": "11d05713-535f-4d4b-b52b-13a36398a9d9-bdea1fe3-ab3b-4528-ab38-fbfd27469bc6",
+            "drawId": "48f71377-e8dc-4af3-8b44-52a29efa6a1e",
+            "eventId": "F75AEAA6-58FE-4310-A8EE-E3DFA373B206",
+            "eventName": "U18 Girls Singles",
+            "roundName": "R32",
+            "roundNumber": 1,
+            "roundPositions": [1, 2, 3, 4, 5, 6, 7, 8],
+            "structureId": "11d05713-535f-4d4b-b52b-13a36398a9d9",
+            "tournamentId": "dbc5b3d2-c6ab-45d2-ae88-5f3745990647",
+            "sortOrder": 1
+          },
+          {
+            "id": "11d05713-535f-4d4b-b52b-13a36398a9d9-16035215-ca57-4722-9de5-5af82c3b234c",
+            "drawId": "48f71377-e8dc-4af3-8b44-52a29efa6a1e",
+            "eventId": "F75AEAA6-58FE-4310-A8EE-E3DFA373B206",
+            "eventName": "U18 Girls Singles",
+            "roundName": "R16",
+            "roundNumber": 2,
+            "structureId": "11d05713-535f-4d4b-b52b-13a36398a9d9",
+            "tournamentId": "dbc5b3d2-c6ab-45d2-ae88-5f3745990647",
+            "sortOrder": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "scheduleDate": "2020-05-01",
+    "venues": [
+      {
+        "venueId": "a37dfa4f-e6a0-4ebd-bdbd-d22c8870bfd5",
+        "rounds": [
+          {
+            "id": "46a5aed3-2f11-4db4-83fb-9da5ffa6156e-1c78036f-cd89-45d0-8d07-1c390580fdea",
+            "drawId": "01b5116e-b1d4-48b3-8b3f-8438a5350a59",
+            "eventId": "6F15E022-A6B7-4117-AA81-B3FE089FAD72",
+            "eventName": "U18 Boys Doubles",
+            "roundName": "E-R16",
+            "roundNumber": 1,
+            "structureId": "46a5aed3-2f11-4db4-83fb-9da5ffa6156e",
+            "tournamentId": "dbc5b3d2-c6ab-45d2-ae88-5f3745990647"
+          },
+          {
+            "id": "46a5aed3-2f11-4db4-83fb-9da5ffa6156e-b3ff539e-8967-4fb9-b954-797b13546acb",
+            "drawId": "01b5116e-b1d4-48b3-8b3f-8438a5350a59",
+            "eventId": "6F15E022-A6B7-4117-AA81-B3FE089FAD72",
+            "eventName": "U18 Boys Doubles",
+            "roundName": "E-QF",
+            "roundNumber": 2,
+            "structureId": "46a5aed3-2f11-4db4-83fb-9da5ffa6156e",
+            "tournamentId": "dbc5b3d2-c6ab-45d2-ae88-5f3745990647"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -18,8 +18,8 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function addMatchUpScheduleItems(props) {
-  return addScheduleItems(props);
+export function addMatchUpScheduleItems(params) {
+  return addScheduleItems(params);
 }
 
 export function addMatchUpScheduledDate({
@@ -135,7 +135,7 @@ export function addMatchUpOfficial({
     },
   });
 
-  const { participant } = findParticipant({
+  const participant = findParticipant({
     tournamentParticipants,
     participantId,
   });
