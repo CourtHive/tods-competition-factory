@@ -307,9 +307,9 @@ function getParticipants({ tournamentRecord }) {
   return participants;
 }
 
-export function publicFindMatchUp(props) {
-  Object.assign(props, { inContext: true });
-  const { matchUp, error } = findMatchUp(props);
+export function publicFindMatchUp(params) {
+  Object.assign(params, { inContext: true });
+  const { matchUp, error } = findMatchUp(params);
   return { matchUp: makeDeepCopy(matchUp), error };
 }
 

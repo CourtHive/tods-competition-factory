@@ -7,14 +7,14 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
-export function checkDoubleWalkoverPropagation(props) {
+export function checkDoubleWalkoverPropagation(params) {
   const {
     targetMatchUps: { winnerMatchUp },
-  } = props.targetData;
+  } = params.targetData;
 
   if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
     const { tournamentRecord, event, drawDefinition, matchUpId, matchUpsMap } =
-      props;
+      params;
 
     const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
       (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId

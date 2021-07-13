@@ -9,7 +9,7 @@ import {
 import { MAIN, CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
-export function feedInChampionship(props = {}) {
+export function feedInChampionship(params = {}) {
   const {
     uuids,
     feedRounds,
@@ -23,7 +23,7 @@ export function feedInChampionship(props = {}) {
     staggeredEntry,
     feedPolicy,
     fmlc,
-  } = props;
+  } = params;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   const { matchUps } = staggeredEntry

@@ -45,9 +45,9 @@ function getPositionProfiles({
  * 3. unassigned positions which are paired and which have no conflicting groupings (groupings to avoid)
  *
  */
-export function analyzeEliminationDrawPositions(props) {
-  const { unfilledPositions, chunkedDrawPositions } = props;
-  const profiledPositions = getPositionProfiles(props);
+export function analyzeEliminationDrawPositions(params) {
+  const { unfilledPositions, chunkedDrawPositions } = params;
+  const profiledPositions = getPositionProfiles(params);
 
   const checkedChunk = chunkedDrawPositions.map((chunkedGrouping) => {
     const unassigned = unfilledPositions.filter((unfilledPosition) =>
@@ -91,9 +91,9 @@ export function analyzeEliminationDrawPositions(props) {
  *
  */
 
-export function analyzeRoundRobinDrawPositions(props) {
-  const { unfilledPositions, chunkedDrawPositions } = props;
-  const profiledPositions = getPositionProfiles(props);
+export function analyzeRoundRobinDrawPositions(params) {
+  const { unfilledPositions, chunkedDrawPositions } = params;
+  const profiledPositions = getPositionProfiles(params);
 
   const checkedChunk = chunkedDrawPositions.map((chunkedGrouping) => {
     const unassigned = unfilledPositions.filter((unfilledPosition) =>

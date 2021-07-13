@@ -75,7 +75,7 @@ export function generateRoundRobin({
 // first iteration only links to a single playoff structure
 // future iteration should allow structureOptions to specify
 // groups of finishing drawPositions which playoff
-export function generateRoundRobinWithPlayOff(props) {
+export function generateRoundRobinWithPlayOff(params) {
   const {
     uuids,
     matchUpType,
@@ -83,11 +83,11 @@ export function generateRoundRobinWithPlayOff(props) {
     playoffMatchUpFormat,
     stageSequence = 1,
     structureOptions,
-  } = props;
+  } = params;
 
   const mainDrawProperties = Object.assign(
     { structureName: MAIN }, // default structureName
-    props,
+    params,
     { stage: MAIN }
   );
   const {

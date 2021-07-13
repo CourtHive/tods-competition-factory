@@ -14,7 +14,7 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function setMatchUpFormat(props) {
+export function setMatchUpFormat(params) {
   const errors = [];
   const {
     drawDefinition,
@@ -23,7 +23,7 @@ export function setMatchUpFormat(props) {
     matchUpType,
     matchUpFormat,
     tieFormat,
-  } = props;
+  } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };

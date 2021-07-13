@@ -56,7 +56,7 @@ import { SINGLES } from '../../../constants/matchUpTypes';
  * @param {object} drawDefinition
  */
 // TODO: consider refactoring to return structures rather than pushing them into drawDefinition
-export function generateDrawType(props = {}) {
+export function generateDrawType(params = {}) {
   const {
     uuids,
     goesTo = true,
@@ -65,18 +65,18 @@ export function generateDrawType(props = {}) {
     staggeredEntry,
     stageSequence = 1,
     drawType = SINGLE_ELIMINATION,
-    // qualifyingPositions, => passed through in props to treeMatchUps
-    // qualifyingRound, => passed through in props to treeMatchUps
+    // qualifyingPositions, => passed through in params to treeMatchUps
+    // qualifyingRound, => passed through in params to treeMatchUps
     // TODO: description => is this passed on?
     drawDefinition,
-  } = props;
+  } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { tieFormat, matchUpType } = drawDefinition || { matchUpType: SINGLES };
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  Object.assign(props, { drawSize, matchUpType, tieFormat });
+  Object.assign(params, { drawSize, matchUpType, tieFormat });
 
   const validDoubleEliminationSize = powerOf2((drawSize * 2) / 3);
 
@@ -113,7 +113,7 @@ export function generateDrawType(props = {}) {
 
   const generators = {
     [SINGLE_ELIMINATION]: () => {
-      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(props);
+      const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
       const structure = structureTemplate({
         stage,
@@ -129,22 +129,22 @@ export function generateDrawType(props = {}) {
       drawDefinition.structures.push(structure);
       return Object.assign({ structure }, SUCCESS);
     },
-    [DOUBLE_ELIMINATION]: () => generateDoubleElimination(props),
+    [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
     [COMPASS]: () =>
       playoff(
-        Object.assign(props, {
+        Object.assign(params, {
           roundOffsetLimit: 3,
           playoffAttributes: COMPASS_ATTRIBUTES,
         })
       ),
     [OLYMPIC]: () =>
       playoff(
-        Object.assign(props, {
+        Object.assign(params, {
           roundOffsetLimit: 2,
           playoffAttributes: OLYMPIC_ATTRIBUTES,
         })
       ),
-    [PLAY_OFF]: () => playoff(props),
+    [PLAY_OFF]: () => playoff(params),
 
     [FEED_IN]: () => {
       const { matchUps } = feedInMatchUps({ drawSize, uuids, matchUpType });
@@ -162,22 +162,22 @@ export function generateDrawType(props = {}) {
       return Object.assign({ structure }, SUCCESS);
     },
 
-    [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(props),
+    [FIRST_ROUND_LOSER_CONSOLATION]: () => firstRoundLoserConsolation(params),
     [FIRST_MATCH_LOSER_CONSOLATION]: () =>
-      feedInChampionship(Object.assign(props, { feedRounds: 1, fmlc: true })),
-    [MFIC]: () => feedInChampionship(Object.assign(props, { feedRounds: 1 })),
+      feedInChampionship(Object.assign(params, { feedRounds: 1, fmlc: true })),
+    [MFIC]: () => feedInChampionship(Object.assign(params, { feedRounds: 1 })),
     [FICQF]: () =>
-      feedInChampionship(Object.assign(props, { feedsFromFinal: 2 })),
+      feedInChampionship(Object.assign(params, { feedsFromFinal: 2 })),
     [FICSF]: () =>
-      feedInChampionship(Object.assign(props, { feedsFromFinal: 1 })),
+      feedInChampionship(Object.assign(params, { feedsFromFinal: 1 })),
     [FICR16]: () =>
-      feedInChampionship(Object.assign(props, { feedsFromFinal: 3 })),
-    [FEED_IN_CHAMPIONSHIP]: () => feedInChampionship(props),
+      feedInChampionship(Object.assign(params, { feedsFromFinal: 3 })),
+    [FEED_IN_CHAMPIONSHIP]: () => feedInChampionship(params),
 
-    [CURTIS]: () => generateCurtisConsolation(props),
+    [CURTIS]: () => generateCurtisConsolation(params),
 
-    [ROUND_ROBIN]: () => generateRoundRobin(props),
-    [ROUND_ROBIN_WITH_PLAYOFF]: () => generateRoundRobinWithPlayOff(props),
+    [ROUND_ROBIN]: () => generateRoundRobin(params),
+    [ROUND_ROBIN_WITH_PLAYOFF]: () => generateRoundRobinWithPlayOff(params),
   };
 
   const generator = generators[drawType];

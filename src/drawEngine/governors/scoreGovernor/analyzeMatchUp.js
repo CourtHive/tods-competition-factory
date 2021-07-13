@@ -6,10 +6,10 @@ import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 
-export function analyzeMatchUp(props) {
+export function analyzeMatchUp(params) {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } =
-    props || {};
-  let { matchUpFormat } = props || {};
+    params || {};
+  let { matchUpFormat } = params || {};
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   matchUpFormat = matchUpFormat || matchUp?.matchUpFormat;

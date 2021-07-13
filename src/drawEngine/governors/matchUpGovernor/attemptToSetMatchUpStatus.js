@@ -21,7 +21,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function attemptToSetMatchUpStatus(props) {
+export function attemptToSetMatchUpStatus(params) {
   const {
     notes,
     matchUp,
@@ -36,14 +36,14 @@ export function attemptToSetMatchUpStatus(props) {
     event,
 
     matchUpsMap,
-  } = props;
+  } = params;
 
   if (matchUp.winningSide) {
     if (matchUpStatus === BYE) {
       return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
     } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
       if (matchUpStatus === DOUBLE_WALKOVER) {
-        let result = removeDirectedParticipants(props);
+        let result = removeDirectedParticipants(params);
         if (result.error) return result;
         result = checkDoubleWalkoverPropagation({
           drawDefinition,
@@ -66,7 +66,7 @@ export function attemptToSetMatchUpStatus(props) {
     } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
       // only possible to remove winningSide if neither winner
       // nor loser has been directed further into target structures
-      const result = removeDirectedParticipants(props);
+      const result = removeDirectedParticipants(params);
       if (result.error) return result;
       modifyMatchUpScore({
         notes,
@@ -115,7 +115,7 @@ export function attemptToSetMatchUpStatus(props) {
           event,
         });
 
-        doubleWalkoverAdvancement(props);
+        doubleWalkoverAdvancement(params);
       } else {
         return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
       }

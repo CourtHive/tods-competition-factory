@@ -13,8 +13,8 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function addPenalty(props) {
-  const { tournamentRecords, participantIds } = props;
+export function addPenalty(params) {
+  const { tournamentRecords, participantIds } = params;
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   let penaltyId;
@@ -29,8 +29,8 @@ export function addPenalty(props) {
 
     if (tournamentParticipantIds.length) {
       const result = penaltyAdd({
-        ...props,
-        penaltyId: props.penaltyId || penaltyId,
+        ...params,
+        penaltyId: params.penaltyId || penaltyId,
         tournamentRecord,
         participantIds: tournamentParticipantIds,
       });
@@ -43,8 +43,8 @@ export function addPenalty(props) {
     : { error: PARTICIPANT_NOT_FOUND };
 }
 
-export function modifyPenalty(props) {
-  const { tournamentRecords } = props;
+export function modifyPenalty(params) {
+  const { tournamentRecords } = params;
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -53,7 +53,7 @@ export function modifyPenalty(props) {
 
   let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = penaltyModify({ tournamentRecord, ...props });
+    const result = penaltyModify({ tournamentRecord, ...params });
     if (result.error && result.error !== PENALTY_NOT_FOUND)
       error = result.error;
   }
@@ -61,8 +61,8 @@ export function modifyPenalty(props) {
   return error ? { error } : SUCCESS;
 }
 
-export function removePenalty(props) {
-  const { tournamentRecords } = props;
+export function removePenalty(params) {
+  const { tournamentRecords } = params;
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -71,7 +71,7 @@ export function removePenalty(props) {
 
   let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = penaltyRemove({ tournamentRecord, ...props });
+    const result = penaltyRemove({ tournamentRecord, ...params });
     if (result.error && result.error !== PENALTY_NOT_FOUND)
       error = result.error;
   }

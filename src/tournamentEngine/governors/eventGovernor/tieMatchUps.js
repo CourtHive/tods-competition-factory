@@ -19,10 +19,10 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-export function assignTieMatchUpParticipantId(props) {
-  // let { individualParticipants } = props; // clarify use
-  const { tournamentRecord, drawDefinition, event } = props;
-  const { participantId, sideMember, tieMatchUpId } = props;
+export function assignTieMatchUpParticipantId(params) {
+  // let { individualParticipants } = params; // clarify use
+  const { tournamentRecord, drawDefinition, event } = params;
+  const { participantId, sideMember, tieMatchUpId } = params;
 
   // TODO: sideNumber should not be required; should be resolved based on the participantId team membership
   // will additionally insure no attempts are made to add participant to incorrect side

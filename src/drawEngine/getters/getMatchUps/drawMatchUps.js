@@ -9,10 +9,10 @@ import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConsta
 /*
   return ALL matchUps within a drawDefinition, regardless of state
 */
-export function getAllDrawMatchUps(props) {
-  if (!props.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+export function getAllDrawMatchUps(params) {
+  if (!params.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  Object.assign(props, { requireParticipants: false });
+  Object.assign(params, { requireParticipants: false });
 
   const {
     abandonedMatchUps,
@@ -22,7 +22,7 @@ export function getAllDrawMatchUps(props) {
     byeMatchUps,
 
     matchUpsMap,
-  } = getDrawMatchUps(props);
+  } = getDrawMatchUps(params);
   const matchUps = [].concat(
     ...abandonedMatchUps,
     ...completedMatchUps,

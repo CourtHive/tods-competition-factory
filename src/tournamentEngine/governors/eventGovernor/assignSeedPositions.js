@@ -14,7 +14,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
  * Provides the ability to assign seedPositions *after* a structure has been generated
  * To be used *before* participants are positioned
  */
-export function assignSeedPositions(props) {
+export function assignSeedPositions(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -22,7 +22,7 @@ export function assignSeedPositions(props) {
     structureId,
     assignments,
     useExistingSeedLimit,
-  } = props;
+  } = params;
 
   let modifications = 0;
 

@@ -21,16 +21,16 @@ const { SUCCESS } = resultConstants;
  *
  */
 
-export function avoidanceTest(props) {
-  const { avoidance, eventType, participantType, sex } = props;
+export function avoidanceTest(params) {
+  const { avoidance, eventType, participantType, sex } = params;
   const {
     valuesCount = 10,
     valuesInstanceLimit,
     participantsCount = 32,
     drawType = SINGLE_ELIMINATION,
-  } = props;
+  } = params;
 
-  let { seedsCount } = props;
+  let { seedsCount } = params;
   if (!seedsCount) seedsCount = participantsCount / 4;
 
   const { tournamentRecord } = generateTournamentWithParticipants({

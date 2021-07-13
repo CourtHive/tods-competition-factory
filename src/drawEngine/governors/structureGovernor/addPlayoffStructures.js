@@ -30,12 +30,12 @@ import {
  * @param {string} playoffStructureNameBase - Root word for default playoff naming, e.g. 'Playoff' for 'Playoff 3-4'
  *
  */
-export function addPlayoffStructures(props) {
+export function addPlayoffStructures(params) {
   const {
     playoffRounds: availablePlayoffRounds,
     playoffRoundsRanges: availablePlayoffRoundsRanges,
     error: playoffRoundsError,
-  } = getAvailablePlayoffRounds(props);
+  } = getAvailablePlayoffRounds(params);
   if (playoffRoundsError) return { error: playoffRoundsError };
 
   const {
@@ -43,7 +43,7 @@ export function addPlayoffStructures(props) {
     playoffRoundsRanges,
     playoffPositionsReturned,
     error: sourceRoundsError,
-  } = getSourceRounds(props);
+  } = getSourceRounds(params);
   if (sourceRoundsError) return { error: sourceRoundsError };
 
   const {
@@ -56,7 +56,7 @@ export function addPlayoffStructures(props) {
     exitProfileLimit,
     playoffStructureNameBase,
     structureId: sourceStructureId,
-  } = props;
+  } = params;
 
   const roundProfile =
     roundProfiles?.length && Object.assign({}, ...roundProfiles);
@@ -183,7 +183,7 @@ export function addPlayoffStructures(props) {
     if (result.error) console.log(result.error);
   });
 
-  if (props.goesTo)
+  if (params.goesTo)
     addGoesTo({
       drawDefinition,
       inContextDrawMatchUps,

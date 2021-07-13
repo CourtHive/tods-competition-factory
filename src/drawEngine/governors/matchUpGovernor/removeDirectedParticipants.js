@@ -11,7 +11,7 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function removeDirectedParticipants(props) {
+export function removeDirectedParticipants(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -27,7 +27,7 @@ export function removeDirectedParticipants(props) {
     event,
 
     matchUpsMap,
-  } = props;
+  } = params;
 
   const {
     targetLinks: { loserTargetLink, winnerTargetLink },
@@ -58,7 +58,7 @@ export function removeDirectedParticipants(props) {
 
     modifyMatchUpScore({
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-      drawDefinition: props.drawDefinition,
+      drawDefinition: params.drawDefinition,
       removeWinningSide: true,
       matchUpStatusCodes,
       tournamentRecord,

@@ -7,8 +7,8 @@ import {
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
 
-export function getCompetitionParticipants(props) {
-  const { tournamentRecords } = props || {};
+export function getCompetitionParticipants(params) {
+  const { tournamentRecords } = params || {};
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -20,7 +20,7 @@ export function getCompetitionParticipants(props) {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { tournamentParticipants } = getTournamentParticipants({
       tournamentRecord,
-      ...props,
+      ...params,
     });
     for (const tournamentParticipant of tournamentParticipants) {
       const { participantId } = tournamentParticipant;

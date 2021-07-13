@@ -37,8 +37,8 @@ import {
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function keyValueMatchUpScore(props) {
-  const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = props;
+export function keyValueMatchUpScore(params) {
+  const { auto, checkFormat, shiftFirst, lowSide, value, matchUp } = params;
   const { score, winningSide, matchUpStatus, matchUpFormat } = matchUp;
   const scoreString = matchUp.scoreString || score?.scoreStringSide1;
   const sets = matchUp.sets || score?.sets;
@@ -77,10 +77,10 @@ export function keyValueMatchUpScore(props) {
 }
 
 /* shiftFirst indicates that SHIFT key refers to first opponent, rather than second */
-export function keyValueScore(props) {
-  let { lowSide = 1, value } = props;
-  let { scoreString, sets, winningSide, matchUpStatus } = props;
-  const { matchUpFormat, shiftFirst, auto = true } = props;
+export function keyValueScore(params) {
+  let { lowSide = 1, value } = params;
+  let { scoreString, sets, winningSide, matchUpStatus } = params;
+  const { matchUpFormat, shiftFirst, auto = true } = params;
 
   let updated, message;
   const isShifted =

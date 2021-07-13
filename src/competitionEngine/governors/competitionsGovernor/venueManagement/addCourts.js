@@ -7,15 +7,15 @@ import {
   VENUE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
-export function addCourts(props) {
-  const { tournamentRecords, venueId } = props || {};
+export function addCourts(params) {
+  const { tournamentRecords, venueId } = params || {};
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   let success;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { venue } = findVenue({ tournamentRecord, venueId });
     if (venue) {
-      const result = courtsAdd({ tournamentRecord, ...props });
+      const result = courtsAdd({ tournamentRecord, ...params });
       if (result.error) return result;
       success = true;
     }

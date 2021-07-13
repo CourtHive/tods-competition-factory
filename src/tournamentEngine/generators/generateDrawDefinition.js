@@ -24,9 +24,9 @@ import {
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
 
-export function generateDrawDefinition(props) {
-  const { tournamentRecord, event } = props;
-  let { drawName, matchUpType, structureOptions } = props;
+export function generateDrawDefinition(params) {
+  const { tournamentRecord, event } = params;
+  let { drawName, matchUpType, structureOptions } = params;
 
   const {
     uuids,
@@ -48,7 +48,7 @@ export function generateDrawDefinition(props) {
     seededParticipants,
     seedByRanking = true,
     seedingScaleName,
-  } = props;
+  } = params;
 
   const participants = tournamentRecord?.participants;
 
@@ -70,7 +70,7 @@ export function generateDrawDefinition(props) {
     return { error: INVALID_DRAW_TYPE };
   }
 
-  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = props;
+  let { seedsCount, drawSize = 32, tieFormat, matchUpFormat } = params;
 
   // coersion
   if (typeof drawSize !== 'number') drawSize = parseInt(drawSize);
@@ -128,7 +128,7 @@ export function generateDrawDefinition(props) {
     finishingPositionNaming,
 
     feedPolicy,
-    goesTo: props.goesTo,
+    goesTo: params.goesTo,
   });
 
   if (generatedDrawErrors)

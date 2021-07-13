@@ -8,10 +8,10 @@ import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { ADD_MATCHUPS } from '../../constants/topicConstants';
 
-export function playoff(props) {
-  const { structure, childStructures } = playoffStructures(props);
+export function playoff(params) {
+  const { structure, childStructures } = playoffStructures(params);
 
-  props.drawDefinition.structures.sort(structureSort);
+  params.drawDefinition.structures.sort(structureSort);
 
   return Object.assign({ structure, childStructures }, SUCCESS);
 }

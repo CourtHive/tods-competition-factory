@@ -24,18 +24,18 @@ import { PAIR } from '../../../../constants/participantTypes';
  * @param {string} entryStatus - change the entry status of the removed participant to either ALTERNATE or WITHDRAWN
  *
  */
-export function removeDrawPositionAssignment(props) {
-  const { drawId, replaceWithBye, destroyPair, entryStatus } = props;
+export function removeDrawPositionAssignment(params) {
+  const { drawId, replaceWithBye, destroyPair, entryStatus } = params;
 
-  const result = clearDrawPosition(props);
+  const result = clearDrawPosition(params);
   if (result.error) return result;
 
   const { participantId } = result;
-  const { drawDefinition, drawPosition, event, structureId } = props;
+  const { drawDefinition, drawPosition, event, structureId } = params;
 
   if ([ALTERNATE, WITHDRAWN].includes(entryStatus)) {
     if (participantId) {
-      const { tournamentRecord } = props;
+      const { tournamentRecord } = params;
       const { participant } = findTournamentParticipant({
         tournamentRecord,
         participantId,
@@ -78,7 +78,7 @@ export function removeDrawPositionAssignment(props) {
       method: 'replaceWithBye',
       drawPosition,
     });
-    const { matchUpsMap } = props;
+    const { matchUpsMap } = params;
     const result = assignDrawPositionBye({
       drawDefinition,
       structureId,

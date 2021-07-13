@@ -14,14 +14,14 @@ import { INVALID_DRAW_POSITION } from '../../../constants/errorConditionConstant
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
-export function directLoser(props) {
+export function directLoser(params) {
   const {
     loserMatchUp,
     drawDefinition,
     loserTargetLink,
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
-  } = props;
+  } = params;
 
   pushGlobalLog({
     color: 'brightblue',

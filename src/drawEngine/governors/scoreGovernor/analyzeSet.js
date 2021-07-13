@@ -6,8 +6,8 @@ import {
   MISSING_SET_OBJECT,
 } from '../../../constants/errorConditionConstants';
 
-export function analyzeSet(props) {
-  const { setObject, matchUpScoringFormat } = props;
+export function analyzeSet(params) {
+  const { setObject, matchUpScoringFormat } = params;
   if (!setObject) return { error: MISSING_SET_OBJECT };
 
   const { setNumber } = setObject || {};

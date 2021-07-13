@@ -38,18 +38,18 @@ export function allCompetitionMatchUps({
   return { matchUps: competitionMatchUps };
 }
 
-export function competitionScheduleMatchUps(props) {
+export function competitionScheduleMatchUps(params) {
   if (
-    typeof props?.tournamentRecords !== 'object' ||
-    !Object.keys(props?.tournamentRecords).length
+    typeof params?.tournamentRecords !== 'object' ||
+    !Object.keys(params?.tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
-  const { courts, venues } = getVenuesAndCourts(props);
-  const { sortCourtsData, sortDateMatchUps = true } = props;
-  const schedulingProfile = getSchedulingProfile(props).schedulingProfile;
+  const { courts, venues } = getVenuesAndCourts(params);
+  const { sortCourtsData, sortDateMatchUps = true } = params;
+  const schedulingProfile = getSchedulingProfile(params).schedulingProfile;
 
   const { completedMatchUps, upcomingMatchUps, pendingMatchUps } =
-    competitionMatchUps(props);
+    competitionMatchUps(params);
 
   const relevantMatchUps = [
     ...(upcomingMatchUps || []),

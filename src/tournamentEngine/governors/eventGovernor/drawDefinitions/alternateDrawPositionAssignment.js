@@ -8,6 +8,6 @@ import { alternateDrawPositionAssignment as positionAlternate } from '../../../.
  * @param {string} alternateParticipantId - id of participant
  *
  */
-export function alternateDrawPositionAssignment(props) {
-  return positionAlternate(props);
+export function alternateDrawPositionAssignment(params) {
+  return positionAlternate(params);
 }

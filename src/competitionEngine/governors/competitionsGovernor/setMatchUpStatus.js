@@ -12,24 +12,24 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function setMatchUpStatus(props) {
-  const { tournamentRecords, tournamentId } = props;
+export function setMatchUpStatus(params) {
+  const { tournamentRecords, tournamentId } = params;
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };
 
   const tournamentRecord = tournamentRecords[tournamentId];
 
   const { drawDefinition, event } = findEvent({
-    eventId: props.eventId,
-    drawId: props.drawId,
+    eventId: params.eventId,
+    drawId: params.drawId,
     tournamentRecord,
   });
 
-  return setStatus({ tournamentRecord, ...props, drawDefinition, event });
+  return setStatus({ tournamentRecord, ...params, drawDefinition, event });
 }
 
-export function bulkMatchUpStatusUpdate(props) {
-  const { tournamentRecords, outcomes } = props;
+export function bulkMatchUpStatusUpdate(params) {
+  const { tournamentRecords, outcomes } = params;
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(outcomes)) return { error: MISSING_VALUE };
 

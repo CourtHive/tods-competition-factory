@@ -33,8 +33,8 @@ export const tournamentEngine = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) =>
       getState({ convertExtensions, tournamentId }),
-    newTournamentRecord: (props = {}) => {
-      const result = newTournamentRecord(props);
+    newTournamentRecord: (params = {}) => {
+      const result = newTournamentRecord(params);
       if (result.error) return result;
       setTournamentRecord(result);
       tournamentId = result.tournamentId;

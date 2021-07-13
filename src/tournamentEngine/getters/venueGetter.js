@@ -23,6 +23,6 @@ export function findVenue({ tournamentRecord, venueId }) {
   return (venue && { venue }) || { error: VENUE_NOT_FOUND };
 }
 
-export function publicFindVenue(props) {
-  return makeDeepCopy(findVenue(props));
+export function publicFindVenue(params) {
+  return makeDeepCopy(findVenue(params));
 }

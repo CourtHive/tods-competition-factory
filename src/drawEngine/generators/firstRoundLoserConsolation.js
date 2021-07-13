@@ -13,8 +13,8 @@ import {
 } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
-export function firstRoundLoserConsolation(props) {
-  let { drawSize, consolationStructureName } = props;
+export function firstRoundLoserConsolation(params) {
+  let { drawSize, consolationStructureName } = params;
   const {
     uuids,
     matchUpType,
@@ -24,7 +24,7 @@ export function firstRoundLoserConsolation(props) {
     staggeredEntry,
     stageSequence = 1,
     finishingPositionOffset = 0,
-  } = props;
+  } = params;
 
   drawSize = drawSize || getStageDrawPositionsCount({ stage, drawDefinition });
 

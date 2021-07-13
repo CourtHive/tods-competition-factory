@@ -34,20 +34,20 @@ import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
   inContext both adds drawId and structureId to matchUps
   AND deep copies so that changes cannot be made to drawDefinition
 */
-function drawMatchUps(props) {
-  Object.assign(props, { inContext: true });
-  return getDrawMatchUps(props);
+function drawMatchUps(params) {
+  Object.assign(params, { inContext: true });
+  return getDrawMatchUps(params);
 }
 
-function allStructureMatchUps(props) {
-  const { structure } = findStructure(props);
-  Object.assign(props, { structure, inContext: true });
-  return getAllStructureMatchUps(props);
+function allStructureMatchUps(params) {
+  const { structure } = findStructure(params);
+  Object.assign(params, { structure, inContext: true });
+  return getAllStructureMatchUps(params);
 }
 
-function allDrawMatchUps(props) {
-  Object.assign(props, { inContext: true });
-  return getAllDrawMatchUps(props);
+function allDrawMatchUps(params) {
+  Object.assign(params, { inContext: true });
+  return getAllDrawMatchUps(params);
 }
 
 const queryGovernor = {

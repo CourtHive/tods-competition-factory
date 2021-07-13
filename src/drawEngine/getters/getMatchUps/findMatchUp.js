@@ -12,9 +12,9 @@ import {
 /*
   public version of findMatchUp
 */
-export function publicFindMatchUp(props) {
-  Object.assign(props, { inContext: true });
-  return { matchUp: makeDeepCopy(findMatchUp(props).matchUp) };
+export function publicFindMatchUp(params) {
+  Object.assign(params, { inContext: true });
+  return { matchUp: makeDeepCopy(findMatchUp(params).matchUp) };
 }
 
 /*

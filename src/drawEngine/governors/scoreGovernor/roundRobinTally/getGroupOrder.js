@@ -53,11 +53,11 @@ const defaultTallyDirectives = [
  * @returns {object[]} groupOrder - array of objects [{ participantId, position }]
  */
 
-export function getGroupOrder(props) {
-  const { participantResults, subOrderMap } = props;
+export function getGroupOrder(params) {
+  const { participantResults, subOrderMap } = params;
 
   // if not all opponents have completed their matchUps, no orders are assigned
-  if (!isComplete(props)) return;
+  if (!isComplete(params)) return;
 
   const matchUpsWonGroups = getGroups({
     attribute: 'matchUpsWon',
@@ -68,7 +68,7 @@ export function getGroupOrder(props) {
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
     .map((key) => matchUpsWonGroups[key])
-    .map((participantIds) => groupSubSort({ participantIds, ...props }))
+    .map((participantIds) => groupSubSort({ participantIds, ...params }))
     .flat(Infinity);
 
   let groupPosition = 1;

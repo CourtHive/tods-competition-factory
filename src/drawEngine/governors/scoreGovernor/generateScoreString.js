@@ -19,7 +19,7 @@ import { isNumeric } from '../../../utilities/math';
  * @param {boolean} - autoComplete - whether to convert undefined values to 0
  *
  */
-export function generateScoreString(props) {
+export function generateScoreString(params) {
   const {
     sets,
     winningSide,
@@ -28,7 +28,7 @@ export function generateScoreString(props) {
     reversed = false,
     winnerFirst = true,
     addOutcomeString,
-  } = props;
+  } = params;
   if (!sets) return { error: MISSING_VALUE };
 
   const scoresInSideOrder = !winnerFirst || !winningSide || winningSide === 1;

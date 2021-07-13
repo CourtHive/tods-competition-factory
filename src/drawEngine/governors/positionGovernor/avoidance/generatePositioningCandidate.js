@@ -14,7 +14,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
  *
- * NOTE: some of these parameters are passed directly through to other functions via ...props
+ * NOTE: some of these parameters are passed directly through to other functions via ...params
  *
  * @param {object[]} initialPositionAssignments - positionAssignments before any new participants placed
  * @param {object[]} participantsWithContext - participants with added team/group/pair participantIds arrays
@@ -28,7 +28,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  * @param {object[]} allGroups - map of values and participantIds which have those values
  *
  */
-export function generatePositioningCandidate(props) {
+export function generatePositioningCandidate(params) {
   const {
     initialPositionAssignments,
     participantsWithContext,
@@ -36,7 +36,7 @@ export function generatePositioningCandidate(props) {
     drawPositionGroups,
     policyAttributes,
     // entries,
-  } = props;
+  } = params;
 
   const errors = [],
     idCollections = {};
@@ -78,7 +78,7 @@ export function generatePositioningCandidate(props) {
   generateRange(0, opponentsToPlaceCount).forEach(() => {
     const { newGroupKey, selectedParticipantId, targetDrawPosition } =
       getParticipantPlacement({
-        ...props,
+        ...params,
         groupKey,
         idCollections,
         candidatePositionAssignments,

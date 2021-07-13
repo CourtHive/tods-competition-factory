@@ -4,7 +4,7 @@ import { matchUpAssignedCourtId } from '../../accessors/matchUpAccessor/courtAss
 import { matchUpAssignedVenueId } from '../../accessors/matchUpAccessor/venueAssignment';
 import { extractDate, sameDay } from '../../../utilities/dateTime';
 
-export function filterMatchUps(props) {
+export function filterMatchUps(params) {
   const {
     stages,
     venueIds,
@@ -31,7 +31,7 @@ export function filterMatchUps(props) {
     structureIds,
 
     filterMatchUpTypes = true,
-  } = props;
+  } = params;
 
   const targetMatchUpStatuses = Array.isArray(matchUpStatuses)
     ? matchUpStatuses.filter(Boolean)

@@ -10,11 +10,11 @@ import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants
  * @param {string} structureId - UUID of structure to be found within drawDefinition
  *
  */
-export function structureActions(props) {
+export function structureActions(params) {
   const actions = [];
-  if (!props?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  const isComplete = isCompletedStructure(props);
-  const hasPlayoffPositionsFilled = allPlayoffPositionsFilled(props);
+  if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  const isComplete = isCompletedStructure(params);
+  const hasPlayoffPositionsFilled = allPlayoffPositionsFilled(params);
   return { actions, state: { isComplete, hasPlayoffPositionsFilled } };
 }
 
@@ -23,9 +23,9 @@ export function structureActions(props) {
  * @param {object} drawDefinition
  * @param {string} structureId
  */
-export function isCompletedStructure(props) {
-  if (!props?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  const structureMatchUps = getStructureMatchUps(props);
+export function isCompletedStructure(params) {
+  if (!params?.drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  const structureMatchUps = getStructureMatchUps(params);
 
   const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
     structureMatchUps || {};
@@ -44,8 +44,8 @@ export function isCompletedStructure(props) {
  * @param {string} structureId - either drawDefinition and structureId or structure
  * @param {object} structure - optional
  */
-export function allPlayoffPositionsFilled(props) {
-  const { drawDefinition, structureId } = props;
+export function allPlayoffPositionsFilled(params) {
+  const { drawDefinition, structureId } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { playoffStructures } = getPlayoffStructures({

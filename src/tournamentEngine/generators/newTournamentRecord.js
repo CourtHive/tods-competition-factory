@@ -4,18 +4,21 @@ import { isISODateString } from '../../utilities/dateTime';
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { UUID } from '../../utilities';
 
-export function newTournamentRecord(props = {}) {
-  if (!props.tournamentId) Object.assign(props, { tournamentId: UUID() });
-  if (props.startDate) {
+export function newTournamentRecord(params = {}) {
+  if (!params.tournamentId) Object.assign(params, { tournamentId: UUID() });
+  if (params.startDate) {
     if (
-      !isISODateString(props.startDate) &&
-      !validDateString.test(props.startDate)
+      !isISODateString(params.startDate) &&
+      !validDateString.test(params.startDate)
     )
       return { error: INVALID_DATE };
   }
-  if (props.endDate) {
-    if (!isISODateString(props.endDate) && !validDateString.test(props.endDate))
+  if (params.endDate) {
+    if (
+      !isISODateString(params.endDate) &&
+      !validDateString.test(params.endDate)
+    )
       return { error: INVALID_DATE };
   }
-  return { ...props };
+  return { ...params };
 }

@@ -65,13 +65,13 @@ export function randomUnseededSeparation({
 
   const isRoundRobin = structure.structureType === CONTAINER;
 
-  const props = isRoundRobin
+  const params = isRoundRobin
     ? { structure, matchUps, allDrawPositions, roundsToSeparate }
     : { matchUps, allDrawPositions, roundsToSeparate };
 
   const { drawPositionGroups, drawPositionChunks } = isRoundRobin
-    ? roundRobinParticipantGroups(props)
-    : eliminationParticipantGroups(props);
+    ? roundRobinParticipantGroups(params)
+    : eliminationParticipantGroups(params);
 
   const allGroups = getAttributeGroupings({
     policyAttributes,
@@ -171,10 +171,10 @@ export function randomUnseededSeparation({
       );
 }
 
-function roundRobinParticipantGroups(props) {
+function roundRobinParticipantGroups(params) {
   const {
     structure: { structures },
-  } = props;
+  } = params;
   const drawPositionGroups = structures.map((structure) =>
     structure.positionAssignments.map((assignment) => assignment.drawPosition)
   );

@@ -27,7 +27,7 @@ import {
  * @param {string} entryStage - entryStage enum
  *
  */
-export function addEventEntries(props) {
+export function addEventEntries(params) {
   const {
     tournamentRecord,
     drawDefinition,
@@ -39,7 +39,7 @@ export function addEventEntries(props) {
     entryStage = MAIN,
 
     autoEntryPositions = true,
-  } = props;
+  } = params;
 
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds || !participantIds.length) {

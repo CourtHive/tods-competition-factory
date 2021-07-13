@@ -7,6 +7,6 @@ import { swapDrawPositionAssignments as positionSwap } from '../../../../drawEng
  * @param {number[]} drawPositions - drawPositions for which participants will be swapped
  *
  */
-export function swapDrawPositionAssignments(props) {
-  return positionSwap(props);
+export function swapDrawPositionAssignments(params) {
+  return positionSwap(params);
 }

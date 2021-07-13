@@ -10,10 +10,10 @@ import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/participantTypes';
 
-export function generateTeamsFromParticipantAttribute(props) {
-  if (!props?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function generateTeamsFromParticipantAttribute(params) {
+  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const { tournamentRecord, participantAttribute, personAttribute, uuids } =
-    props;
+    params;
 
   const teams = {};
   const participants = tournamentRecord.participants || [];

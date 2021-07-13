@@ -183,13 +183,13 @@ function conditionallyAdvanceDrawPosition({
   return SUCCESS;
 }
 
-function advanceByeToLoserMatchUp(props) {
+function advanceByeToLoserMatchUp(params) {
   const {
     drawDefinition,
     loserTargetLink,
     loserTargetDrawPosition,
     matchUpsMap,
-  } = props;
+  } = params;
   const structureId = loserTargetLink?.target?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: MISSING_STRUCTURE };
