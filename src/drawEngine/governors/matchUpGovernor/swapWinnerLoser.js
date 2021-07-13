@@ -42,9 +42,52 @@ export function swapWinnerLoser(params) {
     addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
   });
 
-  const currentStageSequence = structure.stageSequence;
+  const { stage: currentStage, stageSequence: currentStageSequence } =
+    structure;
+  const subsequentStructureIds = drawDefinition.structures
+    .filter(
+      ({ stage, stageSequence }) =>
+        stage === currentStage && stageSequence > currentStageSequence
+    )
+    .map(({ structureId }) => structureId);
+
+  const {
+    targetLinks: { loserTargetLink, winnerTargetLink },
+  } = params.targetData;
+  const targetStructureIds = [
+    loserTargetLink?.target.structureId,
+    winnerTargetLink?.target?.structureId,
+  ].filter(Boolean);
+
+  // find target structures that are not part of current stage...
+  // ... as well as any subsequent structures
+  drawDefinition.structures
+    .filter(({ stage, structureId }) => {
+      return stage !== currentStage && targetStructureIds.includes(structureId);
+    })
+    .forEach(
+      ({
+        stage: targetStage,
+        stageSequence: targetStageSequence,
+        structureId,
+      }) => {
+        if (!subsequentStructureIds.includes(structureId))
+          subsequentStructureIds.push(structureId);
+
+        drawDefinition.structures
+          .filter(
+            ({ stage, stageSequence }) =>
+              stage === targetStage && stageSequence > targetStageSequence
+          )
+          .forEach(({ structureId }) => {
+            if (!subsequentStructureIds.includes(structureId))
+              subsequentStructureIds.push(structureId);
+          });
+      }
+    );
+
   const subsequentStructures = drawDefinition.structures.filter(
-    ({ stageSequence }) => stageSequence > currentStageSequence
+    ({ structureId }) => subsequentStructureIds.includes(structureId)
   );
 
   // for each subsequent structure swap drawPosition assignments (where applicable)
