@@ -2,22 +2,22 @@ import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawP
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
+import { findStructure } from '../../getters/findStructure';
+import { intersection } from '../../../utilities';
+import { positionTargets } from './positionTargets';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findStructure } from '../../getters/findStructure';
-import { intersection } from '../../../utilities';
-import { positionTargets } from './positionTargets';
 
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_POSITION_ASSIGNED,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function doubleWalkoverAdvancement({
   drawDefinition,

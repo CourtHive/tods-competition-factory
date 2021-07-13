@@ -8,6 +8,7 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   CANCELLED,
@@ -19,110 +20,65 @@ import {
   INVALID_MATCHUP_STATUS,
   UNRECOGNIZED_MATCHUP_STATUS,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function attemptToSetMatchUpStatus(params) {
-  const {
-    notes,
-    matchUp,
-    matchUpId,
-    structure,
-    targetData,
-    matchUpStatus,
-    matchUpFormat,
-    drawDefinition,
-    matchUpStatusCodes,
-    tournamentRecord,
-    event,
+  const { matchUp, structure, matchUpStatus } = params;
 
-    matchUpsMap,
-  } = params;
-
-  if (matchUp.winningSide) {
-    if (matchUpStatus === BYE) {
-      return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-    } else if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      if (matchUpStatus === DOUBLE_WALKOVER) {
-        let result = removeDirectedParticipants(params);
-        if (result.error) return result;
-        result = checkDoubleWalkoverPropagation({
-          drawDefinition,
-          matchUpsMap,
-          targetData,
-        });
-        if (result.error) return result;
-      }
-      modifyMatchUpScore({
-        notes,
-        matchUp,
-        matchUpId,
-        matchUpStatus,
-        matchUpFormat,
-        drawDefinition,
-        matchUpStatusCodes,
-        tournamentRecord,
-        event,
-      });
-    } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-      // only possible to remove winningSide if neither winner
-      // nor loser has been directed further into target structures
-      const result = removeDirectedParticipants(params);
-      if (result.error) return result;
-      modifyMatchUpScore({
-        notes,
-        matchUp,
-        matchUpId,
-        matchUpFormat,
-        drawDefinition,
-        matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-        matchUpStatusCodes,
-        tournamentRecord,
-        event,
-      });
-    } else {
-      return { error: UNRECOGNIZED_MATCHUP_STATUS };
-    }
+  const existingWinningSide = matchUp.winningSide;
+  if (existingWinningSide) {
+    return removeWinningSide(params);
   } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    const removeScore = [CANCELLED, WALKOVER].includes(matchUpStatus);
-    modifyMatchUpScore({
-      notes,
-      matchUp,
-      matchUpId,
-      removeScore,
-      matchUpFormat,
-      drawDefinition,
-      matchUpStatusCodes,
-      matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-      tournamentRecord,
-      event,
+    return modifyMatchUpScore({
+      ...params,
+      removeScore: [CANCELLED, WALKOVER].includes(matchUpStatus),
+      matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
     });
   } else if (matchUpStatus === BYE) {
-    const result = attemptToSetMatchUpStatusBYE({ matchUp, structure });
-    if (result.error) return result;
+    return attemptToSetMatchUpStatusBYE({ matchUp, structure });
+  } else if (!isDirectingMatchUpStatus({ matchUpStatus })) {
+    return { error: UNRECOGNIZED_MATCHUP_STATUS };
+  } else if (matchUpStatus === DOUBLE_WALKOVER) {
+    return modifyScoreAndAdvanceWOWO(params);
   } else {
-    if (isDirectingMatchUpStatus({ matchUpStatus })) {
-      if (matchUpStatus === DOUBLE_WALKOVER) {
-        modifyMatchUpScore({
-          notes,
-          matchUp,
-          matchUpId,
-          matchUpStatus,
-          matchUpFormat,
-          drawDefinition,
-          removeScore: true,
-          matchUpStatusCodes,
-          tournamentRecord,
-          event,
-        });
+    return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
+  }
+}
 
-        doubleWalkoverAdvancement(params);
-      } else {
-        return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-      }
-    } else {
-      return { error: UNRECOGNIZED_MATCHUP_STATUS };
+function modifyScoreAndAdvanceWOWO(params) {
+  const result = modifyMatchUpScore({ ...params, removeScore: true });
+  if (result.error) return result;
+  return doubleWalkoverAdvancement(params);
+}
+
+function removeWinningSide(params) {
+  const { matchUpStatus, drawDefinition, matchUpsMap, targetData } = params;
+  if (isDirectingMatchUpStatus({ matchUpStatus })) {
+    if (matchUpStatus === DOUBLE_WALKOVER) {
+      let result = removeDirectedParticipants(params);
+      if (result.error) return result;
+      result = checkDoubleWalkoverPropagation({
+        drawDefinition,
+        matchUpsMap,
+        targetData,
+      });
+      if (result.error) return result;
     }
+    const result = modifyMatchUpScore(params);
+    if (result.error) return result;
+  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
+    // only possible to remove winningSide if neither winner
+    // nor loser has been directed further into target structures
+    const result = removeDirectedParticipants(params);
+    if (result.error) return result;
+
+    const scoringResult = modifyMatchUpScore({
+      ...params,
+      matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
+    });
+    if (scoringResult.error) return scoringResult;
+  } else {
+    return { error: UNRECOGNIZED_MATCHUP_STATUS };
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
