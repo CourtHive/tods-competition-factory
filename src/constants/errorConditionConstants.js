@@ -2,6 +2,7 @@ export const INVALID_RECORDS =
   'records must be an object with tournamentId keys';
 export const MISSING_TOURNAMENT_RECORDS = 'Missing tournamentRecords';
 export const MISSING_TOURNAMENT_RECORD = 'Missing tournamentRecord';
+export const INVALID_TOURNAMENT_RECORD = 'Invalid tournamentRecord';
 export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
 
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
@@ -240,6 +241,7 @@ export const errorConditionConstants = {
   INVALID_TIME,
   INVALID_TIME_ITEM,
   INVALID_TOURNAMENT_DATES,
+  INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,
