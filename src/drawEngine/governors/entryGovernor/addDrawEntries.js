@@ -2,6 +2,7 @@ import { refreshEntryPositions } from '../../../common/producers/refreshEntryPos
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DIRECT_ACCEPTANCE,
   LUCKY_LOSER,
@@ -16,7 +17,6 @@ import {
   MISSING_PARTICIPANT_ID,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   VOLUNTARY_CONSOLATION,
@@ -147,6 +147,7 @@ export function addDrawEntries({
     );
     drawDefinition.entries.push(entry);
   });
+
   if (autoEntryPositions) {
     drawDefinition.entries = refreshEntryPositions({
       entries: drawDefinition.entries,

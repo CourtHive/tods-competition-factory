@@ -1,5 +1,5 @@
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -8,6 +8,7 @@ import {
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 it('can add draw with empty voluntary consolation stage', () => {
   const eventProfiles = [
@@ -96,12 +97,13 @@ it('can add voluntary consolation structure to an existing draw', () => {
   const {
     drawIds: [drawId],
     eventIds: [eventId],
-    // tournamentRecord,
+    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
 
-  // tournamentEngine.setState(tournamentRecord);
+  let result = tournamentEngine.setState(tournamentRecord);
+  expect(result.success).toEqual(true);
 
   let {
     flightProfile: { flights },
@@ -112,11 +114,20 @@ it('can add voluntary consolation structure to an existing draw', () => {
     .map(({ participantId }) => participantId)
     .slice(0, drawSize / 2);
 
-  let result = tournamentEngine.addVoluntaryConsolationStage({
+  result = tournamentEngine.addVoluntaryConsolationStage({
     drawId,
     drawSize: consolationParticipantIds.length,
   });
   expect(result.success).toEqual(true);
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const { extension } = findExtension({
+    element: drawDefinition,
+    name: 'entryProfile',
+  });
+  expect(extension.value[VOLUNTARY_CONSOLATION].drawSize).toEqual(
+    consolationParticipantIds.length
+  );
 
   result = tournamentEngine.addDrawEntries({
     participantIds: consolationParticipantIds,
@@ -126,13 +137,19 @@ it('can add voluntary consolation structure to an existing draw', () => {
   });
   expect(result.success).toEqual(true);
 
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  let voluntaryEntries = drawDefinition.entries.filter(
+    ({ entryStage }) => entryStage === VOLUNTARY_CONSOLATION
+  );
+  expect(voluntaryEntries.length).toEqual(consolationParticipantIds.length);
+
   ({
     flightProfile: { flights },
   } = tournamentEngine.getFlightProfile({ eventId }));
 
   flight = flights[0];
 
-  const voluntaryEntries = flight.drawEntries.filter(
+  voluntaryEntries = flight.drawEntries.filter(
     ({ entryStage }) => entryStage === VOLUNTARY_CONSOLATION
   );
   expect(voluntaryEntries.length).toEqual(consolationParticipantIds.length);
@@ -143,7 +160,7 @@ it('can add voluntary consolation structure to an existing draw', () => {
   });
   expect(result.success).toEqual(true);
 
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   const voluntaryConsolationStructure = drawDefinition.structures.find(
     ({ stage }) => stage === VOLUNTARY_CONSOLATION
   );

@@ -2,6 +2,8 @@ import { addDrawEntries as addEntries } from '../../../../drawEngine/governors/e
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
+import { VOLUNTARY_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { LUCKY_LOSER } from '../../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -46,12 +48,29 @@ export function addDrawEntries({
   const flight = flightProfile?.flights.find(
     (flight) => flight.drawId === drawId
   );
+
   if (flight?.drawEntries) {
-    const enteredParticipantIds = flight.drawEntries.map(
-      ({ participantId }) => participantId
-    );
     participantIds.forEach((participantId) => {
-      if (!enteredParticipantIds.includes(participantId)) {
+      const invalidLuckyLoser =
+        entryStatus === LUCKY_LOSER &&
+        participantInFlightEntries({
+          participantId,
+          entryStatus,
+          flight,
+        });
+      const invalidVoluntaryConsolation =
+        entryStage === VOLUNTARY_CONSOLATION &&
+        participantInFlightEntries({
+          participantId,
+          entryStage,
+          flight,
+        });
+      const invalidEntry =
+        entryStatus !== LUCKY_LOSER &&
+        entryStage !== VOLUNTARY_CONSOLATION &&
+        participantInFlightEntries({ flight, participantId });
+
+      if (!invalidEntry && !invalidLuckyLoser && !invalidVoluntaryConsolation) {
         flight.drawEntries.push({
           participantId,
           entryStatus,
@@ -68,4 +87,19 @@ export function addDrawEntries({
   }
 
   return SUCCESS;
+}
+
+function participantInFlightEntries({
+  participantId,
+  entryStatus,
+  entryStage,
+  flight,
+}) {
+  const inEntries = flight.drawEntries?.find(
+    (entry) =>
+      entry.participantId === participantId &&
+      (!entryStatus || entryStatus === entry.entryStatus) &&
+      (!entryStage || entryStage === entry.entryStage)
+  );
+  return participantId && inEntries;
 }
