@@ -26,14 +26,9 @@ export function doubleWalkoverAdvancement({
 
   matchUpsMap,
 }) {
-  if (!matchUpsMap) {
-    matchUpsMap = getMatchUpsMap({ drawDefinition });
-  }
+  if (structure.structureType === CONTAINER) return SUCCESS;
+  if (!matchUpsMap) matchUpsMap = getMatchUpsMap({ drawDefinition });
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
-
-  if (structure.structureType === CONTAINER) {
-    return SUCCESS;
-  }
 
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } =
     targetMatchUps;
@@ -149,7 +144,7 @@ function conditionallyAdvanceDrawPosition({
           (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
         );
         if (!noContextNextWinnerMatchUp) return { error: MISSING_MATCHUP };
-        modifyMatchUpScore({
+        const result = modifyMatchUpScore({
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUp: noContextNextWinnerMatchUp,
           drawDefinition,
@@ -157,13 +152,16 @@ function conditionallyAdvanceDrawPosition({
           matchUpStatusCodes: [],
           removeScore: true,
         });
-        doubleWalkoverAdvancement({
+        if (result.error) return result;
+
+        const advancementResult = doubleWalkoverAdvancement({
           drawDefinition,
           structure,
           targetData,
           matchUpId,
           matchUpsMap,
         });
+        if (advancementResult.error) return advancementResult;
       }
     }
   }

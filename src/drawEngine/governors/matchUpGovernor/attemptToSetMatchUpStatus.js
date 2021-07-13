@@ -8,7 +8,10 @@ import {
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_MATCHUP_STATUS,
+  UNRECOGNIZED_MATCHUP_STATUS,
+} from '../../../constants/errorConditionConstants';
 import {
   BYE,
   CANCELLED,
@@ -16,69 +19,70 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  UNRECOGNIZED_MATCHUP_STATUS,
-} from '../../../constants/errorConditionConstants';
 
 export function attemptToSetMatchUpStatus(params) {
   const { matchUp, structure, matchUpStatus } = params;
 
+  const isBYE = matchUpStatus === BYE;
+  const WOWO = matchUpStatus === DOUBLE_WALKOVER;
   const existingWinningSide = matchUp.winningSide;
-  if (existingWinningSide) {
-    return removeWinningSide(params);
-  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    return modifyMatchUpScore({
+  const directing = isDirectingMatchUpStatus({ matchUpStatus });
+  const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
+
+  const clearScore = () =>
+    modifyMatchUpScore({
       ...params,
       removeScore: [CANCELLED, WALKOVER].includes(matchUpStatus),
       matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
     });
-  } else if (matchUpStatus === BYE) {
-    return attemptToSetMatchUpStatusBYE({ matchUp, structure });
-  } else if (!isDirectingMatchUpStatus({ matchUpStatus })) {
-    return { error: UNRECOGNIZED_MATCHUP_STATUS };
-  } else if (matchUpStatus === DOUBLE_WALKOVER) {
-    return modifyScoreAndAdvanceWOWO(params);
-  } else {
-    return { error: INVALID_MATCHUP_STATUS, matchUpStatus };
-  }
+
+  return (
+    (!directing && !nonDirecting && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
+    (existingWinningSide && removeWinningSide(params, directing, WOWO)) ||
+    (nonDirecting && clearScore()) ||
+    (isBYE && attemptToSetMatchUpStatusBYE({ matchUp, structure })) ||
+    (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
+    (WOWO && modifyScoreAndAdvanceWOWO(params)) || {
+      error: INVALID_MATCHUP_STATUS,
+    }
+  );
+}
+
+function removeWinningSide(params, directing, WOWO) {
+  return (
+    (directing && WOWO && removeDoubleWalkover(params)) ||
+    (directing && modifyMatchUpScore(params)) ||
+    removeAndModifyScore(params)
+  );
+}
+
+function removeDoubleWalkover(params) {
+  const { drawDefinition, matchUpsMap, targetData } = params;
+  let result = removeDirectedParticipants(params);
+  if (result.error) return result;
+
+  result = checkDoubleWalkoverPropagation({
+    drawDefinition,
+    matchUpsMap,
+    targetData,
+  });
+  if (result.error) return result;
+
+  return modifyMatchUpScore(params);
+}
+
+function removeAndModifyScore(params) {
+  const result = removeDirectedParticipants(params);
+  if (result.error) return result;
+
+  return modifyMatchUpScore({
+    ...params,
+    matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
+  });
 }
 
 function modifyScoreAndAdvanceWOWO(params) {
   const result = modifyMatchUpScore({ ...params, removeScore: true });
   if (result.error) return result;
   return doubleWalkoverAdvancement(params);
-}
-
-function removeWinningSide(params) {
-  const { matchUpStatus, drawDefinition, matchUpsMap, targetData } = params;
-  if (isDirectingMatchUpStatus({ matchUpStatus })) {
-    if (matchUpStatus === DOUBLE_WALKOVER) {
-      let result = removeDirectedParticipants(params);
-      if (result.error) return result;
-      result = checkDoubleWalkoverPropagation({
-        drawDefinition,
-        matchUpsMap,
-        targetData,
-      });
-      if (result.error) return result;
-    }
-    const result = modifyMatchUpScore(params);
-    if (result.error) return result;
-  } else if (isNonDirectingMatchUpStatus({ matchUpStatus })) {
-    // only possible to remove winningSide if neither winner
-    // nor loser has been directed further into target structures
-    const result = removeDirectedParticipants(params);
-    if (result.error) return result;
-
-    const scoringResult = modifyMatchUpScore({
-      ...params,
-      matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
-    });
-    if (scoringResult.error) return scoringResult;
-  } else {
-    return { error: UNRECOGNIZED_MATCHUP_STATUS };
-  }
-
-  return { ...SUCCESS };
 }
