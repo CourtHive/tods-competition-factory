@@ -234,64 +234,17 @@ export function setMatchUpStatus(params) {
 }
 
 function winningSideWithDownstreamDependencies(params) {
-  const {
-    matchUp,
-    matchUpStatus,
-    winningSide,
-    notes,
-    matchUpId,
-    tournamentRecord,
-    event,
-  } = params;
-
+  const { matchUp, winningSide } = params;
   if (winningSide === matchUp.winningSide) {
-    if (matchUpStatus) {
-      return applyMatchUpValues(params);
-    } else {
-      const { drawDefinition, score, matchUpFormat, matchUpTieId } = params;
-      modifyMatchUpScore({
-        tournamentRecord,
-        drawDefinition,
-        matchUpFormat,
-        matchUpId,
-        matchUp,
-        score,
-        notes,
-        event,
-        matchUpTieId,
-      });
-    }
+    return applyMatchUpValues(params);
   } else {
     return { error: CANNOT_CHANGE_WINNINGSIDE };
   }
-
-  return SUCCESS;
 }
 
 function applyMatchUpValues(params) {
-  const {
-    tournamentRecord,
-    drawDefinition,
-    matchUpStatusCodes,
-    matchUpStatus,
-    matchUpFormat,
-    matchUpId,
-    matchUp,
-    event,
-    score,
-    notes,
-  } = params;
   return modifyMatchUpScore({
-    tournamentRecord,
-    drawDefinition,
-    matchUpStatus: matchUpStatus || COMPLETED,
-    matchUpStatusCodes,
-    matchUpFormat,
-    matchUpId,
-    matchUp,
-    event,
-    score,
-    notes,
-    matchUpTieId: params.matchUpTieId,
+    ...params,
+    matchUpStatus: params.matchUpStatus || COMPLETED,
   });
 }
