@@ -86,15 +86,19 @@ it('can setStateProvier', async () => {
   expect(allParticipants.length).toEqual(participantsCount);
 
   let { tournamentRecords } = await asyncCompetitionEngine.getState();
-  expect(Object.keys(tournamentRecords).length).toEqual(2);
+  const tournamentIds = Object.keys(tournamentRecords);
+  expect(tournamentIds.length).toEqual(2);
 
   result = await asyncCompetitionEngine.removeTournamentRecord(
-    tournamentRecord.tournamentId
+    tournamentIds[0]
   );
   expect(result.success).toEqual(true);
 
+  // removing the tournamentRecord matching globalState.tournamentId
+  // caused there to be only one tournamentRecord in globalState
+  // and globalState.tournamentId was updated to point to this remaining tournament
   ({ tournamentRecord } = await asyncTournamentEngine.getState());
-  expect(tournamentRecord).toBeUndefined();
+  expect(tournamentRecord.tournamentId).toEqual(tournamentIds[1]);
 
   ({ tournamentRecords } = await asyncCompetitionEngine.getState());
   expect(Object.keys(tournamentRecords).length).toEqual(1);
