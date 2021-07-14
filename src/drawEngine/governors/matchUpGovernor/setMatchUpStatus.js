@@ -184,7 +184,7 @@ export function setMatchUpStatus(params) {
   });
 
   // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
-  const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
+  const activeDownStream = isActiveDownstream(params);
   if (
     activeDownStream &&
     !winningSide &&

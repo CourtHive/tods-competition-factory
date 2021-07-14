@@ -7,9 +7,22 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import {
+  BYE,
+  DOUBLE_WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
+const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
+  matchUps.find(
+    (matchUp) =>
+      matchUp.roundNumber === roundNumber &&
+      matchUp.roundPosition === roundPosition
+  );
+
+// tournamentEngine.devContext({ WOWO: true });
+
+// duplicate this test but reverse the order of scoring; enter WO/WO second
 test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const {
@@ -18,6 +31,8 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
+
+  tournamentEngine.setState(tournamentRecord);
 
   let matchUpsNotificationCounter = 0;
   let result = setSubscriptions({
@@ -29,16 +44,6 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
   });
   expect(result.success).toEqual(true);
 
-  tournamentEngine
-    // .devContext({ WOWO: true }) // enable context logging
-    .setState(tournamentRecord);
-
-  const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-    matchUps.find(
-      (matchUp) =>
-        matchUp.roundNumber === roundNumber &&
-        matchUp.roundPosition === roundPosition
-    );
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
@@ -52,7 +57,7 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
   expect(matchUpsNotificationCounter).toEqual(2);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
     winningSide: 1,
   });
@@ -68,8 +73,94 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
   expect(targetMatchUp.winningSide).toEqual(2);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-3 6-3',
+    winningSide: 2,
+  }));
+
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    allowChangePropagation: true,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+
+  expect(matchUpsNotificationCounter).toEqual(8);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([4]);
+  expect(targetMatchUp.winningSide).toEqual(2);
+});
+
+test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WALKOVER', () => {
+  const drawProfiles = [{ drawSize: 8, participantsCount: 7 }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(BYE);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 2],
+    [2, 1],
+    [3, 1],
+  ]);
+  modifiedMatchUpLog = [];
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 3],
+    [2, 2],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // tournamentEngine.devContext({ WOWO: true });
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+  });
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 4],
+    [2, 2],
+    [3, 1],
+  ]);
 });
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
@@ -129,7 +220,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   }));
   expect(filteredOrderedPairs).toEqual(consolationStructureOrderedPairs);
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
@@ -175,7 +266,7 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   expect(filteredOrderedPairs).toEqual([[3, 4], [5, 6], [1, 3], [2], [3]]);
 
   // remove outcome
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,
@@ -197,6 +288,9 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   expect(filteredOrderedPairs).toEqual(consolationStructureOrderedPairs);
 });
 
+/*
+Generate SINGLE_ELIMINATION drawSize: 16 and complete r1p1 with score
+*/
 it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   const drawProfiles = [
     {
@@ -216,13 +310,11 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  // get the first upcoming matchUp, which will be { roundPosition: 2 }
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
-  const [matchUp] = upcomingMatchUps;
-  const { matchUpId, roundPosition } = matchUp;
-  expect(roundPosition).toEqual(2);
+  tournamentEngine.setState(tournamentRecord);
+
+  // get the first upcoming matchUp
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { matchUpId } = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
 
   let {
     drawDefinition: {
@@ -249,7 +341,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
     [],
   ]);
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
@@ -338,7 +430,7 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   const targetMatchUp = matchUps.find(
     ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4
   );
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
@@ -437,7 +529,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
     scoreString: '7-5 7-5',
     winningSide: 1,
   });
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,
@@ -532,7 +624,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
     scoreString: '7-5 7-5',
     winningSide: 1,
   });
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome,

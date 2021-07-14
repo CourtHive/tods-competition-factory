@@ -2,14 +2,14 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { intersection, numericSort } from '../../../utilities';
 import { pushGlobalLog } from '../../../global/globalLog';
+import { addNotice } from '../../../global/globalState';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
-
-import { addNotice, getDevContext } from '../../../global/globalState';
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
@@ -27,6 +27,7 @@ import {
 export function assignMatchUpDrawPosition({
   drawDefinition,
   matchUpId,
+  matchUpStatus,
   drawPosition,
   iterative,
 
@@ -66,8 +67,11 @@ export function assignMatchUpDrawPosition({
     drawPosition,
   });
 
-  let positionAdded = false;
   const drawPositions = matchUp.drawPositions || [];
+  const { positionAdded, positionAssigned, updatedDrawPositions } =
+    getUpdatedDrawPositions({ drawPosition, drawPositions });
+  /*
+  let positionAdded = false;
   let positionAssigned = drawPositions.includes(drawPosition);
   const updatedDrawPositions = positionAssigned
     ? drawPositions
@@ -84,6 +88,7 @@ export function assignMatchUpDrawPosition({
           }
         })
         .sort(numericSort);
+        */
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
@@ -98,54 +103,30 @@ export function assignMatchUpDrawPosition({
     matchUp.matchUpStatus === WALKOVER &&
     updatedDrawPositions.filter(Boolean).length < 2;
 
-  const matchUpStatus = isByeMatchUp
+  matchUpStatus = isByeMatchUp
     ? BYE
+    : matchUpStatus
+    ? matchUpStatus
     : isWOWOWalkover
     ? WALKOVER
     : TO_BE_PLAYED;
 
-  let walkoverWinningSide;
-  if (isWOWOWalkover) {
-    // if it is a feedArm then sideNumber: 1 is always the fed side and drawPosition will be present
-    // if a BYE is being fed then the matchUpStatus will already be BYE and this logic is bypassed
-
-    // determine which sideNumber { drawPosition } will be and assign winningSide
-    // NOTE: at present this is dependent on presence of .winnerMatchUpId and .loserMatchUpId
-    // TODO: reusable function that will be able to use position targeting using links
-    // which will need to filter by previous round then get positionTargets for each matchUp in the round
-    const sourceMatchUps = inContextDrawMatchUps.filter(
-      ({ winnerMatchUpId, loserMatchUpId }) =>
-        loserMatchUpId === matchUpId || winnerMatchUpId === matchUpId
-    );
-    const feedRound = sourceMatchUps.find(({ feedRound }) => feedRound);
-    walkoverWinningSide = feedRound
-      ? 1
-      : sourceMatchUps.reduce((sideNumber, sourceMatchUp, index) => {
-          if (sourceMatchUp.drawPositions.includes(drawPosition))
-            return index + 1;
-          return sideNumber;
-        }, undefined);
-  }
-
-  if (getDevContext({ WOWO: true })) {
-    console.log('assignMatchUpDrawPosition', matchUp.matchUpStatus, {
-      matchUpStatus,
-      positionAdded,
-      updatedDrawPositions,
-      walkoverWinningSide,
-    });
-  }
-
-  matchUp.drawPositions = updatedDrawPositions;
-
-  // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
-  Object.assign(matchUp, {
-    drawPositions: updatedDrawPositions,
-    winningSide: walkoverWinningSide,
-    matchUpStatus,
-  });
-
   if (positionAdded) {
+    const walkoverWinningSide =
+      isWOWOWalkover &&
+      getWalkoverWinningSide({
+        matchUpId,
+        drawPosition,
+        inContextDrawMatchUps,
+      });
+
+    // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
+    Object.assign(matchUp, {
+      drawPositions: updatedDrawPositions,
+      winningSide: walkoverWinningSide,
+      matchUpStatus,
+    });
+
     addNotice({
       topic: MODIFY_MATCHUP,
       payload: { matchUp },
@@ -256,4 +237,26 @@ export function assignMatchUpDrawPosition({
   } else {
     return { error: DRAW_POSITION_ASSIGNED, drawPosition };
   }
+}
+
+function getUpdatedDrawPositions({ drawPosition, drawPositions }) {
+  let positionAdded;
+  let positionAssigned = drawPositions.includes(drawPosition);
+  const updatedDrawPositions = positionAssigned
+    ? drawPositions
+    : []
+        .concat(...drawPositions, undefined, undefined)
+        .slice(0, 2) // accounts for empty array, should always have length 2
+        .map((position) => {
+          if (!position && !positionAssigned) {
+            positionAssigned = true;
+            positionAdded = true;
+            return drawPosition;
+          } else {
+            return position;
+          }
+        })
+        .sort(numericSort);
+
+  return { updatedDrawPositions, positionAdded, positionAssigned };
 }
