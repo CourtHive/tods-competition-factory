@@ -3,11 +3,11 @@ import { getAllStructureMatchUps } from './getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { findStructure } from '../findStructure';
 
+import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
   upcomingMatchUpStatuses,
 } from '../../../constants/matchUpStatusConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined

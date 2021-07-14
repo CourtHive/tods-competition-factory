@@ -50,6 +50,8 @@ import {
 export function setMatchUpStatus(params) {
   let messages = [];
 
+  if (getDevContext({ setMatchUpStatus: true })) console.log(params);
+
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
   const {

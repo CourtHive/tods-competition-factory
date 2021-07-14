@@ -42,10 +42,12 @@ export function modifyMatchUpScore({
   removeScore,
   removeWinningSide,
 }) {
+  let structure;
+
   if (matchUp.matchUpType === TEAM) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      ({ matchUp } = findMatchUp({ drawDefinition, matchUpId }));
+      ({ matchUp, structure } = findMatchUp({ drawDefinition, matchUpId }));
     } else {
       // the modification is to be applied to the TEAM matchUp
     }
@@ -64,11 +66,12 @@ export function modifyMatchUpScore({
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
 
-  // TODO: can this find be avoided by passing inContext matchUp details?
-  const { structure } = findMatchUp({
-    drawDefinition,
-    matchUpId,
-  });
+  if (!structure) {
+    ({ structure } = findMatchUp({
+      drawDefinition,
+      matchUpId,
+    }));
+  }
 
   if (structure?.structureType === CONTAINER) {
     matchUpFormat =
