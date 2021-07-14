@@ -44,19 +44,17 @@ export const tournamentEngine = (function () {
   };
 
   fx.version = () => factoryVersion();
-  fx.reset = () => {
-    removeTournamentRecord(getTournamentId());
-    return SUCCESS;
-  };
+  fx.reset = () => removeTournamentRecord(getTournamentId());
   fx.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
     return processResult(result);
   };
-  fx.devContext = (isDev) => {
-    setDevContext(isDev);
+  fx.devContext = (contextCriteria) => {
+    setDevContext(contextCriteria);
     return fx;
   };
+  fx.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
 
   fx.executionQueue = (directives, rollbackOnError) =>
     executionQueue(fx, directives, rollbackOnError);

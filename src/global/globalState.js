@@ -1,13 +1,14 @@
 import { intersection } from '../utilities/arrays';
-import syncStateEngine from './syncGlobalState';
+import syncGlobalState from './syncGlobalState';
 
 import { MISSING_VALUE } from '../constants/errorConditionConstants';
+
 const globalState = {
-  devContext: false,
+  devContext: undefined,
   deepCopy: true,
 };
 
-let _globalStateProvider = syncStateEngine;
+let _globalStateProvider = syncGlobalState;
 
 const requiredStateProviderMethods = [
   'addNotice',
@@ -58,12 +59,11 @@ export function createInstanceState() {
 }
 
 /**
- * if no contextCriteria is provided just provide boolean whether devContext has been set
  * if contextCriteria, check whether all contextCriteria keys values are equivalent with globalState.devContext object
  */
 export function getDevContext(contextCriteria) {
   if (!contextCriteria || typeof contextCriteria !== 'object') {
-    return !!globalState.devContext;
+    return globalState.devContext || false;
   } else {
     if (typeof globalState.devContext !== 'object') return false;
     return Object.keys(contextCriteria).every(

@@ -39,10 +39,6 @@ export function competitionEngineAsync(test) {
       setTournamentRecords({});
       return SUCCESS;
     },
-    devContext: (isDev) => {
-      setDevContext(isDev);
-      return fx;
-    },
     setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
       const result = setState(records, deepCopyOption);
@@ -63,6 +59,10 @@ export function competitionEngineAsync(test) {
     },
   };
 
+  fx.devContext = (contextCriteria) => {
+    setDevContext(contextCriteria);
+    return fx;
+  };
   fx.executionQueue = (directives, rollbackOnError) =>
     executionQueueAsync(fx, directives, rollbackOnError);
 
