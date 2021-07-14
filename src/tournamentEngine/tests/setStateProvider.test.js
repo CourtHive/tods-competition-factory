@@ -30,7 +30,8 @@ it('can set state provider', () => {
     },
   };
 
-  setSubscriptions({ subscriptions });
+  result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
 
   const { tournamentId } = tournamentEngine.newTournamentRecord();
   let participant = {
