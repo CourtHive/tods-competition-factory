@@ -61,7 +61,6 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  console.log(filteredOrderedPairs);
   expect(filteredOrderedPairs).toEqual([
     [1, 2],
     [3, 4],
