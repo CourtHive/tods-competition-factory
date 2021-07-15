@@ -132,12 +132,13 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const hasDrawPosition = drawPositions.length === 1;
   const walkoverWinningSide =
-    hasDrawPosition &&
-    getWalkoverWinningSide({
-      matchUpId,
-      drawPosition: drawPositions[0],
-      inContextDrawMatchUps,
-    });
+    (hasDrawPosition &&
+      getWalkoverWinningSide({
+        matchUpId,
+        drawPosition: drawPositions[0],
+        inContextDrawMatchUps,
+      })) ||
+    undefined;
 
   // assign the WALKOVER status to winnerMatchUp
   const existingWalkover =

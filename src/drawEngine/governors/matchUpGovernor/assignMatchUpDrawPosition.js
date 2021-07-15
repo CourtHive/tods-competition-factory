@@ -96,12 +96,13 @@ export function assignMatchUpDrawPosition({
 
   if (positionAdded) {
     const walkoverWinningSide =
-      isWOWOWalkover &&
-      getWalkoverWinningSide({
-        matchUpId,
-        drawPosition,
-        inContextDrawMatchUps,
-      });
+      (isWOWOWalkover &&
+        getWalkoverWinningSide({
+          matchUpId,
+          drawPosition,
+          inContextDrawMatchUps,
+        })) ||
+      undefined;
 
     // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
     Object.assign(matchUp, {
