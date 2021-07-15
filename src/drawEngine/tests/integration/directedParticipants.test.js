@@ -124,7 +124,6 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     matchUpId,
     matchUpStatus: RETIRED,
   });
-  console.log({ error });
   expect(error).not.toBeUndefined();
 
   ({ matchUp } = findMatchUpByRoundNumberAndPosition({
@@ -507,7 +506,6 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     matchUpId,
     matchUpStatus: TO_BE_PLAYED,
   }));
-  console.log({ error });
   expect(error).not.toBeUndefined();
 
   // Now attempt to change a 1st round matchUpStatus, but not winner...
