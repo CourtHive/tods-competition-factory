@@ -1,12 +1,12 @@
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 import {
   getContextMatchUp,
   getOrderedDrawPositionPairs,
 } from '../../../drawEngine/tests/testingUtilities';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
 
-import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
 
 it('DISALLOWS entry of incomplete result if active downsream', () => {
   const drawProfiles = [
