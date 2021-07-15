@@ -68,10 +68,12 @@ export function modifyMatchUpScore({
   if (removeWinningSide) matchUp.winningSide = undefined;
 
   if (getDevContext({ WOWO: true }))
-    console.log({ matchUpStatus }, [
-      matchUp.roundNumber,
-      matchUp.roundPosition,
-    ]);
+    console.log('mms:', {
+      matchUpStatus,
+      roundNumber: matchUp.roundNumber,
+      roundPosition: matchUp.roundPosition,
+      winningSide,
+    });
 
   if (!structure) {
     ({ structure } = findMatchUp({

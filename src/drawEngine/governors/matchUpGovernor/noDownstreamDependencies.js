@@ -15,6 +15,8 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
+import { getDevContext } from '../../../global/globalState';
+
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
 
@@ -45,6 +47,8 @@ export function noDownstreamDependencies(params) {
     Object.assign(params, { removeScore });
     return removeDirectedParticipants(params);
   };
+
+  if (getDevContext({ WOWO: true })) console.log({ existingWOWO });
 
   return (
     (winningSide && attemptToSetWinningSide(params)) ||
