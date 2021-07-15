@@ -332,7 +332,7 @@ test.only('Removing a scored outcome will remove a WALKOVER advanced participant
     drawId,
   });
   // expect(result.success).toEqual(true);
-  // console.log({ result });
+  console.log({ result });
   console.log({ modifiedMatchUpLog });
   /*
   expect(modifiedMatchUpLog).toEqual([

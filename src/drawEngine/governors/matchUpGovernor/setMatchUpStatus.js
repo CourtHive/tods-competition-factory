@@ -194,6 +194,7 @@ export function setMatchUpStatus(params) {
   }
 
   const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+
   if (
     winningSide &&
     winningSide === matchUp.winningSide &&

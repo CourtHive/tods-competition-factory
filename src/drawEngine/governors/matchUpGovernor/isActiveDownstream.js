@@ -41,15 +41,15 @@ export function isActiveDownstream(params) {
     winnerMatchUp?.matchUpId &&
     inContextWinnerMatchUp?.matchUpId === winnerMatchUp?.matchUpId;
 
-  const completedWithRelevantDrawPositions = !!structureMatchUps?.filter(
+  const normalCompletionWithRelevantDrawPositions = !!structureMatchUps?.filter(
     (matchUp) => {
-      return (
+      const normal =
         matchUp.roundNumber > inContextMatchUp.roundNumber &&
-        matchUp.drawPositions.length > 1 &&
+        matchUp.drawPositions.filter(Boolean).length > 1 &&
         intersection(inContextMatchUp.drawPositions, matchUp.drawPositions)
           .length &&
-        matchUp.winningSide
-      );
+        matchUp.winningSide;
+      return normal;
     }
   ).length;
 
@@ -68,15 +68,13 @@ export function isActiveDownstream(params) {
 
   const loserActiveDownstream =
     loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection;
-  const winnerInCompletedSubsequentMatchUp =
-    winnerMatchUpInSameStructure && completedWithRelevantDrawPositions;
   const winnerActiveDownstream =
     winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection;
 
   const activeDownstream =
-    loserActiveDownstream ||
-    winnerInCompletedSubsequentMatchUp ||
-    winnerActiveDownstream;
+    loserActiveDownstream || winnerMatchUpInSameStructure
+      ? normalCompletionWithRelevantDrawPositions
+      : winnerActiveDownstream;
 
   return activeDownstream;
 }
