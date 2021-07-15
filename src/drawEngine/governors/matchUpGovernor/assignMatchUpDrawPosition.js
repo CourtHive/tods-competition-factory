@@ -70,25 +70,6 @@ export function assignMatchUpDrawPosition({
   const drawPositions = matchUp.drawPositions || [];
   const { positionAdded, positionAssigned, updatedDrawPositions } =
     getUpdatedDrawPositions({ drawPosition, drawPositions });
-  /*
-  let positionAdded = false;
-  let positionAssigned = drawPositions.includes(drawPosition);
-  const updatedDrawPositions = positionAssigned
-    ? drawPositions
-    : []
-        .concat(...drawPositions, undefined, undefined)
-        .slice(0, 2) // accounts for empty array, should always have length 2
-        .map((position) => {
-          if (!position && !positionAssigned) {
-            positionAssigned = true;
-            positionAdded = true;
-            return drawPosition;
-          } else {
-            return position;
-          }
-        })
-        .sort(numericSort);
-        */
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
