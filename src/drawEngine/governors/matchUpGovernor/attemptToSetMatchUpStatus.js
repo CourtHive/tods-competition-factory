@@ -42,9 +42,10 @@ export function attemptToSetMatchUpStatus(params) {
     (nonDirecting && clearScore()) ||
     (isBYE && attemptToSetMatchUpStatusBYE({ matchUp, structure })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
-    (WOWO && modifyScoreAndAdvanceWOWO(params)) || {
+    (WOWO && modifyScoreAndAdvanceWOWO(params)) ||
+    (console.log('invalid', { matchUpStatus }) && {
       error: INVALID_MATCHUP_STATUS,
-    }
+    })
   );
 }
 
