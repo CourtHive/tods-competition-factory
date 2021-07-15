@@ -48,7 +48,11 @@ export function noDownstreamDependencies(params) {
     return removeDirectedParticipants(params);
   };
 
-  if (getDevContext({ WOWO: true })) console.log({ existingWOWO });
+  if (getDevContext({ WOWO: true }))
+    console.log({
+      removeWinningSide,
+      existingWOWO,
+    });
 
   return (
     (winningSide && attemptToSetWinningSide(params)) ||

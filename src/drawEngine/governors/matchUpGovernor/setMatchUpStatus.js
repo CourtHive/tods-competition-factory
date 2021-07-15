@@ -233,7 +233,7 @@ export function setMatchUpStatus(params) {
         matchUp: makeDeepCopy(matchUp),
         messages,
       }
-    : SUCCESS;
+    : { ...SUCCESS };
 }
 
 function winningSideWithDownstreamDependencies(params) {

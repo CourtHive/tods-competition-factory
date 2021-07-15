@@ -28,6 +28,7 @@ export function removeDirectedParticipants(params) {
     event,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   } = params;
 
   if (!matchUp.drawPositions) return { error: MISSING_DRAW_POSITIONS };
@@ -93,6 +94,7 @@ export function removeDirectedParticipants(params) {
       winningDrawPosition,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }
@@ -114,6 +116,7 @@ export function removeDirectedParticipants(params) {
         drawPosition,
         targetLink: loserTargetLink,
         matchUpsMap,
+        inContextDrawMatchUps,
       });
       if (removeByeResult.error) return removeByeResult;
     }
@@ -124,6 +127,7 @@ export function removeDirectedParticipants(params) {
       loserTargetLink,
       loserParticipantId,
       matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (removeLoserResult) return removeLoserResult;
   }
@@ -139,6 +143,7 @@ export function removeDirectedWinner({
   winningDrawPosition,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const { structureId, roundNumber } = winnerMatchUp;
 
@@ -182,6 +187,8 @@ export function removeDirectedWinner({
     structureId,
     roundNumber,
     targetDrawPosition: winningDrawPosition,
+
+    inContextDrawMatchUps,
     matchUpsMap,
   });
 
