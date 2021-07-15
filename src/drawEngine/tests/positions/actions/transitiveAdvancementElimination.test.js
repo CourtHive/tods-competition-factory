@@ -117,7 +117,7 @@ it('can advance participants when double BYEs are created', () => {
     [3, 4],
     [5, 6],
     [7, 8],
-    [undefined, 3],
+    [3, undefined],
     [8, undefined],
     [undefined, undefined],
   ]);

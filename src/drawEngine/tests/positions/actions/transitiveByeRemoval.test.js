@@ -237,7 +237,7 @@ function swapTest({ swapPosition }) {
     [5, 6],
     [7, 8],
     [1, swapPosition], // should be drawPosition 5's previousy participantId paired with drawPosition: 1
-    [8, 6],
+    [6, 8],
     [undefined, undefined],
   ]);
 }

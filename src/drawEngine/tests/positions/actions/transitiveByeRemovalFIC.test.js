@@ -56,10 +56,10 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   expect(orderedPairs).toEqual([
     [4, 5],
     [6, 7],
-    [undefined, 2],
-    [undefined, 3],
+    [2, undefined],
+    [3, undefined],
     [undefined, undefined],
-    [undefined, 1],
+    [1, undefined],
   ]);
 
   let assignedParticipantIds = mainStructure.positionAssignments.filter(
@@ -92,8 +92,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [5, 6],
     [7, 8],
     [1, 3],
-    // [6, 8],
-    [8, 6],
+    [6, 8],
     [3, 6],
   ]);
 
@@ -195,7 +194,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [7, 8],
     [1, undefined],
     [6, 7],
-    [undefined, 7],
+    [7, undefined],
   ]);
 
   ({ orderedPairs } = getOrderedDrawPositionPairs({
@@ -206,7 +205,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     [6, 7],
     [2, undefined],
     [3, 7],
-    [undefined, 7],
+    [7, undefined],
     [1, undefined],
   ]);
 });

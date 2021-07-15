@@ -21,7 +21,7 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
       drawPositions,
     }))
     .sort(matchUpSort)
-    .map(({ drawPositions }) => drawPositions);
+    .map(({ drawPositions }) => drawPositions.sort((a, b) => a - b));
 
   const filteredOrderedPairs = orderedPairs.map((pair) => pair.filter(Boolean));
   return { filteredOrderedPairs, orderedPairs, matchUps };

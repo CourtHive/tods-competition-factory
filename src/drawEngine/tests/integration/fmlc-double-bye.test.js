@@ -335,7 +335,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   });
   expect(orderedPairs).toEqual([
     [2, 3],
-    [undefined, 1],
+    [1, undefined],
   ]);
   expect(
     positionAssignments.map(({ participantId }) => !!participantId)
@@ -397,7 +397,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   });
   expect(orderedPairs).toEqual([
     [2, 3],
-    [undefined, 1],
+    [1, undefined],
   ]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
