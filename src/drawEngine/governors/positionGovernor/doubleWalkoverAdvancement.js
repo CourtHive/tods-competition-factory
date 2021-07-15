@@ -1,5 +1,6 @@
+import { getPairedPreviousMatchUpIsWalkover } from './getPairedPreviousMatchUpisWalkover';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
-import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 // import { getDevContext } from '../../../global/globalState';
@@ -18,7 +19,6 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 
 export function doubleWalkoverAdvancement(params) {
   const {
@@ -98,7 +98,8 @@ function conditionallyAdvanceDrawPosition(params) {
   if (winnerMatchUpDrawPositions.length > 1)
     return { error: DRAW_POSITION_ASSIGNED };
 
-  const { nextMatchUpIsWO } = getNextMatchUpIsWalkover(params);
+  const { pairedPreviousMatchUpIsWO } =
+    getPairedPreviousMatchUpIsWalkover(params);
 
   // get the targets for the winnerMatchUp
   const targetData = positionTargets({
@@ -162,10 +163,11 @@ function conditionallyAdvanceDrawPosition(params) {
   if (drawPositionToAdvance) {
     return assignMatchUpDrawPosition({
       drawDefinition,
+      inContextDrawMatchUps,
       matchUpId: nextWinnerMatchUp.matchUpId,
       drawPosition: drawPositionToAdvance,
     });
-  } else if (nextMatchUpIsWO) {
+  } else if (pairedPreviousMatchUpIsWO) {
     const noContextNextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
       (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
     );
@@ -229,30 +231,4 @@ function advanceByeToLoserMatchUp(params) {
     drawPosition: loserTargetDrawPosition,
     matchUpsMap,
   });
-}
-
-function getNextMatchUpIsWalkover(params) {
-  const { winnerMatchUp, sourceMatchUp, structure, matchUpsMap } = params;
-  const previousRound =
-    winnerMatchUp.roundNumber > 1 && winnerMatchUp.roundNumber - 1;
-
-  // look for paired round position in previous round
-  const sourceRoundPosition = sourceMatchUp.roundPosition;
-  const offset = sourceRoundPosition % 2 ? 1 : -1;
-  const pairedRoundPosition = sourceRoundPosition + offset;
-  const structureMatchUps = getMappedStructureMatchUps({
-    structureId: structure.structureId,
-    matchUpsMap,
-  });
-  const pairedPreviousMatchUp =
-    previousRound &&
-    structureMatchUps.find(
-      ({ roundNumber, roundPosition }) =>
-        roundNumber === previousRound && roundPosition === pairedRoundPosition
-    );
-  const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
-  const nextMatchUpIsWO = [WALKOVER, DOUBLE_WALKOVER].includes(
-    pairedPreviousMatchUpStatus
-  );
-  return { nextMatchUpIsWO };
 }
