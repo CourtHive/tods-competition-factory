@@ -16,12 +16,12 @@ import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstan
 
 export function removeDoubleWalkover({
   drawDefinition,
-  inContextDrawMatchUps,
   targetData,
   structure,
   matchUp: sourceMatchUp,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const {
     targetLinks: { loserTargetLink },
@@ -60,9 +60,9 @@ function removePropagatedDoubleWalkover({
   structure,
   sourceMatchUp,
   winnerMatchUp,
-  inContextDrawMatchUps,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const targetData = positionTargets({
     matchUpId: winnerMatchUp.matchUpId,
@@ -130,6 +130,7 @@ function removePropagatedDoubleWalkover({
           winningDrawPosition: drawPositionToRemove,
 
           matchUpsMap,
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       }

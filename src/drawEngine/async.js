@@ -11,7 +11,7 @@ import { notifySubscribersAsync } from '../global/notifySubscribers';
 import definitionTemplate from './generators/drawDefinitionTemplate';
 import { factoryVersion } from '../global/factoryVersion';
 import { UUID, makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
+import { paramsMiddleWare, setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -24,6 +24,7 @@ import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
+let prefetch = false;
 let tournamentParticipants = [];
 
 function newDrawDefinition({ drawId, drawType } = {}) {
@@ -123,11 +124,16 @@ export function drawEngineAsync(test) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
-    const result = governor[governorMethod]({
+    const additionalParams = prefetch ? paramsMiddleWare(drawDefinition) : {};
+
+    params = {
+      ...params,
+      ...additionalParams,
       tournamentParticipants,
       drawDefinition,
-      ...params,
-    });
+    };
+
+    const result = governor[governorMethod](params);
 
     if (result?.error) {
       if (snapshot) setState(snapshot);

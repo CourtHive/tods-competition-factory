@@ -33,9 +33,7 @@ export function assignDrawPosition({
   matchUpsMap,
   inContextDrawMatchUps,
 }) {
-  if (!matchUpsMap) {
-    matchUpsMap = getMatchUpsMap({ drawDefinition });
-  }
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -103,6 +101,9 @@ export function assignDrawPosition({
       drawDefinition,
       drawPosition,
       structureId,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }
@@ -125,6 +126,9 @@ export function assignDrawPosition({
       positionAssignments,
       drawDefinition,
       structure,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 

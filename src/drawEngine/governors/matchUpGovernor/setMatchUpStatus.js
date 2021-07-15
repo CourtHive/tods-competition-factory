@@ -175,12 +175,12 @@ export function setMatchUpStatus(params) {
   Object.assign(params, {
     matchUp,
     inContextMatchUp,
-    inContextDrawMatchUps,
     matchUpTieId,
     structure,
     targetData,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
 
   // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM

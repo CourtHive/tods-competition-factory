@@ -7,6 +7,8 @@ import {
   INVALID_DRAW_DEFINITION,
   MISSING_DRAW_DEFINITION,
 } from '../constants/errorConditionConstants';
+import { getMatchUpsMap } from './getters/getMatchUps/getMatchUpsMap';
+import { getAllDrawMatchUps } from './getters/getMatchUps/drawMatchUps';
 
 // TASK: add verify/validate structure as option in setState
 export function setState(definition, deepCopyOption = true) {
@@ -27,4 +29,23 @@ function validDefinitionKeys(definition) {
     true
   );
   return valid;
+}
+
+export function paramsMiddleWare(drawDefinition) {
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
+
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+
+    matchUpsMap,
+  });
+
+  const additionalParams = {
+    matchUpsMap,
+    inContextDrawMatchUps,
+  };
+
+  return additionalParams;
 }

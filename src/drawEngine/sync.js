@@ -11,7 +11,7 @@ import definitionTemplate from './generators/drawDefinitionTemplate';
 import { notifySubscribers } from '../global/notifySubscribers';
 import { factoryVersion } from '../global/factoryVersion';
 import { UUID, makeDeepCopy } from '../utilities';
-import { setState } from './stateMethods';
+import { paramsMiddleWare, setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -23,6 +23,7 @@ import { MISSING_DRAW_DEFINITION } from '../constants/errorConditionConstants';
 import { SUCCESS } from '../constants/resultConstants';
 
 let drawDefinition;
+let prefetch = false;
 let tournamentParticipants = [];
 
 function newDrawDefinition({ drawId, drawType } = {}) {
@@ -93,13 +94,13 @@ export const drawEngine = (function () {
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
-      Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+      Object.keys(governor).forEach((governorMethod) => {
+        fx[governorMethod] = (params) => {
           if (getDevContext()) {
-            return invoke({ params, governor, key });
+            return invoke({ params, governor, governorMethod });
           } else {
             try {
-              return invoke({ params, governor, key });
+              return invoke({ params, governor, governorMethod });
             } catch (err) {
               console.log('%c ERROR', 'color: orange', { err });
             }
@@ -109,15 +110,21 @@ export const drawEngine = (function () {
     });
   }
 
-  function invoke({ params, governor, key }) {
+  function invoke({ params, governor, governorMethod }) {
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
-    const result = governor[key]({
+    // TODO: perhaps prefetch based on targeted methods (e.g. specific governors)
+    const additionalParams = prefetch ? paramsMiddleWare(drawDefinition) : {};
+
+    params = {
+      ...params,
+      ...additionalParams,
       tournamentParticipants,
       drawDefinition,
-      ...params,
-    });
+    };
+
+    const result = governor[governorMethod](params);
 
     if (result?.error) {
       if (snapshot) setState(snapshot);

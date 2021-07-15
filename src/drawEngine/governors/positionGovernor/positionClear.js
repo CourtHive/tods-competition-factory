@@ -26,6 +26,7 @@ export function clearDrawPosition({
   structureId,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({
@@ -58,21 +59,23 @@ export function clearDrawPosition({
     return { error: DRAW_POSITION_ACTIVE };
   }
 
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    includeByeMatchUps: true,
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
 
-    matchUpsMap,
-  });
+      matchUpsMap,
+    }));
+  }
 
   const { drawPositionCleared, error } = drawPositionRemovals({
-    inContextDrawMatchUps,
     drawDefinition,
     structureId,
     drawPosition,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (error) return { error };
 
