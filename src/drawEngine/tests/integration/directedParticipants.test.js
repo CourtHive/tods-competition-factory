@@ -502,6 +502,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundPosition: 2,
     inContext: true,
   }));
+
   ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: TO_BE_PLAYED,
