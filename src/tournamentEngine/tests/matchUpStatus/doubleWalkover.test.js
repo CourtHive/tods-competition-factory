@@ -11,6 +11,7 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
   DOUBLE_WALKOVER,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
@@ -23,7 +24,7 @@ const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
 // tournamentEngine.devContext({ WOWO: true });
 
 // duplicate this test but reverse the order of scoring; enter WO/WO second
-test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
+test.only('A DOUBLE_WALKOVER will create a WALKOVER', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const {
     tournamentRecord,
@@ -46,6 +47,7 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
 
+  // Enter DOUBLE_WALKOVER in R1P1
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -56,6 +58,7 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
 
   expect(matchUpsNotificationCounter).toEqual(2);
 
+  // Enter Score in R1P2 advancing DP3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
@@ -68,9 +71,9 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
     outcome,
   });
   expect(result.success).toEqual(true);
-
   expect(matchUpsNotificationCounter).toEqual(5);
 
+  // Expect R2P1 to have only DP3 with winningSide: 2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
@@ -82,6 +85,7 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
     winningSide: 2,
   }));
 
+  // Change R1P2 winningSide (allowChangePropagation: true)
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
@@ -92,13 +96,20 @@ test('A DOUBLE_WALKOVER will create a WALKOVER', () => {
 
   expect(matchUpsNotificationCounter).toEqual(8);
 
+  // expect that the winning side has been updated to 2 and is now DP4
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([4]);
   expect(targetMatchUp.winningSide).toEqual(2);
 });
 
-test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WALKOVER', () => {
+/*
+  R1P1 matchUp is BYE.  Enters three DOUBLE_WALKOVERs in remaining first round matchUps.
+  Entering WOWO in R1P2 produces WALKOVER in R2P1 and advances DP1 to 3rd round. 
+  Entering WOWO in R1P3 produces WALKOVER in R2P2. 
+  Entering WOWO in R1P4 converts R2P2 to DOUBLE_WALKOVER and produces WALKOVER in R3P1. 
+*/
+test.only('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WALKOVER', () => {
   const drawProfiles = [{ drawSize: 8, participantsCount: 7 }];
   const {
     tournamentRecord,
@@ -124,6 +135,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
+  // Enter DOUBLE_WALKOVER in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -137,6 +149,12 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
+  // Check that R2P1 is a produced WALKOVER
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  // Enter DOUBLE_WALKOVER in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -149,7 +167,12 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   ]);
   modifiedMatchUpLog = [];
 
-  // tournamentEngine.devContext({ WOWO: true });
+  // Produces WALKOVER in R2P2
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  // Enter DOUBLE_WALKOVER in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -161,6 +184,17 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
     [2, 2],
     [3, 1],
   ]);
+
+  // Converts WALKOVER to DOUBLE_WALKOVER in R2P2
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+
+  // Produces WALKOVER in R3P1, advances DP1 to Final, sets winningSide
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(1);
 });
 
 it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
