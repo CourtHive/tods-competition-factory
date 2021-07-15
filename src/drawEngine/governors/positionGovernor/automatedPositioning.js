@@ -1,16 +1,18 @@
 import { positionUnseededParticipants } from './positionUnseededParticipants';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { positionQualifiers } from './positionQualifiers';
 import { positionSeedBlocks } from './positionSeeds';
 
+import { WATERFALL } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
-import { WATERFALL } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function automatedPositioning({
   drawDefinition,
@@ -18,9 +20,6 @@ export function automatedPositioning({
   participants,
   structureId,
   seedsOnly,
-
-  inContextDrawMatchUps,
-  matchUpsMap,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
@@ -40,6 +39,15 @@ export function automatedPositioning({
 
   let errors = [];
   let byePositionError, seedBlockErrors;
+  const matchUpsMap = getMatchUpsMap({ drawDefinition });
+
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+
+    matchUpsMap,
+  });
 
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
@@ -57,6 +65,7 @@ export function automatedPositioning({
       structure,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     }));
   } else {
     // otherwise... seeds need to be placed first so that BYEs
@@ -67,6 +76,7 @@ export function automatedPositioning({
       structure,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     }));
     ({ error: byePositionError } = positionByes({
       drawDefinition,
@@ -74,6 +84,7 @@ export function automatedPositioning({
       seedsOnly,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     }));
   }
 
