@@ -30,7 +30,7 @@ it('can define a new venue', () => {
       ],
     },
   ];
-  result = tournamentEngine.devContext(true).addCourts({
+  result = tournamentEngine.addCourts({
     venueId,
     courtsCount: 3,
     dateAvailability,

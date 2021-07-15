@@ -1,9 +1,11 @@
-import tournamentEngine from '../../sync';
+import { intersection, makeDeepCopy } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { MALE } from '../../../constants/genderConstants';
-import { intersection, makeDeepCopy } from '../../../utilities';
+
+tournamentEngine.devContext(true);
 
 it('can retrieve tournament participants', () => {
   const participantsProfile = {
@@ -15,7 +17,7 @@ it('can retrieve tournament participants', () => {
     participantsProfile,
   });
 
-  tournamentEngine.setState(tournamentRecord).devContext(true);
+  tournamentEngine.setState(tournamentRecord);
 
   const { tournamentParticipants: individualParticipants } =
     tournamentEngine.getTournamentParticipants({

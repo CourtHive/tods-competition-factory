@@ -1,6 +1,6 @@
-import tournamentEngine from '../../sync';
-import mocksEngine from '../../../mocksEngine';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 import {
   CONSOLATION,
@@ -15,6 +15,8 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+
+tournamentEngine.devContext(true);
 
 it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkover', () => {
   const participantsProfile = {
@@ -429,7 +431,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
   expect(matchUp.matchUpStatus).toEqual(DEFAULTED);
 
   // remove outcome
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,

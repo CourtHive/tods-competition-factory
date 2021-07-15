@@ -2,13 +2,12 @@ import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { verifyMatchUps } from '../../tests/primitives/verifyMatchUps';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
 import {
   getOrderedDrawPositionPairs,
   replaceWithBye,
 } from '../testingUtilities';
-
-import tournamentEngine from '../../../tournamentEngine/sync';
-import mocksEngine from '../../../mocksEngine';
 
 import {
   CONSOLATION,
@@ -16,6 +15,8 @@ import {
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+
+tournamentEngine.devContext(true);
 
 // import { printGlobalLog, pushGlobalLog } from '../../../global/globalLog';
 
@@ -253,7 +254,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(score.scoreStringSide1).toEqual('6-2 6-2');
 
   // remove outcome
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,
@@ -266,7 +267,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(completedMatchUps.length).toEqual(12);
 
   // complete matchUp
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
@@ -291,7 +292,6 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     true
   );
   */
-  tournamentEngine.devContext(false);
 
   const drawProfiles = [
     {
@@ -368,7 +368,6 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     },
     true
   );
-  tournamentEngine.devContext(false);
   */
   const drawProfiles = [
     {

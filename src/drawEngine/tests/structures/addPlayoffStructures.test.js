@@ -1,5 +1,7 @@
-import { drawEngine } from '../../sync';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
+import { drawEngine } from '../../sync';
+
+drawEngine.devContext(true);
 
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -93,14 +95,14 @@ function drawEngineAddStructuresTest({
   reset();
   initialize();
   mainDrawPositions({ drawSize, drawType });
-  let result = drawEngine.devContext(true).generateDrawType({ drawType });
+  let result = drawEngine.generateDrawType({ drawType });
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = drawEngine.getState();
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
   );
-  result = drawEngine.devContext(true).addPlayoffStructures({
+  result = drawEngine.addPlayoffStructures({
     structureId: mainStructure.structureId,
     playoffPositions,
     roundNumbers,

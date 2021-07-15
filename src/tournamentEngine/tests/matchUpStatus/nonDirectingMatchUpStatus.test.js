@@ -28,7 +28,7 @@ it('supports entering CANCELED matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: CANCELLED },
@@ -55,7 +55,7 @@ it('supports entering ABANDONED matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: ABANDONED },
@@ -82,7 +82,7 @@ it('supports entering INCOMPLETE matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: INCOMPLETE },
@@ -109,7 +109,7 @@ it('supports entering SUSPENDED matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: SUSPENDED },
@@ -136,7 +136,7 @@ it('supports entering DEAD_RUBBER matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: DEAD_RUBBER },
@@ -163,7 +163,7 @@ it('supports entering NOT_PLAYED matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: NOT_PLAYED },
@@ -190,7 +190,7 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: IN_PROGRESS },
@@ -217,7 +217,7 @@ it('supports entering AWAITING_RESULT matchUpStatus', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  const result = tournamentEngine.devContext(true).setMatchUpStatus({
+  const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: AWAITING_RESULT },

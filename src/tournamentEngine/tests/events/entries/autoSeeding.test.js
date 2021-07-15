@@ -54,8 +54,6 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
-  tournamentEngine.devContext(true);
-
   let scaleAttributes = {
     scaleName: 'WTN',
     scaleType: RATING,

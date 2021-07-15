@@ -111,7 +111,7 @@ it('removes advanced participant when completed score changes to incomplete resu
     matchUpStatus: INCOMPLETE,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome,
@@ -171,7 +171,7 @@ it('removes advanced participant in FINAL when completed score changes to incomp
     matchUpStatus: INCOMPLETE,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome,

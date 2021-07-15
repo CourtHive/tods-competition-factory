@@ -1,12 +1,14 @@
+import { generateRange } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
   PLAY_OFF,
 } from '../../../constants/drawDefinitionConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { generateRange } from '../../../utilities';
+
+tournamentEngine.devContext(true);
 
 it.each([
   [32, INVALID_VALUES, undefined],
@@ -180,7 +182,7 @@ function tournamentEngineAddPlayoffsTest({
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  return tournamentEngine.devContext(true).addPlayoffStructures({
+  return tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     roundNumbers,

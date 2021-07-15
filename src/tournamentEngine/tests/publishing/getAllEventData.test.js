@@ -37,7 +37,7 @@ it('can return all event data', () => {
       ],
     },
   ];
-  tournamentEngine.devContext(true).addCourts({
+  tournamentEngine.addCourts({
     venueId,
     courtsCount: 3,
     dateAvailability,

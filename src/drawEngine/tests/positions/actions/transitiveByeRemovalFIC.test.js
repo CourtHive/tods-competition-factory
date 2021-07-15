@@ -173,8 +173,6 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   );
   expect(assignedByes.length).toEqual(6);
 
-  tournamentEngine.devContext(true);
-
   removeAssignment({
     drawId,
     structureId: mainStructure.structureId,

@@ -1,20 +1,22 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { drawEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { drawEngine } from '../../sync';
 import {
   completeMatchUp,
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
 
+import { SINGLES } from '../../../constants/matchUpTypes';
+import { MALE } from '../../../constants/genderConstants';
 import {
   MAIN,
   CONSOLATION,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
-import { MALE } from '../../../constants/genderConstants';
+
+tournamentEngine.devContext(true);
 
 it('can direct winners and losers', () => {
   const drawSize = 32;
@@ -64,7 +66,7 @@ it('can direct winners and losers', () => {
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
   });
 
-  result = drawEngine.devContext(true).setMatchUpStatus({
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: 'TO_BE_PLAYED',
     score: { sets: [] },
@@ -147,7 +149,7 @@ it('can direct winners and losers', () => {
     requireParticipants: true, // requires that drawPositions be assigned to participantIds
   });
 
-  result = drawEngine.devContext(true).setMatchUpStatus({
+  result = drawEngine.setMatchUpStatus({
     matchUpId,
     ...toBePlayed,
   });
@@ -224,7 +226,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
     consolationStructure.positionAssignments[1].participantId
   ).toBeUndefined();
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,

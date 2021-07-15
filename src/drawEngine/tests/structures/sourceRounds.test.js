@@ -8,7 +8,7 @@ it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.devContext(true).generateDrawType();
+  const result = drawEngine.generateDrawType();
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = drawEngine.getState();
@@ -78,7 +78,7 @@ it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.devContext(true).generateDrawType({
+  const result = drawEngine.generateDrawType({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);
