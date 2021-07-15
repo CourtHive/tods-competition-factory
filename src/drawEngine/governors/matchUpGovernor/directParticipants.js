@@ -26,6 +26,9 @@ export function directParticipants(params) {
     winningSide,
     targetData,
     score,
+
+    matchUpsMap,
+    inContextDrawMatchUps,
   } = params;
 
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
@@ -84,6 +87,9 @@ export function directParticipants(params) {
         winningDrawPosition,
         winnerMatchUp,
         winnerMatchUpDrawPositionIndex,
+
+        matchUpsMap,
+        inContextDrawMatchUps,
       });
       if (result.error) return result;
     }
@@ -95,6 +101,9 @@ export function directParticipants(params) {
         loserMatchUp,
         loserMatchUpDrawPositionIndex,
         matchUpStatus,
+
+        matchUpsMap,
+        inContextDrawMatchUps,
       });
       if (result.error) return result;
     }
