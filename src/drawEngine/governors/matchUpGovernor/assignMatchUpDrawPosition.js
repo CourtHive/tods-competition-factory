@@ -1,11 +1,13 @@
+import { getPairedPreviousMatchUpIsWalkover } from '../positionGovernor/getPairedPreviousMatchUpisWalkover';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
-import { intersection, numericSort } from '../../../utilities';
 import { pushGlobalLog } from '../../../global/globalLog';
 import { addNotice } from '../../../global/globalState';
+import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
@@ -126,6 +128,11 @@ export function assignMatchUpDrawPosition({
     targetLinks: { loserTargetLink },
   } = targetData;
 
+  const structureMatchUps = getMappedStructureMatchUps({
+    structureId: structure.structureId,
+    matchUpsMap,
+  });
+
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
@@ -134,6 +141,8 @@ export function assignMatchUpDrawPosition({
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
+
+          matchUpsMap,
           inContextDrawMatchUps,
         });
         if (result.error) return result;
@@ -147,37 +156,24 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const previousRoundNumber =
-      matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
-    if (previousRoundNumber && winnerMatchUp) {
-      const structureMatchUps = getMappedStructureMatchUps({
-        structureId: structure.structureId,
+    const { pairedPreviousMatchUpIsWO } = getPairedPreviousMatchUpIsWalkover({
+      winnerMatchUp: matchUp,
+      drawPosition,
+      structure,
+      matchUpsMap,
+    });
+
+    if (pairedPreviousMatchUpIsWO && winnerMatchUp) {
+      const result = assignMatchUpDrawPosition({
+        drawDefinition,
+        drawPosition,
+        matchUpId: winnerMatchUp.matchUpId,
+        iterative: 'brightred',
 
         matchUpsMap,
+        inContextDrawMatchUps,
       });
-      const sourceMatchUp = structureMatchUps.find(
-        ({ drawPositions, roundNumber }) =>
-          roundNumber === previousRoundNumber &&
-          drawPositions.includes(drawPosition)
-      );
-      const sourceRoundPosition = sourceMatchUp?.roundPosition;
-      const offset = sourceRoundPosition % 2 ? 1 : -1;
-      const pairedRoundPosition = sourceRoundPosition + offset;
-      const pairedMatchUp = structureMatchUps.find(
-        ({ roundPosition, roundNumber }) =>
-          roundPosition === pairedRoundPosition &&
-          roundNumber === previousRoundNumber
-      );
-      if (pairedMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-        const result = assignMatchUpDrawPosition({
-          drawDefinition,
-          drawPosition,
-          matchUpId: winnerMatchUp.matchUpId,
-          iterative: 'brightred',
-          inContextDrawMatchUps,
-        });
-        if (result.error) return result;
-      }
+      if (result.error) return result;
     }
   }
 
@@ -187,11 +183,6 @@ export function assignMatchUpDrawPosition({
     updatedDrawPositions.filter(Boolean).length === 2 &&
     !isByeMatchUp
   ) {
-    const structureMatchUps = getMappedStructureMatchUps({
-      structureId: structure.structureId,
-
-      matchUpsMap,
-    });
     const firstRoundMatchUps = structureMatchUps.filter(
       ({ drawPositions, roundNumber }) =>
         roundNumber === 1 &&
@@ -218,26 +209,4 @@ export function assignMatchUpDrawPosition({
   } else {
     return { error: DRAW_POSITION_ASSIGNED, drawPosition };
   }
-}
-
-function getUpdatedDrawPositions({ drawPosition, drawPositions }) {
-  let positionAdded;
-  let positionAssigned = drawPositions.includes(drawPosition);
-  const updatedDrawPositions = positionAssigned
-    ? drawPositions
-    : []
-        .concat(...drawPositions, undefined, undefined)
-        .slice(0, 2) // accounts for empty array, should always have length 2
-        .map((position) => {
-          if (!position && !positionAssigned) {
-            positionAssigned = true;
-            positionAdded = true;
-            return drawPosition;
-          } else {
-            return position;
-          }
-        })
-        .sort(numericSort);
-
-  return { updatedDrawPositions, positionAdded, positionAssigned };
 }

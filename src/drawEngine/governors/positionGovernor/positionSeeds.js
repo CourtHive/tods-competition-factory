@@ -1,11 +1,11 @@
-import { generateRange } from '../../../utilities';
-import { findStructure } from '../../getters/findStructure';
 import { getValidSeedBlocks, getNextSeedBlock } from '../../getters/seedGetter';
 import { getAppliedPolicies } from '../policyGovernor/getAppliedPolicies';
+import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
+import { generateRange } from '../../../utilities';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function positionSeedBlocks({
   drawDefinition,
@@ -15,6 +15,7 @@ export function positionSeedBlocks({
   structure,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const errors = [];
   let placedSeedBlocks = 0;
@@ -41,6 +42,7 @@ export function positionSeedBlocks({
         structureId,
 
         matchUpsMap,
+        inContextDrawMatchUps,
       });
       if (result && result.success) placedSeedBlocks++;
       if (result.error) {
@@ -57,6 +59,7 @@ function positionSeedBlock({
   participants,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const { unplacedSeedParticipantIds, unfilledPositions } = getNextSeedBlock({
     drawDefinition,
@@ -81,6 +84,7 @@ function positionSeedBlock({
       automaticPlacement: true,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (!result.success) return result;
   }

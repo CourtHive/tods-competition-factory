@@ -1,15 +1,15 @@
-import { drawEngine } from '../../sync';
-import { getStageEntries } from '../../getters/stageGetter';
-import { getDrawStructures } from '../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { getDrawStructures } from '../../getters/findStructure';
+import { getStageEntries } from '../../getters/stageGetter';
+import { drawEngine } from '../../sync';
 import {
   reset,
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
 
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-
+import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   ROUND_ROBIN,
@@ -19,8 +19,6 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-
-import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 

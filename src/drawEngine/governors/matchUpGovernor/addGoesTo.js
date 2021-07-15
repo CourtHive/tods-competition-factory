@@ -5,9 +5,8 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
   drawDefinition,
-  inContextDrawMatchUps,
-
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({

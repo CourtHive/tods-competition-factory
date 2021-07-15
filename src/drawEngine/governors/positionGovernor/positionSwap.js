@@ -1,19 +1,20 @@
 import { removeDrawPositionAssignment } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/removeDrawPositionAssignment';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 
 export function swapDrawPositionAssignments({
   drawDefinition,
@@ -28,6 +29,12 @@ export function swapDrawPositionAssignments({
 
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
+  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    drawDefinition,
+    inContext: true,
+    includeByeMatchUps: true,
+  });
+
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
@@ -40,6 +47,7 @@ export function swapDrawPositionAssignments({
       drawPositions,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     // if not a CONTAINER then swap occurs within elimination structure
@@ -48,6 +56,7 @@ export function swapDrawPositionAssignments({
       structure,
       drawPositions,
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 
@@ -70,6 +79,7 @@ function eliminationSwap({
   drawPositions,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   // if not a CONTAINER then swap occurs within elimination structure
   const assignments = structure?.positionAssignments.filter((assignment) =>
@@ -95,6 +105,7 @@ function eliminationSwap({
       assignments,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     return eliminationParticipantSwap({
@@ -102,6 +113,7 @@ function eliminationSwap({
       assignments,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 }
@@ -112,6 +124,7 @@ function swapParticipantIdWithBYE({
   assignments,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   // remove the assignment that has a participantId
   const originalByeAssignment = assignments.find(({ bye }) => bye);
@@ -130,6 +143,7 @@ function swapParticipantIdWithBYE({
     drawPosition: originalByeDrawPosition,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
@@ -139,6 +153,7 @@ function swapParticipantIdWithBYE({
     drawPosition: originalParticipantIdDrawPosition,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
@@ -148,6 +163,7 @@ function swapParticipantIdWithBYE({
     drawPosition: originalParticipantIdDrawPosition,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
 
   // replace the original byeAssignment with participantId
@@ -156,6 +172,9 @@ function swapParticipantIdWithBYE({
     structureId,
     drawPosition: originalByeDrawPosition,
     participantId,
+
+    matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (result.error) return result;
 
@@ -186,6 +205,7 @@ function roundRobinSwap({
   structure,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const assignments = structure.structures?.reduce((assignments, structure) => {
     const structureAssignments = structure?.positionAssignments.filter(
@@ -206,6 +226,7 @@ function roundRobinSwap({
       structure,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     const participantIds = assignments.map(
