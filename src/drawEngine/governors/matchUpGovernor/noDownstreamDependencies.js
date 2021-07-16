@@ -1,5 +1,5 @@
 import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';

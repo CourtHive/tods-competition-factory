@@ -6,7 +6,7 @@ import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
-  // WALKOVER,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
@@ -101,12 +101,12 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
-  tournamentEngine.devContext({ WOWO: true });
   // now target R1P2 and modify the result to be a DOUBLE_WALKOVER
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: DOUBLE_WALKOVER,
   }));
+  tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
@@ -114,9 +114,9 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   });
   expect(result.success).toEqual(true);
 
-  /*
   expect(modifiedMatchUpLog).toEqual([
-    [1, 1],
+    [1, 2],
+    [2, 1],
     [2, 1],
   ]);
   modifiedMatchUpLog = [];
@@ -124,9 +124,8 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   // DOUBLE_WALKOVER advanced winner is removed from R2P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1, 3]);
-  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  expect(targetMatchUp.winningSide).toBeUndefined();
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(1);
   expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
-  */
 });

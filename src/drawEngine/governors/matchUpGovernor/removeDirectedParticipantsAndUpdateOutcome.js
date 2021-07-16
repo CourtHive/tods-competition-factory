@@ -52,7 +52,6 @@ export function removeDirectedParticipants(params) {
       { winnerParticipantId: undefined, loserParticipantId: undefined }
     );
 
-  // TODO: this method should not also modify matchUp
   const result = modifyMatchUpScore({
     ...params,
     matchUpStatus: matchUpStatus || TO_BE_PLAYED,
@@ -118,6 +117,7 @@ export function removeDirectedParticipants(params) {
     });
     if (removeLoserResult) return removeLoserResult;
   }
+
   return { ...SUCCESS };
 }
 

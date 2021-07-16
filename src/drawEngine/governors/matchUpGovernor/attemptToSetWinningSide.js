@@ -1,4 +1,4 @@
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { directParticipants } from './directParticipants';
 

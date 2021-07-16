@@ -5,7 +5,7 @@ import { intersection } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
-} from './removeDirectedParticipants';
+} from './removeDirectedParticipantsAndUpdateOutcome';
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
