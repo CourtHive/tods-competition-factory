@@ -14,18 +14,11 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function removeDirectedParticipants(params) {
   const {
-    tournamentRecord,
     drawDefinition,
     structure,
     matchUp,
-    matchUpId,
     matchUpStatus,
-    matchUpFormat,
-    matchUpStatusCodes,
     targetData,
-    removeScore = true,
-    score,
-    event,
 
     matchUpsMap,
     inContextDrawMatchUps,
@@ -59,18 +52,11 @@ export function removeDirectedParticipants(params) {
       { winnerParticipantId: undefined, loserParticipantId: undefined }
     );
 
+  // TODO: this method should not also modify matchUp
   const result = modifyMatchUpScore({
+    ...params,
     matchUpStatus: matchUpStatus || TO_BE_PLAYED,
-    drawDefinition: params.drawDefinition,
     removeWinningSide: true,
-    matchUpStatusCodes,
-    tournamentRecord,
-    matchUpFormat,
-    removeScore,
-    matchUpId,
-    matchUp,
-    score,
-    event,
   });
   if (result.error) return result;
 
@@ -98,6 +84,7 @@ export function removeDirectedParticipants(params) {
     });
     if (result.error) return result;
   }
+
   if (loserMatchUp) {
     const { winnerHadMatchUpStatus: winnerHadBye } = includesMatchUpStatuses({
       sourceMatchUps,
@@ -131,7 +118,6 @@ export function removeDirectedParticipants(params) {
     });
     if (removeLoserResult) return removeLoserResult;
   }
-
   return { ...SUCCESS };
 }
 
@@ -216,17 +202,19 @@ export function removeDirectedBye({
   targetLink,
   drawPosition,
   drawDefinition,
-  inContextDrawMatchUps,
+
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const structureId = targetLink.target.structureId;
 
   clearDrawPosition({
     drawDefinition,
-    inContextDrawMatchUps,
     structureId,
     drawPosition,
+
     matchUpsMap,
+    inContextDrawMatchUps,
   });
 
   return { ...SUCCESS };

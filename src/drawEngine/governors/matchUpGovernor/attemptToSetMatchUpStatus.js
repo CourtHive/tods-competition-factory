@@ -72,6 +72,8 @@ function removeDoubleWalkover(params) {
 }
 
 function removeAndModifyScore(params) {
+  return removeDirectedParticipants(params);
+  /*
   const result = removeDirectedParticipants(params);
   if (result.error) return result;
 
@@ -79,6 +81,7 @@ function removeAndModifyScore(params) {
     ...params,
     matchUpStatus: params.matchUpStatus || TO_BE_PLAYED,
   });
+  */
 }
 
 function modifyScoreAndAdvanceWOWO(params) {

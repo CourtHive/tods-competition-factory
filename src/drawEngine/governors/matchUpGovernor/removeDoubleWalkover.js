@@ -7,8 +7,8 @@ import {
   removeDirectedWinner,
 } from './removeDirectedParticipants';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
 // 2. remove any advanced participant or BYE from winnerMatchUp
@@ -52,7 +52,7 @@ export function removeDoubleWalkover({
     });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function removePropagatedDoubleWalkover({
@@ -142,9 +142,9 @@ function removePropagatedDoubleWalkover({
       targetLink: nextLoserTargetLink,
       drawPosition: nextLoserTargetDrawPosition,
       drawDefinition,
-      inContextDrawMatchUps,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 }

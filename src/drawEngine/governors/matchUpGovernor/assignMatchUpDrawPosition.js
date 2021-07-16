@@ -6,7 +6,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -136,6 +136,8 @@ export function assignMatchUpDrawPosition({
 
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
+      if (getDevContext({ WOWO: true }))
+        console.log({ matchUpStatus, isWOWOWalkover });
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           drawDefinition,
