@@ -106,7 +106,6 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: DOUBLE_WALKOVER,
   }));
-  tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
