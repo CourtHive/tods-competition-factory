@@ -99,7 +99,6 @@ test('Removing a DOUBLE_WALKOVER will remove produced WALKOVER in subsequent rou
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(2);
 
-  tournamentEngine.devContext({ WOWO: true });
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
@@ -112,21 +111,18 @@ test('Removing a DOUBLE_WALKOVER will remove produced WALKOVER in subsequent rou
   });
   expect(result.success).toEqual(true);
   tournamentEngine.devContext(false);
-  console.log({ modifiedMatchUpLog });
-  /*
   expect(modifiedMatchUpLog).toEqual([
-    [1, 1],
     [2, 1],
+    [1, 1],
   ]);
   modifiedMatchUpLog = [];
-  */
 
   // DOUBLE_WALKOVER advanced winner is removed from R2P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
 
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1, 3]);
-  // expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
-  console.log(targetMatchUp.winningSide);
-  // console.log(targetMatchUp.matchUpStatusCodes);
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.winningSide).toBeUndefined();
+  expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
 });

@@ -6,11 +6,16 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
+import { getDevContext } from '../../../global/globalState';
 
 export function checkDoubleWalkoverPropagation(params) {
   const {
     targetMatchUps: { winnerMatchUp },
   } = params.targetData;
+
+  if (getDevContext({ WOWO: true })) {
+    console.log('checkDoubleWalkoverPropagation');
+  }
 
   if (winnerMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
     const { tournamentRecord, event, drawDefinition, matchUpId, matchUpsMap } =

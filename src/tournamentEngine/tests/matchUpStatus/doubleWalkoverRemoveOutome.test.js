@@ -100,6 +100,7 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(2);
 
+  // tournamentEngine.devContext({ WOWO: true });
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
@@ -111,7 +112,9 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
     drawId,
   });
   expect(result.success).toEqual(true);
+  console.log(modifiedMatchUpLog);
   expect(modifiedMatchUpLog).toEqual([
+    [2, 1],
     [1, 1],
     [2, 1],
   ]);

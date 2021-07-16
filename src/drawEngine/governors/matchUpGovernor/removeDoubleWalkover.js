@@ -1,6 +1,7 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { intersection } from '../../../utilities';
 import {
   removeDirectedBye,
@@ -14,15 +15,17 @@ import { SUCCESS } from '../../../constants/resultConstants';
 // 2. remove any advanced participant or BYE from winnerMatchUp
 // 3. remove any BYE sent to linked consolation from winnerMatchUp
 
-export function removeDoubleWalkover({
-  drawDefinition,
-  targetData,
-  structure,
-  matchUp: sourceMatchUp,
+export function removeDoubleWalkover(params) {
+  const {
+    drawDefinition,
+    targetData,
+    structure,
+    matchUp,
 
-  matchUpsMap,
-  inContextDrawMatchUps,
-}) {
+    matchUpsMap,
+    inContextDrawMatchUps,
+  } = params;
+
   const {
     targetLinks: { loserTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp, loserTargetDrawPosition },
@@ -41,15 +44,29 @@ export function removeDoubleWalkover({
 
   // only handles winnerMatchUps in the same structure
   if (winnerMatchUp) {
-    removePropagatedDoubleWalkover({
+    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    );
+    let result = modifyMatchUpScore({
+      ...params,
+      removeScore: true,
+      removeWinningSide: true,
+      matchUp: noContextWinnerMatchUp,
+      matchUpId: winnerMatchUp.matchUpId,
+    });
+    if (result.error) return result;
+
+    result = removePropagatedDoubleWalkover({
       drawDefinition,
       structure,
-      sourceMatchUp,
+
       winnerMatchUp,
-      inContextDrawMatchUps,
+      sourceMatchUp: matchUp,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
+    if (result.error) return result;
   }
 
   return { ...SUCCESS };
@@ -147,4 +164,6 @@ function removePropagatedDoubleWalkover({
       inContextDrawMatchUps,
     });
   }
+
+  return { ...SUCCESS };
 }

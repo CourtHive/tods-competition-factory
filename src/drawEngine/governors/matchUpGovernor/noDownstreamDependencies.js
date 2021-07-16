@@ -1,4 +1,3 @@
-import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
@@ -59,7 +58,6 @@ export function noDownstreamDependencies(params) {
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected()) ||
-    (existingWOWO && checkDoubleWalkoverPropagation(params)) ||
     (matchUp && modifyMatchUpScore({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS })
   );

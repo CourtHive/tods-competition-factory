@@ -65,7 +65,7 @@ function removeWinningSideSetWOWO(params) {
 }
 
 function removeDoubleWalkover(params) {
-  console.log('clear WOWO');
+  console.log('-------------clear WOWO-------------');
   const { drawDefinition, matchUpsMap, targetData } = params;
   let result = removeDirectedParticipants(params);
   if (result.error) return result;
