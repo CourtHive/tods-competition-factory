@@ -37,31 +37,15 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         Object.assign(inContextMatchUp, { sidesTo });
       }
     } else {
-      let winnerMatchUp, loserMatchUp;
-      const { winnerMatchUpId, loserMatchUpId } = inContextMatchUp;
-
-      if (winnerMatchUpId || loserMatchUpId) {
-        winnerMatchUp =
-          winnerMatchUpId &&
-          inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === winnerMatchUpId
-          );
-        loserMatchUp =
-          loserMatchUpId &&
-          inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === loserMatchUpId
-          );
-      } else {
-        // if goesTo information not present, get it by brute force
-        const targetData = positionTargets({
-          matchUpId,
-          structure,
-          drawDefinition,
-          inContextMatchUp,
-          inContextDrawMatchUps,
-        });
-        ({ winnerMatchUp, loserMatchUp } = targetData.targetMatchUps);
-      }
+      const targetData = positionTargets({
+        matchUpId,
+        structure,
+        drawDefinition,
+        inContextMatchUp,
+        inContextDrawMatchUps,
+        useTargetMatchUpIds: true,
+      });
+      const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
 
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
