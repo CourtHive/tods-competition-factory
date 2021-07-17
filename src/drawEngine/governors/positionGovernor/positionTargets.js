@@ -49,6 +49,9 @@ function targetByRoundOutcome({
     roundNumber: matchUp.roundNumber,
     structureId: structure.structureId,
   });
+  const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
+  const loserTargetLink = getTargetLink({ source, linkType: LOSER });
+
   const structureMatchUps = inContextDrawMatchUps.filter(
     (matchUp) => matchUp.structureId === structure.structureId
   );
@@ -62,7 +65,6 @@ function targetByRoundOutcome({
   );
 
   const { roundPosition: sourceRoundPosition } = matchUp;
-  const loserTargetLink = getTargetLink({ source, linkType: LOSER });
   const {
     matchUp: loserMatchUp,
     matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
@@ -76,7 +78,6 @@ function targetByRoundOutcome({
   });
 
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
-  const winnerTargetLink = getTargetLink({ source, linkType: WINNER });
   if (winnerTargetLink) {
     ({
       matchUp: winnerMatchUp,
