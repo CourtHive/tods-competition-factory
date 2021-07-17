@@ -6,11 +6,6 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
-  /*
-  const hasGoesToData = inContextDrawMatchUps.find(
-    ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
-  );
-  */
   inContextDrawMatchUps.forEach((inContextMatchUp) => {
     const { matchUpId, structureId, drawPositions = [] } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
@@ -49,6 +44,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
 
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
+
       if (
         inContextMatchUp.matchUpStatus !== BYE &&
         loserMatchUp?.matchUpStatus === BYE

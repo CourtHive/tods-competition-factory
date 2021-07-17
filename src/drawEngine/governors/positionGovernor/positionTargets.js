@@ -67,6 +67,7 @@ function targetByRoundOutcome({
 
   let loserMatchUp, loserTargetDrawPosition, loserMatchUpDrawPositionIndex;
   let winnerMatchUp, winnerTargetDrawPosition, winnerMatchUpDrawPositionIndex;
+  let structureMatchUps;
 
   if (useTargetMatchUpIds) {
     winnerMatchUp =
@@ -86,9 +87,11 @@ function targetByRoundOutcome({
 
   if (useBruteForce) {
     const { roundPosition: sourceRoundPosition } = matchUp;
-    const structureMatchUps = inContextDrawMatchUps.filter(
-      (matchUp) => matchUp.structureId === structure.structureId
-    );
+    structureMatchUps =
+      structureMatchUps ||
+      inContextDrawMatchUps.filter(
+        (matchUp) => matchUp.structureId === structure.structureId
+      );
     const sourceRoundMatchUpCount = structureMatchUps.reduce(
       (count, currentMatchUp) => {
         return currentMatchUp.roundNumber === matchUp.roundNumber
@@ -98,17 +101,19 @@ function targetByRoundOutcome({
       0
     );
 
-    ({
-      matchUp: loserMatchUp,
-      matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
-      targetDrawPosition: loserTargetDrawPosition,
-    } = getTargetMatchUp({
-      drawDefinition,
-      inContextDrawMatchUps,
-      sourceRoundPosition,
-      sourceRoundMatchUpCount,
-      targetLink: loserTargetLink,
-    }));
+    if (loserTargetLink) {
+      ({
+        matchUp: loserMatchUp,
+        matchUpDrawPositionIndex: loserMatchUpDrawPositionIndex,
+        targetDrawPosition: loserTargetDrawPosition,
+      } = getTargetMatchUp({
+        drawDefinition,
+        inContextDrawMatchUps,
+        sourceRoundPosition,
+        sourceRoundMatchUpCount,
+        targetLink: loserTargetLink,
+      }));
+    }
 
     if (winnerTargetLink) {
       ({
@@ -122,17 +127,16 @@ function targetByRoundOutcome({
         sourceRoundMatchUpCount,
         targetLink: winnerTargetLink,
       }));
-    } else {
-      // if there is no winnerTargetLink then find targetMatchUp in next round
-      ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
-        structureMatchUps,
-        matchUp,
-      }));
     }
-  } else if (!winnerTargetLink && !winnerMatchUp) {
-    const structureMatchUps = inContextDrawMatchUps.filter(
-      (matchUp) => matchUp.structureId === structure.structureId
-    );
+  }
+
+  if (!winnerMatchUp) {
+    // if there is no winnerTargetLink then find targetMatchUp in next round
+    structureMatchUps =
+      structureMatchUps ||
+      inContextDrawMatchUps.filter(
+        (matchUp) => matchUp.structureId === structure.structureId
+      );
     ({ matchUp: winnerMatchUp } = nextRoundMatchUp({
       structureMatchUps,
       matchUp,
