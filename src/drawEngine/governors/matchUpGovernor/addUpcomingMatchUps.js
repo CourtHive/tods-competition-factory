@@ -6,14 +6,16 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
+  /*
   const hasGoesToData = inContextDrawMatchUps.find(
     ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
   );
-  inContextDrawMatchUps.forEach((matchUp) => {
-    const { matchUpId, structureId, drawPositions = [] } = matchUp;
+  */
+  inContextDrawMatchUps.forEach((inContextMatchUp) => {
+    const { matchUpId, structureId, drawPositions = [] } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
     if (structure?.finishingPosition === WIN_RATIO) {
-      const { roundNumber } = matchUp;
+      const { roundNumber } = inContextMatchUp;
       const nextRoundNumber = roundNumber && parseInt(roundNumber) + 1;
       const matchUps = structure.matchUps || [];
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
@@ -32,21 +34,22 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             structureName: structure.structureName,
           };
         });
-        Object.assign(matchUp, { sidesTo });
+        Object.assign(inContextMatchUp, { sidesTo });
       }
     } else {
       let winnerMatchUp, loserMatchUp;
+      const { winnerMatchUpId, loserMatchUpId } = inContextMatchUp;
 
-      if (hasGoesToData) {
+      if (winnerMatchUpId || loserMatchUpId) {
         winnerMatchUp =
-          matchUp.winnerMatchUpId &&
+          winnerMatchUpId &&
           inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId
+            ({ matchUpId }) => matchUpId === winnerMatchUpId
           );
         loserMatchUp =
-          matchUp.loserMatchUpId &&
+          loserMatchUpId &&
           inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === matchUp.loserMatchUpId
+            ({ matchUpId }) => matchUpId === loserMatchUpId
           );
       } else {
         // if goesTo information not present, get it by brute force
@@ -54,6 +57,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           matchUpId,
           structure,
           drawDefinition,
+          inContextMatchUp,
           inContextDrawMatchUps,
         });
         ({ winnerMatchUp, loserMatchUp } = targetData.targetMatchUps);
@@ -62,7 +66,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
       if (
-        matchUp.matchUpStatus !== BYE &&
+        inContextMatchUp.matchUpStatus !== BYE &&
         loserMatchUp?.matchUpStatus === BYE
       ) {
         const { matchUp: nextMatchUp } =
@@ -75,10 +79,10 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) ||
           loserTo;
       }
-      Object.assign(matchUp, { winnerTo, loserTo });
+      Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
-      if (matchUp.drawPositions.filter(Boolean).length) {
-        const participants = getParticipants(matchUp);
+      if (inContextMatchUp.drawPositions.filter(Boolean).length) {
+        const participants = getParticipants(inContextMatchUp);
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
           const loserParticipantIds = getParticipantIds(loserMatchUp);
