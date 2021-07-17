@@ -5,14 +5,14 @@ import { getPositionAssignments } from '../positionsGetter';
 import { getDevContext } from '../../../global/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 
+import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
+import { DISABLE_LINKS } from '../../../constants/extensionConstants';
 import {
   DRAW,
   BOTTOM_UP,
   RANDOM,
   TOP_DOWN,
 } from '../../../constants/drawDefinitionConstants';
-import { MISSING_TARGET_LINK } from '../../../constants/errorConditionConstants';
-import { DISABLE_LINKS } from '../../../constants/extensionConstants';
 
 export function getTargetMatchUp({
   drawDefinition,
