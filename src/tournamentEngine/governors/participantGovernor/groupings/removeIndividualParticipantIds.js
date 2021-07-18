@@ -47,14 +47,14 @@ export function removeIndividualParticipantIds({
     individualParticipantIds,
   });
 
+  if (error) return { error };
+
   if (removed) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
       payload: { participants: [groupingParticipant] },
     });
   }
-
-  if (error) return { error };
 
   return { ...SUCCESS, removed };
 }

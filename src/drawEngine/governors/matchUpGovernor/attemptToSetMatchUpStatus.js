@@ -1,6 +1,5 @@
 import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { doubleWalkoverAdvancement } from '../positionGovernor/doubleWalkoverAdvancement';
-import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
 import { attemptToSetMatchUpStatusBYE } from './attemptToSetMatchUpStatusBYE';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import {
@@ -66,16 +65,8 @@ function removeWinningSideSetWOWO(params) {
 
 function removeDoubleWalkover(params) {
   console.log('-------------clear WOWO-------------');
-  const { drawDefinition, matchUpsMap, targetData } = params;
-  let result = removeDirectedParticipants(params);
-  if (result.error) return result;
-
   // removeDirectedParticipants should handle undoing WOWO propagation
-  return checkDoubleWalkoverPropagation({
-    drawDefinition,
-    matchUpsMap,
-    targetData,
-  });
+  return removeDirectedParticipants(params);
 }
 
 function modifyScoreAndAdvanceWOWO(params) {
