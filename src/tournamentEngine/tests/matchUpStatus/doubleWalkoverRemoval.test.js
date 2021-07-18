@@ -627,3 +627,66 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
 });
+
+test('removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent rounds', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          matchUpStatus: 'DOUBLE_WALKOVER',
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          matchUpStatus: 'DOUBLE_WALKOVER',
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  // keep track of notficiations with each setMatchUpStatus event
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  });
+  // tournamentEngine.devContext({ WOWO: true });
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+});

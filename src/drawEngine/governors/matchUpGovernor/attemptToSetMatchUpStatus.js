@@ -25,8 +25,6 @@ export function attemptToSetMatchUpStatus(params) {
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
   const setWOWO = matchUpStatus === DOUBLE_WALKOVER;
-  const clearWOWO =
-    matchUp.matchUpStatus === DOUBLE_WALKOVER && matchUpStatus === TO_BE_PLAYED;
 
   const directing = isDirectingMatchUpStatus({ matchUpStatus });
   const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
@@ -48,7 +46,6 @@ export function attemptToSetMatchUpStatus(params) {
     (changeCompletedToWOWO && removeWinningSideSetWOWO(params)) ||
     (existingWinningSide && removeDirectedParticipants(params)) ||
     (nonDirecting && clearScore()) ||
-    (clearWOWO && removeDoubleWalkover(params)) ||
     (isBYE && attemptToSetMatchUpStatusBYE({ matchUp, structure })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (setWOWO && modifyScoreAndAdvanceWOWO(params)) || {
@@ -61,12 +58,6 @@ function removeWinningSideSetWOWO(params) {
   let result = removeDirectedParticipants(params);
   if (result.error) return result;
   return doubleWalkoverAdvancement(params);
-}
-
-function removeDoubleWalkover(params) {
-  console.log('-------------clear WOWO-------------');
-  // removeDirectedParticipants should handle undoing WOWO propagation
-  return removeDirectedParticipants(params);
 }
 
 function modifyScoreAndAdvanceWOWO(params) {

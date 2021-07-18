@@ -1,16 +1,21 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { addNotice } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
 } from './removeDirectedParticipantsAndUpdateOutcome';
 
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   completedMatchUpStatuses,
+  DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
@@ -113,6 +118,24 @@ function removePropagatedDoubleWalkover({
       [...completedMatchUpStatuses, BYE].includes(
         pairedPreviousMatchUp?.matchUpStatus
       ) || pairedPreviousMatchUp?.winningSide;
+
+    // TODO: This should be replaced with an algorithm which traverses winnerMatchUps until a produced WALKOVER is encountered
+    // as the winnerMatchUps are traversed a record of matchUps to be modified is kept
+    // when the produced WALKVER is encountered it must be determined whether it is doubly produced before it can be removed
+    if (
+      nextWinnerMatchUp.matchUpStatus === WALKOVER &&
+      winnerMatchUp.matchUpStatus === DOUBLE_WALKOVER &&
+      sourceMatchUp.matchUpStatus === DOUBLE_WALKOVER
+    ) {
+      const noContextNextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+        (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
+      );
+      noContextNextWinnerMatchUp.matchUpStatus = TO_BE_PLAYED;
+      addNotice({
+        topic: MODIFY_MATCHUP,
+        payload: { matchUp: noContextNextWinnerMatchUp },
+      });
+    }
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
