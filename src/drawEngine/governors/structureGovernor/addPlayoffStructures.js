@@ -179,6 +179,9 @@ export function addPlayoffStructures(params) {
       matchUpId,
       matchUp,
       score,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) console.log(result.error);
   });

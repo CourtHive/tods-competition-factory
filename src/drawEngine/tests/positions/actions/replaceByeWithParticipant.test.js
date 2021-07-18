@@ -3,6 +3,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import {
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
@@ -11,7 +12,6 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('supports replacing a BYE with a participant (DA or ALT)', () => {
   const drawProfiles = [

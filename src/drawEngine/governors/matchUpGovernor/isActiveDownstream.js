@@ -1,32 +1,56 @@
-import { intersection } from '../../../utilities';
+import { positionTargets } from '../positionGovernor/positionTargets';
 
-export function isActiveDownstream({ inContextMatchUp, targetData }) {
+export function isActiveDownstream(params) {
+  const { inContextDrawMatchUps, targetData, drawDefinition } = params;
+
   const {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
   } = targetData;
 
-  // if neither loserMatchUp or winnerMatchUp have winningSide
-  // => score matchUp and advance participants along links
-  const matchUpParticipantIds =
-    inContextMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const loserMatchUpHasWinningSide = loserMatchUp?.winningSide;
-  const loserMatchUpParticipantIds =
-    loserMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const loserMatchUpParticipantIntersection = !!intersection(
-    matchUpParticipantIds,
-    loserMatchUpParticipantIds
-  ).length;
-  const winnerMatchUpHasWinningSide = winnerMatchUp?.winningSide;
-  const winnerMatchUpParticipantIds =
-    winnerMatchUp?.sides?.map(({ participantId }) => participantId) || [];
-  const winnerMatchUpParticipantIntersection = !!intersection(
-    matchUpParticipantIds,
-    winnerMatchUpParticipantIds
-  ).length;
+  const loserDrawPositionsCount =
+    loserMatchUp?.drawPositions.filter(Boolean).length || 0;
+  const winnerDrawPositionsCount =
+    winnerMatchUp?.drawPositions.filter(Boolean).length || 0;
 
-  const activeDownstream =
-    (loserMatchUpHasWinningSide && loserMatchUpParticipantIntersection) ||
-    (winnerMatchUpHasWinningSide && winnerMatchUpParticipantIntersection);
+  if (
+    loserMatchUp?.winningSide ||
+    (winnerDrawPositionsCount === 2 && winnerMatchUp?.winningSide)
+  )
+    return true;
 
-  return activeDownstream;
+  if (!loserDrawPositionsCount && !winnerDrawPositionsCount) return false;
+
+  let loserTargetData =
+    loserMatchUp &&
+    positionTargets({
+      matchUpId: loserMatchUp.matchUpId,
+      drawDefinition,
+      inContextDrawMatchUps,
+    });
+
+  let winnerTargetData =
+    winnerMatchUp &&
+    positionTargets({
+      matchUpId: winnerMatchUp.matchUpId,
+      drawDefinition,
+      inContextDrawMatchUps,
+    });
+
+  const loserActive =
+    loserTargetData &&
+    isActiveDownstream({
+      inContextDrawMatchUps,
+      drawDefinition,
+      targetData: loserTargetData,
+    });
+
+  const winnerActive =
+    winnerTargetData &&
+    isActiveDownstream({
+      inContextDrawMatchUps,
+      drawDefinition,
+      targetData: winnerTargetData,
+    });
+
+  return !!(winnerActive || loserActive);
 }

@@ -1,30 +1,35 @@
+import { getPairedPreviousMatchUpIsWalkover } from '../positionGovernor/getPairedPreviousMatchUpisWalkover';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
-import { intersection, numericSort } from '../../../utilities';
+import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
+import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
+import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
 } from '../../getters/getMatchUps/getMatchUpsMap';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   COMPLETED,
   DOUBLE_WALKOVER,
   RETIRED,
   TO_BE_PLAYED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function assignMatchUpDrawPosition({
   drawDefinition,
   matchUpId,
+  matchUpStatus,
   drawPosition,
   iterative,
 
@@ -64,24 +69,9 @@ export function assignMatchUpDrawPosition({
     drawPosition,
   });
 
-  let positionAdded = false;
   const drawPositions = matchUp.drawPositions || [];
-  let positionAssigned = drawPositions.includes(drawPosition);
-  const updatedDrawPositions = positionAssigned
-    ? drawPositions
-    : []
-        .concat(...drawPositions, undefined, undefined)
-        .slice(0, 2) // accounts for empty array, should always have length 2
-        .map((position) => {
-          if (!position && !positionAssigned) {
-            positionAssigned = true;
-            positionAdded = true;
-            return drawPosition;
-          } else {
-            return position;
-          }
-        })
-        .sort(numericSort);
+  const { positionAdded, positionAssigned, updatedDrawPositions } =
+    getUpdatedDrawPositions({ drawPosition, drawPositions });
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
@@ -92,16 +82,35 @@ export function assignMatchUpDrawPosition({
     updatedDrawPositions.includes(assignment.drawPosition)
   );
   const isByeMatchUp = matchUpAssignments.find(({ bye }) => bye);
-  const matchUpStatus = isByeMatchUp ? BYE : TO_BE_PLAYED;
+  const isWOWOWalkover =
+    matchUp.matchUpStatus === WALKOVER &&
+    updatedDrawPositions.filter(Boolean).length < 2;
 
-  matchUp.drawPositions = updatedDrawPositions;
-
-  Object.assign(matchUp, {
-    drawPositions: updatedDrawPositions,
-    matchUpStatus,
-  });
+  matchUpStatus = isByeMatchUp
+    ? BYE
+    : matchUpStatus
+    ? matchUpStatus
+    : isWOWOWalkover
+    ? WALKOVER
+    : TO_BE_PLAYED;
 
   if (positionAdded) {
+    const walkoverWinningSide =
+      (isWOWOWalkover &&
+        getWalkoverWinningSide({
+          matchUpId,
+          drawPosition,
+          inContextDrawMatchUps,
+        })) ||
+      undefined;
+
+    // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
+    Object.assign(matchUp, {
+      drawPositions: updatedDrawPositions,
+      winningSide: walkoverWinningSide,
+      matchUpStatus,
+    });
+
     addNotice({
       topic: MODIFY_MATCHUP,
       payload: { matchUp },
@@ -110,7 +119,6 @@ export function assignMatchUpDrawPosition({
 
   const targetData = positionTargets({
     matchUpId,
-    structure,
     drawDefinition,
     inContextDrawMatchUps,
     inContextMatchUp,
@@ -120,14 +128,23 @@ export function assignMatchUpDrawPosition({
     targetLinks: { loserTargetLink },
   } = targetData;
 
+  const structureMatchUps = getMappedStructureMatchUps({
+    structureId: structure.structureId,
+    matchUpsMap,
+  });
+
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
+      if (getDevContext({ WOWO: true }))
+        console.log({ matchUpStatus, isWOWOWalkover });
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           drawDefinition,
           drawPosition,
           matchUpId: winnerMatchUp.matchUpId,
           iterative: 'brightmagenta',
+
+          matchUpsMap,
           inContextDrawMatchUps,
         });
         if (result.error) return result;
@@ -141,37 +158,24 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const previousRoundNumber =
-      matchUp.roundNumber > 1 && matchUp.roundNumber - 1;
-    if (previousRoundNumber && winnerMatchUp) {
-      const structureMatchUps = getMappedStructureMatchUps({
-        structureId: structure.structureId,
+    const { pairedPreviousMatchUpIsWO } = getPairedPreviousMatchUpIsWalkover({
+      winnerMatchUp: matchUp,
+      drawPosition,
+      structure,
+      matchUpsMap,
+    });
+
+    if (pairedPreviousMatchUpIsWO && winnerMatchUp) {
+      const result = assignMatchUpDrawPosition({
+        drawDefinition,
+        drawPosition,
+        matchUpId: winnerMatchUp.matchUpId,
+        iterative: 'brightred',
 
         matchUpsMap,
+        inContextDrawMatchUps,
       });
-      const sourceMatchUp = structureMatchUps.find(
-        ({ drawPositions, roundNumber }) =>
-          roundNumber === previousRoundNumber &&
-          drawPositions.includes(drawPosition)
-      );
-      const sourceRoundPosition = sourceMatchUp?.roundPosition;
-      const offset = sourceRoundPosition % 2 ? 1 : -1;
-      const pairedRoundPosition = sourceRoundPosition + offset;
-      const pairedMatchUp = structureMatchUps.find(
-        ({ roundPosition, roundNumber }) =>
-          roundPosition === pairedRoundPosition &&
-          roundNumber === previousRoundNumber
-      );
-      if (pairedMatchUp?.matchUpStatus === DOUBLE_WALKOVER) {
-        const result = assignMatchUpDrawPosition({
-          drawDefinition,
-          drawPosition,
-          matchUpId: winnerMatchUp.matchUpId,
-          iterative: 'brightred',
-          inContextDrawMatchUps,
-        });
-        if (result.error) return result;
-      }
+      if (result.error) return result;
     }
   }
 
@@ -181,11 +185,6 @@ export function assignMatchUpDrawPosition({
     updatedDrawPositions.filter(Boolean).length === 2 &&
     !isByeMatchUp
   ) {
-    const structureMatchUps = getMappedStructureMatchUps({
-      structureId: structure.structureId,
-
-      matchUpsMap,
-    });
     const firstRoundMatchUps = structureMatchUps.filter(
       ({ drawPositions, roundNumber }) =>
         roundNumber === 1 &&

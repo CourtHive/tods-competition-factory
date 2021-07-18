@@ -3,6 +3,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
+import { getDevContext } from '../../../global/globalState';
 import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
@@ -42,10 +43,12 @@ export function modifyMatchUpScore({
   removeScore,
   removeWinningSide,
 }) {
+  let structure;
+
   if (matchUp.matchUpType === TEAM) {
     if (matchUpId && matchUp.matchUpId !== matchUpId) {
       // the modification is to be applied to a tieMatchUp
-      ({ matchUp } = findMatchUp({ drawDefinition, matchUpId }));
+      ({ matchUp, structure } = findMatchUp({ drawDefinition, matchUpId }));
     } else {
       // the modification is to be applied to the TEAM matchUp
     }
@@ -58,17 +61,26 @@ export function modifyMatchUpScore({
   } else if (score) {
     matchUp.score = score;
   }
-  if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
+  if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
 
-  // TODO: can this find be avoided by passing inContext matchUp details?
-  const { structure } = findMatchUp({
-    drawDefinition,
-    matchUpId,
-  });
+  if (getDevContext({ WOWO: true }))
+    console.log('mms:', {
+      matchUpStatus,
+      roundNumber: matchUp.roundNumber,
+      roundPosition: matchUp.roundPosition,
+      winningSide,
+    });
+
+  if (!structure) {
+    ({ structure } = findMatchUp({
+      drawDefinition,
+      matchUpId,
+    }));
+  }
 
   if (structure?.structureType === CONTAINER) {
     matchUpFormat =

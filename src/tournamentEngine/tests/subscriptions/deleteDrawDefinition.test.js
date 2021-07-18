@@ -21,21 +21,26 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
     inContext: true,
   });
 
+  let notificationCounter = 0;
   const subscriptions = {
     deletedMatchUpIds: (notices) => {
+      notificationCounter += 1;
       expect(notices.length).toEqual(1);
       expect(notices[0].matchUpIds.length).toEqual(31);
     },
   };
+  let result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
 
-  setSubscriptions(subscriptions);
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.deleteDrawDefinitions({
+  result = tournamentEngine.deleteDrawDefinitions({
     eventId,
     drawIds: [drawId],
   });
   expect(result.success).toEqual(true);
+
+  expect(notificationCounter).toEqual(1);
 
   let { timeItem } = tournamentEngine.getEventTimeItem({
     itemType: 'deleteDrawDefinitions',

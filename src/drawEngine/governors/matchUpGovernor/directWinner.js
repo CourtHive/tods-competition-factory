@@ -8,6 +8,9 @@ export function directWinner({
   winningDrawPosition,
   winnerMatchUp,
   winnerMatchUpDrawPositionIndex,
+
+  matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   let error;
 
@@ -62,6 +65,8 @@ export function directWinner({
         structureId: targetStructureId,
         participantId: winnerParticipantId,
         drawPosition: targetMatchUpDrawPosition,
+        matchUpsMap,
+        inContextDrawMatchUps,
       });
     } else if (unfilledTargetMatchUpDrawPositions.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
@@ -70,12 +75,17 @@ export function directWinner({
         structureId: targetStructureId,
         participantId: winnerParticipantId,
         drawPosition,
+        matchUpsMap,
+        inContextDrawMatchUps,
       });
     } else if (winnerExistingDrawPosition) {
       ({ error } = assignMatchUpDrawPosition({
         drawDefinition,
         matchUpId: winnerMatchUp.matchUpId,
         drawPosition: winnerExistingDrawPosition,
+
+        matchUpsMap,
+        inContextDrawMatchUps,
       }));
     } else {
       error = 'winner target position unavaiallble';
@@ -86,6 +96,9 @@ export function directWinner({
       drawDefinition,
       matchUpId: winnerMatchUp.matchUpId,
       drawPosition: winningDrawPosition,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     }));
   }
 

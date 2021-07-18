@@ -1,9 +1,11 @@
-import { drawEngine } from '../../sync';
-import { getStageEntries } from '../../getters/stageGetter';
-import { getDrawStructures } from '../../getters/findStructure';
-import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { getDrawStructures } from '../../getters/findStructure';
+import { getStageEntries } from '../../getters/stageGetter';
+import { drawEngine } from '../../sync';
 import {
   completeMatchUp,
   verifyMatchUps,
@@ -11,10 +13,9 @@ import {
   findMatchUpByRoundNumberAndPosition,
 } from '../../tests/primitives/verifyMatchUps';
 
-import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-
+import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
+import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   RETIRED,
@@ -28,9 +29,6 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { CANNOT_CHANGE_WINNINGSIDE } from '../../../constants/errorConditionConstants';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -504,6 +502,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundPosition: 2,
     inContext: true,
   }));
+
   ({ error } = drawEngine.setMatchUpStatus({
     matchUpId,
     matchUpStatus: TO_BE_PLAYED,

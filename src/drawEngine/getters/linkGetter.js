@@ -1,8 +1,9 @@
+import { intersection } from '../../utilities';
+
 import {
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
 } from '../../constants/errorConditionConstants';
-import { intersection } from '../../utilities';
 
 /**
  *

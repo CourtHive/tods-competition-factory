@@ -1,10 +1,13 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
+/**
+ * for FMLC 2nd round matchUps test whether it if a first loss for both participants
+ */
 export function swapWinnerLoser(params) {
   const { inContextMatchUp, structure, drawDefinition } = params;
   const matchUpRoundNumber = inContextMatchUp.roundNumber;
@@ -31,6 +34,9 @@ export function swapWinnerLoser(params) {
       drawPositions.includes(existingWinnerDrawPosition) &&
       roundNumber > matchUpRoundNumber
   );
+
+  if (getDevContext({ changeWinner: true }))
+    console.log({ existingWinnerSubsequentMatchUps });
 
   // replace new winningSide drawPosition in all subsequent matches in structure
   existingWinnerSubsequentMatchUps.forEach((matchUp) => {

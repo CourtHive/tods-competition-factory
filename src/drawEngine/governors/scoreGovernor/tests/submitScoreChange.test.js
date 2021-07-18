@@ -65,7 +65,6 @@ test('submitScoreChange smoke test', () => {
   }));
   expect(result).toEqual(false);
   expect(error).toEqual(INVALID_SET_NUMBER);
-  console.log('WIP');
 
   /*
   ({ result, error } = submitScoreChange({

@@ -61,7 +61,7 @@ it('can add events, venues, and schedule matchUps', () => {
       endTime: '19:00',
     },
   ];
-  let { courts } = tournamentEngine.devContext(true).addCourts({
+  let { courts } = tournamentEngine.addCourts({
     venueId,
     courtsCount: 3,
     dateAvailability,

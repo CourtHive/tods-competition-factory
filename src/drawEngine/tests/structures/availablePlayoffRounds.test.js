@@ -13,11 +13,13 @@ import {
   MAIN,
 } from '../../../constants/drawDefinitionConstants';
 
+tournamentEngine.devContext(true);
+
 it('can correctly determine positions playedOff for STANDARD_ELIMINATION', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.devContext(true).generateDrawType();
+  const result = drawEngine.generateDrawType();
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = drawEngine.getState();
@@ -52,7 +54,7 @@ it('can correctly determine positions playedOff for FIRST_MATCH_LOSER_CONSOLATIO
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const result = drawEngine.devContext(true).generateDrawType({
+  const result = drawEngine.generateDrawType({
     drawType: FIRST_MATCH_LOSER_CONSOLATION,
   });
   expect(result.success).toEqual(true);
@@ -164,7 +166,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
   const {
     drawIds: [drawId],
     tournamentRecord,
-  } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   const { drawDefinition } = tournamentEngine
     .setState(tournamentRecord)
@@ -181,7 +183,7 @@ it('can generate only specified playoff rounds and give them custom names', () =
   const playoffAttributes = {
     '0-2': { name: 'BRONZE', abbreviation: 'B' },
   };
-  const result = tournamentEngine.devContext(true).addPlayoffStructures({
+  const result = tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     exitProfileLimit: true,
@@ -205,7 +207,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   const {
     drawIds: [drawId],
     tournamentRecord,
-  } = mocksEngine.devContext(true).generateTournamentRecord({ drawProfiles });
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   const { drawDefinition } = tournamentEngine
     .setState(tournamentRecord)
@@ -220,7 +222,7 @@ it('can use roundProfiles to specify depth of playoff structures', () => {
   const { structureId } = consolationStructure;
 
   // in this case a playoff structure is being added to a consolstion structure
-  const result = tournamentEngine.devContext(true).addPlayoffStructures({
+  const result = tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     exitProfileLimit: true,
@@ -273,12 +275,10 @@ it('can determine playoff structures available from playoff structures', () => {
 
   ({ structureId } = drawDefinition.structures[1]);
 
-  ({ playoffRoundsRanges } = tournamentEngine
-    .devContext(true)
-    .getAvailablePlayoffRounds({
-      drawId,
-      structureId,
-    }));
+  ({ playoffRoundsRanges } = tournamentEngine.getAvailablePlayoffRounds({
+    drawId,
+    structureId,
+  }));
 
   expect(playoffRoundsRanges.length).toEqual(1);
   expect(playoffRoundsRanges[0].finishingPositionRange).toEqual('7-8');

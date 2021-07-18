@@ -1,13 +1,11 @@
-import { findStructure } from '../../getters/findStructure';
-import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function addGoesTo({
   drawDefinition,
-  inContextDrawMatchUps,
-
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   if (!inContextDrawMatchUps) {
     ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
@@ -21,10 +19,8 @@ export function addGoesTo({
 
   (inContextDrawMatchUps || []).forEach((inContextMatchUp) => {
     const { matchUpId, structureId } = inContextMatchUp;
-    const { structure } = findStructure({ drawDefinition, structureId });
     const targetData = positionTargets({
       matchUpId,
-      structure,
       drawDefinition,
       inContextDrawMatchUps,
     });

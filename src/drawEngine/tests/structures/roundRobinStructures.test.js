@@ -14,9 +14,7 @@ it('can generate Round Robin Main Draws', () => {
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  let { structure } = drawEngine
-    .devContext(true)
-    .generateDrawType({ drawType });
+  let { structure } = drawEngine.generateDrawType({ drawType });
   expect(structure.structureType).toEqual(CONTAINER);
   expect(structure.finishingPosition).toEqual(WIN_RATIO);
   expect(structure.structures.length).toEqual(4);
@@ -26,7 +24,7 @@ it('can generate Round Robin Main Draws', () => {
   reset();
   initialize();
   mainDrawPositions({ drawSize: 32 });
-  ({ structure } = drawEngine.devContext(true).generateDrawType({ drawType }));
+  ({ structure } = drawEngine.generateDrawType({ drawType }));
   expect(structure.structures.length).toEqual(8);
 });
 
@@ -35,7 +33,7 @@ it('can generate Round Robins with varying group sizes', () => {
   initialize();
   mainDrawPositions({ drawSize: 30 });
   let structureOptions = { groupSize: 5 };
-  let { structure } = drawEngine.devContext(true).generateDrawType({
+  let { structure } = drawEngine.generateDrawType({
     drawType: ROUND_ROBIN,
     structureOptions,
   });
@@ -46,7 +44,7 @@ it('can generate Round Robins with varying group sizes', () => {
   initialize();
   mainDrawPositions({ drawSize: 30 });
   structureOptions = { groupSize: 3 };
-  ({ structure } = drawEngine.devContext(true).generateDrawType({
+  ({ structure } = drawEngine.generateDrawType({
     drawType: ROUND_ROBIN,
     structureOptions,
   }));

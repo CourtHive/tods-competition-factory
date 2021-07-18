@@ -55,7 +55,7 @@ export function mainDrawWithEntries({
   const participantIds = participants.map((p) => p.participantId);
   result = drawEngine.addDrawEntries({ participantIds, stage: MAIN });
   expect(result).toMatchObject(SUCCESS);
-  result = drawEngine.devContext(true).generateDrawType({ drawType });
+  result = drawEngine.generateDrawType({ drawType });
   return result;
 }
 

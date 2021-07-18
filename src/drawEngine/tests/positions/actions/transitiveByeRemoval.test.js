@@ -1,5 +1,6 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { generateRange } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import {
   getOrderedDrawPositionPairs,
   getContextMatchUp,
@@ -12,7 +13,6 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../../constants/positionActionConstants';
-import { generateRange } from '../../../../utilities';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });

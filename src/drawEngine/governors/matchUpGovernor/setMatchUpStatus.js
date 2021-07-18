@@ -6,9 +6,9 @@ import { noDownstreamDependencies } from './noDownstreamDependencies';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { getDevContext } from '../../../global/globalState';
 import { findStructure } from '../../getters/findStructure';
+import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
-import { isActiveDownstream } from './isActiveDownstream';
 import { swapWinnerLoser } from './swapWinnerLoser';
 import { makeDeepCopy } from '../../../utilities';
 import {
@@ -49,6 +49,8 @@ import {
 
 export function setMatchUpStatus(params) {
   let messages = [];
+
+  if (getDevContext({ setMatchUpStatus: true })) console.log(params);
 
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
@@ -117,13 +119,10 @@ export function setMatchUpStatus(params) {
   }
 
   const matchUpTieId = inContextMatchUp.matchUpTieId;
-  const structureId = inContextMatchUp.structureId;
-  const { structure } = findStructure({ drawDefinition, structureId });
 
   // Get winner/loser position targets ----------------------------------------
   const targetData = positionTargets({
     matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
-    structure,
     drawDefinition,
     inContextDrawMatchUps,
   });
@@ -170,21 +169,24 @@ export function setMatchUpStatus(params) {
   }
 
   // if there is a TEAM matchUp, assign it instead of the tieMatchUp ??
+  const structureId = inContextMatchUp.structureId;
+  const { structure } = findStructure({ drawDefinition, structureId });
+
   Object.assign(params, {
     matchUp,
     inContextMatchUp,
-    inContextDrawMatchUps,
     matchUpTieId,
     structure,
     targetData,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
 
-  // with propagating winningSide changes, activeDownStream only applies to eventType: TEAM
-  const activeDownStream = isActiveDownstream({ inContextMatchUp, targetData });
+  // with propagating winningSide changes, activeDownstream only applies to eventType: TEAM
+  const activeDownstream = isActiveDownstream(params);
   if (
-    activeDownStream &&
+    activeDownstream &&
     !winningSide &&
     isNonDirectingMatchUpStatus({ matchUpStatus })
   ) {
@@ -192,6 +194,7 @@ export function setMatchUpStatus(params) {
   }
 
   const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+
   if (
     winningSide &&
     winningSide === matchUp.winningSide &&
@@ -216,7 +219,7 @@ export function setMatchUpStatus(params) {
     return swapWinnerLoser(params);
   }
 
-  const result = (!activeDownStream && noDownstreamDependencies(params)) ||
+  const result = (!activeDownstream && noDownstreamDependencies(params)) ||
     (winningSide && winningSideWithDownstreamDependencies(params)) ||
     (directingMatchUpStatus && applyMatchUpValues(params)) || {
       error: NO_VALID_ACTIONS,
@@ -230,7 +233,7 @@ export function setMatchUpStatus(params) {
         matchUp: makeDeepCopy(matchUp),
         messages,
       }
-    : SUCCESS;
+    : { ...SUCCESS };
 }
 
 function winningSideWithDownstreamDependencies(params) {

@@ -6,14 +6,11 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
-  const hasGoesToData = inContextDrawMatchUps.find(
-    ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
-  );
-  inContextDrawMatchUps.forEach((matchUp) => {
-    const { matchUpId, structureId, drawPositions = [] } = matchUp;
+  inContextDrawMatchUps.forEach((inContextMatchUp) => {
+    const { matchUpId, structureId, drawPositions = [] } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
     if (structure?.finishingPosition === WIN_RATIO) {
-      const { roundNumber } = matchUp;
+      const { roundNumber } = inContextMatchUp;
       const nextRoundNumber = roundNumber && parseInt(roundNumber) + 1;
       const matchUps = structure.matchUps || [];
       const { roundMatchUps } = getRoundMatchUps({ matchUps });
@@ -32,37 +29,23 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             structureName: structure.structureName,
           };
         });
-        Object.assign(matchUp, { sidesTo });
+        Object.assign(inContextMatchUp, { sidesTo });
       }
     } else {
-      let winnerMatchUp, loserMatchUp;
-
-      if (hasGoesToData) {
-        winnerMatchUp =
-          matchUp.winnerMatchUpId &&
-          inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId
-          );
-        loserMatchUp =
-          matchUp.loserMatchUpId &&
-          inContextDrawMatchUps.find(
-            ({ matchUpId }) => matchUpId === matchUp.loserMatchUpId
-          );
-      } else {
-        // if goesTo information not present, get it by brute force
-        const targetData = positionTargets({
-          matchUpId,
-          structure,
-          drawDefinition,
-          inContextDrawMatchUps,
-        });
-        ({ winnerMatchUp, loserMatchUp } = targetData.targetMatchUps);
-      }
+      const targetData = positionTargets({
+        matchUpId,
+        drawDefinition,
+        inContextMatchUp,
+        inContextDrawMatchUps,
+        useTargetMatchUpIds: true,
+      });
+      const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
 
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
+
       if (
-        matchUp.matchUpStatus !== BYE &&
+        inContextMatchUp.matchUpStatus !== BYE &&
         loserMatchUp?.matchUpStatus === BYE
       ) {
         const { matchUp: nextMatchUp } =
@@ -75,10 +58,10 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) ||
           loserTo;
       }
-      Object.assign(matchUp, { winnerTo, loserTo });
+      Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
-      if (matchUp.drawPositions.filter(Boolean).length) {
-        const participants = getParticipants(matchUp);
+      if (inContextMatchUp.drawPositions.filter(Boolean).length) {
+        const participants = getParticipants(inContextMatchUp);
         if (participants.length) {
           const winnerParticipantIds = getParticipantIds(winnerMatchUp);
           const loserParticipantIds = getParticipantIds(loserMatchUp);
@@ -134,15 +117,11 @@ function getNextToBePlayedMatchUp({
         ({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId
       );
     } else {
-      const { structure } = findStructure({ drawDefinition, structureId });
-      const targetData =
-        structure &&
-        positionTargets({
-          matchUpId,
-          structure,
-          drawDefinition,
-          inContextDrawMatchUps,
-        });
+      const targetData = positionTargets({
+        matchUpId,
+        drawDefinition,
+        inContextDrawMatchUps,
+      });
       ({ winnerMatchUp } = targetData?.targetMatchUps || {});
     }
 

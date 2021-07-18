@@ -1,4 +1,6 @@
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -8,15 +10,36 @@ import { clearDrawPosition } from './positionClear';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function positionParticipantAction({
-  participantId,
-  drawDefinition,
-  drawPosition,
-  structureId,
-  positionActionName,
-  participantIdAttributeName = 'participantId',
-}) {
+export function positionParticipantAction(params) {
+  const {
+    participantId,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    positionActionName,
+    participantIdAttributeName = 'participantId',
+  } = params;
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  let { inContextDrawMatchUps, matchUpsMap } = params;
+
+  if (!matchUpsMap) {
+    matchUpsMap = getMatchUpsMap({ drawDefinition });
+    Object.assign(params, { matchUpsMap });
+  }
+
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
+
+      matchUpsMap,
+    }));
+    Object.assign(params, { inContextDrawMatchUps });
+  }
+
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
     structureId,
@@ -31,6 +54,9 @@ export function positionParticipantAction({
       structureId,
       drawPosition,
       participantId,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (!result.success) {
       console.log({ result });
@@ -43,6 +69,9 @@ export function positionParticipantAction({
     drawDefinition,
     drawPosition,
     structureId,
+
+    matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (result.error) return result;
   const removedParticipantId = result.participantId;
@@ -52,6 +81,9 @@ export function positionParticipantAction({
     structureId,
     drawPosition,
     participantId,
+
+    matchUpsMap,
+    inContextDrawMatchUps,
   });
   if (!result.success) return result;
 

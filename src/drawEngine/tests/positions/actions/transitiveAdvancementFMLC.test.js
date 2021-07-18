@@ -223,7 +223,6 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
     },
   } = tournamentEngine.getEvent({ drawId }));
 
-  tournamentEngine.devContext(true);
   removeAssignment({
     drawId,
     structureId: mainStructure.structureId,
@@ -344,7 +343,6 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
     [1, undefined],
   ]);
 
-  tournamentEngine.devContext(true);
   removeAssignment({
     drawId,
     structureId: mainStructure.structureId,

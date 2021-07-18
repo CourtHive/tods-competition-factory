@@ -10,6 +10,9 @@ import {
   SPLIT_WATERFALL,
 } from '../../../constants/flightConstants';
 
+// turn on devContext to enable checking splitEntries value
+tournamentEngine.devContext(true);
+
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
@@ -59,8 +62,6 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
   });
 
-  // turn on devContext to enable checking splitEntries value
-  tournamentEngine.devContext(true);
   let { flightProfile, splitEntries } = tournamentEngine.generateFlightProfile({
     eventId,
     scaleAttributes,

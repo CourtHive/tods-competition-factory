@@ -288,7 +288,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   });
   expect(matchUps.length).toEqual(1);
   const { matchUpId } = matchUps[0];
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: toBePlayed,

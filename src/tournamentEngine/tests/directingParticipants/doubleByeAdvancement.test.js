@@ -12,7 +12,6 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { SCORE } from '../../../constants/matchUpActionConstants';
 
 it('can create double bye and remove advanced participant when outcome is reset', () => {
-  tournamentEngine.devContext(true);
   const participantsProfile = {
     participantsCount: 16,
   };
@@ -102,7 +101,6 @@ it('can create double bye and remove advanced participant when outcome is reset'
 });
 
 it('can create double bye and replace bye with alternate', () => {
-  tournamentEngine.devContext(true);
   const participantsProfile = {
     participantsCount: 16,
   };

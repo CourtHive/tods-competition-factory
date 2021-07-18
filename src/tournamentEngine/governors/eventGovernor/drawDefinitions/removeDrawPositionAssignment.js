@@ -8,11 +8,11 @@ import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
 import { pushGlobalLog } from '../../../../global/globalLog';
 
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   ALTERNATE,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import { PAIR } from '../../../../constants/participantTypes';
 
 /**
  *
@@ -25,13 +25,20 @@ import { PAIR } from '../../../../constants/participantTypes';
  *
  */
 export function removeDrawPositionAssignment(params) {
-  const { drawId, replaceWithBye, destroyPair, entryStatus } = params;
+  const {
+    drawId,
+    replaceWithBye,
+    destroyPair,
+    entryStatus,
+    drawDefinition,
+    matchUpsMap,
+  } = params;
 
   const result = clearDrawPosition(params);
   if (result.error) return result;
 
   const { participantId } = result;
-  const { drawDefinition, drawPosition, event, structureId } = params;
+  const { drawPosition, event, structureId } = params;
 
   if ([ALTERNATE, WITHDRAWN].includes(entryStatus)) {
     if (participantId) {
@@ -78,7 +85,7 @@ export function removeDrawPositionAssignment(params) {
       method: 'replaceWithBye',
       drawPosition,
     });
-    const { matchUpsMap } = params;
+
     const result = assignDrawPositionBye({
       drawDefinition,
       structureId,

@@ -1,15 +1,14 @@
-import tournamentEngine from '../../../tournamentEngine/sync';
-import mocksEngine from '../..';
-
 import { matchUpSort } from '../../../drawEngine/getters/matchUpSort';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
 import { fmlc32profile } from './fmlc32';
+import mocksEngine from '../..';
 
+import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import {
   FIRST_MATCH_LOSER_CONSOLATION,
   ROUND_ROBIN,
 } from '../../../constants/drawDefinitionConstants';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 
 it('can generate a tournament with all results completed', () => {
   const drawProfiles = [{ drawSize: 32 }];

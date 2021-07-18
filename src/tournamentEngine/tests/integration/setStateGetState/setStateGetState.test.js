@@ -25,7 +25,7 @@ it('can recognize invalid matchUps', () => {
 
   const { drawDefinition } = mutation.executionQueue[0].params;
   drawEngine.setState(drawDefinition);
-  const state = drawEngine.devContext(true).getState(drawDefinition);
+  const state = drawEngine.getState(drawDefinition);
   expect(state).not.toEqual(drawDefinition);
   const { matchUps: drawMatchUps } = drawEngine.allDrawMatchUps();
   result = validDrawPositions({ matchUps: drawMatchUps });

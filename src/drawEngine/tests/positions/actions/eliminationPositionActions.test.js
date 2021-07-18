@@ -1,5 +1,6 @@
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
+import drawEngine from '../../../sync';
 
 import {
   INVALID_DRAW_POSITION,
@@ -20,7 +21,6 @@ import {
   SEED_VALUE,
   SEED_VALUE_METHOD,
 } from '../../../../constants/positionActionConstants';
-import drawEngine from '../../../sync';
 
 it('can return accurate position details when requesting positionActions', () => {
   const drawProfiles = [

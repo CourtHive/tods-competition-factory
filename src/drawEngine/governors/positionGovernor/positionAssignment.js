@@ -7,6 +7,8 @@ import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssig
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
+import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
@@ -31,6 +33,18 @@ export function assignDrawPosition({
   matchUpsMap,
   inContextDrawMatchUps,
 }) {
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
+
+      matchUpsMap,
+    }));
+  }
+
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({
@@ -87,6 +101,9 @@ export function assignDrawPosition({
       drawDefinition,
       drawPosition,
       structureId,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
     if (result.error) return result;
   }
@@ -109,6 +126,9 @@ export function assignDrawPosition({
       positionAssignments,
       drawDefinition,
       structure,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 
@@ -152,6 +172,7 @@ function addDrawPositionToMatchUps({
     structure,
 
     matchUpsMap,
+    inContextDrawMatchUps,
   });
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });

@@ -47,7 +47,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
     .slice(0, 3)
     .map((participant) => participant.participantId);
 
-  result = tournamentEngine.devContext(true).addParticipant({
+  result = tournamentEngine.addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -122,7 +122,7 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
-  let result = tournamentEngine.devContext(true).addParticipant({
+  let result = tournamentEngine.addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -185,7 +185,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
     .slice(0, 4)
     .map((participant) => participant.participantId);
 
-  let result = tournamentEngine.devContext(true).addParticipant({
+  let result = tournamentEngine.addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: OTHER,
@@ -213,7 +213,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   });
   expect(result.error).toEqual(MISSING_VALUE);
 
-  result = tournamentEngine.devContext(true).modifyIndividualParticipantIds({
+  result = tournamentEngine.modifyIndividualParticipantIds({
     groupingParticipantId,
     individualParticipantIds: newIndividualParticipantIds,
   });
@@ -245,7 +245,7 @@ it('can remove individualParticipantIds from a grouping participant', () => {
     (participant) => participant.participantId
   );
 
-  let result = tournamentEngine.devContext(true).addParticipant({
+  let result = tournamentEngine.addParticipant({
     participant: {
       participantType: GROUP,
       participantRole: COMPETITOR,

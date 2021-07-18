@@ -12,6 +12,7 @@ import {
   deleteNotices,
   removeTournamentRecord,
   getTournamentRecords,
+  setTournamentRecords,
 } from '../global/globalState';
 
 import {
@@ -30,6 +31,11 @@ import {
 export const competitionEngine = (function () {
   const fx = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
+    version: () => factoryVersion(),
+    reset: () => {
+      setTournamentRecords({});
+      return SUCCESS;
+    },
   };
 
   importGovernors([
@@ -39,15 +45,11 @@ export const competitionEngine = (function () {
     scheduleGovernor,
   ]);
 
-  fx.version = () => factoryVersion();
-  fx.reset = () => {
-    setTournamentRecord({});
-    return SUCCESS;
-  };
-  fx.devContext = (isDev) => {
-    setDevContext(isDev);
+  fx.devContext = (contextCriteria) => {
+    setDevContext(contextCriteria);
     return fx;
   };
+  fx.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
   fx.setState = (records, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(records, deepCopyOption);

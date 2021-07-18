@@ -20,19 +20,24 @@ it('can notify subscriber when audit information is added', () => {
     inContext: true,
   });
 
+  let notificationsCounter = 0;
   const subscriptions = {
     audit: (notices) => {
+      notificationsCounter += 1;
       expect(notices.length).toEqual(1);
       expect(notices[0][0].action).toEqual(DELETE_DRAW_DEFINITIONS);
       expect(notices[0][0].payload.drawDefinitions).not.toBeUndefined();
     },
   };
-  setSubscriptions(subscriptions);
+  let result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.deleteDrawDefinitions({
+  result = tournamentEngine.deleteDrawDefinitions({
     eventId,
     drawIds: [drawId],
   });
   expect(result.success).toEqual(true);
+
+  expect(notificationsCounter).toEqual(1);
 });

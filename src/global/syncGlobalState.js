@@ -1,3 +1,4 @@
+import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
@@ -89,6 +90,7 @@ export function setSubscriptions({ subscriptions = {} } = {}) {
   Object.keys(subscriptions).forEach((subscription) => {
     syncGlobalState.subscriptions[subscription] = subscriptions[subscription];
   });
+  return { ...SUCCESS };
 }
 
 export function addNotice({ topic, payload }) {

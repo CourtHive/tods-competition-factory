@@ -12,9 +12,15 @@
 
 ## Double Walkovers
 
-1. When a DOUBLE_WALKOVER matchUpStatus is assigned the subsequent matchUp receives a WALKOVER matchUpStatus
-   - This implies that the factory must allow a matchUp with NO drawPositions to have a matchUpStatus other than TO_BE_PLAYED
-2. When a participant is advanced into a matchUp which already has a WALKOVER matchUpStatus:
+1. When a DOUBLE_WALKOVER matchUpStatus is assigned the subsequent winnerMatchUp receives a WALKOVER matchUpStatus
+   - This implies that the factory must allow a matchUp with NO (or one) drawPosition(s) to have a matchUpStatus other than TO_BE_PLAYED
+2. When a DOUBLE_WALKOVER matchUpStatus is assigned the subsequent loserMatchUp, if present, receives a BYE matchUpStatus
+3. When a participant is advanced into a matchUp which already has a WALKOVER matchUpStatus:
    a. IF there are no other drawPositions, the participant is advanced further
-   b. IF there is already a drawPosition, then it must be assumed that a DOUBLE_WALKOVER has been removed and the WALKOVER should become TO_BE_PLAYED
-3. A DOUBLE_WALKOVER may NOT be removed if there is a downstream matchUp with a score
+   b. IF there is already a drawPosition, then it must be assumed that a DOUBLE_WALKOVER has been removed and the matchUpStatus becomes TO_BE_PLAYED
+4. A DOUBLE_WALKOVER may NOT be removed if there is a downstream matchUp with a score
+
+### Test Cases
+
+1. When a WO/WO is entered the subsequent matchUp.matchUpStatus is set to WALKOVER, but no winningSide is set
+2. In a SINGLE_ELIMINATION, encountering a WO/WO will advance a participant to the subsequent round and set the winningSide appropriately

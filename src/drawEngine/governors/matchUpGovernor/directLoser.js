@@ -21,6 +21,9 @@ export function directLoser(params) {
     loserTargetLink,
     loserDrawPosition,
     loserMatchUpDrawPositionIndex,
+
+    matchUpsMap,
+    inContextDrawMatchUps,
   } = params;
 
   pushGlobalLog({
@@ -142,6 +145,8 @@ export function directLoser(params) {
       participantId: loserParticipantId,
       drawPosition: fedDrawPosition,
       automaticPlacement: true,
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   } else {
     return { error: INVALID_DRAW_POSITION };
@@ -170,6 +175,8 @@ export function directLoser(params) {
       structureId: targetStructureId,
       drawPosition: targetMatchUpDrawPosition,
       automaticPlacement: true,
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
   }
 }

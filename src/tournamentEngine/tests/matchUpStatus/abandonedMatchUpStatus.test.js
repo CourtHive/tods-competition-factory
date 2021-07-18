@@ -1,6 +1,6 @@
+import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { getOrderedDrawPositionPairs } from '../../../drawEngine/tests/testingUtilities';
 
 import {
   ABANDONED,
@@ -24,7 +24,7 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   let result;
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: { matchUpStatus: ABANDONED },
@@ -40,7 +40,7 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
     matchUpStatus: COMPLETED,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome,

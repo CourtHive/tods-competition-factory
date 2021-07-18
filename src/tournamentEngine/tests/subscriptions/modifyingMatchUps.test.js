@@ -17,12 +17,15 @@ it('can notify subscriber when matchUps are modified', () => {
     inContext: true,
   });
 
+  let notificationsCounter = 0;
   const subscriptions = {
     modifyMatchUp: (results) => {
+      notificationsCounter += 1;
       expect(results.length).toEqual(2);
     },
   };
-  setSubscriptions(subscriptions);
+  let result = setSubscriptions({ subscriptions });
+  expect(result.success).toEqual(true);
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -30,10 +33,12 @@ it('can notify subscriber when matchUps are modified', () => {
     upcomingMatchUps: [{ matchUpId }],
   } = tournamentEngine.tournamentMatchUps();
 
-  let result = tournamentEngine.setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     matchUpId,
     outcome: { winningSide: 1 },
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  expect(notificationsCounter).toEqual(1);
 });

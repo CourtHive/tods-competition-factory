@@ -1,12 +1,19 @@
-import { addNotice } from '../../../global/globalState';
-import { numericSort } from '../../../utilities';
+import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { findStructure } from '../../getters/findStructure';
+import { addNotice } from '../../../global/globalState';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  BYE,
+  TO_BE_PLAYED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
-// TODO: Consolidate with duplicated version of this function
+// NOTE: significant portsions of code shared with drawPositionRemovals.js
 export function removeSubsequentRoundsParticipant({
   drawDefinition,
   structureId,
@@ -14,33 +21,24 @@ export function removeSubsequentRoundsParticipant({
   targetDrawPosition,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
-  if (!matchUpsMap && !drawDefinition) {
-    console.log('ERROR: missing params');
-    return;
-  }
+  const { structure } = findStructure({ drawDefinition, structureId });
+  if (structure.structureType === CONTAINER) return;
 
-  if (!matchUpsMap) {
-    matchUpsMap = getMatchUpsMap({ drawDefinition });
-  }
-  const mappedMatchUps = matchUpsMap?.mappedMatchUps;
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
+  const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const matchUps = mappedMatchUps[structureId].matchUps;
 
-  // determine the initial round where drawPosition appears
-  // drawPosition cannot be removed from its initial round
-  const targetDrawPositionInitialRoundNumber = matchUps
-    .filter(
-      ({ drawPositions }) =>
-        targetDrawPosition && drawPositions.includes(targetDrawPosition)
-    )
-    .map(({ roundNumber }) => parseInt(roundNumber))
-    .sort(numericSort)[0];
+  const { initialRoundNumber } = getInitialRoundNumber({
+    drawPosition: targetDrawPosition,
+    matchUps,
+  });
 
-  const relevantMatchUps = matchUps.filter(
+  const relevantMatchUps = matchUps?.filter(
     (matchUp) =>
-      matchUp.roundNumber > 1 &&
       matchUp.roundNumber >= roundNumber &&
-      matchUp.roundNumber !== targetDrawPositionInitialRoundNumber &&
+      matchUp.roundNumber !== initialRoundNumber &&
       matchUp.drawPositions.includes(targetDrawPosition)
   );
 
@@ -48,23 +46,51 @@ export function removeSubsequentRoundsParticipant({
     drawDefinition,
     structureId,
   });
-  relevantMatchUps.forEach((matchUp) => {
-    matchUp.drawPositions = (matchUp.drawPositions || []).map(
-      (drawPosition) => {
-        return drawPosition === targetDrawPosition ? undefined : drawPosition;
-      }
-    );
-    const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
-      matchUp.drawPositions.includes(drawPosition)
-    );
-    const matchUpContainsBye = matchUpAssignments.filter(
-      (assignment) => assignment.bye
-    ).length;
 
-    matchUp.matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
+  for (const matchUp of relevantMatchUps) {
+    const result = removeDrawPosition({
+      matchUp,
+      targetDrawPosition,
+      positionAssignments,
+
+      matchUpsMap,
+      inContextDrawMatchUps,
     });
+    if (result.error) return result;
+  }
+
+  return { ...SUCCESS };
+}
+
+function removeDrawPosition({
+  matchUp,
+  targetDrawPosition,
+  positionAssignments,
+}) {
+  matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) =>
+    drawPosition === targetDrawPosition ? undefined : drawPosition
+  );
+  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+    matchUp.drawPositions.includes(drawPosition)
+  );
+  const matchUpContainsBye = matchUpAssignments.filter(
+    (assignment) => assignment.bye
+  ).length;
+
+  matchUp.matchUpStatus = matchUpContainsBye
+    ? BYE
+    : matchUp.matchUpStatus === WALKOVER
+    ? WALKOVER
+    : TO_BE_PLAYED;
+
+  // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
+  // ... and the winningSide must be removed
+  if (matchUp.matchUpStatus === WALKOVER) matchUp.winningSide = undefined;
+
+  addNotice({
+    topic: MODIFY_MATCHUP,
+    payload: { matchUp },
   });
+
+  return { ...SUCCESS };
 }

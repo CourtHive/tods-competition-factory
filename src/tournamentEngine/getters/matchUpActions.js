@@ -1,5 +1,5 @@
-import { allTournamentMatchUps } from './matchUpsGetter';
 import { matchUpActions as drawEngineMatchupActions } from '../../drawEngine/governors/queryGovernor/matchUpActions';
+import { allTournamentMatchUps } from './matchUpsGetter';
 
 import {
   DRAW_DEFINITION_NOT_FOUND,

@@ -22,6 +22,8 @@ import {
   START_TIME,
 } from '../../../constants/timeItemConstants';
 
+tournamentEngine.devContext({ addVenue: true });
+
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
   const endDate = '2020-01-06';
@@ -63,9 +65,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result).toEqual(SUCCESS);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  result = tournamentEngine.addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -85,7 +85,7 @@ it('can add events, venues, and schedule matchUps', () => {
       ],
     },
   ];
-  let { courts } = tournamentEngine.devContext(true).addCourts({
+  let { courts } = tournamentEngine.addCourts({
     venueId,
     courtsCount: 3,
     dateAvailability,
@@ -378,9 +378,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   expect(result).toEqual(SUCCESS);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  result = tournamentEngine.addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -399,7 +397,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
       ],
     },
   ];
-  let { courts } = tournamentEngine.devContext(true).addCourts({
+  let { courts } = tournamentEngine.addCourts({
     venueId,
     courtsCount: 3,
     dateAvailability,

@@ -1,35 +1,45 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { addNotice } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
-} from './removeDirectedParticipants';
+} from './removeDirectedParticipantsAndUpdateOutcome';
 
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
+import {
+  BYE,
+  completedMatchUpStatuses,
+  DOUBLE_WALKOVER,
+  TO_BE_PLAYED,
+  WALKOVER,
+} from '../../../constants/matchUpStatusConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
 // 2. remove any advanced participant or BYE from winnerMatchUp
 // 3. remove any BYE sent to linked consolation from winnerMatchUp
 
-export function removeDoubleWalkover({
-  drawDefinition,
-  inContextDrawMatchUps,
-  targetData,
-  structure,
-  matchUp: sourceMatchUp,
+export function removeDoubleWalkover(params) {
+  const {
+    drawDefinition,
+    targetData,
+    structure,
+    matchUp,
 
-  matchUpsMap,
-}) {
+    matchUpsMap,
+    inContextDrawMatchUps,
+  } = params;
+
   const {
     targetLinks: { loserTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp, loserTargetDrawPosition },
   } = targetData;
 
   if (loserMatchUp) {
-    removeDirectedBye({
+    const result = removeDirectedBye({
       targetLink: loserTargetLink,
       drawPosition: loserTargetDrawPosition,
       drawDefinition,
@@ -37,22 +47,37 @@ export function removeDoubleWalkover({
 
       matchUpsMap,
     });
+    if (result.error) return result;
   }
 
   // only handles winnerMatchUps in the same structure
   if (winnerMatchUp) {
-    removePropagatedDoubleWalkover({
+    const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+      (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
+    );
+    let result = modifyMatchUpScore({
+      ...params,
+      removeScore: true,
+      removeWinningSide: true,
+      matchUp: noContextWinnerMatchUp,
+      matchUpId: winnerMatchUp.matchUpId,
+    });
+    if (result.error) return result;
+
+    result = removePropagatedDoubleWalkover({
       drawDefinition,
       structure,
-      sourceMatchUp,
+
       winnerMatchUp,
-      inContextDrawMatchUps,
+      sourceMatchUp: matchUp,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
+    if (result.error) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function removePropagatedDoubleWalkover({
@@ -60,13 +85,12 @@ function removePropagatedDoubleWalkover({
   structure,
   sourceMatchUp,
   winnerMatchUp,
-  inContextDrawMatchUps,
 
   matchUpsMap,
+  inContextDrawMatchUps,
 }) {
   const targetData = positionTargets({
     matchUpId: winnerMatchUp.matchUpId,
-    structure,
     drawDefinition,
     inContextDrawMatchUps,
   });
@@ -85,33 +109,62 @@ function removePropagatedDoubleWalkover({
       matchUp: sourceMatchUp,
       structureId: structure.structureId,
 
+      inContextDrawMatchUps,
       matchUpsMap,
     });
+    const pairedPreviousDrawPositions =
+      pairedPreviousMatchUp?.drawPositions.filter(Boolean) || [];
     const pairedPreviousMatchUpComplete =
-      completedMatchUpStatuses.includes(pairedPreviousMatchUp?.matchUpStatus) ||
-      pairedPreviousMatchUp?.winningSide;
+      [...completedMatchUpStatuses, BYE].includes(
+        pairedPreviousMatchUp?.matchUpStatus
+      ) || pairedPreviousMatchUp?.winningSide;
+
+    // TODO: This should be replaced with an algorithm which traverses winnerMatchUps until a produced WALKOVER is encountered
+    // as the winnerMatchUps are traversed a record of matchUps to be modified is kept
+    // when the produced WALKOVER is encountered it must be determined whether it is doubly produced before it can be removed
+    // when the produced WALKOVER is removed the previous DOUBLE_WALKOVER must become the prouced WALKOVER
+    if (
+      nextWinnerMatchUp.matchUpStatus === WALKOVER &&
+      winnerMatchUp.matchUpStatus === DOUBLE_WALKOVER &&
+      sourceMatchUp.matchUpStatus === DOUBLE_WALKOVER
+    ) {
+      const noContextNextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
+        (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
+      );
+      noContextNextWinnerMatchUp.matchUpStatus = TO_BE_PLAYED;
+      addNotice({
+        topic: MODIFY_MATCHUP,
+        payload: { matchUp: noContextNextWinnerMatchUp },
+      });
+      winnerMatchUp.matchUpStatus = WALKOVER;
+      winnerMatchUp.matchUpStatusCodes = ['WOWO'];
+      addNotice({
+        topic: MODIFY_MATCHUP,
+        payload: { matchUp: winnerMatchUp },
+      });
+    }
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
-      let targetDrawPositions = nextWinnerMatchUp.drawPositions.filter(
-        (f) => f
-      );
+      let targetDrawPositions = nextWinnerMatchUp.drawPositions.filter(Boolean);
       if (intersection(sourceDrawPositions, targetDrawPositions).length) {
         targetDrawPositions = targetDrawPositions.filter(
           (drawPosition) => !sourceDrawPositions.includes(drawPosition)
         );
       }
 
-      if (targetDrawPositions.length > 1) {
-        return { error: DRAW_POSITION_ASSIGNED };
-      }
-      const drawPositionToRemove = targetDrawPositions[0];
+      const possibleBranchDrawPositions = sourceDrawPositions.concat(
+        pairedPreviousDrawPositions
+      );
+      const drawPositionToRemove = possibleBranchDrawPositions.find(
+        (drawPosition) => targetDrawPositions.includes(drawPosition)
+      );
+
       if (drawPositionToRemove) {
         const targetData = positionTargets({
           matchUpId: nextWinnerMatchUp.matchUpId,
-          structure,
-          drawDefinition,
           inContextDrawMatchUps,
+          drawDefinition,
         });
         const {
           targetMatchUps: { winnerMatchUp: subsequentWinnerMatchUp },
@@ -130,6 +183,7 @@ function removePropagatedDoubleWalkover({
           winningDrawPosition: drawPositionToRemove,
 
           matchUpsMap,
+          inContextDrawMatchUps,
         });
         if (result.error) return result;
       }
@@ -137,13 +191,16 @@ function removePropagatedDoubleWalkover({
   }
 
   if (nextLoserMatchUp) {
-    removeDirectedBye({
+    const result = removeDirectedBye({
       targetLink: nextLoserTargetLink,
       drawPosition: nextLoserTargetDrawPosition,
       drawDefinition,
-      inContextDrawMatchUps,
 
       matchUpsMap,
+      inContextDrawMatchUps,
     });
+    if (result.error) return result;
   }
+
+  return { ...SUCCESS };
 }

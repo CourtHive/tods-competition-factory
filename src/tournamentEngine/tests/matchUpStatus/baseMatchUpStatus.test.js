@@ -10,6 +10,8 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
+tournamentEngine.devContext(true);
+
 it('can set every valid matchUpStatus', () => {
   const participantsProfile = {
     participantsCount: 16,
@@ -146,7 +148,7 @@ it('allows AWAITING_RESULT status with no outcome', () => {
     .drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
@@ -155,7 +157,7 @@ it('allows AWAITING_RESULT status with no outcome', () => {
   });
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
@@ -191,7 +193,7 @@ it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions'
     });
   const matchUpId = pendingMatchUps[0].matchUpId;
 
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
@@ -200,7 +202,7 @@ it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions'
   });
   expect(result.error).not.toBeUndefined();
 
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome: {
@@ -235,7 +237,7 @@ it('attaches notes to matchUps', () => {
 
   const firstNote = 'first note';
   const secondNote = 'second note';
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     notes: firstNote,
@@ -246,7 +248,7 @@ it('attaches notes to matchUps', () => {
   expect(result.matchUp.notes).toEqual(firstNote);
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.devContext(true).setMatchUpStatus({
+  result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     notes: secondNote,

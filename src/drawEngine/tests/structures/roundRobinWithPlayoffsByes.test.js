@@ -2,7 +2,7 @@ import { roundRobinWithPlayoffsTest } from './roundRobinWithPlayoffsTest';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
-it('can generate Playoffs for Round Robins when BYEs are present (1)', () => {
+it.skip('can generate Playoffs for Round Robins when BYEs are present (1)', () => {
   const playoffGroups = [
     {
       finishingPositions: [1, 2],

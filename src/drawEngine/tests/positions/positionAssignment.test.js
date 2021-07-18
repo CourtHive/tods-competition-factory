@@ -1,15 +1,15 @@
-import { drawEngine } from '../../sync';
-import { getStageEntries } from '../../getters/stageGetter';
-import { getDrawStructures } from '../../getters/findStructure';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { mainDrawWithEntries } from '../../tests/primitives/primitives';
+import { getDrawStructures } from '../../getters/findStructure';
+import { getStageEntries } from '../../getters/stageGetter';
+import { drawEngine } from '../../sync';
 import {
   reset,
   initialize,
   mainDrawPositions,
 } from '../../tests/primitives/primitives';
 
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-
+import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import {
   MAIN,
   ROUND_ROBIN,
@@ -19,8 +19,6 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
-
-import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 
@@ -173,9 +171,7 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   reset();
   initialize();
   mainDrawPositions({ drawSize: 16 });
-  const { structure: elimination } = drawEngine
-    .devContext(true)
-    .generateDrawType();
+  const { structure: elimination } = drawEngine.generateDrawType();
   const { positionAssignments: eliminationAssignments } =
     structureAssignedDrawPositions({ structure: elimination });
   expect(eliminationAssignments.length).toEqual(16);
@@ -184,9 +180,7 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   initialize();
   const drawType = ROUND_ROBIN;
   mainDrawPositions({ drawSize: 16 });
-  const { structure: roundRobin } = drawEngine
-    .devContext(true)
-    .generateDrawType({ drawType });
+  const { structure: roundRobin } = drawEngine.generateDrawType({ drawType });
   const { positionAssignments: roundRobinAssignments } =
     structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments.length).toEqual(16);

@@ -60,7 +60,6 @@ test.skip.each([
       },
       true
     );
-    tournamentEngine.devContext(true);
     let result = replacementTest({
       drawType,
       drawSize,

@@ -1,13 +1,13 @@
-import { matchUpSort } from '../getters/matchUpSort';
 import tournamentEngine from '../../tournamentEngine/sync';
+import { matchUpSort } from '../getters/matchUpSort';
 
+import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
+import { BYE } from '../../constants/matchUpStatusConstants';
 import {
   ASSIGN_PARTICIPANT,
   REMOVE_ASSIGNMENT,
 } from '../../constants/positionActionConstants';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
 
 export function getOrderedDrawPositionPairs({ structureId } = {}) {
   const matchUpFilters = { structureIds: [structureId] };
@@ -21,7 +21,7 @@ export function getOrderedDrawPositionPairs({ structureId } = {}) {
       drawPositions,
     }))
     .sort(matchUpSort)
-    .map(({ drawPositions }) => drawPositions);
+    .map(({ drawPositions }) => drawPositions.sort((a, b) => a - b));
 
   const filteredOrderedPairs = orderedPairs.map((pair) => pair.filter(Boolean));
   return { filteredOrderedPairs, orderedPairs, matchUps };

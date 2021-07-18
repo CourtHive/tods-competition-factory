@@ -1,5 +1,4 @@
-import { checkDoubleWalkoverPropagation } from './checkDoubleWalkoverPropagation';
-import { removeDirectedParticipants } from './removeDirectedParticipants';
+import { removeDirectedParticipants } from './removeDirectedParticipantsAndUpdateOutcome';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
@@ -36,7 +35,6 @@ export function noDownstreamDependencies(params) {
   const removeWinningSide =
     matchUp.winningSide && !winningSide && !scoreHasValue({ score });
 
-  const existingWOWO = matchUp?.matchUpStatus === DOUBLE_WALKOVER;
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
   const removeDirected = ({ removeScore } = {}) => {
@@ -51,7 +49,6 @@ export function noDownstreamDependencies(params) {
     (scoreWithNoWinningSide && removeDirected({ removeScore })) ||
     (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected()) ||
-    (existingWOWO && checkDoubleWalkoverPropagation(params)) ||
     (matchUp && modifyMatchUpScore({ ...params, removeScore: true })) ||
     (console.log('unknown condition') && { ...SUCCESS })
   );

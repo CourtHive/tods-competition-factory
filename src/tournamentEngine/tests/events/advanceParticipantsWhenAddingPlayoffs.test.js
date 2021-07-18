@@ -1,5 +1,7 @@
-import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
+
+tournamentEngine.devContext(true);
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const drawProfiles = [
@@ -83,7 +85,7 @@ function tournamentEngineAddPlayoffsTest({
     structures: [{ structureId }],
   } = drawDefinition;
 
-  return tournamentEngine.devContext(true).addPlayoffStructures({
+  return tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     roundNumbers,

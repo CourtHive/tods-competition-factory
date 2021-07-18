@@ -1,3 +1,5 @@
+import { getAllDrawMatchUps } from '../drawEngine/getters/getMatchUps/drawMatchUps';
+import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
@@ -34,7 +36,8 @@ export function getState({ convertExtensions, tournamentId } = {}) {
   };
 }
 
-export function paramsMiddleWare(tournamentRecord, params) {
+// prefetch can be triggered based on method governor, e.g. not necessary for query
+export function paramsMiddleWare(tournamentRecord, params, prefetch) {
   if (params) {
     const { drawId } = params || (params.matchUp && params.matchUp.drawId);
 
@@ -43,7 +46,27 @@ export function paramsMiddleWare(tournamentRecord, params) {
         tournamentRecord,
         drawId,
       });
-      params = { ...params, event, drawDefinition };
+
+      params = {
+        ...params,
+        event,
+        drawDefinition,
+      };
+
+      if (prefetch) {
+        const matchUpsMap = getMatchUpsMap({ drawDefinition });
+
+        const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+          drawDefinition,
+          inContext: true,
+          includeByeMatchUps: true,
+
+          matchUpsMap,
+        });
+
+        params.matchUpsMap = matchUpsMap;
+        params.inContextDrawMatchUps = inContextDrawMatchUps;
+      }
     }
 
     if (params.eventId && !params.event) {

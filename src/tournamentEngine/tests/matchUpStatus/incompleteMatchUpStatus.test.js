@@ -1,12 +1,12 @@
+import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 import {
   getContextMatchUp,
   getOrderedDrawPositionPairs,
 } from '../../../drawEngine/tests/testingUtilities';
-import mocksEngine from '../../../mocksEngine';
-import tournamentEngine from '../../sync';
 
-import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { INCOMPLETE } from '../../../constants/matchUpStatusConstants';
 
 it('DISALLOWS entry of incomplete result if active downsream', () => {
   const drawProfiles = [
@@ -111,7 +111,7 @@ it('removes advanced participant when completed score changes to incomplete resu
     matchUpStatus: INCOMPLETE,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome,
@@ -171,7 +171,7 @@ it('removes advanced participant in FINAL when completed score changes to incomp
     matchUpStatus: INCOMPLETE,
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
-  let result = tournamentEngine.devContext(true).setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId,
     outcome,
