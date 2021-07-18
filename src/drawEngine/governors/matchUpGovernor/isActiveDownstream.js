@@ -52,5 +52,5 @@ export function isActiveDownstream(params) {
       targetData: winnerTargetData,
     });
 
-  return winnerActive || loserActive;
+  return !!(winnerActive || loserActive);
 }
