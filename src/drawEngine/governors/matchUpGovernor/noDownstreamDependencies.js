@@ -14,8 +14,6 @@ import {
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
 
-import { getDevContext } from '../../../global/globalState';
-
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
 
@@ -37,7 +35,6 @@ export function noDownstreamDependencies(params) {
   const removeWinningSide =
     matchUp.winningSide && !winningSide && !scoreHasValue({ score });
 
-  const existingWOWO = matchUp?.matchUpStatus === DOUBLE_WALKOVER;
   const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
   const removeDirected = ({ removeScore } = {}) => {
@@ -46,12 +43,6 @@ export function noDownstreamDependencies(params) {
     Object.assign(params, { removeScore });
     return removeDirectedParticipants(params);
   };
-
-  if (getDevContext({ WOWO: true }))
-    console.log({
-      removeWinningSide,
-      existingWOWO,
-    });
 
   return (
     (winningSide && attemptToSetWinningSide(params)) ||
