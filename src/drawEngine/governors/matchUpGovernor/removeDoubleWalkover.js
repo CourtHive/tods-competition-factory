@@ -121,7 +121,8 @@ function removePropagatedDoubleWalkover({
 
     // TODO: This should be replaced with an algorithm which traverses winnerMatchUps until a produced WALKOVER is encountered
     // as the winnerMatchUps are traversed a record of matchUps to be modified is kept
-    // when the produced WALKVER is encountered it must be determined whether it is doubly produced before it can be removed
+    // when the produced WALKOVER is encountered it must be determined whether it is doubly produced before it can be removed
+    // when the produced WALKOVER is removed the previous DOUBLE_WALKOVER must become the prouced WALKOVER
     if (
       nextWinnerMatchUp.matchUpStatus === WALKOVER &&
       winnerMatchUp.matchUpStatus === DOUBLE_WALKOVER &&
@@ -134,6 +135,11 @@ function removePropagatedDoubleWalkover({
       addNotice({
         topic: MODIFY_MATCHUP,
         payload: { matchUp: noContextNextWinnerMatchUp },
+      });
+      winnerMatchUp.matchUpStatus = WALKOVER;
+      addNotice({
+        topic: MODIFY_MATCHUP,
+        payload: { matchUp: winnerMatchUp },
       });
     }
 
