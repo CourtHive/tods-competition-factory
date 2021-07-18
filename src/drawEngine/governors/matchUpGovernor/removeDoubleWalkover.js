@@ -8,7 +8,6 @@ import {
   removeDirectedWinner,
 } from './removeDirectedParticipantsAndUpdateOutcome';
 
-import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
@@ -32,7 +31,7 @@ export function removeDoubleWalkover(params) {
   } = targetData;
 
   if (loserMatchUp) {
-    removeDirectedBye({
+    const result = removeDirectedBye({
       targetLink: loserTargetLink,
       drawPosition: loserTargetDrawPosition,
       drawDefinition,
@@ -40,6 +39,7 @@ export function removeDoubleWalkover(params) {
 
       matchUpsMap,
     });
+    if (result.error) return result;
   }
 
   // only handles winnerMatchUps in the same structure
@@ -101,27 +101,31 @@ function removePropagatedDoubleWalkover({
       matchUp: sourceMatchUp,
       structureId: structure.structureId,
 
+      inContextDrawMatchUps,
       matchUpsMap,
     });
+    const pairedPreviousDrawPositions =
+      pairedPreviousMatchUp?.drawPositions.filter(Boolean) || [];
     const pairedPreviousMatchUpComplete =
       completedMatchUpStatuses.includes(pairedPreviousMatchUp?.matchUpStatus) ||
       pairedPreviousMatchUp?.winningSide;
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
-      let targetDrawPositions = nextWinnerMatchUp.drawPositions.filter(
-        (f) => f
-      );
+      let targetDrawPositions = nextWinnerMatchUp.drawPositions.filter(Boolean);
       if (intersection(sourceDrawPositions, targetDrawPositions).length) {
         targetDrawPositions = targetDrawPositions.filter(
           (drawPosition) => !sourceDrawPositions.includes(drawPosition)
         );
       }
 
-      if (targetDrawPositions.length > 1) {
-        return { error: DRAW_POSITION_ASSIGNED };
-      }
-      const drawPositionToRemove = targetDrawPositions[0];
+      const possibleBranchDrawPositions = sourceDrawPositions.concat(
+        pairedPreviousDrawPositions
+      );
+      const drawPositionToRemove = possibleBranchDrawPositions.find(
+        (drawPosition) => targetDrawPositions.includes(drawPosition)
+      );
+
       if (drawPositionToRemove) {
         const targetData = positionTargets({
           matchUpId: nextWinnerMatchUp.matchUpId,
