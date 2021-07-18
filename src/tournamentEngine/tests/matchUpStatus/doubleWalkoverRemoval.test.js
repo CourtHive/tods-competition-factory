@@ -2,7 +2,7 @@ import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { REFEREE } from '../../../constants/matchUpActionConstants';
+import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   COMPLETED,
@@ -249,7 +249,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   // DOUBLE_WALKOVER advanced winner is removed from R2P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
   expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
@@ -341,7 +341,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   // DOUBLE_WALKOVER advanced winner is removed from R2P2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([7]); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([7]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
   expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
@@ -431,16 +431,44 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
     outcome,
     drawId,
   });
-
   expect(result.success).toEqual(true);
 
   // DOUBLE_WALKOVER advanced winner is removed from R2P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toEqual(undefined);
 
-  console.log(targetMatchUp.drawPositions);
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // DOUBLE_WALKOVER advanced winner is removed from R2P2
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
+  result = tournamentEngine.matchUpActions({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+  });
+  expect(result.validActions.map(({ type }) => type).includes(SCORE)).toEqual(
+    true
+  );
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
 });
 
 test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => {

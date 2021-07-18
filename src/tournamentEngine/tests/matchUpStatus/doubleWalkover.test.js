@@ -414,7 +414,9 @@ it('supports entering DOUBLE_WALKOVER matchUpStatus', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
+
   expect(filteredOrderedPairs).toEqual(mainStructureOrderedPairs);
+
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));

@@ -61,8 +61,8 @@ export function modifyMatchUpScore({
   } else if (score) {
     matchUp.score = score;
   }
-  if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatus) matchUp.matchUpStatus = matchUpStatus;
+  if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
