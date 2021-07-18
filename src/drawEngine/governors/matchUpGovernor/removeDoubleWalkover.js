@@ -83,7 +83,6 @@ function removePropagatedDoubleWalkover({
 }) {
   const targetData = positionTargets({
     matchUpId: winnerMatchUp.matchUpId,
-    structure,
     drawDefinition,
     inContextDrawMatchUps,
   });
@@ -126,9 +125,8 @@ function removePropagatedDoubleWalkover({
       if (drawPositionToRemove) {
         const targetData = positionTargets({
           matchUpId: nextWinnerMatchUp.matchUpId,
-          structure,
-          drawDefinition,
           inContextDrawMatchUps,
+          drawDefinition,
         });
         const {
           targetMatchUps: { winnerMatchUp: subsequentWinnerMatchUp },

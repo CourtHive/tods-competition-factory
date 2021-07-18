@@ -119,7 +119,6 @@ export function assignMatchUpDrawPosition({
 
   const targetData = positionTargets({
     matchUpId,
-    structure,
     drawDefinition,
     inContextDrawMatchUps,
     inContextMatchUp,

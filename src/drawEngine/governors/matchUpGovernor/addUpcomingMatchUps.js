@@ -34,7 +34,6 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     } else {
       const targetData = positionTargets({
         matchUpId,
-        structure,
         drawDefinition,
         inContextMatchUp,
         inContextDrawMatchUps,
@@ -118,15 +117,11 @@ function getNextToBePlayedMatchUp({
         ({ matchUpId }) => matchUpId === matchUp.winnerMatchUpId
       );
     } else {
-      const { structure } = findStructure({ drawDefinition, structureId });
-      const targetData =
-        structure &&
-        positionTargets({
-          matchUpId,
-          structure,
-          drawDefinition,
-          inContextDrawMatchUps,
-        });
+      const targetData = positionTargets({
+        matchUpId,
+        drawDefinition,
+        inContextDrawMatchUps,
+      });
       ({ winnerMatchUp } = targetData?.targetMatchUps || {});
     }
 

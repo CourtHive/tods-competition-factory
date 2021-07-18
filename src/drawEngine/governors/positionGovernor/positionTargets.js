@@ -7,6 +7,7 @@ import {
   WINNER,
   ROUND_OUTCOME,
 } from '../../../constants/drawDefinitionConstants';
+import { findStructure } from '../../getters/findStructure';
 
 /**
  * @param {string} matchUpId - matchUp identifier for sourceMatchUp
@@ -22,7 +23,6 @@ import {
  */
 export function positionTargets({
   matchUpId,
-  structure,
   drawDefinition,
   inContextDrawMatchUps = [],
   inContextMatchUp,
@@ -32,6 +32,11 @@ export function positionTargets({
   if (inContextDrawMatchUps.length && !matchUp) {
     matchUp = inContextDrawMatchUps.find((m) => m.matchUpId === matchUpId);
   }
+
+  const { structure } = findStructure({
+    drawDefinition,
+    structureId: matchUp.structureId,
+  });
 
   const { finishingPosition } = structure;
   if (finishingPosition === ROUND_OUTCOME) {

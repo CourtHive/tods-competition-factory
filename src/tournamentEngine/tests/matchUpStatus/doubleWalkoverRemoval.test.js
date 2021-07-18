@@ -126,3 +126,80 @@ test('Removing a DOUBLE_WALKOVER will remove produced WALKOVER in subsequent rou
   expect(targetMatchUp.winningSide).toBeUndefined();
   expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
 });
+
+test.only('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      participantsCount: 7,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          matchUpStatus: 'DOUBLE_WALKOVER',
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          scoreString: '6-1 6-3',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          scoreString: '6-1 6-4',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 2,
+          scoreString: '6-2 6-2',
+          winningSide: 1,
+        },
+        {
+          roundNumber: 3,
+          roundPosition: 1,
+          scoreString: '6-3 6-1',
+          winningSide: 1,
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  // keep track of notficiations with each setMatchUpStatus event
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  tournamentEngine.devContext({ WOWO: true });
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  });
+  tournamentEngine.devContext({ WOWO: true });
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  console.log({ result });
+});
