@@ -137,6 +137,7 @@ function removePropagatedDoubleWalkover({
         payload: { matchUp: noContextNextWinnerMatchUp },
       });
       winnerMatchUp.matchUpStatus = WALKOVER;
+      winnerMatchUp.matchUpStatusCodes = ['WOWO'];
       addNotice({
         topic: MODIFY_MATCHUP,
         payload: { matchUp: winnerMatchUp },
