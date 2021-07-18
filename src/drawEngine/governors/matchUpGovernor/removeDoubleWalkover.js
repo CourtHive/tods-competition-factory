@@ -157,7 +157,7 @@ function removePropagatedDoubleWalkover({
   }
 
   if (nextLoserMatchUp) {
-    removeDirectedBye({
+    const result = removeDirectedBye({
       targetLink: nextLoserTargetLink,
       drawPosition: nextLoserTargetDrawPosition,
       drawDefinition,
@@ -165,6 +165,7 @@ function removePropagatedDoubleWalkover({
       matchUpsMap,
       inContextDrawMatchUps,
     });
+    if (result.error) return result;
   }
 
   return { ...SUCCESS };

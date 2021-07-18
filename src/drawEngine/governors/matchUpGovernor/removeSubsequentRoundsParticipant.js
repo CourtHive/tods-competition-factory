@@ -6,6 +6,7 @@ import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
   TO_BE_PLAYED,
@@ -46,8 +47,8 @@ export function removeSubsequentRoundsParticipant({
     structureId,
   });
 
-  relevantMatchUps.forEach((matchUp) => {
-    removeDrawPosition({
+  for (const matchUp of relevantMatchUps) {
+    const result = removeDrawPosition({
       matchUp,
       targetDrawPosition,
       positionAssignments,
@@ -55,7 +56,10 @@ export function removeSubsequentRoundsParticipant({
       matchUpsMap,
       inContextDrawMatchUps,
     });
-  });
+    if (result.error) return result;
+  }
+
+  return { ...SUCCESS };
 }
 
 function removeDrawPosition({
@@ -87,4 +91,6 @@ function removeDrawPosition({
     topic: MODIFY_MATCHUP,
     payload: { matchUp },
   });
+
+  return { ...SUCCESS };
 }

@@ -439,6 +439,8 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toEqual(undefined);
+
+  console.log(targetMatchUp.drawPositions);
 });
 
 test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => {

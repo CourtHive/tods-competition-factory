@@ -168,7 +168,7 @@ export function removeDirectedWinner({
   }
 
   // Remove participant's drawPosition from current and subsequent round matchUps
-  removeSubsequentRoundsParticipant({
+  return removeSubsequentRoundsParticipant({
     drawDefinition,
     structureId,
     roundNumber,
@@ -177,8 +177,6 @@ export function removeDirectedWinner({
     inContextDrawMatchUps,
     matchUpsMap,
   });
-
-  return { ...SUCCESS };
 }
 
 function removeDirectedLoser({
