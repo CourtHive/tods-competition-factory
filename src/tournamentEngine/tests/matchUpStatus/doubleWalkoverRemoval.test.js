@@ -2,12 +2,14 @@ import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { REFEREE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
@@ -127,7 +129,7 @@ test('Removing a DOUBLE_WALKOVER will remove produced WALKOVER in subsequent rou
   expect(targetMatchUp.matchUpStatusCodes).toEqual([]);
 });
 
-test.only('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => {
+test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -188,18 +190,28 @@ test.only('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', (
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-
-  tournamentEngine.devContext({ WOWO: true });
   let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+
+  // a DOUBLE_WALKOVER matchUp will not have SCORE option if { activeDownstream: true }
+  result = tournamentEngine.matchUpActions({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+  });
+  expect(result.validActions.length).toEqual(1);
+  expect(result.validActions[0].type).toEqual(REFEREE);
+
+  // attempting to score an active DOUBLE_WALKOVER matchUp will return an error
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: undefined,
     matchUpStatus: TO_BE_PLAYED,
   });
-  tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
     drawId,
   });
-  console.log({ result });
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+
+  tournamentEngine.devContext({ WOWO: true });
 });
