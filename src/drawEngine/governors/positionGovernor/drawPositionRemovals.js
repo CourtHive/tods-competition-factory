@@ -4,7 +4,7 @@ import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchU
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
 import {
@@ -153,6 +153,9 @@ export function drawPositionRemovals({
     );
     if (!targetMatchUp) {
       return;
+    }
+    if (getDevContext({ WOWO: true })) {
+      console.log('foo');
     }
     removeSubsequentRoundsParticipant({
       drawDefinition,

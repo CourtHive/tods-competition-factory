@@ -564,3 +564,66 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
   });
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 });
+
+test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => {
+  const drawProfiles = [
+    {
+      drawSize: 8,
+      participantsCount: 7,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          matchUpStatus: 'DOUBLE_WALKOVER',
+        },
+      ],
+    },
+  ];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  // keep track of notficiations with each setMatchUpStatus event
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  });
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  expect(modifiedMatchUpLog).toEqual([
+    [2, 1],
+    [3, 1],
+    [1, 2],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // produced WALKOVER advanced winner is removed from R3P1
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+});

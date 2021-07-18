@@ -1,5 +1,4 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { intersection } from '../../../utilities';
@@ -9,6 +8,10 @@ import {
 } from './removeDirectedParticipantsAndUpdateOutcome';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../constants/matchUpStatusConstants';
 
 // 1. remove any BYE sent to linked consolation from matchUp
 // 2. remove any advanced participant or BYE from winnerMatchUp
@@ -107,8 +110,9 @@ function removePropagatedDoubleWalkover({
     const pairedPreviousDrawPositions =
       pairedPreviousMatchUp?.drawPositions.filter(Boolean) || [];
     const pairedPreviousMatchUpComplete =
-      completedMatchUpStatuses.includes(pairedPreviousMatchUp?.matchUpStatus) ||
-      pairedPreviousMatchUp?.winningSide;
+      [...completedMatchUpStatuses, BYE].includes(
+        pairedPreviousMatchUp?.matchUpStatus
+      ) || pairedPreviousMatchUp?.winningSide;
 
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = sourceMatchUp?.drawPositions || [];
