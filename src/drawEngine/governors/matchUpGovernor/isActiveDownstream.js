@@ -1,14 +1,7 @@
 import { positionTargets } from '../positionGovernor/positionTargets';
 
 export function isActiveDownstream(params) {
-  const {
-    inContextDrawMatchUps,
-    targetData,
-    drawDefinition,
-    iteration = 0,
-  } = params;
-
-  if (iteration > 4) return false;
+  const { inContextDrawMatchUps, targetData, drawDefinition } = params;
 
   const {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
@@ -49,7 +42,6 @@ export function isActiveDownstream(params) {
       inContextDrawMatchUps,
       drawDefinition,
       targetData: loserTargetData,
-      iteration: iteration + 1,
     });
 
   const winnerActive =
@@ -58,7 +50,6 @@ export function isActiveDownstream(params) {
       inContextDrawMatchUps,
       drawDefinition,
       targetData: winnerTargetData,
-      iteration: iteration + 1,
     });
 
   return winnerActive || loserActive;
