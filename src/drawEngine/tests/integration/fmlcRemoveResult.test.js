@@ -1,6 +1,6 @@
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import tournamentEngine from '../../../tournamentEngine/sync';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { drawEngine } from '../../sync';
 import {
@@ -44,7 +44,14 @@ it('can direct winners and losers', () => {
     roundPosition: 2,
     winningSide: 2,
   });
-  const { matchUpId } = result.matchUp;
+  const { matchUps } = drawEngine.allDrawMatchUps();
+  const matchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.structureId === mainStructureId &&
+      matchUp.roundNumber === 1 &&
+      matchUp.roundPosition === 2
+  );
+  const { matchUpId } = matchUp;
   expect(result.success).toEqual(true);
 
   verifyMatchUps({
@@ -124,7 +131,14 @@ it('can direct winners and losers', () => {
     roundPosition: 2,
     winningSide: 2,
   });
-  const { matchUpId } = result.matchUp;
+  const { matchUps } = drawEngine.allDrawMatchUps();
+  const matchUp = matchUps.find(
+    (matchUp) =>
+      matchUp.structureId === mainStructureId &&
+      matchUp.roundNumber === 1 &&
+      matchUp.roundPosition === 2
+  );
+  const { matchUpId } = matchUp;
   expect(result.success).toEqual(true);
 
   verifyMatchUps({
@@ -232,7 +246,9 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
     outcome: toBePlayed,
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.score.scoreStringSide1).toEqual('');
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp.score.scoreStringSide1).toEqual('');
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 

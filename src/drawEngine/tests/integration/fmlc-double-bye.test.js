@@ -243,7 +243,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   expect(completedMatchUps.length).toEqual(13);
 
   // target specific matchUp
-  const targetMatchUp = completedMatchUps.find(
+  let targetMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
       roundNumber === 2 &&
       roundPosition === 2 &&
@@ -260,10 +260,15 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     outcome: toBePlayed,
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.score.scoreStringSide1).toEqual('');
 
   // outcome removal should be succesful => now expecting 12 completed matchUps
-  ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(targetMatchUp.score.scoreStringSide1).toEqual('');
+  ({ completedMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  }));
   expect(completedMatchUps.length).toEqual(12);
 
   // complete matchUp
@@ -276,7 +281,9 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
     },
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.score).not.toBeUndefined();
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(targetMatchUp.score).not.toBeUndefined();
 
   ({ completedMatchUps } = tournamentEngine.drawMatchUps({ drawId }));
   expect(completedMatchUps.length).toEqual(13);

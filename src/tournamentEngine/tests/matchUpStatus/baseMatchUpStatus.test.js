@@ -165,7 +165,9 @@ it('allows AWAITING_RESULT status with no outcome', () => {
     },
   });
   expect(result.success).toEqual(true);
-  expect(result.matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp.matchUpStatus).toEqual(AWAITING_RESULT);
 });
 
 it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions', () => {
@@ -245,8 +247,11 @@ it('attaches notes to matchUps', () => {
       matchUpStatus: IN_PROGRESS,
     },
   });
-  expect(result.matchUp.notes).toEqual(firstNote);
   expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp.notes).toEqual(firstNote);
 
   result = tournamentEngine.setMatchUpStatus({
     drawId,
@@ -256,6 +261,8 @@ it('attaches notes to matchUps', () => {
       matchUpStatus: IN_PROGRESS,
     },
   });
-  expect(result.matchUp.notes).toEqual(secondNote);
   expect(result.success).toEqual(true);
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp.notes).toEqual(secondNote);
 });
