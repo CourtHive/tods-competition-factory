@@ -3,28 +3,6 @@ title: Features
 slug: /features
 ---
 
-## Mock Tournament Generation
-
-The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
-
-```jsx live
-function MocksEngineDemo(props) {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-
-  return <Tournament data={tournamentRecord} />;
-}
-```
-
-See [Generating Tournaments](engines/mocks-engine-examples) for more examples of mock tournament generation,
-
-:::note Live Visualizations
-For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
-:::
-
-:::tip RESTful API Available
-For free access to a public RESTful API, contact <support@courthive.com>.
-:::
-
 ## Draw Generation
 
 Draws are the centerpiece of any tournament. While TODS strives to be agnostic about the specific type of draw represented by a `drawDefinition`, **Competition Factory** includes a convenience method which exercises other methods to generate a wide range of recognized [draw types](engines/draw-types).
@@ -55,6 +33,28 @@ function DrawDefinitionDemo(props) {
 
 ## Tournament Queries
 -->
+
+## Mock Tournament Generation
+
+The `mocksEngine` can generate entire TODS tournament documents, including participants, events, and draws.
+
+```jsx live
+function MocksEngineDemo(props) {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+
+  return <Tournament data={tournamentRecord} />;
+}
+```
+
+See [Generating Tournaments](engines/mocks-engine-examples) for more examples of mock tournament generation,
+
+:::note Live Visualizations
+For a live example of the `mocksEngine` in action, see the **[Example: tods-react-draws](https://courthive.github.io/tods-react-draws/example)**
+:::
+
+:::tip RESTful API Available
+For free access to a public RESTful API, contact <support@courthive.com>.
+:::
 
 ## Scheduling
 

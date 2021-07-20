@@ -3,6 +3,7 @@ title: Scale Items
 ---
 
 **scaleItems** capture participant RANKING, RATING and SEEDING values. They are attached to `participants` as [Time Items](./timeItems).
+A participant can thus have multiple **_scaleItems_** for each event within a tournament.
 
 ```js
 const scaleItem = {
@@ -32,6 +33,12 @@ const { scaleItem } = tournamentEngine.getParticipantScaleItem({
   scaleAttributes,
 });
 ```
+
+## Generating Seeding scaleItems
+
+Scale items may be generated automatically using [autoSeeding](/docs/apis/tournament-engine-api#autoseeding) or [generateSeedingScaleItems](/docs/apis/tournament-engine-api#generateseedingscaleitems) and then saved to participants with [setParticipantScaleItems](/docs/apis/tournament-engine-api#setparticipantscaleitems).
+
+## scaleItem Accessors
 
 When **scaleValues** are objects, **scaleAttributes** may include an **accessor** describing an attribute path to a nested value.
 

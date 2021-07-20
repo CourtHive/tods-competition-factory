@@ -10,9 +10,9 @@ The **Competition Factory** is a collection of "state engines" for transforming/
 
 Engines manage different concerns within a document structure representing a tournament and may contain **accessors, generators, getters, governors and test suites**. Engines can be used either synchronously or asynchronously.
 
-1. **competitionEngine** - for managaging resources which may be shared by multiple tournaments, such as venues (courts & other locations); includes scheduling.
-2. **tournamentEngine** - for managing tournament participants and general tournament information.
-3. **drawEngine** - generates drawDefinitions and matchUp results, managing participant movement within and between structures.
+1. **competitionEngine** - managages resources which may be shared by multiple tournaments, such as venues (courts & other locations); includes scheduling.
+2. **tournamentEngine** - manages tournament metadata, participants, events; many `drawEngine` methods are also exported directly.
+3. **drawEngine** - generates drawDefinitions and matchUp results; manages participant movement within and between structures.
 4. **mocksEngine** - generates tournaments, participants, events and drawDefinitions for testing purposes.
 
 ## Installation
@@ -20,7 +20,3 @@ Engines manage different concerns within a document structure representing a tou
 ```sh
 yarn install tods-competition-factory
 ```
-
-### IMPORTANT
-
-**Competition Factory** is based on a combination of TODS v0.8 and elements which have been proposed for TODS v1.0. Until the v1.0 specification has been released there could be significant volatility in the JSON output of the methods included in this package.
