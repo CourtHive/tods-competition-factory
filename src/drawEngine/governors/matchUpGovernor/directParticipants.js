@@ -43,6 +43,7 @@ export function directParticipants(params) {
   const matchUpStatusIsValid = isDirectingMatchUpStatus({ matchUpStatus });
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
+
   const result = modifyMatchUpScore({
     drawDefinition,
     matchUpFormat,

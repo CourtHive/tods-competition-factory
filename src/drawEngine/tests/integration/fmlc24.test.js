@@ -1,13 +1,14 @@
-import { drawEngine } from '../../sync';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 import { instanceCount } from '../../../utilities';
+import { drawEngine } from '../../sync';
 import {
   completeMatchUp,
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
+
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
@@ -115,7 +116,16 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
       winningSide,
     });
     expect(result.success).toEqual(success);
-    if (result.success) expect(result.matchUp.winningSide).toEqual(winningSide);
+    if (result.success) {
+      const { matchUps } = drawEngine.allDrawMatchUps();
+      const matchUp = matchUps.find(
+        (matchUp) =>
+          matchUp.structureId === mainStructureId &&
+          matchUp.roundNumber === roundNumber &&
+          matchUp.roundPosition === roundPosition
+      );
+      expect(matchUp.winningSide).toEqual(winningSide);
+    }
   });
 
   const positionAssignmentByesCount =
@@ -240,7 +250,16 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
       winningSide,
     });
     expect(result.success).toEqual(success);
-    if (result.success) expect(result.matchUp.winningSide).toEqual(winningSide);
+    if (result.success) {
+      const { matchUps } = drawEngine.allDrawMatchUps();
+      const matchUp = matchUps.find(
+        (matchUp) =>
+          matchUp.structureId === mainStructureId &&
+          matchUp.roundNumber === roundNumber &&
+          matchUp.roundPosition === roundPosition
+      );
+      expect(matchUp.winningSide).toEqual(winningSide);
+    }
   });
 
   const positionAssignmentByesCount =

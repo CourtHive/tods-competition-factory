@@ -824,6 +824,32 @@ const {
 
 ---
 
+## executionQueue
+
+The `executionQueue` method accepts an array of `tournamentEngine` methods and associated parameters,
+allowing for multiple queries or mutations in a single API call, which is significant if a client is making a
+request of a server and the server needs to prepare context by loading a tournament record.
+
+An additional benefit of the `executionQueue` is that subscribers to `tournamentEngine` events are not notified
+until all methods in the queue have completed successfully, and a failure of any one method can be used to roll back state
+with the assurance that there are no side-effects caused by subscribers responding to notifications. This also means
+that the server context can not be blocked by any long-running external processes.
+
+```js
+const result = tournamentEngine.executionQueue([
+  {
+    method: 'getTournamentParticipants',
+    params: { participantFilters: { participantTypes: [PAIR] } },
+  },
+  {
+    method: 'getTournamentParticipants',
+    params: { participantFilters: { participantTypes: [INDIVIDUAL] } },
+  },
+]);
+```
+
+---
+
 ## findCourt
 
 ```js

@@ -1,5 +1,5 @@
-import { drawEngine } from '../../sync';
 import { generateRange } from '../../../utilities';
+import { drawEngine } from '../../sync';
 
 import {
   MAIN,

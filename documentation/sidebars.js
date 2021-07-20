@@ -9,8 +9,10 @@ module.exports = {
       type: 'category',
       label: 'Concepts',
       items: [
-        'concepts/context',
+        'concepts/actions',
         'concepts/accessors',
+        'concepts/context',
+        'concepts/matchUpFormat',
         {
           Policies: [
             'concepts/policies',
@@ -24,9 +26,8 @@ module.exports = {
             'policies/feedPolicy',
           ],
         },
-        'concepts/timeItems',
         'concepts/scaleItems',
-        'concepts/matchUpFormat',
+        'concepts/timeItems',
         'concepts/subscriptions',
       ],
     },

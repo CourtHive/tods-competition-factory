@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsWalkover } from '../positionGovernor/getPairedPreviousMatchUpisWalkover';
+import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -6,7 +6,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -135,8 +135,6 @@ export function assignMatchUpDrawPosition({
 
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
-      if (getDevContext({ WOWO: true }))
-        console.log({ matchUpStatus, isWOWOWalkover });
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           drawDefinition,
@@ -158,14 +156,14 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const { pairedPreviousMatchUpIsWO } = getPairedPreviousMatchUpIsWalkover({
+    const { pairedPreviousMatchUpisWOWO } = getPairedPreviousMatchUpIsWOWO({
       winnerMatchUp: matchUp,
       drawPosition,
       structure,
       matchUpsMap,
     });
 
-    if (pairedPreviousMatchUpIsWO && winnerMatchUp) {
+    if (pairedPreviousMatchUpisWOWO && winnerMatchUp) {
       const result = assignMatchUpDrawPosition({
         drawDefinition,
         drawPosition,

@@ -1,0 +1,24 @@
+---
+title: Actions
+---
+
+import RenderJSON from '../components/RenderJSON';
+
+The engines of the Competition Factory preserve the integrity of tourtnament records,
+which means that errors are thrown when **invalid** actions are attempted, such as removing an outcome for a matchUp
+when participants have already progressed and completed subsequent matchUps in an elimination structure.
+
+In developing a User Interface for interaction with draw structures it is useful to know in advance which actions are **valid**.
+The Competition Factory exports two methods via `drawEngine`, and `tournamentEngine` which return not only `validActions`
+but also the `methods` to perform each action along with both prepopulated `params` and valid values for `params` which are yet to be defined.
+
+## positionActions
+
+- [drawEngine.positionActions](/docs/apis/draw-engine-api#positionactions)
+- [tournamentEngine.positionActions](/docs/apis/tournament-engine-api#positionactions)
+
+## matchUpActions
+
+- [drawEngine.matchUpActions](/docs/apis/draw-engine-api#matchupactions)
+- [tournamentEngine.matchUpActions](/docs/apis/tournament-engine-api#matchupactions)
+- [competitionEngine.matchUpActions](/docs/apis/competition-engine-api#matchupactions)

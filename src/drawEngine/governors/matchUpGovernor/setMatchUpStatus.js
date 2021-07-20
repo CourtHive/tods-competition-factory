@@ -10,14 +10,12 @@ import { isActiveDownstream } from './isActiveDownstream';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { swapWinnerLoser } from './swapWinnerLoser';
-import { makeDeepCopy } from '../../../utilities';
 import {
   isDirectingMatchUpStatus,
   isNonDirectingMatchUpStatus,
 } from './checkStatusType';
 
 import { BYE, COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   ABANDONED,
@@ -48,8 +46,6 @@ import {
  */
 
 export function setMatchUpStatus(params) {
-  let messages = [];
-
   if (getDevContext({ setMatchUpStatus: true })) console.log(params);
 
   // matchUpStatus in params is the new status
@@ -225,15 +221,7 @@ export function setMatchUpStatus(params) {
       error: NO_VALID_ACTIONS,
     };
 
-  if (result.error) return result;
-
-  return getDevContext()
-    ? {
-        ...SUCCESS,
-        matchUp: makeDeepCopy(matchUp),
-        messages,
-      }
-    : { ...SUCCESS };
+  return result;
 }
 
 function winningSideWithDownstreamDependencies(params) {
