@@ -19,8 +19,3 @@
    a. IF there are no other drawPositions, the participant is advanced further
    b. IF there is already a drawPosition, then it must be assumed that a DOUBLE_WALKOVER has been removed and the matchUpStatus becomes TO_BE_PLAYED
 4. A DOUBLE_WALKOVER may NOT be removed if there is a downstream matchUp with a score
-
-### Test Cases
-
-1. When a WO/WO is entered the subsequent matchUp.matchUpStatus is set to WALKOVER, but no winningSide is set
-2. In a SINGLE_ELIMINATION, encountering a WO/WO will advance a participant to the subsequent round and set the winningSide appropriately
