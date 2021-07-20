@@ -5,8 +5,10 @@ import tournamentEngine from '../../sync';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   DOUBLE_WALKOVER,
-  // WALKOVER,
+  TO_BE_PLAYED,
+  WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { generateRange } from '../../../utilities';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
@@ -79,37 +81,190 @@ test('A produced WALKOVER encountering a produced WALKOVER winningSide will not 
     outcome,
   });
   expect(result.success).toEqual(true);
-  console.log(modifiedMatchUpLog);
-  // expect(matchUpsNotificationCounter).toEqual(5);
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 4],
+    [2, 2],
+    [3, 1],
+  ]);
+  modifiedMatchUpLog = [];
 
-  /*
-  // Expect R2P1 to have only DP3 with winningSide: 2
+  // expect R2P2 to be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([7]);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(2);
 
-  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
-    scoreString: '6-3 6-3',
-    winningSide: 2,
-  }));
+  // expect R3P1 to have two drawPositions and matchUpStatus: TO_BE_PLAYED
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([3, 7]);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
 
-  // Change R1P2 winningSide (allowChangePropagation: true)
+  // expect R4P1 to have no drawPositions and matchUpStatus: TO_BE_PLAYED
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
+
+  // Enter Score in R1P5
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 5 });
   result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
-    allowChangePropagation: true,
     outcome,
   });
   expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 5],
+    [2, 3],
+  ]);
+  modifiedMatchUpLog = [];
 
-  expect(matchUpsNotificationCounter).toEqual(8);
+  // Enter Score in R1P7
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 7 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 7],
+    [2, 4],
+  ]);
+  modifiedMatchUpLog = [];
 
-  // expect that the winning side has been updated to 2 and is now DP4
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: DOUBLE_WALKOVER,
+  }));
+  // Enter DOUBLE_WALKOVER in R1P6
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 6 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 6],
+    [2, 3],
+    [3, 2],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // Enter DOUBLE_WALKOVER in R1P8
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 8 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 8],
+    [2, 4],
+    [3, 2],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // Enter DOUBLE_WALKOVER in R3P1
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [3, 1],
+    [4, 1],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // enter result in R3P2
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  }));
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 2 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [3, 2],
+    [4, 1],
+  ]);
+  modifiedMatchUpLog = [];
+
+  // now refresh matchUps and remove outcomes
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([4]);
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([9]);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(2);
-  */
+
+  // now remove outcomes
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  }));
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [4, 1],
+    [3, 1],
+  ]);
+  modifiedMatchUpLog = [];
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([9]);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 2 });
+  result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUpLog).toEqual([
+    [3, 2],
+    [4, 1],
+  ]);
+  modifiedMatchUpLog = [];
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
+  expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
+
+  generateRange(1, 9).forEach((roundPosition) => {
+    targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition });
+    result = tournamentEngine.setMatchUpStatus({
+      drawId,
+      matchUpId: targetMatchUp.matchUpId,
+      outcome,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  matchUps.forEach((matchUp) => {
+    expect(matchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+    expect(matchUp.winningSide).toEqual(undefined);
+    const drawPositions = matchUp.drawPositions.filter(Boolean);
+    expect(drawPositions.length).toEqual(matchUp.roundNumber === 1 ? 2 : 0);
+  });
 });
