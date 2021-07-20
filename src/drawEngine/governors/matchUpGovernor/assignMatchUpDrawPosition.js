@@ -6,7 +6,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -110,10 +110,6 @@ export function assignMatchUpDrawPosition({
       winningSide: walkoverWinningSide,
       matchUpStatus,
     });
-    if (getDevContext({ WOWO: true })) {
-      const { roundNumber, roundPosition } = matchUp;
-      console.log({ isWOWOWalkover, roundNumber, roundPosition });
-    }
 
     addNotice({
       topic: MODIFY_MATCHUP,
@@ -160,23 +156,13 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const { pairedPreviousMatchUp, pairedPreviousMatchUpisWOWO } =
-      getPairedPreviousMatchUpIsWOWO({
-        winnerMatchUp: matchUp,
-        drawPosition,
-        structure,
-        matchUpsMap,
-      });
+    const { pairedPreviousMatchUpisWOWO } = getPairedPreviousMatchUpIsWOWO({
+      winnerMatchUp: matchUp,
+      drawPosition,
+      structure,
+      matchUpsMap,
+    });
 
-    if (winnerMatchUp && getDevContext({ WOWO: true })) {
-      const { roundNumber, roundPosition } = winnerMatchUp;
-      console.log({
-        pairedPreviousMatchUpisWOWO,
-        roundNumber,
-        roundPosition,
-        matchUpStatus: pairedPreviousMatchUp.matchUpStatus,
-      });
-    }
     if (pairedPreviousMatchUpisWOWO && winnerMatchUp) {
       const result = assignMatchUpDrawPosition({
         drawDefinition,

@@ -3,8 +3,8 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { addNotice, getDevContext } from '../../../global/globalState';
 import { findStructure } from '../../getters/findStructure';
+import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
 import {
@@ -156,9 +156,6 @@ export function drawPositionRemovals({
     );
     if (!targetMatchUp) {
       return;
-    }
-    if (getDevContext({ WOWO: true })) {
-      console.log('foo');
     }
     removeSubsequentRoundsParticipant({
       drawDefinition,

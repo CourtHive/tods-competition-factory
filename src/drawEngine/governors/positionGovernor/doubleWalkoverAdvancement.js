@@ -3,7 +3,6 @@ import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawP
 import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
-import { getDevContext } from '../../../global/globalState';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
@@ -28,9 +27,6 @@ export function doubleWalkoverAdvancement(params) {
 
     matchUpsMap,
   } = params;
-  if (getDevContext({ WOWO: true })) {
-    console.log('doubleWalkoverAdvancement');
-  }
 
   if (structure.structureType === CONTAINER) return SUCCESS;
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
@@ -80,15 +76,6 @@ function conditionallyAdvanceDrawPosition(params) {
     matchUpsMap,
   } = params;
 
-  if (getDevContext({ WOWO: true })) {
-    const { roundNumber, roundPosition } = winnerMatchUp;
-    console.log('conditionally advance', {
-      existingWalkover,
-      matchUpStatus,
-      roundNumber,
-      roundPosition,
-    });
-  }
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
   );

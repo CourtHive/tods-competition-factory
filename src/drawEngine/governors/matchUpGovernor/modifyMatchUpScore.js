@@ -3,7 +3,6 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { getDevContext } from '../../../global/globalState';
 import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
@@ -66,14 +65,6 @@ export function modifyMatchUpScore({
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
   if (removeWinningSide) matchUp.winningSide = undefined;
-
-  if (getDevContext({ WOWO: true }))
-    console.log('mms:', {
-      matchUpStatus,
-      roundNumber: matchUp.roundNumber,
-      roundPosition: matchUp.roundPosition,
-      winningSide,
-    });
 
   if (!structure) {
     ({ structure } = findMatchUp({
