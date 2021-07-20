@@ -1,12 +1,9 @@
 import { getMappedStructureMatchUps } from '../../getters/getMatchUps/getMatchUpsMap';
 // import { getPairedPreviousMatchUp } from './getPairedPreviousMatchup';
 
-import {
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 
-export function getPairedPreviousMatchUpIsWalkover(params) {
+export function getPairedPreviousMatchUpIsWOWO(params) {
   let { sourceMatchUp } = params;
   const { winnerMatchUp, structure, matchUpsMap, drawPosition } = params;
   const previousRoundNumber =
@@ -46,8 +43,8 @@ export function getPairedPreviousMatchUpIsWalkover(params) {
   });
   */
   const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
-  const pairedPreviousMatchUpIsWO = [WALKOVER, DOUBLE_WALKOVER].includes(
+  const pairedPreviousMatchUpisWOWO = [DOUBLE_WALKOVER].includes(
     pairedPreviousMatchUpStatus
   );
-  return { pairedPreviousMatchUpIsWO };
+  return { pairedPreviousMatchUp, pairedPreviousMatchUpisWOWO };
 }

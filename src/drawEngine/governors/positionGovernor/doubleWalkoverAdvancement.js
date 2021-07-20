@@ -1,9 +1,9 @@
-import { getPairedPreviousMatchUpIsWalkover } from './getPairedPreviousMatchUpisWalkover';
+import { getPairedPreviousMatchUpIsWOWO } from './getPairedPreviousMatchUpisWOWO';
 import { assignMatchUpDrawPosition } from '../matchUpGovernor/assignMatchUpDrawPosition';
 import { getWalkoverWinningSide } from '../matchUpGovernor/getWalkoverWinningSide';
 import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
-// import { getDevContext } from '../../../global/globalState';
+import { getDevContext } from '../../../global/globalState';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
@@ -28,6 +28,9 @@ export function doubleWalkoverAdvancement(params) {
 
     matchUpsMap,
   } = params;
+  if (getDevContext({ WOWO: true })) {
+    console.log('doubleWalkoverAdvancement');
+  }
 
   if (structure.structureType === CONTAINER) return SUCCESS;
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
@@ -77,6 +80,15 @@ function conditionallyAdvanceDrawPosition(params) {
     matchUpsMap,
   } = params;
 
+  if (getDevContext({ WOWO: true })) {
+    const { roundNumber, roundPosition } = winnerMatchUp;
+    console.log('conditionally advance', {
+      existingWalkover,
+      matchUpStatus,
+      roundNumber,
+      roundPosition,
+    });
+  }
   const noContextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
     (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
   );
@@ -98,8 +110,8 @@ function conditionallyAdvanceDrawPosition(params) {
   if (winnerMatchUpDrawPositions.length > 1)
     return { error: DRAW_POSITION_ASSIGNED };
 
-  const { pairedPreviousMatchUpIsWO } =
-    getPairedPreviousMatchUpIsWalkover(params);
+  const { pairedPreviousMatchUpisWOWO } =
+    getPairedPreviousMatchUpIsWOWO(params);
 
   // get the targets for the winnerMatchUp
   const targetData = positionTargets({
@@ -144,6 +156,7 @@ function conditionallyAdvanceDrawPosition(params) {
   const existingWalkover =
     noContextWinnerMatchUp.matchUpStatus === WALKOVER && !drawPositions.length;
   const matchUpStatus = existingWalkover ? DOUBLE_WALKOVER : WALKOVER;
+
   const result = modifyMatchUpScore({
     ...params,
     matchUp: noContextWinnerMatchUp,
@@ -168,7 +181,7 @@ function conditionallyAdvanceDrawPosition(params) {
       matchUpId: nextWinnerMatchUp.matchUpId,
       drawPosition: drawPositionToAdvance,
     });
-  } else if (pairedPreviousMatchUpIsWO) {
+  } else if (pairedPreviousMatchUpisWOWO) {
     const noContextNextWinnerMatchUp = matchUpsMap.drawMatchUps.find(
       (matchUp) => matchUp.matchUpId === nextWinnerMatchUp.matchUpId
     );

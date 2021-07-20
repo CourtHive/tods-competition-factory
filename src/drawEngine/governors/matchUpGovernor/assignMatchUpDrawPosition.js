@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUpIsWalkover } from '../positionGovernor/getPairedPreviousMatchUpisWalkover';
+import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
@@ -110,6 +110,10 @@ export function assignMatchUpDrawPosition({
       winningSide: walkoverWinningSide,
       matchUpStatus,
     });
+    if (getDevContext({ WOWO: true })) {
+      const { roundNumber, roundPosition } = matchUp;
+      console.log({ isWOWOWalkover, roundNumber, roundPosition });
+    }
 
     addNotice({
       topic: MODIFY_MATCHUP,
@@ -135,8 +139,6 @@ export function assignMatchUpDrawPosition({
 
   if (positionAssigned && isByeMatchUp) {
     if (winnerMatchUp) {
-      if (getDevContext({ WOWO: true }))
-        console.log({ matchUpStatus, isWOWOWalkover });
       if ([BYE, DOUBLE_WALKOVER].includes(matchUpStatus)) {
         const result = assignMatchUpDrawPosition({
           drawDefinition,
@@ -158,14 +160,24 @@ export function assignMatchUpDrawPosition({
       }
     }
   } else {
-    const { pairedPreviousMatchUpIsWO } = getPairedPreviousMatchUpIsWalkover({
-      winnerMatchUp: matchUp,
-      drawPosition,
-      structure,
-      matchUpsMap,
-    });
+    const { pairedPreviousMatchUp, pairedPreviousMatchUpisWOWO } =
+      getPairedPreviousMatchUpIsWOWO({
+        winnerMatchUp: matchUp,
+        drawPosition,
+        structure,
+        matchUpsMap,
+      });
 
-    if (pairedPreviousMatchUpIsWO && winnerMatchUp) {
+    if (winnerMatchUp && getDevContext({ WOWO: true })) {
+      const { roundNumber, roundPosition } = winnerMatchUp;
+      console.log({
+        pairedPreviousMatchUpisWOWO,
+        roundNumber,
+        roundPosition,
+        matchUpStatus: pairedPreviousMatchUp.matchUpStatus,
+      });
+    }
+    if (pairedPreviousMatchUpisWOWO && winnerMatchUp) {
       const result = assignMatchUpDrawPosition({
         drawDefinition,
         drawPosition,

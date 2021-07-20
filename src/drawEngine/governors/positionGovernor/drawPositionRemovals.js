@@ -3,8 +3,8 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { findStructure } from '../../getters/findStructure';
 import { addNotice, getDevContext } from '../../../global/globalState';
+import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
 import { intersection } from '../../../utilities';
 import {
@@ -23,10 +23,11 @@ import {
 /**
  *
  * @param {object} drawDefinition
- * @param {object} matchUpsMap
- * @param {object[]} inContextDrawMatchUps
  * @param {string} structureId
  * @param {number} drawPosition
+ *
+ * @param {object} matchUpsMap
+ * @param {object[]} inContextDrawMatchUps
  *
  */
 export function drawPositionRemovals({
@@ -57,6 +58,8 @@ export function drawPositionRemovals({
       positionAssignments,
       drawDefinition,
       structure,
+
+      matchUpsMap,
     });
     return { drawPositionCleared };
   }
@@ -181,7 +184,7 @@ export function drawPositionRemovals({
   return { tasks, drawPositionCleared };
 }
 
-export function removeSubsequentRoundsParticipant({
+function removeSubsequentRoundsParticipant({
   drawDefinition,
   structureId,
   roundNumber,
