@@ -836,7 +836,7 @@ with the assurance that there are no side-effects caused by subscribers respondi
 that the server context can not be blocked by any long-running external processes.
 
 ```js
-const result = await tournamentEngine.executionQueue([
+const result = tournamentEngine.executionQueue([
   {
     method: 'getTournamentParticipants',
     params: { participantFilters: { participantTypes: [PAIR] } },

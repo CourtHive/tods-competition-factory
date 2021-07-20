@@ -404,7 +404,7 @@ with the assurance that there are no side-effects caused by subscribers respondi
 that the server context can not be blocked by any long-running external processes.
 
 ```js
-const result = await competitionEngine.executionQueue([
+const result = competitionEngine.executionQueue([
   {
     method: 'getCompetitionParticipants',
     params: { participantFilters: { participantTypes: [PAIR] } },
