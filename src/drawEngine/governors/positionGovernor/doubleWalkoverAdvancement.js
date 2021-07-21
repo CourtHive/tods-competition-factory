@@ -142,7 +142,10 @@ function conditionallyAdvanceDrawPosition(params) {
   // assign the WALKOVER status to winnerMatchUp
   const existingWalkover =
     noContextWinnerMatchUp.matchUpStatus === WALKOVER && !drawPositions.length;
-  const matchUpStatus = existingWalkover ? DOUBLE_WALKOVER : WALKOVER;
+  const isFinal = noContextWinnerMatchUp.finishingRound === 1;
+
+  const matchUpStatus =
+    existingWalkover && !isFinal ? DOUBLE_WALKOVER : WALKOVER;
 
   const result = modifyMatchUpScore({
     ...params,

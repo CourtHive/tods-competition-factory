@@ -12,32 +12,32 @@ export function includesMatchUpStatuses({
   drawPositionMatchUps,
   matchUpStatuses = [BYE, WALKOVER, DEFAULTED],
 }) {
-  const sourceMatchUp = drawPositionMatchUps.reduce(
+  const sourceMatchUp = drawPositionMatchUps?.reduce(
     (sourceMatchUp, matchUp) =>
       !sourceMatchUp || matchUp.roundNumber > sourceMatchUp.roundNumber
         ? matchUp
         : sourceMatchUp,
     undefined
   );
-  const winnerDrawPosition = sourceMatchUp.drawPositions.find(
+  const winnerDrawPosition = sourceMatchUp?.drawPositions?.find(
     (drawPosition) => drawPosition !== loserDrawPosition
   );
 
   const winnerMatchUpStatuses = sourceMatchUps
-    .filter((matchUp) => matchUp.drawPositions.includes(winnerDrawPosition))
+    .filter((matchUp) => matchUp?.drawPositions?.includes(winnerDrawPosition))
     .map((matchUp) => matchUp.matchUpStatus);
 
   const loserMatchUpStatuses = sourceMatchUps
-    .filter((matchUp) => matchUp.drawPositions.includes(loserDrawPosition))
+    .filter((matchUp) => matchUp?.drawPositions?.includes(loserDrawPosition))
     .map((matchUp) => matchUp.matchUpStatus);
 
   const winnerHadMatchUpStatus = !!intersection(
-    winnerMatchUpStatuses,
+    winnerMatchUpStatuses || [],
     matchUpStatuses
   ).length;
 
   const loserHadMatchUpStatus = !!intersection(
-    loserMatchUpStatuses,
+    loserMatchUpStatuses || [],
     matchUpStatuses
   ).length;
 

@@ -690,3 +690,111 @@ test('removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent round
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 });
+
+test.skip('A produced WALKOVER in the Final will be replaced by a propagated winner', () => {
+  const drawProfiles = [{ drawSize: 16 }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: DOUBLE_WALKOVER,
+  });
+
+  // Enter score for first 7 roundNumber: 1 matchUps
+  matchUps
+    .filter(
+      ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition < 8
+    )
+    .forEach(({ matchUpId }) => {
+      result = tournamentEngine.setMatchUpStatus({
+        drawId,
+        matchUpId,
+        outcome,
+      });
+      expect(result.success).toEqual(true);
+    });
+
+  expect(modifiedMatchUpLog.length).toEqual(18);
+  modifiedMatchUpLog = [];
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  const statuses = matchUps.reduce((statuses, matchUp) => {
+    const { matchUpStatus } = matchUp;
+    return statuses.includes(matchUpStatus)
+      ? statuses
+      : statuses.concat(matchUpStatus);
+  }, []);
+  expect(statuses).toEqual([DOUBLE_WALKOVER, WALKOVER, TO_BE_PLAYED]);
+
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  tournamentEngine.devContext({ WOWO: true });
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 8 });
+  // now set the final roundNumber: 1 matchUpStatus to be DOUBLE_WALKOVER
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 8],
+    [2, 4],
+    [3, 2],
+    [4, 1],
+  ]);
+
+  // expect the produced WALKOVER in the Final (R4P1) has not been converted to DOUBLE_WALKOVER
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '6-1 6-2',
+    winningSide: 1,
+  }));
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  expect(modifiedMatchUpLog).toEqual([
+    [1, 8],
+    [2, 4],
+    [3, 2],
+    [4, 1],
+    [2, 1],
+    [1, 1],
+    [2, 1],
+    [3, 1],
+    [4, 1],
+  ]);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  console.log({ targetMatchUp });
+});

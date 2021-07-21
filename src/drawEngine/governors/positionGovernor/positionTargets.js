@@ -1,13 +1,13 @@
-import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
 import { nextRoundMatchUp } from '../../getters/getMatchUps/nextRoundMatchUp';
 import { getTargetMatchUp } from '../../getters/getMatchUps/getTargetMatchUp';
+import { getRoundLinks, getTargetLink } from '../../getters/linkGetter';
+import { findStructure } from '../../getters/findStructure';
 
 import {
   LOSER,
   WINNER,
   ROUND_OUTCOME,
 } from '../../../constants/drawDefinitionConstants';
-import { findStructure } from '../../getters/findStructure';
 
 /**
  * @param {string} matchUpId - matchUp identifier for sourceMatchUp
