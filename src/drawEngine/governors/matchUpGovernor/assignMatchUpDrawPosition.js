@@ -6,7 +6,7 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -92,6 +92,8 @@ export function assignMatchUpDrawPosition({
     ? matchUpStatus
     : isWOWOWalkover
     ? WALKOVER
+    : matchUp.matchUpStatus === DOUBLE_WALKOVER
+    ? DOUBLE_WALKOVER
     : TO_BE_PLAYED;
 
   if (positionAdded) {
@@ -103,6 +105,18 @@ export function assignMatchUpDrawPosition({
           inContextDrawMatchUps,
         })) ||
       undefined;
+
+    if (getDevContext({ WOWO: true })) {
+      const { roundNumber, roundPosition } = matchUp;
+      console.log(
+        {
+          matchUpStatus,
+          roundNumber,
+          roundPosition,
+        },
+        matchUp.matchUpStatus
+      );
+    }
 
     // only in the case of WOWO produced WALKOVER can a winningSide be assigned at the same time as a position
     Object.assign(matchUp, {

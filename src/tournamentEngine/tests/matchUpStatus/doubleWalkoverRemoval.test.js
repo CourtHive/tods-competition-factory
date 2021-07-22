@@ -691,7 +691,7 @@ test('removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent round
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 });
 
-test.skip('A produced WALKOVER in the Final will be replaced by a propagated winner', () => {
+test('A produced WALKOVER in the Final will be replaced by a propagated winner', () => {
   const drawProfiles = [{ drawSize: 16 }];
   const {
     tournamentRecord,
@@ -748,7 +748,6 @@ test.skip('A produced WALKOVER in the Final will be replaced by a propagated win
   let targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 
-  tournamentEngine.devContext({ WOWO: true });
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 8 });
   // now set the final roundNumber: 1 matchUpStatus to be DOUBLE_WALKOVER
   result = tournamentEngine.setMatchUpStatus({
@@ -767,6 +766,8 @@ test.skip('A produced WALKOVER in the Final will be replaced by a propagated win
 
   // expect the produced WALKOVER in the Final (R4P1) has not been converted to DOUBLE_WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
 
@@ -775,6 +776,7 @@ test.skip('A produced WALKOVER in the Final will be replaced by a propagated win
     scoreString: '6-1 6-2',
     winningSide: 1,
   }));
+  tournamentEngine.devContext({ WOWO: true });
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
@@ -782,6 +784,7 @@ test.skip('A produced WALKOVER in the Final will be replaced by a propagated win
   });
   expect(result.success).toEqual(true);
 
+  console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
     [1, 8],
     [2, 4],
@@ -795,6 +798,13 @@ test.skip('A produced WALKOVER in the Final will be replaced by a propagated win
   ]);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
+  console.log(targetMatchUp.matchUpStatus);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
+  targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(undefined);
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
-  console.log({ targetMatchUp });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  console.log(targetMatchUp.winningSide);
 });
