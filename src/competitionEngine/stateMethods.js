@@ -1,6 +1,7 @@
 import { findExtension } from './governors/competitionsGovernor/competitionExtentions';
 import { makeDeepCopy } from '../utilities';
 import {
+  getTournamentId,
   getTournamentRecords,
   setTournamentRecords,
   setTournamentRecord as globalSetTournamentRecord,
@@ -15,7 +16,9 @@ import {
 
 export function getState({ convertExtensions }) {
   const tournamentRecords = getTournamentRecords();
+  const tournamentId = getTournamentId();
   return {
+    tournamentId,
     tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
   };
 }

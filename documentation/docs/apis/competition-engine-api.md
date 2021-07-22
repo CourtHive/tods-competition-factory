@@ -557,10 +557,15 @@ const { personRequests } = competitionEngine.getPersonRequests({
 
 ## getState
 
-Returns a deep copy of the current competitionEngine state.
+Returns a deep copy `tournamentRecords` which have been loaded, along with currently selected `tournamentId`.
+
+:::note
+`competitionEngine` and `tournamentEngine` share state; `tournamentId` points to the `tournamentRecord` that
+`tournamentEngine` methods will mutate.
+:::
 
 ```js
-const { tournaentRecords } = competition.getState({
+const { tournamentId, tournaentRecords } = competition.getState({
   convertExtensions, // optional - convert extensions to '_' prefixed attributes
 });
 ```
