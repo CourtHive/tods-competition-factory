@@ -55,9 +55,16 @@ export function removeDoubleWalkover(params) {
     const noContextWinnerMatchUp = matchUpsMap?.drawMatchUps.find(
       (matchUp) => matchUp.matchUpId === winnerMatchUp.matchUpId
     );
+    const { pairedPreviousMatchUp } = getPairedPreviousMatchUp({
+      matchUp: winnerMatchUp,
+      structureId: structure.structureId,
+      matchUpsMap,
+    });
+    const pairedPreviousWOWO =
+      pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
     let result = modifyMatchUpScore({
       ...params,
-      removeScore: true,
+      removeScore: !pairedPreviousWOWO,
       removeWinningSide: true,
       matchUp: noContextWinnerMatchUp,
       matchUpId: winnerMatchUp.matchUpId,
