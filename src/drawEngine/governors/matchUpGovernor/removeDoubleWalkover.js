@@ -1,7 +1,7 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { addNotice } from '../../../global/globalState';
+import { addNotice, getDevContext } from '../../../global/globalState';
 import { intersection } from '../../../utilities';
 import {
   removeDirectedBye,
@@ -62,6 +62,30 @@ export function removeDoubleWalkover(params) {
     });
     const pairedPreviousWOWO =
       pairedPreviousMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
+
+    /*
+    const pairedPreviousDrawPositions =
+      pairedPreviousMatchUp?.drawPositions.filter(Boolean) || [];
+    const pairedPreviousMatchUpComplete =
+      [...completedMatchUpStatuses, BYE].includes(
+        pairedPreviousMatchUp?.matchUpStatus
+      ) || pairedPreviousMatchUp?.winningSide;
+
+    const nextTargetData = positionTargets({
+      matchUpId: winnerMatchUp.matchUpId,
+      drawDefinition,
+      inContextDrawMatchUps,
+    });
+
+    const {
+      targetMatchUps: { winnerMatchUp: nextWinnerMatchUp },
+    } = nextTargetData;
+    */
+
+    if (getDevContext({ WOWO: true })) {
+      const { roundNumber, roundPosition } = noContextWinnerMatchUp;
+      console.log({ roundNumber, roundPosition });
+    }
     let result = modifyMatchUpScore({
       ...params,
       removeScore: !pairedPreviousWOWO,
