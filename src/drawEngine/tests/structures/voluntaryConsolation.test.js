@@ -1,3 +1,4 @@
+import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
@@ -8,7 +9,6 @@ import {
   QUALIFYING,
   VOLUNTARY_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
-import { findExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
 it('can add draw with empty voluntary consolation stage', () => {
   const eventProfiles = [
