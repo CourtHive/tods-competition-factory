@@ -73,7 +73,7 @@ export function localizeDate(submittedDate, dateLocalization, locale) {
 
 export function formatDate(date, separator = '-', format = 'YMD') {
   if (!date) return '';
-  if (!isNaN(date)) date = offsetTime(date);
+  if (typeof date === 'string' && date.indexOf('T') < 0) date = date + 'T00:00';
 
   const d = new Date(date);
   let month = '' + (d.getMonth() + 1);
@@ -261,11 +261,14 @@ export function weekDays(date = new Date(), firstDayOfWeek = 0) {
 }
 
 export function addWeek(date, dateFormat) {
-  const now = new Date(date);
-  return formatDate(now.setDate(now.getDate() + 7), dateFormat);
+  const universalDate = extractDate(date) + 'T00:00';
+  const now = new Date(universalDate);
+  let adjustedDate = new Date(now.setDate(now.getDate() + 7));
+  return formatDate(adjustedDate, dateFormat);
 }
 export function subtractWeek(date, dateFormat) {
-  const now = new Date(date);
+  const universalDate = extractDate(date) + 'T00:00';
+  const now = new Date(universalDate);
   return formatDate(now.setDate(now.getDate() - 7), dateFormat);
 }
 
