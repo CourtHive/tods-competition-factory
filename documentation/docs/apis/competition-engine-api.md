@@ -5,7 +5,7 @@ title: Competition Engine API
 
 ## addCourts
 
-Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**.
+Convenience function to bulk add courts to a Venue. Only adds **dateAvailability** and **courtName**. See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 competitionEngine.addCourts({
@@ -711,6 +711,8 @@ competitionEngine.modifyPenalty({ penaltyId, modifications });
 ---
 
 ## modifyVenue
+
+See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const modifications = {
