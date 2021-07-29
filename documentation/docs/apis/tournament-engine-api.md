@@ -7,7 +7,7 @@ All tournamentEngine methods return either `{ success: true }` or `{ error }`
 
 ## addCourt
 
-Add a court to a Venue.
+Add a court to a Venue. See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const court = {
@@ -31,7 +31,7 @@ tournamentEngine.addCourt({ venueId, court });
 
 ## addCourts
 
-Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**.
+Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**. See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const dateAvailability = [
@@ -1752,7 +1752,7 @@ tournamentEngine.mergeParticipants({ participants });
 
 ## modifyCourtAvailability
 
-Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected.
+Modifies the `dateAvailability` attribute of a specified court. Warns if existing scheduled matchUps would be affected. See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const result = tournamentEngine.modifyCourtAvailability({
@@ -1921,6 +1921,8 @@ tournamentEngine.modifySeedAssignment({
 ---
 
 ## modifyVenue
+
+See [Scheduling](/docs/concepts/scheduling).
 
 ```js
 const modifications = {

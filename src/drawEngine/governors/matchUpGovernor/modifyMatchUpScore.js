@@ -3,7 +3,7 @@ import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructu
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { addNotice, getDevContext } from '../../../global/globalState';
+import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
@@ -100,11 +100,6 @@ export function modifyMatchUpScore({
       matchUpFormat,
       matchUps,
     });
-  }
-
-  if (getDevContext({ WOWO: true })) {
-    const { roundNumber, roundPosition } = matchUp;
-    console.log({ roundNumber, roundPosition, matchUpStatus });
   }
 
   if (notes) {

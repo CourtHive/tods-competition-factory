@@ -239,9 +239,11 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(result.success).toEqual(true);
 
   // three matchUps are modified
+  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [2, 1],
     [3, 1],
+    [3, 1],
+    [2, 1],
     [1, 1],
   ]);
   modifiedMatchUpLog = [];
@@ -258,7 +260,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
-  expect(targetMatchUp.matchUpStatusCodes?.length).toBeUndefined();
+  expect(targetMatchUp.matchUpStatusCodes?.length || 0).toEqual(0);
 
   // Bottom half of draw -----------------------------------------
   // Target R1P3 and enter a DOUBLE_WALKOVER
@@ -331,9 +333,11 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(result.success).toEqual(true);
 
   // three matchUps are modified
+  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [2, 2],
     [3, 1],
+    [3, 1],
+    [2, 2],
     [1, 3],
   ]);
   modifiedMatchUpLog = [];
@@ -350,7 +354,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
-  expect(targetMatchUp.matchUpStatusCodes?.length).toBeUndefined();
+  expect(targetMatchUp.matchUpStatusCodes?.length || 0).toEqual(0);
 });
 
 test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in subsequent round', () => {
@@ -615,9 +619,11 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   });
   expect(result.success).toEqual(true);
 
+  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [2, 1],
     [3, 1],
+    [3, 1],
+    [2, 1],
     [1, 2],
   ]);
   modifiedMatchUpLog = [];
@@ -628,7 +634,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
 });
 
-test('removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent rounds', () => {
+test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent rounds', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -689,6 +695,80 @@ test('removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent round
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
+});
+
+test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in subsequent rounds', () => {
+  const drawProfiles = [{ drawSize: 16 }];
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  // keep track of notficiations with each setMatchUpStatus event
+  let modifiedMatchUpLog = [];
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (matchUps) => {
+        matchUps.forEach(({ matchUp }) =>
+          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
+        );
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  let { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: DOUBLE_WALKOVER,
+  });
+
+  // Enter score for first 7 roundNumber: 1 matchUps
+  matchUps
+    .filter(({ roundNumber }) => roundNumber === 1)
+    .forEach(({ matchUpId }) => {
+      result = tournamentEngine.setMatchUpStatus({
+        drawId,
+        matchUpId,
+        outcome,
+      });
+      expect(result.success).toEqual(true);
+    });
+
+  expect(modifiedMatchUpLog.length).toEqual(22);
+  modifiedMatchUpLog = [];
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  const statuses = matchUps.reduce((statuses, matchUp) => {
+    const { matchUpStatus } = matchUp;
+    return statuses.includes(matchUpStatus)
+      ? statuses
+      : statuses.concat(matchUpStatus);
+  }, []);
+  expect(statuses).toEqual([DOUBLE_WALKOVER, WALKOVER]);
+
+  let targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+
+  tournamentEngine.devContext({ WOWO: true });
+  ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+    winningSide: undefined,
+    matchUpStatus: TO_BE_PLAYED,
+  }));
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: targetMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // console.log(modifiedMatchUpLog);
+  modifiedMatchUpLog = [];
 });
 
 test('A produced WALKOVER in the Final will be replaced by a propagated winner', () => {
@@ -784,7 +864,10 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
   });
   expect(result.success).toEqual(true);
 
+  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
+    [4, 1],
+    [3, 1],
     [2, 1],
     [1, 1],
     [2, 1],

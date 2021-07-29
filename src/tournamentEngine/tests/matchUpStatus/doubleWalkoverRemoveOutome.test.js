@@ -111,7 +111,6 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
     drawId,
   });
   expect(result.success).toEqual(true);
-  console.log(modifiedMatchUpLog);
   expect(modifiedMatchUpLog).toEqual([
     [2, 1],
     [1, 1],

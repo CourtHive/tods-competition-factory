@@ -1,0 +1,24 @@
+---
+title: Scheduling
+---
+
+import RenderJSON from '../components/RenderJSON';
+import dateAvailability from './assets/dateAvailability.json';
+
+Scheduling `matchUps` depends on tournamentRecords having `venues` with `courts` which have defined `dateAvailability` attributes.
+
+A `dateAvailability` definition is an array of objects which define a `startTime` and `endTime` for court availability.
+When no date is specified the start and end times apply to all valid tournament dates; defining a `date` attribute scopes the
+definition to a specific date.
+
+`dateAvailability` definitions can also contain an array of `bookings` objects which makes courts unavailable to auto-Scheduling
+functions during specified blocks of time.
+
+<RenderJSON
+  data={dateAvailability}
+  root={'dateAvailability'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandRoot={true}
+  expandToLevel={2}
+/>

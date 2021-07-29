@@ -26,6 +26,7 @@ module.exports = {
             'policies/feedPolicy',
           ],
         },
+        'concepts/scheduling',
         'concepts/scaleItems',
         'concepts/timeItems',
         'concepts/subscriptions',

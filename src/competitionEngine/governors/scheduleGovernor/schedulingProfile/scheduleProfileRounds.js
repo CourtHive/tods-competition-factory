@@ -98,7 +98,7 @@ export function scheduleProfileRounds({
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],
           drawIds: [round.drawId],
-          structureids: [round.structureId],
+          structureIds: [round.structureId],
           roundNumbers: [round.roundNumber],
         };
 
