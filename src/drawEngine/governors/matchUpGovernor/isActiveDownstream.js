@@ -7,8 +7,6 @@ export function isActiveDownstream(params) {
     targetMatchUps: { loserMatchUp, winnerMatchUp },
   } = targetData;
 
-  const loserDrawPositionsCount =
-    loserMatchUp?.drawPositions.filter(Boolean).length || 0;
   const winnerDrawPositionsCount =
     winnerMatchUp?.drawPositions.filter(Boolean).length || 0;
 
@@ -17,8 +15,6 @@ export function isActiveDownstream(params) {
     (winnerDrawPositionsCount === 2 && winnerMatchUp?.winningSide)
   )
     return true;
-
-  if (!loserDrawPositionsCount && !winnerDrawPositionsCount) return false;
 
   let loserTargetData =
     loserMatchUp &&

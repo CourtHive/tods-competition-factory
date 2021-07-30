@@ -2,11 +2,14 @@ import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/ge
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { structureSort } from '../../drawEngine/getters/structureSort';
 import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
+import tournamentEngineSync from '../../tournamentEngine/sync';
 import { randomInt } from '../../utilities/math';
 
-import tournamentEngineSync from '../../tournamentEngine/sync';
-
-import { BYE, COMPLETED } from '../../constants/matchUpStatusConstants';
+import {
+  BYE,
+  COMPLETED,
+  DOUBLE_WALKOVER,
+} from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function completeDrawMatchUps({
@@ -39,7 +42,8 @@ export function completeDrawMatchUps({
         matchUpId,
       });
       const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
-      if (targetMatchUp?.readyToScore) {
+      const isWOWO = targetMatchUp.matchUpStatus === DOUBLE_WALKOVER;
+      if (targetMatchUp?.readyToScore && !isWOWO) {
         const result = completeMatchUp({
           tournamentEngine,
           targetMatchUp,
