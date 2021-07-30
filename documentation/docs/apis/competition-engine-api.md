@@ -334,6 +334,17 @@ const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
 
 ---
 
+## clearScheduledMatchUps
+
+```js
+competitionEngine.clearScheduledMatchUps({
+  ignoreMatchUpStatuses, // optionally specify matchUpStatus values to be ignored
+  scheduleAttributes, // optionally specify which attributes should be considered
+});
+```
+
+---
+
 ## competitionMatchUps
 
 Returns aggregated arrays of "inContext" matchUps for all tournamentRecords loaded into `competitionEngine`.
