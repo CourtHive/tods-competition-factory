@@ -218,7 +218,7 @@ export function generateEventWithDraw({
         });
         const result = completeDrawMatchUps({
           tournamentEngine,
-          drawId,
+          drawDefinition,
           matchUpFormat,
           randomWinningSide,
         });
