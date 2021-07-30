@@ -13,6 +13,7 @@ import {
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 import { SEEDING } from '../../constants/timeItemConstants';
+import { utilities } from '../..';
 
 export function generateEventWithDraw({
   completeAllMatchUps,
@@ -35,16 +36,22 @@ export function generateEventWithDraw({
     automated,
     stage,
   } = drawProfile;
+
+  // let tournamentRecord = tournamentEngine.getState();
+
   let { participantsCount, seedsCount } = drawProfile;
   if (!participantsCount || participantsCount > drawSize)
     participantsCount = drawSize;
 
-  const event = { eventName, eventType, category, tieFormat };
+  const eventId = utilities.UUID();
+  const event = { eventId, eventName, eventType, category, tieFormat };
+  // let result = addEvent({ tournamentRecord, event });
+
   let result = tournamentEngine.addEvent({ event });
   if (result.error) return { error: result.error };
 
-  const { event: createdEvent } = result;
-  const { eventId } = createdEvent;
+  // const { event: createdEvent } = result;
+  // const { eventId } = createdEvent;
 
   const isEventParticipantType = (participant) => {
     const { participantType } = participant;
