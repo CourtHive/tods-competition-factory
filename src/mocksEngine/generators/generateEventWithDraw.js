@@ -1,21 +1,28 @@
+import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { tournamentEngine } from '../../tournamentEngine/sync';
 import { generateRange, intersection } from '../../utilities';
+import { utilities } from '../..';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
 import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
+import { SEEDING } from '../../constants/timeItemConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { SEEDING } from '../../constants/timeItemConstants';
-import { utilities } from '../..';
 
 export function generateEventWithDraw({
+  tournamentRecord,
   completeAllMatchUps,
   randomWinningSide,
   participants,
@@ -44,14 +51,12 @@ export function generateEventWithDraw({
     participantsCount = drawSize;
 
   const eventId = utilities.UUID();
-  const event = { eventId, eventName, eventType, category, tieFormat };
-  // let result = addEvent({ tournamentRecord, event });
+  const newEvent = { eventId, eventName, eventType, category, tieFormat };
 
-  let result = tournamentEngine.addEvent({ event });
+  let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return { error: result.error };
 
-  // const { event: createdEvent } = result;
-  // const { eventId } = createdEvent;
+  const { event } = result;
 
   const isEventParticipantType = (participant) => {
     const { participantType } = participant;
@@ -64,8 +69,10 @@ export function generateEventWithDraw({
     .filter(isEventParticipantType)
     .slice(0, participantsCount)
     .map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({
-    eventId,
+
+  result = addEventEntries({
+    event,
+    tournamentRecord,
     participantIds,
     entryStage: stage,
     autoEntryPositions: false,
@@ -77,14 +84,17 @@ export function generateEventWithDraw({
     .slice(participantsCount)
     .map((p) => p.participantId);
   if (alternatesParticipantIds.length) {
-    result = tournamentEngine.addEventEntries({
-      eventId,
+    result = addEventEntries({
+      event,
+      tournamentRecord,
       entryStatus: ALTERNATE,
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
     });
     if (result.error) return { error: result.error };
   }
+
+  tournamentEngine.setState(tournamentRecord);
 
   // now add seeding information for seedsCount participants
   const seedingScaleName =
@@ -102,39 +112,36 @@ export function generateEventWithDraw({
         scaleDate: startDate,
       };
       const participantId = participantIds[index];
-      tournamentEngine.setParticipantScaleItem({
-        participantId,
-        scaleItem,
-      });
+      setParticipantScaleItem({ tournamentRecord, participantId, scaleItem });
     });
   }
 
-  const { drawDefinition, error: generationError } =
-    tournamentEngine.generateDrawDefinition({
-      seedingScaleName,
-      structureOptions,
-      matchUpFormat,
-      seedsCount,
-      feedPolicy,
-      tieFormat,
-      automated,
-      drawType,
-      drawSize,
-      eventId,
-      goesTo,
-      stage,
-    });
+  const { drawDefinition, error: generationError } = generateDrawDefinition({
+    seedingScaleName,
+    structureOptions,
+    matchUpFormat,
+    seedsCount,
+    feedPolicy,
+    tieFormat,
+    automated,
+    drawType,
+    drawSize,
+    eventId,
+    goesTo,
+    event,
+    stage,
+  });
 
   if (generationError) return { error: generationError };
-  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-
+  result = addDrawDefinition({ drawDefinition, event });
   const { drawId } = drawDefinition;
 
   const manual = automated === false;
   if (!manual) {
     if (drawProfile.outcomes) {
-      const { matchUps } = tournamentEngine.allDrawMatchUps({
-        drawId,
+      const { matchUps } = allDrawMatchUps({
+        event,
+        drawDefinition,
         inContext: true,
       });
       for (const outcomeDef of drawProfile.outcomes) {
@@ -179,8 +186,8 @@ export function generateEventWithDraw({
           );
         });
         const targetMatchUp = targetMatchUps[matchUpIndex];
-        completeMatchUp({
-          tournamentEngine,
+        const result = completeMatchUp({
+          drawDefinition,
           targetMatchUp,
           scoreString,
           winningSide,
@@ -189,15 +196,18 @@ export function generateEventWithDraw({
           matchUpFormat,
           drawId,
         });
+        if (result.error) return result;
       }
     }
+
     if (completeAllMatchUps) {
-      completeDrawMatchUps({
-        tournamentEngine,
-        drawId,
+      const result = completeDrawMatchUps({
+        drawDefinition,
         matchUpFormat,
         randomWinningSide,
       });
+      if (result.error) return result;
+
       if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
         const mainStructure = drawDefinition.structures.find(
           (structure) => structure.stage === MAIN
@@ -206,12 +216,13 @@ export function generateEventWithDraw({
           drawId,
           structureId: mainStructure.structureId,
         });
-        completeDrawMatchUps({
+        const result = completeDrawMatchUps({
           tournamentEngine,
           drawId,
           matchUpFormat,
           randomWinningSide,
         });
+        if (result.error) return result;
       }
       // TODO: check if RRWPO & automate & complete
     }
