@@ -1,8 +1,7 @@
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
-
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
 
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
@@ -11,6 +10,7 @@ import {
 export function clearScheduledMatchUps({
   tournamentRecord,
   ignoreMatchUpStatuses = completedMatchUpStatuses,
+  scheduleAttributes = ['scheduledDate', 'scheduledTime'],
 }) {
   if (typeof tournamentRecord !== 'object')
     return { error: MISSING_TOURNAMENT_RECORD };
@@ -22,12 +22,10 @@ export function clearScheduledMatchUps({
   });
 
   const hasSchedule = ({ schedule }) => {
-    const scheduleKeys =
-      schedule &&
-      Object.keys(schedule).filter(
-        (key) => key !== 'updatedAt' && schedule[key]
-      );
-    return !!scheduleKeys?.length;
+    const matchUpScheduleKeys = Object.keys(schedule)
+      .filter((key) => scheduleAttributes.includes(key))
+      .filter((key) => schedule[key]);
+    return !!matchUpScheduleKeys.length;
   };
 
   const relevantMatchUpIds = matchUps
@@ -43,6 +41,7 @@ export function clearScheduledMatchUps({
     scheduledDate: '',
     scheduledTime: '',
   };
+
   return bulkScheduleMatchUps({
     tournamentRecord,
     matchUpIds: relevantMatchUpIds,

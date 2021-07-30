@@ -681,6 +681,17 @@ tournamentEngine.checkOutParticipant({
 
 ---
 
+## clearScheduledMatchUps
+
+```js
+tournamentEngine.clearScheduledMatchUps({
+  ignoreMatchUpStatuses, // optionally specify matchUpStatus values to be ignored
+  scheduleAttributes, // optionally specify which attributes should be considered
+});
+```
+
+---
+
 ## deleteCourt
 
 ```js
