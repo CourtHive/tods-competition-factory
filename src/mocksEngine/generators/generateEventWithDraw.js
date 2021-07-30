@@ -124,86 +124,89 @@ export function generateEventWithDraw({
   const { drawId } = drawDefinition;
 
   const manual = automated === false;
-  if (!manual && completeAllMatchUps) {
-    completeDrawMatchUps({
-      tournamentEngine,
-      drawId,
-      matchUpFormat,
-      randomWinningSide,
-    });
-    if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-      const mainStructure = drawDefinition.structures.find(
-        (structure) => structure.stage === MAIN
-      );
-      tournamentEngine.automatedPlayoffPositioning({
+  if (!manual) {
+    if (drawProfile.outcomes) {
+      const { matchUps } = tournamentEngine.allDrawMatchUps({
         drawId,
-        structureId: mainStructure.structureId,
+        inContext: true,
       });
+      for (const outcomeDef of drawProfile.outcomes) {
+        const {
+          roundNumber,
+          drawPositions,
+          roundPosition,
+          scoreString,
+          winningSide,
+          stage = MAIN,
+          matchUpFormat,
+          stageSequence = 1,
+          matchUpStatus = COMPLETED,
+          matchUpIndex = 0,
+          structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
+        } = outcomeDef;
+        const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
+          const { structureId, matchUpId } = matchUp;
+          if (sm[structureId]) {
+            sm[structureId].push(matchUpId);
+          } else {
+            sm[structureId] = [matchUpId];
+          }
+          return sm;
+        }, {});
+        const orderedStructures = Object.assign(
+          {},
+          ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
+            [structureId]: index + 1,
+          }))
+        );
+        const targetMatchUps = matchUps.filter((matchUp) => {
+          return (
+            (!stage || matchUp.stage === stage) &&
+            (!stageSequence || matchUp.stageSequence === stageSequence) &&
+            (!roundNumber || matchUp.roundNumber === roundNumber) &&
+            (!roundPosition || matchUp.roundPosition === roundPosition) &&
+            (!structureOrder ||
+              orderedStructures[matchUp.structureId] === structureOrder) &&
+            (!drawPositions ||
+              intersection(drawPositions, matchUp.drawPositions).length === 2)
+          );
+        });
+        const targetMatchUp = targetMatchUps[matchUpIndex];
+        completeMatchUp({
+          tournamentEngine,
+          targetMatchUp,
+          scoreString,
+          winningSide,
+          matchUpStatus,
+          outcomeDef,
+          matchUpFormat,
+          drawId,
+        });
+      }
+    }
+    if (completeAllMatchUps) {
       completeDrawMatchUps({
         tournamentEngine,
         drawId,
         matchUpFormat,
         randomWinningSide,
       });
-    }
-    // TODO: check if RRWPO & automate & complete
-  } else if (!manual && drawProfile.outcomes) {
-    const { matchUps } = tournamentEngine.allDrawMatchUps({
-      drawId,
-      inContext: true,
-    });
-    for (const outcomeDef of drawProfile.outcomes) {
-      const {
-        roundNumber,
-        drawPositions,
-        roundPosition,
-        scoreString,
-        winningSide,
-        stage = MAIN,
-        matchUpFormat,
-        stageSequence = 1,
-        matchUpStatus = COMPLETED,
-        matchUpIndex = 0,
-        structureOrder, // like a group number; for RR = the order of the structureType: ITEM within structureType: CONTAINER
-      } = outcomeDef;
-      const structureMatchUpIds = matchUps.reduce((sm, matchUp) => {
-        const { structureId, matchUpId } = matchUp;
-        if (sm[structureId]) {
-          sm[structureId].push(matchUpId);
-        } else {
-          sm[structureId] = [matchUpId];
-        }
-        return sm;
-      }, {});
-      const orderedStructures = Object.assign(
-        {},
-        ...Object.keys(structureMatchUpIds).map((structureId, index) => ({
-          [structureId]: index + 1,
-        }))
-      );
-      const targetMatchUps = matchUps.filter((matchUp) => {
-        return (
-          (!stage || matchUp.stage === stage) &&
-          (!stageSequence || matchUp.stageSequence === stageSequence) &&
-          (!roundNumber || matchUp.roundNumber === roundNumber) &&
-          (!roundPosition || matchUp.roundPosition === roundPosition) &&
-          (!structureOrder ||
-            orderedStructures[matchUp.structureId] === structureOrder) &&
-          (!drawPositions ||
-            intersection(drawPositions, matchUp.drawPositions).length === 2)
+      if (drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+        const mainStructure = drawDefinition.structures.find(
+          (structure) => structure.stage === MAIN
         );
-      });
-      const targetMatchUp = targetMatchUps[matchUpIndex];
-      completeMatchUp({
-        tournamentEngine,
-        targetMatchUp,
-        scoreString,
-        winningSide,
-        matchUpStatus,
-        outcomeDef,
-        matchUpFormat,
-        drawId,
-      });
+        tournamentEngine.automatedPlayoffPositioning({
+          drawId,
+          structureId: mainStructure.structureId,
+        });
+        completeDrawMatchUps({
+          tournamentEngine,
+          drawId,
+          matchUpFormat,
+          randomWinningSide,
+        });
+      }
+      // TODO: check if RRWPO & automate & complete
     }
   }
 
