@@ -6,7 +6,7 @@ import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFli
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { utilities } from '../..';
+import { UUID } from '../../utilities';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
@@ -67,7 +67,7 @@ export function generateEventWithFlights({
       ),
   };
 
-  const eventId = utilities.UUID();
+  const eventId = UUID();
   const newEvent = {
     eventId,
     eventName,

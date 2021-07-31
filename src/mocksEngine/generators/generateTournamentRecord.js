@@ -5,7 +5,7 @@ import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCou
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
-import { utilities } from '../..';
+import { UUID } from '../../utilities';
 import {
   dateRange,
   formatDate,
@@ -161,7 +161,7 @@ export function generateTournamentRecord({
         endTime = '19:00',
       } = venueProfile;
 
-      const venueId = utilities.UUID();
+      const venueId = UUID();
       const newVenue = {
         venueId,
         venueName: venueName || `Venue ${index + 1}`,
