@@ -65,7 +65,9 @@ it('can setStateProvier', async () => {
     participantsProfile: { participantsCount },
   }));
 
+  expect(allNotices.length).toEqual(1);
   expect(allMatchUps.length).toEqual(drawSize - 1);
+  expect(allParticipants.length).toEqual(participantsCount);
 
   result = await asyncCompetitionEngine.setTournamentRecord(tournamentRecord);
   expect(result.success).toEqual(true);
@@ -82,8 +84,9 @@ it('can setStateProvier', async () => {
   expect(result.success).toEqual(true);
 
   expect(allNotices.length).toEqual(2);
+
+  // expect 7 matchUps to have been deleted
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
-  expect(allParticipants.length).toEqual(participantsCount);
 
   let { tournamentRecords } = await asyncCompetitionEngine.getState();
   const tournamentIds = Object.keys(tournamentRecords);
