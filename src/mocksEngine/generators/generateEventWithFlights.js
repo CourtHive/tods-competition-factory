@@ -80,7 +80,8 @@ export function generateEventWithFlights({
   const { event } = result;
 
   for (const drawProfile of drawProfiles) {
-    const { stage, drawName, drawSize, qualifyingPositions } = drawProfile;
+    const { stage, drawName, drawType, drawSize, qualifyingPositions } =
+      drawProfile;
     const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
     const drawParticipantIds = (stageParticipants[stage || MAIN] || [])
       .slice(0, entriesCount)
@@ -103,7 +104,7 @@ export function generateEventWithFlights({
     const result = addFlight({
       event,
       stage,
-      drawName,
+      drawName: drawName || drawType,
       drawSize,
       drawEntries,
       qualifyingPositions,
