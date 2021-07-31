@@ -1,4 +1,5 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
+import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
@@ -43,8 +44,6 @@ export function generateEventWithDraw({
     automated,
     stage,
   } = drawProfile;
-
-  // let tournamentRecord = tournamentEngine.getState();
 
   let { participantsCount, seedsCount } = drawProfile;
   if (!participantsCount || participantsCount > drawSize)
@@ -93,8 +92,6 @@ export function generateEventWithDraw({
     });
     if (result.error) return { error: result.error };
   }
-
-  tournamentEngine.setState(tournamentRecord);
 
   // now add seeding information for seedsCount participants
   const seedingScaleName =
@@ -213,11 +210,13 @@ export function generateEventWithDraw({
         const mainStructure = drawDefinition.structures.find(
           (structure) => structure.stage === MAIN
         );
-        tournamentEngine.automatedPlayoffPositioning({
-          drawId,
+        let result = automatedPlayoffPositioning({
           structureId: mainStructure.structureId,
+          tournamentRecord,
+          drawDefinition,
+          event,
         });
-        const result = completeDrawMatchUps({
+        result = completeDrawMatchUps({
           tournamentEngine,
           drawDefinition,
           matchUpFormat,
