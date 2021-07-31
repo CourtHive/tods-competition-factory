@@ -59,6 +59,7 @@ export function automatedPositioning({
 
       matchUpsMap,
     }));
+
     ({ errors: seedBlockErrors } = positionSeedBlocks({
       drawDefinition,
       participants,
@@ -78,6 +79,7 @@ export function automatedPositioning({
       matchUpsMap,
       inContextDrawMatchUps,
     }));
+
     ({ error: byePositionError } = positionByes({
       drawDefinition,
       structure,

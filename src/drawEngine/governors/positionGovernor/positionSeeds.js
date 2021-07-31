@@ -50,6 +50,7 @@ export function positionSeedBlocks({
       }
     }
   });
+
   return { errors };
 }
 
@@ -86,6 +87,7 @@ function positionSeedBlock({
       matchUpsMap,
       inContextDrawMatchUps,
     });
+
     if (!result.success) return result;
   }
 

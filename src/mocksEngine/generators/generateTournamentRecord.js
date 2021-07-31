@@ -1,7 +1,11 @@
+import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
+import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
+import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
-import tournamentEngine from '../../tournamentEngine/sync';
+import { utilities } from '../..';
 import {
   dateRange,
   formatDate,
@@ -39,7 +43,6 @@ export function generateTournamentRecord({
 
   completeAllMatchUps,
   randomWinningSide,
-  // inContext,
   goesTo,
 } = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
@@ -61,12 +64,11 @@ export function generateTournamentRecord({
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  const result = tournamentEngine.newTournamentRecord({
+  const tournamentRecord = newTournamentRecord({
     startDate,
     endDate,
     tournamentName,
   });
-  if (result.error) return result;
 
   const getEventProfileParticipantsCount = (eventProfile) =>
     eventProfile?.drawProfiles.reduce((total, { drawSize, drawEntries }) => {
@@ -113,7 +115,8 @@ export function generateTournamentRecord({
 
     valuesInstanceLimit,
   });
-  tournamentEngine.addParticipants({ participants });
+  let result = addParticipants({ tournamentRecord, participants });
+  if (!result.success) return result;
 
   const drawIds = [],
     eventIds = [],
@@ -121,6 +124,7 @@ export function generateTournamentRecord({
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId } = generateEventWithDraw({
+        tournamentRecord,
         completeAllMatchUps,
         randomWinningSide,
         participants,
@@ -136,6 +140,7 @@ export function generateTournamentRecord({
   if (eventProfiles) {
     for (const eventProfile of eventProfiles) {
       const { eventId, drawIds: generatedDrawIds } = generateEventWithFlights({
+        tournamentRecord,
         completeAllMatchUps,
         randomWinningSide,
         eventProfile,
@@ -155,10 +160,15 @@ export function generateTournamentRecord({
         startTime = '07:00',
         endTime = '19:00',
       } = venueProfile;
-      const venue = { venueName: venueName || `Venue ${index + 1}` };
-      const {
-        venue: { venueId },
-      } = tournamentEngine.devContext({ addVenue: true }).addVenue({ venue });
+
+      const venueId = utilities.UUID();
+      const newVenue = {
+        venueId,
+        venueName: venueName || `Venue ${index + 1}`,
+      };
+      let result = addVenue({ tournamentRecord, venue: newVenue });
+      if (result.error) return result;
+
       venueIds.push(venueId);
 
       const dates = dateRange(startDate, endDate);
@@ -171,16 +181,15 @@ export function generateTournamentRecord({
           }))) ||
         dateAvailability;
 
-      tournamentEngine.addCourts({
+      result = addCourts({
+        tournamentRecord,
         venueId,
         courtsCount,
         dateAvailability,
       });
+      if (result.error) return result;
     }
   }
-
-  const { tournamentRecord } = tournamentEngine.getState();
-  tournamentEngine.reset();
 
   return { tournamentRecord, drawIds, eventIds, venueIds };
 }

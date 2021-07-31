@@ -11,6 +11,7 @@ import {
 } from '../testingUtilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
 // pseudocode...
 // 1. Generate drawType of drawSize
@@ -97,8 +98,15 @@ export function replacementTest({
   const totalMatchUpsCount = allMatchUps.length;
 
   // complete all matchUps in the target draw
-  let result = completeDrawMatchUps({ tournamentEngine, drawId });
+  const { tournamentRecord: updatedTournamentRecord } =
+    tournamentEngine.getState();
+  const { drawDefinition } = findEvent({
+    tournamentRecord: updatedTournamentRecord,
+    drawId,
+  });
+  let result = completeDrawMatchUps({ drawDefinition });
   if (result.error) return result;
+  tournamentEngine.setState(updatedTournamentRecord);
 
   result = tournamentEngine.tournamentMatchUps();
   const { byeMatchUps, completedMatchUps } = result;

@@ -1,32 +1,33 @@
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
+import { setMatchUpStatus } from '../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
+import { getMatchUpsMap } from '../../drawEngine/getters/getMatchUps/getMatchUpsMap';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { structureSort } from '../../drawEngine/getters/structureSort';
 import { matchUpSort } from '../../drawEngine/getters/matchUpSort';
-import tournamentEngineSync from '../../tournamentEngine/sync';
 import { randomInt } from '../../utilities/math';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   BYE,
   COMPLETED,
   DOUBLE_WALKOVER,
 } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function completeDrawMatchUps({
-  tournamentEngine = tournamentEngineSync,
   randomWinningSide,
   matchUpFormat,
-  drawId,
+  drawDefinition,
 }) {
   const errors = [];
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const sortedStructures = drawDefinition.structures
     .slice()
     .sort(structureSort);
 
   for (const structure of sortedStructures) {
+    const matchUpsMap = getMatchUpsMap({ drawDefinition });
     const { matchUps } = getAllStructureMatchUps({
       drawDefinition,
+      matchUpsMap,
       structure,
       inContext: true,
     });
@@ -37,21 +38,26 @@ export function completeDrawMatchUps({
       .map(({ matchUpId }) => matchUpId);
 
     for (const matchUpId of sortedMatchUpIds) {
-      const { matchUp: targetMatchUp } = tournamentEngine.findMatchUp({
-        drawId,
-        matchUpId,
+      const { matchUps } = getAllStructureMatchUps({
+        drawDefinition,
+        matchUpsMap,
+        structure,
+        inContext: true,
       });
+
+      const targetMatchUp = matchUps.find(
+        (matchUp) => matchUp.matchUpId === matchUpId
+      );
       const winningSide = randomWinningSide ? randomInt(1, 2) : 1;
       const isWOWO = targetMatchUp.matchUpStatus === DOUBLE_WALKOVER;
       if (targetMatchUp?.readyToScore && !isWOWO) {
         const result = completeMatchUp({
-          tournamentEngine,
+          drawDefinition,
           targetMatchUp,
           matchUpStatus: COMPLETED,
-          scoreString: '6-1 6-1',
+          scoreString: '6-1 6-1', // TODO: function to generate winning score strings given score format
           matchUpFormat,
           winningSide,
-          drawId,
         });
         if (result.error) {
           console.log({ result });
@@ -65,14 +71,13 @@ export function completeDrawMatchUps({
 }
 
 export function completeMatchUp({
-  tournamentEngine = tournamentEngineSync,
   targetMatchUp,
   scoreString,
   winningSide,
   matchUpStatus,
   matchUpFormat,
   outcomeDef,
-  drawId,
+  drawDefinition,
 }) {
   const { outcome } = generateOutcomeFromScoreString({
     scoreString,
@@ -88,11 +93,10 @@ export function completeMatchUp({
     return;
   }
   const { matchUpId } = targetMatchUp || {};
-  const result = tournamentEngine.setMatchUpStatus({
-    drawId,
+  return setMatchUpStatus({
+    drawDefinition,
     matchUpId,
     outcome,
     matchUpFormat,
   });
-  return result;
 }
