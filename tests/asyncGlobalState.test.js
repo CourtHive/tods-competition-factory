@@ -6,11 +6,11 @@ import {
   mocksEngine,
 } from '../dist/tods-competition-factory.esm';
 
-import asyncGlobalState from '../src/global/examples/asyncGlobalState';
-
 /**
  * Example of how to use asyncGlobalState
  */
+
+import asyncGlobalState from '../src/global/examples/asyncGlobalState';
 
 const ssp = setStateProvider(asyncGlobalState);
 const asyncTournamentEngine = tournamentEngineAsync();

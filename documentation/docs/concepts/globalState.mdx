@@ -1,0 +1,45 @@
+---
+title: Global State
+---
+
+## Engines share state
+
+Except in cases where `tournamentEngine` is used to generate a `tournamentRecord` from scratch,
+it is necessary to first call a `.setState()` engine method.
+
+Setting `tournamentEngine` state adds a tournamentRecord to global state, which makes it available to `competitionEngine`.
+
+```js
+tournamentEngine.setState(tournamentRecord);
+const { tournamentRecords } = competitionEngine.getState();
+```
+
+If multiple tournamentRecords are added to `competitionEngine` state,
+`tournamentEngine` can point to a specific tournamentRecord by setting `tournamentId`.
+
+```js
+competitionEngine.setState(tournamentRecords);
+tournamentEngine.setTournamentId(tournamentId);
+const { tournamentRecord } = tournamentEngine.getState();
+```
+
+When a single tournamentRecord is added via `competitionEngine`, `tournamentId` is set automatically.
+
+## Synchronous and Asynchronous
+
+Competition Factory engines share a global state which is by default **synchronous**.
+
+In the `/sr/global/examples` there is an example of an **asynchronous** global state provider which can be copied into projects,
+typically nodejs servers, which require asynchronous processing.
+
+```js
+import asyncGlobalState from '../src/global/examples/asyncGlobalState';
+
+setStateProvider(asyncGlobalState);
+const asyncTournamentEngine = tournamentEngineAsync();
+const asyncCompetitionEngine = competitionEngineAsync();
+```
+
+:::note
+There is no need to define a "stateProvider" for synchronous use, but it is possible to provide an alternate implementation.
+:::

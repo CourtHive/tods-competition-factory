@@ -100,7 +100,7 @@ test('accessorValues can filter participants by sex', () => {
   expect(tournamentParticipants.length).toEqual(0);
 });
 
-it.only('can accept a privacy policy to filter tournament participants attributes', () => {
+it('can accept a privacy policy to filter tournament participants attributes', () => {
   const participantsProfile = {
     participantsCount: 100,
     nationalityCodesCount: 10,
