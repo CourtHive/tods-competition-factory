@@ -12,6 +12,7 @@ module.exports = {
         'concepts/actions',
         'concepts/accessors',
         'concepts/context',
+        'concepts/globalState',
         'concepts/matchUpFormat',
         {
           Policies: [
