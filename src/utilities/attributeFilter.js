@@ -1,5 +1,6 @@
 export function attributeFilter({ source, template }) {
   const target = {};
+
   attributeCopy(source, template, target);
   return target;
 
@@ -12,13 +13,13 @@ export function attributeFilter({ source, template }) {
         const tobj = templateObject[vKeys[k]];
         const vobj = valuesObject[vKeys[k]];
         if (tobj && typeof tobj === 'object' && typeof vobj !== 'function') {
-          if (tobj.constructor !== Array) {
+          if (vobj.constructor !== Array) {
             outputObject[vKeys[k]] = {};
             attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
-          } else if (tobj.length) {
+          } else if (vobj.length) {
             outputObject[vKeys[k]] = (vobj || []).map((arrayMember) => {
               const target = {};
-              attributeCopy(arrayMember, tobj[0], target);
+              attributeCopy(arrayMember, tobj, target);
               return target;
             });
           }
