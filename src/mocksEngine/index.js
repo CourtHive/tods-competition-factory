@@ -1,4 +1,5 @@
-import { setDevContext } from '../global/globalState';
+import { deleteNotices, setDevContext } from '../global/globalState';
+import { notifySubscribers } from '../global/notifySubscribers';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {
@@ -18,7 +19,10 @@ export const mocksEngine = (function () {
 
   // enable Middleware
   function engineInvoke(fx, params) {
-    return fx({ ...params });
+    const result = fx({ ...params });
+    if (!result?.error) notifySubscribers();
+    deleteNotices();
+    return result;
   }
 
   function importGovernors(governors) {

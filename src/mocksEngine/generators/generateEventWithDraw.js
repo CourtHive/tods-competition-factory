@@ -6,9 +6,7 @@ import { generateDrawDefinition } from '../../tournamentEngine/generators/genera
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
-import { tournamentEngine } from '../../tournamentEngine/sync';
-import { generateRange, intersection } from '../../utilities';
-import { utilities } from '../..';
+import { generateRange, intersection, UUID } from '../../utilities';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -49,7 +47,7 @@ export function generateEventWithDraw({
   if (!participantsCount || participantsCount > drawSize)
     participantsCount = drawSize;
 
-  const eventId = utilities.UUID();
+  const eventId = UUID();
   const newEvent = { eventId, eventName, eventType, category, tieFormat };
 
   let result = addEvent({ tournamentRecord, event: newEvent });
@@ -217,7 +215,6 @@ export function generateEventWithDraw({
           event,
         });
         result = completeDrawMatchUps({
-          tournamentEngine,
           drawDefinition,
           matchUpFormat,
           randomWinningSide,
