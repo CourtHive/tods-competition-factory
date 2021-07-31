@@ -117,6 +117,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
+    tournamentRecord,
     seedingScaleName,
     structureOptions,
     matchUpFormat,

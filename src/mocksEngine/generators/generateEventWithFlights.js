@@ -132,6 +132,7 @@ export function generateEventWithFlights({
       drawEntries,
       matchUpFormat,
       matchUpType: eventType,
+      tournamentRecord,
     });
     let result = addDrawDefinition({
       drawDefinition,
