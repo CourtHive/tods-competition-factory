@@ -1,7 +1,6 @@
-import { participantPolicyDefinitionFilter } from './participantPolicyDefinitionFilter';
+import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { addParticipantContext } from './addParticipantContext';
 import { filterParticipants } from './filterParticipants';
-import { makeDeepCopy } from '../../../utilities';
 
 import {
   INVALID_OBJECT,
@@ -27,32 +26,24 @@ export function getTournamentParticipants({
   participantFilters = {},
   policyDefinition,
 
-  inContext,
-  convertExtensions,
   withStatistics,
   withOpponents,
   withMatchUps,
   withEvents,
   withDraws,
+
+  convertExtensions,
+  inContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) return { error: MISSING_PARTICIPANTS };
 
-  let tournamentParticipants = participantPolicyDefinitionFilter({
-    participants: tournamentRecord.participants,
-    policyDefinition,
-    convertExtensions,
-  });
+  let tournamentParticipants = tournamentRecord.participants.map(
+    (participant) => makeDeepCopy(participant, convertExtensions)
+  );
 
   if (typeof participantFilters !== 'object')
     return { error: INVALID_OBJECT, participantFilters };
-
-  if (participantFilters)
-    tournamentParticipants = filterParticipants({
-      tournamentRecord,
-      participantFilters,
-      participants: tournamentParticipants,
-    });
 
   if (inContext) {
     tournamentParticipants?.forEach((participant) => {
@@ -68,6 +59,13 @@ export function getTournamentParticipants({
     });
   }
 
+  if (participantFilters)
+    tournamentParticipants = filterParticipants({
+      tournamentRecord,
+      participantFilters,
+      participants: tournamentParticipants,
+    });
+
   if (withMatchUps || withStatistics || withOpponents) {
     addParticipantContext({
       tournamentRecord,
@@ -79,6 +77,16 @@ export function getTournamentParticipants({
       withEvents,
       withDraws,
     });
+  }
+
+  const participantAttributes = policyDefinition?.participant;
+  if (participantAttributes?.participant) {
+    tournamentParticipants = tournamentParticipants.map((participant) =>
+      attributeFilter({
+        source: participant,
+        template: participantAttributes.participant,
+      })
+    );
   }
 
   return { tournamentParticipants };

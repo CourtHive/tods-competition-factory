@@ -1,10 +1,49 @@
-import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
-import { MALE } from '../../../constants/genderConstants';
+import { FEMALE, MALE } from '../../../constants/genderConstants';
+
+const privacyPolicy = {
+  [POLICY_TYPE_PARTICIPANT]: {
+    policyName: 'Participant Privacy Policy',
+    participant: {
+      individualParticipants: {
+        participantName: true,
+        participantOtherName: true,
+        participantId: true,
+        participantRole: true,
+        participantStatus: true,
+        representing: true,
+        participantType: true,
+        person: {
+          nationalityCode: true,
+          otherNames: true,
+          sex: false,
+          standardFamilyName: true,
+          standardGivenName: true,
+        },
+      },
+      individualParticipantIds: true,
+      participantName: true,
+      participantOtherName: true,
+      participantId: true,
+      participantRole: true,
+      participantStatus: true,
+      representing: true,
+      participantType: true,
+      person: {
+        nationalityCode: true,
+        otherNames: true,
+        sex: false,
+        standardFamilyName: true,
+        standardGivenName: true,
+      },
+    },
+  },
+};
 
 it('can retrieve tournament participants', () => {
   const participantsProfile = {
@@ -43,20 +82,58 @@ it('can retrieve tournament participants', () => {
   expect(tournamentParticipants.length).toEqual(150);
 });
 
-it('can accept a privacy policy to filter tournament participants attributes', () => {
+test('accessorValues can filter participants by sex', () => {
   const participantsProfile = {
-    participantsCount: 10,
+    participantsCount: 100,
     nationalityCodesCount: 10,
-    sex: MALE,
+    sex: FEMALE,
   };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile,
   });
   tournamentEngine.setState(tournamentRecord);
 
+  const accessorValues = [{ accessor: 'person.sex', value: MALE }];
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
+    participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
   });
+  expect(tournamentParticipants.length).toEqual(0);
+});
+
+it.only('can accept a privacy policy to filter tournament participants attributes', () => {
+  const participantsProfile = {
+    participantsCount: 100,
+    nationalityCodesCount: 10,
+    participantType: PAIR,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+  tournamentEngine.setState(tournamentRecord);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+
+  const participantTypes = tournamentParticipants.reduce(
+    (types, participant) =>
+      types.includes(participant.participantType)
+        ? types
+        : types.concat(participant.participantType),
+    []
+  );
+  expect(participantTypes.length).toEqual(2);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  }));
+  const participantGenders = tournamentParticipants.reduce(
+    (genders, participant) =>
+      genders.includes(participant.person.sex)
+        ? genders
+        : genders.concat(participant.person.sex),
+    []
+  );
+  expect(participantGenders.length).toEqual(2);
+
   let personAttributes = Object.keys(tournamentParticipants[0].person);
   expect(personAttributes).toEqual([
     'addresses',
@@ -68,38 +145,55 @@ it('can accept a privacy policy to filter tournament participants attributes', (
     'sex',
   ]);
 
-  const privacyPolicy = {
-    [POLICY_TYPE_PARTICIPANT]: {
-      policyName: 'Participant Privacy Policy',
-      participant: {
-        name: true,
-        individualParticipants: true,
-        individualParticipantIds: true,
-        participantName: true,
-        participantOtherName: true,
-        participantId: true,
-        participantRole: true,
-        participantStatus: true,
-        representing: true,
-        participantType: true,
-        person: {
-          nationalityCode: true,
-          otherNames: true,
-          sex: false,
-          standardFamilyName: true,
-          standardGivenName: true,
-        },
-      },
-    },
-  };
+  // first filter for only MALE participants and capture the count
+  // this will change for every test run since gendered particpants are genderated randomly
+  let accessorValues = [{ accessor: 'person.sex', value: MALE }];
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { participantTypes: [INDIVIDUAL] },
+    participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
+  }));
+  const maleParticpantsCount = tournamentParticipants.length;
+
+  // check that the privacy policy has not removed the gender/sex until after filtering has occurred
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
     policyDefinition: privacyPolicy,
   }));
+  expect(tournamentParticipants.length).toEqual(maleParticpantsCount);
+
   personAttributes = Object.keys(tournamentParticipants[0].person);
   expect(personAttributes).toEqual([
     'standardFamilyName',
     'standardGivenName',
     'nationalityCode',
   ]);
+
+  accessorValues = [
+    // this only specifies that at least one if the individualParticipants must be MALE
+    { accessor: 'individualParticipants.person.sex', value: MALE },
+  ];
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [PAIR], accessorValues },
+    inContext: true,
+  }));
+
+  tournamentParticipants.forEach((participant) => {
+    const individualGenders = participant.individualParticipants.map(
+      ({ person }) => person.sex
+    );
+    expect(individualGenders.includes(MALE)).toEqual(true);
+  });
+
+  // now apply privacyPolicy and filter out gender
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [PAIR], accessorValues },
+    policyDefinition: privacyPolicy,
+    inContext: true,
+  }));
+  tournamentParticipants.forEach((participant) => {
+    expect(participant.individualParticipants.length).toEqual(2);
+    participant.individualParticipants.forEach((individual) => {
+      expect(Object.keys(individual.person).length).toBeGreaterThan(0);
+      expect(individual.person.sex).toBeUndefined();
+    });
+  });
 });

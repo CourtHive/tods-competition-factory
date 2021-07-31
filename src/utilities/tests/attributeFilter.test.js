@@ -1,6 +1,7 @@
 import { attributeFilter } from '../attributeFilter';
-import { MALE } from '../../constants/genderConstants';
+
 import { INDIVIDUAL } from '../../constants/participantTypes';
+import { MALE } from '../../constants/genderConstants';
 
 it('can filter attributes from arrays of object', () => {
   const privacy = {
@@ -10,15 +11,13 @@ it('can filter attributes from arrays of object', () => {
     participantStatus: false,
     participantType: true,
     person: {
-      addresses: [
-        {
-          city: 'Cuernavaca',
-          state: 'Morelos',
-          countryCode: false,
-          addressLine1: false,
-          addressLine2: false,
-        },
-      ],
+      addresses: {
+        city: 'Cuernavaca',
+        state: 'Morelos',
+        countryCode: false,
+        addressLine1: false,
+        addressLine2: false,
+      },
       birthDate: false,
       nationalityCode: true,
       nativeFamilyName: false,

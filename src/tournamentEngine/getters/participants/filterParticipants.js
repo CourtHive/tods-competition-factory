@@ -48,7 +48,7 @@ export function filterParticipants({
       (!participantRoles ||
         (isValidFilterArray(participantRoles) &&
           participantRoles.includes(participant.participantRole))) &&
-      (!accessorValues ||
+      (!accessorValues?.length ||
         (isValidFilterArray(accessorValues) &&
           participantHasAccessorValues(participant)))
     );
