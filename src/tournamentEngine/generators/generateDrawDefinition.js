@@ -235,30 +235,29 @@ export function generateDrawDefinition(params) {
       eventType,
     };
 
-    const rankingScaleAttributes = {
-      scaleType: RANKING,
-      scaleName: categoryName || ageCategoryCode,
-      eventType,
-    };
-
-    const { scaledEntries: seedingScaledEntries } = getScaledEntries({
+    let { scaledEntries } = getScaledEntries({
       scaleAttributes: seedingScaleAttributes,
       tournamentRecord,
       entries,
       stage,
     });
 
-    const { scaledEntries: rankingScaledEntries } = getScaledEntries({
-      scaleAttributes: rankingScaleAttributes,
-      tournamentRecord,
-      entries,
-      stage,
-    });
+    if (!scaledEntries.length && seedByRanking) {
+      const rankingScaleAttributes = {
+        scaleType: RANKING,
+        scaleName: categoryName || ageCategoryCode,
+        eventType,
+      };
 
-    // Attempt to seed based on seeding scaled entries and then rank scaled entries
-    const scaledEntries = seedingScaledEntries?.length
-      ? seedingScaledEntries
-      : (seedByRanking && rankingScaledEntries) || [];
+      ({ scaledEntries } = getScaledEntries({
+        scaleAttributes: rankingScaleAttributes,
+        tournamentRecord,
+        entries,
+        stage,
+      }));
+    }
+
+    scaledEntries = scaledEntries || [];
 
     const scaledEntriesCount = scaledEntries?.length || 0;
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
