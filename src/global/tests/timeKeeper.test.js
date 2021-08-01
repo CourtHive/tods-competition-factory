@@ -32,10 +32,10 @@ it.only('can keep time for various processes', async () => {
   expect(result.length).toEqual(3);
 
   result = timeKeeper('report', 'firstTimer');
-  expect(result.elapsedTime).toBeGreaterThan(2);
+  expect(+result.elapsedTime).toBeGreaterThan(2);
 
   result = timeKeeper('report', 'secondTimer');
-  expect(result.elapsedTime).toBeLessThan(2);
+  expect(+result.elapsedTime).toBeLessThan(2);
 
   result = timeKeeper('stop', 'firstTimer');
   expect(result.state).toEqual('stopped');
@@ -45,10 +45,12 @@ it.only('can keep time for various processes', async () => {
   result = await getAllTimers(2000);
 
   result = timeKeeper('report', 'secondTimer');
-  expect(result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
+  expect(+result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
 
   result = timeKeeper('report', 'firstTimer');
-  expect(result.elapsedTime).toEqual(firstTimerElapsedTime);
+  expect(parseFloat(result.elapsedTime).toFixed(2)).toEqual(
+    parseFloat(firstTimerElapsedTime).toFixed(2)
+  );
 
   result = timeKeeper('start', 'firstTimer');
   expect(result.state).toEqual('active');
@@ -57,7 +59,7 @@ it.only('can keep time for various processes', async () => {
   result = await getAllTimers(500);
 
   result = timeKeeper('report', 'firstTimer');
-  expect(result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
+  expect(+result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
 
   result = timeKeeper('reset', 'allTimers');
   expect(result).toEqual(true);
