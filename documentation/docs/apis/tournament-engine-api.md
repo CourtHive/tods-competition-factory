@@ -980,7 +980,7 @@ const drawDefinitionValues = {
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
   seededParticipants, // optional - { participantId, seedNumber, seedValue }
   seedingScaleName, // optional - custom scale for determining seeded participants
-  seedingProfile, // optional - used to specify WATERFALL seeding for ROUND_ROBIN
+  seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
   qualifyingRound, // optional - used to derive roundLimit
   structureOptions, // optional - for ROUND_ROBIN - { groupSize, playoffGroups }
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions

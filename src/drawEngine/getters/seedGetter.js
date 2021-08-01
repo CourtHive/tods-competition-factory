@@ -78,7 +78,6 @@ export function getValidSeedBlocks({
 
     ({ validSeedBlocks } = constructContainerBlocks({
       seedingProfile,
-      // seedBlocks,
       structure,
     }));
   } else if (uniqueDrawPositionsByRound.length) {
