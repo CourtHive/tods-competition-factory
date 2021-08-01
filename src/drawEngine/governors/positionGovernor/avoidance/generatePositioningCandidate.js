@@ -1,7 +1,8 @@
-import { getSwapOptions } from './getSwapOptions';
-import { getAvoidanceConflicts } from './getAvoidanceConflicts';
-import { getParticipantPlacement } from './getParticipantPlacement';
+import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { getPositionedParticipants } from './getPositionedParticipants';
+import { getParticipantPlacement } from './getParticipantPlacement';
+import { getAvoidanceConflicts } from './getAvoidanceConflicts';
+import { getSwapOptions } from './getSwapOptions';
 import {
   chunkArray,
   generateRange,
@@ -75,12 +76,19 @@ export function generatePositioningCandidate(params) {
     .filter((assignment) => !assignment.participantId)
     .map((assignment) => assignment.drawPosition);
 
+  const targetGroups = getAttributeGroupings({
+    participants: participantsWithContext,
+    idCollections,
+    policyAttributes,
+    targetParticipantIds: params.unseededParticipantIds,
+  });
+
   generateRange(0, opponentsToPlaceCount).forEach(() => {
     const { newGroupKey, selectedParticipantId, targetDrawPosition } =
       getParticipantPlacement({
         ...params,
         groupKey,
-        idCollections,
+        targetGroups,
         candidatePositionAssignments,
       });
     groupKey = newGroupKey;
