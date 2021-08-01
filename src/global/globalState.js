@@ -90,7 +90,9 @@ export function timeKeeper(action = 'reset', timer = 'default') {
               ? 0
               : (timeNow - currentTimer.startTime) / 1000;
           return {
-            elapsedTime: currentTimer.elapsedTime + elapsedPeriod,
+            elapsedTime: parseFloat(
+              currentTimer.elapsedTime + elapsedPeriod
+            ).toFixed(2),
             timer,
             state: globalState.timers[timer].state,
           };
@@ -102,7 +104,9 @@ export function timeKeeper(action = 'reset', timer = 'default') {
           ? 0
           : (timeNow - globalState.timers[timer].startTime) / 1000;
       return {
-        elapsedTime: globalState.timers[timer].elapsedTime + elapsedPeriod,
+        elapsedTime: parseFloat(
+          globalState.timers[timer].elapsedTime + elapsedPeriod
+        ).toFixed(2),
         timer,
         state: globalState.timers[timer].state,
       };
