@@ -7,12 +7,12 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
+import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
@@ -84,7 +84,7 @@ export function positionUnseededParticipants({
   }
 
   if (avoidance && participants) {
-    return randomUnseededSeparation({
+    const result = randomUnseededSeparation({
       unseededParticipantIds,
       candidatesCount,
       drawDefinition,
@@ -96,8 +96,9 @@ export function positionUnseededParticipants({
       matchUpsMap,
       inContextDrawMatchUps,
     });
+    return result;
   } else {
-    return randomUnseededDistribution({
+    const result = randomUnseededDistribution({
       unseededParticipantIds,
       unfilledDrawPositions,
       drawDefinition,
@@ -106,6 +107,7 @@ export function positionUnseededParticipants({
       matchUpsMap,
       inContextDrawMatchUps,
     });
+    return result;
   }
 }
 

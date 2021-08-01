@@ -1,4 +1,3 @@
-import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { randomMember } from '../../../../utilities';
 
 /**
@@ -16,42 +15,44 @@ import { randomMember } from '../../../../utilities';
  */
 
 export function getNextParticipantId({
-  participants,
-  policyAttributes,
-  targetParticipantIds,
-
   groupKey,
-  idCollections,
+  targetGroups,
   largestFirst = true,
+  targetParticipantIds,
   useSpecifiedGroupKey = false,
 }) {
-  const targetGroups = getAttributeGroupings({
-    participants,
-    idCollections,
-    policyAttributes,
-    targetParticipantIds,
-  });
-  const largestGroupSize = Object.keys(targetGroups).reduce(
+  const groupings = Object.assign(
+    {},
+    ...Object.keys(targetGroups)
+      .map((group) => [
+        group,
+        targetGroups[group].filter((id) => targetParticipantIds.includes(id)),
+      ])
+      .filter((item) => item[1].length)
+      .map(([group, ids]) => ({ [group]: ids }))
+  );
+
+  const largestGroupSize = Object.keys(groupings).reduce(
     (size, key) =>
-      targetGroups[key].length > size ? targetGroups[key].length : size,
+      groupings[key].length > size ? groupings[key].length : size,
     0
   );
-  const largestSizedGroupings = Object.keys(targetGroups).filter(
-    (key) => targetGroups[key].length === largestGroupSize
+  const largestSizedGroupings = Object.keys(groupings).filter(
+    (key) => groupings[key].length === largestGroupSize
   );
 
   const randomGroupKey = largestFirst
     ? randomMember(largestSizedGroupings)
-    : randomMember(Object.keys(targetGroups));
+    : randomMember(Object.keys(groupings));
 
   groupKey =
-    useSpecifiedGroupKey && targetGroups[groupKey]?.length
+    useSpecifiedGroupKey && groupings[groupKey]?.length
       ? groupKey
       : randomGroupKey;
 
   const participantId =
-    groupKey && targetGroups[groupKey]
-      ? randomMember(targetGroups[groupKey])
+    groupKey && groupings[groupKey]
+      ? randomMember(groupings[groupKey])
       : randomMember(targetParticipantIds);
   return { participantId, groupKey };
 }

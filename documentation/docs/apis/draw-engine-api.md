@@ -489,7 +489,7 @@ drawEngine.generateDrawType({
   playoffMatchUpFormat, // optional - default playoffMatchUpFormat
 
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions
-  seedingProfile, // optional - applies only to WATERFALL seeding in ROUND_ROBIN structures
+  seedingProfile, // optional - WATERFALL seeding for ROUND_ROBIN structures, CLUSTER or SEPARATE seeding for elimination structures
   feedPolicy, // optional - provides fine-grain control for FEED_IN_CONSOLATION feed links
 
   qualifyingRound, // optional - for qualifying draw structures, roundNumber to win to qualify

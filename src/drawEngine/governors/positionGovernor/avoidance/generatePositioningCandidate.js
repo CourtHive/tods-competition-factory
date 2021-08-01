@@ -1,7 +1,7 @@
-import { getSwapOptions } from './getSwapOptions';
-import { getAvoidanceConflicts } from './getAvoidanceConflicts';
-import { getParticipantPlacement } from './getParticipantPlacement';
 import { getPositionedParticipants } from './getPositionedParticipants';
+import { getParticipantPlacement } from './getParticipantPlacement';
+import { getAvoidanceConflicts } from './getAvoidanceConflicts';
+import { getSwapOptions } from './getSwapOptions';
 import {
   chunkArray,
   generateRange,
@@ -9,7 +9,7 @@ import {
   randomPop,
 } from '../../../../utilities';
 
-import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
+// import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
 /**
@@ -35,38 +35,16 @@ export function generatePositioningCandidate(params) {
     opponentsToPlaceCount,
     drawPositionGroups,
     policyAttributes,
-    // entries,
+
+    idCollections,
+    targetGroups,
   } = params;
 
-  const errors = [],
-    idCollections = {};
+  const errors = [];
   let groupKey;
 
   const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
   const isRoundRobin = groupSize > 2;
-
-  // scope the idCollections to entered participants to reduce processing
-  /*
-  const enteredParticipantIds =
-    entries?.map(({ participantId }) => participantId) || [];
-  const enteredParticipantFilter = (participant) =>
-    participant.individualParticipantIds?.length &&
-    intersection(participant.individualParticipantIds, enteredParticipantIds)
-      .length;
-  const relevantContextParticipants = participantsWithContext.filter(
-    enteredParticipantFilter
-  );
-  */
-
-  idCollections.groupParticipants = participantsWithContext
-    .filter((participant) => participant.participantType === GROUP)
-    .map((participant) => participant.participantId);
-  idCollections.teamParticipants = participantsWithContext
-    .filter((participant) => participant.participantType === TEAM)
-    .map((participant) => participant.participantId);
-  idCollections.pairParticipants = participantsWithContext
-    .filter((participant) => participant.participantType === PAIR)
-    .map((participant) => participant.participantId);
 
   const candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
 
@@ -80,7 +58,7 @@ export function generatePositioningCandidate(params) {
       getParticipantPlacement({
         ...params,
         groupKey,
-        idCollections,
+        targetGroups,
         candidatePositionAssignments,
       });
     groupKey = newGroupKey;

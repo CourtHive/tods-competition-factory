@@ -23,29 +23,29 @@ import {
  *
  */
 export function organizeDrawPositionOptions({
-  allGroups,
-  isRoundRobin,
-  unfilledPositions,
-  drawPositionChunks,
-  positionAssignments,
   selectedParticipantGroups,
+  participantIdGroups,
+  positionAssignments,
+  drawPositionChunks,
+  unfilledPositions,
+  isRoundRobin,
 }) {
   const vettedChunks = drawPositionChunks.map((chunkedDrawPositions) => {
     if (isRoundRobin) {
       return analyzeRoundRobinDrawPositions({
-        allGroups,
-        unfilledPositions,
-        positionAssignments,
-        chunkedDrawPositions,
         groupsToAvoid: selectedParticipantGroups,
+        chunkedDrawPositions,
+        participantIdGroups,
+        positionAssignments,
+        unfilledPositions,
       });
     } else {
       return analyzeEliminationDrawPositions({
-        allGroups,
-        unfilledPositions,
-        positionAssignments,
-        chunkedDrawPositions,
         groupsToAvoid: selectedParticipantGroups,
+        chunkedDrawPositions,
+        participantIdGroups,
+        positionAssignments,
+        unfilledPositions,
       });
     }
   });

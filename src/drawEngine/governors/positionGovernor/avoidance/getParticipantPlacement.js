@@ -1,22 +1,20 @@
-import { randomPop } from '../../../../utilities/arrays';
-
 import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
+import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
 import { getUnfilledPositions } from './getUnfilledPositions';
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getNextParticipantId } from './getNextParticipantId';
+import { randomPop } from '../../../../utilities/arrays';
 
 export function getParticipantPlacement({
-  groupKey,
-  allGroups,
-  idCollections,
-  pairedPriority,
-  policyAttributes,
-  drawPositionGroups,
-  drawPositionChunks,
-  unseededParticipantIds,
-  participantsWithContext,
   candidatePositionAssignments,
+  unseededParticipantIds,
+  participantIdGroups,
+  drawPositionChunks,
+  drawPositionGroups,
+  pairedPriority,
+  targetGroups,
+  allGroups,
+  groupKey,
 }) {
   const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
     return group.length > largest ? group.length : largest;
@@ -36,11 +34,9 @@ export function getParticipantPlacement({
   const { participantId: selectedParticipantId, groupKey: newGroupKey } =
     getNextParticipantId({
       groupKey,
-      idCollections,
-      policyAttributes,
+      targetGroups,
       targetParticipantIds,
       useSpecifiedGroupKey,
-      participants: participantsWithContext,
     });
 
   const selectedParticipantGroups = getParticipantGroups({
@@ -49,13 +45,14 @@ export function getParticipantPlacement({
   });
 
   const drawPositionOptions = organizeDrawPositionOptions({
-    allGroups,
-    largestGroupSize,
-    unfilledPositions,
-    drawPositionChunks,
-    isRoundRobin: useSpecifiedGroupKey,
     positionAssignments: candidatePositionAssignments,
+    isRoundRobin: useSpecifiedGroupKey,
     selectedParticipantGroups,
+    participantIdGroups,
+    drawPositionChunks,
+    unfilledPositions,
+    largestGroupSize,
+    allGroups,
   });
   const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
 

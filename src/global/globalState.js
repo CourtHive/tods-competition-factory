@@ -5,6 +5,7 @@ import { MISSING_VALUE } from '../constants/errorConditionConstants';
 
 const globalState = {
   devContext: undefined,
+  timers: { default: { elapsedTime: 0 } },
   deepCopy: true,
 };
 
@@ -70,6 +71,71 @@ export function getDevContext(contextCriteria) {
       (key) => globalState.devContext[key] === contextCriteria[key]
     );
   }
+}
+
+export function timeKeeper(action = 'reset', timer = 'default') {
+  const timeNow = new Date().getTime();
+
+  if (action === 'report') {
+    if (timer === 'allTimers') {
+      const timers = Object.keys(globalState.timers);
+      const report = timers
+        .filter(
+          (timer) => timer !== 'default' || globalState.timers[timer].startTime
+        )
+        .map((timer) => {
+          const currentTimer = globalState.timers[timer];
+          const elapsedPeriod =
+            currentTimer.state === 'stopped'
+              ? 0
+              : (timeNow - currentTimer.startTime) / 1000;
+          return {
+            elapsedTime: parseFloat(
+              currentTimer.elapsedTime + elapsedPeriod
+            ).toFixed(2),
+            timer,
+            state: globalState.timers[timer].state,
+          };
+        });
+      return report;
+    } else {
+      const elapsedPeriod =
+        globalState.timers[timer].state === 'stopped'
+          ? 0
+          : (timeNow - globalState.timers[timer].startTime) / 1000;
+      return {
+        elapsedTime: parseFloat(
+          globalState.timers[timer].elapsedTime + elapsedPeriod
+        ).toFixed(2),
+        timer,
+        state: globalState.timers[timer].state,
+      };
+    }
+  }
+
+  if (!globalState.timers[timer] || action === 'reset') {
+    if (timer === 'allTimers') {
+      globalState.timers = { default: { elapsedTime: 0 } };
+      return true;
+    } else {
+      globalState.timers[timer] = {
+        elapsedTime: 0,
+        startTime: timeNow,
+        state: 'active',
+      };
+    }
+  }
+
+  action === 'stop' &&
+    globalState.timers[timer].state !== 'stopped' &&
+    (globalState.timers[timer].state = 'stopped') &&
+    (globalState.timers[timer].elapsedTime +=
+      (timeNow - globalState.timers[timer].startTime) / 1000);
+  action === 'start' &&
+    (globalState.timers[timer].startTime = timeNow) &&
+    (globalState.timers[timer].state = 'active');
+
+  return globalState.timers[timer];
 }
 
 export function setDevContext(value) {

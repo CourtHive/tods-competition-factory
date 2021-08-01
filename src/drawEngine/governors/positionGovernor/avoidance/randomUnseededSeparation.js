@@ -14,6 +14,7 @@ import {
 } from '../../../../utilities';
 
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
+import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -79,6 +80,34 @@ export function randomUnseededSeparation({
     targetParticipantIds: unseededParticipantIds,
   });
 
+  const idCollections = {};
+  idCollections.groupParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === GROUP)
+    .map((participant) => participant.participantId);
+  idCollections.teamParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === TEAM)
+    .map((participant) => participant.participantId);
+  idCollections.pairParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === PAIR)
+    .map((participant) => participant.participantId);
+
+  const targetGroups = getAttributeGroupings({
+    participants: participantsWithContext,
+    idCollections,
+    policyAttributes,
+    targetParticipantIds: unseededParticipantIds,
+  });
+
+  const participantIdGroups = Object.assign(
+    {},
+    ...unseededParticipantIds.map((participantId) => {
+      const groups = Object.keys(allGroups).filter((key) =>
+        allGroups[key].includes(participantId)
+      );
+      return { [participantId]: groups };
+    })
+  );
+
   const unplacedParticipantIds = getUnplacedParticipantIds({
     participantIds: unseededParticipantIds,
     positionAssignments,
@@ -88,24 +117,9 @@ export function randomUnseededSeparation({
     return { error: 'More participantIds than unpaired positions' };
   }
 
+  let candidate;
   const errors = [];
   const opponentsToPlaceCount = unplacedParticipantIds.length;
-
-  const pairedPriorityCandidates = generateRange(0, candidatesCount).map(() =>
-    generatePositioningCandidate({
-      initialPositionAssignments: positionAssignments,
-      participantsWithContext,
-      unseededParticipantIds,
-      opponentsToPlaceCount,
-      drawPositionChunks,
-      drawPositionGroups,
-      allGroups,
-
-      entries,
-      policyAttributes,
-      pairedPriority: true,
-    })
-  );
 
   const noPairPriorityCandidates = generateRange(0, candidatesCount).map(() =>
     generatePositioningCandidate({
@@ -115,6 +129,10 @@ export function randomUnseededSeparation({
       opponentsToPlaceCount,
       drawPositionChunks,
       drawPositionGroups,
+
+      participantIdGroups,
+      idCollections,
+      targetGroups,
       allGroups,
 
       policyAttributes,
@@ -122,14 +140,41 @@ export function randomUnseededSeparation({
     })
   );
 
-  const candidates = noPairPriorityCandidates
-    .concat(...pairedPriorityCandidates)
-    .filter((candidate) => !candidate.errors?.length);
-
-  const candidate = candidates.reduce(
+  candidate = noPairPriorityCandidates.reduce(
     (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
     undefined
   );
+
+  if (!candidate || candidate.conflicts) {
+    const pairedPriorityCandidates = generateRange(0, candidatesCount).map(() =>
+      generatePositioningCandidate({
+        initialPositionAssignments: positionAssignments,
+        participantsWithContext,
+        unseededParticipantIds,
+        opponentsToPlaceCount,
+        drawPositionChunks,
+        drawPositionGroups,
+
+        participantIdGroups,
+        idCollections,
+        targetGroups,
+        allGroups,
+
+        entries,
+        policyAttributes,
+        pairedPriority: true,
+      })
+    );
+
+    const candidates = noPairPriorityCandidates
+      .concat(...pairedPriorityCandidates)
+      .filter((candidate) => !candidate.errors?.length);
+
+    candidate = candidates.reduce(
+      (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
+      undefined
+    );
+  }
 
   if (!candidate) return { error: 'Could not produce candidate' };
 
