@@ -1,21 +1,18 @@
-import { randomPop } from '../../../../utilities/arrays';
-
 import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
+import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
 import { getUnfilledPositions } from './getUnfilledPositions';
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getNextParticipantId } from './getNextParticipantId';
+import { randomPop } from '../../../../utilities/arrays';
 
 export function getParticipantPlacement({
   groupKey,
   allGroups,
-  idCollections,
+  targetGroups,
   pairedPriority,
-  policyAttributes,
   drawPositionGroups,
   drawPositionChunks,
   unseededParticipantIds,
-  participantsWithContext,
   candidatePositionAssignments,
 }) {
   const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
@@ -36,11 +33,9 @@ export function getParticipantPlacement({
   const { participantId: selectedParticipantId, groupKey: newGroupKey } =
     getNextParticipantId({
       groupKey,
-      idCollections,
-      policyAttributes,
+      targetGroups,
       targetParticipantIds,
       useSpecifiedGroupKey,
-      participants: participantsWithContext,
     });
 
   const selectedParticipantGroups = getParticipantGroups({
