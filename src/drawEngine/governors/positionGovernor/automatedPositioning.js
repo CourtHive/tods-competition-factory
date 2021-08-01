@@ -20,6 +20,9 @@ export function automatedPositioning({
   participants,
   structureId,
   seedsOnly,
+
+  inContextDrawMatchUps,
+  matchUpsMap,
 }) {
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
@@ -39,15 +42,18 @@ export function automatedPositioning({
 
   let errors = [];
   let byePositionError, seedBlockErrors;
-  const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
-  const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
-    drawDefinition,
-    inContext: true,
-    includeByeMatchUps: true,
+  matchUpsMap = matchUpsMap || getMatchUpsMap({ drawDefinition });
 
-    matchUpsMap,
-  });
+  if (!inContextDrawMatchUps) {
+    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+      drawDefinition,
+      inContext: true,
+      includeByeMatchUps: true,
+
+      matchUpsMap,
+    }));
+  }
 
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
