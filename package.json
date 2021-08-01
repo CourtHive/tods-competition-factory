@@ -15,13 +15,15 @@
     "coverageDirectory": "./benchmarks",
     "coveragePathIgnorePatterns": [
       "benchmarks",
+      "harness",
       "index.ts"
     ],
     "watchPathIgnorePatterns": [
       "generated"
     ],
     "testPathIgnorePatterns": [
-      "benchmarks"
+      "benchmarks",
+      "harness"
     ]
   },
   "homepage": "https://github.com/CourtHive/tods-competition-factory",
