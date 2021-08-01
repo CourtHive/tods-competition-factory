@@ -6,14 +6,15 @@ import { getNextParticipantId } from './getNextParticipantId';
 import { randomPop } from '../../../../utilities/arrays';
 
 export function getParticipantPlacement({
-  groupKey,
-  allGroups,
-  targetGroups,
-  pairedPriority,
-  drawPositionGroups,
-  drawPositionChunks,
-  unseededParticipantIds,
   candidatePositionAssignments,
+  unseededParticipantIds,
+  participantIdGroups,
+  drawPositionChunks,
+  drawPositionGroups,
+  pairedPriority,
+  targetGroups,
+  allGroups,
+  groupKey,
 }) {
   const largestGroupSize = drawPositionGroups.reduce((largest, group) => {
     return group.length > largest ? group.length : largest;
@@ -44,13 +45,14 @@ export function getParticipantPlacement({
   });
 
   const drawPositionOptions = organizeDrawPositionOptions({
-    allGroups,
-    largestGroupSize,
-    unfilledPositions,
-    drawPositionChunks,
-    isRoundRobin: useSpecifiedGroupKey,
     positionAssignments: candidatePositionAssignments,
+    isRoundRobin: useSpecifiedGroupKey,
     selectedParticipantGroups,
+    participantIdGroups,
+    drawPositionChunks,
+    unfilledPositions,
+    largestGroupSize,
+    allGroups,
   });
   const { unassigned, unpaired, pairedNoConflict } = drawPositionOptions;
 

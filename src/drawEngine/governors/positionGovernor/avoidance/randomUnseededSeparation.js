@@ -14,6 +14,7 @@ import {
 } from '../../../../utilities';
 
 import { MISSING_AVOIDANCE_POLICY } from '../../../../constants/errorConditionConstants';
+import { GROUP, PAIR, TEAM } from '../../../../constants/participantTypes';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
@@ -79,6 +80,34 @@ export function randomUnseededSeparation({
     targetParticipantIds: unseededParticipantIds,
   });
 
+  const idCollections = {};
+  idCollections.groupParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === GROUP)
+    .map((participant) => participant.participantId);
+  idCollections.teamParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === TEAM)
+    .map((participant) => participant.participantId);
+  idCollections.pairParticipants = participantsWithContext
+    .filter((participant) => participant.participantType === PAIR)
+    .map((participant) => participant.participantId);
+
+  const targetGroups = getAttributeGroupings({
+    participants: participantsWithContext,
+    idCollections,
+    policyAttributes,
+    targetParticipantIds: unseededParticipantIds,
+  });
+
+  const participantIdGroups = Object.assign(
+    {},
+    ...unseededParticipantIds.map((participantId) => {
+      const groups = Object.keys(allGroups).filter((key) =>
+        allGroups[key].includes(participantId)
+      );
+      return { [participantId]: groups };
+    })
+  );
+
   const unplacedParticipantIds = getUnplacedParticipantIds({
     participantIds: unseededParticipantIds,
     positionAssignments,
@@ -100,6 +129,10 @@ export function randomUnseededSeparation({
       opponentsToPlaceCount,
       drawPositionChunks,
       drawPositionGroups,
+
+      participantIdGroups,
+      idCollections,
+      targetGroups,
       allGroups,
 
       policyAttributes,
@@ -121,6 +154,10 @@ export function randomUnseededSeparation({
         opponentsToPlaceCount,
         drawPositionChunks,
         drawPositionGroups,
+
+        participantIdGroups,
+        idCollections,
+        targetGroups,
         allGroups,
 
         entries,

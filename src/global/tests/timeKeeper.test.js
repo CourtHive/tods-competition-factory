@@ -32,7 +32,7 @@ it.only('can keep time for various processes', async () => {
   expect(result.length).toEqual(3);
 
   result = timeKeeper('report', 'firstTimer');
-  expect(+result.elapsedTime).toBeGreaterThan(2);
+  expect(+result.elapsedTime).toBeGreaterThanOrEqual(2);
 
   result = timeKeeper('report', 'secondTimer');
   expect(+result.elapsedTime).toBeLessThan(2);

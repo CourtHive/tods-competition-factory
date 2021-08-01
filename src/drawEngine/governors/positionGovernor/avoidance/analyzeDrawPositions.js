@@ -1,5 +1,3 @@
-import { intersection } from '../../../../utilities/arrays';
-
 /**
  *
  * @param {string[]} allGroups - group names derived from participant attributes which match policyAttributes
@@ -8,27 +6,27 @@ import { intersection } from '../../../../utilities/arrays';
  *
  */
 function getPositionProfiles({
-  allGroups,
-  groupsToAvoid,
+  participantIdGroups,
   positionAssignments,
+  groupsToAvoid,
 }) {
-  return Object.assign(
+  const positionProfiles = Object.assign(
     {},
     ...positionAssignments
       .filter((assignment) => assignment?.participantId)
       .map((assginment) => {
         const { drawPosition, participantId } = assginment;
-        const participantGroups = getParticipantGroups({
-          allGroups,
-          participantId,
-        });
-        const includesGroupsToAvoid = !!intersection(
-          groupsToAvoid,
-          participantGroups
-        ).length;
+        const participantGroups = participantIdGroups
+          ? participantIdGroups[participantId] || []
+          : [];
+
+        const includesGroupsToAvoid = !!groupsToAvoid.some((group) =>
+          participantGroups.includes(group)
+        );
         return { [drawPosition]: { participantGroups, includesGroupsToAvoid } };
       })
   );
+  return positionProfiles;
 }
 
 /**
