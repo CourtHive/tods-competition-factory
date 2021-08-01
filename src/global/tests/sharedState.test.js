@@ -1,8 +1,11 @@
 import competitionEngine from '../../competitionEngine/sync';
 import tournamentEngine from '../../tournamentEngine/sync';
 import mocksEngine from '../../mocksEngine';
+import { getElapsedTime } from '../globalState';
 
 test('engines share state', () => {
+  let elapsedTime = getElapsedTime();
+  expect(elapsedTime).toEqual(0);
   const { tournamentRecord: firstRecord } =
     mocksEngine.generateTournamentRecord({
       tournamentName: 'First Tournament',
@@ -35,4 +38,7 @@ test('engines share state', () => {
 
   ({ tournamentInfo } = tournamentEngine.getTournamentInfo());
   expect(tournamentInfo.tournamentName).toEqual('Second Tournament');
+
+  elapsedTime = getElapsedTime();
+  expect(elapsedTime).toBeGreaterThan(0);
 });

@@ -5,6 +5,7 @@ import { MISSING_VALUE } from '../constants/errorConditionConstants';
 
 const globalState = {
   devContext: undefined,
+  startTime: undefined,
   deepCopy: true,
 };
 
@@ -70,6 +71,13 @@ export function getDevContext(contextCriteria) {
       (key) => globalState.devContext[key] === contextCriteria[key]
     );
   }
+}
+
+export function getElapsedTime(initialize) {
+  if (!globalState.startTime || initialize)
+    globalState.startTime = new Date().getTime();
+  const currentTime = new Date().getTime();
+  return (currentTime - globalState.startTime) / 1000;
 }
 
 export function setDevContext(value) {
