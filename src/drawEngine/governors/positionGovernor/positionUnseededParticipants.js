@@ -7,12 +7,12 @@ import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../utilities';
 
+import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   WILDCARD,
   DIRECT_ACCEPTANCE,
 } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PLAY_OFF } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   drawDefinition,
