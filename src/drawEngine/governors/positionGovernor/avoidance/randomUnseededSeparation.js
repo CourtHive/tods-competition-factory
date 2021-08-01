@@ -88,24 +88,9 @@ export function randomUnseededSeparation({
     return { error: 'More participantIds than unpaired positions' };
   }
 
+  let candidate;
   const errors = [];
   const opponentsToPlaceCount = unplacedParticipantIds.length;
-
-  const pairedPriorityCandidates = generateRange(0, candidatesCount).map(() =>
-    generatePositioningCandidate({
-      initialPositionAssignments: positionAssignments,
-      participantsWithContext,
-      unseededParticipantIds,
-      opponentsToPlaceCount,
-      drawPositionChunks,
-      drawPositionGroups,
-      allGroups,
-
-      entries,
-      policyAttributes,
-      pairedPriority: true,
-    })
-  );
 
   const noPairPriorityCandidates = generateRange(0, candidatesCount).map(() =>
     generatePositioningCandidate({
@@ -122,14 +107,37 @@ export function randomUnseededSeparation({
     })
   );
 
-  const candidates = noPairPriorityCandidates
-    .concat(...pairedPriorityCandidates)
-    .filter((candidate) => !candidate.errors?.length);
-
-  const candidate = candidates.reduce(
+  candidate = noPairPriorityCandidates.reduce(
     (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
     undefined
   );
+
+  if (!candidate || candidate.conflicts) {
+    const pairedPriorityCandidates = generateRange(0, candidatesCount).map(() =>
+      generatePositioningCandidate({
+        initialPositionAssignments: positionAssignments,
+        participantsWithContext,
+        unseededParticipantIds,
+        opponentsToPlaceCount,
+        drawPositionChunks,
+        drawPositionGroups,
+        allGroups,
+
+        entries,
+        policyAttributes,
+        pairedPriority: true,
+      })
+    );
+
+    const candidates = noPairPriorityCandidates
+      .concat(...pairedPriorityCandidates)
+      .filter((candidate) => !candidate.errors?.length);
+
+    candidate = candidates.reduce(
+      (p, c) => (!p || (c.conflicts || 0) < (p.conflicts || 0) ? c : p),
+      undefined
+    );
+  }
 
   if (!candidate) return { error: 'Could not produce candidate' };
 
