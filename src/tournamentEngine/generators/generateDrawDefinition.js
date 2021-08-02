@@ -171,14 +171,15 @@ export function generateDrawDefinition(params) {
   }
 
   // OPTIMIZE: use drawEngine.addDrawEntries
-  entries.forEach((entry) => {
+  for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
       ...entry,
       entryStage: entry.entryStage || MAIN,
     };
-    drawEngine.addDrawEntry(entryData);
-  });
+    const result = drawEngine.addDrawEntry(entryData);
+    if (result.error) return result;
+  }
 
   const enteredParticipantIds = entries.map(
     ({ participantId }) => participantId

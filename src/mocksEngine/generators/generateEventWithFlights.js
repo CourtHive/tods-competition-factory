@@ -61,15 +61,18 @@ export function generateEventWithFlights({
       ? PAIR
       : eventType;
 
+  const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
+  const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
+
   const stageParticipants = {
     QUALIFYING: participants
       .filter(({ participantType }) => participantType === eventParticipantType)
-      .slice(0, stageParticipantsCount[QUALIFYING]),
+      .slice(0, qualifyingParticipantsCount),
     MAIN: participants
       .filter(({ participantType }) => participantType === eventParticipantType)
       .slice(
-        stageParticipantsCount[QUALIFYING],
-        stageParticipantsCount[QUALIFYING] + stageParticipantsCount[MAIN]
+        qualifyingParticipantsCount,
+        qualifyingParticipantsCount + mainParticipantsCount
       ),
   };
 
@@ -112,7 +115,7 @@ export function generateEventWithFlights({
       });
       if (result.error) return result;
     }
-    const drawEntries = drawParticipantIds.map(({ participantId }) => ({
+    const drawEntries = drawParticipantIds.map((participantId) => ({
       participantId,
       entryStage: stage || MAIN,
       entryStatus: DIRECT_ACCEPTANCE,
@@ -138,6 +141,7 @@ export function generateEventWithFlights({
     const automated = drawProfiles[index].automated;
     const matchUpFormat = drawProfiles[index].matchUpFormat;
     const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
+
     const { drawDefinition } = generateDrawDefinition({
       stage,
       drawId,
@@ -148,6 +152,7 @@ export function generateEventWithFlights({
       automated,
       tieFormat,
       drawEntries,
+      participants,
       matchUpFormat,
       matchUpType: eventType,
       tournamentRecord,

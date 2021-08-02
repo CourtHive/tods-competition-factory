@@ -25,6 +25,7 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
     type: AGE,
   };
   const doublesDrawSize = 32;
+  const singlesDrawSize = 64;
   const eventProfiles = [
     {
       category,
@@ -46,7 +47,7 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
       surfaceCategory: CLAY,
       drawProfiles: [
         {
-          drawSize: 64,
+          drawSize: singlesDrawSize,
           drawType: FIRST_MATCH_LOSER_CONSOLATION,
         },
       ],
@@ -127,4 +128,13 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
   }));
 
   expect(tournamentParticipants.length).toEqual(doublesDrawSize);
+
+  eventIds.forEach((eventId) => {
+    const { event } = tournamentEngine.getEvent({ eventId });
+    const eventEntriesCount = event.entries.length;
+    expect(eventEntriesCount).toBeGreaterThan(0);
+    event.drawDefinitions.forEach((drawDefinition) => {
+      expect(drawDefinition.entries.length).toEqual(eventEntriesCount);
+    });
+  });
 });
