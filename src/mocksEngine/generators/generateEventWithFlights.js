@@ -15,6 +15,7 @@ import {
   MAIN,
   QUALIFYING,
   ROUND_ROBIN_WITH_PLAYOFF,
+  SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithFlights({
@@ -80,8 +81,13 @@ export function generateEventWithFlights({
   const { event } = result;
 
   for (const drawProfile of drawProfiles) {
-    const { stage, drawName, drawType, drawSize, qualifyingPositions } =
-      drawProfile;
+    const {
+      stage,
+      drawName,
+      drawType = SINGLE_ELIMINATION,
+      drawSize,
+      qualifyingPositions,
+    } = drawProfile;
     const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
     const drawParticipantIds = (stageParticipants[stage || MAIN] || [])
       .slice(0, entriesCount)
@@ -109,14 +115,16 @@ export function generateEventWithFlights({
       drawEntries,
       qualifyingPositions,
     });
-    if (result.error) return result;
+    if (result.error) {
+      return result;
+    }
   }
 
   const drawIds = [];
   const { flightProfile } = getFlightProfile({ event });
   const success = flightProfile?.flights?.every((flight, index) => {
     const { drawId, drawSize, stage, drawName, drawEntries } = flight;
-    const drawType = drawProfiles[index].drawType;
+    const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
     const automated = drawProfiles[index].automated;
     const matchUpFormat = drawProfiles[index].matchUpFormat;
     const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
@@ -138,7 +146,9 @@ export function generateEventWithFlights({
       drawDefinition,
       event,
     });
-    if (result.error) return false;
+    if (result.error) {
+      return false;
+    }
     drawIds.push(flight.drawId);
 
     const manual = automated === false;

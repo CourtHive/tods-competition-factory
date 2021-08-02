@@ -59,9 +59,12 @@ export function generateParticipants({
     return count;
   }
 
-  const { cities } = cityMocks({ count: citiesCount });
-  const { states } = stateMocks({ count: statesCount });
-  const { postalCodes } = postalCodeMocks({ count: postalCodesCount });
+  const { cities } = cityMocks({ count: citiesCount, participantsCount });
+  const { states } = stateMocks({ count: statesCount, participantsCount });
+  const { postalCodes } = postalCodeMocks({
+    count: postalCodesCount,
+    participantsCount,
+  });
   const addressValues = { cities, states, postalCodes };
 
   const isoMin = getMin(nationalityCodesCount);

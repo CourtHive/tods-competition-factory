@@ -139,13 +139,18 @@ export function generateTournamentRecord({
 
   if (eventProfiles) {
     for (const eventProfile of eventProfiles) {
-      const { eventId, drawIds: generatedDrawIds } = generateEventWithFlights({
+      const {
+        error,
+        eventId,
+        drawIds: generatedDrawIds,
+      } = generateEventWithFlights({
         tournamentRecord,
         completeAllMatchUps,
         randomWinningSide,
         eventProfile,
         participants,
       });
+      if (error) return { error };
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
     }
