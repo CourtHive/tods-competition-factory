@@ -25,6 +25,7 @@ import {
   inPlaceSubSort,
   occurrences,
   subSort,
+  overlap,
 } from '../arrays';
 import { isOdd, nextPowerOf2, powerOf2 } from '../math';
 
@@ -281,4 +282,11 @@ test('miscellaneous array tests', () => {
 
   result = inPlaceSubSort(array, 3, 4, (a, b) => b - a);
   expect(result).toEqual(array);
+});
+
+test('overlap detects the presence of an intersection of two arrays', () => {
+  let hasOverlap = overlap([1, 2], [3, 4, 6, 2, 7]);
+  expect(hasOverlap).toEqual(true);
+  hasOverlap = overlap([1, 2], [3, 4, 6, 7]);
+  expect(hasOverlap).toEqual(false);
 });

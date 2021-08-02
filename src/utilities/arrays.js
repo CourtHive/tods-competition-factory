@@ -81,6 +81,10 @@ export function intersection(a, b) {
     .filter((n) => b.indexOf(n) !== -1)
     .filter((e, i, c) => c.indexOf(e) === i);
 }
+export function overlap(a, b) {
+  if (!Array.isArray(a) || !Array.isArray(b)) return false;
+  return a.some((e) => b.includes(e));
+}
 export function occurrences(val, arr) {
   return (
     arr.reduce((r, val) => {

@@ -5,7 +5,7 @@ import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { modifyMatchUpScore } from '../matchUpGovernor/modifyMatchUpScore';
 import { findStructure } from '../../getters/findStructure';
 import { positionTargets } from './positionTargets';
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -87,7 +87,7 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // insure winnerMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
   // this covers the case where a pre-existing advancement was made
-  if (intersection(sourceDrawPositions, winnerMatchUpDrawPositions).length) {
+  if (overlap(sourceDrawPositions, winnerMatchUpDrawPositions)) {
     winnerMatchUpDrawPositions = winnerMatchUpDrawPositions.filter(
       (drawPosition) => !sourceDrawPositions.includes(drawPosition)
     );

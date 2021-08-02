@@ -3,12 +3,7 @@ import { getRoundMatchUps } from '../accessors/matchUpAccessor/getRoundMatchUps'
 import { getPositionAssignments } from './positionsGetter';
 import { isActiveMatchUp } from './activeMatchUp';
 import { findStructure } from './findStructure';
-import {
-  generateRange,
-  intersection,
-  numericSort,
-  unique,
-} from '../../utilities';
+import { generateRange, overlap, numericSort, unique } from '../../utilities';
 
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 
@@ -71,10 +66,7 @@ export function structureActiveDrawPositions({ drawDefinition, structureId }) {
       previousRoundNumbers.forEach((targetRoundNumber) => {
         roundMatchUps[targetRoundNumber].forEach((targetRoundMatchUp) => {
           if (
-            intersection(
-              dependentDrawPositions,
-              targetRoundMatchUp.drawPositions
-            ).length
+            overlap(dependentDrawPositions, targetRoundMatchUp.drawPositions)
           ) {
             dependentDrawPositions.push(...targetRoundMatchUp.drawPositions);
           }

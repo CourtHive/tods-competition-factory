@@ -7,7 +7,7 @@ import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
 import { addNotice } from '../../../global/globalState';
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
   getMatchUpsMap,
@@ -195,8 +195,7 @@ export function assignMatchUpDrawPosition({
   ) {
     const firstRoundMatchUps = structureMatchUps.filter(
       ({ drawPositions, roundNumber }) =>
-        roundNumber === 1 &&
-        intersection(drawPositions, updatedDrawPositions).length
+        roundNumber === 1 && overlap(drawPositions, updatedDrawPositions)
     );
     const byePropagation = firstRoundMatchUps.every(({ matchUpStatus }) =>
       [COMPLETED, RETIRED].includes(matchUpStatus)

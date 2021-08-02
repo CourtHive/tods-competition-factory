@@ -1,6 +1,6 @@
 import {
   allNumeric,
-  intersection,
+  overlap,
   noNumeric,
   numericSort,
 } from '../../../utilities';
@@ -21,8 +21,8 @@ export function getOrderedDrawPositions({
 
   const targetRoundProfile = roundProfile[roundNumber];
   const displayOrder =
-    targetRoundProfile?.pairedDrawPositions.find(
-      (pair) => intersection(pair || [], drawPositions.filter(Boolean)).length
+    targetRoundProfile?.pairedDrawPositions.find((pair) =>
+      overlap(pair || [], drawPositions.filter(Boolean))
     ) || unassignedDrawPositions;
 
   // ############# IMPORTANT DO NOT CHANGE #################

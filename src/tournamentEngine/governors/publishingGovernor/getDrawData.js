@@ -9,6 +9,7 @@ import {
   generateRange,
   intersection,
   makeDeepCopy,
+  overlap,
   unique,
 } from '../../../utilities';
 
@@ -231,8 +232,8 @@ export function getStructureGroups({ drawDefinition }) {
       const structureIds = linkedStructureIds[index];
       const mergedWithOverlappingIds =
         linkedStructureIds.reduce((biggest, ids) => {
-          const overlap = intersection(structureIds, ids).length;
-          return overlap ? biggest.concat(...ids) : biggest;
+          const hasOverlap = overlap(structureIds, ids);
+          return hasOverlap ? biggest.concat(...ids) : biggest;
         }, []) || [];
       return unique(structureIds.concat(...mergedWithOverlappingIds));
     });

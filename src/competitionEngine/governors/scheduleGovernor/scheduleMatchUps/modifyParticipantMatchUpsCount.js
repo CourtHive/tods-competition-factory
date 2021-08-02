@@ -1,5 +1,5 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { intersection } from '../../../../utilities';
+import { overlap } from '../../../../utilities';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
@@ -21,9 +21,7 @@ export function modifyParticipantMatchUpsCount({
   // are present in individualParticipantIds which ensures that source match losers
   // do not get considered when incrementing or decrementing matchUp counters
   const filterdPotentials = potentialParticipantIds
-    .filter(
-      (potentials) => !intersection(potentials, individualParticipantIds).length
-    )
+    .filter((potentials) => !overlap(potentials, individualParticipantIds))
     .flat();
   const consideredParticipantIds = [
     ...individualParticipantIds,
