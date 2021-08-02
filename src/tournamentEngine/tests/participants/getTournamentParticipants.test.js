@@ -5,6 +5,8 @@ import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { SINGLES } from '../../../constants/eventConstants';
+import { utilities } from '../../..';
 
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {
@@ -196,4 +198,80 @@ it('can accept a privacy policy to filter tournament participants attributes', (
       expect(individual.person.sex).toBeUndefined();
     });
   });
+});
+
+it('can filter by entries', () => {
+  const participantsCount = 64;
+  const participantsProfile = { participantsCount };
+  const drawSize = 16;
+  const eventProfiles = [
+    {
+      eventName: 'U18 Boys Doubles',
+      gender: MALE,
+      drawProfiles: [{ drawSize }],
+    },
+  ];
+  const {
+    // drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+    participantsProfile,
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventIds: [eventId] },
+  });
+
+  expect(tournamentParticipants.length).toEqual(drawSize);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { drawEntryStatuses: true },
+  }));
+  expect(tournamentParticipants.length).toEqual(drawSize);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventEntryStatuses: true },
+  }));
+  expect(tournamentParticipants.length).toEqual(drawSize);
+
+  const newEventId = utilities.UUID();
+  const event = {
+    eventType: SINGLES,
+    eventId: newEventId,
+  };
+
+  let result = tournamentEngine.addEvent({ event });
+  expect(result.success).toEqual(true);
+
+  const participantIds = tournamentRecord.participants.map(
+    (p) => p.participantId
+  );
+  result = tournamentEngine.addEventEntries({
+    eventId: newEventId,
+    participantIds,
+  });
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventEntryStatuses: true },
+  }));
+  expect(tournamentParticipants.length).toEqual(64);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { drawEntryStatuses: true },
+  }));
+  expect(tournamentParticipants.length).toEqual(drawSize);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { positionedOnly: true },
+  }));
+  expect(tournamentParticipants.length).toEqual(drawSize);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { positionedOnly: false },
+  }));
+  expect(tournamentParticipants.length).toEqual(participantsCount - drawSize);
 });

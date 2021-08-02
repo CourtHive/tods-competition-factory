@@ -16,6 +16,18 @@ export function getDrawPositions({ structure }) {
   }
 }
 
+export function getAllPositionedParticipantIds({ drawDefinition }) {
+  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+  return (drawDefinition.structures || [])
+    .map((structure) => {
+      const { positionAssignments } = getPositionAssignments({ structure });
+      return positionAssignments
+        .map(({ participantId }) => participantId)
+        .filter(Boolean);
+    })
+    .flat();
+}
+
 export function getPositionAssignments({
   structure,
   drawDefinition,

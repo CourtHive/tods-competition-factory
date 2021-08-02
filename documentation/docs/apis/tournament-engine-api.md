@@ -1608,7 +1608,7 @@ Returns **deepCopies** of tournament participants filtered by participantFilters
 ```js
 const participantFilters = {
   accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
-  eventEntriesOnly, // boolean
+  eventEntryStatuses, // boolean
   participantTypes: [INDIVIDUAL],
   participantRoles, [COMPETITOR],
   signInStatus, // specific signIn status
@@ -1625,7 +1625,17 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
 });
 ```
 
-participantFilters imlemented: eventIds, participantIds, participantTypes, participantRoles, signInStatus
+### Implemented participantFilters
+
+- accessorValues: array of accessors and targeted value `[{ accessor, value }]`
+- drawEntryStatuses: boolean - participantIds found in draw.entries
+- eventEntryStatuses: boolean - participantIds found in event.entries
+- eventIds: array of targeted eventIds
+- participantIds: array of targeted participantIds
+- participantRoles: array of targeted participantRoles
+- participantTypes: array of targeted participantTypes
+- positionedOnly: participantIds positioned in structures `[true, false, undefined]`
+- signInStatus: SIGNED_IN or SIGNED_OUT
 
 ---
 

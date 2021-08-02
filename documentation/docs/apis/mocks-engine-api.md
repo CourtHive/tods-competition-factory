@@ -73,9 +73,20 @@ const outcomes = [
 const drawProfiles = [
   {
     drawSize: 4,
-    participantsCount: 4,
+    participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
     drawType: ROUND_ROBIN,
     outcomes,
+  },
+];
+const eventProfiles = [
+  {
+    eventName: 'U18 Boys Doubles',
+    gender: MALE,
+    drawProfiles: [
+      {
+        drawSize: 16,
+      },
+    ],
   },
 ];
 const venueProfiles = [
@@ -95,11 +106,17 @@ const {
   startDate, // optional - ISO string date
   participantsProfile, // optional - { participantCount, participantType }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
+  eventProfiles, // optional - array of profiles for events to be generated; can include drawProfiles
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts
 });
 
 tournamentEngine.setState(tournamentRecord);
 ```
+
+:::note
+When using `drawProfiles` participants in excess of `drawSize` will be added with `{ entryStatus: ALTERNATE }`,
+whereas with `eventProfiles` only the number of participants necessary to populate the draw are added with `{ entryStatus: DIRECT_ACCEPTANCE }`.
+:::
 
 ---
 

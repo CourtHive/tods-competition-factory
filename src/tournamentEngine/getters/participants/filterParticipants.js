@@ -1,8 +1,11 @@
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
+import { getFlightProfile } from '../getFlightProfile';
+import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/positionsGetter';
 
 export function filterParticipants({
   tournamentRecord,
@@ -12,16 +15,64 @@ export function filterParticipants({
   let { eventIds } = participantFilters;
   const {
     accessorValues,
-    eventEntriesOnly,
+    drawEntryStatuses, // only those participantIds that are in draw.entries or flightProfile.flights[].drawEntries
+    positionedOnly, // only those participantIds that are included in any structure.positionAssignments
+    eventEntryStatuses,
     participantRoles,
     participantTypes,
     participantIds,
     signInStatus,
   } = participantFilters;
 
-  if (!eventIds?.length && eventEntriesOnly) {
-    eventIds = tournamentRecord.events?.map(({ eventId }) => eventId);
+  // NOTE: at the moment drawEntryStatuses and eventEntryStatuses are boolean
+  // ... in the future they can both be arrays of targeted statuses where [] == all == true
+
+  const tournamentEvents =
+    (isValidFilterArray(eventIds) &&
+      tournamentRecord.events?.filter((event) =>
+        eventIds.includes(event.eventId)
+      )) ||
+    tournamentRecord.events ||
+    [];
+
+  if (!eventIds?.length && eventEntryStatuses) {
+    eventIds = tournamentEvents.map(({ eventId }) => eventId);
   }
+
+  const competitorEntries =
+    drawEntryStatuses &&
+    unique(
+      tournamentEvents.reduce((entries, event) => {
+        const { flightProfile } = getFlightProfile({ event });
+        const flightEntries =
+          flightProfile?.flights
+            ?.map(({ drawEntries }) =>
+              drawEntries
+                ? drawEntries.map(({ participantId }) => participantId)
+                : []
+            )
+            .flat() || [];
+
+        const drawEntries =
+          tournamentEvents.drawDefinitions?.map(({ entries }) =>
+            entries ? entries.map(({ participantId }) => participantId) : []
+          ) || [];
+
+        return entries.concat(...flightEntries, ...drawEntries);
+      }, [])
+    );
+
+  const positionedParticipantIds =
+    [true, false].includes(positionedOnly) &&
+    tournamentEvents.reduce((participantIds, event) => {
+      return participantIds.concat(
+        ...(event.drawDefinitions || [])
+          .map((drawDefinition) =>
+            getAllPositionedParticipantIds({ drawDefinition })
+          )
+          .filter(Boolean)
+      );
+    }, []);
 
   const participantHasAccessorValues = (participant) => {
     return accessorValues.reduce((hasValues, keyValue) => {
@@ -39,28 +90,26 @@ export function filterParticipants({
       element: participant,
       itemType: SIGN_IN_STATUS,
     });
+    const { participantId, participantType, participantRole } = participant;
     return (
-      (!participantIds || participantIds.includes(participant.participantId)) &&
+      (positionedOnly === undefined ||
+        (positionedOnly && positionedParticipantIds.includes(participantId)) ||
+        (positionedOnly === false &&
+          !positionedParticipantIds.includes(participantId))) &&
+      (!competitorEntries || competitorEntries.includes(participantId)) &&
+      (!participantIds || participantIds.includes(participantId)) &&
       (!signInStatus || participantSignInStatus === signInStatus) &&
       (!participantTypes ||
         (isValidFilterArray(participantTypes) &&
-          participantTypes.includes(participant.participantType))) &&
+          participantTypes.includes(participantType))) &&
       (!participantRoles ||
         (isValidFilterArray(participantRoles) &&
-          participantRoles.includes(participant.participantRole))) &&
+          participantRoles.includes(participantRole))) &&
       (!accessorValues?.length ||
         (isValidFilterArray(accessorValues) &&
           participantHasAccessorValues(participant)))
     );
   });
-
-  const tournamentEvents =
-    (isValidFilterArray(eventIds) &&
-      tournamentRecord.events?.filter((event) =>
-        eventIds.includes(event.eventId)
-      )) ||
-    tournamentRecord.events ||
-    [];
 
   if (tournamentEvents.length && eventIds) {
     const participantIds = tournamentEvents
