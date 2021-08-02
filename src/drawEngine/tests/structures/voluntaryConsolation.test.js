@@ -50,7 +50,7 @@ it('can add draw with empty voluntary consolation stage', () => {
     .setState(tournamentRecord)
     .getFlightProfile({ eventId });
   expect(flightProfile.flights[0].drawEntries.length).toEqual(16);
-  expect(flightProfile.flights[1].drawEntries.length).toEqual(28);
+  expect(flightProfile.flights[1].drawEntries.length).toEqual(16);
   expect(flightProfile.flights[2].drawEntries.length).toEqual(0);
 
   expect(drawIds.length).toEqual(3);

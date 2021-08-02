@@ -59,11 +59,17 @@ export function generateParticipants({
     return count;
   }
 
-  const { cities } = cityMocks({ count: citiesCount, participantsCount });
-  const { states } = stateMocks({ count: statesCount, participantsCount });
+  const { cities } = cityMocks({
+    count: citiesCount,
+    participantsCount: individualParticipantsCount,
+  });
+  const { states } = stateMocks({
+    count: statesCount,
+    participantsCount: individualParticipantsCount,
+  });
   const { postalCodes } = postalCodeMocks({
     count: postalCodesCount,
-    participantsCount,
+    participantsCount: individualParticipantsCount,
   });
   const addressValues = { cities, states, postalCodes };
 

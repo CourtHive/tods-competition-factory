@@ -26,10 +26,15 @@ export function generateEventWithFlights({
   participants,
 }) {
   const {
+    ballType,
     category,
-    eventName = 'Generated Event',
-    eventType = SINGLES,
+    discipline,
     drawProfiles,
+    eventName = 'Generated Event',
+    eventLevel,
+    eventType = SINGLES,
+    gender,
+    surfaceCategory,
     tieFormat: eventTieFormat,
   } = eventProfile;
 
@@ -70,10 +75,15 @@ export function generateEventWithFlights({
 
   const eventId = UUID();
   const newEvent = {
+    ballType,
+    category,
+    discipline,
     eventId,
     eventName,
+    eventLevel,
     eventType,
-    category,
+    gender,
+    surfaceCategory,
     tieFormat: eventTieFormat,
   };
   let result = addEvent({ tournamentRecord, event: newEvent });

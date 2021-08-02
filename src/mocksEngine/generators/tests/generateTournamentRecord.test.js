@@ -3,8 +3,9 @@ import mocksEngine from '../..';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { CLAY, HARD } from '../../../constants/surfaceConstants';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -23,15 +24,17 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
     categoryName: 'U18',
     type: AGE,
   };
+  const doublesDrawSize = 32;
   const eventProfiles = [
     {
       category,
       eventName: 'U18 Boys Doubles',
       eventType: DOUBLES,
       gender: MALE,
+      surfaceCategory: HARD,
       drawProfiles: [
         {
-          drawSize: 32,
+          drawSize: doublesDrawSize,
         },
       ],
     },
@@ -40,6 +43,7 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
       eventName: 'U18 Girls Singles',
       eventType: SINGLES,
       gender: FEMALE,
+      surfaceCategory: CLAY,
       drawProfiles: [
         {
           drawSize: 64,
@@ -83,12 +87,16 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
   expect(venueIds.length).toEqual(1);
   expect(drawIds.length).toEqual(2);
 
+  const { events } = tournamentRecord;
+  expect(events[0].gender).toEqual(MALE);
+  expect(events[1].gender).toEqual(FEMALE);
+  expect(events[0].surfaceCategory).toEqual(HARD);
+  expect(events[1].surfaceCategory).toEqual(CLAY);
+
   tournamentEngine.setState(tournamentRecord);
-  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
-    {
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    }
-  );
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   const addressComponents = tournamentParticipants.reduce(
     (components, participant) => {
@@ -109,7 +117,14 @@ test.only('eventProfiles and participantsProfile work as expected', () => {
     },
     { cities: [], states: [], postalCodes: [], nationalityCodes: [] }
   );
+
   Object.keys(addressComponents).forEach((key) => {
     expect(addressComponents[key].length).toEqual(uniqueAddressPropsCount);
   });
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { participantTypes: [PAIR] },
+  }));
+
+  expect(tournamentParticipants.length).toEqual(doublesDrawSize);
 });

@@ -70,28 +70,39 @@ export function generateTournamentRecord({
     tournamentName,
   });
 
-  const getEventProfileParticipantsCount = (eventProfile) =>
-    eventProfile?.drawProfiles.reduce((total, { drawSize, drawEntries }) => {
-      const size = Math.max(drawSize || 0, drawEntries?.length || 0);
-      return total + size;
-    }, 0) || 0;
+  let largestDoublesDraw = 0,
+    largestSinglesDraw = 0;
 
-  const largestDrawSize =
-    Math.max(
-      ...(drawProfiles || []).map((drawProfile) => drawProfile.drawSize),
-      ...(eventProfiles || []).map(getEventProfileParticipantsCount)
-    ) || 32;
+  eventProfiles?.forEach(({ eventType, drawProfiles }) => {
+    const isDoubles = eventType === DOUBLES;
+    drawProfiles?.forEach(({ drawSize }) => {
+      if (isDoubles && drawSize && drawSize > largestDoublesDraw)
+        largestDoublesDraw = drawSize;
+      if (!isDoubles && drawSize && drawSize > largestSinglesDraw)
+        largestSinglesDraw = drawSize;
+    });
+  });
+  drawProfiles?.forEach(({ drawSize, eventType }) => {
+    const isDoubles = eventType === DOUBLES;
+    if (isDoubles && drawSize && drawSize > largestDoublesDraw)
+      largestDoublesDraw = drawSize;
+    if (!isDoubles && drawSize && drawSize > largestSinglesDraw)
+      largestSinglesDraw = drawSize;
+  });
 
-  const doublesEvents = drawProfiles?.find(
-    (drawProfile) => drawProfile.eventType === DOUBLES
+  const individualCompetitorsCount = Math.max(
+    largestSinglesDraw,
+    largestDoublesDraw * 2
   );
-  const doublesFactor = doublesEvents ? 2 : 1;
-  const minPartcipantsCount = largestDrawSize * doublesFactor;
 
-  if (doublesEvents) participantType = PAIR;
-  if (participantsCount < minPartcipantsCount)
-    participantsCount = minPartcipantsCount;
-  if (participantType === PAIR) participantsCount = participantsCount / 2;
+  if (largestDoublesDraw) participantType = PAIR;
+  if (participantsCount < individualCompetitorsCount)
+    participantsCount = individualCompetitorsCount;
+  if (
+    participantType === PAIR &&
+    (!largestSinglesDraw || largestSinglesDraw / 2 >= largestDoublesDraw)
+  )
+    participantsCount = participantsCount / 2;
 
   const {
     addressProps,
@@ -99,7 +110,6 @@ export function generateTournamentRecord({
     nationalityCodesCount,
     valuesInstanceLimit,
     inContext,
-
     sex,
   } = participantsProfile || {};
 
