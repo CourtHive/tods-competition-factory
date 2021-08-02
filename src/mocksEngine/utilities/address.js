@@ -14,8 +14,10 @@ export function address() {
 export function cityMocks({ count = 1, participantsCount = 32 } = {}) {
   const shuffledCities = shuffleArray(citiesData);
   const candidateCities = shuffledCities.slice(0, count);
-  const cities = generateRange(0, participantsCount).map(() =>
-    randomMember(candidateCities)
+
+  // the following insures that all of the generated items are used at least once
+  const cities = generateRange(0, participantsCount).map((i) =>
+    i < count ? candidateCities[i] : randomMember(candidateCities)
   );
   return { cities };
 }
@@ -26,8 +28,10 @@ export function stateMocks({ count = 1, participantsCount = 32 } = {}) {
     .slice(0, count)
     .map((state) => Object.keys(state))
     .flat();
-  const states = generateRange(0, participantsCount).map(() =>
-    randomMember(candidateStates)
+
+  // the following insures that all of the generated items are used at least once
+  const states = generateRange(0, participantsCount).map((i) =>
+    i < count ? candidateStates[i] : randomMember(candidateStates)
   );
   return { states };
 }
@@ -38,8 +42,10 @@ export function postalCodeMocks({ count = 1, participantsCount = 32 } = {}) {
       .map(() => randomInt(0, 9))
       .join('')
   );
-  const postalCodes = generateRange(0, participantsCount).map(() =>
-    randomMember(candidatePostalCodes)
+
+  // the following insures that all of the generated items are used at least once
+  const postalCodes = generateRange(0, participantsCount).map((i) =>
+    i < count ? candidatePostalCodes[i] : randomMember(candidatePostalCodes)
   );
   return { postalCodes };
 }
