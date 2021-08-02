@@ -1,7 +1,7 @@
 import { getAssignedParticipantIds } from '../../../../drawEngine/getters/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../../../../common/producers/refreshEntryPositions';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
-import { intersection } from '../../../../utilities';
+import { overlap } from '../../../../utilities';
 
 import {
   MISSING_EVENT,
@@ -28,10 +28,10 @@ export function removeDrawEntries({
   if (!event.entries) event.entries = [];
 
   const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
-  const someAssignedParticipantIds = intersection(
+  const someAssignedParticipantIds = overlap(
     participantIds,
     assignedParticipantIds
-  ).length;
+  );
 
   if (someAssignedParticipantIds)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };

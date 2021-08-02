@@ -1,6 +1,5 @@
-import { intersection } from '../../../../utilities/arrays';
-
 import { getRoundRobinGroupMatchUps } from '../../../generators/roundRobinGroups';
+import { overlap } from '../../../../utilities/arrays';
 
 export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
   const avoidanceConflicts = [];
@@ -19,10 +18,10 @@ export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
         }))
       );
       uniqueMatchUpGroupings.forEach((grouping) => {
-        const avoidanceConflict = intersection(
+        const avoidanceConflict = overlap(
           drawPositionValuesMap[grouping[0]].values || [],
           drawPositionValuesMap[grouping[1]].values || []
-        ).length;
+        );
 
         if (avoidanceConflict) {
           avoidanceConflicts.push(grouping);
@@ -32,10 +31,10 @@ export function getAvoidanceConflicts({ isRoundRobin, groupedParticipants }) {
     });
   } else {
     groupedParticipants.forEach((matchUpPair) => {
-      const avoidanceConflict = intersection(
+      const avoidanceConflict = overlap(
         matchUpPair[0].values || [],
         matchUpPair[1].values || []
-      ).length;
+      );
 
       if (avoidanceConflict) {
         avoidanceConflicts.push(matchUpPair);

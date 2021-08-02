@@ -1,7 +1,7 @@
 import {
   chunkArray,
   generateRange,
-  intersection,
+  overlap,
   nextPowerOf2,
 } from '../../../utilities';
 
@@ -51,7 +51,7 @@ export function getSeedBlocks({ participantsCount, cluster }) {
         // for USTA/SEPARATE seeding the pattern is simple: first on top, last on bottom
         candidate = top ? first : last;
       }
-      if (!intersection(chunk, positions).length) {
+      if (!overlap(chunk, positions)) {
         positions.push(candidate);
       }
     });

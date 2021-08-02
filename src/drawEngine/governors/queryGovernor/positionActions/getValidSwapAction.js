@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
-import { intersection, makeDeepCopy } from '../../../../utilities';
+import { overlap, makeDeepCopy } from '../../../../utilities';
 
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
 import {
@@ -58,9 +58,8 @@ export function getValidSwapAction({
     structure,
     inContext: true,
   });
-  const relevantMatchUps = matchUps.filter(
-    ({ drawPositions }) =>
-      intersection(drawPositions, filteredDrawPositions).length
+  const relevantMatchUps = matchUps.filter(({ drawPositions }) =>
+    overlap(drawPositions, filteredDrawPositions)
   );
   const sourceDrawPositionRangeMap = Object.assign(
     {},
