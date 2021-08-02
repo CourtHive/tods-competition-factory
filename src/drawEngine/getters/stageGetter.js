@@ -5,20 +5,23 @@ import {
   findExtension,
 } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
-  ALTERNATE,
-  FEED_IN,
-  WILDCARD,
-  DIRECT_ACCEPTANCE,
-} from '../../constants/entryStatusConstants';
+  ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
+  NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
+} from '../../constants/errorConditionConstants';
 import {
   POSITION,
   CONTAINER,
   PLAY_OFF,
   validStages,
 } from '../../constants/drawDefinitionConstants';
-
-import { SUCCESS } from '../../constants/resultConstants';
+import {
+  ALTERNATE,
+  FEED_IN,
+  WILDCARD,
+  DIRECT_ACCEPTANCE,
+} from '../../constants/entryStatusConstants';
 
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
@@ -247,7 +250,7 @@ export function stageSpace({
     if (stageAlternatesCount({ stage, drawDefinition })) {
       return Object.assign({ positionsAvailable: Infinity }, SUCCESS);
     } else {
-      return { error: 'Alternates not allowed in stage' };
+      return { error: ENTRY_STATUS_NOT_ALLOWED_IN_STAGE };
     }
   }
 
@@ -270,11 +273,13 @@ export function stageSpace({
   const stageFull = totalEntriesCount >= stageDrawPositionsAvailable;
   const positionsAvailable = stageDrawPositionsAvailable - totalEntriesCount;
 
-  if (stageFull) return { error: 'No Space Available' };
+  if (stageFull) {
+    return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
+  }
 
   if (entryStatus === WILDCARD) {
     if (wildcardEntriesCount < wildcardPositions) return SUCCESS;
-    return { error: 'No Wildcard space available' };
+    return { error: NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS };
   }
 
   return Object.assign({ positionsAvailable }, SUCCESS);
