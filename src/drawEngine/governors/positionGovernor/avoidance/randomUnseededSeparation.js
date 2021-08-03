@@ -74,12 +74,6 @@ export function randomUnseededSeparation({
     ? roundRobinParticipantGroups(params)
     : eliminationParticipantGroups(params);
 
-  const allGroups = getAttributeGroupings({
-    policyAttributes,
-    participants: participantsWithContext,
-    targetParticipantIds: unseededParticipantIds,
-  });
-
   const idCollections = {};
   idCollections.groupParticipants = participantsWithContext
     .filter((participant) => participant.participantType === GROUP)
@@ -91,7 +85,7 @@ export function randomUnseededSeparation({
     .filter((participant) => participant.participantType === PAIR)
     .map((participant) => participant.participantId);
 
-  const targetGroups = getAttributeGroupings({
+  const allGroups = getAttributeGroupings({
     participants: participantsWithContext,
     idCollections,
     policyAttributes,
@@ -132,7 +126,6 @@ export function randomUnseededSeparation({
 
       participantIdGroups,
       idCollections,
-      targetGroups,
       allGroups,
 
       policyAttributes,
@@ -157,7 +150,6 @@ export function randomUnseededSeparation({
 
         participantIdGroups,
         idCollections,
-        targetGroups,
         allGroups,
 
         entries,
