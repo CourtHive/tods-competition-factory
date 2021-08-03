@@ -13,15 +13,15 @@ export function attributeFilter({ source, template }) {
         const tobj = templateObject[vKeys[k]];
         const vobj = valuesObject[vKeys[k]];
         if (tobj && typeof tobj === 'object' && typeof vobj !== 'function') {
-          if (vobj?.constructor !== Array) {
-            outputObject[vKeys[k]] = {};
-            attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
-          } else if (vobj?.length) {
-            outputObject[vKeys[k]] = (vobj || []).map((arrayMember) => {
+          if (Array.isArray(vobj)) {
+            outputObject[vKeys[k]] = vobj.map((arrayMember) => {
               const target = {};
               attributeCopy(arrayMember, tobj, target);
               return target;
             });
+          } else if (vobj) {
+            outputObject[vKeys[k]] = {};
+            attributeCopy(vobj, tobj, outputObject[vKeys[k]]);
           }
         } else {
           if (templateObject[vKeys[k]]) {
