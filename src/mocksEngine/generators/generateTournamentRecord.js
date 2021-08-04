@@ -105,16 +105,19 @@ export function generateTournamentRecord({
     participantsCount = participantsCount / 2;
 
   const {
-    addressProps,
-    nationalityCodes,
-    nationalityCodesCount,
     valuesInstanceLimit,
+    nationalityCodesCount,
+    nationalityCodeType,
+    nationalityCodes,
+    addressProps,
     inContext,
     sex,
   } = participantsProfile || {};
 
   const { participants } = generateParticipants({
+    valuesInstanceLimit,
     nationalityCodesCount,
+    nationalityCodeType,
     nationalityCodes,
     addressProps,
 
@@ -122,8 +125,6 @@ export function generateTournamentRecord({
     participantType,
     inContext,
     sex,
-
-    valuesInstanceLimit,
   });
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;

@@ -24,11 +24,12 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  *
  */
 export function generateParticipants({
-  nationalityCodes,
-  nationalityCodesCount,
-  participantsCount = 32,
   valuesInstanceLimit,
+  nationalityCodesCount,
+  nationalityCodeType,
+  nationalityCodes,
 
+  participantsCount = 32,
   participantType,
   addressProps,
   matchUpType,
@@ -49,7 +50,9 @@ export function generateParticipants({
   });
   if (error) return { error };
 
-  const isoCountries = countries.filter((country) => country.iso);
+  const isoCountries = countries.filter((country) =>
+    nationalityCodeType === 'ISO' ? country.iso : country.ioc
+  );
   const { citiesCount, statesCount, postalCodesCount } = addressProps || {};
 
   function getMin(count) {
