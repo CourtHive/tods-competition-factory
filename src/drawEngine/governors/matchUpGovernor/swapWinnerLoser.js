@@ -45,7 +45,11 @@ export function swapWinnerLoser(params) {
         ? existingLoserDrawPosition
         : drawPosition
     );
-    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+    addNotice({
+      topic: MODIFY_MATCHUP,
+      payload: { matchUp },
+      key: matchUp.matchUpId,
+    });
   });
 
   const { stage: currentStage, stageSequence: currentStageSequence } =

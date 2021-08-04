@@ -292,6 +292,7 @@ function removeDrawPosition({
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp: targetMatchUp },
+    key: targetMatchUp.matchUpId,
   });
 
   if (

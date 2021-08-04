@@ -36,7 +36,12 @@ export function deleteCourt({
     venue.courts = (venue.courts || []).filter((courtRecord) => {
       return courtRecord.courtId !== courtId;
     });
-    if (!disableNotice) addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+    if (!disableNotice)
+      addNotice({
+        topic: MODIFY_VENUE,
+        payload: { venue },
+        key: venue.venueId,
+      });
   } else {
     return deletionMessage({ matchUpsCount: matchUps.length });
   }

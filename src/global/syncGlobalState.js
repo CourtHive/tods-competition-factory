@@ -102,10 +102,10 @@ export function addNotice({ topic, payload, key }) {
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(
-      (notice) => notice.topic !== topic && notice.key !== key
+      (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
-  syncGlobalState.notices.push({ topic, payload });
+  syncGlobalState.notices.push({ topic, payload, key });
 }
 
 export function getNotices({ topic }) {

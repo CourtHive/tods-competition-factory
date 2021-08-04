@@ -124,6 +124,7 @@ export function assignMatchUpDrawPosition({
     addNotice({
       topic: MODIFY_MATCHUP,
       payload: { matchUp },
+      key: matchUp.matchUpId,
     });
   }
 

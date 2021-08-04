@@ -150,7 +150,7 @@ function addNotice({ topic, payload, key }) {
   if (!instanceState.subscriptions[topic]) return;
   if (key) {
     instanceState.notices = instanceState.notices.filter(
-      (notice) => notice.topic !== topic && notice.key !== key
+      (notice) => !(notice.topic === topic && notice.key === key)
     );
   }
   instanceState.notices.push({ topic, payload });
