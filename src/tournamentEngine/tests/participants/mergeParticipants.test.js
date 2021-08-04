@@ -1,7 +1,25 @@
+import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import {
+  ADD_PARTICIPANTS,
+  MODIFY_PARTICIPANTS,
+} from '../../../constants/topicConstants';
+
 test('participants can be merged', () => {
+  let participantAddEventsCounter = 0;
+  let participantModifyEventsCounter = 0;
+  setSubscriptions({
+    subscriptions: {
+      [ADD_PARTICIPANTS]: (addedParticipants) => {
+        participantAddEventsCounter += addedParticipants?.length || 0;
+      },
+      [MODIFY_PARTICIPANTS]: (participants) => {
+        participantModifyEventsCounter += participants?.length || 0;
+      },
+    },
+  });
   let { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 10 },
   });
@@ -78,4 +96,7 @@ test('participants can be merged', () => {
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
   expect(tournamentParticipants.length).toEqual(10);
+
+  expect(participantAddEventsCounter).toEqual(3);
+  expect(participantModifyEventsCounter).toEqual(3);
 });
