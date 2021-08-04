@@ -2058,10 +2058,6 @@ const { eventData } = tournamentEngine.publishEvent({
 
 ---
 
-## rankByRatings
-
----
-
 ## removeDrawDefinitionExtension
 
 ```js
