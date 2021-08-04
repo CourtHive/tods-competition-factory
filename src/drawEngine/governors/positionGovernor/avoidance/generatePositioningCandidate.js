@@ -37,7 +37,7 @@ export function generatePositioningCandidate(params) {
     policyAttributes,
 
     idCollections,
-    targetGroups,
+    allGroups,
   } = params;
 
   const errors = [];
@@ -58,7 +58,7 @@ export function generatePositioningCandidate(params) {
       getParticipantPlacement({
         ...params,
         groupKey,
-        targetGroups,
+        allGroups,
         candidatePositionAssignments,
       });
     groupKey = newGroupKey;

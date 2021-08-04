@@ -15,6 +15,7 @@ export {
   intersection,
   noNulls,
   noNumeric,
+  overlap,
   randomMember,
   randomPop,
   shuffleArray,

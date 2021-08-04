@@ -1,7 +1,7 @@
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 import {
   removeDirectedBye,
   removeDirectedWinner,
@@ -84,7 +84,7 @@ export function removeDoubleWalkover(params) {
     if (pairedPreviousMatchUpComplete) {
       const sourceDrawPositions = matchUp.drawPositions || [];
       let targetDrawPositions = winnerMatchUp.drawPositions.filter(Boolean);
-      if (intersection(sourceDrawPositions, targetDrawPositions).length) {
+      if (overlap(sourceDrawPositions, targetDrawPositions)) {
         targetDrawPositions = targetDrawPositions.filter(
           (drawPosition) => !sourceDrawPositions.includes(drawPosition)
         );

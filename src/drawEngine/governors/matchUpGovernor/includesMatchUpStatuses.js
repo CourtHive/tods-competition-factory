@@ -1,4 +1,4 @@
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 
 import {
   BYE,
@@ -31,15 +31,15 @@ export function includesMatchUpStatuses({
     .filter((matchUp) => matchUp?.drawPositions?.includes(loserDrawPosition))
     .map((matchUp) => matchUp.matchUpStatus);
 
-  const winnerHadMatchUpStatus = !!intersection(
+  const winnerHadMatchUpStatus = overlap(
     winnerMatchUpStatuses || [],
     matchUpStatuses
-  ).length;
+  );
 
-  const loserHadMatchUpStatus = !!intersection(
+  const loserHadMatchUpStatus = overlap(
     loserMatchUpStatuses || [],
     matchUpStatuses
-  ).length;
+  );
 
   return {
     sourceMatchUp,

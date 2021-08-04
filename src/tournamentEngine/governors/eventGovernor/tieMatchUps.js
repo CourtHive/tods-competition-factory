@@ -4,7 +4,7 @@ import { getPositionAssignments } from '../../../drawEngine/getters/positionsGet
 // import { getPairedParticipant } from '../participantGovernor/getPairedParticipant';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getDevContext } from '../../../global/globalState';
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 // import { UUID } from '../../../utilities/UUID';
 
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantTypes';
@@ -89,10 +89,8 @@ export function assignTieMatchUpParticipantId(params) {
     participantType === INDIVIDUAL ? [participantId] : individualParticipantIds;
 
   const participantTeam = teamParticipants.find(
-    ({ individualParticipantIds }) => {
-      return intersection(relevantParticipantIds, individualParticipantIds)
-        .length;
-    }
+    ({ individualParticipantIds }) =>
+      overlap(relevantParticipantIds, individualParticipantIds)
   );
 
   const teamAssignment = relevantAssignments.find(

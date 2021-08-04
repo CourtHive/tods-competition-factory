@@ -171,14 +171,16 @@ export function generateDrawDefinition(params) {
   }
 
   // OPTIMIZE: use drawEngine.addDrawEntries
-  entries.forEach((entry) => {
+  for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
       ...entry,
       entryStage: entry.entryStage || MAIN,
     };
+    // NOTE: we don't throw an error if an entry can't be added
+    // INVESTIGATE: not entirely sure why this is the case. All but one test passes when error is thrown.
     drawEngine.addDrawEntry(entryData);
-  });
+  }
 
   const enteredParticipantIds = entries.map(
     ({ participantId }) => participantId

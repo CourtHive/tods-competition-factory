@@ -12,7 +12,6 @@ export function getParticipantPlacement({
   drawPositionChunks,
   drawPositionGroups,
   pairedPriority,
-  targetGroups,
   allGroups,
   groupKey,
 }) {
@@ -34,7 +33,7 @@ export function getParticipantPlacement({
   const { participantId: selectedParticipantId, groupKey: newGroupKey } =
     getNextParticipantId({
       groupKey,
-      targetGroups,
+      allGroups,
       targetParticipantIds,
       useSpecifiedGroupKey,
     });

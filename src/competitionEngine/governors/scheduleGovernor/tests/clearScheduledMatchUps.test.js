@@ -2,11 +2,11 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
+import { SINGLES } from '../../../../constants/eventConstants';
 import {
   COMPASS,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can clear scheduled matchUps', () => {
   const venueProfiles = [

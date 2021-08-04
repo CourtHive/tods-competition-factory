@@ -1,13 +1,13 @@
-import tournamentEngine from '../../sync';
 import mocksEngine from '../../../mocksEngine';
+import { intersection } from '../../../utilities';
+import tournamentEngine from '../../sync';
 
 import { PAIR } from '../../../constants/participantTypes';
 import { MALE } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { AGE } from '../../../constants/eventConstants';
-import { intersection } from '../../../utilities';
 
-it('can add statistics to tournament participants', () => {
+it.only('can add statistics to tournament participants', () => {
   const participantsProfile = {
     participantsCount: 200,
     participantType: PAIR,
@@ -151,7 +151,8 @@ it('can add statistics to tournament participants', () => {
     withOpponents: true,
     withMatchUps: true,
   });
-  expect(tournamentParticipants.length).toEqual(300);
+  // specified 200 participantType: DOUBLES => 200 PAIR + 400 INDIVIDUAL
+  expect(tournamentParticipants.length).toEqual(600);
 
   const getParticipant = ({ drawPosition }) => {
     const participantId = positionAssignments.find(

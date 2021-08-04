@@ -16,17 +16,17 @@ import { randomMember } from '../../../../utilities';
 
 export function getNextParticipantId({
   groupKey,
-  targetGroups,
+  allGroups,
   largestFirst = true,
   targetParticipantIds,
   useSpecifiedGroupKey = false,
 }) {
   const groupings = Object.assign(
     {},
-    ...Object.keys(targetGroups)
+    ...Object.keys(allGroups)
       .map((group) => [
         group,
-        targetGroups[group].filter((id) => targetParticipantIds.includes(id)),
+        allGroups[group].filter((id) => targetParticipantIds.includes(id)),
       ])
       .filter((item) => item[1].length)
       .map(([group, ids]) => ({ [group]: ids }))

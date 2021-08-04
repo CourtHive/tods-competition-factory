@@ -5,6 +5,7 @@ import competitionEngine from '../../../sync';
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import POLICY_SCORING_USTA from '../../../../fixtures/policies/POLICY_SCORING_USTA';
 import {
+  EVENT_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
@@ -26,11 +27,14 @@ test('competitionEngine can addDrawDefinitions', () => {
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   expect(matchUps.length).toEqual(31);
 
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  let result = tournamentEngine.generateDrawDefinition({
     drawSize: secondDrawSize,
     eventId,
   });
-  let result = competitionEngine.addDrawDefinition({
+
+  const { drawDefinition } = result;
+
+  result = competitionEngine.addDrawDefinition({
     tournamentId,
     drawDefinition,
   });
@@ -46,7 +50,7 @@ test('competitionEngine can addDrawDefinitions', () => {
     eventId: 'bogusId',
     drawDefinition,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
   result = competitionEngine.addDrawDefinition({
     tournamentId,
     eventId,

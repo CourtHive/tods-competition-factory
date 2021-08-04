@@ -1,4 +1,4 @@
-import { intersection } from '../../../utilities/arrays';
+import { overlap } from '../../../utilities/arrays';
 
 import {
   MISSING_PARTICIPANT_ID,
@@ -35,11 +35,10 @@ export function getParticipantEventDetails({
       const enteredParticipantIds = (event?.entries || []).map(
         (entry) => entry.participantId
       );
-      const overlap = intersection(
+      const presentInEvent = overlap(
         enteredParticipantIds,
         relevantParticipantIds
       );
-      const presentInEvent = !!overlap.length;
       return presentInEvent;
     })
     .map((event) => ({ eventName: event.eventName, eventId: event.eventId }));

@@ -1,4 +1,4 @@
-import { intersection } from '../../utilities';
+import { overlap } from '../../utilities';
 
 import {
   MISSING_STRUCTURE_ID,
@@ -39,7 +39,7 @@ export function getTargetLink({ source, linkType, finishingPositions }) {
     const positionCondition =
       !link.source?.finishingPositions ||
       !finishingPositions ||
-      intersection(finishingPositions, link.source?.finishingPositions).length;
+      overlap(finishingPositions, link.source?.finishingPositions);
     return positionCondition && link.linkType === linkType ? link : target;
   }, undefined);
   return target;

@@ -140,7 +140,7 @@ function setSubscriptions({ subscriptions = {} } = {}) {
   return { success: true };
 }
 
-function addNotice({ topic, payload }) {
+function addNotice({ topic, payload, key }) {
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
@@ -148,6 +148,11 @@ function addNotice({ topic, payload }) {
   const instanceState = getInstanceState();
 
   if (!instanceState.subscriptions[topic]) return;
+  if (key) {
+    instanceState.notices = instanceState.notices.filter(
+      (notice) => notice.topic !== topic && notice.key !== key
+    );
+  }
   instanceState.notices.push({ topic, payload });
 
   return { success: true };

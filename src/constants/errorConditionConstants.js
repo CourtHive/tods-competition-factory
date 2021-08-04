@@ -140,6 +140,10 @@ export const PARTICIPANT_NOT_ENTERED_IN_STAGE =
   'Participant not entered in stage';
 export const PARTICIPANT_NOT_FOUND_IN_STAGE =
   'Participant not found in stageSequence';
+export const ENTRY_STATUS_NOT_ALLOWED_IN_STAGE =
+  'entryStatus not allowed in stage';
+export const NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS =
+  'No stage space available for entryStatus';
 
 export const MISSING_PENALTY_TYPE = 'Missing penaltyType';
 export const MISSING_PENALTY_ID = 'Missing penaltyId';
@@ -200,6 +204,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_ASSIGNED,
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
+  ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
   EVENT_EXISTS,
   EVENT_NOT_FOUND,
   EXISTING_END_TIME,
@@ -302,6 +307,7 @@ export const errorConditionConstants = {
   MODIFICATIONS_FAILED,
   MORE_PARTICIPANTS_THAN_DRAW_POSITIONS,
   NO_MODIFICATIONS_APPLIED,
+  NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
   NO_PARTICIPANT_REMOVED,
   NO_VALID_ACTIONS,
   NO_VALID_ATTRIBUTES,

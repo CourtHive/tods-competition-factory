@@ -1,12 +1,13 @@
-import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 import {
   makeDeepCopy,
   generateRange,
-  intersection,
+  overlap,
   chunkArray,
   shuffleArray,
   randomPop,
 } from '../../utilities';
+
+import { MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 /**
  * Resolves drawPositions for each structure participant based on arrays of preferred drawPositions
@@ -76,18 +77,18 @@ export function resolveDrawPositions({
 
   const chunkResolution = {};
   for (const chunkSize of chunkSizes) {
-    const targetChunks = chunkArray(drawPositions, chunkSize).filter(
-      (chunk) => intersection(chunk, remainingDrawPositions).length
+    const targetChunks = chunkArray(drawPositions, chunkSize).filter((chunk) =>
+      overlap(chunk, remainingDrawPositions)
     );
     const chunkMap = {};
     unresolvedParticipantIds.forEach((participantId) => {
       targetChunks.forEach((chunk) => {
         const chunkSignature = chunk.join('|');
-        const fit = intersection(
+        const hasOverlap = overlap(
           chunk,
           participantFactors[participantId].preferences
         );
-        if (fit.length) {
+        if (hasOverlap) {
           if (!chunkMap[chunkSignature]) chunkMap[chunkSignature] = [];
           chunkMap[chunkSignature].push(participantId);
         }

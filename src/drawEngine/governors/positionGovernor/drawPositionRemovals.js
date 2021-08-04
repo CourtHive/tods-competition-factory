@@ -6,7 +6,7 @@ import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
 import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
-import { intersection } from '../../../utilities';
+import { overlap } from '../../../utilities';
 import {
   getPositionAssignments,
   structureAssignedDrawPositions,
@@ -147,12 +147,11 @@ export function drawPositionRemovals({
   }, []);
 
   tasks.forEach(({ roundNumber, targetDrawPosition, relevantPair }) => {
-    const targetMatchUp = roundMatchUps[roundNumber].find(
-      (matchUp) =>
-        intersection(
-          matchUp.drawPositions.filter(Boolean),
-          relevantPair.filter(Boolean)
-        ).length
+    const targetMatchUp = roundMatchUps[roundNumber].find((matchUp) =>
+      overlap(
+        matchUp.drawPositions.filter(Boolean),
+        relevantPair.filter(Boolean)
+      )
     );
     if (!targetMatchUp) {
       return;

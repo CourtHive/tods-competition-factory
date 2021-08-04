@@ -2,6 +2,7 @@ import { makeDeepCopy } from '../../utilities';
 
 import {
   DRAW_DEFINITION_NOT_FOUND,
+  EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
@@ -62,6 +63,7 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
     const event = events.reduce((event, candidate) => {
       return candidate.eventId === eventId ? candidate : event;
     }, undefined);
+    if (!event) return { error: EVENT_NOT_FOUND };
     return { event };
   }
 

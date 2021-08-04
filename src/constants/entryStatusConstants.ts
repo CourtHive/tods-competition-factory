@@ -56,6 +56,7 @@ export const entryStatusConstants = {
   FEED_IN,
   WILDCARD,
   UNPAIRED,
+  UNGROUPED,
   ALTERNATE,
   CONFIRMED,
   QUALIFIER,
