@@ -1,4 +1,5 @@
 import { addNotice, getTopics } from '../../../global/globalState';
+import { deepMerge } from '../../../utilities/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -10,32 +11,40 @@ import {
 export function mergeParticipants({
   tournamentRecord,
   participants: incomingParticipants = [],
+  arraysToMerge,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!tournamentRecord.participants) tournamentRecord.participants = [];
 
-  incomingParticipants = incomingParticipants.filter(
-    (participant) => participant.participantId
-  );
-
-  const idMap = Object.assign(
-    ...incomingParticipants.map((p) => ({ [p.participantId]: p }))
+  const incomingIdMap = Object.assign(
+    ...incomingParticipants
+      .filter(({ participantId }) => participantId)
+      .map((p) => ({ [p.participantId]: p }))
   );
 
   // check for overlap with existing players, add any newly retrieved attributes to existing
   const modifiedParticipants = [];
-  tournamentRecord.participants.forEach((participant) => {
-    if (idMap[participant.participantId]) {
-      Object.assign(participant, idMap[participant.participantId]);
-      modifiedParticipants.push(participant);
+  tournamentRecord.participants = tournamentRecord.participants.map(
+    (participant) => {
+      if (incomingIdMap[participant.participantId]) {
+        const mergedParticipant = deepMerge(
+          participant,
+          incomingIdMap[participant.participantId],
+          arraysToMerge
+        );
+        modifiedParticipants.push(mergedParticipant);
+        return mergedParticipant;
+      } else {
+        return participant;
+      }
     }
-  });
+  );
 
   const existingParticipantIds = tournamentRecord.participants.map(
-    (p) => p.participantId
+    ({ participantId }) => participantId
   );
-  const newParticipants = incomingParticipants.filter((p) =>
-    existingParticipantIds.includes(p.participantId)
+  const newParticipants = incomingParticipants.filter(
+    ({ participantId }) => !existingParticipantIds.includes(participantId)
   );
 
   const { topics } = getTopics();
