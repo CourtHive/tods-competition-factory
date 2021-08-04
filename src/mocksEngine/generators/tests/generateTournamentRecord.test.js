@@ -18,7 +18,7 @@ test('generateTournamentRecord', () => {
   ]);
 });
 
-test.only('eventProfiles and participantsProfile work as expected', () => {
+test('eventProfiles and participantsProfile work as expected', () => {
   const category = {
     ageCategoryCode: 'U18',
     categoryName: 'U18',

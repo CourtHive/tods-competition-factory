@@ -9,7 +9,7 @@ async function getAllTimers(delay = 1000) {
   });
 }
 
-it.only('can keep time for various processes', async () => {
+it('can keep time for various processes', async () => {
   let result = timeKeeper();
   expect(result.elapsedTime).toEqual(0);
   expect(result.startTime).not.toBeUndefined();

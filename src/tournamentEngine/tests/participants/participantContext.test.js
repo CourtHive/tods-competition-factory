@@ -7,7 +7,7 @@ import { MALE } from '../../../constants/genderConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { AGE } from '../../../constants/eventConstants';
 
-it.only('can add statistics to tournament participants', () => {
+it('can add statistics to tournament participants', () => {
   const participantsProfile = {
     participantsCount: 200,
     participantType: PAIR,
