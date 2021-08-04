@@ -112,7 +112,6 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   });
   expect(result.success).toEqual(true);
   expect(modifiedMatchUpLog).toEqual([
-    [2, 1],
     [1, 1],
     [2, 1],
   ]);

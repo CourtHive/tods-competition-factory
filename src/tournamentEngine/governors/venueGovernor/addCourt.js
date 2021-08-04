@@ -79,7 +79,11 @@ export function addCourt({
     venue.courts.push(courtRecord);
 
     if (!disableNotice) {
-      addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+      addNotice({
+        topic: MODIFY_VENUE,
+        payload: { venue },
+        key: venue.venueId,
+      });
     }
 
     return getDevContext() || returnDetails
@@ -130,7 +134,7 @@ export function addCourts({
 
   if (courtRecords.length === courtsCount) {
     const { venue } = findVenue({ tournamentRecord, venueId });
-    addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+    addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
     return { ...SUCCESS, courts: makeDeepCopy(courtRecords) };
   } else {
     return Object.assign(

@@ -239,9 +239,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(result.success).toEqual(true);
 
   // three matchUps are modified
-  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [3, 1],
     [3, 1],
     [2, 1],
     [1, 1],
@@ -333,9 +331,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(result.success).toEqual(true);
 
   // three matchUps are modified
-  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [3, 1],
     [3, 1],
     [2, 2],
     [1, 3],
@@ -619,9 +615,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   });
   expect(result.success).toEqual(true);
 
-  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [3, 1],
     [3, 1],
     [2, 1],
     [1, 2],
@@ -864,11 +858,7 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
   });
   expect(result.success).toEqual(true);
 
-  // console.log({ modifiedMatchUpLog });
   expect(modifiedMatchUpLog).toEqual([
-    [4, 1],
-    [3, 1],
-    [2, 1],
     [1, 1],
     [2, 1],
     [3, 1],

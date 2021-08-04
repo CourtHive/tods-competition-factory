@@ -213,6 +213,7 @@ function setMatchUpStatusBYE({ matchUp }) {
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp },
+    key: matchUp.matchUpId,
   });
 }
 
@@ -427,6 +428,7 @@ function advanceWinner({
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp: noContextWinnerMatchUp },
+    key: noContextWinnerMatchUp.matchUpId,
   });
 
   if (pairedDrawPositionIsBye || drawPositionIsBye) {

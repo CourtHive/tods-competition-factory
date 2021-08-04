@@ -55,7 +55,11 @@ export function setMatchUpFormat(params) {
       } else if (tieFormat) {
         matchUp.tieFormat = tieFormat;
       }
-      addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+      addNotice({
+        topic: MODIFY_MATCHUP,
+        payload: { matchUp },
+        key: matchUp.matchUpId,
+      });
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });

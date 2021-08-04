@@ -121,7 +121,11 @@ export function addMatchUpScheduleItems({
   if (!disableNotice) {
     const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+    addNotice({
+      topic: MODIFY_MATCHUP,
+      payload: { matchUp },
+      key: matchUp.matchUpId,
+    });
   }
   return SUCCESS;
 }

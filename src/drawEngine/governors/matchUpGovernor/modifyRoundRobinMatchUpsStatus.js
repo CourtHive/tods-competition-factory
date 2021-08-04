@@ -31,6 +31,7 @@ export function modifyRoundRobinMatchUpsStatus({
       addNotice({
         topic: MODIFY_MATCHUP,
         payload: { matchUp },
+        key: matchUp.matchUpId,
       });
     }
   });

@@ -31,7 +31,8 @@ export function modifyCourtAvailability({
   }
 
   court.dateAvailability = dateAvailability;
-  if (!disableNotice) addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+  if (!disableNotice)
+    addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
 
   return SUCCESS;
 }

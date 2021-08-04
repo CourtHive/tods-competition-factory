@@ -22,7 +22,11 @@ export function addMatchUpTimeItem({
 
   const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
   if (!disableNotice) {
-    addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+    addNotice({
+      topic: MODIFY_MATCHUP,
+      payload: { matchUp },
+      key: matchUp.matchUpId,
+    });
   }
   return result;
 }
@@ -31,6 +35,10 @@ export function resetMatchUpTimeItems({ drawDefinition, matchUpId }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
-  addNotice({ topic: MODIFY_MATCHUP, payload: { matchUp } });
+  addNotice({
+    topic: MODIFY_MATCHUP,
+    payload: { matchUp },
+    key: matchUp.matchUpId,
+  });
   return SUCCESS;
 }

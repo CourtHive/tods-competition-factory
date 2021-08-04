@@ -65,7 +65,7 @@ export function modifyCourt({
   }
 
   if (!disableNotice) {
-    addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+    addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
   }
 
   return { ...SUCCESS, court: makeDeepCopy(court) };

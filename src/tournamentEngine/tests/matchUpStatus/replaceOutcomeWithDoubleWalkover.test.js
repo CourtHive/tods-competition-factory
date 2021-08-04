@@ -116,7 +116,6 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   expect(modifiedMatchUpLog).toEqual([
     [1, 2],
     [2, 1],
-    [2, 1],
   ]);
   modifiedMatchUpLog = [];
 

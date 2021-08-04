@@ -112,7 +112,7 @@ export function modifyVenue({
     }
   }
 
-  addNotice({ topic: MODIFY_VENUE, payload: { venue } });
+  addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
 
   return { ...SUCCESS, venue: makeDeepCopy(venue) };
 }
