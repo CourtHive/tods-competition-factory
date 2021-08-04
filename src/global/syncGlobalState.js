@@ -93,12 +93,18 @@ export function setSubscriptions({ subscriptions = {} } = {}) {
   return { ...SUCCESS };
 }
 
-export function addNotice({ topic, payload }) {
+export function addNotice({ topic, payload, key }) {
   if (typeof topic !== 'string' || typeof payload !== 'object') {
     return;
   }
 
   if (!syncGlobalState.subscriptions[topic]) return;
+
+  if (key) {
+    syncGlobalState.notices = syncGlobalState.notices.filter(
+      (notice) => notice.topic !== topic && notice.key !== key
+    );
+  }
   syncGlobalState.notices.push({ topic, payload });
 }
 
