@@ -177,7 +177,9 @@ export function addParticipantContext(params) {
       })
     );
 
-    matchUps?.forEach((matchUp) => processMatchUp({ matchUp, drawDetails }));
+    matchUps?.forEach((matchUp) =>
+      processMatchUp({ matchUp, drawDetails, eventType })
+    );
 
     params.tournamentParticipants?.forEach((participant) =>
       annotateParticipant({
@@ -189,12 +191,11 @@ export function addParticipantContext(params) {
     );
   });
 
-  function processMatchUp({ matchUp, drawDetails }) {
+  function processMatchUp({ matchUp, drawDetails, eventType }) {
     const {
       drawId,
       drawName,
       eventId,
-      eventType,
       finishingPositionRange,
       loserTo,
       matchUpId,
