@@ -1,10 +1,10 @@
-import mocksEngine from '../../../mocksEngine';
 import { intersection } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { PAIR } from '../../../constants/participantTypes';
 import { MALE } from '../../../constants/genderConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { AGE } from '../../../constants/eventConstants';
 
 it('can add statistics to tournament participants', () => {
@@ -181,6 +181,11 @@ it('can add statistics to tournament participants', () => {
 
   expect(individualParticipant.draws[0].finishingPositionRange).toEqual([1, 8]);
   expect(individualParticipant.events[0].eventType).toEqual(DOUBLES);
+
+  const hasPotentials = tournamentParticipants.find(
+    (p) => p.potentialMatchUps?.length
+  );
+  expect(hasPotentials).not.toBeUndefined();
 });
 
 it('can add statistics to tournament participants', () => {
