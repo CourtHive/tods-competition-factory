@@ -1,14 +1,7 @@
 import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
 import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
-import { findPolicy } from '../../policyGovernor/findPolicy';
-import {
-  findEventExtension,
-  findTournamentExtension,
-} from '../../queryGovernor/extensionQueries';
-
+import { getScheduleTiming } from './getScheduleTiming';
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
-import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
 /**
  * find the policy-defined average matchUp time for a given category
@@ -34,45 +27,28 @@ export function getMatchUpFormatTiming({
 
   // event is optional, so eventType can also be passed in directly
   eventType = eventType || event?.eventType;
-  categoryName =
-    categoryName ||
-    event?.category?.categoryName ||
-    event?.category?.ageCategoryCode;
-
-  const { policy } = findPolicy({
-    policyType: POLICY_TYPE_SCHEDULING,
-    tournamentRecord,
-    event,
-  });
-
   const defaultTiming = {
     averageTimes: [{ minutes: { default: defaultAverageMinutes } }],
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const { extension: tournamentExtension } = findTournamentExtension({
+  const { scheduleTiming } = getScheduleTiming({
     tournamentRecord,
-    name: SCHEDULE_TIMING,
-  });
-  const tournamentScheduling = tournamentExtension?.value;
-
-  const { extension: eventExtension } = findEventExtension({
+    categoryName,
     event,
-    name: SCHEDULE_TIMING,
   });
-  const eventScheduling = eventExtension?.value;
 
   const timingDetails = {
+    ...scheduleTiming,
     matchUpFormat,
-    categoryName,
     categoryType,
-
-    eventScheduling,
-    tournamentScheduling,
     defaultTiming,
-    policy,
   };
 
+  return matchUpFormatTimes({ eventType, timingDetails });
+}
+
+export function matchUpFormatTimes({ eventType, timingDetails }) {
   const averageTimes = getMatchUpFormatAverageTimes(timingDetails);
   const averageKeys = Object.keys(averageTimes?.minutes || {});
 
