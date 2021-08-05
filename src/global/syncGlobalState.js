@@ -109,8 +109,6 @@ export function addNotice({ topic, payload, key }) {
 }
 
 export function getNotices({ topic }) {
-  if (typeof topic !== 'string') return [];
-
   const notices = syncGlobalState.notices
     .filter((notice) => notice.topic === topic)
     .map((notice) => notice.payload);

@@ -2,7 +2,6 @@ import { executionAsyncId, createHook } from 'async_hooks';
 
 const NOT_FOUND = 'Not found';
 const INVALID_VALUES = 'Invalid values';
-const INVALID_TOURNAMENT_RECORD = 'Invalid Tournament Record';
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 
 /**
@@ -83,13 +82,9 @@ export function getTournamentRecords() {
 
 export function setTournamentRecord(tournamentRecord) {
   const tournamentId = tournamentRecord?.tournamentId;
-  if (tournamentId) {
-    const instanceState = getInstanceState();
-    instanceState.tournamentRecords[tournamentId] = tournamentRecord;
-    return { success: true };
-  } else {
-    return { error: INVALID_TOURNAMENT_RECORD };
-  }
+  const instanceState = getInstanceState();
+  instanceState.tournamentRecords[tournamentId] = tournamentRecord;
+  return { success: true };
 }
 
 export function setTournamentId(tournamentId) {
@@ -146,8 +141,8 @@ function addNotice({ topic, payload, key }) {
   }
 
   const instanceState = getInstanceState();
-
   if (!instanceState.subscriptions[topic]) return;
+
   if (key) {
     instanceState.notices = instanceState.notices.filter(
       (notice) => !(notice.topic === topic && notice.key === key)
@@ -159,8 +154,6 @@ function addNotice({ topic, payload, key }) {
 }
 
 function getNotices({ topic }) {
-  if (typeof topic !== 'string') return [];
-
   const instanceState = getInstanceState();
 
   const notices = instanceState.notices
