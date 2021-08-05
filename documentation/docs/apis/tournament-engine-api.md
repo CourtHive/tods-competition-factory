@@ -1618,7 +1618,7 @@ const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withOpponents, // optional - include opponent participantIds
-  withMatchUps, // optional - include all matchUps in which the participant appears
+  withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinition, // optional - can accept a privacy policy to filter participant attributes
   participantFilters, // optional - filters

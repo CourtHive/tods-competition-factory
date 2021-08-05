@@ -321,6 +321,7 @@ export function addParticipantContext(params) {
             perspectiveScoreString: participantScore,
             roundName,
             roundNumber,
+            roundPosition,
             schedule,
             score,
             structureName,
