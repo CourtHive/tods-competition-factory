@@ -97,7 +97,12 @@ function getParticipantIds(matchUp) {
 }
 function getParticipants(matchUp) {
   return (
-    matchUp?.sides?.map(({ participant }) => participant).filter(Boolean) || []
+    matchUp?.sides
+      ?.map(
+        ({ participant, participantId }) =>
+          participant || (participantId && { participantId })
+      )
+      .filter(Boolean) || []
   );
 }
 
