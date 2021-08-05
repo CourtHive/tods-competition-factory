@@ -73,6 +73,7 @@ export function scheduleProfileRounds({
   const overLimitMatchUpIds = [];
   const scheduledMatchUpIds = [];
   const requestConflicts = [];
+
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];

@@ -148,7 +148,13 @@ it('can generate a tournament with events and draws', () => {
 });
 
 it('can set tournament names', () => {
-  let result = tournamentEngine.newTournamentRecord();
+  let result = tournamentEngine.newTournamentRecord({ startDate: 'invalid' });
+  expect(result.error).not.toBeUndefined();
+
+  result = tournamentEngine.newTournamentRecord({ endDate: 'invalid' });
+  expect(result.error).not.toBeUndefined();
+
+  result = tournamentEngine.newTournamentRecord();
   expect(result?.success).toEqual(true);
 
   const tournamentName = 'CourtHive Challenge';

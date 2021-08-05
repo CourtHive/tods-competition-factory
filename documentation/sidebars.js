@@ -41,7 +41,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Engine',
-      items: ['pseudocode/scheduling', 'apis/competition-engine-api'],
+      items: ['apis/competition-engine-api'],
     },
     {
       type: 'category',

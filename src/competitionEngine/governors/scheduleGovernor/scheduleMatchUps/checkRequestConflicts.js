@@ -1,11 +1,12 @@
-import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
+import { getIndividualParticipants } from './getIndividualParticipants';
 import {
   addMinutes,
   extractTime,
   sameDay,
   timeToDate,
 } from '../../../../utilities/dateTime';
-import { getIndividualParticipants } from './getIndividualParticipants';
+
+import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 
 /**
  *
@@ -14,7 +15,7 @@ import { getIndividualParticipants } from './getIndividualParticipants';
  * @param {string} scheduleTime - time being checked
  * @param {number} averageMatchUpMinutes - number of minutes matchUp is expected to last
  *
- * @param {object} requestConflicts - trackis per-matchUp conflicts { [requestId]: { scheduleTimes, matchUpIds }}
+ * @param {object} requestConflicts - tracks per-matchUp conflicts { [requestId]: { scheduleTimes, matchUpIds }}
  * @param {boolean} potentials - whether to consdier potential participants when determining conflicts
  * @param {object} personRequests - contains personRequests { [personId]: [request] }
  *
