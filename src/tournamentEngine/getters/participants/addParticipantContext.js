@@ -1,9 +1,11 @@
 import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { extensionConstants } from '../../../constants/extensionConstants';
+import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 import {
+  addMinutesToTimeString,
   extractDate,
   extractTime,
   timeSort,
@@ -11,7 +13,6 @@ import {
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
-import { definedAttributes } from '../../../utilities/objects';
 
 export function addParticipantContext(params) {
   const participantIdMap = {};
@@ -214,6 +215,7 @@ export function addParticipantContext(params) {
       finishingPositionRange,
       loserTo,
       matchUpId,
+      matchUpFormat,
       matchUpStatus,
       roundName,
       roundNumber,
@@ -348,6 +350,7 @@ export function addParticipantContext(params) {
               finishingPositionRange,
               loserTo,
               matchUpId,
+              matchUpFormat,
               matchUpStatus,
               opponentParticipantInfo,
               participantWon,
@@ -396,11 +399,13 @@ export function addParticipantContext(params) {
               drawId,
               eventId,
               eventType,
+              matchUpFormat,
               roundName,
               roundNumber,
               roundPosition,
               schedule,
               structureName,
+              potential: true,
             });
         });
       });
@@ -459,11 +464,12 @@ function annotateParticipant({
     });
   }
 
+  const participantPotentialMatchUps = Object.values(potentialMatchUps);
+  const participantMatchUps = Object.values(matchUps);
+
   if (withMatchUps) {
-    const participantPotentialMatchUps = Object.values(potentialMatchUps);
     participant.potentialMatchUps = participantPotentialMatchUps;
 
-    const participantMatchUps = Object.values(matchUps);
     participant.matchUps = participantMatchUps;
 
     participantDraws?.forEach((draw) => {
@@ -487,51 +493,58 @@ function annotateParticipant({
       );
       draw.finishingPositionRange = finishingPositionRange;
     });
+  }
 
-    if (withScheduleAnalysis) {
-      // construct object with matchUps by date
-      const scheduledMatchUps = participantMatchUps
-        .concat(participantPotentialMatchUps)
-        .reduce((dateMatchUps, matchUp) => {
-          const { schedule } = matchUp;
-          const date = extractDate(schedule?.scheduledDate);
-          const time = extractTime(schedule?.scheduledDate);
-          if (date && time) {
-            if (dateMatchUps[date]) {
-              dateMatchUps[date].push(matchUp);
-            } else {
-              dateMatchUps[date] = [matchUp];
-            }
+  if (withScheduleAnalysis) {
+    // construct object with matchUps by date
+    const scheduledMatchUps = participantMatchUps
+      .concat(participantPotentialMatchUps)
+      .reduce((dateMatchUps, matchUp) => {
+        const { schedule } = matchUp;
+        const date = extractDate(schedule?.scheduledDate);
+        const time = extractTime(schedule?.scheduledDate);
+        if (date && time) {
+          if (dateMatchUps[date]) {
+            dateMatchUps[date].push(matchUp);
+          } else {
+            dateMatchUps[date] = [matchUp];
           }
-          return dateMatchUps;
-        }, {});
+        }
+        return dateMatchUps;
+      }, {});
 
-      // sort all date matchUps
-      const dates = Object.keys(scheduledMatchUps);
-      dates.forEach((date) => {
-        scheduledMatchUps[date].sort((a, b) =>
-          timeSort(
-            extractTime(a.schedule?.scheduledTime),
-            extractTime(b.schedule?.scheduledTime)
-          )
-        );
+    // sort all date matchUps
+    const dates = Object.keys(scheduledMatchUps);
+    dates.forEach((date) => {
+      scheduledMatchUps[date].sort((a, b) =>
+        timeSort(
+          extractTime(a.schedule?.scheduledTime),
+          extractTime(b.schedule?.scheduledTime)
+        )
+      );
 
-        scheduledMatchUps.forEach((matchUp) => {
+      scheduledMatchUps[date].forEach((matchUp) => {
+        const scheduledTime = extractTime(matchUp.schedule?.scheduledTime);
+        if (scheduledTime) {
           const timingDetails = {
+            matchUpFormat: matchUp.matchUpFormat,
             ...scheduleTiming,
           };
-          const { averageMinutes, recoveryMinutes } = matchUpFormatTimes({
-            eventType: matchUp.eventType,
-            timingDetails,
-          });
-          console.log({ averageMinutes, recoveryMinutes });
-          // for each matchUp.matchUpFormat find the averageTime and recoveryTime
-          // annotate each matchUp with .afterRecoveryTime
-        });
+          const { averageMinutes = 0, recoveryMinutes = 0 } =
+            matchUpFormatTimes({
+              eventType: matchUp.eventType,
+              timingDetails,
+            });
+          const afterRecoveryTime = addMinutesToTimeString(
+            scheduledTime,
+            averageMinutes + recoveryMinutes
+          );
+          matchUp.schedule.afterRecoveryTime = afterRecoveryTime;
+        }
       });
+    });
 
-      participant.scheduledMatchUps = scheduledMatchUps;
-    }
+    participant.scheduledMatchUps = scheduledMatchUps;
   }
   if (withStatistics) participant.statistics = [winRatioStat];
 }

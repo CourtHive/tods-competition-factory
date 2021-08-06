@@ -53,8 +53,9 @@ export function matchUpFormatTimes({ eventType, timingDetails }) {
   const averageKeys = Object.keys(averageTimes?.minutes || {});
 
   const averageMinutes =
-    (averageKeys?.includes(eventType) && averageTimes.minutes[eventType]) ||
-    averageTimes?.minutes?.default;
+    averageTimes?.minutes &&
+    ((averageKeys?.includes(eventType) && averageTimes.minutes[eventType]) ||
+      averageTimes.minutes.default);
 
   const recoveryTimes = getMatchUpFormatRecoveryTimes({
     ...timingDetails,
@@ -63,8 +64,9 @@ export function matchUpFormatTimes({ eventType, timingDetails }) {
 
   const recoveryKeys = Object.keys(recoveryTimes?.minutes || {});
   const recoveryMinutes =
-    (recoveryKeys?.includes(eventType) && recoveryTimes.minutes[eventType]) ||
-    recoveryTimes.minutes.default;
+    recoveryTimes?.minutes &&
+    ((recoveryKeys?.includes(eventType) && recoveryTimes.minutes[eventType]) ||
+      recoveryTimes.minutes.default);
 
   return { averageMinutes, recoveryMinutes };
 }
