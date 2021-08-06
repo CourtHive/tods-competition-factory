@@ -1,9 +1,9 @@
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { OFFICIAL } from '../../../../constants/participantRoles';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { OFFICIAL } from '../../../../constants/participantRoles';
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
