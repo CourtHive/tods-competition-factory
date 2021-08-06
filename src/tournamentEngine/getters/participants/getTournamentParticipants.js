@@ -26,6 +26,7 @@ export function getTournamentParticipants({
   participantFilters = {},
   policyDefinition,
 
+  withScheduleAnalysis,
   withStatistics,
   withOpponents,
   withMatchUps,
@@ -66,11 +67,20 @@ export function getTournamentParticipants({
       participants: tournamentParticipants,
     });
 
-  if (withMatchUps || withStatistics || withOpponents) {
+  if (
+    withEvents ||
+    withDraws ||
+    withMatchUps ||
+    withStatistics ||
+    withOpponents ||
+    withScheduleAnalysis
+  ) {
     addParticipantContext({
       tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
+      participantFilters,
+      withScheduleAnalysis,
       withStatistics,
       withOpponents,
       withMatchUps,

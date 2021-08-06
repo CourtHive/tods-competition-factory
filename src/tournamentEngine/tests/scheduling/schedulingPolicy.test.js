@@ -14,14 +14,14 @@ it.each([
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
-    averageMinutes: 137,
+    averageMinutes: 97,
     recoveryMinutes: 30,
     eventType: DOUBLES,
   },
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
-    averageMinutes: 137,
+    averageMinutes: 97,
     recoveryMinutes: 60,
     eventType: SINGLES,
   },

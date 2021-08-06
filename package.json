@@ -8,7 +8,7 @@
     "competition",
     "tennis"
   ],
-  "version": "0.7.36",
+  "version": "0.7.41",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -74,13 +74,13 @@
   "author": "Charles Allen <charles@CourtHive.com> (CourtHive.com)",
   "module": "dist/tods-competition-factory.esm.js",
   "devDependencies": {
-    "@babel/core": "7.14.8",
+    "@babel/core": "7.15.0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "7.14.5",
     "@babel/plugin-proposal-optional-chaining": "7.14.5",
-    "@babel/preset-env": "7.14.9",
-    "@babel/preset-typescript": "7.14.5",
+    "@babel/preset-env": "7.15.0",
+    "@babel/preset-typescript": "7.15.0",
     "@types/jest": "26.0.24",
-    "@types/node": "14.17.8",
+    "@types/node": "14.17.9",
     "@typescript-eslint/eslint-plugin": "4.29.0",
     "@typescript-eslint/parser": "4.29.0",
     "babel-jest": "26.6.3",

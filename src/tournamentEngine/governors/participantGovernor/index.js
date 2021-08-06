@@ -18,7 +18,6 @@ import { setParticipantScaleItem } from './addScaleItems';
 import { deleteParticipants } from './deleteParticipants';
 import { mergeParticipants } from './mergeParticipants';
 import { modifyParticipant } from './modifyParticipant';
-import { rankByRatings } from './rankByRatings';
 import {
   removeIndividualParticipantIds,
   removeParticipantIdsFromAllTeams,
@@ -50,7 +49,6 @@ const participantGovernor = {
 
   generateTeamsFromParticipantAttribute,
 
-  rankByRatings,
   getParticipantIdFinishingPositions,
 
   modifyParticipant,

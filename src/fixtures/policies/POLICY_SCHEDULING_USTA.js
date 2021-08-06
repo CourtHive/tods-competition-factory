@@ -25,7 +25,7 @@ export const POLICY_SCHEDULING_USTA = {
       {
         matchUpFormatCodes: ['SET3-S:6/TB7'],
         averageTimes: [
-          { categoryTypes: [JUNIOR], minutes: { default: 137 } },
+          { categoryTypes: [JUNIOR], minutes: { default: 97 } },
           {
             categoryTypes: [ADULT, WHEELCHAIR],
             minutes: { default: 120 },

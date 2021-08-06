@@ -40,6 +40,7 @@ const { participants } = mocksEngine.generateParticipants({
   sex: FEMALE, // optional - [MALE, FEMALE]
 
   nationalityCodesCount: 10, // optional - number of nationality codes to use when generating participants
+  nationalityCodeType: 'ISO', // optional - 'IOC' or 'ISO', defaults to IOC
   nationalityCodes: [], // optional - an array of ISO codes to randomly assign to participants
   addressProps: {
     citiesCount: 10,

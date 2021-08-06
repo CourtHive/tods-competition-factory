@@ -2,6 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
+import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { SINGLES } from '../../../../constants/eventConstants';
 import {
   COMPASS,
@@ -50,6 +51,10 @@ it('can clear scheduled matchUps', () => {
   });
 
   competitionEngine.setState(tournamentRecord);
+
+  competitionEngine.attachPolicy({
+    policyDefinition: POLICY_SCHEDULING_USTA,
+  });
 
   const { tournamentId } = tournamentRecord;
   const scheduledStructureIds = [];
@@ -107,6 +112,16 @@ it('can clear scheduled matchUps', () => {
     scheduledStructureIds.includes(structureId)
   );
   expect(expectedStructureIds).toEqual(true);
+
+  const { competitionParticipants } =
+    competitionEngine.getCompetitionParticipants({
+      inContext: true,
+      withScheduleAnalysis: true,
+    });
+
+  expect(
+    Object.values(competitionParticipants[0].scheduledMatchUps)[0].length
+  ).toEqual(2);
 
   result = competitionEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);

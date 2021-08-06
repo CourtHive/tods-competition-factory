@@ -474,9 +474,15 @@ const participantFilters = {
 const { competitionParticipants } =
   competitionEngine.getCompetitionParticipants({
     inContext, // optional - adds individualParticipants for all individualParticipantIds
+
     withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
     withOpponents, // optional - include opponent participantIds
-    withMatchUps, // optional - include all matchUps in which the participant appears
+    withEvents, // optional - defaults to true
+    withDraws, // optional - defaults to true
+
+    withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
+    withScheduleAnalysis, // optional - requires { withMatchUps: true } - analyze matchUp.schedules
+
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     policyDefinition, // optional - can accept a privacy policy to filter participant attributes
     participantFilters, // optional - filters

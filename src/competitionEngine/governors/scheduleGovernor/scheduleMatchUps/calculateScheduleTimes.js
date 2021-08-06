@@ -1,4 +1,5 @@
-import { getMatchUpFormatTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
@@ -8,6 +9,7 @@ import {
   sameDay,
   timeToDate,
 } from '../../../../utilities/dateTime';
+
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
 
 /**
@@ -84,11 +86,18 @@ export function calculateScheduleTimes({
   // get a mapping of eventIds to category details
   const eventDetails = Object.assign(
     {},
-    ...Object.keys(tournamentRecords)
-      .map((tournamentId) =>
-        (tournamentRecords[tournamentId].events || []).map((event) => ({
-          [event.eventId]: { tournamentId, event },
-        }))
+    ...Object.values(tournamentRecords)
+      .map((tournamentRecord) =>
+        (tournamentRecord.events || []).map((event) => {
+          const { scheduleTiming } = getScheduleTiming({
+            tournamentRecord,
+            event,
+          });
+
+          return {
+            [event.eventId]: { event, scheduleTiming },
+          };
+        })
       )
       .flat()
   );
@@ -104,16 +113,20 @@ export function calculateScheduleTimes({
       matchUpFilters,
     })?.dateMatchUps || [];
 
+  const defaultTiming = {
+    averageTimes: [{ minutes: { default: averageMatchUpMinutes } }],
+    recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
+  };
+
   const bookings = dateMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
-    const { event, tournamentId } = eventDetails[eventId];
-    const tournamentRecord = tournamentRecords[tournamentId];
-    const { averageMinutes } = getMatchUpFormatTiming({
-      defaultAverageMinutes: averageMatchUpMinutes,
-      defaultRecoveryMinutes,
+    const { event, scheduleTiming } = eventDetails[eventId];
+    const eventType = event?.eventType;
+    const timingDetails = {
+      ...scheduleTiming,
+      defaultTiming,
       matchUpFormat,
-      tournamentRecord,
-      event,
-    });
+    };
+    const { averageMinutes } = matchUpFormatTimes({ eventType, timingDetails });
     const { courtId, venueId } = schedule;
     const startTime = extractTime(schedule.scheduledTime);
     const endTime = addMinutesToTimeString(startTime, averageMinutes);

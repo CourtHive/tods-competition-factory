@@ -20,17 +20,39 @@ it('can setStateProvier', async () => {
   // expect setting state provider to have succeeded
   expect(ssp.success).toEqual(true);
 
-  const allNotices = [];
   const allMatchUps = [];
+  const auditNotices = [];
   const allParticipants = [];
+  const modifiedMatchUps = [];
   const allDeletedMatchUpIds = [];
 
+  let result = await asyncTournamentEngine.setTournamentId();
+  expect(result.error).not.toBeUndefined();
+
+  result = await asyncCompetitionEngine.setTournamentRecord();
+  expect(result.error).not.toBeUndefined();
+
+  result = await asyncCompetitionEngine.setTournamentRecord({});
+  expect(result.error).not.toBeUndefined();
+
+  result = await asyncCompetitionEngine.reset();
+  expect(result.success).toEqual(true);
+
+  result = await asyncCompetitionEngine.removeTournamentRecord();
+  expect(result.error).not.toBeUndefined();
+
+  result = await asyncCompetitionEngine.removeTournamentRecord('bogusId');
+  expect(result.error).not.toBeUndefined();
+
   const subscriptions = {
-    audit: (notices) => allNotices.push(...notices),
+    audit: (notices) => auditNotices.push(...notices),
     addMatchUps: (addedMatchUps) => {
       addedMatchUps.forEach(({ matchUps }) => {
         allMatchUps.push(...matchUps);
       });
+    },
+    modifyMatchUp: (modified) => {
+      modified.forEach(({ matchUp }) => modifiedMatchUps.push(matchUp));
     },
     deletedMatchUpIds: (deletedMatchUpIds) => {
       deletedMatchUpIds.forEach(({ matchUpIds }) => {
@@ -45,7 +67,7 @@ it('can setStateProvier', async () => {
   };
   setSubscriptions({ subscriptions });
 
-  let result = await asyncTournamentEngine.newTournamentRecord();
+  result = await asyncTournamentEngine.newTournamentRecord();
   expect(result.success).toEqual(true);
   expect(result.tournamentId).not.toBeUndefined();
 
@@ -65,7 +87,7 @@ it('can setStateProvier', async () => {
     participantsProfile: { participantsCount },
   }));
 
-  expect(allNotices.length).toEqual(1);
+  expect(auditNotices.length).toEqual(1);
   expect(allMatchUps.length).toEqual(drawSize - 1);
   expect(allParticipants.length).toEqual(participantsCount);
 
@@ -77,16 +99,40 @@ it('can setStateProvier', async () => {
   );
   expect(result.success).toEqual(true);
 
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    scoreString: '7-5 7-5',
+    winningSide: 1,
+  });
+
+  result = await asyncTournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId: allMatchUps[0].matchUpId,
+    outcome,
+  });
+  expect(result.success).toEqual(true);
+  expect(modifiedMatchUps.length).toEqual(2);
+
   result = await asyncTournamentEngine.deleteDrawDefinitions({
     eventId,
     drawIds: [drawId],
   });
   expect(result.success).toEqual(true);
-
-  expect(allNotices.length).toEqual(2);
+  expect(auditNotices.length).toEqual(2);
 
   // expect 7 matchUps to have been deleted
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
+
+  const { drawDefinition } = await asyncTournamentEngine.generateDrawDefinition(
+    {
+      drawSize,
+      eventId,
+    }
+  );
+  result = await asyncTournamentEngine.addDrawDefinition({
+    eventId,
+    drawDefinition,
+  });
+  expect(result.success).toEqual(true);
 
   let { tournamentRecords } = await asyncCompetitionEngine.getState();
   const tournamentIds = Object.keys(tournamentRecords);
@@ -105,4 +151,12 @@ it('can setStateProvier', async () => {
 
   ({ tournamentRecords } = await asyncCompetitionEngine.getState());
   expect(Object.keys(tournamentRecords).length).toEqual(1);
+
+  result = await asyncCompetitionEngine.removeTournamentRecord(
+    tournamentIds[1]
+  );
+  expect(result.success).toEqual(true);
+
+  result = setSubscriptions('not an object');
+  expect(result.error).not.toBeUndefined();
 });
