@@ -8,6 +8,7 @@ import {
   COMPASS,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../../constants/drawDefinitionConstants';
+import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 
 it('can clear scheduled matchUps', () => {
   const venueProfiles = [
@@ -119,9 +120,31 @@ it('can clear scheduled matchUps', () => {
       withScheduleAnalysis: true,
     });
 
-  expect(
-    Object.values(competitionParticipants[0].scheduledMatchUps)[0].length
-  ).toEqual(2);
+  let participantsWithMultipleScheduledMatchUps = 0;
+  competitionParticipants.forEach((participant) => {
+    const { scheduledMatchUps } = participant;
+    if (scheduledMatchUps) {
+      const dates = Object.keys(scheduledMatchUps);
+      if (
+        dates.length &&
+        scheduledMatchUps[dates[0]] &&
+        scheduledMatchUps[dates[0]].length > 1
+      ) {
+        participantsWithMultipleScheduledMatchUps += 1;
+        const dateMatchUps = scheduledMatchUps[dates[0]];
+        const firstMatchAfterRecoveryMinutes = timeStringMinutes(
+          dateMatchUps[0].schedule.afterRecoveryTime
+        );
+        const secondMatchStartMinutes = timeStringMinutes(
+          extractTime(dateMatchUps[1].schedule.scheduledTime)
+        );
+        expect(secondMatchStartMinutes).toBeGreaterThanOrEqual(
+          firstMatchAfterRecoveryMinutes
+        );
+      }
+    }
+  });
+  expect(participantsWithMultipleScheduledMatchUps).toBeGreaterThan(1);
 
   result = competitionEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);

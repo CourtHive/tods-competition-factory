@@ -1,10 +1,6 @@
+import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { processNextMatchUps } from './processNextMatchUps';
-import {
-  addMinutesToTimeString,
-  minutesDifference,
-  timeToDate,
-} from '../../../../utilities/dateTime';
+import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 
 export function checkRecoveryTime({
   matchUpPotentialParticipantIds,
@@ -47,26 +43,14 @@ export function checkRecoveryTime({
     sufficientTimeForIndiiduals && sufficientTimeBetweenMatchUps;
 
   if (enoughTime) {
-    individualParticipantIds.forEach((participantId) => {
-      const timeAfterRecovery = addMinutesToTimeString(
-        scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
-      );
-      if (!individualParticipantProfiles[participantId]) {
-        individualParticipantProfiles[participantId] = {
-          timeAfterRecovery,
-        };
-      } else {
-        individualParticipantProfiles[participantId].timeAfterRecovery =
-          timeAfterRecovery;
-      }
-
-      processNextMatchUps({
-        matchUp,
-        timeAfterRecovery,
-        matchUpNotBeforeTimes,
-        matchUpPotentialParticipantIds,
-      });
+    updateTimeAfterRecovery({
+      averageMatchUpMinutes,
+      recoveryMinutes,
+      matchUp,
+      individualParticipantProfiles,
+      scheduleTime,
+      matchUpNotBeforeTimes,
+      matchUpPotentialParticipantIds,
     });
   }
 

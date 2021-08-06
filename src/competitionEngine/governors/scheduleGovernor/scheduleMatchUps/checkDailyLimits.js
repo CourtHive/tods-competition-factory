@@ -52,7 +52,11 @@ export function checkDailyLimits(
   if (!participantIdsAtLimit.length) {
     relevantParticipantids.forEach((participantId) => {
       if (!individualParticipantProfiles[participantId])
-        individualParticipantProfiles[participantId] = { counters: {} };
+        individualParticipantProfiles[participantId] = {
+          counters: {},
+          afterRecoveryTimes: [],
+          timeAfterRecovery: undefined,
+        };
       const counters = individualParticipantProfiles[participantId].counters;
       if (counters[matchUpType]) counters[matchUpType] += 1;
       else counters[matchUpType] = 1;

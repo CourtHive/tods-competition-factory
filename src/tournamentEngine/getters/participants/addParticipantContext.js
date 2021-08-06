@@ -9,6 +9,7 @@ import {
   extractDate,
   extractTime,
   timeSort,
+  timeStringMinutes,
 } from '../../../utilities/dateTime';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
@@ -523,9 +524,18 @@ function annotateParticipant({
         )
       );
 
+      let afterRecoveryTime;
       scheduledMatchUps[date].forEach((matchUp) => {
         const scheduledTime = extractTime(matchUp.schedule?.scheduledTime);
         if (scheduledTime) {
+          const scheduleConflict =
+            afterRecoveryTime &&
+            timeStringMinutes(scheduledTime) <
+              timeStringMinutes(afterRecoveryTime);
+          if (scheduleConflict) {
+            matchUp.schedule.scheduleConflict = scheduleConflict;
+          }
+
           const timingDetails = {
             matchUpFormat: matchUp.matchUpFormat,
             ...scheduleTiming,
@@ -535,7 +545,7 @@ function annotateParticipant({
               eventType: matchUp.eventType,
               timingDetails,
             });
-          const afterRecoveryTime = addMinutesToTimeString(
+          afterRecoveryTime = addMinutesToTimeString(
             scheduledTime,
             averageMinutes + recoveryMinutes
           );
