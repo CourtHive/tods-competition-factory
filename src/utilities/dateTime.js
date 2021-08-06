@@ -160,6 +160,15 @@ function isTimeString(timeString) {
   return true;
 }
 
+export function timeStringMinutes(timeString) {
+  const validTimeString = extractTime(timeString);
+  if (!validTimeString) return 0;
+  const [hours, minutes] = timeString
+    .split(':')
+    .map((value) => parseInt(value));
+  return hours * 60 + minutes;
+}
+
 export function tidyTime(timeString) {
   return timeString.split(':').slice(0, 2).map(zeroPad).join(':');
 }
@@ -464,20 +473,21 @@ export function isoDateString(date) {
 */
 
 export const dateTime = {
-  sameDay,
-  timeUTC,
+  addMinutesToTimeString,
+  convertTime,
+  currentUTCDate,
   DateHHMM,
-  extractTime,
   extractDate,
+  extractTime,
   formatDate,
+  getDateByWeek,
+  getTimeZoneOffset,
+  isISODateString,
+  isTimeString,
   offsetDate,
   offsetTime,
+  sameDay,
+  timeStringMinutes,
   timeToDate,
-  convertTime,
-  getDateByWeek,
-  currentUTCDate,
-  getTimeZoneOffset,
-  isTimeString,
-  isISODateString,
-  addMinutesToTimeString,
+  timeUTC,
 };
