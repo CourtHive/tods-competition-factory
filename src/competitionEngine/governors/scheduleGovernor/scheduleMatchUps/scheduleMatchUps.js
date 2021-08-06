@@ -3,15 +3,15 @@ import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchU
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { getDevContext } from '../../../../global/globalState';
-import { getPersonRequests } from './personRequests';
 import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
+import { getPersonRequests } from './personRequests';
 import {
-  addMinutesToTimeString,
   extractDate,
   extractTime,
   isValidDateString,
@@ -119,13 +119,12 @@ export function scheduleMatchUps({
     });
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
-      const timeAfterRecovery = addMinutesToTimeString(
-        scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
-      );
-      processNextMatchUps({
+      updateTimeAfterRecovery({
+        averageMatchUpMinutes,
+        recoveryMinutes,
         matchUp,
-        timeAfterRecovery,
+        individualParticipantProfiles,
+        scheduleTime,
         matchUpNotBeforeTimes,
         matchUpPotentialParticipantIds,
       });

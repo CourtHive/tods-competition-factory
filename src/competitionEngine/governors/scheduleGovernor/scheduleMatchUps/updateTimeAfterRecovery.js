@@ -36,7 +36,6 @@ export function updateTimeAfterRecovery({
     matchUp,
     timeAfterRecovery,
     matchUpNotBeforeTimes,
-    individualParticipantIds,
     matchUpPotentialParticipantIds,
   });
 }
