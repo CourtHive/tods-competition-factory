@@ -30,7 +30,11 @@ export function modifyParticipantMatchUpsCount({
 
   consideredParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
-      individualParticipantProfiles[participantId] = { counters: {} };
+      individualParticipantProfiles[participantId] = {
+        counters: {},
+        timeAfterRecovery: undefined,
+        afterRecoveryTimes: [],
+      };
     }
     const counters = individualParticipantProfiles[participantId].counters;
     if (counters[matchUpType]) counters[matchUpType] += value;
