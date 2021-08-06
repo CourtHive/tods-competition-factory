@@ -1,16 +1,17 @@
+import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
-
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { DOUBLES } from '../../../constants/matchUpTypes';
 import {
   extractDate,
   extractTime,
   timeSort,
 } from '../../../utilities/dateTime';
-import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES } from '../../../constants/matchUpTypes';
+import { definedAttributes } from '../../../utilities/objects';
 
 export function addParticipantContext(params) {
   const participantIdMap = {};
@@ -26,8 +27,7 @@ export function addParticipantContext(params) {
     };
   };
 
-  const { tournamentRecord } = params;
-
+  const { tournamentRecord, participantFilters } = params;
   const allTournamentParticipants = params.tournamentRecord?.participants || [];
   const relevantParticipantIdsMap = Object.assign(
     {},
@@ -48,6 +48,21 @@ export function addParticipantContext(params) {
       }
     )
   );
+
+  // optimize when filtering participants by participantIds
+  // by only returing relevantParticpantIds related to specified particpantIds
+  const targetParticipantIds = participantFilters?.participantIds;
+  const getRelevantParticipantIds = (participantId) => {
+    const relevantParticipantIds =
+      (participantId && relevantParticipantIdsMap[participantId]) || [];
+    return relevantParticipantIds.some(
+      (obj) =>
+        !targetParticipantIds ||
+        targetParticipantIds.includes(obj.relevantParticipantId)
+    )
+      ? relevantParticipantIds
+      : [];
+  };
 
   // loop through all filtered events and capture events played
   params.tournamentEvents?.forEach((rawEvent) => {
@@ -86,7 +101,7 @@ export function addParticipantContext(params) {
 
         // include all individual participants that are part of teams & pairs
         // relevantParticipantId is a reference to an individual
-        const relevantParticipantIds = relevantParticipantIdsMap[participantId];
+        const relevantParticipantIds = getRelevantParticipantIds(participantId);
         relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
           if (!participantIdMap[relevantParticipantId]) {
             initializeParticipantId(relevantParticipantId);
@@ -104,7 +119,7 @@ export function addParticipantContext(params) {
     const addDrawData = ({ drawId, drawEntry, drawName, drawType }) => {
       const { participantId, entryStage, entryStatus, entryPosition } =
         drawEntry;
-      const relevantParticipantIds = relevantParticipantIdsMap[participantId];
+      const relevantParticipantIds = getRelevantParticipantIds(participantId);
       relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
         if (!participantIdMap[relevantParticipantId]) {
           initializeParticipantId(relevantParticipantId);
@@ -225,18 +240,17 @@ export function addParticipantContext(params) {
       );
       const opponentParticipantId = opponent?.participantId;
       const relevantOpponents =
-        (opponentParticipantId && relevantParticipantIdsMap[participantId]) ||
+        (opponentParticipantId &&
+          relevantParticipantIdsMap[opponentParticipantId]) ||
         [];
       const finishingPositionRange =
         winningSide && (participantWon ? winner : loser);
-
-      const relevantParticipantIds =
-        (participantId && relevantParticipantIdsMap[participantId]) || [];
       const drawEntry = drawEntries.find(
         (entry) => entry.participantId === participantId
       );
 
       // include all individual participants that are part of teams & pairs
+      const relevantParticipantIds = getRelevantParticipantIds(participantId);
       relevantParticipantIds?.forEach(
         ({ relevantParticipantId, participantType }) => {
           const { entryStage, entryStatus, entryPosition } = drawEntry || {};
@@ -326,27 +340,28 @@ export function addParticipantContext(params) {
               participantType,
             })
           );
-          participantIdMap[relevantParticipantId].matchUps[matchUpId] = {
-            drawId,
-            eventId,
-            eventType,
-            finishingPositionRange,
-            loserTo,
-            matchUpId,
-            matchUpStatus,
-            opponentParticipantInfo,
-            participantWon,
-            partnerParticipantId,
-            perspectiveScoreString: participantScore,
-            roundName,
-            roundNumber,
-            roundPosition,
-            schedule,
-            score,
-            structureName,
-            winnerTo,
-            winningSide,
-          };
+          participantIdMap[relevantParticipantId].matchUps[matchUpId] =
+            definedAttributes({
+              drawId,
+              eventId,
+              eventType,
+              finishingPositionRange,
+              loserTo,
+              matchUpId,
+              matchUpStatus,
+              opponentParticipantInfo,
+              participantWon,
+              partnerParticipantId,
+              perspectiveScoreString: participantScore,
+              roundName,
+              roundNumber,
+              roundPosition,
+              schedule,
+              score,
+              structureName,
+              winnerTo,
+              winningSide,
+            });
 
           if (partnerParticipantId && eventType === DOUBLES) {
             participantIdMap[relevantParticipantId].events[
@@ -371,14 +386,13 @@ export function addParticipantContext(params) {
         .map(({ participantId }) => participantId);
 
       potentialParticipantIds?.forEach((participantId) => {
-        const relevantParticipantIds =
-          (participantId && relevantParticipantIdsMap[participantId]) || [];
+        const relevantParticipantIds = getRelevantParticipantIds(participantId);
         relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
           if (!participantIdMap[relevantParticipantId]) {
             initializeParticipantId(relevantParticipantId);
           }
           participantIdMap[relevantParticipantId].potentialMatchUps[matchUpId] =
-            {
+            definedAttributes({
               drawId,
               eventId,
               eventType,
@@ -387,7 +401,7 @@ export function addParticipantContext(params) {
               roundPosition,
               schedule,
               structureName,
-            };
+            });
         });
       });
     }
@@ -480,8 +494,8 @@ function annotateParticipant({
         .concat(participantPotentialMatchUps)
         .reduce((dateMatchUps, matchUp) => {
           const { schedule } = matchUp;
-          const date = extractDate(schedule.scheduledDate);
-          const time = extractTime(schedule.scheduledDate);
+          const date = extractDate(schedule?.scheduledDate);
+          const time = extractTime(schedule?.scheduledDate);
           if (date && time) {
             if (dateMatchUps[date]) {
               dateMatchUps[date].push(matchUp);
@@ -497,8 +511,8 @@ function annotateParticipant({
       dates.forEach((date) => {
         scheduledMatchUps[date].sort((a, b) =>
           timeSort(
-            extractTime(a.schedule.scheduledTime),
-            extractTime(b.schedule.scheduledTime)
+            extractTime(a.schedule?.scheduledTime),
+            extractTime(b.schedule?.scheduledTime)
           )
         );
 

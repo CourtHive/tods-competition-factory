@@ -71,6 +71,7 @@ export function getTournamentParticipants({
       tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
+      participantFilters,
       withStatistics,
       withOpponents,
       withMatchUps,
