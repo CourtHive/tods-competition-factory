@@ -6,6 +6,7 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
+import { deepMerge } from '../../utilities/deepMerge';
 
 export function getCompetitionParticipants(params) {
   const { tournamentRecords } = params || {};
@@ -14,11 +15,15 @@ export function getCompetitionParticipants(params) {
     !Object.keys(tournamentRecords).length
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
-  const competitionParticipants = [];
+  let competitionParticipants = [];
   const competitionParticipantIds = [];
+  const participantIdsWithConflicts = {};
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const { tournamentParticipants } = getTournamentParticipants({
+    const {
+      tournamentParticipants,
+      participantIdsWithConflicts: idsWithConflicts,
+    } = getTournamentParticipants({
       tournamentRecord,
       ...params,
     });
@@ -27,11 +32,31 @@ export function getCompetitionParticipants(params) {
       if (!competitionParticipantIds.includes(participantId)) {
         competitionParticipantIds.push(participantId);
         competitionParticipants.push(tournamentParticipant);
+      } else {
+        // merge participant record context across tournaments
+        competitionParticipants = competitionParticipants.map((participant) =>
+          participant.participantId !== participantId
+            ? participant
+            : deepMerge(participant, tournamentParticipant, true)
+        );
       }
     }
+
+    idsWithConflicts &&
+      Object.keys(idsWithConflicts).forEach((participantId) => {
+        if (participantIdsWithConflicts[participantId]) {
+          participantIdsWithConflicts[participantId] =
+            participantIdsWithConflicts[participantId].concat(
+              idsWithConflicts[participantId]
+            );
+        } else {
+          participantIdsWithConflicts[participantId] =
+            idsWithConflicts[participantId];
+        }
+      });
   }
 
-  return { competitionParticipants };
+  return { competitionParticipants, participantIdsWithConflicts };
 }
 
 export function publicFindParticipant({

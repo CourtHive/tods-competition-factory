@@ -16,6 +16,8 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 export function addParticipantContext(params) {
+  const participantIdsWithConflicts = {};
+
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
     participantIdMap[participantId] = {
@@ -198,14 +200,17 @@ export function addParticipantContext(params) {
       processMatchUp({ matchUp, drawDetails, eventType })
     );
 
-    params.tournamentParticipants?.forEach((participant) =>
-      annotateParticipant({
+    params.tournamentParticipants?.forEach((participant) => {
+      const scheduleConflicts = annotateParticipant({
         ...params,
         participant,
         participantIdMap,
         scheduleTiming,
-      })
-    );
+      });
+      if (scheduleConflicts?.length)
+        participantIdsWithConflicts[participant.participantId] =
+          scheduleConflicts;
+    });
   });
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {
@@ -412,6 +417,8 @@ export function addParticipantContext(params) {
       });
     }
   }
+
+  return { participantIdsWithConflicts };
 }
 
 function annotateParticipant({
@@ -426,6 +433,7 @@ function annotateParticipant({
   scheduleTiming,
   participantIdMap,
 }) {
+  const scheduleConflicts = [];
   const participantId = participant?.participantId;
   if (!participantId || !participantIdMap[participantId]) return;
 
@@ -534,6 +542,7 @@ function annotateParticipant({
               timeStringMinutes(afterRecoveryTime);
           if (scheduleConflict) {
             matchUp.schedule.scheduleConflict = scheduleConflict;
+            scheduleConflicts.push(matchUp.matchUpId);
           }
 
           const timingDetails = {
@@ -549,7 +558,9 @@ function annotateParticipant({
             scheduledTime,
             averageMinutes + recoveryMinutes
           );
-          matchUp.schedule.afterRecoveryTime = afterRecoveryTime;
+          if (averageMinutes || recoveryMinutes) {
+            matchUp.schedule.afterRecoveryTime = afterRecoveryTime;
+          }
         }
       });
     });
@@ -557,4 +568,5 @@ function annotateParticipant({
     participant.scheduledMatchUps = scheduledMatchUps;
   }
   if (withStatistics) participant.statistics = [winRatioStat];
+  return scheduleConflicts;
 }

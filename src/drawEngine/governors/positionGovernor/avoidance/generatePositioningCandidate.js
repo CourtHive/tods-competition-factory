@@ -17,7 +17,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
  * NOTE: some of these parameters are passed directly through to other functions via ...params
  *
  * @param {object[]} initialPositionAssignments - positionAssignments before any new participants placed
- * @param {object[]} participantsWithContext - participants with added team/group/pair participantIds arrays
+ * @param {object[]} participantsWithGroupings - participants with added team/group/pair participantIds arrays
  * @param {string[]} unseededParticipantIds - ids of participants who are unseeded
  * @param {object[]} drawPositionChunks - drawPositions grouped by round starting with the final round
  * @param {object[]} drawPositionGroups - drawPositions paird with their initial round opponent drawPosition
@@ -31,7 +31,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 export function generatePositioningCandidate(params) {
   const {
     initialPositionAssignments,
-    participantsWithContext,
+    participantsWithGroupings,
     opponentsToPlaceCount,
     drawPositionGroups,
     policyAttributes,
@@ -72,7 +72,7 @@ export function generatePositioningCandidate(params) {
 
   let positionedParticipants = getPositionedParticipants({
     candidatePositionAssignments,
-    participantsWithContext,
+    participantsWithGroupings,
     policyAttributes,
     idCollections,
   });
@@ -101,7 +101,7 @@ export function generatePositioningCandidate(params) {
 
       positionedParticipants = getPositionedParticipants({
         candidatePositionAssignments,
-        participantsWithContext,
+        participantsWithGroupings,
         policyAttributes,
         idCollections,
       });

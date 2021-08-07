@@ -67,6 +67,7 @@ export function getTournamentParticipants({
       participants: tournamentParticipants,
     });
 
+  let participantIdsWithConflicts;
   if (
     withEvents ||
     withDraws ||
@@ -75,7 +76,7 @@ export function getTournamentParticipants({
     withOpponents ||
     withScheduleAnalysis
   ) {
-    addParticipantContext({
+    ({ participantIdsWithConflicts } = addParticipantContext({
       tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
@@ -86,7 +87,7 @@ export function getTournamentParticipants({
       withMatchUps,
       withEvents,
       withDraws,
-    });
+    }));
   }
 
   const participantAttributes = policyDefinition?.participant;
@@ -99,5 +100,5 @@ export function getTournamentParticipants({
     );
   }
 
-  return { tournamentParticipants };
+  return { tournamentParticipants, participantIdsWithConflicts };
 }

@@ -2,13 +2,13 @@ import { extractAttributeValues } from '../../../getters/getAttributeGrouping';
 
 export function getPositionedParticipants({
   candidatePositionAssignments,
-  participantsWithContext,
+  participantsWithGroupings,
   policyAttributes,
   idCollections,
 }) {
   const participantsMap = Object.assign(
     {},
-    ...participantsWithContext.map((participant) => ({
+    ...participantsWithGroupings.map((participant) => ({
       [participant.participantId]: participant,
     }))
   );
@@ -20,7 +20,7 @@ export function getPositionedParticipants({
       policyAttributes,
 
       idCollections,
-      participants: participantsWithContext,
+      participants: participantsWithGroupings,
     });
     return { ...assignment, values };
   });
