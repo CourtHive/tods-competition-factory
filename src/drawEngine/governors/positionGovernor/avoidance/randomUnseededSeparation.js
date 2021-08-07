@@ -3,7 +3,7 @@ import { structureAssignedDrawPositions } from '../../../getters/positionsGetter
 import { getAttributeGroupings } from '../../../getters/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
-import { addParticipantContext } from './addParticipantContext';
+import { addParticipantGroupings } from './addParticipantGroupings';
 import { findStructure } from '../../../getters/findStructure';
 import { assignDrawPosition } from '../positionAssignment';
 import {
@@ -54,7 +54,7 @@ export function randomUnseededSeparation({
   });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  const participantsWithContext = addParticipantContext({ participants });
+  const participantsWithGroupings = addParticipantGroupings({ participants });
 
   const unassignedPositions = positionAssignments.filter(
     (assignment) => !assignment.participantId
@@ -75,18 +75,18 @@ export function randomUnseededSeparation({
     : eliminationParticipantGroups(params);
 
   const idCollections = {};
-  idCollections.groupParticipants = participantsWithContext
+  idCollections.groupParticipants = participantsWithGroupings
     .filter((participant) => participant.participantType === GROUP)
     .map((participant) => participant.participantId);
-  idCollections.teamParticipants = participantsWithContext
+  idCollections.teamParticipants = participantsWithGroupings
     .filter((participant) => participant.participantType === TEAM)
     .map((participant) => participant.participantId);
-  idCollections.pairParticipants = participantsWithContext
+  idCollections.pairParticipants = participantsWithGroupings
     .filter((participant) => participant.participantType === PAIR)
     .map((participant) => participant.participantId);
 
   const allGroups = getAttributeGroupings({
-    participants: participantsWithContext,
+    participants: participantsWithGroupings,
     idCollections,
     policyAttributes,
     targetParticipantIds: unseededParticipantIds,
@@ -118,7 +118,7 @@ export function randomUnseededSeparation({
   const noPairPriorityCandidates = generateRange(0, candidatesCount).map(() =>
     generatePositioningCandidate({
       initialPositionAssignments: positionAssignments,
-      participantsWithContext,
+      participantsWithGroupings,
       unseededParticipantIds,
       opponentsToPlaceCount,
       drawPositionChunks,
@@ -142,7 +142,7 @@ export function randomUnseededSeparation({
     const pairedPriorityCandidates = generateRange(0, candidatesCount).map(() =>
       generatePositioningCandidate({
         initialPositionAssignments: positionAssignments,
-        participantsWithContext,
+        participantsWithGroupings,
         unseededParticipantIds,
         opponentsToPlaceCount,
         drawPositionChunks,

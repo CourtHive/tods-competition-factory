@@ -7,22 +7,22 @@ import {
   TEAM,
 } from '../../../../constants/participantTypes';
 
-export function addParticipantContext({ participants = [] }) {
-  const participantsWithContext = makeDeepCopy(participants, true, true);
-  const teamParticipants = participantsWithContext.filter(
+export function addParticipantGroupings({ participants = [] }) {
+  const participantsWithGroupings = makeDeepCopy(participants, true, true);
+  const teamParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === TEAM
   );
-  const groupParticipants = participantsWithContext.filter(
+  const groupParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === GROUP
   );
 
   // pairParticipants should only consider those that are in the same event as current draw
   // TODO: this requires access to the parent event which is not currently in scope
-  const pairParticipants = participantsWithContext.filter(
+  const pairParticipants = participantsWithGroupings.filter(
     (participant) => participant.participantType === PAIR
   );
 
-  participantsWithContext.forEach((participant) => {
+  participantsWithGroupings.forEach((participant) => {
     const { participantId } = participant;
     participant.teamParticipantIds = [];
     participant.groupParticipantIds = [];
@@ -52,5 +52,5 @@ export function addParticipantContext({ participants = [] }) {
       });
     }
   });
-  return participantsWithContext;
+  return participantsWithGroupings;
 }
