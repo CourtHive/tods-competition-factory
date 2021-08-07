@@ -17,10 +17,8 @@ export function filterMatchUps(params) {
     scheduledDate,
     scheduledDates,
     isMatchUpTie,
-    localTimeZone,
     matchUpFormats,
     matchUpStatuses,
-    localPerspective,
     isCollectionMatchUp,
 
     // only applies to inContext matchUps and only when processContext boolean is true
@@ -136,13 +134,9 @@ export function filterMatchUps(params) {
     if (targetScheduledDates?.length) {
       const { scheduledTime } = scheduledMatchUpTime({
         matchUp,
-        localTimeZone,
-        localPerspective,
       });
       const { scheduledDate: matchUpDate } = scheduledMatchUpDate({
         matchUp,
-        localTimeZone,
-        localPerspective,
       });
       const scheduledTimeDate = extractDate(scheduledTime);
       const comparisonDate = scheduledTimeDate || matchUpDate;

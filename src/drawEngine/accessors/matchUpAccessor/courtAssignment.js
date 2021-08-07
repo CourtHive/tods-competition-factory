@@ -1,6 +1,9 @@
+import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
+
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 
-export function matchUpAssignedCourtId({ matchUp }) {
+export function matchUpAssignedCourtId({ matchUp, visibilityThreshold }) {
+  /*
   const timeItems = matchUp?.timeItems || [];
   const getTimeStamp = (item) =>
     !item.createdAt ? 0 : new Date(item.createdAt).getTime();
@@ -10,6 +13,13 @@ export function matchUpAssignedCourtId({ matchUp }) {
 
   const lastCourtAssignmentItem = courtAssignmentItems.pop();
   const courtId = lastCourtAssignmentItem && lastCourtAssignmentItem.itemValue;
+  */
 
-  return { courtId };
+  const itemValue = latestVisibleTimeItemValue(
+    matchUp?.timeItems || [],
+    ASSIGN_COURT,
+    visibilityThreshold
+  );
+
+  return { courtId: itemValue };
 }
