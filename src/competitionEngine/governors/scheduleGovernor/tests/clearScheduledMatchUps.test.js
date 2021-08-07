@@ -1,3 +1,4 @@
+import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -8,7 +9,6 @@ import {
   COMPASS,
   FIRST_MATCH_LOSER_CONSOLATION,
 } from '../../../../constants/drawDefinitionConstants';
-import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 
 it('can clear scheduled matchUps', () => {
   const venueProfiles = [

@@ -74,7 +74,7 @@ export function getDevContext(contextCriteria) {
 }
 
 export function timeKeeper(action = 'reset', timer = 'default') {
-  const timeNow = new Date().getTime();
+  const timeNow = Date.now();
 
   if (action === 'report') {
     if (timer === 'allTimers') {

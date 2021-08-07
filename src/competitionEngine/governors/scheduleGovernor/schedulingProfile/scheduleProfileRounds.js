@@ -1,3 +1,4 @@
+import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
@@ -29,6 +30,11 @@ export function scheduleProfileRounds({
     getSchedulingProfile({ tournamentRecords })?.schedulingProfile || [];
 
   const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
+
+  const containedStructureIds = Object.assign(
+    {},
+    ...Object.values(tournamentRecords).map(getContainedStructures)
+  );
 
   const competitionMatchUpFilters = {};
   const { matchUps } = allCompetitionMatchUps({
@@ -95,12 +101,16 @@ export function scheduleProfileRounds({
         // e.g. a round has been split between two venues
         // for elimation roundPositionRange could work..., but not for RR
         // for Round Robins you want to keep the groups together at a venue
+
+        const structureIds = containedStructureIds[round.structureId] || [
+          round.structureId,
+        ];
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
           eventIds: [round.eventId],
           drawIds: [round.drawId],
-          structureIds: [round.structureId],
           roundNumbers: [round.roundNumber],
+          structureIds,
         };
 
         const roundMatchUps = filterMatchUps({
