@@ -1605,6 +1605,8 @@ const { tournamentRecord } = tournamentEngine.getState({
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
 
+When `{ withScheduleAnalysis: true }` returns an array of `participantIds` which have schedule conflicts.
+
 ```js
 const participantFilters = {
   accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
@@ -1614,7 +1616,10 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+const {
+  tournamentParticipants,
+  participantIdsWithConflicts // when { withScheduleAnalysis: true } returns array of participantIds which have scheduling conflicts
+} = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'

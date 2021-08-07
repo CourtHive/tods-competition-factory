@@ -462,6 +462,8 @@ const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
 
 Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values.
 
+When `{ withScheduleAnalysis: true }` returns an array of `participantIds` which have schedule conflicts.
+
 ```js
 const participantFilters = {
   accessorValues,
@@ -471,7 +473,10 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const { competitionParticipants } =
+const {
+  competitionParticipants,
+  participantIdsWithConflicts // when { withScheduleAnalysis: true } returns array of participantIds which have scheduling conflicts
+  } =
   competitionEngine.getCompetitionParticipants({
     inContext, // optional - adds individualParticipants for all individualParticipantIds
 
