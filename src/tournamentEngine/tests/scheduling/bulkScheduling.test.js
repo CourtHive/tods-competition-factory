@@ -78,9 +78,11 @@ it('can bulk schedule matchUps', () => {
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.error).toEqual(INVALID_VALUES);
 
+  const scheduledDate = '2021-01-01';
+  const scheduledTime = '08:00';
   schedule = {
-    scheduledTime: '08:00',
-    scheduledDate: '2021-01-01',
+    scheduledTime,
+    scheduledDate,
     venueId,
   };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
@@ -92,6 +94,18 @@ it('can bulk schedule matchUps', () => {
   );
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
+
+  const { tournamentParticipants, participantIdsWithConflicts } =
+    tournamentEngine.getTournamentParticipants({ withScheduleAnalysis: true });
+  expect(participantIdsWithConflicts).toEqual({});
+  const participantsWithScheduledMatchUps = tournamentParticipants.filter(
+    ({ scheduledMatchUps }) => scheduledMatchUps
+  );
+  expect(participantsWithScheduledMatchUps.length).toEqual(32);
+  expect(
+    participantsWithScheduledMatchUps[0].scheduledMatchUps[scheduledDate][0]
+      .schedule.scheduledTime
+  ).toEqual(scheduledTime);
 
   schedule = {
     scheduledTime: '',
