@@ -1,4 +1,5 @@
 import { findMatchUp as drawEngineFindMatchUp } from '../../drawEngine/getters/getMatchUps/findMatchUp';
+import { getScheduleTiming } from '../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolicies';
 import { makeDeepCopy } from '../../utilities/makeDeepCopy';
 import {
@@ -48,6 +49,7 @@ export function allTournamentMatchUps({
           matchUpFilters,
           contextFilters,
           policyDefinition,
+          tournamentRecord,
           scheduleVisibilityFilters,
           tournamentAppliedPolicies,
         }).matchUps
@@ -131,15 +133,21 @@ export function allEventMatchUps({
   participants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   const drawDefinitions = event.drawDefinitions || [];
+  const scheduleTiming = getScheduleTiming({
+    tournamentRecord,
+    event,
+  }).scheduleTiming;
+
   const matchUps = drawDefinitions
     .map((drawDefinition) => {
       const { matchUps } = getAllDrawMatchUps({
         drawDefinition,
         context: additionalContext,
         inContext,
+        nextMatchUps,
         matchUpFilters,
         contextFilters,
-        nextMatchUps,
+        scheduleTiming,
         tournamentRecord,
         policyDefinition,
         tournamentAppliedPolicies,

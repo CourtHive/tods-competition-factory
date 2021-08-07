@@ -113,6 +113,7 @@ it('can clear scheduled matchUps', () => {
     scheduledStructureIds.includes(structureId)
   );
   expect(expectedStructureIds).toEqual(true);
+  expect(scheduledMatchUps[0].schedule.afterRecoveryTime).toEqual('10:30');
 
   const { competitionParticipants } =
     competitionEngine.getCompetitionParticipants({

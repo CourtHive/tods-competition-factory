@@ -1,11 +1,11 @@
-import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
+// import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+// import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 import {
-  addMinutesToTimeString,
+  // addMinutesToTimeString,
   extractDate,
   extractTime,
   timeSort,
@@ -80,9 +80,11 @@ export function addParticipantContext(params) {
     );
     const eventEntries = event.entries || [];
 
+    /*
     const scheduleTiming =
       params.withScheduleAnalysis &&
       getScheduleTiming({ tournamentRecord, event }).scheduleTiming;
+      */
 
     // don't allow system extensions to be copied to participants
     const disallowedConstants = [].concat(...Object.values(extensionConstants));
@@ -172,6 +174,7 @@ export function addParticipantContext(params) {
       event,
       inContext: true,
       nextMatchUps: true,
+      tournamentRecord,
     });
 
     const drawDetails = Object.assign(
@@ -205,7 +208,7 @@ export function addParticipantContext(params) {
         ...params,
         participant,
         participantIdMap,
-        scheduleTiming,
+        // scheduleTiming,
       });
       if (scheduleConflicts?.length)
         participantIdsWithConflicts[participant.participantId] =
@@ -430,7 +433,7 @@ function annotateParticipant({
   withScheduleAnalysis,
 
   participant,
-  scheduleTiming,
+  // scheduleTiming,
   participantIdMap,
 }) {
   const scheduleConflicts = [];
@@ -545,6 +548,10 @@ function annotateParticipant({
             scheduleConflicts.push(matchUp.matchUpId);
           }
 
+          afterRecoveryTime = matchUp.schedule?.afterRecoveryTime;
+
+          /*
+          // this is now accomplished inside of matchUpScheduleDetails
           const timingDetails = {
             matchUpFormat: matchUp.matchUpFormat,
             ...scheduleTiming,
@@ -561,6 +568,7 @@ function annotateParticipant({
           if (averageMinutes || recoveryMinutes) {
             matchUp.schedule.afterRecoveryTime = afterRecoveryTime;
           }
+          */
         }
       });
     });

@@ -5,6 +5,7 @@ import { getEventTimeItem } from '../queryGovernor/timeItems';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 
 export function getAllEventData({ tournamentRecord, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -48,6 +49,11 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
       discipline,
     }))(event);
 
+    const scheduleTiming = getScheduleTiming({
+      tournamentRecord,
+      event,
+    }).scheduleTiming;
+
     const drawsData = (event.drawDefinitions || []).map((drawDefinition) => {
       const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
         drawId,
@@ -64,6 +70,7 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
         context: { eventId },
         inContext: true,
         drawDefinition,
+        scheduleTiming,
         policyDefinition,
         tournamentRecord,
         includeByeMatchUps: false,
