@@ -2014,6 +2014,18 @@ const {
 
 ---
 
+## participantScheduledMatchUps
+
+Returns `matchUps` which have been scheduled, organized by `scheduledDate` and sorted by `scheduledTime`.
+
+```js
+const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps({
+  matchUps,
+});
+```
+
+---
+
 ## positionActions
 
 ```js
