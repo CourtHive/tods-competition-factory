@@ -1,11 +1,14 @@
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { positionTargets } from '../positionGovernor/positionTargets';
+import { timeStringMinutes } from '../../../utilities/dateTime';
 import { findStructure } from '../../getters/findStructure';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
+  const scheduleConflictMatchUpIds = [];
+
   inContextDrawMatchUps.forEach((inContextMatchUp) => {
     const { matchUpId, structureId, drawPositions = [] } = inContextMatchUp;
     const { structure } = findStructure({ drawDefinition, structureId });
@@ -58,6 +61,28 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           (nextMatchUp && getUpcomingInfo({ upcomingMatchUp: nextMatchUp })) ||
           loserTo;
       }
+
+      const afterRecoveryTime = inContextMatchUp.schedule?.afterRecoveryTime;
+      if (afterRecoveryTime) {
+        if (winnerTo?.schedule?.scheduledTime) {
+          const scheduleConflict =
+            timeStringMinutes(winnerTo.schedule.scheduledTime) <
+            timeStringMinutes(afterRecoveryTime);
+          if (scheduleConflict) {
+            scheduleConflictMatchUpIds.push(winnerTo.matchUpId);
+            winnerTo.schedule.scheduleConflict = true;
+          }
+        }
+        if (loserTo?.schedule?.scheduledTime) {
+          const scheduleConflict =
+            timeStringMinutes(winnerTo.schedule.scheduledTime) <
+            timeStringMinutes(afterRecoveryTime);
+          if (scheduleConflict) {
+            scheduleConflictMatchUpIds.push(loserTo.matchUpId);
+            loserTo.schedule.scheduleConflict = true;
+          }
+        }
+      }
       Object.assign(inContextMatchUp, { winnerTo, loserTo });
 
       if (inContextMatchUp.drawPositions.filter(Boolean).length) {
@@ -87,6 +112,15 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       }
     }
   });
+
+  if (scheduleConflictMatchUpIds.length) {
+    inContextDrawMatchUps.forEach((inContextMatchUp) => {
+      if (scheduleConflictMatchUpIds.includes(inContextMatchUp.matchUpId))
+        inContextMatchUp.schedule.scheduleConflict = true;
+    });
+  }
+
+  return { scheduleConflictMatchUpIds };
 }
 
 function getParticipantIds(matchUp) {

@@ -1,22 +1,13 @@
-// import { matchUpFormatTimes } from '../../governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-// import { getScheduleTiming } from '../../governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
-import {
-  // addMinutesToTimeString,
-  extractDate,
-  extractTime,
-  timeSort,
-  timeStringMinutes,
-} from '../../../utilities/dateTime';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
 
 export function addParticipantContext(params) {
-  const participantIdsWithConflicts = {};
+  const participantIdsWithConflicts = [];
 
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
@@ -79,12 +70,6 @@ export function addParticipantContext(params) {
       (extensionKey) => (eventInfo[extensionKey] = event[extensionKey])
     );
     const eventEntries = event.entries || [];
-
-    /*
-    const scheduleTiming =
-      params.withScheduleAnalysis &&
-      getScheduleTiming({ tournamentRecord, event }).scheduleTiming;
-      */
 
     // don't allow system extensions to be copied to participants
     const disallowedConstants = [].concat(...Object.values(extensionConstants));
@@ -208,11 +193,11 @@ export function addParticipantContext(params) {
         ...params,
         participant,
         participantIdMap,
-        // scheduleTiming,
       });
-      if (scheduleConflicts?.length)
-        participantIdsWithConflicts[participant.participantId] =
-          scheduleConflicts;
+      if (scheduleConflicts?.length) {
+        participant.scheduleConflicts = scheduleConflicts;
+        participantIdsWithConflicts.push(participant.participantId);
+      }
     });
   });
 
@@ -430,10 +415,8 @@ function annotateParticipant({
   withOpponents,
   withMatchUps,
   withStatistics,
-  withScheduleAnalysis,
 
   participant,
-  // scheduleTiming,
   participantIdMap,
 }) {
   const scheduleConflicts = [];
@@ -481,100 +464,40 @@ function annotateParticipant({
 
   if (withMatchUps) {
     participant.potentialMatchUps = participantPotentialMatchUps;
-
     participant.matchUps = participantMatchUps;
-
-    participantDraws?.forEach((draw) => {
-      const drawMatchUps =
-        (matchUps &&
-          participantMatchUps.filter(
-            (matchUp) => matchUp.drawId === draw.drawId
-          )) ||
-        [];
-      const diff = (range) => Math.abs(range[0] - range[1]);
-      const finishingPositionRange = drawMatchUps.reduce(
-        (finishingPositionRange, matchUp) => {
-          if (!finishingPositionRange) return matchUp.finishingPositionRange;
-          return finishingPositionRange &&
-            matchUp.finishingPositionRange &&
-            diff(finishingPositionRange) > diff(matchUp.finishingPositionRange)
-            ? matchUp.finishingPositionRange
-            : finishingPositionRange;
-        },
-        undefined
-      );
-      draw.finishingPositionRange = finishingPositionRange;
-    });
   }
 
-  if (withScheduleAnalysis) {
-    // construct object with matchUps by date
-    const scheduledMatchUps = participantMatchUps
-      .concat(participantPotentialMatchUps)
-      .reduce((dateMatchUps, matchUp) => {
-        const { schedule } = matchUp;
-        const date = extractDate(schedule?.scheduledDate);
-        const time = extractTime(schedule?.scheduledDate);
-        if (date && time) {
-          if (dateMatchUps[date]) {
-            dateMatchUps[date].push(matchUp);
-          } else {
-            dateMatchUps[date] = [matchUp];
-          }
-        }
-        return dateMatchUps;
-      }, {});
-
-    // sort all date matchUps
-    const dates = Object.keys(scheduledMatchUps);
-    dates.forEach((date) => {
-      scheduledMatchUps[date].sort((a, b) =>
-        timeSort(
-          extractTime(a.schedule?.scheduledTime),
-          extractTime(b.schedule?.scheduledTime)
-        )
-      );
-
-      let afterRecoveryTime;
-      scheduledMatchUps[date].forEach((matchUp) => {
-        const scheduledTime = extractTime(matchUp.schedule?.scheduledTime);
-        if (scheduledTime) {
-          const scheduleConflict =
-            afterRecoveryTime &&
-            timeStringMinutes(scheduledTime) <
-              timeStringMinutes(afterRecoveryTime);
-          if (scheduleConflict) {
-            matchUp.schedule.scheduleConflict = scheduleConflict;
-            scheduleConflicts.push(matchUp.matchUpId);
-          }
-
-          afterRecoveryTime = matchUp.schedule?.afterRecoveryTime;
-
-          /*
-          // this is now accomplished inside of matchUpScheduleDetails
-          const timingDetails = {
-            matchUpFormat: matchUp.matchUpFormat,
-            ...scheduleTiming,
-          };
-          const { averageMinutes = 0, recoveryMinutes = 0 } =
-            matchUpFormatTimes({
-              eventType: matchUp.eventType,
-              timingDetails,
-            });
-          afterRecoveryTime = addMinutesToTimeString(
-            scheduledTime,
-            averageMinutes + recoveryMinutes
-          );
-          if (averageMinutes || recoveryMinutes) {
-            matchUp.schedule.afterRecoveryTime = afterRecoveryTime;
-          }
-          */
-        }
-      });
+  participantMatchUps
+    .concat(participantPotentialMatchUps)
+    .forEach((matchUp) => {
+      if (matchUp.schedule?.scheduleConflict) {
+        scheduleConflicts.push(matchUp.matchUpId);
+      }
     });
 
-    participant.scheduledMatchUps = scheduledMatchUps;
-  }
+  participantDraws?.forEach((draw) => {
+    const drawMatchUps =
+      (matchUps &&
+        participantMatchUps.filter(
+          (matchUp) => matchUp.drawId === draw.drawId
+        )) ||
+      [];
+    const diff = (range) => Math.abs(range[0] - range[1]);
+    const finishingPositionRange = drawMatchUps.reduce(
+      (finishingPositionRange, matchUp) => {
+        if (!finishingPositionRange) return matchUp.finishingPositionRange;
+        return finishingPositionRange &&
+          matchUp.finishingPositionRange &&
+          diff(finishingPositionRange) > diff(matchUp.finishingPositionRange)
+          ? matchUp.finishingPositionRange
+          : finishingPositionRange;
+      },
+      undefined
+    );
+    draw.finishingPositionRange = finishingPositionRange;
+  });
+
   if (withStatistics) participant.statistics = [winRatioStat];
+
   return scheduleConflicts;
 }

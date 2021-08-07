@@ -53,7 +53,9 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       if (!result) {
         // covers methods which are expected to return boolean
         expect([false, 0].includes(result)).toEqual(true);
-      } else if (['credits', 'version'].includes(method)) {
+      } else if (
+        ['credits', 'version', 'participantScheduledMatchUps'].includes(method)
+      ) {
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();

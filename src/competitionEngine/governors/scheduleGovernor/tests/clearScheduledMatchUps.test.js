@@ -115,15 +115,23 @@ it('can clear scheduled matchUps', () => {
   expect(expectedStructureIds).toEqual(true);
   expect(scheduledMatchUps[0].schedule.afterRecoveryTime).toEqual('10:30');
 
-  const { competitionParticipants } =
+  const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       inContext: true,
+      withMatchUps: true,
       withScheduleAnalysis: true,
     });
 
+  expect(participantIdsWithConflicts.length).toEqual(0);
+
   let participantsWithMultipleScheduledMatchUps = 0;
   competitionParticipants.forEach((participant) => {
-    const { scheduledMatchUps } = participant;
+    const { matchUps = [], potentialMatchUps = [] } = participant;
+
+    const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps(
+      { matchUps: matchUps.concat(potentialMatchUps) }
+    );
+
     if (scheduledMatchUps) {
       const dates = Object.keys(scheduledMatchUps);
       if (
@@ -145,6 +153,7 @@ it('can clear scheduled matchUps', () => {
       }
     }
   });
+
   expect(participantsWithMultipleScheduledMatchUps).toBeGreaterThan(1);
 
   result = competitionEngine.clearScheduledMatchUps();

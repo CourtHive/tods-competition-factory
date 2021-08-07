@@ -441,7 +441,7 @@ const { matchUps } = allEventMatchUps({
   eventId,
   inContext: true, // include contextual details
   nextMatchUps: true, // include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```
@@ -455,7 +455,8 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters,
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  nextMatchUps, // include winnerTo and loserTo matchUps
 });
 ```
 
@@ -825,7 +826,7 @@ const {
 } = tournamentEngine.eventMatchUps({
   eventId,
   nextMatchUps, // optional boolean; include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
@@ -1605,8 +1606,6 @@ const { tournamentRecord } = tournamentEngine.getState({
 
 Returns **deepCopies** of tournament participants filtered by participantFilters which are arrays of desired participant attribute values.
 
-When `{ withScheduleAnalysis: true }` returns an array of `participantIds` which have schedule conflicts.
-
 ```js
 const participantFilters = {
   accessorValues: [{ accessor, value }], // optional - see Accessors in Concepts
@@ -1618,7 +1617,7 @@ const participantFilters = {
 };
 const {
   tournamentParticipants,
-  participantIdsWithConflicts // when { withScheduleAnalysis: true } returns array of participantIds which have scheduling conflicts
+  participantIdsWithConflicts //  returns array of participantIds which have scheduling conflicts
 } = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
@@ -1628,7 +1627,6 @@ const {
   withDraws, // optional - defaults to true
 
   withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
-  withScheduleAnalysis, // optional - requires { withMatchUps: true } - analyze matchUp.schedules
 
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinition, // optional - can accept a privacy policy to filter participant attributes
@@ -2516,7 +2514,7 @@ const {
   pendingMatchUps,
   upcomingMatchUps,
 } = tournamentEngine.tournamentMatchUps({
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```

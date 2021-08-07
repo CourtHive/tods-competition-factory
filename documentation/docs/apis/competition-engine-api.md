@@ -238,6 +238,8 @@ competitionEngine.addVenue({ venue: { venueName } });
 ```js
 const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters,
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  nextMatchUps, // include winnerTo and loserTo matchUps
 });
 ```
 
@@ -462,8 +464,6 @@ const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
 
 Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values.
 
-When `{ withScheduleAnalysis: true }` returns an array of `participantIds` which have schedule conflicts.
-
 ```js
 const participantFilters = {
   accessorValues,
@@ -475,7 +475,7 @@ const participantFilters = {
 };
 const {
   competitionParticipants,
-  participantIdsWithConflicts // when { withScheduleAnalysis: true } returns array of participantIds which have scheduling conflicts
+  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
   } =
   competitionEngine.getCompetitionParticipants({
     inContext, // optional - adds individualParticipants for all individualParticipantIds
@@ -486,7 +486,6 @@ const {
     withDraws, // optional - defaults to true
 
     withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
-    withScheduleAnalysis, // optional - requires { withMatchUps: true } - analyze matchUp.schedules
 
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     policyDefinition, // optional - can accept a privacy policy to filter participant attributes

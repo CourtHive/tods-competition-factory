@@ -26,7 +26,6 @@ export function getTournamentParticipants({
   participantFilters = {},
   policyDefinition,
 
-  withScheduleAnalysis,
   withStatistics,
   withOpponents,
   withMatchUps,
@@ -73,21 +72,21 @@ export function getTournamentParticipants({
     withDraws ||
     withMatchUps ||
     withStatistics ||
-    withOpponents ||
-    withScheduleAnalysis
+    withOpponents
   ) {
-    ({ participantIdsWithConflicts } = addParticipantContext({
+    const result = addParticipantContext({
       tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
       participantFilters,
-      withScheduleAnalysis,
       withStatistics,
       withOpponents,
       withMatchUps,
       withEvents,
       withDraws,
-    }));
+    });
+
+    participantIdsWithConflicts = result?.participantIdsWithConflicts;
   }
 
   const participantAttributes = policyDefinition?.participant;
