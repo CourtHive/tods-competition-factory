@@ -10,8 +10,7 @@ export function latestVisibleTimeItemValue(
       (timeItem) =>
         timeItem &&
         timeItem.itemType === itemType &&
-        (!visibilityThreshold ||
-          getTimeStamp(timeItem).getTime() < visibilityThreshold)
+        (!visibilityThreshold || getTimeStamp(timeItem) < visibilityThreshold)
     )
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();

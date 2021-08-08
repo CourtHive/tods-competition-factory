@@ -10,6 +10,7 @@ import {
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function allCompetitionMatchUps({
+  scheduleVisibilityFilters,
   tournamentRecords,
   matchUpFilters,
   contextFilters,
@@ -26,6 +27,7 @@ export function allCompetitionMatchUps({
     .map((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
       const { matchUps } = allTournamentMatchUps({
+        scheduleVisibilityFilters,
         tournamentRecord,
         matchUpFilters,
         contextFilters,

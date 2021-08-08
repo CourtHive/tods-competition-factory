@@ -7,9 +7,10 @@ import { tournamentEngine } from '../../sync';
 
 import { eventConstants } from '../../../constants/eventConstants';
 import { resultConstants } from '../../../constants/resultConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -97,23 +98,6 @@ it('can bulk schedule matchUps', () => {
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
 
-  /*
-  const { tournamentParticipants, participantIdsWithConflicts } =
-    tournamentEngine.getTournamentParticipants({ withMatchUps: true });
-
-  console.log(tournamentParticipants[0]);
-  // expect(participantIdsWithConflicts).toEqual({});
-
-  const participantsWithScheduledMatchUps = tournamentParticipants.filter(
-    ({ scheduledMatchUps }) => scheduledMatchUps
-  );
-  expect(participantsWithScheduledMatchUps.length).toEqual(32);
-  expect(
-    participantsWithScheduledMatchUps[0].scheduledMatchUps[scheduledDate][0]
-      .schedule.scheduledTime
-  ).toEqual(scheduledTime);
-  */
-
   schedule = {
     scheduledTime: '',
     scheduledDate: '',
@@ -130,6 +114,8 @@ it('can bulk schedule matchUps', () => {
 });
 
 test('recognizes scheduling conflicts', () => {
+  const visibilityThreshold = Date.now();
+
   const eventProfiles = [
     {
       eventName: 'Event  Test',
@@ -178,6 +164,10 @@ test('recognizes scheduling conflicts', () => {
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
     nextMatchUps: true,
   }));
+  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
+    true
+  );
+
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
     expect(firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(true);
@@ -185,6 +175,17 @@ test('recognizes scheduling conflicts', () => {
   roundMatchUps[2].forEach((secondRoundMatchUp) =>
     expect(secondRoundMatchUp.schedule.scheduleConflict).toEqual(true)
   );
+
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps({
+    nextMatchUps: true,
+    scheduleVisibilityFilters: { visibilityThreshold },
+  }));
+
+  // visibilityThreshold has removed all schedule details except for time and milliseconds
+  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
+    false
+  );
+  expect(Object.keys(matchUps[0].schedule).length).toEqual(2);
 
   const { participantIdsWithConflicts: ceConflicts } =
     competitionEngine.getCompetitionParticipants({ withStatistics: true });
