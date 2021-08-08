@@ -1,8 +1,10 @@
+import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { GROUP, INDIVIDUAL } from '../../../constants/participantTypes';
 import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -10,6 +12,15 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+
+let participantModifyEventsCounter = 0;
+setSubscriptions({
+  subscriptions: {
+    [MODIFY_PARTICIPANTS]: (participants) => {
+      participantModifyEventsCounter += participants?.length || 0;
+    },
+  },
+});
 
 it('can add a GROUP participant and add individualParticipantIds', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -102,6 +113,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
   result = tournamentEngine.addIndividualParticipantIds({
     groupingParticipantId,
     individualParticipantIds,
+    removeFromOtherTeams: true,
   });
   expect(result.added).toEqual(0);
   expect(result.groupingParticipant.individualParticipantIds.length).toEqual(4);
@@ -160,6 +172,13 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   expect(result.removed).toEqual(2);
 
   result = tournamentEngine.removeIndividualParticipantIds({
+    groupingParticipantId,
+    individualParticipantIds: ['bogusId'],
+  });
+  expect(result.success).toEqual(true);
+  expect(result.removed).toEqual(0);
+
+  result = tournamentEngine.removeIndividualParticipantIds({
     individualParticipantIds: individualParticipantIds.slice(2),
   });
   expect(result.error).toEqual(MISSING_VALUE);
@@ -172,8 +191,8 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
 
 it('can modify individualParticipantIds of a grouping participant', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  tournamentEngine.setState(tournamentRecord);
 
+  tournamentEngine.setState(tournamentRecord);
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     {
       participantFilters: { participantTypes: [INDIVIDUAL] },
@@ -214,12 +233,19 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   expect(result.error).toEqual(MISSING_VALUE);
 
   result = tournamentEngine.modifyIndividualParticipantIds({
+    groupingParticipantId: 'bogusId',
+    individualParticipantIds: newIndividualParticipantIds,
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+
+  result = tournamentEngine.modifyIndividualParticipantIds({
     groupingParticipantId,
     individualParticipantIds: newIndividualParticipantIds,
   });
   expect(result.added).toEqual(2);
   expect(result.removed).toEqual(2);
   expect(result.success).toEqual(true);
+  expect(participantModifyEventsCounter).toBeGreaterThan(0);
 
   ({ participant } = tournamentEngine.findParticipant({
     participantId: groupingParticipantId,

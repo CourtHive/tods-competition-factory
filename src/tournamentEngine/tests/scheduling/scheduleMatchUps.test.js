@@ -2,6 +2,7 @@ import { generateTournamentWithParticipants } from '../../../mocksEngine/generat
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
 import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
 import { competitionEngine } from '../../../competitionEngine/sync';
+import { setSubscriptions } from '../../../global/globalState';
 import { tournamentEngine } from '../../sync';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -21,8 +22,22 @@ import {
   ASSIGN_VENUE,
   START_TIME,
 } from '../../../constants/timeItemConstants';
+import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
 
 tournamentEngine.devContext({ addVenue: true });
+
+let venueModificationsCounter = 0;
+let venueDeletionsCounter = 0;
+setSubscriptions({
+  subscriptions: {
+    [MODIFY_VENUE]: () => {
+      venueModificationsCounter += 1;
+    },
+    [DELETE_VENUE]: () => {
+      venueDeletionsCounter += 1;
+    },
+  },
+});
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -303,8 +318,12 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.success).toBeUndefined();
   expect(result.message).not.toBeUndefined();
 
+  result = tournamentEngine.deleteCourt({ courtId, force: true });
+  expect(result.success).toEqual(true);
+  expect(venueModificationsCounter).toEqual(2);
   result = tournamentEngine.deleteVenue({ venueId, force: true });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
+  expect(venueDeletionsCounter).toEqual(1);
 
   ({ venues } = tournamentEngine.getVenues());
   expect(venues.length).toEqual(0);

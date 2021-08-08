@@ -20,6 +20,7 @@ test('participants can be merged', () => {
       },
     },
   });
+
   let { tournamentRecord } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: 10 },
   });
