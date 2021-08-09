@@ -4,10 +4,10 @@ import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPositio
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
 import { participantScaleItem } from '../../accessors/participantScaleItem';
+import { getVenuesAndCourts, findVenue } from '../../getters/venueGetter';
 import { getCourts, publicFindCourt } from '../../getters/courtGetter';
 import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
-import { getVenues, findVenue } from '../../getters/venueGetter';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
 import { matchUpActions } from '../../getters/matchUpActions';
@@ -73,9 +73,9 @@ const queryGovernor = {
 
   getMaxEntryPosition,
 
-  getVenues,
   findVenue,
   getCourts,
+  getVenuesAndCourts,
   findCourt: publicFindCourt,
 
   getEventTimeItem,

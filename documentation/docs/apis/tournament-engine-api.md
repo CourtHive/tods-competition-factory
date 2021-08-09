@@ -1697,12 +1697,12 @@ const {
 
 ---
 
-## getVenues
+## getVenuesAndCourts
 
-Returns an array of all Venues which are part of a tournamentRecord.
+Returns an array of all Venues which are part of a tournamentRecord and an aggregation of courts across all venues.
 
 ```js
-const { venues } = tournamentEngine.getVenues();
+const { venues, courts } = tournamentEngine.getVenuesAndCourts();
 ```
 
 ---
