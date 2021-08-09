@@ -304,6 +304,25 @@ competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
 
 ---
 
+## bulkRescheduleMatchUps
+
+```js
+const {
+  rescheduled, // array of inContext matchUps which have been rescheduled
+  notRescheduled, // array of inContext matchUps which have NOT been rescheduled
+  allRescheduled, // boolean indicating whether all matchUps have been rescheduled
+  dryRun, // boolean - only report what would happen without making modifications
+} = competitionEngine.bulkRescheduleMatchUps({
+  matchUpIds, // array of matchUupIds for matchUps which are to be rescheduled
+  scheduleChange: {
+    daysChange: 1, // number of days +/-
+    minutesChange: 30, // number of minutes +/-
+  },
+});
+```
+
+---
+
 ## bulkScheduleMatchUps
 
 ```js
@@ -474,7 +493,7 @@ const participantFilters = {
 const {
   competitionParticipants,
   participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
-  } =
+} =
   competitionEngine.getCompetitionParticipants({
     inContext, // optional - adds individualParticipants for all individualParticipantIds
 

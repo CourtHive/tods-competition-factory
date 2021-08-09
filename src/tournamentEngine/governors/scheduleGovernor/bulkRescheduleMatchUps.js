@@ -31,8 +31,9 @@ import {
  */
 export function bulkRescheduleMatchUps({
   tournamentRecord,
-  matchUpIds,
   scheduleChange,
+  matchUpIds,
+  dryRun,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpIds || !Array.isArray(matchUpIds))
@@ -126,7 +127,7 @@ export function bulkRescheduleMatchUps({
             newScheduledTime = `${scheduledTimeDate}T${newScheduledTime}`;
           }
 
-          if (!doNotReschedule) {
+          if (!doNotReschedule && !dryRun) {
             const result = addMatchUpScheduledTime({
               drawDefinition,
               matchUpId,
@@ -144,7 +145,7 @@ export function bulkRescheduleMatchUps({
             new Date(newDate) < new Date(startDate) ||
             new Date(newDate) > new Date(endDate);
 
-          if (!doNotReschedule) {
+          if (!doNotReschedule && !dryRun) {
             const result = addMatchUpScheduledDate({
               drawDefinition,
               matchUpId,
