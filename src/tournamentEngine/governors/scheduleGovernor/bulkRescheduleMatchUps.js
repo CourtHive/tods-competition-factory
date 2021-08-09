@@ -1,7 +1,19 @@
-import { validTimeString } from '../../../fixtures/validations/regex';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../getters/venueGetter';
 import { getDrawDefinition } from '../../getters/eventGetter';
+import {
+  addMinutesToTimeString,
+  dateStringDaysChange,
+  extractDate,
+  extractTime,
+  timeStringMinutes,
+} from '../../../utilities/dateTime';
+import {
+  addMatchUpScheduledDate,
+  addMatchUpScheduledTime,
+} from './scheduleItems';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -14,6 +26,7 @@ import {
  *
  * @param {object} tournamentRecord - passed in automatically by tournamentEngine
  * @param {string[]} matchUpIds - array of matchUpIds to be scheduled
+ * @param {object} scheduleChange - { minutesChange, daysChange }
  *
  */
 export function bulkRescheduleMatchUps({
@@ -26,11 +39,13 @@ export function bulkRescheduleMatchUps({
     return { error: MISSING_MATCHUP_IDS };
   if (typeof scheduleChange !== 'object') return { error: INVALID_VALUES };
 
-  const { timeDifference, daysDifference } = scheduleChange;
-  if (timeDifference && !validTimeString(timeDifference))
-    return { error: INVALID_VALUES };
-  if (daysDifference && !isNaN(daysDifference))
-    return { error: INVALID_VALUES };
+  const rescheduled = [];
+  const notRescheduled = [];
+  const { minutesChange, daysChange } = scheduleChange;
+  if (!minutesChange && !daysChange) return { ...SUCCESS };
+
+  if (minutesChange && isNaN(minutesChange)) return { error: INVALID_VALUES };
+  if (daysChange && isNaN(daysChange)) return { error: INVALID_VALUES };
 
   const { matchUps, error } = allTournamentMatchUps({
     tournamentRecord,
@@ -45,25 +60,37 @@ export function bulkRescheduleMatchUps({
       .filter((key) => schedule[key]);
     return !!matchUpScheduleKeys.length;
   };
+  const notCompleted = ({ matchUpStatus }) =>
+    !completedMatchUpStatuses.includes(matchUpStatus);
 
   // return success if there are no scheduled matchUps to reschedule
-  const scheduledMatchUps = matchUps.filter(hasSchedule);
-  if (!scheduledMatchUps.length) return { ...SUCCESS };
+  const scheduledNotCompletedMatchUps = matchUps
+    .filter(hasSchedule)
+    .filter(notCompleted);
+  if (!scheduledNotCompletedMatchUps.length) return { ...SUCCESS };
 
   const { courts } = getVenuesAndCourts({ tournamentRecord });
-  console.log(courts.length);
+  if (courts) {
+    /**foo */
+  }
+  const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
+  const { startDate, endDate } = tournamentInfo;
 
   // first organize matchUpIds by drawId
-  const drawIdMap = scheduledMatchUps.reduce((drawIdMap, matchUp) => {
-    const { matchUpId, drawId } = matchUp;
-    if (drawIdMap[drawId]) {
-      drawIdMap[drawId].push(matchUpId);
-    } else {
-      drawIdMap[drawId] = [matchUpId];
-    }
-    return drawIdMap;
-  }, {});
+  const drawIdMap = scheduledNotCompletedMatchUps.reduce(
+    (drawIdMap, matchUp) => {
+      const { matchUpId, drawId } = matchUp;
+      if (drawIdMap[drawId]) {
+        drawIdMap[drawId].push(matchUpId);
+      } else {
+        drawIdMap[drawId] = [matchUpId];
+      }
+      return drawIdMap;
+    },
+    {}
+  );
 
+  const dayTotalMinutes = 1440;
   for (const drawId of Object.keys(drawIdMap)) {
     const { drawDefinition, error } = getDrawDefinition({
       tournamentRecord,
@@ -73,28 +100,70 @@ export function bulkRescheduleMatchUps({
     const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
       matchUpIds.includes(matchUpId)
     );
+
     for (const matchUpId of drawMatchUpIds) {
       if (matchUpId && drawDefinition) {
-        //
-      }
-      /*
-        if (scheduledTime !== undefined) {
-          const result = addMatchUpScheduledTime({
-            drawDefinition,
-            matchUpId,
+        const inContextMatchUp = scheduledNotCompletedMatchUps.find(
+          (matchUp) => matchUp.matchUpId === matchUpId
+        );
+        const schedule = inContextMatchUp.schedule;
+        const { scheduledTime, scheduledDate, averageMinutes } = schedule;
+
+        let doNotReschedule;
+        if (minutesChange && scheduledTime) {
+          const scheduledTimeDate = extractDate(scheduledTime);
+          const currentDayMinutes = timeStringMinutes(
+            extractTime(scheduledTime)
+          );
+          const newTime = currentDayMinutes + minutesChange + averageMinutes;
+          doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
+
+          let newScheduledTime = addMinutesToTimeString(
             scheduledTime,
-          });
+            minutesChange
+          );
+          if (scheduledTimeDate) {
+            newScheduledTime = `${scheduledTimeDate}T${newScheduledTime}`;
+          }
+
+          if (!doNotReschedule) {
+            const result = addMatchUpScheduledTime({
+              drawDefinition,
+              matchUpId,
+              scheduledTime: newScheduledTime,
+            });
+            if (result.error) return result;
+          }
         }
-        if (scheduledDate !== undefined) {
-          const result = addMatchUpScheduledDate({
-            drawDefinition,
-            matchUpId,
-            scheduledDate,
-          });
+
+        if (!doNotReschedule && daysChange && scheduledDate) {
+          const currentDate = extractDate(scheduledDate);
+          const newDate = dateStringDaysChange(currentDate, daysChange);
+
+          doNotReschedule =
+            new Date(newDate) < new Date(startDate) ||
+            new Date(newDate) > new Date(endDate);
+
+          if (!doNotReschedule) {
+            const result = addMatchUpScheduledDate({
+              drawDefinition,
+              matchUpId,
+              scheduledDate: newDate,
+            });
+            if (result.error) return result;
+          }
         }
-	*/
+
+        if (doNotReschedule) {
+          notRescheduled.push(inContextMatchUp);
+        } else {
+          rescheduled.push(inContextMatchUp);
+        }
+      }
     }
   }
 
-  return { ...SUCCESS };
+  const allRescheduled = rescheduled.length && !notRescheduled.length;
+
+  return { ...SUCCESS, rescheduled, notRescheduled, allRescheduled };
 }

@@ -8,7 +8,11 @@ import {
   CURTIS_CONSOLATION,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
 } from '../../../constants/drawDefinitionConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_MATCHUP_IDS,
+} from '../../../constants/errorConditionConstants';
+import { dateStringDaysChange } from '../../../utilities/dateTime';
 
 it('can bulk reschedule matchUps', () => {
   const venueProfiles = [
@@ -109,9 +113,75 @@ it('can bulk reschedule matchUps', () => {
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(scheduledMatchUps[0].schedule.scheduledDate).toEqual(startDate);
   expect(scheduledMatchUps.length).toBeLessThan(matchUps.length);
 
   const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
   result = tournamentEngine.bulkRescheduleMatchUps({ matchUpIds });
   expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds: 'not an array',
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_IDS);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: 'not an object',
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: 0, minutesChange: 0 },
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: -1, minutesChange: 0 },
+  });
+  expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: 1, minutesChange: 0 },
+  });
+  expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
+
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
+
+  expect(scheduledMatchUps[0].schedule.scheduledDate).toEqual(
+    dateStringDaysChange(startDate, 1)
+  );
+
+  expect(scheduledMatchUps[0].schedule.scheduledTime).toEqual(
+    '2022-01-01T08:00'
+  );
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { minutesChange: 300 },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
+
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(scheduledMatchUps[0].schedule.scheduledTime).toEqual(
+    '2022-01-01T13:00'
+  );
+
+  // nothing should be rescheduled because scheduledTimes would be next day
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { minutesChange: 800 },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
 });
