@@ -3,6 +3,8 @@ name: API
 title: Competition Engine API
 ---
 
+All competitionEngine methods which make a mutation return either `{ success: true }` or `{ error }`
+
 ## addCourts
 
 Convenience function to bulk add courts to a Venue. Only adds **dateAvailability** and **courtName**. See [Scheduling](/docs/concepts/scheduling).

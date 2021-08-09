@@ -3,7 +3,7 @@ name: API
 title: Tournament Engine API
 ---
 
-All tournamentEngine methods return either `{ success: true }` or `{ error }`
+All tournamentEngine methods which make a mutation return either `{ success: true }` or `{ error }`
 
 ## addCourt
 
