@@ -8,6 +8,7 @@ import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFo
 import { getMatchUpFormatTiming } from './matchUpFormatTiming/getMatchUpFormatTiming';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
+import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
@@ -62,6 +63,7 @@ const scheduleGovernor = {
 
   clearScheduledMatchUps,
   bulkScheduleMatchUps,
+  bulkRescheduleMatchUps,
 };
 
 export default scheduleGovernor;

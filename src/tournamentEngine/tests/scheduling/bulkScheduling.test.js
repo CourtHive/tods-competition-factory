@@ -8,7 +8,11 @@ import { eventConstants } from '../../../constants/eventConstants';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_DATE,
+  INVALID_TIME,
+  VENUE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
 
@@ -64,15 +68,15 @@ it('can bulk schedule matchUps', () => {
 
   let schedule = { scheduledTime: '08:00 x y z' };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_TIME);
 
   schedule = { venueId: 'bogus venue' };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(VENUE_NOT_FOUND);
 
   schedule = { scheduledDate: 'December 3rd 2100' };
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_DATE);
 
   const scheduledDate = '2021-01-01';
   const scheduledTime = '08:00';

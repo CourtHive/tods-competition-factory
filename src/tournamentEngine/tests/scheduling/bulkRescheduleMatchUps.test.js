@@ -8,6 +8,7 @@ import {
   CURTIS_CONSOLATION,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
 } from '../../../constants/drawDefinitionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 it('can bulk reschedule matchUps', () => {
   const venueProfiles = [
@@ -109,4 +110,8 @@ it('can bulk reschedule matchUps', () => {
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toBeLessThan(matchUps.length);
+
+  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  result = tournamentEngine.bulkRescheduleMatchUps({ matchUpIds });
+  expect(result.error).toEqual(INVALID_VALUES);
 });
