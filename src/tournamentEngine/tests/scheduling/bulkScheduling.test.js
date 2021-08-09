@@ -111,7 +111,7 @@ test('recognizes scheduling conflicts', () => {
 
   const eventProfiles = [
     {
-      eventName: 'Event  Test',
+      eventName: 'Event Test',
       eventType: SINGLES,
       drawProfiles: [
         {

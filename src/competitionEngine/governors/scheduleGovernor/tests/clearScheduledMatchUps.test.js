@@ -22,7 +22,7 @@ it('can clear scheduled matchUps', () => {
 
   const eventProfiles = [
     {
-      eventName: 'Event  Test',
+      eventName: 'Event Test',
       eventType: SINGLES,
       drawProfiles: [
         {
