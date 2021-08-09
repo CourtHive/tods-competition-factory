@@ -1,5 +1,6 @@
+import { getVenuesAndCourts as teVenuesAndCourts } from '../../tournamentEngine/getters/venueGetter';
 import { makeDeepCopy } from '../../utilities';
-import { getVenues } from '../../tournamentEngine/getters/venueGetter';
+
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function getVenuesAndCourts({ tournamentRecords }) {
@@ -49,7 +50,7 @@ export function getCompetitionVenues({ tournamentRecords }) {
   return tournamentIds.reduce(
     (accumulator, tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      const { venues } = getVenues({ tournamentRecord });
+      const { venues } = teVenuesAndCourts({ tournamentRecord });
       venues.forEach((venue) => {
         const { venueId } = venue;
         if (!accumulator.venueIds.includes(venueId)) {

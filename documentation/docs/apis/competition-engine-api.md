@@ -238,7 +238,7 @@ competitionEngine.addVenue({ venue: { venueName } });
 ```js
 const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters,
-  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduledDate, scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   nextMatchUps, // include winnerTo and loserTo matchUps
 });
 ```

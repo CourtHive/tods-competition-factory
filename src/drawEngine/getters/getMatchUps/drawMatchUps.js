@@ -1,7 +1,7 @@
-import { getMatchUpsMap } from './getMatchUpsMap';
-import { getDrawStructures } from '../findStructure';
-import { getStructureMatchUps } from './getStructureMatchUps';
 import { addUpcomingMatchUps } from '../../governors/matchUpGovernor/addUpcomingMatchUps';
+import { getStructureMatchUps } from './getStructureMatchUps';
+import { getDrawStructures } from '../findStructure';
+import { getMatchUpsMap } from './getMatchUpsMap';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

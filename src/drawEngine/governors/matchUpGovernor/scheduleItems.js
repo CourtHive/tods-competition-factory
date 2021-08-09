@@ -171,8 +171,7 @@ export function addMatchUpScheduledTime({
   // must support undefined as a value so that scheduledTime can be cleared
   if (!validTimeValue(scheduledTime)) return { error: INVALID_TIME };
 
-  // TODO: scheduleTime must be on same day as scheduledDate (if it exists)
-  // TODO: check that scheduledTime is a date object with time
+  // TODO: if scheduledDate and scheduleTime includes date, must be on same day as scheduledDate
 
   const itemValue = scheduledTime;
   const timeItem = {

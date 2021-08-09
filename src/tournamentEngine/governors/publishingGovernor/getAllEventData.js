@@ -1,11 +1,11 @@
+import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
-import { getTournamentInfo } from './getTournamentInfo';
-import { getVenues } from '../../getters/venueGetter';
+import { getVenuesAndCourts } from '../../getters/venueGetter';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { getTournamentInfo } from './getTournamentInfo';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 
 export function getAllEventData({ tournamentRecord, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -15,7 +15,7 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
 
-  const { venues: venuesData } = getVenues({
+  const { venues: venuesData } = getVenuesAndCourts({
     tournamentRecord,
   });
 

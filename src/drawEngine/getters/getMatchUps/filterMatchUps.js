@@ -10,6 +10,7 @@ export function filterMatchUps(params) {
     venueIds,
     courtIds,
     matchUps,
+    matchUpIds,
     matchUpTypes,
     roundNumbers,
     matchUpFormat,
@@ -43,6 +44,9 @@ export function filterMatchUps(params) {
     ? roundNumbers.filter(Boolean)
     : [];
 
+  const targetMatchUpIds = Array.isArray(matchUpIds)
+    ? matchUpIds.filter(Boolean)
+    : [];
   const targetMatchUpTypes =
     Array.isArray(matchUpTypes) && filterMatchUpTypes
       ? matchUpTypes.filter(Boolean)
@@ -115,6 +119,12 @@ export function filterMatchUps(params) {
     if (
       targetMatchUpStatuses.length &&
       !targetMatchUpStatuses.includes(matchUp.matchUpStatus)
+    ) {
+      return false;
+    }
+    if (
+      targetMatchUpIds.length &&
+      !targetMatchUpIds.includes(matchUp.matchUpId)
     ) {
       return false;
     }

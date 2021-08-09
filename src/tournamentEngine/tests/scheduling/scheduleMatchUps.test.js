@@ -297,12 +297,12 @@ it('can add events, venues, and schedule matchUps', () => {
 
   result = tournamentEngine.deleteCourt();
   expect(result.error).toEqual(MISSING_COURT_ID);
-  result = tournamentEngine.getVenues();
+  result = tournamentEngine.getVenuesAndCourts();
   result = tournamentEngine.deleteCourt({ courtId });
   expect(result.error).not.toBeUndefined();
   expect(result.message).not.toBeUndefined();
 
-  let { venues } = tournamentEngine.getVenues();
+  let { venues } = tournamentEngine.getVenuesAndCourts();
   expect(venues.length).toEqual(1);
 
   result = tournamentEngine.deleteVenue();
@@ -325,7 +325,7 @@ it('can add events, venues, and schedule matchUps', () => {
   expect(result.success).toEqual(true);
   expect(venueDeletionsCounter).toEqual(1);
 
-  ({ venues } = tournamentEngine.getVenues());
+  ({ venues } = tournamentEngine.getVenuesAndCourts());
   expect(venues.length).toEqual(0);
 
   result = tournamentEngine.addMatchUpScheduledTime({

@@ -6,13 +6,13 @@ import {
   addMatchUpScheduledTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_SCHEDULE,
   MISSING_MATCHUP_IDS,
   MISSING_TOURNAMENT_RECORD,
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
