@@ -23,7 +23,7 @@ it('can retrieve tournament participants', () => {
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [INDIVIDUAL] },
     });
-  expect(individualParticipants.length).toEqual(10);
+  expect(individualParticipants.length).toEqual(20);
   const individualParticipant = individualParticipants[0];
   const person = {
     standardFamilyName: 'Sampras',
@@ -47,7 +47,7 @@ it('can retrieve tournament participants', () => {
     tournamentEngine.getTournamentParticipants({
       participantFilters: { participantTypes: [PAIR] },
     });
-  expect(pairParticipants.length).toEqual(5);
+  expect(pairParticipants.length).toEqual(10);
   const pairParticipant = pairParticipants[0];
 
   const newIndividualParticipant = individualParticipants.filter(

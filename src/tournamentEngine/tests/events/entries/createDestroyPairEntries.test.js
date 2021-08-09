@@ -1,6 +1,6 @@
-import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { isUngrouped } from '../../../../global/isUngrouped';
 import { chunkArray } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
@@ -9,24 +9,15 @@ import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-// import mocksEngine from '../../../../mocksEngine';
 
 let result;
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
-    participantsCount: 32,
-    participantType: PAIR,
-  });
-  /*
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
     participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
-  */
   const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);
@@ -112,11 +103,10 @@ it('can add doubles events to a tournament record', () => {
 });
 
 it('can destroy pair entries in doubles events', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
-    participantType: PAIR,
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
   const { participants } = tournamentRecord;
 
@@ -207,11 +197,9 @@ it('can destroy pair entries in doubles events', () => {
 });
 
 it('can create pair entries in doubles events', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
-    participantType: INDIVIDUAL,
   });
   const { participants } = tournamentRecord;
 
@@ -261,11 +249,10 @@ it('can create pair entries in doubles events', () => {
 });
 
 it('can allow duplicateParticipantIdsPairs and add them to events', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
-    participantType: PAIR,
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
 
   tournamentEngine.setState(tournamentRecord);

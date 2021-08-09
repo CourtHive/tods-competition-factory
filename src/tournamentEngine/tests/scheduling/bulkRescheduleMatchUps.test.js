@@ -3,10 +3,9 @@ import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
-import { eventConstants } from '../../../constants/eventConstants';
-
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 
+import { eventConstants } from '../../../constants/eventConstants';
 const { SINGLES } = eventConstants;
 
 test('recognizes scheduling conflicts', () => {

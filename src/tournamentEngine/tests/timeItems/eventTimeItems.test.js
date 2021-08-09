@@ -1,5 +1,5 @@
+import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -11,10 +11,9 @@ import { RETRIEVAL } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2021-01-01',
     endDate: '2021-01-06',
-    participantsCount: 32,
   });
 
   tournamentEngine.setState(tournamentRecord);

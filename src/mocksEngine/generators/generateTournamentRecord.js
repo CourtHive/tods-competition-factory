@@ -47,6 +47,7 @@ export function generateTournamentRecord({
 } = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
+  const specifiedParicipantsCount = participantsCount; // capture this to insure calculated participantsCount is not below
 
   if (
     (startDate && !isValidDateString(startDate)) ||
@@ -103,6 +104,8 @@ export function generateTournamentRecord({
     (!largestSinglesDraw || largestSinglesDraw / 2 >= largestDoublesDraw)
   )
     participantsCount = participantsCount / 2;
+  if (participantsCount < specifiedParicipantsCount)
+    participantsCount = specifiedParicipantsCount;
 
   const {
     valuesInstanceLimit,

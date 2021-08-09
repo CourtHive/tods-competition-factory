@@ -1,10 +1,9 @@
-import { drawEngine } from '../../../drawEngine/sync';
-import { tournamentEngine } from '../../sync';
-
-import { eventConstants } from '../../../constants/eventConstants';
-import { resultConstants } from '../../../constants/resultConstants';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
+import { resultConstants } from '../../../constants/resultConstants';
+import { eventConstants } from '../../../constants/eventConstants';
+import { drawEngine } from '../../../drawEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import { tournamentEngine } from '../../sync';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
@@ -13,8 +12,8 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: 14,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 14 },
   });
 
   const { participants } = tournamentRecord;

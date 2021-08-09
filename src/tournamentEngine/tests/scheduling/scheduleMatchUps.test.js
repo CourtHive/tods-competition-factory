@@ -1,10 +1,11 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getScheduleTimes } from '../../../competitionEngine/governors/scheduleGovernor/garman/getScheduleTimes';
 import { removeCourtAssignment } from '../../governors/venueGovernor/removeCourtAssignment';
 import { competitionEngine } from '../../../competitionEngine/sync';
 import { setSubscriptions } from '../../../global/globalState';
+import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
+import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
@@ -22,7 +23,6 @@ import {
   ASSIGN_VENUE,
   START_TIME,
 } from '../../../constants/timeItemConstants';
-import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
 
 tournamentEngine.devContext({ addVenue: true });
 
@@ -44,10 +44,10 @@ it('can add events, venues, and schedule matchUps', () => {
   const endDate = '2020-01-06';
   const participantsCount = 32;
 
-  const { tournamentRecord: record } = generateTournamentWithParticipants({
+  const { tournamentRecord: record } = mocksEngine.generateTournamentRecord({
     startDate,
     endDate,
-    participantsCount,
+    participantsProfile: { participantsCount },
   });
   const { participants } = record;
   tournamentEngine.setState(record);
@@ -361,10 +361,10 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const endDate = '2020-01-06';
   const participantsCount = 32;
 
-  const { tournamentRecord: record } = generateTournamentWithParticipants({
+  const { tournamentRecord: record } = mocksEngine.generateTournamentRecord({
     startDate,
     endDate,
-    participantsCount,
+    participantsProfile: { participantsCount },
   });
   const { participants } = record;
   tournamentEngine.setState(record);

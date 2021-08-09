@@ -1,16 +1,17 @@
+import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { RATING } from '../../../constants/scaleConstants';
-import { RANKING } from '../../../constants/timeItemConstants';
 import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
+import { RANKING } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
+import { RATING } from '../../../constants/scaleConstants';
 
 it('can set participant scaleItems', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: 100,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 100 },
   });
+
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
@@ -111,8 +112,8 @@ it('can set participant scaleItems', () => {
 });
 
 it('can set participant scaleItems in bulk', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: 100,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 100 },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

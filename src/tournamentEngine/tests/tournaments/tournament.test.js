@@ -1,25 +1,22 @@
-import { tournamentEngine } from '../../sync';
-import { drawEngine } from '../../../drawEngine/sync';
-
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
 import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreString';
+import { drawEngine } from '../../../drawEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import { tournamentEngine } from '../../sync';
+
+import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
-
-import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
   });
   const { participants } = tournamentRecord;
 
