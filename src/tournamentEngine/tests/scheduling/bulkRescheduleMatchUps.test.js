@@ -1,4 +1,3 @@
-import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
 import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -7,104 +6,8 @@ import { tournamentEngine } from '../../sync';
 import { eventConstants } from '../../../constants/eventConstants';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
-
-it('can bulk schedule matchUps', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  const { participants } = tournamentRecord;
-
-  tournamentEngine.setState(tournamentRecord);
-
-  const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
-  const {
-    venue: { venueId },
-  } = result;
-  expect(result.success).toEqual(true);
-
-  const event = {
-    eventName: 'Test Event',
-    eventType: SINGLES,
-  };
-
-  result = tournamentEngine.addEvent({ event });
-  const { event: eventResult, success } = result;
-  const { eventId } = eventResult;
-  expect(success).toEqual(true);
-
-  const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result.success).toEqual(true);
-
-  const values = {
-    automated: true,
-    drawSize: 32,
-    eventId,
-    seedsCount: 8,
-    event: eventResult,
-    policyDefinitions: [SEEDING_ITF_POLICY],
-  };
-  const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
-
-  result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result.success).toEqual(true);
-
-  const { structureId } = drawDefinition.structures[0];
-  const { roundMatchUps } = getStructureRoundProfile({
-    drawDefinition,
-    structureId,
-  });
-
-  const matchUpIds = roundMatchUps[1].map((matchUp) => matchUp.matchUpId);
-
-  let schedule = { scheduledTime: '08:00 x y z' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  schedule = { venueId: 'bogus venue' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  schedule = { scheduledDate: 'December 3rd 2100' };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  const scheduledDate = '2021-01-01';
-  const scheduledTime = '08:00';
-  schedule = {
-    scheduledTime,
-    scheduledDate,
-    venueId,
-  };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.success).toEqual(true);
-
-  let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
-
-  expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
-
-  schedule = {
-    scheduledTime: '',
-    scheduledDate: '',
-    venueId,
-  };
-  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
-  expect(result.success).toEqual(true);
-
-  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
-  expect(matchUpsWithScheduledTime.length).toEqual(0);
-});
 
 test('recognizes scheduling conflicts', () => {
   const visibilityThreshold = Date.now();

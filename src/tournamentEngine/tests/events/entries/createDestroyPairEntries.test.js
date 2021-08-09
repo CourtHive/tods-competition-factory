@@ -9,6 +9,7 @@ import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';
 import { DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+// import mocksEngine from '../../../../mocksEngine';
 
 let result;
 
@@ -19,6 +20,13 @@ it('can add doubles events to a tournament record', () => {
     participantsCount: 32,
     participantType: PAIR,
   });
+  /*
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    startDate: '2020-01-01',
+    endDate: '2020-01-06',
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
+  });
+  */
   const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);

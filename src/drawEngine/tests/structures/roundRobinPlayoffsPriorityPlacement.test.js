@@ -1,13 +1,15 @@
-import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine/sync';
-import { chunkArray, intersection } from '../../../utilities/arrays';
-
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
-import { reset, initialize } from '../primitives/primitives';
-
-import { findStructure } from '../../getters/findStructure';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import { chunkArray, intersection } from '../../../utilities/arrays';
+import tournamentEngine from '../../../tournamentEngine/sync';
+import { reset, initialize } from '../primitives/primitives';
+import { findStructure } from '../../getters/findStructure';
 import { setsValues } from './roundRobinSetsValues.js';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
+import {
+  allPlayoffPositionsFilled,
+  isCompletedStructure,
+} from '../../governors/queryGovernor/structureActions';
 
 import {
   MAIN,
@@ -20,10 +22,6 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  allPlayoffPositionsFilled,
-  isCompletedStructure,
-} from '../../governors/queryGovernor/structureActions';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   reset();
@@ -49,8 +47,8 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     playoffGroups,
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -284,8 +282,8 @@ it('can advance players in Round Robin with Playoffs', () => {
     playoffGroups,
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

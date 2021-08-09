@@ -1,20 +1,21 @@
-import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine/sync';
 import { getDrawStructures } from '../../getters/findStructure';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
+
+import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
 } from '../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

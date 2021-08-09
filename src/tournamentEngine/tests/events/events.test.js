@@ -1,5 +1,5 @@
 import { tournamentEngine } from '../../sync';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
+import mocksEngine from '../../../mocksEngine';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -7,10 +7,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 let result;
 
 it('can add events to a tournament record', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
   });
   const { participants } = tournamentRecord;
 
