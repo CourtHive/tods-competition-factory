@@ -204,8 +204,19 @@ test('recognizes scheduling conflicts', () => {
     participantWithConflict.potentialMatchUps[0].schedule.scheduleConflict
   ).toEqual(true);
 
-  ({ tournamentParticipants } = competitionEngine.getCompetitionParticipants({
-    scheduleAnalysis: { scheduledMinutesDifference: 60 },
-    withStatistics: true,
-  }));
+  let { participantIdsWithConflicts } =
+    competitionEngine.getCompetitionParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 60 },
+      withStatistics: true,
+    });
+
+  expect(participantIdsWithConflicts.length).toEqual(16);
+
+  ({ participantIdsWithConflicts } =
+    competitionEngine.getCompetitionParticipants({
+      scheduleAnalysis: { scheduledMinutesDifference: 80 },
+      withStatistics: true,
+    }));
+
+  expect(participantIdsWithConflicts.length).toEqual(0);
 });
