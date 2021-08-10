@@ -1644,8 +1644,11 @@ const {
   withOpponents, // optional - include opponent participantIds
   withEvents, // optional - defaults to true
   withDraws, // optional - defaults to true
-
   withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
+
+  scheduleAnalysis: {
+    scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+  },
 
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinition, // optional - can accept a privacy policy to filter participant attributes
