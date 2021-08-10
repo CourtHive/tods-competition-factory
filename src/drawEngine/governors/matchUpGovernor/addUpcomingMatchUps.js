@@ -62,12 +62,12 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           loserTo;
       }
 
-      const afterRecoveryTime = inContextMatchUp.schedule?.afterRecoveryTime;
-      if (afterRecoveryTime) {
+      const timeAfterRecovery = inContextMatchUp.schedule?.timeAfterRecovery;
+      if (timeAfterRecovery) {
         if (winnerTo?.schedule?.scheduledTime) {
           const scheduleConflict =
             timeStringMinutes(winnerTo.schedule.scheduledTime) <
-            timeStringMinutes(afterRecoveryTime);
+            timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
             scheduleConflictMatchUpIds.push(winnerTo.matchUpId);
             winnerTo.schedule.scheduleConflict = true;
@@ -76,7 +76,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
         if (loserTo?.schedule?.scheduledTime) {
           const scheduleConflict =
             timeStringMinutes(winnerTo.schedule.scheduledTime) <
-            timeStringMinutes(afterRecoveryTime);
+            timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
             scheduleConflictMatchUpIds.push(loserTo.matchUpId);
             loserTo.schedule.scheduleConflict = true;

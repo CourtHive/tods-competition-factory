@@ -113,7 +113,7 @@ it('can clear scheduled matchUps', () => {
     scheduledStructureIds.includes(structureId)
   );
   expect(expectedStructureIds).toEqual(true);
-  expect(scheduledMatchUps[0].schedule.afterRecoveryTime).toEqual('10:30');
+  expect(scheduledMatchUps[0].schedule.timeAfterRecovery).toEqual('10:30');
 
   const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
@@ -141,7 +141,7 @@ it('can clear scheduled matchUps', () => {
         participantsWithMultipleScheduledMatchUps += 1;
         const dateMatchUps = scheduledMatchUps[dates[0]];
         const firstMatchAfterRecoveryMinutes = timeStringMinutes(
-          dateMatchUps[0].schedule.afterRecoveryTime
+          dateMatchUps[0].schedule.timeAfterRecovery
         );
         const secondMatchStartMinutes = timeStringMinutes(
           extractTime(dateMatchUps[1].schedule.scheduledTime)

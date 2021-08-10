@@ -10,6 +10,7 @@ import { matchUpEndTime } from './endTime';
 import {
   addMinutesToTimeString,
   extractDate,
+  extractTime,
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
@@ -40,7 +41,7 @@ export function getMatchUpScheduleDetails({
     const { courtId } = matchUpAssignedCourtId(scheduleSource);
     const { venueId } = matchUpAssignedVenueId(scheduleSource);
 
-    let afterRecoveryTime, averageMinutes, recoveryMinutes;
+    let timeAfterRecovery, averageMinutes, recoveryMinutes;
     if (scheduleTiming && scheduledTime && afterRecoveryTimes) {
       const timingDetails = {
         matchUpFormat: matchUp.matchUpFormat,
@@ -51,10 +52,12 @@ export function getMatchUpScheduleDetails({
         timingDetails,
       }));
       if (averageMinutes || recoveryMinutes) {
-        afterRecoveryTime = addMinutesToTimeString(
-          scheduledTime,
-          averageMinutes + recoveryMinutes
-        );
+        timeAfterRecovery = endTime
+          ? addMinutesToTimeString(extractTime(endTime), recoveryMinutes)
+          : addMinutesToTimeString(
+              scheduledTime,
+              averageMinutes + recoveryMinutes
+            );
       }
     }
 
@@ -71,7 +74,7 @@ export function getMatchUpScheduleDetails({
       scheduledDate,
       scheduledTime,
       averageMinutes,
-      afterRecoveryTime,
+      timeAfterRecovery,
     });
   } else {
     schedule = definedAttributes({
