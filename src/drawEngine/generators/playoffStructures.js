@@ -1,12 +1,16 @@
 import { feedInMatchUps, treeMatchUps } from './eliminationTree';
 import { structureSort } from '../getters/structureSort';
-import { addNotice } from '../../global/globalState';
+// import { addNotice } from '../../global/globalState';
 import structureTemplate from './structureTemplate';
 import { generateRange } from '../../utilities';
+import {
+  addMatchUpsNotice,
+  modifyDrawNotice,
+} from '../notifications/drawNotifications';
 
 import { MAIN, TOP_DOWN, LOSER } from '../../constants/drawDefinitionConstants';
+// import { ADD_MATCHUPS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ADD_MATCHUPS } from '../../constants/topicConstants';
 
 export function playoff(params) {
   const { structure, childStructures } = playoffStructures(params);
@@ -95,7 +99,9 @@ function playoffStructures({
   });
 
   drawDefinition.structures.push(structure);
-  addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  // addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+  addMatchUpsNotice({ drawDefinition, matchUps });
+  modifyDrawNotice({ drawDefinition });
 
   const rounds = Math.ceil(Math.log(drawSize) / Math.log(2));
   const roundsToPlayOff = roundOffsetLimit

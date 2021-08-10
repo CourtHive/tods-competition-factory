@@ -20,7 +20,7 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetMatchUpStatus(params) {
-  const { matchUp, structure, matchUpStatus } = params;
+  const { drawDefinition, matchUp, structure, matchUpStatus } = params;
 
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
@@ -46,7 +46,8 @@ export function attemptToSetMatchUpStatus(params) {
     (changeCompletedToWOWO && removeWinningSideSetWOWO(params)) ||
     (existingWinningSide && removeDirectedParticipants(params)) ||
     (nonDirecting && clearScore()) ||
-    (isBYE && attemptToSetMatchUpStatusBYE({ matchUp, structure })) ||
+    (isBYE &&
+      attemptToSetMatchUpStatusBYE({ drawDefinition, matchUp, structure })) ||
     (!directing && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (setWOWO && modifyScoreAndAdvanceWOWO(params)) || {
       error: INVALID_MATCHUP_STATUS,

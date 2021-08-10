@@ -4,6 +4,10 @@ import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
+import {
+  deleteDrawNotice,
+  deleteMatchUpsNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -19,7 +23,7 @@ import {
 } from '../../../../constants/timeItemConstants';
 import {
   AUDIT,
-  DELETED_MATCHUP_IDS,
+  // DELETED_MATCHUP_IDS,
 } from '../../../../constants/topicConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
@@ -91,10 +95,15 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     if (result.error) return { error: result.error };
   }
   if (matchUpIds.length) {
+    /*
     addNotice({
       topic: DELETED_MATCHUP_IDS,
       payload: { matchUpIds },
     });
+    */
+    deleteMatchUpsNotice({ matchUpIds });
   }
+  deleteDrawNotice({ drawId });
+
   return SUCCESS;
 }

@@ -28,6 +28,10 @@ const subscriptions = {
   addParticipants: (payload) => () // payload [{ participants }]
   modifyParticipants: (payload) => () // payload [{ participants }]
   deleteParticipants: (payload) => () // payload [{ participantIds }]
+
+  addDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
+  modifyDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
+  deletedDrawIds: (payload) => (), // payload = [{ drawId }]
 };
 ```
 

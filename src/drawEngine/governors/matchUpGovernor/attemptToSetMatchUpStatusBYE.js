@@ -1,14 +1,14 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { addNotice } from '../../../global/globalState';
 
+import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_MATCHUP_STATUS,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (!structure) return { error: MISSING_STRUCTURE };
