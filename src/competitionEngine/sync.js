@@ -33,8 +33,7 @@ export const competitionEngine = (function () {
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});
-      fx.success = true;
-      return fx;
+      return processResult();
     },
   };
 
