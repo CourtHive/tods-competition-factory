@@ -66,7 +66,7 @@ function promoteWithinElement({
     ) ||
     alternates.reduce((participantEntry, entry) => {
       const { entryPosition } = entry;
-      return !entryPosition
+      return isNaN(entryPosition)
         ? participantEntry
         : !participantEntry || entryPosition < participantEntry.entryPosition
         ? entry
@@ -87,7 +87,7 @@ function promoteWithinElement({
   // cleanUp
   const entryPosition = participantEntry?.entryPosition;
 
-  if (entryPosition) {
+  if (!isNaN(entryPosition)) {
     // if promoted participant has an entryPosition, adjust all other alternates with an entryPosition higher than promoted participant
     element.entries.forEach((entry) => {
       if (
@@ -108,7 +108,7 @@ function promoteWithinElement({
       .map(({ entryPosition }) => parseInt(entryPosition || 0)),
     0
   );
-  participantEntry.entryPosition = (maxEntryPosition || 0) + 1;
+  participantEntry.entryPosition = maxEntryPosition || 0;
 
   return SUCCESS;
 }

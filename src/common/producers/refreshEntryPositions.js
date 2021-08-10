@@ -19,7 +19,7 @@ export function refreshEntryPositions({ entries = [] } = {}) {
       return stagedEntries[entryHash]
         .sort((a, b) => (a.entryPosition || 99999) - (b.entryPosition || 99999))
         .map((entry, index) => {
-          const entryPosition = index + 1;
+          const entryPosition = index;
           return Object.assign(entry, { entryPosition });
         });
     })
