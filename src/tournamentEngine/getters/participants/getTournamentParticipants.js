@@ -33,6 +33,7 @@ export function getTournamentParticipants({
   withDraws,
 
   convertExtensions,
+  scheduleAnalysis,
   inContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -72,13 +73,15 @@ export function getTournamentParticipants({
     withDraws ||
     withMatchUps ||
     withStatistics ||
-    withOpponents
+    withOpponents ||
+    scheduleAnalysis
   ) {
     const result = addParticipantContext({
       tournamentRecord,
       tournamentEvents: tournamentRecord.events,
       tournamentParticipants,
       participantFilters,
+      scheduleAnalysis,
       withStatistics,
       withOpponents,
       withMatchUps,

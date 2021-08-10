@@ -119,7 +119,6 @@ it('can clear scheduled matchUps', () => {
     competitionEngine.getCompetitionParticipants({
       inContext: true,
       withMatchUps: true,
-      withScheduleAnalysis: true,
     });
 
   expect(participantIdsWithConflicts.length).toEqual(0);

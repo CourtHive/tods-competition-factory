@@ -1,12 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { utilities } from '../../..';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { utilities } from '../../..';
 
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {

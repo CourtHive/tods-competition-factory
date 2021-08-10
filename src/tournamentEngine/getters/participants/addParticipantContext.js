@@ -1,4 +1,6 @@
+import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { extensionConstants } from '../../../constants/extensionConstants';
+import { timeStringMinutes } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -189,7 +191,7 @@ export function addParticipantContext(params) {
     );
 
     params.tournamentParticipants?.forEach((participant) => {
-      const scheduleConflicts = annotateParticipant({
+      const { scheduleConflicts } = annotateParticipant({
         ...params,
         participant,
         participantIdMap,
@@ -393,6 +395,7 @@ export function addParticipantContext(params) {
               drawId,
               eventId,
               eventType,
+              matchUpId,
               matchUpFormat,
               roundName,
               roundNumber,
@@ -415,13 +418,14 @@ function annotateParticipant({
   withOpponents,
   withMatchUps,
   withStatistics,
+  scheduleAnalysis,
 
   participant,
   participantIdMap,
 }) {
   const scheduleConflicts = [];
   const participantId = participant?.participantId;
-  if (!participantId || !participantIdMap[participantId]) return;
+  if (!participantId || !participantIdMap[participantId]) return {};
 
   const {
     wins,
@@ -467,13 +471,44 @@ function annotateParticipant({
     participant.matchUps = participantMatchUps;
   }
 
-  participantMatchUps
-    .concat(participantPotentialMatchUps)
-    .forEach((matchUp) => {
+  const allParticipantMatchUps = participantMatchUps.concat(
+    participantPotentialMatchUps
+  );
+  if (scheduleAnalysis?.scheduledMinutesDifference) {
+    const { scheduledMinutesDifference } = scheduleAnalysis;
+    if (!isNaN(scheduledMinutesDifference)) {
+      const { scheduledMatchUps } = participantScheduledMatchUps({
+        matchUps: allParticipantMatchUps,
+      });
+
+      Object.keys(scheduledMatchUps).forEach((date) => {
+        let lastScheduledTime;
+        scheduledMatchUps[date].forEach((matchUp) => {
+          const {
+            schedule: { scheduledTime },
+            matchUpId,
+          } = matchUp;
+          if (lastScheduledTime) {
+            if (scheduledTime) {
+              const minutesDifference =
+                timeStringMinutes(scheduledTime) -
+                timeStringMinutes(lastScheduledTime);
+              if (minutesDifference >= scheduledMinutesDifference) {
+                scheduleConflicts.push(matchUpId);
+              }
+            }
+          }
+          lastScheduledTime = scheduledTime;
+        });
+      });
+    }
+  } else {
+    allParticipantMatchUps.forEach((matchUp) => {
       if (matchUp.schedule?.scheduleConflict) {
         scheduleConflicts.push(matchUp.matchUpId);
       }
     });
+  }
 
   participantDraws?.forEach((draw) => {
     const drawMatchUps =
@@ -499,5 +534,5 @@ function annotateParticipant({
 
   if (withStatistics) participant.statistics = [winRatioStat];
 
-  return scheduleConflicts;
+  return { scheduleConflicts };
 }
