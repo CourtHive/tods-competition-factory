@@ -11,6 +11,7 @@ import {
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { AUDIT } from '../../../../constants/topicConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
@@ -21,10 +22,6 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
-import {
-  AUDIT,
-  // DELETED_MATCHUP_IDS,
-} from '../../../../constants/topicConstants';
 
 export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

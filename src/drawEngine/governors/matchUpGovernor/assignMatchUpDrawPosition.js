@@ -7,7 +7,6 @@ import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-// import { addNotice } from '../../../global/globalState';
 import { overlap } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -16,7 +15,6 @@ import {
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-// import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
@@ -123,13 +121,6 @@ export function assignMatchUpDrawPosition({
     });
 
     modifyMatchUpNotice({ drawDefinition, matchUp });
-    /*
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
-    */
   }
 
   const targetData = positionTargets({
