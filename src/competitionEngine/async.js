@@ -22,7 +22,6 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
@@ -37,7 +36,7 @@ export function competitionEngineAsync(test) {
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});
-      return SUCCESS;
+      return processResult();
     },
     setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);

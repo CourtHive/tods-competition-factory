@@ -54,7 +54,7 @@ test.each([competitionEngineSync])(
       expect(
         tournamentRecord.extensions[0].value.matchUpAverageTimes.length
       ).toEqual(1);
-      tournamentEngine.setState(tournamentRecord);
+      tournamentEngine.setTournamentId(tournamentId);
       result = tournamentEngine.getMatchUpFormatTiming({
         matchUpFormat,
         categoryType: JUNIOR,

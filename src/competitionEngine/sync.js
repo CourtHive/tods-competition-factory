@@ -22,7 +22,6 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
@@ -34,7 +33,8 @@ export const competitionEngine = (function () {
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});
-      return SUCCESS;
+      fx.success = true;
+      return fx;
     },
   };
 
@@ -47,7 +47,7 @@ export const competitionEngine = (function () {
 
   fx.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return fx;
+    return processResult();
   };
   fx.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
   fx.setState = (records, deepCopyOption) => {

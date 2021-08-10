@@ -49,7 +49,10 @@ export function tournamentEngineAsync(test) {
   };
 
   fx.version = () => factoryVersion();
-  fx.reset = () => removeTournamentRecord(getTournamentId());
+  fx.reset = () => {
+    const result = removeTournamentRecord(getTournamentId());
+    return processResult(result);
+  };
   fx.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
