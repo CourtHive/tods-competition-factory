@@ -22,7 +22,7 @@ export function deleteMatchUpsNotice({ drawDefinition, matchUpIds, action }) {
     topic: DELETED_MATCHUP_IDS,
     payload: {
       action,
-      payload: { matchUpIds },
+      matchUpIds,
     },
   });
 }

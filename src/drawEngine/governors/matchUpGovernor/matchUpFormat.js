@@ -1,9 +1,8 @@
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
 
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import {
@@ -55,11 +54,14 @@ export function setMatchUpFormat(params) {
       } else if (tieFormat) {
         matchUp.tieFormat = tieFormat;
       }
+      modifyMatchUpNotice({ drawDefinition, matchUp });
+      /*
       addNotice({
         topic: MODIFY_MATCHUP,
         payload: { matchUp },
         key: matchUp.matchUpId,
       });
+      */
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });

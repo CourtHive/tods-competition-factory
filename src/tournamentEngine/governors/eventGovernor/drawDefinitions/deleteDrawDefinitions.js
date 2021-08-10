@@ -95,12 +95,6 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     if (result.error) return { error: result.error };
   }
   if (matchUpIds.length) {
-    /*
-    addNotice({
-      topic: DELETED_MATCHUP_IDS,
-      payload: { matchUpIds },
-    });
-    */
     deleteMatchUpsNotice({ matchUpIds });
   }
   deleteDrawNotice({ drawId });
