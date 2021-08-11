@@ -69,7 +69,7 @@ export const competitionEngine = (function () {
   };
 
   engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(engine, directives, rollbackOnError);
+    executionQueue(directives, rollbackOnError);
 
   return engine;
 
@@ -125,7 +125,7 @@ export const competitionEngine = (function () {
     });
   }
 
-  function executionQueue(engine, directives, rollbackOnError) {
+  function executionQueue(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
 

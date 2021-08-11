@@ -64,7 +64,7 @@ export function tournamentEngineAsync(test) {
   };
 
   engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueueAsync(engine, directives, rollbackOnError);
+    executionQueueAsync(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -149,7 +149,7 @@ export function tournamentEngineAsync(test) {
     }
   }
 
-  async function executionQueueAsync(engine, directives, rollbackOnError) {
+  async function executionQueueAsync(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentId = getTournamentId();
     const tournamentRecord = getTournamentRecord(tournamentId);

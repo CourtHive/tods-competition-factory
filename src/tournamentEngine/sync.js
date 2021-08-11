@@ -60,7 +60,7 @@ export const tournamentEngine = (function () {
   engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
 
   engine.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(engine, directives, rollbackOnError);
+    executionQueue(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
@@ -134,7 +134,7 @@ export const tournamentEngine = (function () {
     });
   }
 
-  function executionQueue(engine, directives, rollbackOnError) {
+  function executionQueue(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
 
     const tournamentId = getTournamentId();
