@@ -1,12 +1,14 @@
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { findStructure } from '../../getters/findStructure';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import {
-  MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,
   UNRECOGNIZED_MATCHUP_FORMAT,
@@ -42,17 +44,13 @@ export function setMatchUpFormat(params) {
     });
     if (error) return { error };
 
-    if (!matchUp) {
-      return { error: MATCHUP_NOT_FOUND };
-    } else {
-      if (matchUpType) matchUp.matchUpType = matchUpType;
-      if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
-        matchUp.matchUpFormat = matchUpFormat;
-      } else if (tieFormat) {
-        matchUp.tieFormat = tieFormat;
-      }
-      modifyMatchUpNotice({ drawDefinition, matchUp });
+    if (matchUpType) matchUp.matchUpType = matchUpType;
+    if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
+      matchUp.matchUpFormat = matchUpFormat;
+    } else if (tieFormat) {
+      matchUp.tieFormat = tieFormat;
     }
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });
     if (error) return { error };
@@ -74,6 +72,8 @@ export function setMatchUpFormat(params) {
       drawDefinition.tieFormat = tieFormat;
     }
   }
+
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS };
 }
