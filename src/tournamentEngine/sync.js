@@ -30,7 +30,7 @@ import {
 } from '../constants/errorConditionConstants';
 
 export const tournamentEngine = (function () {
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) =>
       getState({ convertExtensions, tournamentId: getTournamentId() }),
     newTournamentRecord: (params = {}) => {
@@ -43,34 +43,34 @@ export const tournamentEngine = (function () {
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };
 
-  fx.version = () => factoryVersion();
-  fx.reset = () => {
+  engine.version = () => factoryVersion();
+  engine.reset = () => {
     const result = removeTournamentRecord(getTournamentId());
     return processResult(result);
   };
-  fx.setState = (tournament, deepCopyOption) => {
+  engine.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
     return processResult(result);
   };
-  fx.devContext = (contextCriteria) => {
+  engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return fx;
+    return engine;
   };
-  fx.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
+  engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
 
-  fx.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(fx, directives, rollbackOnError);
+  engine.executionQueue = (directives, rollbackOnError) =>
+    executionQueue(engine, directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
     }
-    return fx;
+    return engine;
   }
 
   importGovernors([
@@ -84,11 +84,14 @@ export const tournamentEngine = (function () {
     participantGovernor,
   ]);
 
-  return fx;
+  return engine;
 
-  function executeFunction(tournamentRecord, fx, params) {
+  function executeFunction(tournamentRecord, method, params) {
+    delete engine.success;
+    delete engine.error;
+
     const augmentedParams = paramsMiddleWare(tournamentRecord, params);
-    const result = fx({
+    const result = method({
       ...augmentedParams,
       tournamentRecord,
     });
@@ -96,13 +99,13 @@ export const tournamentEngine = (function () {
     return result;
   }
 
-  function engineInvoke(fx, params) {
+  function engineInvoke(method, params) {
     const tournamentRecord = getTournamentRecord(getTournamentId());
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = executeFunction(tournamentRecord, fx, params);
+    const result = executeFunction(tournamentRecord, method, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -116,7 +119,7 @@ export const tournamentEngine = (function () {
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((method) => {
-        fx[method] = (params) => {
+        engine[method] = (params) => {
           if (getDevContext()) {
             return engineInvoke(governor[method], params, method);
           } else {
@@ -131,7 +134,7 @@ export const tournamentEngine = (function () {
     });
   }
 
-  function executionQueue(fx, directives, rollbackOnError) {
+  function executionQueue(engine, directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
 
     const tournamentId = getTournamentId();
@@ -145,9 +148,9 @@ export const tournamentEngine = (function () {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
       const { method, params } = directive;
-      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+      if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
-      const result = executeFunction(tournamentRecord, fx[method], params);
+      const result = executeFunction(tournamentRecord, engine[method], params);
 
       if (result?.error) {
         if (snapshot) setState(snapshot);

@@ -37,7 +37,7 @@ export function drawEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
     }),
@@ -60,15 +60,15 @@ export function drawEngineAsync(test) {
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
       drawDefinition = result;
-      fx.drawId = result.drawId;
+      engine.drawId = result.drawId;
     }
-    return fx;
+    return engine;
   }
 
   importGovernors([
@@ -82,28 +82,28 @@ export function drawEngineAsync(test) {
     structureGovernor,
   ]);
 
-  fx.devContext = (isDev) => {
+  engine.devContext = (isDev) => {
     setDevContext(isDev);
-    return fx;
+    return engine;
   };
-  fx.setParticipants = (participants = []) => {
+  engine.setParticipants = (participants = []) => {
     tournamentParticipants = participants;
-    return fx;
+    return engine;
   };
-  fx.setState = (definition, deepCopyOption) => {
+  engine.setState = (definition, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(definition);
     return processResult(result);
   };
 
-  return fx;
+  return engine;
 
   async function importGovernors(governors) {
     for (const governor of governors) {
       const governorMethods = Object.keys(governor);
 
       for (const governorMethod of governorMethods) {
-        fx[governorMethod] = async (params) => {
+        engine[governorMethod] = async (params) => {
           if (getDevContext()) {
             const result = await invoke({ params, governor, governorMethod });
 
@@ -123,6 +123,9 @@ export function drawEngineAsync(test) {
   }
 
   async function invoke({ params, governor, governorMethod }) {
+    delete engine.success;
+    delete engine.error;
+
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 
