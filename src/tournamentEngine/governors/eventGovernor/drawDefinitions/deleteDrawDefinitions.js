@@ -23,7 +23,12 @@ import {
   STATUS,
 } from '../../../../constants/timeItemConstants';
 
-export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
+export function deleteDrawDefinitions({
+  tournamentRecord,
+  eventId,
+  drawIds,
+  auditData,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawId = Array.isArray(drawIds) && drawIds[0];
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
@@ -38,13 +43,18 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
 
     event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
-        const auditData = {
+        const audit = {
           action: DELETE_DRAW_DEFINITIONS,
-          payload: { drawDefinitions: [drawDefinition] },
+          payload: {
+            drawDefinitions: [drawDefinition],
+            eventId: event.eventId,
+            auditData,
+          },
         };
-        auditTrail.push(auditData);
+        auditTrail.push(audit);
         const { drawId, drawType, drawName } = drawDefinition;
         deletedDrawDetails.push({
+          auditData,
           drawId,
           drawType,
           drawName,
