@@ -1,5 +1,6 @@
 import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
 import { getAssignedParticipantIds } from '../../getters/getAssignedParticipantIds';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -34,5 +35,7 @@ export function removeEntry({
     });
   }
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

@@ -1,7 +1,10 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
-import { modifyMatchUpNotice } from '../../../notifications/drawNotifications';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
@@ -189,6 +192,8 @@ export function assignDrawPositionBye({
     });
     if (result.error) return result;
   }
+
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS };
 }

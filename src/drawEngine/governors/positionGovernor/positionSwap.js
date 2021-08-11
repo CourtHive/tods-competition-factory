@@ -4,6 +4,7 @@ import { assignDrawPositionBye } from './byePositioning/assignDrawPositionBye';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 
@@ -60,17 +61,18 @@ export function swapDrawPositionAssignments({
     });
   }
 
-  if (!result?.error) {
-    conditionallyDisableLinkPositioning({ structure, drawPositions });
-    const positionAction = {
-      name: 'swapDrawPositionAssignments',
-      drawPositions,
-      structureId,
-    };
-    addPositionActionTelemetry({ drawDefinition, positionAction });
-  }
+  if (result.error) return result;
 
-  return result;
+  conditionallyDisableLinkPositioning({ structure, drawPositions });
+  const positionAction = {
+    name: 'swapDrawPositionAssignments',
+    drawPositions,
+    structureId,
+  };
+  addPositionActionTelemetry({ drawDefinition, positionAction });
+
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }
 
 function eliminationSwap({
@@ -95,7 +97,7 @@ function eliminationSwap({
   }
 
   // if both positions are BYE no need to do anything
-  if (assignments.filter(({ bye }) => bye).length === 2) return SUCCESS;
+  if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
@@ -178,7 +180,7 @@ function swapParticipantIdWithBYE({
   });
   if (result.error) return result;
 
-  return result.error ? result : SUCCESS;
+  return { ...SUCCESS };
 }
 
 function eliminationParticipantSwap({ structure, assignments }) {
@@ -196,7 +198,7 @@ function eliminationParticipantSwap({ structure, assignments }) {
     (assignment) => newAssignments[assignment.drawPosition] || assignment
   );
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function roundRobinSwap({
@@ -216,7 +218,7 @@ function roundRobinSwap({
   }, []);
 
   // if both positions are BYE no need to do anything
-  if (assignments.filter(({ bye }) => bye).length === 2) return SUCCESS;
+  if (assignments.filter(({ bye }) => bye).length === 2) return { ...SUCCESS };
   const isByeSwap = assignments.some(({ bye }) => bye);
 
   if (isByeSwap) {
@@ -238,5 +240,5 @@ function roundRobinSwap({
     );
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

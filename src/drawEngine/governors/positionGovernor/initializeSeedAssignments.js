@@ -1,6 +1,7 @@
 import { getPolicyDefinition } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
@@ -58,6 +59,8 @@ export function initializeStructureSeedAssignments({
       participantId: undefined,
     })
   );
+
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS, seedLimit: seedsCount };
 }

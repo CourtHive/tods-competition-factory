@@ -1,3 +1,4 @@
+import { modifyDrawNotice } from './notifications/drawNotifications';
 import structureGovernor from './governors/structureGovernor';
 import positionGovernor from './governors/positionGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
@@ -52,6 +53,7 @@ export function drawEngineAsync(test) {
     setDrawDescription: ({ description } = {}) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = description;
+      modifyDrawNotice({ drawDefinition });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
   };

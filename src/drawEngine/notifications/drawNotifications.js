@@ -27,7 +27,7 @@ export function deleteMatchUpsNotice({ drawDefinition, matchUpIds, action }) {
   });
 }
 export function modifyMatchUpNotice({ drawDefinition, matchUp }) {
-  drawUpdatedAt(drawDefinition);
+  modifyDrawNotice({ drawDefinition });
   addNotice({
     topic: MODIFY_MATCHUP,
     payload: { matchUp },

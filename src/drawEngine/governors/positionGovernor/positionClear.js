@@ -1,6 +1,7 @@
 import { structureActiveDrawPositions } from '../../getters/structureActiveDrawPositions';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { drawPositionRemovals } from './drawPositionRemovals';
 import { findStructure } from '../../getters/findStructure';
 
@@ -80,6 +81,8 @@ export function clearDrawPosition({
   if (error) return { error };
 
   if (!drawPositionCleared) return { error: DRAW_POSITION_NOT_CLEARED };
+
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS, participantId };
 }

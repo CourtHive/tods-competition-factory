@@ -1,4 +1,5 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getAppliedPolicies } from './getAppliedPolicies';
 
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
@@ -9,11 +10,12 @@ import {
   MISSING_POLICY_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-function addPolicyProfile({ drawDefinition, policyDefinition }) {
-  const errors = [];
+function attachPolicy({ drawDefinition, policyDefinition }) {
+  if (!drawDefinition) {
+    return { error: MISSING_DRAW_DEFINITION };
+  }
   if (!policyDefinition || typeof policyDefinition !== 'object') {
-    errors.push({ error: MISSING_POLICY_DEFINITION });
-    return { errors };
+    return { error: MISSING_POLICY_DEFINITION };
   }
 
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
@@ -37,16 +39,8 @@ function addPolicyProfile({ drawDefinition, policyDefinition }) {
     if (result.error) return result;
   }
 
-  return !applied ? { error: EXISTING_POLICY_TYPE } : SUCCESS;
-}
-
-function attachPolicy({ drawDefinition, policyDefinition }) {
-  if (!drawDefinition) {
-    return { error: MISSING_DRAW_DEFINITION };
-  }
-  let result = addPolicyProfile({ drawDefinition, policyDefinition });
-  if (result && result.errors) return { error: result.errors };
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+  return !applied ? { error: EXISTING_POLICY_TYPE } : { ...SUCCESS };
 }
 
 const policyGovernor = {

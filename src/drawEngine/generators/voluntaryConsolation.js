@@ -1,4 +1,5 @@
 import { automatedPositioning } from '../governors/positionGovernor/automatedPositioning';
+import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../getters/stageGetter';
 import structureTemplate from './structureTemplate';
 import { treeMatchUps } from './eliminationTree';
@@ -45,5 +46,7 @@ export function generateVoluntaryConsolationStructure({
     });
   }
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

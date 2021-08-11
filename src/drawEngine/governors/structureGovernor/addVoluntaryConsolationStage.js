@@ -1,3 +1,4 @@
+import { modifyDrawName } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/modifyDrawName';
 import { setStageDrawSize } from '../entryGovernor/stageEntryCounts';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
@@ -12,5 +13,8 @@ export function addVoluntaryConsolationStage({ drawDefinition, drawSize }) {
     drawSize,
   });
   if (result.error) return result;
+
+  modifyDrawName({ drawDefinition });
+
   return SUCCESS;
 }

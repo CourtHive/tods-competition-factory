@@ -1,6 +1,7 @@
 import { positionUnseededParticipants } from './positionUnseededParticipants';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { positionByes } from './byePositioning/positionByes';
 import { findStructure } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
@@ -127,6 +128,8 @@ export function automatedPositioning({
     if (qualifierPositionError) errors.push(qualifierPositionError);
     if (unseededPositionError) errors.push(unseededPositionError);
   }
+
+  modifyDrawNotice({ drawDefinition });
 
   return { errors, conflicts };
 }

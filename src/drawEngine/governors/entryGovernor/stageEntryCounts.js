@@ -1,3 +1,4 @@
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
@@ -40,7 +41,8 @@ export function setStageDrawSize({ drawDefinition, stage, drawSize }) {
     attributes: [{ [stage]: { drawSize } }],
   });
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }
 
 export function setStageAlternatesCount({
@@ -63,7 +65,8 @@ export function setStageAlternatesCount({
       }) || [];
   }
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }
 
 export function setStageWildcardsCount({
@@ -111,7 +114,8 @@ export function setStageWildcardsCount({
     attributes: [{ [stage]: { wildcardsCount } }],
   });
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }
 
 export function setStageQualifiersCount({
@@ -149,5 +153,6 @@ export function setStageQualifiersCount({
     attributes: [{ [stage]: { qualifiersCount } }],
   });
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }

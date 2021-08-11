@@ -4,6 +4,7 @@ import { treeMatchUps, feedInMatchUps } from '../../generators/eliminationTree';
 import { generateCurtisConsolation } from '../../generators/curtisConsolation';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { feedInChampionship } from '../../generators/feedInChampionShip';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { getStageDrawPositionsCount } from '../../getters/stageGetter';
 import { generateTieMatchUps } from '../../generators/tieMatchUps';
 import structureTemplate from '../../generators/structureTemplate';
@@ -207,6 +208,8 @@ export function generateDrawType(params = {}) {
     matchUpsMap,
     inContextDrawMatchUps,
   });
+
+  modifyDrawNotice({ drawDefinition });
 
   return result;
 }
