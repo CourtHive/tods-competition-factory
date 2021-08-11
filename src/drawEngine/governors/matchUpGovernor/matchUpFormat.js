@@ -44,8 +44,14 @@ export function setMatchUpFormat(params) {
     });
     if (error) return { error };
 
+    // TODO: check for valid matchUpType
     if (matchUpType) matchUp.matchUpType = matchUpType;
-    if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
+
+    if (
+      matchUpFormat &&
+      matchUp.matchUpType !== TEAM &&
+      (!matchUpType || matchUpType !== TEAM)
+    ) {
       matchUp.matchUpFormat = matchUpFormat;
     } else if (tieFormat) {
       matchUp.tieFormat = tieFormat;
@@ -57,8 +63,14 @@ export function setMatchUpFormat(params) {
     if (!structure) {
       return { error: STRUCTURE_NOT_FOUND };
     } else {
+      // TODO: check for valid matchUpType
       if (matchUpType) structure.matchUpType = matchUpType;
-      if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
+
+      if (
+        matchUpFormat &&
+        structure.matchUpType !== TEAM &&
+        (!matchUpType || matchUpType !== TEAM)
+      ) {
         structure.matchUpFormat = matchUpFormat;
       } else if (tieFormat) {
         structure.tieFormat = tieFormat;
