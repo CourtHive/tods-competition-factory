@@ -37,13 +37,6 @@ export function attemptToSetMatchUpStatusBYE({
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
     modifyMatchUpNotice({ drawDefinition, matchUp });
-    /*
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
-    */
     return SUCCESS;
   } else {
     return {

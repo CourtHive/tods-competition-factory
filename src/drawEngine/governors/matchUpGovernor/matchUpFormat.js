@@ -45,8 +45,6 @@ export function setMatchUpFormat(params) {
 
     if (!matchUp) {
       errors.push({ error: MATCHUP_NOT_FOUND });
-      // } else if (matchUp.winningSide) {
-      //   errors.push({ error: 'cannot set format for completed matchUp' });
     } else {
       if (matchUpType) matchUp.matchUpType = matchUpType;
       if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
@@ -55,13 +53,6 @@ export function setMatchUpFormat(params) {
         matchUp.tieFormat = tieFormat;
       }
       modifyMatchUpNotice({ drawDefinition, matchUp });
-      /*
-      addNotice({
-        topic: MODIFY_MATCHUP,
-        payload: { matchUp },
-        key: matchUp.matchUpId,
-      });
-      */
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });

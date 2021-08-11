@@ -1,11 +1,10 @@
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
@@ -50,6 +49,7 @@ export function removeSubsequentRoundsParticipant({
   for (const matchUp of relevantMatchUps) {
     const result = removeDrawPosition({
       matchUp,
+      drawDefinition,
       targetDrawPosition,
       positionAssignments,
 
@@ -64,6 +64,7 @@ export function removeSubsequentRoundsParticipant({
 
 function removeDrawPosition({
   matchUp,
+  drawDefinition,
   targetDrawPosition,
   positionAssignments,
 }) {
@@ -87,11 +88,7 @@ function removeDrawPosition({
   // ... and the winningSide must be removed
   if (matchUp.matchUpStatus === WALKOVER) matchUp.winningSide = undefined;
 
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp },
-    key: matchUp.matchUpId,
-  });
+  modifyMatchUpNotice({ drawDefinition, matchUp });
 
   return { ...SUCCESS };
 }

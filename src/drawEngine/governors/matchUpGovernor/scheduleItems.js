@@ -1,8 +1,8 @@
 import { assignMatchUpCourt } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpCourt';
 import { assignMatchUpVenue } from '../../../tournamentEngine/governors/scheduleGovernor/assignMatchUpVenue';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { formatDate } from '../../../utilities/dateTime';
-import { addNotice } from '../../../global/globalState';
 import { addMatchUpTimeItem } from './timeItems';
 import {
   dateValidation,
@@ -10,6 +10,7 @@ import {
   validTimeString,
 } from '../../../fixtures/validations/regex';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
@@ -31,8 +32,6 @@ import {
   SCHEDULED_TIME,
   SCHEDULED_DATE,
 } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 function timeDate(value) {
   if (validTimeString.test(value)) {
@@ -121,13 +120,9 @@ export function addMatchUpScheduleItems({
   if (!disableNotice) {
     const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
     if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   }
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function addMatchUpScheduledDate({

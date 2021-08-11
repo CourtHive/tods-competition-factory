@@ -1,8 +1,7 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { addNotice } from '../../../global/globalState';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 export function modifyRoundRobinMatchUpsStatus({
   positionAssignments,
@@ -28,11 +27,7 @@ export function modifyRoundRobinMatchUpsStatus({
       const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;
 
       Object.assign(matchUp, { matchUpStatus });
-      addNotice({
-        topic: MODIFY_MATCHUP,
-        payload: { matchUp },
-        key: matchUp.matchUpId,
-      });
+      modifyMatchUpNotice({ drawDefinition, matchUp });
     }
   });
 }

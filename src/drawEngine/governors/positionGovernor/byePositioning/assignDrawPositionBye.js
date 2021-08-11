@@ -1,16 +1,16 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
+import { modifyMatchUpNotice } from '../../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findStructure } from '../../../getters/findStructure';
-import { addNotice } from '../../../../global/globalState';
+import { pushGlobalLog } from '../../../../global/globalLog';
 import { positionTargets } from '../positionTargets';
 
-import { pushGlobalLog } from '../../../../global/globalLog';
-
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
@@ -18,7 +18,6 @@ import {
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   BYE,
   TO_BE_PLAYED,
@@ -27,7 +26,6 @@ import {
   CONSOLATION,
   CONTAINER,
 } from '../../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 
 /*
   assignDrawPositionBye
@@ -97,7 +95,7 @@ export function assignDrawPositionBye({
     (assignment) => assignment.drawPosition === drawPosition
   );
 
-  if (currentAssignment.bye) return SUCCESS;
+  if (currentAssignment.bye) return { ...SUCCESS };
 
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions.includes(drawPosition);
@@ -111,7 +109,7 @@ export function assignDrawPositionBye({
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
 
   const { filled, containsBye } = drawPositionFilled(positionAssignment);
-  if (containsBye) return SUCCESS; // nothing to be done
+  if (containsBye) return { ...SUCCESS }; // nothing to be done
 
   if (filled && !containsBye) {
     console.log('assignDrawPositionBye ##');
@@ -145,8 +143,8 @@ export function assignDrawPositionBye({
   });
 
   if (structure.structureType === CONTAINER) {
-    assignRoundRobinBYE({ matchUps, drawPosition });
-    return SUCCESS;
+    assignRoundRobinBYE({ drawDefinition, matchUps, drawPosition });
+    return { ...SUCCESS };
   }
 
   // ############ Get furthest advancement of drawPosition ############
@@ -165,7 +163,7 @@ export function assignDrawPositionBye({
     drawPositions.includes(drawPosition)
   );
 
-  setMatchUpStatusBYE({ matchUp });
+  setMatchUpStatusBYE({ drawDefinition, matchUp });
 
   const drawPositionToAdvance = matchUp.drawPositions.find(
     (position) => position !== drawPosition
@@ -192,7 +190,7 @@ export function assignDrawPositionBye({
     if (result.error) return result;
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function drawPositionFilled(positionAssignment) {
@@ -203,24 +201,20 @@ function drawPositionFilled(positionAssignment) {
   return { containsBye, containsQualifier, containsParticipant, filled };
 }
 
-function setMatchUpStatusBYE({ matchUp }) {
+function setMatchUpStatusBYE({ drawDefinition, matchUp }) {
   Object.assign(matchUp, {
     matchUpStatus: BYE,
     score: undefined,
     winningSide: undefined,
   });
 
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp },
-    key: matchUp.matchUpId,
-  });
+  modifyMatchUpNotice({ drawDefinition, matchUp });
 }
 
-function assignRoundRobinBYE({ matchUps, drawPosition }) {
+function assignRoundRobinBYE({ drawDefinition, matchUps, drawPosition }) {
   matchUps.forEach((matchUp) => {
     if (matchUp.drawPositions.includes(drawPosition)) {
-      setMatchUpStatusBYE({ matchUp });
+      setMatchUpStatusBYE({ drawDefinition, matchUp });
     }
   });
 }
@@ -320,7 +314,7 @@ function advanceDrawPosition({
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 function advanceWinner({
@@ -425,11 +419,7 @@ function advanceWinner({
     drawPositions,
   });
 
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp: noContextWinnerMatchUp },
-    key: noContextWinnerMatchUp.matchUpId,
-  });
+  modifyMatchUpNotice({ drawDefinition, matchUp: noContextWinnerMatchUp });
 
   if (pairedDrawPositionIsBye || drawPositionIsBye) {
     const advancingDrawPosition = pairedDrawPositionIsBye

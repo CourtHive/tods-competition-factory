@@ -2,9 +2,9 @@ import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRo
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../accessors/matchUpAccessor/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../utilities';
 import {
@@ -13,7 +13,6 @@ import {
 } from '../../getters/positionsGetter';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
   BYE,
   TO_BE_PLAYED,
@@ -289,11 +288,7 @@ function removeDrawPosition({
   if (targetMatchUp.matchUpStatus === WALKOVER)
     targetMatchUp.winningSide = undefined;
 
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp: targetMatchUp },
-    key: targetMatchUp.matchUpId,
-  });
+  modifyMatchUpNotice({ drawDefinition, matchUp: targetMatchUp });
 
   if (
     loserMatchUp &&

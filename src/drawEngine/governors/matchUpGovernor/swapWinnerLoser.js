@@ -1,9 +1,8 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../getters/positionsGetter';
+import { getDevContext } from '../../../global/globalState';
 import { modifyMatchUpScore } from './modifyMatchUpScore';
-import { addNotice, getDevContext } from '../../../global/globalState';
-
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 /**
  * for FMLC 2nd round matchUps test whether it if a first loss for both participants
@@ -45,11 +44,7 @@ export function swapWinnerLoser(params) {
         ? existingLoserDrawPosition
         : drawPosition
     );
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   });
 
   const { stage: currentStage, stageSequence: currentStageSequence } =
