@@ -3,23 +3,23 @@ import { notifySubscribers } from '../global/notifySubscribers';
 import mocksGovernor from './governors/mocksGovernor';
 
 export const mocksEngine = (function () {
-  const fx = {
+  const engine = {
     version: () => {
       return '@VERSION@';
     },
     devContext: (isDev) => {
       setDevContext(isDev);
-      return fx;
+      return engine;
     },
   };
 
   importGovernors([mocksGovernor]);
 
-  return fx;
+  return engine;
 
   // enable Middleware
-  function engineInvoke(fx, params) {
-    const result = fx({ ...params });
+  function engineInvoke(method, params) {
+    const result = method({ ...params });
     if (!result?.error) notifySubscribers();
     deleteNotices();
     return result;
@@ -28,7 +28,7 @@ export const mocksEngine = (function () {
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+        engine[key] = (params) => {
           try {
             return engineInvoke(governor[key], params);
           } catch (err) {
