@@ -113,6 +113,7 @@ export function generateTournamentRecord({
     nationalityCodeType,
     nationalityCodes,
     addressProps,
+    personIds,
     inContext,
     sex,
   } = participantsProfile || {};
@@ -126,6 +127,8 @@ export function generateTournamentRecord({
 
     participantsCount,
     participantType,
+    personIds,
+
     inContext,
     sex,
   });
