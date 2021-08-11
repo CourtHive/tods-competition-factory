@@ -14,7 +14,6 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
-  const errors = [];
   const {
     drawDefinition,
     structureId,
@@ -41,10 +40,10 @@ export function setMatchUpFormat(params) {
       drawDefinition,
       matchUpId,
     });
-    if (error) errors.push(error);
+    if (error) return { error };
 
     if (!matchUp) {
-      errors.push({ error: MATCHUP_NOT_FOUND });
+      return { error: MATCHUP_NOT_FOUND };
     } else {
       if (matchUpType) matchUp.matchUpType = matchUpType;
       if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
@@ -56,9 +55,9 @@ export function setMatchUpFormat(params) {
     }
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });
-    if (error) errors.push(error);
+    if (error) return { error };
     if (!structure) {
-      errors.push({ error: STRUCTURE_NOT_FOUND });
+      return { error: STRUCTURE_NOT_FOUND };
     } else {
       if (matchUpType) structure.matchUpType = matchUpType;
       if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
@@ -76,5 +75,5 @@ export function setMatchUpFormat(params) {
     }
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  return { ...SUCCESS };
 }
