@@ -26,13 +26,15 @@ export function deleteCourt({
   });
 
   if (!matchUps.length || force) {
-    matchUps.forEach((matchUp) => {
-      removeCourtAssignment({
+    for (const matchUp of matchUps) {
+      const result = removeCourtAssignment({
         tournamentRecord,
         drawDefinition,
+        drawId: matchUp.drawId,
         matchUpId: matchUp.matchUpId,
       });
-    });
+      if (result.error) return result;
+    }
     venue.courts = (venue.courts || []).filter((courtRecord) => {
       return courtRecord.courtId !== courtId;
     });

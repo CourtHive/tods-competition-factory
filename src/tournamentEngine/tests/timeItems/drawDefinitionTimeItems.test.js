@@ -43,6 +43,7 @@ it('can add and read timeItems from events', () => {
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
+  const createdAt = drawDefinition.updatedAt;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
@@ -93,4 +94,5 @@ it('can add and read timeItems from events', () => {
     },
   } = tournamentEngine.getEvent({ eventId });
   expect(updatedDrawDefinition.timeItems.length).toEqual(1);
+  expect(updatedDrawDefinition.updatedAt).toBeGreaterThan(createdAt);
 });

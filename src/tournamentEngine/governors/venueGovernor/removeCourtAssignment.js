@@ -1,3 +1,4 @@
+import { modifyMatchUpNotice } from '../../../drawEngine/notifications/drawNotifications';
 import { findMatchUp } from '../../../drawEngine/getters/getMatchUps/findMatchUp';
 import { getMatchUp } from '../../../drawEngine/accessors/matchUpAccessor';
 import { tournamentMatchUps } from '../../getters/matchUpsGetter';
@@ -51,6 +52,8 @@ export function removeCourtAssignment({
         itemDate: '',
       };
       matchUp.timeItems.push(timeItem);
+
+      modifyMatchUpNotice({ drawDefinition, matchUp });
     }
   }
 
