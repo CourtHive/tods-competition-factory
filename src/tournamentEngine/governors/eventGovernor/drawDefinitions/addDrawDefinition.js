@@ -1,16 +1,20 @@
 import { addEventExtension } from '../../tournamentGovernor/addRemoveExtensions';
-import { addNotice, getTopics } from '../../../../global/globalState';
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
+import { getTopics } from '../../../../global/globalState';
+import {
+  addDrawNotice,
+  addMatchUpsNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
+import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
+import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_ID_EXISTS,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
-import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 
 export function addDrawDefinition({ drawDefinition, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
@@ -90,8 +94,10 @@ export function addDrawDefinition({ drawDefinition, event }) {
   const { topics } = getTopics();
   if (topics.includes(ADD_MATCHUPS)) {
     const { matchUps } = allDrawMatchUps({ drawDefinition, event });
-    addNotice({ topic: ADD_MATCHUPS, payload: { matchUps } });
+    addMatchUpsNotice({ drawDefinition, matchUps });
   }
 
-  return SUCCESS;
+  addDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

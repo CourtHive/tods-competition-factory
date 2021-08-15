@@ -1,11 +1,10 @@
-import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine/sync';
-
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { allPlayoffPositionsFilled } from '../../governors/queryGovernor/structureActions';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { reset, initialize } from '../primitives/primitives';
 import { generateRange } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
 
 import {
   MAIN,
@@ -35,8 +34,8 @@ export function roundRobinWithPlayoffsTest({
     playoffGroups,
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

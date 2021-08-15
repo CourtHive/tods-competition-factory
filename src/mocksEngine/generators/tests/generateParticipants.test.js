@@ -1,3 +1,4 @@
+import { generateRange, UUID } from '../../../utilities';
 import defaultPersonData from '../../data/persons.json';
 import mocksEngine from '../..';
 
@@ -13,6 +14,33 @@ it('can generate unique participants', () => {
   expect(participants[participants.length - 1].person.firstName).not.toEqual(
     'GivenName'
   );
+});
+
+test('generateTournamentRecord passes participantsProfile.personIds', () => {
+  const personIds = generateRange(0, 9).map(() => UUID());
+  const participantsProfile = {
+    participantsCount: 10,
+    personIds,
+  };
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile,
+  });
+  expect(tournamentRecord.participants[0].person.personId).toEqual(
+    personIds[0]
+  );
+});
+
+it('can generate use pre-defined personIds', () => {
+  const participantsCount = defaultPersonData.length + 10;
+  const personIds = generateRange(0, 9).map(() => UUID());
+  const { participants } = mocksEngine.generateParticipants({
+    participantsCount,
+    personIds,
+  });
+  expect(participants[participants.length - 1].person.firstName).not.toEqual(
+    'GivenName'
+  );
+  expect(participants[0].person.personId).toEqual(personIds[0]);
 });
 
 it('can generate sexed participants', () => {

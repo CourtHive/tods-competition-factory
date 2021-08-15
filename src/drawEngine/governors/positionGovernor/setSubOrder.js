@@ -1,15 +1,17 @@
 import { addExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { updateAssignmentParticipantResults } from '../matchUpGovernor/updateAssignmentParticipantResults';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 
+import { CONTAINER } from '../../../constants/drawDefinitionConstants';
+import { SUB_ORDER } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
 } from '../../../constants/errorConditionConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUB_ORDER } from '../../../constants/extensionConstants';
 
 /**
  *
@@ -75,6 +77,8 @@ export function setSubOrder({
     matchUps,
     matchUpFormat,
   });
+  if (result.error) return result;
 
-  return result;
+  modifyDrawNotice({ drawDefinition });
+  return { ...SUCCESS };
 }

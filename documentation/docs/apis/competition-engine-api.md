@@ -3,6 +3,8 @@ name: API
 title: Competition Engine API
 ---
 
+All competitionEngine methods which make a mutation return either `{ success: true }` or `{ error }`
+
 ## addCourts
 
 Convenience function to bulk add courts to a Venue. Only adds **dateAvailability** and **courtName**. See [Scheduling](/docs/concepts/scheduling).
@@ -238,6 +240,8 @@ competitionEngine.addVenue({ venue: { venueName } });
 ```js
 const { matchUps } = competitionEngine.allCompetitionMatchUps({
   scheduleVisibilityFilters,
+  matchUpFilters, // optional; [ scheduledDate, scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  nextMatchUps, // include winnerTo and loserTo matchUps
 });
 ```
 
@@ -298,6 +302,25 @@ const outcomes = [
   },
 ];
 competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
+```
+
+---
+
+## bulkRescheduleMatchUps
+
+```js
+const {
+  rescheduled, // array of inContext matchUps which have been rescheduled
+  notRescheduled, // array of inContext matchUps which have NOT been rescheduled
+  allRescheduled, // boolean indicating whether all matchUps have been rescheduled
+  dryRun, // boolean - only report what would happen without making modifications
+} = competitionEngine.bulkRescheduleMatchUps({
+  matchUpIds, // array of matchUupIds for matchUps which are to be rescheduled
+  scheduleChange: {
+    daysChange: 1, // number of days +/-
+    minutesChange: 30, // number of minutes +/-
+  },
+});
 ```
 
 ---
@@ -369,8 +392,6 @@ const {
 const matchUpFilters = {
   isMatchUpTie: false,
   scheduledDate, // scheduled date of matchUps to return
-  localTimeZone, // optional - used to convert scheduleDate
-  localPerspective: true,
 };
 
 const { completedMatchUps, dateMatchUps, courtsData, venues } =
@@ -471,7 +492,10 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const { competitionParticipants } =
+const {
+  competitionParticipants,
+  participantIdsWithConflicts // returns array of participantIds which have scheduling conflicts
+} =
   competitionEngine.getCompetitionParticipants({
     inContext, // optional - adds individualParticipants for all individualParticipantIds
 
@@ -479,9 +503,11 @@ const { competitionParticipants } =
     withOpponents, // optional - include opponent participantIds
     withEvents, // optional - defaults to true
     withDraws, // optional - defaults to true
-
     withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
-    withScheduleAnalysis, // optional - requires { withMatchUps: true } - analyze matchUp.schedules
+
+    scheduleAnalysis: {
+      scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+    },
 
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
     policyDefinition, // optional - can accept a privacy policy to filter participant attributes

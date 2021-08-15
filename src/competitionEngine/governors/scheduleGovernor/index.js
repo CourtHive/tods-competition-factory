@@ -14,6 +14,7 @@ import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
+import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
 import { matchUpScheduleChange } from './matchUpScheduleChange';
 import { getMatchUpDailyLimits } from './getMatchUpDailyLimits';
@@ -45,6 +46,7 @@ const scheduleGovernor = {
   scheduleMatchUps,
   scheduleProfileRounds,
   clearScheduledMatchUps,
+  bulkRescheduleMatchUps,
 
   matchUpScheduleChange,
   calculateScheduleTimes,

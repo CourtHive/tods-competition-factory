@@ -1,20 +1,15 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { feedInChampionship } from '../../tests/primitives/feedIn';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { intersection } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    startDate: '2020-01-01',
-    endDate: '2020-01-06',
-    participantsCount: 32,
-  });
-
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);

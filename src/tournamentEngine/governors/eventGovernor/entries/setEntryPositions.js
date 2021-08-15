@@ -1,9 +1,9 @@
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function setEntryPosition({
   tournamentRecord,
@@ -15,10 +15,7 @@ export function setEntryPosition({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  // setting entryPosition to 0 is the same as removing entryPosition
-  if (entryPosition === 0) entryPosition = undefined;
-
-  if (entryPosition !== undefined && isNaN(parseInt(entryPosition)))
+  if (entryPosition !== undefined && !Number.isSafeInteger(entryPosition))
     return { error: INVALID_VALUES, entryPosition };
 
   (event?.entries || []).forEach((entry) => {

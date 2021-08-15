@@ -22,19 +22,18 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
 } from '../constants/errorConditionConstants';
 
 export const competitionEngine = (function () {
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});
-      return SUCCESS;
+      return processResult();
     },
   };
 
@@ -45,53 +44,56 @@ export const competitionEngine = (function () {
     scheduleGovernor,
   ]);
 
-  fx.devContext = (contextCriteria) => {
+  engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return fx;
+    return processResult();
   };
-  fx.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
-  fx.setState = (records, deepCopyOption) => {
+  engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
+  engine.setState = (records, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(records, deepCopyOption);
     return processResult(result);
   };
-  fx.setTournamentRecord = (tournamentRecord, deepCopyOption) => {
+  engine.setTournamentRecord = (tournamentRecord, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setTournamentRecord(tournamentRecord, deepCopyOption);
     return processResult(result);
   };
-  fx.removeTournamentRecord = (tournamentId) => {
+  engine.removeTournamentRecord = (tournamentId) => {
     const result = removeTournamentRecord(tournamentId);
     return processResult(result);
   };
-  fx.removeUnlinkedTournamentRecords = () => {
+  engine.removeUnlinkedTournamentRecords = () => {
     const result = removeUnlinkedTournamentRecords();
     return processResult(result);
   };
 
-  fx.executionQueue = (directives, rollbackOnError) =>
-    executionQueue(fx, directives, rollbackOnError);
+  engine.executionQueue = (directives, rollbackOnError) =>
+    executionQueue(directives, rollbackOnError);
 
-  return fx;
+  return engine;
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
     }
-    return fx;
+    return engine;
   }
 
-  function engineInvoke(fx, params) {
+  function engineInvoke(method, params) {
+    delete engine.success;
+    delete engine.error;
+
     const tournamentRecords = getTournamentRecords();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
-    const result = fx({
+    const result = method({
       ...params,
       tournamentRecords,
     });
@@ -108,7 +110,7 @@ export const competitionEngine = (function () {
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((key) => {
-        fx[key] = (params) => {
+        engine[key] = (params) => {
           if (getDevContext()) {
             return engineInvoke(governor[key], params);
           } else {
@@ -123,7 +125,7 @@ export const competitionEngine = (function () {
     });
   }
 
-  function executionQueue(fx, directives, rollbackOnError) {
+  function executionQueue(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
 
@@ -135,9 +137,9 @@ export const competitionEngine = (function () {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
       const { method, params } = directive;
-      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+      if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
-      const result = fx[method]({
+      const result = engine[method]({
         ...params,
         tournamentRecords,
       });

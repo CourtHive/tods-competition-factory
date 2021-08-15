@@ -1,20 +1,19 @@
+import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 
+import { MODIFICATION } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   INVALID_TIME_ITEM,
   MISSING_TIME_ITEM,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { MODIFICATION } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add and read timeItems from events', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2021-01-01',
     endDate: '2021-01-06',
-    participantsCount: 32,
   });
   const { participants } = tournamentRecord;
 
@@ -44,6 +43,7 @@ it('can add and read timeItems from events', () => {
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
+  const createdAt = drawDefinition.updatedAt;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
@@ -94,4 +94,5 @@ it('can add and read timeItems from events', () => {
     },
   } = tournamentEngine.getEvent({ eventId });
   expect(updatedDrawDefinition.timeItems.length).toEqual(1);
+  expect(updatedDrawDefinition.updatedAt).toBeGreaterThan(createdAt);
 });

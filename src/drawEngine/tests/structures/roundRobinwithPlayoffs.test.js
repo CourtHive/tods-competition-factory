@@ -1,12 +1,15 @@
-import drawEngine from '../../sync';
-import tournamentEngine from '../../../tournamentEngine/sync';
-
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { generateMatchUpOutcome } from '../primitives/generateMatchUpOutcome';
 import { reset, initialize, mainDrawPositions } from '../primitives/primitives';
 import { chunkArray, intersection } from '../../../utilities/arrays';
+import tournamentEngine from '../../../tournamentEngine/sync';
 import { findStructure } from '../../getters/findStructure';
 import { setsValues } from './roundRobinSetsValues.js';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
+import {
+  allPlayoffPositionsFilled,
+  isCompletedStructure,
+} from '../../governors/queryGovernor/structureActions';
 
 import {
   DRAW,
@@ -21,10 +24,6 @@ import {
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  allPlayoffPositionsFilled,
-  isCompletedStructure,
-} from '../../governors/queryGovernor/structureActions';
 
 it('can generate Round Robins 32 with playoffs', () => {
   reset();
@@ -166,8 +165,8 @@ it('can advance players in Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -379,8 +378,8 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
     ],
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

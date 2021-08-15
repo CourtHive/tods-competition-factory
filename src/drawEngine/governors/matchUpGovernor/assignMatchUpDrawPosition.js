@@ -1,12 +1,12 @@
 import { getPairedPreviousMatchUpIsWOWO } from '../positionGovernor/getPairedPreviousMatchUpisWOWO';
 import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assignDrawPositionBye';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
 import { pushGlobalLog } from '../../../global/globalLog';
-import { addNotice } from '../../../global/globalState';
 import { overlap } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -15,7 +15,6 @@ import {
 
 import { DRAW_POSITION_ASSIGNED } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   BYE,
@@ -121,11 +120,7 @@ export function assignMatchUpDrawPosition({
       matchUpStatus,
     });
 
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   }
 
   const targetData = positionTargets({

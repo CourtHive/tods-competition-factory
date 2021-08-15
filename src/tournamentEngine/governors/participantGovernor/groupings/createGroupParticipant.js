@@ -54,7 +54,6 @@ export function createGroupParticipant({
     participantType: GROUP,
     participantRole,
     participantName: groupName,
-    name: groupName, // for backwards compatability
     individualParticipantIds,
   };
 

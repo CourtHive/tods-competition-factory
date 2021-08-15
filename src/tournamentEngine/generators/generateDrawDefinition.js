@@ -113,7 +113,7 @@ export function generateDrawDefinition(params) {
   const {
     matchUpsMap,
     inContextDrawMatchUps,
-    errors: generatedDrawErrors,
+    error: generatedDrawError,
   } = drawEngine.generateDrawType({
     stage,
     drawType,
@@ -131,8 +131,7 @@ export function generateDrawDefinition(params) {
     goesTo: params.goesTo,
   });
 
-  if (generatedDrawErrors)
-    return { error: generatedDrawErrors, message: 'generated draw type error' };
+  if (generatedDrawError) return { error: generatedDrawError };
 
   const { structures } = drawEngine.getDrawStructures({
     stage,
@@ -186,6 +185,7 @@ export function generateDrawDefinition(params) {
     ({ participantId }) => participantId
   );
 
+  if (seededParticipants) seedsCount = seededParticipants.length;
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
@@ -206,25 +206,21 @@ export function generateDrawDefinition(params) {
       .filter(
         (seededParticipant) =>
           !seededParticipant.seedNumber ||
-          seededParticipant.seedNumber > seededParticipants.length
+          seededParticipant.seedNumber <= seededParticipants.length
       )
       .sort((a, b) => {
-        if (a.seedValue < b.seedValue) return -1;
-        if (a.seedValue < b.seedValue) return 1;
+        if (a.seedNumber < b.seedNumber) return -1;
+        if (a.seedNumber < b.seedNumber) return 1;
         return 0;
       })
       .forEach((seededParticipant) => {
         const { participantId, seedNumber, seedValue } = seededParticipant;
-        const result = drawEngine.assignSeed({
+        drawEngine.assignSeed({
+          participantId,
           structureId,
           seedNumber,
           seedValue,
-          participantId,
         });
-        if (!result.success) {
-          console.log('generateDrawDefinition seededParticipants');
-          console.log(`%c ${result.error}`, 'color: red');
-        }
       });
   } else if (event?.category || seedingScaleName) {
     // if no seededParticipants have been defined, seed by seeding scale or ranking scale, if present
@@ -259,8 +255,6 @@ export function generateDrawDefinition(params) {
       }));
     }
 
-    scaledEntries = scaledEntries || [];
-
     const scaledEntriesCount = scaledEntries?.length || 0;
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
@@ -275,16 +269,12 @@ export function generateDrawDefinition(params) {
           const seedValue = seedNumber;
           // TODO: attach basis of seeding information to seedAssignment
           const { participantId } = scaledEntry;
-          const result = drawEngine.assignSeed({
+          drawEngine.assignSeed({
             participantId,
             structureId,
             seedNumber,
             seedValue,
           });
-          if (!result.success) {
-            console.log('generateDrawDefinition scaledEntries');
-            console.log(`%c ${result.error} ${seedNumber}`, 'color: red');
-          }
         });
   }
 

@@ -1,12 +1,12 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
+import { utilities } from '../../..';
 
 import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { utilities } from '../../..';
 
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {
@@ -58,30 +58,30 @@ it('can retrieve tournament participants', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  expect(tournamentParticipants.length).toEqual(150);
+  expect(tournamentParticipants.length).toEqual(300);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL] },
   }));
-  expect(tournamentParticipants.length).toEqual(100);
+  expect(tournamentParticipants.length).toEqual(200);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantTypes: [PAIR] },
   }));
-  expect(tournamentParticipants.length).toEqual(50);
+  expect(tournamentParticipants.length).toEqual(100);
   expect(tournamentParticipants[0].individualParticipants).toBeUndefined();
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantTypes: [PAIR] },
     inContext: true,
   }));
-  expect(tournamentParticipants.length).toEqual(50);
+  expect(tournamentParticipants.length).toEqual(100);
   expect(tournamentParticipants[0].individualParticipants.length).toEqual(2);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantRoles: [COMPETITOR] },
   }));
-  expect(tournamentParticipants.length).toEqual(150);
+  expect(tournamentParticipants.length).toEqual(300);
 });
 
 test('accessorValues can filter participants by sex', () => {

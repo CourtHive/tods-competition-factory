@@ -4,9 +4,14 @@ import { allDrawMatchUps } from '../../../getters/matchUpsGetter';
 import { getTimeItem } from '../../queryGovernor/timeItems';
 import { addNotice } from '../../../../global/globalState';
 import { findEvent } from '../../../getters/eventGetter';
+import {
+  deleteDrawNotice,
+  deleteMatchUpsNotice,
+} from '../../../../drawEngine/notifications/drawNotifications';
 
 import { DELETE_DRAW_DEFINITIONS } from '../../../../constants/auditConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { AUDIT } from '../../../../constants/topicConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
@@ -17,12 +22,13 @@ import {
   PUBLISH,
   STATUS,
 } from '../../../../constants/timeItemConstants';
-import {
-  AUDIT,
-  DELETED_MATCHUP_IDS,
-} from '../../../../constants/topicConstants';
 
-export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
+export function deleteDrawDefinitions({
+  tournamentRecord,
+  eventId,
+  drawIds,
+  auditData,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawId = Array.isArray(drawIds) && drawIds[0];
   const { event } = findEvent({ tournamentRecord, eventId, drawId });
@@ -37,13 +43,18 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
 
     event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
       if (drawIds.includes(drawDefinition.drawId)) {
-        const auditData = {
+        const audit = {
           action: DELETE_DRAW_DEFINITIONS,
-          payload: { drawDefinitions: [drawDefinition] },
+          payload: {
+            drawDefinitions: [drawDefinition],
+            eventId: event.eventId,
+            auditData,
+          },
         };
-        auditTrail.push(auditData);
+        auditTrail.push(audit);
         const { drawId, drawType, drawName } = drawDefinition;
         deletedDrawDetails.push({
+          auditData,
           drawId,
           drawType,
           drawName,
@@ -91,10 +102,9 @@ export function deleteDrawDefinitions({ tournamentRecord, eventId, drawIds }) {
     if (result.error) return { error: result.error };
   }
   if (matchUpIds.length) {
-    addNotice({
-      topic: DELETED_MATCHUP_IDS,
-      payload: { matchUpIds },
-    });
+    deleteMatchUpsNotice({ matchUpIds });
   }
+  deleteDrawNotice({ drawId });
+
   return SUCCESS;
 }

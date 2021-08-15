@@ -1,8 +1,8 @@
+import { validTimePeriod } from '../../../fixtures/validations/time';
 import {
   dateValidation,
   timeValidation,
 } from '../../../fixtures/validations/regex';
-import { validTimePeriod } from '../../../fixtures/validations/time';
 
 import {
   INVALID_DATE,
@@ -73,7 +73,7 @@ export function validDateAvailability({ dateAvailability }) {
 
       for (const booking of bookings) {
         if (typeof booking !== 'object') {
-          return { error: INVALID_DATE_AVAILABILITY };
+          return { error: INVALID_BOOKINGS };
         }
         const { startTime, endTime } = booking;
         if (!timeValidation.test(startTime)) {
@@ -83,7 +83,7 @@ export function validDateAvailability({ dateAvailability }) {
             message: timeNote,
           };
         }
-        if (!timeValidation.test(availability.endTime)) {
+        if (!timeValidation.test(endTime)) {
           return {
             error: INVALID_TIME,
             booking: { endTime },

@@ -1,9 +1,11 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
+import {
+  deleteMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../notifications/drawNotifications';
 
-import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -67,13 +69,12 @@ export function removeStructure({ drawDefinition, structureId }) {
     }
   });
 
-  addNotice({
-    topic: DELETED_MATCHUP_IDS,
-    payload: {
-      action: 'removeStructure',
-      payload: { matchUpIds: removedMatchUpIds },
-    },
+  deleteMatchUpsNotice({
+    drawDefinition,
+    matchUpIds: removedMatchUpIds,
+    action: 'removeStructure',
   });
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS, removedMatchUpIds };
 }

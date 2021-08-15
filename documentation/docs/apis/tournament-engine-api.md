@@ -3,7 +3,7 @@ name: API
 title: Tournament Engine API
 ---
 
-All tournamentEngine methods return either `{ success: true }` or `{ error }`
+All tournamentEngine methods which make a mutation return either `{ success: true }` or `{ error }`
 
 ## addCourt
 
@@ -441,7 +441,7 @@ const { matchUps } = allEventMatchUps({
   eventId,
   inContext: true, // include contextual details
   nextMatchUps: true, // include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```
@@ -455,7 +455,8 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   scheduleVisibilityFilters,
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  nextMatchUps, // include winnerTo and loserTo matchUps
 });
 ```
 
@@ -628,6 +629,25 @@ const outcomes = [
   },
 ];
 tournamentEngine.bulkMatchUpStatusUpdate({ outcomes });
+```
+
+---
+
+## bulkRescheduleMatchUps
+
+```js
+const {
+  rescheduled, // array of inContext matchUps which have been rescheduled
+  notRescheduled, // array of inContext matchUps which have NOT been rescheduled
+  allRescheduled, // boolean indicating whether all matchUps have been rescheduled
+  dryRun, // boolean - only report what would happen without making modifications
+} = tournamentEngine.bulkRescheduleMatchUps({
+  matchUpIds, // array of matchUupIds for matchUps which are to be rescheduled
+  scheduleChange: {
+    daysChange: 1, // number of days +/-
+    minutesChange: 30, // number of minutes +/-
+  },
+});
 ```
 
 ---
@@ -825,7 +845,7 @@ const {
 } = tournamentEngine.eventMatchUps({
   eventId,
   nextMatchUps, // optional boolean; include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
@@ -1614,16 +1634,21 @@ const participantFilters = {
   signInStatus, // specific signIn status
   eventIds, // events in which participants appear
 };
-const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+const {
+  tournamentParticipants,
+  participantIdsWithConflicts //  returns array of participantIds which have scheduling conflicts
+} = tournamentEngine.getTournamentParticipants({
   inContext, // optional - adds individualParticipants for all individualParticipantIds
 
   withStatistics, // optional - adds events, machUps and statistics, e.g. 'winRatio'
   withOpponents, // optional - include opponent participantIds
   withEvents, // optional - defaults to true
   withDraws, // optional - defaults to true
-
   withMatchUps, // optional - include all matchUps in which the participant appears, as well as potentialMatchUps
-  withScheduleAnalysis, // optional - requires { withMatchUps: true } - analyze matchUp.schedules
+
+  scheduleAnalysis: {
+    scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+  },
 
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
   policyDefinition, // optional - can accept a privacy policy to filter participant attributes
@@ -1694,12 +1719,12 @@ const {
 
 ---
 
-## getVenues
+## getVenuesAndCourts
 
-Returns an array of all Venues which are part of a tournamentRecord.
+Returns an array of all Venues which are part of a tournamentRecord and an aggregation of courts across all venues.
 
 ```js
-const { venues } = tournamentEngine.getVenues();
+const { venues, courts } = tournamentEngine.getVenuesAndCourts();
 ```
 
 ---
@@ -2006,6 +2031,18 @@ const {
 } = tournamentEngine.participantScaleItem({
   participant,
   scaleAttributes,
+});
+```
+
+---
+
+## participantScheduledMatchUps
+
+Returns `matchUps` which have been scheduled, organized by `scheduledDate` and sorted by `scheduledTime`.
+
+```js
+const { scheduledMatchUps } = tournamentEngine.participantScheduledMatchUps({
+  matchUps,
 });
 ```
 
@@ -2511,7 +2548,7 @@ const {
   pendingMatchUps,
   upcomingMatchUps,
 } = tournamentEngine.tournamentMatchUps({
-  matchUpFilters, // optional; [ scheduleDates: [], c]urtIds: [], s]ages: [], r]undNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  matchUpFilters, // optional; [ scheduleDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   scheduleVisibilityFilters,
 });
 ```

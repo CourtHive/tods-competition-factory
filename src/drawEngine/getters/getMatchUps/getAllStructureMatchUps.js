@@ -33,6 +33,7 @@ export function getAllStructureMatchUps({
   drawDefinition,
   contextFilters,
   matchUpFilters,
+  scheduleTiming,
   seedAssignments,
   policyDefinition,
   tournamentParticipants,
@@ -248,6 +249,7 @@ export function getAllStructureMatchUps({
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
+      scheduleTiming,
       matchUp,
     });
     const drawPositions = matchUp.drawPositions || tieDrawPositions;

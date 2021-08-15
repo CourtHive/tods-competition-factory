@@ -1,16 +1,19 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { addNotice } from '../../../global/globalState';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
+import { BYE } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_MATCHUP_STATUS,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
-export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
+export function attemptToSetMatchUpStatusBYE({
+  drawDefinition,
+  matchUp,
+  structure,
+}) {
   if (!structure) return { error: MISSING_STRUCTURE };
   if (!matchUp) return { error: MISSING_MATCHUP };
   if (matchUp?.winningSide) {
@@ -33,11 +36,7 @@ export function attemptToSetMatchUpStatusBYE({ matchUp, structure }) {
   if (matchUpIncludesBye) {
     matchUp.matchUpStatus = BYE;
     matchUp.matchUpStatusCodes = [];
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
+    modifyMatchUpNotice({ drawDefinition, matchUp });
     return SUCCESS;
   } else {
     return {

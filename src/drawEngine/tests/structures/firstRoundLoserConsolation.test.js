@@ -1,8 +1,8 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getDrawStructures } from '../../getters/findStructure';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { instanceCount } from '../../../utilities';
+import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
 
 import {
@@ -16,8 +16,8 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
 it('correctly assigns positions for Elimination structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -57,8 +57,8 @@ it('correctly assigns positions for Elimination structure', () => {
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
   const participantsCount = 17;
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -122,8 +122,8 @@ it('correctly assigns BYE positions in consolation structure', () => {
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 8;
   const participantsCount = 5;
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

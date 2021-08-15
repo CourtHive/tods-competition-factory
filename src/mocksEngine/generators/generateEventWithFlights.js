@@ -133,6 +133,7 @@ export function generateEventWithFlights({
     }
   }
 
+  let generationError;
   const drawIds = [];
   const { flightProfile } = getFlightProfile({ event });
   const success = flightProfile?.flights?.every((flight, index) => {
@@ -142,7 +143,7 @@ export function generateEventWithFlights({
     const matchUpFormat = drawProfiles[index].matchUpFormat;
     const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
 
-    const { drawDefinition } = generateDrawDefinition({
+    let result = generateDrawDefinition({
       stage,
       drawId,
       event,
@@ -157,13 +158,18 @@ export function generateEventWithFlights({
       matchUpType: eventType,
       tournamentRecord,
     });
-    let result = addDrawDefinition({
+
+    const { drawDefinition, error } = result;
+    if (error) {
+      generationError = error;
+      return false;
+    }
+
+    result = addDrawDefinition({
       drawDefinition,
       event,
     });
-    if (result.error) {
-      return false;
-    }
+    if (result.error) return false;
     drawIds.push(flight.drawId);
 
     const manual = automated === false;
@@ -197,7 +203,7 @@ export function generateEventWithFlights({
     return true;
   });
 
-  if (!success) return { error: 'Draws not generated ' };
+  if (!success) return { error: generationError || 'Draws not generated' };
 
   return { drawIds, eventId };
 }

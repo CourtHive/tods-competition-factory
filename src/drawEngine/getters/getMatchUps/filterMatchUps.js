@@ -10,6 +10,7 @@ export function filterMatchUps(params) {
     venueIds,
     courtIds,
     matchUps,
+    matchUpIds,
     matchUpTypes,
     roundNumbers,
     matchUpFormat,
@@ -17,10 +18,8 @@ export function filterMatchUps(params) {
     scheduledDate,
     scheduledDates,
     isMatchUpTie,
-    localTimeZone,
     matchUpFormats,
     matchUpStatuses,
-    localPerspective,
     isCollectionMatchUp,
 
     // only applies to inContext matchUps and only when processContext boolean is true
@@ -45,6 +44,9 @@ export function filterMatchUps(params) {
     ? roundNumbers.filter(Boolean)
     : [];
 
+  const targetMatchUpIds = Array.isArray(matchUpIds)
+    ? matchUpIds.filter(Boolean)
+    : [];
   const targetMatchUpTypes =
     Array.isArray(matchUpTypes) && filterMatchUpTypes
       ? matchUpTypes.filter(Boolean)
@@ -121,6 +123,12 @@ export function filterMatchUps(params) {
       return false;
     }
     if (
+      targetMatchUpIds.length &&
+      !targetMatchUpIds.includes(matchUp.matchUpId)
+    ) {
+      return false;
+    }
+    if (
       targetMatchUpTypes.length &&
       !targetMatchUpTypes.includes(matchUp.matchUpType)
     ) {
@@ -136,13 +144,9 @@ export function filterMatchUps(params) {
     if (targetScheduledDates?.length) {
       const { scheduledTime } = scheduledMatchUpTime({
         matchUp,
-        localTimeZone,
-        localPerspective,
       });
       const { scheduledDate: matchUpDate } = scheduledMatchUpDate({
         matchUp,
-        localTimeZone,
-        localPerspective,
       });
       const scheduledTimeDate = extractDate(scheduledTime);
       const comparisonDate = scheduledTimeDate || matchUpDate;

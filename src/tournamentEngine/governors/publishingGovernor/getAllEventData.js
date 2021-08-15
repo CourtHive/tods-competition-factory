@@ -1,7 +1,8 @@
+import { getScheduleTiming } from '../scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
 import { getDrawMatchUps } from '../../../drawEngine/getters/getMatchUps/drawMatchUps';
-import { getTournamentInfo } from './getTournamentInfo';
-import { getVenues } from '../../getters/venueGetter';
+import { getVenuesAndCourts } from '../../getters/venueGetter';
 import { getEventTimeItem } from '../queryGovernor/timeItems';
+import { getTournamentInfo } from './getTournamentInfo';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
@@ -14,7 +15,7 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
 
-  const { venues: venuesData } = getVenues({
+  const { venues: venuesData } = getVenuesAndCourts({
     tournamentRecord,
   });
 
@@ -48,6 +49,11 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
       discipline,
     }))(event);
 
+    const scheduleTiming = getScheduleTiming({
+      tournamentRecord,
+      event,
+    }).scheduleTiming;
+
     const drawsData = (event.drawDefinitions || []).map((drawDefinition) => {
       const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
         drawId,
@@ -64,6 +70,7 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
         context: { eventId },
         inContext: true,
         drawDefinition,
+        scheduleTiming,
         policyDefinition,
         tournamentRecord,
         includeByeMatchUps: false,

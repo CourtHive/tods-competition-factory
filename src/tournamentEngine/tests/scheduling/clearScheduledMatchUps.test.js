@@ -1,5 +1,5 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUps/getStructureRoundProfile';
+import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
 import { resultConstants } from '../../../constants/resultConstants';
@@ -11,10 +11,9 @@ const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
 
 it('can clear matchUp schedules', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
   });
   const { participants } = tournamentRecord;
 

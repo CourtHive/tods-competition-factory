@@ -34,7 +34,7 @@ export function tournamentEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) =>
       getState({ convertExtensions, tournamentId: getTournamentId() }),
     newTournamentRecord: (params = {}) => {
@@ -48,30 +48,33 @@ export function tournamentEngineAsync(test) {
     setTournamentId: (newTournamentId) => setTournamentId(newTournamentId),
   };
 
-  fx.version = () => factoryVersion();
-  fx.reset = () => removeTournamentRecord(getTournamentId());
-  fx.setState = (tournament, deepCopyOption) => {
+  engine.version = () => factoryVersion();
+  engine.reset = () => {
+    const result = removeTournamentRecord(getTournamentId());
+    return processResult(result);
+  };
+  engine.setState = (tournament, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(tournament, deepCopyOption);
     return processResult(result);
   };
-  fx.devContext = (contextCriteria) => {
+  engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return fx;
+    return engine;
   };
 
-  fx.executionQueue = (directives, rollbackOnError) =>
-    executionQueueAsync(fx, directives, rollbackOnError);
+  engine.executionQueue = (directives, rollbackOnError) =>
+    executionQueueAsync(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
     }
-    return fx;
+    return engine;
   }
 
   importGovernors([
@@ -85,12 +88,15 @@ export function tournamentEngineAsync(test) {
     participantGovernor,
   ]);
 
-  return fx;
+  return engine;
 
-  async function executeFunctionAsync(tournamentRecord, fx, params) {
+  async function executeFunctionAsync(tournamentRecord, method, params) {
+    delete engine.success;
+    delete engine.error;
+
     const augmentedParams = paramsMiddleWare(tournamentRecord, params);
 
-    const result = await fx({
+    const result = await method({
       ...augmentedParams,
       tournamentRecord,
     });
@@ -98,13 +104,13 @@ export function tournamentEngineAsync(test) {
     return result;
   }
 
-  async function engineInvoke(fx, params) {
+  async function engineInvoke(method, params) {
     const tournamentRecord = getTournamentRecord(getTournamentId());
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecord, false, true);
 
-    const result = await executeFunctionAsync(tournamentRecord, fx, params);
+    const result = await executeFunctionAsync(tournamentRecord, method, params);
 
     if (result?.error && snapshot) setState(snapshot);
 
@@ -120,20 +126,20 @@ export function tournamentEngineAsync(test) {
       const governorMethods = Object.keys(governor);
 
       for (const governorMethod of governorMethods) {
-        fx[governorMethod] = async (params) => {
+        engine[governorMethod] = async (params) => {
           if (getDevContext()) {
             const result = await engineInvoke(
               governor[governorMethod],
-              params,
-              governorMethod
+              params
+              // governorMethod
             );
 
             return result;
           } else {
             const result = await engineInvoke(
               governor[governorMethod],
-              params,
-              governorMethod
+              params
+              // governorMethod
             );
 
             return result;
@@ -143,7 +149,7 @@ export function tournamentEngineAsync(test) {
     }
   }
 
-  async function executionQueueAsync(fx, directives, rollbackOnError) {
+  async function executionQueueAsync(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentId = getTournamentId();
     const tournamentRecord = getTournamentRecord(tournamentId);
@@ -156,11 +162,11 @@ export function tournamentEngineAsync(test) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
       const { method, params } = directive;
-      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+      if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
       const result = await executeFunctionAsync(
         tournamentRecord,
-        fx[method],
+        engine[method],
         params
       );
 

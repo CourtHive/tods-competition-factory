@@ -1,8 +1,9 @@
-import { findStructure } from '../../getters/findStructure';
-import { isValidSeedPosition } from '../../getters/seedGetter';
-import { participantInEntries } from '../../getters/entryGetter';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
+import { participantInEntries } from '../../getters/entryGetter';
+import { isValidSeedPosition } from '../../getters/seedGetter';
+import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -55,7 +56,7 @@ export function assignSeed({
   }
 
   if (seedNumbers.includes(seedNumber)) {
-    const result = {};
+    let success;
     seedAssignments.forEach((assignment) => {
       // insure that this participantId is not assigned to any other seedNumber
       if (
@@ -68,11 +69,14 @@ export function assignSeed({
       if (assignment.seedNumber === seedNumber) {
         assignment.participantId = participantId;
         assignment.seedValue = seedValue || seedNumber;
-        Object.assign(result, SUCCESS);
+        success = true;
       }
     });
-    return result;
-  } else {
-    return { error: INVALID_SEED_NUMBER };
+
+    if (success) {
+      modifyDrawNotice({ drawDefinition });
+      return { ...SUCCESS };
+    }
   }
+  return { error: INVALID_SEED_NUMBER };
 }

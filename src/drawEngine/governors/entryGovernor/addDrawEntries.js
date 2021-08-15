@@ -1,4 +1,5 @@
 import { refreshEntryPositions } from '../../../common/producers/refreshEntryPositions';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
 
@@ -80,8 +81,9 @@ export function addDrawEntry({
     entryPosition,
   };
   drawDefinition.entries.push(entry);
+  modifyDrawNotice({ drawDefinition });
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }
 
 /**
@@ -154,5 +156,7 @@ export function addDrawEntries({
     });
   }
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

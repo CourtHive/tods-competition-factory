@@ -16,6 +16,7 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  * @param {number} nationalityCodesCount - number of nationality codes to use when generating participants
  * @param {number} participantsCount - number of participants to generate
  * @param {string} participantType - [INDIVIDUAL, PAIR, TEAM]
+ * @param {number[]} personIds - optional array of pre-defined personIds
  * @param {string} matchUpType - optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
  * @param {string} sex - optional - [MALE, FEMALE]
  * @param {number} valuesInstanceLimit - maximum number of values which can be the same
@@ -31,6 +32,7 @@ export function generateParticipants({
 
   participantsCount = 32,
   participantType,
+  personIds,
   addressProps,
   matchUpType,
   sex,
@@ -159,7 +161,7 @@ export function generateParticipants({
       participantName,
       person: {
         addresses: [address],
-        personId: UUID(),
+        personId: (personIds?.length && personIds[participantIndex]) || UUID(),
         standardFamilyName,
         standardGivenName,
         nationalityCode,

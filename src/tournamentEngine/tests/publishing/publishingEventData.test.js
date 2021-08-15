@@ -1,8 +1,8 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -17,7 +17,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   WATERFALL,
 } from '../../../constants/drawDefinitionConstants';
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 it('can generate payload for publishing a Round Robin with Playoffs', () => {
   const drawSize = 16;
@@ -35,8 +34,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     ],
   };
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -201,8 +200,8 @@ it('can generate payload for publishing a compass draw', () => {
   const drawSize = 16;
   const drawType = COMPASS;
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
@@ -334,8 +333,8 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   const drawSize = 16;
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
-    participantsCount: drawSize,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: drawSize },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

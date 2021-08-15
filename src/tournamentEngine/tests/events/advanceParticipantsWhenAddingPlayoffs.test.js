@@ -80,16 +80,18 @@ function tournamentEngineAddPlayoffsTest({
   });
 
   tournamentEngine.setState(tournamentRecord);
-  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const {
     structures: [{ structureId }],
   } = drawDefinition;
 
-  return tournamentEngine.addPlayoffStructures({
+  const result = tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     roundNumbers,
     playoffPositions,
     playoffStructureNameBase,
   });
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  return { ...result, drawDefinition };
 }

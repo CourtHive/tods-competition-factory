@@ -1,5 +1,5 @@
-import { generateTournamentWithParticipants } from '../../../../mocksEngine/generators/generateTournamentWithParticipants';
 import drawEngine from '../../../../drawEngine/sync';
+import mocksEngine from '../../../../mocksEngine';
 import { tournamentEngine } from '../../../sync';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
@@ -9,11 +9,10 @@ import { PAIR } from '../../../../constants/participantTypes';
 import { isUngrouped } from '../../../../global/isUngrouped';
 
 it('can add doubles events to a tournament record', () => {
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
-    participantsCount: 32,
-    participantType: PAIR,
+    participantsProfile: { participantType: PAIR, participantsCount: 32 },
   });
   const { participants } = tournamentRecord;
 

@@ -1,5 +1,6 @@
 import { getPolicyDefinition } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
 import { tallyParticipantResults } from '../scoreGovernor/roundRobinTally/roundRobinTally';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { createSubOrderMap } from './createSubOrderMap';
 import {
   addExtension,
@@ -65,5 +66,7 @@ export function updateAssignmentParticipantResults({
     }
   });
 
-  return SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

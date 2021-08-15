@@ -22,6 +22,7 @@ import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
 } from '../../../constants/errorConditionConstants';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 export function assignDrawPosition({
   drawDefinition,
@@ -145,6 +146,9 @@ export function assignDrawPosition({
     };
     addPositionActionTelemetry({ drawDefinition, positionAction });
   }
+
+  modifyDrawNotice({ drawDefinition });
+
   return Object.assign({ positionAssignments }, SUCCESS);
 
   function drawPositionFilled(positionAssignment) {

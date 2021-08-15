@@ -1,13 +1,14 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { findStructure } from '../../getters/findStructure';
-import { addNotice } from '../../../global/globalState';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../notifications/drawNotifications';
 
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/participantTypes';
 import {
-  MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_FORMAT,
   MISSING_DRAW_DEFINITION,
   UNRECOGNIZED_MATCHUP_FORMAT,
@@ -15,7 +16,6 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function setMatchUpFormat(params) {
-  const errors = [];
   const {
     drawDefinition,
     structureId,
@@ -42,33 +42,35 @@ export function setMatchUpFormat(params) {
       drawDefinition,
       matchUpId,
     });
-    if (error) errors.push(error);
+    if (error) return { error };
 
-    if (!matchUp) {
-      errors.push({ error: MATCHUP_NOT_FOUND });
-      // } else if (matchUp.winningSide) {
-      //   errors.push({ error: 'cannot set format for completed matchUp' });
-    } else {
-      if (matchUpType) matchUp.matchUpType = matchUpType;
-      if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
-        matchUp.matchUpFormat = matchUpFormat;
-      } else if (tieFormat) {
-        matchUp.tieFormat = tieFormat;
-      }
-      addNotice({
-        topic: MODIFY_MATCHUP,
-        payload: { matchUp },
-        key: matchUp.matchUpId,
-      });
+    // TODO: check for valid matchUpType
+    if (matchUpType) matchUp.matchUpType = matchUpType;
+
+    if (
+      matchUpFormat &&
+      matchUp.matchUpType !== TEAM &&
+      (!matchUpType || matchUpType !== TEAM)
+    ) {
+      matchUp.matchUpFormat = matchUpFormat;
+    } else if (tieFormat) {
+      matchUp.tieFormat = tieFormat;
     }
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   } else if (structureId) {
     const { structure, error } = findStructure({ drawDefinition, structureId });
-    if (error) errors.push(error);
+    if (error) return { error };
     if (!structure) {
-      errors.push({ error: STRUCTURE_NOT_FOUND });
+      return { error: STRUCTURE_NOT_FOUND };
     } else {
+      // TODO: check for valid matchUpType
       if (matchUpType) structure.matchUpType = matchUpType;
-      if (matchUpFormat && (!matchUpType || matchUpType !== TEAM)) {
+
+      if (
+        matchUpFormat &&
+        structure.matchUpType !== TEAM &&
+        (!matchUpType || matchUpType !== TEAM)
+      ) {
         structure.matchUpFormat = matchUpFormat;
       } else if (tieFormat) {
         structure.tieFormat = tieFormat;
@@ -83,5 +85,7 @@ export function setMatchUpFormat(params) {
     }
   }
 
-  return errors.length ? { errors } : SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

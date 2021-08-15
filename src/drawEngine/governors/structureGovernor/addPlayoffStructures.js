@@ -1,4 +1,5 @@
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { directParticipants } from '../matchUpGovernor/directParticipants';
 import { getAvailablePlayoffRounds } from './getAvailablePlayoffRounds';
 import { matchUpIsComplete } from '../scoreGovernor/matchUpIsComplete';
@@ -8,7 +9,6 @@ import { findStructure } from '../../getters/findStructure';
 import { getDevContext } from '../../../global/globalState';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
 import { getSourceRounds } from './getSourceRounds';
-import { makeDeepCopy } from '../../../utilities';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -193,10 +193,7 @@ export function addPlayoffStructures(params) {
       matchUpsMap,
     });
 
-  return getDevContext()
-    ? {
-        ...SUCCESS,
-        drawDefinition: makeDeepCopy(drawDefinition),
-      }
-    : SUCCESS;
+  modifyDrawNotice({ drawDefinition });
+
+  return { ...SUCCESS };
 }

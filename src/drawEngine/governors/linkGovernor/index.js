@@ -1,3 +1,5 @@
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
+
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { WINNER, DRAW } from '../../../constants/drawDefinitionConstants';
 
@@ -23,6 +25,8 @@ function generateQualifyingLink({
   };
 
   drawDefinition.links.push(link);
+
+  modifyDrawNotice({ drawDefinition });
 }
 
 const linkGovernor = {

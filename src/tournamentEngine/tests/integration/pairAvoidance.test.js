@@ -1,8 +1,8 @@
-import { eventConstants } from '../../..';
-import { intersection } from '../../../utilities/arrays';
 import { avoidanceTest } from '../primitives/avoidanceTest';
+import { intersection } from '../../../utilities/arrays';
 
 import { PAIR } from '../../../constants/participantTypes';
+import { eventConstants } from '../../..';
 const { SINGLES } = eventConstants;
 
 const pairAvoidancePolicy = {

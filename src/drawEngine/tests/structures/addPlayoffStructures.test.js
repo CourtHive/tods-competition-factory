@@ -98,7 +98,7 @@ function drawEngineAddStructuresTest({
   let result = drawEngine.generateDrawType({ drawType });
   expect(result.success).toEqual(true);
 
-  const { drawDefinition } = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
   );
@@ -107,5 +107,6 @@ function drawEngineAddStructuresTest({
     playoffPositions,
     roundNumbers,
   });
-  return result;
+  ({ drawDefinition } = drawEngine.getState());
+  return { ...result, drawDefinition };
 }

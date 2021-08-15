@@ -14,12 +14,18 @@ export function refreshEntryPositions({ entries = [] } = {}) {
     return stages;
   }, {});
 
+  const validEntryPosition = (entryPosition) =>
+    !isNaN(entryPosition) ? entryPosition : 9999;
   const positionedEntries = Object.keys(stagedEntries)
     .map((entryHash) => {
       return stagedEntries[entryHash]
-        .sort((a, b) => (a.entryPosition || 99999) - (b.entryPosition || 99999))
+        .sort(
+          (a, b) =>
+            validEntryPosition(a.entryPosition) -
+            validEntryPosition(b.entryPosition)
+        )
         .map((entry, index) => {
-          const entryPosition = index + 1;
+          const entryPosition = index;
           return Object.assign(entry, { entryPosition });
         });
     })

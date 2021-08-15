@@ -39,6 +39,7 @@ const { participants } = mocksEngine.generateParticipants({
   matchUpType: SINGLES, // optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
   sex: FEMALE, // optional - [MALE, FEMALE]
 
+  personIds, // optional array of pre-defined personIds
   nationalityCodesCount: 10, // optional - number of nationality codes to use when generating participants
   nationalityCodeType: 'ISO', // optional - 'IOC' or 'ISO', defaults to IOC
   nationalityCodes: [], // optional - an array of ISO codes to randomly assign to participants

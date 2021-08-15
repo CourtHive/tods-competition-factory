@@ -1,12 +1,12 @@
 import { getTournamentParticipants } from '../../tournamentEngine/getters/participants/getTournamentParticipants';
 import { findParticipant } from '../../common/deducers/findParticipant';
+import { deepMerge } from '../../utilities/deepMerge';
 import { makeDeepCopy } from '../../utilities';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { deepMerge } from '../../utilities/deepMerge';
 
 export function getCompetitionParticipants(params) {
   const { tournamentRecords } = params || {};
@@ -17,7 +17,7 @@ export function getCompetitionParticipants(params) {
     return { error: MISSING_TOURNAMENT_RECORDS };
   let competitionParticipants = [];
   const competitionParticipantIds = [];
-  const participantIdsWithConflicts = {};
+  const participantIdsWithConflicts = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const {
@@ -43,16 +43,9 @@ export function getCompetitionParticipants(params) {
     }
 
     idsWithConflicts &&
-      Object.keys(idsWithConflicts).forEach((participantId) => {
-        if (participantIdsWithConflicts[participantId]) {
-          participantIdsWithConflicts[participantId] =
-            participantIdsWithConflicts[participantId].concat(
-              idsWithConflicts[participantId]
-            );
-        } else {
-          participantIdsWithConflicts[participantId] =
-            idsWithConflicts[participantId];
-        }
+      idsWithConflicts.forEach((participantId) => {
+        if (!participantIdsWithConflicts.includes(participantId))
+          participantIdsWithConflicts.push(participantId);
       });
   }
 

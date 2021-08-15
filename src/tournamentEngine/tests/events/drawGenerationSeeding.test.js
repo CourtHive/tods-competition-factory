@@ -2,11 +2,14 @@ import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
+
+import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -143,7 +146,52 @@ it('can constrain seedsCount by policyDefinition', () => {
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     eventId,
-    seedsCount: 10, // this is in excess of policy limit
+    seedsCount: 100, // this is in excess of policy limit and above drawSize and stageEntries #
   });
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
+});
+
+it('can define seeds using seededParticipants', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  const eventName = 'Test Event';
+  const ageCategoryCode = 'U18';
+  const event = { eventName, category: { ageCategoryCode } };
+  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
+  let { event: eventResult } = result;
+  const { eventId } = eventResult;
+  expect(result.success).toEqual(true);
+
+  const policyDefinition = POLICY_AVOIDANCE_COUNTRY;
+  result = tournamentEngine.attachEventPolicy({ policyDefinition, eventId });
+  expect(result.success).toEqual(true);
+
+  const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
+    {
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    }
+  );
+  const participantIds = tournamentParticipants.map((p) => p.participantId);
+  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  expect(result.success).toEqual(true);
+
+  const seededParticipants = participantIds
+    .slice(0, 8)
+    .map((participantId, i) => ({
+      participantId,
+      seedNumber: 8 - i,
+      seedValue: 8 - i,
+    }));
+
+  let { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    seededParticipants,
+    eventId,
+  });
+  expect(drawDefinition.structures[0].seedLimit).toEqual(8);
+
+  // code coverage
+  result = tournamentEngine.generateDrawDefinition({
+    drawType: 'Bogus Draw Type',
+    eventId,
+  });
+  expect(result.error).toEqual(UNRECOGNIZED_DRAW_TYPE);
 });

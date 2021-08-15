@@ -1,32 +1,13 @@
-import { getTimeZoneOffset } from '../../../utilities/dateTime';
+import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
 import { SCHEDULED_TIME } from '../../../constants/timeItemConstants';
 
-export function scheduledMatchUpTime({
-  matchUp,
-  localTimeZone,
-  localPerspective,
-}) {
-  const timeItems = matchUp?.timeItems || [];
-  const getTimeStamp = (item) =>
-    !item.createdAt ? 0 : new Date(item.createdAt).getTime();
-  const lastScheduledTimeItem = timeItems
-    .filter((timeItem) => timeItem?.itemType === SCHEDULED_TIME)
-    .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
-    .pop();
-
-  const itemValue = lastScheduledTimeItem && lastScheduledTimeItem.itemValue;
-
-  if (itemValue && localPerspective && localTimeZone) {
-    if (itemValue?.indexOf(':') >= 0 && itemValue?.indexOf('-') >= 0) {
-      const { offsetDate, error } = getTimeZoneOffset({
-        date: itemValue,
-        timeZone: localTimeZone,
-      });
-      if (error) return { error };
-      return { scheduledTime: offsetDate };
-    }
-  }
+export function scheduledMatchUpTime({ matchUp, visibilityThreshold }) {
+  const itemValue = latestVisibleTimeItemValue(
+    matchUp?.timeItems || [],
+    SCHEDULED_TIME,
+    visibilityThreshold
+  );
 
   return { scheduledTime: itemValue };
 }

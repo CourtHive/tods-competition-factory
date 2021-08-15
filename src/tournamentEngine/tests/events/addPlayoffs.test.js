@@ -182,11 +182,13 @@ function tournamentEngineAddPlayoffsTest({
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  return tournamentEngine.addPlayoffStructures({
+  const result = tournamentEngine.addPlayoffStructures({
     drawId,
     structureId,
     roundNumbers,
     playoffPositions,
     playoffStructureNameBase,
   });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  return { ...result, drawDefinition };
 }

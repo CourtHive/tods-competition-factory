@@ -1,4 +1,3 @@
-import { generateTournamentWithParticipants } from '../../../mocksEngine/generators/generateTournamentWithParticipants';
 import { drawEngine, tournamentEngine, resultConstants } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
@@ -6,6 +5,7 @@ import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import mocksEngine from '../../../mocksEngine';
 
 const { SUCCESS } = resultConstants;
 
@@ -33,23 +33,26 @@ export function avoidanceTest(params) {
   let { seedsCount } = params;
   if (!seedsCount) seedsCount = participantsCount / 4;
 
-  const { tournamentRecord } = generateTournamentWithParticipants({
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2020-01-01',
     endDate: '2020-01-06',
 
-    sex,
-    participantType,
-    participantsCount,
-    inContext: true,
+    participantsProfile: {
+      sex,
+      participantType,
+      participantsCount,
+      inContext: true,
 
-    valuesInstanceLimit,
-    nationalityCodesCount: valuesCount,
-    addressProps: {
-      citiesCount: valuesCount,
-      statesCount: valuesCount,
-      postalCodesCount: valuesCount,
+      valuesInstanceLimit,
+      nationalityCodesCount: valuesCount,
+      addressProps: {
+        citiesCount: valuesCount,
+        statesCount: valuesCount,
+        postalCodesCount: valuesCount,
+      },
     },
   });
+
   const { participants } = tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);

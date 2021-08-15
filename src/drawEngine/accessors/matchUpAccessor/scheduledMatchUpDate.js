@@ -1,35 +1,13 @@
-import { getTimeZoneOffset } from '../../../utilities/dateTime';
+import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
 import { SCHEDULED_DATE } from '../../../constants/timeItemConstants';
 
-export function scheduledMatchUpDate({
-  matchUp,
-  localTimeZone,
-  localPerspective,
-}) {
-  const timeItems = matchUp?.timeItems || [];
-  const getTimeStamp = (item) =>
-    !item.createdAt ? 0 : new Date(item.createdAt).getTime();
-  const scheduledDateItem = timeItems.reduce((scheduledDateItem, timeItem) => {
-    const scheduledDateCandidate =
-      timeItem.itemType === SCHEDULED_DATE && timeItem;
-    const laterScheduledTimeItem =
-      scheduledDateCandidate &&
-      (!scheduledDateItem ||
-        getTimeStamp(scheduledDateCandidate) > getTimeStamp(scheduledDateItem));
-    return laterScheduledTimeItem ? scheduledDateCandidate : scheduledDateItem;
-  }, undefined);
-
-  const itemValue = scheduledDateItem && scheduledDateItem.itemValue;
-
-  if (itemValue && localPerspective && localTimeZone) {
-    const { offsetDate, error } = getTimeZoneOffset({
-      date: itemValue,
-      timeZone: localTimeZone,
-    });
-    if (error) return { error };
-    return { scheduledTime: offsetDate };
-  }
+export function scheduledMatchUpDate({ matchUp, visibilityThreshold }) {
+  const itemValue = latestVisibleTimeItemValue(
+    matchUp?.timeItems || [],
+    SCHEDULED_DATE,
+    visibilityThreshold
+  );
 
   return { scheduledDate: itemValue };
 }

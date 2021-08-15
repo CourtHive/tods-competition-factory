@@ -6,13 +6,12 @@ import {
   addMatchUpScheduledTime,
 } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_SCHEDULE,
   MISSING_MATCHUP_IDS,
   MISSING_TOURNAMENT_RECORD,
-  INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
@@ -49,45 +48,43 @@ export function bulkScheduleMatchUps({
 
   const { venueId, scheduledDate, scheduledTime } = schedule;
 
-  const errors = [];
-  Object.keys(drawIdMap).forEach((drawId) => {
+  for (const drawId of Object.keys(drawIdMap)) {
     const { drawDefinition, error } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    if (!error) {
-      const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
-        matchUpIds.includes(matchUpId)
-      );
-      drawMatchUpIds.forEach((matchUpId) => {
-        if (scheduledTime !== undefined) {
-          const result = addMatchUpScheduledTime({
-            drawDefinition,
-            matchUpId,
-            scheduledTime,
-          });
-          if (result.error) errors.push({ error: result.error, scheduledTime });
-        }
-        if (scheduledDate !== undefined) {
-          const result = addMatchUpScheduledDate({
-            drawDefinition,
-            matchUpId,
-            scheduledDate,
-          });
-          if (result.error) errors.push({ error: result.error, scheduledDate });
-        }
-        if (venueId !== undefined) {
-          const result = assignMatchUpVenue({
-            tournamentRecord,
-            drawDefinition,
-            matchUpId,
-            venueId,
-          });
-          if (result.error) errors.push({ error: result.error, venueId });
-        }
-      });
+    if (error) return { error };
+    const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
+      matchUpIds.includes(matchUpId)
+    );
+    for (const matchUpId of drawMatchUpIds) {
+      if (scheduledTime !== undefined) {
+        const result = addMatchUpScheduledTime({
+          drawDefinition,
+          matchUpId,
+          scheduledTime,
+        });
+        if (result.error) return { error: result.error, scheduledTime };
+      }
+      if (scheduledDate !== undefined) {
+        const result = addMatchUpScheduledDate({
+          drawDefinition,
+          matchUpId,
+          scheduledDate,
+        });
+        if (result.error) return { error: result.error, scheduledDate };
+      }
+      if (venueId !== undefined) {
+        const result = assignMatchUpVenue({
+          tournamentRecord,
+          drawDefinition,
+          matchUpId,
+          venueId,
+        });
+        if (result.error) return { error: result.error, venueId };
+      }
     }
-  });
+  }
 
-  return !errors.length ? SUCCESS : { error: INVALID_VALUES, errors };
+  return { ...SUCCESS };
 }

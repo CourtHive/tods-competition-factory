@@ -3,9 +3,9 @@ import { getMatchUpsMap } from '../drawEngine/getters/getMatchUps/getMatchUpsMap
 import { findEvent } from './getters/eventGetter';
 import { makeDeepCopy } from '../utilities';
 import {
-  setTournamentRecord,
   getTournamentRecord,
   setTournamentId,
+  setTournamentRecords,
 } from '../global/globalState';
 
 import {
@@ -22,7 +22,7 @@ export function setState(tournament, deepCopyOption) {
   const tournamentRecord =
     deepCopyOption !== false ? makeDeepCopy(tournament) : tournament;
 
-  setTournamentRecord(tournamentRecord);
+  setTournamentRecords({ [tournamentId]: tournamentRecord });
   setTournamentId(tournamentId); // must be set AFTER tournamentRecord
 
   return tournamentRecord;

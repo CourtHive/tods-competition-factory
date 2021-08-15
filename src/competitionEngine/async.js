@@ -22,7 +22,6 @@ import {
   setTournamentRecord,
 } from './stateMethods';
 
-import { SUCCESS } from '../constants/resultConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
@@ -32,12 +31,12 @@ export function competitionEngineAsync(test) {
   const result = createInstanceState();
   if (result.error && !test) return result;
 
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});
-      return SUCCESS;
+      return processResult();
     },
     setState: (records, deepCopyOption) => {
       setDeepCopy(deepCopyOption);
@@ -59,22 +58,22 @@ export function competitionEngineAsync(test) {
     },
   };
 
-  fx.devContext = (contextCriteria) => {
+  engine.devContext = (contextCriteria) => {
     setDevContext(contextCriteria);
-    return fx;
+    return engine;
   };
-  fx.executionQueue = (directives, rollbackOnError) =>
-    executionQueueAsync(fx, directives, rollbackOnError);
+  engine.executionQueue = (directives, rollbackOnError) =>
+    executionQueueAsync(directives, rollbackOnError);
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
     }
-    return fx;
+    return engine;
   }
 
   importGovernors([
@@ -85,13 +84,16 @@ export function competitionEngineAsync(test) {
   ]);
 
   // enable Middleware
-  async function engineInvoke(fx, params) {
+  async function engineInvoke(method, params) {
+    delete engine.success;
+    delete engine.error;
+
     const tournamentRecords = getTournamentRecords();
 
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(tournamentRecords, false, true);
 
-    const result = await fx({
+    const result = await method({
       ...params,
       tournamentRecords,
     });
@@ -109,7 +111,7 @@ export function competitionEngineAsync(test) {
     for (const governor of governors) {
       const govKeys = Object.keys(governor);
       for (const govKey of govKeys) {
-        fx[govKey] = async function (params) {
+        engine[govKey] = async function (params) {
           // if devContext is true then don't trap errors
           if (getDevContext()) {
             const engineResult = await engineInvoke(governor[govKey], params);
@@ -127,7 +129,7 @@ export function competitionEngineAsync(test) {
     }
   }
 
-  async function executionQueueAsync(fx, directives, rollbackOnError) {
+  async function executionQueueAsync(directives, rollbackOnError) {
     if (!Array.isArray(directives)) return { error: INVALID_VALUES };
     const tournamentRecords = getTournamentRecords();
 
@@ -139,9 +141,9 @@ export function competitionEngineAsync(test) {
       if (typeof directive !== 'object') return { error: INVALID_VALUES };
 
       const { method, params } = directive;
-      if (!fx[method]) return { error: METHOD_NOT_FOUND };
+      if (!engine[method]) return { error: METHOD_NOT_FOUND };
 
-      const result = await fx[method]({
+      const result = await engine[method]({
         ...params,
         tournamentRecords,
       });
@@ -159,7 +161,7 @@ export function competitionEngineAsync(test) {
     return { results };
   }
 
-  return fx;
+  return engine;
 }
 
 export default competitionEngineAsync;

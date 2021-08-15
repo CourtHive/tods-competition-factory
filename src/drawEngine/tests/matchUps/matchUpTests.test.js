@@ -18,6 +18,11 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
+import {
+  MATCHUP_NOT_FOUND,
+  MISSING_DRAW_DEFINITION,
+  STRUCTURE_NOT_FOUND,
+} from '../../../constants/errorConditionConstants';
 
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   reset();
@@ -149,7 +154,7 @@ it('can set matchUpFormat', () => {
 
   const { matchUpId } = matchUp;
   const { drawDefinition } = drawEngine.getState();
-  const result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
+  let result = setMatchUpFormat({ drawDefinition, matchUpId, matchUpFormat });
   expect(result.success).toEqual(true);
 
   const { matchUp: modifiedMatchUp } = findMatchUp({
@@ -157,4 +162,40 @@ it('can set matchUpFormat', () => {
     matchUpId,
   });
   expect(modifiedMatchUp.matchUpFormat).toEqual(matchUpFormat);
+
+  result = setMatchUpFormat({ matchUpId: 'bogus matchUpId', matchUpFormat });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
+  result = setMatchUpFormat({
+    drawDefinition,
+    matchUpId: 'bogus matchUpId',
+    matchUpFormat,
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+  result = setMatchUpFormat({
+    drawDefinition,
+    structureId: 'bogus structureId',
+    matchUpFormat,
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
+  result = setMatchUpFormat({
+    drawDefinition,
+    structureId: structure.structureId,
+    matchUpFormat,
+  });
+  expect(result.success).toEqual(true);
+
+  // TODO: validate tieFormat
+  result = setMatchUpFormat({
+    drawDefinition,
+    structureId: structure.structureId,
+    tieFormat: {},
+  });
+  expect(result.success).toEqual(true);
+
+  result = setMatchUpFormat({
+    drawDefinition,
+    matchUpId,
+    tieFormat: {},
+  });
+  expect(result.success).toEqual(true);
 });

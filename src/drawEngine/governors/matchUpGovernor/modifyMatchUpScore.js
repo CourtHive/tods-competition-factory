@@ -1,12 +1,11 @@
 import { addNotes } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveNotes';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
 import { updateAssignmentParticipantResults } from './updateAssignmentParticipantResults';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { addNotice } from '../../../global/globalState';
 
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
 
@@ -106,11 +105,7 @@ export function modifyMatchUpScore({
     addNotes({ element: matchUp, notes });
   }
 
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp },
-    key: matchUp.matchUpId,
-  });
+  modifyMatchUpNotice({ drawDefinition, matchUp });
 
   return SUCCESS;
 }

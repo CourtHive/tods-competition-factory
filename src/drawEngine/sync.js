@@ -1,3 +1,4 @@
+import { modifyDrawNotice } from './notifications/drawNotifications';
 import structureGovernor from './governors/structureGovernor';
 import positionGovernor from './governors/positionGovernor';
 import matchUpGovernor from './governors/matchUpGovernor';
@@ -32,7 +33,7 @@ function newDrawDefinition({ drawId, drawType } = {}) {
 }
 
 export const drawEngine = (function () {
-  const fx = {
+  const engine = {
     getState: ({ convertExtensions } = {}) => ({
       drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
     }),
@@ -48,21 +49,22 @@ export const drawEngine = (function () {
     setDrawDescription: ({ description } = {}) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
       drawDefinition.description = description;
+      modifyDrawNotice({ drawDefinition });
       return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
     },
   };
 
   function processResult(result) {
     if (result?.error) {
-      fx.error = result.error;
-      fx.success = false;
+      engine.error = result.error;
+      engine.success = false;
     } else {
-      fx.error = undefined;
-      fx.success = true;
+      engine.error = undefined;
+      engine.success = true;
       drawDefinition = result;
-      fx.drawId = result.drawId;
+      engine.drawId = result.drawId;
     }
-    return fx;
+    return engine;
   }
 
   importGovernors([
@@ -76,26 +78,26 @@ export const drawEngine = (function () {
     structureGovernor,
   ]);
 
-  fx.devContext = (isDev) => {
+  engine.devContext = (isDev) => {
     setDevContext(isDev);
-    return fx;
+    return engine;
   };
-  fx.setParticipants = (participants = []) => {
+  engine.setParticipants = (participants = []) => {
     tournamentParticipants = participants;
-    return fx;
+    return engine;
   };
-  fx.setState = (definition, deepCopyOption) => {
+  engine.setState = (definition, deepCopyOption) => {
     setDeepCopy(deepCopyOption);
     const result = setState(definition);
     return processResult(result);
   };
 
-  return fx;
+  return engine;
 
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((governorMethod) => {
-        fx[governorMethod] = (params) => {
+        engine[governorMethod] = (params) => {
           if (getDevContext()) {
             return invoke({ params, governor, governorMethod });
           } else {
@@ -111,6 +113,9 @@ export const drawEngine = (function () {
   }
 
   function invoke({ params, governor, governorMethod }) {
+    delete engine.success;
+    delete engine.error;
+
     const snapshot =
       params?.rollbackOnError && makeDeepCopy(drawDefinition, false, true);
 

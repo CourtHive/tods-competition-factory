@@ -57,7 +57,7 @@ export function addFlight({
     drawId: drawId || UUID(),
   };
 
-  if (stage) flight.drawSize = stage;
+  if (stage) flight.stage = stage;
   if (drawSize) flight.drawSize = drawSize;
   if (qualifyingPositions) flight.qualifyingPositions = qualifyingPositions;
 

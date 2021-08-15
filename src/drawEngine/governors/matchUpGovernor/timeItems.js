@@ -1,10 +1,9 @@
 import { addTimeItem } from '../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { addNotice } from '../../../global/globalState';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 /*
   generic function to addMatchUpTimeItem
@@ -22,11 +21,7 @@ export function addMatchUpTimeItem({
 
   const result = addTimeItem({ element: matchUp, timeItem, duplicateValues });
   if (!disableNotice) {
-    addNotice({
-      topic: MODIFY_MATCHUP,
-      payload: { matchUp },
-      key: matchUp.matchUpId,
-    });
+    modifyMatchUpNotice({ drawDefinition, matchUp });
   }
   return result;
 }
@@ -35,10 +30,6 @@ export function resetMatchUpTimeItems({ drawDefinition, matchUpId }) {
   const { matchUp } = findMatchUp({ drawDefinition, matchUpId });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
   matchUp.timeItems = [];
-  addNotice({
-    topic: MODIFY_MATCHUP,
-    payload: { matchUp },
-    key: matchUp.matchUpId,
-  });
-  return SUCCESS;
+  modifyMatchUpNotice({ drawDefinition, matchUp });
+  return { ...SUCCESS };
 }

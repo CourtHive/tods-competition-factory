@@ -109,9 +109,9 @@ export function modifyEntriesStatus({
   };
 
   const entryPositionsExist =
-    event.entries?.find(({ entryPosition }) => entryPosition) ||
-    flight?.drawEntries?.find(({ entryPosition }) => entryPosition) ||
-    drawDefinition?.entries?.find(({ entryPosition }) => entryPosition);
+    event.entries?.find(({ entryPosition }) => !isNaN(entryPosition)) ||
+    flight?.drawEntries?.find(({ entryPosition }) => !isNaN(entryPosition)) ||
+    drawDefinition?.entries?.find(({ entryPosition }) => !isNaN(entryPosition));
 
   // before modifying, if autoEntryPositions: true, pre-assign entryPositions
   if (autoEntryPositions && !entryPositionsExist) autoPosition();
