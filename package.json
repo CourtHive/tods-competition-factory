@@ -105,6 +105,6 @@
     "tods-matchup-format-code": "1.1.4"
   },
   "resolutions": {
-    "marked": "^0.7.0 "
+    "marked": "^3.0.0"
   }
 }
