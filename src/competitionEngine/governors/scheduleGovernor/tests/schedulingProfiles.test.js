@@ -5,6 +5,7 @@ import mocksEngine from '../../../../mocksEngine';
 import {
   INVALID_DATE,
   INVALID_VALUES,
+  VENUE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
 test.each([competitionEngineSync])(
@@ -80,8 +81,16 @@ test.each([competitionEngineSync])(
     });
     expect(result.success).toEqual(true);
 
+    ({ schedulingProfile, modifications, issues } =
+      competitionEngine.getSchedulingProfile());
+
+    result = competitionEngine.isValidSchedulingProfile({ schedulingProfile });
+    expect(result.valid).toEqual(true);
+
+    // undefined { schedulingProfile } will remove all relevant extensions
     result = competitionEngine.setSchedulingProfile({});
-    expect(result.error).toEqual(INVALID_VALUES);
+    expect(result.success).toEqual(true);
+    expect(result.removed).toEqual(2);
 
     result = competitionEngine.setSchedulingProfile({ schedulingProfile: {} });
     expect(result.error).toEqual(INVALID_VALUES);
@@ -119,5 +128,75 @@ test.each([competitionEngineSync])(
 
     result = tournamentEngine.setSchedulingProfile({ schedulingProfile: [] });
     expect(result.success).toEqual(true);
+  }
+);
+
+test.skip.each([competitionEngineSync])(
+  'isValidSchedulingProfile can identify invalid schedulingProfiles',
+  async (competitionEngine) => {
+    const venueProfiles = [
+      { venueName: 'venue 1', courtsCount: 4 },
+      { venueName: 'venue 2', courtsCount: 8 },
+    ];
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+      venueProfiles,
+      startDate: '2022-01-01',
+      endDate: '2022-01-07',
+    });
+    competitionEngine.setState(tournamentRecord);
+    const { venueIds } = competitionEngine.getCompetitionVenues();
+
+    let result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: {},
+    });
+    expect(result.valid).toEqual(false);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [],
+    });
+    expect(result.valid).toEqual(true);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [[]],
+    });
+    expect(result.valid).toEqual(false);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [] }],
+    });
+    expect(result.valid).toEqual(true);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [{ scheduleDate: '2022-01-03', venues: [{}] }],
+    });
+    expect(result.valid).toEqual(false);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        { scheduleDate: '2022-01-03', venues: [{ rounds: [] }] },
+      ],
+    });
+    expect(result.valid).toEqual(false);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [{ venueId: venueIds[0], rounds: [] }],
+        },
+      ],
+    });
+    expect(result.valid).toEqual(true);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [{ venueId: 'bogusId', rounds: [] }],
+        },
+      ],
+    });
+    expect(result.error).toEqual(VENUE_NOT_FOUND);
+    expect(result.valid).toEqual(false);
   }
 );

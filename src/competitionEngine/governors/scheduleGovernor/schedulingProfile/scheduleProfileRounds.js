@@ -6,8 +6,10 @@ import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
+import { isConvertableInteger } from '../../../../utilities/math';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
+import { isPowerOf2 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -97,27 +99,43 @@ export function scheduleProfileRounds({
           dateSchedulingProfile?.periodLength ||
           periodLength;
 
-        // TODO: capture range of matchUps within a round
-        // e.g. a round has been split between two venues
-        // for elimation roundPositionRange could work..., but not for RR
-        // for Round Robins you want to keep the groups together at a venue
-
         const structureIds = containedStructureIds[round.structureId] || [
           round.structureId,
         ];
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
+          roundNumbers: [round.roundNumber],
+          matchUpIds: round.matchUpIds,
           eventIds: [round.eventId],
           drawIds: [round.drawId],
-          roundNumbers: [round.roundNumber],
           structureIds,
         };
 
-        const roundMatchUps = filterMatchUps({
+        let roundMatchUps = filterMatchUps({
           matchUps,
           processContext: true,
           ...roundMatchUpFilters,
         });
+
+        // filter by roundSegment
+        const { segmentNumber, segmentsCount } = round.roundSegment || {};
+        if (
+          isConvertableInteger(segmentNumber) &&
+          isPowerOf2(roundMatchUps?.length) &&
+          isPowerOf2(segmentsCount) &&
+          segmentNumber > 0 &&
+          segmentNumber <= segmentsCount &&
+          segmentsCount < roundMatchUps?.length &&
+          !round.matchUpIds?.length
+        ) {
+          const segmentSize = roundMatchUps.length / segmentsCount;
+          const firstSegmentIndex = segmentSize * (segmentNumber - 1);
+          roundMatchUps = roundMatchUps.slice(
+            firstSegmentIndex,
+            firstSegmentIndex + segmentSize
+          );
+        }
+
         const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
 
         const tournamentRecord = tournamentRecords[round.tournamentId];
