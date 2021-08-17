@@ -648,7 +648,7 @@ const { courts, venues } = competitionEngine.getVenuesAndCourts();
 ## isValidSchedulingProfile
 
 ```js
-const isValid = competitionEngine.isValidSchedulingProfile({
+const { valid, error } = competitionEngine.isValidSchedulingProfile({
   schedulingProfile,
 });
 ```
@@ -890,7 +890,7 @@ competitionEngine.scheduleMatchUps({
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
   venueIds, // optional - defaults to all known; if a single venueId is provided then all matchUps will be scheduled for that venue
-  matchUpIds, // array of matchUpIds; if no schedulingProfile provided will be auto-sorted by draw size and roundNumbers
+  matchUpIds, // array of matchUpIds; if no schedulingProfile is present will be auto-sorted by draw size and roundNumbers
   periodLength = 30, // optional - size of scheduling blocks
   averageMatchUpMinutes = 90, // optional - defaults to 90
   recoveryMinutes = 0, // optional - amount of time participants are given to recover between matchUps
