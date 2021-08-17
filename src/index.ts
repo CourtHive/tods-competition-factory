@@ -1,4 +1,4 @@
-import { nearestPowerOf2, powerOf2, isNumeric } from './utilities/math';
+import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
 import { numericSort } from './utilities/sorting';
@@ -31,7 +31,7 @@ export const utilities = {
   nearestPowerOf2,
   numericSort,
   overlap,
-  powerOf2,
+  isPowerOf2,
   randomMember,
   randomPop,
   shuffleArray,

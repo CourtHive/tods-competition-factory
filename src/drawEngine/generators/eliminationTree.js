@@ -2,7 +2,7 @@ import {
   nearestPowerOf2,
   generateRange,
   instanceCount,
-  powerOf2,
+  isPowerOf2,
   UUID,
 } from '../../utilities';
 
@@ -17,7 +17,7 @@ export function treeMatchUps({
   finishingPositionOffset,
   uuids,
 }) {
-  if (isNaN(drawSize) || !powerOf2(drawSize) || drawSize < 2) {
+  if (isNaN(drawSize) || !isPowerOf2(drawSize) || drawSize < 2) {
     return { matchUps: [], roundsCount: 0 };
   }
 

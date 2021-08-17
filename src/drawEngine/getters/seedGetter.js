@@ -2,7 +2,7 @@ import { getAppliedPolicies } from '../governors/policyGovernor/getAppliedPolici
 import { getAllStructureMatchUps } from './getMatchUps/getAllStructureMatchUps';
 import { getSeedBlocks } from '../governors/positionGovernor/getSeedBlocks';
 import { getStructureSeedAssignments } from './getStructureSeedAssignments';
-import { generateRange, powerOf2, shuffleArray } from '../../utilities';
+import { generateRange, isPowerOf2, shuffleArray } from '../../utilities';
 import { structureAssignedDrawPositions } from './positionsGetter';
 import { findStructure } from './findStructure';
 
@@ -164,7 +164,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
     const baseDrawSize = positionAssignments.length;
 
     let blocks, error;
-    if (powerOf2(baseDrawSize)) {
+    if (isPowerOf2(baseDrawSize)) {
       ({ blocks, error } = constructPower2Blocks({
         seedBlocks,
         baseDrawSize,

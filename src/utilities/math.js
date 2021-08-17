@@ -1,4 +1,4 @@
-export function powerOf2(n) {
+export function isPowerOf2(n) {
   if (isNaN(n)) return false;
   return n && (n & (n - 1)) === 0;
 }
@@ -20,7 +20,7 @@ export function isOdd(num) {
 
 export function nextPowerOf2(n) {
   if (isNaN(n)) return false;
-  while (!powerOf2(n)) {
+  while (!isPowerOf2(n)) {
     n++;
   }
   return n;
