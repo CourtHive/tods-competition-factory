@@ -50,9 +50,36 @@ To support the use of the Garman formula for scheduling `matchUps` from differen
 `competitionEngine` makes use of a `schedulingProfile` to define the order of `rounds` of structures within `drawDefinitions`
 to be scheduled on specific days, and then iteratively calls the Garman formula.
 
-The `schedulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record.
+The `schedulingProfile` is an array of profiles for the `scheduleDates` to be scheduled; it is stored as an `extension` attached to the tournament record.
 `competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached
 via `setSchedulingProfile()`.
+
+Each `scheduleDate` profile object must include the attributes `{ scheduleDate, venues }`, and the `venues` attribute must be an array of venue profile objects
+which include the attributes `{ venueId, rounds }`, where `rounds` is an array of objects with the following attributes:
+
+```js
+[
+  {
+    // required
+    tournamentId,
+    eventId,
+    drawId,
+    structureId,
+    roundNumber,
+
+    //optional
+    roundSegment: {
+      segmentNumber, // segment which is to be scheduled
+      segmentsCount, // number of segments in a round
+    },
+  },
+];
+```
+
+### Example
+
+In this example additional attributes have been added by the client applications for display purposes.
+They are not required for automated scheduling to function.
 
 <RenderJSON
   data={SchedulingProfile}
