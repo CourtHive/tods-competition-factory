@@ -1852,10 +1852,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.4.tgz#15925414e0ad2cd765bfef58842f7e26a7accb24"
   integrity sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
 
-"@types/react@17.0.17":
-  version "17.0.17"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.17.tgz#1772d3d5425128e0635a716f49ef57c2955df055"
-  integrity sha512-nrfi7I13cAmrd0wje8czYpf5SFbryczCtPzFc6ijqvdjKcyA3tCvGxwchOUlxb2ucBPuJ9Y3oUqKrRqZvrz0lw==
+"@types/react@17.0.18":
+  version "17.0.18"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.18.tgz#4109cbbd901be9582e5e39e3d77acd7b66bb7fbe"
+  integrity sha512-YTLgu7oS5zvSqq49X5Iue5oAbVGhgPc5Au29SJC4VeE17V6gASoOxVkUDy9pXFMRFxCWCD9fLeweNFizo3UzOg==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
@@ -8200,10 +8200,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-competition-factory@0.7.51:
-  version "0.7.51"
-  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.7.51.tgz#f3416ddbde568079f69c6be16631d075fe1a2e67"
-  integrity sha512-X2/hD1nS46yNeztf/JxrsAHhp4bdvTRN1h5HhBjpv06el5ylRatWzs9dQR2X4M5pQ0rcY1XN7R3X1qU14wue0g==
+tods-competition-factory@0.7.52:
+  version "0.7.52"
+  resolved "https://registry.yarnpkg.com/tods-competition-factory/-/tods-competition-factory-0.7.52.tgz#f1e84d336d33e8f9a79f3bd17040807f7702075f"
+  integrity sha512-UW9Me4DGs9Vpx2ZMqHOVjxAVrVrIurrHzM1jln+CqGLiZBsOEJBH7VD8VvS7SBZkhvJscjmE4TUqxt0Nv8QWUQ==
   dependencies:
     tods-matchup-format-code "1.1.4"
 
