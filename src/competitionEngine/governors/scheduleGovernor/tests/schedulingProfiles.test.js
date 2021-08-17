@@ -38,11 +38,128 @@ test.each([competitionEngineSync])(
     expect(venues.length).toEqual(2);
     expect(venueIds.length).toEqual(2);
 
+    const { matchUps } = competitionEngine.allCompetitionMatchUps();
+    const { tournamentId, eventId, drawId, structureId, roundNumber } =
+      matchUps[0];
+
+    let result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [
+            {
+              venueId: venueIds[0],
+              rounds: [
+                { tournamentId, eventId, drawId, structureId, roundNumber },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.valid).toEqual(true);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [
+            {
+              venueId: venueIds[0],
+              rounds: [
+                {
+                  tournamentId,
+                  eventId,
+                  drawId,
+                  structureId,
+                  roundNumber,
+                  roundSegment: {},
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [
+            {
+              venueId: venueIds[0],
+              rounds: [
+                {
+                  tournamentId,
+                  eventId,
+                  drawId,
+                  structureId,
+                  roundNumber,
+                  roundSegment: { segmentNumber: 1, segmentsCount: 4 },
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.valid).toEqual(true);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [
+            {
+              venueId: venueIds[0],
+              rounds: [
+                {
+                  tournamentId,
+                  eventId,
+                  drawId,
+                  structureId,
+                  roundNumber,
+                  roundSegment: { segmentNumber: 1, segmentsCount: 3 }, // segmentsCount must be power of 2
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = competitionEngine.isValidSchedulingProfile({
+      schedulingProfile: [
+        {
+          scheduleDate: '2022-01-03',
+          venues: [
+            {
+              venueId: venueIds[0],
+              rounds: [
+                {
+                  tournamentId,
+                  eventId,
+                  drawId,
+                  structureId,
+                  roundNumber,
+                  roundSegment: { segmentNumber: 5, segmentsCount: 4 }, // segmentNumber must be less than segmentsCount
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(result.error).toEqual(INVALID_VALUES);
+
     let { schedulingProfile, modifications, issues } =
       competitionEngine.getSchedulingProfile();
     expect(schedulingProfile).toEqual([]);
 
-    let result = competitionEngine.addSchedulingProfileRound({
+    result = competitionEngine.addSchedulingProfileRound({
       scheduleDate: '2022-01-03',
       venueId: venueIds[0],
       round: { drawId: 'drawId' },
@@ -55,10 +172,6 @@ test.each([competitionEngineSync])(
     expect(schedulingProfile).toEqual([]);
     expect(modifications).toEqual(0);
     expect(issues).toEqual(undefined);
-
-    const { matchUps } = competitionEngine.allCompetitionMatchUps();
-    const { tournamentId, eventId, drawId, structureId, roundNumber } =
-      matchUps[0];
 
     result = competitionEngine.addSchedulingProfileRound({
       scheduleDate: '2022-01-13',
