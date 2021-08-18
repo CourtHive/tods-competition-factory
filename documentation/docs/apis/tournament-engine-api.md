@@ -1599,7 +1599,7 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
 
 ```js
-const { seedsCount, error } = getSeedsCount({
+const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
   policyDefinition: SEEDING_USTA,
   participantCount: 15,
