@@ -214,7 +214,7 @@ test('recognizes scheduling conflicts', () => {
 
   ({ participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 80 },
+      scheduleAnalysis: { scheduledMinutesDifference: 50 },
       withStatistics: true,
     }));
 

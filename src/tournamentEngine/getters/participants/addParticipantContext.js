@@ -493,7 +493,7 @@ function annotateParticipant({
               const minutesDifference =
                 timeStringMinutes(scheduledTime) -
                 timeStringMinutes(lastScheduledTime);
-              if (minutesDifference >= scheduledMinutesDifference) {
+              if (minutesDifference <= scheduledMinutesDifference) {
                 scheduleConflicts.push(matchUpId);
               }
             }
