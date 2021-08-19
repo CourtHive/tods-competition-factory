@@ -30,6 +30,7 @@ if (!error) {
     tournamentId,
     eventId,
     drawDefinition,
+    flight, // optional - pass flight definition object for integrity check
   });
 }
 ```

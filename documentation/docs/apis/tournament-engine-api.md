@@ -67,6 +67,7 @@ if (!error) {
   const result = tournamentEngine.addDrawDefinition({
     eventId,
     drawDefinition,
+    flight, // optional - pass flight definition object for integrity check
   });
 }
 ```
