@@ -5,17 +5,17 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
+import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_STRUCTURE,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 
 export function initializeStructureSeedAssignments({
   requireParticipantCount = true,
-  drawSizeProgression = true,
   enforcePolicyLimits = true,
+  drawSizeProgression,
   participantCount,
   drawDefinition,
   structureId,
