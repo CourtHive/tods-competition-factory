@@ -2,6 +2,11 @@ import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
 import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { getScheduleTiming } from './getScheduleTiming';
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
+import { SINGLES } from '../../../../constants/matchUpTypes';
+import {
+  DOUBLES_SINGLES,
+  SINGLES_DOUBLES,
+} from '../../../../constants/scheduleConstants';
 
 /**
  * find the policy-defined average matchUp time for a given category
@@ -68,5 +73,14 @@ export function matchUpFormatTimes({ eventType, timingDetails }) {
     ((recoveryKeys?.includes(eventType) && recoveryTimes.minutes[eventType]) ||
       recoveryTimes.minutes.default);
 
-  return { averageMinutes, recoveryMinutes };
+  const formatChangeKey =
+    eventType === SINGLES ? SINGLES_DOUBLES : DOUBLES_SINGLES;
+
+  const formatChangeRecoveryMinutes =
+    recoveryTimes?.minutes &&
+    ((recoveryKeys?.includes(formatChangeKey) &&
+      recoveryTimes.minutes[formatChangeKey]) ||
+      recoveryTimes.minutes.default);
+
+  return { averageMinutes, recoveryMinutes, formatChangeRecoveryMinutes };
 }

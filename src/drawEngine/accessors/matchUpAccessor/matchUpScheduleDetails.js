@@ -41,13 +41,21 @@ export function getMatchUpScheduleDetails({
     const { courtId } = matchUpAssignedCourtId(scheduleSource);
     const { venueId } = matchUpAssignedVenueId(scheduleSource);
 
-    let timeAfterRecovery, averageMinutes, recoveryMinutes;
+    let timeAfterRecovery,
+      averageMinutes,
+      recoveryMinutes,
+      formatChangeRecoveryMinutes,
+      formatChangeTimeAfterRecovery;
     if (scheduleTiming && scheduledTime && afterRecoveryTimes) {
       const timingDetails = {
         matchUpFormat: matchUp.matchUpFormat,
         ...scheduleTiming,
       };
-      ({ averageMinutes = 0, recoveryMinutes = 0 } = matchUpFormatTimes({
+      ({
+        averageMinutes = 0,
+        recoveryMinutes = 0,
+        formatChangeRecoveryMinutes = 0,
+      } = matchUpFormatTimes({
         eventType: matchUp.matchUpType,
         timingDetails,
       }));
@@ -57,6 +65,17 @@ export function getMatchUpScheduleDetails({
           : addMinutesToTimeString(
               scheduledTime,
               averageMinutes + recoveryMinutes
+            );
+      }
+      if (formatChangeRecoveryMinutes) {
+        formatChangeTimeAfterRecovery = endTime
+          ? addMinutesToTimeString(
+              extractTime(endTime),
+              formatChangeRecoveryMinutes
+            )
+          : addMinutesToTimeString(
+              scheduledTime,
+              averageMinutes + formatChangeRecoveryMinutes
             );
       }
     }
@@ -75,6 +94,7 @@ export function getMatchUpScheduleDetails({
       scheduledTime,
       averageMinutes,
       timeAfterRecovery,
+      formatChangeTimeAfterRecovery,
     });
   } else {
     schedule = definedAttributes({
