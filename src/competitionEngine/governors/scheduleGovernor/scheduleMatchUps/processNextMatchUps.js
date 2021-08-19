@@ -24,7 +24,7 @@ export function processNextMatchUps({
   // e.g. roundPosition 1 matchUp timeAfterRecovery is 11:00 but
   // roundPosition 2 matchUp timeAfterRecover is 9:30
   // and the last one to be processed shouldn't overwrite later value
-  const updateTimeAfterRecovery = (matchUpId) => {
+  const updateMatchUpNotBeforeTimes = (matchUpId) => {
     if (
       !matchUpNotBeforeTimes[matchUpId] ||
       timeAfterRecovery > matchUpNotBeforeTimes[matchUpId]
@@ -36,18 +36,18 @@ export function processNextMatchUps({
   const winnerMatchUpId =
     matchUp.winnerTo?.matchUpId || matchUp.winnerMatchUpId;
   if (winnerMatchUpId) {
-    timeAfterRecovery && updateTimeAfterRecovery(winnerMatchUpId);
+    timeAfterRecovery && updateMatchUpNotBeforeTimes(winnerMatchUpId);
     addPotentialParticipantIds(winnerMatchUpId);
   }
   const loserMatchUpId = matchUp.loserTo?.matchUpId || matchUp.loserMatchUpId;
   if (loserMatchUpId) {
-    timeAfterRecovery && updateTimeAfterRecovery(loserMatchUpId);
+    timeAfterRecovery && updateMatchUpNotBeforeTimes(loserMatchUpId);
     addPotentialParticipantIds(loserMatchUpId);
   }
   if (matchUp.sidesTo?.length) {
     matchUp.sidesTo.forEach(({ matchUpId }) => {
       if (matchUpId) {
-        timeAfterRecovery && updateTimeAfterRecovery(matchUpId);
+        timeAfterRecovery && updateMatchUpNotBeforeTimes(matchUpId);
         addPotentialParticipantIds(matchUpId);
       }
     });
