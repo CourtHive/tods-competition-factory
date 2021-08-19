@@ -40,7 +40,7 @@ export function updateTimeAfterRecovery({
       };
     } else {
       const matchUpTypeChange =
-        individualParticipantIds[participantId].priorMatchUpType !==
+        individualParticipantProfiles[participantId].priorMatchUpType !==
         matchUp.matchUpType;
 
       // if matchUpType of previous matchUp is different, use formatChangeTimeAfterRecovery (if available)
