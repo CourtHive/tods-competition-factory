@@ -33,7 +33,7 @@ export function modifyParticipantMatchUpsCount({
       individualParticipantProfiles[participantId] = {
         counters: {},
         timeAfterRecovery: undefined,
-        afterRecoveryTimes: [],
+        priorMatchUpType: undefined,
       };
     }
     const counters = individualParticipantProfiles[participantId].counters;
