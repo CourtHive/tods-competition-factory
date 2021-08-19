@@ -13,6 +13,7 @@ import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_ID_EXISTS,
   INVALID_DRAW_DEFINITION,
+  INVALID_VALUES,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
@@ -21,12 +22,16 @@ export function addDrawDefinition({
   drawDefinition,
   event,
   flight: flightDefinition,
+  existingDrawCount,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
 
   if (!event.drawDefinitions) event.drawDefinitions = [];
   const { drawId, drawName, entries: drawEntries } = drawDefinition;
+
+  if (existingDrawCount && existingDrawCount !== event.drawDefinitions.length)
+    return { error: INVALID_VALUES, message: 'drawDefintions count mismatch' };
 
   const drawDefinitionExists = !!event.drawDefinitions.find(
     (drawDefinition) => drawDefinition.drawId === drawId

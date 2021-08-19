@@ -14,6 +14,7 @@ export function addDrawDefinition({
   tournamentId,
   eventId,
   flight,
+  existingDrawCount,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
@@ -25,5 +26,5 @@ export function addDrawDefinition({
   const { event, error } = findEvent({ tournamentRecord, eventId });
   if (error) return { error };
 
-  return addDefinition({ drawDefinition, event, flight });
+  return addDefinition({ drawDefinition, event, flight, existingDrawCount });
 }
