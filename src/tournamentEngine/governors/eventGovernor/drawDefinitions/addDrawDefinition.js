@@ -12,34 +12,38 @@ import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_ID_EXISTS,
+  INVALID_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_EVENT,
 } from '../../../../constants/errorConditionConstants';
 
-export function addDrawDefinition({ drawDefinition, event }) {
+export function addDrawDefinition({
+  drawDefinition,
+  event,
+  flight: flightDefinition,
+}) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
 
   if (!event.drawDefinitions) event.drawDefinitions = [];
   const { drawId, drawName, entries: drawEntries } = drawDefinition;
 
-  const drawDefinitionExists = event.drawDefinitions.reduce(
-    (exists, candidate) => {
-      return candidate.drawId === drawId ? true : exists;
-    },
-    undefined
+  const drawDefinitionExists = !!event.drawDefinitions.find(
+    (drawDefinition) => drawDefinition.drawId === drawId
   );
 
   if (drawDefinitionExists) return { error: DRAW_ID_EXISTS };
-  const drawOrders =
-    event.drawDefinitions
-      .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
-      ?.filter(Boolean) || [];
 
   const { flightProfile } = getFlightProfile({ event });
-  const flight = flightProfile?.flights?.find(
-    (flight) => flight.drawId === drawId
-  );
+  const flightConflict =
+    flightDefinition &&
+    !!flightProfile?.find(
+      (flight) =>
+        flight.flightNumber === flightDefinition.flightNumber &&
+        flight.drawId !== drawDefinition.drawId
+    );
+
+  if (flightConflict) return { error: INVALID_DRAW_DEFINITION };
 
   const flightNumbers =
     flightProfile?.flights
@@ -48,7 +52,16 @@ export function addDrawDefinition({ drawDefinition, event }) {
       )
       ?.filter(Boolean) || [];
 
+  const drawOrders =
+    event.drawDefinitions
+      .map(({ drawOrder }) => !isNaN(drawOrder) && parseInt(drawOrder))
+      ?.filter(Boolean) || [];
+
   let drawOrder = Math.max(0, ...drawOrders, ...flightNumbers) + 1;
+
+  const flight = flightProfile?.flights?.find(
+    (flight) => flight.drawId === drawId
+  );
 
   let extension;
   if (flight) {
