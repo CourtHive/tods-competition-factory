@@ -1598,6 +1598,10 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
 
+:::note
+`drawSizeProgression` will be overridden by a `{ drawSizeProgression }` value in a policyDefinition.
+:::
+
 ```js
 const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
