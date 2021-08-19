@@ -24,12 +24,18 @@ export function updateTimeAfterRecovery({
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
-  const formatChangeTimeAfterRecovery = endTime
-    ? addMinutesToTimeString(extractTime(endTime), formatChangeRecoveryMinutes)
-    : addMinutesToTimeString(
-        scheduleTime,
-        parseInt(averageMatchUpMinutes) + parseInt(formatChangeRecoveryMinutes)
-      );
+  const formatChangeTimeAfterRecovery =
+    formatChangeRecoveryMinutes &&
+    (endTime
+      ? addMinutesToTimeString(
+          extractTime(endTime),
+          formatChangeRecoveryMinutes
+        )
+      : addMinutesToTimeString(
+          scheduleTime,
+          parseInt(averageMatchUpMinutes) +
+            parseInt(formatChangeRecoveryMinutes)
+        ));
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   individualParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
