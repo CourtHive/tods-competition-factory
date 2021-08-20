@@ -1,10 +1,6 @@
+import { addMatchUpScheduleItems } from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { getDrawDefinition } from '../../getters/eventGetter';
-import { assignMatchUpVenue } from './assignMatchUpVenue';
-import {
-  addMatchUpScheduledDate,
-  addMatchUpScheduledTime,
-} from '../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -46,8 +42,6 @@ export function bulkScheduleMatchUps({
     return drawIdMap;
   }, {});
 
-  const { venueId, scheduledDate, scheduledTime } = schedule;
-
   for (const drawId of Object.keys(drawIdMap)) {
     const { drawDefinition, error } = getDrawDefinition({
       tournamentRecord,
@@ -58,31 +52,13 @@ export function bulkScheduleMatchUps({
       matchUpIds.includes(matchUpId)
     );
     for (const matchUpId of drawMatchUpIds) {
-      if (scheduledTime !== undefined) {
-        const result = addMatchUpScheduledTime({
-          drawDefinition,
-          matchUpId,
-          scheduledTime,
-        });
-        if (result.error) return { error: result.error, scheduledTime };
-      }
-      if (scheduledDate !== undefined) {
-        const result = addMatchUpScheduledDate({
-          drawDefinition,
-          matchUpId,
-          scheduledDate,
-        });
-        if (result.error) return { error: result.error, scheduledDate };
-      }
-      if (venueId !== undefined) {
-        const result = assignMatchUpVenue({
-          tournamentRecord,
-          drawDefinition,
-          matchUpId,
-          venueId,
-        });
-        if (result.error) return { error: result.error, venueId };
-      }
+      const result = addMatchUpScheduleItems({
+        tournamentRecord,
+        drawDefinition,
+        matchUpId,
+        schedule,
+      });
+      if (result.error) return result;
     }
   }
 
