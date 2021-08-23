@@ -2,10 +2,10 @@ import competitionEngine from '../../../competitionEngine/sync';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
-import fs from 'fs';
 
 import POLICY_SCHEDULING_USTA from '../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { eventConstants } from '../../../constants/eventConstants';
+import { INDIVIDUAL } from '../../../constants/participantTypes';
 
 const { SINGLES, DOUBLES } = eventConstants;
 
@@ -31,7 +31,7 @@ test('recognizes scheduling conflicts', () => {
   ];
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
     venueProfiles,
     eventProfiles,
     startDate,
@@ -44,7 +44,9 @@ test('recognizes scheduling conflicts', () => {
     policyDefinition: POLICY_SCHEDULING_USTA,
   });
 
-  let { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = competitionEngine.allCompetitionMatchUps({
+    matchUpFilters: { eventIds: [eventIds[0]] },
+  });
   let { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
 
   const scheduledDate = '2021-01-01';
@@ -65,6 +67,7 @@ test('recognizes scheduling conflicts', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
+    matchUpFilters: { eventIds: [eventIds[0]] },
     nextMatchUps: true,
   }));
   expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
@@ -81,6 +84,7 @@ test('recognizes scheduling conflicts', () => {
 
   let { tournamentParticipants, participantIdsWithConflicts } =
     tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
       withStatistics: true,
       withMatchUps: true,
     });
@@ -100,11 +104,6 @@ test('recognizes scheduling conflicts', () => {
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
       withStatistics: true,
     }));
-
-  fs.writeFileSync(
-    'tp.json',
-    JSON.stringify(tournamentParticipants, undefined, 2)
-  );
 
   expect(participantIdsWithConflicts.length).toEqual(16);
 
