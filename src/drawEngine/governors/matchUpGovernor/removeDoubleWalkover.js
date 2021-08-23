@@ -64,13 +64,6 @@ export function removeDoubleWalkover(params) {
         pairedPreviousMatchUp?.matchUpStatus
       ) || pairedPreviousMatchUp?.winningSide;
 
-    /*
-    console.log(matchUp.roundNumber, {
-      pairedPreviousWOWO,
-      pairedPreviousMatchUpComplete,
-    });
-    */
-
     const nextTargetData = positionTargets({
       matchUpId: winnerMatchUp.matchUpId,
       drawDefinition,
