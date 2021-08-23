@@ -158,7 +158,8 @@ function buildRound({
       roundPosition,
       matchUpStatus: TO_BE_PLAYED,
       // TODO: undefined drawPositions can be filtered; several tests will have to be updated
-      // drawPositions: node.children.map((c) => c.drawPosition).filter(f=>f),
+      // UNDEFINED drawPositions
+      // drawPositions: node.children.map((c) => c.drawPosition).filter(Boolean),
       drawPositions: node.children.map((c) => c.drawPosition),
     };
 

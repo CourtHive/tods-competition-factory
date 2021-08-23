@@ -387,6 +387,7 @@ function advanceWinner({
       undefined
     )
     .slice(0, 2);
+  // UNDEFINED drawPositions
   const drawPositions = twoDrawPositions.map((position) => {
     if (!position && !drawPositionAssigned) {
       drawPositionAssigned = true;

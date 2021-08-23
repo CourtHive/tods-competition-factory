@@ -249,6 +249,7 @@ function removeDrawPosition({
   if (targetMatchUp.roundNumber > initialRoundNumber) {
     targetMatchUp.drawPositions = (targetMatchUp.drawPositions || []).map(
       (currentDrawPosition) =>
+        // UNDEFINED drawPositions
         currentDrawPosition === drawPosition ? undefined : currentDrawPosition
     );
   }
