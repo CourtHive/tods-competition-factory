@@ -199,7 +199,8 @@ export function addParticipantContext(params) {
       });
       if (scheduleConflicts?.length) {
         participant.scheduleConflicts = scheduleConflicts;
-        participantIdsWithConflicts.push(participant.participantId);
+        if (!participantIdsWithConflicts.includes(participant.participantId))
+          participantIdsWithConflicts.push(participant.participantId);
       }
     });
   });
