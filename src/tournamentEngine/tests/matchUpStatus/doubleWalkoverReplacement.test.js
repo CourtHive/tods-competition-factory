@@ -1,3 +1,4 @@
+// import { getDevContext, setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -6,6 +7,7 @@ import {
   DOUBLE_WALKOVER,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+// import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
@@ -14,6 +16,17 @@ const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
       matchUp.roundPosition === roundPosition
   );
 
+/*
+let result = setSubscriptions({
+  subscriptions: {
+    [MODIFY_MATCHUP]: (matchUps) => {
+      if (getDevContext({ scorePropagation: true })) console.log(matchUps);
+    },
+  },
+});
+*/
+
+// test added to address improper score propagation discovered during testing
 test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will not propagate score', () => {
   const drawProfiles = [
     {
@@ -75,6 +88,7 @@ test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
+  tournamentEngine.devContext({ scorePropagation: true });
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-2',
@@ -86,6 +100,7 @@ test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will
     drawId,
   });
   expect(result.success).toEqual(true);
+  tournamentEngine.devContext({ scorePropagation: false });
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
@@ -94,7 +109,6 @@ test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
-  // expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
-  // expect(targetMatchUp.winningSide).toEqual(1);
-  // console.log(targetMatchUp);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(1);
 });
