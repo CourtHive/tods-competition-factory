@@ -2,6 +2,7 @@ import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
@@ -10,7 +11,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
