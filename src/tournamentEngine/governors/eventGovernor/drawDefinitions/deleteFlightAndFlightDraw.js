@@ -10,7 +10,12 @@ import {
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 
-export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
+export function deleteFlightAndFlightDraw({
+  tournamentRecord,
+  event,
+  drawId,
+  auditData,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
@@ -43,6 +48,7 @@ export function deleteFlightAndFlightDraw({ tournamentRecord, event, drawId }) {
     tournamentRecord,
     eventId: event.eventId,
     drawIds: [drawId],
+    auditData,
   });
 
   return SUCCESS;
