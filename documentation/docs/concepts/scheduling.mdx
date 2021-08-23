@@ -3,6 +3,8 @@ title: Scheduling
 ---
 
 import RenderJSON from '../components/RenderJSON';
+
+import tournamentParticipants from './assets/tournamentParticipants.json';
 import dateAvailability from './assets/dateAvailability.json';
 import SchedulingProfile from './assets/schedulingProfile.json';
 import SchedulingPolicy from './assets/schedulingPolicy.json';
@@ -139,7 +141,7 @@ competitionEngine.scheduleProfileRounds({
 });
 ```
 
-## pseudocode
+### pseudocode
 
 Scheduling operates with an array of all competition matchUps "inContext".
 After building up a mapping of matchUpIds to scheduleTimes, the assignments are made.
@@ -158,3 +160,45 @@ After building up a mapping of matchUpIds to scheduleTimes, the assignments are 
     - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
     - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NO_SCHEDULE }` conflicts
 12. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
+
+## Schedule Conflict Reporting
+
+Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getTournamentParticipants` or `competitionEngine.getCompetitionParticipants`.
+
+The attribute `scheduleConflicts` is an array of `matchUpIds` that have been scheduled at times that conflict with other `matchUps` based on either the **scheduling policy**
+that is in force, or a specified `scheduledMinutesDifference`, which overrides the default behavior.
+
+:::note
+`matchUpIds` in the `scheduleConflicts` array may refer to either a participant's `matchUps` or their `potentialMatchUps` which are defined as those `matchUps`
+in which they will appear if they either win or lose `matchUps` in which they are already present.
+:::
+
+A **scheduling policy** defines average match times for different scoring formats as well as recovery times between **_matchUpTypes_**.
+A conflict occurs when a matchUp's `scheduledTime + averageMinutes + recoveryMinutes`, or `endTime + recoveryMinutes` (if available) is greater than the `scheduledTime` of any other participant `matchUp`.
+
+```js
+const {
+  tournamentParticipants,
+  participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
+} = tournamentEngine.getTournamentParticipants({
+  inContext: true,
+
+  scheduleAnalysis: {
+    scheduledMinutesDifference: 60, // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+  },
+  withStatistics,
+  withOpponents,
+  withMatchUps,
+});
+```
+
+### Example participants with schedule conflicts
+
+<RenderJSON
+  data={tournamentParticipants}
+  root={'tournamentParticipants'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandRoot={true}
+  expandToLevel={1}
+/>

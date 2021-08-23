@@ -1,0 +1,254 @@
+[
+  {
+    "participantId": "95d733dd-304b-4ab8-8985-e9e07eb43067",
+    "participantType": "INDIVIDUAL",
+    "participantRole": "COMPETITOR",
+    "participantName": "Viacheslav Bielinskyi",
+    "person": {
+      "addresses": [
+        {
+          "city": "Brownsville",
+          "state": "UT",
+          "postalCode": "56938",
+          "countryCode": "RUS"
+        }
+      ],
+      "personId": "41f92127-10c0-4448-ac48-08596dd527a6",
+      "standardFamilyName": "Bielinskyi",
+      "standardGivenName": "Viacheslav",
+      "nationalityCode": "RUS",
+      "extensions": [
+        {
+          "name": "regionCode",
+          "value": 1
+        }
+      ],
+      "sex": "MALE"
+    },
+    "draws": [
+      {
+        "drawName": "SINGLE_ELIMINATION",
+        "drawType": "SINGLE_ELIMINATION",
+        "entryStage": "MAIN",
+        "entryStatus": "DIRECT_ACCEPTANCE",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4"
+      }
+    ],
+    "events": [
+      {
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventName": "Event Test",
+        "eventType": "SINGLES",
+        "entryStage": "MAIN",
+        "entryStatus": "DIRECT_ACCEPTANCE",
+        "drawIds": ["f61499f7-8791-416b-ac4c-57ca8ae89be4"]
+      }
+    ],
+    "potentialMatchUps": [
+      {
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventType": "SINGLES",
+        "matchUpId": "5791f1be-013b-4c79-99a1-144b06a05631",
+        "matchUpFormat": "SET3-S:6/TB7",
+        "roundName": "QF",
+        "roundNumber": 2,
+        "roundPosition": 4,
+        "schedule": {
+          "time": "00:00:00",
+          "milliseconds": 0,
+          "scheduledDate": "2021-01-01",
+          "scheduledTime": "09:00",
+          "averageMinutes": 90,
+          "timeAfterRecovery": "11:30",
+          "formatChangeTimeAfterRecovery": "11:30",
+          "scheduleConflict": true
+        },
+        "structureName": "MAIN",
+        "potential": true
+      }
+    ],
+    "matchUps": [
+      {
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventType": "SINGLES",
+        "matchUpId": "a45b6dc2-63cb-400f-9133-5a6444225449",
+        "matchUpFormat": "SET3-S:6/TB7",
+        "matchUpStatus": "TO_BE_PLAYED",
+        "opponentParticipantInfo": [
+          {
+            "participantId": "cda6fda8-e4f2-4668-8326-b3a2ce7675ad",
+            "participantType": "INDIVIDUAL"
+          }
+        ],
+        "roundName": "R16",
+        "roundNumber": 1,
+        "roundPosition": 7,
+        "schedule": {
+          "time": "00:00:00",
+          "milliseconds": 0,
+          "scheduledDate": "2021-01-01",
+          "scheduledTime": "08:00",
+          "averageMinutes": 90,
+          "timeAfterRecovery": "10:30",
+          "formatChangeTimeAfterRecovery": "10:30"
+        },
+        "structureName": "MAIN",
+        "winnerTo": {
+          "matchUpId": "5791f1be-013b-4c79-99a1-144b06a05631",
+          "structureId": "d4cb005b-a773-4f78-8374-b002a59e4228",
+          "schedule": {
+            "time": "00:00:00",
+            "milliseconds": 0,
+            "scheduledDate": "2021-01-01",
+            "scheduledTime": "09:00",
+            "averageMinutes": 90,
+            "timeAfterRecovery": "11:30",
+            "formatChangeTimeAfterRecovery": "11:30",
+            "scheduleConflict": true
+          },
+          "roundNumber": 2,
+          "roundPosition": 4,
+          "structureName": "MAIN"
+        }
+      }
+    ],
+    "statistics": [
+      {
+        "statCode": "winRatio",
+        "numerator": 0,
+        "denominator": 0,
+        "statValue": 0
+      }
+    ],
+    "scheduleConflicts": ["5791f1be-013b-4c79-99a1-144b06a05631"]
+  },
+  {
+    "participantId": "a842b4cb-1741-4dd1-bf8b-fcbae6e83018",
+    "participantType": "INDIVIDUAL",
+    "participantRole": "COMPETITOR",
+    "participantName": "Ashleigh Barty",
+    "person": {
+      "addresses": [
+        {
+          "city": "Brownsville",
+          "state": "UT",
+          "postalCode": "56938",
+          "countryCode": "BOT"
+        }
+      ],
+      "personId": "ebccc2d4-7423-4276-90c8-85eacef897fb",
+      "standardFamilyName": "Barty",
+      "standardGivenName": "Ashleigh",
+      "nationalityCode": "BOT",
+      "extensions": [
+        {
+          "name": "regionCode",
+          "value": 2
+        }
+      ],
+      "sex": "FEMALE"
+    },
+    "draws": [
+      {
+        "drawName": "SINGLE_ELIMINATION",
+        "drawType": "SINGLE_ELIMINATION",
+        "entryStage": "MAIN",
+        "entryStatus": "DIRECT_ACCEPTANCE",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4"
+      }
+    ],
+    "events": [
+      {
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventName": "Event Test",
+        "eventType": "SINGLES",
+        "entryStage": "MAIN",
+        "entryStatus": "DIRECT_ACCEPTANCE",
+        "drawIds": ["f61499f7-8791-416b-ac4c-57ca8ae89be4"]
+      }
+    ],
+    "potentialMatchUps": [
+      {
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventType": "SINGLES",
+        "matchUpId": "b17e7780-83f3-4241-a80f-9255a5883f47",
+        "matchUpFormat": "SET3-S:6/TB7",
+        "roundName": "QF",
+        "roundNumber": 2,
+        "roundPosition": 3,
+        "schedule": {
+          "time": "00:00:00",
+          "milliseconds": 0,
+          "scheduledDate": "2021-01-01",
+          "scheduledTime": "09:00",
+          "averageMinutes": 90,
+          "timeAfterRecovery": "11:30",
+          "formatChangeTimeAfterRecovery": "11:30",
+          "scheduleConflict": true
+        },
+        "structureName": "MAIN",
+        "potential": true
+      }
+    ],
+    "matchUps": [
+      {
+        "drawId": "f61499f7-8791-416b-ac4c-57ca8ae89be4",
+        "eventId": "13f05bda-afeb-40f7-b27d-90d4f6f48058",
+        "eventType": "SINGLES",
+        "matchUpId": "0714e53c-8e7f-442d-ba5a-c26c7a84d27c",
+        "matchUpFormat": "SET3-S:6/TB7",
+        "matchUpStatus": "TO_BE_PLAYED",
+        "opponentParticipantInfo": [
+          {
+            "participantId": "c60d9e8b-9fc7-45bc-92d4-723e75073b38",
+            "participantType": "INDIVIDUAL"
+          }
+        ],
+        "roundName": "R16",
+        "roundNumber": 1,
+        "roundPosition": 6,
+        "schedule": {
+          "time": "00:00:00",
+          "milliseconds": 0,
+          "scheduledDate": "2021-01-01",
+          "scheduledTime": "08:00",
+          "averageMinutes": 90,
+          "timeAfterRecovery": "10:30",
+          "formatChangeTimeAfterRecovery": "10:30"
+        },
+        "structureName": "MAIN",
+        "winnerTo": {
+          "matchUpId": "b17e7780-83f3-4241-a80f-9255a5883f47",
+          "structureId": "d4cb005b-a773-4f78-8374-b002a59e4228",
+          "schedule": {
+            "time": "00:00:00",
+            "milliseconds": 0,
+            "scheduledDate": "2021-01-01",
+            "scheduledTime": "09:00",
+            "averageMinutes": 90,
+            "timeAfterRecovery": "11:30",
+            "formatChangeTimeAfterRecovery": "11:30",
+            "scheduleConflict": true
+          },
+          "roundNumber": 2,
+          "roundPosition": 3,
+          "structureName": "MAIN"
+        }
+      }
+    ],
+    "statistics": [
+      {
+        "statCode": "winRatio",
+        "numerator": 0,
+        "denominator": 0,
+        "statValue": 0
+      }
+    ],
+    "scheduleConflicts": ["b17e7780-83f3-4241-a80f-9255a5883f47"]
+  }
+]

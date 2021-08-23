@@ -30,14 +30,23 @@ function ContextDemo(props) {
 
 ## tournamentParticipants
 
-For **tournamentParticipants**, individualParticipants are added from individualParticipantIds.
+When participants are returned with `{ inContext: true }`, those that are `participantType` **PAIR, TEAM, or GROUP** include `individualParticipants` derived from `individualParticipantIds`.
+
+Context is also added if `withStatistics, withOpponents, withMatchUps, or scheduleAnalysis` are true.
 
 ```js
-const { tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-  participantFilters: {
-    inContext: true,
-    participantTypes: [PAIR],
-  },
+const {
+  tournamentParticipants,
+  participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
+} = tournamentEngine.getTournamentParticipants({
+  inContext: true,
+
+  participantFilters: { participantTypes: [PAIR] },
+  scheduleAnalysis: { scheduledMinutesDifference },
+  policyDefinition,
+  withStatistics,
+  withOpponents,
+  withMatchUps,
 });
 ```
 
