@@ -163,9 +163,11 @@ After building up a mapping of matchUpIds to scheduleTimes, the assignments are 
 
 ## Schedule Conflict Reporting
 
-Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getTournamentParticipants` or `competitionEngine.getCompetitionParticipants`.
+Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getTournamentParticipants`
+or `competitionEngine.getCompetitionParticipants`.
 
-The attribute `scheduleConflicts` is an array of `matchUpIds` that have been scheduled at times that conflict with other `matchUps` based on either the **scheduling policy**
+The attribute `scheduleConflicts` is an array of objects containing pairs of `matchUpIds`
+that have been scheduled at times that conflict with each other based on either the **scheduling policy**
 that is in force, or a specified `scheduledMinutesDifference`, which overrides the default behavior.
 
 :::note

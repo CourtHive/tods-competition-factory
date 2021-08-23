@@ -76,10 +76,14 @@ test('recognizes scheduling conflicts', () => {
 
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
-    expect(firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(true);
+    expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
+      'string'
+    );
   });
   roundMatchUps[2].forEach((secondRoundMatchUp) =>
-    expect(secondRoundMatchUp.schedule.scheduleConflict).toEqual(true)
+    expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual(
+      'string'
+    )
   );
 
   let { tournamentParticipants, participantIdsWithConflicts } =
@@ -96,10 +100,12 @@ test('recognizes scheduling conflicts', () => {
   );
 
   expect(
-    participantWithConflict.potentialMatchUps[0].schedule.scheduleConflict
-  ).toEqual(true);
+    typeof participantWithConflict.potentialMatchUps[0].schedule
+      .scheduleConflict
+  ).toEqual('string');
 
-  ({ tournamentParticipants, participantIdsWithConflicts } =
+  let competitionParticipants;
+  ({ competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       scheduleAnalysis: { scheduledMinutesDifference: 60 },
       withStatistics: true,
@@ -114,4 +120,13 @@ test('recognizes scheduling conflicts', () => {
     }));
 
   expect(participantIdsWithConflicts.length).toEqual(0);
+
+  expect(competitionParticipants[0].scheduleConflicts.length).toEqual(1);
+  expect(
+    typeof competitionParticipants[0].scheduleConflicts[0]
+      .priorScheduledMatchUpId
+  ).toEqual('string');
+  expect(
+    typeof competitionParticipants[0].scheduleConflicts[0].matchUpIdWithConflict
+  ).toEqual('string');
 });

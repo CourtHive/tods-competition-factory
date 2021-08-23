@@ -484,7 +484,7 @@ function annotateParticipant({
       });
 
       Object.keys(scheduledMatchUps).forEach((date) => {
-        let lastScheduledTime;
+        let lastScheduledTime, priorScheduledMatchUpId;
         scheduledMatchUps[date].forEach((matchUp) => {
           const {
             schedule: { scheduledTime },
@@ -499,11 +499,15 @@ function annotateParticipant({
                   timeStringMinutes(scheduledTime) -
                   timeStringMinutes(lastScheduledTime);
                 if (minutesDifference <= scheduledMinutesDifference) {
-                  scheduleConflicts.push(matchUpId);
+                  scheduleConflicts.push({
+                    priorScheduledMatchUpId,
+                    matchUpIdWithConflict: matchUpId,
+                  });
                 }
               }
             }
             lastScheduledTime = scheduledTime;
+            priorScheduledMatchUpId = matchUpId;
           }
         });
       });
@@ -511,7 +515,10 @@ function annotateParticipant({
   } else {
     allParticipantMatchUps.forEach((matchUp) => {
       if (matchUp.schedule?.scheduleConflict && matchUp.matchUpStatus !== BYE) {
-        scheduleConflicts.push(matchUp.matchUpId);
+        scheduleConflicts.push({
+          priorScheduledMatchUpId: matchUp.schedule.scheduleConflict,
+          matchUpIdWithConflict: matchUp.matchUpId,
+        });
       }
     });
   }
