@@ -55,10 +55,11 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
     }).scheduleTiming;
 
     const drawsData = (event.drawDefinitions || []).map((drawDefinition) => {
-      const drawInfo = (({ drawId, drawName, matchUpFormat }) => ({
+      const drawInfo = (({ drawId, drawName, matchUpFormat, updatedAt }) => ({
         drawId,
         drawName,
         matchUpFormat,
+        updatedAt,
       }))(drawDefinition);
 
       const {
