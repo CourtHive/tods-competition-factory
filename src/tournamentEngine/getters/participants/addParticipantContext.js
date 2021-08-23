@@ -7,6 +7,7 @@ import { makeDeepCopy } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -486,25 +487,29 @@ function annotateParticipant({
         scheduledMatchUps[date].forEach((matchUp) => {
           const {
             schedule: { scheduledTime },
+            matchUpStatus,
             matchUpId,
           } = matchUp;
-          if (lastScheduledTime) {
-            if (scheduledTime) {
-              const minutesDifference =
-                timeStringMinutes(scheduledTime) -
-                timeStringMinutes(lastScheduledTime);
-              if (minutesDifference <= scheduledMinutesDifference) {
-                scheduleConflicts.push(matchUpId);
+
+          if (matchUpStatus !== BYE) {
+            if (lastScheduledTime) {
+              if (scheduledTime) {
+                const minutesDifference =
+                  timeStringMinutes(scheduledTime) -
+                  timeStringMinutes(lastScheduledTime);
+                if (minutesDifference <= scheduledMinutesDifference) {
+                  scheduleConflicts.push(matchUpId);
+                }
               }
             }
+            lastScheduledTime = scheduledTime;
           }
-          lastScheduledTime = scheduledTime;
         });
       });
     }
   } else {
     allParticipantMatchUps.forEach((matchUp) => {
-      if (matchUp.schedule?.scheduleConflict) {
+      if (matchUp.schedule?.scheduleConflict && matchUp.matchUpStatus !== BYE) {
         scheduleConflicts.push(matchUp.matchUpId);
       }
     });
