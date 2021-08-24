@@ -646,6 +646,27 @@ const { courts, venues } = competitionEngine.getVenuesAndCourts();
 
 ---
 
+## getVenuesReport
+
+Returns a `venueReports` array which provides details for each targt `venue` for targt date(s).
+
+```js
+const { venuesReport } = competitionEngine.getVenuesReport({
+  dates, // optional array of target dates
+  venueIds, // optional array of target venueIds
+});
+
+const {
+  availableCourts, // how many courts are available for date
+  availableMinutes, // total courts minutes available for date
+  scheduledMinutes, // minutes of court time that are scheduled for matchUps
+  scheduledMatchUpsCount, // number of scheduled matchUps
+  percentUtilization, // percent of available minutes utilized by scheduled matchUps
+} = venuesReport[0].venueReport[date];
+```
+
+---
+
 ## isValidSchedulingProfile
 
 ```js
