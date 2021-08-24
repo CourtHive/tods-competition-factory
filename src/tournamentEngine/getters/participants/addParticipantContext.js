@@ -1,6 +1,6 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { extensionConstants } from '../../../constants/extensionConstants';
-import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
+import { timeStringMinutes } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -497,6 +497,7 @@ function annotateParticipant({
 
       // matchUps with { matchUpStatus: BYE } are ignored
       if (scheduledTime && matchUpStatus !== BYE) {
+        const scheduledMinutes = timeStringMinutes(scheduledTime);
         // each matchUp only considers conflicts with matchUps which occur at the same or later scheduledTime
         const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
 
@@ -518,9 +519,10 @@ function annotateParticipant({
             const bothPotential =
               matchUp.potential && consideredMatchUp.potential;
 
-            const minutesDifference =
-              timeStringMinutes(consideredMatchUp.schedule.scheduledTime) -
-              timeStringMinutes(scheduledTime);
+            const nextMinutes = timeStringMinutes(
+              consideredMatchUp.schedule.scheduledTime
+            );
+            const minutesDifference = nextMinutes - scheduledMinutes;
 
             // Conflicts can be determined in two ways:
             // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
@@ -528,8 +530,8 @@ function annotateParticipant({
             const timeOverlap =
               scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
-                : extractTime(notBeforeTime) >
-                  extractTime(consideredMatchUp.schedule.scheduledTime);
+                : timeStringMinutes(notBeforeTime) >
+                  timeStringMinutes(consideredMatchUp.schedule.scheduledTime);
 
             // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw)) {
