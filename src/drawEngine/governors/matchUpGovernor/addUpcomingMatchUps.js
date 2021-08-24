@@ -62,6 +62,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           loserTo;
       }
 
+      // scheduleConflict in the following only applies to conflicts between subsequent matchUps WITHIN the same draw
       const timeAfterRecovery = inContextMatchUp.schedule?.timeAfterRecovery;
       if (timeAfterRecovery) {
         if (winnerTo?.schedule?.scheduledTime) {

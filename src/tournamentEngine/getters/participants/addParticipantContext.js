@@ -1,6 +1,6 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { extensionConstants } from '../../../constants/extensionConstants';
-import { timeStringMinutes } from '../../../utilities/dateTime';
+import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -148,7 +148,7 @@ export function addParticipantContext(params) {
       });
     };
 
-    // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
+    // iterate through flights to ensure that draw entries are captured if drawDefinitions have not yet been generated
     const drawIdsWithDefinitions =
       event.drawDefinitions?.map(({ drawId }) => drawId) || [];
     eventInfo._flightProfile?.flights?.forEach((flight) => {
@@ -476,15 +476,15 @@ function annotateParticipant({
   const allParticipantMatchUps = participantMatchUps.concat(
     participantPotentialMatchUps
   );
+  const { scheduledMatchUps } = participantScheduledMatchUps({
+    matchUps: allParticipantMatchUps,
+  });
+
   if (scheduleAnalysis?.scheduledMinutesDifference) {
     const { scheduledMinutesDifference } = scheduleAnalysis;
     if (!isNaN(scheduledMinutesDifference)) {
-      const { scheduledMatchUps } = participantScheduledMatchUps({
-        matchUps: allParticipantMatchUps,
-      });
-
       Object.keys(scheduledMatchUps).forEach((date) => {
-        let lastScheduledTime, priorScheduledMatchUpId;
+        let lastScheduledTime, priorScheduledMatchUp;
         scheduledMatchUps[date].forEach((matchUp) => {
           const {
             schedule: { scheduledTime },
@@ -493,33 +493,58 @@ function annotateParticipant({
           } = matchUp;
 
           if (matchUpStatus !== BYE) {
-            if (lastScheduledTime) {
-              if (scheduledTime) {
-                const minutesDifference =
-                  timeStringMinutes(scheduledTime) -
-                  timeStringMinutes(lastScheduledTime);
-                if (minutesDifference <= scheduledMinutesDifference) {
-                  scheduleConflicts.push({
-                    priorScheduledMatchUpId,
-                    matchUpIdWithConflict: matchUpId,
-                  });
-                }
+            if (lastScheduledTime && scheduledTime) {
+              const sameDraw = matchUp.drawId === priorScheduledMatchUp.drawId;
+              const bothPotential =
+                matchUp.potential && priorScheduledMatchUp.potential;
+              const minutesDifference =
+                timeStringMinutes(scheduledTime) -
+                timeStringMinutes(lastScheduledTime);
+              if (
+                minutesDifference <= scheduledMinutesDifference &&
+                !(bothPotential && sameDraw)
+              ) {
+                scheduleConflicts.push({
+                  priorScheduledMatchUpId: priorScheduledMatchUp.matchUpId,
+                  matchUpIdWithConflict: matchUpId,
+                });
               }
             }
             lastScheduledTime = scheduledTime;
-            priorScheduledMatchUpId = matchUpId;
+            priorScheduledMatchUp = matchUp;
           }
         });
       });
     }
   } else {
-    allParticipantMatchUps.forEach((matchUp) => {
-      if (matchUp.schedule?.scheduleConflict && matchUp.matchUpStatus !== BYE) {
-        scheduleConflicts.push({
-          priorScheduledMatchUpId: matchUp.schedule.scheduleConflict,
-          matchUpIdWithConflict: matchUp.matchUpId,
-        });
-      }
+    Object.keys(scheduledMatchUps).forEach((date) => {
+      let afterRecoveryTime, priorScheduledMatchUp;
+      scheduledMatchUps[date].forEach((matchUp) => {
+        const {
+          schedule: { scheduledTime, timeAfterRecovery },
+          matchUpStatus,
+          matchUpId,
+        } = matchUp;
+
+        if (matchUpStatus !== BYE) {
+          if (priorScheduledMatchUp && afterRecoveryTime && scheduledTime) {
+            const sameDraw = matchUp.drawId === priorScheduledMatchUp.drawId;
+            const bothPotential =
+              matchUp.potential && priorScheduledMatchUp.potential;
+            if (
+              extractTime(afterRecoveryTime) > extractTime(scheduledTime) &&
+              !(bothPotential && sameDraw)
+            ) {
+              scheduleConflicts.push({
+                priorScheduledMatchUpId: priorScheduledMatchUp.matchUpId,
+                matchUpIdWithConflict: matchUpId,
+              });
+            }
+          }
+          afterRecoveryTime = timeAfterRecovery;
+          priorScheduledMatchUp = matchUp;
+        }
+      });
     });
   }
 
