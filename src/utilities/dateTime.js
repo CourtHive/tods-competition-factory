@@ -163,7 +163,7 @@ function isTimeString(timeString) {
 export function timeStringMinutes(timeString) {
   const validTimeString = extractTime(timeString);
   if (!validTimeString) return 0;
-  const [hours, minutes] = timeString
+  const [hours, minutes] = validTimeString
     .split(':')
     .map((value) => parseInt(value));
   return hours * 60 + minutes;
