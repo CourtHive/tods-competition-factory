@@ -476,6 +476,8 @@ function annotateParticipant({
   const allParticipantMatchUps = participantMatchUps.concat(
     participantPotentialMatchUps
   );
+
+  // scheduledMatchUps are a participant's matchUps separated by date and sorted by scheduledTime
   const { scheduledMatchUps } = participantScheduledMatchUps({
     matchUps: allParticipantMatchUps,
   });
@@ -493,19 +495,25 @@ function annotateParticipant({
         matchUpId,
       } = matchUp;
 
+      // matchUps with { matchUpStatus: BYE } are ignored
       if (scheduledTime && matchUpStatus !== BYE) {
+        // each matchUp only considers conflicts with matchUps which occur at the same or later scheduledTime
         const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
 
         for (const consideredMatchUp of matchUpsToConsider) {
-          const typeChange =
-            matchUp.matchUpType !== consideredMatchUp.matchUpType;
-          const notBeforeTime = typeChange
-            ? typeChangeTimeAfterRecovery || timeAfterRecovery
-            : timeAfterRecovery;
+          // ignore { matchUpStatus: BYE } and matchUps which are unscheduled
           if (
             matchUpStatus !== BYE &&
             consideredMatchUp.schedule?.scheduledTime
           ) {
+            // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery
+            const typeChange =
+              matchUp.matchUpType !== consideredMatchUp.matchUpType;
+            const notBeforeTime = typeChange
+              ? typeChangeTimeAfterRecovery || timeAfterRecovery
+              : timeAfterRecovery;
+
+            // if two matchUps are both potentials and both part of the same draw they cannot be considered in conflict
             const sameDraw = matchUp.drawId === consideredMatchUp.drawId;
             const bothPotential =
               matchUp.potential && consideredMatchUp.potential;
@@ -513,12 +521,17 @@ function annotateParticipant({
             const minutesDifference =
               timeStringMinutes(consideredMatchUp.schedule.scheduledTime) -
               timeStringMinutes(scheduledTime);
+
+            // Conflicts can be determined in two ways:
+            // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
+            // 2. A scheduledTime occurring before a prior matchUps notBeforeTime (timeAfterRecovery)
             const timeOverlap =
               scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
                 : extractTime(notBeforeTime) >
                   extractTime(consideredMatchUp.schedule.scheduledTime);
 
+            // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
             if (timeOverlap && !(bothPotential && sameDraw)) {
               scheduleConflicts.push({
                 priorScheduledMatchUpId: consideredMatchUp.matchUpId,
