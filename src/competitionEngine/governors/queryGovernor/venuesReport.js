@@ -8,14 +8,14 @@ import {
 } from '../../../utilities/dateTime';
 
 import {
-  INVALID_VALUE,
+  INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 import { generateTimeSlots } from '../scheduleGovernor/garman/generateTimeSlots';
 
 export function getVenuesReport({ tournamentRecords, venueIds, dates = [] }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(dates)) return { error: INVALID_VALUE, dates };
+  if (!Array.isArray(dates)) return { error: INVALID_VALUES, dates };
 
   const result = getVenuesAndCourts({ tournamentRecords });
   if (result.error) return result;
