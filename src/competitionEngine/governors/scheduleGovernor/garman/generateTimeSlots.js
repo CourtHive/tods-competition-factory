@@ -1,4 +1,8 @@
-import { timeToDate, extractTime } from '../../../../utilities/dateTime';
+import {
+  timeToDate,
+  extractTime,
+  tidyTime,
+} from '../../../../utilities/dateTime';
 
 /**
  *
@@ -16,7 +20,7 @@ export function generateTimeSlots({ courtDate, includeBookingTypes = [] }) {
         !booking.bookingType ||
         !includeBookingTypes.includes(booking.bookingType)
     )
-    .sort((a, b) => a.startTime.localeCompare(b.startTime))
+    .sort((a, b) => tidyTime(a.startTime).localeCompare(tidyTime(b.startTime)))
     .forEach((booking) => {
       const timeSlot = {
         startTime: extractTime(startTime.toISOString()),
