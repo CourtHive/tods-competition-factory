@@ -97,9 +97,11 @@ it('can bulk reschedule matchUps', () => {
     expect(result.success).toEqual(true);
   }
 
+  competitionEngine.devContext({ timing: true });
   let result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
   });
+  competitionEngine.devContext({ timing: false });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
 
