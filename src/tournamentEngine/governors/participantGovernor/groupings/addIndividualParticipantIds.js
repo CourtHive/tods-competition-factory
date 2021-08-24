@@ -48,7 +48,7 @@ export function addIndividualParticipantIds({
     };
   }
 
-  // integrity chck to insure only individuals can be added to groupings
+  // integrity chck to ensure only individuals can be added to groupings
   const invalidParticipantIds = individualParticipantIds.filter(
     (participantId) => {
       const participant = tournamentParticipants.find(

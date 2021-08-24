@@ -7,7 +7,7 @@ import { SCHEDULE_LIMITS } from '../../../../constants/extensionConstants';
 import { INVALID_OBJECT } from '../../../../constants/errorConditionConstants';
 
 it('can set and honor matchUpDailyLimits', () => {
-  // insure that tournament has exactly 16 participants
+  // ensure that tournament has exactly 16 participants
   // so that conflict can be assured for testing purposes
   const participantsCount = 16;
   const drawProfiles = [{ drawSize: participantsCount }];

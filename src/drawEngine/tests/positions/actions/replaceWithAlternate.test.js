@@ -79,7 +79,7 @@ it('can recognize valid ALTERNATES', () => {
     payload.alternateParticipantId
   );
 
-  // insure that drawPosition is still advanced to the second round
+  // ensure that drawPosition is still advanced to the second round
   targetMatchUp = matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)

@@ -56,7 +56,7 @@ it('will not allow duplicate entries', () => {
   });
   expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
 
-  // now test to insure participant cannot be added to two stages
+  // now test to ensure participant cannot be added to two stages
   qualifyingDrawPositions();
   result = drawEngine.addDrawEntry({
     participant: { participantId: 'uuid1' },

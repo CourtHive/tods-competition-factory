@@ -92,7 +92,7 @@ export function competitionScheduleMatchUps(params) {
     const checkedInParticipantsCount =
       (matchUp?.checkedInParticipantIds?.length || 0) * 10;
 
-    // floatValue insures that allParticipantsCheckedIn always floats to top as millisecond
+    // floatValue ensures that allParticipantsCheckedIn always floats to top as millisecond
     // differences are not always enough to differentiate
     const floatValue = checkedInParticipantsCount + allParticipantsCheckedIn;
     return floatValue;

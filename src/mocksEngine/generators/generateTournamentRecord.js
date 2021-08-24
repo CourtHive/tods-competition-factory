@@ -47,7 +47,7 @@ export function generateTournamentRecord({
 } = {}) {
   let { participantsCount = 32, participantType = INDIVIDUAL } =
     participantsProfile || {};
-  const specifiedParicipantsCount = participantsCount; // capture this to insure calculated participantsCount is not below
+  const specifiedParicipantsCount = participantsCount; // capture this to ensure calculated participantsCount is not below
 
   if (
     (startDate && !isValidDateString(startDate)) ||

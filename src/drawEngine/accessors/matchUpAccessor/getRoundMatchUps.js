@@ -70,7 +70,7 @@ export function getRoundMatchUps({ matchUps = [] }) {
         chunkFactor
       );
 
-      // insures that drawPositions are returned in top to bottom order
+      // ensures that drawPositions are returned in top to bottom order
       const roundDrawPositions = currentRoundMatchUps.map((matchUp) => {
         const { roundPosition, drawPositions } = matchUp;
         if (!roundPosition) return drawPositions;

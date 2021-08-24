@@ -39,7 +39,7 @@ export function assignSeedPositions(params) {
   if (error) errors.push(error);
 
   /**
-   * mergeObject and seedLimit insure that new assignments do not go beyond already established number of seeds
+   * mergeObject and seedLimit ensure that new assignments do not go beyond already established number of seeds
    */
   const mergeObject = Object.assign(
     {},
@@ -59,7 +59,7 @@ export function assignSeedPositions(params) {
   });
 
   /**
-   * Insure that no participantId is assigned to multiple seedNumbers
+   * ensure that no participantId is assigned to multiple seedNumbers
    */
   const updatedAssignments = Object.values(mergeObject);
   const participantIds = updatedAssignments

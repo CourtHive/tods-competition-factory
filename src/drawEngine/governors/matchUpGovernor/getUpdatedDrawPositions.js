@@ -1,7 +1,7 @@
 import { numericSort } from '../../../utilities';
 
 /**
- * Insures that a matchUp has 2 and only 2 drawPositions
+ * ensures that a matchUp has 2 and only 2 drawPositions
  * Checks to see whether drawPosition is already present in drawPositions
  * Does NOT allow a position to be assigned if there are already 2 drawPositions
  *

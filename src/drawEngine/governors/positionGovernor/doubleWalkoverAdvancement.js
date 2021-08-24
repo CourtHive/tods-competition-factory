@@ -85,7 +85,7 @@ function conditionallyAdvanceDrawPosition(params) {
   let winnerMatchUpDrawPositions =
     noContextWinnerMatchUp.drawPositions.filter(Boolean);
 
-  // insure winnerMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
+  // ensure winnerMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
   // this covers the case where a pre-existing advancement was made
   if (overlap(sourceDrawPositions, winnerMatchUpDrawPositions)) {
     winnerMatchUpDrawPositions = winnerMatchUpDrawPositions.filter(

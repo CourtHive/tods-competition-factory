@@ -321,7 +321,7 @@ tournamentEngine.addMatchUpStopTime({
 
 ## addParticipant
 
-Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to insure `participant.individualParticipantIds` are valid.
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
 
 ```js
 const participantId = UUID();
@@ -1919,7 +1919,7 @@ tournamentEngine.devContext(true).modifyIndividualParticipantIds({
 
 ## modifyParticipant
 
-Modifies attributes of a participant with integrity checks to insure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
+Modifies attributes of a participant with integrity checks to ensure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
 
 ```js
 tournamentEngine.modifyParticipant({

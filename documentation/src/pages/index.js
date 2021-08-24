@@ -14,7 +14,7 @@ const features = [
     description: (
       <>
         The Competition Factory generates and consumes TODS documents and
-        insures that all document mutations are valid.
+        ensures that all document mutations are valid.
       </>
     ),
   },

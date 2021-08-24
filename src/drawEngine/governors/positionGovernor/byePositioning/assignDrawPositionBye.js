@@ -379,7 +379,7 @@ function advanceWinner({
   );
 
   let drawPositionAssigned = isByeAdvancedBye;
-  // always insure there are two drawPositions to iterate over
+  // always ensure there are two drawPositions to iterate over
   const twoDrawPositions = []
     .concat(
       ...(noContextWinnerMatchUp.drawPositions || []).filter(Boolean),
