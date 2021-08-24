@@ -24,7 +24,7 @@ export function updateTimeAfterRecovery({
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
-  const formatChangeTimeAfterRecovery =
+  const typeChangeTimeAfterRecovery =
     formatChangeRecoveryMinutes &&
     (endTime
       ? addMinutesToTimeString(
@@ -41,7 +41,7 @@ export function updateTimeAfterRecovery({
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         timeAfterRecovery,
-        formatChangeTimeAfterRecovery,
+        typeChangeTimeAfterRecovery,
         priorMatchUpType: matchUp.matchUpType,
       };
     } else {
@@ -49,10 +49,10 @@ export function updateTimeAfterRecovery({
         individualParticipantProfiles[participantId].priorMatchUpType !==
         matchUp.matchUpType;
 
-      // if matchUpType of previous matchUp is different, use formatChangeTimeAfterRecovery (if available)
+      // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
       individualParticipantProfiles[participantId].timeAfterRecovery =
         matchUpTypeChange
-          ? formatChangeTimeAfterRecovery || timeAfterRecovery
+          ? typeChangeTimeAfterRecovery || timeAfterRecovery
           : timeAfterRecovery;
     }
   });

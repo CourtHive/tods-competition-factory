@@ -79,7 +79,7 @@
           "scheduledTime": "09:00",
           "averageMinutes": 90,
           "timeAfterRecovery": "11:30",
-          "formatChangeTimeAfterRecovery": "11:30",
+          "typeChangeTimeAfterRecovery": "11:30",
           "scheduleConflict": "2fa18511-5d50-4ae8-8a66-609cc4737e96"
         },
         "structureName": "MAIN",
@@ -123,7 +123,7 @@
           "scheduledTime": "08:00",
           "averageMinutes": 90,
           "timeAfterRecovery": "10:30",
-          "formatChangeTimeAfterRecovery": "10:30"
+          "typeChangeTimeAfterRecovery": "10:30"
         },
         "structureName": "MAIN",
         "winnerTo": {
@@ -136,7 +136,7 @@
             "scheduledTime": "09:00",
             "averageMinutes": 90,
             "timeAfterRecovery": "11:30",
-            "formatChangeTimeAfterRecovery": "11:30",
+            "typeChangeTimeAfterRecovery": "11:30",
             "scheduleConflict": "2fa18511-5d50-4ae8-8a66-609cc4737e96"
           },
           "roundNumber": 2,
@@ -276,7 +276,7 @@
           "scheduledTime": "09:00",
           "averageMinutes": 90,
           "timeAfterRecovery": "11:30",
-          "formatChangeTimeAfterRecovery": "11:30",
+          "typeChangeTimeAfterRecovery": "11:30",
           "scheduleConflict": "793d3ea5-23bf-415b-bc0a-9afc8086c1b0"
         },
         "structureName": "MAIN",
@@ -320,7 +320,7 @@
           "scheduledTime": "08:00",
           "averageMinutes": 90,
           "timeAfterRecovery": "10:30",
-          "formatChangeTimeAfterRecovery": "10:30"
+          "typeChangeTimeAfterRecovery": "10:30"
         },
         "structureName": "MAIN",
         "winnerTo": {
@@ -333,7 +333,7 @@
             "scheduledTime": "09:00",
             "averageMinutes": 90,
             "timeAfterRecovery": "11:30",
-            "formatChangeTimeAfterRecovery": "11:30",
+            "typeChangeTimeAfterRecovery": "11:30",
             "scheduleConflict": "793d3ea5-23bf-415b-bc0a-9afc8086c1b0"
           },
           "roundNumber": 2,

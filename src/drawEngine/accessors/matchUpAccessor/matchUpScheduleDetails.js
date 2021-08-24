@@ -45,7 +45,7 @@ export function getMatchUpScheduleDetails({
       averageMinutes,
       recoveryMinutes,
       formatChangeRecoveryMinutes,
-      formatChangeTimeAfterRecovery;
+      typeChangeTimeAfterRecovery;
     if (scheduleTiming && scheduledTime && afterRecoveryTimes) {
       const timingDetails = {
         matchUpFormat: matchUp.matchUpFormat,
@@ -68,7 +68,7 @@ export function getMatchUpScheduleDetails({
             );
       }
       if (formatChangeRecoveryMinutes) {
-        formatChangeTimeAfterRecovery = endTime
+        typeChangeTimeAfterRecovery = endTime
           ? addMinutesToTimeString(
               extractTime(endTime),
               formatChangeRecoveryMinutes
@@ -94,7 +94,7 @@ export function getMatchUpScheduleDetails({
       scheduledTime,
       averageMinutes,
       timeAfterRecovery,
-      formatChangeTimeAfterRecovery,
+      typeChangeTimeAfterRecovery,
     });
   } else {
     schedule = definedAttributes({

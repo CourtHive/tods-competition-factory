@@ -518,31 +518,45 @@ function annotateParticipant({
     }
   } else {
     Object.keys(scheduledMatchUps).forEach((date) => {
-      let afterRecoveryTime, priorScheduledMatchUp;
-      scheduledMatchUps[date].forEach((matchUp) => {
+      scheduledMatchUps[date].forEach((matchUp, i) => {
         const {
-          schedule: { scheduledTime, timeAfterRecovery },
+          schedule: {
+            scheduledTime,
+            timeAfterRecovery,
+            typeChangeTimeAfterRecovery,
+          },
           matchUpStatus,
           matchUpId,
         } = matchUp;
 
-        if (matchUpStatus !== BYE) {
-          if (priorScheduledMatchUp && afterRecoveryTime && scheduledTime) {
-            const sameDraw = matchUp.drawId === priorScheduledMatchUp.drawId;
-            const bothPotential =
-              matchUp.potential && priorScheduledMatchUp.potential;
+        if (scheduledTime && matchUpStatus !== BYE) {
+          const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
+
+          for (const consideredMatchUp of matchUpsToConsider) {
+            const typeChange =
+              matchUp.matchUpType !== consideredMatchUp.matchUpType;
+            const notBeforeTime = typeChange
+              ? typeChangeTimeAfterRecovery || timeAfterRecovery
+              : timeAfterRecovery;
             if (
-              extractTime(afterRecoveryTime) > extractTime(scheduledTime) &&
-              !(bothPotential && sameDraw)
+              matchUpStatus !== BYE &&
+              consideredMatchUp.schedule?.scheduledTime
             ) {
-              scheduleConflicts.push({
-                priorScheduledMatchUpId: priorScheduledMatchUp.matchUpId,
-                matchUpIdWithConflict: matchUpId,
-              });
+              const sameDraw = matchUp.drawId === consideredMatchUp.drawId;
+              const bothPotential =
+                matchUp.potential && consideredMatchUp.potential;
+              if (
+                extractTime(notBeforeTime) >
+                  extractTime(consideredMatchUp.schedule.scheduledTime) &&
+                !(bothPotential && sameDraw)
+              ) {
+                scheduleConflicts.push({
+                  priorScheduledMatchUpId: consideredMatchUp.matchUpId,
+                  matchUpIdWithConflict: matchUpId,
+                });
+              }
             }
           }
-          afterRecoveryTime = timeAfterRecovery;
-          priorScheduledMatchUp = matchUp;
         }
       });
     });
