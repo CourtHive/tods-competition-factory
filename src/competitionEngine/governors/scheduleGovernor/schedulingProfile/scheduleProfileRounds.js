@@ -201,6 +201,7 @@ export function scheduleProfileRounds({
   return {
     ...SUCCESS,
     scheduledDates,
+    noTimeMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
     requestConflicts,

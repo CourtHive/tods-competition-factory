@@ -630,6 +630,8 @@ const { tournamentId, tournaentRecords } = competition.getState({
 
 ## getSchedulingProfile
 
+Returns a `schedulingProfile` (if present). Checks the integrity of the profile to account for any `venues` or `drawDefinitions` which have been deleted.
+
 ```js
 const { schedulingProfile } = competitionEngine.getSchedulingProfile();
 ```
@@ -928,12 +930,20 @@ competitionEngine.scheduleMatchUps({
 Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using `competitionEngine.setSchedulingProfile`.
 
 ```js
-competitionEngine.scheduleProfileRounds({
+const result = competitionEngine.scheduleProfileRounds({
   scheduleDates, // optional array of dates to schedule
   periodLength = 30, // optional - size of scheduling blocks
 
   checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
 });
+
+const {
+  scheduledDates, // dates for which matchUps have been scheduled
+  scheduledMatchUpIds, // array of matchUpIds which have been scheduled
+  noTimeMatchUpIds, // array of matchUpids which have NOT been scheduled
+  overLimitMatchUpIds, // matchUps not scheduled because of participant daily limits
+  requestConflicts, // array of { date, conflicts } objects for each date in schedulingProfile
+} = result;
 ```
 
 ---
