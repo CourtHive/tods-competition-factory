@@ -42,7 +42,7 @@ export function addDrawDefinition({
   const { flightProfile } = getFlightProfile({ event });
   const flightConflict =
     flightDefinition &&
-    !!flightProfile?.find(
+    !!flightProfile?.flights?.find(
       (flight) =>
         flight.flightNumber === flightDefinition.flightNumber &&
         flight.drawId !== drawDefinition.drawId
