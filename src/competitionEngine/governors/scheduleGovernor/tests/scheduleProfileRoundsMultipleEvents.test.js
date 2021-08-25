@@ -2,11 +2,18 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { MISSING_TOURNAMENT_ID } from '../../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+
+const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
+const hasSchedule = ({ schedule }) => {
+  const matchUpScheduleKeys = Object.keys(schedule)
+    .filter((key) => scheduleAttributes.includes(key))
+    .filter((key) => schedule[key]);
+  return !!matchUpScheduleKeys.length;
+};
 
 it('can auto schedule multiple events at multiple venues', () => {
   const venueProfiles = [
@@ -20,7 +27,7 @@ it('can auto schedule multiple events at multiple venues', () => {
       venueName: 'venue 2',
       startTime: '08:00',
       endTime: '20:00',
-      courtsCount: 4,
+      courtsCount: 2,
     },
   ];
 
@@ -47,10 +54,6 @@ it('can auto schedule multiple events at multiple venues', () => {
 
   competitionEngine.setState(tournamentRecord);
   const { tournamentId } = tournamentRecord;
-
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
-  });
 
   let { competitionParticipants } =
     competitionEngine.getCompetitionParticipants({
@@ -184,6 +187,14 @@ it('can auto schedule multiple events at multiple venues', () => {
   expect(schedulingProfile[0].venues[1].rounds[0].eventId).toEqual(eventIds[1]);
   expect(schedulingProfile[0].venues[1].rounds[0].drawId).toEqual(drawIds[1]);
 
+  result = competitionEngine.scheduleProfileRounds({
+    scheduleDates: [startDate],
+  });
+  expect(result.success).toEqual(true);
+  expect(result.requestConflicts).toEqual([]);
+
+  expect(result.noTimeMatchUpIds.length).toEqual(0);
+
   const { matchUps: singlesMatchUps } =
     competitionEngine.allCompetitionMatchUps({
       matchUpFilters: { matchUpTypes: [SINGLES] },
@@ -196,8 +207,9 @@ it('can auto schedule multiple events at multiple venues', () => {
     });
   expect(doublesMatchUps.length).toEqual(15);
 
-  result = competitionEngine.scheduleProfileRounds({
-    scheduleDates: [startDate],
-  });
-  expect(result.success).toEqual(true);
+  const singlesScheduled = singlesMatchUps.filter(hasSchedule);
+  const doublesScheduled = doublesMatchUps.filter(hasSchedule);
+
+  expect(singlesScheduled.length).toEqual(24);
+  expect(doublesScheduled.length).toEqual(12);
 });

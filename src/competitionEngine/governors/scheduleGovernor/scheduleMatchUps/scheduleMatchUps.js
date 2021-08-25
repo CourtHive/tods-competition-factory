@@ -285,12 +285,7 @@ export function scheduleMatchUps({
                 matchUpId,
                 scheduledTime,
               });
-              if (result.success)
-                scheduledMatchUpIds.push({
-                  drawId,
-                  matchUpId,
-                  scheduledTime,
-                });
+              if (result.success) scheduledMatchUpIds.push(matchUpId);
 
               if (venueId) {
                 assignMatchUpVenue({

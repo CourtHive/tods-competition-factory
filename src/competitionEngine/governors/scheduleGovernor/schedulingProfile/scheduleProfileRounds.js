@@ -191,7 +191,7 @@ export function scheduleProfileRounds({
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
-        requestConflicts.push({ date, conflicts });
+        if (conflicts.length) requestConflicts.push({ date, conflicts });
       }
     }
   }
