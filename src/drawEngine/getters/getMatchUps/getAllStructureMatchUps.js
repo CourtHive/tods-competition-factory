@@ -130,7 +130,8 @@ export function getAllStructureMatchUps({
   // enables passing in seedAssignments rather than using structureSeedAssignments
   seedAssignments = seedAssignments || structureSeedAssignments;
 
-  const { structureId, structureName, stage, stageSequence } = structure;
+  const { structureId, structureName, stage, stageSequence, exitProfile } =
+    structure;
   const { drawId, drawName } = drawDefinition || {};
 
   // a collectionDefinition can be found as a propery of tieFormat
@@ -286,6 +287,7 @@ export function getAllStructureMatchUps({
         schedule,
         feedRound,
         roundName,
+        exitProfile,
         structureId,
         matchUpTieId,
         matchUpStatus,
@@ -295,7 +297,7 @@ export function getAllStructureMatchUps({
         drawPositionsRange,
       },
       context,
-      makeDeepCopy(matchUp, true)
+      makeDeepCopy(matchUp, true, true)
     );
 
     if (matchUpWithContext.tieMatchUps) {
