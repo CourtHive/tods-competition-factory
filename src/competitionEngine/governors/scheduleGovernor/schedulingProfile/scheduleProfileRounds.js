@@ -1,4 +1,5 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
@@ -6,12 +7,14 @@ import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
+import { addNotice, getTopics } from '../../../../global/globalState';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
 import { isPowerOf2 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { AUDIT } from '../../../../constants/topicConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
@@ -197,6 +200,28 @@ export function scheduleProfileRounds({
   const scheduledDates = dateSchedulingProfiles.map(
     ({ scheduleDate }) => scheduleDate
   );
+
+  const autoSchedulingAudit = {
+    timeStamp: Date.now(),
+    schedulingProfile,
+    scheduledDates,
+    noTimeMatchUpIds,
+    scheduledMatchUpIds,
+    overLimitMatchUpIds,
+    requestConflicts,
+  };
+  const { topics } = getTopics();
+  if (topics.includes(AUDIT)) {
+    addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
+  } else {
+    const timeItem = {
+      itemType: 'autoSchedulingAudit',
+      itemValue: autoSchedulingAudit,
+    };
+    for (const tournamentRecord of Object.values(tournamentRecords)) {
+      addTournamentTimeItem({ tournamentRecord, timeItem });
+    }
+  }
 
   return {
     ...SUCCESS,
