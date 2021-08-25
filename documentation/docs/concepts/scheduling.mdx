@@ -23,8 +23,11 @@ Automated scheduling, along with direct assignment of venues and courts, depends
 ### dateAvailability
 
 A `dateAvailability` definition is an array of objects which define a `startTime` and `endTime` for court availability.
-When no date is specified the start and end times apply to all valid tournament dates; defining a `date` attribute scopes the
+
+:::note
+When no date is specified in a `dateAvailability` object the `startTime` and `endTime` apply to all valid tournament dates; defining a `date` attribute scopes the
 definition to a specific date.
+:::
 
 `dateAvailability` definitions can also contain an array of `bookings` objects which makes courts unavailable to auto-scheduling
 functions during specified blocks of time.

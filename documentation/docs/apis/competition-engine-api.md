@@ -803,7 +803,7 @@ const modifications = {
       courtName: 'Custom Court 1',
       dateAvailability: [
         {
-          date: '2020-01-01',
+          date: '2020-01-01', // if no date is provided then `startTime` and `endTime` will be considered default values
           startTime: '16:30',
           endTime: '17:30',
         },
