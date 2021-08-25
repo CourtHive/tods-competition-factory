@@ -28,8 +28,9 @@ export function bulkRescheduleMatchUps({
       matchUpIds,
       dryRun,
     });
-    notRescheduled.push(...result.notRescheduled);
     if (result.error) return result;
+    if (Array.isArray(result.notRescheduled))
+      notRescheduled.push(...result.notRescheduled);
 
     // this is a check in case something has been rescheduled multiple times in the same call
     const notRescheduledIds =
@@ -45,7 +46,7 @@ export function bulkRescheduleMatchUps({
 
     if (removeFromNotScheduledIds.length) {
       notRescheduled =
-        result?.notRescheduled.filter(
+        result?.notRescheduled?.filter(
           ({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)
         ) || [];
     }
