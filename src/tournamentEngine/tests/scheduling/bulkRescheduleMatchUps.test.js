@@ -189,9 +189,18 @@ it('can bulk reschedule matchUps', () => {
 
   result = competitionEngine.bulkRescheduleMatchUps({
     matchUpIds,
+    scheduleChange: { minutesChange: 800 },
+  });
+  expect(result.success).toEqual(true);
+  expect(result.rescheduled.length).toEqual(0);
+  expect(result.notRescheduled.length).toEqual(scheduledMatchUps.length);
+
+  result = competitionEngine.bulkRescheduleMatchUps({
+    matchUpIds,
     scheduleChange: { minutesChange: 30 },
   });
   expect(result.success).toEqual(true);
+  expect(result.rescheduled.length).toEqual(scheduledMatchUps.length);
 
   result = competitionEngine.bulkRescheduleMatchUps({
     matchUpIds,
