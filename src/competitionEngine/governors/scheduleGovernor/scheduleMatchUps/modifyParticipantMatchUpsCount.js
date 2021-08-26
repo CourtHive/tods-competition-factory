@@ -3,6 +3,8 @@ import { overlap } from '../../../../utilities';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
+// IMPORTANT: participant counts should only be incremented for ONE potential matchUp per draw
+// TODO: add ability to track which draw a potential has been incremented from...
 export function modifyParticipantMatchUpsCount({
   matchUpPotentialParticipantIds,
   individualParticipantProfiles,
@@ -20,12 +22,12 @@ export function modifyParticipantMatchUpsCount({
   // filteredPotentials exclude potentials if any of the participantIds
   // are present in individualParticipantIds which ensures that source match losers
   // do not get considered when incrementing or decrementing matchUp counters
-  const filterdPotentials = potentialParticipantIds
+  const filteredPotentials = potentialParticipantIds
     .filter((potentials) => !overlap(potentials, individualParticipantIds))
     .flat();
   const consideredParticipantIds = [
     ...individualParticipantIds,
-    ...filterdPotentials,
+    ...filteredPotentials,
   ];
 
   consideredParticipantIds.forEach((participantId) => {
