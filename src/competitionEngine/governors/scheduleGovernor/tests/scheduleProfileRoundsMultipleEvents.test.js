@@ -187,7 +187,9 @@ it('can auto schedule multiple events at multiple venues', () => {
   expect(schedulingProfile[0].venues[1].rounds[0].eventId).toEqual(eventIds[1]);
   expect(schedulingProfile[0].venues[1].rounds[0].drawId).toEqual(drawIds[1]);
 
-  // result = competitionEngine.validateSchedulingProfile({ schedulingProfile });
+  result = competitionEngine.getSchedulingProfileReport({ schedulingProfile });
+  expect(result.issues.length).toEqual(0);
+  expect(result.success).toEqual(true);
 
   result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],

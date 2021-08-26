@@ -1,4 +1,4 @@
-import { validateSchedulingProfile } from './validateScheudlingProfile';
+import { getSchedulingProfileReport } from './getSchedulingProfileIssues';
 import { getCompetitionDateRange } from './getCompetitionDateRange';
 import { credits } from '../../../fixtures/credits';
 import { matchUpActions } from './matchUpActions';
@@ -25,7 +25,7 @@ const queryGovernor = {
   getTournamentIds,
 
   competitionScheduleMatchUps,
-  validateSchedulingProfile,
+  getSchedulingProfileReport,
   allCompetitionMatchUps,
   competitionMatchUps,
   matchUpActions,
