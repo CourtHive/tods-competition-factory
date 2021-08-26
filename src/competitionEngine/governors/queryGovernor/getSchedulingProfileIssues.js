@@ -15,7 +15,7 @@ import {
  * @param {string[]} dates - optional - array of dates to validate
  * @returns
  */
-export function getSchedulingProfileReport({
+export function getSchedulingProfileIssues({
   tournamentRecords,
   schedulingProfile,
   dates = [],
@@ -69,14 +69,14 @@ export function getSchedulingProfileReport({
 
           const drawRounds = drawAggregator[drawHash];
           for (const round of drawRounds) {
-            const { structureId } = round;
+            const { structureId, roundNumber } = round;
 
             // find a matchUp representative of the round
             const roundMatchUp = matchUps?.find(
               (matchUp) => matchUp.structureId === structureId
             );
             // extract attributes to be used when checking order
-            const { /*exitProfile,*/ stage, stageSequence, roundNumber } =
+            const { /*exitProfile,*/ stage, stageSequence } =
               roundMatchUp || {};
             const stageOrder = orderedStages[stage];
 

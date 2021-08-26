@@ -3,7 +3,7 @@ import mocksEngine from '../..';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
-test('without uniqueParticipants: true draw entries will overlap', () => {
+test('with uniqueParticipants: false draw entries will overlap', () => {
   const drawProfiles = [
     { drawSize: 16, uniqueParticipants: false },
     { drawSize: 16, uniqueParticipants: false },
