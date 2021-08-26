@@ -140,8 +140,9 @@ export function generateTournamentRecord({
     venueIds = [];
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawId, eventId } = generateEventWithDraw({
+      const { drawId, eventId, error } = generateEventWithDraw({
         tournamentRecord,
+        participantsProfile,
         completeAllMatchUps,
         randomWinningSide,
         participants,
@@ -149,6 +150,7 @@ export function generateTournamentRecord({
         startDate,
         goesTo,
       });
+      if (error) return { error };
       drawIds.push(drawId);
       eventIds.push(eventId);
     }
@@ -162,6 +164,7 @@ export function generateTournamentRecord({
         drawIds: generatedDrawIds,
       } = generateEventWithFlights({
         tournamentRecord,
+        participantsProfile,
         completeAllMatchUps,
         randomWinningSide,
         eventProfile,

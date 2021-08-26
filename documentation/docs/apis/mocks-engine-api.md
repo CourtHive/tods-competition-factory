@@ -76,6 +76,7 @@ const drawProfiles = [
   {
     drawSize: 4,
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
+    uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
     drawType: ROUND_ROBIN,
     outcomes,
   },
