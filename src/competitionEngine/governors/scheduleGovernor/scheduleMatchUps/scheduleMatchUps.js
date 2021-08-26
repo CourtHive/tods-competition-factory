@@ -67,6 +67,9 @@ export function scheduleMatchUps({
   recoveryMinutes = 0,
 
   matchUpDailyLimits = {},
+  matchUpNotBeforeTimes = {},
+  matchUpPotentialParticipantIds = {},
+
   checkPotentialConflicts = true,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -79,6 +82,7 @@ export function scheduleMatchUps({
   )
     return { error: INVALID_VALUES };
 
+  const individualParticipantProfiles = {};
   const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
     tournamentRecords,
     nextMatchUps: true,
@@ -99,11 +103,6 @@ export function scheduleMatchUps({
       periodLength,
       venueIds,
     });
-
-  // built from existing matchUps scheduled on the date
-  const matchUpNotBeforeTimes = {};
-  const individualParticipantProfiles = {};
-  const matchUpPotentialParticipantIds = {};
 
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
