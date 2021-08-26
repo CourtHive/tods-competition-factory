@@ -12,6 +12,12 @@ module.exports = {
         'concepts/actions',
         'concepts/accessors',
         'concepts/context',
+        {
+          'Data Structures': [
+            'concepts/dataStructures',
+            'concepts/matchUpFormat',
+          ],
+        },
         'concepts/globalState',
         'concepts/matchUpFormat',
         {
