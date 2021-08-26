@@ -80,9 +80,7 @@ export function getStructureMatchUps({
       const isCollectionMatchUp = matchUp.collectionId;
       const collectionSidesAssigned =
         isCollectionMatchUp &&
-        matchUp.sides.reduce((assigned, side) => {
-          return side.participantId && assigned;
-        }, true);
+        matchUp.sides.every((side) => side.participantId);
 
       const roundFilterEquality = matchUp.roundNumber === roundFilter;
 
@@ -91,11 +89,9 @@ export function getStructureMatchUps({
         matchUp.drawPositions?.filter(Boolean).length === 2;
       const drawPositionsAssigned =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.reduce((assigned, drawPosition) => {
-          return (
-            participantAssignedDrawPositions.includes(drawPosition) && assigned
-          );
-        }, true);
+        matchUp.drawPositions?.every((drawPosition) =>
+          participantAssignedDrawPositions.includes(drawPosition)
+        );
 
       const byeAssignedDrawPositions = assignedPositions
         .filter((assignment) => assignment.bye)
@@ -103,11 +99,9 @@ export function getStructureMatchUps({
 
       const isByeMatchUp =
         !isCollectionMatchUp &&
-        matchUp.drawPositions?.reduce((isByeMatchUp, drawPosition) => {
-          return (
-            byeAssignedDrawPositions.includes(drawPosition) || isByeMatchUp
-          );
-        }, false);
+        matchUp.drawPositions?.find((drawPosition) =>
+          byeAssignedDrawPositions.includes(drawPosition)
+        );
 
       const validUpcomingMatchUpStatus = upcomingMatchUpStatuses.includes(
         matchUp.matchUpStatus

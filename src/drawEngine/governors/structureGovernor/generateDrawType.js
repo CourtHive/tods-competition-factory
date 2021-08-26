@@ -11,7 +11,7 @@ import structureTemplate from '../../generators/structureTemplate';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { playoff } from '../../generators/playoffStructures';
 import { addGoesTo } from '../matchUpGovernor/addGoesTo';
-import { powerOf2 } from '../../../utilities';
+import { isPowerOf2 } from '../../../utilities';
 import {
   generateRoundRobin,
   generateRoundRobinWithPlayOff,
@@ -79,7 +79,7 @@ export function generateDrawType(params = {}) {
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   Object.assign(params, { drawSize, matchUpType, tieFormat });
 
-  const validDoubleEliminationSize = powerOf2((drawSize * 2) / 3);
+  const validDoubleEliminationSize = isPowerOf2((drawSize * 2) / 3);
 
   // check that drawSize is a valid value
   const invalidDrawSize =
@@ -91,7 +91,7 @@ export function generateDrawType(params = {}) {
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
           drawType
         ) &&
-          !powerOf2(drawSize))));
+          !isPowerOf2(drawSize))));
 
   if (invalidDrawSize) {
     return { error: INVALID_DRAW_SIZE };

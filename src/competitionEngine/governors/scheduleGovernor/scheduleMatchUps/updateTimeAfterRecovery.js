@@ -7,6 +7,7 @@ import {
 
 export function updateTimeAfterRecovery({
   averageMatchUpMinutes,
+  formatChangeRecoveryMinutes,
   recoveryMinutes,
 
   matchUp,
@@ -23,19 +24,36 @@ export function updateTimeAfterRecovery({
         scheduleTime,
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
+  const typeChangeTimeAfterRecovery =
+    formatChangeRecoveryMinutes &&
+    (endTime
+      ? addMinutesToTimeString(
+          extractTime(endTime),
+          formatChangeRecoveryMinutes
+        )
+      : addMinutesToTimeString(
+          scheduleTime,
+          parseInt(averageMatchUpMinutes) +
+            parseInt(formatChangeRecoveryMinutes)
+        ));
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
   individualParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         timeAfterRecovery,
-        afterRecoveryTimes: [timeAfterRecovery],
+        typeChangeTimeAfterRecovery,
+        priorMatchUpType: matchUp.matchUpType,
       };
     } else {
+      const matchUpTypeChange =
+        individualParticipantProfiles[participantId].priorMatchUpType !==
+        matchUp.matchUpType;
+
+      // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
       individualParticipantProfiles[participantId].timeAfterRecovery =
-        timeAfterRecovery;
-      individualParticipantProfiles[participantId].afterRecoveryTimes.push(
-        timeAfterRecovery
-      );
+        matchUpTypeChange
+          ? typeChangeTimeAfterRecovery || timeAfterRecovery
+          : timeAfterRecovery;
     }
   });
   processNextMatchUps({

@@ -2,11 +2,13 @@ import { addDrawDefinition } from '../../tournamentEngine/governors/eventGoverno
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { generateRange, intersection, UUID } from '../../utilities';
+import { generateParticipants } from './generateParticipants';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -22,6 +24,7 @@ import {
 
 export function generateEventWithDraw({
   tournamentRecord,
+  participantsProfile,
   completeAllMatchUps,
   randomWinningSide,
   participants,
@@ -35,11 +38,13 @@ export function generateEventWithDraw({
     eventName = 'Generated Event',
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
+    uniqueParticipants = false,
     structureOptions,
     drawSize = 32,
     tieFormat,
     feedPolicy,
     automated,
+    gender,
     stage,
   } = drawProfile;
 
@@ -51,7 +56,7 @@ export function generateEventWithDraw({
   const newEvent = { eventId, eventName, eventType, category, tieFormat };
 
   let result = addEvent({ tournamentRecord, event: newEvent });
-  if (result.error) return { error: result.error };
+  if (result.error) return result;
 
   const { event } = result;
 
@@ -62,7 +67,40 @@ export function generateEventWithDraw({
     if (eventType === TEAM && participantType === TEAM) return true;
     return false;
   };
-  const participantIds = participants
+
+  let targetParticipants = participants;
+  if (uniqueParticipants) {
+    const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
+    const {
+      valuesInstanceLimit,
+      nationalityCodesCount,
+      nationalityCodeType,
+      nationalityCodes,
+      addressProps,
+      personIds,
+      inContext,
+    } = participantsProfile || {};
+    const { participants: unique } = generateParticipants({
+      participantsCount,
+      participantType,
+
+      sex: gender || participantsProfile?.sex,
+      valuesInstanceLimit,
+      nationalityCodesCount,
+      nationalityCodeType,
+      nationalityCodes,
+      addressProps,
+      personIds,
+
+      inContext,
+    });
+
+    result = addParticipants({ tournamentRecord, participants: unique });
+    if (result.error) return result;
+    targetParticipants = unique;
+  }
+
+  const participantIds = targetParticipants
     .filter(isEventParticipantType)
     .slice(0, participantsCount)
     .map((p) => p.participantId);
@@ -74,8 +112,10 @@ export function generateEventWithDraw({
     entryStage: stage,
     autoEntryPositions: false,
   });
-  if (result.error) return { error: result.error };
+  if (result.error) return result;
 
+  // alternates can still be taken from existing participants
+  // when unique participants are used for DIRECT_ACCEPTANCE entries
   const alternatesParticipantIds = participants
     .filter(isEventParticipantType)
     .slice(participantsCount)

@@ -57,8 +57,16 @@ export function addMatchUpScheduleItems({
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!schedule) return { error: MISSING_VALUE };
 
-  const { scheduledDate, scheduledTime, startTime, endTime, courtId, venueId } =
-    schedule;
+  const {
+    endTime,
+    courtId,
+    resumeTime,
+    scheduledDate,
+    scheduledTime,
+    startTime,
+    stopTime,
+    venueId,
+  } = schedule;
 
   if (scheduledDate !== undefined) {
     const result = addMatchUpScheduledDate({
@@ -67,7 +75,7 @@ export function addMatchUpScheduleItems({
       scheduledDate,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, scheduledDate };
   }
   if (scheduledTime !== undefined) {
     const result = addMatchUpScheduledTime({
@@ -76,7 +84,7 @@ export function addMatchUpScheduleItems({
       scheduledTime,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, scheduledTime };
   }
   if (startTime !== undefined) {
     const result = addMatchUpStartTime({
@@ -85,7 +93,7 @@ export function addMatchUpScheduleItems({
       startTime,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, startTime };
   }
   if (endTime !== undefined) {
     const result = addMatchUpEndTime({
@@ -94,7 +102,25 @@ export function addMatchUpScheduleItems({
       endTime,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, endTime };
+  }
+  if (stopTime !== undefined) {
+    const result = addMatchUpStopTime({
+      drawDefinition,
+      matchUpId,
+      stopTime,
+      disableNotice: true,
+    });
+    if (result?.error) return { error: result.error, stopTime };
+  }
+  if (resumeTime !== undefined) {
+    const result = addMatchUpResumeTime({
+      drawDefinition,
+      matchUpId,
+      resumeTime,
+      disableNotice: true,
+    });
+    if (result?.error) return { error: result.error, resumeTime };
   }
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
@@ -105,7 +131,7 @@ export function addMatchUpScheduleItems({
       courtId,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, courtId };
   } else if (venueId !== undefined) {
     const result = assignMatchUpVenue({
       tournamentRecord,
@@ -114,7 +140,7 @@ export function addMatchUpScheduleItems({
       venueId,
       disableNotice: true,
     });
-    if (result?.error) return result;
+    if (result?.error) return { error: result.error, venueId };
   }
 
   if (!disableNotice) {

@@ -23,12 +23,14 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
-      } else if (result.success) {
+      } else if (result.success || result.valid) {
         expect(
           [
             'reset',
             'devContext',
             'getTournamentIds',
+            'setSchedulingProfile',
+            'isValidSchedulingProfile',
             'removeUnlinkedTournamentRecords',
           ].includes(method)
         ).toEqual(true);
@@ -59,13 +61,14 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
         expect(result).not.toBeUndefined();
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
-      } else if (result.success) {
+      } else if (result.success || result.valid) {
         expect(
           [
-            'newTournamentRecord',
-            'generateDrawDefinition',
             'reset',
             'setTournamentId',
+            'newTournamentRecord',
+            'generateDrawDefinition',
+            'isValidSchedulingProfile',
           ].includes(method)
         ).toEqual(true);
       } else {

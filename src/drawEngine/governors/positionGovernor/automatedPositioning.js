@@ -58,7 +58,7 @@ export function automatedPositioning({
 
   if (seedingProfile === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
-    // BYEs must be placed first to insure lower seeds get BYEs
+    // BYEs must be placed first to ensure lower seeds get BYEs
     ({ error: byePositionError } = positionByes({
       drawDefinition,
       structure,

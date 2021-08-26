@@ -7,7 +7,7 @@ import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
-  const scheduleConflictMatchUpIds = [];
+  const scheduleConflictMatchUpIds = {};
 
   inContextDrawMatchUps.forEach((inContextMatchUp) => {
     const { matchUpId, structureId, drawPositions = [] } = inContextMatchUp;
@@ -62,6 +62,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           loserTo;
       }
 
+      // scheduleConflict in the following only applies to conflicts between subsequent matchUps WITHIN the same draw
       const timeAfterRecovery = inContextMatchUp.schedule?.timeAfterRecovery;
       if (timeAfterRecovery) {
         if (winnerTo?.schedule?.scheduledTime) {
@@ -69,8 +70,9 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             timeStringMinutes(winnerTo.schedule.scheduledTime) <
             timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
-            scheduleConflictMatchUpIds.push(winnerTo.matchUpId);
-            winnerTo.schedule.scheduleConflict = true;
+            scheduleConflictMatchUpIds[winnerTo.matchUpId] =
+              inContextMatchUp.matchUpId;
+            winnerTo.schedule.scheduleConflict = inContextMatchUp.matchUpId;
           }
         }
         if (loserTo?.schedule?.scheduledTime) {
@@ -78,8 +80,9 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
             timeStringMinutes(winnerTo.schedule.scheduledTime) <
             timeStringMinutes(timeAfterRecovery);
           if (scheduleConflict) {
-            scheduleConflictMatchUpIds.push(loserTo.matchUpId);
-            loserTo.schedule.scheduleConflict = true;
+            scheduleConflictMatchUpIds[loserTo.matchUpId] =
+              inContextMatchUp.matchUpId;
+            loserTo.schedule.scheduleConflict = inContextMatchUp.matchUpId;
           }
         }
       }
@@ -113,10 +116,15 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
     }
   });
 
-  if (scheduleConflictMatchUpIds.length) {
+  if (Object.keys(scheduleConflictMatchUpIds).length) {
     inContextDrawMatchUps.forEach((inContextMatchUp) => {
-      if (scheduleConflictMatchUpIds.includes(inContextMatchUp.matchUpId))
-        inContextMatchUp.schedule.scheduleConflict = true;
+      if (
+        Object.keys(scheduleConflictMatchUpIds).includes(
+          inContextMatchUp.matchUpId
+        )
+      )
+        inContextMatchUp.schedule.scheduleConflict =
+          scheduleConflictMatchUpIds[inContextMatchUp.matchUpId];
     });
   }
 

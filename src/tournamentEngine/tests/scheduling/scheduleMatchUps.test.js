@@ -39,7 +39,7 @@ setSubscriptions({
   },
 });
 
-// this is necessary to insure that at least one millisecond has passed between modifications
+// this is necessary to ensure that at least one millisecond has passed between modifications
 async function forceDelay(delay = 10) {
   return new Promise((resolve) => setTimeout(() => resolve(), delay));
 }

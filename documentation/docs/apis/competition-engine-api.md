@@ -30,6 +30,7 @@ if (!error) {
     tournamentId,
     eventId,
     drawDefinition,
+    flight, // optional - pass flight definition object for integrity check
   });
 }
 ```
@@ -629,6 +630,8 @@ const { tournamentId, tournaentRecords } = competition.getState({
 
 ## getSchedulingProfile
 
+Returns a `schedulingProfile` (if present). Checks the integrity of the profile to account for any `venues` or `drawDefinitions` which have been deleted.
+
 ```js
 const { schedulingProfile } = competitionEngine.getSchedulingProfile();
 ```
@@ -645,10 +648,31 @@ const { courts, venues } = competitionEngine.getVenuesAndCourts();
 
 ---
 
+## getVenuesReport
+
+Returns a `venueReports` array which provides details for each targt `venue` for targt date(s).
+
+```js
+const { venuesReport } = competitionEngine.getVenuesReport({
+  dates, // optional array of target dates
+  venueIds, // optional array of target venueIds
+});
+
+const {
+  availableCourts, // how many courts are available for date
+  availableMinutes, // total courts minutes available for date
+  scheduledMinutes, // minutes of court time that are scheduled for matchUps
+  scheduledMatchUpsCount, // number of scheduled matchUps
+  percentUtilization, // percent of available minutes utilized by scheduled matchUps
+} = venuesReport[0].venueReport[date];
+```
+
+---
+
 ## isValidSchedulingProfile
 
 ```js
-const isValid = competitionEngine.isValidSchedulingProfile({
+const { valid, error } = competitionEngine.isValidSchedulingProfile({
   schedulingProfile,
 });
 ```
@@ -779,7 +803,7 @@ const modifications = {
       courtName: 'Custom Court 1',
       dateAvailability: [
         {
-          date: '2020-01-01',
+          date: '2020-01-01', // if no date is provided then `startTime` and `endTime` will be considered default values
           startTime: '16:30',
           endTime: '17:30',
         },
@@ -890,7 +914,7 @@ competitionEngine.scheduleMatchUps({
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
   venueIds, // optional - defaults to all known; if a single venueId is provided then all matchUps will be scheduled for that venue
-  matchUpIds, // array of matchUpIds; if no schedulingProfile provided will be auto-sorted by draw size and roundNumbers
+  matchUpIds, // array of matchUpIds; if no schedulingProfile is present will be auto-sorted by draw size and roundNumbers
   periodLength = 30, // optional - size of scheduling blocks
   averageMatchUpMinutes = 90, // optional - defaults to 90
   recoveryMinutes = 0, // optional - amount of time participants are given to recover between matchUps
@@ -906,12 +930,20 @@ competitionEngine.scheduleMatchUps({
 Auto-schedules all rounds which have been specified in a `schedulingProfile` which has been saved to the tournamentRecord using `competitionEngine.setSchedulingProfile`.
 
 ```js
-competitionEngine.scheduleProfileRounds({
+const result = competitionEngine.scheduleProfileRounds({
   scheduleDates, // optional array of dates to schedule
   periodLength = 30, // optional - size of scheduling blocks
 
   checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
 });
+
+const {
+  scheduledDates, // dates for which matchUps have been scheduled
+  scheduledMatchUpIds, // array of matchUpIds which have been scheduled
+  noTimeMatchUpIds, // array of matchUpids which have NOT been scheduled
+  overLimitMatchUpIds, // matchUps not scheduled because of participant daily limits
+  requestConflicts, // array of { date, conflicts } objects for each date in schedulingProfile
+} = result;
 ```
 
 ---

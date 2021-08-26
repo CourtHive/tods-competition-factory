@@ -2,6 +2,7 @@ import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
+import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import { REFEREE, SCORE } from '../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
 import {
@@ -10,7 +11,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find(
@@ -867,11 +867,11 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(1);
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
-  expect(targetMatchUp.winningSide).toEqual(undefined);
+  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.winningSide).toEqual(1);
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(1);

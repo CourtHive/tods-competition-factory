@@ -29,8 +29,12 @@ export function bulkRescheduleMatchUps({
       dryRun,
     });
     if (result.error) return result;
+    if (Array.isArray(result.notRescheduled))
+      notRescheduled.push(...result.notRescheduled);
 
-    const notRescheduledIds = notRescheduled.map(({ matchUpId }) => matchUpId);
+    // this is a check in case something has been rescheduled multiple times in the same call
+    const notRescheduledIds =
+      result.notRescheduled?.map(({ matchUpId }) => matchUpId) || [];
     const removeFromNotScheduledIds = [];
     result.rescheduled?.forEach((matchUp) => {
       const { matchUpId } = matchUp;
@@ -41,9 +45,10 @@ export function bulkRescheduleMatchUps({
     });
 
     if (removeFromNotScheduledIds.length) {
-      notRescheduled = notRescheduled.filter(
-        ({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)
-      );
+      notRescheduled =
+        result?.notRescheduled?.filter(
+          ({ matchUpId }) => !removeFromNotScheduledIds.includes(matchUpId)
+        ) || [];
     }
   }
 

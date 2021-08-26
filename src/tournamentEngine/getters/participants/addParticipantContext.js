@@ -7,6 +7,7 @@ import { makeDeepCopy } from '../../../utilities';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES } from '../../../constants/matchUpTypes';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function addParticipantContext(params) {
   const participantIdsWithConflicts = [];
@@ -147,7 +148,7 @@ export function addParticipantContext(params) {
       });
     };
 
-    // iterate through flights to insure that draw entries are captured if drawDefinitions have not yet been generated
+    // iterate through flights to ensure that draw entries are captured if drawDefinitions have not yet been generated
     const drawIdsWithDefinitions =
       event.drawDefinitions?.map(({ drawId }) => drawId) || [];
     eventInfo._flightProfile?.flights?.forEach((flight) => {
@@ -198,7 +199,8 @@ export function addParticipantContext(params) {
       });
       if (scheduleConflicts?.length) {
         participant.scheduleConflicts = scheduleConflicts;
-        participantIdsWithConflicts.push(participant.participantId);
+        if (!participantIdsWithConflicts.includes(participant.participantId))
+          participantIdsWithConflicts.push(participant.participantId);
       }
     });
   });
@@ -474,41 +476,75 @@ function annotateParticipant({
   const allParticipantMatchUps = participantMatchUps.concat(
     participantPotentialMatchUps
   );
-  if (scheduleAnalysis?.scheduledMinutesDifference) {
-    const { scheduledMinutesDifference } = scheduleAnalysis;
-    if (!isNaN(scheduledMinutesDifference)) {
-      const { scheduledMatchUps } = participantScheduledMatchUps({
-        matchUps: allParticipantMatchUps,
-      });
 
-      Object.keys(scheduledMatchUps).forEach((date) => {
-        let lastScheduledTime;
-        scheduledMatchUps[date].forEach((matchUp) => {
-          const {
-            schedule: { scheduledTime },
-            matchUpId,
-          } = matchUp;
-          if (lastScheduledTime) {
-            if (scheduledTime) {
-              const minutesDifference =
-                timeStringMinutes(scheduledTime) -
-                timeStringMinutes(lastScheduledTime);
-              if (minutesDifference >= scheduledMinutesDifference) {
-                scheduleConflicts.push(matchUpId);
-              }
+  // scheduledMatchUps are a participant's matchUps separated by date and sorted by scheduledTime
+  const { scheduledMatchUps } = participantScheduledMatchUps({
+    matchUps: allParticipantMatchUps,
+  });
+  const { scheduledMinutesDifference } = scheduleAnalysis || {};
+
+  Object.keys(scheduledMatchUps).forEach((date) => {
+    scheduledMatchUps[date].forEach((matchUp, i) => {
+      const {
+        schedule: {
+          scheduledTime,
+          timeAfterRecovery,
+          typeChangeTimeAfterRecovery,
+        },
+        matchUpStatus,
+        matchUpId,
+      } = matchUp;
+
+      // matchUps with { matchUpStatus: BYE } are ignored
+      if (scheduledTime && matchUpStatus !== BYE) {
+        const scheduledMinutes = timeStringMinutes(scheduledTime);
+        // each matchUp only considers conflicts with matchUps which occur at the same or later scheduledTime
+        const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
+
+        for (const consideredMatchUp of matchUpsToConsider) {
+          // ignore { matchUpStatus: BYE } and matchUps which are unscheduled
+          if (
+            matchUpStatus !== BYE &&
+            consideredMatchUp.schedule?.scheduledTime
+          ) {
+            // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery
+            const typeChange =
+              matchUp.matchUpType !== consideredMatchUp.matchUpType;
+            const notBeforeTime = typeChange
+              ? typeChangeTimeAfterRecovery || timeAfterRecovery
+              : timeAfterRecovery;
+
+            // if two matchUps are both potentials and both part of the same draw they cannot be considered in conflict
+            const sameDraw = matchUp.drawId === consideredMatchUp.drawId;
+            const bothPotential =
+              matchUp.potential && consideredMatchUp.potential;
+
+            const nextMinutes = timeStringMinutes(
+              consideredMatchUp.schedule.scheduledTime
+            );
+            const minutesDifference = nextMinutes - scheduledMinutes;
+
+            // Conflicts can be determined in two ways:
+            // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
+            // 2. A scheduledTime occurring before a prior matchUps notBeforeTime (timeAfterRecovery)
+            const timeOverlap =
+              scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
+                ? minutesDifference <= scheduledMinutesDifference
+                : timeStringMinutes(notBeforeTime) >
+                  timeStringMinutes(consideredMatchUp.schedule.scheduledTime);
+
+            // if there is a time overlap capture both the prior matchUpId and the conflicted matchUpId
+            if (timeOverlap && !(bothPotential && sameDraw)) {
+              scheduleConflicts.push({
+                priorScheduledMatchUpId: consideredMatchUp.matchUpId,
+                matchUpIdWithConflict: matchUpId,
+              });
             }
           }
-          lastScheduledTime = scheduledTime;
-        });
-      });
-    }
-  } else {
-    allParticipantMatchUps.forEach((matchUp) => {
-      if (matchUp.schedule?.scheduleConflict) {
-        scheduleConflicts.push(matchUp.matchUpId);
+        }
       }
     });
-  }
+  });
 
   participantDraws?.forEach((draw) => {
     const drawMatchUps =

@@ -155,6 +155,8 @@ it('can clear scheduled matchUps', () => {
 
   expect(participantsWithMultipleScheduledMatchUps).toBeGreaterThan(1);
 
+  result = competitionEngine.getVenuesReport();
+
   result = competitionEngine.clearScheduledMatchUps();
   expect(result.success).toEqual(true);
 

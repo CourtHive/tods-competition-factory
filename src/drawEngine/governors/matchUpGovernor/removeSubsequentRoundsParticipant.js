@@ -68,6 +68,7 @@ function removeDrawPosition({
   targetDrawPosition,
   positionAssignments,
 }) {
+  // UNDEFINED drawPositions
   matchUp.drawPositions = (matchUp.drawPositions || []).map((drawPosition) =>
     drawPosition === targetDrawPosition ? undefined : drawPosition
   );

@@ -3,6 +3,8 @@ title: Scheduling
 ---
 
 import RenderJSON from '../components/RenderJSON';
+
+import tournamentParticipants from './assets/tournamentParticipants.json';
 import dateAvailability from './assets/dateAvailability.json';
 import SchedulingProfile from './assets/schedulingProfile.json';
 import SchedulingPolicy from './assets/schedulingPolicy.json';
@@ -21,8 +23,11 @@ Automated scheduling, along with direct assignment of venues and courts, depends
 ### dateAvailability
 
 A `dateAvailability` definition is an array of objects which define a `startTime` and `endTime` for court availability.
-When no date is specified the start and end times apply to all valid tournament dates; defining a `date` attribute scopes the
+
+:::note
+When no date is specified in a `dateAvailability` object the `startTime` and `endTime` apply to all valid tournament dates; defining a `date` attribute scopes the
 definition to a specific date.
+:::
 
 `dateAvailability` definitions can also contain an array of `bookings` objects which makes courts unavailable to auto-scheduling
 functions during specified blocks of time.
@@ -50,9 +55,36 @@ To support the use of the Garman formula for scheduling `matchUps` from differen
 `competitionEngine` makes use of a `schedulingProfile` to define the order of `rounds` of structures within `drawDefinitions`
 to be scheduled on specific days, and then iteratively calls the Garman formula.
 
-The `schedulingProfile` is an array of profiles for the `dates` to be scheduled; it is stored as an `extension` attached to the tournament record.
+The `schedulingProfile` is an array of profiles for the `scheduleDates` to be scheduled; it is stored as an `extension` attached to the tournament record.
 `competitionEngine` provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached
 via `setSchedulingProfile()`.
+
+Each `scheduleDate` profile object must include the attributes `{ scheduleDate, venues }`, and the `venues` attribute must be an array of venue profile objects
+which include the attributes `{ venueId, rounds }`, where `rounds` is an array of objects with the following attributes:
+
+```js
+[
+  {
+    // required
+    tournamentId,
+    eventId,
+    drawId,
+    structureId,
+    roundNumber,
+
+    //optional
+    roundSegment: {
+      segmentNumber, // segment which is to be scheduled
+      segmentsCount, // number of segments in a round
+    },
+  },
+];
+```
+
+### Example
+
+In this example additional attributes have been added by the client applications for display purposes.
+They are not required for automated scheduling to function.
 
 <RenderJSON
   data={SchedulingProfile}
@@ -112,14 +144,14 @@ competitionEngine.scheduleProfileRounds({
 });
 ```
 
-## pseudocode
+### pseudocode
 
 Scheduling operates with an array of all competition matchUps "inContext".
 After building up a mapping of matchUpIds to scheduleTimes, the assignments are made.
 
 1. Loop through `scheduleDates` ...
 2. Loop through venues for current `scheduleDate` ...
-3. Insure `rounds` specified for `scheduleDate` are sorted as specified
+3. ensure `rounds` specified for `scheduleDate` are sorted as specified
 4. Generate ordered array of `matchUpIds` derived from specified `rounds`
 5. Group ordered `matchUpIds` by **averageMatchUpMinutes|recoveryMinutes**
 6. Loop through groups of `matchUpIds` ...
@@ -131,3 +163,47 @@ After building up a mapping of matchUpIds to scheduleTimes, the assignments are 
     - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
     - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NO_SCHEDULE }` conflicts
 12. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
+
+## Schedule Conflict Reporting
+
+Schedule Conflicts are reported for participants that are returned from `tournamentEngine.getTournamentParticipants`
+or `competitionEngine.getCompetitionParticipants`.
+
+The attribute `scheduleConflicts` is an array of objects containing pairs of `matchUpIds`
+that have been scheduled at times that conflict with each other based on either the **scheduling policy**
+that is in force, or a specified `scheduledMinutesDifference`, which overrides the default behavior.
+
+:::note
+`matchUpIds` in the `scheduleConflicts` array may refer to either a participant's `matchUps` or their `potentialMatchUps` which are defined as those `matchUps`
+in which they will appear if they either win or lose `matchUps` in which they are already present.
+:::
+
+A **scheduling policy** defines average match times for different scoring formats as well as recovery times between **_matchUpTypes_**.
+A conflict occurs when a matchUp's `scheduledTime + averageMinutes + recoveryMinutes`, or `endTime + recoveryMinutes` (if available) is greater than the `scheduledTime` of any other participant `matchUp`.
+
+```js
+const {
+  tournamentParticipants,
+  participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
+} = tournamentEngine.getTournamentParticipants({
+  inContext: true,
+
+  scheduleAnalysis: {
+    scheduledMinutesDifference: 60, // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+  },
+  withStatistics,
+  withOpponents,
+  withMatchUps,
+});
+```
+
+### Example participants with schedule conflicts
+
+<RenderJSON
+  data={tournamentParticipants}
+  root={'tournamentParticipants'}
+  colorScheme={'summerfruit'}
+  invertTheme={true}
+  expandRoot={true}
+  expandToLevel={1}
+/>

@@ -1,10 +1,12 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { UUID } from '../../utilities';
 
@@ -20,6 +22,7 @@ import {
 
 export function generateEventWithFlights({
   tournamentRecord,
+  participantsProfile,
   completeAllMatchUps,
   randomWinningSide,
   eventProfile,
@@ -29,7 +32,7 @@ export function generateEventWithFlights({
     ballType,
     category,
     discipline,
-    drawProfiles,
+    drawProfiles = [],
     eventName = 'Generated Event',
     eventLevel,
     eventType = SINGLES,
@@ -38,11 +41,13 @@ export function generateEventWithFlights({
     tieFormat: eventTieFormat,
   } = eventProfile;
 
+  let generateUniqueParticipants;
   const stageParticipantsCount = drawProfiles.reduce(
     (stageParticipantsCount, drawProfile) => {
       const stage = drawProfile.stage || MAIN;
       const participantsCount =
         (drawProfile.drawSize || 0) - (drawProfile.qualifyingPositions || 0);
+      if (drawProfile.uniqueParticipants) generateUniqueParticipants = true;
       if (!Object.keys(stageParticipantsCount).includes(stage))
         stageParticipantsCount[stage] = 0;
       stageParticipantsCount[stage] = Math.max(
@@ -51,7 +56,7 @@ export function generateEventWithFlights({
       );
       return stageParticipantsCount;
     },
-    []
+    {}
   );
 
   const eventParticipantType =
@@ -64,11 +69,43 @@ export function generateEventWithFlights({
   const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
 
+  let targetParticipants = participants;
+  if (generateUniqueParticipants) {
+    const {
+      valuesInstanceLimit,
+      nationalityCodesCount,
+      nationalityCodeType,
+      nationalityCodes,
+      addressProps,
+      personIds,
+      inContext,
+    } = participantsProfile || {};
+
+    const { participants: unique } = generateParticipants({
+      participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
+      participantType: eventParticipantType,
+      sex: gender,
+
+      valuesInstanceLimit,
+      nationalityCodesCount,
+      nationalityCodeType,
+      nationalityCodes,
+      addressProps,
+      personIds,
+
+      inContext,
+    });
+
+    let result = addParticipants({ tournamentRecord, participants: unique });
+    if (result.error) return result;
+    targetParticipants = unique;
+  }
+
   const stageParticipants = {
-    QUALIFYING: participants
+    QUALIFYING: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
       .slice(0, qualifyingParticipantsCount),
-    MAIN: participants
+    MAIN: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
       .slice(
         qualifyingParticipantsCount,
@@ -133,77 +170,72 @@ export function generateEventWithFlights({
     }
   }
 
-  let generationError;
   const drawIds = [];
   const { flightProfile } = getFlightProfile({ event });
-  const success = flightProfile?.flights?.every((flight, index) => {
-    const { drawId, drawSize, stage, drawName, drawEntries } = flight;
-    const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
-    const automated = drawProfiles[index].automated;
-    const matchUpFormat = drawProfiles[index].matchUpFormat;
-    const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
 
-    let result = generateDrawDefinition({
-      stage,
-      drawId,
-      event,
-      drawSize,
-      drawType,
-      drawName,
-      automated,
-      tieFormat,
-      drawEntries,
-      participants,
-      matchUpFormat,
-      matchUpType: eventType,
-      tournamentRecord,
-    });
+  if (Array.isArray(flightProfile?.flights)) {
+    for (const [index, flight] of flightProfile.flights.entries()) {
+      const { drawId, drawSize, stage, drawName, drawEntries } = flight;
+      const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
+      const automated = drawProfiles[index].automated;
+      const matchUpFormat = drawProfiles[index].matchUpFormat;
+      const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
 
-    const { drawDefinition, error } = result;
-    if (error) {
-      generationError = error;
-      return false;
-    }
-
-    result = addDrawDefinition({
-      drawDefinition,
-      event,
-    });
-    if (result.error) return false;
-    drawIds.push(flight.drawId);
-
-    const manual = automated === false;
-    if (!manual && completeAllMatchUps) {
-      const result = completeDrawMatchUps({
-        randomWinningSide,
+      let result = generateDrawDefinition({
+        matchUpType: eventType,
+        tournamentRecord,
         matchUpFormat,
-        drawDefinition,
+        drawEntries,
+        automated,
+        tieFormat,
+        drawSize,
+        drawType,
+        drawName,
+        stage,
+        drawId,
+        event,
       });
-      if (result.error) return false;
-      if (drawProfiles[index].drawType === ROUND_ROBIN_WITH_PLAYOFF) {
-        const mainStructure = drawDefinition.structures.find(
-          (structure) => structure.stage === MAIN
-        );
-        let result = automatedPlayoffPositioning({
-          structureId: mainStructure.structureId,
-          tournamentRecord,
-          drawDefinition,
-          event,
-        });
-        if (result.error) return false;
 
-        result = completeDrawMatchUps({
+      const { drawDefinition, error } = result;
+      if (error) return { error };
+
+      result = addDrawDefinition({
+        drawDefinition,
+        event,
+      });
+      if (result.error) return result;
+      drawIds.push(flight.drawId);
+
+      const manual = automated === false;
+      if (!manual && completeAllMatchUps) {
+        const result = completeDrawMatchUps({
           randomWinningSide,
           matchUpFormat,
           drawDefinition,
         });
-        if (result.error) return false;
+        if (result.error) return result;
+        if (drawProfiles[index].drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+          const mainStructure = drawDefinition.structures.find(
+            (structure) => structure.stage === MAIN
+          );
+          let result = automatedPlayoffPositioning({
+            structureId: mainStructure.structureId,
+            tournamentRecord,
+            drawDefinition,
+            event,
+          });
+          if (result.error) return result;
+
+          result = completeDrawMatchUps({
+            randomWinningSide,
+            matchUpFormat,
+            drawDefinition,
+          });
+          if (result.error) return result;
+        }
       }
     }
-    return true;
-  });
-
-  if (!success) return { error: generationError || 'Draws not generated' };
+  }
 
   return { drawIds, eventId };
 }

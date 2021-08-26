@@ -1,8 +1,8 @@
 /*
   Manages entries into drawDefinitions
-  Insures entries do not exceed drawPositions specified for stage
-  Insures entries may not be removed if participants are active in draw
-  Insures entries may not be removed if draw stage is active
+  ensures entries do not exceed drawPositions specified for stage
+  ensures entries may not be removed if participants are active in draw
+  ensures entries may not be removed if draw stage is active
 */
 
 import { addDrawEntry, addDrawEntries } from './addDrawEntries';

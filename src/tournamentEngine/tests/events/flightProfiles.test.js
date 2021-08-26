@@ -2,7 +2,10 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
-import { EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
+import {
+  DRAW_ID_EXISTS,
+  EXISTING_PROFILE,
+} from '../../../constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -107,8 +110,18 @@ it('can create and return flighProfiles with drawDefinitions', () => {
       drawId: flight.drawId,
       drawEntries: flight.drawEntries,
     });
-    result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+    result = tournamentEngine.addDrawDefinition({
+      eventId,
+      drawDefinition,
+      flight,
+    });
     expect(result.success).toEqual(true);
+    result = tournamentEngine.addDrawDefinition({
+      eventId,
+      drawDefinition,
+      flight,
+    });
+    expect(result.error).toEqual(DRAW_ID_EXISTS);
   });
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));

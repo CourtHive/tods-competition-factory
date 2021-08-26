@@ -19,6 +19,7 @@ export function matchUpActions({
   )
     return { error: INVALID_VALUES };
 
+  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORDS };
 

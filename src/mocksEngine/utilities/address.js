@@ -15,7 +15,7 @@ export function cityMocks({ count = 1, participantsCount = 32 } = {}) {
   const shuffledCities = shuffleArray(citiesData);
   const candidateCities = shuffledCities.slice(0, count);
 
-  // the following insures that all of the generated items are used at least once
+  // the following ensures that all of the generated items are used at least once
   const cities = generateRange(0, participantsCount).map((i) =>
     i < count ? candidateCities[i] : randomMember(candidateCities)
   );
@@ -29,7 +29,7 @@ export function stateMocks({ count = 1, participantsCount = 32 } = {}) {
     .map((state) => Object.keys(state))
     .flat();
 
-  // the following insures that all of the generated items are used at least once
+  // the following ensures that all of the generated items are used at least once
   const states = generateRange(0, participantsCount).map((i) =>
     i < count ? candidateStates[i] : randomMember(candidateStates)
   );
@@ -43,7 +43,7 @@ export function postalCodeMocks({ count = 1, participantsCount = 32 } = {}) {
       .join('')
   );
 
-  // the following insures that all of the generated items are used at least once
+  // the following ensures that all of the generated items are used at least once
   const postalCodes = generateRange(0, participantsCount).map((i) =>
     i < count ? candidatePostalCodes[i] : randomMember(candidatePostalCodes)
   );

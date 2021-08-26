@@ -72,7 +72,7 @@ export function getSeedBlocks({ participantsCount, cluster }) {
   }
 
   // generate an array of seed block sizes... [1, 1, 2, 4, 8, 16...]
-  // 20 insures a more than adequate number of seedBlocks!
+  // 20 ensures a more than adequate number of seedBlocks!
   const seedBlockSizes = generateRange(0, 20).map((x) => Math.pow(2, x));
   seedBlockSizes.unshift(1);
   // the number of seedBlocks is given by the index of drawSize in seedBlockSizes

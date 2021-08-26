@@ -19,7 +19,7 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
     getTournamentDates(tournamentRecord);
   if (error) return { error };
 
-  // use extractDate() to insure that only the YYYY-MM-DD part of date is used for comparison
+  // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const newEventStartDate = new Date(extractDate(startDate));
   if (
     newEventStartDate < tournamentStartDate ||
@@ -27,7 +27,7 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
   )
     return { error: INVALID_DATE };
 
-  // use extractDate() to insure that only the YYYY-MM-DD part of date is used for comparison
+  // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const eventEndDate = event.endDate && new Date(extractDate(event.endDate));
   if (eventEndDate && newEventStartDate > eventEndDate) {
     // if the new startDate is after an existing endDate set the endDate to the startDate
@@ -47,7 +47,7 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
     getTournamentDates(tournamentRecord);
   if (error) return { error };
 
-  // use extractDate() to insure that only the YYYY-MM-DD part of date is used for comparison
+  // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const newEventEndDate = new Date(extractDate(endDate));
   if (
     newEventEndDate < tournamentStartDate ||
@@ -55,7 +55,7 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
   )
     return { error: INVALID_DATE };
 
-  // use extractDate() to insure that only the YYYY-MM-DD part of date is used for comparison
+  // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const eventStartDate =
     event.startDate && new Date(extractDate(event.startDate));
   if (eventStartDate && newEventEndDate < eventStartDate) {
@@ -100,7 +100,7 @@ function getTournamentDates(tournamentRecord) {
     return { error: INVALID_TOURNAMENT_DATES };
   }
 
-  // use extractDate() to insure that only the YYYY-MM-DD part of date is used for comparison
+  // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   return {
     tournamentStartDate: new Date(extractDate(startDate)),
     tournamentEndDate: new Date(extractDate(endDate)),

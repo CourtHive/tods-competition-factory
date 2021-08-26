@@ -58,7 +58,7 @@ export function assignSeed({
   if (seedNumbers.includes(seedNumber)) {
     let success;
     seedAssignments.forEach((assignment) => {
-      // insure that this participantId is not assigned to any other seedNumber
+      // ensure that this participantId is not assigned to any other seedNumber
       if (
         assignment.participantId === participantId &&
         assignment.seedNumber !== seedNumber

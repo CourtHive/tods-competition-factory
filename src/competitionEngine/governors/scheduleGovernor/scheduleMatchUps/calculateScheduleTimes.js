@@ -105,7 +105,7 @@ export function calculateScheduleTimes({
   // Get an array of all matchUps scheduled for the date
   // some of them may have courts assigned and some may only have venueIds
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
-  const matchUpFilters = { scheduledDate: date };
+  const matchUpFilters = { scheduledDate: date, venueIds };
   const dateMatchUps =
     competitionScheduleMatchUps({
       tournamentRecords,

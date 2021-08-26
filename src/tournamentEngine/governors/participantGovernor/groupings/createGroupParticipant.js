@@ -14,7 +14,7 @@ import {
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { ADD_PARTICIPANTS } from '../../../../constants/topicConstants';
 
-// TODO: integrity check to insure that participantIds to add are participantType: INDIVIDUAL
+// TODO: integrity check to ensure that participantIds to add are participantType: INDIVIDUAL
 // would require that tournamentRecord be loaded in tournamentEngine
 
 export function createGroupParticipant({

@@ -25,4 +25,5 @@ it('returns eventData', () => {
       eventId: eventIds[0],
     });
   expect(generatedEventData.drawsData[0].structures.length).toEqual(2);
+  expect(generatedEventData.drawsData[0].updatedAt).not.toBeUndefined();
 });

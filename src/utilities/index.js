@@ -1,4 +1,4 @@
-export { nearestPowerOf2, nextPowerOf2, powerOf2, isOdd } from './math';
+export { nearestPowerOf2, nextPowerOf2, isPowerOf2, isOdd } from './math';
 export { attributeFilter } from './attributeFilter';
 export { generateTimeCode } from './timeCode';
 export { makeDeepCopy } from './makeDeepCopy';

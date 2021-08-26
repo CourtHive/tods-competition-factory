@@ -51,7 +51,8 @@ export function getSeedsCount({
 
   const seedsCountThresholds = policy.seedsCountThresholds;
   if (!seedsCountThresholds) return { error: MISSING_SEEDCOUNT_THRESHOLDS };
-  if (policy.drawSizeProgression) drawSizeProgression = true;
+  if (policy.drawSizeProgression !== undefined)
+    drawSizeProgression = policy.drawSizeProgression;
 
   const relevantThresholds = seedsCountThresholds.filter((threshold) => {
     return drawSizeProgression

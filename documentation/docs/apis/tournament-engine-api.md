@@ -67,6 +67,7 @@ if (!error) {
   const result = tournamentEngine.addDrawDefinition({
     eventId,
     drawDefinition,
+    flight, // optional - pass flight definition object for integrity check
   });
 }
 ```
@@ -320,7 +321,7 @@ tournamentEngine.addMatchUpStopTime({
 
 ## addParticipant
 
-Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to insure `participant.individualParticipantIds` are valid.
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
 
 ```js
 const participantId = UUID();
@@ -1598,8 +1599,12 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
 
 Takes a policyDefinition, drawSize and participantCount and returrns the number of seeds valid for the specified drawSize
 
+:::note
+`drawSizeProgression` will be overridden by a `{ drawSizeProgression }` value in a policyDefinition.
+:::
+
 ```js
-const { seedsCount, error } = getSeedsCount({
+const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
   policyDefinition: SEEDING_USTA,
   participantCount: 15,
@@ -1914,7 +1919,7 @@ tournamentEngine.devContext(true).modifyIndividualParticipantIds({
 
 ## modifyParticipant
 
-Modifies attributes of a participant with integrity checks to insure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
+Modifies attributes of a participant with integrity checks to ensure valid values for e.g. `{ participantType, participantRole }`. Adds participant if not found.
 
 ```js
 tournamentEngine.modifyParticipant({
@@ -1986,7 +1991,7 @@ const modifications = {
       courtName: 'Custom Court 1',
       dateAvailability: [
         {
-          date: '2020-01-01',
+          date: '2020-01-01', // if no date is provided then `startTime` and `endTime` will be considered default values
           startTime: '16:30',
           endTime: '17:30',
         },

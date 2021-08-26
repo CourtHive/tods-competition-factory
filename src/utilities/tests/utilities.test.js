@@ -27,7 +27,7 @@ import {
   subSort,
   overlap,
 } from '../arrays';
-import { isOdd, nextPowerOf2, powerOf2 } from '../math';
+import { isOdd, nextPowerOf2, isPowerOf2 } from '../math';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -203,10 +203,10 @@ test('formatDate supports multiple formats', () => {
 });
 
 test('miscellaneous math tests', () => {
-  let result = powerOf2(3);
+  let result = isPowerOf2(3);
   expect(result).toEqual(false);
 
-  result = powerOf2();
+  result = isPowerOf2();
   expect(result).toEqual(false);
 
   result = nextPowerOf2();

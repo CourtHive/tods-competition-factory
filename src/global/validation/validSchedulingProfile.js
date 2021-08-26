@@ -1,18 +1,28 @@
 import { getAllStructureMatchUps } from '../../drawEngine/getters/getMatchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
 import { getDrawStructures } from '../../drawEngine/getters/findStructure';
+import { isConvertableInteger, isPowerOf2 } from '../../utilities/math';
 import { isValidDateString } from '../../utilities/dateTime';
+
+import {
+  INVALID_VALUES,
+  VENUE_NOT_FOUND,
+} from '../../constants/errorConditionConstants';
 
 export function isValidSchedulingProfile({
   tournamentRecords,
   schedulingProfile,
 }) {
-  if (!Array.isArray(schedulingProfile)) return false;
+  if (!schedulingProfile) return { valid: true };
+
+  if (!Array.isArray(schedulingProfile))
+    return { valid: false, error: INVALID_VALUES };
 
   const { venueIds, tournamentsMap } = getAllRelevantSchedulingIds({
     tournamentRecords,
   });
 
+  let error;
   const isValid = schedulingProfile.every((dateSchedule) => {
     const { scheduleDate, venues } = dateSchedule;
     if (!isValidDateString(scheduleDate)) {
@@ -27,12 +37,21 @@ export function isValidSchedulingProfile({
         return false;
       }
       if (!venueIds.includes(venueId)) {
+        error = VENUE_NOT_FOUND;
         return false;
       }
       const validRounds = rounds.every((round) => {
-        if (!round) return false;
-        const { tournamentId, eventId, drawId, structureId, roundNumber } =
-          round;
+        if (!round) {
+          return false;
+        }
+        const {
+          tournamentId,
+          eventId,
+          drawId,
+          structureId,
+          roundNumber,
+          roundSegment,
+        } = round;
 
         const rounds =
           tournamentsMap[tournamentId] &&
@@ -40,15 +59,27 @@ export function isValidSchedulingProfile({
           tournamentsMap[tournamentId][eventId][drawId] &&
           tournamentsMap[tournamentId][eventId][drawId][structureId];
         const validRound = rounds?.includes(roundNumber);
-        return validRound;
+
+        const { segmentNumber, segmentsCount } = roundSegment || {};
+        const validSegment =
+          !roundSegment ||
+          (isConvertableInteger(segmentNumber) &&
+            isPowerOf2(segmentsCount) &&
+            segmentNumber <= segmentsCount);
+
+        return validRound && validSegment;
       });
-      if (!validRounds) return false;
+      if (!validRounds) {
+        return false;
+      }
 
       return true;
     });
     return validVenues;
   });
-  return isValid;
+
+  if (!isValid && !error) error = INVALID_VALUES;
+  return { valid: !!isValid, error };
 }
 
 export function tournamentRelevantSchedulingIds({

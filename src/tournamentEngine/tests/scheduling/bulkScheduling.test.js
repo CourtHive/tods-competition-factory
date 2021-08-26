@@ -167,10 +167,14 @@ test('recognizes scheduling conflicts', () => {
 
   ({ roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
-    expect(firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(true);
+    expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
+      'string'
+    );
   });
   roundMatchUps[2].forEach((secondRoundMatchUp) =>
-    expect(secondRoundMatchUp.schedule.scheduleConflict).toEqual(true)
+    expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual(
+      'string'
+    )
   );
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps({
@@ -201,8 +205,9 @@ test('recognizes scheduling conflicts', () => {
   );
 
   expect(
-    participantWithConflict.potentialMatchUps[0].schedule.scheduleConflict
-  ).toEqual(true);
+    typeof participantWithConflict.potentialMatchUps[0].schedule
+      .scheduleConflict
+  ).toEqual('string');
 
   let { participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
@@ -214,7 +219,7 @@ test('recognizes scheduling conflicts', () => {
 
   ({ participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 80 },
+      scheduleAnalysis: { scheduledMinutesDifference: 50 },
       withStatistics: true,
     }));
 

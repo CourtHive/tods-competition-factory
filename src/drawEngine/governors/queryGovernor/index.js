@@ -1,3 +1,13 @@
+import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
+import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
+import { getParticipantIdFinishingPositions } from './finishingPositions';
+import { positionActions } from './positionActions/positionActions';
+import { getParticipantIdMatchUps } from './participantIdMatchUps';
+import { findStructure } from '../../getters/findStructure';
+import { credits } from '../../../fixtures/credits';
+import { getExitProfiles } from './getExitProfile';
 import { matchUpActions } from './matchUpActions';
 import {
   generateTieMatchUpScore,
@@ -18,16 +28,6 @@ import {
   getAllDrawMatchUps,
   getDrawMatchUps,
 } from '../../getters/getMatchUps/drawMatchUps';
-
-import { credits } from '../../../fixtures/credits';
-import { findStructure } from '../../getters/findStructure';
-import { getParticipantIdMatchUps } from './participantIdMatchUps';
-import { positionActions } from './positionActions/positionActions';
-import { getParticipantIdFinishingPositions } from './finishingPositions';
-import { getMatchUpParticipantIds } from '../../accessors/participantAccessor';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getNextUnfilledDrawPositions } from './positionActions/getNextUnfilledDrawPositions';
-import { getEliminationDrawSize } from '../../getters/getEliminationDrawSize';
 
 /*
   return an array of all matchUps within a drawDefinition
@@ -67,6 +67,7 @@ const queryGovernor = {
   positionActions,
   getStructureSeedAssignments,
   getNextUnfilledDrawPositions,
+  getExitProfiles,
 
   getMatchUpContextIds,
   getMatchUpParticipantIds,

@@ -77,7 +77,7 @@ it('can add, query, amd remove personRequests across multiple tournaments', () =
 });
 
 it('can identify conflicts with person requests', () => {
-  // insure that tournament has exactly 16 participants
+  // ensure that tournament has exactly 16 participants
   // so that conflict can be assured for testing purposes
   const participantsCount = 16;
   const drawProfiles = [{ drawSize: participantsCount }];

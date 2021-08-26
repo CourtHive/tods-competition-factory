@@ -41,14 +41,14 @@ export function modifyEventEntries({
     .concat(...participantIdPairs)
     .flat(Infinity);
 
-  // insure all participants are present in the tournament record
+  // ensure all participants are present in the tournament record
   const invalidParticipantIds = incomingIndividualParticipantIds.filter(
     (participantId) => !individualParticipantIds.includes(participantId)
   );
   if (invalidParticipantIds.length)
     return { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds };
 
-  // insure all participantIdPairs have two individual participantIds
+  // ensure all participantIdPairs have two individual participantIds
   const invalidParticipantIdPairs = participantIdPairs.filter(
     (pair) => pair.length !== 2
   );

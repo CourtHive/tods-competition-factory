@@ -64,13 +64,6 @@ export function removeDoubleWalkover(params) {
         pairedPreviousMatchUp?.matchUpStatus
       ) || pairedPreviousMatchUp?.winningSide;
 
-    /*
-    console.log(matchUp.roundNumber, {
-      pairedPreviousWOWO,
-      pairedPreviousMatchUpComplete,
-    });
-    */
-
     const nextTargetData = positionTargets({
       matchUpId: winnerMatchUp.matchUpId,
       drawDefinition,
@@ -119,15 +112,23 @@ export function removeDoubleWalkover(params) {
       inContextDrawMatchUps,
     });
 
-    let mathcUpStatus =
-      noContextWinnerMatchUp?.matchUpStatus === WALKOVER && pairedPreviousWOWO
+    let matchUpStatus =
+      [WALKOVER, DOUBLE_WALKOVER].includes(
+        noContextWinnerMatchUp?.matchUpStatus
+      ) && pairedPreviousWOWO
         ? WALKOVER
         : TO_BE_PLAYED;
 
+    const removeScore = !pairedPreviousWOWO;
     let result = modifyMatchUpScore({
       ...params,
-      mathcUpStatus,
-      removeScore: !pairedPreviousWOWO,
+      matchUpStatus,
+      removeScore,
+      score: {
+        scoreStringSide1: '',
+        scoreStringSide2: '',
+        sets: undefined,
+      },
       removeWinningSide: true,
       matchUp: noContextWinnerMatchUp,
       matchUpId: winnerMatchUp.matchUpId,

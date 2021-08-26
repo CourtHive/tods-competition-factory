@@ -91,6 +91,7 @@ function playoffStructures({
     matchUps,
     matchUpType,
     roundOffset,
+    exitProfile,
     stageSequence,
     structureName,
     structureAbbreviation,

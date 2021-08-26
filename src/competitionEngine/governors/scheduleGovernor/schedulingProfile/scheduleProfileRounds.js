@@ -1,4 +1,5 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
 import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
@@ -6,10 +7,14 @@ import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
+import { addNotice, getTopics } from '../../../../global/globalState';
+import { isConvertableInteger } from '../../../../utilities/math';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
+import { isPowerOf2 } from '../../../../utilities';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
+import { AUDIT } from '../../../../constants/topicConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
@@ -97,27 +102,43 @@ export function scheduleProfileRounds({
           dateSchedulingProfile?.periodLength ||
           periodLength;
 
-        // TODO: capture range of matchUps within a round
-        // e.g. a round has been split between two venues
-        // for elimation roundPositionRange could work..., but not for RR
-        // for Round Robins you want to keep the groups together at a venue
-
         const structureIds = containedStructureIds[round.structureId] || [
           round.structureId,
         ];
         const roundMatchUpFilters = {
           tournamentIds: [round.tournamentId],
+          roundNumbers: [round.roundNumber],
+          matchUpIds: round.matchUpIds,
           eventIds: [round.eventId],
           drawIds: [round.drawId],
-          roundNumbers: [round.roundNumber],
           structureIds,
         };
 
-        const roundMatchUps = filterMatchUps({
+        let roundMatchUps = filterMatchUps({
           matchUps,
           processContext: true,
           ...roundMatchUpFilters,
         });
+
+        // filter by roundSegment
+        const { segmentNumber, segmentsCount } = round.roundSegment || {};
+        if (
+          isConvertableInteger(segmentNumber) &&
+          isPowerOf2(roundMatchUps?.length) &&
+          isPowerOf2(segmentsCount) &&
+          segmentNumber > 0 &&
+          segmentNumber <= segmentsCount &&
+          segmentsCount < roundMatchUps?.length &&
+          !round.matchUpIds?.length
+        ) {
+          const segmentSize = roundMatchUps.length / segmentsCount;
+          const firstSegmentIndex = segmentSize * (segmentNumber - 1);
+          roundMatchUps = roundMatchUps.slice(
+            firstSegmentIndex,
+            firstSegmentIndex + segmentSize
+          );
+        }
+
         const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
 
         const tournamentRecord = tournamentRecords[round.tournamentId];
@@ -170,7 +191,7 @@ export function scheduleProfileRounds({
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
-        requestConflicts.push({ date, conflicts });
+        if (conflicts.length) requestConflicts.push({ date, conflicts });
       }
     }
   }
@@ -180,9 +201,32 @@ export function scheduleProfileRounds({
     ({ scheduleDate }) => scheduleDate
   );
 
+  const autoSchedulingAudit = {
+    timeStamp: Date.now(),
+    schedulingProfile,
+    scheduledDates,
+    noTimeMatchUpIds,
+    scheduledMatchUpIds,
+    overLimitMatchUpIds,
+    requestConflicts,
+  };
+  const { topics } = getTopics();
+  if (topics.includes(AUDIT)) {
+    addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
+  } else {
+    const timeItem = {
+      itemType: 'autoSchedulingAudit',
+      itemValue: autoSchedulingAudit,
+    };
+    for (const tournamentRecord of Object.values(tournamentRecords)) {
+      addTournamentTimeItem({ tournamentRecord, timeItem });
+    }
+  }
+
   return {
     ...SUCCESS,
     scheduledDates,
+    noTimeMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
     requestConflicts,

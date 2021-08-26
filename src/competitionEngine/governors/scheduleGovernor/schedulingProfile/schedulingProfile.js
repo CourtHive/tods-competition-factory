@@ -10,13 +10,13 @@ import {
 import {
   addExtension,
   findExtension,
+  removeExtension,
 } from '../../competitionsGovernor/competitionExtentions';
 
 import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   INVALID_DATE,
-  INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
 
@@ -48,10 +48,12 @@ export function getSchedulingProfile({ tournamentRecords }) {
 
     if (modifications) {
       schedulingProfile = updatedSchedulingProfile;
-      setSchedulingProfile({
+      const result = setSchedulingProfile({
         tournamentRecords,
         schedulingProfile,
       });
+      if (result.error) return result;
+
       return { schedulingProfile, modifications, issues };
     }
   }
@@ -61,13 +63,22 @@ export function getSchedulingProfile({ tournamentRecords }) {
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!isValidSchedulingProfile({ tournamentRecords, schedulingProfile }))
-    return { error: INVALID_VALUES };
+
+  const profileValidity = isValidSchedulingProfile({
+    tournamentRecords,
+    schedulingProfile,
+  });
+
+  if (profileValidity.error) return profileValidity;
+
+  if (!schedulingProfile)
+    return removeExtension({ tournamentRecords, name: SCHEDULING_PROFILE });
 
   const extension = {
     name: SCHEDULING_PROFILE,
     value: schedulingProfile,
   };
+
   return addExtension({ tournamentRecords, extension });
 }
 
