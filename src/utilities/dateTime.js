@@ -169,6 +169,13 @@ export function timeStringMinutes(timeString) {
   return hours * 60 + minutes;
 }
 
+export function dayMinutesToTimeString(totalMinutes) {
+  let hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes - hours * 60;
+  if (hours > 23) hours = hours % 24;
+  return [zeroPad(hours), zeroPad(minutes)].join(':');
+}
+
 export function tidyTime(timeString) {
   return timeString.split(':').slice(0, 2).map(zeroPad).join(':');
 }

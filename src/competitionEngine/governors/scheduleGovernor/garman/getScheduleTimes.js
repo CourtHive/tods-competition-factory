@@ -3,15 +3,14 @@ import { getVirtualCourtBookings } from './getVirtualCourtBookings';
 import { generateRange } from '../../../../utilities/arrays';
 import {
   currentUTCDate,
-  timeToDate,
-  addMinutes,
-  minutesDifference,
   extractTime,
   extractDate,
+  timeStringMinutes,
+  dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
 
 export function getScheduleTimes({
-  startTime = '8:00',
+  startTime = '08:00',
   endTime = '19:00',
   date = currentUTCDate(),
   periodLength = 30,
@@ -42,17 +41,17 @@ export function getScheduleTimes({
   let cumulativePeriods = 0;
 
   // startTime, endTime and periodLength are used to calculate periodCount
-  const dayStartTime = timeToDate(startTime);
-  const dayEndTime = timeToDate(endTime);
-  const dayMinutes = minutesDifference(dayEndTime, dayStartTime);
+  const dayStartMinutes = timeStringMinutes(startTime);
+  const dayEndMinutes = timeStringMinutes(endTime);
+  const dayMinutes = dayEndMinutes - dayStartMinutes;
   const periodCount = Math.floor(dayMinutes / periodLength);
   const periods = generateRange(0, periodCount + 1);
 
   const { virtualCourts } = getVirtualCourtBookings({ bookings, courts, date });
 
   const timingProfile = periods.map((period) => {
-    const periodStartTime = addMinutes(dayStartTime, period * periodLength);
-    const periodStart = extractTime(periodStartTime.toISOString());
+    const periodStartMinutes = dayStartMinutes + period * periodLength;
+    const periodStart = dayMinutesToTimeString(periodStartMinutes);
 
     // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
     // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes

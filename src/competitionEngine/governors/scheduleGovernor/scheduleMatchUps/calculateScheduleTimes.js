@@ -7,7 +7,7 @@ import {
   addMinutesToTimeString,
   extractTime,
   sameDay,
-  timeToDate,
+  timeStringMinutes,
 } from '../../../../utilities/dateTime';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
@@ -62,7 +62,8 @@ export function calculateScheduleTimes({
 
       return comparisonStartTime &&
         (!minStartTime ||
-          timeToDate(comparisonStartTime) < timeToDate(minStartTime))
+          timeStringMinutes(comparisonStartTime) <
+            timeStringMinutes(minStartTime))
         ? comparisonStartTime
         : minStartTime;
     }, undefined);
@@ -77,7 +78,8 @@ export function calculateScheduleTimes({
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
       return comparisonEndTime &&
-        (!maxEndTime || timeToDate(comparisonEndTime) > timeToDate(maxEndTime))
+        (!maxEndTime ||
+          timeStringMinutes(comparisonEndTime) > timeStringMinutes(maxEndTime))
         ? comparisonEndTime
         : maxEndTime;
     }, undefined);
@@ -106,39 +108,48 @@ export function calculateScheduleTimes({
   // some of them may have courts assigned and some may only have venueIds
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
   const matchUpFilters = { scheduledDate: date, venueIds };
-  const dateMatchUps =
-    competitionScheduleMatchUps({
-      tournamentRecords,
-      sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
-      matchUpFilters,
-    })?.dateMatchUps || [];
+  const scheduleMatchUps = competitionScheduleMatchUps({
+    tournamentRecords,
+    sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
+    matchUpFilters,
+  });
+
+  const relevantMatchUps = [].concat(
+    ...(scheduleMatchUps.dateMatchUps || []),
+    ...(scheduleMatchUps.completedMatchUps || [])
+  );
 
   const defaultTiming = {
     averageTimes: [{ minutes: { default: averageMatchUpMinutes } }],
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const bookings = dateMatchUps?.map(({ eventId, schedule, matchUpFormat }) => {
-    const { event, scheduleTiming } = eventDetails[eventId];
-    const eventType = event?.eventType;
-    const timingDetails = {
-      ...scheduleTiming,
-      defaultTiming,
-      matchUpFormat,
-    };
-    const { averageMinutes } = matchUpFormatTimes({ eventType, timingDetails });
-    const { courtId, venueId } = schedule;
-    const startTime = extractTime(schedule.scheduledTime);
-    const endTime = addMinutesToTimeString(startTime, averageMinutes);
-    const booking = {
-      averageMinutes,
-      startTime,
-      endTime,
-      courtId,
-      venueId,
-    };
-    return booking;
-  });
+  const bookings = relevantMatchUps?.map(
+    ({ eventId, schedule, matchUpFormat }) => {
+      const { event, scheduleTiming } = eventDetails[eventId];
+      const eventType = event?.eventType;
+      const timingDetails = {
+        ...scheduleTiming,
+        defaultTiming,
+        matchUpFormat,
+      };
+      const { averageMinutes } = matchUpFormatTimes({
+        eventType,
+        timingDetails,
+      });
+      const { courtId, venueId } = schedule;
+      const startTime = extractTime(schedule.scheduledTime);
+      const endTime = addMinutesToTimeString(startTime, averageMinutes);
+      const booking = {
+        averageMinutes,
+        startTime,
+        endTime,
+        courtId,
+        venueId,
+      };
+      return booking;
+    }
+  );
 
   const timingParameters = {
     date,
@@ -159,7 +170,7 @@ export function calculateScheduleTimes({
       ? venues[0].venueId
       : undefined;
 
-  const dateScheduledMatchUpIds = dateMatchUps.map(
+  const dateScheduledMatchUpIds = relevantMatchUps.map(
     ({ matchUpId }) => matchUpId
   );
 
