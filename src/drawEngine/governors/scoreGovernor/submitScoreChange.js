@@ -1,4 +1,7 @@
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { analyzeMatchUp } from './analyzeMatchUp';
+import { analyzeSet } from './analyzeSet';
+
 import {
   MISSING_MATCHUP,
   MISSING_SET_NUMBER,
@@ -7,8 +10,6 @@ import {
   MISSING_VALUE,
   INVALID_SET_NUMBER,
 } from '../../../constants/errorConditionConstants';
-import { analyzeMatchUp } from './analyzeMatchUp';
-import { analyzeSet } from './analyzeSet';
 
 export function submitScoreChange(params) {
   const { matchUp, sideNumber, setNumber, value } = params || {};

@@ -1,18 +1,18 @@
 import { setMatchUpStatus as drawEngineSetMatchUpStatus } from '../../../drawEngine/governors/matchUpGovernor/setMatchUpStatus';
 import { setMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { matchUpScore } from '../../../drawEngine/governors/matchUpGovernor/matchUpScore';
+import { matchUpScore } from '../../../drawEngine/governors/scoreGovernor/matchUpScore';
 import { getDevContext } from '../../../global/globalState';
 import { findPolicy } from '../policyGovernor/findPolicy';
 import { findEvent } from '../../getters/eventGetter';
 import { makeDeepCopy } from '../../../utilities';
 
+import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 
 /**
  *

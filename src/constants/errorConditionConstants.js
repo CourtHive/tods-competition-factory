@@ -60,6 +60,7 @@ export const UNRECOGNIZED_MATCHUP_STATUS = 'Unrecognized matchUpStatus';
 export const UNRECOGNIZED_MATCHUP_FORMAT = 'Unrecognized matchUpFormat';
 export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
+export const INVALID_MATCHUP_FORMAT = 'Invalid matchUpFormat';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
 export const MISSING_MATCHUP_IDS = 'Missing matchUpIds';
@@ -226,6 +227,7 @@ export const errorConditionConstants = {
   INVALID_ENTRIES,
   INVALID_EVENT_TYPE,
   INVALID_GAME_SCORES,
+  INVALID_MATCHUP_FORMAT,
   INVALID_MATCHUP_STATUS,
   INVALID_MATCHUP,
   INVALID_OBJECT,
