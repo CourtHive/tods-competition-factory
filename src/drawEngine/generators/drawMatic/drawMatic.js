@@ -1,5 +1,5 @@
-import { INVALID_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { INVALID_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function drawMatic({ drawDefinition }) {
   if (typeof drawDefinition !== 'object')
