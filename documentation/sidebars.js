@@ -19,7 +19,6 @@ module.exports = {
           ],
         },
         'concepts/globalState',
-        'concepts/matchUpFormat',
         {
           Policies: [
             'concepts/policies',
