@@ -4,6 +4,32 @@ menu: Mocks Engine
 route: /mocksEngine/api
 ---
 
+## generateOutcome
+
+:::note
+**matchUpStatusProfile** is an object containing the percentage chance specified matchUpStatuses will appear.
+
+`matchUpStatusProfile: { [WALKOVER]: 100 }` will generate `WALKOVER` 100% of the time.
+:::
+
+```js
+const { outcome } = mocksEngine.generateOutcome({
+  matchUpStatusProfile: {}, // Optional - an empty object always returns { matchUpStatus: COMPLETED }
+  winningSide: 1, // Optional - to specify a specific winningSide
+  matchUpFormat, // Optional - generate outcome with score constrained by matchUpFormat
+  sideWeight, // Optional - defaults to 4 - controls how often "deciding sets" are generated
+  defaultWithScorePercent, // Optional - percentage change that an outcome with { matchUpStatus: DEFAULTED } will have a score
+});
+
+const {
+  score: { sets, side1ScoreString, side2ScoreString },
+  winningSide,
+  matchUpStatus,
+} = outcome;
+```
+
+---
+
 ## generateOutcomeFromScoreString
 
 Generates `outcome` object from parseable score string.
