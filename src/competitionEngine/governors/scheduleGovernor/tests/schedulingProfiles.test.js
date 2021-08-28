@@ -244,7 +244,7 @@ test.each([competitionEngineSync])(
   }
 );
 
-test.skip.each([competitionEngineSync])(
+test.each([competitionEngineSync])(
   'isValidSchedulingProfile can identify invalid schedulingProfiles',
   async (competitionEngine) => {
     const venueProfiles = [
