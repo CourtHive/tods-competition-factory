@@ -44,6 +44,7 @@ export const FIRST_MATCHUP = 'FIRST_MATCHUP'; // condition for valididty of link
 
 // draw types
 // PLAY_OFF is also a stage type
+export const AD_HOC = 'AD_HOC';
 export const FEED_IN = 'FEED IN';
 export const COMPASS = 'COMPASS';
 export const OLYMPIC = 'OLYMPIC';
@@ -117,6 +118,7 @@ export const MULTI_STRUCTURE_DRAWS = [
 ];
 
 export const generatedDrawTypes = [
+  AD_HOC,
   COMPASS,
   CURTIS,
   DOUBLE_ELIMINATION,
@@ -147,6 +149,7 @@ export const drawDefinitionConstants = {
   WINNER,
   LOSER,
 
+  AD_HOC,
   FEED_IN,
   COMPASS,
   PLAY_OFF,
