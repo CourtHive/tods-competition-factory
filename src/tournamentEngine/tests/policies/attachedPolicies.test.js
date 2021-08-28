@@ -4,8 +4,12 @@ import tournamentEngine from '../../sync';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import POLICY_SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import ROUND_NAMING_POLICY from '../publishing/roundNamingPolicy';
+import {
+  APPLIED_POLICIES,
+  ENTRY_PROFILE,
+  FLIGHT_PROFILE,
+} from '../../../constants/extensionConstants';
 
 it('generateDrawDefinition will find seeding policy attached to tournamentRecord', () => {
   const {
@@ -34,7 +38,7 @@ it('generateDrawDefinition will find seeding policy attached to tournamentRecord
 
   // There is no POLICY_TYPE_SEEDING on the drawDefinition because it is attached to the tournamentRecord
   expect(drawDefinition.extensions.length).toEqual(1);
-  expect(drawDefinition.extensions[0].name).toEqual('entryProfile');
+  expect(drawDefinition.extensions[0].name).toEqual(ENTRY_PROFILE);
 });
 
 it('generateDrawDefinition will find seeding policy attached to event', () => {
@@ -66,7 +70,7 @@ it('generateDrawDefinition will find seeding policy attached to event', () => {
   expect(event.extensions.length).toEqual(2);
   expect(event.extensions.map(({ name }) => name).sort()).toEqual([
     APPLIED_POLICIES,
-    'flightProfile',
+    FLIGHT_PROFILE,
   ]);
 
   const appliedPolicies = event.extensions.find(
@@ -76,7 +80,7 @@ it('generateDrawDefinition will find seeding policy attached to event', () => {
 
   // There is no POLICY_TYPE_SEEDING on the drawDefinition because it is attached to the tournamentRecord
   expect(drawDefinition.extensions.length).toEqual(1);
-  expect(drawDefinition.extensions[0].name).toEqual('entryProfile');
+  expect(drawDefinition.extensions[0].name).toEqual(ENTRY_PROFILE);
 });
 
 it('policyDefinitions can be passed directly into generateDrawDefintion from drawProfiles', () => {
@@ -102,7 +106,7 @@ it('policyDefinitions can be passed directly into generateDrawDefintion from dra
   expect(drawDefinition.extensions.length).toEqual(2);
   expect(drawDefinition.extensions.map(({ name }) => name).sort()).toEqual([
     APPLIED_POLICIES,
-    'entryProfile',
+    ENTRY_PROFILE,
   ]);
 
   const appliedPolicies = drawDefinition.extensions.find(
