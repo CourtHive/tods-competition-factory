@@ -115,7 +115,7 @@ export function avoidanceTest(params) {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 
-  drawEngine.setParticipants(participants);
+  drawEngine.setState(drawDefinition).setParticipants(participants);
   const { upcomingMatchUps } = drawEngine.drawMatchUps({
     drawDefinition,
     requireParticipants: true,

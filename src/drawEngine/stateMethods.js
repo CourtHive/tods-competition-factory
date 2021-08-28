@@ -1,6 +1,6 @@
 import { getAllDrawMatchUps } from './getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from './getters/getMatchUps/getMatchUpsMap';
-import { makeDeepCopy } from '../utilities';
+import { makeDeepCopy, UUID } from '../utilities';
 import definitionTemplate, {
   keyValidation,
 } from './generators/drawDefinitionTemplate';
@@ -33,7 +33,7 @@ function validDefinitionKeys(definition) {
   return valid;
 }
 
-export function newDrawDefinition({ drawId, drawType } = {}) {
+export function newDrawDefinition({ drawId = UUID(), drawType } = {}) {
   const drawDefinition = definitionTemplate();
   return Object.assign(drawDefinition, { drawId, drawType });
 }

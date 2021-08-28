@@ -1,6 +1,6 @@
-import drawEngine from '../../sync';
-import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../../tournamentEngine/sync';
+import mocksEngine from '../../../mocksEngine';
+import drawEngine from '../../sync';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
@@ -79,10 +79,12 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   let [mainStructure, consolationStructure] = drawDefinition.structures;
 
-  const { upcomingMatchUps } = drawEngine.getStructureMatchUps({
-    drawDefinition,
-    structureId: mainStructure.structureId,
-  });
+  const { upcomingMatchUps } = drawEngine
+    .setState(drawDefinition)
+    .getStructureMatchUps({
+      drawDefinition,
+      structureId: mainStructure.structureId,
+    });
 
   const firstRoundMatchUps = upcomingMatchUps.filter(
     (matchUp) => matchUp.roundNumber === 1
@@ -109,10 +111,12 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
       (assignment) => assignment.drawPosition === losingDrawPosition
     );
 
-  const { matchUps } = drawEngine.allStructureMatchUps({
-    drawDefinition,
-    structureId: consolationStructure.structureId,
-  });
+  const { matchUps } = drawEngine
+    .setState(drawDefinition)
+    .allStructureMatchUps({
+      drawDefinition,
+      structureId: consolationStructure.structureId,
+    });
 
   const { roundMatchUps } = drawEngine.getRoundMatchUps({ matchUps });
   const consolationTargetMatchUp = roundMatchUps[2].find(

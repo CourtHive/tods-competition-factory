@@ -4,7 +4,6 @@ import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinit
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/globalState';
-import drawEngine from '../../drawEngine/sync';
 
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
@@ -23,6 +22,16 @@ import {
   POLICY_TYPE_AVOIDANCE,
   POLICY_TYPE_SEEDING,
 } from '../../constants/policyConstants';
+import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
+import { newDrawDefinition } from '../../drawEngine/stateMethods';
+import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
+import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
+import { attachPolicy } from '../../drawEngine/governors/policyGovernor/attachPolicy';
+import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
+import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
+import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
+import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 
 export function generateDrawDefinition(params) {
   const { tournamentRecord, event } = params;
@@ -97,24 +106,22 @@ export function generateDrawDefinition(params) {
     drawSize = stageEntries.length;
   }
 
-  drawEngine.reset();
-  drawEngine.newDrawDefinition({ drawType, drawId });
+  const drawDefinition = newDrawDefinition({ drawType, drawId });
 
-  drawEngine.setStageDrawSize({ stage, drawSize });
-  const { error: matchUpFormatError } = drawEngine.setMatchUpFormat({
+  setStageDrawSize({ drawDefinition, stage, drawSize });
+  let result = setMatchUpFormat({
+    drawDefinition,
     matchUpFormat,
     tieFormat,
     matchUpType,
   });
 
-  if (matchUpFormatError)
-    return { error: matchUpFormatError, message: 'matchUpFormat error' };
+  if (result.error)
+    return { error: result.error, message: 'matchUpFormat error' };
 
-  const {
-    matchUpsMap,
-    inContextDrawMatchUps,
-    error: generatedDrawError,
-  } = drawEngine.generateDrawType({
+  result = generateDrawType({
+    drawDefinition,
+
     stage,
     drawType,
     seedingProfile,
@@ -130,19 +137,22 @@ export function generateDrawDefinition(params) {
     feedPolicy,
     goesTo: params.goesTo,
   });
+  if (result.error) return result;
 
-  if (generatedDrawError) return { error: generatedDrawError };
+  const { matchUpsMap, inContextDrawMatchUps } = result;
 
-  const { structures } = drawEngine.getDrawStructures({
-    stage,
+  const { structures } = getDrawStructures({
+    drawDefinition,
     stageSequence: 1,
+    stage,
   });
   const [structure] = structures;
   const { structureId } = structure || {};
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
-      drawEngine.attachPolicy({
+      attachPolicy({
+        drawDefinition,
         policyDefinition: { [policyType]: policyDefinitions[policyType] },
       });
     }
@@ -164,11 +174,11 @@ export function generateDrawDefinition(params) {
 
   if (!policyDefinitions?.seeding && !eventSeedingPolicy) {
     // if there is no seeding policy then use default seeing policy
-    drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+    attachPolicy({ drawDefinition, policyDefinition: SEEDING_POLICY });
   }
 
   if (!policyDefinitions?.avoidance && eventAvoidancePolicy) {
-    drawEngine.attachPolicy({ policyDefinition: eventAvoidancePolicy });
+    attachPolicy({ drawDefinition, policyDefinition: eventAvoidancePolicy });
   }
 
   // OPTIMIZE: use drawEngine.addDrawEntries
@@ -177,10 +187,11 @@ export function generateDrawDefinition(params) {
     const entryData = {
       ...entry,
       entryStage: entry.entryStage || MAIN,
+      drawDefinition,
     };
     // NOTE: we don't throw an error if an entry can't be added
     // INVESTIGATE: not entirely sure why this is the case. All but one test passes when error is thrown.
-    drawEngine.addDrawEntry(entryData);
+    addDrawEntry(entryData);
   }
 
   const enteredParticipantIds = entries.map(
@@ -191,9 +202,10 @@ export function generateDrawDefinition(params) {
   if (seedsCount > drawSize) seedsCount = drawSize;
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
-  const { seedLimit } = drawEngine.initializeStructureSeedAssignments({
+  const { seedLimit } = initializeStructureSeedAssignments({
     participantCount: stageEntries.length,
     enforcePolicyLimits,
+    drawDefinition,
     structureId,
     seedsCount,
   });
@@ -217,7 +229,8 @@ export function generateDrawDefinition(params) {
       })
       .forEach((seededParticipant) => {
         const { participantId, seedNumber, seedValue } = seededParticipant;
-        drawEngine.assignSeed({
+        assignSeed({
+          drawDefinition,
           participantId,
           structureId,
           seedNumber,
@@ -271,7 +284,8 @@ export function generateDrawDefinition(params) {
           const seedValue = seedNumber;
           // TODO: attach basis of seeding information to seedAssignment
           const { participantId } = scaledEntry;
-          drawEngine.assignSeed({
+          assignSeed({
+            drawDefinition,
             participantId,
             structureId,
             seedNumber,
@@ -284,7 +298,8 @@ export function generateDrawDefinition(params) {
   if (automated !== false) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
-    ({ conflicts } = drawEngine.automatedPositioning({
+    ({ conflicts } = automatedPositioning({
+      drawDefinition,
       participants,
       structureId,
       seedsOnly,
@@ -293,8 +308,6 @@ export function generateDrawDefinition(params) {
       matchUpsMap,
     }));
   }
-
-  const { drawDefinition } = drawEngine.getState();
 
   drawName = drawName || drawType;
   if (drawDefinition) Object.assign(drawDefinition, { drawName });

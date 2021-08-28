@@ -11,7 +11,7 @@ import linkGovernor from './governors/linkGovernor';
 import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
 import { notifySubscribers } from '../global/notifySubscribers';
 import { factoryVersion } from '../global/factoryVersion';
-import { UUID, makeDeepCopy } from '../utilities';
+import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
   setDevContext,
@@ -36,7 +36,7 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return SUCCESS;
     },
-    newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
+    newDrawDefinition: ({ drawId, drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
       return Object.assign(
         {

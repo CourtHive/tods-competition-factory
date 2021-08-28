@@ -118,9 +118,11 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   });
 
   const { drawId } = drawDefinition;
-  const { matchUps: allStructureMatchUps } = drawEngine.allStructureMatchUps({
-    structureId: mainStructure.structureId,
-  });
+  const { matchUps: allStructureMatchUps } = drawEngine
+    .setState(drawDefinition)
+    .allStructureMatchUps({
+      structureId: mainStructure.structureId,
+    });
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
@@ -353,9 +355,11 @@ it('can advance players in Round Robin with Playoffs', () => {
   });
 
   const { drawId } = drawDefinition;
-  const { matchUps: allStructureMatchUps } = drawEngine.allStructureMatchUps({
-    structureId: mainStructure.structureId,
-  });
+  const { matchUps: allStructureMatchUps } = drawEngine
+    .setState(drawDefinition)
+    .allStructureMatchUps({
+      structureId: mainStructure.structureId,
+    });
   const allStructureMatchUpsCount = allStructureMatchUps.length;
   const matchUpsPerStructure =
     allStructureMatchUpsCount / (drawSize / groupSize);
