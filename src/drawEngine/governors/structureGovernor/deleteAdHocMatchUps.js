@@ -1,3 +1,8 @@
+import {
+  deleteMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../notifications/drawNotifications';
+
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -7,10 +12,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-} from '../../notifications/drawNotifications';
 
 export function deleteAdHocMatchUps({
   drawDefinition,
