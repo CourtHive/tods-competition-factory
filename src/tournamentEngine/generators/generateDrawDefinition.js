@@ -143,7 +143,6 @@ export function generateDrawDefinition(params) {
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       drawEngine.attachPolicy({
-        tournamentRecord,
         policyDefinition: { [policyType]: policyDefinitions[policyType] },
       });
     }

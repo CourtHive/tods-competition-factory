@@ -39,6 +39,7 @@ export function generateEventWithDraw({
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     uniqueParticipants = false,
+    policyDefinitions,
     structureOptions,
     drawSize = 32,
     tieFormat,
@@ -152,6 +153,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
+    policyDefinitions,
     tournamentRecord,
     seedingScaleName,
     structureOptions,

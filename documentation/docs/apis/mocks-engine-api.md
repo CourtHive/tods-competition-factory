@@ -104,6 +104,7 @@ const drawProfiles = [
     drawSize: 4,
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
     uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
+    policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     drawType: ROUND_ROBIN,
     outcomes,
   },
@@ -111,6 +112,7 @@ const drawProfiles = [
 const eventProfiles = [
   {
     eventName: 'U18 Boys Doubles',
+    policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     gender: MALE,
     drawProfiles: [
       {

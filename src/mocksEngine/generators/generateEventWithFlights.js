@@ -19,6 +19,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { attachEventPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -39,6 +40,7 @@ export function generateEventWithFlights({
     gender,
     surfaceCategory,
     tieFormat: eventTieFormat,
+    policyDefinitions,
   } = eventProfile;
 
   let generateUniqueParticipants;
@@ -126,6 +128,14 @@ export function generateEventWithFlights({
     surfaceCategory,
     tieFormat: eventTieFormat,
   };
+  if (typeof policyDefinitions === 'object') {
+    for (const policyType of Object.keys(policyDefinitions)) {
+      attachEventPolicy({
+        event: newEvent,
+        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+      });
+    }
+  }
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
   const { event } = result;
