@@ -1,4 +1,4 @@
-import { addAdHocMatchUps } from '../governors/structureGovernor/addAdhocMatchUp';
+import { addAdHocMatchUps } from '../governors/structureGovernor/addAdHocMatchUps';
 import { isConvertableInteger } from '../../utilities/math';
 import { generateRange, UUID } from '../../utilities';
 

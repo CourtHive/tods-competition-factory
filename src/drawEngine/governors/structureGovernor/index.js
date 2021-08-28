@@ -7,7 +7,7 @@ import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { addPlayoffStructures } from './addPlayoffStructures';
 import { structureSort } from '../../getters/structureSort';
 import { generateDrawType } from './generateDrawType';
-import { addAdHocMatchUps } from './addAdhocMatchUp';
+import { addAdHocMatchUps } from './addAdHocMatchUps';
 import { removeStructure } from './removeStructure';
 import { getSourceRounds } from './getSourceRounds';
 
