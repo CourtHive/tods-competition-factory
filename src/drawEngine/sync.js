@@ -38,7 +38,13 @@ export const drawEngine = (function () {
     },
     newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
-      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+      return Object.assign(
+        {
+          drawId: drawDefinition.drawId,
+          drawDefinition: makeDeepCopy(drawDefinition),
+        },
+        SUCCESS
+      );
     },
     setDrawDescription: ({ description } = {}) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
