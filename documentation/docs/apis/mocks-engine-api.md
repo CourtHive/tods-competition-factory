@@ -135,6 +135,7 @@ const {
   endDate, // optional - ISO string date
   startDate, // optional - ISO string date
   participantsProfile, // optional - { participantCount, participantType }
+  policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
   eventProfiles, // optional - array of profiles for events to be generated; can include drawProfiles
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts

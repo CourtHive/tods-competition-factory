@@ -1,4 +1,5 @@
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { attachPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
@@ -22,10 +23,10 @@ import { DOUBLES } from '../../constants/eventConstants';
  *
  * @param {string} startDate - optional - ISO string date
  * @param {string} endDate - optional - ISO string date
- * @param {object} participantsProfile - { participantsCount, participantType }
- * @param {object[]} drawProfiles - [{ category, drawSize, drawType, eventType, matchUpFormat }]
- * @param {object[]} venueProfiles - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
- * @param {object[]} outcomes - [{ roundNumber, roundPosition, scoreString, winningSide, ... }]
+ * @param {object} participantsProfile - optional - { participantsCount, participantType }
+ * @param {object} policyDefinitions - optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
+ * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat }]
+ * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
  * @param {boolean} completeAllMatchUps
  * @param {boolean} randomWinningSide
  * @param {boolean} inContext
@@ -36,6 +37,7 @@ export function generateTournamentRecord({
   startDate,
   tournamentName,
 
+  policyDefinitions,
   participantsProfile,
   drawProfiles,
   eventProfiles,
@@ -70,6 +72,15 @@ export function generateTournamentRecord({
     endDate,
     tournamentName,
   });
+
+  if (typeof policyDefinitions === 'object') {
+    for (const policyType of Object.keys(policyDefinitions)) {
+      attachPolicy({
+        tournamentRecord,
+        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+      });
+    }
+  }
 
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0;
