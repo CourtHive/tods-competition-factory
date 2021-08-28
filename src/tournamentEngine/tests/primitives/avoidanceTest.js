@@ -106,7 +106,7 @@ export function avoidanceTest(params) {
     seedsCount,
     automated: true,
     event: eventResult,
-    policyDefinitions: [{ avoidance }, SEEDING_ITF],
+    policyDefinitions: { ...avoidance, ...SEEDING_ITF },
   };
   const { error, conflicts, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);

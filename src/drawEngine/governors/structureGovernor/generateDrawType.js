@@ -40,6 +40,7 @@ import {
   OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
   FIRST_MATCH_LOSER_CONSOLATION,
+  WIN_RATIO,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -116,12 +117,13 @@ export function generateDrawType(params = {}) {
   const generators = {
     [AD_HOC]: () => {
       const structure = structureTemplate({
-        stage,
+        structureName: structureName || stage,
+        finishingPosition: WIN_RATIO,
+        structureId: uuids?.pop(),
+        stageSequence,
         matchUps: [],
         matchUpType,
-        stageSequence,
-        structureId: uuids?.pop(),
-        structureName: structureName || stage,
+        stage,
       });
 
       drawDefinition.structures.push(structure);

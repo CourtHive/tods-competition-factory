@@ -140,10 +140,13 @@ export function generateDrawDefinition(params) {
   const [structure] = structures;
   const { structureId } = structure || {};
 
-  if (Array.isArray(policyDefinitions)) {
-    policyDefinitions.forEach((policyDefinition) => {
-      drawEngine.attachPolicy({ policyDefinition });
-    });
+  if (typeof policyDefinitions === 'object') {
+    for (const policyType of Object.keys(policyDefinitions)) {
+      drawEngine.attachPolicy({
+        tournamentRecord,
+        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+      });
+    }
   }
 
   const { policyDefinition: eventAvoidancePolicy } =
