@@ -9680,10 +9680,10 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
-tods-matchup-format-code@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/tods-matchup-format-code/-/tods-matchup-format-code-1.1.4.tgz#b072e42f48dee9d254868787c38cc98ba1c7a193"
-  integrity sha512-ebhVu4me44xiOHRSqBVTupJdQDdXlk/SAhjbqDj2mRS7jrZRR8GefjaShO7oDYyePtIexNVyGkUKRbKhdrpgog==
+tods-matchup-format-code@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/tods-matchup-format-code/-/tods-matchup-format-code-1.1.5.tgz#3d1decf6e34fa23fe33ac0c9043055a004b641ae"
+  integrity sha512-zeeNb0gAM0y8kpNM+BBX/YBDbIipAneL5+cCb7KWMNWE5i30d96+uar3Yudw99JAAZWIbyAhM38+QJ1GXcdVpQ==
 
 tough-cookie@^2.3.3, tough-cookie@~2.5.0:
   version "2.5.0"
