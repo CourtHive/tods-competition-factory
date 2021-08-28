@@ -1,4 +1,7 @@
-import { addMatchUpsNotice } from '../../notifications/drawNotifications';
+import {
+  addMatchUpsNotice,
+  modifyDrawNotice,
+} from '../../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -38,6 +41,7 @@ export function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
   structure.matchUps.push(...matchUps);
 
   addMatchUpsNotice({ drawDefinition, matchUps });
+  modifyDrawNotice({ drawDefinition });
 
   return { ...SUCCESS };
 }
