@@ -22,6 +22,7 @@ import {
   FICQF,
   FICSF,
   MFIC,
+  AD_HOC,
   CURTIS,
   FICR16,
   COMPASS,
@@ -113,6 +114,19 @@ export function generateDrawType(params = {}) {
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
   const generators = {
+    [AD_HOC]: () => {
+      const structure = structureTemplate({
+        stage,
+        matchUps: [],
+        matchUpType,
+        stageSequence,
+        structureId: uuids?.pop(),
+        structureName: structureName || stage,
+      });
+
+      drawDefinition.structures.push(structure);
+      return Object.assign({ structure }, SUCCESS);
+    },
     [SINGLE_ELIMINATION]: () => {
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;
