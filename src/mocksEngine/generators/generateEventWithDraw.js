@@ -26,6 +26,7 @@ export function generateEventWithDraw({
   tournamentRecord,
   participantsProfile,
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   participants,
   drawProfile,
@@ -230,7 +231,6 @@ export function generateEventWithDraw({
           scoreString,
           winningSide,
           matchUpStatus,
-          outcomeDef,
           matchUpFormat,
           drawId,
         });
@@ -243,6 +243,8 @@ export function generateEventWithDraw({
         drawDefinition,
         matchUpFormat,
         randomWinningSide,
+        completeAllMatchUps,
+        matchUpStatusProfile,
       });
       if (result.error) return result;
 
@@ -260,6 +262,8 @@ export function generateEventWithDraw({
           drawDefinition,
           matchUpFormat,
           randomWinningSide,
+          completeAllMatchUps,
+          matchUpStatusProfile,
         });
         if (result.error) return result;
       }

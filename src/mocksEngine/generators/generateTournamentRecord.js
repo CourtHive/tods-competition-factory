@@ -27,7 +27,8 @@ import { DOUBLES } from '../../constants/eventConstants';
  * @param {object} policyDefinitions - optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
  * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat }]
  * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
- * @param {boolean} completeAllMatchUps
+ * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
+ * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
  * @param {boolean} randomWinningSide
  * @param {boolean} inContext
  *
@@ -44,6 +45,7 @@ export function generateTournamentRecord({
   venueProfiles,
 
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   goesTo,
 } = {}) {
@@ -155,6 +157,7 @@ export function generateTournamentRecord({
         tournamentRecord,
         participantsProfile,
         completeAllMatchUps,
+        matchUpStatusProfile,
         randomWinningSide,
         participants,
         drawProfile,
@@ -177,6 +180,7 @@ export function generateTournamentRecord({
         tournamentRecord,
         participantsProfile,
         completeAllMatchUps,
+        matchUpStatusProfile,
         randomWinningSide,
         eventProfile,
         participants,

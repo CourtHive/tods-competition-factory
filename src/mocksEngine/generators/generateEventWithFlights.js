@@ -25,6 +25,7 @@ export function generateEventWithFlights({
   tournamentRecord,
   participantsProfile,
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   eventProfile,
   participants,
@@ -219,6 +220,8 @@ export function generateEventWithFlights({
       const manual = automated === false;
       if (!manual && completeAllMatchUps) {
         const result = completeDrawMatchUps({
+          completeAllMatchUps,
+          matchUpStatusProfile,
           randomWinningSide,
           matchUpFormat,
           drawDefinition,
@@ -237,6 +240,8 @@ export function generateEventWithFlights({
           if (result.error) return result;
 
           result = completeDrawMatchUps({
+            completeAllMatchUps,
+            matchUpStatusProfile,
             randomWinningSide,
             matchUpFormat,
             drawDefinition,
