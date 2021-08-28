@@ -46,15 +46,23 @@ export function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
   const nextDrawPosition = Math.max(...existingDrawPositions, 0) + 1;
 
   const matchUpsCount = matchUps.length;
-  const newDrawPositions = chunkArray(
-    generateRange(nextDrawPosition, nextDrawPosition + matchUpsCount * 2),
-    2
+  const newDrawPositions = generateRange(
+    nextDrawPosition,
+    nextDrawPosition + matchUpsCount * 2
   );
+  const newDrawPositionPairs = chunkArray(newDrawPositions, 2);
   matchUps.forEach(
-    (matchUp, i) => (matchUp.drawPositions = newDrawPositions[i])
+    (matchUp, i) => (matchUp.drawPositions = newDrawPositionPairs[i])
   );
 
   structure.matchUps.push(...matchUps);
+
+  const newPositionAssignments = newDrawPositions.map((drawPosition) => ({
+    drawPosition,
+  }));
+
+  if (!structure.positionAssignments) structure.positionAssignments = [];
+  structure.positionAssignments.push(...newPositionAssignments);
 
   addMatchUpsNotice({ drawDefinition, matchUps });
   modifyDrawNotice({ drawDefinition });
