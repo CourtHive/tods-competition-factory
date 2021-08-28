@@ -14,11 +14,12 @@ route: /mocksEngine/api
 
 ```js
 const { outcome } = mocksEngine.generateOutcome({
-  matchUpStatusProfile: {}, // Optional - an empty object always returns { matchUpStatus: COMPLETED }
-  winningSide: 1, // Optional - to specify a specific winningSide
-  matchUpFormat, // Optional - generate outcome with score constrained by matchUpFormat
-  sideWeight, // Optional - defaults to 4 - controls how often "deciding sets" are generated
-  defaultWithScorePercent, // Optional - percentage change that an outcome with { matchUpStatus: DEFAULTED } will have a score
+  matchUpFormat, // optional - generate outcome with score constrained by matchUpFormat
+  matchUpStatusProfile: {}, // optional - an empty object always returns { matchUpStatus: COMPLETED }
+  pointsPerMinute, // optional - defaults to 1 - used for generating timed set scores
+  winningSide: 1, // optional - to specify a specific winningSide
+  sideWeight, // optional - defaults to 4 - controls how often "deciding sets" are generated
+  defaultWithScorePercent, // optional - percentage change that an outcome with { matchUpStatus: DEFAULTED } will have a score
 });
 
 const {

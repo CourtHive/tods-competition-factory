@@ -40,7 +40,7 @@ const defaultStatusProfile = {
  *
  * @param {string} matchUpFormat - optional - TODS matchUpFormat code string - defaults to 'SET3-S:6/TB7'
  * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
- * @param {integer} pointsPerMinute - optional - value used for generating scores for timed sets
+ * @param {integer} pointsPerMinute - optional - value used for generating timed sets scores
  * @param {integer} sideWeight - optional - the larger the number the less likely a deciding (e.g. 3rd) set is generated
  * @param {integer} winningSide - optional - 1 or 2 forces the winningSide
  * @param {integer} defaultWithScorePercent - optional - percentage of the time a DEFAULT should include a score
