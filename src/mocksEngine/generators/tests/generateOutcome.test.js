@@ -24,30 +24,6 @@ it('can generate score strings for matchUpFormats', () => {
   expect([1, 2].includes(result.outcome.winningSide)).toBeTruthy();
   expect(result.outcome.matchUpStatus).toEqual(COMPLETED);
 
-  result = mocksEngine.generateOutcome({
-    matchUpStatusProfile: {}, // insures that there are no DOUBLE_WALKOVERS
-    winningSide: 1,
-  });
-  expect(result.outcome.winningSide).toEqual(1);
-
-  result = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [WALKOVER]: 100 },
-    winningSide: 1,
-  });
-  expect(result.outcome.winningSide).toEqual(1);
-
-  result = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [RETIRED]: 100 },
-    winningSide: 1,
-  });
-  expect(result.outcome.winningSide).toEqual(1);
-
-  result = mocksEngine.generateOutcome({
-    matchUpStatusProfile: {}, // insures that there are no DOUBLE_WALKOVERS
-    winningSide: 2,
-  });
-  expect(result.outcome.winningSide).toEqual(2);
-
   let { outcome } = mocksEngine.generateOutcome({
     matchUpStatusProfile: { [RETIRED]: 100 },
   });
@@ -136,4 +112,92 @@ test('iteration counts', () => {
   });
 
   expect(firstIteration).toBeGreaterThan(threeSets);
+});
+
+test('supports timed matchUpFormats', () => {
+  let result = mocksEngine.generateOutcome({
+    matchUpFormat: 'SET1-S:T20',
+    matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+  });
+  expect(result.outcome.winningSide).not.toBeUndefined();
+
+  // supports short form matchUpFormat for timed sets
+  result = mocksEngine.generateOutcome({
+    matchUpFormat: 'T20',
+    matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+  });
+  expect(result.outcome.winningSide).not.toBeUndefined();
+
+  result = mocksEngine.generateOutcome({
+    matchUpFormat: 'SET3-S:T20',
+    matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+  });
+  expect(result.outcome.winningSide).not.toBeUndefined();
+  expect([2, 3].includes(result.outcome.score.sets.length)).toEqual(true);
+
+  result = mocksEngine.generateOutcome({
+    matchUpFormat: 'SET3-S:T20',
+    matchUpStatusProfile: { [RETIRED]: 100 },
+  });
+  expect(result.outcome.winningSide).not.toBeUndefined();
+  expect(result.outcome.matchUpStatus).toEqual(RETIRED);
+});
+
+test('supports specifying winningSide', () => {
+  let result;
+  generateRange(0, 10).forEach(() => {
+    result = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET1-S:T20',
+      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+      winningSide: 1,
+    });
+    expect(result.outcome.winningSide).toEqual(1);
+    result = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET1-S:T20',
+      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+      winningSide: 2,
+    });
+    expect(result.outcome.winningSide).toEqual(2);
+
+    result = mocksEngine.generateOutcome({
+      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+      winningSide: 1,
+    });
+    expect(result.outcome.winningSide).toEqual(1);
+
+    result = mocksEngine.generateOutcome({
+      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+      winningSide: 2,
+    });
+    expect(result.outcome.winningSide).toEqual(2);
+
+    result = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [WALKOVER]: 100 },
+      winningSide: 1,
+    });
+    expect(result.outcome.winningSide).toEqual(1);
+
+    result = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [RETIRED]: 100 },
+      winningSide: 1,
+    });
+    expect(result.outcome.winningSide).toEqual(1);
+  });
+});
+
+test('other matchUpFormats', () => {
+  let result = mocksEngine.generateOutcome({
+    matchUpFormat: 'SET3-S:4/TB7',
+    matchUpStatusProfile: {}, // ensures a COMPLETED outcome
+  });
+  const { side1Score, side2Score } = result.outcome.score.sets[0];
+  expect(Math.max(side1Score, side2Score) <= 5).toBeTruthy();
+
+  result = mocksEngine.generateOutcome({
+    matchUpFormat: 'SET3-S:TB7',
+    matchUpStatusProfile: {},
+    winningSide: 2,
+  });
+  expect(result.outcome.winningSide).toEqual(2);
+  expect(result.outcome.matchUpStatus).toEqual(COMPLETED);
 });

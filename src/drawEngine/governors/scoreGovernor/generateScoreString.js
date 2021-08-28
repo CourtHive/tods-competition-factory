@@ -69,7 +69,7 @@ export function generateScoreString(params) {
       (isNumeric(side2TiebreakScore) || autoComplete ? 0 : '');
 
     if (isTiebreakSet) {
-      const tiebreakScore = reversed ? [t2, t1] : [t1, t2];
+      const tiebreakScore = reverseScores ? [t2, t1] : [t1, t2];
       return `[${tiebreakScore.join('-')}]`;
     }
 

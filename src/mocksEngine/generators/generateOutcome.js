@@ -1,9 +1,9 @@
 import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyzeMatchUp';
 import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
+import { randomInt, weightedRandom } from '../../utilities/math';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { generateRange, randomPop } from '../../utilities';
-import { randomInt } from '../../utilities/math';
 import {
   getSetComplement,
   getTiebreakComplement,
@@ -38,27 +38,33 @@ const defaultStatusProfile = {
 
 /**
  *
+ * @param {string} matchUpFormat - optional - TODS matchUpFormat code string - defaults to 'SET3-S:6/TB7'
+ * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
+ * @param {integer} pointsPerMinute - optional - value used for generating scores for timed sets
+ * @param {integer} sideWeight - optional - the larger the number the less likely a deciding (e.g. 3rd) set is generated
  * @param {integer} winningSide - optional - 1 or 2 forces the winningSide
- * @param {integer} sideWeight - the larger the number the less likely a deciding (e.g. 3rd) set is generated
- * @param {integer} defaultWithScorePercent - percentage of the time a DEFAULT should include a score
- * @param {string} matchUpFormat - TODS matchUpFormat code string
- * @param {object} matchUpStatusProfile - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
+ * @param {integer} defaultWithScorePercent - optional - percentage of the time a DEFAULT should include a score
  *
  * @returns {object} outcome - { score, winningSide, matchUpStatus }
  */
 export function generateOutcome({
-  winningSide,
-  sideWeight = 4,
-  defaultWithScorePercent = 2,
   matchUpFormat = 'SET3-S:6/TB7',
   matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
+  pointsPerMinute = 1,
+  sideWeight = 4,
+  winningSide,
+  defaultWithScorePercent = 2,
 }) {
   if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };
   if (defaultWithScorePercent > 100) defaultWithScorePercent = 100;
-  if (isNaN(sideWeight) || isNaN(defaultWithScorePercent))
+  if (
+    isNaN(defaultWithScorePercent) ||
+    isNaN(pointsPerMinute) ||
+    isNaN(sideWeight)
+  )
     return { error: INVALID_VALUES };
 
   const matchUpStatuses = Object.keys(matchUpStatusProfile).filter(
@@ -112,7 +118,7 @@ export function generateOutcome({
   const sets = [];
   const weightedSide = randomInt(0, 1);
   const weightedRange = winningSide
-    ? [2 - winningSide]
+    ? [winningSide - 1]
     : [
         ...generateRange(0, sideWeight).map(() => weightedSide),
         1 - weightedSide,
@@ -134,10 +140,11 @@ export function generateOutcome({
   for (const setNumber of generateRange(1, bestOf + 1)) {
     const isFinalSet = setNumber === bestOf;
     const { set, incomplete, winningSideNumber } = generateSet({
-      setNumber,
       incomplete: incompleteAt === setNumber,
-      setFormat: (isFinalSet && finalSetFormat) || setFormat,
       matchUpStatus,
+      pointsPerMinute,
+      setFormat: (isFinalSet && finalSetFormat) || setFormat,
+      setNumber,
       weightedRange,
     });
     sets.push(set);
@@ -181,27 +188,63 @@ export function generateOutcome({
  * @returns
  */
 function generateSet({
-  setNumber,
   incomplete,
-  setFormat,
-  weightedRange = [0, 1],
   matchUpStatus,
+  pointsPerMinute,
+  setFormat,
+  setNumber,
+  weightedRange = [0, 1],
 }) {
   const set = { setNumber };
-  const { setTo, tiebreakFormat, tiebreakAt, timed, minutes } = setFormat;
+  const { setTo, tiebreakFormat, tiebreakAt, tiebreakSet, timed, minutes } =
+    setFormat;
 
   // will tend to be more likely to either reverse or not revderse all sets
   // preserves randomness of winningSide while reducing deciding set outcomes
   const weightIndex = randomInt(0, weightedRange.length - 1);
   const reverseScores = weightedRange[weightIndex];
+  let winningSideNumber;
 
-  if (timed && minutes) {
+  if (timed) {
+    const calcPoints = minutes * pointsPerMinute;
+    const pointsVariation = Math.round(calcPoints * 0.2);
+    const totalPoints = calcPoints + randomPop([1, -1]) * pointsVariation;
+    // the use of weightedRandom applies a bell curve distribution to the difference in side scores
+    // the larger the second value, the more pronounced the bell curve will be
+    const sidePoints = weightedRandom(totalPoints, 2);
+    const scores = [sidePoints, totalPoints - sidePoints];
+
+    if (reverseScores) scores.reverse();
+    winningSideNumber = weightedRange[weightIndex] + 1;
+
+    // sides could be tied
+    let highSide = scores[0] > scores[1] ? 1 : scores[1] > scores[0] ? 2 : 0;
+
+    if (incomplete) {
+      const [side1Score, side2Score] = scores;
+      Object.assign(set, { side1Score, side2Score });
+      if (completedMatchUpStatuses.includes(matchUpStatus)) {
+        return { set, incomplete, winningSideNumber };
+      }
+
+      return { set, incomplete };
+    }
+
+    if (!highSide) scores[randomInt(0, 1)] += 1;
+    highSide = scores[0] > scores[1] ? 1 : 2; // sides are not tied
+    if (highSide !== winningSideNumber) scores.reverse();
+
+    const [side1Score, side2Score] = scores;
+    Object.assign(set, {
+      side1Score,
+      side2Score,
+      winningSide: winningSideNumber,
+    });
+
     return { set };
   } else if (incomplete) {
     set.side1Score = randomInt(0, tiebreakAt);
     set.side2Score = randomInt(0, tiebreakAt);
-
-    let winningSideNumber;
 
     if (completedMatchUpStatuses.includes(matchUpStatus)) {
       winningSideNumber = weightedRange[weightIndex] + 1;
@@ -215,46 +258,72 @@ function generateSet({
       .flat();
     const lowValue = range[randomInt(0, range.length - 1)];
 
-    const scores = getSetComplement({
-      isSide1: true,
-      lowValue,
-      setTo,
-      tiebreakAt,
-    });
+    const scores =
+      setTo &&
+      getSetComplement({
+        isSide1: true,
+        lowValue,
+        setTo,
+        tiebreakAt,
+      });
+    const isTiebreakSet = !scores;
+    const specifiedWinningSide =
+      weightedRange.length === 1 && weightedRange[weightIndex] + 1;
 
-    if (reverseScores) scores.reverse();
+    if (!isTiebreakSet) {
+      if (specifiedWinningSide) {
+        const highSide = scores[0] > scores[1] ? 1 : 2; // sides are not tied
+        if (highSide !== specifiedWinningSide) scores.reverse();
+      } else if (reverseScores) {
+        scores.reverse();
+      }
 
-    const [side1Score, side2Score] = scores;
-    Object.assign(set, { side1Score, side2Score });
+      const [side1Score, side2Score] = scores;
+      Object.assign(set, { side1Score, side2Score });
+    }
 
     const setAnalysis = analyzeSet({
       setObject: set,
       matchUpScoringFormat: { setFormat },
     });
 
-    if (setAnalysis.hasTiebreakCondition) {
-      const { NoAD: tiebreakNoAd, tiebreakTo } = tiebreakFormat;
+    let tiebreakWinningSide;
+    if (setAnalysis.hasTiebreakCondition || isTiebreakSet) {
+      const { NoAD: tiebreakNoAd, tiebreakTo } = tiebreakFormat || tiebreakSet;
       const range = generateRange(1, tiebreakTo + 1)
         .map((value) =>
           generateRange(0, tiebreakTo + 2 - value).map(() => value)
         )
         .flat();
       const lowValue = range[randomInt(0, range.length - 1)];
-      const scores = getTiebreakComplement({
+      let scores = getTiebreakComplement({
         isSide1: true,
         lowValue,
         tiebreakTo,
         tiebreakNoAd,
       });
 
-      if (setAnalysis.leadingSide === 2) {
+      if (isTiebreakSet) {
+        const highSide = scores[0] > scores[1] ? 1 : 2; // sides are not tied
+        if (specifiedWinningSide) {
+          if (highSide !== specifiedWinningSide) scores.reverse();
+        } else if (reverseScores) {
+          scores.reverse();
+        }
+        [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
+        tiebreakWinningSide = scores[0] > scores[1] ? 1 : 2;
+      } else if (setAnalysis.leadingSide === 2) {
         [set.side1TiebreakScore, set.side2TiebreakScore] = scores;
       } else {
         [set.side2TiebreakScore, set.side1TiebreakScore] = scores;
       }
     }
 
-    set.winningSide = setAnalysis.winningSide || setAnalysis.leadingSide;
+    set.winningSide =
+      setAnalysis.winningSide ||
+      setAnalysis.leadingSide ||
+      specifiedWinningSide ||
+      tiebreakWinningSide;
   }
   return { set };
 }

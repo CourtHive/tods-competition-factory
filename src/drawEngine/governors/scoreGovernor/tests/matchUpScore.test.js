@@ -17,3 +17,44 @@ it('can generate score object', () => {
   expect(score.scoreStringSide1).toEqual('6-2 1-6 1-6');
   expect(score.scoreStringSide2).toEqual('2-6 6-1 6-1');
 });
+
+it('generates correct scoreStrings for tiebreak sets', () => {
+  const sets = [
+    {
+      setNumber: 1,
+      side1TiebreakScore: 6,
+      side2TiebreakScore: 8,
+      winningSide: 2,
+    },
+    {
+      setNumber: 2,
+      side1TiebreakScore: 6,
+      side2TiebreakScore: 8,
+      winningSide: 2,
+    },
+  ];
+  const { score } = matchUpScore({
+    score: { sets },
+    winningSide: 2,
+    matchUpStatus: COMPLETED,
+  });
+
+  expect(score).toEqual({
+    sets: [
+      {
+        setNumber: 1,
+        side1TiebreakScore: 6,
+        side2TiebreakScore: 8,
+        winningSide: 2,
+      },
+      {
+        setNumber: 2,
+        side1TiebreakScore: 6,
+        side2TiebreakScore: 8,
+        winningSide: 2,
+      },
+    ],
+    scoreStringSide1: '[6-8] [6-8]',
+    scoreStringSide2: '[8-6] [8-6]',
+  });
+});
