@@ -2,10 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   CANCELLED,
@@ -88,6 +85,11 @@ it('can generate AD_HOC drawDefinitions', () => {
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   expect(matchUps.length).toEqual(12);
 
+  const drawPositions = matchUps
+    .map(({ drawPositions }) => drawPositions)
+    .flat();
+  expect(Math.max(...drawPositions)).toEqual(24);
+
   result = tournamentEngine.getRoundMatchUps({ matchUps });
   expect(result.roundMatchUps[1].length).toEqual(3);
   expect(result.roundMatchUps[2].length).toEqual(4);
@@ -121,6 +123,5 @@ it('can generate AD_HOC drawDefinitions', () => {
     outcome,
     drawId,
   });
-  // since there are no drawPositions / no participants
-  expect(result.error).toEqual(INVALID_MATCHUP_STATUS);
+  expect(result.success).toEqual(true);
 });

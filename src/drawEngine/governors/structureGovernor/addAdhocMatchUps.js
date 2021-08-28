@@ -1,3 +1,4 @@
+import { chunkArray, generateRange } from '../../../utilities';
 import {
   addMatchUpsNotice,
   modifyDrawNotice,
@@ -37,6 +38,21 @@ export function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
   ) {
     return { error: INVALID_STRUCTURE };
   }
+
+  const existingDrawPositions = (structure.matchUps || [])
+    .map(({ drawPositions }) => drawPositions)
+    .flat()
+    .sort((a, b) => a - b);
+  const nextDrawPosition = Math.max(...existingDrawPositions, 0) + 1;
+
+  const matchUpsCount = matchUps.length;
+  const newDrawPositions = chunkArray(
+    generateRange(nextDrawPosition, nextDrawPosition + matchUpsCount * 2),
+    2
+  );
+  matchUps.forEach(
+    (matchUp, i) => (matchUp.drawPositions = newDrawPositions[i])
+  );
 
   structure.matchUps.push(...matchUps);
 
