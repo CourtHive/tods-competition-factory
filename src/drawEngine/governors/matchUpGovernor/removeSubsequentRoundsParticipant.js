@@ -12,7 +12,7 @@ import {
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-// NOTE: significant portsions of code shared with drawPositionRemovals.js
+// significant portsions of code shared with drawPositionRemovals.js
 export function removeSubsequentRoundsParticipant({
   drawDefinition,
   structureId,

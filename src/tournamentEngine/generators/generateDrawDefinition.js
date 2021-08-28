@@ -282,7 +282,7 @@ export function generateDrawDefinition(params) {
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
           const seedValue = seedNumber;
-          // TODO: attach basis of seeding information to seedAssignment
+          // ?? attach basis of seeding information to seedAssignment ??
           const { participantId } = scaledEntry;
           assignSeed({
             drawDefinition,
