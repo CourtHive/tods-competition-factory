@@ -1566,7 +1566,7 @@ const { policyDefinition } = tournamentEngine.getPolicyDefinition({
 Returns an array of `positionAssignments` for a structure. Combines `positionAssginments` for child structures in the case of ROUND_ROBIN where `{ structureType: CONTAINER }`.
 
 ```js
-let { positionAssignments } = getPositionAssignments({
+let { positionAssignments } = tournamentEngine.getPositionAssignments({
   drawDefinition, // optional if { structure } is provided
   structureId, // optional if { structure } is provided
   structure, // optional if { drawDefinition, structureId } are provided
