@@ -222,6 +222,7 @@ export function generateDrawType(params = {}) {
 
   Object.assign(result, generatorResult, {
     matchUpsMap,
+    drawDefinition,
     inContextDrawMatchUps,
   });
 

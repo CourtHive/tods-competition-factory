@@ -8,11 +8,10 @@ import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
+import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
 import { notifySubscribersAsync } from '../global/notifySubscribers';
-import definitionTemplate from './generators/drawDefinitionTemplate';
 import { factoryVersion } from '../global/factoryVersion';
 import { UUID, makeDeepCopy } from '../utilities';
-import { paramsMiddleWare, setState } from './stateMethods';
 import {
   setDeepCopy,
   setDevContext,
@@ -27,11 +26,6 @@ import { SUCCESS } from '../constants/resultConstants';
 let drawDefinition;
 let prefetch = false;
 let tournamentParticipants = [];
-
-function newDrawDefinition({ drawId, drawType } = {}) {
-  const drawDefinition = definitionTemplate();
-  return Object.assign(drawDefinition, { drawId, drawType });
-}
 
 export function drawEngineAsync(test) {
   const result = createInstanceState();
