@@ -18,7 +18,9 @@ test('can recreate an exitProfile for a COMPASS draw', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { exitProfiles } = drawEngine.getExitProfiles({ drawDefinition });
+  const { exitProfiles } = drawEngine
+    .setState(drawDefinition)
+    .getExitProfiles({ drawDefinition });
   expect(Object.values(exitProfiles)).toEqual([
     ['0'],
     ['0-1'],
@@ -41,7 +43,9 @@ test('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
 
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const { exitProfiles } = drawEngine.getExitProfiles({ drawDefinition });
+  const { exitProfiles } = drawEngine
+    .setState(drawDefinition)
+    .getExitProfiles({ drawDefinition });
   expect(Object.values(exitProfiles)).toEqual([
     ['0'],
     ['0-1', '0-2'],
