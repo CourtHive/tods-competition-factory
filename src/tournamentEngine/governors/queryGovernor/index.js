@@ -1,5 +1,4 @@
 import { getMatchUpScheduleDetails as drawEngineGetMatchUpScheduleDetails } from '../../../drawEngine/accessors/matchUpAccessor/matchUpScheduleDetails';
-import { isValidMatchUpFormat } from '../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 import { getMaxEntryPosition } from '../../../common/deducers/getMaxEntryPosition';
 import { participantScheduledMatchUps } from './participantScheduledMatchUps';
 import { getPositionAssignments } from '../../getters/getPositionAssignments';
@@ -10,6 +9,7 @@ import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';
@@ -69,7 +69,7 @@ const queryGovernor = {
   getDrawDefinition,
   getEventProperties,
   getPositionAssignments,
-  isValidMatchUpFormat,
+  isValidMatchUpFormat: matchUpFormatCode.isValidMatchUpFormat,
 
   getMaxEntryPosition,
 

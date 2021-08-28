@@ -1,10 +1,9 @@
-import { isValidMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 import { analyzeMatchUp } from '../../drawEngine/governors/scoreGovernor/analyzeMatchUp';
 import { matchUpScore } from '../../drawEngine/governors/scoreGovernor/matchUpScore';
 import { analyzeSet } from '../../drawEngine/governors/scoreGovernor/analyzeSet';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
-import { randomInt } from '../../utilities/math';
 import { generateRange, randomPop } from '../../utilities';
+import { randomInt } from '../../utilities/math';
 import {
   getSetComplement,
   getTiebreakComplement,
@@ -35,6 +34,8 @@ const defaultStatusProfile = {
   [DEFAULTED]: 4,
 };
 
+// TODO: timed sets && NoAd
+
 /**
  *
  * @param {integer} winningSide - optional - 1 or 2 forces the winningSide
@@ -52,7 +53,7 @@ export function generateOutcome({
   matchUpFormat = 'SET3-S:6/TB7',
   matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
 }) {
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object')
     return { error: INVALID_VALUES };
