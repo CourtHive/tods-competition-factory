@@ -8,6 +8,7 @@ export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
 export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
 export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
+export const INVALID_STRUCTURE = 'Invalid structure';
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
@@ -244,6 +245,7 @@ export const errorConditionConstants = {
   INVALID_SIDE_NUMBER,
   INVALID_STAGE,
   INVALID_START_TIME,
+  INVALID_STRUCTURE,
   INVALID_STOP_TIME,
   INVALID_TIME,
   INVALID_TIME_ITEM,

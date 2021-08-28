@@ -42,6 +42,7 @@ import {
 } from './timeItems';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { getRoundMatchUps } from './getRoundMatchUps';
 
 function getDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -52,6 +53,7 @@ const queryGovernor = {
   allTournamentMatchUps,
   tournamentMatchUps,
   allEventMatchUps,
+  getRoundMatchUps,
   allDrawMatchUps,
   eventMatchUps,
   drawMatchUps,
