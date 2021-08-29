@@ -7,6 +7,11 @@ import {
   INVALID_PARTICIPANT_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
+import {
+  DIRECT_ACCEPTANCE,
+  ORGANISER_ACCEPTANCE,
+  WILDCARD,
+} from '../../../constants/entryStatusConstants';
 
 /**
  *
@@ -17,6 +22,7 @@ import {
  */
 export function drawMatic({
   tournamentParticipants,
+  restrictEntryStatus,
   drawDefinition,
   participantIds,
   structureId,
@@ -26,9 +32,15 @@ export function drawMatic({
   if (typeof drawDefinition !== 'object')
     return { error: INVALID_DRAW_DEFINITION };
 
-  const enteredParticipantIds = drawDefinition.entries.map(
-    ({ participantId }) => participantId
-  );
+  const enteredParticipantIds = drawDefinition.entries
+    .filter(
+      ({ entryStatus }) =>
+        !restrictEntryStatus ||
+        [DIRECT_ACCEPTANCE, ORGANISER_ACCEPTANCE, WILDCARD].includes(
+          entryStatus
+        )
+    )
+    .map(({ participantId }) => participantId);
 
   if (participantIds) {
     // ensure all participantIds are in drawDefinition.entries
@@ -69,10 +81,14 @@ export function drawMatic({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (!isAdHoc(structure)) return { error: INVALID_DRAW_DEFINITION };
 
+  // TODO: adHocRatings should be retrieved for all participantIds
+  const adHocRatings = {};
+
   const { matchUps } = generateDrawMaticRound({
     tournamentParticipants,
     drawDefinition,
     participantIds,
+    adHocRatings,
     matchUpIds,
     structureId,
     structure,

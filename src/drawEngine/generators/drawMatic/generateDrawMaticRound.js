@@ -1,11 +1,19 @@
+import { assignDrawPosition } from '../../governors/positionGovernor/positionAssignment';
 import { getPositionAssignments } from '../../getters/positionsGetter';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
+import { generateCandidate } from './generateCandidate';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { TEAM } from '../../../constants/participantTypes';
 
+// this should be in policyDefinition
 const ENCOUNTER_VALUE = 50;
 const SAME_TEAM_VALUE = 60;
+const DEFAULT_RATING = 0;
+
+const CANDIDATE_GOAL = 2000;
+const ACTOR_DIVISOR = 100;
 
 // valueObjects provide "weighting" to each possible pairing of participants
 // deltaObjects contain the difference in ratings between two participants
@@ -14,14 +22,14 @@ export function generateDrawMaticRound({
   tournamentParticipants,
   drawDefinition,
   participantIds,
+  adHocRatings,
   structureId,
   matchUpIds,
   eventType,
   structure,
 }) {
-  const { positionAssignments } = getPositionAssignments({ structure });
-
   // create valueObject for each previous encounter within the structure
+  const { positionAssignments } = getPositionAssignments({ structure });
   const { encounters } = getEncounters({
     matchUps: structure.matchUps,
     positionAssignments,
@@ -40,7 +48,7 @@ export function generateDrawMaticRound({
     // add SAME_TEAM_VALUE for participants who appear on the same team
     for (const teamParticipant of teamParticipants) {
       const participantIds = teamParticipant.individualParticipantIds;
-      const { uniquePairings } = getUniquePairings({ participantIds });
+      const { uniquePairings } = getPairingsData({ participantIds });
       for (const pairing of uniquePairings) {
         if (!valueObjects[pairing]) valueObjects[pairing] = 0;
         valueObjects[pairing] += SAME_TEAM_VALUE;
@@ -48,40 +56,107 @@ export function generateDrawMaticRound({
     }
   }
 
-  const { uniquePairings, deltaObjects } = getUniquePairings({
+  const { uniquePairings, possiblePairings, deltaObjects } = getPairingsData({
     participantIds,
   });
 
-  const matchUpsCount = Math.floor(participantIds.lenght / 2);
+  const matchUpsCount = Math.floor(participantIds.length / 2);
 
-  const { matchUps: roundMatchUps } = generateAdHocMatchUps({
+  // TODO: for client/server sync...
+  // ... this needs to be called BEFORE drawMatic and the matchUpIds of pre-generated matchUps passed in...
+  // ... and draw position assignments need to be passed in bulk AFTER
+  const result = generateAdHocMatchUps({
     newRound: true,
     drawDefinition,
     matchUpsCount,
     structureId,
     matchUpIds,
+    addMatchUps: true,
   });
+  // OR: the matchUps don't get added here...
+  // ... and the drawPositions to be added are retrieved by query then added ...
+  // ... and then the addAdHocMatchUps method can be called with drawPositions in place ...
+  // ... and it needs to do an integrity check to insure the drawPositions are all valid.
+  // This approach would require drawPositions to be assigned without calling assignDrawPosition
+  if (result.error) return result;
+  const roundMatchUps = result.matchUps;
 
   const params = {
     drawDefinition,
     participantIds,
+    possiblePairings,
     uniquePairings,
-    roundMatchUps,
+    adHocRatings,
     deltaObjects,
+    valueObjects,
     structure,
   };
 
-  eventType === DOUBLES
-    ? generateDoublesRound(params)
-    : generateSinglesRound(params);
+  const { participantIdPairings } =
+    eventType === DOUBLES
+      ? getDoublesPairings(params)
+      : getSinglesPairings(params);
 
-  return { matchUps: [] };
+  for (const [index, matchUp] of roundMatchUps.entries()) {
+    const drawPositions = matchUp.drawPositions;
+    const { participantIds } = participantIdPairings[index];
+    for (const i of drawPositions.keys()) {
+      const participantId = participantIds[i];
+      const drawPosition = drawPositions[i];
+      const result = assignDrawPosition({
+        drawDefinition,
+        structureId,
+        participantId,
+        drawPosition,
+      });
+      if (result.error) return result;
+    }
+  }
+  return { ...SUCCESS };
 }
 
-function generateSinglesRound() {}
-function generateDoublesRound() {}
+function getSinglesPairings({
+  deltaObjects,
+  valueObjects,
+  adHocRatings = {},
+  uniquePairings,
+  possiblePairings,
+}) {
+  // modify valueObjects by ratings differential squared
+  uniquePairings.forEach((pairing) => {
+    const ratings = pairing
+      .split('|')
+      .map((participantId) => adHocRatings[participantId] || DEFAULT_RATING);
+    const differential = Math.abs(ratings[0] - ratings[1]) + 1;
+    deltaObjects[pairing] = Math.abs(ratings[0] - ratings[1]);
+    if (!valueObjects[pairing]) valueObjects[pairing] = 0;
+    valueObjects[pairing] += Math.pow(differential, 2);
+  });
 
-function getUniquePairings({ participantIds }) {
+  const rankedPairings = uniquePairings
+    .map((pairing) => ({ pairing, value: valueObjects[pairing] }))
+    .sort((a, b) => a.value - b.value);
+  const { pairingValues } = getParticipantPairingValues({
+    possiblePairings,
+    valueObjects,
+  });
+
+  const { participantIdPairings } = generateCandidate({
+    rankedPairings,
+    pairingValues,
+    deltaObjects,
+    candidateGoal: CANDIDATE_GOAL,
+    actorDivisor: ACTOR_DIVISOR,
+  });
+
+  return { participantIdPairings };
+}
+
+function getDoublesPairings({ roundMatchUps }) {
+  return { matchUps: roundMatchUps };
+}
+
+function getPairingsData({ participantIds }) {
   const possiblePairings = {};
   const uniquePairings = [];
 
@@ -121,49 +196,28 @@ function getEncounters({ matchUps, positionAssignments }) {
   return { encounters };
 }
 
+function getParticipantPairingValues({ possiblePairings, valueObjects }) {
+  let pairingValues = {};
+
+  for (const participantId of Object.keys(possiblePairings)) {
+    let participantValues = possiblePairings[participantId].map((opponent) =>
+      pairingValue(participantId, opponent)
+    );
+    pairingValues[participantId] = participantValues.sort(
+      (a, b) => a.value - b.value
+    );
+  }
+
+  function pairingValue(participantId, opponent) {
+    let key = matchupHash(participantId, opponent);
+    return { opponent, value: valueObjects[key] };
+  }
+  return { pairingValues };
+}
+
 function matchupHash(id1, id2) {
   return [id1, id2].sort().join('|');
 }
-
-/*
-  function singlesRound() {
-    // increment matchup values based on ratings differentials
-    Object.keys(value_objects).forEach((matchup) => {
-      let ratings = matchup
-        .split('|')
-        .map((pid) => evt.adhoc_ratings[pid] || fx.DEFAULT_RATING);
-      let differential = Math.abs(ratings[0] - ratings[1]) + 1;
-      delta_objects[matchup] = Math.abs(ratings[0] - ratings[1]);
-      value_objects[matchup] += Math.pow(differential, 2);
-    });
-
-    let ranked_matchups = Object.keys(value_objects)
-      .map((matchup) => ({ matchup, value: value_objects[matchup] }))
-      .sort(valueSort);
-    let player_matchup_values = matchupValues({
-      matchups: player_matchups,
-      value_objects,
-    });
-
-    evt.rounds += 1;
-    let candidate = generateCandidate({
-      ranked_matchups,
-      matchup_values: player_matchup_values,
-      delta_objects,
-      env,
-    });
-    let singles_matches = candidate.matchups.map((matchup) =>
-      teamMatch({
-        tournament,
-        evt,
-        opponents: matchup.opponents,
-        round: evt.rounds,
-      })
-    );
-
-    return singles_matches;
-  }
-*/
 
 /*
   function doublesRound() {
