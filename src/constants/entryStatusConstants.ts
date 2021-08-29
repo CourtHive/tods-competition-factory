@@ -7,7 +7,7 @@ export enum EntryStatusEnum {
   WITHDRAWN = 'WITHDRAWN',
 
   // applies only to { participantType: INDIVIDUAL } entries in { eventType: DOUBLES }
-  UNPAIRED = 'UNPAIRED',
+  UNPAIRED = 'UNPAIRED', // legacy - being replaced by UNGROUPED
   UNGROUPED = 'UNGROUPED',
 
   // These entryStatus enums apply only to draw.entries

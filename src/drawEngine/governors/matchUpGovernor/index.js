@@ -8,7 +8,7 @@ import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
-import { drawMatic } from '../../generators/drawMatic';
+import { drawMatic } from '../../generators/drawMatic/drawMatic';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
 

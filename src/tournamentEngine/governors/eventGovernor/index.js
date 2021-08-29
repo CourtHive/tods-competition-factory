@@ -72,6 +72,7 @@ import { addAdHocMatchUps } from './drawDefinitions/addAdHocMatchUps';
 import { getFlightProfile } from '../../getters/getFlightProfile';
 import { modifyDrawName } from './drawDefinitions/modifyDrawName';
 import { modifyEventEntries } from './entries/modifyEventEntries';
+import { drawMatic } from './drawDefinitions/drawMatic';
 import { addFlight } from './addFlight';
 import {
   setEventDates,
@@ -125,6 +126,7 @@ const eventGovernor = {
   addAdHocMatchUps,
   generateAdHocMatchUps,
   deleteAdHocMatchUps,
+  drawMatic,
 
   setDelegatedOutcome,
   removeDelegatedOutcome,
