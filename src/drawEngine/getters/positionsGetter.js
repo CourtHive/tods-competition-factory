@@ -1,4 +1,5 @@
 import { findStructure } from './findStructure';
+
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_POSITION_ASSIGNMENTS,
@@ -53,6 +54,7 @@ export function getPositionAssignments({
   } else {
     error = MISSING_POSITION_ASSIGNMENTS;
   }
+
   return { positionAssignments, error };
 }
 
