@@ -192,7 +192,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   let assignmentAction = result.validActions.find(
     ({ type }) => type === ASSIGN_PARTICIPANT
   );
-  const { method, payload, availableParticipantIds } = assignmentAction;
+  let { method, payload, availableParticipantIds } = assignmentAction;
   expect(payload.drawPosition).toEqual(drawPosition);
   expect(availableParticipantIds.length).toEqual(40);
 
@@ -202,6 +202,33 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   payload.participantId = availableParticipantIds[0];
   result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  let validActions = result.validActions.map(({ type }) => type);
+  expect(validActions.includes(ASSIGN_PARTICIPANT)).toEqual(false);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.hasPositionAssigned).toEqual(true);
+
+  drawPosition = matchUps[0].drawPositions[1];
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  validActions = result.validActions.map(({ type }) => type);
+  expect(validActions.includes(ASSIGN_PARTICIPANT)).toEqual(true);
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.hasPositionAssigned).toEqual(false);
+
+  assignmentAction = result.validActions.find(
+    ({ type }) => type === ASSIGN_PARTICIPANT
+  );
+  ({ availableParticipantIds } = assignmentAction);
+  expect(availableParticipantIds.length).toEqual(39);
 
   // Notes: need to be able to assign the same participantId to multiple matchUps
   // in the same structure, but not within the same round... which will take care of same matchUp
