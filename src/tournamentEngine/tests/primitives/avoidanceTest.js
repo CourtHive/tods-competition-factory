@@ -6,6 +6,7 @@ import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import mocksEngine from '../../../mocksEngine';
+import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
 
 const { SUCCESS } = resultConstants;
 
@@ -106,7 +107,7 @@ export function avoidanceTest(params) {
     seedsCount,
     automated: true,
     event: eventResult,
-    policyDefinitions: [{ avoidance }, SEEDING_ITF],
+    policyDefinitions: { [POLICY_TYPE_AVOIDANCE]: avoidance, ...SEEDING_ITF },
   };
   const { error, conflicts, drawDefinition } =
     tournamentEngine.generateDrawDefinition(values);
@@ -114,7 +115,7 @@ export function avoidanceTest(params) {
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 
-  drawEngine.setParticipants(participants);
+  drawEngine.setState(drawDefinition).setParticipants(participants);
   const { upcomingMatchUps } = drawEngine.drawMatchUps({
     drawDefinition,
     requireParticipants: true,

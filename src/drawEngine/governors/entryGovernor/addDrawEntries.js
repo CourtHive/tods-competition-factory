@@ -2,6 +2,7 @@ import { refreshEntryPositions } from '../../../common/producers/refreshEntryPos
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { validStage, stageSpace } from '../../getters/stageGetter';
 import { participantInEntries } from '../../getters/entryGetter';
+import { definedAttributes } from '../../../utilities/objects';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -73,13 +74,13 @@ export function addDrawEntry({
     return { error: EXISTING_PARTICIPANT };
   }
 
-  const entry = {
+  const entry = definedAttributes({
     ...participant,
     participantId,
     entryStage,
     entryStatus,
     entryPosition,
-  };
+  });
   drawDefinition.entries.push(entry);
   modifyDrawNotice({ drawDefinition });
 

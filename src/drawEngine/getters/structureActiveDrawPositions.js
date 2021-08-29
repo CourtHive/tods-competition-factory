@@ -11,7 +11,9 @@ import { CONTAINER } from '../../constants/drawDefinitionConstants';
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus
 export function structureActiveDrawPositions({ drawDefinition, structureId }) {
   const matchUpFilters = { isCollectionMatchUp: false };
-  const { structure } = findStructure({ drawDefinition, structureId });
+  const { structure, error } = findStructure({ drawDefinition, structureId });
+  if (error) return { error };
+
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
     structure,

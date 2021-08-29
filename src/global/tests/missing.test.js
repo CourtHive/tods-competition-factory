@@ -55,6 +55,8 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
       if (!result) {
         // covers methods which are expected to return boolean
         expect([false, 0].includes(result)).toEqual(true);
+      } else if (method === 'getRoundMatchUps') {
+        expect(result.roundMatchUps).toEqual({});
       } else if (
         ['credits', 'version', 'participantScheduledMatchUps'].includes(method)
       ) {
@@ -72,6 +74,7 @@ it.each([asyncTournamentEngine, tournamentEngineSync])(
           ].includes(method)
         ).toEqual(true);
       } else {
+        if (!result.error) console.log({ method, result });
         expect(result.error).not.toBeUndefined();
       }
     }

@@ -359,6 +359,7 @@ export function addParticipantContext(params) {
               roundPosition,
               schedule,
               score,
+              sides,
               structureName,
               winnerTo,
               winningSide,

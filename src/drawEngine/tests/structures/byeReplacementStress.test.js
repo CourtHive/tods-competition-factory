@@ -43,6 +43,7 @@ it('can run stress tests when JEST_STRESS=true', () => {
   }
 });
 
+// skipped in normal testing, only used for stress testing
 test.skip.each([
   [8, COMPASS, [5, 6, 3, 1]],
   [8, ROUND_ROBIN, [5, 6, 3, 1]],

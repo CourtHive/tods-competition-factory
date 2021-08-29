@@ -7,11 +7,18 @@ import {
 import { POLICY_TYPE_SCHEDULING } from '../../../../constants/policyConstants';
 import { SCHEDULE_TIMING } from '../../../../constants/extensionConstants';
 
-export function getScheduleTiming({ tournamentRecord, categoryName, event }) {
+export function getScheduleTiming({
+  tournamentRecord,
+  categoryName,
+  categoryType,
+  event,
+}) {
   categoryName =
     categoryName ||
     event?.category?.categoryName ||
     event?.category?.ageCategoryCode;
+
+  categoryType = categoryType || event?.category?.categoryType;
 
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCHEDULING,
@@ -33,6 +40,7 @@ export function getScheduleTiming({ tournamentRecord, categoryName, event }) {
 
   const scheduleTiming = {
     categoryName,
+    categoryType,
     eventScheduling,
     tournamentScheduling,
     policy,

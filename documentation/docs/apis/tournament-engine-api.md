@@ -5,6 +5,24 @@ title: Tournament Engine API
 
 All tournamentEngine methods which make a mutation return either `{ success: true }` or `{ error }`
 
+## addAdHocMatchUps
+
+Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
+
+:::important
+`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
+:::
+
+```js
+const result = tournamentEngine.addAdHocMatchUps({
+  drawId, // required - drawId of drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUps, // required - matchUps are generated with tournamentEngine.generateAdHocMatchUps
+});
+```
+
+---
+
 ## addCourt
 
 Add a court to a Venue. See [Scheduling](/docs/concepts/scheduling).
@@ -713,6 +731,18 @@ tournamentEngine.clearScheduledMatchUps({
 
 ---
 
+## deleteAdHocMatchUps
+
+```js
+const result = tournamentEngine.deleteAdHocMatchUps({
+  drawId, // required - drawId of drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUpIds, // array of matchUpIds identifying matchUps to be deleted
+});
+```
+
+---
+
 ## deleteCourt
 
 ```js
@@ -976,6 +1006,22 @@ Returns a complete venue object. Primarily used internally.
 
 ```js
 tournamentEngine.findVenue({ venueId });
+```
+
+---
+
+## generateAdHocMatchUps
+
+```js
+const result = tournamentEngine.generateAdHocMatchUps({
+  drawId, // required - drawId of drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUpsCount, // optional - number of matchUps to generate - defaults to 1
+  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
+  addMatchUps, // optional - boolean defaults to false - whether to add generated matchUps to structure
+  roundNumber, // optional - specify round for which matchUps will be generated
+  newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
+});
 ```
 
 ---
@@ -1566,7 +1612,7 @@ const { policyDefinition } = tournamentEngine.getPolicyDefinition({
 Returns an array of `positionAssignments` for a structure. Combines `positionAssginments` for child structures in the case of ROUND_ROBIN where `{ structureType: CONTAINER }`.
 
 ```js
-let { positionAssignments } = getPositionAssignments({
+let { positionAssignments } = tournamentEngine.getPositionAssignments({
   drawDefinition, // optional if { structure } is provided
   structureId, // optional if { structure } is provided
   structure, // optional if { drawDefinition, structureId } are provided

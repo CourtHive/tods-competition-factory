@@ -1,5 +1,6 @@
-import { analyzeSet } from '../analyzeSet';
 import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { analyzeSet } from '../analyzeSet';
+
 import { FORMAT_STANDARD } from './formatConstants';
 import {
   INVALID_GAME_SCORES,

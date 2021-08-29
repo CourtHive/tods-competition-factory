@@ -1,6 +1,7 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
   DIRECT_ACCEPTANCE,
@@ -37,7 +38,7 @@ it('can set entryPositions', () => {
     eventId,
     entryPositions,
   });
-  expect(result.error.length).toEqual(2);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   // expect success
   entryPositions = [

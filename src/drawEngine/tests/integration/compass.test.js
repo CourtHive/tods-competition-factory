@@ -2,8 +2,8 @@ import { generateRange } from '../../../utilities';
 import { drawEngine } from '../../sync';
 
 import { MAIN, COMPASS } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
 import SEEDING_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   let drawSize, seedsCount, participantsCount;

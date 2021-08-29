@@ -1,6 +1,6 @@
 import { getMatchUpFormatTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
-import { isValidMatchUpFormat } from '../../../../drawEngine/governors/matchUpGovernor/isValidMatchUpFormat';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 
 import {
   MISSING_TOURNAMENT_RECORDS,
@@ -22,7 +22,7 @@ export function findMatchUpFormatTiming({
   eventId,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!isValidMatchUpFormat(matchUpFormat))
+  if (!matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(

@@ -1,11 +1,10 @@
-import { drawEngine } from '../../sync';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
+import { drawEngine } from '../../sync';
 import {
   completeMatchUp,
   verifyMatchUps,
 } from '../../tests/primitives/verifyMatchUps';
-
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
 
 import {
   BYE,

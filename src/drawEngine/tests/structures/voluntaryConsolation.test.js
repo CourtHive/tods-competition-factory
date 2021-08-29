@@ -3,6 +3,7 @@ import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats/formatConstants';
+import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   COMPASS,
@@ -123,7 +124,7 @@ it('can add voluntary consolation structure to an existing draw', () => {
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { extension } = findExtension({
     element: drawDefinition,
-    name: 'entryProfile',
+    name: ENTRY_PROFILE,
   });
   expect(extension.value[VOLUNTARY_CONSOLATION].drawSize).toEqual(
     consolationParticipantIds.length

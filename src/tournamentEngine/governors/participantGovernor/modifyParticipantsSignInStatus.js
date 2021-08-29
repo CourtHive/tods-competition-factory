@@ -1,6 +1,8 @@
 import { addParticipantTimeItem } from '../tournamentGovernor/addTimeItem';
 import { addNotice, getTopics } from '../../../global/globalState';
 
+import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANTS,
@@ -12,8 +14,6 @@ import {
   SIGNED_OUT,
   SIGN_IN_STATUS,
 } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 export function modifyParticipantsSignInStatus({
   tournamentRecord,
@@ -29,10 +29,9 @@ export function modifyParticipantsSignInStatus({
   const participants = tournamentRecord.participants || [];
   if (!participants.length) return { error: MISSING_PARTICIPANTS };
 
-  const errors = [];
   const modifiedParticipants = [];
   const createdAt = new Date().toISOString();
-  participants.forEach((participant) => {
+  for (const participant of participants) {
     const { participantId } = participant;
     if (participantIds.includes(participantId)) {
       const timeItem = {
@@ -46,10 +45,10 @@ export function modifyParticipantsSignInStatus({
         participantId,
         timeItem,
       });
-      if (result.error) errors.push(result.error);
+      if (result.error) return result;
       modifiedParticipants.push(participant);
     }
-  });
+  }
 
   const { topics } = getTopics();
   if (modifiedParticipants.length && topics.includes(MODIFY_PARTICIPANTS)) {
@@ -59,5 +58,5 @@ export function modifyParticipantsSignInStatus({
     });
   }
 
-  return errors.length ? { error: errors } : SUCCESS;
+  return { ...SUCCESS };
 }

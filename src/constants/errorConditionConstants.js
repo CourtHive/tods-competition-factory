@@ -8,6 +8,7 @@ export const MISSING_TOURNAMENT_ID = 'Missing tournamentId';
 export const INVALID_DRAW_DEFINITION = 'Invalid drawDefinition';
 export const MISSING_DRAW_DEFINITION = 'Missing drawDefinition';
 export const DRAW_DEFINITION_NOT_FOUND = 'drawDefinition not found';
+export const INVALID_STRUCTURE = 'Invalid structure';
 
 export const INVALID_DRAW_POSITION_FOR_SEEDING =
   'Invalid drawPosition for seedAssignment';
@@ -60,6 +61,7 @@ export const UNRECOGNIZED_MATCHUP_STATUS = 'Unrecognized matchUpStatus';
 export const UNRECOGNIZED_MATCHUP_FORMAT = 'Unrecognized matchUpFormat';
 export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
+export const INVALID_MATCHUP_FORMAT = 'Invalid matchUpFormat';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
 export const MISSING_MATCHUP_IDS = 'Missing matchUpIds';
@@ -226,6 +228,7 @@ export const errorConditionConstants = {
   INVALID_ENTRIES,
   INVALID_EVENT_TYPE,
   INVALID_GAME_SCORES,
+  INVALID_MATCHUP_FORMAT,
   INVALID_MATCHUP_STATUS,
   INVALID_MATCHUP,
   INVALID_OBJECT,
@@ -242,6 +245,7 @@ export const errorConditionConstants = {
   INVALID_SIDE_NUMBER,
   INVALID_STAGE,
   INVALID_START_TIME,
+  INVALID_STRUCTURE,
   INVALID_STOP_TIME,
   INVALID_TIME,
   INVALID_TIME_ITEM,

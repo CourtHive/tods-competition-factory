@@ -27,7 +27,7 @@ const values = {
   eventId,
   automated: true,
   drawSize: 32,
-  policyDefinitions: [AVOIDANCE_COUNTRY],
+  policyDefinitions: { ...AVOIDANCE_COUNTRY },
 };
 const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 ```

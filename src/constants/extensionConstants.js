@@ -2,6 +2,7 @@ export const APPLIED_POLICIES = 'appliedPolicies';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLE_LINKS = 'disableLinks';
 export const DRAW_PROFILE = 'drawProfile';
+export const ENTRY_PROFILE = 'entryProfile';
 export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
@@ -17,6 +18,7 @@ export const extensionConstants = {
   DELEGATED_OUTCOME,
   DISABLE_LINKS,
   DRAW_PROFILE,
+  ENTRY_PROFILE,
   FLIGHT_PROFILE,
   GROUPING_ATTRIBUTE,
   LINKED_TOURNAMENTS,

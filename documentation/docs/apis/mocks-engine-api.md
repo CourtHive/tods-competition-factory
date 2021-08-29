@@ -4,6 +4,33 @@ menu: Mocks Engine
 route: /mocksEngine/api
 ---
 
+## generateOutcome
+
+:::note
+**matchUpStatusProfile** is an object containing the percentage chance specified matchUpStatuses will appear.
+
+`matchUpStatusProfile: { [WALKOVER]: 100 }` will generate `WALKOVER` 100% of the time.
+:::
+
+```js
+const { outcome } = mocksEngine.generateOutcome({
+  matchUpFormat, // optional - generate outcome with score constrained by matchUpFormat
+  matchUpStatusProfile: {}, // optional - an empty object always returns { matchUpStatus: COMPLETED }
+  pointsPerMinute, // optional - defaults to 1 - used for generating timed set scores
+  winningSide: 1, // optional - to specify a specific winningSide
+  sideWeight, // optional - defaults to 4 - controls how often "deciding sets" are generated
+  defaultWithScorePercent, // optional - percentage change that an outcome with { matchUpStatus: DEFAULTED } will have a score
+});
+
+const {
+  score: { sets, side1ScoreString, side2ScoreString },
+  winningSide,
+  matchUpStatus,
+} = outcome;
+```
+
+---
+
 ## generateOutcomeFromScoreString
 
 Generates `outcome` object from parseable score string.
@@ -77,6 +104,7 @@ const drawProfiles = [
     drawSize: 4,
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
     uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
+    policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     drawType: ROUND_ROBIN,
     outcomes,
   },
@@ -84,6 +112,7 @@ const drawProfiles = [
 const eventProfiles = [
   {
     eventName: 'U18 Boys Doubles',
+    policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     gender: MALE,
     drawProfiles: [
       {
@@ -108,6 +137,9 @@ const {
   endDate, // optional - ISO string date
   startDate, // optional - ISO string date
   participantsProfile, // optional - { participantCount, participantType }
+  policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
+  completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
+  matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
   drawProfiles, // optional - array of profiles for draws to be generated; each draw creates an event
   eventProfiles, // optional - array of profiles for events to be generated; can include drawProfiles
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts

@@ -51,7 +51,7 @@ it('can bulk schedule matchUps', () => {
     eventId,
     seedsCount: 8,
     event: eventResult,
-    policyDefinitions: [SEEDING_ITF_POLICY],
+    policyDefinitions: { ...SEEDING_ITF_POLICY },
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 

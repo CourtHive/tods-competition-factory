@@ -1,3 +1,4 @@
+import { instanceCount, numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
 import {
   reset,
@@ -13,7 +14,6 @@ import {
 } from '../../../constants/drawDefinitionConstants';
 
 import { ERROR } from '../../../constants/resultConstants';
-import { instanceCount, numericSort } from '../../../utilities';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playoffDraw({

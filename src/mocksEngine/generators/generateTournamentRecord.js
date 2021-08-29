@@ -1,4 +1,5 @@
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { attachPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
@@ -22,11 +23,12 @@ import { DOUBLES } from '../../constants/eventConstants';
  *
  * @param {string} startDate - optional - ISO string date
  * @param {string} endDate - optional - ISO string date
- * @param {object} participantsProfile - { participantsCount, participantType }
- * @param {object[]} drawProfiles - [{ category, drawSize, drawType, eventType, matchUpFormat }]
- * @param {object[]} venueProfiles - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
- * @param {object[]} outcomes - [{ roundNumber, roundPosition, scoreString, winningSide, ... }]
- * @param {boolean} completeAllMatchUps
+ * @param {object} participantsProfile - optional - { participantsCount, participantType }
+ * @param {object} policyDefinitions - optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
+ * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat }]
+ * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
+ * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
+ * @param {object} matchUpStatusProfile - optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }
  * @param {boolean} randomWinningSide
  * @param {boolean} inContext
  *
@@ -36,12 +38,15 @@ export function generateTournamentRecord({
   startDate,
   tournamentName,
 
+  policyDefinitions,
   participantsProfile,
+  autoEntryPositions,
   drawProfiles,
   eventProfiles,
   venueProfiles,
 
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   goesTo,
 } = {}) {
@@ -70,6 +75,15 @@ export function generateTournamentRecord({
     endDate,
     tournamentName,
   });
+
+  if (typeof policyDefinitions === 'object') {
+    for (const policyType of Object.keys(policyDefinitions)) {
+      attachPolicy({
+        tournamentRecord,
+        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+      });
+    }
+  }
 
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0;
@@ -142,8 +156,10 @@ export function generateTournamentRecord({
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, error } = generateEventWithDraw({
         tournamentRecord,
+        autoEntryPositions,
         participantsProfile,
         completeAllMatchUps,
+        matchUpStatusProfile,
         randomWinningSide,
         participants,
         drawProfile,
@@ -164,8 +180,10 @@ export function generateTournamentRecord({
         drawIds: generatedDrawIds,
       } = generateEventWithFlights({
         tournamentRecord,
+        autoEntryPositions,
         participantsProfile,
         completeAllMatchUps,
+        matchUpStatusProfile,
         randomWinningSide,
         eventProfile,
         participants,

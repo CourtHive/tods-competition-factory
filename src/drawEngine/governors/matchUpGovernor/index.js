@@ -4,10 +4,11 @@ import { checkInParticipant, checkOutParticipant } from './checkInStatus';
 import { publicFindMatchUp } from '../../getters/getMatchUps/findMatchUp';
 import { addMatchUpTimeItem, resetMatchUpTimeItems } from './timeItems';
 import { removeDelegatedOutcome } from './removeDelegatedOutcome';
-import { isValidMatchUpFormat } from './isValidMatchUpFormat';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { setDelegatedOutcome } from './setDelegatedOutcome';
 import { validDrawPositions } from './validDrawPositions';
 import { matchUpSort } from '../../getters/matchUpSort';
+import { drawMatic } from '../../generators/drawMatic';
 import { setMatchUpStatus } from './setMatchUpStatus';
 import { setMatchUpFormat } from './matchUpFormat';
 
@@ -25,7 +26,7 @@ import {
 const matchUpGovernor = {
   setMatchUpStatus,
   setMatchUpFormat,
-  isValidMatchUpFormat,
+  isValidMatchUpFormat: matchUpFormatCode.isValidMatchUpFormat,
 
   addMatchUpTimeItem,
   resetMatchUpTimeItems,
@@ -44,6 +45,7 @@ const matchUpGovernor = {
   setDelegatedOutcome,
   removeDelegatedOutcome,
 
+  drawMatic,
   matchUpSort,
   addMatchUpOfficial,
 

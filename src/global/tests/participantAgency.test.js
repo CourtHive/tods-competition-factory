@@ -15,8 +15,8 @@ it.each([
   { participantsCount: 64, seedsCount: 16, automated: true },
   { participantsCount: 63, seedsCount: 16, automated: true },
   { participantsCount: 63, seedsCount: 16, automated: false },
+  { participantsCount: 45, seedsCount: 8, automated: { seedsOnly: true } }, // only places byes for seeded participants
   { participantsCount: 63, seedsCount: 16, automated: { seedsOnly: true } },
-  { participantsCount: 45, seedsCount: 16, automated: { seedsOnly: true } }, // only places byes for seeded participants
   { participantsCount: 50, seedsCount: 16, automated: { seedsOnly: true } },
 ])(
   'mocksEngine can generate seedsCount seeded participants',

@@ -40,6 +40,7 @@ export function getMatchUpFormatTiming({
   const { scheduleTiming } = getScheduleTiming({
     tournamentRecord,
     categoryName,
+    categoryType,
     event,
   });
 

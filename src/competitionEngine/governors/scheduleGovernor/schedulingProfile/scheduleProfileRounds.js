@@ -84,6 +84,8 @@ export function scheduleProfileRounds({
   const overLimitMatchUpIds = [];
   const scheduledMatchUpIds = [];
   const requestConflicts = [];
+  const matchUpNotBeforeTimes = {};
+  const matchUpPotentialParticipantIds = {};
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
@@ -172,6 +174,8 @@ export function scheduleProfileRounds({
           tournamentRecords,
 
           matchUpDailyLimits,
+          matchUpNotBeforeTimes,
+          matchUpPotentialParticipantIds,
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutes,
 

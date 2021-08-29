@@ -57,14 +57,7 @@ export function attachPolicy({
     : { ...SUCCESS, applied };
 }
 
-export function attachEventPolicy({
-  tournamentRecord,
-  policyDefinition,
-  event,
-}) {
-  if (!tournamentRecord) {
-    return { error: MISSING_TOURNAMENT_RECORD };
-  }
+export function attachEventPolicy({ policyDefinition, event }) {
   if (!event) {
     return { error: MISSING_EVENT };
   }
@@ -89,8 +82,7 @@ export function attachEventPolicy({
   return policiesApplied ? SUCCESS : { error: POLICY_NOT_ATTACHED };
 }
 
-export function removeEventPolicy({ tournamentRecord, event, policyType }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+export function removeEventPolicy({ event, policyType }) {
   if (!policyType) return { error: MISSING_VALUE };
   if (!event) return { error: MISSING_EVENT };
 

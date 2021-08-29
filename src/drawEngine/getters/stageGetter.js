@@ -5,6 +5,7 @@ import {
   findExtension,
 } from '../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
+import { ENTRY_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
@@ -26,7 +27,7 @@ import {
 function getEntryProfile({ drawDefinition }) {
   let { extension } = findDrawDefinitionExtension({
     drawDefinition,
-    name: 'entryProfile',
+    name: ENTRY_PROFILE,
   });
   const entryProfile = extension?.value || drawDefinition.entryProfile || {};
   return { entryProfile };
