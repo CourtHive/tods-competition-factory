@@ -1,4 +1,5 @@
 import { generateRange, randomPop, unique } from '../../../utilities';
+import { arrayIndices } from '../../../utilities/arrays';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -14,7 +15,6 @@ import {
   CANCELLED,
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { arrayIndices } from '../../../utilities/arrays';
 
 it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   const {

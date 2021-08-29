@@ -13,6 +13,14 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {string} drawId - allows tournamentEngine to find drawDefinition
+ * @param {object} drawDefinition
+ * @param {string} structureId
+ * @param {string[]} matchUpIds - ids of matchUps to be deleted
+ *
+ */
 export function deleteAdHocMatchUps({
   drawDefinition,
   structureId,

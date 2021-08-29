@@ -14,6 +14,14 @@ import {
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {string} drawId - when called via tournamentEngine enabled drawDefinition discovery
+ * @param {object} drawDefinition - required when called via drawEngine
+ * @param {string} structureId
+ * @param {object[]} matchUps
+ *
+ */
 export function addAdHocMatchUps({ drawDefinition, structureId, matchUps }) {
   if (typeof drawDefinition !== 'object')
     return { error: MISSING_DRAW_DEFINITION };

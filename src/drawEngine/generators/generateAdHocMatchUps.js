@@ -12,6 +12,18 @@ import {
   MISSING_STRUCTURE_ID,
 } from '../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {string} drawId - required - tournamentEngine discovers and passes { drawDefinition }
+ * @param {object} drawDefinition - required
+ * @param {string} structureId - required - structure for which matchUps are being generated
+ * @param {boolean} addMatchUps - whether to add matchUps to structure once generated
+ * @param {integer} matchUpsCount - number of matchUps to be generated
+ * @param {string[]} matchUpIds - optional - when not provided UUIDs will be generated
+ * @param {integer} roundNumber - optional - round for which matchUps will be generated
+ * @param {boolen} newRound - optional - whether to auto-increment to the next roundNumber
+ * @returns
+ */
 export function generateAdHocMatchUps({
   drawDefinition,
   structureId,
