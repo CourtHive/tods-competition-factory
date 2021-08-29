@@ -75,9 +75,9 @@ export function setParticipantScaleItems({
   let modificationsApplied = 0;
   const participantScaleItemsMap = {};
 
-  const errors = [];
   const modifiedParticipants = [];
-  scaleItemsWithParticipantIds.forEach((item) => {
+
+  for (const item of scaleItemsWithParticipantIds) {
     const participantId = item?.participantId;
     if (Array.isArray(item?.scaleItems)) {
       item.scaleItems.forEach((scaleItem) => {
@@ -87,11 +87,11 @@ export function setParticipantScaleItems({
           }
           participantScaleItemsMap[participantId].push(scaleItem);
         } else {
-          errors.push({ error: INVALID_SCALE_ITEM });
+          return { error: INVALID_SCALE_ITEM };
         }
       });
     }
-  });
+  }
 
   tournamentRecord.participants.forEach((participant) => {
     const { participantId } = participant || {};
@@ -107,20 +107,14 @@ export function setParticipantScaleItems({
   const message = !modificationsApplied && NO_MODIFICATIONS_APPLIED;
 
   const { topics } = getTopics();
-  if (
-    topics.includes(MODIFY_PARTICIPANTS) &&
-    modificationsApplied &&
-    !errors.length
-  ) {
+  if (topics.includes(MODIFY_PARTICIPANTS) && modificationsApplied) {
     addNotice({
       topic: MODIFY_PARTICIPANTS,
       payload: { participants: modifiedParticipants },
     });
   }
 
-  return errors.length
-    ? { error: errors }
-    : { ...SUCCESS, modificationsApplied, message };
+  return { ...SUCCESS, modificationsApplied, message };
 }
 
 function isValidScaleItem({ scaleItem }) {

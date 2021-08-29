@@ -10,6 +10,7 @@ import { getInitialRoundNumber } from '../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from './addPositionActionTelemetry';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { isValidSeedPosition } from '../../getters/seedGetter';
 import { findStructure } from '../../getters/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -21,8 +22,8 @@ import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_DRAW_POSITION_FOR_SEEDING,
   DRAW_POSITION_ACTIVE,
+  MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 export function assignDrawPosition({
   drawDefinition,
@@ -73,12 +74,14 @@ export function assignDrawPosition({
     (assignment) => assignment.drawPosition === drawPosition
   );
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
+  if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
   const participantExists = positionAssignments
     .map((d) => d.participantId)
     .includes(participantId);
-  if (participantExists)
+  if (participantExists) {
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+  }
 
   const { containsParticipant, containsBye } =
     drawPositionFilled(positionAssignment);

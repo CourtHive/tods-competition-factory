@@ -42,8 +42,7 @@ export function setEntryPositions({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(entryPositions)) return { error: INVALID_VALUES };
 
-  const errors = [];
-  entryPositions.forEach((positioning) => {
+  for (const positioning of entryPositions) {
     const { participantId, entryPosition } = positioning;
     const result = setEntryPosition({
       tournamentRecord,
@@ -52,8 +51,8 @@ export function setEntryPositions({
       entryPosition,
       event,
     });
-    if (result.error) errors.push(result.error);
-  });
+    if (result.error) return result;
+  }
 
-  return errors.length ? { error: errors } : SUCCESS;
+  return { ...SUCCESS };
 }

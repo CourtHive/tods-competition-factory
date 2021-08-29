@@ -1,11 +1,11 @@
 import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { getPlayoffStructures } from '../../getters/structureGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
@@ -30,7 +30,11 @@ export function automatedPositioning({
     seedsOnly,
   });
 
-  return result?.errors?.length ? { error: result.errors } : SUCCESS;
+  return result.error
+    ? result
+    : result?.errors?.length
+    ? { error: result.errors }
+    : SUCCESS;
 }
 
 export function automatedPlayoffPositioning({
@@ -61,6 +65,7 @@ export function automatedPlayoffPositioning({
         participants,
         seedsOnly,
       });
+      if (result.error) errors.push(result.error);
       result.errors?.forEach((error) => errors.push(error));
     });
 

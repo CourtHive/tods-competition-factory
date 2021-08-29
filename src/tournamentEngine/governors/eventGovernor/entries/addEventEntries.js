@@ -104,8 +104,8 @@ export function addEventEntries(params) {
       event,
     });
 
-    // Ignore errors if drawId is included but entry can't be added to drawDefinition/flightProfile
-    // return errors as message to client
+    // Ignore error if drawId is included but entry can't be added to drawDefinition/flightProfile
+    // return error as message to client
     if (result.error) {
       message = result.error;
     }

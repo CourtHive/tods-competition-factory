@@ -3,12 +3,16 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_PARTICIPANT_ID,
+} from '../../../constants/errorConditionConstants';
 import {
   ABANDONED,
   CANCELLED,
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
+import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 
 it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   const {
@@ -165,4 +169,40 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(result.success).toEqual(true);
   expect(result.matchUps.length).toEqual(20);
   expect(result.matchUps[0].roundNumber).toEqual(1);
+
+  const { positionAssignments } = tournamentEngine.getPositionAssignments({
+    drawId,
+    structureId,
+  });
+  expect(positionAssignments.length).toEqual(40);
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(20);
+
+  let drawPosition = matchUps[0].drawPositions[0];
+
+  result = tournamentEngine.positionActions({
+    drawId,
+    structureId,
+    drawPosition,
+  });
+  expect(result.isDrawPosition).toEqual(true);
+  expect(result.hasPositionAssigned).toEqual(false);
+
+  let assignmentAction = result.validActions.find(
+    ({ type }) => type === ASSIGN_PARTICIPANT
+  );
+  const { method, payload, availableParticipantIds } = assignmentAction;
+  expect(payload.drawPosition).toEqual(drawPosition);
+  expect(availableParticipantIds.length).toEqual(40);
+
+  result = tournamentEngine[method](payload);
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  payload.participantId = availableParticipantIds[0];
+  result = tournamentEngine[method](payload);
+  expect(result.success).toEqual(true);
+
+  // Notes: need to be able to assign the same participantId to multiple matchUps
+  // in the same structure, but not within the same round... which will take care of same matchUp
 });
