@@ -8,8 +8,8 @@ import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
+import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

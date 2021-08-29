@@ -1,3 +1,4 @@
+import { getAvailableAdHocParticipantIds } from '../queryGovernor/positionActions/getAvailableAdHocParticipantIds';
 import { modifyRoundRobinMatchUpsStatus } from '../matchUpGovernor/modifyRoundRobinMatchUpsStatus';
 import { conditionallyDisableLinkPositioning } from './conditionallyDisableLinkPositioning';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
@@ -24,7 +25,6 @@ import {
   DRAW_POSITION_ACTIVE,
   MISSING_PARTICIPANT_ID,
 } from '../../../constants/errorConditionConstants';
-import { getAvailableAdHocParticipantIds } from '../queryGovernor/positionActions/getAvailableAdHocParticipantIds';
 
 export function assignDrawPosition({
   drawDefinition,
