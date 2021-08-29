@@ -22,9 +22,7 @@ it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Dou
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
     .filter((p) => p.participantType === PAIR)
-    .map((p) =>
-      p.individualParticipants.map((ip) => ip.name || ip.participantName)
-    );
+    .map((p) => p.individualParticipants.map((ip) => ip.participantName));
   const pairedOpponents = report.map((r) => r.names);
   pairedParticipants.forEach((pair) => {
     pairedOpponents.forEach((opponents) => {
@@ -46,9 +44,7 @@ it('can generate SINGLE_ELIMINATION drawDefinition using pair avoidance with Dou
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
     .filter((p) => p.participantType === PAIR)
-    .map((p) =>
-      p.individualParticipants.map((ip) => ip.name || ip.participantName)
-    );
+    .map((p) => p.individualParticipants.map((ip) => ip.participantName));
   const pairedOpponents = report.map((r) => r.names);
   pairedParticipants.forEach((pair) => {
     pairedOpponents.forEach((opponents) => {
@@ -80,9 +76,7 @@ it('can generate SINGLE_ELIMINATION drawDefinition using pair and nationality av
   const { conflicts, report, participants } = result || {};
   const pairedParticipants = participants
     .filter((p) => p.participantType === PAIR)
-    .map((p) =>
-      p.individualParticipants.map((ip) => ip.name || ip.participantName)
-    );
+    .map((p) => p.individualParticipants.map((ip) => ip.participantName));
   const pairedOpponents = report.map((r) => r.names);
   pairedParticipants.forEach((pair) => {
     pairedOpponents.forEach((opponents) => {

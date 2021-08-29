@@ -1,6 +1,5 @@
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
-import { findStructure } from '../../../getters/findStructure';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
 import { unique } from '../../../../utilities';
 
@@ -10,23 +9,24 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
+import { getAvailableAdHocParticipantIds } from './getAvailableAdHocParticipantIds';
 
 export function getValidAssignmentActions({
-  drawDefinition,
-  structureId,
-  drawPosition,
-  isByePosition,
-  policyDefinition,
-  positionAssignments,
+  positionSourceStructureIds,
+  unassignedParticipantIds,
+  possiblyDisablingAction,
   tournamentParticipants,
   isWinRatioFedStructure,
-  possiblyDisablingAction,
-  unassignedParticipantIds,
-  positionSourceStructureIds,
+  positionAssignments,
+  policyDefinition,
+  drawDefinition,
+  isByePosition,
+  drawPosition,
+  structureId,
+  structure,
 }) {
   const { drawId } = drawDefinition;
   const validAssignmentActions = [];
-  const { structure } = findStructure({ drawDefinition, structureId });
 
   let unplacedSeedParticipantIds,
     unplacedSeedAssignments,
@@ -66,6 +66,7 @@ export function getValidAssignmentActions({
       payload: { drawId, structureId, drawPosition },
     });
   }
+
   if (isWinRatioFedStructure && ignoreSeedPositions) {
     const assignedParticipantIds = positionAssignments
       .map((assignment) => assignment.participantId)
@@ -110,8 +111,14 @@ export function getValidAssignmentActions({
     }
     return { validAssignmentActions };
   }
+
+  const isAdHoc =
+    !structure?.structures &&
+    !structure?.matchUps.find(({ roundPosition }) => !!roundPosition);
+
   if (unfilledPositions.includes(drawPosition) || isByePosition) {
     let availableParticipantIds;
+
     if (unplacedSeedAssignments?.length) {
       // return any valid seedAssignments
       const validToAssign = unplacedSeedAssignments.filter((seedAssignment) =>
@@ -122,14 +129,20 @@ export function getValidAssignmentActions({
       availableParticipantIds = validToAssign.map(
         (assignment) => assignment.participantId
       );
+    } else if (isAdHoc) {
+      availableParticipantIds = getAvailableAdHocParticipantIds({
+        drawDefinition,
+        drawPosition,
+        structure,
+      });
     } else {
       // otherwise look for any unplaced entries
       // 1) unassigned DIRECT_ACCEPTANCE or WILDCARD structure entries
       availableParticipantIds = unassignedParticipantIds;
-
       // 2) unassigned qualifer entries
       const { unplacedQualifiersCount } = getQualifiersData({
         drawDefinition,
+        structureId,
         structure,
       });
       if (unplacedQualifiersCount) console.log({ unplacedQualifiersCount });

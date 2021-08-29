@@ -26,7 +26,6 @@ import {
   MISSING_DRAW_POSITION,
   MISSING_EVENT,
   MISSING_STRUCTURE_ID,
-  STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 import {
   ADD_NICKNAME_METHOD,
@@ -81,9 +80,10 @@ export function positionActions({
     byeDrawPositions,
     inactiveDrawPositions,
     structure,
+    error,
   } = structureActiveDrawPositions({ drawDefinition, structureId });
 
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
+  if (error) return { error };
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
     policyDefinition,
@@ -165,6 +165,7 @@ export function positionActions({
     drawDefinition,
     stages,
   });
+
   const unassignedParticipantIds = stageEntries
     .filter(
       (entry) => !stageAssignedParticipantIds.includes(entry.participantId)
@@ -181,18 +182,19 @@ export function positionActions({
     (!positionAssignment || isByePosition)
   ) {
     const { validAssignmentActions } = getValidAssignmentActions({
-      drawDefinition,
-      structureId,
-      drawPosition,
-      isByePosition,
-      policyDefinition,
-      activeDrawPositions,
-      positionAssignments,
+      positionSourceStructureIds,
+      unassignedParticipantIds,
+      possiblyDisablingAction,
       isWinRatioFedStructure,
       tournamentParticipants,
-      possiblyDisablingAction,
-      unassignedParticipantIds,
-      positionSourceStructureIds,
+      positionAssignments,
+      activeDrawPositions,
+      policyDefinition,
+      drawDefinition,
+      isByePosition,
+      drawPosition,
+      structureId,
+      structure,
     });
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }

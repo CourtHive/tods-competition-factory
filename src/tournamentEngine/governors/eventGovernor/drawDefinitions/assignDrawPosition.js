@@ -20,16 +20,15 @@ export function assignDrawPosition({
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
 
-  const errors = [];
-
   if (bye) {
     const result = assignPositionBye({
       drawDefinition,
       drawPosition,
       structureId,
     });
-    if (result.error) errors.push(result.error);
+    if (result.error) return result;
   } else if (qualifier) {
+    // TODO: handle qualifier assignment
     console.log('assign qualifier');
   } else {
     const result = assignPosition({
@@ -38,8 +37,8 @@ export function assignDrawPosition({
       drawPosition,
       participantId,
     });
-    if (result.error) errors.push(result.error);
+    if (result.error) return result;
   }
 
-  return errors && errors.length ? { errors } : SUCCESS;
+  return { ...SUCCESS };
 }

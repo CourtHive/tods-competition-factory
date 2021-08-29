@@ -39,7 +39,7 @@ it('can aggrgate participant finishingPositions', () => {
     eventId,
     seedsCount: 4,
     event: eventResult,
-    policyDefinitions: [SEEDING_ITF_POLICY],
+    policyDefinitions: { ...SEEDING_ITF_POLICY },
   };
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;

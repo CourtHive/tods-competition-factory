@@ -276,3 +276,24 @@ it('handles zero', () => {
   result = generateScoreString({ sets, autoComplete: false });
   expect(result).toEqual('0-6');
 });
+
+it('generates tiebreak sets', () => {
+  const sets = [
+    {
+      setNumber: 1,
+      side1TiebreakScore: 6,
+      side2TiebreakScore: 8,
+      winningSide: 2,
+    },
+    {
+      setNumber: 2,
+      side1TiebreakScore: 6,
+      side2TiebreakScore: 8,
+      winningSide: 2,
+    },
+  ];
+  let result = generateScoreString({ sets });
+  expect(result).toEqual('[6-8] [6-8]');
+  result = generateScoreString({ sets, winningSide: 2 });
+  expect(result).toEqual('[8-6] [8-6]');
+});

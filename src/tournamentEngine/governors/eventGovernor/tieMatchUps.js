@@ -24,7 +24,7 @@ export function assignTieMatchUpParticipantId(params) {
   const { tournamentRecord, drawDefinition, event } = params;
   const { participantId, sideMember, tieMatchUpId } = params;
 
-  // TODO: sideNumber should not be required; should be resolved based on the participantId team membership
+  // ?? sideNumber should not be required; should be resolved based on the participantId team membership
   // will additionally ensure no attempts are made to add participant to incorrect side
   // 1. get drawPositions for tieMatchUp
   // 2. get team participants for each side

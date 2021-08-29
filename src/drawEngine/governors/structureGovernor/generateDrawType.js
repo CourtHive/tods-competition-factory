@@ -22,6 +22,7 @@ import {
   FICQF,
   FICSF,
   MFIC,
+  AD_HOC,
   CURTIS,
   FICR16,
   COMPASS,
@@ -39,6 +40,7 @@ import {
   OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
   FIRST_MATCH_LOSER_CONSOLATION,
+  WIN_RATIO,
 } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_DRAW_SIZE,
@@ -85,7 +87,7 @@ export function generateDrawType(params = {}) {
   const invalidDrawSize =
     drawSize < 2 ||
     (!staggeredEntry &&
-      drawType !== FEED_IN &&
+      ![FEED_IN, AD_HOC].includes(drawType) &&
       ((drawType === ROUND_ROBIN && drawSize < 3) ||
         (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(
@@ -113,6 +115,20 @@ export function generateDrawType(params = {}) {
   if (structureCount >= sequenceLimit) return { error: STAGE_SEQUENCE_LIMIT };
 
   const generators = {
+    [AD_HOC]: () => {
+      const structure = structureTemplate({
+        structureName: structureName || stage,
+        finishingPosition: WIN_RATIO,
+        structureId: uuids?.pop(),
+        stageSequence,
+        matchUps: [],
+        matchUpType,
+        stage,
+      });
+
+      drawDefinition.structures.push(structure);
+      return Object.assign({ structure }, SUCCESS);
+    },
     [SINGLE_ELIMINATION]: () => {
       const { matchUps, roundLimit: derivedRoundLimit } = treeMatchUps(params);
       const qualifyingRound = stage === QUALIFYING && derivedRoundLimit;

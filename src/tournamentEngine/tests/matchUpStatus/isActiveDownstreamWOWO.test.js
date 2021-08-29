@@ -53,11 +53,6 @@ it('can recognize when double WO/WO propagated WO/WO is active downstream', () =
   });
   expect(matchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
-  // TODO: DOUBLE_WALKOVER status is a comppleted status, but may NOT be readyToScore if isActiveDownstream
-  // currently the boolean is set only based on matchUpStatus without lookahead to see if isActiveDownstream
-  // ... which would be processor intensive (unless scoped only to WOWO)
-  // console.log(matchUp.readyToScore);
-
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let types = validActions.reduce(
     (types, action) =>

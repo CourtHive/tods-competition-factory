@@ -19,11 +19,14 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import { attachEventPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 export function generateEventWithFlights({
   tournamentRecord,
+  autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   eventProfile,
   participants,
@@ -39,6 +42,7 @@ export function generateEventWithFlights({
     gender,
     surfaceCategory,
     tieFormat: eventTieFormat,
+    policyDefinitions,
   } = eventProfile;
 
   let generateUniqueParticipants;
@@ -126,6 +130,14 @@ export function generateEventWithFlights({
     surfaceCategory,
     tieFormat: eventTieFormat,
   };
+  if (typeof policyDefinitions === 'object') {
+    for (const policyType of Object.keys(policyDefinitions)) {
+      attachEventPolicy({
+        event: newEvent,
+        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+      });
+    }
+  }
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
   const { event } = result;
@@ -148,7 +160,7 @@ export function generateEventWithFlights({
         event,
         stage: stage || MAIN,
         participantIds: drawParticipantIds,
-        autoEntryPositions: false,
+        autoEntryPositions,
       });
       if (result.error) return result;
     }
@@ -209,6 +221,8 @@ export function generateEventWithFlights({
       const manual = automated === false;
       if (!manual && completeAllMatchUps) {
         const result = completeDrawMatchUps({
+          completeAllMatchUps,
+          matchUpStatusProfile,
           randomWinningSide,
           matchUpFormat,
           drawDefinition,
@@ -227,6 +241,8 @@ export function generateEventWithFlights({
           if (result.error) return result;
 
           result = completeDrawMatchUps({
+            completeAllMatchUps,
+            matchUpStatusProfile,
             randomWinningSide,
             matchUpFormat,
             drawDefinition,

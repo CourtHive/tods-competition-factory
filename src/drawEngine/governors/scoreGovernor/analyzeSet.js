@@ -51,6 +51,14 @@ export function analyzeSet(params) {
     tiebreakAt &&
     sideGameScores.filter((gameScore) => gameScore >= tiebreakAt).length === 2;
 
+  const leadingSide =
+    hasTiebreakCondition &&
+    (sideGameScores[0] > sideGameScores[1]
+      ? 1
+      : sideGameScores[1] > sideGameScores[0]
+      ? 2
+      : undefined);
+
   const isTiebreakSet = !!(tiebreakScoresCount && !gameScoresCount);
 
   const isCompletedSet = !!(setObject && setObject?.winningSide);
@@ -96,6 +104,7 @@ export function analyzeSet(params) {
     isValidSet,
     isValidSetNumber,
     isValidSetOutcome,
+    leadingSide,
     setFormat,
     sideGameScores,
     sideGameScoresCount,
@@ -172,6 +181,7 @@ function checkValidStandardSetOutcome({
   const hasTiebreakCondition =
     tiebreakAt &&
     sideGameScores.filter((gameScore) => gameScore >= tiebreakAt).length === 2;
+
   if (setTiebreakDefined) {
     const { NoAD: tiebreakNoAD, tiebreakTo } = tiebreakFormat;
 

@@ -1,9 +1,9 @@
 import fs from 'fs';
 
-import { drawEngine } from '../../sync';
+import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { generateDrawStructure } from '../primitives/generateDrawStructure';
+import { drawEngine } from '../../sync';
 import {
   completeMatchUp,
   verifyMatchUps,

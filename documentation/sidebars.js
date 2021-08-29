@@ -18,8 +18,8 @@ module.exports = {
             'concepts/matchUpFormat',
           ],
         },
+        'concepts/drawGeneration',
         'concepts/globalState',
-        'concepts/matchUpFormat',
         {
           Policies: [
             'concepts/policies',

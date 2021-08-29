@@ -1,5 +1,5 @@
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
-import { isValidMatchUpFormat } from './isValidMatchUpFormat';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { findStructure } from '../../getters/findStructure';
 import {
   modifyDrawNotice,
@@ -28,7 +28,7 @@ export function setMatchUpFormat(params) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat && !tieFormat) return { error: MISSING_MATCHUP_FORMAT };
 
-  if (matchUpFormat && !isValidMatchUpFormat(matchUpFormat))
+  if (matchUpFormat && !matchUpFormatCode.isValidMatchUpFormat(matchUpFormat))
     return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   /*

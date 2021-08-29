@@ -1,3 +1,4 @@
+import { addDrawNotice } from '../../../../drawEngine/notifications/drawNotifications';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_TIME_ITEM,
@@ -22,6 +23,8 @@ export function addDrawDefinitionTimeItem({ drawDefinition, timeItem }) {
   const createdAt = new Date().toISOString();
   Object.assign(timeItem, { createdAt });
   drawDefinition.timeItems.push(timeItem);
+
+  addDrawNotice({ drawDefinition });
 
   return SUCCESS;
 }

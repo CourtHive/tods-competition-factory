@@ -4,14 +4,14 @@ import { makeDeepCopy } from '../../../utilities';
 import { getVenueData } from './getVenueData';
 import { getDrawData } from './getDrawData';
 
+import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
-// pass in policyDefinitions for roundNaming and personPrivacy
+// TODO: pass in policyDefinitions for roundNaming and personPrivacy
 export function getEventData({ tournamentRecord, event, policyDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
@@ -35,7 +35,6 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
-  // TODO: review
   const venuesData = venues.map((venue) =>
     (({ venueData }) => ({
       ...venueData,

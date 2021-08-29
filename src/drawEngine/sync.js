@@ -8,11 +8,10 @@ import scoreGovernor from './governors/scoreGovernor';
 import entryGovernor from './governors/entryGovernor';
 import linkGovernor from './governors/linkGovernor';
 
-import definitionTemplate from './generators/drawDefinitionTemplate';
+import { newDrawDefinition, paramsMiddleWare, setState } from './stateMethods';
 import { notifySubscribers } from '../global/notifySubscribers';
 import { factoryVersion } from '../global/factoryVersion';
-import { UUID, makeDeepCopy } from '../utilities';
-import { paramsMiddleWare, setState } from './stateMethods';
+import { makeDeepCopy } from '../utilities';
 import {
   setDeepCopy,
   setDevContext,
@@ -27,11 +26,6 @@ let drawDefinition;
 let prefetch = false;
 let tournamentParticipants = [];
 
-function newDrawDefinition({ drawId, drawType } = {}) {
-  const drawDefinition = definitionTemplate();
-  return Object.assign(drawDefinition, { drawId, drawType });
-}
-
 export const drawEngine = (function () {
   const engine = {
     getState: ({ convertExtensions } = {}) => ({
@@ -42,9 +36,15 @@ export const drawEngine = (function () {
       drawDefinition = undefined;
       return SUCCESS;
     },
-    newDrawDefinition: ({ drawId = UUID(), drawType, drawProfile } = {}) => {
+    newDrawDefinition: ({ drawId, drawType, drawProfile } = {}) => {
       drawDefinition = newDrawDefinition({ drawId, drawType, drawProfile });
-      return Object.assign({ drawId: drawDefinition.drawId }, SUCCESS);
+      return Object.assign(
+        {
+          drawId: drawDefinition.drawId,
+          drawDefinition: makeDeepCopy(drawDefinition),
+        },
+        SUCCESS
+      );
     },
     setDrawDescription: ({ description } = {}) => {
       if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

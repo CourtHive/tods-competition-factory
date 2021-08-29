@@ -107,7 +107,7 @@ export function addPersonRequests({ tournamentRecords, personId, requests }) {
 
 // check whether there is a request for the date with overlapping times
 // extend startTime/endTime rather than creating multiple
-// NOTE: only pertains to { requestType: DO_NOT_SCHEDULE }
+// ... only pertains to { requestType: DO_NOT_SCHEDULE }
 function mergePersonRequests({ personRequests, personId, requests }) {
   if (!personRequests[personId]) personRequests[personId] = [];
   /*

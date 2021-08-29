@@ -40,14 +40,11 @@ export function createGroupParticipant({
     (participant) => participant.participantId
   );
 
-  const errors = [];
-  individualParticipantIds.forEach((participantId) => {
+  for (const participantId of individualParticipantIds) {
     if (!tournamentIndividualParticipantIds.includes(participantId)) {
-      errors.push({ error: INVALID_PARTICIPANT_TYPE, participantId });
+      return { error: INVALID_PARTICIPANT_TYPE, participantId };
     }
-  });
-
-  if (errors.length) return { error: errors };
+  }
 
   const groupParticipant = {
     participantId: participantId || UUID(),

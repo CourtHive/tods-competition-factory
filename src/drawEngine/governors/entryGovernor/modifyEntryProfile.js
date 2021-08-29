@@ -1,10 +1,12 @@
 import { addDrawDefinitionExtension } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { findDrawDefinitionExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 
+import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
+
 export function modifyEntryProfile({ drawDefinition, attributes }) {
   let { extension } = findDrawDefinitionExtension({
     drawDefinition,
-    name: 'entryProfile',
+    name: ENTRY_PROFILE,
   });
   const entryProfile = extension?.value || drawDefinition.entryProfile || {};
 
@@ -19,7 +21,7 @@ export function modifyEntryProfile({ drawDefinition, attributes }) {
   });
 
   extension = {
-    name: 'entryProfile',
+    name: ENTRY_PROFILE,
     value: entryProfile,
   };
   addDrawDefinitionExtension({ drawDefinition, extension });

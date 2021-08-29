@@ -8,7 +8,7 @@
     "competition",
     "tennis"
   ],
-  "version": "0.7.68",
+  "version": "0.7.74",
   "license": "MIT",
   "private": false,
   "jest": {
@@ -88,10 +88,10 @@
     "eslint-config-prettier": "8.3.0",
     "eslint-plugin-jest": "24.4.0",
     "eslint-plugin-prettier": "3.4.1",
-    "eslint-plugin-react": "7.24.0",
+    "eslint-plugin-react": "7.25.0",
     "husky": "7.0.2",
-    "jest-cli": "27.0.6",
-    "jest-environment-node": "27.0.6",
+    "jest-cli": "27.1.0",
+    "jest-environment-node": "27.1.0",
     "np": "7.5.0",
     "pinst": "2.1.6",
     "prettier": "2.3.2",
@@ -99,10 +99,10 @@
     "source-map-resolve": "0.6.0",
     "tsdx": "0.14.1",
     "tslib": "2.3.1",
-    "typescript": "4.3.5"
+    "typescript": "4.4.2"
   },
   "dependencies": {
-    "tods-matchup-format-code": "1.1.4"
+    "tods-matchup-format-code": "1.1.5"
   },
   "resolutions": {
     "marked": "^3.0.0"

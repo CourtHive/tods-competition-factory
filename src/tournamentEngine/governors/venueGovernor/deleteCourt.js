@@ -4,11 +4,9 @@ import { addNotice } from '../../../global/globalState';
 import { findCourt } from '../../getters/courtGetter';
 import { deletionMessage } from './deletionMessage';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { MODIFY_VENUE } from '../../../constants/topicConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 
-// TODO: drawDefinition should not be required. Although this method may primarily be called from competitionEngine.
-// getScheduledCourtMatchUps should get matchUPs inContext so that drawIds can be determined.
 export function deleteCourt({
   tournamentRecord,
   drawDefinition,
@@ -21,7 +19,6 @@ export function deleteCourt({
 
   const { matchUps } = getScheduledCourtMatchUps({
     tournamentRecord,
-
     courtId,
   });
 
@@ -48,5 +45,5 @@ export function deleteCourt({
     return deletionMessage({ matchUpsCount: matchUps.length });
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

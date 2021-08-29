@@ -15,18 +15,19 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
 
-import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import {
   ASSIGN_BYE,
   ASSIGN_PARTICIPANT,
   REMOVE_ASSIGNMENT,
 } from '../../../constants/positionActionConstants';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 
 it('disables placement actions for Round Robin Playoffs until all groups are complete', () => {
   reset();
@@ -204,10 +205,10 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantsCount: drawSize },
-    completeAllMatchUps: true,
+    // possible to specify score string with which to complete all matchUps
+    completeAllMatchUps: '6-1 6-1',
     drawProfiles,
   });
-  // const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });

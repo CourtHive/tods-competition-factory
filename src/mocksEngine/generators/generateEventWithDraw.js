@@ -24,8 +24,10 @@ import {
 
 export function generateEventWithDraw({
   tournamentRecord,
+  autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
+  matchUpStatusProfile,
   randomWinningSide,
   participants,
   drawProfile,
@@ -39,6 +41,7 @@ export function generateEventWithDraw({
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     uniqueParticipants = false,
+    policyDefinitions,
     structureOptions,
     drawSize = 32,
     tieFormat,
@@ -110,7 +113,7 @@ export function generateEventWithDraw({
     tournamentRecord,
     participantIds,
     entryStage: stage,
-    autoEntryPositions: false,
+    autoEntryPositions,
   });
   if (result.error) return result;
 
@@ -152,6 +155,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
+    policyDefinitions,
     tournamentRecord,
     seedingScaleName,
     structureOptions,
@@ -228,7 +232,6 @@ export function generateEventWithDraw({
           scoreString,
           winningSide,
           matchUpStatus,
-          outcomeDef,
           matchUpFormat,
           drawId,
         });
@@ -241,6 +244,8 @@ export function generateEventWithDraw({
         drawDefinition,
         matchUpFormat,
         randomWinningSide,
+        completeAllMatchUps,
+        matchUpStatusProfile,
       });
       if (result.error) return result;
 
@@ -258,6 +263,8 @@ export function generateEventWithDraw({
           drawDefinition,
           matchUpFormat,
           randomWinningSide,
+          completeAllMatchUps,
+          matchUpStatusProfile,
         });
         if (result.error) return result;
       }

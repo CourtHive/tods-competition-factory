@@ -1,11 +1,11 @@
 import { automatedPositioning as drawEngineAutomatedPositioning } from '../../../drawEngine/governors/positionGovernor/automatedPositioning';
 import { getPlayoffStructures } from '../../getters/structureGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /**
  *
@@ -30,7 +30,11 @@ export function automatedPositioning({
     seedsOnly,
   });
 
-  return result?.errors?.length ? { error: result.errors } : SUCCESS;
+  return result.error
+    ? result
+    : result?.errors?.length
+    ? { error: result.errors }
+    : SUCCESS;
 }
 
 export function automatedPlayoffPositioning({
@@ -50,9 +54,8 @@ export function automatedPlayoffPositioning({
     structureId,
   });
 
-  const errors = [];
-  playoffStructures &&
-    playoffStructures.forEach((structure) => {
+  if (playoffStructures) {
+    for (const structure of playoffStructures) {
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
         structureId: playoffStructureId,
@@ -61,8 +64,9 @@ export function automatedPlayoffPositioning({
         participants,
         seedsOnly,
       });
-      result.errors?.forEach((error) => errors.push(error));
-    });
+      if (result.error) return result;
+    }
+  }
 
-  return errors.length ? { error: errors } : SUCCESS;
+  return { ...SUCCESS };
 }

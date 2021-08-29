@@ -2,6 +2,24 @@
 title: Draw Engine API
 ---
 
+## addAdHocMatchUps
+
+Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
+
+:::important
+`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
+:::
+
+```js
+const result = drawEngine.addAdHocMatchUps({
+  drawDefinition, // required - drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUps, // required - matchUps are generated with tournamentEngine.generateAdHocMatchUps
+});
+```
+
+---
+
 ## addDrawEntries
 
 ```js
@@ -408,6 +426,18 @@ drawEngine.clearDrawPosition({
 
 ---
 
+## deleteAdHocMatchUps
+
+```js
+const result = drawEngine.deleteAdHocMatchUps({
+  drawDefinition, // required - drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUpIds, // array of matchUpIds identifying matchUps to be deleted
+});
+```
+
+---
+
 ## devContext
 
 Setting devContext(true) bypasses **try {} catch (err) {}** code block and in some cases enables logging
@@ -455,6 +485,22 @@ const {
   matchUpId,
   inContext, // optional - boolean - returns matchUp with additional attributes
   tournamentParticipants, // optional - enables inContext matchUp to contain full participant objects
+});
+```
+
+---
+
+## generateAdHocMatchUps
+
+```js
+const result = drawEngine.generateAdHocMatchUps({
+  drawDefinition, // required - drawDefinition in which target structure is found
+  structureId, // required - structureId of structure for which matchUps are being generated
+  matchUpsCount, // optional - number of matchUps to generate - defaults to 1
+  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
+  addMatchUps, // optional - boolean defaults to false - whether to add generated matchUps to structure
+  roundNumber, // optional - specify round for which matchUps will be generated
+  newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
 });
 ```
 

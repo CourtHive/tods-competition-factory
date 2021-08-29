@@ -8,7 +8,7 @@ export function getWalkoverWinningSide({
   // TODO: reusable function that will be able to use position targeting using links
   // which will need to filter by previous round then get positionTargets for each matchUp in the round
 
-  // IMPORTANT: sourceMatchUps need to be sorted by roundPosition
+  // sourceMatchUps MUST be sorted by roundPosition
   const sourceMatchUps = inContextDrawMatchUps
     .filter(
       ({ winnerMatchUpId, loserMatchUpId }) =>

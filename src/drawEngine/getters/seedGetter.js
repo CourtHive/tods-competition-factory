@@ -24,11 +24,12 @@ export function getValidSeedBlocks({
 }) {
   let firstRoundSeedsCount,
     fedSeedNumberOffset = 0;
-  let isFeedIn,
+  let error,
+    isFeedIn,
     isContainer,
     validSeedBlocks = [];
 
-  if (!structure) return [{ error: MISSING_STRUCTURE }];
+  if (!structure) return { error: MISSING_STRUCTURE };
 
   const { roundMatchUps } = getAllStructureMatchUps({
     structure,
@@ -76,10 +77,11 @@ export function getValidSeedBlocks({
   if (structure.structureType === CONTAINER) {
     isContainer = true;
 
-    ({ validSeedBlocks } = constructContainerBlocks({
+    ({ validSeedBlocks, error } = constructContainerBlocks({
       seedingProfile,
       structure,
     }));
+    if (error) return { error };
   } else if (uniqueDrawPositionsByRound.length) {
     isFeedIn = true;
 
@@ -150,10 +152,10 @@ export function getValidSeedBlocks({
 }
 
 function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
-  const errors = [];
   const containedStructures = structure.structures || [];
 
-  const groupSeedBlocks = containedStructures.map((structure) => {
+  const groupSeedBlocks = [];
+  for (const structure of containedStructures) {
     const { positionAssignments } = structureAssignedDrawPositions({
       structure,
     });
@@ -179,11 +181,9 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
         seedCountGoal: baseDrawSize,
       }));
     }
-    if (error) {
-      errors.push({ seedBlockError: error });
-    }
-    return blocks;
-  });
+    if (error) return { error };
+    groupSeedBlocks.push(blocks);
+  }
 
   const seedNumberDrawPositions = groupSeedBlocks
     .map((groupBlocks) => {
@@ -241,7 +241,7 @@ function constructContainerBlocks({ seedingProfile, structure, seedBlocks }) {
   if (structure.seedingProfile === WATERFALL)
     validSeedBlocks = waterfallSeeding;
 
-  return { validSeedBlocks, errors };
+  return { validSeedBlocks };
 }
 
 function constructPower2Blocks({
