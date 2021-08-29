@@ -6,6 +6,7 @@ import tournamentEngine from '../../sync';
 import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import {
+  DRAW_POSITION_ACTIVE,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
@@ -188,7 +189,8 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(matchUps.length).toEqual(matchUpsPerRound);
 
   // start with the first drawPosition of the first matchUp
-  let drawPosition = matchUps[0].drawPositions[0];
+  const firstRoundMatchUp = matchUps[0];
+  let drawPosition = firstRoundMatchUp.drawPositions[0];
 
   // get the actions for the first drawPosition
   result = tournamentEngine.positionActions({
@@ -232,7 +234,7 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(result.hasPositionAssigned).toEqual(true);
 
   // set the drawPosition to be the second drawPosition in the first matchUp
-  drawPosition = matchUps[0].drawPositions[1];
+  drawPosition = firstRoundMatchUp.drawPositions[1];
   result = tournamentEngine.positionActions({
     drawId,
     structureId,
@@ -275,10 +277,12 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.matchUps.length).toEqual(matchUpsPerRound);
-  expect(result.matchUps[0].roundNumber).toEqual(2);
+
+  const secondRoundMatchUp = result.matchUps[0];
+  expect(secondRoundMatchUp.roundNumber).toEqual(2);
 
   // assign the firstParticipantId to the first matchUp of { roundNumber: 2 }
-  drawPosition = result.matchUps[0].drawPositions[1];
+  drawPosition = secondRoundMatchUp.drawPositions[0];
   result = tournamentEngine.positionActions({
     drawId,
     structureId,
@@ -315,8 +319,33 @@ it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
   expect(arrayIndices(firstParticipantId, assignedParticipantIds)).toEqual([
     0, 2,
   ]);
-});
 
-it('can remove adHoc positionAssignments', () => {
-  expect('foo');
+  // remove the positionAssignment for the 2nd round matchUp
+  result = tournamentEngine.removeDrawPositionAssignment({
+    drawId,
+    drawPosition,
+    structureId,
+  });
+  expect(result.participantId).toEqual(firstParticipantId);
+  expect(result.success).toEqual(true);
+
+  // score the first round matchUp which has two participants assigned
+  const { outcome } = mocksEngine.generateOutcome();
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId: firstRoundMatchUp.matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
+  expect(completedMatchUps[0].matchUpId).toEqual(firstRoundMatchUp.matchUpId);
+
+  // remove the positionAssignment for the 2nd round matchUp
+  result = tournamentEngine.removeDrawPositionAssignment({
+    drawId,
+    drawPosition: firstRoundMatchUp.drawPositions[0],
+    structureId,
+  });
+  expect(result.error).toEqual(DRAW_POSITION_ACTIVE);
 });
