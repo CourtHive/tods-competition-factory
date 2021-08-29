@@ -1,7 +1,9 @@
+import { participantScaleItem } from '../../../tournamentEngine/accessors/participantScaleItem';
 import { stageOrder } from '../../../constants/drawDefinitionConstants';
 import { generateDrawMaticRound } from './generateDrawMaticRound';
 
 import { SUCCESS } from '../../../constants/resultConstants';
+import { SINGLES } from '../../../constants/eventConstants';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
@@ -12,6 +14,7 @@ import {
   ORGANISER_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
+import { RATING } from '../../../constants/scaleConstants';
 
 /**
  *
@@ -27,6 +30,7 @@ export function drawMatic({
   participantIds,
   structureId,
   matchUpIds,
+  scaleName, // custom rating name to seed dynamic ratings
   eventType,
 }) {
   if (typeof drawDefinition !== 'object')
@@ -81,8 +85,19 @@ export function drawMatic({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
   if (!isAdHoc(structure)) return { error: INVALID_DRAW_DEFINITION };
 
-  // TODO: adHocRatings should be retrieved for all participantIds
   const adHocRatings = {};
+  for (const participantId of participantIds) {
+    const participant = tournamentParticipants?.find(
+      (participant) => participant.participantId === participantId
+    );
+    // first see if there is already a dynamic value
+    let scaleValue = getScaleValue({ eventType, participant });
+    // if no dynamic value found and a seeding scaleValue is provided...
+    if (!scaleValue && scaleName) {
+      scaleValue = getScaleValue({ scaleValue, eventType, participant });
+    }
+    if (scaleValue) adHocRatings[participantId] = scaleValue;
+  }
 
   const { matchUps } = generateDrawMaticRound({
     tournamentParticipants,
@@ -96,4 +111,19 @@ export function drawMatic({
   });
 
   return { ...SUCCESS, matchUps };
+}
+
+function getScaleValue({ scaleName = 'dynamic', eventType, participant }) {
+  const scaleAttributes = {
+    scaleType: RATING,
+    eventType: eventType || SINGLES,
+    scaleName,
+  };
+  const result =
+    participant &&
+    participantScaleItem({
+      participant,
+      scaleAttributes,
+    });
+  return result?.scaleItem?.scaleValue;
 }
