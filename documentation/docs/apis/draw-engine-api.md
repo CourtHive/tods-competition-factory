@@ -6,6 +6,10 @@ title: Draw Engine API
 
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
 
+:::important
+`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
+:::
+
 ```js
 const result = drawEngine.addAdHocMatchUps({
   drawDefinition, // required - drawDefinition in which target structure is found

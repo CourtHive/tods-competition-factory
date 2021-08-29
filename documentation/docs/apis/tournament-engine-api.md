@@ -9,6 +9,10 @@ All tournamentEngine methods which make a mutation return either `{ success: tru
 
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **DrawMatic**. The only restriction is that a participant may appear once per round.
 
+:::important
+`matchUps` to be added must be generated with `tournamentEngine.generateAdHocMatchUps`
+:::
+
 ```js
 const result = tournamentEngine.addAdHocMatchUps({
   drawId, // required - drawId of drawDefinition in which target structure is found

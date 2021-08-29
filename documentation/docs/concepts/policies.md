@@ -20,9 +20,9 @@ The structure of an **_policyDefinition_** is as follows:
 - [Avoidance Policy](../policies/avoidance): Can be attached to drawDefinitions to specify the attriubutes by which participants should be separated
 - [Position Actions Policy](../policies/positionActions): Determines valid actions for positions in a draw structure
 - [Seeding Policy](../policies/positioningSeeds): Sets seeding pattern and thresholds for number of seeds allowed for draw sizes
-- [Feed Policy](../policies/feedPolicy): Determining the the patterns which direct participants into consolation feed rounds
+- [Scheduling Policy](../policies/scheduling): Defines average and rest/recovery times for matchUpFormats, categoryNames, and categoryTypes
 - [Round Robin Tally Policy](../policies/tallyPolicy): Configures calculations which determine participant finishing positions
+- [Feed Policy](../policies/feedPolicy): Determining the the patterns which direct participants into consolation feed rounds
 - Round Naming Policy: Specifies how rounds of draw structures should be named
 - Participant Policy: Enables participant details to be filtered to respect privacy concerns
-- Scheduling Policy: Defines average and rest/recovery times for matchUpFormats, categoryNames, and categoryTypes
 - Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"
