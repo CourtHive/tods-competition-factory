@@ -28,6 +28,7 @@ export function assignDrawPosition({
     });
     if (result.error) return result;
   } else if (qualifier) {
+    // TODO: handle qualifier assignment
     console.log('assign qualifier');
   } else {
     const result = assignPosition({
