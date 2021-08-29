@@ -42,23 +42,58 @@ export function deleteAdHocMatchUps({
     return { error: INVALID_STRUCTURE };
   }
 
-  const drawPositionsToDelete = existingMatchUps
-    .filter(({ matchUpId }) => matchUpIds.includes(matchUpId))
+  const matchUpsToDelete = existingMatchUps.filter(({ matchUpId }) =>
+    matchUpIds.includes(matchUpId)
+  );
+  const matchUpIdsToDelete = matchUpsToDelete.map(({ matchUpId }) => matchUpId);
+
+  const drawPositionsToDelete = matchUpsToDelete
     .map(({ drawPositions }) => drawPositions)
     .flat();
 
   if (drawPositionsToDelete.length) {
     // remove positionAssignments with drawPositions to delete
-    // build up a re-mapping of remaining drawPositions to close any gaps in sequential order
-    // remap positionAssignments and remaining matchUp.drawPositions
-  }
+    structure.positionAssignments = structure.positionAssignments
+      .filter(
+        ({ drawPosition }) => !drawPositionsToDelete.includes(drawPosition)
+      )
+      // sort just for sanity
+      .sort((a, b) => a.drawPosition - b.drawPosition);
 
-  deleteMatchUpsNotice({
-    drawDefinition,
-    matchUpIds,
-    action: 'deleteAdHocMatchUps',
-  });
-  modifyDrawNotice({ drawDefinition });
+    structure.matchUps = structure.matchUps.filter(
+      ({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId)
+    );
+
+    // build up a re-mapping of remaining drawPositions to close any gaps in sequential order
+    const newDrawPositionsMap = Object.assign(
+      {},
+      ...structure.positionAssignments.map(({ drawPosition }, index) => ({
+        [drawPosition]: index + 1,
+      }))
+    );
+
+    // remap positionAssignments
+    structure.positionAssignments = structure.positionAssignments.map(
+      (assignment) => ({
+        ...assignment,
+        drawPosition: newDrawPositionsMap[assignment.drawPosition],
+      })
+    );
+
+    // remap remaining matchUp.drawPositions
+    const remapDrawPositions = (matchUp) =>
+      (matchUp.drawPositions = matchUp.drawPositions.map(
+        (drawPosition) => newDrawPositionsMap[drawPosition]
+      ));
+    structure.matchUps.forEach(remapDrawPositions);
+
+    deleteMatchUpsNotice({
+      drawDefinition,
+      matchUpIds: matchUpIdsToDelete,
+      action: 'deleteAdHocMatchUps',
+    });
+    modifyDrawNotice({ drawDefinition });
+  }
 
   return { ...SUCCESS };
 }

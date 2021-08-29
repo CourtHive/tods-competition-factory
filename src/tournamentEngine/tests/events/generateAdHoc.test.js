@@ -1,3 +1,4 @@
+import { generateRange, randomPop } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
@@ -9,7 +10,7 @@ import {
   DOUBLE_WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
 
-it('can generate AD_HOC drawDefinitions', () => {
+it('can generate AD_HOC drawDefinitions, add and delete matchUps', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
@@ -124,4 +125,44 @@ it('can generate AD_HOC drawDefinitions', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const randomMatchUpIds = generateRange(0, 5).map(() => randomPop(matchUpIds));
+  expect(matchUpIds.length).toEqual(7);
+  expect(randomMatchUpIds.length).toEqual(5);
+
+  result = tournamentEngine.deleteAdHocMatchUps({
+    drawId,
+    structureId,
+    matchUpIds: randomMatchUpIds,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps.length).toEqual(7);
+});
+
+it('can generate AD_HOC with arbitrary drawSizes and assign positions', () => {
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 40, drawType: AD_HOC }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const structureId = drawDefinition.structures[0].structureId;
+
+  let result = tournamentEngine.generateAdHocMatchUps({
+    drawId,
+    structureId,
+    newRound: true,
+    matchUpsCount: 20,
+    addMatchUps: true,
+  });
+  expect(result.success).toEqual(true);
+  expect(result.matchUps.length).toEqual(20);
+  expect(result.matchUps[0].roundNumber).toEqual(1);
 });

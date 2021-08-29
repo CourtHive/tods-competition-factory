@@ -23,6 +23,7 @@ import { attachEventPolicy } from '../../tournamentEngine/governors/policyGovern
 
 export function generateEventWithFlights({
   tournamentRecord,
+  autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
   matchUpStatusProfile,
@@ -159,7 +160,7 @@ export function generateEventWithFlights({
         event,
         stage: stage || MAIN,
         participantIds: drawParticipantIds,
-        autoEntryPositions: false,
+        autoEntryPositions,
       });
       if (result.error) return result;
     }

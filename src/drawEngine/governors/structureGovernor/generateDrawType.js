@@ -87,7 +87,7 @@ export function generateDrawType(params = {}) {
   const invalidDrawSize =
     drawSize < 2 ||
     (!staggeredEntry &&
-      drawType !== FEED_IN &&
+      ![FEED_IN, AD_HOC].includes(drawType) &&
       ((drawType === ROUND_ROBIN && drawSize < 3) ||
         (drawType === DOUBLE_ELIMINATION && !validDoubleEliminationSize) ||
         (![ROUND_ROBIN, DOUBLE_ELIMINATION, ROUND_ROBIN_WITH_PLAYOFF].includes(

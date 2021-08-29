@@ -24,6 +24,7 @@ import {
 
 export function generateEventWithDraw({
   tournamentRecord,
+  autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
   matchUpStatusProfile,
@@ -112,7 +113,7 @@ export function generateEventWithDraw({
     tournamentRecord,
     participantIds,
     entryStage: stage,
-    autoEntryPositions: false,
+    autoEntryPositions,
   });
   if (result.error) return result;
 

@@ -66,6 +66,7 @@ import { deleteFlightAndFlightDraw } from './drawDefinitions/deleteFlightAndFlig
 import { generateAdHocMatchUps } from './drawDefinitions/generateAdHocMatchUps';
 import { generateFlightProfile } from '../../generators/generateFlightProfile';
 import { addVoluntaryConsolationStage } from './addVoluntaryConsolationStage';
+import { deleteAdHocMatchUps } from './drawDefinitions/deleteAdHocMatchUps';
 import { updateDrawIdsOrder } from './drawDefinitions/updateDrawIdsOrder';
 import { addAdHocMatchUps } from './drawDefinitions/addAdHocMatchUps';
 import { getFlightProfile } from '../../getters/getFlightProfile';
@@ -121,8 +122,9 @@ const eventGovernor = {
   deleteFlightAndFlightDraw,
   deleteFlightProfileAndFlightDraws,
 
-  generateAdHocMatchUps,
   addAdHocMatchUps,
+  generateAdHocMatchUps,
+  deleteAdHocMatchUps,
 
   setDelegatedOutcome,
   removeDelegatedOutcome,

@@ -40,6 +40,7 @@ export function generateTournamentRecord({
 
   policyDefinitions,
   participantsProfile,
+  autoEntryPositions,
   drawProfiles,
   eventProfiles,
   venueProfiles,
@@ -155,6 +156,7 @@ export function generateTournamentRecord({
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, error } = generateEventWithDraw({
         tournamentRecord,
+        autoEntryPositions,
         participantsProfile,
         completeAllMatchUps,
         matchUpStatusProfile,
@@ -178,6 +180,7 @@ export function generateTournamentRecord({
         drawIds: generatedDrawIds,
       } = generateEventWithFlights({
         tournamentRecord,
+        autoEntryPositions,
         participantsProfile,
         completeAllMatchUps,
         matchUpStatusProfile,
