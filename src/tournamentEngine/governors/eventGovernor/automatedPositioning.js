@@ -54,9 +54,8 @@ export function automatedPlayoffPositioning({
     structureId,
   });
 
-  const errors = [];
-  playoffStructures &&
-    playoffStructures.forEach((structure) => {
+  if (playoffStructures) {
+    for (const structure of playoffStructures) {
       const { structureId: playoffStructureId } = structure;
       const result = drawEngineAutomatedPositioning({
         structureId: playoffStructureId,
@@ -65,9 +64,9 @@ export function automatedPlayoffPositioning({
         participants,
         seedsOnly,
       });
-      if (result.error) errors.push(result.error);
-      result.errors?.forEach((error) => errors.push(error));
-    });
+      if (result.error) return result;
+    }
+  }
 
-  return errors.length ? { error: errors } : SUCCESS;
+  return { ...SUCCESS };
 }

@@ -2,13 +2,13 @@ import { uniqueValues } from '../../../utilities/arrays';
 import { assignSeed } from '../../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getStructureSeedAssignments } from '../../../drawEngine/getters/getStructureSeedAssignments';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
   MISSING_ASSIGNMENTS,
   NO_MODIFICATIONS_APPLIED,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated
@@ -34,9 +34,7 @@ export function assignSeedPositions(params) {
     drawDefinition,
     structureId,
   });
-
-  const errors = [];
-  if (error) errors.push(error);
+  if (error) return { error };
 
   /**
    * mergeObject and seedLimit ensure that new assignments do not go beyond already established number of seeds
@@ -72,23 +70,18 @@ export function assignSeedPositions(params) {
     };
   }
 
-  updatedAssignments.forEach((assignment) => {
+  for (const assignment of updatedAssignments) {
     const result = assignSeed({
       ...assignment,
       drawDefinition,
       structureId,
     });
     if (result?.error) {
-      modifications = 0;
-      errors.push(result?.error);
-    } else if (!errors.length && result?.success) {
+      return result;
+    } else if (result?.success) {
       modifications++;
     }
-  });
+  }
 
-  return modifications
-    ? SUCCESS
-    : errors.length
-    ? { error: NO_MODIFICATIONS_APPLIED, errors }
-    : { error: NO_MODIFICATIONS_APPLIED };
+  return modifications ? { ...SUCCESS } : { error: NO_MODIFICATIONS_APPLIED };
 }
