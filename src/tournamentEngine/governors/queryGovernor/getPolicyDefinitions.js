@@ -9,6 +9,14 @@ import {
   POLICY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
+/**
+ * Discovers policies bottom up from drawDefinition => event => tournamentRecord
+ * @param {object} tournamentRecord - optional
+ * @param {object} event - optional
+ * @param {object} drawDefinition - optional
+ * @param {string[]} policyTypes - name of policies to find
+ * @returns
+ */
 export function getPolicyDefinitions({
   tournamentRecord,
   drawDefinition,
@@ -17,37 +25,39 @@ export function getPolicyDefinitions({
 }) {
   if (!Array.isArray(policyTypes)) return { error: MISSING_POLICY_TYPE };
 
+  // create a policyDefinitions object consisting of policies applied
+  // starting with drawDefinition, then even, then tournamentRecord
+  // Once a matching policyType has been found higher level policies of the same type are ignored
+  const policyDefinitions = {};
+
+  const mapAppliedPolicies = (appliedPolicies) => {
+    for (const policyType of policyTypes) {
+      const policy = appliedPolicies[policyType];
+      if (policy && !policyDefinitions[policyType]) {
+        // only add found policy if it doesn't already exist
+        policyDefinitions[policyType] = policy;
+      }
+    }
+  };
+
   if (drawDefinition) {
     const { appliedPolicies } =
       getDrawAppliedPolicies({ drawDefinition }) || {};
-    const policyDefinitions = mapTargetPolicies(appliedPolicies, policyTypes);
-    if (Object.keys(policyDefinitions).length) return { policyDefinitions };
+    mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
   if (event) {
     const { appliedPolicies } = getEventAppliedPolicies({ event }) || {};
-    const policyDefinitions = mapTargetPolicies(appliedPolicies, policyTypes);
-    if (Object.keys(policyDefinitions).length) return { policyDefinitions };
+    mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
   if (tournamentRecord) {
     const { appliedPolicies } =
       getTournamentAppliedPolicies({ tournamentRecord }) || {};
-    const policyDefinitions = mapTargetPolicies(appliedPolicies, policyTypes);
-    if (Object.keys(policyDefinitions).length) return { policyDefinitions };
+    mapAppliedPolicies(appliedPolicies, policyTypes);
   }
 
-  return { error: POLICY_NOT_FOUND };
-
-  function mapTargetPolicies(appliedPolicies, policyTypes) {
-    return Object.assign(
-      {},
-      ...policyTypes
-        .map((policyType) => {
-          const policy = appliedPolicies[policyType];
-          return policy && { [policyType]: policy };
-        })
-        .filter(Boolean)
-    );
-  }
+  return Object.keys(policyDefinitions).length
+    ? { policyDefinitions }
+    : { error: POLICY_NOT_FOUND };
 }

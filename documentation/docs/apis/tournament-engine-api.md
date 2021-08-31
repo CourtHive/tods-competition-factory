@@ -1593,7 +1593,10 @@ const signInStatus = tournamentEngine.getParticipantSignInStatus({
 
 ## getPolicyDefinitions
 
-Finds policyDefinition for either draw (if drawId), event (if eventId), or tournament, in that order. This enables a default policy to be attached to the tournament record and for event-specific or draw-specific policies to override the default(s).
+Finds policies which have been attached to the tournamentRecord, or to a target event, or target drawDefinition, in reverse order.
+Once a matching `policyType` has been found, higher level policies of the same type are ignored, enabling a default policy to be attached to the tournamentRecord and for event-specific or draw-specific policies to override the default(s).
+
+The constructed `policyDefinitions` object contains targeted policies from all levels, scoped to the lowest level specified.
 
 See [Policies](../concepts/policies).
 
