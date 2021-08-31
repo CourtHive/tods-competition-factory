@@ -1,11 +1,12 @@
 import { getAccessorValue } from '../../utilities/getAccessorValue';
+
+import { SCALE } from '../../constants/scaleConstants';
 import {
   INVALID_SCALE_ITEM,
   INVALID_VALUES,
   MISSING_PARTICIPANT,
   SCALE_ITEM_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { SCALE } from '../../constants/scaleConstants';
 
 export function participantScaleItem({
   participant,
