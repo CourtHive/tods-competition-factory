@@ -53,8 +53,8 @@ it('can clear scheduled matchUps', () => {
 
   competitionEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   const { tournamentId } = tournamentRecord;

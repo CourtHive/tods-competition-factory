@@ -5,14 +5,14 @@ import { getSeedsCount } from './getSeedsCount';
 import { findPolicy } from './findPolicy';
 
 import {
-  attachPolicy,
-  attachEventPolicy,
+  attachPolicies,
+  attachEventPolicies,
   removeEventPolicy,
 } from './policyManagement';
 
 const policyGovernor = {
-  attachPolicy,
-  attachEventPolicy,
+  attachPolicies,
+  attachEventPolicies,
   removeEventPolicy,
   findPolicy,
 

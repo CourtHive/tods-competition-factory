@@ -16,7 +16,7 @@ it('can support ITF Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_ITF,
+    policyDefinitions: SEEDING_ITF,
   });
 
   const {
@@ -97,7 +97,7 @@ it('can support USTA Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   const {

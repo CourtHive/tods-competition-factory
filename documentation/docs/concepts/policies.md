@@ -2,15 +2,19 @@
 title: Introduction to Policies
 ---
 
-Policies determine how the various Competition Factory engines function and can shape the way that results are returned. Policies can be attached to the `tournamentRecord`, `events`, or to `drawDefinitions` within an `event`. They can also be passed into some `tournamentEngine` and `drawEngine` methods.
+Policies determine how the various Competition Factory engines function and can shape the way that results are returned. Policies can be attached to the `tournamentRecord`, `events`, or to `drawDefinitions` within an `event`. They can also be passed directly into some factory methods; e.g. a **Participant Policy** can be passed into a method which returns particpipants and filter out attributes which are not to be displayed.
 
-The structure of an **_policyDefinition_** is as follows:
+The structure of a **_policyDefinitions_** object is as follows:
 
 ```json
 {
   [policyType]: {      // e.g. 'seeding' or 'avoidance'
     policyName: 'name'  // for 'seeding' can be the provider of the policy, e.g. 'ITF' or 'USTA'
     ...attributes       // attributes relevant to the policyType
+  },
+  [anotherPolicyType]: {
+    policyName: 'name'
+    ...attributes
   },
 }
 ```

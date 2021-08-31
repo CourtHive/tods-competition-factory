@@ -146,7 +146,7 @@ function generateRoundRobin({
   drawEngine.reset();
   drawEngine.newDrawDefinition();
 
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 
   drawEngine.setStageDrawSize({ stage, drawSize });
   drawEngine.generateDrawType({

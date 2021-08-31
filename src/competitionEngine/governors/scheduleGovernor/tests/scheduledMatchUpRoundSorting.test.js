@@ -45,8 +45,8 @@ test.each([
     } = result;
     competitionEngine.setState(tournamentRecord);
 
-    result = competitionEngine.attachPolicy({
-      policyDefinition: POLICY_SCHEDULING_USTA,
+    result = competitionEngine.attachPolicies({
+      policyDefinitions: POLICY_SCHEDULING_USTA,
     });
     expect(result.success).toEqual(true);
 

@@ -1,5 +1,5 @@
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
-import { attachPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
@@ -24,7 +24,7 @@ import { DOUBLES } from '../../constants/eventConstants';
  * @param {string} startDate - optional - ISO string date
  * @param {string} endDate - optional - ISO string date
  * @param {object} participantsProfile - optional - { participantsCount, participantType }
- * @param {object} policyDefinitions - optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
+ * @param {object} policyDefinitions - optional - { [policyType]: policyDefinitions, [policyType2]: policyDefinitions }
  * @param {object[]} drawProfiles - optional - [{ category, drawSize, drawType, eventType, matchUpFormat }]
  * @param {object[]} venueProfiles - optional - [{ courtsCount, venueName, dateAvailability, startTime, endTime }]
  * @param {boolean} completeAllMatchUps - optional - boolean (legacy support for scoreString to apply to all matchUps)
@@ -78,9 +78,9 @@ export function generateTournamentRecord({
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
-      attachPolicy({
+      attachPolicies({
         tournamentRecord,
-        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+        policyDefinitions: { [policyType]: policyDefinitions[policyType] },
       });
     }
   }

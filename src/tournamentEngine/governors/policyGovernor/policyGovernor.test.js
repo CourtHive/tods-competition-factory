@@ -11,7 +11,7 @@ import {
 } from '../../../constants/policyConstants';
 
 it('can set and remove policies from tournamentRecords and events', () => {
-  expect(tournamentEngine).toHaveProperty('attachPolicy');
+  expect(tournamentEngine).toHaveProperty('attachPolicies');
 
   // cannot attach a policy if no tournamentRecord
   tournamentEngine.reset();
@@ -20,16 +20,16 @@ it('can set and remove policies from tournamentRecords and events', () => {
       policyName: 'TEST',
     },
   };
-  let result = tournamentEngine.attachPolicy({
-    policyDefinition: scoringPolicy,
+  let result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
   });
   expect(result).toMatchObject({ error: MISSING_TOURNAMENT_RECORD });
 
   const newTournamentRecord = tournamentEngine.newTournamentRecord();
 
   tournamentEngine.setState(newTournamentRecord);
-  result = tournamentEngine.attachPolicy({
-    policyDefinition: scoringPolicy,
+  result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
     allowReplacement: true,
   });
   expect(result.success).toEqual(true);
@@ -49,9 +49,9 @@ it('can set and remove policies from tournamentRecords and events', () => {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  result = tournamentEngine.attachEventPolicy({
+  result = tournamentEngine.attachEventPolicies({
     eventId,
-    policyDefinition: AVOIDANCE_COUNTRY,
+    policyDefinitions: AVOIDANCE_COUNTRY,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -67,9 +67,9 @@ it('can set and remove policies from tournamentRecords and events', () => {
     'Nationality Code'
   );
 
-  result = tournamentEngine.attachEventPolicy({
+  result = tournamentEngine.attachEventPolicies({
     eventId,
-    policyDefinition: AVOIDANCE_COUNTRY,
+    policyDefinitions: AVOIDANCE_COUNTRY,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -100,8 +100,8 @@ it('can find policies whether on event or tournamentRecord', () => {
       policyName: testPolicyName,
     },
   };
-  let result = tournamentEngine.attachPolicy({
-    policyDefinition: scoringPolicy,
+  let result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
   });
   expect(result.success).toEqual(true);
 
@@ -127,9 +127,9 @@ it('can find policies whether on event or tournamentRecord', () => {
   }));
   expect(policy.policyName).toEqual(testPolicyName);
 
-  result = tournamentEngine.attachEventPolicy({
+  result = tournamentEngine.attachEventPolicies({
     eventId,
-    policyDefinition: AVOIDANCE_COUNTRY,
+    policyDefinitions: AVOIDANCE_COUNTRY,
   });
   expect(result.success).toEqual(true);
 
@@ -153,9 +153,9 @@ it('can find policies whether on event or tournamentRecord', () => {
   }));
   expect(policy.policyName).toEqual('Nationality Code');
 
-  result = tournamentEngine.attachEventPolicy({
+  result = tournamentEngine.attachEventPolicies({
     eventId,
-    policyDefinition: scoringPolicy,
+    policyDefinitions: scoringPolicy,
   });
   expect(result).toEqual(SUCCESS);
 });

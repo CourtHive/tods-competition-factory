@@ -3,7 +3,7 @@ import { getTournamentParticipants } from '../../getters/participants/getTournam
 
 export function positionActions({
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   drawDefinition,
   drawPosition,
   structureId,
@@ -17,7 +17,7 @@ export function positionActions({
   return drawEnginePositionActions({
     tournamentParticipants,
     tournamentRecord,
-    policyDefinition,
+    policyDefinitions,
     drawDefinition,
     drawPosition,
     structureId,

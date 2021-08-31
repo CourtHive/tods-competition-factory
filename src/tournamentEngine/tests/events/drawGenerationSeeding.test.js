@@ -73,7 +73,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       participantCount,
     });
     const { seedsCount } = tournamentEngine.getSeedsCount({
-      policyDefinition: SEEDING_USTA,
+      policyDefinitions: SEEDING_USTA,
       participantCount,
       drawSize,
     });
@@ -91,7 +91,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     result = tournamentEngine.getEntriesAndSeedsCount({
       eventId,
       drawId: flight.drawId,
-      policyDefinition: SEEDING_USTA,
+      policyDefinitions: SEEDING_USTA,
     });
     expect(result.seedsCount).toEqual(seedsCount);
     expect(result.entries.length).toEqual(drawSize);
@@ -99,7 +99,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   });
 });
 
-it('can constrain seedsCount by policyDefinition', () => {
+it('can constrain seedsCount by policyDefinitions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
   const eventName = 'Test Event';
   const ageCategoryCode = 'U18';
@@ -139,7 +139,7 @@ it('can constrain seedsCount by policyDefinition', () => {
   const participantCount = 32;
 
   const { seedsCount } = tournamentEngine.getSeedsCount({
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
     participantCount,
     drawSize,
   });
@@ -161,8 +161,8 @@ it('can define seeds using seededParticipants', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  const policyDefinition = POLICY_AVOIDANCE_COUNTRY;
-  result = tournamentEngine.attachEventPolicy({ policyDefinition, eventId });
+  const policyDefinitions = POLICY_AVOIDANCE_COUNTRY;
+  result = tournamentEngine.attachEventPolicies({ policyDefinitions, eventId });
   expect(result.success).toEqual(true);
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(

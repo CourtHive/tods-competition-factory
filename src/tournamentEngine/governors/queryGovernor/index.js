@@ -13,7 +13,7 @@ import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { matchUpActions } from '../../getters/matchUpActions';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';
-import { getPolicyDefinition } from './getPolicyDefinition';
+import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { getEventProperties } from './getEventProperties';
 import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
@@ -96,7 +96,7 @@ const queryGovernor = {
   getParticipantScaleItem,
   getParticipantSignInStatus,
 
-  getPolicyDefinition,
+  getPolicyDefinitions,
 
   // pass through accessors
   getMatchUpScheduleDetails: drawEngineGetMatchUpScheduleDetails,

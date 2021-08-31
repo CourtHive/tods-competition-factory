@@ -88,7 +88,7 @@ function getavailablePlayoffRounds({
   const { links } = getStructureLinks({ drawDefinition, structureId });
   const linkSourceRoundNumbers =
     links?.source
-      // TODO: perhaps this should be enabled by a policyDefinition
+      // TODO: perhaps this should be enabled by a policyDefinitions
       ?.filter((link) => link.linkCondition !== FIRST_MATCHUP)
       .map((link) => link.source?.roundNumber) || [];
 

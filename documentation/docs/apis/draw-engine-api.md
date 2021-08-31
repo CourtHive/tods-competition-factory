@@ -361,14 +361,14 @@ result = drawEngine.assignSeed({
 
 ---
 
-## attachPolicy
+## attachPolicies
 
 Attaches a policy to a drawDefinition.
 
 See [Policies](../concepts/policies).
 
 ```js
-drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 ```
 
 ---
@@ -954,7 +954,7 @@ const { drawDefinition } = drawEngine.getState();
 const positionActions = drawEngine.positionActions({
   structureId,
   drawPosition,
-  policyDefinition: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
+  policyDefinitions: positionActionsPolicy, // optional - policy defining what actions are allowed in client context
 });
 
 const {

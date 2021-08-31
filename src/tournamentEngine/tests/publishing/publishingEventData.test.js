@@ -142,7 +142,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(playoffStructures.length).toEqual(4);
   expect(playoffStructures[0].positionAssignments.length).toEqual(4);
 
-  const policyDefinition = Object.assign(
+  const policyDefinitions = Object.assign(
     {},
     ROUND_NAMING_POLICY,
     PARTICIPANT_PRIVACY_DEFAULT
@@ -150,7 +150,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     eventId,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].drawIds).toEqual([drawId]);
@@ -291,7 +291,7 @@ it('can generate payload for publishing a compass draw', () => {
   );
   expect(mainStructure.structureName).toEqual('EAST');
 
-  const policyDefinition = Object.assign(
+  const policyDefinitions = Object.assign(
     {},
     ROUND_NAMING_POLICY,
     PARTICIPANT_PRIVACY_DEFAULT
@@ -299,7 +299,7 @@ it('can generate payload for publishing a compass draw', () => {
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     eventId,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(publishSuccess).toEqual(true);
   expect(eventData.eventInfo.publish.state[PUBLIC].structureIds).toEqual([]);
@@ -424,7 +424,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   );
   expect(mainStructure.structureName).toEqual('MAIN');
 
-  const policyDefinition = Object.assign(
+  const policyDefinitions = Object.assign(
     {},
     ROUND_NAMING_POLICY,
     PARTICIPANT_PRIVACY_DEFAULT
@@ -432,7 +432,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
 
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     eventId,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(publishSuccess).toEqual(true);
 
@@ -516,7 +516,7 @@ it('can filter out unpublished draws when publishing event', () => {
   });
 
   const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
-  const policyDefinition = Object.assign(
+  const policyDefinitions = Object.assign(
     {},
     ROUND_NAMING_POLICY,
     PARTICIPANT_PRIVACY_DEFAULT
@@ -525,7 +525,7 @@ it('can filter out unpublished draws when publishing event', () => {
   const drawId = drawIds[0];
   const { eventData, success: publishSuccess } = tournamentEngine.publishEvent({
     eventId,
-    policyDefinition,
+    policyDefinitions,
     drawIds: [drawId],
   });
   expect(publishSuccess).toEqual(true);

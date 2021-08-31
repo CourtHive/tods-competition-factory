@@ -9,6 +9,7 @@ import {
   getEventAppliedPolicies,
 } from './getAppliedPolicies';
 
+import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_EVENT,
@@ -19,25 +20,24 @@ import {
   POLICY_NOT_FOUND,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
-export function attachPolicy({
+export function attachPolicies({
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   allowReplacement,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!policyDefinition || typeof policyDefinition !== 'object') {
+  if (!policyDefinitions || typeof policyDefinitions !== 'object') {
     return { error: MISSING_POLICY_DEFINITION };
   }
 
   if (!tournamentRecord.extensions) tournamentRecord.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
-  const applied = Object.keys(policyDefinition)
+  const applied = Object.keys(policyDefinitions)
     .map((policyType) => {
       if (!appliedPolicies[policyType] || allowReplacement) {
-        appliedPolicies[policyType] = policyDefinition[policyType];
+        appliedPolicies[policyType] = policyDefinitions[policyType];
         return policyType;
       }
     })
@@ -57,11 +57,11 @@ export function attachPolicy({
     : { ...SUCCESS, applied };
 }
 
-export function attachEventPolicy({ policyDefinition, event }) {
+export function attachEventPolicies({ policyDefinitions, event }) {
   if (!event) {
     return { error: MISSING_EVENT };
   }
-  if (!policyDefinition) {
+  if (!policyDefinitions) {
     return { error: MISSING_POLICY_DEFINITION };
   }
 
@@ -69,8 +69,8 @@ export function attachEventPolicy({ policyDefinition, event }) {
   if (!event.extensions) event.extensions = [];
   const { appliedPolicies } = getEventAppliedPolicies({ event });
 
-  Object.keys(policyDefinition).forEach((policyType) => {
-    appliedPolicies[policyType] = policyDefinition[policyType];
+  Object.keys(policyDefinitions).forEach((policyType) => {
+    appliedPolicies[policyType] = policyDefinitions[policyType];
     policiesApplied++;
   });
 

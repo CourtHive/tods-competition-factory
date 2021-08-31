@@ -3,7 +3,10 @@ import tournamentEngine from '../../sync';
 
 import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 import POLICY_SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
+import {
+  POLICY_TYPE_ROUND_NAMING,
+  POLICY_TYPE_SEEDING,
+} from '../../../constants/policyConstants';
 import ROUND_NAMING_POLICY from '../publishing/roundNamingPolicy';
 import {
   APPLIED_POLICIES,
@@ -16,8 +19,8 @@ it('generateDrawDefinition will find seeding policy attached to tournamentRecord
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 32, drawType: AD_HOC }],
     policyDefinitions: { ...ROUND_NAMING_POLICY, ...POLICY_SEEDING_ITF },
+    drawProfiles: [{ drawSize: 32, drawType: AD_HOC }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -30,6 +33,10 @@ it('generateDrawDefinition will find seeding policy attached to tournamentRecord
 
   expect(
     tournamentRecord.extensions[0].value[POLICY_TYPE_ROUND_NAMING]
+  ).not.toBeUndefined();
+
+  expect(
+    tournamentRecord.extensions[0].value[POLICY_TYPE_SEEDING]
   ).not.toBeUndefined();
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });

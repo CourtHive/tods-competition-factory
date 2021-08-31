@@ -1,8 +1,9 @@
 import { completeDrawMatchUps } from '../../../mocksEngine/generators/completeDrawMatchUps';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { getPositionAssignments } from '../../getters/positionsGetter';
-import { shuffleArray } from '../../../utilities';
 import tournamentEngine from '../../../tournamentEngine/sync';
 import { randomInt } from '../../../utilities/math';
+import { shuffleArray } from '../../../utilities';
 import mocksEngine from '../../../mocksEngine';
 import {
   replaceWithBye,
@@ -11,7 +12,6 @@ import {
 } from '../testingUtilities';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
 // pseudocode...
 // 1. Generate drawType of drawSize

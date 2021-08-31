@@ -231,7 +231,7 @@ function generateCompass({
   } = drawEngine.getDrawStructures({ stage, stageSequence: 1 });
   const { structureId } = structure;
 
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 
   const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,

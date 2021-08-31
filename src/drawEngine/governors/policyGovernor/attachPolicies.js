@@ -10,20 +10,20 @@ import {
   MISSING_POLICY_DEFINITION,
 } from '../../../constants/errorConditionConstants';
 
-export function attachPolicy({ drawDefinition, policyDefinition }) {
+export function attachPolicies({ drawDefinition, policyDefinitions }) {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
-  if (!policyDefinition || typeof policyDefinition !== 'object') {
+  if (!policyDefinitions || typeof policyDefinitions !== 'object') {
     return { error: MISSING_POLICY_DEFINITION };
   }
 
   if (!drawDefinition.extensions) drawDefinition.extensions = [];
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
 
-  const applied = Object.keys(policyDefinition).every((policyType) => {
+  const applied = Object.keys(policyDefinitions).every((policyType) => {
     if (!appliedPolicies[policyType]) {
-      appliedPolicies[policyType] = policyDefinition[policyType];
+      appliedPolicies[policyType] = policyDefinitions[policyType];
       return true;
     } else {
       return false;

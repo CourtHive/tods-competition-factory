@@ -69,13 +69,13 @@ export function removeAssignment({
   structureId,
   drawPosition,
   replaceWithBye,
-  policyDefinition,
+  policyDefinitions,
 }) {
   let result = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
@@ -93,13 +93,13 @@ export function replaceWithBye({
   drawId,
   structureId,
   drawPosition,
-  policyDefinition,
+  policyDefinitions,
 }) {
   const { validActions } = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   const { method, payload } = validActions.find(({ type }) => type === BYE);
   const result = tournamentEngine[method](payload);
@@ -111,13 +111,13 @@ export function replaceWithAlternate({
   drawId,
   structureId,
   drawPosition,
-  policyDefinition,
+  policyDefinitions,
 }) {
   const { validActions } = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   let result = validActions.find(({ type }) => type === ALTERNATE);
   const { method, payload, availableAlternatesParticipantIds } = result;

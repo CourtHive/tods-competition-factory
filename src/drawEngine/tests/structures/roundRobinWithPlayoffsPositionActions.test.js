@@ -115,7 +115,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
   });
   expect(result.validActions.length).toEqual(0);
 
@@ -154,7 +154,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
   });
   expect(result.validActions.length).toEqual(0);
   mainStructure.structures.slice(2).forEach((structure, structureOrder) => {
@@ -175,7 +175,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
   });
   expect(result.validActions.length).not.toEqual(0);
 });
@@ -296,9 +296,9 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
   });
   expect(result.success).toEqual(true);
 
-  // first test with POLICY_SEEDING_USTA included in policyDefinition
+  // first test with POLICY_SEEDING_USTA included in policyDefinitions
   let drawPosition = 1;
-  let policyDefinition = Object.assign(
+  let policyDefinitions = Object.assign(
     {},
     POLICY_POSITION_ACTIONS_UNRESTRICTED,
     POLICY_SEEDING_USTA
@@ -307,7 +307,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(result.validActions.length).not.toEqual(0);
 
@@ -320,7 +320,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
 
   validActionTypes = result.validActions.map(({ type }) => type);
@@ -338,7 +338,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   const assignmentAction = result.validActions.find(
     ({ type }) => type === ASSIGN_PARTICIPANT
@@ -352,12 +352,12 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
 
   // now test with seed position enforced (default behavior)
   drawPosition = 1;
-  policyDefinition = POLICY_POSITION_ACTIONS_UNRESTRICTED;
+  policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
   result = tournamentEngine.positionActions({
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
   expect(result.validActions.length).not.toEqual(0);
 
@@ -372,7 +372,7 @@ it('Playoff drawPosition assignment includes group winners who lost no matchUps'
     drawId,
     structureId: playoffStructureIds[0],
     drawPosition,
-    policyDefinition,
+    policyDefinitions,
   });
 
   validActionTypes = result.validActions.map(({ type }) => type);

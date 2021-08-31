@@ -7,7 +7,7 @@ import { getTournamentInfo } from './getTournamentInfo';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
 
-export function getAllEventData({ tournamentRecord, policyDefinition }) {
+export function getAllEventData({ tournamentRecord, policyDefinitions }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const events = tournamentRecord.events || [];
@@ -72,7 +72,7 @@ export function getAllEventData({ tournamentRecord, policyDefinition }) {
         inContext: true,
         drawDefinition,
         scheduleTiming,
-        policyDefinition,
+        policyDefinitions,
         tournamentRecord,
         includeByeMatchUps: false,
         requireParticipants: true,

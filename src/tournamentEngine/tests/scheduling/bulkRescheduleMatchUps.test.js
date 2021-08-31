@@ -57,8 +57,8 @@ it('can bulk reschedule matchUps', () => {
 
   competitionEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   const { tournamentId } = tournamentRecord;

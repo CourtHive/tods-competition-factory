@@ -1,26 +1,26 @@
-import { getPolicyDefinition } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
+import { getPolicyDefinitions } from '../../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 
 export function getEnabledStructures({
-  policyDefinition,
+  policyDefinitions,
   tournamentRecord,
   drawDefinition,
   structure,
   event,
 }) {
-  const { policyDefinition: attachedPolicy } = getPolicyDefinition({
-    policyType: POLICY_TYPE_POSITION_ACTIONS,
+  const { policyDefinitions: attachedPolicy } = getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_POSITION_ACTIONS],
     tournamentRecord,
     drawDefinition,
     event,
   });
 
-  policyDefinition =
-    policyDefinition || attachedPolicy || POLICY_POSITION_ACTIONS_DEFAULT;
+  policyDefinitions =
+    policyDefinitions || attachedPolicy || POLICY_POSITION_ACTIONS_DEFAULT;
 
-  const positionActionsPolicy = policyDefinition[POLICY_TYPE_POSITION_ACTIONS];
+  const positionActionsPolicy = policyDefinitions[POLICY_TYPE_POSITION_ACTIONS];
 
   const { enabledStructures, disabledStructures } = positionActionsPolicy || {};
   const actionsDisabled = disabledStructures?.find(

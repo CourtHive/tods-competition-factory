@@ -1,49 +1,52 @@
-import { getPolicyDefinition } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinition';
+import { getPolicyDefinitions } from '../../../tournamentEngine/governors/queryGovernor/getPolicyDefinitions';
 import { getSeedsCount } from '../../../tournamentEngine/governors/policyGovernor/getSeedsCount';
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 import { generateRange } from '../../../utilities';
 
+import { SEEDSCOUNT_GREATER_THAN_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  MISSING_STRUCTURE,
-  SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
-} from '../../../constants/errorConditionConstants';
 
 export function initializeStructureSeedAssignments({
+  tournamentRecord,
+  drawDefinition,
+  event,
+
   requireParticipantCount = true,
   enforcePolicyLimits = true,
   drawSizeProgression,
   participantCount,
-  drawDefinition,
   structureId,
   seedsCount,
 }) {
-  const { structure } = findStructure({ drawDefinition, structureId });
+  const { structure, error } = findStructure({ drawDefinition, structureId });
+  if (error) return { error };
+
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const drawSize = positionAssignments.length;
 
-  if (!structure) return { error: MISSING_STRUCTURE };
   if (seedsCount > drawSize)
     return { error: SEEDSCOUNT_GREATER_THAN_DRAW_SIZE };
 
-  const { policyDefinition } = getPolicyDefinition({
+  const { policyDefinitions } = getPolicyDefinitions({
+    tournamentRecord,
     drawDefinition,
-    policyType: POLICY_TYPE_SEEDING,
+    event,
+    policyTypes: [POLICY_TYPE_SEEDING],
   });
 
   const { seedsCount: maxSeedsCount } = getSeedsCount({
     requireParticipantCount,
     drawSizeProgression,
-    policyDefinition,
+    policyDefinitions,
     participantCount,
     drawSize,
   });
 
   if (
-    policyDefinition &&
+    policyDefinitions &&
     maxSeedsCount &&
     seedsCount > maxSeedsCount &&
     enforcePolicyLimits

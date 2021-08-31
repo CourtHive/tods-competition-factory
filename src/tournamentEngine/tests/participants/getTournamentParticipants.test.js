@@ -158,7 +158,7 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   // check that the privacy policy has not removed the gender/sex until after filtering has occurred
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantTypes: [INDIVIDUAL], accessorValues },
-    policyDefinition: privacyPolicy,
+    policyDefinitions: privacyPolicy,
   }));
   expect(tournamentParticipants.length).toEqual(maleParticpantsCount);
 
@@ -188,7 +188,7 @@ it('can accept a privacy policy to filter tournament participants attributes', (
   // now apply privacyPolicy and filter out gender
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { participantTypes: [PAIR], accessorValues },
-    policyDefinition: privacyPolicy,
+    policyDefinitions: privacyPolicy,
     inContext: true,
   }));
   tournamentParticipants.forEach((participant) => {

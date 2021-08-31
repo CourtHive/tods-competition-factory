@@ -15,7 +15,7 @@ it('can support ITF Consolation participant placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_ITF,
+    policyDefinitions: SEEDING_ITF,
   });
 
   const completionValues = [
@@ -61,7 +61,7 @@ it('can support USTA Consolation participant placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   const completionValues = [

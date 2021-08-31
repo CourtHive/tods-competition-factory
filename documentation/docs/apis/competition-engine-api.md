@@ -275,12 +275,12 @@ competitionEngine.assignMatchUVenue({
 
 ---
 
-## attachPolicy
+## attachPolicies
 
-Attaches a `policyDefinition` to all tournamentRecords currently loaded into `competitionEngine`.
+Attaches `policyDefinitions` to all tournamentRecords currently loaded into `competitionEngine`.
 
 ```js
-competitionEngine.attachPolicy({ policyDefinition });
+competitionEngine.attachPolicies({ policyDefinitions });
 ```
 
 ---
@@ -511,7 +511,7 @@ const {
     },
 
     convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
-    policyDefinition, // optional - can accept a privacy policy to filter participant attributes
+    policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
     participantFilters, // optional - filters
   });
 ```

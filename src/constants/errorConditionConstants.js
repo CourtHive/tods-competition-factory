@@ -71,11 +71,11 @@ export const MISSING_MATCHUP = 'Missing matchUp';
 export const INVALID_MATCHUP = 'Invalid matchUp';
 
 export const MISSING_POLICY_TYPE = 'Missing policyType';
-export const MISSING_POLICY_DEFINITION = 'Missing policyDefinition';
+export const MISSING_POLICY_DEFINITION = 'Missing policyDefinitions';
 export const MISSING_SEEDING_POLICY = 'Missing seeding policy';
 export const MISSING_AVOIDANCE_POLICY = 'Missing avoidance policy';
 export const MISSING_POLICY_ATTRIBUTES = 'Missing policy attributes';
-export const INVALID_POLICY_DEFINITION = 'Invalid policyDefinition';
+export const INVALID_POLICY_DEFINITION = 'Invalid policyDefinitions';
 export const EXISTING_POLICY_TYPE = 'existing policyType';
 export const POLICY_NOT_ATTACHED = 'Policy not attached';
 export const POLICY_NOT_FOUND = 'Policy not found';

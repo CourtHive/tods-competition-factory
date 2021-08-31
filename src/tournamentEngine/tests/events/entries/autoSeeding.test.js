@@ -63,7 +63,7 @@ it('can autoSeed by Rankings', () => {
     eventId,
     scaleName: 'U18',
     scaleAttributes,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
     sortDescending: true,
   });
   let scaleValues = result.scaleItemsWithParticipantIds
@@ -96,7 +96,7 @@ it('can autoSeed by Rankings', () => {
     eventId,
     scaleName: 'U18',
     scaleAttributes,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
     sortDescending: false,
   });
   scaleValues = result.scaleItemsWithParticipantIds
@@ -118,7 +118,7 @@ it('can autoSeed by Rankings', () => {
     eventId,
     scaleName: 'U18',
     scaleAttributes,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
   scaleValues = result.scaleItemsWithParticipantIds
     .map(({ scaleItems }) => scaleItems[0].scaleValue)
