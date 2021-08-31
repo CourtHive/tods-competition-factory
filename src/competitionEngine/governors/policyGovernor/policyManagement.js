@@ -1,9 +1,9 @@
-import { attachPolicy as attachTournamentPolicy } from '../../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { attachPolicies as attachTournamentPolicies } from '../../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 
-export function attachPolicy({ tournamentRecords, policyDefinition }) {
+export function attachPolicies({ tournamentRecords, policyDefinitions }) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -11,9 +11,9 @@ export function attachPolicy({ tournamentRecords, policyDefinition }) {
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = attachTournamentPolicy({
+    const result = attachTournamentPolicies({
       tournamentRecord,
-      policyDefinition,
+      policyDefinitions,
       allowReplacement: true,
     });
     if (result.error) {

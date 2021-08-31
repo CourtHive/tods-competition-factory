@@ -1,13 +1,27 @@
+import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
+import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
+import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
+import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
 import { checkValidEntries } from '../governors/eventGovernor/entries/checkValidEntries';
+import { attachPolicies } from '../../drawEngine/governors/policyGovernor/attachPolicies';
+import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
 import { getScaledEntries } from '../governors/eventGovernor/entries/getScaledEntries';
-import { getPolicyDefinition } from '../governors/queryGovernor/getPolicyDefinition';
+import { getPolicyDefinitions } from '../governors/queryGovernor/getPolicyDefinitions';
+import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
 import { getAllowedDrawTypes } from '../governors/policyGovernor/allowedTypes';
+import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
+import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/globalState';
 
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import SEEDING_POLICY from '../../fixtures/policies/POLICY_SEEDING_USTA';
+import {
+  POLICY_TYPE_AVOIDANCE,
+  POLICY_TYPE_SEEDING,
+} from '../../constants/policyConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
@@ -17,21 +31,6 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-
-import {
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_SEEDING,
-} from '../../constants/policyConstants';
-import { setStageDrawSize } from '../../drawEngine/governors/entryGovernor/stageEntryCounts';
-import { setMatchUpFormat } from '../../drawEngine/governors/matchUpGovernor/matchUpFormat';
-import { newDrawDefinition } from '../../drawEngine/stateMethods';
-import { generateDrawType } from '../../drawEngine/governors/structureGovernor/generateDrawType';
-import { getDrawStructures } from '../../drawEngine/getters/structureGetter';
-import { attachPolicy } from '../../drawEngine/governors/policyGovernor/attachPolicy';
-import { addDrawEntry } from '../../drawEngine/governors/entryGovernor/addDrawEntries';
-import { initializeStructureSeedAssignments } from '../../drawEngine/governors/positionGovernor/initializeSeedAssignments';
-import { assignSeed } from '../../drawEngine/governors/entryGovernor/seedAssignment';
-import { automatedPositioning } from '../../drawEngine/governors/positionGovernor/automatedPositioning';
 
 export function generateDrawDefinition(params) {
   const { tournamentRecord, event } = params;
@@ -151,34 +150,39 @@ export function generateDrawDefinition(params) {
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
-      attachPolicy({
+      attachPolicies({
         drawDefinition,
-        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+        policyDefinitions: { [policyType]: policyDefinitions[policyType] },
       });
     }
   }
 
-  const { policyDefinition: eventAvoidancePolicy } =
-    getPolicyDefinition({
-      event,
+  const { policyDefinitions: seedingPolicy } =
+    getPolicyDefinitions({
       tournamentRecord,
-      policyType: POLICY_TYPE_AVOIDANCE,
+      drawDefinition,
+      event,
+      policyTypes: [POLICY_TYPE_SEEDING],
     }) || {};
 
-  const { policyDefinition: eventSeedingPolicy } =
-    getPolicyDefinition({
-      event,
-      tournamentRecord,
-      policyType: POLICY_TYPE_SEEDING,
-    }) || {};
-
-  if (!policyDefinitions?.seeding && !eventSeedingPolicy) {
+  if (!policyDefinitions?.seeding && !seedingPolicy?.seeding) {
     // if there is no seeding policy then use default seeing policy
-    attachPolicy({ drawDefinition, policyDefinition: SEEDING_POLICY });
+    attachPolicies({ drawDefinition, policyDefinitions: POLICY_SEEDING_USTA });
   }
 
-  if (!policyDefinitions?.avoidance && eventAvoidancePolicy) {
-    attachPolicy({ drawDefinition, policyDefinition: eventAvoidancePolicy });
+  // if an avoidance policy is not passed in at draw generation
+  // but an event level avoidance policy exists... attach that to the draw for posterity.
+  // because an event level policy COULD be modified or removed AFTER draw is generated...
+  const { policyDefinitions: eventAvoidancePolicy } =
+    getPolicyDefinitions({
+      tournamentRecord,
+      drawDefinition,
+      event,
+      policyTypes: [POLICY_TYPE_AVOIDANCE],
+    }) || {};
+
+  if (!policyDefinitions?.avoidance && eventAvoidancePolicy?.avoidance) {
+    attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
 
   // OPTIMIZE: use drawEngine.addDrawEntries
@@ -203,9 +207,12 @@ export function generateDrawDefinition(params) {
   if (seedsCount > stageEntries.length) seedsCount = stageEntries.length;
 
   const { seedLimit } = initializeStructureSeedAssignments({
+    tournamentRecord,
+    drawDefinition,
+    event,
+
     participantCount: stageEntries.length,
     enforcePolicyLimits,
-    drawDefinition,
     structureId,
     seedsCount,
   });

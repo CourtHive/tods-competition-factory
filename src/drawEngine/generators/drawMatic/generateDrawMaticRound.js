@@ -7,7 +7,7 @@ import { SUCCESS } from '../../../constants/resultConstants';
 import { DOUBLES } from '../../../constants/eventConstants';
 import { TEAM } from '../../../constants/participantTypes';
 
-// this should be in policyDefinition
+// this should be in policyDefinitions
 const ENCOUNTER_VALUE = 50;
 const SAME_TEAM_VALUE = 60;
 const DEFAULT_RATING = 0;

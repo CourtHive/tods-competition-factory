@@ -24,8 +24,8 @@ it('can modify event timing for matchUpFormat codes', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  tournamentEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  tournamentEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   let { eventMatchUpFormatTiming, error } =
@@ -119,13 +119,16 @@ it('can modify event timing for matchUpFormat codes', () => {
   });
   expect(result.error).not.toBeUndefined();
 
-  const policyDefinition = POLICY_SCORING_USTA;
-  tournamentEngine.attachPolicy({ policyDefinition, allowReplacement: true });
+  const policyDefinitions = POLICY_SCORING_USTA;
+  tournamentEngine.attachPolicies({
+    policyDefinitions,
+    allowReplacement: true,
+  });
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   }));
-  expect(policyDefinition.scoring.matchUpFormats.length).toEqual(
+  expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(
     eventMatchUpFormatTiming.length
   );
 });

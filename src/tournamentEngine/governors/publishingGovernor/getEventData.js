@@ -12,7 +12,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 // TODO: pass in policyDefinitions for roundNaming and personPrivacy
-export function getEventData({ tournamentRecord, event, policyDefinition }) {
+export function getEventData({ tournamentRecord, event, policyDefinitions }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
 
@@ -26,7 +26,7 @@ export function getEventData({ tournamentRecord, event, policyDefinition }) {
     }))(
       getDrawData({
         tournamentParticipants,
-        policyDefinition,
+        policyDefinitions,
         drawDefinition,
         context: { eventId },
       })

@@ -35,7 +35,7 @@ export function getAllStructureMatchUps({
   matchUpFilters,
   scheduleTiming,
   seedAssignments,
-  policyDefinition,
+  policyDefinitions,
   tournamentParticipants,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
@@ -98,7 +98,7 @@ export function getAllStructureMatchUps({
     {},
     tournamentAppliedPolicies,
     drawAppliedPolicies,
-    policyDefinition
+    policyDefinitions
   );
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
@@ -413,7 +413,7 @@ export function getAllStructureMatchUps({
         if (side.participantId) {
           const participant = findParticipant({
             tournamentParticipants,
-            policyDefinition: appliedPolicies,
+            policyDefinitions: appliedPolicies,
             participantId: side.participantId,
           });
           if (participant) {
@@ -425,7 +425,7 @@ export function getAllStructureMatchUps({
           const individualParticipants =
             side.participant.individualParticipantIds.map((participantId) => {
               return findParticipant({
-                policyDefinition: appliedPolicies,
+                policyDefinitions: appliedPolicies,
                 tournamentParticipants,
                 participantId,
               });

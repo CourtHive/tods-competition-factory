@@ -24,7 +24,7 @@ export function getTournamentParticipants({
   tournamentRecord,
 
   participantFilters = {},
-  policyDefinition,
+  policyDefinitions,
 
   withStatistics,
   withOpponents,
@@ -92,7 +92,7 @@ export function getTournamentParticipants({
     participantIdsWithConflicts = result?.participantIdsWithConflicts;
   }
 
-  const participantAttributes = policyDefinition?.participant;
+  const participantAttributes = policyDefinitions?.participant;
   if (participantAttributes?.participant) {
     tournamentParticipants = tournamentParticipants.map((participant) =>
       attributeFilter({

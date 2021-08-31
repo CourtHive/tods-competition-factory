@@ -9,7 +9,7 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
  *
  * @param {string} eventId - resolved by tournamentEngine to the event object
  *
- * @param {object} policyDefinition - seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+ * @param {object} policyDefinitions - seeding policyDefinitions determines the # of seeds for given participantCount/drawSize
  * @param {number} drawSize - OPTIONAL - defaults to calculation based on # of entries
  * @param {string} drawId - OPTIONAL - will use flight.drawEntries or drawDefinition.entries rather than event.entries
  * @param {string} stage - OPTIONAL - filters entries by specified stage
@@ -21,7 +21,7 @@ export function getEntriesAndSeedsCount({
   drawId,
   event,
 
-  policyDefinition,
+  policyDefinitions,
   drawSize,
   stage,
 }) {
@@ -52,7 +52,7 @@ export function getEntriesAndSeedsCount({
     participantCount,
   });
   const { seedsCount, error } = getSeedsCount({
-    policyDefinition,
+    policyDefinitions,
     participantCount,
     drawSize: drawSize || eliminationDrawSize,
   });

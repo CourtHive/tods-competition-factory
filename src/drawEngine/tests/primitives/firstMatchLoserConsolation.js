@@ -12,7 +12,7 @@ export function generateFMLC({
   drawSize,
   seedsCount,
   participantsCount,
-  policyDefinition,
+  policyDefinitions,
 }) {
   const drawType = FIRST_MATCH_LOSER_CONSOLATION;
 
@@ -31,8 +31,8 @@ export function generateFMLC({
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 1 });
   const { structureId: consolationStructureId } = consolationStructure;
 
-  drawEngine.attachPolicy({
-    policyDefinition: policyDefinition || SEEDING_POLICY,
+  drawEngine.attachPolicies({
+    policyDefinitions: policyDefinitions || SEEDING_POLICY,
   });
 
   const participants = generateRange(0, participantsCount).map((i) => ({

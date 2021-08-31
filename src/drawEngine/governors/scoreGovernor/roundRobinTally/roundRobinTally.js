@@ -8,7 +8,7 @@ import { MISSING_MATCHUPS } from '../../../../constants/errorConditionConstants'
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 export function tallyParticipantResults({
-  policyDefinition,
+  policyDefinitions,
 
   matchUpFormat,
   matchUps = [],
@@ -33,7 +33,7 @@ export function tallyParticipantResults({
   if (!bracketComplete) perPlayer = 0;
 
   const tallyPolicy =
-    policyDefinition && policyDefinition[POLICY_TYPE_ROUND_ROBIN_TALLY];
+    policyDefinitions && policyDefinitions[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const completedMatchUps = matchUps.filter(matchUpIsComplete);
   const { participantResults, matchUpStatuses } = getParticipantResults({

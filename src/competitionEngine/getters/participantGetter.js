@@ -56,7 +56,7 @@ export function publicFindParticipant({
   tournamentRecords,
   participantId,
   personId,
-  policyDefinition,
+  policyDefinitions,
   inContext,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -67,14 +67,14 @@ export function publicFindParticipant({
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { tournamentParticipants } = getTournamentParticipants({
       tournamentRecord,
-      policyDefinition,
+      policyDefinitions,
       inContext,
     });
     participant = findParticipant({
       tournamentParticipants,
       participantId,
       personId,
-      policyDefinition,
+      policyDefinitions,
     });
     if (participant) break;
   }

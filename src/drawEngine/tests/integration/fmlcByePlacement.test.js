@@ -22,7 +22,7 @@ it('can support ITF Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_ITF,
+    policyDefinitions: SEEDING_ITF,
   });
 
   const completionValues = [
@@ -67,7 +67,7 @@ it('can support USTA Consolation BYE placement', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   const completionValues = [
@@ -113,7 +113,7 @@ it('can remove BYEs when matchUps are cleared', () => {
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   let completionValues = [

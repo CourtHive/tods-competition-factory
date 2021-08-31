@@ -40,8 +40,8 @@ test('recognizes scheduling conflicts', () => {
 
   competitionEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps({

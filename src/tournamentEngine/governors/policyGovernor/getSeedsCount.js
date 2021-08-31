@@ -1,4 +1,5 @@
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
+import { getPolicyDefinitions } from '../queryGovernor/getPolicyDefinitions';
 
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import {
@@ -17,16 +18,31 @@ import {
  * @param {boolean} drawSizeProgression - drawSizeProgression indicates that rules for all smaller drawSizes should be considered
  * @param {number} participantCount - number of participants in draw structure
  * @param {number} drawSize - number of positions available in draw structure
- * @param {object} policyDefinition - polictyDefinition object
+ * @param {object} policyDefinitions - polictyDefinition object
+ * @param {object} drawDefinition - optional - retrieved automatically if drawId is provided
+ * @param {string} drawId - allows drawDefinition and event to be retrieved by tournamentEngine from tournament record
  */
 export function getSeedsCount({
+  tournamentRecord,
+  drawDefinition,
+  event,
+
   requireParticipantCount = true,
   drawSizeProgression = false,
-  policyDefinition,
+  policyDefinitions,
   participantCount,
   drawSize,
 } = {}) {
-  if (!policyDefinition) return { error: MISSING_POLICY_DEFINITION };
+  if (!policyDefinitions) {
+    const result = getPolicyDefinitions({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    });
+    if (result.error) return result;
+    if (!result.policyDefinitions) return { error: MISSING_POLICY_DEFINITION };
+    policyDefinitions = result.policyDefinitions;
+  }
   if (participantCount && isNaN(participantCount))
     return { error: INVALID_VALUES };
   if (requireParticipantCount && !participantCount)
@@ -46,7 +62,7 @@ export function getSeedsCount({
   if (consideredParticipantCount > drawSize)
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
-  const policy = policyDefinition[POLICY_TYPE_SEEDING];
+  const policy = policyDefinitions[POLICY_TYPE_SEEDING];
   if (!policy) return { error: INVALID_POLICY_DEFINITION };
 
   const seedsCountThresholds = policy.seedsCountThresholds;
@@ -65,5 +81,6 @@ export function getSeedsCount({
       ? threshold.seedsCount
       : seedsCount;
   }, 0);
+
   return { seedsCount };
 }

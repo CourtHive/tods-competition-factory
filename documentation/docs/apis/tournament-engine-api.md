@@ -569,29 +569,29 @@ Used when interactively creating `{ participantType: PAIR }` participants.
 
 ---
 
-## attachEventPolicy
+## attachEventPolicies
 
 Attaches a policy to an event within a tournamentRecord.
 
 See [Policies](../concepts/policies).
 
 ```js
-tournamentEngine.attachEventPolicy({
+tournamentEngine.attachEventPolicies({
   eventId,
-  policyDefinition: SEEDING_POLICY,
+  policyDefinitions: SEEDING_POLICY,
 });
 ```
 
 ---
 
-## attachPolicy
+## attachPolicies
 
 Attaches a policy to a tournamentRecord.
 
 See [Policies](../concepts/policies).
 
 ```js
-tournamentEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+tournamentEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 ```
 
 ---
@@ -613,7 +613,7 @@ tournamentEngine.automatedPositioning({ drawId, structureId });
 ```js
 const { scaleItemsWithParticipantIds } = tournamentEngine.autoSeeding({
   eventId,
-  policyDefinition, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+  policyDefinitions, // seeding policyDefinition determines the # of seeds for given participantCount/drawSize
   scaleAttributes, // { scaleType, scaleName, }
   scaleName, // Optional - defaults to scaleAttributes.scaleName
   drawSize, // Optional - defaults to calculation based on # of entries
@@ -1166,7 +1166,7 @@ Returns all `matchUps` for all draws in all events along with `tournamentInfo`, 
 
 ```js
 const { allEventData } = tournamentEngine.getAllEventData({
-  policyDefinition, // optional - allows participant data to be filtered via a privacy policy
+  policyDefinitions, // optional - allows participant data to be filtered via a privacy policy
 });
 
 const { tournamentInfo, eventsData, venuesData } = allEventData;
@@ -1299,7 +1299,7 @@ const { representativeParticipantIds } =
 const { error, entries, seedsCount, stageEntries } =
   tournamentEngine.getEntriesAndSeedsCount({
     eventId,
-    policyDefinition, // seeding policy which determines # of seeds for # of participants/drawSize
+    policyDefinitions, // seeding policy which determines # of seeds for # of participants/drawSize
 
     drawSize, // optional - overrides number calculaed from entries in either event or draw
     drawId, // optional - scopes entries to a specific flight/drawDefinition
@@ -1374,7 +1374,7 @@ See [publishEvent](#publishEvent) for details on `policyDefinition`.
 ```js
 const { eventData } = tournamentEngine.getEventData({
   drawId,
-  policyDefinition, // optional
+  policyDefinitions, // optional
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
@@ -1591,15 +1591,15 @@ const signInStatus = tournamentEngine.getParticipantSignInStatus({
 
 ---
 
-## getPolicyDefinition
+## getPolicyDefinitions
 
 Finds policyDefinition for either draw (if drawId), event (if eventId), or tournament, in that order. This enables a default policy to be attached to the tournament record and for event-specific or draw-specific policies to override the default(s).
 
 See [Policies](../concepts/policies).
 
 ```js
-const { policyDefinition } = tournamentEngine.getPolicyDefinition({
-  policyType: POLICY_TYPE_SEEDING,
+const { policyDefinitions } = tournamentEngine.getPolicyDefinitions({
+  policyTypes: [POLICY_TYPE_SEEDING],
   eventId, // optional
   drawId, // optional
 });
@@ -1652,7 +1652,7 @@ Takes a policyDefinition, drawSize and participantCount and returrns the number 
 ```js
 const { seedsCount, error } = tournamentEngine.getSeedsCount({
   drawSizeProgression, // optional - fits the seedsCount to the participantsCount rather than the drawSize
-  policyDefinition: SEEDING_USTA,
+  policyDefinitions: SEEDING_USTA,
   participantCount: 15,
   drawSize: 128,
 });
@@ -1702,7 +1702,7 @@ const {
   },
 
   convertExtensions, // optional - BOOLEAN - convert extensions so _extensionName attributes
-  policyDefinition, // optional - can accept a privacy policy to filter participant attributes
+  policyDefinitions, // optional - can accept a privacy policy to filter participant attributes
   participantFilters, // optional - filters
 });
 ```
@@ -2134,14 +2134,14 @@ Utilizes [getEventData](#getEventData) to prepare data for display. Differs from
 See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
 ```js
-const policyDefinition = Object.assign(
+const policyDefinitions = Object.assign(
   {},
   ROUND_NAMING_POLICY,
   PARTICIPANT_PRIVACY_DEFAULT
 );
 
 const { eventData } = tournamentEngine.publishEvent({
-  policyDefinition,
+  policyDefinitions,
   eventId,
   drawIds, // optional - array of drawIds within the event to publish
   structureIds = [], // optional - specify structureIds

@@ -68,8 +68,8 @@ it.each([
       expect(result.recoveryMinutes).toEqual(57);
     }
 
-    result = tournamentEngine.attachPolicy({
-      policyDefinition: POLICY_SCHEDULING_USTA,
+    result = tournamentEngine.attachPolicies({
+      policyDefinitions: POLICY_SCHEDULING_USTA,
     });
     expect(result.success).toEqual(true);
 

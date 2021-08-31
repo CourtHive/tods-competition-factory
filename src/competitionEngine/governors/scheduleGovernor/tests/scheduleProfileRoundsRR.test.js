@@ -43,8 +43,8 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
 
   competitionEngine.setState(tournamentRecord);
 
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   const { tournamentId } = tournamentRecord;

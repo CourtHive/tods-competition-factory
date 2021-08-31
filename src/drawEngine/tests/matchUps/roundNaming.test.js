@@ -25,8 +25,8 @@ it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', (
     drawType: SINGLE_ELIMINATION,
   });
   expect(structure.structureName).toEqual(MAIN);
-  const result = drawEngine.attachPolicy({
-    policyDefinition: POLICY_ROUND_NAMING_DEFAULT,
+  const result = drawEngine.attachPolicies({
+    policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -69,8 +69,8 @@ it('can return matchUps with roundNames from a FIRST_MATCH_LOSER_CONSOLATION str
   });
   const { mainStructure, consolationStructure } = result;
   expect(mainStructure.structureName).toEqual(MAIN);
-  result = drawEngine.attachPolicy({
-    policyDefinition: POLICY_ROUND_NAMING_DEFAULT,
+  result = drawEngine.attachPolicies({
+    policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -125,8 +125,8 @@ it('can return matchUps with roundNames from a FEED_IN structure and identify fe
   mainDrawPositions({ drawSize: 12 });
   const { structure } = drawEngine.generateDrawType({ drawType: FEED_IN });
   expect(structure.structureName).toEqual(MAIN);
-  const result = drawEngine.attachPolicy({
-    policyDefinition: POLICY_ROUND_NAMING_DEFAULT,
+  const result = drawEngine.attachPolicies({
+    policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
   expect(result).toEqual(SUCCESS);
 
@@ -176,8 +176,8 @@ it('can return matchUps with roundNames from a OLYMPIC structure', () => {
   const { structures } = drawDefinition;
   expect(structures.length).toEqual(4);
 
-  result = drawEngine.attachPolicy({
-    policyDefinition: POLICY_ROUND_NAMING_DEFAULT,
+  result = drawEngine.attachPolicies({
+    policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
   });
   expect(result).toEqual(SUCCESS);
 

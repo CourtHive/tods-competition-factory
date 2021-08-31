@@ -7,7 +7,7 @@ import { getScaledEntries } from './getScaledEntries';
  * @param {object} tournamentRecord - passed automatically if tournamentEngine.setState() has been called
  * @param {string} eventId - resolved by tournamentEngine to the event object
  *
- * @param {object} policyDefinition - seeding policyDefinition determines the # of seeds for given participantCount/drawSize
+ * @param {object} policyDefinitions - seeding policyDefinitions determines the # of seeds for given participantCount/drawSize
  * @param {object} scaleAttributes -
  * @param {string} scaleName - OPTIONAL - defaults to scaleAttributes.scaleName
  * @param {number} drawSize - OPTIONAL - defaults to calculation based on # of entries
@@ -23,7 +23,7 @@ export function autoSeeding({
   tournamentRecord,
   drawDefinition,
 
-  policyDefinition,
+  policyDefinitions,
   scaleAttributes,
   scaleName,
   drawSize,
@@ -38,7 +38,7 @@ export function autoSeeding({
     drawDefinition,
     drawId,
     event,
-    policyDefinition,
+    policyDefinitions,
     drawSize,
     stage,
   });

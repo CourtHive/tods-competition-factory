@@ -1,7 +1,7 @@
-import { attachPolicy } from './attachPolicy';
+import { attachPolicies } from './attachPolicies';
 
 const policyGovernor = {
-  attachPolicy,
+  attachPolicies,
 };
 
 export default policyGovernor;

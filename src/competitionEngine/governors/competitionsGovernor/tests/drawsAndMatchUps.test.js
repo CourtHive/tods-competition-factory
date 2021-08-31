@@ -183,8 +183,8 @@ test('can modify event timing for matchUpFormat codes', () => {
 
   competitionEngine.setState([firstTournament, secondTournament]);
 
-  competitionEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   let result = competitionEngine.getEventMatchUpFormatTiming({
@@ -262,15 +262,18 @@ test('can modify event timing for matchUpFormat codes', () => {
   expect(eventMatchUpFormatTiming).toBeUndefined();
   expect(error).not.toBeUndefined();
 
-  const policyDefinition = POLICY_SCORING_USTA;
-  competitionEngine.attachPolicy({ policyDefinition, allowReplacement: true });
+  const policyDefinitions = POLICY_SCORING_USTA;
+  competitionEngine.attachPolicies({
+    policyDefinitions,
+    allowReplacement: true,
+  });
 
   ({ eventMatchUpFormatTiming } = competitionEngine.getEventMatchUpFormatTiming(
     {
       eventId,
     }
   ));
-  expect(policyDefinition.scoring.matchUpFormats.length).toEqual(
+  expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(
     eventMatchUpFormatTiming.length
   );
 });

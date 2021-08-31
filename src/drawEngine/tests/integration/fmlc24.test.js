@@ -21,7 +21,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_ITF,
+    policyDefinitions: SEEDING_ITF,
   });
 
   const {
@@ -155,7 +155,7 @@ it('can direct winners and losers with ITF SEEDING POLICY; all participants with
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_ITF,
+    policyDefinitions: SEEDING_ITF,
   });
 
   const {
@@ -288,7 +288,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   const {
@@ -411,7 +411,7 @@ it('can direct winners and losers with USTA SEEDING POLICY; all participants wit
     drawSize,
     seedsCount,
     participantsCount,
-    policyDefinition: SEEDING_USTA,
+    policyDefinitions: SEEDING_USTA,
   });
 
   const {

@@ -21,7 +21,7 @@ export function allTournamentMatchUps({
   nextMatchUps,
   matchUpFilters,
   contextFilters,
-  policyDefinition,
+  policyDefinitions,
   scheduleVisibilityFilters,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -48,7 +48,7 @@ export function allTournamentMatchUps({
           participants,
           matchUpFilters,
           contextFilters,
-          policyDefinition,
+          policyDefinitions,
           tournamentRecord,
           scheduleVisibilityFilters,
           tournamentAppliedPolicies,
@@ -68,7 +68,7 @@ export function allDrawMatchUps({
   contextFilters,
   drawDefinition,
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
@@ -94,7 +94,7 @@ export function allDrawMatchUps({
     contextFilters,
     nextMatchUps,
     tournamentRecord,
-    policyDefinition,
+    policyDefinitions,
     tournamentParticipants,
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
@@ -112,7 +112,7 @@ export function allEventMatchUps({
   contextFilters,
   participants = [],
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
 }) {
@@ -149,7 +149,7 @@ export function allEventMatchUps({
         contextFilters,
         scheduleTiming,
         tournamentRecord,
-        policyDefinition,
+        policyDefinitions,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
         tournamentParticipants: participants,
@@ -167,7 +167,7 @@ export function tournamentMatchUps({
   contextFilters,
   inContext = true,
   nextMatchUps,
-  policyDefinition,
+  policyDefinitions,
   scheduleVisibilityFilters,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -191,7 +191,7 @@ export function tournamentMatchUps({
         matchUpFilters,
         contextFilters,
         nextMatchUps,
-        policyDefinition,
+        policyDefinitions,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,
       })
@@ -227,7 +227,7 @@ export function eventMatchUps({
   matchUpFilters,
   contextFilters,
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
@@ -252,7 +252,7 @@ export function eventMatchUps({
         matchUpFilters,
         contextFilters,
         tournamentRecord,
-        policyDefinition,
+        policyDefinitions,
         tournamentAppliedPolicies,
         tournamentParticipants,
         scheduleVisibilityFilters,
@@ -281,7 +281,7 @@ export function drawMatchUps({
   contextFilters,
   drawDefinition,
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   tournamentAppliedPolicies,
   scheduleVisibilityFilters,
 }) {
@@ -302,7 +302,7 @@ export function drawMatchUps({
     matchUpFilters,
     contextFilters,
     tournamentRecord,
-    policyDefinition,
+    policyDefinitions,
     tournamentAppliedPolicies,
     tournamentParticipants,
     scheduleVisibilityFilters,

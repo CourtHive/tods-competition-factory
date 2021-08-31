@@ -2,7 +2,7 @@ import { attributeFilter, makeDeepCopy } from '../../utilities';
 
 export function findParticipant({
   tournamentParticipants = [],
-  policyDefinition = {},
+  policyDefinitions = {},
   participantId,
   personId,
 }) {
@@ -12,7 +12,7 @@ export function findParticipant({
       (personId && candidate.person && candidate.person.personId === personId)
   );
 
-  const participantAttributes = policyDefinition.participant;
+  const participantAttributes = policyDefinitions.participant;
 
   if (participantAttributes?.participant) {
     const participantCopy = attributeFilter({

@@ -19,7 +19,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { attachEventPolicy } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
+import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -132,9 +132,9 @@ export function generateEventWithFlights({
   };
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
-      attachEventPolicy({
+      attachEventPolicies({
         event: newEvent,
-        policyDefinition: { [policyType]: policyDefinitions[policyType] },
+        policyDefinitions: { [policyType]: policyDefinitions[policyType] },
       });
     }
   }

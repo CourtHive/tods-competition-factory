@@ -46,7 +46,7 @@ it('can retrieve and modify tournament persons', () => {
     updatedParticipant.person.personId
   );
 
-  const policyDefinition = { ...PARTICIPANT_PRIVACY_DEFAULT };
+  const policyDefinitions = { ...PARTICIPANT_PRIVACY_DEFAULT };
 
   const personId = updatedParticipant.person.personId;
   result = tournamentEngine.findParticipant({
@@ -56,7 +56,7 @@ it('can retrieve and modify tournament persons', () => {
   expect(result.participant.person.personId).toEqual(personId);
 
   result = tournamentEngine.findParticipant({
-    policyDefinition,
+    policyDefinitions,
     personId,
   });
   expect(result.participant.person.personId).toBeUndefined();

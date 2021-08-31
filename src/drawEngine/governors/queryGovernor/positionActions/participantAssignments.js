@@ -18,7 +18,7 @@ export function getValidAssignmentActions({
   tournamentParticipants,
   isWinRatioFedStructure,
   positionAssignments,
-  policyDefinition,
+  policyDefinitions,
   drawDefinition,
   isByePosition,
   drawPosition,
@@ -33,7 +33,7 @@ export function getValidAssignmentActions({
     unfilledPositions = [];
 
   const ignoreSeedPositions =
-    policyDefinition?.seeding?.validSeedPositions?.ignore;
+    policyDefinitions?.seeding?.validSeedPositions?.ignore;
 
   if (!ignoreSeedPositions) {
     const result = getNextSeedBlock({

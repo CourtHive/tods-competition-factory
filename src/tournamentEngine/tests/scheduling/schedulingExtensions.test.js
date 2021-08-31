@@ -54,8 +54,8 @@ it.each([
       expect(result.recoveryMinutes).toEqual(57);
     }
 
-    result = tournamentEngine.attachPolicy({
-      policyDefinition: POLICY_SCHEDULING_USTA,
+    result = tournamentEngine.attachPolicies({
+      policyDefinitions: POLICY_SCHEDULING_USTA,
     });
     expect(result.success).toEqual(true);
 
@@ -105,8 +105,8 @@ it('can modify timing for multiple matchUpFormat codes', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  tournamentEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  tournamentEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
   tournamentEngine.modifyMatchUpFormatTiming({
     matchUpFormat: 'SET3-S:6/TB7',
@@ -172,8 +172,8 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  tournamentEngine.attachPolicy({
-    policyDefinition: POLICY_SCHEDULING_USTA,
+  tournamentEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
   });
 
   let matchUpFormat = 'SET3-S:6/TB7';

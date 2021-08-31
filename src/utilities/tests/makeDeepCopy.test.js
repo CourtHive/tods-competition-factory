@@ -14,8 +14,8 @@ it('can convert extensions during deepCopy', () => {
       policyName: 'TEST',
     },
   };
-  let result = tournamentEngine.attachPolicy({
-    policyDefinition: scoringPolicy,
+  let result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
   });
   expect(result.success).toEqual(true);
 

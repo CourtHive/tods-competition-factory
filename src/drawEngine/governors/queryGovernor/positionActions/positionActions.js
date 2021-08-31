@@ -63,7 +63,7 @@ import {
  */
 export function positionActions({
   tournamentParticipants = [],
-  policyDefinition,
+  policyDefinitions,
   tournamentRecord,
   drawDefinition,
   drawPosition,
@@ -86,7 +86,7 @@ export function positionActions({
   if (error) return { error };
 
   const { enabledStructures, actionsDisabled } = getEnabledStructures({
-    policyDefinition,
+    policyDefinitions,
     tournamentRecord,
     drawDefinition,
     structure,
@@ -189,7 +189,7 @@ export function positionActions({
       tournamentParticipants,
       positionAssignments,
       activeDrawPositions,
-      policyDefinition,
+      policyDefinitions,
       drawDefinition,
       isByePosition,
       drawPosition,

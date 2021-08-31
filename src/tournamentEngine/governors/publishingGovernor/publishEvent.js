@@ -13,7 +13,7 @@ import { PUBLISH_EVENT } from '../../../constants/topicConstants';
 
 export function publishEvent({
   tournamentRecord,
-  policyDefinition,
+  policyDefinitions,
   status = PUBLIC,
   structureIds = [],
   drawIdsToRemove,
@@ -52,7 +52,7 @@ export function publishEvent({
 
   const { eventData } = getEventData({
     tournamentRecord,
-    policyDefinition,
+    policyDefinitions,
     event,
   });
 

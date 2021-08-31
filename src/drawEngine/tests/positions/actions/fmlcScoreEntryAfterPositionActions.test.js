@@ -33,12 +33,12 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const consolationStructureId = consolationStructure.structureId;
-  const policyDefinition = POLICY_POSITION_ACTIONS_UNRESTRICTED;
+  const policyDefinitions = POLICY_POSITION_ACTIONS_UNRESTRICTED;
   replaceWithBye({
     drawId,
     structureId: consolationStructureId,
     drawPosition: 1,
-    policyDefinition,
+    policyDefinitions,
   });
 
   const contextFilters = { structureIds: [mainStructure.structureId] };

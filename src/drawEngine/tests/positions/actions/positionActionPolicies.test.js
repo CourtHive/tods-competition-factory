@@ -68,22 +68,22 @@ it('supports policyDefinitions in positionActions', () => {
   expect(result.isActiveDrawPosition).toEqual(false);
   expect(result.validActions.map((a) => a.type)).toEqual(allActions);
 
-  // policyDefinition to disable all actions
-  let policyDefinition = POLICY_POSITION_ACTIONS_DISABLED;
+  // policyDefinitions to disable all actions
+  let policyDefinitions = POLICY_POSITION_ACTIONS_DISABLED;
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,
-    policyDefinition,
+    policyDefinitions,
     drawPosition,
     drawId,
   });
   expect(result.validActions.length).toEqual(0);
 
-  // policyDefinition to only allow actions not related to movement
+  // policyDefinitions to only allow actions not related to movement
   // the three actions below are specifically enabled by the policy
-  policyDefinition = POLICY_POSITION_ACTIONS_NO_MOVEMENT;
+  policyDefinitions = POLICY_POSITION_ACTIONS_NO_MOVEMENT;
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,
-    policyDefinition,
+    policyDefinitions,
     drawPosition,
     drawId,
   });
@@ -159,9 +159,9 @@ it('supports policyDefinitions in positionActions', () => {
   ]);
 
   // now check the available positionActions for the consolation structure when participants are present
-  // ...when an unrestricted policyDefinition is applied
+  // ...when an unrestricted policyDefinitions is applied
   result = tournamentEngine.positionActions({
-    policyDefinition: POLICY_POSITION_ACTIONS_UNRESTRICTED,
+    policyDefinitions: POLICY_POSITION_ACTIONS_UNRESTRICTED,
     structureId: consolationStructure.structureId,
     drawPosition: firstRoundConsolationDrawPositions[0],
     drawId,

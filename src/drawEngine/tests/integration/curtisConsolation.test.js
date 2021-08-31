@@ -171,7 +171,7 @@ function generateCurtis({
   } = drawEngine.getDrawStructures({ stage: CONSOLATION, stageSequence: 2 });
   const { structureId: consolation2ndStructureId } = consolation2ndStructure;
 
-  drawEngine.attachPolicy({ policyDefinition: SEEDING_POLICY });
+  drawEngine.attachPolicies({ policyDefinitions: SEEDING_POLICY });
 
   const participants = generateRange(0, participantsCount).map((i) => ({
     participantId: `ko-uuid${i + 1}`,
