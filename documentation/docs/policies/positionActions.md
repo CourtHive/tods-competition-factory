@@ -4,8 +4,8 @@ title: Position Actions
 
 See [Actions](/docs/concepts/actions) for context.
 
-`positionActions` returns an array of valid actions for a specified drawPosition. Valid actions can be determined, in part, by a
-`policyDefinition`. In the Competition Factory source there are four examples of position action policies:
+`positionActions` returns an array of valid actions for a specified drawPosition. Valid actions can be determined, in part, by
+`policyDefinitions`. In the Competition Factory source there are four examples of position action policies:
 
 1. Default position actions
 2. No movement (disallows swapping participants & etc.)
