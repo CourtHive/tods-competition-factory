@@ -22,6 +22,8 @@ import { DOUBLES } from '../../constants/matchUpTypes';
  * @param {number} valuesInstanceLimit - maximum number of values which can be the same
  * @param {number} valuesCount - number of values to generate
  * @param {boolean} inContext - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
+ * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
+ * @param {object} personExtensions - optional array of extentsions to apply to all persons
  *
  */
 export function generateParticipants({
@@ -33,12 +35,14 @@ export function generateParticipants({
   participantsCount = 32,
   participantType,
   personIds,
+
+  personData,
+  personExtensions,
   addressProps,
   matchUpType,
   sex,
 
   inContext,
-  personData,
 }) {
   const doubles = participantType === PAIR || matchUpType === DOUBLES;
   const team = participantType === TEAM || matchUpType === TEAM;
@@ -47,6 +51,7 @@ export function generateParticipants({
 
   const { persons: mockedPersons, error } = personMocks({
     count: individualParticipantsCount,
+    personExtensions,
     personData,
     sex,
   });

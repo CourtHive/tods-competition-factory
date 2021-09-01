@@ -4,7 +4,18 @@ import defaultPersonData from '../data/persons.json';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../constants/genderConstants';
 
-export function personMocks({ count = 1, sex, personData } = {}) {
+/**
+ * @param {integer} count - number of persons to generate
+ * @param {string} sex - optional - MALE or FEMALE
+ * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
+ * @param {object} personExtensions - optional array of extentsions to apply to all persons
+ */
+export function personMocks({
+  count = 1,
+  sex,
+  personData,
+  personExtensions,
+} = {}) {
   if (isNaN(count)) return { error: INVALID_VALUES };
 
   let validPersonData = defaultPersonData.filter(
@@ -87,7 +98,7 @@ export function personMocks({ count = 1, sex, personData } = {}) {
 
   const persons = shuffledPersons.slice(0, count).map((person, i) => {
     return Object.assign(person, {
-      extensions: [{ name: 'regionCode', value: i + 1 }],
+      extensions: personExtensions || [{ name: 'regionCode', value: i + 1 }],
     });
   });
   return { persons: (persons.length && persons) || shuffledPersons[0] };
