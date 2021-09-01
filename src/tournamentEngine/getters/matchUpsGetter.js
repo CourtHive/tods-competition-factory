@@ -127,6 +127,7 @@ export function allEventMatchUps({
     category,
     gender,
     matchUpFormat,
+    tournamentId: tournamentRecord?.tournamentId,
   };
   if (endDate) additionalContext.contextEndDate = endDate;
 

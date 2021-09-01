@@ -29,7 +29,6 @@ export function addParticipantContext(params) {
   };
 
   const { tournamentRecord, participantFilters } = params;
-  const { tournamentId } = tournamentRecord;
   const allTournamentParticipants = params.tournamentRecord?.participants || [];
 
   // build up a mapping of all participantIds to all of the individualParticipantIds that they reference
@@ -266,6 +265,7 @@ export function addParticipantContext(params) {
       schedule,
       structureName,
       structureId,
+      tournamentId,
       winnerTo,
       winningSide,
     } = matchUp;
