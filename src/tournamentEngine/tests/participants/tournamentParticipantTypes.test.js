@@ -93,12 +93,16 @@ it('can generate TEAM events', () => {
       convertExtensions: true,
       inContext: true,
 
-      withDraws: true,
-      withEvents: true,
+      withDraws: false,
+      withEvents: false,
+      withMatchUps: true,
       withStatistics: true,
     }));
 
   expect(inContextIdividualParticipants[0].person._districtCode).toEqual('Z');
+  expect(
+    inContextIdividualParticipants[0].matchUps[0].tournamentId
+  ).not.toBeUndefined();
 
   const individualsInGroups = inContextIdividualParticipants.filter(
     (participant) => participant.groupParticipantIds.length
