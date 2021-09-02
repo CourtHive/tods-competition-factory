@@ -1,11 +1,12 @@
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
-import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { generateRange, unique } from '../../../../utilities';
 import { extractTime } from '../../../../utilities/dateTime';
+import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
+
+import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 const date = new Date().toISOString().split('T')[0];
 
@@ -171,5 +172,17 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     }
     return timesMapped;
   }, {});
-  console.log({ timeMap });
+
+  expect(timeMap).toEqual({
+    '08:00': 30,
+    '09:00': 10,
+    '09:30': 10,
+    '10:00': 10,
+    '10:30': 10,
+    '11:00': 8,
+    '11:30': 5,
+    '12:00': 5,
+    '12:30': 5,
+    '13:00': 2,
+  });
 });
