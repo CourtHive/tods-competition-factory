@@ -11,6 +11,7 @@ import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from './personRequests';
+import { unique } from '../../../../utilities';
 import {
   extractDate,
   extractTime,
@@ -90,6 +91,15 @@ export function scheduleMatchUps({
   const targetMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     matchUpIds.includes(matchUpId)
   );
+
+  // discover the earliest time that this block of targetMatchUps can be scheduled
+  const notBeforeTimes = targetMatchUps.map(
+    ({ matchUpId }) => matchUpNotBeforeTimes[matchUpId]
+  );
+  const notBeforeTime = unique(notBeforeTimes.filter(Boolean)).sort()[0];
+
+  startTime =
+    startTime || notBeforeTimes.includes(undefined) ? undefined : notBeforeTime;
 
   // determines court availability taking into account already scheduled matchUps on the date
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)

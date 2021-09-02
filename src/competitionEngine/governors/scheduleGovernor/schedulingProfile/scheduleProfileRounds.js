@@ -4,6 +4,7 @@ import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filte
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
+import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
@@ -86,6 +87,16 @@ export function scheduleProfileRounds({
   const requestConflicts = [];
   const matchUpNotBeforeTimes = {};
   const matchUpPotentialParticipantIds = {};
+
+  matchUps.forEach((matchUp) => {
+    if (matchUp.schedule?.timeAfterRecovery) {
+      processNextMatchUps({
+        matchUp,
+        matchUpNotBeforeTimes,
+        matchUpPotentialParticipantIds,
+      });
+    }
+  });
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
