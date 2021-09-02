@@ -1,7 +1,7 @@
 import { addMinutes, timeToDate } from '../../../../utilities/dateTime';
 import { getCourtDateFilters } from './courtDateFilters';
 
-export function courtsAvailableAtPeriodStart({
+export function getCourtsAvailableAtPeriodStart({
   includeBookingTypes,
   averageMatchUpMinutes,
   periodStart,
