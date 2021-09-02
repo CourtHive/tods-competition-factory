@@ -1,5 +1,5 @@
-import garman from './garman';
 import { generateRange } from '../../../../utilities';
+import garman from '../garman/garman';
 
 const date = new Date().toISOString().split('T')[0];
 
