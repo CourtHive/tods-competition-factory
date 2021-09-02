@@ -65,6 +65,7 @@ test('eventProfiles and participantsProfile work as expected', () => {
 
   const uniqueAddressPropsCount = 10;
   const participantsProfile = {
+    participantsCount: 32,
     nationalityCodesCount: uniqueAddressPropsCount,
     addressProps: {
       citiesCount: uniqueAddressPropsCount,

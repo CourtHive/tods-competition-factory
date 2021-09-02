@@ -21,6 +21,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 32 },
     drawProfiles,
   });
 

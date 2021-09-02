@@ -21,8 +21,9 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
+    participantsProfile: { participantsCount: 32 },
     inContext: true,
+    drawProfiles,
   });
 
   let {
