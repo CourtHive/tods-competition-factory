@@ -30,7 +30,7 @@ export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
     } else if (isDateObject(value)) {
       targetObject[key] = new Date(value).toISOString();
     } else {
-      targetObject[key] = makeDeepCopy(value, convertExtensions);
+      targetObject[key] = makeDeepCopy(value, convertExtensions, internalUse);
     }
   }
 
