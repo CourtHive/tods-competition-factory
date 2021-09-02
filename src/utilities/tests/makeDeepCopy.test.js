@@ -1,8 +1,8 @@
 import { COMPETITOR } from '../../constants/participantRoles';
 import { INDIVIDUAL } from '../../constants/participantTypes';
-import mocksEngine from '../../mocksEngine';
 import tournamentEngine from '../../tournamentEngine/sync';
 import { makeDeepCopy } from '../makeDeepCopy';
+import mocksEngine from '../../mocksEngine';
 import { UUID } from '../UUID';
 
 it('can convert extensions during deepCopy', () => {
