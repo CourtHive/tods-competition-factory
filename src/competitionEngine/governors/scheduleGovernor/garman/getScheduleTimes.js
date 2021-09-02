@@ -1,4 +1,4 @@
-import { courtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
+import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { getVirtualCourtBookings } from './getVirtualCourtBookings';
 import { generateRange } from '../../../../utilities/arrays';
 import {
@@ -55,7 +55,7 @@ export function getScheduleTimes({
 
     // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
     // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes
-    const { availableToScheduleCount } = courtsAvailableAtPeriodStart({
+    const { availableToScheduleCount } = getCourtsAvailableAtPeriodStart({
       courts: virtualCourts,
       averageMatchUpMinutes,
       periodStart,

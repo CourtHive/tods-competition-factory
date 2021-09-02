@@ -35,7 +35,7 @@ export function roundRobinWithPlayoffsTest({
   };
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { participantsCount },
+    participantsProfile: { participantsCount: participantsCount || 32 },
   });
   const { participants } = tournamentRecord;
   tournamentEngine.setState(tournamentRecord);

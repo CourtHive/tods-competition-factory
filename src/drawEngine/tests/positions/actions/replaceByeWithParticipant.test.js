@@ -92,8 +92,9 @@ it('can replace BYE with ALTERNATE to Final in drawSize: 8 when 7 BYEs', () => {
     },
   ];
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
+    participantsProfile: { participantsCount: 32 },
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);

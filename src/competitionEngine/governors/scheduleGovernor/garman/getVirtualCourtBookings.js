@@ -1,7 +1,6 @@
 import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { getCourtDateFilters } from './courtDateFilters';
 import { generateTimeSlots } from './generateTimeSlots';
-import { makeDeepCopy } from '../../../../utilities';
 
 /**
  *
@@ -28,7 +27,18 @@ export function getVirtualCourtBookings({ bookings, courts, date }) {
     },
     { courtBookings: {}, unassignedBookings: [] }
   );
-  const virtualCourts = makeDeepCopy(courts, false, true);
+
+  const virtualCourts = courts.map(({ courtId, dateAvailability }) => ({
+    courtId,
+    dateAvailability: dateAvailability?.map(
+      ({ date, startTime, endTime, bookings }) => ({
+        date,
+        startTime,
+        endTime,
+        bookings: bookings?.map((booking) => booking),
+      })
+    ),
+  }));
 
   unassignedBookings.forEach((unassignedBooking) => {
     const { startTime, endTime } = unassignedBooking;

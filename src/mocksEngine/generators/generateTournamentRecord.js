@@ -1,8 +1,9 @@
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
-import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
+import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
+import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
@@ -15,7 +16,8 @@ import {
 
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
-import { DOUBLES } from '../../constants/eventConstants';
+import { DOUBLES, TEAM } from '../../constants/eventConstants';
+import { SINGLES } from '../../constants/matchUpTypes';
 
 /**
  *
@@ -50,9 +52,9 @@ export function generateTournamentRecord({
   randomWinningSide,
   goesTo,
 } = {}) {
-  let { participantsCount = 32, participantType = INDIVIDUAL } =
+  let { participantsCount, participantType = INDIVIDUAL } =
     participantsProfile || {};
-  const specifiedParicipantsCount = participantsCount; // capture this to ensure calculated participantsCount is not below
+  const specifiedParicipantsCount = participantsCount || 0; // capture this to ensure calculated participantsCount is not below
 
   if (
     (startDate && !isValidDateString(startDate)) ||
@@ -88,36 +90,65 @@ export function generateTournamentRecord({
   let largestDoublesDraw = 0,
     largestSinglesDraw = 0;
 
-  eventProfiles?.forEach(({ eventType, drawProfiles }) => {
+  const processDrawProfile = ({ drawSize, eventType, tieFormat }) => {
     const isDoubles = eventType === DOUBLES;
-    drawProfiles?.forEach(({ drawSize }) => {
-      if (isDoubles && drawSize && drawSize > largestDoublesDraw)
-        largestDoublesDraw = drawSize;
-      if (!isDoubles && drawSize && drawSize > largestSinglesDraw)
-        largestSinglesDraw = drawSize;
-    });
-  });
-  drawProfiles?.forEach(({ drawSize, eventType }) => {
-    const isDoubles = eventType === DOUBLES;
+    const isTeam = eventType === TEAM;
+    if (isTeam) {
+      tieFormat = tieFormat || tieFormatDefaults();
+      tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
+        if (collectionDefinition?.matchUpType === DOUBLES) {
+          if (collectionDefinition.matchUpCount > largestDoublesDraw)
+            largestDoublesDraw = collectionDefinition.matchUpCount;
+        }
+        if (collectionDefinition?.matchUpType === SINGLES) {
+          if (collectionDefinition.matchUpCount > largestSinglesDraw)
+            largestSinglesDraw = collectionDefinition.matchUpCount;
+        }
+      });
+    }
     if (isDoubles && drawSize && drawSize > largestDoublesDraw)
       largestDoublesDraw = drawSize;
-    if (!isDoubles && drawSize && drawSize > largestSinglesDraw)
+    if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw)
       largestSinglesDraw = drawSize;
+  };
+
+  eventProfiles?.forEach(({ eventType, drawProfiles }) => {
+    if (drawProfiles) {
+      for (const drawProfile of drawProfiles) {
+        const { drawSize, tieFormat } = drawProfile;
+        processDrawProfile({ drawSize, eventType, tieFormat });
+      }
+    }
   });
 
+  if (drawProfiles) {
+    for (const drawProfile of drawProfiles) {
+      const { drawSize, eventType, tieFormat } = drawProfile;
+      processDrawProfile({ drawSize, eventType, tieFormat });
+    }
+  }
   const individualCompetitorsCount = Math.max(
     largestSinglesDraw,
     largestDoublesDraw * 2
   );
 
   if (largestDoublesDraw) participantType = PAIR;
-  if (participantsCount < individualCompetitorsCount)
-    participantsCount = individualCompetitorsCount;
   if (
-    participantType === PAIR &&
-    (!largestSinglesDraw || largestSinglesDraw / 2 >= largestDoublesDraw)
+    (participantsCount || specifiedParicipantsCount) <
+    individualCompetitorsCount
   )
-    participantsCount = participantsCount / 2;
+    participantsCount = individualCompetitorsCount;
+
+  if (
+    participantsCount &&
+    largestDoublesDraw &&
+    [PAIR, TEAM].includes(participantType) &&
+    (!largestSinglesDraw || largestDoublesDraw * 2 >= largestSinglesDraw)
+  ) {
+    participantsCount = Math.ceil(participantsCount / 2);
+  }
+
+  if (!participantsCount) participantsCount = 32;
   if (participantsCount < specifiedParicipantsCount)
     participantsCount = specifiedParicipantsCount;
 

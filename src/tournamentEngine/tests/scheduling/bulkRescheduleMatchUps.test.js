@@ -1,3 +1,4 @@
+import { dateStringDaysChange } from '../../../utilities/dateTime';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -12,7 +13,6 @@ import {
   INVALID_VALUES,
   MISSING_MATCHUP_IDS,
 } from '../../../constants/errorConditionConstants';
-import { dateStringDaysChange } from '../../../utilities/dateTime';
 
 it('can bulk reschedule matchUps', () => {
   const venueProfiles = [

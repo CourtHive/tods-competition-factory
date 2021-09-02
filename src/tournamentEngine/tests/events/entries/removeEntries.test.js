@@ -15,6 +15,7 @@ test('event entries are only removed when not placed in draw structures', () => 
     tournamentRecord,
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount: 32 },
     drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
