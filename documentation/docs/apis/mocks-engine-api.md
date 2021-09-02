@@ -57,7 +57,7 @@ tournamentEngine.devContext(true).setMatchUpStatus({
 
 ## generateParticipants
 
-Generate mock participants. This method is used within `generateTournamentRecord`
+Generate mock participants. This method is used within `generateTournamentRecord`; all parameters can be passed into `generateTournamentRecord({ participantsProfile })`.
 
 ```js
 const { participants } = mocksEngine.generateParticipants({
@@ -66,7 +66,7 @@ const { participants } = mocksEngine.generateParticipants({
   matchUpType: SINGLES, // optional - [SINGLES, DOUBLES] - forces PAIR participant generation if DOUBLES
   sex: FEMALE, // optional - [MALE, FEMALE]
 
-  personIds, // optional array of pre-defined personIds
+  valuesInstanceLimit, // optional - maximum number of values which can be the same
   nationalityCodesCount: 10, // optional - number of nationality codes to use when generating participants
   nationalityCodeType: 'ISO', // optional - 'IOC' or 'ISO', defaults to IOC
   nationalityCodes: [], // optional - an array of ISO codes to randomly assign to participants
@@ -75,10 +75,11 @@ const { participants } = mocksEngine.generateParticipants({
     statesCount: 10,
     postalCodesCount: 10,
   },
-  valuesInstanceLimit, // optional - maximum number of values which can be the same
+  personExtensions, // optional array of extensions to attach to all generated persons
+  personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
+  personIds, // optional array of pre-defined personIds
 
   inContext: true, // optional - whether to expand PAIR and TEAM individualParticipantIds => individualParticipant objects
-  personData, //  optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
 });
 
 tournamentEngine.addParticipants({ participants });
@@ -136,7 +137,7 @@ const {
 } = mocksEngine.generateTournamentRecord({
   endDate, // optional - ISO string date
   startDate, // optional - ISO string date
-  participantsProfile, // optional - { participantCount, participantType }
+  participantsProfile, // optional - { participantCount, participantType } - see mocksEngine.generateParticipants()
   policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
   completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
   matchUpStatusProfile, // optional - whole number percent for each target matchUpStatus { [matchUpStatus]: percentLikelihood }

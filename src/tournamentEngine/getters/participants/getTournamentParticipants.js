@@ -2,12 +2,12 @@ import { attributeFilter, makeDeepCopy } from '../../../utilities';
 import { addParticipantContext } from './addParticipantContext';
 import { filterParticipants } from './filterParticipants';
 
+import { GROUP, PAIR, TEAM } from '../../../constants/participantTypes';
 import {
   INVALID_OBJECT,
   MISSING_PARTICIPANTS,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { PAIR, TEAM } from '../../../constants/participantTypes';
 
 /**
  * Returns deepCopies of tournament participants filtered by participantFilters which are arrays of desired participant attribute values
@@ -48,7 +48,7 @@ export function getTournamentParticipants({
 
   if (inContext) {
     tournamentParticipants?.forEach((participant) => {
-      if ([PAIR, TEAM].includes(participant.participantType)) {
+      if ([PAIR, TEAM, GROUP].includes(participant.participantType)) {
         participant.individualParticipants =
           participant.individualParticipantIds.map((participantId) => {
             const individualParticipant = tournamentRecord.participants.find(

@@ -5,8 +5,8 @@ import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
-import { DOUBLES } from '../../../constants/matchUpTypes';
+import { GROUP, INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
+import { DOUBLES, TEAM } from '../../../constants/matchUpTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 export function addParticipantContext(params) {
@@ -15,6 +15,9 @@ export function addParticipantContext(params) {
   const participantIdMap = {};
   const initializeParticipantId = (participantId) => {
     participantIdMap[participantId] = {
+      groupParticipantIds: [],
+      teamParticipantIds: [],
+      pairParticipantIds: [],
       potentialMatchUps: {},
       opponents: {},
       matchUps: {},
@@ -27,10 +30,14 @@ export function addParticipantContext(params) {
 
   const { tournamentRecord, participantFilters } = params;
   const allTournamentParticipants = params.tournamentRecord?.participants || [];
+
+  // build up a mapping of all participantIds to all of the individualParticipantIds that they reference
+  // this map includes the key participantId as a value of the array of relevantParticipantIds
   const relevantParticipantIdsMap = Object.assign(
     {},
     ...allTournamentParticipants.map(
       ({ participantId, participantType, individualParticipantIds }) => {
+        initializeParticipantId(participantId);
         const individualParticipantIdObjects = (
           individualParticipantIds || []
         ).map((relevantParticipantId) => ({
@@ -46,6 +53,33 @@ export function addParticipantContext(params) {
       }
     )
   );
+
+  allTournamentParticipants.forEach((participant) => {
+    if (participant.participantType === GROUP) {
+      const groupParticipantId = participant.participantId;
+      participant.individualParticipantIds.forEach((participantId) =>
+        participantIdMap[participantId].groupParticipantIds.push(
+          groupParticipantId
+        )
+      );
+    }
+    if (participant.participantType === TEAM) {
+      const teamParticipantId = participant.participantId;
+      participant.individualParticipantIds.forEach((participantId) =>
+        participantIdMap[participantId].teamParticipantIds.push(
+          teamParticipantId
+        )
+      );
+    }
+    if (participant.participantType === PAIR) {
+      const pairParticipantId = participant.participantId;
+      participant.individualParticipantIds.forEach((participantId) =>
+        participantIdMap[participantId].pairParticipantIds.push(
+          pairParticipantId
+        )
+      );
+    }
+  });
 
   // optimize when filtering participants by participantIds
   // by only returing relevantParticpantIds related to specified particpantIds
@@ -97,15 +131,13 @@ export function addParticipantContext(params) {
         // relevantParticipantId is a reference to an individual
         const relevantParticipantIds = getRelevantParticipantIds(participantId);
         relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-          if (!participantIdMap[relevantParticipantId]) {
-            initializeParticipantId(relevantParticipantId);
-          }
           participantIdMap[relevantParticipantId].events[eventId] = {
             ...filteredEventInfo,
             entryStage,
             entryStatus,
             entryPosition,
             drawIds: [],
+            partnerParticipantIds: [],
           };
         });
       });
@@ -115,9 +147,6 @@ export function addParticipantContext(params) {
         drawEntry;
       const relevantParticipantIds = getRelevantParticipantIds(participantId);
       relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-        if (!participantIdMap[relevantParticipantId]) {
-          initializeParticipantId(relevantParticipantId);
-        }
         if (!participantIdMap[relevantParticipantId].events[eventId]) {
           participantIdMap[relevantParticipantId].events[eventId] = {
             ...filteredEventInfo,
@@ -125,6 +154,7 @@ export function addParticipantContext(params) {
             entryStatus,
             entryPosition,
             drawIds: [],
+            partnerParticipantIds: [],
           };
         }
 
@@ -136,6 +166,7 @@ export function addParticipantContext(params) {
           entryPosition,
           eventId,
           drawId,
+          partnerParticipantIds: [],
         };
         const eventDrawIds =
           participantIdMap[relevantParticipantId].events[eventId].drawIds;
@@ -191,6 +222,8 @@ export function addParticipantContext(params) {
       processMatchUp({ matchUp, drawDetails, eventType })
     );
 
+    // tournamentParticipants is an array of FILTERED participants
+    // whereas allTournamentParticipants = params.tournamentRecord.participants
     params.tournamentParticipants?.forEach((participant) => {
       const { scheduleConflicts } = annotateParticipant({
         ...params,
@@ -203,6 +236,15 @@ export function addParticipantContext(params) {
           participantIdsWithConflicts.push(participant.participantId);
       }
     });
+  });
+
+  params.tournamentParticipants?.forEach((participant) => {
+    participant.groupParticipantIds =
+      participantIdMap[participant.participantId].groupParticipantIds;
+    participant.pairParticipantIds =
+      participantIdMap[participant.participantId].pairParticipantIds;
+    participant.teamParticipantIds =
+      participantIdMap[participant.participantId].teamParticipantIds;
   });
 
   function processMatchUp({ matchUp, drawDetails, eventType }) {
@@ -222,6 +264,8 @@ export function addParticipantContext(params) {
       sides,
       schedule,
       structureName,
+      structureId,
+      tournamentId,
       winnerTo,
       winningSide,
     } = matchUp;
@@ -255,9 +299,6 @@ export function addParticipantContext(params) {
         ({ relevantParticipantId, participantType }) => {
           const { entryStage, entryStatus, entryPosition } = drawEntry || {};
 
-          if (!participantIdMap[relevantParticipantId]) {
-            initializeParticipantId(relevantParticipantId);
-          }
           participantIdMap[relevantParticipantId].draws[drawId] = {
             drawName,
             drawType,
@@ -266,6 +307,7 @@ export function addParticipantContext(params) {
             entryPosition,
             eventId,
             drawId,
+            partnerParticipantIds: [],
           };
 
           const eventDrawIds =
@@ -361,6 +403,8 @@ export function addParticipantContext(params) {
               score,
               sides,
               structureName,
+              structureId,
+              tournamentId,
               winnerTo,
               winningSide,
             });
@@ -368,6 +412,17 @@ export function addParticipantContext(params) {
           if (partnerParticipantId && eventType === DOUBLES) {
             participantIdMap[relevantParticipantId].events[
               eventId
+            ].partnerParticipantIds.push(partnerParticipantId);
+            participantIdMap[relevantParticipantId].draws[
+              drawId
+            ].partnerParticipantIds.push(partnerParticipantId);
+
+            // legacy.... deprecate when ETL updated
+            participantIdMap[relevantParticipantId].events[
+              eventId
+            ].partnerParticipantId = partnerParticipantId;
+            participantIdMap[relevantParticipantId].draws[
+              drawId
             ].partnerParticipantId = partnerParticipantId;
           }
 
@@ -390,9 +445,6 @@ export function addParticipantContext(params) {
       potentialParticipantIds?.forEach((participantId) => {
         const relevantParticipantIds = getRelevantParticipantIds(participantId);
         relevantParticipantIds?.forEach(({ relevantParticipantId }) => {
-          if (!participantIdMap[relevantParticipantId]) {
-            initializeParticipantId(relevantParticipantId);
-          }
           participantIdMap[relevantParticipantId].potentialMatchUps[matchUpId] =
             definedAttributes({
               drawId,
@@ -439,6 +491,7 @@ function annotateParticipant({
     draws,
     opponents,
   } = participantIdMap[participantId];
+
   const numerator = wins;
   const denominator = wins + losses;
   const statValue = denominator && numerator / denominator;

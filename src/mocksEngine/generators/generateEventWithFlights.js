@@ -1,6 +1,7 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
@@ -19,7 +20,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -50,6 +50,7 @@ export function generateEventWithFlights({
     (stageParticipantsCount, drawProfile) => {
       const stage = drawProfile.stage || MAIN;
       const participantsCount =
+        drawProfile.participantsCount ||
         (drawProfile.drawSize || 0) - (drawProfile.qualifyingPositions || 0);
       if (drawProfile.uniqueParticipants) generateUniqueParticipants = true;
       if (!Object.keys(stageParticipantsCount).includes(stage))

@@ -126,7 +126,9 @@ export function generateTournamentRecord({
     nationalityCodesCount,
     nationalityCodeType,
     nationalityCodes,
+    personExtensions,
     addressProps,
+    personData,
     personIds,
     inContext,
     sex,
@@ -137,14 +139,17 @@ export function generateTournamentRecord({
     nationalityCodesCount,
     nationalityCodeType,
     nationalityCodes,
+
+    personExtensions,
     addressProps,
+    personData,
+    sex,
 
     participantsCount,
     participantType,
     personIds,
 
     inContext,
-    sex,
   });
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;

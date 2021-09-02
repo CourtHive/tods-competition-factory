@@ -1,3 +1,4 @@
+import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/positionsGetter';
 import { getAccessorValue } from '../../../utilities/getAccessorValue';
 import { getTimeItem } from '../../governors/queryGovernor/timeItems';
 import { getFlightProfile } from '../getFlightProfile';
@@ -5,7 +6,6 @@ import { unique } from '../../../utilities';
 
 import { SIGN_IN_STATUS } from '../../../constants/participantConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { getAllPositionedParticipantIds } from '../../../drawEngine/getters/positionsGetter';
 
 export function filterParticipants({
   tournamentRecord,
@@ -19,6 +19,7 @@ export function filterParticipants({
     positionedOnly, // only those participantIds that are included in any structure.positionAssignments
     eventEntryStatuses,
     participantRoles,
+    participantRoleResponsibilities,
     participantTypes,
     participantIds,
     signInStatus,
@@ -90,7 +91,12 @@ export function filterParticipants({
       element: participant,
       itemType: SIGN_IN_STATUS,
     });
-    const { participantId, participantType, participantRole } = participant;
+    const {
+      participantId,
+      participantType,
+      participantRole,
+      participantRoleResponsibilities: responsibilities,
+    } = participant;
     return (
       (positionedOnly === undefined ||
         (positionedOnly && positionedParticipantIds.includes(participantId)) ||
@@ -105,6 +111,12 @@ export function filterParticipants({
       (!participantRoles ||
         (isValidFilterArray(participantRoles) &&
           participantRoles.includes(participantRole))) &&
+      (!participantRoleResponsibilities ||
+        (isValidFilterArray(responsibilities) &&
+          isValidFilterArray(participantRoleResponsibilities) &&
+          participantRoleResponsibilities.find((roleResponsbility) =>
+            responsibilities.includes(roleResponsbility)
+          ))) &&
       (!accessorValues?.length ||
         (isValidFilterArray(accessorValues) &&
           participantHasAccessorValues(participant)))
