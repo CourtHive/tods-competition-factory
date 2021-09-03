@@ -36,7 +36,6 @@ export function generateEventWithDraw({
   const {
     category,
     eventType = SINGLES,
-    eventName = 'Generated Event',
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     uniqueParticipants = false,
@@ -49,6 +48,7 @@ export function generateEventWithDraw({
     gender,
     stage,
   } = drawProfile;
+  let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord.participants;
 
   let { participantsCount, seedsCount } = drawProfile;
