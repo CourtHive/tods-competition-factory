@@ -39,7 +39,7 @@ import { COMPETITOR } from '../../constants/participantRoles';
 export function generateTournamentRecord({
   endDate,
   startDate,
-  tournamentName,
+  tournamentName = 'Mock Tournament',
 
   policyDefinitions,
   participantsProfile,
