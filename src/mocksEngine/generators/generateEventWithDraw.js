@@ -29,7 +29,6 @@ export function generateEventWithDraw({
   completeAllMatchUps,
   matchUpStatusProfile,
   randomWinningSide,
-  participants,
   drawProfile,
   startDate,
   goesTo,
@@ -50,6 +49,7 @@ export function generateEventWithDraw({
     gender,
     stage,
   } = drawProfile;
+  let targetParticipants = tournamentRecord.participants;
 
   let { participantsCount, seedsCount } = drawProfile;
   if (!participantsCount || participantsCount > drawSize)
@@ -71,7 +71,6 @@ export function generateEventWithDraw({
     return false;
   };
 
-  let targetParticipants = participants;
   if (uniqueParticipants) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
@@ -119,7 +118,7 @@ export function generateEventWithDraw({
 
   // alternates can still be taken from existing participants
   // when unique participants are used for DIRECT_ACCEPTANCE entries
-  const alternatesParticipantIds = participants
+  const alternatesParticipantIds = targetParticipants
     .filter(isEventParticipantType)
     .slice(participantsCount)
     .map((p) => p.participantId);

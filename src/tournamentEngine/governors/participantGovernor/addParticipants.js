@@ -78,24 +78,30 @@ export function addParticipant({
       if (!validPairParticipants) return { error: INVALID_PARTICIPANT_IDS };
     }
 
-    const existingParticipantIdPairs = tournamentParticipants
+    const existingPairParticipants = tournamentParticipants
       .filter((participant) => participant.participantType === PAIR)
-      .map((participant) => participant.individualParticipantIds);
+      .map((participant) => ({
+        participant,
+        individualParticipantIds: participant.individualParticipantIds,
+      }));
 
     // determine whether a PAIR participant already exists
     const existingPairParticipant =
       participant.participantType === PAIR &&
-      existingParticipantIdPairs.find(
-        (pairedParticipantIds) =>
+      existingPairParticipants.find(
+        (existingPairParticipant) =>
           intersection(
-            pairedParticipantIds,
+            existingPairParticipant.individualParticipantIds,
             participant.individualParticipantIds
           ).length === 2
       );
 
     if (existingPairParticipant) {
       if (!allowDuplicateParticipantIdPairs) {
-        return { ...SUCCESS, participant: makeDeepCopy(participant) };
+        return {
+          ...SUCCESS,
+          participant: makeDeepCopy(existingPairParticipant.participant),
+        };
       }
     }
 

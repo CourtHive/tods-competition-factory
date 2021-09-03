@@ -77,7 +77,9 @@ export function assignTieMatchUpParticipantId(params) {
     },
   });
 
-  if (!participantToAssign) return { error: PARTICIPANT_NOT_FOUND };
+  if (!participantToAssign) {
+    return { error: PARTICIPANT_NOT_FOUND };
+  }
   const { individualParticipantIds, participantType } = participantToAssign;
 
   // check that the participantToAssign is the correct participantType for matchUp.matchUpType

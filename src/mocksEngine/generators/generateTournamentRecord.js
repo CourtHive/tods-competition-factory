@@ -7,7 +7,7 @@ import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenu
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
-import { UUID } from '../../utilities';
+import { generateRange, UUID } from '../../utilities';
 import {
   dateRange,
   formatDate,
@@ -18,6 +18,7 @@ import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
+import { COMPETITOR } from '../../constants/participantRoles';
 
 /**
  *
@@ -210,6 +211,29 @@ export function generateTournamentRecord({
   if (!result.success) return result;
 
   // generate Team participants
+  const allIndividualParticipantIds = participants
+    .filter(({ participantType }) => participantType === INDIVIDUAL)
+    .map(({ participantId }) => participantId);
+  const teamParticipants = generateRange(0, largestTeamDraw).map(
+    (teamIndex) => {
+      const individualParticipantIds = allIndividualParticipantIds.slice(
+        teamIndex * largestTeamSize,
+        (teamIndex + 1) * largestTeamSize
+      );
+      return {
+        participantName: `Team ${teamIndex + 1}`,
+        participantRole: COMPETITOR,
+        participantType: TEAM,
+        participantId: UUID(),
+        individualParticipantIds,
+      };
+    }
+  );
+  result = addParticipants({
+    tournamentRecord,
+    participants: teamParticipants,
+  });
+  if (!result.success) return result;
 
   const drawIds = [],
     eventIds = [],
@@ -223,7 +247,6 @@ export function generateTournamentRecord({
         completeAllMatchUps,
         matchUpStatusProfile,
         randomWinningSide,
-        participants,
         drawProfile,
         startDate,
         goesTo,
@@ -248,7 +271,6 @@ export function generateTournamentRecord({
         matchUpStatusProfile,
         randomWinningSide,
         eventProfile,
-        participants,
       });
       if (error) return { error };
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);

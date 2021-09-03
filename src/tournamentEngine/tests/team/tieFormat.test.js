@@ -17,21 +17,14 @@ import {
  * mocksEngine
  * 1. Generates 100 individual participants using 10 different nationality codes
  * 2. Generates a team event with specified tieFormat containing a draw of 8 teams
- * 3. Generates teams from the nationalityCode participant attribute
  *
  * after mocksEngine
- * 4. Add generated teams to the team event and draw entries
- * 5. Automate positioning of the team participants in the draw
- * 6. Assign a singles participant to a SINGLES tieMatchUp
- * 7. Assign a doubles participant to a DOUBLES tieMatchUp
- * 8.
+ * 3. Automate positioning of the team participants in the draw
+ * 4. Assign a singles participant to a SINGLES tieMatchUp
+ * 5. Assign a doubles participant to a DOUBLES tieMatchUp
  */
 it('can generate draws in TEAM events with tieFormat and assign particiapnts to collectionPositions', () => {
-  const nationalityCodesCount = 10;
-  const participantsProfile = {
-    participantsCount: 100,
-    nationalityCodesCount,
-  };
+  const participantsProfile = { participantsCount: 100 };
 
   const singlesCollectionId = UUID();
   const doublesCollectionId = UUID();
@@ -87,35 +80,16 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
 
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.generateTeamsFromParticipantAttribute({
-    personAttribute: 'nationalityCode',
-  });
-  expect(result.success).toEqual(true);
-
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     { participantFilters: { participantTypes: [TEAM] } }
   );
-  // since teams are generated from nationalityCodes expect there to be
-  // the same number of teams as nationalityCodes
-  expect(tournamentParticipants.length).toEqual(nationalityCodesCount);
-
-  const participantIds = tournamentParticipants
-    .map((p) => p.participantId)
-    .slice(0, drawSize);
-
-  // can add to event and draw at same time
-  result = tournamentEngine.addEventEntries({
-    participantIds,
-    eventId,
-    drawId,
-  });
-  expect(result.success).toEqual(true);
+  expect(tournamentParticipants.length).toEqual(drawSize);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   expect(event.tieFormat.winCriteria.valueGoal).toEqual(valueGoal);
 
   const structureId = drawDefinition.structures[0].structureId;
-  result = tournamentEngine.automatedPositioning({
+  let result = tournamentEngine.automatedPositioning({
     drawId,
     structureId,
   });

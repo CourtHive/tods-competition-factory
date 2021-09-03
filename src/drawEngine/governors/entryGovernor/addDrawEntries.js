@@ -50,7 +50,9 @@ export function addDrawEntry({
     drawDefinition,
     entryStatus,
   });
-  if (!spaceAvailable.success) return { error: spaceAvailable.error };
+  if (!spaceAvailable.success) {
+    return { error: spaceAvailable.error };
+  }
 
   participantId = participantId || (participant && participant.participantId);
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
@@ -109,7 +111,9 @@ export function addDrawEntries({
   if (!validStage({ stage, drawDefinition })) return { error: INVALID_STAGE };
 
   const spaceAvailable = stageSpace({ stage, drawDefinition, entryStatus });
-  if (!spaceAvailable.success) return { error: spaceAvailable.error };
+  if (!spaceAvailable.success) {
+    return { error: spaceAvailable.error };
+  }
   const positionsAvailable = spaceAvailable.positionsAvailable || 0;
   if (positionsAvailable < participantIds.length)
     return { error: MORE_PARTICIPANTS_THAN_DRAW_POSITIONS };
