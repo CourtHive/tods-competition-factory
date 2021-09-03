@@ -53,7 +53,7 @@ it('can generate TEAM events', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let result = tournamentEngine.generateTeamsFromParticipantAttribute({
-    personAttribute: 'nationalityCode',
+    accessor: 'person.nationalityCode',
   });
   expect(result.success).toEqual(true);
 

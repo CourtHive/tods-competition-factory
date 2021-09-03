@@ -95,7 +95,7 @@ export function addParticipant({
 
     if (existingPairParticipant) {
       if (!allowDuplicateParticipantIdPairs) {
-        return { ...SUCCESS };
+        return { ...SUCCESS, participant: makeDeepCopy(participant) };
       }
     }
 

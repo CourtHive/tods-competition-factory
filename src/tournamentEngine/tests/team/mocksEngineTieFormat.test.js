@@ -2,6 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { UUID } from '../../../utilities';
 
 it('can generate draws in TEAM events with tieFormat and assign particiapnts to collectionPositions', () => {
@@ -57,4 +58,17 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
   expect(drawId).not.toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord);
+
+  const { tournamentParticipants: individualParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [INDIVIDUAL] },
+    });
+
+  expect(individualParticipants.length).toEqual(40);
+
+  const { tournamentParticipants: pairParticipants } =
+    tournamentEngine.getTournamentParticipants({
+      participantFilters: { participantTypes: [PAIR] },
+    });
+  expect(pairParticipants.length).toEqual(20);
 });
