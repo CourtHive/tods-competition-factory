@@ -19,6 +19,7 @@ export function completeDrawMatchUps({
   randomWinningSide,
   completeAllMatchUps,
   matchUpStatusProfile,
+  event,
 }) {
   const sortedStructures = drawDefinition.structures
     .slice()
@@ -37,6 +38,7 @@ export function completeDrawMatchUps({
       matchUpsMap,
       structure,
       inContext: true,
+      event,
     });
 
     const sortedMatchUpIds = matchUps
@@ -50,6 +52,7 @@ export function completeDrawMatchUps({
         matchUpsMap,
         structure,
         inContext: true,
+        event,
       });
 
       const targetMatchUp = matchUps.find(
@@ -100,6 +103,7 @@ export function completeMatchUp({
   });
 }
 
+// NOTE: matchUpFormat must come from collectionDefinition in TEAM events
 function smartComplete(params) {
   const {
     targetMatchUp,

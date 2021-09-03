@@ -29,7 +29,6 @@ export function generateEventWithFlights({
   matchUpStatusProfile,
   randomWinningSide,
   eventProfile,
-  participants,
 }) {
   const {
     ballType,
@@ -44,6 +43,7 @@ export function generateEventWithFlights({
     tieFormat: eventTieFormat,
     policyDefinitions,
   } = eventProfile;
+  let targetParticipants = tournamentRecord.participants;
 
   let generateUniqueParticipants;
   const stageParticipantsCount = drawProfiles.reduce(
@@ -74,7 +74,6 @@ export function generateEventWithFlights({
   const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
 
-  let targetParticipants = participants;
   if (generateUniqueParticipants) {
     const {
       valuesInstanceLimit,

@@ -74,9 +74,11 @@ export function generateDrawType(params = {}) {
     drawDefinition,
   } = params;
 
+  let { tieFormat, matchUpType } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const { tieFormat, matchUpType } = drawDefinition || { matchUpType: SINGLES };
+  tieFormat = tieFormat || drawDefinition.tieFormat;
+  matchUpType = matchUpType || drawDefinition.matchUpType || SINGLES;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
   Object.assign(params, { drawSize, matchUpType, tieFormat });

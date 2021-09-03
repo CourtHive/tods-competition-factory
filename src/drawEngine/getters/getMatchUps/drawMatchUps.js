@@ -35,6 +35,7 @@ export function getAllDrawMatchUps(params) {
 }
 
 export function getDrawMatchUps({
+  event,
   context,
   inContext,
   roundFilter,
@@ -81,6 +82,7 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = getStructureMatchUps({
+      event,
       context,
       structure,
       roundFilter,

@@ -246,6 +246,7 @@ export function eventMatchUps({
   const matchUpGroupings = drawDefinitions.reduce(
     (matchUps, drawDefinition) => {
       const drawMatchUps = getDrawMatchUps({
+        event,
         context,
         inContext,
         nextMatchUps,
@@ -296,6 +297,7 @@ export function drawMatchUps({
   const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   return getDrawMatchUps({
+    event,
     context,
     inContext,
     nextMatchUps,

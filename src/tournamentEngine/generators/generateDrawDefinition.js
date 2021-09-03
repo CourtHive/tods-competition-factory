@@ -94,7 +94,7 @@ export function generateDrawDefinition(params) {
 
   const entries = drawEntries || event?.entries || [];
   const eventType = event?.eventType;
-  matchUpType = matchUpType || (eventType !== TEAM && eventType);
+  matchUpType = matchUpType || eventType;
 
   const stageEntries = entries.filter(
     (entry) =>
@@ -108,18 +108,36 @@ export function generateDrawDefinition(params) {
   const drawDefinition = newDrawDefinition({ drawType, drawId });
 
   setStageDrawSize({ drawDefinition, stage, drawSize });
-  let result = setMatchUpFormat({
+
+  if (matchUpFormat || tieFormat) {
+    let equivalentInScope =
+      (matchUpFormat && event?.matchUpFormat === matchUpFormat) ||
+      (event?.tieFormat &&
+        tieFormat &&
+        JSON.stringify(event.tieFormat) === JSON.stringify(tieFormat));
+
+    // if an equivalent matchUpFormat or tieFormat is attached to the event
+    // there is no need to attach to the drawDefinition
+    if (!equivalentInScope) {
+      let result = setMatchUpFormat({
+        drawDefinition,
+        matchUpFormat,
+        tieFormat,
+        matchUpType,
+      });
+
+      if (result.error)
+        return { error: result.error, message: 'matchUpFormat error' };
+    } else {
+      if (matchUpType) drawDefinition.matchUpType = matchUpType;
+    }
+  }
+
+  tieFormat = tieFormat || event?.tieFormat;
+  let result = generateDrawType({
     drawDefinition,
-    matchUpFormat,
-    tieFormat,
     matchUpType,
-  });
-
-  if (result.error)
-    return { error: result.error, message: 'matchUpFormat error' };
-
-  result = generateDrawType({
-    drawDefinition,
+    tieFormat,
 
     stage,
     drawType,

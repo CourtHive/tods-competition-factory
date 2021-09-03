@@ -516,7 +516,9 @@ For more information on `feedPolicy` see [Feed Policies](../policies/feedPolicy)
 drawEngine.generateDrawType({
   drawType, // defaults to SINGLE_ELIMINATION
 
+  matchUpType, // optional - defaults to SINGLES - will check first on drawDefinition
   matchUpFormat, // optional - default matchUpFormat
+  tieFormat, // optional - overrides drawDefinition.tieFormat, if present, for TEAM draws
   playoffMatchUpFormat, // optional - default playoffMatchUpFormat
 
   staggeredEntry, // optional - accepts non-base-2 drawSizes and generates feed arms for "extra" drawPositions

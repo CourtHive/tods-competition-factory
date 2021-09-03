@@ -17,6 +17,7 @@ import {
   *AND* where both drawPositions map to assigned participantIds
 */
 export function getStructureMatchUps({
+  event,
   context,
   inContext,
   structure,
@@ -38,6 +39,7 @@ export function getStructureMatchUps({
     ({ structure } = findStructure({ drawDefinition, structureId }));
   }
   const { matchUps, error } = getAllStructureMatchUps({
+    event,
     context,
     structure,
     inContext,

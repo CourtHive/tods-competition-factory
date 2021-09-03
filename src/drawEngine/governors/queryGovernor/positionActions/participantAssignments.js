@@ -1,3 +1,4 @@
+import { getAvailableAdHocParticipantIds } from './getAvailableAdHocParticipantIds';
 import { getDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getQualifiersData } from '../../positionGovernor/positionQualifiers';
 import { getNextSeedBlock } from '../../../getters/seedGetter';
@@ -9,7 +10,6 @@ import {
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { getAvailableAdHocParticipantIds } from './getAvailableAdHocParticipantIds';
 
 export function getValidAssignmentActions({
   positionSourceStructureIds,

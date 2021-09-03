@@ -1,7 +1,6 @@
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
-import { MISSING_ENTRIES } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 
@@ -9,14 +8,12 @@ import { COMPLETED } from '../../../constants/matchUpStatusConstants';
  * mocksEngine
  * 1. Generates 100 individual participants using 10 different nationality codes
  * 2. Generates a team event containing a draw of 8 teams
- * 3. Generates teams from the nationalityCode participant attribute
  *
  * after mocksEngine
- * 4. Add generated teams to the team event and draw entries
- * 5. Since no tieFormat was provided the default of 6 singles / 3 doubles was used
- * 6. Automate positioning of the team participants in the draw
- * 7. Complete one singles matchUp within one dual match
- * 8. Confirm that the score of the dual matchUp is 1-0
+ * 3. Since no tieFormat was provided the default of 6 singles / 3 doubles was used
+ * 4. Automate positioning of the team participants in the draw
+ * 5. Complete one singles matchUp within one dual match
+ * 6. Confirm that the score of the dual matchUp is 1-0
  */
 it('can generate TEAM events', () => {
   const nationalityCodesCount = 10;
@@ -52,50 +49,23 @@ it('can generate TEAM events', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let result = tournamentEngine.generateTeamsFromParticipantAttribute({
-    personAttribute: 'nationalityCode',
-  });
-  expect(result.success).toEqual(true);
-
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     { participantFilters: { participantTypes: [TEAM] } }
   );
   // since teams are generated from nationalityCodes expect there to be
   // the same number of teams as nationalityCodes
-  expect(tournamentParticipants.length).toEqual(nationalityCodesCount);
-
-  const participantIds = tournamentParticipants
-    .map((p) => p.participantId)
-    .slice(0, drawSize);
-
-  // expect error: can't add to draw if not in event
-  result = tournamentEngine.addDrawEntries({
-    participantIds,
-    eventId,
-    drawId,
-  });
-  expect(result.error).toEqual(MISSING_ENTRIES);
-
-  // can add to event and draw at same time
-  result = tournamentEngine.addEventEntries({
-    participantIds,
-    eventId,
-    drawId,
-  });
-  expect(result.success).toEqual(true);
+  expect(tournamentParticipants.length).toEqual(drawSize);
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-  expect(drawDefinition.entries.length).toEqual(participantIds.length);
-  expect(event.entries.length).toEqual(participantIds.length);
+  expect(drawDefinition.entries.length).toEqual(drawSize);
+  expect(event.entries.length).toEqual(drawSize);
 
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
   expect(flightProfile.flights.length).toEqual(1);
-  expect(flightProfile.flights[0].drawEntries.length).toEqual(
-    participantIds.length
-  );
+  expect(flightProfile.flights[0].drawEntries.length).toEqual(drawSize);
 
   const structureId = drawDefinition.structures[0].structureId;
-  result = tournamentEngine.automatedPositioning({
+  let result = tournamentEngine.automatedPositioning({
     drawId,
     structureId,
   });
