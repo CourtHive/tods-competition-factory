@@ -100,6 +100,7 @@ it('can generate sexed participants', () => {
     inContext: true,
     sex: FEMALE,
   }));
+
   sexes = participants
     .filter((p) => p.participantType === PAIR)
     .reduce((sexes, participant) => {
