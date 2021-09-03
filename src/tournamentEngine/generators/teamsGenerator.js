@@ -1,5 +1,6 @@
 import { addExtension } from '../governors/tournamentGovernor/addRemoveExtensions';
 import { findExtension } from '../governors/queryGovernor/extensionQueries';
+import { getAccessorValue } from '../../utilities/getAccessorValue';
 import { addNotice } from '../../global/globalState';
 import { UUID } from '../../utilities';
 
@@ -8,23 +9,42 @@ import { GROUPING_ATTRIBUTE } from '../../constants/extensionConstants';
 import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/participantTypes';
+import { INDIVIDUAL, TEAM } from '../../constants/participantTypes';
 
-export function generateTeamsFromParticipantAttribute(params) {
-  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  const { tournamentRecord, participantAttribute, personAttribute, uuids } =
-    params;
+/**
+ *
+ * @param {object} tournamentRecord - passed in automatically by tournamentEngine
+ * @param {string} participantAttribute - optional - participant attribute to be used to group individual participants
+ * @param {string} personAttribute - optional - person attribute to be used to group individual participants
+ * @param {string} accessor - optional - dot delimited string targeting nested value
+ * @param {string[]} uuids - optional - array of unique identifiers for genrated team participants
+ * @returns { success: true } or { error }
+ */
+export function generateTeamsFromParticipantAttribute({
+  tournamentRecord,
+  participantAttribute,
+  personAttribute,
+  accessor,
+  uuids,
+}) {
+  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const teams = {};
-  const participants = tournamentRecord.participants || [];
+  const individualParticipants = (tournamentRecord.participants || []).filter(
+    ({ participantType, participantRole }) =>
+      participantType === INDIVIDUAL && participantRole === COMPETITOR
+  );
 
-  participants.forEach((participant) => {
-    if (!participant.person) return;
-    if (participant.participantRole !== COMPETITOR) return;
-
-    const attributeValue = personAttribute
-      ? participant.person[personAttribute]
-      : participant[participantAttribute];
+  for (const individualParticipant of individualParticipants) {
+    const { value: accessorValue } = getAccessorValue({
+      element: individualParticipant,
+      accessor,
+    });
+    const attributeValue =
+      accessorValue ||
+      (personAttribute
+        ? individualParticipant.person[personAttribute]
+        : individualParticipant[participantAttribute]);
 
     if (attributeValue) {
       if (!Object.keys(teams).includes(attributeValue)) {
@@ -44,14 +64,14 @@ export function generateTeamsFromParticipantAttribute(params) {
       }
 
       teams[attributeValue].individualParticipantIds.push(
-        participant.participantId
+        individualParticipant.participantId
       );
     }
-  });
+  }
 
   const groupingAttributes = Object.keys(teams);
 
-  const overlappingTeamParticipantIds = participants
+  const overlappingTeamParticipantIds = (tournamentRecord.participants || [])
     .map((participant) => {
       if (participant.participantType !== TEAM) return undefined;
       if (participant.participantRole !== COMPETITOR) return undefined;

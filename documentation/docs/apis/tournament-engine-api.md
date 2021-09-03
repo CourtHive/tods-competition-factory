@@ -1139,8 +1139,9 @@ Returns count of # of TEAM participants added;
 ```js
 const { participantsAdded } =
   tournamentEngine.generateTeamsFromParticipantAttribute({
-    participantAttribute,
+    participantAttribute, // optional -- attribute of participant object
     personAttribute, // optional - attribute of person object
+    accessor, // optional - use accessor string to retrieve nested value (even from person address arrays)
     uuids, // optional - uuids to assign to generated participants
   });
 ```

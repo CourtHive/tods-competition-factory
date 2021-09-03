@@ -1,6 +1,7 @@
 import { makeDeepCopy } from './makeDeepCopy';
 
 export function getAccessorValue({ element, accessor }) {
+  if (typeof accessor !== 'string') return { values: [] };
   const targetElement = makeDeepCopy(element);
   const attributes = accessor.split('.');
 
