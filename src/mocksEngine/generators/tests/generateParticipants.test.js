@@ -43,7 +43,7 @@ it('can generate use pre-defined personIds', () => {
   expect(participants[0].person.personId).toEqual(personIds[0]);
 });
 
-it.only('can generate sexed participants', () => {
+it('can generate sexed participants', () => {
   let { participants } = mocksEngine.generateParticipants({
     participantsCount: 10,
     sex: FEMALE,
