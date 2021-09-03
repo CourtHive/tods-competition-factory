@@ -310,6 +310,12 @@ export function addParticipantContext(params) {
             partnerParticipantIds: [],
           };
 
+          if (!participantIdMap[relevantParticipantId].events[eventId]) {
+            participantIdMap[relevantParticipantId].events[eventId] = {
+              drawIds: [],
+              partnerParticipantIds: [],
+            };
+          }
           const eventDrawIds =
             participantIdMap[relevantParticipantId].events[eventId].drawIds;
 
