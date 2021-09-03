@@ -26,6 +26,7 @@ import { BYE } from '../../../constants/matchUpStatusConstants';
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 export function getAllStructureMatchUps({
+  event,
   structure,
   inContext,
   roundFilter,
@@ -136,7 +137,8 @@ export function getAllStructureMatchUps({
 
   // a collectionDefinition can be found as a propery of tieFormat
   // which can be found as a property of either a structure or a drawDefinition
-  const tieFormat = structure.tieFormat || drawDefinition?.tieFormat;
+  const tieFormat =
+    structure.tieFormat || drawDefinition?.tieFormat || event?.tieFormat;
   const collectionDefinitions = tieFormat && tieFormat.collectionDefinitions;
   const isRoundRobin = structure.structures;
 
@@ -378,7 +380,7 @@ export function getAllStructureMatchUps({
     if (matchUp.collectionId) {
       // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
-      const collectionDefinition = collectionDefinitions.find(
+      const collectionDefinition = collectionDefinitions?.find(
         (definition) => definition.collectionId === matchUp.collectionId
       );
       const matchUpFormat =

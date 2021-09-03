@@ -39,6 +39,7 @@ export function getDrawData({
   inContext = true,
   drawDefinition,
   context,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -95,6 +96,7 @@ export function getDrawData({
           drawDefinition,
           structure,
           inContext,
+          event,
         });
 
         const { positionAssignments } = getPositionAssignments({

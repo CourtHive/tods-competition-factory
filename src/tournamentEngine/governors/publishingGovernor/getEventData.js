@@ -29,6 +29,7 @@ export function getEventData({ tournamentRecord, event, policyDefinitions }) {
         policyDefinitions,
         drawDefinition,
         context: { eventId },
+        event,
       })
     )
   );

@@ -6,6 +6,7 @@ import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConsta
 export function getParticipantIdMatchUps({
   tournamentParticipants,
   drawDefinition,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -13,6 +14,7 @@ export function getParticipantIdMatchUps({
     tournamentParticipants,
     drawDefinition,
     inContext: true,
+    event,
   });
 
   const allMatchUps = makeDeepCopy(result.matchUps);

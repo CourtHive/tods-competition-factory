@@ -88,6 +88,7 @@ export function modifyMatchUpScore({
     const { matchUps } = getAllStructureMatchUps({
       structure: itemStructure,
       inContext: true,
+      event,
     });
 
     updateAssignmentParticipantResults({

@@ -4,11 +4,11 @@ import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { findStructure } from '../../../getters/findStructure';
 
 import { MISSING_DRAW_ID } from '../../../../constants/errorConditionConstants';
+import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
 import {
   LUCKY_PARTICIPANT,
   LUCKY_PARTICIPANT_METHOD,
 } from '../../../../constants/positionActionConstants';
-import { ROUND_OUTCOME } from '../../../../constants/drawDefinitionConstants';
 
 export function getValidLuckyLosersAction({
   drawPosition,
