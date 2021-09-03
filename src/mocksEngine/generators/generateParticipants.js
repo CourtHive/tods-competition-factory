@@ -70,15 +70,15 @@ export function generateParticipants({
   }
 
   const { cities } = cityMocks({
-    count: citiesCount,
+    count: citiesCount || individualParticipantsCount,
     participantsCount: individualParticipantsCount,
   });
   const { states } = stateMocks({
-    count: statesCount,
+    count: statesCount || individualParticipantsCount,
     participantsCount: individualParticipantsCount,
   });
   const { postalCodes } = postalCodeMocks({
-    count: postalCodesCount,
+    count: postalCodesCount || individualParticipantsCount,
     participantsCount: individualParticipantsCount,
   });
   const addressValues = { cities, states, postalCodes };

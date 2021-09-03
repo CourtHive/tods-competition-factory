@@ -17,7 +17,9 @@ export function cityMocks({ count = 1, participantsCount = 32 } = {}) {
 
   // the following ensures that all of the generated items are used at least once
   const cities = generateRange(0, participantsCount).map((i) =>
-    i < count ? candidateCities[i] : randomMember(candidateCities)
+    i < Math.min(count, shuffledCities.length)
+      ? candidateCities[i]
+      : randomMember(candidateCities)
   );
   return { cities };
 }
@@ -31,7 +33,9 @@ export function stateMocks({ count = 1, participantsCount = 32 } = {}) {
 
   // the following ensures that all of the generated items are used at least once
   const states = generateRange(0, participantsCount).map((i) =>
-    i < count ? candidateStates[i] : randomMember(candidateStates)
+    i < Math.min(count, shuffledStates.length)
+      ? candidateStates[i]
+      : randomMember(candidateStates)
   );
   return { states };
 }
