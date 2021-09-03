@@ -45,6 +45,7 @@ export function generateEventWithDraw({
     tieFormat,
     feedPolicy,
     automated,
+    drawName,
     gender,
     stage,
   } = drawProfile;
@@ -163,6 +164,7 @@ export function generateEventWithDraw({
     feedPolicy,
     tieFormat,
     automated,
+    drawName,
     drawType,
     drawSize,
     eventId,
