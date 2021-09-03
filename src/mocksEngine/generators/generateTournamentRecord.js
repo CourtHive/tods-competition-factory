@@ -88,23 +88,34 @@ export function generateTournamentRecord({
   }
 
   let largestDoublesDraw = 0,
-    largestSinglesDraw = 0;
+    largestSinglesDraw = 0,
+    largestTeamSize = 0,
+    largestTeamDraw = 0;
 
   const processDrawProfile = ({ drawSize, eventType, tieFormat }) => {
     const isDoubles = eventType === DOUBLES;
     const isTeam = eventType === TEAM;
     if (isTeam) {
+      let teamDoublesCount = 0,
+        teamSinglesCount = 0;
+      largestTeamDraw = Math.max(largestTeamDraw, drawSize);
       tieFormat = tieFormat || tieFormatDefaults();
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
         if (collectionDefinition?.matchUpType === DOUBLES) {
+          const doublesCount = collectionDefinition.matchUpCount;
+          teamDoublesCount = Math.max(teamDoublesCount, doublesCount);
           if (collectionDefinition.matchUpCount > largestDoublesDraw)
-            largestDoublesDraw = collectionDefinition.matchUpCount;
+            largestDoublesDraw = doublesCount * (drawSize || 1);
         }
         if (collectionDefinition?.matchUpType === SINGLES) {
+          const singlescount = collectionDefinition.matchUpCount;
+          teamSinglesCount = Math.max(teamSinglesCount, singlescount);
           if (collectionDefinition.matchUpCount > largestSinglesDraw)
-            largestSinglesDraw = collectionDefinition.matchUpCount;
+            largestSinglesDraw = singlescount * (drawSize || 1);
         }
       });
+      const teamSize = Math.max(teamSinglesCount, teamDoublesCount * 2);
+      largestTeamSize = Math.max(largestTeamSize, teamSize);
     }
     if (isDoubles && drawSize && drawSize > largestDoublesDraw)
       largestDoublesDraw = drawSize;
@@ -128,8 +139,9 @@ export function generateTournamentRecord({
     }
   }
   const individualCompetitorsCount = Math.max(
-    largestSinglesDraw,
-    largestDoublesDraw * 2
+    largestTeamDraw * largestTeamSize,
+    largestDoublesDraw * 2,
+    largestSinglesDraw
   );
 
   if (largestDoublesDraw) participantType = PAIR;
@@ -142,10 +154,22 @@ export function generateTournamentRecord({
   if (
     participantsCount &&
     largestDoublesDraw &&
-    [PAIR, TEAM].includes(participantType) &&
-    (!largestSinglesDraw || largestDoublesDraw * 2 >= largestSinglesDraw)
+    [PAIR, TEAM].includes(participantType)
   ) {
-    participantsCount = Math.ceil(participantsCount / 2);
+    // if we are generating PAIRs or TEAMs...
+    if (
+      largestSinglesDraw &&
+      Math.floor(largestSinglesDraw / 2) > largestDoublesDraw
+    ) {
+      // if the half the singles draw is still larger than doubles draw
+      participantsCount = Math.floor(largestSinglesDraw / 2);
+    } else if (
+      !largestSinglesDraw ||
+      largestDoublesDraw * 2 >= largestSinglesDraw
+    ) {
+      // otherwise participantsCount can be cut in half
+      participantsCount = Math.ceil(participantsCount / 2);
+    }
   }
 
   if (!participantsCount) participantsCount = 32;
@@ -184,6 +208,8 @@ export function generateTournamentRecord({
   });
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;
+
+  // generate Team participants
 
   const drawIds = [],
     eventIds = [],
