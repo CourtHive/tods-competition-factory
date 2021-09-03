@@ -567,6 +567,15 @@ tournamentEngine.assignSeedPositions({
 
 Used when interactively creating `{ participantType: PAIR }` participants.
 
+```js
+tournamentEngine.assignTieMatchUpParticipantId({
+  drawId,
+  sideNumber,
+  tieMatchUpId: matchUpId,
+  participantId: individualParticipantId,
+});
+```
+
 ---
 
 ## attachEventPolicies
