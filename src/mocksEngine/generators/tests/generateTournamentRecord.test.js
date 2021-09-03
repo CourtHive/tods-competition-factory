@@ -18,6 +18,23 @@ test('generateTournamentRecord', () => {
   ]);
 });
 
+test('drawProfiles and participantsProfile work as expecteed', () => {
+  const { drawIds, eventIds, venueIds, tournamentRecord } =
+    mocksEngine.generateTournamentRecord({
+      participantsProfile: {
+        participantsCount: 100,
+        addressProps: { citiesCount: 10 },
+      },
+      drawProfiles: [{ drawSize: 16, eventType: DOUBLES }, { drawSize: 8 }],
+    });
+
+  expect(eventIds.length).toEqual(2);
+  expect(venueIds.length).toEqual(0);
+  expect(drawIds.length).toEqual(2);
+
+  tournamentEngine.setState(tournamentRecord);
+});
+
 test('eventProfiles and participantsProfile work as expected', () => {
   const category = {
     ageCategoryCode: 'U18',
