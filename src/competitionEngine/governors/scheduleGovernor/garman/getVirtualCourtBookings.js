@@ -1,4 +1,8 @@
-import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
+import {
+  extractTime,
+  minutesDifference,
+  timeToDate,
+} from '../../../../utilities/dateTime';
 import { getCourtDateFilters } from './courtDateFilters';
 import { generateTimeSlots } from './generateTimeSlots';
 
@@ -10,7 +14,14 @@ import { generateTimeSlots } from './generateTimeSlots';
  *
  * @returns {object[]} virtualCourts - array of court objects to which unassigned bookings have been added
  */
-export function getVirtualCourtBookings({ bookings, courts, date }) {
+export function getVirtualCourtBookings({
+  averageMatchUpMinutes,
+  startTime,
+  endTime,
+  bookings,
+  courts,
+  date,
+}) {
   const { unassignedBookings } = (bookings || []).reduce(
     (accumulator, booking) => {
       const { courtId } = booking;
@@ -40,6 +51,7 @@ export function getVirtualCourtBookings({ bookings, courts, date }) {
     ),
   }));
 
+  const { sameDate } = getCourtDateFilters({ date });
   unassignedBookings.forEach((unassignedBooking) => {
     const { startTime, endTime } = unassignedBooking;
     const bookingStartTime = timeToDate(startTime);
@@ -48,7 +60,6 @@ export function getVirtualCourtBookings({ bookings, courts, date }) {
       bookingStartTime,
       bookingEndTime
     );
-    const { sameDate } = getCourtDateFilters({ date });
 
     virtualCourts.find((court) => {
       if (!Array.isArray(court.dateAvailability)) return false;
@@ -76,5 +87,44 @@ export function getVirtualCourtBookings({ bookings, courts, date }) {
     });
   });
 
-  return { virtualCourts };
+  // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes
+  let firstTimeSlotStartTime;
+  if (startTime && endTime) {
+    const dateStartTime = timeToDate(startTime);
+    const dateEndTime = timeToDate(endTime);
+    virtualCourts.every((court) => {
+      if (!Array.isArray(court.dateAvailability)) return false;
+      const dateAvailability = court.dateAvailability.filter(sameDate);
+      return dateAvailability.find((courtDate) => {
+        const timeSlots = generateTimeSlots({ courtDate });
+        return timeSlots.find((timeSlot) => {
+          const timeSlotStartTime = timeToDate(timeSlot.startTime);
+          const timeSlotEndTime = timeToDate(timeSlot.endTime);
+          if (
+            timeSlotStartTime > dateEndTime ||
+            timeSlotStartTime < dateStartTime
+          )
+            return false;
+          if (timeSlotEndTime < dateStartTime) return false;
+          const timeSlotMinutes = minutesDifference(
+            timeSlotStartTime,
+            timeSlotEndTime
+          );
+          const available = timeSlotMinutes >= averageMatchUpMinutes;
+          if (available) {
+            const timeString = extractTime(timeSlotStartTime.toISOString());
+            if (
+              !firstTimeSlotStartTime ||
+              timeString < firstTimeSlotStartTime
+            ) {
+              firstTimeSlotStartTime = timeString;
+            }
+          }
+          return available;
+        });
+      });
+    });
+  }
+
+  return { virtualCourts, firstTimeSlotStartTime };
 }
