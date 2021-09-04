@@ -93,19 +93,22 @@ export function scheduleMatchUps({
   );
 
   // discover the earliest time that this block of targetMatchUps can be scheduled
-  const notBeforeTimes = targetMatchUps.map(
-    ({ matchUpId }) => matchUpNotBeforeTimes[matchUpId]
-  );
-  const notBeforeTime = unique(notBeforeTimes.filter(Boolean)).sort()[0];
+  // if notBeforeTimes includes undefined it means there are matchUps which have no restrictions
+  const notBeforeTimes = unique(
+    targetMatchUps.map(({ matchUpId }) => matchUpNotBeforeTimes[matchUpId])
+  ).sort();
+  const notBeforeTime =
+    !notBeforeTimes.includes(undefined) && notBeforeTimes.filter(Boolean)[0];
 
-  startTime =
-    startTime || notBeforeTimes.includes(undefined) ? undefined : notBeforeTime;
+  // use notBeforeTime if a startTime has not been specified (normally has not)
+  startTime = startTime || notBeforeTime;
 
   // determines court availability taking into account already scheduled matchUps on the date
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
+      calculateStartTimeFromCourts: !notBeforeTime,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
       date: extractDate(date),
