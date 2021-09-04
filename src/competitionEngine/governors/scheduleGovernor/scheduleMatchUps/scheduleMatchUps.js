@@ -99,6 +99,7 @@ export function scheduleMatchUps({
   ).sort();
   const notBeforeTime =
     !notBeforeTimes.includes(undefined) && notBeforeTimes.filter(Boolean)[0];
+  const calculateStartTimeFromCourts = !notBeforeTime;
 
   // use notBeforeTime if a startTime has not been specified (normally has not)
   startTime = startTime || notBeforeTime;
@@ -108,7 +109,7 @@ export function scheduleMatchUps({
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
-      calculateStartTimeFromCourts: !notBeforeTime,
+      calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
       date: extractDate(date),
