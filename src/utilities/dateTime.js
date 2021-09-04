@@ -400,13 +400,6 @@ export function getTimeZoneOffset({ date, timeZone } = {}) {
 }
 
 /*
-export const currentUTCDateWithTime = () => {
-  const date = new Date();
-  const utcHours = date.getUTCHours();
-  const utcMinutes = date.getMinutes();
-  return `${currentUTCDate()}T${utcHours}:${utcMinutes}`;
-};
-
 export function validDate(datestring, range) {
   if (!datestring) return false;
   const dateparts = formatDate(datestring).split('-');
