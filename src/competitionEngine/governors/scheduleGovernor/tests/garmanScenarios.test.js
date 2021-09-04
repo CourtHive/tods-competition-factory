@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
-import { generateRange, unique } from '../../../../utilities';
 import { extractTime } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
+import { unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
 
@@ -10,22 +10,13 @@ import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 const date = new Date().toISOString().split('T')[0];
 
-function courtGenerator({
-  count = 10,
-  startTime = '8:00',
-  endTime = '20:30',
-} = {}) {
-  return generateRange(0, count).map(() => ({
-    dateAvailability: [{ date, startTime, endTime }],
-  }));
-}
-
 it('correctly generates second round scheduleTimes', () => {
   const courtsCount = 30;
-  const courts = courtGenerator({
+  const courts = garman.courtGenerator({
     count: courtsCount,
     startTime: '08:00',
     endTime: '21:00',
+    date,
   });
   const { scheduleTimes, timingProfile } = garman.getScheduleTimes({
     startTime: '08:00',
@@ -173,6 +164,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     return timesMapped;
   }, {});
 
+  // with seed time as last scheduleTime from previously scheduled round
   expect(timeMap).toEqual({
     '08:00': 30,
     '09:00': 10,
@@ -185,4 +177,141 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     '12:30': 5,
     '13:00': 2,
   });
+});
+
+it('properly schedules 1st rounds of 2 32 single elimination draws with 10 courts', () => {
+  const startDate = '2022-01-01';
+  const endDate = '2022-01-07';
+
+  const courtsCount = 10;
+  const startTime = '08:00';
+  const endTime = '21:00';
+
+  const venueProfiles = [
+    {
+      venueName: 'Ten Courts',
+      venueAbbreviation: 'TCT',
+      courtsCount,
+      startTime,
+      endTime,
+    },
+  ];
+
+  const eventProfiles = [
+    {
+      eventName: 'Scheduling Test',
+      drawProfiles: [
+        {
+          drawSize: 32,
+          drawName: 'First Draw',
+          uniqueParticipants: true,
+        },
+        {
+          drawSize: 32,
+          drawName: 'Second Draw',
+          uniqueParticipants: true,
+        },
+      ],
+    },
+  ];
+  const {
+    drawIds,
+    eventIds: [eventId],
+    venueIds: [venueId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_USTA,
+    eventProfiles,
+    venueProfiles,
+    startDate,
+    endDate,
+  });
+
+  const { tournamentId } = tournamentRecord;
+  competitionEngine.setState(tournamentRecord);
+
+  let {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId: drawIds[0] });
+  let result = competitionEngine.addSchedulingProfileRound({
+    scheduleDate: startDate,
+    venueId,
+    round: {
+      tournamentId,
+      eventId,
+      drawId: drawIds[0],
+      structureId,
+      roundNumber: 1,
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  ({
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId: drawIds[1] }));
+  result = competitionEngine.addSchedulingProfileRound({
+    scheduleDate: startDate,
+    venueId,
+    round: {
+      tournamentId,
+      eventId,
+      drawId: drawIds[1],
+      structureId,
+      roundNumber: 1,
+    },
+  });
+  expect(result.success).toEqual(true);
+
+  result = competitionEngine.scheduleProfileRounds({
+    scheduleDates: [startDate],
+  });
+  expect(result.success).toEqual(true);
+  expect(result.scheduledDates).toEqual([startDate]);
+
+  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
+  const hasSchedule = ({ schedule }) => {
+    const matchUpScheduleKeys = Object.keys(schedule)
+      .filter((key) => scheduleAttributes.includes(key))
+      .filter((key) => schedule[key]);
+    return !!matchUpScheduleKeys.length;
+  };
+
+  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(scheduledMatchUps.length).toEqual(32);
+
+  const scheduledTimes = scheduledMatchUps
+    .map(({ schedule }) => schedule.scheduledTime)
+    .sort();
+  const timeMap = scheduledTimes.reduce((timesMapped, scheduledTime) => {
+    const time = extractTime(scheduledTime);
+    if (!timesMapped[time]) {
+      timesMapped[time] = 1;
+    } else {
+      timesMapped[time] += 1;
+    }
+    return timesMapped;
+  }, {});
+
+  console.log(timeMap);
+
+  // with seed time as last scheduleTime from previously scheduled round
+  /*
+  expect(timeMap).toEqual({
+    '08:00': 30,
+    '09:00': 10,
+    '09:30': 10,
+    '10:00': 10,
+    '10:30': 10,
+    '11:00': 8,
+    '11:30': 5,
+    '12:00': 5,
+    '12:30': 5,
+    '13:00': 2,
+  });
+  */
 });

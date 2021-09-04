@@ -133,13 +133,13 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   const timingParameters = {
     date,
     courts,
-    startTime: '8:00',
+    startTime: '08:00',
     endTime: ' 19:00',
     periodLength: 30,
     averageMatchUpMinutes: 90,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
-  expect(scheduleTimes.length).toEqual(19);
+  expect(scheduleTimes.length).toEqual(18);
 
   ({ tournamentRecord } = tournamentEngine.getState());
   const tournamentId =
@@ -517,13 +517,13 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const timingParameters = {
     date,
     courts,
-    startTime: '8:00',
+    startTime: '08:00',
     endTime: ' 19:00',
     periodLength: 30,
     averageMatchUpMinutes: 90,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
-  expect(scheduleTimes.length).toEqual(19);
+  expect(scheduleTimes.length).toEqual(18);
 
   ({ tournamentRecord } = tournamentEngine.getState());
   const tournamentId =
