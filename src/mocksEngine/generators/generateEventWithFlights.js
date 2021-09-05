@@ -43,25 +43,38 @@ export function generateEventWithFlights({
     tieFormat: eventTieFormat,
     policyDefinitions,
   } = eventProfile;
-  let targetParticipants = tournamentRecord.participants;
 
-  let generateUniqueParticipants;
+  let targetParticipants = tournamentRecord.participants;
+  let uniqueDrawParticipants = [];
+
+  let uniqueParticipantsCount = {};
   const stageParticipantsCount = drawProfiles.reduce(
     (stageParticipantsCount, drawProfile) => {
       const stage = drawProfile.stage || MAIN;
+      if (!Object.keys(stageParticipantsCount).includes(stage))
+        stageParticipantsCount[stage] = 0;
+
       const participantsCount =
         drawProfile.participantsCount ||
         (drawProfile.drawSize || 0) - (drawProfile.qualifyingPositions || 0);
-      if (drawProfile.uniqueParticipants) generateUniqueParticipants = true;
-      if (!Object.keys(stageParticipantsCount).includes(stage))
-        stageParticipantsCount[stage] = 0;
-      stageParticipantsCount[stage] = Math.max(
-        participantsCount,
-        stageParticipantsCount[stage]
-      );
+      if (drawProfile.uniqueParticipants) {
+        if (!Object.keys(uniqueParticipantsCount).includes(stage))
+          uniqueParticipantsCount[stage] = 0;
+        uniqueParticipantsCount[stage] += participantsCount;
+      } else {
+        stageParticipantsCount[stage] = Math.max(
+          participantsCount,
+          stageParticipantsCount[stage]
+        );
+      }
       return stageParticipantsCount;
     },
     {}
+  );
+
+  const uniqueParticipantStages = Object.keys(uniqueParticipantsCount);
+  uniqueParticipantStages.forEach(
+    (stage) => (stageParticipantsCount[stage] += uniqueParticipantsCount[stage])
   );
 
   const eventParticipantType =
@@ -71,10 +84,7 @@ export function generateEventWithFlights({
       ? PAIR
       : eventType;
 
-  const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
-  const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
-
-  if (generateUniqueParticipants) {
+  if (uniqueParticipantStages) {
     const {
       valuesInstanceLimit,
       nationalityCodesCount,
@@ -84,8 +94,11 @@ export function generateEventWithFlights({
       personIds,
       inContext,
     } = participantsProfile || {};
+    const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
+    const qualifyingParticipantsCount =
+      uniqueParticipantsCount[QUALIFYING] || 0;
 
-    const { participants: unique } = generateParticipants({
+    const { participants: uniqueParticipants } = generateParticipants({
       participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
       participantType: eventParticipantType,
       sex: gender,
@@ -100,11 +113,21 @@ export function generateEventWithFlights({
       inContext,
     });
 
-    let result = addParticipants({ tournamentRecord, participants: unique });
+    let result = addParticipants({
+      tournamentRecord,
+      participants: uniqueParticipants,
+    });
     if (result.error) return result;
-    targetParticipants = unique;
+
+    uniqueDrawParticipants = uniqueParticipants.filter(
+      ({ participantType }) => participantType === eventParticipantType
+    );
   }
 
+  const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
+  const qualifyingParticipantsCount = stageParticipantsCount[QUALIFYING] || 0;
+
+  // this is only used for non-unique participants
   const stageParticipants = {
     QUALIFYING: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
@@ -142,6 +165,7 @@ export function generateEventWithFlights({
   if (result.error) return result;
   const { event } = result;
 
+  let uniqueParticipantsIndex = 0;
   for (const drawProfile of drawProfiles) {
     const {
       stage,
@@ -151,9 +175,17 @@ export function generateEventWithFlights({
       qualifyingPositions,
     } = drawProfile;
     const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
-    const drawParticipantIds = (stageParticipants[stage || MAIN] || [])
+
+    // if a drawProfile has specified uniqueParticipants...
+    const drawParticipants = drawProfile.uniqueParticipants
+      ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
+      : stageParticipants[stage || MAIN] || [];
+    if (drawProfile.uniqueParticipants) uniqueParticipantsIndex += entriesCount;
+
+    const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)
       .map(({ participantId }) => participantId);
+
     if (drawParticipantIds.length) {
       const result = addEventEntries({
         tournamentRecord,
