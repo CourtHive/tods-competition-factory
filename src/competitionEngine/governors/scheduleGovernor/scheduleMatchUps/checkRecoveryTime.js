@@ -12,21 +12,21 @@ export function checkRecoveryTime({
   matchUp,
 }) {
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  const sufficientTimeForIndiiduals = individualParticipantIds.reduce(
-    (isSufficient, participantId) => {
-      const profile = individualParticipantProfiles[participantId];
-      if (profile) {
-        if (!profile.timeAfterRecovery) return isSufficient && true;
-        const timeBetween = minutesDifference(
-          timeToDate(profile.timeAfterRecovery),
-          timeToDate(scheduleTime),
-          false
-        );
-        if (timeBetween < 0) return false;
+  const sufficientTimeForIndiiduals = individualParticipantIds.every(
+    (participantId) => {
+      let profile = individualParticipantProfiles[participantId];
+      if (!profile) {
+        individualParticipantProfiles[participantId] = {};
+        profile = individualParticipantProfiles[participantId];
       }
-      return isSufficient;
-    },
-    true
+      if (!profile.timeAfterRecovery) return true;
+      const timeBetween = minutesDifference(
+        timeToDate(profile.timeAfterRecovery),
+        timeToDate(scheduleTime),
+        false
+      );
+      return timeBetween < 0 ? false : true;
+    }
   );
 
   const notBeforeTime = matchUpNotBeforeTimes[matchUp.matchUpId];
