@@ -66,6 +66,7 @@ export function getScheduleTimes({
 
   const { virtualCourts, firstTimeSlotStartTime } = getVirtualCourtBookings({
     averageMatchUpMinutes,
+    periodLength,
     startTime,
     endTime,
     bookings,
@@ -93,7 +94,9 @@ export function getScheduleTimes({
     const { availableToScheduleCount } = getCourtsAvailableAtPeriodStart({
       courts: virtualCourts,
       averageMatchUpMinutes,
+      periodLength,
       periodStart,
+      period,
       date,
     });
 

@@ -31,7 +31,6 @@ it('can clear scheduled matchUps', () => {
         },
         {
           drawSize: 32,
-          qualifyingPositions: 4,
           drawName: 'Main Draw',
           drawType: COMPASS,
         },
@@ -114,6 +113,17 @@ it('can clear scheduled matchUps', () => {
   );
   expect(expectedStructureIds).toEqual(true);
   expect(scheduledMatchUps[0].schedule.timeAfterRecovery).toEqual('10:30');
+
+  // prettier-ignore
+  expect(
+    scheduledMatchUps.map(({ roundNumber, roundPosition }) => [
+      roundNumber,
+      roundPosition,
+    ])
+  ).toEqual([
+    [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],
+    [1, 1], [1, 2], [1, 3], [1, 4], [1, 5], [1, 6], [1, 7], [1, 8],
+    [1, 9], [1, 10], [1, 11], [1, 12], [1, 13], [1, 14], [1, 15], [1, 16]]);
 
   const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({

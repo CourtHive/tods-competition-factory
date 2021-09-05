@@ -1,7 +1,7 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { extractTime } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
-import { unique } from '../../../../utilities';
+import { intersection, unique } from '../../../../utilities';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
 
@@ -197,31 +197,25 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
     },
   ];
 
-  const eventProfiles = [
+  const drawProfiles = [
     {
-      eventName: 'Scheduling Test',
-      drawProfiles: [
-        {
-          drawSize: 32,
-          drawName: 'First Draw',
-          uniqueParticipants: true,
-        },
-        {
-          drawSize: 32,
-          drawName: 'Second Draw',
-          uniqueParticipants: true,
-        },
-      ],
+      drawSize: 32,
+      drawName: 'First Draw',
+      uniqueParticipants: true,
+    },
+    {
+      drawSize: 32,
+      drawName: 'Second Draw',
+      uniqueParticipants: true,
     },
   ];
   const {
     drawIds,
-    eventIds: [eventId],
     venueIds: [venueId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_USTA,
-    eventProfiles,
+    drawProfiles,
     venueProfiles,
     startDate,
     endDate,
@@ -230,8 +224,13 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
   const { tournamentId } = tournamentRecord;
   competitionEngine.setState(tournamentRecord);
 
+  const eventDrawEntries = [];
+  const eventEntries = [];
   let {
+    event: { eventId, entries },
     drawDefinition: {
+      drawId,
+      entries: drawEntries,
       structures: [{ structureId }],
     },
   } = tournamentEngine.getEvent({ drawId: drawIds[0] });
@@ -241,15 +240,20 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
     round: {
       tournamentId,
       eventId,
-      drawId: drawIds[0],
+      drawId,
       structureId,
       roundNumber: 1,
     },
   });
   expect(result.success).toEqual(true);
+  eventEntries.push(entries.map(({ participantId }) => participantId));
+  eventDrawEntries.push(drawEntries.map(({ participantId }) => participantId));
 
   ({
+    event: { eventId, entries },
     drawDefinition: {
+      drawId,
+      entries: drawEntries,
       structures: [{ structureId }],
     },
   } = tournamentEngine.getEvent({ drawId: drawIds[1] }));
@@ -259,12 +263,20 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
     round: {
       tournamentId,
       eventId,
-      drawId: drawIds[1],
+      drawId,
       structureId,
       roundNumber: 1,
     },
   });
   expect(result.success).toEqual(true);
+  eventEntries.push(entries.map(({ participantId }) => participantId));
+  eventDrawEntries.push(drawEntries.map(({ participantId }) => participantId));
+
+  // expect there to be no overlap in the entries between the two events
+  expect(intersection(eventEntries[0], eventEntries[1]).length).toEqual(0);
+  expect(intersection(eventDrawEntries[0], eventDrawEntries[1]).length).toEqual(
+    0
+  );
 
   result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
@@ -297,21 +309,14 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
     return timesMapped;
   }, {});
 
-  console.log(timeMap);
-
-  // with seed time as last scheduleTime from previously scheduled round
-  /*
   expect(timeMap).toEqual({
-    '08:00': 30,
-    '09:00': 10,
-    '09:30': 10,
-    '10:00': 10,
-    '10:30': 10,
-    '11:00': 8,
-    '11:30': 5,
-    '12:00': 5,
-    '12:30': 5,
-    '13:00': 2,
+    '08:00': 10,
+    '09:00': 3,
+    '09:30': 3,
+    '10:00': 4,
+    '10:30': 3,
+    '11:00': 3,
+    '11:30': 4,
+    '12:00': 2,
   });
-  */
 });

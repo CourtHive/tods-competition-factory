@@ -16,6 +16,7 @@ import { generateTimeSlots } from './generateTimeSlots';
  */
 export function getVirtualCourtBookings({
   averageMatchUpMinutes,
+  // periodLength,
   startTime,
   endTime,
   bookings,
@@ -39,6 +40,15 @@ export function getVirtualCourtBookings({
     { courtBookings: {}, unassignedBookings: [] }
   );
 
+  /*
+  console.log({
+    unassignedBookings: unassignedBookings.map(({ startTime, endTime }) => ({
+      startTime,
+      endTime,
+    })),
+  });
+  */
+
   const virtualCourts = courts.map(({ courtId, dateAvailability }) => ({
     courtId,
     dateAvailability: dateAvailability?.map(
@@ -51,6 +61,7 @@ export function getVirtualCourtBookings({
     ),
   }));
 
+  const assignedBookings = [];
   const { sameDate } = getCourtDateFilters({ date });
   unassignedBookings.forEach((unassignedBooking) => {
     const { startTime, endTime } = unassignedBooking;
@@ -78,7 +89,8 @@ export function getVirtualCourtBookings({
           const available = timeSlotMinutes >= bookingRequiredMinutes;
           if (available) {
             if (!courtDate.bookings) courtDate.bookings = [];
-            const booking = { startTime, endTime, bookingType: 'matchUp' };
+            const booking = { startTime, endTime, bookingType: 'virtual' };
+            assignedBookings.push(booking);
             courtDate.bookings.push(booking);
           }
           return available;
@@ -86,6 +98,7 @@ export function getVirtualCourtBookings({
       });
     });
   });
+  // console.log({ assignedBookings });
 
   // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes
   let firstTimeSlotStartTime;

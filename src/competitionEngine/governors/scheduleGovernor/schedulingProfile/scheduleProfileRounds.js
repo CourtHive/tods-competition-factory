@@ -105,16 +105,16 @@ export function scheduleProfileRounds({
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
 
+      const hashes = [];
       const sortedRounds = rounds.sort(
         (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
       );
 
-      for (const round of sortedRounds) {
-        periodLength =
+      const scheduledRoundsDetails = sortedRounds.map((round) => {
+        const roundPeriodLength =
           round.periodLength ||
           dateSchedulingProfile?.periodLength ||
           periodLength;
-
         const structureIds = containedStructureIds[round.structureId] || [
           round.structureId,
         ];
@@ -126,7 +126,6 @@ export function scheduleProfileRounds({
           drawIds: [round.drawId],
           structureIds,
         };
-
         let roundMatchUps = filterMatchUps({
           matchUps,
           processContext: true,
@@ -177,9 +176,48 @@ export function scheduleProfileRounds({
           eventType,
         });
 
-        // a potential optimization is to check the matchUpFormatTiming for sequential rounds
-        // use an aggregator `roundScheduleDetails` and then bulk schedule rounds with equivalent averageMinutes
-        // roundScheduleDetails = [{ averageMinutes, recoveryMinutes, periodLength, matchUpIds }]
+        const hash = `${averageMinutes}|${recoveryMinutes}|${roundPeriodLength}`;
+        if (!hashes.includes(hash)) hashes.push(hash);
+
+        return {
+          hash,
+          matchUpIds,
+          averageMinutes,
+          recoveryMinutes,
+          roundPeriodLength,
+        };
+      });
+
+      const hashedRounds = hashes.map((hash) => {
+        let groupedMatchUpIds = [];
+        let averageMinutes;
+        let recoveryMinutes;
+        let roundPeriodLength;
+        scheduledRoundsDetails
+          .filter((details) => details.hash === hash)
+          .forEach((round) => {
+            averageMinutes = round.averageMinutes;
+            recoveryMinutes = round.recoveryMinutes;
+            roundPeriodLength = round.roundPeriodLength;
+            groupedMatchUpIds = groupedMatchUpIds.concat(round.matchUpIds);
+          });
+
+        return {
+          averageMinutes,
+          recoveryMinutes,
+          roundPeriodLength,
+          matchUpIds: groupedMatchUpIds,
+        };
+      });
+
+      for (const roundDetail of hashedRounds) {
+        const {
+          matchUpIds,
+          averageMinutes,
+          recoveryMinutes,
+          roundPeriodLength,
+        } = roundDetail;
+        periodLength = roundPeriodLength || periodLength;
 
         const result = scheduleMatchUps({
           tournamentRecords,

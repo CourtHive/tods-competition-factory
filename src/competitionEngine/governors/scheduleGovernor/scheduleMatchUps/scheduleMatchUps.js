@@ -56,6 +56,7 @@ import {
  */
 export function scheduleMatchUps({
   tournamentRecords,
+  competitionMatchUps,
   matchUpIds,
   venueIds,
 
@@ -84,12 +85,16 @@ export function scheduleMatchUps({
     return { error: INVALID_VALUES };
 
   const individualParticipantProfiles = {};
-  const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
-    tournamentRecords,
-    nextMatchUps: true,
-  });
-  const targetMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
-    matchUpIds.includes(matchUpId)
+  if (!competitionMatchUps) {
+    ({ matchUps: competitionMatchUps } = allCompetitionMatchUps({
+      tournamentRecords,
+      nextMatchUps: true,
+    }));
+  }
+
+  // this must be done to preserve the order of matchUpIds
+  const targetMatchUps = matchUpIds.map((matchUpId) =>
+    competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
 
   // discover the earliest time that this block of targetMatchUps can be scheduled

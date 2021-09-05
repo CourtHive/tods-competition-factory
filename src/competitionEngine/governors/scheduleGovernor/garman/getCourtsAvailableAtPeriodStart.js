@@ -4,6 +4,7 @@ import { getCourtDateFilters } from './courtDateFilters';
 export function getCourtsAvailableAtPeriodStart({
   includeBookingTypes,
   averageMatchUpMinutes,
+  periodLength,
   periodStart,
   courts,
   date,
@@ -16,6 +17,7 @@ export function getCourtsAvailableAtPeriodStart({
     averageMatchUpMinutes,
     periodStartTime,
     periodEndTime,
+    periodLength,
     date,
   });
 
