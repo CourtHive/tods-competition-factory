@@ -150,8 +150,6 @@ export function scheduleMatchUps({
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
-      if (mappedRecoveryMinutes)
-        console.log({ mappedRecoveryMinutes, recoveryMinutes });
       updateTimeAfterRecovery({
         averageMatchUpMinutes,
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
