@@ -1,7 +1,7 @@
-export { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 export { scoreGovernor } from './drawEngine/governors/scoreGovernor';
 export { fixtures } from './fixtures';
 
+import { garman } from './competitionEngine/governors/scheduleGovernor/garman/garman';
 import { nearestPowerOf2, isPowerOf2, isNumeric } from './utilities/math';
 import { dateTime, dateRange } from './utilities/dateTime';
 import { makeDeepCopy } from './utilities/makeDeepCopy';
@@ -26,6 +26,7 @@ export const utilities = {
   countValues,
   dateRange,
   dateTime,
+  garman,
   generateRange,
   instanceCount,
   intersection,
