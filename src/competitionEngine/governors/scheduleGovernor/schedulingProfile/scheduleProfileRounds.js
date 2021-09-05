@@ -42,10 +42,8 @@ export function scheduleProfileRounds({
     ...Object.values(tournamentRecords).map(getContainedStructures)
   );
 
-  const competitionMatchUpFilters = {};
   const { matchUps } = allCompetitionMatchUps({
     tournamentRecords,
-    matchUpFilters: competitionMatchUpFilters,
     nextMatchUps: true,
   });
 
@@ -110,6 +108,7 @@ export function scheduleProfileRounds({
         (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
       );
 
+      const recoveryMinutesMap = {};
       const scheduledRoundsDetails = sortedRounds.map((round) => {
         const roundPeriodLength =
           round.periodLength ||
@@ -151,8 +150,6 @@ export function scheduleProfileRounds({
           );
         }
 
-        const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
-
         const tournamentRecord = tournamentRecords[round.tournamentId];
         const { drawDefinition, event } = findEvent({
           tournamentRecord,
@@ -176,7 +173,12 @@ export function scheduleProfileRounds({
           eventType,
         });
 
-        const hash = `${averageMinutes}|${recoveryMinutes}|${roundPeriodLength}`;
+        const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
+        matchUpIds.forEach(
+          (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
+        );
+
+        const hash = `${averageMinutes}|${roundPeriodLength}`;
         if (!hashes.includes(hash)) hashes.push(hash);
 
         return {
@@ -222,6 +224,7 @@ export function scheduleProfileRounds({
         const result = scheduleMatchUps({
           tournamentRecords,
 
+          recoveryMinutesMap,
           matchUpDailyLimits,
           matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,

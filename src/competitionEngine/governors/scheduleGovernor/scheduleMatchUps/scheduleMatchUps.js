@@ -56,7 +56,7 @@ import {
  */
 export function scheduleMatchUps({
   tournamentRecords,
-  competitionMatchUps,
+  competitionMatchUps, // optimization for scheduleProfileRounds to pass this is as it has already processed
   matchUpIds,
   venueIds,
 
@@ -67,6 +67,7 @@ export function scheduleMatchUps({
   periodLength = 30,
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
+  recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
 
   matchUpDailyLimits = {},
   matchUpNotBeforeTimes = {},
@@ -84,12 +85,22 @@ export function scheduleMatchUps({
   )
     return { error: INVALID_VALUES };
 
-  const individualParticipantProfiles = {};
+  // if competitionMatchUps not provided as a parameter
+  // scheduleMatchUpProfiles has already called processNextMatchUps for all
   if (!competitionMatchUps) {
     ({ matchUps: competitionMatchUps } = allCompetitionMatchUps({
       tournamentRecords,
       nextMatchUps: true,
     }));
+    competitionMatchUps.forEach((matchUp) => {
+      if (matchUp.schedule?.timeAfterRecovery) {
+        processNextMatchUps({
+          matchUp,
+          matchUpNotBeforeTimes,
+          matchUpPotentialParticipantIds,
+        });
+      }
+    });
   }
 
   // this must be done to preserve the order of matchUpIds
@@ -128,6 +139,7 @@ export function scheduleMatchUps({
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
+  const individualParticipantProfiles = {};
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
@@ -137,9 +149,12 @@ export function scheduleMatchUps({
     });
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
+      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
+      if (mappedRecoveryMinutes)
+        console.log({ mappedRecoveryMinutes, recoveryMinutes });
       updateTimeAfterRecovery({
         averageMatchUpMinutes,
-        recoveryMinutes,
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         matchUp,
         individualParticipantProfiles,
         scheduleTime,
@@ -232,10 +247,11 @@ export function scheduleMatchUps({
 
     // find a matchUp where all individual participants had enough recovery time
     const scheduledMatchUp = matchUpsToSchedule.find((matchUp) => {
+      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       const { enoughTime } = checkRecoveryTime({
         matchUp,
         scheduleTime,
-        recoveryMinutes,
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
         individualParticipantProfiles,
         matchUpNotBeforeTimes,
