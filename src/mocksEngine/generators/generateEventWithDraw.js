@@ -24,6 +24,7 @@ import {
 
 export function generateEventWithDraw({
   tournamentRecord,
+  allUniqueParticipantIds,
   autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
@@ -72,6 +73,7 @@ export function generateEventWithDraw({
     return false;
   };
 
+  const uniqueParticipantIds = [];
   if (uniqueParticipants) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
@@ -100,11 +102,17 @@ export function generateEventWithDraw({
 
     result = addParticipants({ tournamentRecord, participants: unique });
     if (result.error) return result;
+    unique.forEach(({ participantId }) =>
+      uniqueParticipantIds.push(participantId)
+    );
     targetParticipants = unique;
   }
 
   const participantIds = targetParticipants
     .filter(isEventParticipantType)
+    .filter(
+      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+    )
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
@@ -121,6 +129,9 @@ export function generateEventWithDraw({
   // when unique participants are used for DIRECT_ACCEPTANCE entries
   const alternatesParticipantIds = targetParticipants
     .filter(isEventParticipantType)
+    .filter(
+      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+    )
     .slice(participantsCount)
     .map((p) => p.participantId);
   if (alternatesParticipantIds.length) {
@@ -275,5 +286,5 @@ export function generateEventWithDraw({
 
   if (result.error) return { error: result.error };
 
-  return { drawId, eventId };
+  return { drawId, eventId, uniqueParticipantIds };
 }

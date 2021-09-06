@@ -237,23 +237,28 @@ export function generateTournamentRecord({
 
   const drawIds = [],
     eventIds = [],
-    venueIds = [];
+    venueIds = [],
+    allUniqueParticipantIds = [];
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawId, eventId, error } = generateEventWithDraw({
-        tournamentRecord,
-        autoEntryPositions,
-        participantsProfile,
-        completeAllMatchUps,
-        matchUpStatusProfile,
-        randomWinningSide,
-        drawProfile,
-        startDate,
-        goesTo,
-      });
+      const { drawId, eventId, error, uniqueParticipantIds } =
+        generateEventWithDraw({
+          tournamentRecord,
+          allUniqueParticipantIds,
+          autoEntryPositions,
+          participantsProfile,
+          completeAllMatchUps,
+          matchUpStatusProfile,
+          randomWinningSide,
+          drawProfile,
+          startDate,
+          goesTo,
+        });
       if (error) return { error };
       drawIds.push(drawId);
       eventIds.push(eventId);
+      if (uniqueParticipantIds?.length)
+        allUniqueParticipantIds.push(...uniqueParticipantIds);
     }
   }
 
@@ -263,8 +268,10 @@ export function generateTournamentRecord({
         error,
         eventId,
         drawIds: generatedDrawIds,
+        uniqueParticipantIds,
       } = generateEventWithFlights({
         tournamentRecord,
+        allUniqueParticipantIds,
         autoEntryPositions,
         participantsProfile,
         completeAllMatchUps,
@@ -275,6 +282,8 @@ export function generateTournamentRecord({
       if (error) return { error };
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
       eventIds.push(eventId);
+      if (uniqueParticipantIds?.length)
+        allUniqueParticipantIds.push(...uniqueParticipantIds);
     }
   }
 

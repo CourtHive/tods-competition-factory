@@ -23,6 +23,7 @@ import {
 
 export function generateEventWithFlights({
   tournamentRecord,
+  allUniqueParticipantIds,
   autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
@@ -84,6 +85,7 @@ export function generateEventWithFlights({
       ? PAIR
       : eventType;
 
+  const uniqueParticipantIds = [];
   if (uniqueParticipantStages) {
     const {
       valuesInstanceLimit,
@@ -122,6 +124,9 @@ export function generateEventWithFlights({
     uniqueDrawParticipants = uniqueParticipants.filter(
       ({ participantType }) => participantType === eventParticipantType
     );
+    uniqueParticipants.forEach(({ participantId }) =>
+      uniqueParticipantIds.push(participantId)
+    );
   }
 
   const mainParticipantsCount = stageParticipantsCount[MAIN] || 0;
@@ -131,9 +136,15 @@ export function generateEventWithFlights({
   const stageParticipants = {
     QUALIFYING: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
+      .filter(
+        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+      )
       .slice(0, qualifyingParticipantsCount),
     MAIN: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
+      .filter(
+        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+      )
       .slice(
         qualifyingParticipantsCount,
         qualifyingParticipantsCount + mainParticipantsCount
@@ -285,5 +296,5 @@ export function generateEventWithFlights({
     }
   }
 
-  return { drawIds, eventId };
+  return { drawIds, eventId, uniqueParticipantIds };
 }

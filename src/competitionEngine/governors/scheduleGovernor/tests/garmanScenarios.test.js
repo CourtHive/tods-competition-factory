@@ -132,6 +132,12 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
+  // prettier-ignore
+  expect(result.skippedScheduleTimes[startDate]).toEqual([
+    '11:00', '11:00', '11:30', '11:30', '11:30', '11:30', '11:30', '12:00',
+    '12:00', '12:00', '12:00', '12:00', '12:30', '12:30', '12:30', '12:30',
+    '12:30',
+  ]);
 
   const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
   const hasSchedule = ({ schedule }) => {
@@ -179,7 +185,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   });
 });
 
-it('properly schedules 1st rounds of 2 32 single elimination draws with 10 courts', () => {
+it('properly schedules 1st rounds of two 32 single elimination draws with 10 courts', () => {
   const startDate = '2022-01-01';
   const endDate = '2022-01-07';
 
@@ -206,7 +212,6 @@ it('properly schedules 1st rounds of 2 32 single elimination draws with 10 court
     {
       drawSize: 32,
       drawName: 'Second Draw',
-      uniqueParticipants: true,
     },
   ];
   const {
