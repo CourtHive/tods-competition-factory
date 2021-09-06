@@ -25,6 +25,7 @@ export function getMatchUpDependencies({ matchUps, drawIds }) {
     const drawMatchUps = matchUps
       // first get all matchUps for the draw
       .filter((matchUp) => matchUp.drawId === drawId)
+      // TODO: separate by Stage, sort by stageSequence and order by stage then flatten
       // then sort matchUps by stageSequence
       .sort((a, b) => a.stageSequence - b.stageSequence);
 
