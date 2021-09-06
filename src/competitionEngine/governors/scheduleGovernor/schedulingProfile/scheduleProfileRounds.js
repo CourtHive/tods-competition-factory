@@ -193,30 +193,43 @@ export function scheduleProfileRounds({
         };
       });
 
-      const hashedRounds = hashes.map((hash) => {
-        let groupedMatchUpIds = [];
-        let averageMinutes;
-        let recoveryMinutes;
-        let roundPeriodLength;
-        scheduledRoundsDetails
-          .filter((details) => details.hash === hash)
-          .forEach((round) => {
-            averageMinutes = round.averageMinutes;
-            recoveryMinutes = round.recoveryMinutes;
-            roundPeriodLength = round.roundPeriodLength;
-            groupedMatchUpIds = groupedMatchUpIds.concat(round.matchUpIds);
-          });
+      let lastHash;
+      let groupedMatchUpIds = [];
+      let averageMinutes;
+      let recoveryMinutes;
+      let roundPeriodLength;
+      let groupedRounds = [];
+      for (const roundDetails of scheduledRoundsDetails) {
+        if (!lastHash || roundDetails.hash === lastHash) {
+          groupedMatchUpIds = groupedMatchUpIds.concat(roundDetails.matchUpIds);
+        }
 
-        return {
+        if (lastHash && roundDetails.hash !== lastHash) {
+          lastHash = roundDetails.hash;
+          groupedRounds.push({
+            averageMinutes,
+            recoveryMinutes,
+            roundPeriodLength,
+            matchUpIds: groupedMatchUpIds,
+          });
+          groupedMatchUpIds = roundDetails.matchUpIds;
+        }
+        averageMinutes = roundDetails.averageMinutes;
+        recoveryMinutes = roundDetails.recoveryMinutes;
+        roundPeriodLength = roundDetails.roundPeriodLength;
+      }
+
+      if (groupedMatchUpIds.length) {
+        groupedRounds.push({
           averageMinutes,
           recoveryMinutes,
           roundPeriodLength,
           matchUpIds: groupedMatchUpIds,
-        };
-      });
+        });
+      }
 
       let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
-      for (const roundDetail of hashedRounds) {
+      for (const roundDetail of groupedRounds) {
         const {
           matchUpIds,
           averageMinutes,
