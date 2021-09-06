@@ -1,6 +1,7 @@
-// import { CONSOLATION, MAIN } from '../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { matchUpTypes, policyConstants } from 'tods-competition-factory';
+
+const { DOUBLES, SINGLES } = matchUpTypes;
+const { POLICY_TYPE_SCHEDULING } = policyConstants;
 
 // categoryTypes
 const ADULT = 'ADULT';
@@ -23,76 +24,132 @@ export const POLICY_SCHEDULING_USTA = {
     },
     matchUpAverageTimes: [
       {
-        matchUpFormatCodes: ['SET3-S:6/TB7'],
+        matchUpFormatCodes: ['SET3-S:6/TB7'], // Best of 3 tiebreak sets
         averageTimes: [
-          { categoryTypes: [JUNIOR], minutes: { default: 97 } },
           {
-            categoryTypes: [ADULT, WHEELCHAIR],
+            categoryNames: [],
+            minutes: { default: 90 },
+          },
+          {
+            categoryTypes: [WHEELCHAIR],
             minutes: { default: 120 },
           },
         ],
       },
       {
-        matchUpFormatCodes: ['SET3-S:6/TB7-F:TB10'],
-        averageTimes: [
-          { categoryNames: [], minutes: { default: 90 } },
-          { categoryTypes: [ADULT], minutes: { default: 90 } },
-        ],
+        matchUpFormatCodes: ['SET3-S:6/TB7-F:TB10'], // Two tiebreak sets, 10-point match tiebreak at one set all
+        averageTimes: [{ categoryNames: [], minutes: { default: 85 } }],
       },
       {
-        matchUpFormatCodes: ['SET3-S:6/TB7-F:TB7'],
+        matchUpFormatCodes: ['SET3-S:6/TB7-F:TB7'], // Two tiebreak sets, 7-point match tiebreak at one set all
         averageTimes: [{ categoryNames: [], minutes: { default: 70 } }],
       },
       {
-        matchUpFormatCodes: ['SET3-S:4/TB7'],
-        averageTimes: [{ categoryNames: [], minutes: { default: 60 } }],
-      },
-      {
-        matchUpFormatCodes: ['SET3-S:4/TB7-F:TB7'],
+        matchUpFormatCodes: ['SET3-S:4NOAD-F:TB7'], // Two short sets to 4 with deciding game at 3-3, 7-point match tiebreak at one set all
         averageTimes: [{ categoryNames: [], minutes: { default: 55 } }],
       },
       {
-        matchUpFormatCodes: ['SET3-S:4/TB7-F:TB7'],
+        matchUpFormatCodes: ['SET3-S:4/TB7'], // Best of 3 sets to 4
+        averageTimes: [{ categoryNames: [], minutes: { default: 60 } }],
+      },
+      {
+        matchUpFormatCodes: ['SET3-S:4/TB7-F:TB7'], // Two short sets to 4, 7-point match tiebreak at one set all
         averageTimes: [{ categoryNames: [], minutes: { default: 50 } }],
       },
       {
-        matchUpFormatCodes: ['SET3-S:4/TB5@3'],
+        matchUpFormatCodes: ['SET3-S:4/TB7-F:TB10'], // Two short sets to 4, 10-point match tiebreak at one set all
+        averageTimes: [{ categoryNames: [], minutes: { default: 55 } }],
+      },
+      {
+        matchUpFormatCodes: ['SET3-S:4/TB5@3'], // Two out of three short sets to 4 with 5-point tiebreak at 3 games all
         averageTimes: [{ categoryNames: [], minutes: { default: 45 } }],
       },
       {
-        matchUpFormatCodes: ['SET1-S:8/TB7'],
+        matchUpFormatCodes: [
+          'SET1-S:8/TB7' /* 8 game pro-set with 7 point tiebreak at 8 games all */,
+          'SET1-S:8/TB7@7' /* 8 game pro-set with 7 point tiebreak at 7 games all */,
+        ],
         averageTimes: [{ categoryNames: [], minutes: { default: 40 } }],
       },
       {
-        matchUpFormatCodes: ['SET1-S:6/TB7'],
+        matchUpFormatCodes: ['SET1-S:5/TB9@4'], // One no advantage set to 5, tiebreak to 9 at 4-4
+        averageTimes: [{ categoryNames: [], minutes: { default: 30 } }],
+      },
+      {
+        matchUpFormatCodes: ['SET1-S:6/TB7'], // One standard tiebreak set to 6, 7-point tiebreak at 6 games all
+        averageTimes: [{ categoryNames: [], minutes: { default: 30 } }],
+      },
+      {
+        matchUpFormatCodes: ['SET1-S:6NOAD'], // One set to 6 with deciding game at 5 games all
         averageTimes: [{ categoryNames: [], minutes: { default: 30 } }],
       },
       {
         matchUpFormatCodes: [
-          'SET1-S:4/TB7',
-          'SET1-S:4/TB5@3',
-          'SET3-S:TB10',
-          'SET1-S:T20',
+          'SET1-S:4/TB7' /* One short set to 4, 7-point tiebreak at 4 games all */,
+          'SET1-S:4/TB5@3' /* One short set to 4, 5-point tiebreak at 3 games all */,
+          'SET3-S:TB10' /* Best of 3 10-point tiebreak games */,
+          'SET1-S:T20' /* Timed 20 minute game - game based' */,
         ],
         averageTimes: [{ categoryNames: [], minutes: { default: 20 } }],
       },
       {
-        matchUpFormatCodes: ['SET1-S:TB10'],
+        matchUpFormatCodes: ['SET1-S:4NOAD'], // One short set to 4, deciding game is played at 3 games all
+        averageTimes: [{ categoryNames: [], minutes: { default: 20 } }],
+      },
+      {
+        matchUpFormatCodes: ['SET1-S:TB10'], // One 10-point tiebreak game
         averageTimes: [{ categoryNames: [], minutes: { default: 10 } }],
       },
     ],
     matchUpRecoveryTimes: [
       {
-        matchUpFormatCodes: ['SET3-S:6/TB7'],
+        matchUpFormatCodes: [
+          'SET3-S:6/TB7' /* Best of 3 tiebreak sets */,
+          'SET3-S:6/TB7-F:TB10' /* Two tiebreak sets, 10-point match tiebreak at one set all */,
+          'SET3-S:6/TB7-F:TB7' /* Two tiebreak sets, 7-point match tiebreak at one set all */,
+        ],
         recoveryTimes: [
           {
-            categoryNames: [],
+            categoryTypes: [ADULT, WHEELCHAIR],
             minutes: { default: 60, [DOUBLES]: 30 },
+          },
+          {
+            categoryTypes: [JUNIOR],
+            minutes: { default: 60, [DOUBLES]: 60 },
           },
         ],
       },
       {
-        averageTimes: { greaterThan: 29, lessThan: 70 },
+        matchUpFormatCodes: [
+          'SET3-S:4/TB7-F:TB7' /* Two short sets to 4, 7-point match tiebreak at one set all */,
+          'SET3-S:4/TB7-F:TB10' /* Two short sets to 4, 10-point match tiebreak at one set all */,
+          'SET3-S:4NOAD-F:TB7' /* Two short sets to 4 with deciding game at 3-3, 7-point match tiebreak at one set all */,
+          'SET3-S:4/TB7' /* Best of 3 sets to 4 */,
+          'SET3-S:4/TB5@3' /* Two out of three short sets to 4 with 5-point tiebreak at 3 games all */,
+        ],
+        recoveryTimes: [
+          {
+            categoryTypes: [ADULT, WHEELCHAIR],
+            minutes: { default: 30 },
+          },
+          {
+            categoryTypes: [JUNIOR],
+            minutes: { default: 60 },
+          },
+        ],
+      },
+      {
+        matchUpFormatCodes: [
+          'SET1-S:8/TB7' /* 8 game pro-set with 7 point tiebreak at 8 games all */,
+          'SET1-S:8/TB7@7' /* 8 game pro-set with 7 point tiebreak at 7 games all */,
+          'SET1-S:5/TB9@4' /* One no advantage set to 5, tiebreak to 9 at 4-4 */,
+          'SET1-S:6/TB7' /* One standard tiebreak set to 6, 7-point tiebreak at 6 games all */,
+          'SET1-S:6NOAD' /* One set to 6 with deciding game at 5 games all */,
+          'SET1-S:4/TB7' /* One short set to 4, 7-point tiebreak at 4 games all */,
+          'SET1-S:4NOAD' /* One short set to 4, deciding game is played at 3 games all */,
+          'SET3-S:TB10' /* Best of 3 10-point tiebreak games */,
+          'SET1-S:T20' /* Timed 20 minute game - game based */,
+        ],
         recoveryTimes: [
           {
             categoryNames: [],
@@ -101,45 +158,29 @@ export const POLICY_SCHEDULING_USTA = {
         ],
       },
       {
-        averageTimes: { lessThan: 30 },
+        matchUpFormatCodes: ['SET1-S:4/TB5@3'], // One short set to 4, 5-point tiebreak at 3 games all
+        recoveryTimes: [
+          {
+            categoryTypes: [ADULT, JUNIOR],
+            minutes: { default: 30 },
+          },
+          {
+            categoryTypes: [WHEELCHAIR],
+            minutes: { default: 15 },
+          },
+        ],
+      },
+      {
+        matchUpFormatCodes: ['SET1-S:TB10'], // One 10-point tiebreak game
         recoveryTimes: [
           {
             categoryNames: [],
-            minutes: { default: 15, [DOUBLES]: 15 },
+            minutes: { default: 15 },
           },
         ],
       },
     ],
-    matchUpDailyLimits: [
-      {
-        matchUpFormatCodes: [], // all matchUpFormats
-        limits: [
-          {
-            categoryNames: [], // all categoryNames
-            categoryTypes: [], // all categoryTypes
-            matchesCombinations: [
-              { [SINGLES]: { default: 2 }, [DOUBLES]: { default: 1 } },
-              { [SINGLES]: { default: 1 }, [DOUBLES]: { default: 2 } },
-            ],
-            sets: { total: 9, [SINGLES]: 6, [DOUBLES]: 9 },
-          },
-        ],
-      },
-      {
-        matchUpFormatCodes: ['S3-S:TB10'],
-        limits: [
-          {
-            categoryNames: ['12U'],
-            matchesCombinations: [
-              { [SINGLES]: { default: 2 } },
-              { [SINGLES]: { default: 1 }, [DOUBLES]: { default: 2 } },
-              { [DOUBLES]: { default: 3 } },
-            ],
-            sets: { total: 9, [DOUBLES]: 9, [SINGLES]: 6 },
-          },
-        ],
-      },
-    ],
+    matchUpDailyLimits: [],
   },
 };
 
