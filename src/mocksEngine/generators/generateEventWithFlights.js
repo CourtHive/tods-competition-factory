@@ -3,10 +3,12 @@ import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/ev
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
+import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { validExtension } from '../../global/validation/validExtension';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { UUID } from '../../utilities';
@@ -43,8 +45,8 @@ export function generateEventWithFlights({
     surfaceCategory,
     tieFormat: eventTieFormat,
     policyDefinitions,
+    eventExtensions,
   } = eventProfile;
-
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
 
@@ -151,8 +153,12 @@ export function generateEventWithFlights({
       ),
   };
 
+  let { eventAttributes } = eventProfile;
+  if (typeof eventAttributes !== 'object') eventAttributes = {};
+
   const eventId = UUID();
   const newEvent = {
+    ...eventAttributes,
     ballType,
     category,
     discipline,
@@ -164,6 +170,13 @@ export function generateEventWithFlights({
     surfaceCategory,
     tieFormat: eventTieFormat,
   };
+
+  // attach any valid eventExtensions
+  if (eventExtensions?.length && Array.isArray(eventExtensions)) {
+    const extensions = eventExtensions.filter(validExtension);
+    if (extensions?.length) Object.assign(newEvent, { extensions });
+  }
+
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {
       attachEventPolicies({
@@ -253,6 +266,15 @@ export function generateEventWithFlights({
 
       const { drawDefinition, error } = result;
       if (error) return { error };
+
+      const drawExtensions = drawProfiles[index].drawExtensions;
+      if (Array.isArray(drawExtensions)) {
+        drawExtensions
+          .filter(validExtension)
+          .forEach((extension) =>
+            addExtension({ element: drawDefinition, extension })
+          );
+      }
 
       result = addDrawDefinition({
         drawDefinition,

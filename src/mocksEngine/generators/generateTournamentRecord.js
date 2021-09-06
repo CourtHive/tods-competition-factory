@@ -4,6 +4,7 @@ import { newTournamentRecord } from '../../tournamentEngine/generators/newTourna
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
+import { validExtension } from '../../global/validation/validExtension';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
@@ -48,6 +49,9 @@ export function generateTournamentRecord({
   eventProfiles,
   venueProfiles,
 
+  tournamentExtensions,
+  tournamentAttributes,
+
   completeAllMatchUps,
   matchUpStatusProfile,
   randomWinningSide,
@@ -73,11 +77,20 @@ export function generateTournamentRecord({
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
+  if (typeof tournamentAttributes !== 'object') tournamentAttributes = {};
   const tournamentRecord = newTournamentRecord({
+    ...tournamentAttributes,
     startDate,
     endDate,
     tournamentName,
   });
+
+  // attach any valid tournamentExtensions
+  if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
+    const extensions = tournamentExtensions.filter(validExtension);
+
+    if (extensions?.length) Object.assign(tournamentRecord, { extensions });
+  }
 
   if (typeof policyDefinitions === 'object') {
     for (const policyType of Object.keys(policyDefinitions)) {

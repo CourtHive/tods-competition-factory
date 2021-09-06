@@ -47,7 +47,6 @@ it.each([
             uniqueParticipants: true,
             matchUpFormat: matchUpFormatA,
             drawExtensions: [],
-            drawAttributes: {},
           },
           {
             drawSize: 4,
