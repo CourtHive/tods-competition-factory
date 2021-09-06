@@ -29,6 +29,7 @@ import {
  */
 export function getScheduleTimes({
   calculateStartTimeFromCourts = true,
+  remainingScheduleTimes, // times remaining from previous scheduling iteration
   averageMatchUpMinutes = 90,
   date = currentUTCDate(),
   periodLength = 30,
@@ -65,6 +66,7 @@ export function getScheduleTimes({
   }
 
   const { virtualCourts, firstTimeSlotStartTime } = getVirtualCourtBookings({
+    remainingScheduleTimes,
     averageMatchUpMinutes,
     periodLength,
     startTime,

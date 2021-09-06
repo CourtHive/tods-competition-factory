@@ -16,6 +16,7 @@ import { generateTimeSlots } from './generateTimeSlots';
  */
 export function getVirtualCourtBookings({
   averageMatchUpMinutes,
+  // remainingScheduleTimes,
   // periodLength,
   startTime,
   endTime,
@@ -64,7 +65,14 @@ export function getVirtualCourtBookings({
   const assignedBookings = [];
   const { sameDate } = getCourtDateFilters({ date });
   unassignedBookings.forEach((unassignedBooking) => {
-    const { startTime, endTime } = unassignedBooking;
+    const {
+      startTime,
+      endTime,
+      matchUpId,
+      averageMinutes,
+      recoveryMinutes,
+      periodLength,
+    } = unassignedBooking;
     const bookingStartTime = timeToDate(startTime);
     const bookingEndTime = timeToDate(endTime);
     const bookingRequiredMinutes = minutesDifference(
@@ -89,7 +97,15 @@ export function getVirtualCourtBookings({
           const available = timeSlotMinutes >= bookingRequiredMinutes;
           if (available) {
             if (!courtDate.bookings) courtDate.bookings = [];
-            const booking = { startTime, endTime, bookingType: 'virtual' };
+            const booking = {
+              bookingType: 'virtual',
+              averageMinutes,
+              recoveryMinutes,
+              periodLength,
+              matchUpId,
+              startTime,
+              endTime,
+            };
             assignedBookings.push(booking);
             courtDate.bookings.push(booking);
           }

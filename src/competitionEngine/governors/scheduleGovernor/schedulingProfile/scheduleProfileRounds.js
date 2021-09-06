@@ -86,6 +86,9 @@ export function scheduleProfileRounds({
   const matchUpNotBeforeTimes = {};
   const matchUpPotentialParticipantIds = {};
 
+  const remainingScheduleTimes = {};
+  const skippedScheduleTimes = {};
+
   matchUps.forEach((matchUp) => {
     if (matchUp.schedule?.timeAfterRecovery) {
       processNextMatchUps({
@@ -212,6 +215,7 @@ export function scheduleProfileRounds({
         };
       });
 
+      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       for (const roundDetail of hashedRounds) {
         const {
           matchUpIds,
@@ -223,15 +227,18 @@ export function scheduleProfileRounds({
 
         const result = scheduleMatchUps({
           tournamentRecords,
+          competitionMatchUps: matchUps,
 
+          averageMatchUpMinutes: averageMinutes,
           recoveryMinutesMap,
+          recoveryMinutes,
+
           matchUpDailyLimits,
           matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,
-          averageMatchUpMinutes: averageMinutes,
-          recoveryMinutes,
 
           checkPotentialConflicts,
+          remainingScheduleTimes: previousRemainingScheduleTimes,
 
           venueIds: [venueId],
           periodLength,
@@ -239,6 +246,16 @@ export function scheduleProfileRounds({
           date,
         });
         if (result.error) return result;
+
+        previousRemainingScheduleTimes = result.remainingScheduleTimes;
+        if (result.skippedScheduleTimes?.length) {
+          // add skippedScheduleTimes for each date and return for testing
+          skippedScheduleTimes[date] = result.skippedScheduleTimes;
+        }
+        if (result.remainingScheduleTimes?.length) {
+          // add remainingScheduleTimes for each date and return for testing
+          remainingScheduleTimes[date] = result.remainingScheduleTimes;
+        }
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
         noTimeMatchUpIds.push(...roundNoTimeMatchUpIds);
@@ -281,10 +298,14 @@ export function scheduleProfileRounds({
 
   return {
     ...SUCCESS,
+
     scheduledDates,
     noTimeMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
+
     requestConflicts,
+    skippedScheduleTimes,
+    remainingScheduleTimes,
   };
 }

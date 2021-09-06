@@ -28,6 +28,7 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  */
 export function calculateScheduleTimes({
   tournamentRecords,
+  remainingScheduleTimes,
 
   calculateStartTimeFromCourts = true,
   defaultRecoveryMinutes = 60,
@@ -135,7 +136,7 @@ export function calculateScheduleTimes({
         defaultTiming,
         matchUpFormat,
       };
-      const { averageMinutes } = matchUpFormatTimes({
+      const { averageMinutes, recoveryMinutes } = matchUpFormatTimes({
         eventType,
         timingDetails,
       });
@@ -144,6 +145,8 @@ export function calculateScheduleTimes({
       const endTime = addMinutesToTimeString(startTime, averageMinutes);
       const booking = {
         averageMinutes,
+        recoveryMinutes,
+        periodLength,
         startTime,
         endTime,
         courtId,
@@ -155,6 +158,7 @@ export function calculateScheduleTimes({
 
   const timingParameters = {
     calculateStartTimeFromCourts,
+    remainingScheduleTimes,
     averageMatchUpMinutes,
     periodLength,
     startTime,

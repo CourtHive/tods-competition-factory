@@ -144,25 +144,29 @@ competitionEngine.scheduleProfileRounds({
 });
 ```
 
-### pseudocode
+### Pseudocode
 
-Scheduling operates with an array of all competition matchUps "inContext".
-After building up a mapping of matchUpIds to scheduleTimes, the assignments are made.
+The highest level auto-scheduling method is `competitionEngine.scheduleProfileRounds`.
 
-1. Loop through `scheduleDates` ...
-2. Loop through venues for current `scheduleDate` ...
-3. ensure `rounds` specified for `scheduleDate` are sorted as specified
-4. Generate ordered array of `matchUpIds` derived from specified `rounds`
-5. Group ordered `matchUpIds` by **averageMatchUpMinutes|recoveryMinutes**
-6. Loop through groups of `matchUpIds` ...
-7. Calculate Available scheduleTimes, considering court availability and already scheduled matchUps
-8. Construct per-participant hash tables of `matchUps` played and `timeAfterRecovery`
-9. Filter out `matchUps` which are not appropriate for scheduling
-10. Filter out `matchUps` which include participants who have reached daily limits
-11. Loop through available `scheduleTimes` and build up mapping of `matchUpIds` to `scheduleTimes`
+1. Get an array of **inContext** `matchUps` for all relevant `tournamentRecords`
+2. Validate and filter `schedulingProfile` dates by specified `scheduleDates`
+3. Construct hash tables of `matchUpNotBeforeTimes` and `matchUpPotentialParticipantIds`
+4. Iterate through venues for current `scheduleDate`
+5. Ensure `rounds` specified for `scheduleDate` are sorted as specified
+6. Generate ordered array of `matchUpIds` derived from specified `rounds`
+7. Build up a mapping of `matchUpIds` to `recoveryMinutes` so that `matchUps` with equivalent `averageMatchUpMinutes`
+   can be block scheduled while still considering varying `recoveryMinutes`
+8. Group ordered `matchUpIds` by **averageMatchUpMinutes|periodLength**
+9. Loop through groups of `matchUpIds` ...
+10. Calculate available scheduleTimes, considering court availability, already scheduled matchUps, and `remainingScheduleTimes` from previous iteration
+11. Construct per-participant hash tables of `matchUps` played and `timeAfterRecovery`
+12. Filter out `matchUps` which are not appropriate for scheduling
+13. Filter out `matchUps` which include participants who have reached daily limits
+14. Loop through available `scheduleTimes` and build up mapping of `matchUpIds` to `scheduleTimes`
     - Defer scheduling of matchUps where `timeAfterRecovery` has not been reached
     - Defer scheduling of matchUps where `personRequests` include `{ requestType: DO_NO_SCHEDULE }` conflicts
-12. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
+15. Group `matchUpIds` by **eventId|drawId|structureId** and assign `scheduleTimes` to `matchUps`
+16. Return array of `remainingScheduleTimes` from current iteration to seed next iteration of virtualCourtBookings
 
 ## Schedule Conflict Reporting
 

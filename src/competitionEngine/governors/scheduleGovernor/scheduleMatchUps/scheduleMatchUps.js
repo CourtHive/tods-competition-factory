@@ -57,14 +57,7 @@ import {
 export function scheduleMatchUps({
   tournamentRecords,
   competitionMatchUps, // optimization for scheduleProfileRounds to pass this is as it has already processed
-  matchUpIds,
-  venueIds,
 
-  date,
-  startTime,
-  endTime,
-
-  periodLength = 30,
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
   recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
@@ -74,6 +67,15 @@ export function scheduleMatchUps({
   matchUpPotentialParticipantIds = {},
 
   checkPotentialConflicts = true,
+  remainingScheduleTimes,
+
+  startTime,
+  endTime,
+
+  venueIds,
+  periodLength = 30,
+  matchUpIds,
+  date,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -125,6 +127,7 @@ export function scheduleMatchUps({
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
+      remainingScheduleTimes,
       calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
@@ -223,7 +226,7 @@ export function scheduleMatchUps({
   );
 
   const requestConflicts = {};
-  const unusedScheduleTimes = [];
+  const skippedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
   let iterations = 0;
@@ -280,7 +283,7 @@ export function scheduleMatchUps({
     );
 
     if (!scheduledMatchUp) {
-      unusedScheduleTimes.push(scheduleTime);
+      skippedScheduleTimes.push(scheduleTime);
     }
   }
 
@@ -341,11 +344,15 @@ export function scheduleMatchUps({
   return {
     ...SUCCESS,
     requestConflicts: Object.values(requestConflicts),
-    noTimeMatchUpIds,
-    overLimitMatchUpIds,
-    scheduledMatchUpIds,
+    remainingScheduleTimes: scheduleTimes.map(
+      ({ scheduleTime }) => scheduleTime
+    ),
+    individualParticipantProfiles,
     matchUpNotBeforeTimes,
     participantIdsAtLimit,
-    individualParticipantProfiles,
+    skippedScheduleTimes,
+    overLimitMatchUpIds,
+    scheduledMatchUpIds,
+    noTimeMatchUpIds,
   };
 }
