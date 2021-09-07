@@ -132,6 +132,7 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
+
   // prettier-ignore
   expect(result.skippedScheduleTimes[startDate]).toEqual([
     '11:00', '11:00', '11:30', '11:30', '11:30', '11:30', '11:30', '12:00',
