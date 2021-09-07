@@ -3,19 +3,21 @@ import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchU
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
+import { getMatchUpDependencies } from './getMatchUpDependencies';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { getDevContext } from '../../../../global/globalState';
 import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from './personRequests';
-import { unique } from '../../../../utilities';
 import {
   extractDate,
   extractTime,
   isValidDateString,
+  sameDay,
   zeroPad,
 } from '../../../../utilities/dateTime';
 
@@ -56,22 +58,28 @@ import {
  */
 export function scheduleMatchUps({
   tournamentRecords,
-  matchUpIds,
-  venueIds,
+  competitionMatchUps, // optimization for scheduleProfileRounds to pass this is as it has already processed
+  matchUpDependencies, // optimization for scheduleProfileRounds to pass this is as it has already processed
+  allDateMatchUpIds = [],
 
-  date,
-  startTime,
-  endTime,
-
-  periodLength = 30,
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
+  recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
 
   matchUpDailyLimits = {},
   matchUpNotBeforeTimes = {},
   matchUpPotentialParticipantIds = {},
 
   checkPotentialConflicts = true,
+  remainingScheduleTimes,
+
+  startTime,
+  endTime,
+
+  venueIds,
+  periodLength = 30,
+  matchUpIds,
+  date,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -83,29 +91,46 @@ export function scheduleMatchUps({
   )
     return { error: INVALID_VALUES };
 
-  const individualParticipantProfiles = {};
-  const { matchUps: competitionMatchUps } = allCompetitionMatchUps({
-    tournamentRecords,
-    nextMatchUps: true,
+  // if competitionMatchUps not provided as a parameter
+  // scheduleMatchUpProfiles has already called processNextMatchUps for all
+  if (!competitionMatchUps) {
+    ({ matchUps: competitionMatchUps } = allCompetitionMatchUps({
+      tournamentRecords,
+      nextMatchUps: true,
+    }));
+  }
+
+  if (!matchUpDependencies) {
+    ({ matchUpDependencies } = getMatchUpDependencies({
+      matchUps: competitionMatchUps,
+    }));
+  }
+
+  competitionMatchUps.forEach((matchUp) => {
+    if (
+      matchUp.schedule?.scheduledDate &&
+      sameDay(date, extractDate(matchUp.schedule.scheduledDate))
+    ) {
+      processNextMatchUps({
+        matchUp,
+        matchUpNotBeforeTimes,
+        matchUpPotentialParticipantIds,
+      });
+    }
   });
-  const targetMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
-    matchUpIds.includes(matchUpId)
-  );
 
-  // discover the earliest time that this block of targetMatchUps can be scheduled
-  const notBeforeTimes = targetMatchUps.map(
-    ({ matchUpId }) => matchUpNotBeforeTimes[matchUpId]
+  // this must be done to preserve the order of matchUpIds
+  const targetMatchUps = matchUpIds.map((matchUpId) =>
+    competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
-  const notBeforeTime = unique(notBeforeTimes.filter(Boolean)).sort()[0];
-
-  startTime =
-    startTime || notBeforeTimes.includes(undefined) ? undefined : notBeforeTime;
 
   // determines court availability taking into account already scheduled matchUps on the date
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
+      remainingScheduleTimes,
+      // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
       date: extractDate(date),
@@ -119,6 +144,7 @@ export function scheduleMatchUps({
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
+  const individualParticipantProfiles = {};
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
@@ -128,9 +154,10 @@ export function scheduleMatchUps({
     });
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
+      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       updateTimeAfterRecovery({
         averageMatchUpMinutes,
-        recoveryMinutes,
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         matchUp,
         individualParticipantProfiles,
         scheduleTime,
@@ -201,7 +228,7 @@ export function scheduleMatchUps({
   );
 
   const requestConflicts = {};
-  const unusedScheduleTimes = [];
+  const skippedScheduleTimes = [];
   const matchUpScheduleTimes = {};
 
   let iterations = 0;
@@ -223,15 +250,26 @@ export function scheduleMatchUps({
 
     // find a matchUp where all individual participants had enough recovery time
     const scheduledMatchUp = matchUpsToSchedule.find((matchUp) => {
+      const { dependenciesScheduled } = checkDependenciesScheduled({
+        matchUps: competitionMatchUps,
+        matchUpScheduleTimes,
+        matchUpDependencies,
+        allDateMatchUpIds,
+        matchUp,
+      });
+      if (!dependenciesScheduled) return false;
+
+      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       const { enoughTime } = checkRecoveryTime({
         matchUp,
         scheduleTime,
-        recoveryMinutes,
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
         individualParticipantProfiles,
         matchUpNotBeforeTimes,
         matchUpPotentialParticipantIds,
       });
+      if (!enoughTime) return false;
 
       const { conflicts } = checkRequestConflicts({
         potentials: checkPotentialConflicts,
@@ -243,13 +281,12 @@ export function scheduleMatchUps({
         date,
       });
 
-      // TODO: if the round optimization is applied in scheduleProfileRounds
-      // ... then we must checkDailyLimits each time
+      if (conflicts?.length) return false;
 
-      if (enoughTime && !conflicts?.length) {
-        matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
-        return true;
-      }
+      // TODO: checkDailyLimits must be checked each time because batching is no longer by round
+
+      matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
+      return true;
     });
 
     matchUpsToSchedule = matchUpsToSchedule.filter(
@@ -257,7 +294,7 @@ export function scheduleMatchUps({
     );
 
     if (!scheduledMatchUp) {
-      unusedScheduleTimes.push(scheduleTime);
+      skippedScheduleTimes.push(scheduleTime);
     }
   }
 
@@ -318,11 +355,15 @@ export function scheduleMatchUps({
   return {
     ...SUCCESS,
     requestConflicts: Object.values(requestConflicts),
-    noTimeMatchUpIds,
-    overLimitMatchUpIds,
-    scheduledMatchUpIds,
+    remainingScheduleTimes: scheduleTimes.map(
+      ({ scheduleTime }) => scheduleTime
+    ),
+    individualParticipantProfiles,
     matchUpNotBeforeTimes,
     participantIdsAtLimit,
-    individualParticipantProfiles,
+    skippedScheduleTimes,
+    overLimitMatchUpIds,
+    scheduledMatchUpIds,
+    noTimeMatchUpIds,
   };
 }

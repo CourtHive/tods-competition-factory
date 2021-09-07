@@ -1,5 +1,5 @@
-import { makeDeepCopy, unique } from '../../../utilities';
 import { getAllDrawMatchUps } from '../../getters/getMatchUps/drawMatchUps';
+import { makeDeepCopy, unique } from '../../../utilities';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 
@@ -17,7 +17,7 @@ export function getParticipantIdMatchUps({
     event,
   });
 
-  const allMatchUps = makeDeepCopy(result.matchUps);
+  const allMatchUps = makeDeepCopy(result.matchUps, false, true);
 
   const participantIds = unique(
     allMatchUps.reduce((participantIds, matchUp) => {

@@ -114,12 +114,15 @@ it('can generate TEAM draws and use tieFormat and assign particiapnts to collect
   };
 
   const drawSize = 8;
+  const drawName = 'Main Draw';
+  const eventName = 'Custom Event';
   const drawProfiles = [
     {
       drawSize,
       tieFormat,
       eventType: TEAM,
-      drawName: 'Main Draw',
+      drawName,
+      eventName,
     },
   ];
 
@@ -161,4 +164,5 @@ it('can generate TEAM draws and use tieFormat and assign particiapnts to collect
   expect(drawDefinition.entries.length).toEqual(drawSize);
   expect(event.tieFormat).toEqual(tieFormat);
   expect(drawDefinition.tieFormat).toBeUndefined();
+  expect(event.eventName).toEqual(eventName);
 });

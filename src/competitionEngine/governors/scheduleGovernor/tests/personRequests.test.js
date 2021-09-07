@@ -1,3 +1,4 @@
+import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
@@ -80,7 +81,7 @@ it('can identify conflicts with person requests', () => {
   // ensure that tournament has exactly 16 participants
   // so that conflict can be assured for testing purposes
   const participantsCount = 16;
-  const drawProfiles = [{ drawSize: participantsCount }];
+  const drawProfiles = [{ drawSize: participantsCount, drawName: 'PRQ' }];
   const venueProfiles = [{ courtsCount: 6 }];
 
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -94,7 +95,7 @@ it('can identify conflicts with person requests', () => {
   const personId = tournamentRecord.participants[0].person.personId;
 
   competitionEngine.setState([tournamentRecord]);
-  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  let { matchUps } = competitionEngine.allCompetitionMatchUps();
   const { startDate } = competitionEngine.getCompetitionDateRange();
 
   const request = {
@@ -109,7 +110,9 @@ it('can identify conflicts with person requests', () => {
   });
   expect(result.success).toEqual(true);
 
-  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  const matchUpIds = matchUps
+    .filter(({ roundNumber }) => roundNumber < 3)
+    .map(({ matchUpId }) => matchUpId);
 
   result = competitionEngine.scheduleMatchUps({
     date: startDate,
@@ -117,11 +120,33 @@ it('can identify conflicts with person requests', () => {
   });
   expect(result.requestConflicts.length).toBeGreaterThan(0);
   expect(result.noTimeMatchUpIds.length).toEqual(0);
-  expect(result.scheduledMatchUpIds.length).toEqual(15);
+  expect(result.scheduledMatchUpIds.length).toEqual(12); // only scheduled 2 rounds
+
+  ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
+  const hasSchedule = ({ schedule }) => {
+    const matchUpScheduleKeys = Object.keys(schedule)
+      .filter((key) => scheduleAttributes.includes(key))
+      .filter((key) => schedule[key]);
+    return !!matchUpScheduleKeys.length;
+  };
+
+  const scheduledMatchUps = matchUps.filter(hasSchedule);
+  const roundMap = scheduledMatchUps
+    .map(({ roundNumber, roundPosition, drawName, schedule }) => [
+      extractTime(schedule.scheduledTime),
+      roundNumber,
+      roundPosition,
+      drawName,
+    ])
+    .sort((a, b) => timeStringMinutes(a[0]) - timeStringMinutes(b[0]));
+  const roundNumbers = roundMap.map((r) => r[1]);
+  // console.log(roundMap); // useful for eye-balling
+  expect(roundNumbers).toEqual([1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 2]);
 
   // individuals will have late recovery times due to defered scheduling / conflict avoidance
   const lateRecoveryTimes = Object.values(result.individualParticipantProfiles)
     .map(({ timeAfterRecovery }) => timeAfterRecovery)
-    .filter((time) => time > '11:00');
-  expect(lateRecoveryTimes.length).toEqual(2);
+    .filter((time) => timeStringMinutes(time) > timeStringMinutes('11:00'));
+  expect(lateRecoveryTimes.length).toEqual(4);
 });

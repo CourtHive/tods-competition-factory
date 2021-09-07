@@ -1,18 +1,14 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
-import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filterMatchUps';
-import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
-import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
+import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
-import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
-import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
+import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { addNotice, getTopics } from '../../../../global/globalState';
-import { isConvertableInteger } from '../../../../utilities/math';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
-import { isPowerOf2 } from '../../../../utilities';
+import { getGroupedRounds } from './getGroupedRounds';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
@@ -28,6 +24,7 @@ export function scheduleProfileRounds({
   periodLength,
 
   checkPotentialConflicts = true,
+  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
@@ -42,11 +39,14 @@ export function scheduleProfileRounds({
     ...Object.values(tournamentRecords).map(getContainedStructures)
   );
 
-  const competitionMatchUpFilters = {};
   const { matchUps } = allCompetitionMatchUps({
     tournamentRecords,
-    matchUpFilters: competitionMatchUpFilters,
     nextMatchUps: true,
+  });
+
+  const { matchUpDependencies } = getMatchUpDependencies({
+    tournamentRecords,
+    matchUps,
   });
 
   const validScheduleDates = scheduleDates
@@ -88,109 +88,83 @@ export function scheduleProfileRounds({
   const matchUpNotBeforeTimes = {};
   const matchUpPotentialParticipantIds = {};
 
-  matchUps.forEach((matchUp) => {
-    if (matchUp.schedule?.timeAfterRecovery) {
-      processNextMatchUps({
-        matchUp,
-        matchUpNotBeforeTimes,
-        matchUpPotentialParticipantIds,
-      });
-    }
-  });
+  const remainingScheduleTimes = {};
+  const skippedScheduleTimes = {};
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
+    const venueScheduledRoundDetails = {};
+    const allDateMatchUpIds = [];
 
+    // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current date
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
+      const {
+        orderedMatchUpIds,
+        recoveryMinutesMap,
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+      } = getScheduledRoundsDetails({
+        tournamentRecords,
+        containedStructureIds,
+        periodLength,
+        matchUps,
+        rounds,
+      });
 
-      const sortedRounds = rounds.sort(
-        (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
-      );
+      allDateMatchUpIds.push(...orderedMatchUpIds);
 
-      for (const round of sortedRounds) {
-        periodLength =
-          round.periodLength ||
-          dateSchedulingProfile?.periodLength ||
-          periodLength;
+      venueScheduledRoundDetails[venueId] = {
+        recoveryMinutesMap,
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+      };
+    }
 
-        const structureIds = containedStructureIds[round.structureId] || [
-          round.structureId,
-        ];
-        const roundMatchUpFilters = {
-          tournamentIds: [round.tournamentId],
-          roundNumbers: [round.roundNumber],
-          matchUpIds: round.matchUpIds,
-          eventIds: [round.eventId],
-          drawIds: [round.drawId],
-          structureIds,
-        };
+    // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
+    // ... and initiates scheduling
+    for (const venue of venues) {
+      const { venueId } = venue;
 
-        let roundMatchUps = filterMatchUps({
-          matchUps,
-          processContext: true,
-          ...roundMatchUpFilters,
-        });
+      const {
+        recoveryMinutesMap,
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+      } = venueScheduledRoundDetails[venueId];
 
-        // filter by roundSegment
-        const { segmentNumber, segmentsCount } = round.roundSegment || {};
-        if (
-          isConvertableInteger(segmentNumber) &&
-          isPowerOf2(roundMatchUps?.length) &&
-          isPowerOf2(segmentsCount) &&
-          segmentNumber > 0 &&
-          segmentNumber <= segmentsCount &&
-          segmentsCount < roundMatchUps?.length &&
-          !round.matchUpIds?.length
-        ) {
-          const segmentSize = roundMatchUps.length / segmentsCount;
-          const firstSegmentIndex = segmentSize * (segmentNumber - 1);
-          roundMatchUps = roundMatchUps.slice(
-            firstSegmentIndex,
-            firstSegmentIndex + segmentSize
-          );
-        }
+      const { groupedRounds } = getGroupedRounds({
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+        garmanSinglePass,
+      });
 
-        const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
-
-        const tournamentRecord = tournamentRecords[round.tournamentId];
-        const { drawDefinition, event } = findEvent({
-          tournamentRecord,
-          drawId: round.drawId,
-        });
-        const { matchUpFormat } = getMatchUpFormat({
-          tournamentRecord,
-          structureId: round.structureId,
-          drawDefinition,
-          event,
-        });
-
-        const { eventType, category } = event || {};
-        const { categoryName, ageCategoryCode } = category || {};
-        const { averageMinutes, recoveryMinutes } = findMatchUpFormatTiming({
-          tournamentRecords,
-          categoryName: categoryName || ageCategoryCode,
-          tournamentId: round.tournamentId,
-          eventId: round.eventId,
-          matchUpFormat,
-          eventType,
-        });
-
-        // a potential optimization is to check the matchUpFormatTiming for sequential rounds
-        // use an aggregator `roundScheduleDetails` and then bulk schedule rounds with equivalent averageMinutes
-        // roundScheduleDetails = [{ averageMinutes, recoveryMinutes, periodLength, matchUpIds }]
+      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
+      for (const roundDetail of groupedRounds) {
+        const {
+          matchUpIds,
+          averageMinutes,
+          recoveryMinutes,
+          roundPeriodLength,
+        } = roundDetail;
+        periodLength = roundPeriodLength || periodLength;
 
         const result = scheduleMatchUps({
           tournamentRecords,
+          competitionMatchUps: matchUps,
+          matchUpDependencies,
+          allDateMatchUpIds,
+
+          averageMatchUpMinutes: averageMinutes,
+          recoveryMinutesMap,
+          recoveryMinutes,
 
           matchUpDailyLimits,
           matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,
-          averageMatchUpMinutes: averageMinutes,
-          recoveryMinutes,
 
           checkPotentialConflicts,
+          remainingScheduleTimes: previousRemainingScheduleTimes,
 
           venueIds: [venueId],
           periodLength,
@@ -198,6 +172,16 @@ export function scheduleProfileRounds({
           date,
         });
         if (result.error) return result;
+
+        previousRemainingScheduleTimes = result.remainingScheduleTimes;
+        if (result.skippedScheduleTimes?.length) {
+          // add skippedScheduleTimes for each date and return for testing
+          skippedScheduleTimes[date] = result.skippedScheduleTimes;
+        }
+        if (result.remainingScheduleTimes?.length) {
+          // add remainingScheduleTimes for each date and return for testing
+          remainingScheduleTimes[date] = result.remainingScheduleTimes;
+        }
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
         noTimeMatchUpIds.push(...roundNoTimeMatchUpIds);
@@ -240,10 +224,14 @@ export function scheduleProfileRounds({
 
   return {
     ...SUCCESS,
+
     scheduledDates,
     noTimeMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
+
     requestConflicts,
+    skippedScheduleTimes,
+    remainingScheduleTimes,
   };
 }

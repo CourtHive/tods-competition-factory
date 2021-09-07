@@ -2,11 +2,13 @@ import { addDrawDefinition } from '../../tournamentEngine/governors/eventGoverno
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
+import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
+import { validExtension } from '../../global/validation/validExtension';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
 
@@ -24,6 +26,7 @@ import {
 
 export function generateEventWithDraw({
   tournamentRecord,
+  allUniqueParticipantIds,
   autoEntryPositions,
   participantsProfile,
   completeAllMatchUps,
@@ -36,19 +39,23 @@ export function generateEventWithDraw({
   const {
     category,
     eventType = SINGLES,
-    eventName = 'Generated Event',
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     uniqueParticipants = false,
     policyDefinitions,
     structureOptions,
+    eventExtensions,
+    drawExtensions,
     drawSize = 32,
     tieFormat,
     feedPolicy,
     automated,
+    drawName,
     gender,
     stage,
   } = drawProfile;
+
+  let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord.participants;
 
   let { participantsCount, seedsCount } = drawProfile;
@@ -57,6 +64,16 @@ export function generateEventWithDraw({
 
   const eventId = UUID();
   const newEvent = { eventId, eventName, eventType, category, tieFormat };
+
+  let { eventAttributes } = drawProfile;
+  if (typeof eventAttributes !== 'object') eventAttributes = {};
+  Object.assign(newEvent, eventAttributes);
+
+  // attach any valid eventExtensions
+  if (eventExtensions?.length && Array.isArray(eventExtensions)) {
+    const extensions = eventExtensions.filter(validExtension);
+    if (extensions?.length) Object.assign(newEvent, { extensions });
+  }
 
   let result = addEvent({ tournamentRecord, event: newEvent });
   if (result.error) return result;
@@ -71,6 +88,7 @@ export function generateEventWithDraw({
     return false;
   };
 
+  const uniqueParticipantIds = [];
   if (uniqueParticipants) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
@@ -99,11 +117,17 @@ export function generateEventWithDraw({
 
     result = addParticipants({ tournamentRecord, participants: unique });
     if (result.error) return result;
+    unique.forEach(({ participantId }) =>
+      uniqueParticipantIds.push(participantId)
+    );
     targetParticipants = unique;
   }
 
   const participantIds = targetParticipants
     .filter(isEventParticipantType)
+    .filter(
+      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+    )
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
@@ -120,6 +144,9 @@ export function generateEventWithDraw({
   // when unique participants are used for DIRECT_ACCEPTANCE entries
   const alternatesParticipantIds = targetParticipants
     .filter(isEventParticipantType)
+    .filter(
+      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+    )
     .slice(participantsCount)
     .map((p) => p.participantId);
   if (alternatesParticipantIds.length) {
@@ -163,6 +190,7 @@ export function generateEventWithDraw({
     feedPolicy,
     tieFormat,
     automated,
+    drawName,
     drawType,
     drawSize,
     eventId,
@@ -172,6 +200,15 @@ export function generateEventWithDraw({
   });
 
   if (generationError) return { error: generationError };
+
+  if (Array.isArray(drawExtensions)) {
+    drawExtensions
+      .filter(validExtension)
+      .forEach((extension) =>
+        addExtension({ element: drawDefinition, extension })
+      );
+  }
+
   result = addDrawDefinition({ drawDefinition, event });
   const { drawId } = drawDefinition;
 
@@ -273,5 +310,5 @@ export function generateEventWithDraw({
 
   if (result.error) return { error: result.error };
 
-  return { drawId, eventId };
+  return { drawId, eventId, uniqueParticipantIds };
 }

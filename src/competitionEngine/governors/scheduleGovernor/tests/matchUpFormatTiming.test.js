@@ -37,7 +37,7 @@ test.each([competitionEngineSync])(
       matchUpFormat,
       categoryType: JUNIOR,
     });
-    expect(result.averageMinutes).toBeUndefined();
+    expect(result.averageMinutes).toEqual(90);
     expect(result.recoveryMinutes).toBeUndefined();
 
     result = competitionEngine.modifyMatchUpFormatTiming({

@@ -10,26 +10,25 @@ const JUNIOR = 'JUNIOR';
 const WHEELCHAIR = 'WHEELCHAIR';
 
 it.each([
-  { matchUpFormat: 'SET1-S:4/TB5@3', averageMinutes: 20, recoveryMinutes: 15 },
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
-    averageMinutes: 97,
-    recoveryMinutes: 30,
+    averageMinutes: 90,
+    recoveryMinutes: 60,
     eventType: DOUBLES,
   },
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
-    averageMinutes: 97,
+    averageMinutes: 90,
     recoveryMinutes: 60,
     eventType: SINGLES,
   },
-  { matchUpFormat: 'SET3-S:6/TB7', categoryType: ADULT, averageMinutes: 120 },
+  { matchUpFormat: 'SET3-S:6/TB7', categoryType: ADULT, averageMinutes: 90 },
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: WHEELCHAIR,
-    averageMinutes: 120,
+    averageMinutes: 90,
   },
 ])(
   'can retrieve matchUpAverageTimes for for matchUpFormats',

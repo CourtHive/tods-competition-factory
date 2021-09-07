@@ -13,7 +13,7 @@ it.each([
   {
     matchUpFormat: 'SET3-S:6/TB7',
     categoryType: JUNIOR,
-    averageMinutes: 97,
+    averageMinutes: 90,
     recoveryMinutes: 60,
     eventType: SINGLES,
   },
@@ -240,7 +240,7 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
     });
   expect(
     eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
-  ).toEqual([137, 107, 107, 120]);
+  ).toEqual([137, 107, 107, 90]);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
@@ -254,7 +254,7 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
   }));
   expect(
     eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
-  ).toEqual([137, 107, 107, 120]);
+  ).toEqual([137, 107, 107, 90]);
   expect(
     eventMatchUpFormatTiming.map(({ description }) => description)
   ).toEqual(['1', '2', '3', '4']);

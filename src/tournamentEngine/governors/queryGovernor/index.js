@@ -9,12 +9,13 @@ import { getParticipantScaleItem } from './getParticipantScaleItem';
 import { getMatchUpFormat } from '../../getters/getMatchUpFormat';
 import { publicFindMatchUp } from '../../getters/matchUpsGetter';
 import { getEvent, getEvents } from '../../getters/eventGetter';
-import { matchUpFormatCode } from 'tods-matchup-format-code';
+import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { matchUpActions } from '../../getters/matchUpActions';
+import { matchUpFormatCode } from 'tods-matchup-format-code';
 import { bulkUpdatePublishedEventIds } from './publishState';
 import { getParticipantSignInStatus } from './signInStatus';
-import { getPolicyDefinitions } from './getPolicyDefinitions';
 import { getEventProperties } from './getEventProperties';
+import { getRoundMatchUps } from './getRoundMatchUps';
 import { credits } from '../../../fixtures/credits';
 import { positionActions } from './positionQueries';
 import { makeDeepCopy } from '../../../utilities';
@@ -42,7 +43,6 @@ import {
 } from './timeItems';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { getRoundMatchUps } from './getRoundMatchUps';
 
 function getDrawDefinition({ tournamentRecord, drawDefinition }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

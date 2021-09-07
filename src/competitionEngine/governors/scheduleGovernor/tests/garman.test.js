@@ -1,34 +1,30 @@
-import { generateRange } from '../../../../utilities';
 import garman from '../garman/garman';
 
 const date = new Date().toISOString().split('T')[0];
 
-function courtGenerator({
-  count = 10,
-  startTime = '8:00',
-  endTime = '20:30',
-} = {}) {
-  return generateRange(0, count).map(() => ({
-    dateAvailability: [{ date, startTime, endTime }],
-  }));
-}
-
 it('generates dummy courts', () => {
-  let courts = courtGenerator({
-    count: 10,
+  let courts = garman.courtGenerator({
     startTime: '8:00',
     endTime: '20:30',
+    count: 10,
+    date,
   });
   expect(courts.length).toEqual(10);
   expect(courts[9].dateAvailability[0].startTime).toEqual('8:00');
   expect(courts[9].dateAvailability[0].endTime).toEqual('20:30');
-  courts = courtGenerator({ count: 12, startTime: '7:00', endTime: '18:00' });
+  courts = garman.courtGenerator({
+    date,
+    count: 12,
+    startTime: '7:00',
+    endTime: '18:00',
+  });
   expect(courts[11].dateAvailability[0].startTime).toEqual('7:00');
   expect(courts[11].dateAvailability[0].endTime).toEqual('18:00');
 });
 
 it('replcates revised garman spreadsheet funcationality', () => {
-  let courts = courtGenerator({
+  let courts = garman.courtGenerator({
+    date,
     count: 10,
     startTime: '8:00',
     endTime: '20:30',
@@ -46,7 +42,12 @@ it('replcates revised garman spreadsheet funcationality', () => {
   expect(timingProfile[22].add).toEqual(4);
   expect(timingProfile[22].totalMatchUps).toEqual(80);
 
-  courts = courtGenerator({ count: 12, startTime: '8:00', endTime: '20:30' });
+  courts = garman.courtGenerator({
+    date,
+    count: 12,
+    startTime: '8:00',
+    endTime: '20:30',
+  });
   ({ timingProfile } = garman.getScheduleTimes({
     startTime: '8:00',
     endTime: '19:00',
@@ -59,7 +60,12 @@ it('replcates revised garman spreadsheet funcationality', () => {
   expect(timingProfile[22].add).toEqual(4);
   expect(timingProfile[22].totalMatchUps).toEqual(106);
 
-  courts = courtGenerator({ count: 3, startTime: '8:00', endTime: '20:30' });
+  courts = garman.courtGenerator({
+    date,
+    count: 3,
+    startTime: '8:00',
+    endTime: '20:30',
+  });
   ({ timingProfile } = garman.getScheduleTimes({
     startTime: '8:00',
     endTime: '19:00',
@@ -160,12 +166,13 @@ it('generates expected output for two locations with differing court availabilit
     averageMatchUpMinutes: 90,
     courts,
   });
-  expect(timingProfile[20].add).toEqual(0);
-  expect(timingProfile[19].add).toEqual(0);
+  expect(timingProfile[14].add).toEqual(1);
+  expect(timingProfile[14].periodStart).toEqual('16:00');
+  expect(timingProfile[14].totalMatchUps).toEqual(18);
+  expect(timingProfile[16].add).toEqual(0);
+  expect(timingProfile[17].totalMatchUps).toEqual(18);
+  expect(timingProfile[17].add).toEqual(0);
   expect(timingProfile[18].add).toEqual(0);
-  expect(timingProfile[17].add).toEqual(1);
-  expect(timingProfile[17].totalMatchUps).toEqual(20);
-  expect(timingProfile[20].totalMatchUps).toEqual(20);
 });
 
 it('can generate timeSlots from dateAvailability', () => {

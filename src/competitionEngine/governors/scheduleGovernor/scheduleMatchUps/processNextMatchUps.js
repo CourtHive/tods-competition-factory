@@ -23,7 +23,7 @@ export function processNextMatchUps({
   // It is necessary to only update timeAfterRecovery if value is greater...
   // ...to account for source matchUps having earlier timeAfterRecovery
   // e.g. roundPosition 1 matchUp timeAfterRecovery is 11:00 but
-  // roundPosition 2 matchUp timeAfterRecover is 9:30
+  // roundPosition 2 matchUp timeAfterRecovery is 9:30
   // and the last one to be processed shouldn't overwrite later value
   const updateNotBeforeTime = (matchUpId) => {
     if (

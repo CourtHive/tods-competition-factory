@@ -374,7 +374,7 @@ export function getAllStructureMatchUps({
           sourceDrawPositionRange,
         };
       });
-      Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true));
+      Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));
     }
 
     if (matchUp.collectionId) {

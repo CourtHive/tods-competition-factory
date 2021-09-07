@@ -10,13 +10,18 @@ export function getCourtDateFilters({
   averageMatchUpMinutes,
   periodStartTime,
   periodEndTime,
+  periodLength,
   date,
 }) {
   const sameDate = (courtDate) =>
     !courtDate.date || sameDay(courtDate.date, date);
 
   const enoughTime = (courtDate) => {
-    const timeSlots = generateTimeSlots({ courtDate, includeBookingTypes });
+    const timeSlots = generateTimeSlots({
+      courtDate,
+      periodLength,
+      includeBookingTypes,
+    });
     const availableTimeSlots = timeSlots.filter(validTimeSlot);
     const enough = !!availableTimeSlots.length;
     return enough;

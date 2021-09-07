@@ -99,7 +99,7 @@ export function getValidSwapAction({
 
     return {
       ...assignment,
-      participant: makeDeepCopy(participant),
+      participant: makeDeepCopy(participant, false, true),
       sourceDrawPositionRange,
     };
   });

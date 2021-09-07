@@ -125,7 +125,11 @@ export function generateFlightProfile({
 
   return {
     ...SUCCESS,
-    flightProfile: makeDeepCopy({ flights, scaleAttributes, splitMethod }),
+    flightProfile: makeDeepCopy(
+      { flights, scaleAttributes, splitMethod },
+      false,
+      true
+    ),
     splitEntries: (getDevContext() && splitEntries) || undefined,
   };
 }

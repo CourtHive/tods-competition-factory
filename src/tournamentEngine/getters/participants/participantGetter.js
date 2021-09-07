@@ -19,6 +19,7 @@ export function publicFindParticipant({
   participantId,
   personId,
   policyDefinitions,
+  convertExtensions,
   inContext,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -33,5 +34,5 @@ export function publicFindParticipant({
     inContext,
     policyDefinitions,
   });
-  return { participant: makeDeepCopy(participant) };
+  return { participant: makeDeepCopy(participant, convertExtensions, true) };
 }

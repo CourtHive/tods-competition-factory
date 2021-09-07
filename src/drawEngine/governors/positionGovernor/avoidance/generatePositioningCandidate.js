@@ -46,7 +46,11 @@ export function generatePositioningCandidate(params) {
   const groupSize = Math.min(...drawPositionGroups.map((dpg) => dpg.length));
   const isRoundRobin = groupSize > 2;
 
-  const candidatePositionAssignments = makeDeepCopy(initialPositionAssignments);
+  const candidatePositionAssignments = makeDeepCopy(
+    initialPositionAssignments,
+    false,
+    true
+  );
 
   // all drawPositions which are available for placement
   const potentialDrawPositions = initialPositionAssignments

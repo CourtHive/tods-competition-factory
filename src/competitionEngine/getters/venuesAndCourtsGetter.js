@@ -26,7 +26,7 @@ export function getVenuesAndCourts({ tournamentRecords }) {
       venue.courts?.forEach((court) => {
         if (!uniqueCourtIds.includes(court.courtId)) {
           const inContextCourt = {
-            ...makeDeepCopy(court),
+            ...makeDeepCopy(court, false, true),
             venueId: venue.venueId,
           };
           courts.push(inContextCourt);

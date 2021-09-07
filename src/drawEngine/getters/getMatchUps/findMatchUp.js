@@ -14,7 +14,7 @@ import {
 */
 export function publicFindMatchUp(params) {
   Object.assign(params, { inContext: true });
-  return { matchUp: makeDeepCopy(findMatchUp(params).matchUp) };
+  return { matchUp: makeDeepCopy(findMatchUp(params).matchUp, false, true) };
 }
 
 /*

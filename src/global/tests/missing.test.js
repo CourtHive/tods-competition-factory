@@ -24,16 +24,18 @@ it.each([competitionEngineSync, asyncCompetitionEngine])(
       } else if (method === 'getState') {
         expect(result.tournamentRecord).toBeUndefined();
       } else if (result.success || result.valid) {
-        expect(
-          [
-            'reset',
-            'devContext',
-            'getTournamentIds',
-            'setSchedulingProfile',
-            'isValidSchedulingProfile',
-            'removeUnlinkedTournamentRecords',
-          ].includes(method)
-        ).toEqual(true);
+        const successExpected = [
+          'reset',
+          'devContext',
+          'getTournamentIds',
+          'setSchedulingProfile',
+          'getMatchUpDependencies',
+          'isValidSchedulingProfile',
+          'getScheduledRoundsDetails',
+          'getSchedulingProfileIssues',
+          'removeUnlinkedTournamentRecords',
+        ].includes(method);
+        expect(successExpected).toEqual(true);
       } else {
         if (['devContext'].includes(method)) {
           expect(result.version).not.toBeUndefined();
