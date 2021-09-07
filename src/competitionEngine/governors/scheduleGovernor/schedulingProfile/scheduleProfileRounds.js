@@ -7,6 +7,7 @@ import { getScheduledRoundDetails } from './getScheduledRoundDetails';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
+import { getGroupedRounds } from './getGroupedRounds';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
@@ -103,42 +104,11 @@ export function scheduleProfileRounds({
         rounds,
       });
 
-      let lastHash;
-      let groupedMatchUpIds = [];
-      let averageMinutes;
-      let recoveryMinutes;
-      let roundPeriodLength;
-      let groupedRounds = [];
-      for (const roundDetails of scheduledRoundsDetails) {
-        if (!lastHash || roundDetails.hash === lastHash || garmanSinglePass) {
-          groupedMatchUpIds = groupedMatchUpIds.concat(roundDetails.matchUpIds);
-        }
-
-        if (lastHash && roundDetails.hash !== lastHash && !garmanSinglePass) {
-          lastHash = roundDetails.hash;
-          groupedRounds.push({
-            averageMinutes,
-            recoveryMinutes,
-            roundPeriodLength,
-            matchUpIds: groupedMatchUpIds,
-          });
-          groupedMatchUpIds = roundDetails.matchUpIds;
-        }
-        averageMinutes = garmanSinglePass
-          ? greatestAverageMinutes
-          : roundDetails.averageMinutes;
-        recoveryMinutes = roundDetails.recoveryMinutes;
-        roundPeriodLength = roundDetails.roundPeriodLength;
-      }
-
-      if (groupedMatchUpIds.length) {
-        groupedRounds.push({
-          averageMinutes,
-          recoveryMinutes,
-          roundPeriodLength,
-          matchUpIds: groupedMatchUpIds,
-        });
-      }
+      const { groupedRounds } = getGroupedRounds({
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+        garmanSinglePass,
+      });
 
       let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       for (const roundDetail of groupedRounds) {
