@@ -27,5 +27,5 @@ export function findVenue({ tournamentRecord, venueId }) {
 }
 
 export function publicFindVenue(params) {
-  return makeDeepCopy(findVenue(params));
+  return makeDeepCopy(findVenue(params), false, true);
 }

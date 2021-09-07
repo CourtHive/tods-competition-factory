@@ -321,7 +321,7 @@ function getParticipants({ tournamentRecord }) {
 export function publicFindMatchUp(params) {
   Object.assign(params, { inContext: true });
   const { matchUp, error } = findMatchUp(params);
-  return { matchUp: makeDeepCopy(matchUp), error };
+  return { matchUp: makeDeepCopy(matchUp, true, true), error };
 }
 
 export function findMatchUp({

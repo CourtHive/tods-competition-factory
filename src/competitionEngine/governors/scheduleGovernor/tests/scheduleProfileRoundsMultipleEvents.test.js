@@ -2,6 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { MISSING_TOURNAMENT_ID } from '../../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantConstants';
@@ -53,6 +54,10 @@ it('can auto schedule multiple events at multiple venues', () => {
   const { eventIds, venueIds, tournamentRecord } = result;
 
   competitionEngine.setState(tournamentRecord);
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+  });
+
   const { tournamentId } = tournamentRecord;
 
   let { competitionParticipants } =

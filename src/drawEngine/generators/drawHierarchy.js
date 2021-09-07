@@ -125,7 +125,11 @@ export function buildDrawHierarchy({ matchUps, matchUpType }) {
     });
 
     const entrySides = Object.assign({}, ...secondRoundEntriySides);
-    const finishingRound = makeDeepCopy(firstRoundMatchUps[0].finishingRound);
+    const finishingRound = makeDeepCopy(
+      firstRoundMatchUps[0].finishingRound,
+      false,
+      true
+    );
     const finishingPositionRange = makeDeepCopy(
       firstRoundMatchUps[0].finishingPositionRange
     );

@@ -57,7 +57,7 @@ export function getMappedStructureMatchUps({
       const { matchUps, structureName } = mappedMatchUps[itemStructureId];
       if (inContext) {
         return matchUps.map((matchUp) =>
-          Object.assign(makeDeepCopy(matchUp, true), {
+          Object.assign(makeDeepCopy(matchUp, true, true), {
             structureId: itemStructureId,
             structureName,
           })

@@ -1,9 +1,9 @@
+import { makeDeepCopy } from '../../utilities';
 import {
   COURT_NOT_FOUND,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import { makeDeepCopy } from '../../utilities';
 
 export function findCourt({ tournamentRecord, courtId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -24,7 +24,7 @@ export function findCourt({ tournamentRecord, courtId }) {
 }
 
 export function publicFindCourt(params) {
-  return makeDeepCopy(findCourt(params));
+  return makeDeepCopy(findCourt(params), false, true);
 }
 
 /**

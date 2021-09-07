@@ -79,5 +79,5 @@ export function publicFindParticipant({
     if (participant) break;
   }
 
-  return { participant: makeDeepCopy(participant) };
+  return { participant: makeDeepCopy(participant, false, true) };
 }

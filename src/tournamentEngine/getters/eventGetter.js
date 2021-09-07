@@ -1,5 +1,6 @@
 import { makeDeepCopy } from '../../utilities';
 
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
@@ -8,7 +9,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
 
 export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

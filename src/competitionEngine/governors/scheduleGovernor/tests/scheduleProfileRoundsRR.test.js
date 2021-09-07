@@ -2,6 +2,7 @@ import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
@@ -147,6 +148,10 @@ it('can auto schedule Round Robin draws without daily limits', () => {
   });
 
   competitionEngine.setState(tournamentRecord);
+
+  competitionEngine.attachPolicies({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+  });
 
   const { tournamentId } = tournamentRecord;
   const scheduledStructureIds = [];
