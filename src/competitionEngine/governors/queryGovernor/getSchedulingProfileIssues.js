@@ -13,8 +13,8 @@ import {
  * @param {object} tournamentRecords
  * @param {object} schedulingProfile
  * @param {string[]} dates - optional - array of dates to validate
- * @returns
  */
+// NOTE: this can be removed once `getMatchUpDependencies` can be utilized
 export function getSchedulingProfileIssues({
   tournamentRecords,
   schedulingProfile,
