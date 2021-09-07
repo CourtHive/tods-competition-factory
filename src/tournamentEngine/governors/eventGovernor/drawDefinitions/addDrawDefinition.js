@@ -30,7 +30,10 @@ export function addDrawDefinition({
   if (!event.drawDefinitions) event.drawDefinitions = [];
   const { drawId, drawName, entries: drawEntries } = drawDefinition;
 
-  if (existingDrawCount && existingDrawCount !== event.drawDefinitions.length)
+  if (
+    existingDrawCount !== undefined &&
+    existingDrawCount !== event.drawDefinitions.length
+  )
     return { error: INVALID_VALUES, message: 'drawDefintions count mismatch' };
 
   const drawDefinitionExists = !!event.drawDefinitions.find(
