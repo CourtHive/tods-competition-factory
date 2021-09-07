@@ -3,8 +3,10 @@ import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchU
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
+import { getMatchUpDependencies } from './getMatchUpDependencies';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { getDevContext } from '../../../../global/globalState';
 import { processNextMatchUps } from './processNextMatchUps';
@@ -57,6 +59,8 @@ import {
 export function scheduleMatchUps({
   tournamentRecords,
   competitionMatchUps, // optimization for scheduleProfileRounds to pass this is as it has already processed
+  matchUpDependencies, // optimization for scheduleProfileRounds to pass this is as it has already processed
+  allDateMatchUpIds = [],
 
   averageMatchUpMinutes = 90,
   recoveryMinutes = 0,
@@ -96,6 +100,12 @@ export function scheduleMatchUps({
     }));
   }
 
+  if (!matchUpDependencies) {
+    ({ matchUpDependencies } = getMatchUpDependencies({
+      matchUps: competitionMatchUps,
+    }));
+  }
+
   competitionMatchUps.forEach((matchUp) => {
     if (
       matchUp.schedule?.scheduledDate &&
@@ -113,20 +123,6 @@ export function scheduleMatchUps({
   const targetMatchUps = matchUpIds.map((matchUpId) =>
     competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
-
-  /*
-  // discover the earliest time that this block of targetMatchUps can be scheduled
-  // if notBeforeTimes includes undefined it means there are matchUps which have no restrictions
-  const notBeforeTimes = unique(
-    targetMatchUps.map(({ matchUpId }) => matchUpNotBeforeTimes[matchUpId])
-  ).sort();
-  const notBeforeTime =
-    !notBeforeTimes.includes(undefined) && notBeforeTimes.filter(Boolean)[0];
-  const calculateStartTimeFromCourts = !notBeforeTime;
-
-  // use notBeforeTime if a startTime has not been specified (normally has not)
-  startTime = startTime || notBeforeTime;
-  */
 
   // determines court availability taking into account already scheduled matchUps on the date
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
@@ -254,6 +250,15 @@ export function scheduleMatchUps({
 
     // find a matchUp where all individual participants had enough recovery time
     const scheduledMatchUp = matchUpsToSchedule.find((matchUp) => {
+      const { dependenciesScheduled } = checkDependenciesScheduled({
+        matchUps: competitionMatchUps,
+        matchUpScheduleTimes,
+        matchUpDependencies,
+        allDateMatchUpIds,
+        matchUp,
+      });
+      if (!dependenciesScheduled) return false;
+
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       const { enoughTime } = checkRecoveryTime({
         matchUp,
@@ -264,6 +269,7 @@ export function scheduleMatchUps({
         matchUpNotBeforeTimes,
         matchUpPotentialParticipantIds,
       });
+      if (!enoughTime) return false;
 
       const { conflicts } = checkRequestConflicts({
         potentials: checkPotentialConflicts,
@@ -275,13 +281,12 @@ export function scheduleMatchUps({
         date,
       });
 
-      // TODO: if the round optimization is applied in scheduleProfileRounds
-      // ... then we must checkDailyLimits each time
+      if (conflicts?.length) return false;
 
-      if (enoughTime && !conflicts?.length) {
-        matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
-        return true;
-      }
+      // TODO: checkDailyLimits must be checked each time because batching is no longer by round
+
+      matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
+      return true;
     });
 
     matchUpsToSchedule = matchUpsToSchedule.filter(

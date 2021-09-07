@@ -13,11 +13,11 @@
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
 } from '../../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function getMatchUpDependencies({
   tournamentRecords,
