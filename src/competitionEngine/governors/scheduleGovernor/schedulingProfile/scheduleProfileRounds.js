@@ -20,6 +20,10 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
 } from '../../../../constants/errorConditionConstants';
+import {
+  BYE,
+  completedMatchUpStatuses,
+} from '../../../../constants/matchUpStatusConstants';
 
 export function scheduleProfileRounds({
   tournamentRecords,
@@ -169,7 +173,14 @@ export function scheduleProfileRounds({
           });
         if (error) return { error, round };
 
-        const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
+        const matchUpIds = roundMatchUps
+          .filter(
+            ({ matchUpStatus }) =>
+              // don't attempt to scheduled completed matchUpstatuses
+              !completedMatchUpStatuses.includes(matchUpStatus) &&
+              matchUpStatus !== BYE
+          )
+          .map(({ matchUpId }) => matchUpId);
         matchUpIds.forEach(
           (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
         );
