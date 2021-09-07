@@ -44,7 +44,10 @@ export function scheduleProfileRounds({
     nextMatchUps: true,
   });
 
-  const { matchUpDependencies } = getMatchUpDependencies({ matchUps });
+  const { matchUpDependencies } = getMatchUpDependencies({
+    tournamentRecords,
+    matchUps,
+  });
 
   const validScheduleDates = scheduleDates
     .map((date) => {
@@ -91,22 +94,44 @@ export function scheduleProfileRounds({
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
+    const venueScheduledRoundDetails = {};
+    const allDateMatchUpIds = [];
 
+    // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current date
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
-
       const {
+        orderedMatchUpIds,
         recoveryMinutesMap,
         scheduledRoundsDetails,
         greatestAverageMinutes,
       } = getScheduledRoundsDetails({
         tournamentRecords,
-        matchUpDependencies, // not yet utilized
         containedStructureIds,
         periodLength,
         matchUps,
         rounds,
       });
+
+      allDateMatchUpIds.push(...orderedMatchUpIds);
+
+      venueScheduledRoundDetails[venueId] = {
+        recoveryMinutesMap,
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+      };
+    }
+
+    // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
+    // ... and initiates scheduling
+    for (const venue of venues) {
+      const { venueId } = venue;
+
+      const {
+        recoveryMinutesMap,
+        scheduledRoundsDetails,
+        greatestAverageMinutes,
+      } = venueScheduledRoundDetails[venueId];
 
       const { groupedRounds } = getGroupedRounds({
         scheduledRoundsDetails,
@@ -127,6 +152,8 @@ export function scheduleProfileRounds({
         const result = scheduleMatchUps({
           tournamentRecords,
           competitionMatchUps: matchUps,
+          matchUpDependencies,
+          allDateMatchUpIds,
 
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutesMap,
