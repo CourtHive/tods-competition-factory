@@ -1,7 +1,5 @@
-import { matchUpTypes, policyConstants } from 'tods-competition-factory';
-
-const { DOUBLES, SINGLES } = matchUpTypes;
-const { POLICY_TYPE_SCHEDULING } = policyConstants;
+import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 
 // categoryTypes
 const ADULT = 'ADULT';
