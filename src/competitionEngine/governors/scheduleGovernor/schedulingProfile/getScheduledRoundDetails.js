@@ -20,9 +20,13 @@ export function getScheduledRoundDetails({
   rounds,
 }) {
   const hashes = [];
+  const orderedMatchUpIds = [];
   const sortedRounds = rounds.sort(
     (a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)
   );
+
+  // ---------------------------------------------------------
+  // populate required variables if not provided by parameters
   containedStructureIds =
     containedStructureIds ||
     Object.assign(
@@ -36,6 +40,7 @@ export function getScheduledRoundDetails({
       nextMatchUps: true,
     }));
   }
+  // ---------------------------------------------------------
 
   const recoveryMinutesMap = {};
   let greatestAverageMinutes = 0;
@@ -112,6 +117,7 @@ export function getScheduledRoundDetails({
     matchUpIds.forEach(
       (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
     );
+    orderedMatchUpIds.push(...matchUpIds);
 
     greatestAverageMinutes = Math.max(
       averageMinutes || 0,
@@ -129,5 +135,10 @@ export function getScheduledRoundDetails({
     };
   });
 
-  return { scheduledRoundsDetails, recoveryMinutesMap, greatestAverageMinutes };
+  return {
+    scheduledRoundsDetails,
+    greatestAverageMinutes,
+    recoveryMinutesMap,
+    orderedMatchUpIds,
+  };
 }

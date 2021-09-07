@@ -10,6 +10,8 @@
  * When attempting to schedule a matchUp ensure that its depdendencies are already scheduled
  */
 
+import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
+
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
@@ -25,9 +27,7 @@ export function getMatchUpDependencies({ matchUps, drawIds }) {
     const drawMatchUps = matchUps
       // first get all matchUps for the draw
       .filter((matchUp) => matchUp.drawId === drawId)
-      // TODO: separate by Stage, sort by stageSequence and order by stage then flatten
-      // then sort matchUps by stageSequence
-      .sort((a, b) => a.stageSequence - b.stageSequence);
+      .sort(matchUpSort);
 
     for (const matchUp of drawMatchUps) {
       const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;
