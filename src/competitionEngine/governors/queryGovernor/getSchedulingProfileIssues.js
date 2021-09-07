@@ -15,7 +15,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
   if (typeof tournamentRecords !== 'object')
     return { error: INVALID_TOURNAMENT_RECORD };
+
   const issues = [];
+  const roundIndexShouldBeAfter = {};
 
   const { schedulingProfile } = getSchedulingProfile({ tournamentRecords });
 
@@ -35,31 +37,76 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
     // skip dates that are not specified; process all if none specified
     if (!dates?.length || dates.includes(date)) {
       for (const venue of venues || []) {
-        const schedulingErrors = [];
         if (venue) {
           const { rounds } = venue;
-          let { orderedMatchUpIds } = getScheduledRoundsDetails({
-            tournamentRecords,
-            periodLength,
-            matchUps,
-            rounds,
-          });
+          const schedulingErrors = [];
+          let { orderedMatchUpIds, scheduledRoundsDetails } =
+            getScheduledRoundsDetails({
+              tournamentRecords,
+              periodLength,
+              matchUps,
+              rounds,
+            });
           const { matchUpDependencies } = getMatchUpDependencies({ matchUps });
+          const getRoundIndex = (matchUpId) => {
+            let roundIndex;
+            scheduledRoundsDetails.find((round, index) => {
+              const includes = round.matchUpIds.includes(matchUpId);
+              if (includes) roundIndex = index;
+              return includes;
+            });
+            return roundIndex;
+          };
 
           orderedMatchUpIds.forEach((matchUpId, index) => {
             const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
-            const orderErrors = intersection(
+            const shouldBeAfter = intersection(
               followingMatchUpIds,
               matchUpDependencies[matchUpId]
             );
-            if (orderErrors.length)
-              schedulingErrors.push({ [matchUpId]: orderErrors });
+            if (shouldBeAfter.length)
+              schedulingErrors.push({ matchUpId, shouldBeAfter });
           });
+          if (schedulingErrors.length) {
+            const errorsDetail = schedulingErrors.map(
+              ({ matchUpId, shouldBeAfter }) => {
+                const matchUpRoundIndex = getRoundIndex(matchUpId);
+                const earlierRoundIndices = shouldBeAfter.map(getRoundIndex);
+
+                if (!roundIndexShouldBeAfter[matchUpRoundIndex])
+                  roundIndexShouldBeAfter[matchUpRoundIndex] = [];
+                earlierRoundIndices.forEach((index) => {
+                  if (
+                    !roundIndexShouldBeAfter[matchUpRoundIndex].includes(index)
+                  ) {
+                    roundIndexShouldBeAfter[matchUpRoundIndex].push(index);
+                  }
+                });
+
+                return {
+                  matchUpId,
+                  matchUpRoundIndex,
+                  earlierRoundIndices,
+                  shouldBeAfter,
+                };
+              }
+            );
+
+            issues.push(...errorsDetail);
+          }
         }
-        if (schedulingErrors.length) issues.push(...schedulingErrors);
       }
     }
   }
 
-  return { issues, ...SUCCESS };
+  const profileIssues = {
+    matchUpIdShouldBeAfter: Object.assign(
+      {},
+      ...issues.map(({ matchUpId, shouldBeAfter }) => ({
+        [matchUpId]: shouldBeAfter,
+      }))
+    ),
+  };
+
+  return { profileIssues, roundIndexShouldBeAfter, ...SUCCESS };
 }
