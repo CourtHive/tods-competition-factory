@@ -7,18 +7,27 @@ import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
+import { SUCCESS } from '../../../../constants/resultConstants';
+import {
+  MISSING_TOURNAMENT_RECORDS,
+  MISSING_VALUE,
+} from '../../../../constants/errorConditionConstants';
 import {
   BYE,
   completedMatchUpStatuses,
 } from '../../../../constants/matchUpStatusConstants';
 
-export function getScheduledRoundDetails({
+export function getScheduledRoundsDetails({
   tournamentRecords,
   containedStructureIds, // optional to support calling method outside of scheduleProfileRounds
-  periodLength,
+  periodLength = 30,
   matchUps, // optional to support calling method outside of scheduleProfileRounds
   rounds,
 }) {
+  if (typeof tournamentRecords !== 'object')
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Array.isArray(rounds)) return { error: MISSING_VALUE };
+
   const hashes = [];
   const orderedMatchUpIds = [];
   const sortedRounds = rounds.sort(
@@ -140,5 +149,6 @@ export function getScheduledRoundDetails({
     greatestAverageMinutes,
     recoveryMinutesMap,
     orderedMatchUpIds,
+    ...SUCCESS,
   };
 }

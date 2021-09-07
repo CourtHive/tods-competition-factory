@@ -10,16 +10,41 @@
  * When attempting to schedule a matchUp ensure that its depdendencies are already scheduled
  */
 
+import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
 import {
   MISSING_DRAW_ID,
   MISSING_MATCHUPS,
 } from '../../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
-export function getMatchUpDependencies({ matchUps, drawIds }) {
+export function getMatchUpDependencies({
+  tournamentRecords,
+  matchUps = [],
+  drawIds = [],
+}) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(drawIds)) return { error: MISSING_DRAW_ID };
+
+  if (!matchUps.length) {
+    ({ matchUps } = allCompetitionMatchUps({
+      tournamentRecords,
+      nextMatchUps: true,
+    }));
+  }
+
+  if (!drawIds.length) {
+    drawIds = tournamentRecords
+      ? Object.values(tournamentRecords)
+          .map(({ events = [] }) =>
+            events.map(({ drawDefinitions = [] }) =>
+              drawDefinitions.map(({ drawId }) => drawId)
+            )
+          )
+          .flat(Infinity)
+      : [];
+  }
 
   const matchUpDependencies = {};
 
@@ -54,5 +79,5 @@ export function getMatchUpDependencies({ matchUps, drawIds }) {
     }
   }
 
-  return { matchUpDependencies };
+  return { matchUpDependencies, ...SUCCESS };
 }

@@ -1,9 +1,10 @@
 import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
 import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/tournamentGovernor/addTimeItem';
+import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
-import { getScheduledRoundDetails } from './getScheduledRoundDetails';
+import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
 import { getSchedulingProfile } from './schedulingProfile';
@@ -42,6 +43,8 @@ export function scheduleProfileRounds({
     tournamentRecords,
     nextMatchUps: true,
   });
+
+  const { matchUpDependencies } = getMatchUpDependencies({ matchUps });
 
   const validScheduleDates = scheduleDates
     .map((date) => {
@@ -96,8 +99,9 @@ export function scheduleProfileRounds({
         recoveryMinutesMap,
         scheduledRoundsDetails,
         greatestAverageMinutes,
-      } = getScheduledRoundDetails({
+      } = getScheduledRoundsDetails({
         tournamentRecords,
+        matchUpDependencies, // not yet utilized
         containedStructureIds,
         periodLength,
         matchUps,

@@ -3,7 +3,9 @@ import { getMatchUpFormatTimingUpdate } from './matchUpFormatTiming/getMatchUpFo
 import { getEventMatchUpFormatTiming } from './matchUpFormatTiming/getEventMatchUpFormatTiming';
 import { isValidSchedulingProfile } from '../../../global/validation/validSchedulingProfile';
 import { modifyMatchUpFormatTiming } from './matchUpFormatTiming/modifyMatchUpFormatTiming';
+import { getScheduledRoundsDetails } from './schedulingProfile/getScheduledRoundsDetails';
 import { findMatchUpFormatTiming } from './matchUpFormatTiming/findMatchUpFormatTiming';
+import { getMatchUpDependencies } from './scheduleMatchUps/getMatchUpDependencies';
 import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTimes';
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming';
@@ -47,6 +49,8 @@ const scheduleGovernor = {
   scheduleProfileRounds,
   clearScheduledMatchUps,
   bulkRescheduleMatchUps,
+  getScheduledRoundsDetails,
+  getMatchUpDependencies,
 
   matchUpScheduleChange,
   calculateScheduleTimes,
