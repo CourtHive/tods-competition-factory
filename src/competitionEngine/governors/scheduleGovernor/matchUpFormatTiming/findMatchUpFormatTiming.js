@@ -43,7 +43,8 @@ export function findMatchUpFormatTiming({
       categoryType,
       eventType,
     });
-    return timing?.averageMinutes || timing?.recoveryMinutes;
+    const foundTiming = timing?.averageMinutes || timing?.recoveryMinutes;
+    return foundTiming;
   });
 
   return {

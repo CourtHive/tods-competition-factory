@@ -11,11 +11,11 @@ import { processNextMatchUps } from './processNextMatchUps';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from './personRequests';
-import { unique } from '../../../../utilities';
 import {
   extractDate,
   extractTime,
   isValidDateString,
+  sameDay,
   zeroPad,
 } from '../../../../utilities/dateTime';
 
@@ -94,22 +94,27 @@ export function scheduleMatchUps({
       tournamentRecords,
       nextMatchUps: true,
     }));
-    competitionMatchUps.forEach((matchUp) => {
-      if (matchUp.schedule?.timeAfterRecovery) {
-        processNextMatchUps({
-          matchUp,
-          matchUpNotBeforeTimes,
-          matchUpPotentialParticipantIds,
-        });
-      }
-    });
   }
+
+  competitionMatchUps.forEach((matchUp) => {
+    if (
+      matchUp.schedule?.scheduledDate &&
+      sameDay(date, extractDate(matchUp.schedule.scheduledDate))
+    ) {
+      processNextMatchUps({
+        matchUp,
+        matchUpNotBeforeTimes,
+        matchUpPotentialParticipantIds,
+      });
+    }
+  });
 
   // this must be done to preserve the order of matchUpIds
   const targetMatchUps = matchUpIds.map((matchUpId) =>
     competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
 
+  /*
   // discover the earliest time that this block of targetMatchUps can be scheduled
   // if notBeforeTimes includes undefined it means there are matchUps which have no restrictions
   const notBeforeTimes = unique(
@@ -121,6 +126,7 @@ export function scheduleMatchUps({
 
   // use notBeforeTime if a startTime has not been specified (normally has not)
   startTime = startTime || notBeforeTime;
+  */
 
   // determines court availability taking into account already scheduled matchUps on the date
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
@@ -128,7 +134,7 @@ export function scheduleMatchUps({
     calculateScheduleTimes({
       tournamentRecords,
       remainingScheduleTimes,
-      calculateStartTimeFromCourts,
+      // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
       date: extractDate(date),

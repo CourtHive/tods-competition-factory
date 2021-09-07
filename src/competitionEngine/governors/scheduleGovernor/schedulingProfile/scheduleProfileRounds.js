@@ -4,7 +4,6 @@ import { filterMatchUps } from '../../../../drawEngine/getters/getMatchUps/filte
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchUpFormat';
 import { extractDate, isValidDateString } from '../../../../utilities/dateTime';
-import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
@@ -28,6 +27,7 @@ export function scheduleProfileRounds({
   periodLength,
 
   checkPotentialConflicts = true,
+  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
@@ -89,16 +89,6 @@ export function scheduleProfileRounds({
   const remainingScheduleTimes = {};
   const skippedScheduleTimes = {};
 
-  matchUps.forEach((matchUp) => {
-    if (matchUp.schedule?.timeAfterRecovery) {
-      processNextMatchUps({
-        matchUp,
-        matchUpNotBeforeTimes,
-        matchUpPotentialParticipantIds,
-      });
-    }
-  });
-
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
@@ -112,6 +102,7 @@ export function scheduleProfileRounds({
       );
 
       const recoveryMinutesMap = {};
+      let greatestAverageMinutes = 0;
       const scheduledRoundsDetails = sortedRounds.map((round) => {
         const roundPeriodLength =
           round.periodLength ||
@@ -167,20 +158,26 @@ export function scheduleProfileRounds({
 
         const { eventType, category } = event || {};
         const { categoryName, ageCategoryCode } = category || {};
-        const { averageMinutes, recoveryMinutes } = findMatchUpFormatTiming({
-          tournamentRecords,
-          categoryName: categoryName || ageCategoryCode,
-          tournamentId: round.tournamentId,
-          eventId: round.eventId,
-          matchUpFormat,
-          eventType,
-        });
+        const { averageMinutes, recoveryMinutes, error } =
+          findMatchUpFormatTiming({
+            tournamentRecords,
+            categoryName: categoryName || ageCategoryCode,
+            tournamentId: round.tournamentId,
+            eventId: round.eventId,
+            matchUpFormat,
+            eventType,
+          });
+        if (error) return { error, round };
 
         const matchUpIds = roundMatchUps.map(({ matchUpId }) => matchUpId);
         matchUpIds.forEach(
           (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
         );
 
+        greatestAverageMinutes = Math.max(
+          averageMinutes || 0,
+          greatestAverageMinutes
+        );
         const hash = `${averageMinutes}|${roundPeriodLength}`;
         if (!hashes.includes(hash)) hashes.push(hash);
 
@@ -200,11 +197,11 @@ export function scheduleProfileRounds({
       let roundPeriodLength;
       let groupedRounds = [];
       for (const roundDetails of scheduledRoundsDetails) {
-        if (!lastHash || roundDetails.hash === lastHash) {
+        if (!lastHash || roundDetails.hash === lastHash || garmanSinglePass) {
           groupedMatchUpIds = groupedMatchUpIds.concat(roundDetails.matchUpIds);
         }
 
-        if (lastHash && roundDetails.hash !== lastHash) {
+        if (lastHash && roundDetails.hash !== lastHash && !garmanSinglePass) {
           lastHash = roundDetails.hash;
           groupedRounds.push({
             averageMinutes,
@@ -214,7 +211,9 @@ export function scheduleProfileRounds({
           });
           groupedMatchUpIds = roundDetails.matchUpIds;
         }
-        averageMinutes = roundDetails.averageMinutes;
+        averageMinutes = garmanSinglePass
+          ? greatestAverageMinutes
+          : roundDetails.averageMinutes;
         recoveryMinutes = roundDetails.recoveryMinutes;
         roundPeriodLength = roundDetails.roundPeriodLength;
       }

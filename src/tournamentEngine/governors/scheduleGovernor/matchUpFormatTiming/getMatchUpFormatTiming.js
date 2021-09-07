@@ -19,8 +19,8 @@ import {
  * @returns { averageMinutes, recoveryMinutes };
  */
 export function getMatchUpFormatTiming({
-  defaultAverageMinutes,
-  defaultRecoveryMinutes,
+  defaultAverageMinutes = 90,
+  defaultRecoveryMinutes = 0,
   tournamentRecord,
   matchUpFormat,
   categoryName,
