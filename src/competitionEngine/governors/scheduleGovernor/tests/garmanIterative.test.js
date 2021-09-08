@@ -51,7 +51,6 @@ it.each([
           {
             drawSize: 4,
             drawName: 'B',
-            uniqueParticipants: true,
             matchUpFormat: matchUpFormatB,
           },
         ],
@@ -156,17 +155,19 @@ it.each([
         drawName,
       ])
       .sort((a, b) => timeStringMinutes(a[0]) - timeStringMinutes(b[0]));
-    // expect(roundMap.length).toEqual(scheduledCount);
-    console.log(roundMap); // useful for eye-balling
+    expect(roundMap.length).toEqual(scheduledMatchUps.length);
+    // console.log(roundMap); // useful for eye-balling
 
     const { competitionParticipants, participantIdsWithConflicts } =
       competitionEngine.getCompetitionParticipants({
         inContext: true,
         withMatchUps: true,
+        withScheduleItems: true,
       });
     console.log({
       participants: competitionParticipants.length,
       participantIdsWithConflicts,
     });
+    console.log(competitionParticipants[0].scheduleItems);
   }
 );
