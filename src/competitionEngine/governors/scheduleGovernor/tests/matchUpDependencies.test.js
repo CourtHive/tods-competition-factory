@@ -32,7 +32,7 @@ it.each([
 
   Object.keys(dependencyMap).forEach((roundNumber) => {
     roundMatchUps[roundNumber].forEach(({ matchUpId }) =>
-      expect(matchUpDependencies[matchUpId].length).toEqual(
+      expect(matchUpDependencies[matchUpId].matchUpIds.length).toEqual(
         dependencyMap[roundNumber]
       )
     );
@@ -62,7 +62,7 @@ it('can build a dependency map across structures', () => {
     ({ structureName, roundNumber }) =>
       structureName === 'WEST' && roundNumber === 1
   );
-  const dependencies = matchUpDependencies[targetMatchUp.matchUpId];
+  const dependencies = matchUpDependencies[targetMatchUp.matchUpId].matchUpIds;
   matchUps
     .filter(({ matchUpId }) => dependencies.includes(matchUpId))
     .forEach(({ structureName, roundNumber, roundPosition }) => {
