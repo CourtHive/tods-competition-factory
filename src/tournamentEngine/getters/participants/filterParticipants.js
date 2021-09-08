@@ -16,18 +16,15 @@ export function filterParticipants({
   let { eventIds } = participantFilters;
   const {
     accessorValues,
-    drawEntryStatuses, // only those participantIds that are in draw.entries or flightProfile.flights[].drawEntries
-    positionedParticipants, // only those participantIds that are included in any structure.positionAssignments
-    eventEntryStatuses,
+    drawEntryStatuses, // {string[]} participantIds that are in draw.entries or flightProfile.flights[].drawEnteredParticipantIds with entryStatuses
+    positionedParticipants, // boolean - participantIds that are included in any structure.positionAssignments
+    eventEntryStatuses, // {string[]} participantIds that are in entry.entries with entryStatuses
     participantRoles,
     participantRoleResponsibilities,
     participantTypes,
     participantIds,
     signInStatus,
   } = participantFilters;
-
-  // NOTE: at the moment drawEntryStatuses and eventEntryStatuses are boolean
-  // ... in the future they can both be arrays of targeted statuses where [] == all == true
 
   const tournamentEvents =
     (isValidFilterArray(eventIds) &&
@@ -37,32 +34,13 @@ export function filterParticipants({
     tournamentRecord.events ||
     [];
 
-  if (!eventIds?.length && eventEntryStatuses) {
-    eventIds = tournamentEvents.map(({ eventId }) => eventId);
-  }
-
-  const competitorEntries =
+  const drawEnteredParticipantIds =
     drawEntryStatuses &&
-    unique(
-      tournamentEvents.reduce((entries, event) => {
-        const { flightProfile } = getFlightProfile({ event });
-        const flightEntries =
-          flightProfile?.flights
-            ?.map(({ drawEntries }) =>
-              drawEntries
-                ? drawEntries.map(({ participantId }) => participantId)
-                : []
-            )
-            .flat() || [];
+    getDrawEntries({ drawEntryStatuses, tournamentEvents });
 
-        const drawEntries =
-          tournamentEvents.drawDefinitions?.map(({ entries }) =>
-            entries ? entries.map(({ participantId }) => participantId) : []
-          ) || [];
-
-        return entries.concat(...flightEntries, ...drawEntries);
-      }, [])
-    );
+  const eventEnteredParticipantIds =
+    eventEntryStatuses &&
+    getEventEntries({ eventEntryStatuses, tournamentEvents });
 
   const positionedParticipantIds =
     [true, false].includes(positionedParticipants) &&
@@ -105,7 +83,10 @@ export function filterParticipants({
           positionedParticipantIds.includes(participantId)) ||
         (positionedParticipants === false &&
           !positionedParticipantIds.includes(participantId)) ||
-        (competitorEntries && competitorEntries.includes(participantId)) ||
+        (drawEnteredParticipantIds &&
+          drawEnteredParticipantIds.includes(participantId)) ||
+        (eventEnteredParticipantIds &&
+          eventEnteredParticipantIds.includes(participantId)) ||
         (participantIds && participantIds.includes(participantId)) ||
         (signInStatus && participantSignInStatus === signInStatus) ||
         (participantTypes &&
@@ -131,7 +112,10 @@ export function filterParticipants({
             positionedParticipantIds.includes(participantId)) ||
           (positionedParticipants === false &&
             !positionedParticipantIds.includes(participantId))) &&
-        (!competitorEntries || competitorEntries.includes(participantId)) &&
+        (!drawEnteredParticipantIds ||
+          drawEnteredParticipantIds.includes(participantId)) &&
+        (!eventEnteredParticipantIds ||
+          eventEnteredParticipantIds.includes(participantId)) &&
         (!participantIds || participantIds.includes(participantId)) &&
         (!signInStatus || participantSignInStatus === signInStatus) &&
         (!participantTypes ||
@@ -180,4 +164,54 @@ export function filterParticipants({
 
 function isValidFilterArray(filter) {
   return filter && Array.isArray(filter) && filter.length;
+}
+
+function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
+  const statusFilter = ({ entryStatus }) =>
+    !Array.isArray(drawEntryStatuses)
+      ? true
+      : drawEntryStatuses.includes(entryStatus);
+
+  return unique(
+    tournamentEvents.reduce((entries, event) => {
+      const { flightProfile } = getFlightProfile({ event });
+      const flightEntries =
+        flightProfile?.flights
+          ?.map(({ drawEntries }) =>
+            Array.isArray(drawEntries)
+              ? drawEntries
+                  .filter(statusFilter)
+                  .map(({ participantId }) => participantId)
+              : []
+          )
+          .flat() || [];
+
+      const drawEnteredParticipantIds =
+        event.drawDefinitions?.map(({ entries }) =>
+          entries
+            ? entries
+                .filter(statusFilter)
+                .map(({ participantId }) => participantId)
+            : []
+        ) || [];
+
+      return entries.concat(...flightEntries, ...drawEnteredParticipantIds);
+    }, [])
+  );
+}
+
+function getEventEntries({ eventEntryStatuses, tournamentEvents }) {
+  return unique(
+    tournamentEvents.reduce((entries, event) => {
+      const eventEntries = event.entries
+        .filter(({ entryStatus }) =>
+          !Array.isArray(eventEntryStatuses)
+            ? true
+            : eventEntryStatuses.includes(entryStatus)
+        )
+        .map(({ participantId }) => participantId);
+
+      return entries.concat(...eventEntries);
+    }, [])
+  );
 }
