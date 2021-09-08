@@ -164,10 +164,7 @@ it.each([
         withMatchUps: true,
         withScheduleItems: true,
       });
-    console.log({
-      participants: competitionParticipants.length,
-      participantIdsWithConflicts,
-    });
-    console.log(competitionParticipants[0].scheduleItems);
+    expect(participantIdsWithConflicts.length).toEqual(0);
+    expect(competitionParticipants.length).toEqual(8);
   }
 );
