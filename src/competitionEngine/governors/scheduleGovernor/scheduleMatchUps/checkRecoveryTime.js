@@ -6,6 +6,8 @@ export function checkRecoveryTime({
   matchUpPotentialParticipantIds,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
+  matchUpDependencies,
+
   averageMatchUpMinutes,
   recoveryMinutes,
   scheduleTime,
@@ -44,13 +46,15 @@ export function checkRecoveryTime({
 
   if (enoughTime) {
     updateTimeAfterRecovery({
+      individualParticipantProfiles,
+      matchUpPotentialParticipantIds,
+      matchUpNotBeforeTimes,
+      matchUpDependencies,
+
       averageMatchUpMinutes,
       recoveryMinutes,
-      matchUp,
-      individualParticipantProfiles,
       scheduleTime,
-      matchUpNotBeforeTimes,
-      matchUpPotentialParticipantIds,
+      matchUp,
     });
   }
 

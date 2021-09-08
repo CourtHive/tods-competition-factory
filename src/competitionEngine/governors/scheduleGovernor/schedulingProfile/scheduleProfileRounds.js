@@ -45,6 +45,7 @@ export function scheduleProfileRounds({
   });
 
   const { matchUpDependencies } = getMatchUpDependencies({
+    includeParticipantDependencies: true,
     tournamentRecords,
     matchUps,
   });

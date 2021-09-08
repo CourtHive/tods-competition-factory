@@ -6,16 +6,17 @@ import {
 } from '../../../../utilities/dateTime';
 
 export function updateTimeAfterRecovery({
+  individualParticipantProfiles,
+
+  matchUpPotentialParticipantIds,
+  matchUpNotBeforeTimes,
+  matchUpDependencies,
+
   averageMatchUpMinutes,
   formatChangeRecoveryMinutes,
   recoveryMinutes,
-
-  matchUp,
-  individualParticipantProfiles,
-
   scheduleTime,
-  matchUpNotBeforeTimes,
-  matchUpPotentialParticipantIds,
+  matchUp,
 }) {
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
@@ -37,6 +38,11 @@ export function updateTimeAfterRecovery({
             parseInt(formatChangeRecoveryMinutes)
         ));
   const individualParticipantIds = getIndividualParticipantIds(matchUp);
+  const participantIdDependencies =
+    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
+  if (participantIdDependencies.length > individualParticipantIds.length) {
+    console.log({ participantIdDependencies });
+  }
   individualParticipantIds.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
