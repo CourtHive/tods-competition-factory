@@ -518,9 +518,10 @@ const {
 
 ### Implemented participantFilters
 
+- enableOrFiltering: boolean - use OR logic instead of default AND
 - accessorValues: array of accessors and targeted value `[{ accessor, value }]`
-- drawEntryStatuses: boolean - participantIds found in draw.entries
-- eventEntryStatuses: boolean - participantIds found in event.entries
+- drawEntryStatuses: array of `entryStatus` values for participantIds found in draw.entries
+- eventEntryStatuses: array of `entryStatus` values for participantIds found in event.entries
 - eventIds: array of targeted eventIds
 - participantIds: array of targeted participantIds
 - participantRoles: array of targeted participantRoles

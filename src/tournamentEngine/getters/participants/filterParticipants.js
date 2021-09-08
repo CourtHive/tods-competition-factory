@@ -10,7 +10,6 @@ import { SINGLES } from '../../../constants/eventConstants';
 export function filterParticipants({
   tournamentRecord,
   participantFilters,
-  enableOrFiltering,
   participants,
 }) {
   let { eventIds } = participantFilters;
@@ -24,6 +23,7 @@ export function filterParticipants({
     participantTypes,
     participantIds,
     signInStatus,
+    enableOrFiltering,
   } = participantFilters;
 
   const tournamentEvents =
