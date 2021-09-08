@@ -16,7 +16,7 @@ const hasSchedule = ({ schedule }) => {
   return !!matchUpScheduleKeys.length;
 };
 
-it('can auto schedule multiple events at multiple venues', () => {
+it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
     {
       venueName: 'venue 1',
@@ -32,6 +32,7 @@ it('can auto schedule multiple events at multiple venues', () => {
     },
   ];
 
+  // the SAME participants will be in both SINGLES and DOUBLES
   const eventProfiles = [
     {
       eventName: 'Event One',
@@ -204,7 +205,7 @@ it('can auto schedule multiple events at multiple venues', () => {
   expect(result.success).toEqual(true);
   expect(result.requestConflicts).toEqual([]);
 
-  expect(result.noTimeMatchUpIds.length).toEqual(0);
+  expect(result.noTimeMatchUpIds.length).toBeGreaterThan(0);
 
   const { matchUps: singlesMatchUps } =
     competitionEngine.allCompetitionMatchUps({
@@ -222,5 +223,9 @@ it('can auto schedule multiple events at multiple venues', () => {
   const doublesScheduled = doublesMatchUps.filter(hasSchedule);
 
   expect(singlesScheduled.length).toEqual(24);
-  expect(doublesScheduled.length).toEqual(12);
+
+  // because the same participants are in SINGLES and DOUBLES it is not possible to schedule
+  // all of the doubles matchUps at the second venue, give the courts startTime/endTime
+  expect(doublesScheduled.length).toBeGreaterThan(0);
+  expect(doublesScheduled.length).toBeLessThan(8);
 });

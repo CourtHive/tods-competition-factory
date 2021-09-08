@@ -62,7 +62,7 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
             const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
             const shouldBeAfter = intersection(
               followingMatchUpIds,
-              matchUpDependencies[matchUpId]
+              matchUpDependencies?.[matchUpId]?.matchUpIds || []
             );
             if (shouldBeAfter.length)
               schedulingErrors.push({ matchUpId, shouldBeAfter });

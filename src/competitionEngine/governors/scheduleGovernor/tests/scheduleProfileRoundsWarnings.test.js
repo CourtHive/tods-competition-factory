@@ -118,7 +118,7 @@ it.each([
       const followingMatchUpIds = orderedMatchUpIds.slice(index + 1);
       const orderErrors = intersection(
         followingMatchUpIds,
-        matchUpDependencies[matchUpId]
+        matchUpDependencies[matchUpId].matchUpIds
       );
       if (orderErrors.length)
         schedulingErrors.push({ [matchUpId]: orderErrors });

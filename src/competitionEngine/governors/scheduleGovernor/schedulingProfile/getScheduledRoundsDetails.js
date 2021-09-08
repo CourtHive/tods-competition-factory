@@ -17,6 +17,15 @@ import {
   completedMatchUpStatuses,
 } from '../../../../constants/matchUpStatusConstants';
 
+/**
+ *
+ * @param {object} tournamentRecords - passed in automatically by competitionEngine
+ * @param {string[]} containedStructureIds - optional optimization - otherwise created internally
+ * @param {integer} periodLength - optional - defaults to 30
+ * @param {object[]} matchUps - optional optimization - otherwise created internally
+ * @param {object[]} rounds - array of ordered rounds specified as part of a schedulingProfile
+ * @returns
+ */
 export function getScheduledRoundsDetails({
   tournamentRecords,
   containedStructureIds, // optional to support calling method outside of scheduleProfileRounds

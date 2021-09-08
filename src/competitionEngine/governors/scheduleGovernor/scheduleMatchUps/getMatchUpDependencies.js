@@ -1,15 +1,9 @@
 /**
- * Consider all matchUps which are already scheduled on target date
- * Consider all matchUps which are attempting to be scheduled on target date
- * Extract relevant drawIds
- * For each relevant drawDefinition build up a mapping of matchUp dependencies
- * {
- * 	[matchUpId]: matchUpIdDepdendencies
- * }
- * Filter matchUpIdDepdendencies array by matchUpIds which are on target date
- * When attempting to schedule a matchUp ensure that its depdendencies are already scheduled
+ * Builds up an exhaustive map of all matchUpIds on which a matchUpId is depdendent
+ * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
@@ -19,9 +13,18 @@ import {
   MISSING_MATCHUPS,
 } from '../../../../constants/errorConditionConstants';
 
+/**
+ *
+ * @param {object} tournamentRecords - passed in automatically by competitionEngine
+ * @param {boolean} includeParticipantDependencies - whether to attach all participantIds/potentialParticipantIds
+ * @param {object[]} matchUps - optional - optimization to pass matchUps (with nextMatchUps)
+ * @param {string[]} drawIds - optional - scope processing to specified drawIds
+ * @returns { [matchUpId]: { matchUpIds: [matchUpIdDependency] }, participantIds: [potentialParticipantId] }
+ */
 export function getMatchUpDependencies({
   tournamentRecords,
-  matchUps = [],
+  includeParticipantDependencies,
+  matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
@@ -48,33 +51,52 @@ export function getMatchUpDependencies({
 
   const matchUpDependencies = {};
 
+  const initializeMatchUpId = (matchUpId) => {
+    if (!matchUpDependencies[matchUpId])
+      matchUpDependencies[matchUpId] = { matchUpIds: [], participantIds: [] };
+  };
+
+  const propagateDependencies = (matchUpId, targetMatchUpId) => {
+    matchUpDependencies[matchUpId].matchUpIds.forEach((matchUpIdDependency) =>
+      matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpIdDependency)
+    );
+    matchUpDependencies[targetMatchUpId].matchUpIds.push(matchUpId);
+
+    if (includeParticipantDependencies) {
+      matchUpDependencies[matchUpId].participantIds.forEach(
+        (participantIdDependency) =>
+          matchUpDependencies[targetMatchUpId].participantIds.push(
+            participantIdDependency
+          )
+      );
+    }
+  };
+
   for (const drawId of drawIds) {
     const drawMatchUps = matchUps
       // first get all matchUps for the draw
       .filter((matchUp) => matchUp.drawId === drawId)
+      // sort by stage/stageSequence/roundNumber/roundPosition
       .sort(matchUpSort);
 
     for (const matchUp of drawMatchUps) {
       const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;
-      if (!matchUpDependencies[matchUpId]) matchUpDependencies[matchUpId] = [];
-      if (winnerMatchUpId) {
-        if (!matchUpDependencies[winnerMatchUpId]) {
-          matchUpDependencies[winnerMatchUpId] = [];
-        }
+      initializeMatchUpId(matchUpId);
 
-        matchUpDependencies[matchUpId].forEach((depdendentMatchUpId) => {
-          matchUpDependencies[winnerMatchUpId].push(depdendentMatchUpId);
-        });
-        matchUpDependencies[winnerMatchUpId].push(matchUpId);
+      if (includeParticipantDependencies) {
+        const individualParticipantIds = getIndividualParticipantIds(matchUp);
+        matchUpDependencies[matchUpId].participantIds =
+          // allRelevantParticipantIds;
+          individualParticipantIds;
+      }
+
+      if (winnerMatchUpId) {
+        initializeMatchUpId(winnerMatchUpId);
+        propagateDependencies(matchUpId, winnerMatchUpId);
       }
       if (loserMatchUpId) {
-        if (!matchUpDependencies[loserMatchUpId])
-          matchUpDependencies[loserMatchUpId] = [];
-
-        matchUpDependencies[matchUpId].forEach((depdendentMatchUpId) => {
-          matchUpDependencies[loserMatchUpId].push(depdendentMatchUpId);
-        });
-        matchUpDependencies[loserMatchUpId].push(matchUpId);
+        initializeMatchUpId(loserMatchUpId);
+        propagateDependencies(matchUpId, loserMatchUpId);
       }
     }
   }

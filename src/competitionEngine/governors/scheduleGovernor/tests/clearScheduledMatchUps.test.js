@@ -224,13 +224,13 @@ it.each([
   }
 );
 
-it.only('can clear scheduled matchUps', () => {
+it('can clear scheduled matchUps', () => {
   const startTime = '08:00';
   const endTime = '19:00';
   const courtsCount = 6;
   const scheduledCount = 6;
   const uniqueParticipants = false;
-  const twoMatchUps = uniqueParticipants ? 8 : 4;
+  const twoMatchUps = 4;
   const venueProfiles = [
     {
       venueName: 'venue 1',

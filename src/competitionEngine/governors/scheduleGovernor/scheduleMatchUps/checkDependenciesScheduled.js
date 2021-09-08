@@ -6,7 +6,7 @@ export function checkDependenciesScheduled({
 }) {
   // only those dependencies that are part of the date scheduling profile are important to consider
   const matchUpIdDependencies = (
-    matchUpDependencies?.[matchUp.matchUpId] || []
+    matchUpDependencies?.[matchUp.matchUpId]?.matchUpIds || []
   ).filter((matchUpId) => allDateMatchUpIds.includes(matchUpId));
 
   // when true all the matchUps on which this matchUp is dependent have already been scheduled

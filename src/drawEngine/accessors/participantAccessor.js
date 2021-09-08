@@ -1,11 +1,13 @@
+import { unique } from '../../utilities';
+
+import { INDIVIDUAL } from '../../constants/participantTypes';
 import {
   MISSING_CONTEXT,
   MISSING_MATCHUP,
   INVALID_MATCHUP,
 } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../constants/participantTypes';
-import { unique } from '../../utilities';
 
+// Does NOT include potential participandIds
 export function getMatchUpParticipantIds({ matchUp }) {
   let error;
   let sideParticipantIds = [];
@@ -22,7 +24,8 @@ export function getMatchUpParticipantIds({ matchUp }) {
 
     const sideIndividualParticipantIds = matchUp.sides
       .filter((side) => side.participantType === INDIVIDUAL)
-      .map((participant) => participant.participantId);
+      .map((participant) => participant.participantId)
+      .filter(Boolean);
 
     const nestedIndividualParticipants = matchUp.sides
       .map(
@@ -33,18 +36,20 @@ export function getMatchUpParticipantIds({ matchUp }) {
     nestedIndividualParticipantIds = nestedIndividualParticipants.map(
       (participants) =>
         participants
+          .map((participant) => participant?.participantId)
           .filter(Boolean)
-          .map((participant) => participant.participantId)
     );
 
-    individualParticipantIds = [].concat(
-      ...sideIndividualParticipantIds,
-      ...nestedIndividualParticipantIds.flat()
-    );
+    individualParticipantIds = []
+      .concat(
+        ...sideIndividualParticipantIds,
+        ...nestedIndividualParticipantIds.flat()
+      )
+      .filter(Boolean);
 
     allRelevantParticipantIds = unique(
       individualParticipantIds.concat(sideParticipantIds)
-    );
+    ).filter(Boolean);
   }
 
   return {

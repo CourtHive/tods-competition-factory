@@ -69,6 +69,7 @@ export function scheduleMatchUps({
   matchUpDailyLimits = {},
   matchUpNotBeforeTimes = {},
   matchUpPotentialParticipantIds = {},
+  individualParticipantProfiles = {},
 
   checkPotentialConflicts = true,
   remainingScheduleTimes,
@@ -102,6 +103,8 @@ export function scheduleMatchUps({
 
   if (!matchUpDependencies) {
     ({ matchUpDependencies } = getMatchUpDependencies({
+      tournamentRecords,
+      includeParticipantDependencies: true,
       matchUps: competitionMatchUps,
     }));
   }
@@ -144,7 +147,6 @@ export function scheduleMatchUps({
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
-  const individualParticipantProfiles = {};
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
@@ -156,13 +158,15 @@ export function scheduleMatchUps({
     if (scheduleTime) {
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       updateTimeAfterRecovery({
-        averageMatchUpMinutes,
-        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
-        matchUp,
         individualParticipantProfiles,
-        scheduleTime,
-        matchUpNotBeforeTimes,
         matchUpPotentialParticipantIds,
+        matchUpNotBeforeTimes,
+        matchUpDependencies,
+
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
+        averageMatchUpMinutes,
+        scheduleTime,
+        matchUp,
       });
     }
   });
@@ -261,13 +265,15 @@ export function scheduleMatchUps({
 
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       const { enoughTime } = checkRecoveryTime({
-        matchUp,
-        scheduleTime,
+        individualParticipantProfiles,
+        matchUpPotentialParticipantIds,
+        matchUpNotBeforeTimes,
+        matchUpDependencies,
+
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
-        individualParticipantProfiles,
-        matchUpNotBeforeTimes,
-        matchUpPotentialParticipantIds,
+        scheduleTime,
+        matchUp,
       });
       if (!enoughTime) return false;
 

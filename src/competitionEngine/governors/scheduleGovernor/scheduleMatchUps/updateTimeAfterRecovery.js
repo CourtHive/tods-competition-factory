@@ -1,4 +1,3 @@
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,
@@ -6,16 +5,17 @@ import {
 } from '../../../../utilities/dateTime';
 
 export function updateTimeAfterRecovery({
+  individualParticipantProfiles,
+
+  matchUpPotentialParticipantIds,
+  matchUpNotBeforeTimes,
+  matchUpDependencies,
+
   averageMatchUpMinutes,
   formatChangeRecoveryMinutes,
   recoveryMinutes,
-
-  matchUp,
-  individualParticipantProfiles,
-
   scheduleTime,
-  matchUpNotBeforeTimes,
-  matchUpPotentialParticipantIds,
+  matchUp,
 }) {
   const endTime = extractTime(matchUp?.schedule?.endTime);
   const timeAfterRecovery = endTime
@@ -36,10 +36,14 @@ export function updateTimeAfterRecovery({
           parseInt(averageMatchUpMinutes) +
             parseInt(formatChangeRecoveryMinutes)
         ));
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  individualParticipantIds.forEach((participantId) => {
+  const participantIdDependencies =
+    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
+
+  participantIdDependencies.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
+        counters: {},
+        potentialCounted: {},
         timeAfterRecovery,
         typeChangeTimeAfterRecovery,
         priorMatchUpType: matchUp.matchUpType,

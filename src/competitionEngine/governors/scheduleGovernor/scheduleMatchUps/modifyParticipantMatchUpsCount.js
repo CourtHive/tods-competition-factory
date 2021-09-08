@@ -3,8 +3,6 @@ import { overlap } from '../../../../utilities';
 
 import { TOTAL } from '../../../../constants/scheduleConstants';
 
-// IMPORTANT: participant counts should only be incremented for ONE potential matchUp per draw
-// TODO: add ability to track which draw a potential has been incremented from...
 export function modifyParticipantMatchUpsCount({
   matchUpPotentialParticipantIds,
   individualParticipantProfiles,
@@ -34,14 +32,31 @@ export function modifyParticipantMatchUpsCount({
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         counters: {},
-        timeAfterRecovery: undefined,
+        potentialCounted: {},
         priorMatchUpType: undefined,
+        timeAfterRecovery: undefined,
+        typeChangeTimeAfterRecovery: undefined,
       };
     }
-    const counters = individualParticipantProfiles[participantId].counters;
-    if (counters[matchUpType]) counters[matchUpType] += value;
-    else if (value > 0) counters[matchUpType] = value;
-    if (counters[TOTAL]) counters[TOTAL] += value;
-    else if (value > 0) counters[TOTAL] = value;
+
+    if (!individualParticipantProfiles[participantId].potentialCounted)
+      individualParticipantProfiles[participantId].potentialCounted = {};
+
+    if (
+      !individualParticipantProfiles[participantId].potentialCounted[
+        matchUp.drawId
+      ]
+    ) {
+      const counters = individualParticipantProfiles[participantId].counters;
+      if (counters[matchUpType]) counters[matchUpType] += value;
+      else if (value > 0) counters[matchUpType] = value;
+      if (counters[TOTAL]) counters[TOTAL] += value;
+      else if (value > 0) counters[TOTAL] = value;
+      if (filteredPotentials.includes(participantId)) {
+        individualParticipantProfiles[participantId].potentialCounted[
+          matchUp.drawId
+        ] = true;
+      }
+    }
   });
 }
