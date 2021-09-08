@@ -1,5 +1,5 @@
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
-import { getVirtualCourtBookings } from './getVirtualCourtBookings';
+import { getVirtualCourts } from './getVirtualCourts';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';
 import {
@@ -65,7 +65,7 @@ export function getScheduleTimes({
     courts = courtGenerator({ startTime, endTime, count: courtsCount, date });
   }
 
-  const { virtualCourts, firstTimeSlotStartTime } = getVirtualCourtBookings({
+  const { virtualCourts, firstTimeSlotStartTime } = getVirtualCourts({
     remainingScheduleTimes,
     averageMatchUpMinutes,
     periodLength,

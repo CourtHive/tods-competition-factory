@@ -88,10 +88,13 @@ export function scheduleProfileRounds({
   const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
 
+  let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
   const scheduledMatchUpIds = [];
   const overLimitMatchUpIds = [];
   const noTimeMatchUpIds = [];
   const requestConflicts = [];
+
+  let iterations = 0;
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
@@ -141,7 +144,8 @@ export function scheduleProfileRounds({
         garmanSinglePass,
       });
 
-      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
+      iterations += groupedRounds.length;
+
       for (const roundDetail of groupedRounds) {
         const {
           matchUpIds,
@@ -227,6 +231,7 @@ export function scheduleProfileRounds({
 
   return {
     ...SUCCESS,
+    iterations,
 
     scheduledDates,
     noTimeMatchUpIds,
