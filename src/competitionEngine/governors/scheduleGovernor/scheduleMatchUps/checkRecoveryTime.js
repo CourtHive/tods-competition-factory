@@ -1,5 +1,4 @@
 import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 
 export function checkRecoveryTime({
@@ -13,8 +12,9 @@ export function checkRecoveryTime({
   scheduleTime,
   matchUp,
 }) {
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
-  const sufficientTimeForIndiiduals = individualParticipantIds.every(
+  const participantIdDependencies =
+    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
+  const sufficientTimeForIndiiduals = participantIdDependencies.every(
     (participantId) => {
       let profile = individualParticipantProfiles[participantId];
       if (!profile) {
