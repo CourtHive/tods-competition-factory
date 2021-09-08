@@ -82,15 +82,16 @@ export function scheduleProfileRounds({
       new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
-  const noTimeMatchUpIds = [];
-  const overLimitMatchUpIds = [];
-  const scheduledMatchUpIds = [];
-  const requestConflicts = [];
-  const matchUpNotBeforeTimes = {};
   const matchUpPotentialParticipantIds = {};
-
+  const individualParticipantProfiles = {};
   const remainingScheduleTimes = {};
+  const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
+
+  const scheduledMatchUpIds = [];
+  const overLimitMatchUpIds = [];
+  const noTimeMatchUpIds = [];
+  const requestConflicts = [];
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
@@ -163,6 +164,7 @@ export function scheduleProfileRounds({
           matchUpDailyLimits,
           matchUpNotBeforeTimes,
           matchUpPotentialParticipantIds,
+          individualParticipantProfiles,
 
           checkPotentialConflicts,
           remainingScheduleTimes: previousRemainingScheduleTimes,

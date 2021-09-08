@@ -69,6 +69,7 @@ export function scheduleMatchUps({
   matchUpDailyLimits = {},
   matchUpNotBeforeTimes = {},
   matchUpPotentialParticipantIds = {},
+  individualParticipantProfiles = {},
 
   checkPotentialConflicts = true,
   remainingScheduleTimes,
@@ -146,7 +147,6 @@ export function scheduleMatchUps({
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
     dateScheduledMatchUpIds.includes(matchUpId)
   );
-  const individualParticipantProfiles = {};
   dateScheduledMatchUps.forEach((matchUp) => {
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
