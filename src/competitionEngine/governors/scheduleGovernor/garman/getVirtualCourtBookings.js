@@ -16,14 +16,37 @@ import { generateTimeSlots } from './generateTimeSlots';
  */
 export function getVirtualCourtBookings({
   averageMatchUpMinutes,
-  // remainingScheduleTimes,
-  // periodLength,
+  remainingScheduleTimes = [],
   startTime,
   endTime,
   bookings,
   courts,
   date,
 }) {
+  const { sameDate } = getCourtDateFilters({ date });
+  const virtualCourts = courts.map(({ courtId, dateAvailability }, index) => ({
+    courtId,
+    dateAvailability: dateAvailability
+      ?.filter(sameDate)
+      .map(({ date, startTime, endTime, bookings }) => {
+        const amendedBookings = [];
+        const allocatedTimeBooking = remainingScheduleTimes[index] && {
+          startTime,
+          endTime: remainingScheduleTimes[index],
+          bookingType: 'remainingScheduleTime',
+        };
+        if (allocatedTimeBooking) amendedBookings.push(allocatedTimeBooking);
+        if (Array.isArray(bookings))
+          amendedBookings.push(...bookings?.map((booking) => booking));
+        return {
+          date,
+          startTime,
+          endTime,
+          bookings: amendedBookings,
+        };
+      }),
+  }));
+
   const { unassignedBookings } = (bookings || []).reduce(
     (accumulator, booking) => {
       const { courtId } = booking;
@@ -41,29 +64,7 @@ export function getVirtualCourtBookings({
     { courtBookings: {}, unassignedBookings: [] }
   );
 
-  /*
-  console.log({
-    unassignedBookings: unassignedBookings.map(({ startTime, endTime }) => ({
-      startTime,
-      endTime,
-    })),
-  });
-  */
-
-  const virtualCourts = courts.map(({ courtId, dateAvailability }) => ({
-    courtId,
-    dateAvailability: dateAvailability?.map(
-      ({ date, startTime, endTime, bookings }) => ({
-        date,
-        startTime,
-        endTime,
-        bookings: bookings?.map((booking) => booking),
-      })
-    ),
-  }));
-
   const assignedBookings = [];
-  const { sameDate } = getCourtDateFilters({ date });
   unassignedBookings.forEach((unassignedBooking) => {
     const {
       startTime,
@@ -81,9 +82,8 @@ export function getVirtualCourtBookings({
     );
 
     virtualCourts.find((court) => {
-      if (!Array.isArray(court.dateAvailability)) return false;
-      const dateAvailability = court.dateAvailability.filter(sameDate);
-      return dateAvailability.find((courtDate) => {
+      // court.dateAvailability is an array of at most one courtDate object
+      return court.dateAvailability.find((courtDate) => {
         const timeSlots = generateTimeSlots({ courtDate });
         return timeSlots.find((timeSlot) => {
           const timeSlotStartTime = timeToDate(timeSlot.startTime);
