@@ -1,4 +1,5 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
+import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
 import { extensionConstants } from '../../../constants/extensionConstants';
 import { timeStringMinutes } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/objects';
@@ -29,30 +30,27 @@ export function addParticipantContext(params) {
   };
 
   const { tournamentRecord, participantFilters } = params;
-  const allTournamentParticipants = params.tournamentRecord?.participants || [];
+  const allTournamentParticipants = tournamentRecord?.participants || [];
 
-  // build up a mapping of all participantIds to all of the individualParticipantIds that they reference
-  // this map includes the key participantId as a value of the array of relevantParticipantIds
-  const relevantParticipantIdsMap = Object.assign(
-    {},
-    ...allTournamentParticipants.map(
-      ({ participantId, participantType, individualParticipantIds }) => {
-        initializeParticipantId(participantId);
-        const individualParticipantIdObjects = (
-          individualParticipantIds || []
-        ).map((relevantParticipantId) => ({
-          relevantParticipantId,
-          participantType: INDIVIDUAL,
-        }));
-        return {
-          [participantId]: individualParticipantIdObjects.concat({
-            relevantParticipantId: participantId,
-            participantType,
-          }),
-        };
-      }
+  const { relevantParticipantIdsMap } = getRelevantParticipantIdsMap({
+    tournamentRecord,
+    processParticipantId: initializeParticipantId,
+  });
+
+  // optimize when filtering participants by participantIds
+  // by only returning relevantParticpantIds related to specified particpantIds
+  const targetParticipantIds = participantFilters?.participantIds;
+  const getRelevantParticipantIds = (participantId) => {
+    const relevantParticipantIds =
+      (participantId && relevantParticipantIdsMap[participantId]) || [];
+    return relevantParticipantIds.some(
+      (obj) =>
+        !targetParticipantIds ||
+        targetParticipantIds.includes(obj.relevantParticipantId)
     )
-  );
+      ? relevantParticipantIds
+      : [];
+  };
 
   allTournamentParticipants.forEach((participant) => {
     if (participant.participantType === GROUP) {
@@ -80,21 +78,6 @@ export function addParticipantContext(params) {
       );
     }
   });
-
-  // optimize when filtering participants by participantIds
-  // by only returing relevantParticpantIds related to specified particpantIds
-  const targetParticipantIds = participantFilters?.participantIds;
-  const getRelevantParticipantIds = (participantId) => {
-    const relevantParticipantIds =
-      (participantId && relevantParticipantIdsMap[participantId]) || [];
-    return relevantParticipantIds.some(
-      (obj) =>
-        !targetParticipantIds ||
-        targetParticipantIds.includes(obj.relevantParticipantId)
-    )
-      ? relevantParticipantIds
-      : [];
-  };
 
   // loop through all filtered events and capture events played
   params.tournamentEvents?.forEach((rawEvent) => {
