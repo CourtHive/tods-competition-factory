@@ -10,13 +10,14 @@ import { SINGLES } from '../../../constants/eventConstants';
 export function filterParticipants({
   tournamentRecord,
   participantFilters,
+  enableOrFiltering,
   participants,
 }) {
   let { eventIds } = participantFilters;
   const {
     accessorValues,
     drawEntryStatuses, // only those participantIds that are in draw.entries or flightProfile.flights[].drawEntries
-    positionedOnly, // only those participantIds that are included in any structure.positionAssignments
+    positionedParticipants, // only those participantIds that are included in any structure.positionAssignments
     eventEntryStatuses,
     participantRoles,
     participantRoleResponsibilities,
@@ -64,7 +65,7 @@ export function filterParticipants({
     );
 
   const positionedParticipantIds =
-    [true, false].includes(positionedOnly) &&
+    [true, false].includes(positionedParticipants) &&
     tournamentEvents.reduce((participantIds, event) => {
       return participantIds.concat(
         ...(event.drawDefinitions || [])
@@ -97,30 +98,59 @@ export function filterParticipants({
       participantRole,
       participantRoleResponsibilities: responsibilities,
     } = participant;
-    return (
-      (positionedOnly === undefined ||
-        (positionedOnly && positionedParticipantIds.includes(participantId)) ||
-        (positionedOnly === false &&
-          !positionedParticipantIds.includes(participantId))) &&
-      (!competitorEntries || competitorEntries.includes(participantId)) &&
-      (!participantIds || participantIds.includes(participantId)) &&
-      (!signInStatus || participantSignInStatus === signInStatus) &&
-      (!participantTypes ||
-        (isValidFilterArray(participantTypes) &&
-          participantTypes.includes(participantType))) &&
-      (!participantRoles ||
-        (isValidFilterArray(participantRoles) &&
-          participantRoles.includes(participantRole))) &&
-      (!participantRoleResponsibilities ||
-        (isValidFilterArray(responsibilities) &&
+
+    if (enableOrFiltering) {
+      return (
+        (positionedParticipants &&
+          positionedParticipantIds.includes(participantId)) ||
+        (positionedParticipants === false &&
+          !positionedParticipantIds.includes(participantId)) ||
+        (competitorEntries && competitorEntries.includes(participantId)) ||
+        (participantIds && participantIds.includes(participantId)) ||
+        (signInStatus && participantSignInStatus === signInStatus) ||
+        (participantTypes &&
+          isValidFilterArray(participantTypes) &&
+          participantTypes.includes(participantType)) ||
+        (participantRoles &&
+          isValidFilterArray(participantRoles) &&
+          participantRoles.includes(participantRole)) ||
+        (participantRoleResponsibilities &&
+          isValidFilterArray(responsibilities) &&
           isValidFilterArray(participantRoleResponsibilities) &&
           participantRoleResponsibilities.find((roleResponsbility) =>
             responsibilities.includes(roleResponsbility)
-          ))) &&
-      (!accessorValues?.length ||
-        (isValidFilterArray(accessorValues) &&
-          participantHasAccessorValues(participant)))
-    );
+          )) ||
+        (accessorValues?.length &&
+          isValidFilterArray(accessorValues) &&
+          participantHasAccessorValues(participant))
+      );
+    } else {
+      return (
+        (positionedParticipants === undefined ||
+          (positionedParticipants &&
+            positionedParticipantIds.includes(participantId)) ||
+          (positionedParticipants === false &&
+            !positionedParticipantIds.includes(participantId))) &&
+        (!competitorEntries || competitorEntries.includes(participantId)) &&
+        (!participantIds || participantIds.includes(participantId)) &&
+        (!signInStatus || participantSignInStatus === signInStatus) &&
+        (!participantTypes ||
+          (isValidFilterArray(participantTypes) &&
+            participantTypes.includes(participantType))) &&
+        (!participantRoles ||
+          (isValidFilterArray(participantRoles) &&
+            participantRoles.includes(participantRole))) &&
+        (!participantRoleResponsibilities ||
+          (isValidFilterArray(responsibilities) &&
+            isValidFilterArray(participantRoleResponsibilities) &&
+            participantRoleResponsibilities.find((roleResponsbility) =>
+              responsibilities.includes(roleResponsbility)
+            ))) &&
+        (!accessorValues?.length ||
+          (isValidFilterArray(accessorValues) &&
+            participantHasAccessorValues(participant)))
+      );
+    }
   });
 
   if (tournamentEvents.length && eventIds) {

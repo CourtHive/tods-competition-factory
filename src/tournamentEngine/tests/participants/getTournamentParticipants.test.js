@@ -266,12 +266,12 @@ it('can filter by entries', () => {
   expect(tournamentParticipants.length).toEqual(drawSize);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { positionedOnly: true },
+    participantFilters: { positionedParticipants: true },
   }));
   expect(tournamentParticipants.length).toEqual(drawSize);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
-    participantFilters: { positionedOnly: false },
+    participantFilters: { positionedParticipants: false },
   }));
   expect(tournamentParticipants.length).toEqual(participantsCount - drawSize);
 });

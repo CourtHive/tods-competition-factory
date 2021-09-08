@@ -1729,7 +1729,7 @@ const {
 - participantIds: array of targeted participantIds
 - participantRoles: array of targeted participantRoles
 - participantTypes: array of targeted participantTypes
-- positionedOnly: participantIds positioned in structures `[true, false, undefined]`
+- positionedParticipants: participantIds positioned in structures `[true, false, undefined]`
 - signInStatus: SIGNED_IN or SIGNED_OUT
 
 ---
