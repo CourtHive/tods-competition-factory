@@ -15,6 +15,7 @@ it.each([
     courtsCount: 4,
     matchUpFormatA: FORMAT_STANDARD,
     matchUpFormatB: FORMAT_STANDARD,
+    iterations: 1,
   },
   {
     startTime: '08:00',
@@ -22,10 +23,18 @@ it.each([
     courtsCount: 4,
     matchUpFormatA: FORMAT_STANDARD,
     matchUpFormatB: 'SET3-S:4/TB7-F:TB7',
+    iterations: 4,
   },
 ])(
   'can clear scheduled matchUps',
-  ({ startTime, endTime, courtsCount, matchUpFormatA, matchUpFormatB }) => {
+  ({
+    startTime,
+    endTime,
+    courtsCount,
+    matchUpFormatA,
+    matchUpFormatB,
+    iterations,
+  }) => {
     const venueProfiles = [
       {
         startTime,
@@ -117,6 +126,7 @@ it.each([
       garmanSinglePass: false,
     });
     expect(result.success).toEqual(true);
+    expect(result.iterations).toEqual(iterations);
     expect(result.scheduledDates).toEqual([startDate]);
     // #######################################################
 

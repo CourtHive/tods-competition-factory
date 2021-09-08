@@ -94,6 +94,8 @@ export function scheduleProfileRounds({
   const noTimeMatchUpIds = [];
   const requestConflicts = [];
 
+  let iterations = 0;
+
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const date = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
@@ -141,6 +143,8 @@ export function scheduleProfileRounds({
         greatestAverageMinutes,
         garmanSinglePass,
       });
+
+      iterations += groupedRounds.length;
 
       for (const roundDetail of groupedRounds) {
         const {
@@ -227,6 +231,7 @@ export function scheduleProfileRounds({
 
   return {
     ...SUCCESS,
+    iterations,
 
     scheduledDates,
     noTimeMatchUpIds,
