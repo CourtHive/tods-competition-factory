@@ -14,7 +14,7 @@ import { generateTimeSlots } from './generateTimeSlots';
  *
  * @returns {object[]} virtualCourts - array of court objects to which unassigned bookings have been added
  */
-export function getVirtualCourtBookings({
+export function getVirtualCourts({
   averageMatchUpMinutes,
   remainingScheduleTimes = [],
   startTime,
