@@ -1,4 +1,3 @@
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,
@@ -37,13 +36,10 @@ export function updateTimeAfterRecovery({
           parseInt(averageMatchUpMinutes) +
             parseInt(formatChangeRecoveryMinutes)
         ));
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
-  if (participantIdDependencies.length > individualParticipantIds.length) {
-    console.log({ participantIdDependencies });
-  }
-  individualParticipantIds.forEach((participantId) => {
+
+  participantIdDependencies.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         timeAfterRecovery,
