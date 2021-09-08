@@ -1,11 +1,13 @@
 import { unique } from '../../utilities';
+
+import { INDIVIDUAL } from '../../constants/participantTypes';
 import {
   MISSING_CONTEXT,
   MISSING_MATCHUP,
   INVALID_MATCHUP,
 } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../constants/participantTypes';
 
+// Does NOT include potential participandIds
 export function getMatchUpParticipantIds({ matchUp }) {
   let error;
   let sideParticipantIds = [];

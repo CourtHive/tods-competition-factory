@@ -230,7 +230,7 @@ it.only('can clear scheduled matchUps', () => {
   const courtsCount = 6;
   const scheduledCount = 6;
   const uniqueParticipants = false;
-  const twoMatchUps = uniqueParticipants ? 8 : 4;
+  const twoMatchUps = 4;
   const venueProfiles = [
     {
       venueName: 'venue 1',
