@@ -42,6 +42,8 @@ export function updateTimeAfterRecovery({
   participantIdDependencies.forEach((participantId) => {
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
+        counters: {},
+        potentialCounted: false,
         timeAfterRecovery,
         typeChangeTimeAfterRecovery,
         priorMatchUpType: matchUp.matchUpType,

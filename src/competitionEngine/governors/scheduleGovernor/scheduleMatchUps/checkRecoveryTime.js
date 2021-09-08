@@ -18,7 +18,13 @@ export function checkRecoveryTime({
     (participantId) => {
       let profile = individualParticipantProfiles[participantId];
       if (!profile) {
-        individualParticipantProfiles[participantId] = {};
+        individualParticipantProfiles[participantId] = {
+          counters: {},
+          potentialCounted: false,
+          priorMatchUpType: undefined,
+          timeAfterRecovery: undefined,
+          typeChangeTimeAfterRecovery: undefined,
+        };
         profile = individualParticipantProfiles[participantId];
       }
       if (!profile.timeAfterRecovery) return true;
