@@ -1,7 +1,7 @@
 import { participantScheduledMatchUps } from '../../governors/queryGovernor/participantScheduledMatchUps';
 import { getRelevantParticipantIdsMap } from './getRelevantParticipantIdsMap';
+import { extractTime, timeStringMinutes } from '../../../utilities/dateTime';
 import { extensionConstants } from '../../../constants/extensionConstants';
-import { timeStringMinutes } from '../../../utilities/dateTime';
 import { definedAttributes } from '../../../utilities/objects';
 import { allEventMatchUps } from '../matchUpsGetter';
 import { makeDeepCopy } from '../../../utilities';
@@ -20,6 +20,7 @@ export function addParticipantContext(params) {
       teamParticipantIds: [],
       pairParticipantIds: [],
       potentialMatchUps: {},
+      scheduleItems: [],
       opponents: {},
       matchUps: {},
       events: {},
@@ -204,24 +205,24 @@ export function addParticipantContext(params) {
     matchUps?.forEach((matchUp) =>
       processMatchUp({ matchUp, drawDetails, eventType })
     );
-
-    // tournamentParticipants is an array of FILTERED participants
-    // whereas allTournamentParticipants = params.tournamentRecord.participants
-    params.tournamentParticipants?.forEach((participant) => {
-      const { scheduleConflicts } = annotateParticipant({
-        ...params,
-        participant,
-        participantIdMap,
-      });
-      if (scheduleConflicts?.length) {
-        participant.scheduleConflicts = scheduleConflicts;
-        if (!participantIdsWithConflicts.includes(participant.participantId))
-          participantIdsWithConflicts.push(participant.participantId);
-      }
-    });
   });
 
+  // tournamentParticipants is an array of FILTERED participants
+  // whereas allTournamentParticipants = params.tournamentRecord.participants
   params.tournamentParticipants?.forEach((participant) => {
+    const { scheduleConflicts, scheduleItems } = annotateParticipant({
+      ...params,
+      participant,
+      participantIdMap,
+    });
+    if (params.withScheduleItems) {
+      participant.scheduleItems = scheduleItems;
+    }
+    if (scheduleConflicts?.length) {
+      participant.scheduleConflicts = scheduleConflicts;
+      if (!participantIdsWithConflicts.includes(participant.participantId))
+        participantIdsWithConflicts.push(participant.participantId);
+    }
     participant.groupParticipantIds =
       participantIdMap[participant.participantId].groupParticipantIds;
     participant.pairParticipantIds =
@@ -467,7 +468,9 @@ function annotateParticipant({
   participant,
   participantIdMap,
 }) {
+  const scheduleItems = [];
   const scheduleConflicts = [];
+
   const participantId = participant?.participantId;
   if (!participantId || !participantIdMap[participantId]) return {};
 
@@ -536,7 +539,20 @@ function annotateParticipant({
         },
         matchUpStatus,
         matchUpId,
+        roundNumber,
+        roundPosition,
+        structureName,
+        drawId,
       } = matchUp;
+
+      scheduleItems.push({
+        drawId,
+        structureName,
+        roundNumber,
+        roundPosition,
+        ...matchUp.schedule,
+        scheduledTime: extractTime(matchUp.schedule.scheduledTime),
+      });
 
       // matchUps with { matchUpStatus: BYE } are ignored
       if (scheduledTime && matchUpStatus !== BYE) {
@@ -613,5 +629,5 @@ function annotateParticipant({
 
   if (withStatistics) participant.statistics = [winRatioStat];
 
-  return { scheduleConflicts };
+  return { scheduleConflicts, scheduleItems };
 }
