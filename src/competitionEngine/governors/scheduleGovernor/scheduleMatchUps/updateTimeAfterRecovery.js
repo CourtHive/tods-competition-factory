@@ -43,7 +43,7 @@ export function updateTimeAfterRecovery({
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         counters: {},
-        potentialCounted: false,
+        potentialCounted: {},
         timeAfterRecovery,
         typeChangeTimeAfterRecovery,
         priorMatchUpType: matchUp.matchUpType,

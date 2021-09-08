@@ -20,7 +20,7 @@ export function checkRecoveryTime({
       if (!profile) {
         individualParticipantProfiles[participantId] = {
           counters: {},
-          potentialCounted: false,
+          potentialCounted: {},
           priorMatchUpType: undefined,
           timeAfterRecovery: undefined,
           typeChangeTimeAfterRecovery: undefined,

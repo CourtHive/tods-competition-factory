@@ -32,21 +32,30 @@ export function modifyParticipantMatchUpsCount({
     if (!individualParticipantProfiles[participantId]) {
       individualParticipantProfiles[participantId] = {
         counters: {},
-        potentialCounted: false,
+        potentialCounted: {},
         priorMatchUpType: undefined,
         timeAfterRecovery: undefined,
         typeChangeTimeAfterRecovery: undefined,
       };
     }
 
-    if (!individualParticipantProfiles[participantId].potentialCounted) {
+    if (!individualParticipantProfiles[participantId].potentialCounted)
+      individualParticipantProfiles[participantId].potentialCounted = {};
+
+    if (
+      !individualParticipantProfiles[participantId].potentialCounted[
+        matchUp.drawId
+      ]
+    ) {
       const counters = individualParticipantProfiles[participantId].counters;
       if (counters[matchUpType]) counters[matchUpType] += value;
       else if (value > 0) counters[matchUpType] = value;
       if (counters[TOTAL]) counters[TOTAL] += value;
       else if (value > 0) counters[TOTAL] = value;
       if (filteredPotentials.includes(participantId)) {
-        individualParticipantProfiles[participantId].potentialCounted = true;
+        individualParticipantProfiles[participantId].potentialCounted[
+          matchUp.drawId
+        ] = true;
       }
     }
   });
