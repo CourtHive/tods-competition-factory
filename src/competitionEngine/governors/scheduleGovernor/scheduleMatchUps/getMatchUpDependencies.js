@@ -3,7 +3,7 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
-import { getMatchUpParticipantIds } from '../../../../drawEngine/accessors/participantAccessor';
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 
@@ -24,7 +24,7 @@ import {
 export function getMatchUpDependencies({
   tournamentRecords,
   includeParticipantDependencies,
-  matchUps = [],
+  matchUps = [], // requires matchUps { inContext: true }
   drawIds = [],
 }) {
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
@@ -84,11 +84,10 @@ export function getMatchUpDependencies({
       initializeMatchUpId(matchUpId);
 
       if (includeParticipantDependencies) {
-        const { allRelevantParticipantIds } = getMatchUpParticipantIds({
-          matchUp,
-        });
+        const individualParticipantIds = getIndividualParticipantIds(matchUp);
         matchUpDependencies[matchUpId].participantIds =
-          allRelevantParticipantIds;
+          // allRelevantParticipantIds;
+          individualParticipantIds;
       }
 
       if (winnerMatchUpId) {
