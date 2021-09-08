@@ -88,6 +88,7 @@ export function scheduleProfileRounds({
   const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
 
+  let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
   const scheduledMatchUpIds = [];
   const overLimitMatchUpIds = [];
   const noTimeMatchUpIds = [];
@@ -141,7 +142,6 @@ export function scheduleProfileRounds({
         garmanSinglePass,
       });
 
-      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       for (const roundDetail of groupedRounds) {
         const {
           matchUpIds,
