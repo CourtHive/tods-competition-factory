@@ -12,12 +12,13 @@ export function getGroupedRounds({
   let recoveryMinutes;
   let roundPeriodLength;
   let groupedRounds = [];
+
   for (const roundDetails of scheduledRoundsDetails) {
-    if (!lastHash || roundDetails.hash === lastHash || garmanSinglePass) {
+    if (!lastHash) lastHash = roundDetails.hash;
+    if (roundDetails.hash === lastHash || garmanSinglePass) {
       groupedMatchUpIds = groupedMatchUpIds.concat(roundDetails.matchUpIds);
     }
-
-    if (lastHash && roundDetails.hash !== lastHash && !garmanSinglePass) {
+    if (roundDetails.hash !== lastHash && !garmanSinglePass) {
       lastHash = roundDetails.hash;
       groupedRounds.push({
         averageMinutes,
