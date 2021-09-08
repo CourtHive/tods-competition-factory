@@ -224,7 +224,7 @@ it.each([
   }
 );
 
-it.only('can clear scheduled matchUps', () => {
+it('can clear scheduled matchUps', () => {
   const startTime = '08:00';
   const endTime = '19:00';
   const courtsCount = 6;

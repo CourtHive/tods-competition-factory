@@ -15,106 +15,108 @@ import {
   INVALID_VALUES,
 } from '../../../constants/errorConditionConstants';
 
-it('can generate score strings for matchUpFormats', () => {
-  let result = mocksEngine.generateOutcome({ matchUpFormat: '' });
-  expect(result.error).toEqual(INVALID_MATCHUP_FORMAT);
-  result = mocksEngine.generateOutcome({ matchUpStatusProfile: '' });
-  expect(result.error).toEqual(INVALID_VALUES);
-  result = mocksEngine.generateOutcome({ matchUpStatusProfile: {} });
-  expect([1, 2].includes(result.outcome.winningSide)).toBeTruthy();
-  expect(result.outcome.matchUpStatus).toEqual(COMPLETED);
+const iterations = 1;
 
-  let { outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [RETIRED]: 100 },
-  });
-  expect(outcome.matchUpStatus).toEqual(RETIRED);
-  expect([1, 2].includes(outcome.winningSide)).toEqual(true);
-  expect(outcome.score.sets.pop().winningSide).toBeUndefined();
+it.each(generateRange(0, iterations))(
+  'can generate score strings for matchUpFormats',
+  () => {
+    let result = mocksEngine.generateOutcome({ matchUpFormat: '' });
+    expect(result.error).toEqual(INVALID_MATCHUP_FORMAT);
+    result = mocksEngine.generateOutcome({ matchUpStatusProfile: '' });
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = mocksEngine.generateOutcome({ matchUpStatusProfile: {} });
+    expect([1, 2].includes(result.outcome.winningSide)).toBeTruthy();
+    expect(result.outcome.matchUpStatus).toEqual(COMPLETED);
 
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [DEFAULTED]: 100 },
-  }));
-  expect(outcome.matchUpStatus).toEqual(DEFAULTED);
-  expect([1, 2].includes(outcome.winningSide)).toEqual(true);
-  const defaultedSet = outcome.score.sets.pop();
-  if (defaultedSet) {
-    expect(defaultedSet.winningSide).toBeUndefined();
+    let { outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [RETIRED]: 100 },
+    });
+    expect(outcome.matchUpStatus).toEqual(RETIRED);
+    expect([1, 2].includes(outcome.winningSide)).toEqual(true);
+    expect(outcome.score.sets.pop().winningSide).toBeUndefined();
+
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [DEFAULTED]: 100 },
+    }));
+    expect(outcome.matchUpStatus).toEqual(DEFAULTED);
+    expect([1, 2].includes(outcome.winningSide)).toEqual(true);
+    const defaultedSet = outcome.score.sets.pop();
+    if (defaultedSet) {
+      expect(defaultedSet.winningSide).toBeUndefined();
+    }
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [DEFAULTED]: 100 },
+      defaultWithScorePercent: 100,
+    }));
+    expect(outcome.matchUpStatus).toEqual(DEFAULTED);
+    expect([1, 2].includes(outcome.winningSide)).toEqual(true);
+    expect(outcome.score.sets.length).toBeGreaterThan(0);
+
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [WALKOVER]: 100 },
+    }));
+    expect(outcome.matchUpStatus).toEqual(WALKOVER);
+    expect(outcome.score.sets).toEqual([]);
+    expect(outcome.score.side1ScoreString).toEqual('');
+    expect(outcome.score.side2ScoreString).toEqual('');
+    expect([1, 2].includes(outcome.winningSide)).toEqual(true);
+
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [DOUBLE_WALKOVER]: 100 },
+    }));
+    expect(outcome.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+    expect(outcome.score.sets).toEqual([]);
+    expect(outcome.score.side1ScoreString).toEqual('');
+    expect(outcome.score.side2ScoreString).toEqual('');
+    expect(outcome.winningSide).toBeUndefined();
+
+    // specifying a winningSide does not produce a winningSide for DOUBLE_WALKOVER
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [DOUBLE_WALKOVER]: 100 },
+      winningSide: 1,
+    }));
+    expect(outcome.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+    expect(outcome.winningSide).toBeUndefined();
+
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [SUSPENDED]: 100 },
+      winningSide: 1,
+    }));
+    expect(outcome.matchUpStatus).toEqual(SUSPENDED);
+    expect(outcome.winningSide).toBeUndefined();
+
+    ({ outcome } = mocksEngine.generateOutcome({
+      matchUpStatusProfile: { [INCOMPLETE]: 100 },
+      winningSide: 1,
+    }));
+    expect(outcome.matchUpStatus).toEqual(INCOMPLETE);
+    expect(outcome.winningSide).toBeUndefined();
   }
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [DEFAULTED]: 100 },
-    defaultWithScorePercent: 100,
-  }));
-  expect(outcome.matchUpStatus).toEqual(DEFAULTED);
-  expect([1, 2].includes(outcome.winningSide)).toEqual(true);
-  expect(outcome.score.sets.length).toBeGreaterThan(0);
-
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [WALKOVER]: 100 },
-  }));
-  expect(outcome.matchUpStatus).toEqual(WALKOVER);
-  expect(outcome.score.sets).toEqual([]);
-  expect(outcome.score.side1ScoreString).toEqual('');
-  expect(outcome.score.side2ScoreString).toEqual('');
-  expect([1, 2].includes(outcome.winningSide)).toEqual(true);
-
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [DOUBLE_WALKOVER]: 100 },
-  }));
-  expect(outcome.matchUpStatus).toEqual(DOUBLE_WALKOVER);
-  expect(outcome.score.sets).toEqual([]);
-  expect(outcome.score.side1ScoreString).toEqual('');
-  expect(outcome.score.side2ScoreString).toEqual('');
-  expect(outcome.winningSide).toBeUndefined();
-
-  // specifying a winningSide does not produce a winningSide for DOUBLE_WALKOVER
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [DOUBLE_WALKOVER]: 100 },
-    winningSide: 1,
-  }));
-  expect(outcome.matchUpStatus).toEqual(DOUBLE_WALKOVER);
-  expect(outcome.winningSide).toBeUndefined();
-
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [SUSPENDED]: 100 },
-    winningSide: 1,
-  }));
-  expect(outcome.matchUpStatus).toEqual(SUSPENDED);
-  expect(outcome.winningSide).toBeUndefined();
-
-  ({ outcome } = mocksEngine.generateOutcome({
-    matchUpStatusProfile: { [INCOMPLETE]: 100 },
-    winningSide: 1,
-  }));
-  expect(outcome.matchUpStatus).toEqual(INCOMPLETE);
-  expect(outcome.winningSide).toBeUndefined();
-});
+);
 
 // used to validate sideWeight to limit generation of 3 sets
-test('iteration counts', () => {
-  // winningSides was used to verify even distribution
+test.each(generateRange(0, iterations))('iteration counts', () => {
+  // winningSides is used to verify even distribution
   const winningSides = { 1: 0, 2: 0 };
 
-  let threeSets = 0;
-
-  generateRange(0, 10).forEach(() => {
+  let firstIteration3Sets = 0;
+  generateRange(0, 100).forEach(() => {
     let { outcome } = mocksEngine.generateOutcome({ sideWeight: 1 });
     winningSides[outcome.winningSide] += 1;
-    if (outcome.score.sets.length === 3) threeSets += 1;
+    if (outcome.score.sets.length === 3) firstIteration3Sets += 1;
   });
 
-  const firstIteration = threeSets;
-
-  threeSets = 0;
-  generateRange(0, 10).forEach(() => {
+  let secondIteration3Sets = 0;
+  generateRange(0, 100).forEach(() => {
     let { outcome } = mocksEngine.generateOutcome({ sideWeight: 100 });
     winningSides[outcome.winningSide] += 1;
-    if (outcome.score.sets.length === 3) threeSets += 1;
+    if (outcome.score.sets.length === 3) secondIteration3Sets += 1;
   });
 
-  expect(firstIteration).toBeGreaterThan(threeSets);
+  expect(firstIteration3Sets).toBeGreaterThan(secondIteration3Sets);
 });
 
-test('supports timed matchUpFormats', () => {
+test.each(generateRange(0, iterations))('supports timed matchUpFormats', () => {
   let result = mocksEngine.generateOutcome({
     matchUpFormat: 'SET1-S:T20',
     matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
@@ -143,49 +145,52 @@ test('supports timed matchUpFormats', () => {
   expect(result.outcome.matchUpStatus).toEqual(RETIRED);
 });
 
-test('supports specifying winningSide', () => {
-  let result;
-  generateRange(0, 10).forEach(() => {
-    result = mocksEngine.generateOutcome({
-      matchUpFormat: 'SET1-S:T20',
-      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
-      winningSide: 1,
-    });
-    expect(result.outcome.winningSide).toEqual(1);
-    result = mocksEngine.generateOutcome({
-      matchUpFormat: 'SET1-S:T20',
-      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
-      winningSide: 2,
-    });
-    expect(result.outcome.winningSide).toEqual(2);
+test.each(generateRange(0, iterations))(
+  'supports specifying winningSide',
+  () => {
+    let result;
+    generateRange(0, 10).forEach(() => {
+      result = mocksEngine.generateOutcome({
+        matchUpFormat: 'SET1-S:T20',
+        matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+        winningSide: 1,
+      });
+      expect(result.outcome.winningSide).toEqual(1);
+      result = mocksEngine.generateOutcome({
+        matchUpFormat: 'SET1-S:T20',
+        matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+        winningSide: 2,
+      });
+      expect(result.outcome.winningSide).toEqual(2);
 
-    result = mocksEngine.generateOutcome({
-      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
-      winningSide: 1,
-    });
-    expect(result.outcome.winningSide).toEqual(1);
+      result = mocksEngine.generateOutcome({
+        matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+        winningSide: 1,
+      });
+      expect(result.outcome.winningSide).toEqual(1);
 
-    result = mocksEngine.generateOutcome({
-      matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
-      winningSide: 2,
-    });
-    expect(result.outcome.winningSide).toEqual(2);
+      result = mocksEngine.generateOutcome({
+        matchUpStatusProfile: {}, // ensures that there are no DOUBLE_WALKOVERS
+        winningSide: 2,
+      });
+      expect(result.outcome.winningSide).toEqual(2);
 
-    result = mocksEngine.generateOutcome({
-      matchUpStatusProfile: { [WALKOVER]: 100 },
-      winningSide: 1,
-    });
-    expect(result.outcome.winningSide).toEqual(1);
+      result = mocksEngine.generateOutcome({
+        matchUpStatusProfile: { [WALKOVER]: 100 },
+        winningSide: 1,
+      });
+      expect(result.outcome.winningSide).toEqual(1);
 
-    result = mocksEngine.generateOutcome({
-      matchUpStatusProfile: { [RETIRED]: 100 },
-      winningSide: 1,
+      result = mocksEngine.generateOutcome({
+        matchUpStatusProfile: { [RETIRED]: 100 },
+        winningSide: 1,
+      });
+      expect(result.outcome.winningSide).toEqual(1);
     });
-    expect(result.outcome.winningSide).toEqual(1);
-  });
-});
+  }
+);
 
-test('other matchUpFormats', () => {
+test.each(generateRange(0, iterations))('other matchUpFormats', () => {
   let result = mocksEngine.generateOutcome({
     matchUpFormat: 'SET3-S:4/TB7',
     matchUpStatusProfile: {}, // ensures a COMPLETED outcome
