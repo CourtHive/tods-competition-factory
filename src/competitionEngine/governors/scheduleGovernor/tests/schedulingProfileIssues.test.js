@@ -11,6 +11,9 @@ import {
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 
+const startDate = '2022-01-01';
+const endDate = '2022-01-07';
+
 test.each([
   {
     drawSize: 4,
@@ -23,7 +26,11 @@ test.each([
     drawSize: 4,
     drawType: SINGLE_ELIMINATION,
     roundNumbers: [2, 1],
-    roundIndexShouldBeAfter: { 0: [1] },
+    roundIndexShouldBeAfter: {
+      [startDate]: {
+        0: [1],
+      },
+    },
     matchUpIdShouldBeAfterCount: 1,
   },
   {
@@ -37,21 +44,33 @@ test.each([
     drawSize: 16,
     drawType: SINGLE_ELIMINATION,
     roundNumbers: [1, 2, 4, 3],
-    roundIndexShouldBeAfter: { 2: [3] },
+    roundIndexShouldBeAfter: {
+      [startDate]: {
+        2: [3],
+      },
+    },
     matchUpIdShouldBeAfterCount: 1,
   },
   {
     drawSize: 16,
     drawType: SINGLE_ELIMINATION,
     roundNumbers: [1, 4, 2, 3],
-    roundIndexShouldBeAfter: { 1: [2, 3] },
+    roundIndexShouldBeAfter: {
+      [startDate]: {
+        1: [2, 3],
+      },
+    },
     matchUpIdShouldBeAfterCount: 1,
   },
   {
     drawSize: 16,
     drawType: SINGLE_ELIMINATION,
     roundNumbers: [1, 3, 2, 4],
-    roundIndexShouldBeAfter: { 1: [2] },
+    roundIndexShouldBeAfter: {
+      [startDate]: {
+        1: [2],
+      },
+    },
     matchUpIdShouldBeAfterCount: 2,
   },
 ])(
@@ -84,8 +103,6 @@ test.each([
         ],
       },
     ];
-    const startDate = '2022-01-01';
-    const endDate = '2022-01-07';
     const {
       drawIds,
       venueIds: [venueId],
@@ -135,12 +152,12 @@ test('getScheduligProfileIssues thows appropriate errors', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getSchedulingProfileIssues({
-    dates: 'invalid value',
+    scheduleDates: 'invalid value',
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = competitionEngine.getSchedulingProfileIssues({
-    dates: ['invalid value'],
+    scheduleDates: ['invalid value'],
   });
   expect(result.error).toEqual(INVALID_DATE);
 

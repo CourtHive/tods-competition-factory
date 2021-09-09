@@ -639,6 +639,43 @@ const { schedulingProfile } = competitionEngine.getSchedulingProfile();
 
 ---
 
+## getSchedulingProfileIssues
+
+Analyzes the `schedulingProfile` (if any) that is attached to the `tournamentRecord(s)` and reports any issues with the ordering of rounds.
+
+The analysis for each `scheduleDate` only includes `matchUps` to be scheduled on that date.
+In other words, the method only reports on scheduling issues relative to the group of `matchUpIds` derived from rounds which are being scheduled for each date.
+
+:::note
+In some cases it is valid to schedule a second round, for instance, before a first round, because there may be some second round `matchUps` which are ready to be played... possibly due to `participants` advancing via first round BYEs or WALKOVERs.
+
+Regardless of issues reported, `competitionEngine.scheduleProfileRounds()` will attempt to follow the desired order, but will not schedule `matchUps` before dependencies.
+:::
+
+```js
+const {
+  profileIssues: {
+    // object includes matchUpIds which are out of order
+    matchUpIdsShouldBeAfter: {
+      [matchUpId]: {
+        earlierRoundIndices: [index], // indices of scheduled rounds which must be scheduled before matchUpId
+        shouldBeAfter: [matchUpId], // array of matchUpIds which must be scheduled before matchUpId
+      },
+    },
+  },
+  // roundIndex is the index of the round to be scheduled within the schedulingProfile for a givn date
+  roundIndexShouldBeAfter: {
+    [scheduleDate]: {
+      [index]: [indexOfEarlierRound], // maps the index of the round within a date's scheduled rounds to those rounds which should be scheduled first
+    },
+  },
+} = competitionEngine.getSchedulingProfileIssues({
+  dates, // optional array of target dates
+});
+```
+
+---
+
 ## getVenuesAndCourts
 
 Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.
