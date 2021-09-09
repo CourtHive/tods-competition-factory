@@ -1060,11 +1060,15 @@ Loads tournament records into competitionEngine; supports both an array of tourn
 By default a deep copy of the `tournamentRecords` is made so that mutations made by `competitionEngine` do not affect the source objects. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
 :::
 
+:::note
+`deepCopyConfig` is an object which configures `makeDeepCopy` for "internal use". In server configurations when `deepCopy` is FALSE and `tournamentRecords` are retrieved from Mongo, for instance, there are scenarios where nodes of the JSON structure contain prototypes which cannot be converted.
+:::
+
 ```js
 const tournamentRecords = [tournamentRecord];
 // or const tournamentRecords = { [tournamentId]: tournamentRecord }
 
-competitionEngine.setsState(tournamentRecords, deepCopy);
+competitionEngine.setsState(tournamentRecords, deepCopy, deepCopyConfig);
 ```
 
 ---
