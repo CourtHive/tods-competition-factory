@@ -598,6 +598,29 @@ const { DOUBLES, SINGLES, total } = matchUpDailyLimits;
 
 ---
 
+## getMatchUpDependencies
+
+For each `matchUpId` returns an array of other `matchUpIds` which occur earlier in the draw.
+
+Optionally returns an array of `participantIds` which could potentially appear in each `matchUp`;
+used internally to ensure that auto scheduling respects the `timeAfterRecovery` of all potential participants.
+
+```js
+const {
+  matchUpDependencies: {
+    [matchUpId]: {
+      matchUpIds: [matchUpIdDependency], // array of all matchUpIds which occur prior to this matchUpId in the draw; crosses all structures
+      participantIds: [potentialParticipantIds], // array of all participantIds which could potentially appear in this matchUp
+    },
+  },
+} = competitionEngine.getMatchUpDependencies({
+  includeParticipantDependencies, // boolean - defaults to false
+  drawIds, // optional array of drawIds to scope the analysis
+});
+```
+
+---
+
 ## getPersonRequests
 
 Returns an object with array of requests for each relevant `personId`. Request objects are returned with a `requestId` which can be used to call [modifyPersonRequests](competition-engine-api#modifypersonrequests).
