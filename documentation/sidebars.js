@@ -63,5 +63,10 @@ module.exports = {
         'apis/draw-engine-api',
       ],
     },
+    {
+      type: 'category',
+      label: 'Utilities',
+      items: ['engines/makeDeepCopy'],
+    },
   ],
 };
