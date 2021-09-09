@@ -5,6 +5,10 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import {
+  INVALID_DATE,
+  INVALID_VALUES,
+} from '../../../../constants/errorConditionConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
 import {
   COMPASS,
@@ -204,6 +208,18 @@ it.each([
     });
 
     expect(participantsWithMultipleScheduledMatchUps).toEqual(twoMatchUps);
+
+    result = competitionEngine.getVenuesReport({ venueIds: 'invalid value' });
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = competitionEngine.getVenuesReport({ dates: 'invalid value' });
+    expect(result.error).toEqual(INVALID_VALUES);
+    result = competitionEngine.getVenuesReport({ dates: ['bogus date'] });
+    expect(result.error).toEqual(INVALID_DATE);
+    result = competitionEngine.getVenuesReport({
+      dates: [startDate],
+      venueIds: [venueId],
+    });
+    expect(result.venuesReport.length).toEqual(1);
 
     const {
       venuesReport: [{ venueReport }],

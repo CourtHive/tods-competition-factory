@@ -2,25 +2,36 @@ import { getScheduledRoundsDetails } from '../scheduleGovernor/schedulingProfile
 import { getMatchUpDependencies } from '../scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 import { getSchedulingProfile } from '../scheduleGovernor/schedulingProfile/schedulingProfile';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
-import { intersection } from '../../../utilities';
+import { isValidDateString } from '../../../utilities/dateTime';
+import { intersection, unique } from '../../../utilities';
 
-import { INVALID_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import {
+  INVALID_DATE,
+  INVALID_TOURNAMENT_RECORD,
+  INVALID_VALUES,
+} from '../../../constants/errorConditionConstants';
 
 /**
  *
  * @param {object} tournamentRecords
- * @param {string[]} dates - optional - array of dates to validate
+ * @param {string[]} scheduleDates - optional - array of scheduleDates to validate
  */
-export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
+export function getSchedulingProfileIssues({
+  tournamentRecords,
+  scheduleDates = [],
+} = {}) {
   if (typeof tournamentRecords !== 'object')
     return { error: INVALID_TOURNAMENT_RECORD };
+  if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
+
+  const validDates = scheduleDates.every(isValidDateString);
+  if (!validDates) return { error: INVALID_DATE };
 
   const issues = [];
   const roundIndexShouldBeAfter = {};
 
   const { schedulingProfile } = getSchedulingProfile({ tournamentRecords });
-
   if (!schedulingProfile) return { issues, ...SUCCESS };
 
   const { matchUps } = allCompetitionMatchUps({
@@ -32,10 +43,10 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
 
   // for each date check the rounds for each venue
   for (const dateProfile of schedulingProfile) {
-    const { date, venues = [] } = dateProfile;
+    const { scheduleDate, venues = [] } = dateProfile;
 
-    // skip dates that are not specified; process all if none specified
-    if (!dates?.length || dates.includes(date)) {
+    // skip scheduleDates that are not specified; process all if none specified
+    if (!scheduleDates?.length || scheduleDates.includes(scheduleDate)) {
       for (const venue of venues || []) {
         if (venue) {
           const { rounds } = venue;
@@ -47,7 +58,10 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
               matchUps,
               rounds,
             });
-          const { matchUpDependencies } = getMatchUpDependencies({ matchUps });
+          const { matchUpDependencies } = getMatchUpDependencies({
+            tournamentRecords,
+            matchUps,
+          });
           const getRoundIndex = (matchUpId) => {
             let roundIndex;
             scheduledRoundsDetails.find((round, index) => {
@@ -71,15 +85,24 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
             const errorsDetail = schedulingErrors.map(
               ({ matchUpId, shouldBeAfter }) => {
                 const matchUpRoundIndex = getRoundIndex(matchUpId);
-                const earlierRoundIndices = shouldBeAfter.map(getRoundIndex);
+                const earlierRoundIndices = unique(
+                  shouldBeAfter.map(getRoundIndex)
+                );
 
-                if (!roundIndexShouldBeAfter[matchUpRoundIndex])
-                  roundIndexShouldBeAfter[matchUpRoundIndex] = [];
+                if (!roundIndexShouldBeAfter[scheduleDate]) {
+                  roundIndexShouldBeAfter[scheduleDate] = {};
+                }
+                if (!roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex])
+                  roundIndexShouldBeAfter[scheduleDate][matchUpRoundIndex] = [];
                 earlierRoundIndices.forEach((index) => {
                   if (
-                    !roundIndexShouldBeAfter[matchUpRoundIndex].includes(index)
+                    !roundIndexShouldBeAfter[scheduleDate][
+                      matchUpRoundIndex
+                    ].includes(index)
                   ) {
-                    roundIndexShouldBeAfter[matchUpRoundIndex].push(index);
+                    roundIndexShouldBeAfter[scheduleDate][
+                      matchUpRoundIndex
+                    ].push(index);
                   }
                 });
 
@@ -102,9 +125,12 @@ export function getSchedulingProfileIssues({ tournamentRecords, dates = [] }) {
   const profileIssues = {
     matchUpIdShouldBeAfter: Object.assign(
       {},
-      ...issues.map(({ matchUpId, shouldBeAfter }) => ({
-        [matchUpId]: shouldBeAfter,
-      }))
+      ...issues.map((issue) => {
+        const { matchUpId, shouldBeAfter, earlierRoundIndices } = issue;
+        return {
+          [matchUpId]: { earlierRoundIndices, shouldBeAfter },
+        };
+      })
     ),
   };
 

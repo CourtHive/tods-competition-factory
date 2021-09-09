@@ -1,13 +1,9 @@
 import { getTournamentInfo } from '../../../tournamentEngine/governors/publishingGovernor/getTournamentInfo';
 import { extractDate } from '../../../utilities/dateTime';
 
-import {
-  MISSING_DATE,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_DATE } from '../../../constants/errorConditionConstants';
 
 export function getCompetitionDateRange({ tournamentRecords }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   const tournamentIds = Object.keys(tournamentRecords);
   const dateRange = tournamentIds.reduce(
     (dateRange, tournamentId) => {

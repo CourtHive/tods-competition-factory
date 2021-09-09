@@ -598,6 +598,29 @@ const { DOUBLES, SINGLES, total } = matchUpDailyLimits;
 
 ---
 
+## getMatchUpDependencies
+
+For each `matchUpId` returns an array of other `matchUpIds` which occur earlier in the draw.
+
+Optionally returns an array of `participantIds` which could potentially appear in each `matchUp`;
+used internally to ensure that auto scheduling respects the `timeAfterRecovery` of all potential participants.
+
+```js
+const {
+  matchUpDependencies: {
+    [matchUpId]: {
+      matchUpIds: [matchUpIdDependency], // array of all matchUpIds which occur prior to this matchUpId in the draw; crosses all structures
+      participantIds: [potentialParticipantIds], // array of all participantIds which could potentially appear in this matchUp
+    },
+  },
+} = competitionEngine.getMatchUpDependencies({
+  includeParticipantDependencies, // boolean - defaults to false
+  drawIds, // optional array of drawIds to scope the analysis
+});
+```
+
+---
+
 ## getPersonRequests
 
 Returns an object with array of requests for each relevant `personId`. Request objects are returned with a `requestId` which can be used to call [modifyPersonRequests](competition-engine-api#modifypersonrequests).
@@ -635,6 +658,43 @@ Returns a `schedulingProfile` (if present). Checks the integrity of the profile 
 
 ```js
 const { schedulingProfile } = competitionEngine.getSchedulingProfile();
+```
+
+---
+
+## getSchedulingProfileIssues
+
+Analyzes the `schedulingProfile` (if any) that is attached to the `tournamentRecord(s)` and reports any issues with the ordering of rounds.
+
+The analysis for each `scheduleDate` only includes `matchUps` to be scheduled on that date.
+In other words, the method only reports on scheduling issues relative to the group of `matchUpIds` derived from rounds which are being scheduled for each date.
+
+:::note
+In some cases it is valid to schedule a second round, for instance, before a first round, because there may be some second round `matchUps` which are ready to be played... possibly due to `participants` advancing via first round BYEs or WALKOVERs.
+
+Regardless of issues reported, `competitionEngine.scheduleProfileRounds()` will attempt to follow the desired order, but will not schedule `matchUps` before dependencies.
+:::
+
+```js
+const {
+  profileIssues: {
+    // object includes matchUpIds which are out of order
+    matchUpIdsShouldBeAfter: {
+      [matchUpId]: {
+        earlierRoundIndices: [index], // indices of scheduled rounds which must be scheduled before matchUpId
+        shouldBeAfter: [matchUpId], // array of matchUpIds which must be scheduled before matchUpId
+      },
+    },
+  },
+  // roundIndex is the index of the round to be scheduled within the schedulingProfile for a givn date
+  roundIndexShouldBeAfter: {
+    [scheduleDate]: {
+      [index]: [indexOfEarlierRound], // maps the index of the round within a date's scheduled rounds to those rounds which should be scheduled first
+    },
+  },
+} = competitionEngine.getSchedulingProfileIssues({
+  dates, // optional array of target dates
+});
 ```
 
 ---
