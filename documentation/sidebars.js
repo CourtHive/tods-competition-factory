@@ -66,7 +66,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Utilities',
-      items: ['engines/makeDeepCopy'],
+      items: ['engines/make-deep-copy'],
     },
   ],
 };
