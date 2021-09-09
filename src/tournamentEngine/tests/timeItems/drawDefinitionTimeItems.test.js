@@ -10,7 +10,12 @@ import {
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
-it('can add and read timeItems from events', () => {
+// this is necessary to ensure that at least one millisecond has passed between modifications
+async function forceDelay(delay = 10) {
+  return new Promise((resolve) => setTimeout(() => resolve(), delay));
+}
+
+it('can add and read timeItems from events', async () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2021-01-01',
     endDate: '2021-01-06',
@@ -44,6 +49,8 @@ it('can add and read timeItems from events', () => {
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
   const { drawId } = drawDefinition;
   const createdAt = drawDefinition.updatedAt;
+
+  await forceDelay();
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);

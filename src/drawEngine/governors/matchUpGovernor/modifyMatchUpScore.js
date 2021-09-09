@@ -103,7 +103,8 @@ export function modifyMatchUpScore({
   }
 
   if (notes) {
-    addNotes({ element: matchUp, notes });
+    const result = addNotes({ element: matchUp, notes });
+    if (result.error) return result;
   }
 
   modifyMatchUpNotice({ drawDefinition, matchUp });

@@ -38,13 +38,17 @@ export function competitionEngineAsync(test) {
       setTournamentRecords({});
       return processResult();
     },
-    setState: (records, deepCopyOption) => {
-      setDeepCopy(deepCopyOption);
+    setState: (records, deepCopyOption, deepCopyAttributes) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
       const result = setState(records, deepCopyOption);
       return processResult(result);
     },
-    setTournamentRecord: (tournamentRecord, deepCopyOption) => {
-      setDeepCopy(deepCopyOption);
+    setTournamentRecord: (
+      tournamentRecord,
+      deepCopyOption,
+      deepCopyAttributes
+    ) => {
+      setDeepCopy(deepCopyOption, deepCopyAttributes);
       const result = setTournamentRecord(tournamentRecord, deepCopyOption);
       return processResult(result);
     },

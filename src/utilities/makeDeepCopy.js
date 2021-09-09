@@ -10,8 +10,9 @@ import { isDateObject } from './dateTime';
  */
 export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
   const deepCopy = deepCopyEnabled();
+
   if (
-    (!deepCopy && !internalUse) ||
+    (!deepCopy?.enabled && !internalUse) ||
     typeof sourceObject !== 'object' ||
     typeof sourceObject === 'function' ||
     sourceObject === null
@@ -21,11 +22,26 @@ export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
 
   const targetObject = Array.isArray(sourceObject) ? [] : {};
 
-  for (const key in sourceObject) {
+  const sourceObjectKeys = Object.keys(sourceObject).filter(
+    (key) => !internalUse || !deepCopy?.ignore.includes(key)
+  );
+
+  for (const key of sourceObjectKeys) {
     const value = sourceObject[key];
     if (convertExtensions && key === 'extensions' && Array.isArray(value)) {
       const extensionConversions = extensionsToAttributes(value);
       Object.assign(targetObject, ...extensionConversions);
+    } else if (internalUse && deepCopy?.stringify.includes(key)) {
+      targetObject[key] =
+        typeof value?.toString === 'function'
+          ? value.toString()
+          : JSON.stringify(value);
+    } else if (
+      internalUse &&
+      deepCopy?.toJSON.includes(key) &&
+      typeof value?.toJSON === 'function'
+    ) {
+      targetObject[key] = value.toJSON();
     } else if (value === null) {
       targetObject[key] = undefined;
     } else if (isDateObject(value)) {

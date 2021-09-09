@@ -1,9 +1,10 @@
-import { COMPETITOR } from '../../constants/participantRoles';
-import { INDIVIDUAL } from '../../constants/participantTypes';
 import tournamentEngine from '../../tournamentEngine/sync';
 import { makeDeepCopy } from '../makeDeepCopy';
 import mocksEngine from '../../mocksEngine';
 import { UUID } from '../UUID';
+
+import { COMPETITOR } from '../../constants/participantRoles';
+import { INDIVIDUAL } from '../../constants/participantTypes';
 
 it('can convert extensions during deepCopy', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -94,4 +95,55 @@ it('can disable deepCopy without compromising source document', () => {
     tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps[0]
       .sides
   ).toBeUndefined();
+});
+
+it('can selectively stringify or ignore attributes when used internally', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 2 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord, false, {
+    stringify: ['_id', 'foo'],
+    ignore: ['testing'],
+    toJSON: ['bar'],
+  });
+
+  let { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const { drawId, matchUpId } = matchUps[0];
+
+  const myObject = {
+    _id: {
+      fx: (x) => x * x,
+    },
+    foo: {
+      toString: () => '######',
+    },
+    bar: {
+      toJSON: () => '{ "some": "json" }',
+    },
+    keep: {
+      num: 1,
+      str: 'string',
+      obj: {
+        a: 1,
+        b: 2,
+      },
+    },
+    testing: true,
+  };
+
+  let result = tournamentEngine.setMatchUpStatus({
+    drawId,
+    matchUpId,
+    notes: myObject,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ matchUps } = tournamentEngine.allTournamentMatchUps());
+  expect(matchUps[0].notes).toEqual({
+    _id: '[object Object]',
+    foo: '######',
+    bar: '{ "some": "json" }',
+    keep: { num: 1, str: 'string', obj: { a: 1, b: 2 } },
+  });
 });

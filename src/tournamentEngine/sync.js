@@ -48,8 +48,8 @@ export const tournamentEngine = (function () {
     const result = removeTournamentRecord(getTournamentId());
     return processResult(result);
   };
-  engine.setState = (tournament, deepCopyOption) => {
-    setDeepCopy(deepCopyOption);
+  engine.setState = (tournament, deepCopyOption, deepCopyAttributes) => {
+    setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setState(tournament, deepCopyOption);
     return processResult(result);
   };
