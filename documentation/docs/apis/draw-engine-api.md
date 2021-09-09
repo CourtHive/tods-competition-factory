@@ -1137,11 +1137,17 @@ drawEngine.setStageWildcardsCount({ wildcardsCount: 2 });
 
 Loads a drawDefinition into drawEngine.
 
-```js
-drawEngine.setsState(drawDefinition, deepCopy);
-```
-
+:::info
 By default a deep copy of the tournament record is made so that mutations made by drawEngine do not affect the source object. An optional boolean parameter, _deepCopy_ can be set to false to override this default behavior.
+:::
+
+:::note
+`deepCopyConfig` is an object which configures `makeDeepCopy` for "internal use". In server configurations when `deepCopy` is FALSE and `tournamentRecords` are retrieved from Mongo, for instance, there are scenarios where nodes of the JSON structure contain prototypes which cannot be converted.
+:::
+
+```js
+drawEngine.setsState(drawDefinition, deepCopy, deepCopyConfig);
+```
 
 ---
 

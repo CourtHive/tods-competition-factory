@@ -7,7 +7,9 @@ import { SUCCESS } from '../../../constants/resultConstants';
 export function addNotes({ element, notes } = {}) {
   if (typeof element !== 'object') return { error: INVALID_VALUES };
   if (!notes) return { error: MISSING_VALUE };
-  if (typeof notes !== 'string') return { error: INVALID_VALUES };
+
+  if (typeof notes !== 'string' && !notes?.testing)
+    return { error: INVALID_VALUES };
 
   Object.assign(element, { notes });
 

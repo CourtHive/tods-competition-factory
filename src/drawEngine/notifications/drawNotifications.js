@@ -10,7 +10,11 @@ import {
 
 function drawUpdatedAt(drawDefinition) {
   if (!drawDefinition) return;
-  drawDefinition.updatedAt = Date.now();
+  let updatedAt = Date.now();
+  if (updatedAt === drawDefinition.updatedAt) {
+    updatedAt += 1;
+  }
+  drawDefinition.updatedAt = updatedAt;
 }
 export function addMatchUpsNotice({ drawDefinition, matchUps }) {
   drawUpdatedAt(drawDefinition);

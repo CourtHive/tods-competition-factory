@@ -7,6 +7,11 @@ const globalState = {
   devContext: undefined,
   timers: { default: { elapsedTime: 0 } },
   deepCopy: true,
+  deepCopyAttributes: {
+    ignore: [],
+    toJSON: [],
+    stringify: [],
+  },
 };
 
 let _globalStateProvider = syncGlobalState;
@@ -142,14 +147,25 @@ export function setDevContext(value) {
   globalState.devContext = value;
 }
 
-export function setDeepCopy(value) {
+export function setDeepCopy(value, attributes) {
   if (typeof value === 'boolean') {
     globalState.deepCopy = value;
+  }
+  if (typeof attributes === 'object') {
+    if (Array.isArray(attributes.ignore))
+      globalState.deepCopyAttributes.ignore = attributes.ignore;
+    if (Array.isArray(attributes.toJSON))
+      globalState.deepCopyAttributes.toJSON = attributes.toJSON;
+    if (Array.isArray(attributes.stringify))
+      globalState.deepCopyAttributes.stringify = attributes.stringify;
   }
 }
 
 export function deepCopyEnabled() {
-  return globalState.deepCopy;
+  return {
+    enabled: globalState.deepCopy,
+    ...globalState.deepCopyAttributes,
+  };
 }
 
 export function setSubscriptions({ subscriptions } = {}) {

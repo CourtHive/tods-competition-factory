@@ -86,8 +86,8 @@ export const drawEngine = (function () {
     tournamentParticipants = participants;
     return engine;
   };
-  engine.setState = (definition, deepCopyOption) => {
-    setDeepCopy(deepCopyOption);
+  engine.setState = (definition, deepCopyOption, deepCopyAttributes) => {
+    setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setState(definition);
     return processResult(result);
   };

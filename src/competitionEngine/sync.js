@@ -49,13 +49,17 @@ export const competitionEngine = (function () {
     return processResult();
   };
   engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
-  engine.setState = (records, deepCopyOption) => {
-    setDeepCopy(deepCopyOption);
+  engine.setState = (records, deepCopyOption, deepCopyAttributes) => {
+    setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setState(records, deepCopyOption);
     return processResult(result);
   };
-  engine.setTournamentRecord = (tournamentRecord, deepCopyOption) => {
-    setDeepCopy(deepCopyOption);
+  engine.setTournamentRecord = (
+    tournamentRecord,
+    deepCopyOption,
+    deepCopyAttributes
+  ) => {
+    setDeepCopy(deepCopyOption, deepCopyAttributes);
     const result = setTournamentRecord(tournamentRecord, deepCopyOption);
     return processResult(result);
   };

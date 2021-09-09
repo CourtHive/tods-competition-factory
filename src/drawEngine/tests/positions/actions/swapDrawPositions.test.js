@@ -1,7 +1,9 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
+import { setSubscriptions } from '../../../..';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { MODIFY_DRAW_DEFINITION } from '../../../../constants/topicConstants';
 import {
   ALTERNATE_PARTICIPANT,
   REMOVE_ASSIGNMENT,
@@ -83,6 +85,19 @@ it('can recognize valid SWAP positions', () => {
 });
 
 it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () => {
+  let updatedAt = 0;
+  let drawModifications = 0;
+  let result = setSubscriptions({
+    subscriptions: {
+      [MODIFY_DRAW_DEFINITION]: ([{ drawDefinition }]) => {
+        drawModifications += 1;
+        expect(drawDefinition.updatedAt).toBeGreaterThan(updatedAt);
+        updatedAt = drawDefinition.updatedAt;
+      },
+    },
+  });
+  expect(result.success).toEqual(true);
+
   const drawProfiles = [
     {
       drawSize: 32,
@@ -104,7 +119,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   const originalPositionAssignments = structures[0].positionAssignments;
 
   let drawPosition = 1;
-  let result = tournamentEngine.positionActions({
+  result = tournamentEngine.positionActions({
     drawId,
     structureId,
     drawPosition,
@@ -156,6 +171,8 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   expect(options.includes(WITHDRAW_PARTICIPANT)).toEqual(false);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
+
+  expect(drawModifications).toEqual(2);
 });
 
 it('can SWAP assignment.bye with assignment.participantId', () => {

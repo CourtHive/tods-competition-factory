@@ -1,4 +1,5 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { findStructure } from '../../getters/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -48,6 +49,8 @@ export function modifySeedAssignment({
     const seedNumber = Math.max(0, ...seedNumbers) + 1;
     structure.seedAssignments.push({ seedNumber, seedValue, participantId });
   }
+
+  modifyDrawNotice({ drawDefinition });
 
   return SUCCESS;
 }
