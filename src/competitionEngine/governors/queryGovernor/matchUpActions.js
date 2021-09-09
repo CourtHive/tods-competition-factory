@@ -9,14 +9,13 @@ export function matchUpActions({
   tournamentRecords,
   tournamentId,
   matchUpId,
-  eventId,
+  eventId, // optional
   drawId,
 } = {}) {
   if (
     typeof tournamentRecords !== 'object' ||
     typeof tournamentId !== 'string' ||
     typeof matchUpId !== 'string' ||
-    typeof eventId !== 'string' ||
     typeof drawId !== 'string'
   )
     return { error: INVALID_VALUES };

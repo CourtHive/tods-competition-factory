@@ -1,21 +1,29 @@
+import { generateTimeSlots } from '../scheduleGovernor/garman/generateTimeSlots';
 import { getVenuesAndCourts } from '../../getters/venuesAndCourtsGetter';
 import { allCompetitionMatchUps } from '../../getters/matchUpsGetter';
 import {
   addMinutesToTimeString,
   extractTime,
+  isValidDateString,
   sameDay,
   timeStringMinutes,
 } from '../../../utilities/dateTime';
 
 import {
+  INVALID_DATE,
   INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { generateTimeSlots } from '../scheduleGovernor/garman/generateTimeSlots';
 
-export function getVenuesReport({ tournamentRecords, venueIds, dates = [] }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
+export function getVenuesReport({
+  tournamentRecords,
+  venueIds = [],
+  dates = [],
+}) {
   if (!Array.isArray(dates)) return { error: INVALID_VALUES, dates };
+  if (!Array.isArray(venueIds)) return { error: INVALID_VALUES, venueIds };
+
+  const validDates = dates.every(isValidDateString);
+  if (!validDates) return { error: INVALID_DATE };
 
   const result = getVenuesAndCourts({ tournamentRecords });
   if (result.error) return result;
