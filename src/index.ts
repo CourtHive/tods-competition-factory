@@ -89,5 +89,9 @@ export { venueConstants } from './constants/venueConstants';
 // END-: constants ---------------------------------------------------------------
 
 // START- Global State methods
-export { setStateProvider, setSubscriptions } from './global/globalState';
+export {
+  setDeepCopy,
+  setStateProvider,
+  setSubscriptions,
+} from './global/globalState';
 // END
