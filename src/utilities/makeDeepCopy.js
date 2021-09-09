@@ -13,6 +13,7 @@ export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
   if (
     (!deepCopy && !internalUse) ||
     typeof sourceObject !== 'object' ||
+    typeof sourceObject === 'function' ||
     sourceObject === null
   ) {
     return sourceObject;
