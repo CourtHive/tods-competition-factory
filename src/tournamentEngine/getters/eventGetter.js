@@ -58,6 +58,7 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
       return drawDefinition ? { event: candidate, drawDefinition } : result;
     }, {});
 
+    if (!event) return { error: EVENT_NOT_FOUND };
     return { event, drawDefinition };
   } else if (eventId) {
     const event = events.reduce((event, candidate) => {
