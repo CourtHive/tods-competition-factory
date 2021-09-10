@@ -84,7 +84,6 @@ export function scheduleProfileRounds({
 
   const matchUpPotentialParticipantIds = {};
   const remainingScheduleTimes = {};
-  const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
 
   let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
@@ -100,6 +99,7 @@ export function scheduleProfileRounds({
     const venues = dateSchedulingProfile?.venues || [];
     const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
+    const matchUpNotBeforeTimes = {};
     const allDateMatchUpIds = [];
 
     // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
