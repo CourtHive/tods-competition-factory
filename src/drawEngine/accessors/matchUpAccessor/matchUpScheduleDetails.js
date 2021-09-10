@@ -1,4 +1,5 @@
 import { matchUpFormatTimes } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
@@ -14,14 +15,38 @@ import {
 } from '../../../utilities/dateTime';
 
 import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
+import { TEAM } from '../../../constants/eventConstants';
 
 export function getMatchUpScheduleDetails({
+  tournamentRecord,
   scheduleVisibilityFilters,
   afterRecoveryTimes = true,
   scheduleTiming,
+  matchUpType,
   matchUp,
 }) {
   if (!matchUp) return { error: MISSING_MATCHUP };
+
+  if (
+    !matchUp.matchUpType &&
+    !matchUpType &&
+    tournamentRecord &&
+    matchUp.drawId
+  ) {
+    const { drawDefinition, event } = findEvent({
+      tournamentRecord,
+      drawId: matchUp.drawId,
+    });
+    const structure =
+      matchUp.structureId &&
+      drawDefinition?.structures?.find(
+        ({ structureId }) => structureId === matchUp.structureId
+      );
+    matchUpType =
+      structure?.matchUpType ||
+      drawDefinition?.matchUpType ||
+      (event?.eventType !== TEAM && event?.eventType);
+  }
 
   const { milliseconds, time } = matchUpDuration({ matchUp });
   const { startTime } = matchUpStartTime({ matchUp });
@@ -44,7 +69,7 @@ export function getMatchUpScheduleDetails({
     let timeAfterRecovery,
       averageMinutes,
       recoveryMinutes,
-      formatChangeRecoveryMinutes,
+      typeChangeRecoveryMinutes,
       typeChangeTimeAfterRecovery;
     if (scheduleTiming && scheduledTime && afterRecoveryTimes) {
       const timingDetails = {
@@ -54,11 +79,12 @@ export function getMatchUpScheduleDetails({
       ({
         averageMinutes = 0,
         recoveryMinutes = 0,
-        formatChangeRecoveryMinutes = 0,
+        typeChangeRecoveryMinutes = 0,
       } = matchUpFormatTimes({
-        eventType: matchUp.matchUpType,
+        eventType: matchUp.matchUpType || matchUpType,
         timingDetails,
       }));
+
       if (averageMinutes || recoveryMinutes) {
         timeAfterRecovery = endTime
           ? addMinutesToTimeString(extractTime(endTime), recoveryMinutes)
@@ -67,15 +93,15 @@ export function getMatchUpScheduleDetails({
               averageMinutes + recoveryMinutes
             );
       }
-      if (formatChangeRecoveryMinutes) {
+      if (typeChangeRecoveryMinutes) {
         typeChangeTimeAfterRecovery = endTime
           ? addMinutesToTimeString(
               extractTime(endTime),
-              formatChangeRecoveryMinutes
+              typeChangeRecoveryMinutes
             )
           : addMinutesToTimeString(
               scheduledTime,
-              averageMinutes + formatChangeRecoveryMinutes
+              averageMinutes + typeChangeRecoveryMinutes
             );
       }
     }
@@ -84,17 +110,20 @@ export function getMatchUpScheduleDetails({
       scheduledDate = extractDate(scheduledTime);
 
     schedule = definedAttributes({
-      time,
-      courtId,
       venueId,
-      startTime,
-      endTime,
-      milliseconds,
+      courtId,
+      typeChangeTimeAfterRecovery,
+      timeAfterRecovery,
       scheduledDate,
       scheduledTime,
+
+      typeChangeRecoveryMinutes,
+      recoveryMinutes,
       averageMinutes,
-      timeAfterRecovery,
-      typeChangeTimeAfterRecovery,
+      milliseconds,
+      startTime,
+      endTime,
+      time,
     });
   } else {
     schedule = definedAttributes({

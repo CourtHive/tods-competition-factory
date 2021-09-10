@@ -174,10 +174,10 @@ export function addParticipantContext(params) {
     });
 
     const { matchUps } = allEventMatchUps({
-      event,
-      inContext: true,
-      nextMatchUps: true,
       tournamentRecord,
+      nextMatchUps: true,
+      inContext: true,
+      event,
     });
 
     const drawDetails = Object.assign(
@@ -239,6 +239,7 @@ export function addParticipantContext(params) {
       finishingPositionRange,
       loserTo,
       matchUpId,
+      matchUpType,
       matchUpFormat,
       matchUpStatus,
       roundName,
@@ -380,6 +381,7 @@ export function addParticipantContext(params) {
               finishingPositionRange,
               loserTo,
               matchUpId,
+              matchUpType,
               matchUpFormat,
               matchUpStatus,
               opponentParticipantInfo,
@@ -441,6 +443,7 @@ export function addParticipantContext(params) {
               eventId,
               eventType,
               matchUpId,
+              matchUpType,
               matchUpFormat,
               roundName,
               roundNumber,
@@ -527,6 +530,7 @@ function annotateParticipant({
   const { scheduledMatchUps } = participantScheduledMatchUps({
     matchUps: allParticipantMatchUps,
   });
+
   const { scheduledMinutesDifference } = scheduleAnalysis || {};
 
   Object.keys(scheduledMatchUps).forEach((date) => {
@@ -547,6 +551,7 @@ function annotateParticipant({
 
       scheduleItems.push({
         drawId,
+        matchUpId,
         structureName,
         roundNumber,
         roundPosition,
@@ -559,7 +564,6 @@ function annotateParticipant({
         const scheduledMinutes = timeStringMinutes(scheduledTime);
         // each matchUp only considers conflicts with matchUps which occur at the same or later scheduledTime
         const matchUpsToConsider = scheduledMatchUps[date].slice(i + 1);
-
         for (const consideredMatchUp of matchUpsToConsider) {
           // ignore { matchUpStatus: BYE } and matchUps which are unscheduled
           if (
