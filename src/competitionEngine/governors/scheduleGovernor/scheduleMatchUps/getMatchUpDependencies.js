@@ -85,14 +85,20 @@ export function getMatchUpDependencies({
       ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
     );
     if (!hasGoesTo) {
-      const hasTournamentId = drawMatchUps.find(
-        ({ tournamentId }) => tournamentId
+      const isRoundRobin = drawMatchUps.find(
+        ({ roundPosition }) => roundPosition
       );
-      const { drawDefinition } = findEvent({
-        tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
-        drawId,
-      });
-      addGoesTo({ drawDefinition });
+      // skip this if Round Robin because there is no "Goes To"
+      if (!isRoundRobin) {
+        const hasTournamentId = drawMatchUps.find(
+          ({ tournamentId }) => tournamentId
+        );
+        const { drawDefinition } = findEvent({
+          tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
+          drawId,
+        });
+        addGoesTo({ drawDefinition });
+      }
     }
 
     for (const matchUp of drawMatchUps) {
