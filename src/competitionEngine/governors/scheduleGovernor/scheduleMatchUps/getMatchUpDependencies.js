@@ -108,7 +108,6 @@ export function getMatchUpDependencies({
       if (includeParticipantDependencies) {
         const individualParticipantIds = getIndividualParticipantIds(matchUp);
         matchUpDependencies[matchUpId].participantIds =
-          // allRelevantParticipantIds;
           individualParticipantIds;
       }
 

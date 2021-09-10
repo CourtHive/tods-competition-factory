@@ -12,8 +12,9 @@ export function checkRecoveryTime({
   scheduleTime,
   matchUp,
 }) {
-  const participantIdDependencies =
-    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
+  const participantIdDependencies = (
+    matchUpDependencies?.[matchUp.matchUpId]?.participantIds || []
+  ).flat();
   const sufficientTimeForIndiiduals = participantIdDependencies.every(
     (participantId) => {
       let profile = individualParticipantProfiles[participantId];
