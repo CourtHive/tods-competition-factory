@@ -99,7 +99,6 @@ export function scheduleProfileRounds({
     const matchUpPotentialParticipantIds = {};
     const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
-    const remainingScheduleTimes = {};
     const matchUpNotBeforeTimes = {};
 
     const allDateMatchUpIds = [];
@@ -132,6 +131,7 @@ export function scheduleProfileRounds({
     // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
     // ... and initiates scheduling
     for (const venue of venues) {
+      const remainingScheduleTimes = {};
       const { venueId } = venue;
 
       const {
@@ -202,9 +202,11 @@ export function scheduleProfileRounds({
         if (conflicts.length)
           requestConflicts.push({ date: scheduleDate, conflicts });
       }
-    }
 
-    scheduleTimesRemaining[scheduleDate] = remainingScheduleTimes;
+      if (!scheduleTimesRemaining[venueId])
+        scheduleTimesRemaining[venueId] = {};
+      scheduleTimesRemaining[venueId][scheduleDate] = remainingScheduleTimes;
+    }
   }
 
   // returns the original form of the dateStrings, before extractDate()
