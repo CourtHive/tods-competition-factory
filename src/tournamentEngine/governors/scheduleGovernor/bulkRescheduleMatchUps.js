@@ -110,7 +110,7 @@ export function bulkRescheduleMatchUps({
         const schedule = inContextMatchUp.schedule;
         const { scheduledTime, scheduledDate, averageMinutes } = schedule;
 
-        let doNotReschedule;
+        let doNotReschedule, newScheduledTime, newScheduledDate;
         if (minutesChange && scheduledTime) {
           const scheduledTimeDate = extractDate(scheduledTime);
           const currentDayMinutes = timeStringMinutes(
@@ -119,46 +119,47 @@ export function bulkRescheduleMatchUps({
           const newTime = currentDayMinutes + minutesChange + averageMinutes;
           doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
 
-          let newScheduledTime = addMinutesToTimeString(
-            scheduledTime,
-            minutesChange
-          );
-          if (scheduledTimeDate) {
-            newScheduledTime = `${scheduledTimeDate}T${newScheduledTime}`;
-          }
-
-          if (!doNotReschedule && !dryRun) {
-            const result = addMatchUpScheduledTime({
-              drawDefinition,
-              matchUpId,
-              scheduledTime: newScheduledTime,
-            });
-            if (result.error) return result;
+          if (scheduledTimeDate && !doNotReschedule) {
+            let timeString = addMinutesToTimeString(
+              scheduledTime,
+              minutesChange
+            );
+            newScheduledTime = `${scheduledTimeDate}T${timeString}`;
           }
         }
 
         if (!doNotReschedule && daysChange && scheduledDate) {
           const currentDate = extractDate(scheduledDate);
-          const newDate = dateStringDaysChange(currentDate, daysChange);
+          newScheduledDate = dateStringDaysChange(currentDate, daysChange);
 
           doNotReschedule =
-            new Date(newDate) < new Date(startDate) ||
-            new Date(newDate) > new Date(endDate);
-
-          if (!doNotReschedule && !dryRun) {
-            const result = addMatchUpScheduledDate({
-              drawDefinition,
-              matchUpId,
-              scheduledDate: newDate,
-            });
-            if (result.error) return result;
-          }
+            new Date(newScheduledDate) < new Date(startDate) ||
+            new Date(newScheduledDate) > new Date(endDate);
         }
 
         if (doNotReschedule) {
           notRescheduled.push(inContextMatchUp);
         } else {
-          rescheduled.push(inContextMatchUp);
+          if (!dryRun) {
+            if (newScheduledTime) {
+              const result = addMatchUpScheduledTime({
+                drawDefinition,
+                matchUpId,
+                scheduledTime: newScheduledTime,
+              });
+              if (result.error) return result;
+            }
+            if (newScheduledDate) {
+              const result = addMatchUpScheduledDate({
+                drawDefinition,
+                matchUpId,
+                scheduledDate: newScheduledDate,
+              });
+              if (result.error) return result;
+            }
+          }
+          if (newScheduledTime || newScheduledDate)
+            rescheduled.push(inContextMatchUp);
         }
       }
     }
