@@ -41,7 +41,7 @@ export function printGlobalLog(purge) {
         return `${logColors.white}${key}: ${keyColor}${line[key]}`;
       })
       .join(', ');
-    const tabs = method.length < 15 ? `\t\t` : '\t';
+    const tabs = method?.length < 15 ? `\t\t` : '\t';
     return [
       newline ? '\n' : '',
       methodColor,
