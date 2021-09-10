@@ -6,7 +6,7 @@ import fs from 'fs';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 
 const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/goesToTournament.json',
+  './src/global/testHarness/crossDateSchedulingTournament.json',
   'utf-8'
 );
 
@@ -14,9 +14,9 @@ const tournamentRecord = JSON.parse(tournamentRecordJSON);
 competitionEngine.setState(tournamentRecord);
 const showGlobalLog = false;
 
-it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchUpid', () => {
+it('can auto schedule across multiple dates', () => {
   const { schedulingProfile } = competitionEngine.getSchedulingProfile();
-  expect(schedulingProfile.length).toEqual(1);
+  expect(schedulingProfile.length).toEqual(2);
   const { issuesCount } = competitionEngine.getSchedulingProfileIssues();
   expect(issuesCount).toEqual(0);
 
@@ -105,8 +105,10 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
           {
             matchUpId,
             scheduledTime,
+            scheduledDate: schedule.scheduledDate,
             keyColors: {
               scheduledTime: 'brightcyan',
+              scheduledDate: 'brightcyan',
               matchUpId: 'yellow',
             },
           },
@@ -131,12 +133,4 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
       withDraws: false,
     });
   expect(participantIdsWithConflicts.length).toEqual(0);
-
-  /*
-  const participantsWithConflicts = competitionParticipants
-    .filter(({ participantId }) =>
-      participantIdsWithConflicts.includes(participantId)
-    )
-    .map((p) => p.scheduleConflicts);
-  */
 });

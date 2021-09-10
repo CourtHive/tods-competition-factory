@@ -82,11 +82,9 @@ export function scheduleProfileRounds({
       new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
-  const matchUpPotentialParticipantIds = {};
-  const remainingScheduleTimes = {};
+  const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
 
-  let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
   const scheduledMatchUpIds = [];
   const overLimitMatchUpIds = [];
   const noTimeMatchUpIds = [];
@@ -95,11 +93,15 @@ export function scheduleProfileRounds({
   let iterations = 0;
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
+    let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
+    const matchUpPotentialParticipantIds = {};
     const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
+    const remainingScheduleTimes = {};
     const matchUpNotBeforeTimes = {};
+
     const allDateMatchUpIds = [];
 
     // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
@@ -201,6 +203,8 @@ export function scheduleProfileRounds({
           requestConflicts.push({ date: scheduleDate, conflicts });
       }
     }
+
+    scheduleTimesRemaining[scheduleDate] = remainingScheduleTimes;
   }
 
   // returns the original form of the dateStrings, before extractDate()
@@ -241,6 +245,6 @@ export function scheduleProfileRounds({
 
     requestConflicts,
     skippedScheduleTimes,
-    remainingScheduleTimes,
+    scheduleTimesRemaining,
   };
 }
