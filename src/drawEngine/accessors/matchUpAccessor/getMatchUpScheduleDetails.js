@@ -24,24 +24,33 @@ export function getMatchUpScheduleDetails({
   scheduleTiming,
   matchUpType,
   matchUp,
+  event,
 }) {
   if (!matchUp) return { error: MISSING_MATCHUP };
 
   if (
     !matchUp.matchUpType &&
     !matchUpType &&
-    tournamentRecord &&
+    (event || tournamentRecord) &&
     matchUp.drawId
   ) {
-    const { drawDefinition, event } = findEvent({
-      tournamentRecord,
-      drawId: matchUp.drawId,
-    });
+    let drawDefinition = event?.drawDefinitions.find(
+      (drawDefinition) => drawDefinition.drawId === matchUp.drawId
+    );
+
+    if (!drawDefinition && tournamentRecord) {
+      ({ drawDefinition, event } = findEvent({
+        tournamentRecord,
+        drawId: matchUp.drawId,
+      }));
+    }
+
     const structure =
       matchUp.structureId &&
       drawDefinition?.structures?.find(
         ({ structureId }) => structureId === matchUp.structureId
       );
+
     matchUpType =
       structure?.matchUpType ||
       drawDefinition?.matchUpType ||

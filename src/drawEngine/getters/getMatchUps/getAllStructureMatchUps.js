@@ -1,4 +1,4 @@
-import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
@@ -272,6 +272,7 @@ export function getAllStructureMatchUps({
       scheduleTiming,
       matchUpType,
       matchUp,
+      event,
     });
     const drawPositions = matchUp.drawPositions || tieDrawPositions;
     const { collectionPosition, collectionId, roundNumber, roundPosition } =
