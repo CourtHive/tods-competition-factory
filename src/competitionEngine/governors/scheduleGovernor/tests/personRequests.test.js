@@ -115,7 +115,7 @@ it('can identify conflicts with person requests', () => {
     .map(({ matchUpId }) => matchUpId);
 
   result = competitionEngine.scheduleMatchUps({
-    date: startDate,
+    scheduleDate: startDate,
     matchUpIds,
   });
   expect(result.requestConflicts.length).toBeGreaterThan(0);

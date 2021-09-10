@@ -27,7 +27,7 @@ test.each([competitionEngineSync])(
     ).toEqual({ DOUBLES: 8 });
 
     let result = competitionEngine.scheduleMatchUps({
-      date: startDate,
+      scheduleDate: startDate,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
@@ -65,7 +65,7 @@ test.each([competitionEngineSync])(
     ).toEqual({ DOUBLES: 8, SINGLES: 32 });
 
     let result = competitionEngine.scheduleMatchUps({
-      date: startDate,
+      scheduleDate: startDate,
       matchUpIds,
     });
     expect(result.success).toEqual(true);
@@ -136,7 +136,7 @@ test.each([competitionEngineSync])(
     expect(result.dateMatchUps.length).toEqual(0);
 
     result = competitionEngine.scheduleMatchUps({
-      date: startDate,
+      scheduleDate: startDate,
       matchUpIds,
     });
     expect(result.scheduledMatchUpIds.length).toEqual(0);

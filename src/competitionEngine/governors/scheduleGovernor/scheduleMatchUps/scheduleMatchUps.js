@@ -80,11 +80,11 @@ export function scheduleMatchUps({
   venueIds,
   periodLength = 30,
   matchUpIds,
-  date,
+  scheduleDate,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
-  if (!isValidDateString(date)) return { error: INVALID_DATE };
+  if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
   if (
     isNaN(periodLength) ||
     isNaN(averageMatchUpMinutes) ||
@@ -112,7 +112,7 @@ export function scheduleMatchUps({
   competitionMatchUps.forEach((matchUp) => {
     if (
       matchUp.schedule?.scheduledDate &&
-      sameDay(date, extractDate(matchUp.schedule.scheduledDate))
+      sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
     ) {
       processNextMatchUps({
         matchUp,
@@ -136,7 +136,7 @@ export function scheduleMatchUps({
       // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
-      date: extractDate(date),
+      date: extractDate(scheduleDate),
       averageMatchUpMinutes,
       periodLength,
       venueIds,
@@ -284,7 +284,7 @@ export function scheduleMatchUps({
         personRequests,
         scheduleTime,
         matchUp,
-        date,
+        date: scheduleDate,
       });
 
       if (conflicts?.length) return false;
@@ -330,7 +330,9 @@ export function scheduleMatchUps({
             if (scheduleTime) {
               // must include date being scheduled to generate proper ISO string
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
-              const scheduledTime = `${extractDate(date)}T${formatTime}`;
+              const scheduledTime = `${extractDate(
+                scheduleDate
+              )}T${formatTime}`;
 
               const result = addMatchUpScheduledTime({
                 drawDefinition,

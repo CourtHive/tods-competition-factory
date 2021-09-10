@@ -176,7 +176,7 @@ export function scheduleProfileRounds({
           venueIds: [venueId],
           periodLength,
           matchUpIds,
-          date,
+          scheduleDate: date,
         });
         if (result.error) return result;
 

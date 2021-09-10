@@ -24,8 +24,8 @@ test.each([competitionEngineSync])(
     ).toEqual({ SINGLES: 12 });
 
     let result = competitionEngine.scheduleMatchUps({
+      scheduleDate: startDate,
       recoveryMinutes: 30,
-      date: startDate,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
@@ -74,8 +74,8 @@ test.each([competitionEngineSync])(
 
     let result = competitionEngine.scheduleMatchUps({
       matchUpDailyLimits: { total: 2 },
+      scheduleDate: startDate,
       recoveryMinutes: 30,
-      date: startDate,
       matchUpIds,
     });
     Object.values(result.individualParticipantProfiles).forEach(
