@@ -133,7 +133,6 @@ export function scheduleMatchUps({
     calculateScheduleTimes({
       tournamentRecords,
       remainingScheduleTimes,
-      // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
       scheduleDate: extractDate(scheduleDate),
@@ -151,6 +150,7 @@ export function scheduleMatchUps({
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
       individualParticipantProfiles,
+      scheduleDate,
       matchUp,
       value: 1,
     });
@@ -165,6 +165,7 @@ export function scheduleMatchUps({
 
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
+        scheduleDate,
         scheduleTime,
         matchUp,
       });
@@ -196,10 +197,11 @@ export function scheduleMatchUps({
         const { drawId, tournamentId } = matchUp;
 
         const participantIdsAtLimit = checkDailyLimits(
-          matchUp,
-          matchUpDailyLimits,
           individualParticipantProfiles,
-          matchUpPotentialParticipantIds
+          matchUpPotentialParticipantIds,
+          matchUpDailyLimits,
+          scheduleDate,
+          matchUp
         );
         if (participantIdsAtLimit?.length) {
           aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
@@ -273,6 +275,7 @@ export function scheduleMatchUps({
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
         scheduleTime,
+        scheduleDate,
         matchUp,
       });
       if (!enoughTime) return false;
@@ -288,8 +291,6 @@ export function scheduleMatchUps({
       });
 
       if (conflicts?.length) return false;
-
-      // TODO: checkDailyLimits must be checked each time because batching is no longer by round
 
       matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
       return true;
@@ -309,6 +310,7 @@ export function scheduleMatchUps({
     modifyParticipantMatchUpsCount({
       individualParticipantProfiles,
       matchUpPotentialParticipantIds,
+      scheduleDate,
       value: -1,
       matchUp,
     });

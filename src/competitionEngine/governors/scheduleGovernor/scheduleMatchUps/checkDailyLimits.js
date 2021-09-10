@@ -13,10 +13,11 @@ import { TOTAL } from '../../../../constants/scheduleConstants';
  * @modifies individualParticipantProfiles - increments counters
  */
 export function checkDailyLimits(
-  matchUp,
-  matchUpDailyLimits,
   individualParticipantProfiles,
-  matchUpPotentialParticipantIds
+  matchUpPotentialParticipantIds,
+  matchUpDailyLimits,
+  scheduleDate,
+  matchUp
 ) {
   const { matchUpId, matchUpType } = matchUp;
   const individualParticipantIds = getIndividualParticipantIds(matchUp);

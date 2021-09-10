@@ -83,7 +83,6 @@ export function scheduleProfileRounds({
     });
 
   const matchUpPotentialParticipantIds = {};
-  const individualParticipantProfiles = {};
   const remainingScheduleTimes = {};
   const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
@@ -99,6 +98,7 @@ export function scheduleProfileRounds({
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
+    const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
     const allDateMatchUpIds = [];
 

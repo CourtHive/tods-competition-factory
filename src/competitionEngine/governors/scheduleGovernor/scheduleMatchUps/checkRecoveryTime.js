@@ -9,6 +9,7 @@ export function checkRecoveryTime({
 
   averageMatchUpMinutes,
   recoveryMinutes,
+  scheduleDate,
   scheduleTime,
   matchUp,
 }) {
@@ -60,6 +61,7 @@ export function checkRecoveryTime({
 
       averageMatchUpMinutes,
       recoveryMinutes,
+      scheduleDate,
       scheduleTime,
       matchUp,
     });
