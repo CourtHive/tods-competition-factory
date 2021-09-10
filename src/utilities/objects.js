@@ -1,5 +1,5 @@
 export function definedAttributes(obj) {
-  if (typeof obj !== 'object') return obj;
+  if (typeof obj !== 'object' || obj === null) return obj;
   const definedKeys = Object.keys(obj).filter(
     (key) => !['', undefined, null].includes(obj[key])
   );
