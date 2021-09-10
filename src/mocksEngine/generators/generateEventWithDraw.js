@@ -53,6 +53,7 @@ export function generateEventWithDraw({
     drawName,
     gender,
     stage,
+    uuids,
   } = drawProfile;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
@@ -197,6 +198,7 @@ export function generateEventWithDraw({
     goesTo,
     event,
     stage,
+    uuids,
   });
 
   if (generationError) return { error: generationError };

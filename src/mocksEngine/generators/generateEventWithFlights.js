@@ -192,11 +192,11 @@ export function generateEventWithFlights({
   let uniqueParticipantsIndex = 0;
   for (const drawProfile of drawProfiles) {
     const {
-      stage,
-      drawName,
       drawType = SINGLE_ELIMINATION,
-      drawSize,
       qualifyingPositions,
+      drawName,
+      drawSize,
+      stage,
     } = drawProfile;
     const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
 
@@ -245,9 +245,10 @@ export function generateEventWithFlights({
     for (const [index, flight] of flightProfile.flights.entries()) {
       const { drawId, drawSize, stage, drawName, drawEntries } = flight;
       const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
-      const automated = drawProfiles[index].automated;
-      const matchUpFormat = drawProfiles[index].matchUpFormat;
       const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
+      const matchUpFormat = drawProfiles[index].matchUpFormat;
+      const automated = drawProfiles[index].automated;
+      const uuids = drawProfiles[index].uuids;
 
       let result = generateDrawDefinition({
         matchUpType: eventType,
@@ -259,9 +260,10 @@ export function generateEventWithFlights({
         drawSize,
         drawType,
         drawName,
-        stage,
         drawId,
         event,
+        stage,
+        uuids,
       });
 
       const { drawDefinition, error } = result;
