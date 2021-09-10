@@ -51,9 +51,9 @@ export function scheduleProfileRounds({
   });
 
   const validScheduleDates = scheduleDates
-    .map((date) => {
-      if (!isValidDateString(date)) return;
-      return extractDate(date);
+    .map((scheduleDate) => {
+      if (!isValidDateString(scheduleDate)) return;
+      return extractDate(scheduleDate);
     })
     .filter(Boolean);
 
@@ -75,15 +75,14 @@ export function scheduleProfileRounds({
 
   const dateSchedulingProfiles = schedulingProfile
     .filter((dateschedulingProfile) => {
-      const date = extractDate(dateschedulingProfile?.scheduleDate);
-      return profileDates.includes(date);
+      const scheduleDate = extractDate(dateschedulingProfile?.scheduleDate);
+      return profileDates.includes(scheduleDate);
     })
     .sort((a, b) => {
       new Date(a.scheduleDate).getTime() - new Date(b.scheduleDate).getTime();
     });
 
   const matchUpPotentialParticipantIds = {};
-  const individualParticipantProfiles = {};
   const remainingScheduleTimes = {};
   const matchUpNotBeforeTimes = {};
   const skippedScheduleTimes = {};
@@ -97,12 +96,13 @@ export function scheduleProfileRounds({
   let iterations = 0;
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
-    const date = extractDate(dateSchedulingProfile?.scheduleDate);
+    const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
+    const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
     const allDateMatchUpIds = [];
 
-    // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current date
+    // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
       const {
@@ -176,18 +176,18 @@ export function scheduleProfileRounds({
           venueIds: [venueId],
           periodLength,
           matchUpIds,
-          date,
+          scheduleDate,
         });
         if (result.error) return result;
 
         previousRemainingScheduleTimes = result.remainingScheduleTimes;
         if (result.skippedScheduleTimes?.length) {
-          // add skippedScheduleTimes for each date and return for testing
-          skippedScheduleTimes[date] = result.skippedScheduleTimes;
+          // add skippedScheduleTimes for each scheduleDate and return for testing
+          skippedScheduleTimes[scheduleDate] = result.skippedScheduleTimes;
         }
         if (result.remainingScheduleTimes?.length) {
-          // add remainingScheduleTimes for each date and return for testing
-          remainingScheduleTimes[date] = result.remainingScheduleTimes;
+          // add remainingScheduleTimes for each scheduleDate and return for testing
+          remainingScheduleTimes[scheduleDate] = result.remainingScheduleTimes;
         }
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
@@ -197,7 +197,8 @@ export function scheduleProfileRounds({
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
-        if (conflicts.length) requestConflicts.push({ date, conflicts });
+        if (conflicts.length)
+          requestConflicts.push({ date: scheduleDate, conflicts });
       }
     }
   }

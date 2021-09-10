@@ -19,7 +19,7 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  * @param {boolean} calculateStartTimeFromCourts - defaults to true - will override supplied startTime
  * @param {string} startTime - military time string, time only, e.g. '08:00'
  * @param {string} endTime - military time string, time only, e.g. '18:00'
- * @param {string} date - e.g. '2100-01-01'
+ * @param {string} scheduleDate - date string 'YYYY-MM-DD'
  *
  * NOTE: not using matchUpFormat here because time per format is defined by policy
  * @param {number} averageMatchUpMinutes - number of minutes per match
@@ -34,9 +34,9 @@ export function calculateScheduleTimes({
   defaultRecoveryMinutes = 60,
   averageMatchUpMinutes = 90,
   periodLength = 30,
+  scheduleDate,
   startTime,
   endTime,
-  date,
 
   venueIds,
 }) {
@@ -58,7 +58,8 @@ export function calculateScheduleTimes({
     startTime = courts.reduce((minStartTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
-        (availability) => !availability.date || sameDay(date, availability.date)
+        (availability) =>
+          !availability.date || sameDay(scheduleDate, availability.date)
       );
       const comparisonStartTime =
         dateAvailability?.startTime || court.startTime;
@@ -76,7 +77,8 @@ export function calculateScheduleTimes({
     endTime = courts.reduce((maxEndTime, court) => {
       const dateAvailability = court.dateAvailability?.find(
         // if no date is specified consider it to be default for all tournament dates
-        (availability) => !availability.date || sameDay(date, availability.date)
+        (availability) =>
+          !availability.date || sameDay(scheduleDate, availability.date)
       );
       const comparisonEndTime = dateAvailability?.endTime || court.endTime;
 
@@ -110,7 +112,7 @@ export function calculateScheduleTimes({
   // Get an array of all matchUps scheduled for the date
   // some of them may have courts assigned and some may only have venueIds
   // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
-  const matchUpFilters = { scheduledDate: date, venueIds };
+  const matchUpFilters = { scheduledDate: scheduleDate, venueIds };
   const matchUpsWithSchedule = competitionScheduleMatchUps({
     tournamentRecords,
     sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
@@ -165,7 +167,7 @@ export function calculateScheduleTimes({
     endTime,
     bookings,
     courts,
-    date,
+    date: scheduleDate,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
 

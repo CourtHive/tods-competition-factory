@@ -152,7 +152,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
   result = competitionEngine
     .setState(tournamentRecords)
-    .scheduleMatchUps({ date, matchUpIds });
+    .scheduleMatchUps({ scheduleDate: date, matchUpIds });
   expect(result.success).toEqual(true);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
@@ -534,7 +534,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
   const matchUpIds = upcoming.map(({ matchUpId }) => matchUpId);
   result = competitionEngine
     .setState(tournamentRecords)
-    .scheduleMatchUps({ date, matchUpIds });
+    .scheduleMatchUps({ scheduleDate: date, matchUpIds });
   expect(result.success).toEqual(true);
 
   ({ tournamentRecords } = competitionEngine.getState());

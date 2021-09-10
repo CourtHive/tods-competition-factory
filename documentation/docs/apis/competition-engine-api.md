@@ -344,7 +344,7 @@ Returns an array of available schedule times for a given date (and optional time
 
 ```js
 const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
-  date,
+  scheduleDate,
 
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
@@ -971,7 +971,7 @@ Auto schedule matchUps on a given date using the Garman formula.
 
 ```js
 competitionEngine.scheduleMatchUps({
-  date,
+  scheduleDate, // date string in the format `YYYY-MM-DD`
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
   venueIds, // optional - defaults to all known; if a single venueId is provided then all matchUps will be scheduled for that venue

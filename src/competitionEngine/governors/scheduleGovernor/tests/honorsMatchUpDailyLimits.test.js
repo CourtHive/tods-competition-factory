@@ -60,7 +60,7 @@ it('can set and honor matchUpDailyLimits', () => {
 
   result = competitionEngine.scheduleMatchUps({
     matchUpDailyLimits,
-    date: startDate,
+    scheduleDate: startDate,
     matchUpIds,
   });
   expect(result.success).toEqual(true);

@@ -21,7 +21,7 @@ it('auto schedules venue if only one venue provided', () => {
   expect(matchUpIds.length).toBeGreaterThan(0);
 
   const result = competitionEngine.scheduleMatchUps({
-    date: startDate,
+    scheduleDate: startDate,
     matchUpIds,
   });
   expect(result.success).toEqual(true);

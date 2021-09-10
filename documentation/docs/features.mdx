@@ -86,7 +86,7 @@ function ScheduleTimesDemo(props) {
   competitionEngine.setState(tournamentRecord);
   const { startDate, endDate } = competitionEngine.getCompetitionDateRange();
   const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
-    date: startDate,
+    scheduleDate: startDate,
   });
 
   return (

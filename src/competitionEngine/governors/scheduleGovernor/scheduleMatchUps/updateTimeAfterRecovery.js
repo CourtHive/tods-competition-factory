@@ -1,3 +1,4 @@
+import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,
@@ -36,25 +37,19 @@ export function updateTimeAfterRecovery({
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
   participantIdDependencies.forEach((participantId) => {
-    if (!individualParticipantProfiles[participantId]) {
-      individualParticipantProfiles[participantId] = {
-        counters: {},
-        potentialCounted: {},
-        timeAfterRecovery,
-        typeChangeTimeAfterRecovery,
-        priorMatchUpType: matchUp.matchUpType,
-      };
-    } else {
-      const matchUpTypeChange =
-        individualParticipantProfiles[participantId].priorMatchUpType !==
-        matchUp.matchUpType;
+    checkParticipantProfileInitialization({
+      individualParticipantProfiles,
+      participantId,
+    });
+    const matchUpTypeChange =
+      individualParticipantProfiles[participantId].priorMatchUpType !==
+      matchUp.matchUpType;
 
-      // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
-      individualParticipantProfiles[participantId].timeAfterRecovery =
-        matchUpTypeChange
-          ? typeChangeTimeAfterRecovery || timeAfterRecovery
-          : timeAfterRecovery;
-    }
+    // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
+    individualParticipantProfiles[participantId].timeAfterRecovery =
+      matchUpTypeChange
+        ? typeChangeTimeAfterRecovery || timeAfterRecovery
+        : timeAfterRecovery;
   });
   processNextMatchUps({
     matchUp,

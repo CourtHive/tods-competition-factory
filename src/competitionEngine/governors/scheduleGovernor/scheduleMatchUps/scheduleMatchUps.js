@@ -44,7 +44,7 @@ import {
  * @param {object[]} tournamentRecords - provided by competitionEngine
  * @param {string[]} matchUpIds - matchUpIds to schedule
  * @param {string[]} venueIds - venueIds of venues where dateAvailability for courts is found
- * @param {string} date - YYYY-MM-DD string representing day on which matchUps should be scheduled
+ * @param {string} scheduleDate - YYYY-MM-DD string representing day on which matchUps should be scheduled
  * @param {string} startTime - 00:00 - military time string
  * @param {string} endTime - 00:00 - military time string
  *
@@ -80,11 +80,11 @@ export function scheduleMatchUps({
   venueIds,
   periodLength = 30,
   matchUpIds,
-  date,
+  scheduleDate,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
-  if (!isValidDateString(date)) return { error: INVALID_DATE };
+  if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
   if (
     isNaN(periodLength) ||
     isNaN(averageMatchUpMinutes) ||
@@ -112,7 +112,7 @@ export function scheduleMatchUps({
   competitionMatchUps.forEach((matchUp) => {
     if (
       matchUp.schedule?.scheduledDate &&
-      sameDay(date, extractDate(matchUp.schedule.scheduledDate))
+      sameDay(scheduleDate, extractDate(matchUp.schedule.scheduledDate))
     ) {
       processNextMatchUps({
         matchUp,
@@ -127,16 +127,15 @@ export function scheduleMatchUps({
     competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
 
-  // determines court availability taking into account already scheduled matchUps on the date
+  // determines court availability taking into account already scheduled matchUps on the scheduleDate
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
       tournamentRecords,
       remainingScheduleTimes,
-      // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
-      date: extractDate(date),
+      scheduleDate: extractDate(scheduleDate),
       averageMatchUpMinutes,
       periodLength,
       venueIds,
@@ -151,6 +150,7 @@ export function scheduleMatchUps({
     modifyParticipantMatchUpsCount({
       matchUpPotentialParticipantIds,
       individualParticipantProfiles,
+      scheduleDate,
       matchUp,
       value: 1,
     });
@@ -165,6 +165,7 @@ export function scheduleMatchUps({
 
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
+        scheduleDate,
         scheduleTime,
         matchUp,
       });
@@ -196,10 +197,11 @@ export function scheduleMatchUps({
         const { drawId, tournamentId } = matchUp;
 
         const participantIdsAtLimit = checkDailyLimits(
-          matchUp,
-          matchUpDailyLimits,
           individualParticipantProfiles,
-          matchUpPotentialParticipantIds
+          matchUpPotentialParticipantIds,
+          matchUpDailyLimits,
+          scheduleDate,
+          matchUp
         );
         if (participantIdsAtLimit?.length) {
           aggregator.overLimitMatchUpIds.push(matchUp.matchUpId);
@@ -273,6 +275,7 @@ export function scheduleMatchUps({
         recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
         averageMatchUpMinutes,
         scheduleTime,
+        scheduleDate,
         matchUp,
       });
       if (!enoughTime) return false;
@@ -283,13 +286,11 @@ export function scheduleMatchUps({
         requestConflicts,
         personRequests,
         scheduleTime,
+        scheduleDate,
         matchUp,
-        date,
       });
 
       if (conflicts?.length) return false;
-
-      // TODO: checkDailyLimits must be checked each time because batching is no longer by round
 
       matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
       return true;
@@ -309,6 +310,7 @@ export function scheduleMatchUps({
     modifyParticipantMatchUpsCount({
       individualParticipantProfiles,
       matchUpPotentialParticipantIds,
+      scheduleDate,
       value: -1,
       matchUp,
     });
@@ -328,9 +330,11 @@ export function scheduleMatchUps({
           drawMatchUps.forEach(({ matchUpId }) => {
             const scheduleTime = matchUpScheduleTimes[matchUpId];
             if (scheduleTime) {
-              // must include date being scheduled to generate proper ISO string
+              // must include scheduleDate being scheduled to generate proper ISO string
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
-              const scheduledTime = `${extractDate(date)}T${formatTime}`;
+              const scheduledTime = `${extractDate(
+                scheduleDate
+              )}T${formatTime}`;
 
               const result = addMatchUpScheduledTime({
                 drawDefinition,
