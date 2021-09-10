@@ -1,3 +1,4 @@
+import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { unique } from '../../../../utilities';
 
@@ -52,14 +53,10 @@ export function checkDailyLimits(
 
   if (!participantIdsAtLimit.length) {
     relevantParticipantids.forEach((participantId) => {
-      if (!individualParticipantProfiles[participantId])
-        individualParticipantProfiles[participantId] = {
-          counters: {},
-          potentialCounted: {},
-          priorMatchUpType: undefined,
-          timeAfterRecovery: undefined,
-          typeChangeTimeAfterRecovery: undefined,
-        };
+      checkParticipantProfileInitialization({
+        individualParticipantProfiles,
+        participantId,
+      });
       const counters = individualParticipantProfiles[participantId].counters;
       if (counters[matchUpType]) counters[matchUpType] += 1;
       else counters[matchUpType] = 1;

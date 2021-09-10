@@ -1,3 +1,4 @@
+import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { overlap } from '../../../../utilities';
 
@@ -29,18 +30,10 @@ export function modifyParticipantMatchUpsCount({
   ];
 
   consideredParticipantIds.forEach((participantId) => {
-    if (!individualParticipantProfiles[participantId]) {
-      individualParticipantProfiles[participantId] = {
-        counters: {},
-        potentialCounted: {},
-        priorMatchUpType: undefined,
-        timeAfterRecovery: undefined,
-        typeChangeTimeAfterRecovery: undefined,
-      };
-    }
-
-    if (!individualParticipantProfiles[participantId].potentialCounted)
-      individualParticipantProfiles[participantId].potentialCounted = {};
+    checkParticipantProfileInitialization({
+      individualParticipantProfiles,
+      participantId,
+    });
 
     if (
       !individualParticipantProfiles[participantId].potentialCounted[
