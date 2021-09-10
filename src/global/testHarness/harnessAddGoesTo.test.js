@@ -12,7 +12,7 @@ const tournamentRecordJSON = fs.readFileSync(
 
 const tournamentRecord = JSON.parse(tournamentRecordJSON);
 competitionEngine.setState(tournamentRecord);
-const showGlobalLog = true;
+const showGlobalLog = false;
 
 it('can auto schedule', () => {
   const { schedulingProfile } = competitionEngine.getSchedulingProfile();
@@ -123,18 +123,20 @@ it('can auto schedule', () => {
   );
   expect(scheduleConflicts.length).toEqual(0);
 
-  const { competitionParticipants, participantIdsWithConflicts } =
+  const { participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       withScheduleItems: true,
       scheduleAnalysis: true,
       withEvents: false,
       withDraws: false,
     });
+  expect(participantIdsWithConflicts.length).toEqual(0);
 
+  /*
   const participantsWithConflicts = competitionParticipants
     .filter(({ participantId }) =>
       participantIdsWithConflicts.includes(participantId)
     )
     .map((p) => p.scheduleConflicts);
-  console.log(participantsWithConflicts);
+  */
 });
