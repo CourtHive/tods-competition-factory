@@ -3,14 +3,12 @@ import { timeKeeper } from '../globalState';
 import fs from 'fs';
 
 const tournamentRecordJSON = fs.readFileSync(
-  './src/global/testHarness/demoTournament.json',
+  './src/global/testHarness/avoidancesTournament.json',
   'utf-8'
 );
 
-const tournamentRecord = JSON.parse(tournamentRecordJSON);
-tournamentEngine.setState(tournamentRecord);
-
 test.skip('benchmark drawGeneration times', () => {
+  const tournamentRecord = JSON.parse(tournamentRecordJSON);
   tournamentEngine.setState(tournamentRecord);
 
   const eventId = 'E9F2D1DF-736D-45A6-8ED7-42F044C6B80E';

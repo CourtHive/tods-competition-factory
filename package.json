@@ -22,8 +22,7 @@
       "generated"
     ],
     "testPathIgnorePatterns": [
-      "benchmarks",
-      "harness"
+      "benchmarks"
     ]
   },
   "homepage": "https://github.com/CourtHive/tods-competition-factory",

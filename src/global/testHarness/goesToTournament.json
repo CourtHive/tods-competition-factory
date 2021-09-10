@@ -221,7 +221,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-08T17:03:19.316Z"
                     },
                     {
@@ -246,7 +246,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.217Z"
                     },
                     {
@@ -304,7 +304,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-08T17:03:29.614Z"
                     },
                     {
@@ -335,7 +335,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.218Z"
                     },
                     {
@@ -379,7 +379,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-08T17:03:29.614Z"
                     },
                     {
@@ -410,7 +410,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.218Z"
                     },
                     {
@@ -448,7 +448,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.863Z"
                     },
                     {
@@ -473,7 +473,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.218Z"
                     },
                     {
@@ -598,7 +598,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.863Z"
                     },
                     {
@@ -623,7 +623,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.219Z"
                     },
                     {
@@ -661,7 +661,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.864Z"
                     },
                     {
@@ -686,7 +686,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.219Z"
                     },
                     {
@@ -1089,7 +1089,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.864Z"
                     },
                     {
@@ -1132,7 +1132,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.220Z"
                     },
                     {
@@ -1170,7 +1170,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.865Z"
                     },
                     {
@@ -1195,7 +1195,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.220Z"
                     },
                     {
@@ -1275,7 +1275,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.866Z"
                     },
                     {
@@ -1300,7 +1300,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.220Z"
                     },
                     {
@@ -1338,7 +1338,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.866Z"
                     },
                     {
@@ -1363,7 +1363,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.221Z"
                     },
                     {
@@ -1401,7 +1401,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.867Z"
                     },
                     {
@@ -1426,7 +1426,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.221Z"
                     },
                     {
@@ -1464,7 +1464,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.866Z"
                     },
                     {
@@ -1489,7 +1489,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.221Z"
                     },
                     {
@@ -1527,7 +1527,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.867Z"
                     },
                     {
@@ -1552,7 +1552,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.224Z"
                     },
                     {
@@ -1590,7 +1590,7 @@
                     {
                       "itemSubTypes": [],
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T09:16:20.868Z"
                     },
                     {
@@ -1615,7 +1615,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.225Z"
                     },
                     {
@@ -1651,7 +1651,7 @@
                     },
                     {
                       "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
-                      "itemValue": "venue1id",
+                      "itemValue": "idVenue1",
                       "createdAt": "2021-09-09T15:57:02.225Z"
                     },
                     {
@@ -2248,7 +2248,7 @@
           "scheduleDate": "2021-09-13T00:00:00Z",
           "venues": [
             {
-              "venueId": "venue1id",
+              "venueId": "idVenue1",
               "rounds": [
                 {
                   "id": "421876b5-023d-48cb-bcb0-db6039dadeb7-53c0e7c1-b019-4ff7-8a61-f0b39e5cf90b",
@@ -2671,14 +2671,14 @@
   ],
   "parentOrganisation": { "organisationId": "organisationId" },
   "timeItems": [],
-  "venueIds": ["venue1id"],
+  "venueIds": ["idVenue1"],
   "venues": [
     {
       "roles": [],
       "subVenues": [],
       "venueName": "Venue 1",
       "venueAbbreviation": "V1",
-      "venueId": "venue1id",
+      "venueId": "idVenue1",
       "addresses": [],
       "venueOtherIds": [],
       "contacts": [],
