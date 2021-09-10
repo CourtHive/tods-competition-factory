@@ -1,4 +1,4 @@
-import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/matchUpScheduleDetails';
+import { getMatchUpScheduleDetails } from '../../accessors/matchUpAccessor/getMatchUpScheduleDetails';
 import { getDrawPositionCollectionAssignment } from './getDrawPositionCollectionAssignment';
 import { getCollectionPositionMatchUps } from '../../accessors/matchUpAccessor/matchUps';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
@@ -272,6 +272,7 @@ export function getAllStructureMatchUps({
       scheduleTiming,
       matchUpType,
       matchUp,
+      event,
     });
     const drawPositions = matchUp.drawPositions || tieDrawPositions;
     const { collectionPosition, collectionId, roundNumber, roundPosition } =
@@ -398,42 +399,18 @@ export function getAllStructureMatchUps({
     }
 
     if (matchUp.collectionId) {
-      // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
-      // can be found in the collectionDefinition
-      // const collectionDefinition = collectionDefinitions?.find(
-      //   (definition) => definition.collectionId === matchUp.collectionId
-      // );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
 
       if (!matchUp.matchUpFormat && matchUpFormat) {
         Object.assign(matchUpWithContext, { matchUpFormat });
       }
-
-      /*
-      const matchUpType =
-        collectionDefinition && collectionDefinition.matchUpType;
-      if (matchUpType) {
-        Object.assign(matchUpWithContext, { matchUpType });
-      }
-      */
     } else {
       if (!matchUp.matchUpFormat) {
         const matchUpFormat =
           structure.matchUpFormat || drawDefinition?.matchUpFormat;
         if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
       }
-      /*
-      if (!matchUp.matchUpType) {
-        const matchUpType =
-          structure.matchUpType ||
-          drawDefinition?.matchUpType ||
-          (event?.eventType !== TEAM && event?.eventType);
-        if (matchUpType) {
-          Object.assign(matchUpWithContext, { matchUpType });
-        }
-      }
-      */
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {
