@@ -29,6 +29,7 @@ export function getSchedulingProfileIssues({
   if (!validDates) return { error: INVALID_DATE };
 
   const issues = [];
+  let issuesCount = 0;
   const roundIndexShouldBeAfter = {};
 
   const { schedulingProfile } = getSchedulingProfile({ tournamentRecords });
@@ -82,6 +83,7 @@ export function getSchedulingProfileIssues({
               schedulingErrors.push({ matchUpId, shouldBeAfter });
           });
           if (schedulingErrors.length) {
+            issuesCount += schedulingErrors.length;
             const errorsDetail = schedulingErrors.map(
               ({ matchUpId, shouldBeAfter }) => {
                 const matchUpRoundIndex = getRoundIndex(matchUpId);
@@ -134,5 +136,5 @@ export function getSchedulingProfileIssues({
     ),
   };
 
-  return { profileIssues, roundIndexShouldBeAfter, ...SUCCESS };
+  return { issuesCount, profileIssues, roundIndexShouldBeAfter, ...SUCCESS };
 }

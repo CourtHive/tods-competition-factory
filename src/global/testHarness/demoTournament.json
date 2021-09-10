@@ -1,1 +1,2822 @@
-{}
+{
+  "endDate": "2021-09-17T00:00:00.000Z",
+  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+  "tournamentName": "Unpaired Tournament",
+  "localTimeZone": "America/New_York",
+  "startDate": "2021-09-13T00:00:00.000Z",
+  "events": [
+    {
+      "gender": "MALE",
+      "endDate": "2021-09-17T00:00:00.000Z",
+      "eventType": "DOUBLES",
+      "startDate": "2021-09-13T00:00:00.000Z",
+      "entries": [
+        {
+          "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        },
+        {
+          "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        },
+        {
+          "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        },
+        {
+          "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        },
+        {
+          "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "entryStage": "MAIN",
+          "entryPosition": 0
+        }
+      ],
+      "eventName": "Men's doubles",
+      "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee"
+              }
+            ]
+          }
+        }
+      ],
+      "drawDefinitions": [
+        {
+          "automated": true,
+          "drawRepresentativeIds": [],
+          "matchUps": [],
+          "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+          "drawName": "Draw",
+          "entries": [
+            {
+              "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            }
+          ],
+          "links": [
+            {
+              "linkType": "LOSER",
+              "source": {
+                "finishingPositions": [],
+                "roundNumber": 1,
+                "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7"
+              },
+              "target": {
+                "feedProfile": "TOP_DOWN",
+                "roundNumber": 1,
+                "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+                "groupedOrder": [1]
+              }
+            },
+            {
+              "linkType": "LOSER",
+              "source": {
+                "finishingPositions": [],
+                "roundNumber": 2,
+                "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7"
+              },
+              "target": {
+                "feedProfile": "TOP_DOWN",
+                "roundNumber": 2,
+                "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+                "groupedOrder": [1]
+              },
+              "linkCondition": "FIRST_MATCHUP"
+            }
+          ],
+          "structures": [
+            {
+              "matchUps": [
+                {
+                  "matchUpId": "MD-1-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [1, 2],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "MD-1-2",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [3, 4],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "MD-1-3",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [5, 6],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 1,
+                  "roundPosition": 3,
+                  "updatedAt": "2021-09-08T17:03:19.317Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2021-09-13",
+                      "createdAt": "2021-09-08T17:03:19.316Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "08:00",
+                      "createdAt": "2021-09-08T17:03:19.316Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-08T17:03:19.316Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.133Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.133Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.134Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T08:00",
+                      "createdAt": "2021-09-09T15:57:02.217Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.217Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.751Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.751Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MD-1-4",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [7, 8],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 4,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "MD-2-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [1, 3],
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-08T17:03:50.420Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2021-09-13",
+                      "createdAt": "2021-09-08T17:03:29.613Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "09:00",
+                      "createdAt": "2021-09-08T17:03:29.614Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-08T17:03:29.614Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "10:30",
+                      "createdAt": "2021-09-08T17:03:50.418Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.134Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.134Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.135Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T08:00",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.752Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.752Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MD-2-2",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [8, null],
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-08T17:03:50.420Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2021-09-13",
+                      "createdAt": "2021-09-08T17:03:29.614Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "09:00",
+                      "createdAt": "2021-09-08T17:03:29.614Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-08T17:03:29.614Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "10:30",
+                      "createdAt": "2021-09-08T17:03:50.419Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.136Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.136Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.136Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T10:00",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.753Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.753Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MD-3-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [null, null],
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "finishingRound": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 3,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:00",
+                      "createdAt": "2021-09-09T09:16:20.862Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.863Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.137Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.137Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.137Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T12:00",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.754Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.754Z"
+                    }
+                  ]
+                }
+              ],
+              "structureName": "MAIN",
+              "stageSequence": 1,
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7",
+              "stage": "MAIN",
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb"
+                },
+                {
+                  "drawPosition": 2,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37"
+                },
+                {
+                  "drawPosition": 4,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 5,
+                  "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4"
+                },
+                {
+                  "drawPosition": 6,
+                  "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138"
+                },
+                {
+                  "drawPosition": 7,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 8,
+                  "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8"
+                }
+              ],
+              "seedLimit": 0
+            },
+            {
+              "matchUps": [
+                {
+                  "matchUpId": "CD-1-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [3, 4],
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [3, 6]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "CD-1-2",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [5, 6],
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [3, 6]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "CD-2-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [1, 4],
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [5, 6]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 2,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-08T17:03:10.820Z"
+                },
+                {
+                  "matchUpId": "CD-2-2",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [2, 5],
+                  "finishingPositionRange": {
+                    "loser": [7, 8],
+                    "winner": [5, 6]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T15:00",
+                      "createdAt": "2021-09-09T09:16:20.863Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.863Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.135Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.135Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.136Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T14:00",
+                      "createdAt": "2021-09-09T15:57:02.218Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.219Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.752Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.753Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "CD-3-1",
+                  "createdAt": "2021-09-08T17:03:10.820Z",
+                  "drawPositions": [1, null],
+                  "finishingPositionRange": {
+                    "loser": [6, 6],
+                    "winner": [5, 5]
+                  },
+                  "finishingRound": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 3,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:00",
+                      "createdAt": "2021-09-09T09:16:20.864Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.864Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.137Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.137Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.138Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T10:00",
+                      "createdAt": "2021-09-09T15:57:02.219Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.219Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.755Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.755Z"
+                    }
+                  ]
+                }
+              ],
+              "structureName": "CONSOLATION",
+              "stageSequence": 1,
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+              "stage": "CONSOLATION",
+              "positionAssignments": [
+                {
+                  "drawPosition": 1
+                },
+                {
+                  "drawPosition": 2
+                },
+                {
+                  "drawPosition": 3,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 4,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 5
+                },
+                {
+                  "drawPosition": 6,
+                  "bye": true
+                }
+              ]
+            }
+          ],
+          "drawType": "FIRST_MATCH_LOSER_CONSOLATION",
+          "extensions": [
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 8,
+                  "alternates": true
+                }
+              }
+            },
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "updatedAt": 1631203336756,
+          "matchUpFormat": "SET3-S:6/TB7",
+          "drawOrder": 1
+        }
+      ],
+      "links": []
+    },
+    {
+      "allowedDrawTypes": ["COMPASS"],
+      "tennisOfficialIds": [],
+      "gender": "MALE",
+      "endDate": "2021-09-17T00:00:00.000Z",
+      "eventType": "SINGLES",
+      "startDate": "2021-09-13T00:00:00.000Z",
+      "entries": [
+        {
+          "entryId": "5294CF39-CB97-46B7-811F-7A9D75BBCF19",
+          "entryPosition": 0,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6"
+        },
+        {
+          "entryId": "BB77D285-6D2B-4A47-B244-9AA9F7B5F987",
+          "entryPosition": 1,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "D60E3155-3067-47DD-80B7-1AAA7E86A201"
+        },
+        {
+          "entryId": "95EA0D69-19AF-47C9-8A4E-535C02D63018",
+          "entryPosition": 2,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
+        },
+        {
+          "entryId": "7B0F159B-484D-44BC-924A-86B39E35A00F",
+          "entryPosition": 3,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "73463D79-412E-47E3-A50E-302F9DFC3479"
+        },
+        {
+          "entryId": "46132AAA-0772-4681-A962-646496F20376",
+          "entryPosition": 4,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F"
+        },
+        {
+          "entryId": "05ABE9E4-8EFA-443D-A04A-167E6039F730",
+          "entryPosition": 5,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "06C0921B-19BA-4203-B39E-B1305D95EA95"
+        },
+        {
+          "entryId": "7916808C-290E-4526-B2B1-E4FD76B518B5",
+          "entryPosition": 6,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "21F1094A-32F1-46D8-9961-BA28F8F4590C"
+        },
+        {
+          "entryId": "909547B6-35D9-4321-867A-13AEF3BF5FFA",
+          "entryPosition": 7,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
+        },
+        {
+          "entryId": "E0442B81-E61A-4E47-838E-C303202AB134",
+          "entryPosition": 8,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "88F5224A-19C8-45FA-B359-AE4D7562D801"
+        },
+        {
+          "entryId": "1581B3DF-DDE2-48DC-AA2A-0BC8A167B56C",
+          "entryPosition": 9,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50"
+        }
+      ],
+      "eventName": "Men's singles",
+      "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7",
+      "category": {
+        "ageCategoryCode": "O35",
+        "type": "AGE",
+        "ballType": "T2STANDARD_PRESSURISED",
+        "subType": "ADULT"
+      },
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 0
+                  },
+                  {
+                    "participantId": "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 1
+                  },
+                  {
+                    "participantId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 2
+                  },
+                  {
+                    "participantId": "73463D79-412E-47E3-A50E-302F9DFC3479",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 3
+                  },
+                  {
+                    "participantId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 4
+                  },
+                  {
+                    "participantId": "06C0921B-19BA-4203-B39E-B1305D95EA95",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 5
+                  },
+                  {
+                    "participantId": "21F1094A-32F1-46D8-9961-BA28F8F4590C",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 6
+                  },
+                  {
+                    "participantId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 7
+                  },
+                  {
+                    "participantId": "88F5224A-19C8-45FA-B359-AE4D7562D801",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 8
+                  },
+                  {
+                    "participantId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50",
+                    "entryStage": "MAIN",
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryPosition": 9
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b"
+              }
+            ]
+          }
+        }
+      ],
+      "drawDefinitions": [
+        {
+          "automated": true,
+          "drawRepresentativeIds": [],
+          "matchUps": [],
+          "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b",
+          "drawName": "Draw",
+          "entries": [
+            {
+              "participantId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 0
+            },
+            {
+              "participantId": "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 1
+            },
+            {
+              "participantId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 2
+            },
+            {
+              "participantId": "73463D79-412E-47E3-A50E-302F9DFC3479",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 3
+            },
+            {
+              "participantId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 4
+            },
+            {
+              "participantId": "06C0921B-19BA-4203-B39E-B1305D95EA95",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 5
+            },
+            {
+              "participantId": "21F1094A-32F1-46D8-9961-BA28F8F4590C",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 6
+            },
+            {
+              "participantId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 7
+            },
+            {
+              "participantId": "88F5224A-19C8-45FA-B359-AE4D7562D801",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 8
+            },
+            {
+              "participantId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50",
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "entryPosition": 9
+            }
+          ],
+          "links": [],
+          "structures": [
+            {
+              "matchUps": [
+                {
+                  "matchUpId": "MS-1-1",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [1, 2],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-1-2",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [3, 4],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-1-3",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [5, 6],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 3,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-1-4",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [7, 8],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 1,
+                  "roundPosition": 4,
+                  "updatedAt": "2021-09-09T13:45:35.871Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T12:30",
+                      "createdAt": "2021-09-09T09:16:20.864Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.864Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2021-09-13",
+                      "createdAt": "2021-09-09T13:44:35.893Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "11:30",
+                      "createdAt": "2021-09-09T13:44:35.902Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "12:30",
+                      "createdAt": "2021-09-09T13:45:35.866Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.138Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.139Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.139Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T12:30",
+                      "createdAt": "2021-09-09T15:57:02.219Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.220Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.756Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.756Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-1-5",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [9, 10],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 1,
+                  "roundPosition": 5,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T10:00",
+                      "createdAt": "2021-09-09T09:16:20.865Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.865Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.139Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.140Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.140Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T10:30",
+                      "createdAt": "2021-09-09T15:57:02.220Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.220Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.756Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.757Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-1-6",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [11, 12],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 6,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-1-7",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [13, 14],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 7,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-1-8",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [15, 16],
+                  "finishingPositionRange": {
+                    "loser": [9, 16],
+                    "winner": [1, 8]
+                  },
+                  "finishingRound": 4,
+                  "matchUpStatus": "BYE",
+                  "roundNumber": 1,
+                  "roundPosition": 8,
+                  "updatedAt": "2021-09-09T09:14:10.708Z"
+                },
+                {
+                  "matchUpId": "MS-2-1",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [1, 3],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:30",
+                      "createdAt": "2021-09-09T09:16:20.865Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.866Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.140Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.140Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.141Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T11:00",
+                      "createdAt": "2021-09-09T15:57:02.220Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.220Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.757Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.757Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-2-2",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [5, null],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T15:30",
+                      "createdAt": "2021-09-09T09:16:20.866Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.866Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.142Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.142Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.142Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T16:00",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.759Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.759Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-2-3",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [12, null],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 3,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T14:00",
+                      "createdAt": "2021-09-09T09:16:20.867Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.867Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.143Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.143Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.143Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:00",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.760Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.760Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-2-4",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [14, 16],
+                  "finishingPositionRange": {
+                    "loser": [5, 8],
+                    "winner": [1, 4]
+                  },
+                  "finishingRound": 3,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 2,
+                  "roundPosition": 4,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T14:00",
+                      "createdAt": "2021-09-09T09:16:20.866Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.866Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.141Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.141Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.141Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:00",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.221Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.758Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.758Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-3-1",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [null, null],
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 3,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T18:00",
+                      "createdAt": "2021-09-09T09:16:20.867Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.867Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.144Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.144Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.144Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T13:30",
+                      "createdAt": "2021-09-09T15:57:02.224Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.224Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.761Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.761Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-3-2",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [null, null],
+                  "finishingPositionRange": {
+                    "loser": [3, 4],
+                    "winner": [1, 2]
+                  },
+                  "finishingRound": 2,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 3,
+                  "roundPosition": 2,
+                  "updatedAt": "2021-09-09T09:16:20.868Z",
+                  "timeItems": [
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T16:30",
+                      "createdAt": "2021-09-09T09:16:20.868Z"
+                    },
+                    {
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T09:16:20.868Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.144Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.145Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T15:56:52.145Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T15:30",
+                      "createdAt": "2021-09-09T15:57:02.224Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.225Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.762Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.762Z"
+                    }
+                  ]
+                },
+                {
+                  "matchUpId": "MS-4-1",
+                  "createdAt": "2021-09-09T09:14:10.708Z",
+                  "drawPositions": [null, null],
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "finishingRound": 1,
+                  "matchUpStatus": "TO_BE_PLAYED",
+                  "roundNumber": 4,
+                  "roundPosition": 1,
+                  "updatedAt": "2021-09-09T09:14:10.708Z",
+                  "timeItems": [
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "2021-09-13T08:00",
+                      "createdAt": "2021-09-09T15:57:02.225Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "venue1id",
+                      "createdAt": "2021-09-09T15:57:02.225Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.762Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.762Z"
+                    },
+                    {
+                      "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                      "itemValue": "",
+                      "createdAt": "2021-09-09T16:02:16.763Z"
+                    }
+                  ]
+                }
+              ],
+              "structureName": "MAIN",
+              "stageSequence": 1,
+              "finishingPosition": "ROUND_OUTCOME",
+              "seedAssignments": [],
+              "structureId": "7d599a7d-c266-456c-947a-0b3b8e99b990",
+              "stage": "MAIN",
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6"
+                },
+                {
+                  "drawPosition": 2,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 3,
+                  "participantId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50"
+                },
+                {
+                  "drawPosition": 4,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 5,
+                  "participantId": "21F1094A-32F1-46D8-9961-BA28F8F4590C"
+                },
+                {
+                  "drawPosition": 6,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 7,
+                  "participantId": "06C0921B-19BA-4203-B39E-B1305D95EA95"
+                },
+                {
+                  "drawPosition": 8,
+                  "participantId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
+                },
+                {
+                  "drawPosition": 9,
+                  "participantId": "D60E3155-3067-47DD-80B7-1AAA7E86A201"
+                },
+                {
+                  "drawPosition": 10,
+                  "participantId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
+                },
+                {
+                  "drawPosition": 11,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 12,
+                  "participantId": "73463D79-412E-47E3-A50E-302F9DFC3479"
+                },
+                {
+                  "drawPosition": 13,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 14,
+                  "participantId": "88F5224A-19C8-45FA-B359-AE4D7562D801"
+                },
+                {
+                  "drawPosition": 15,
+                  "bye": true
+                },
+                {
+                  "drawPosition": 16,
+                  "participantId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F"
+                }
+              ],
+              "seedLimit": 0
+            }
+          ],
+          "drawType": "SINGLE_ELIMINATION",
+          "extensions": [
+            {
+              "name": "entryProfile",
+              "value": {
+                "MAIN": {
+                  "drawSize": 16,
+                  "alternates": true
+                }
+              }
+            },
+            {
+              "name": "appliedPolicies",
+              "value": {
+                "seeding": {
+                  "policyName": "USTA",
+                  "duplicateSeedNumbers": true,
+                  "drawSizeProgression": true,
+                  "validSeedPositions": {
+                    "ignore": true
+                  },
+                  "seedsCountThresholds": [
+                    {
+                      "drawSize": 4,
+                      "minimumParticipantCount": 3,
+                      "seedsCount": 2
+                    },
+                    {
+                      "drawSize": 16,
+                      "minimumParticipantCount": 12,
+                      "seedsCount": 4
+                    },
+                    {
+                      "drawSize": 32,
+                      "minimumParticipantCount": 24,
+                      "seedsCount": 8
+                    },
+                    {
+                      "drawSize": 64,
+                      "minimumParticipantCount": 48,
+                      "seedsCount": 16
+                    },
+                    {
+                      "drawSize": 128,
+                      "minimumParticipantCount": 96,
+                      "seedsCount": 32
+                    },
+                    {
+                      "drawSize": 256,
+                      "minimumParticipantCount": 192,
+                      "seedsCount": 64
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "updatedAt": 1631203336764,
+          "matchUpFormat": "SET3-S:6/TB7",
+          "drawOrder": 1
+        }
+      ],
+      "links": [],
+      "timeItems": [
+        {
+          "itemSubTypes": [],
+          "itemType": "PUBLISH.STATUS",
+          "itemValue": {
+            "PUBLIC": {
+              "drawIds": [],
+              "structureIds": []
+            }
+          },
+          "createdAt": "2021-09-09T09:09:46.884Z"
+        },
+        {
+          "itemSubTypes": [],
+          "itemType": "deleteDrawDefinitions",
+          "itemValue": [
+            {
+              "auditData": {
+                "auditReason": "hjgfdrdfhjlkjk  kuhgfh",
+                "userId": {
+                  "ID": "3e851b0e-24f2-4079-b116-bbf5916b6ed1"
+                },
+                "createdAt": "2021-09-09T09:09:44.987Z"
+              },
+              "drawId": "8a71be23-b04e-402c-bf02-bb708b3b7e9a",
+              "drawType": "SINGLE_ELIMINATION",
+              "drawName": "Draw",
+              "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7"
+            }
+          ],
+          "createdAt": "2021-09-09T09:09:46.894Z"
+        }
+      ]
+    }
+  ],
+  "participants": [
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Michxxx Mironchexxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "21F1094A-32F1-46D8-9961-BA28F8F4590C",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Exxx Kranjcexxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Mxxx Alexanxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "06C0921B-19BA-4203-B39E-B1305D95EA95",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "06C0921B-19BA-4203-B39E-B1305D95EA95",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Josxxx Corxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Kamxxx Kanxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Richxxx Roccxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Jxxx Wxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Mxxx Lofdxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "88F5224A-19C8-45FA-B359-AE4D7562D801",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "88F5224A-19C8-45FA-B359-AE4D7562D801",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Lxxx Gutierxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "73463D79-412E-47E3-A50E-302F9DFC3479",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "73463D79-412E-47E3-A50E-302F9DFC3479",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantRole": "COMPETITOR",
+      "participantName": "Oxxx Motevasxxx",
+      "participantStatus": "ACTIVE",
+      "participantId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8",
+      "participantType": "INDIVIDUAL",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "0C51FFC6-A3AB-419F-AA87-670EDC851BB8",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [],
+      "participantRoleResponsibilities": ["TournamentDirector"],
+      "participantRoleResponsabilities": [],
+      "participantRole": "OFFICIAL",
+      "participantName": "ASR TD National",
+      "participantStatus": "ACTIVE",
+      "participantId": "1CAE27E0-A05B-48AB-835F-7A6D763F98BB",
+      "participantType": "INDIVIDUAL",
+      "contacts": [
+        {
+          "emailAddress": "asr.nationaltd@clubspark.io",
+          "telephone": "6565656565"
+        }
+      ],
+      "onlineResources": [],
+      "penalties": [],
+      "personId": "3E851B0E-24F2-4079-B116-BBF5916B6ED1",
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6",
+        "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "ae59d1aa-9d88-494c-8bf8-16c33c9d6d11",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kanxxx/Wxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "06C0921B-19BA-4203-B39E-B1305D95EA95",
+        "DDBE6B1B-CD96-4D27-9F0D-49B61D8A172F"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "bba34c8a-f855-4ac6-b18b-41d575a13ca8",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Alexanxxx/Roccxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+        "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "e6ced178-29e8-4eae-8526-f3d52ab4d46e",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kranjcexxx/Corxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "88F5224A-19C8-45FA-B359-AE4D7562D801",
+        "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "a50d6ba6-a25a-4c25-bdd9-b27ca2b07b08",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Lofdxxx/Motevasxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "73463D79-412E-47E3-A50E-302F9DFC3479",
+        "21F1094A-32F1-46D8-9961-BA28F8F4590C"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "e5a44989-0d31-4301-a763-c73b19085236",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Mironchexxx/Gutierxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "73463D79-412E-47E3-A50E-302F9DFC3479",
+        "21F1094A-32F1-46D8-9961-BA28F8F4590C"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "10e0224b-c32c-4882-86bb-2a2a1ace0ba5",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Mironchexxx/Gutierxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "D60E3155-3067-47DD-80B7-1AAA7E86A201",
+        "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "69b91286-8d56-4411-acf9-4f61a3a77ca2",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kranjcexxx/Corxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "21F1094A-32F1-46D8-9961-BA28F8F4590C",
+        "D60E3155-3067-47DD-80B7-1AAA7E86A201"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "5ecb54aa-7ddd-422a-b81c-e29c1d61f138",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Mironchexxx/Corxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+        "73463D79-412E-47E3-A50E-302F9DFC3479"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "937adc96-bd7b-44f5-97a7-4dcf1c0303b4",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kranjcexxx/Gutierxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB",
+        "73463D79-412E-47E3-A50E-302F9DFC3479"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "70d224a4-479e-4c12-8353-bf17a4567b57",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kranjcexxx/Gutierxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "88F5224A-19C8-45FA-B359-AE4D7562D801",
+        "0C51FFC6-A3AB-419F-AA87-670EDC851BB8"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "04626e44-3578-4bd0-a3c3-3706399261cb",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Lofdxxx/Motevasxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "6255DEAC-AC7A-4BF2-A98F-B099A10B5E50",
+        "A46C30A3-0C92-4FBC-8259-2BFEED9B7CB6"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "a6f27588-ff38-4976-a5a1-1b0c9ab8ef37",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kanxxx/Wxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "88F5224A-19C8-45FA-B359-AE4D7562D801",
+        "2FE3EF8B-2909-49F0-8E5B-146B0E01A4EB"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "8bd2e5f3-b194-494f-9a8a-46d1aacebecb",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Kranjcexxx/Lofdxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "individualParticipantIds": [
+        "0C51FFC6-A3AB-419F-AA87-670EDC851BB8",
+        "73463D79-412E-47E3-A50E-302F9DFC3479"
+      ],
+      "participantRoleResponsibilities": [],
+      "participantRoleResponsabilities": [],
+      "participantId": "af8678e5-01da-4e67-a637-8251a38b66e4",
+      "participantType": "PAIR",
+      "participantRole": "COMPETITOR",
+      "participantName": "Gutierxxx/Motevasxxx",
+      "contacts": [],
+      "onlineResources": [],
+      "penalties": [],
+      "timeItems": []
+    }
+  ],
+  "extensions": [
+    {
+      "name": "schedulingProfile",
+      "value": [
+        {
+          "scheduleDate": "2021-09-13T00:00:00Z",
+          "venues": [
+            {
+              "venueId": "venue1id",
+              "rounds": [
+                {
+                  "id": "421876b5-023d-48cb-bcb0-db6039dadeb7-53c0e7c1-b019-4ff7-8a61-f0b39e5cf90b",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "QF",
+                  "roundNumber": 1,
+                  "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 1
+                },
+                {
+                  "id": "421876b5-023d-48cb-bcb0-db6039dadeb7-5c09edce-0c6d-4e6c-be4e-5bd1bbb16d63",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "SF",
+                  "roundNumber": 2,
+                  "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 2
+                },
+                {
+                  "id": "421876b5-023d-48cb-bcb0-db6039dadeb7-7a30a618-91cc-4a32-8272-fa6b4b7322ff",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "F",
+                  "roundNumber": 3,
+                  "structureId": "421876b5-023d-48cb-bcb0-db6039dadeb7",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 3
+                },
+                {
+                  "id": "40412763-1801-4c4c-a872-805b792f8eaa-e15808a6-8b9c-4654-8f73-c815773c517a",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "C-SF-Q",
+                  "roundNumber": 1,
+                  "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 4
+                },
+                {
+                  "id": "40412763-1801-4c4c-a872-805b792f8eaa-a174346b-47c0-497d-bde2-7008bf7dea95",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "C-SF",
+                  "roundNumber": 2,
+                  "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 5
+                },
+                {
+                  "id": "40412763-1801-4c4c-a872-805b792f8eaa-8acd89a9-b8f5-4fc9-bf95-e460151073a3",
+                  "drawId": "25121508-ac8d-4515-b75c-7d06fa1168ee",
+                  "eventId": "1E31A65E-52D5-4543-8D56-403136EAA250",
+                  "eventName": "Men's doubles",
+                  "roundName": "C-F",
+                  "roundNumber": 3,
+                  "structureId": "40412763-1801-4c4c-a872-805b792f8eaa",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 6
+                },
+                {
+                  "id": "7d599a7d-c266-456c-947a-0b3b8e99b990-c8e56c10-079c-473f-b7e4-49537676d757",
+                  "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b",
+                  "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7",
+                  "eventName": "Men's singles",
+                  "roundName": "R16",
+                  "roundNumber": 1,
+                  "structureId": "7d599a7d-c266-456c-947a-0b3b8e99b990",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 7
+                },
+                {
+                  "id": "7d599a7d-c266-456c-947a-0b3b8e99b990-f1e892e1-0f55-4196-9455-f9fd0689a4cc",
+                  "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b",
+                  "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7",
+                  "eventName": "Men's singles",
+                  "roundName": "QF",
+                  "roundNumber": 2,
+                  "structureId": "7d599a7d-c266-456c-947a-0b3b8e99b990",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 8
+                },
+                {
+                  "id": "7d599a7d-c266-456c-947a-0b3b8e99b990-32171444-4055-4d76-897c-1076d822b76c",
+                  "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b",
+                  "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7",
+                  "eventName": "Men's singles",
+                  "roundName": "SF",
+                  "roundNumber": 3,
+                  "structureId": "7d599a7d-c266-456c-947a-0b3b8e99b990",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 9
+                },
+                {
+                  "id": "7d599a7d-c266-456c-947a-0b3b8e99b990-10ef2a2c-6e75-4eff-8126-81b2792e1270",
+                  "drawId": "9c163e3d-af7a-4af5-ad1a-17df011c552b",
+                  "eventId": "BDB2D5C8-6ACE-4857-BA0B-4E97757077C7",
+                  "eventName": "Men's singles",
+                  "roundName": "F",
+                  "roundNumber": 4,
+                  "structureId": "7d599a7d-c266-456c-947a-0b3b8e99b990",
+                  "tournamentId": "8D83204D-E812-47B2-81C6-A44056C34C37",
+                  "sortOrder": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "appliedPolicies",
+      "value": {
+        "scheduling": {
+          "defaultTimes": {
+            "averageTimes": [
+              {
+                "categoryNames": [],
+                "minutes": {
+                  "default": 90
+                }
+              }
+            ],
+            "recoveryTimes": [
+              {
+                "minutes": {
+                  "DOUBLES": 30,
+                  "default": 60
+                }
+              }
+            ]
+          },
+          "defaultDailyLimits": {},
+          "matchUpAverageTimes": [
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 90
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 120
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 85
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:6/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 70
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4NOAD-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 55
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7-F:TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 50
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB7-F:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 55
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET3-S:4/TB5@3"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 45
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:8/TB7", "SET1-S:8/TB7@7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 40
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:5/TB9@4"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:6/TB7"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:6NOAD"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:4/TB7",
+                "SET1-S:4/TB5@3",
+                "SET3-S:TB10",
+                "SET1-S:T20"
+              ],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 20
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:4NOAD"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 20
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10"],
+              "averageTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 10
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpRecoveryTimes": [
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:6/TB7",
+                "SET3-S:6/TB7-F:TB10",
+                "SET3-S:6/TB7-F:TB7"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60,
+                    "DOUBLES": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET3-S:4/TB7-F:TB7",
+                "SET3-S:4/TB7-F:TB10",
+                "SET3-S:4NOAD-F:TB7",
+                "SET3-S:4/TB7",
+                "SET3-S:4/TB5@3"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "WHEELCHAIR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["JUNIOR"],
+                  "minutes": {
+                    "default": 60
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": [
+                "SET1-S:8/TB7",
+                "SET1-S:8/TB7@7",
+                "SET1-S:5/TB9@4",
+                "SET1-S:6/TB7",
+                "SET1-S:6NOAD",
+                "SET1-S:4/TB7",
+                "SET1-S:4NOAD",
+                "SET3-S:TB10",
+                "SET1-S:T20"
+              ],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 30
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:4/TB5@3"],
+              "recoveryTimes": [
+                {
+                  "categoryTypes": ["ADULT", "JUNIOR"],
+                  "minutes": {
+                    "default": 30
+                  }
+                },
+                {
+                  "categoryTypes": ["WHEELCHAIR"],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            },
+            {
+              "matchUpFormatCodes": ["SET1-S:TB10"],
+              "recoveryTimes": [
+                {
+                  "categoryNames": [],
+                  "minutes": {
+                    "default": 15
+                  }
+                }
+              ]
+            }
+          ],
+          "matchUpDailyLimits": []
+        }
+      }
+    }
+  ],
+  "parentOrganisation": { "organisationId": "organisationId" },
+  "timeItems": [],
+  "venueIds": ["venue1id"],
+  "venues": [
+    {
+      "roles": [],
+      "subVenues": [],
+      "venueName": "Venue 1",
+      "venueAbbreviation": "V1",
+      "venueId": "venue1id",
+      "addresses": [],
+      "venueOtherIds": [],
+      "contacts": [],
+      "courts": [
+        {
+          "courtId": "ac91e464-3e42-4d16-9f80-3b6eea277320",
+          "courtName": "Court 1",
+          "dateAvailability": [
+            {
+              "date": "2021-09-13T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-14T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-15T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-16T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-17T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            }
+          ],
+          "onlineResources": []
+        },
+        {
+          "courtId": "47bcfb32-1335-44c6-90c0-af0ce4503720",
+          "courtName": "Court 2",
+          "dateAvailability": [
+            {
+              "date": "2021-09-13T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-14T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-15T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-16T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-17T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            }
+          ],
+          "onlineResources": []
+        },
+        {
+          "courtId": "137dfe83-ac08-4a17-9830-f996fdc015f9",
+          "courtName": "Court 3",
+          "dateAvailability": [
+            {
+              "date": "2021-09-13T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-14T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-15T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-16T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-17T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            }
+          ],
+          "onlineResources": []
+        },
+        {
+          "courtId": "aa79683f-6d99-462b-89a8-b14073d514df",
+          "courtName": "Court 4",
+          "dateAvailability": [
+            {
+              "date": "2021-09-13T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-14T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-15T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-16T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            },
+            {
+              "date": "2021-09-17T00:00:00.000Z",
+              "startTime": "08:00",
+              "endTime": "21:00"
+            }
+          ],
+          "onlineResources": []
+        }
+      ],
+      "onlineResources": [],
+      "createdAt": "2021-02-24T14:01:54.942Z",
+      "updatedAt": "2021-09-09T09:15:29.304Z",
+      "parentOrganisation": "5fd0e4cb93d09d82f302e814",
+      "parentOrganisationId": "6C175D1F-6402-481C-9F2B-8574B3F98034"
+    }
+  ]
+}

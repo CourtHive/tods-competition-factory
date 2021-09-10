@@ -2,7 +2,6 @@ import { printGlobalLog, pushGlobalLog } from '../globalLog';
 import { extractTime } from '../../utilities/dateTime';
 import { competitionEngine, drawEngine } from '../..';
 import fs from 'fs';
-import { getMatchUpDependencies } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/getMatchUpDependencies';
 
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/demoTournament.json',
@@ -30,17 +29,7 @@ it('can auto schedule', () => {
     return !!matchUpScheduleKeys.length;
   };
 
-  const { matchUpDependencies } = getMatchUpDependencies({
-    tournamentRecords: { [tournamentRecord.tournamentId]: tournamentRecord },
-    matchUps,
-  });
-  const hasDependencies = Object.keys(matchUpDependencies).find(
-    (key) => matchUpDependencies[key].matchUpIds.length
-  );
-  expect(!!hasDependencies).toEqual(true);
-
   const scheduledMatchUps = matchUps.filter(hasSchedule);
-
   expect(scheduledMatchUps.length).toEqual(scheduledIdsCount);
 
   const structureIds = scheduledMatchUps.reduce(
