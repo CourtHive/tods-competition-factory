@@ -87,17 +87,18 @@ export function allDrawMatchUps({
     (tournamentRecord && getParticipants({ tournamentRecord })) ||
     [];
   const { matchUps } = getAllDrawMatchUps({
-    drawDefinition,
+    tournamentAppliedPolicies,
+    scheduleVisibilityFilters,
+    tournamentParticipants,
     context: additionalContext,
-    inContext,
+    tournamentRecord,
+    policyDefinitions,
+    drawDefinition,
     matchUpFilters,
     contextFilters,
     nextMatchUps,
-    tournamentRecord,
-    policyDefinitions,
-    tournamentParticipants,
-    tournamentAppliedPolicies,
-    scheduleVisibilityFilters,
+    inContext,
+    event,
   });
 
   return { matchUps };
@@ -142,18 +143,19 @@ export function allEventMatchUps({
   const matchUps = drawDefinitions
     .map((drawDefinition) => {
       const { matchUps } = getAllDrawMatchUps({
-        drawDefinition,
+        tournamentParticipants: participants,
+        tournamentAppliedPolicies,
+        scheduleVisibilityFilters,
         context: additionalContext,
-        inContext,
-        nextMatchUps,
+        policyDefinitions,
+        tournamentRecord,
+        drawDefinition,
         matchUpFilters,
         contextFilters,
         scheduleTiming,
-        tournamentRecord,
-        policyDefinitions,
-        tournamentAppliedPolicies,
-        scheduleVisibilityFilters,
-        tournamentParticipants: participants,
+        nextMatchUps,
+        inContext,
+        event,
       });
       return matchUps;
     })
