@@ -3,6 +3,8 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
+import { addGoesTo } from '../../../../drawEngine/governors/matchUpGovernor/addGoesTo';
+import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
@@ -73,11 +75,31 @@ export function getMatchUpDependencies({
   };
 
   for (const drawId of drawIds) {
-    const drawMatchUps = matchUps
+    let drawMatchUps = matchUps
       // first get all matchUps for the draw
       .filter((matchUp) => matchUp.drawId === drawId)
       // sort by stage/stageSequence/roundNumber/roundPosition
       .sort(matchUpSort);
+
+    const hasGoesTo = drawMatchUps.find(
+      ({ winnerMatchUpId, loserMatchUpId }) => winnerMatchUpId || loserMatchUpId
+    );
+    if (!hasGoesTo) {
+      const isRoundRobin = drawMatchUps.find(
+        ({ roundPosition }) => roundPosition
+      );
+      // skip this if Round Robin because there is no "Goes To"
+      if (!isRoundRobin) {
+        const hasTournamentId = drawMatchUps.find(
+          ({ tournamentId }) => tournamentId
+        );
+        const { drawDefinition } = findEvent({
+          tournamentRecord: tournamentRecords[hasTournamentId.tournamentId],
+          drawId,
+        });
+        addGoesTo({ drawDefinition });
+      }
+    }
 
     for (const matchUp of drawMatchUps) {
       const { matchUpId, winnerMatchUpId, loserMatchUpId } = matchUp;

@@ -44,6 +44,13 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
       });
       const { winnerMatchUp, loserMatchUp } = targetData.targetMatchUps;
 
+      if (!inContextMatchUp.winnerMatchUpId && winnerMatchUp) {
+        inContextMatchUp.winnerMatchUpId = winnerMatchUp.matchUpId;
+      }
+      if (!inContextMatchUp.loserMatchUpId && loserMatchUp) {
+        inContextMatchUp.loserMatchUpId = loserMatchUp.matchUpId;
+      }
+
       const winnerTo = getUpcomingInfo({ upcomingMatchUp: winnerMatchUp });
       let loserTo = getUpcomingInfo({ upcomingMatchUp: loserMatchUp });
 

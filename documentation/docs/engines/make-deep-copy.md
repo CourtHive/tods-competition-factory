@@ -27,7 +27,7 @@ This is useful for inContext representations of elements such as participants wh
 
 ## Disabling deep copies
 
-In server environments where it is desireable for objects originating back end storage to be modified directly, it is possible to disable `makeDeepCopy` several ways:
+In server environments where it is desireable for objects originating in back end storage (such as Mongo) to be modified directly, it is possible to disable `makeDeepCopy` several ways:
 
 ```js
 import {

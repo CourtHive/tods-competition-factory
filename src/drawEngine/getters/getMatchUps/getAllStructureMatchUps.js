@@ -7,12 +7,13 @@ import { getMatchUpType } from '../../accessors/matchUpAccessor/getMatchUpType';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getStructureSeedAssignments } from '../getStructureSeedAssignments';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
+import { findParticipant } from '../../../common/deducers/findParticipant';
 import { structureAssignedDrawPositions } from '../positionsGetter';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getRoundContextProfile } from './getRoundContextProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
 import { getCheckedInParticipantIds } from '../matchUpTimeItems';
-import { findParticipant } from '../../../common/deducers/findParticipant';
+import { definedAttributes } from '../../../utilities/objects';
 import { makeDeepCopy } from '../../../utilities';
 import { filterMatchUps } from './filterMatchUps';
 import { getSide } from './getSide';
@@ -20,26 +21,27 @@ import { getSide } from './getSide';
 import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
+import { TEAM } from '../../../constants/eventConstants';
 
 /*
   return all matchUps within a structure and its child structures
   context is used to pass in additional parameters to be assigned to each matchUp
 */
 export function getAllStructureMatchUps({
-  event,
-  structure,
-  inContext,
-  roundFilter,
-  context = {},
+  scheduleVisibilityFilters,
+  tournamentAppliedPolicies,
+  tournamentParticipants,
+  policyDefinitions,
+  seedAssignments,
   drawDefinition,
   contextFilters,
   matchUpFilters,
   scheduleTiming,
-  seedAssignments,
-  policyDefinitions,
-  tournamentParticipants,
-  tournamentAppliedPolicies,
-  scheduleVisibilityFilters,
+  context = {},
+  roundFilter,
+  structure,
+  inContext,
+  event,
 
   matchUpsMap,
 }) {
@@ -182,14 +184,15 @@ export function getAllStructureMatchUps({
 
     matchUps = matchUps.map((matchUp) =>
       addMatchUpContext({
-        matchUp,
+        scheduleVisibilityFilters,
+        sourceDrawPositionRanges,
+        drawPositionsRanges,
+        roundNamingProfile,
+        appliedPolicies,
         isRoundRobin,
         roundProfile,
-        appliedPolicies,
-        roundNamingProfile,
-        drawPositionsRanges,
-        sourceDrawPositionRanges,
-        scheduleVisibilityFilters,
+        matchUp,
+        event,
       })
     );
 
@@ -236,23 +239,38 @@ export function getAllStructureMatchUps({
 
   // isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
   function addMatchUpContext({
-    matchUp,
-    sideLineUps,
-    matchUpTieId,
-    isRoundRobin,
-    roundProfile,
+    scheduleVisibilityFilters,
+    sourceDrawPositionRanges,
+    drawPositionsRanges,
+    roundNamingProfile,
     appliedPolicies,
     isCollectionBye,
     tieDrawPositions,
-    roundNamingProfile,
-    drawPositionsRanges,
-    scheduleVisibilityFilters,
-    sourceDrawPositionRanges,
+    matchUpTieId,
+    isRoundRobin,
+    roundProfile,
+    sideLineUps,
+    matchUp,
+    event,
   }) {
+    const collectionDefinition =
+      matchUp.collectionId &&
+      collectionDefinitions?.find(
+        (definition) => definition.collectionId === matchUp.collectionId
+      );
+
+    const matchUpType =
+      matchUp.matchUpType ||
+      collectionDefinition?.matchUpType ||
+      structure.matchUpType ||
+      drawDefinition?.matchUpType ||
+      (event?.eventType !== TEAM && event?.eventType);
+
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
       scheduleTiming,
+      matchUpType,
       matchUp,
     });
     const drawPositions = matchUp.drawPositions || tieDrawPositions;
@@ -282,13 +300,14 @@ export function getAllStructureMatchUps({
 
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
-      {
+      definedAttributes({
         stage,
         drawId,
         drawName,
         schedule,
         feedRound,
         roundName,
+        matchUpType,
         exitProfile,
         structureId,
         matchUpTieId,
@@ -297,7 +316,7 @@ export function getAllStructureMatchUps({
         stageSequence,
         drawPositions,
         drawPositionsRange,
-      },
+      }),
       context,
       makeDeepCopy(matchUp, true, true)
     );
@@ -315,18 +334,19 @@ export function getAllStructureMatchUps({
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
           return addMatchUpContext({
-            matchUp,
+            tieDrawPositions: drawPositions,
+            scheduleVisibilityFilters,
+            sourceDrawPositionRanges,
+            sideLineUps: lineUps,
+            drawPositionsRanges,
+            roundNamingProfile,
+            appliedPolicies,
+            isCollectionBye,
             matchUpTieId,
             isRoundRobin,
             roundProfile,
-            appliedPolicies,
-            isCollectionBye,
-            roundNamingProfile,
-            drawPositionsRanges,
-            sideLineUps: lineUps,
-            sourceDrawPositionRanges,
-            scheduleVisibilityFilters,
-            tieDrawPositions: drawPositions,
+            matchUp,
+            event,
           });
         }
       );
@@ -380,9 +400,9 @@ export function getAllStructureMatchUps({
     if (matchUp.collectionId) {
       // the default matchUpFormat for matchUps that are part of Dual Matches / Ties
       // can be found in the collectionDefinition
-      const collectionDefinition = collectionDefinitions?.find(
-        (definition) => definition.collectionId === matchUp.collectionId
-      );
+      // const collectionDefinition = collectionDefinitions?.find(
+      //   (definition) => definition.collectionId === matchUp.collectionId
+      // );
       const matchUpFormat =
         collectionDefinition && collectionDefinition.matchUpFormat;
 
@@ -390,24 +410,30 @@ export function getAllStructureMatchUps({
         Object.assign(matchUpWithContext, { matchUpFormat });
       }
 
+      /*
       const matchUpType =
         collectionDefinition && collectionDefinition.matchUpType;
       if (matchUpType) {
         Object.assign(matchUpWithContext, { matchUpType });
       }
+      */
     } else {
       if (!matchUp.matchUpFormat) {
         const matchUpFormat =
           structure.matchUpFormat || drawDefinition?.matchUpFormat;
         if (matchUpFormat) Object.assign(matchUpWithContext, { matchUpFormat });
       }
+      /*
       if (!matchUp.matchUpType) {
         const matchUpType =
-          structure.matchUpType || drawDefinition?.matchUpType;
+          structure.matchUpType ||
+          drawDefinition?.matchUpType ||
+          (event?.eventType !== TEAM && event?.eventType);
         if (matchUpType) {
           Object.assign(matchUpWithContext, { matchUpType });
         }
       }
+      */
     }
 
     if (tournamentParticipants && matchUpWithContext.sides) {

@@ -8,7 +8,7 @@ export function addGoesTo({
   inContextDrawMatchUps,
 }) {
   if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+    ({ matchUps: inContextDrawMatchUps, matchUpsMap } = getAllDrawMatchUps({
       drawDefinition,
       inContext: true,
       includeByeMatchUps: true,

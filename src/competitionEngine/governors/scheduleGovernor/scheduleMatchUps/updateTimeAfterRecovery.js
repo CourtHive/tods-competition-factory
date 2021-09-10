@@ -12,7 +12,7 @@ export function updateTimeAfterRecovery({
   matchUpDependencies,
 
   averageMatchUpMinutes,
-  formatChangeRecoveryMinutes,
+  typeChangeRecoveryMinutes,
   recoveryMinutes,
   scheduleTime,
   matchUp,
@@ -25,16 +25,12 @@ export function updateTimeAfterRecovery({
         parseInt(averageMatchUpMinutes) + parseInt(recoveryMinutes)
       );
   const typeChangeTimeAfterRecovery =
-    formatChangeRecoveryMinutes &&
+    typeChangeRecoveryMinutes &&
     (endTime
-      ? addMinutesToTimeString(
-          extractTime(endTime),
-          formatChangeRecoveryMinutes
-        )
+      ? addMinutesToTimeString(extractTime(endTime), typeChangeRecoveryMinutes)
       : addMinutesToTimeString(
           scheduleTime,
-          parseInt(averageMatchUpMinutes) +
-            parseInt(formatChangeRecoveryMinutes)
+          parseInt(averageMatchUpMinutes) + parseInt(typeChangeRecoveryMinutes)
         ));
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];

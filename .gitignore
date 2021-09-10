@@ -13,4 +13,3 @@ documentation/.docusaurus
 documentation/build
 .DS_Store
 package-lock.json
-src/global/testHarness/*.json

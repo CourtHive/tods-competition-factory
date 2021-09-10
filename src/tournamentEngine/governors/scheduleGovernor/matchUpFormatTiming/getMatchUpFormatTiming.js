@@ -77,11 +77,11 @@ export function matchUpFormatTimes({ eventType, timingDetails }) {
   const formatChangeKey =
     eventType === SINGLES ? SINGLES_DOUBLES : DOUBLES_SINGLES;
 
-  const formatChangeRecoveryMinutes =
+  const typeChangeRecoveryMinutes =
     recoveryTimes?.minutes &&
     ((recoveryKeys?.includes(formatChangeKey) &&
       recoveryTimes.minutes[formatChangeKey]) ||
-      recoveryTimes.minutes.default);
+      recoveryMinutes);
 
-  return { averageMinutes, recoveryMinutes, formatChangeRecoveryMinutes };
+  return { averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes };
 }
