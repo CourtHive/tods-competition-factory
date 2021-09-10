@@ -18,7 +18,9 @@ export function getIndividualParticipantIds(matchUp) {
           : side?.participantId
           ? [side.participantId]
           : [];
-      return individualParticipantIds.concat(potentialIndividualParticipantIds);
+      return individualParticipantIds
+        .concat(potentialIndividualParticipantIds)
+        .flat();
     })
     .flat();
 }
