@@ -10,7 +10,7 @@ import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
 
 /**
  *
- * @param {string} date - 'YYYY-MM-DD' date string
+ * @param {string} scheduleDate - 'YYYY-MM-DD' date string
  * @param {object} matchUp - matchUp being checked
  * @param {string} scheduleTime - time being checked
  * @param {number} averageMatchUpMinutes - number of minutes matchUp is expected to last
@@ -27,8 +27,8 @@ export function checkRequestConflicts({
   potentials = true,
   personRequests,
   scheduleTime,
+  scheduleDate,
   matchUp,
-  date,
 }) {
   const personIds = getIndividualParticipants(matchUp).map(
     ({ person }) => person?.personId
@@ -48,12 +48,13 @@ export function checkRequestConflicts({
     .flat()
     .filter(
       (request) =>
-        request.requestType === DO_NOT_SCHEDULE && sameDay(date, request.date)
+        request.requestType === DO_NOT_SCHEDULE &&
+        sameDay(scheduleDate, request.date)
     );
 
   const conflicts = [];
   const matchUpId = matchUp?.matchUpId;
-  const scheduleStart = timeToDate(scheduleTime, date);
+  const scheduleStart = timeToDate(scheduleTime, scheduleDate);
   const averageEnd = extractTime(
     addMinutes(scheduleStart, averageMatchUpMinutes).toISOString()
   );

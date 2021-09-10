@@ -283,8 +283,8 @@ export function scheduleMatchUps({
         requestConflicts,
         personRequests,
         scheduleTime,
+        scheduleDate,
         matchUp,
-        date: scheduleDate,
       });
 
       if (conflicts?.length) return false;
