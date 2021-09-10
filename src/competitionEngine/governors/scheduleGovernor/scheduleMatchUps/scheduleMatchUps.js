@@ -44,7 +44,7 @@ import {
  * @param {object[]} tournamentRecords - provided by competitionEngine
  * @param {string[]} matchUpIds - matchUpIds to schedule
  * @param {string[]} venueIds - venueIds of venues where dateAvailability for courts is found
- * @param {string} date - YYYY-MM-DD string representing day on which matchUps should be scheduled
+ * @param {string} scheduleDate - YYYY-MM-DD string representing day on which matchUps should be scheduled
  * @param {string} startTime - 00:00 - military time string
  * @param {string} endTime - 00:00 - military time string
  *
@@ -127,7 +127,7 @@ export function scheduleMatchUps({
     competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
   );
 
-  // determines court availability taking into account already scheduled matchUps on the date
+  // determines court availability taking into account already scheduled matchUps on the scheduleDate
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
   const { venueId, scheduleTimes, dateScheduledMatchUpIds } =
     calculateScheduleTimes({
@@ -136,7 +136,7 @@ export function scheduleMatchUps({
       // calculateStartTimeFromCourts,
       startTime: extractTime(startTime),
       endTime: extractTime(endTime),
-      date: extractDate(scheduleDate),
+      scheduleDate: extractDate(scheduleDate),
       averageMatchUpMinutes,
       periodLength,
       venueIds,
@@ -328,7 +328,7 @@ export function scheduleMatchUps({
           drawMatchUps.forEach(({ matchUpId }) => {
             const scheduleTime = matchUpScheduleTimes[matchUpId];
             if (scheduleTime) {
-              // must include date being scheduled to generate proper ISO string
+              // must include scheduleDate being scheduled to generate proper ISO string
               const formatTime = scheduleTime.split(':').map(zeroPad).join(':');
               const scheduledTime = `${extractDate(
                 scheduleDate

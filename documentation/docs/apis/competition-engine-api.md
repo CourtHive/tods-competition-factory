@@ -344,7 +344,7 @@ Returns an array of available schedule times for a given date (and optional time
 
 ```js
 const { scheduleTimes } = competitionEngine.calculateScheduleTimes({
-  date,
+  scheduleDate,
 
   startTime, // optional - if not provided will be derived from court availability for the tiven date
   endTime, // optional - if not provided will be derived from court availability for the tiven date
