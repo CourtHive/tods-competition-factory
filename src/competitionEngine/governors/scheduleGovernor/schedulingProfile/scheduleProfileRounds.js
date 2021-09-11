@@ -93,7 +93,6 @@ export function scheduleProfileRounds({
   let iterations = 0;
 
   for (const dateSchedulingProfile of dateSchedulingProfiles) {
-    let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
     const scheduleDate = extractDate(dateSchedulingProfile?.scheduleDate);
     const venues = dateSchedulingProfile?.venues || [];
     const matchUpPotentialParticipantIds = {};
@@ -131,8 +130,8 @@ export function scheduleProfileRounds({
     // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
     // ... and initiates scheduling
     for (const venue of venues) {
+      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       const remainingScheduleTimes = {}; // remainingScheduleTimes has to be scoped to the current venue
-
       const { venueId } = venue;
 
       const {
@@ -206,7 +205,7 @@ export function scheduleProfileRounds({
 
       if (!scheduleTimesRemaining[venueId])
         scheduleTimesRemaining[venueId] = {};
-      scheduleTimesRemaining[venueId][scheduleDate] = remainingScheduleTimes;
+      scheduleTimesRemaining[venueId] = remainingScheduleTimes;
     }
   }
 
