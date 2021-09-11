@@ -1,4 +1,7 @@
-import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
+import {
+  addParticipantPotentialRecovery,
+  checkParticipantProfileInitialization,
+} from './checkParticipantProfileInitialization';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,
@@ -36,11 +39,32 @@ export function updateTimeAfterRecovery({
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
+  const potentialIndividualParticipantIds =
+    matchUp.potentialParticipants
+      ?.flat()
+      .map(
+        (participant) =>
+          participant?.individualParticipantIds || [participant.participantId]
+      )
+      .flat() || [];
+
   participantIdDependencies.forEach((participantId) => {
     checkParticipantProfileInitialization({
       individualParticipantProfiles,
       participantId,
     });
+
+    // check whether this participantId is potential or actual for this matchUp
+    // IF: potential, ONLY keep track of timeAfterRecovery in .potentialRecovery[drawId]
+    if (potentialIndividualParticipantIds.includes(participantId)) {
+      addParticipantPotentialRecovery({
+        individualParticipantProfiles,
+        drawId: matchUp.drawId,
+        timeAfterRecovery,
+        participantId,
+      });
+    }
+
     const matchUpTypeChange =
       individualParticipantProfiles[participantId].priorMatchUpType !==
       matchUp.matchUpType;
