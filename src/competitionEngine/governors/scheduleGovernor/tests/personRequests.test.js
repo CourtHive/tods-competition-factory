@@ -145,8 +145,12 @@ it('can identify conflicts with person requests', () => {
   expect(roundNumbers).toEqual([1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 1, 2]);
 
   // individuals will have late recovery times due to defered scheduling / conflict avoidance
+  // courts are available at 7:00, there are no recovery times specified, averageMintes = 90
+  // some first round matchUps go on at 8:00 so there are some 9:30 start times
+  // there is one personRequest which causes a 1st round matchUp not to be scheduled until 10:00
+  // which causes 2 players to have timeAfterRecovery > 11:00 (potential timeAfterRecovery not considered)
   const lateRecoveryTimes = Object.values(result.individualParticipantProfiles)
     .map(({ timeAfterRecovery }) => timeAfterRecovery)
     .filter((time) => timeStringMinutes(time) > timeStringMinutes('11:00'));
-  expect(lateRecoveryTimes.length).toEqual(4);
+  expect(lateRecoveryTimes.length).toEqual(2);
 });
