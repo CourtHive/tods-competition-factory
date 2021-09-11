@@ -131,7 +131,8 @@ export function scheduleProfileRounds({
     // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
     // ... and initiates scheduling
     for (const venue of venues) {
-      const remainingScheduleTimes = {};
+      const remainingScheduleTimes = {}; // remainingScheduleTimes has to be scoped to the current venue
+
       const { venueId } = venue;
 
       const {
