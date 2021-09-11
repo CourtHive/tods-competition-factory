@@ -1,4 +1,4 @@
-import { hasSchedule } from '../../../global/testHarness/testUtilities/hasSchedule';
+import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { dateStringDaysChange } from '../../../utilities/dateTime';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';

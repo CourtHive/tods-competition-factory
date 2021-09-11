@@ -1,6 +1,6 @@
-import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';

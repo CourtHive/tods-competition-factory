@@ -1,6 +1,6 @@
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
+import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
-import { hasSchedule } from './testUtilities/hasSchedule';
 import { competitionEngine } from '../..';
 import fs from 'fs';
 

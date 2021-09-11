@@ -1,5 +1,5 @@
-import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 

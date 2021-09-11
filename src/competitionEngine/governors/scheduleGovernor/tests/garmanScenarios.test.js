@@ -1,8 +1,8 @@
-import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
-import mocksEngine from '../../../../mocksEngine';
 import { intersection, unique } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
 

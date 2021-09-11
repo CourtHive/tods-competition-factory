@@ -1,3 +1,4 @@
+import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
 import { bulkScheduleMatchUps } from './bulkScheduleMatchUps';
@@ -21,18 +22,11 @@ export function clearScheduledMatchUps({
     tournamentRecord,
   });
 
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
-
   const relevantMatchUpIds = matchUps
     .filter(
       (matchUp) =>
         !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
-        hasSchedule(matchUp)
+        hasSchedule({ schedule: matchUp.schedule, scheduleAttributes })
     )
     .map(({ matchUpId }) => matchUpId);
 

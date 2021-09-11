@@ -1,5 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
@@ -8,7 +9,6 @@ import { MISSING_TOURNAMENT_ID } from '../../../../constants/errorConditionConst
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
-import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 
 it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
