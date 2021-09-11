@@ -17,31 +17,20 @@ import {
   generateRoundRobinWithPlayOff,
 } from '../../generators/roundRobin';
 
+// prettier-ignore
 import {
-  MAIN,
-  FICQF,
-  FICSF,
-  MFIC,
-  AD_HOC,
-  CURTIS,
-  FICR16,
-  COMPASS,
-  PLAY_OFF,
-  OLYMPIC,
-  FEED_IN,
-  QUALIFYING,
-  ROUND_ROBIN,
-  SINGLE_ELIMINATION,
-  DOUBLE_ELIMINATION,
-  FEED_IN_CHAMPIONSHIP,
+  MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
+  PLAY_OFF, OLYMPIC, FEED_IN, QUALIFYING, ROUND_ROBIN,
+  COMPASS_ATTRIBUTES, OLYMPIC_ATTRIBUTES,
+  SINGLE_ELIMINATION, DOUBLE_ELIMINATION,
+  FIRST_MATCH_LOSER_CONSOLATION,
   FIRST_ROUND_LOSER_CONSOLATION,
   ROUND_ROBIN_WITH_PLAYOFF,
-  COMPASS_ATTRIBUTES,
-  OLYMPIC_ATTRIBUTES,
   MULTI_STRUCTURE_DRAWS,
-  FIRST_MATCH_LOSER_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
 } from '../../../constants/drawDefinitionConstants';
+
 import {
   INVALID_DRAW_SIZE,
   STAGE_SEQUENCE_LIMIT,
@@ -61,7 +50,6 @@ import { SINGLES } from '../../../constants/matchUpTypes';
 // TODO: consider refactoring to return structures rather than pushing them into drawDefinition
 export function generateDrawType(params = {}) {
   const {
-    uuids,
     goesTo = true,
     stage = MAIN,
     structureName,
@@ -72,6 +60,7 @@ export function generateDrawType(params = {}) {
     // qualifyingRound, => passed through in params to treeMatchUps
     // TODO: description => is this passed on?
     drawDefinition,
+    uuids,
   } = params;
 
   let { tieFormat, matchUpType } = params;

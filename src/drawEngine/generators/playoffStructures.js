@@ -35,23 +35,24 @@ export function playoff(params) {
  *
  */
 function playoffStructures({
-  uuids,
-  drawSize,
-  matchUpType,
-  stage = MAIN,
-  sequenceLimit,
-  drawDefinition,
-  staggeredEntry,
-  roundOffset = 0,
-  roundOffsetLimit,
+  finishingPositionOffset = 0,
+  playoffStructureNameBase,
+  finishingPositionNaming,
+  finishingPositionLimit,
   playoffAttributes,
   stageSequence = 1,
-  finishingPositionLimit,
-  finishingPositionNaming,
-  playoffStructureNameBase,
-  finishingPositionOffset = 0,
+  exitProfile = '0',
   exitProfileLimit,
-  exitProfile = '0', // concatenation of rounds at which participant exited
+  roundOffsetLimit,
+  roundOffset = 0,
+  drawDefinition,
+  staggeredEntry,
+  sequenceLimit,
+  stage = MAIN,
+  matchUpType,
+  idPrefix,
+  drawSize,
+  uuids,
 }) {
   const generateStructure =
     !playoffAttributes ||
@@ -82,20 +83,27 @@ function playoffStructures({
   const structureAbbreviation =
     customNaming?.abbreviation || attributeProfile?.abbreviation;
 
+  const mainParams = {
+    idPrefix: idPrefix && `${idPrefix}-${structureName}-RP`,
+    finishingPositionOffset,
+    matchUpType,
+    drawSize,
+    uuids,
+  };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps(mainParams)
+    : treeMatchUps(mainParams);
 
   const structure = structureTemplate({
-    stage,
-    matchUps,
+    structureId: uuids?.pop(),
+    structureAbbreviation,
+    stageSequence,
+    structureName,
     matchUpType,
     roundOffset,
     exitProfile,
-    stageSequence,
-    structureName,
-    structureAbbreviation,
-    structureId: uuids?.pop(),
+    matchUps,
+    stage,
   });
 
   drawDefinition.structures.push(structure);
@@ -127,22 +135,23 @@ function playoffStructures({
       structureName: targetName,
       childStructures,
     } = playoffStructures({
-      uuids,
-      stage,
-      matchUpType,
-      sequenceLimit,
-      drawDefinition,
-      exitProfileLimit,
-      roundOffsetLimit,
-      playoffAttributes,
-      finishingPositionLimit,
-      finishingPositionNaming,
-      playoffStructureNameBase,
+      finishingPositionOffset: childFinishingPositionOffset,
+      exitProfile: `${exitProfile}-${roundNumber}`,
+      roundOffset: roundOffset + roundNumber,
       stageSequence: stageSequence + 1,
       drawSize: playoffDrawPositions,
-      roundOffset: roundOffset + roundNumber,
-      exitProfile: `${exitProfile}-${roundNumber}`,
-      finishingPositionOffset: childFinishingPositionOffset,
+      playoffStructureNameBase,
+      finishingPositionNaming,
+      finishingPositionLimit,
+      playoffAttributes,
+      exitProfileLimit,
+      roundOffsetLimit,
+      drawDefinition,
+      sequenceLimit,
+      matchUpType,
+      idPrefix,
+      uuids,
+      stage,
     });
 
     const link = {

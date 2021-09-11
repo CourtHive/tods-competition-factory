@@ -1,4 +1,5 @@
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
@@ -84,7 +85,10 @@ it('can identify conflicts with person requests', () => {
   const drawProfiles = [{ drawSize: participantsCount, drawName: 'PRQ' }];
   const venueProfiles = [{ courtsCount: 6 }];
 
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     venueProfiles,
     participantsProfile: { participantsCount },
@@ -123,14 +127,6 @@ it('can identify conflicts with person requests', () => {
   expect(result.scheduledMatchUpIds.length).toEqual(12); // only scheduled 2 rounds
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps());
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
-
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   const roundMap = scheduledMatchUps
     .map(({ roundNumber, roundPosition, drawName, schedule }) => [
@@ -153,4 +149,16 @@ it('can identify conflicts with person requests', () => {
     .map(({ timeAfterRecovery }) => timeAfterRecovery)
     .filter((time) => timeStringMinutes(time) > timeStringMinutes('11:00'));
   expect(lateRecoveryTimes.length).toEqual(2);
+
+  const potentialRecoveryTimes = Object.values(
+    result.individualParticipantProfiles
+  )
+    .map((p) => p.potentialRecovery[drawId])
+    .flat();
+
+  // when potentialRecoveryTimes are considered there are twice as many lateRecoveryTimes
+  const potentialLateRecoveryTimes = potentialRecoveryTimes.filter(
+    (time) => timeStringMinutes(time) > timeStringMinutes('11:00')
+  );
+  expect(potentialLateRecoveryTimes.length).toEqual(4);
 });

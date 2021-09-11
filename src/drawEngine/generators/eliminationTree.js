@@ -9,12 +9,13 @@ import {
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 export function treeMatchUps({
-  drawSize,
-  roundLimit,
-  matchUpType,
   qualifyingRound, // round at which participants qualify
-  qualifyingPositions,
   finishingPositionOffset,
+  qualifyingPositions,
+  matchUpType,
+  roundLimit,
+  idPrefix,
+  drawSize,
   uuids,
 }) {
   if (isNaN(drawSize) || !isPowerOf2(drawSize) || drawSize < 2) {
@@ -34,6 +35,7 @@ export function treeMatchUps({
   ({ roundNodes, matchUps } = buildRound({
     roundNumber,
     matchUpType,
+    idPrefix,
     matchUps,
     nodes,
     uuids,
@@ -45,9 +47,10 @@ export function treeMatchUps({
     if (qualifyingPositions && roundNodes.length === qualifyingPositions)
       roundLimit = roundNumber - 1;
     ({ roundNodes, matchUps } = buildRound({
+      nodes: roundNodes,
       roundNumber,
       matchUpType,
-      nodes: roundNodes,
+      idPrefix,
       matchUps,
       uuids,
     }));
@@ -127,12 +130,13 @@ function addFinishingRounds({
 }
 
 function buildRound({
-  roundNumber,
-  nodes,
-  matchUps,
-  matchUpType,
-  uuids,
   includeMatchUpType,
+  matchUpType,
+  roundNumber,
+  matchUps,
+  idPrefix,
+  uuids,
+  nodes,
 }) {
   let index = 0;
   const roundNodes = [];
@@ -146,10 +150,17 @@ function buildRound({
     if (matchRoundNumber) child1.roundNumber = matchRoundNumber;
     if (child2 && matchRoundNumber) child2.roundNumber = matchRoundNumber;
 
+    const matchUpId = getMatchUpId({
+      roundPosition,
+      roundNumber,
+      idPrefix,
+      uuids,
+    });
+
     const node = {
       roundPosition,
       children: [child1, child2],
-      matchUpId: uuids?.pop() || UUID(),
+      matchUpId,
     };
     roundNodes.push(node);
     const matchUp = {
@@ -198,21 +209,20 @@ function roundMatchCounts({ drawSize }) {
 }
 
 export function feedInMatchUps({
-  uuids,
-  drawSize,
-  matchUpType,
+  linkFedFinishingRoundNumbers = [],
+  linkFedRoundNumbers = [],
+  finishingPositionOffset,
+  feedRoundsProfile = [],
   feedRounds = 0,
   skipRounds = 0,
-  baseDrawSize,
-  isConsolation,
   feedsFromFinal,
-  feedRoundsProfile = [],
-
+  isConsolation,
+  baseDrawSize,
+  matchUpType,
+  idPrefix,
+  drawSize,
+  uuids,
   fmlc,
-  finishingPositionOffset,
-
-  linkFedRoundNumbers = [],
-  linkFedFinishingRoundNumbers = [],
 }) {
   // calculate the number of rounds and the number of matchUps in each round
   // for normal elimination structure
@@ -302,6 +312,7 @@ export function feedInMatchUps({
     ({ roundNodes, matchUps } = buildRound({
       roundNumber,
       matchUpType,
+      idPrefix,
       matchUps,
       nodes,
       uuids,
@@ -324,6 +335,7 @@ export function feedInMatchUps({
           roundIteration, // meaningless; avoids eslint value never used
           roundNumber,
           matchUpType,
+          idPrefix,
           matchUps,
           uuids,
           fed,
@@ -373,6 +385,7 @@ function buildFeedRound({
   drawPosition,
   matchUpType,
   roundNumber,
+  idPrefix,
   matchUps,
   uuids,
   nodes,
@@ -399,9 +412,16 @@ function buildFeedRound({
 
     const position = nodes[nodeIndex];
     position.roundNumber = roundNumber - 1;
+    const matchUpId = getMatchUpId({
+      roundPosition: position.roundPosition,
+      roundNumber,
+      idPrefix,
+      uuids,
+    });
+
     const newMatchUp = {
       roundNumber,
-      matchUpId: uuids?.pop() || UUID(),
+      matchUpId,
       roundPosition: position.roundPosition,
       drawPositions: [undefined, feedDrawPosition],
     };
@@ -419,4 +439,10 @@ function buildFeedRound({
     : undefined;
 
   return { roundNodes, matchUps, drawPosition: nextDrawPosition };
+}
+
+function getMatchUpId({ idPrefix, roundNumber, roundPosition, uuids }) {
+  return idPrefix
+    ? `${idPrefix}-${roundNumber}-${roundPosition}`
+    : uuids?.pop() || UUID();
 }

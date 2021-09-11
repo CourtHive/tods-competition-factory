@@ -6,7 +6,6 @@ import { findTournamentParticipant } from '../../../getters/participants/partici
 import { findStructure } from '../../../../drawEngine/getters/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
-import { pushGlobalLog } from '../../../../global/globalLog';
 
 import { PAIR } from '../../../../constants/participantTypes';
 import {
@@ -79,13 +78,6 @@ export function removeDrawPositionAssignment(params) {
   }
 
   if (replaceWithBye) {
-    pushGlobalLog({
-      newline: true,
-      color: 'green',
-      method: 'replaceWithBye',
-      drawPosition,
-    });
-
     const result = assignDrawPositionBye({
       drawDefinition,
       structureId,

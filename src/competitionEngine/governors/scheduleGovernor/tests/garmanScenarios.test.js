@@ -1,7 +1,8 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { extractTime } from '../../../../utilities/dateTime';
-import mocksEngine from '../../../../mocksEngine';
 import { intersection, unique } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 import garman from '../garman/garman';
 
@@ -139,14 +140,6 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
     '12:00', '12:00', '12:00', '12:00', '12:30', '12:30', '12:30', '12:30',
     '12:30',
   ]);
-
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const byeMatchUps = matchUps.filter(

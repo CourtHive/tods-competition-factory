@@ -1,5 +1,6 @@
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { intersection } from '../../../../utilities';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -154,14 +155,6 @@ it.each([
       intersection(drawEnteredParticipantIds[0], drawEnteredParticipantIds[1])
         .length
     ).toEqual(0);
-
-    const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-    const hasSchedule = ({ schedule }) => {
-      const matchUpScheduleKeys = Object.keys(schedule)
-        .filter((key) => scheduleAttributes.includes(key))
-        .filter((key) => schedule[key]);
-      return !!matchUpScheduleKeys.length;
-    };
 
     let { matchUps } = competitionEngine.allCompetitionMatchUps();
     let scheduledMatchUps = matchUps.filter(hasSchedule);

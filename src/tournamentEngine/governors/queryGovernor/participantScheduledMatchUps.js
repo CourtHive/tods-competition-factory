@@ -1,3 +1,4 @@
+import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import {
   extractDate,
   extractTime,
@@ -16,15 +17,8 @@ export function participantScheduledMatchUps({
   if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(scheduleAttributes)) return { error: INVALID_VALUES };
 
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
-
   const scheduledMatchUps = matchUps
-    .filter(hasSchedule)
+    .filter(({ schedule }) => hasSchedule({ schedule, scheduleAttributes }))
     .reduce((dateMatchUps, matchUp) => {
       const { schedule } = matchUp;
       const date = extractDate(schedule?.scheduledDate);

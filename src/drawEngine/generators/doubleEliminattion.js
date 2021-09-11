@@ -13,17 +13,19 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateDoubleElimination({
-  structureName,
   drawDefinition,
+  structureName,
   matchUpType,
+  idPrefix,
   drawSize,
   uuids,
 }) {
   // feedIn MAIN structure needs 1st round feed and final round feed
   const { matchUps } = feedInMatchUps({
-    matchUpType,
-    drawSize: drawSize + 1,
     linkFedFinishingRoundNumbers: [1],
+    drawSize: drawSize + 1,
+    matchUpType,
+    idPrefix,
   });
   const mainStructure = structureTemplate({
     structureName: structureName || MAIN,
@@ -39,10 +41,11 @@ export function generateDoubleElimination({
   const consolationDrawPositions = drawSize / 2;
 
   const { matchUps: consolationMatchUps } = feedInMatchUps({
-    matchUpType,
-    isConsolation: true,
-    drawSize: drawSize - 1,
     finishingPositionOffset: consolationDrawPositions,
+    idPrefix: idPrefix && `${idPrefix}-c`,
+    drawSize: drawSize - 1,
+    isConsolation: true,
+    matchUpType,
     uuids,
   });
 
@@ -58,6 +61,7 @@ export function generateDoubleElimination({
   drawDefinition.structures.push(consolationStructure);
 
   const { matchUps: deciderMatchUps } = treeMatchUps({
+    idPrefix: idPrefix && `${idPrefix}-p1t2`,
     drawSize: 2,
     matchUpType,
   });

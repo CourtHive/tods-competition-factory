@@ -18,8 +18,6 @@ import { SINGLES } from '../../../constants/eventConstants';
 
 tournamentEngine.devContext(true);
 
-// import { printGlobalLog, pushGlobalLog } from '../../../global/globalLog';
-
 it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 17/32', () => {
   const drawSize = 32;
   const seedsCount = 8;
@@ -290,16 +288,6 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
 });
 
 it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with completed matchUp', () => {
-  /*
-  pushGlobalLog(
-    {
-      color: 'brightyellow',
-      method: 'complete matchUp *before* replacing positions with BYE',
-    },
-    true
-  );
-  */
-
   const drawProfiles = [
     {
       drawSize: 4,
@@ -367,15 +355,6 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 });
 
 it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with incomplete matchUp', () => {
-  /*
-  pushGlobalLog(
-    {
-      color: 'brightyellow',
-      method: 'replace positions with BYE *before* completing matchUp',
-    },
-    true
-  );
-  */
   const drawProfiles = [
     {
       drawSize: 4,

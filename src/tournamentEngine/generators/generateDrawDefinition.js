@@ -18,10 +18,6 @@ import { addNotice } from '../../global/globalState';
 import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
-import {
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_SEEDING,
-} from '../../constants/policyConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { AUDIT } from '../../constants/topicConstants';
@@ -31,31 +27,39 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import {
+  POLICY_TYPE_AVOIDANCE,
+  POLICY_TYPE_SEEDING,
+} from '../../constants/policyConstants';
 
+/**
+ * 
+    automated = true, // can be true/false or "truthy" { seedsOnly: true }
+ */
 export function generateDrawDefinition(params) {
   const { tournamentRecord, event } = params;
   let { drawName, matchUpType, structureOptions } = params;
 
   const {
-    uuids,
-    drawId,
-    drawEntries,
-    stage = MAIN,
-    seedingProfile,
-    qualifyingRound,
-    automated = true, // can be true/false or "truthy" { seedsOnly: true }
-    policyDefinitions,
-    qualifyingPositions,
-    enforcePolicyLimits = true,
     drawType = SINGLE_ELIMINATION,
+    enforcePolicyLimits = true,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
     playoffMatchUpFormat,
-    feedPolicy,
-
-    seededParticipants,
     seedByRanking = true,
+    qualifyingPositions,
+    seededParticipants,
+    policyDefinitions,
     seedingScaleName,
+    automated = true,
+    qualifyingRound,
+    seedingProfile,
+    stage = MAIN,
+    drawEntries,
+    feedPolicy,
+    idPrefix,
+    drawId,
+    uuids,
   } = params;
 
   const participants = tournamentRecord?.participants;
@@ -147,6 +151,7 @@ export function generateDrawDefinition(params) {
     qualifyingPositions,
 
     uuids,
+    idPrefix,
     matchUpFormat,
     playoffMatchUpFormat,
     finishingPositionNaming,

@@ -1,10 +1,10 @@
+import { getCourtDateFilters } from './courtDateFilters';
+import { generateTimeSlots } from './generateTimeSlots';
 import {
   extractTime,
   minutesDifference,
   timeToDate,
 } from '../../../../utilities/dateTime';
-import { getCourtDateFilters } from './courtDateFilters';
-import { generateTimeSlots } from './generateTimeSlots';
 
 /**
  *
@@ -36,8 +36,9 @@ export function getVirtualCourts({
           bookingType: 'remainingScheduleTime',
         };
         if (allocatedTimeBooking) amendedBookings.push(allocatedTimeBooking);
-        if (Array.isArray(bookings))
+        if (Array.isArray(bookings)) {
           amendedBookings.push(...bookings?.map((booking) => booking));
+        }
         return {
           date,
           startTime,

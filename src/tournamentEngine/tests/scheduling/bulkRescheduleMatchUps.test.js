@@ -1,3 +1,4 @@
+import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { dateStringDaysChange } from '../../../utilities/dateTime';
 import competitionEngine from '../../../competitionEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -104,14 +105,6 @@ it('can bulk reschedule matchUps', () => {
   competitionEngine.devContext({ timing: false });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
-
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);

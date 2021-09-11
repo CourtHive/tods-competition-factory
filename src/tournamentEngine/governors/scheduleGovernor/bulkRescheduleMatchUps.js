@@ -1,3 +1,4 @@
+import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
@@ -54,13 +55,6 @@ export function bulkRescheduleMatchUps({
   });
   if (error) return { error };
 
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
   const notCompleted = ({ matchUpStatus }) =>
     !completedMatchUpStatuses.includes(matchUpStatus);
 

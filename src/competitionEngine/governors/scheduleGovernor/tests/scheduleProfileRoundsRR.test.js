@@ -1,4 +1,5 @@
 import tournamentEngine from '../../../../tournamentEngine/sync';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
@@ -91,14 +92,6 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(result.scheduledDates).toEqual([startDate]);
   expect(result.overLimitMatchUpIds.length).toEqual(8);
   expect(result.scheduledMatchUpIds.length).toEqual(16);
-
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -196,14 +189,6 @@ it('can auto schedule Round Robin draws without daily limits', () => {
   expect(result.scheduledDates).toEqual([startDate]);
   expect(result.overLimitMatchUpIds.length).toEqual(0);
   expect(result.scheduledMatchUpIds.length).toEqual(24);
-
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
