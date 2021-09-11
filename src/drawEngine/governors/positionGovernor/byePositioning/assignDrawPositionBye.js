@@ -1,18 +1,18 @@
 import { getAllStructureMatchUps } from '../../../getters/getMatchUps/getAllStructureMatchUps';
 import { structureActiveDrawPositions } from '../../../getters/structureActiveDrawPositions';
 import { getRoundMatchUps } from '../../../accessors/matchUpAccessor/getRoundMatchUps';
-import {
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../../getters/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../getters/getMatchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../../getters/getMatchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../getters/positionsGetter';
 import { findStructure } from '../../../getters/findStructure';
-import { pushGlobalLog } from '../../../../global/globalLog';
 import { positionTargets } from '../positionTargets';
+import {
+  modifyDrawNotice,
+  modifyMatchUpNotice,
+} from '../../../notifications/drawNotifications';
 
+import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   DRAW_POSITION_ACTIVE,
@@ -25,10 +25,6 @@ import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  CONTAINER,
-} from '../../../../constants/drawDefinitionConstants';
 
 /*
   assignDrawPositionBye
@@ -66,7 +62,6 @@ export function assignDrawPositionBye({
   drawDefinition,
   structureId,
   drawPosition,
-  iterative,
 
   matchUpsMap,
 }) {
@@ -77,16 +72,6 @@ export function assignDrawPositionBye({
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
-
-  pushGlobalLog({
-    color: iterative || 'yellow',
-    keyColors: {
-      structureName: structure.stage === CONSOLATION && 'brightcyan',
-    },
-    method: 'assignDrawPositionBye',
-    structureName: structure.structureName,
-    drawPosition,
-  });
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = structureActiveDrawPositions({
@@ -172,14 +157,6 @@ export function assignDrawPositionBye({
     (position) => position !== drawPosition
   );
 
-  pushGlobalLog({
-    method: `furthest advancement`,
-    keyColors: { drawPositionToAdvance: 'brightyellow' },
-    drawPosition,
-    roundNumber,
-    drawPositionToAdvance,
-  });
-
   if (drawPositionToAdvance) {
     const result = advanceDrawPosition({
       sourceDrawPositions: matchUp.drawPositions,
@@ -232,7 +209,6 @@ function advanceDrawPosition({
   inContextDrawMatchUps,
   drawDefinition,
   matchUpId,
-  iterative,
 
   matchUpsMap,
 }) {
@@ -266,16 +242,6 @@ function advanceDrawPosition({
     structure,
     drawDefinition,
     inContextDrawMatchUps,
-  });
-
-  pushGlobalLog({
-    method: `advanceDrawPosition`,
-    color: iterative,
-    keyColors: { drawPositionToAdvance: 'brightyellow' },
-    structureName: structure.structureName,
-    drawPositionToAdvance,
-    losingDrawPosition,
-    losingDrawPosiitonIsBye,
   });
 
   // only handling situation where winningMatchUp is in same structure
@@ -432,16 +398,6 @@ function advanceWinner({
       ? drawPositionToAdvance
       : pairedDrawPosition;
 
-    pushGlobalLog({
-      method: `advancingDrawPosition`,
-      color: 'brightcyan',
-      keyColors: { advancingDrawPosition: 'brightyellow' },
-      drawPositionIsBye,
-      advancingDrawPosition,
-      drawPositionToAdvance,
-      pairedDrawPositionIsBye,
-    });
-
     if (advancingDrawPosition) {
       advanceDrawPosition({
         drawPositionToAdvance: advancingDrawPosition,
@@ -480,13 +436,6 @@ function advanceWinner({
           const targetDrawPosition =
             loserMatchUp.drawPositions[targetDrawPositionIndex];
 
-          pushGlobalLog({
-            method: `assignLoserTargetDrawPositionBye`,
-            color: 'brightred',
-            targetDrawPositionIndex,
-            targetDrawPosition,
-            sourceStructureRoundPosition,
-          });
           const result = assignDrawPositionBye({
             drawDefinition,
             structureId: loserTargetLink.target.structureId,
@@ -510,12 +459,6 @@ function assignFedDrawPositionBye({
   matchUpsMap,
 }) {
   const { roundNumber } = loserMatchUp;
-
-  pushGlobalLog({
-    method: `assignFedDrawPositionBye`,
-    color: 'brightcyan',
-    loserTargetDrawPosition,
-  });
 
   const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const loserStructureMatchUps =

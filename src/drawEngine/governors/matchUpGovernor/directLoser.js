@@ -3,7 +3,6 @@ import { assignDrawPositionBye } from '../positionGovernor/byePositioning/assign
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { assignDrawPosition } from '../positionGovernor/positionAssignment';
 import { findStructure } from '../../getters/findStructure';
-import { pushGlobalLog } from '../../../global/globalLog';
 import { numericSort } from '../../../utilities';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
@@ -25,12 +24,6 @@ export function directLoser(params) {
     matchUpsMap,
     inContextDrawMatchUps,
   } = params;
-
-  pushGlobalLog({
-    color: 'brightblue',
-    method: 'directLoser',
-    loserDrawPosition,
-  });
 
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];

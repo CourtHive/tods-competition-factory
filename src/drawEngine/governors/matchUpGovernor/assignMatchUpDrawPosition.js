@@ -6,7 +6,6 @@ import { getPositionAssignments } from '../../getters/positionsGetter';
 import { positionTargets } from '../positionGovernor/positionTargets';
 import { getUpdatedDrawPositions } from './getUpdatedDrawPositions';
 import { getWalkoverWinningSide } from './getWalkoverWinningSide';
-import { pushGlobalLog } from '../../../global/globalLog';
 import { overlap } from '../../../utilities';
 import {
   getMappedStructureMatchUps,
@@ -30,7 +29,6 @@ export function assignMatchUpDrawPosition({
   matchUpId,
   matchUpStatus,
   drawPosition,
-  iterative,
 
   matchUpsMap,
   inContextDrawMatchUps,
@@ -60,13 +58,6 @@ export function assignMatchUpDrawPosition({
   const matchUp = matchUpsMap?.drawMatchUps?.find(
     (matchUp) => matchUp.matchUpId === matchUpId
   );
-
-  pushGlobalLog({
-    color: iterative || 'magenta',
-    method: 'assignMatchUpDrawPosition',
-    stage: structure.stage,
-    drawPosition,
-  });
 
   const drawPositions = matchUp.drawPositions || [];
   const { positionAdded, positionAssigned, updatedDrawPositions } =
