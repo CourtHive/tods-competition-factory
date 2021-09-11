@@ -60,17 +60,17 @@ export function updateTimeAfterRecovery({
         typeChangeTimeAfterRecovery,
         timeAfterRecovery,
       });
+    } else {
+      const matchUpTypeChange =
+        individualParticipantProfiles[participantId].priorMatchUpType !==
+        matchUp.matchUpType;
+
+      // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
+      individualParticipantProfiles[participantId].timeAfterRecovery =
+        matchUpTypeChange
+          ? typeChangeTimeAfterRecovery || timeAfterRecovery
+          : timeAfterRecovery;
     }
-
-    const matchUpTypeChange =
-      individualParticipantProfiles[participantId].priorMatchUpType !==
-      matchUp.matchUpType;
-
-    // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
-    individualParticipantProfiles[participantId].timeAfterRecovery =
-      matchUpTypeChange
-        ? typeChangeTimeAfterRecovery || timeAfterRecovery
-        : timeAfterRecovery;
   });
   processNextMatchUps({
     matchUp,
