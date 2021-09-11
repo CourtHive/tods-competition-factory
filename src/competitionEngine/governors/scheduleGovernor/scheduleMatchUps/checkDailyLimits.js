@@ -21,7 +21,7 @@ export function checkDailyLimits(
   matchUp
 ) {
   const { matchUpId, matchUpType } = matchUp;
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
+  const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
 
   // don't include potentials if matchUp is in round robin
   // this is because potentials uses { sidesTo } attribute which must be present for other calculations

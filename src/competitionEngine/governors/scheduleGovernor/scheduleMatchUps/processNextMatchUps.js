@@ -6,7 +6,7 @@ export function processNextMatchUps({
   matchUpNotBeforeTimes,
   matchUpPotentialParticipantIds,
 }) {
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
+  const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
   timeAfterRecovery = timeAfterRecovery || matchUp.schedule?.timeAfterRecovery;
 
   const addPotentialParticipantIds = (targetMatchUpId) => {

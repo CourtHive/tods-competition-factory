@@ -10,7 +10,7 @@ export function getIndividualParticipantIds(matchUp) {
           : participant.participantId;
       })
     : [];
-  const individualParticipantIds = (sides || [])
+  const enteredIndividualParticipantIds = (sides || [])
     .map((side) => {
       const sideIndividualParticipantIds =
         matchUpType === DOUBLES
@@ -21,7 +21,14 @@ export function getIndividualParticipantIds(matchUp) {
       return sideIndividualParticipantIds;
     })
     .flat();
-  return individualParticipantIds
+
+  const individualParticipantIds = enteredIndividualParticipantIds
     .concat(potentialIndividualParticipantIds)
     .flat();
+
+  return {
+    individualParticipantIds,
+    enteredIndividualParticipantIds,
+    potentialIndividualParticipantIds,
+  };
 }

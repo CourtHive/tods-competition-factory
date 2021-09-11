@@ -106,7 +106,8 @@ export function getMatchUpDependencies({
       initializeMatchUpId(matchUpId);
 
       if (includeParticipantDependencies) {
-        const individualParticipantIds = getIndividualParticipantIds(matchUp);
+        const { individualParticipantIds } =
+          getIndividualParticipantIds(matchUp);
         matchUpDependencies[matchUpId].participantIds =
           individualParticipantIds;
       }

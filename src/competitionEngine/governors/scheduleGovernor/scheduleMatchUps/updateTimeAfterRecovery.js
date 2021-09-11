@@ -1,8 +1,9 @@
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { processNextMatchUps } from './processNextMatchUps';
 import {
   addParticipantPotentialRecovery,
   checkParticipantProfileInitialization,
 } from './checkParticipantProfileInitialization';
-import { processNextMatchUps } from './processNextMatchUps';
 import {
   addMinutesToTimeString,
   extractTime,
@@ -39,14 +40,8 @@ export function updateTimeAfterRecovery({
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
-  const potentialIndividualParticipantIds =
-    matchUp.potentialParticipants
-      ?.flat()
-      .map(
-        (participant) =>
-          participant?.individualParticipantIds || [participant.participantId]
-      )
-      .flat() || [];
+  const { potentialIndividualParticipantIds } =
+    getIndividualParticipantIds(matchUp);
 
   participantIdDependencies.forEach((participantId) => {
     checkParticipantProfileInitialization({
@@ -60,8 +55,10 @@ export function updateTimeAfterRecovery({
       addParticipantPotentialRecovery({
         individualParticipantProfiles,
         drawId: matchUp.drawId,
-        timeAfterRecovery,
         participantId,
+
+        typeChangeTimeAfterRecovery,
+        timeAfterRecovery,
       });
     }
 
