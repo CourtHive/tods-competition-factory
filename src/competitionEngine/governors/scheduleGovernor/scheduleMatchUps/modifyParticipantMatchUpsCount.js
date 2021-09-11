@@ -13,7 +13,7 @@ export function modifyParticipantMatchUpsCount({
   const { matchUpType } = matchUp;
 
   // individualParticipantIds represent those participants already present
-  const individualParticipantIds = getIndividualParticipantIds(matchUp);
+  const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
   // potentialParticipantIds are those who could progress to this matchUp
   const potentialParticipantIds =
     matchUpPotentialParticipantIds[matchUp.matchUpId] || [];

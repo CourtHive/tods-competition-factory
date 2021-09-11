@@ -7,8 +7,23 @@ export function checkParticipantProfileInitialization({
       typeChangeTimeAfterRecovery: undefined,
       timeAfterRecovery: undefined,
       priorMatchUpType: undefined,
-      potentialCounted: {},
+      potentialRecovery: {}, // { [drawId]: [timeString] } - timeAfterRecovery for potential matchUps by drawId
+      potentialCounted: {}, // whether a potential matchUp has been counted for daily limits for a specific drawId
       counters: {},
     };
   }
+}
+
+export function addParticipantPotentialRecovery({
+  individualParticipantProfiles,
+  timeAfterRecovery,
+  participantId,
+  drawId,
+}) {
+  if (!individualParticipantProfiles[participantId].potentialRecovery[drawId]) {
+    individualParticipantProfiles[participantId].potentialRecovery[drawId] = [];
+  }
+  individualParticipantProfiles[participantId].potentialRecovery[drawId].push(
+    timeAfterRecovery
+  );
 }

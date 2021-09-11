@@ -1,5 +1,9 @@
-import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
+import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { processNextMatchUps } from './processNextMatchUps';
+import {
+  addParticipantPotentialRecovery,
+  checkParticipantProfileInitialization,
+} from './checkParticipantProfileInitialization';
 import {
   addMinutesToTimeString,
   extractTime,
@@ -36,11 +40,28 @@ export function updateTimeAfterRecovery({
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
+  const { potentialIndividualParticipantIds } =
+    getIndividualParticipantIds(matchUp);
+
   participantIdDependencies.forEach((participantId) => {
     checkParticipantProfileInitialization({
       individualParticipantProfiles,
       participantId,
     });
+
+    // check whether this participantId is potential or actual for this matchUp
+    // IF: potential, ONLY keep track of timeAfterRecovery in .potentialRecovery[drawId]
+    if (potentialIndividualParticipantIds.includes(participantId)) {
+      addParticipantPotentialRecovery({
+        individualParticipantProfiles,
+        drawId: matchUp.drawId,
+        participantId,
+
+        typeChangeTimeAfterRecovery,
+        timeAfterRecovery,
+      });
+    }
+
     const matchUpTypeChange =
       individualParticipantProfiles[participantId].priorMatchUpType !==
       matchUp.matchUpType;
