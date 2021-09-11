@@ -84,7 +84,10 @@ it('can identify conflicts with person requests', () => {
   const drawProfiles = [{ drawSize: participantsCount, drawName: 'PRQ' }];
   const venueProfiles = [{ courtsCount: 6 }];
 
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
     drawProfiles,
     venueProfiles,
     participantsProfile: { participantsCount },
@@ -153,4 +156,16 @@ it('can identify conflicts with person requests', () => {
     .map(({ timeAfterRecovery }) => timeAfterRecovery)
     .filter((time) => timeStringMinutes(time) > timeStringMinutes('11:00'));
   expect(lateRecoveryTimes.length).toEqual(2);
+
+  const potentialRecoveryTimes = Object.values(
+    result.individualParticipantProfiles
+  )
+    .map((p) => p.potentialRecovery[drawId])
+    .flat();
+
+  // when potentialRecoveryTimes are considered there are twice as many lateRecoveryTimes
+  const potentialLateRecoveryTimes = potentialRecoveryTimes.filter(
+    (time) => timeStringMinutes(time) > timeStringMinutes('11:00')
+  );
+  expect(potentialLateRecoveryTimes.length).toEqual(4);
 });
