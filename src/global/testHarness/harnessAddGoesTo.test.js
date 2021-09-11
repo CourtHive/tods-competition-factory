@@ -1,9 +1,10 @@
+import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
+import { hasSchedule } from './testUtilities/hasSchedule';
 import { competitionEngine } from '../..';
 import fs from 'fs';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/goesToTournament.json',
@@ -24,14 +25,6 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
   let scheduledIdsCount = result.scheduledMatchUpIds.length;
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
-
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   expect(scheduledMatchUps.length).toEqual(scheduledIdsCount);
 

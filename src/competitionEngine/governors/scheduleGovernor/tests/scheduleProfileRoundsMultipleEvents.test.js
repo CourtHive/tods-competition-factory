@@ -1,3 +1,4 @@
+import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -7,14 +8,7 @@ import { MISSING_TOURNAMENT_ID } from '../../../../constants/errorConditionConst
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
 import { PAIR } from '../../../../constants/participantConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
-
-const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-const hasSchedule = ({ schedule }) => {
-  const matchUpScheduleKeys = Object.keys(schedule)
-    .filter((key) => scheduleAttributes.includes(key))
-    .filter((key) => schedule[key]);
-  return !!matchUpScheduleKeys.length;
-};
+import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 
 it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
@@ -228,4 +222,9 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   // all of the doubles matchUps at the second venue, give the courts startTime/endTime
   expect(doublesScheduled.length).toBeGreaterThan(0);
   expect(doublesScheduled.length).toBeLessThan(8);
+
+  const { matchUps } = competitionEngine.allCompetitionMatchUps();
+  const scheduledMatchUps = matchUps.filter(hasSchedule);
+
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
 });

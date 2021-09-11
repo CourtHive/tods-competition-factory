@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '../../../drawEngine/accessors/matchUpAccessor/getRoundMatchUps';
-import { extractTime } from '../../../utilities/dateTime';
 import { printGlobalLog, pushGlobalLog } from '../../globalLog';
+import { extractTime } from '../../../utilities/dateTime';
 
 export function visualizeScheduledMatchUps({
   scheduledMatchUps,

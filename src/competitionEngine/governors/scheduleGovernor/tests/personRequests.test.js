@@ -1,3 +1,4 @@
+import { hasSchedule } from '../../../../global/testHarness/testUtilities/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -126,14 +127,6 @@ it('can identify conflicts with person requests', () => {
   expect(result.scheduledMatchUpIds.length).toEqual(12); // only scheduled 2 rounds
 
   ({ matchUps } = competitionEngine.allCompetitionMatchUps());
-  const scheduleAttributes = ['scheduledDate', 'scheduledTime'];
-  const hasSchedule = ({ schedule }) => {
-    const matchUpScheduleKeys = Object.keys(schedule)
-      .filter((key) => scheduleAttributes.includes(key))
-      .filter((key) => schedule[key]);
-    return !!matchUpScheduleKeys.length;
-  };
-
   const scheduledMatchUps = matchUps.filter(hasSchedule);
   const roundMap = scheduledMatchUps
     .map(({ roundNumber, roundPosition, drawName, schedule }) => [
