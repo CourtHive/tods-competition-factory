@@ -22,13 +22,21 @@ export function feedInChampionship(params = {}) {
     finishingPositionOffset,
     staggeredEntry,
     feedPolicy,
+    idPrefix,
     fmlc,
   } = params;
 
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
+  const mainParams = {
+    finishingPositionOffset,
+    matchUpType,
+    drawSize,
+    idPrefix,
+    uuids,
+  };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps(mainParams)
+    : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
     structureName: structureName || MAIN,
@@ -43,12 +51,13 @@ export function feedInChampionship(params = {}) {
 
   const baseDrawSize = drawSize / 2;
   const { matchUps: consolationMatchUps, roundsCount } = feedInMatchUps({
-    feedRounds,
-    matchUpType,
-    baseDrawSize,
-    feedsFromFinal,
-    isConsolation: true,
     finishingPositionOffset: baseDrawSize,
+    isConsolation: true,
+    feedsFromFinal,
+    baseDrawSize,
+    matchUpType,
+    feedRounds,
+    idPrefix: idPrefix && `${idPrefix}-c`,
     uuids,
     fmlc,
   });

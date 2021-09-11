@@ -1,11 +1,19 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
 import mocksEngine from '../..';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import {
+  COMPASS,
+  FEED_IN_CHAMPIONSHIP,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  PLAY_OFF,
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
+} from '../../../constants/drawDefinitionConstants';
 import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { CLAY, HARD } from '../../../constants/surfaceConstants';
+import { unique } from '../../../utilities';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -33,6 +41,45 @@ test('drawProfiles and participantsProfile work as expecteed', () => {
   expect(drawIds.length).toEqual(2);
 
   tournamentEngine.setState(tournamentRecord);
+});
+
+test.each([
+  PLAY_OFF,
+  COMPASS,
+  FEED_IN_CHAMPIONSHIP,
+  ROUND_ROBIN,
+  ROUND_ROBIN_WITH_PLAYOFF,
+])('drawProfiles can specify idPrefix for matchUpIds', (drawType) => {
+  const idPrefix = 'Foo';
+  const eventIdPrefix = 'Bar';
+  const eventProfiles = [
+    {
+      eventName: 'U18 Boys Doubles',
+      eventType: DOUBLES,
+      drawProfiles: [{ drawSize: 32, idPrefix: eventIdPrefix, drawType }],
+    },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    participantsProfile: {
+      participantsCount: 100,
+      addressProps: { citiesCount: 10 },
+    },
+    drawProfiles: [{ drawSize: 32, idPrefix, drawType }],
+    eventProfiles,
+  });
+
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
+
+  const matchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
+  expect(unique(matchUpIds).length).toEqual(matchUpIds.length);
+
+  matchUps.forEach(({ matchUpId }) =>
+    expect([idPrefix, eventIdPrefix].includes(matchUpId.split('-')[0])).toEqual(
+      true
+    )
+  );
 });
 
 test('eventProfiles and participantsProfile work as expected', () => {

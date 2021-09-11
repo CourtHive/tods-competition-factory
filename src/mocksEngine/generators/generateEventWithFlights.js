@@ -248,6 +248,7 @@ export function generateEventWithFlights({
       const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
       const matchUpFormat = drawProfiles[index].matchUpFormat;
       const automated = drawProfiles[index].automated;
+      const idPrefix = drawProfiles[index].idPrefix;
       const uuids = drawProfiles[index].uuids;
 
       let result = generateDrawDefinition({
@@ -260,6 +261,7 @@ export function generateEventWithFlights({
         drawSize,
         drawType,
         drawName,
+        idPrefix,
         drawId,
         event,
         stage,

@@ -16,19 +16,27 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateCurtisConsolation({
-  uuids,
-  matchUpType,
+  finishingPositionOffset,
+  structureName = MAIN,
+  stageSequence = 1,
   staggeredEntry,
   drawDefinition,
-  stageSequence = 1,
-  structureName = MAIN,
-  finishingPositionOffset,
+  matchUpType,
+  idPrefix,
+  uuids,
 }) {
   const drawSize = getStageDrawPositionsCount({ stage: MAIN, drawDefinition });
 
+  const mainParams = {
+    finishingPositionOffset,
+    matchUpType,
+    drawSize,
+    idPrefix,
+    uuids,
+  };
   const { matchUps, roundsCount: mainDrawRoundsCount } = staggeredEntry
-    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps(mainParams)
+    : treeMatchUps(mainParams);
 
   const mainStructure = structureTemplate({
     matchUps,
@@ -45,12 +53,13 @@ export function generateCurtisConsolation({
   const consolationItems = feedRoundOffsets.map((roundOffset, index) => {
     const stageSequence = index + 1;
     const { consolationStructure } = consolationFeedStructure({
-      index,
-      drawSize,
-      matchUpType,
-      roundOffset,
-      stageSequence,
       structureId: uuids?.pop(),
+      idPrefix: idPrefix && `${idPrefix}-c${index}`,
+      stageSequence,
+      roundOffset,
+      matchUpType,
+      drawSize,
+      index,
       uuids,
     });
 
@@ -75,9 +84,10 @@ export function generateCurtisConsolation({
   // when drawSize === 32 then all rounds feed into the two consolation structures
   if ((drawSize >= 4 && drawSize <= 16) || drawSize > 32) {
     const { matchUps: playoffMatchUps } = treeMatchUps({
+      finishingPositionOffset: 2,
+      idPrefix: idPrefix && `${idPrefix}-p3t4`,
       drawSize: 2,
       matchUpType,
-      finishingPositionOffset: 2,
     });
     const playoffStructure = structureTemplate({
       structureId: uuids?.pop(),
@@ -115,23 +125,25 @@ export function generateCurtisConsolation({
 }
 
 function consolationFeedStructure({
-  index,
-  drawSize,
+  stageSequence = 1,
+  roundOffset = 0,
   matchUpType,
   structureId,
-  roundOffset = 0,
-  stageSequence = 1,
+  idPrefix,
+  drawSize,
+  index,
   uuids,
 }) {
   const consolationDrawPositions = drawSize / (2 * Math.pow(2, roundOffset));
 
   const { matchUps: consolationMatchUps, roundsCount: consolationRoundsCount } =
     feedInMatchUps({
-      feedRounds: 1,
-      matchUpType,
+      finishingPositionOffset: consolationDrawPositions,
       baseDrawSize: consolationDrawPositions,
       isConsolation: true,
-      finishingPositionOffset: consolationDrawPositions,
+      feedRounds: 1,
+      matchUpType,
+      idPrefix,
       uuids,
     });
 

@@ -24,7 +24,10 @@ export function generateVoluntaryConsolationStructure({
 
   matchUpType = matchUpType || drawDefinition.matchUpType;
   const drawSize = getStageDrawPositionsCount({ stage, drawDefinition });
-  const { matchUps } = treeMatchUps({ drawSize, matchUpType });
+  const { matchUps } = treeMatchUps({
+    matchUpType,
+    drawSize,
+  });
 
   const structure = structureTemplate({
     stage,

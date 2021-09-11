@@ -16,21 +16,30 @@ import { SUCCESS } from '../../constants/resultConstants';
 export function firstRoundLoserConsolation(params) {
   let { drawSize, consolationStructureName } = params;
   const {
-    uuids,
-    matchUpType,
-    stage = MAIN,
-    structureName,
+    finishingPositionOffset = 0,
+    stageSequence = 1,
     drawDefinition,
     staggeredEntry,
-    stageSequence = 1,
-    finishingPositionOffset = 0,
+    structureName,
+    stage = MAIN,
+    matchUpType,
+    idPrefix,
+    uuids,
   } = params;
 
   drawSize = drawSize || getStageDrawPositionsCount({ stage, drawDefinition });
 
+  const mainParams = {
+    finishingPositionOffset,
+    matchUpType,
+    drawSize,
+    idPrefix,
+    uuids,
+  };
   const { matchUps } = staggeredEntry
-    ? feedInMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids })
-    : treeMatchUps({ matchUpType, drawSize, finishingPositionOffset, uuids });
+    ? feedInMatchUps(mainParams)
+    : treeMatchUps(mainParams);
+
   const mainStructure = structureTemplate({
     stage,
     matchUps,
@@ -47,9 +56,10 @@ export function firstRoundLoserConsolation(params) {
   const consolationDrawPositions = drawSize / 2;
 
   const { matchUps: consolationMatchUps } = treeMatchUps({
-    matchUpType,
-    drawSize: consolationDrawPositions,
     finishingPositionOffset: finishingPositionOffset + consolationDrawPositions,
+    drawSize: consolationDrawPositions,
+    idPrefix: idPrefix && `${idPrefix}-c`,
+    matchUpType,
   });
 
   consolationStructureName =
