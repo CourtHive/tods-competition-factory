@@ -1,9 +1,9 @@
 import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
-import { printGlobalLog, pushGlobalLog } from '../globalLog';
-import { competitionEngine, drawEngine } from '../..';
+import { competitionEngine } from '../..';
 import fs from 'fs';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 
 const tournamentRecordJSON = fs.readFileSync(
   './src/global/testHarness/goesToTournament.json',
@@ -51,72 +51,7 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
     }
   });
 
-  const structureIds = scheduledMatchUps.reduce(
-    (structureIds, { structureId }) =>
-      structureIds.includes(structureId)
-        ? structureIds
-        : structureIds.concat(structureId),
-    []
-  );
-
-  const structureNames = Object.assign(
-    {},
-    ...structureIds.map((structureId) => {
-      const { structureName, matchUpType } = matchUps.find(
-        (matchUp) => matchUp.structureId === structureId
-      );
-      return {
-        [structureId]: `${structureName} ${matchUpType}`,
-      };
-    })
-  );
-
-  structureIds.forEach((structureId) => {
-    pushGlobalLog(
-      {
-        color: 'blue',
-        method: 'draw',
-        structure: structureNames[structureId],
-        keyColors: {
-          structure: 'magenta',
-        },
-      },
-      true
-    );
-    const structureMatchUps = scheduledMatchUps.filter(
-      (matchUp) => matchUp.structureId === structureId
-    );
-    const { roundMatchUps } = drawEngine.getRoundMatchUps({
-      matchUps: structureMatchUps,
-    });
-    Object.keys(roundMatchUps).forEach((roundNumber) => {
-      pushGlobalLog(
-        {
-          roundNumber,
-          keyColors: {
-            roundNumber: 'brightcyan',
-          },
-        },
-        true
-      );
-      roundMatchUps[roundNumber].forEach(({ matchUpId, schedule }) => {
-        const scheduledTime = extractTime(schedule.scheduledTime);
-        pushGlobalLog(
-          {
-            matchUpId,
-            scheduledTime,
-            keyColors: {
-              scheduledTime: 'brightcyan',
-              matchUpId: 'yellow',
-            },
-          },
-          true
-        );
-      });
-    });
-  });
-
-  if (showGlobalLog) printGlobalLog();
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
   const scheduleConflicts = scheduledMatchUps.filter(
     ({ schedule }) => schedule.scheduleConflict
@@ -131,12 +66,4 @@ it('can auto schedule matchUps which are missing winnerMatchUpId and loserMatchU
       withDraws: false,
     });
   expect(participantIdsWithConflicts.length).toEqual(0);
-
-  /*
-  const participantsWithConflicts = competitionParticipants
-    .filter(({ participantId }) =>
-      participantIdsWithConflicts.includes(participantId)
-    )
-    .map((p) => p.scheduleConflicts);
-  */
 });
