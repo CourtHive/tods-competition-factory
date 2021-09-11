@@ -249,12 +249,12 @@ it('multiple events at multiple venues with different participants will start at
     {
       eventName: 'Event One',
       eventType: SINGLES,
-      drawProfiles: [{ drawSize, uniqueParticipants: true }],
+      drawProfiles: [{ drawSize, idPrefix: 'XS', uniqueParticipants: true }],
     },
     {
       eventName: 'Event Two',
       eventType: DOUBLES,
-      drawProfiles: [{ drawSize }],
+      drawProfiles: [{ drawSize, idPrefix: 'XD' }],
     },
   ];
   const startDate = '2022-01-01';
@@ -314,7 +314,7 @@ it('multiple events at multiple venues with different participants will start at
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
-  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: false });
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
 
   const firstVenueMatchUpScheduleTimes = scheduledMatchUps
     .filter(({ schedule: { venueId } }) => venueId === venueIds[0])
