@@ -52,7 +52,7 @@ import {
  * @param {number} averageMatchUpMinutes - how long the expected matchUps are expected to last, in minutes, on average
  * @param {number} recoveryMinutes - time in minutes that should be alloted for participants to recover between matches
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
- * @param {boolean} checkPotentialConflicts - check personRequests when person is only potentially in matchUp being scheduled
+ * @param {boolean} checkPotentialRequestConflicts - check personRequests when person is only potentially in matchUp being scheduled
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
  */
@@ -71,7 +71,7 @@ export function scheduleMatchUps({
   matchUpPotentialParticipantIds = {},
   individualParticipantProfiles = {},
 
-  checkPotentialConflicts = true,
+  checkPotentialRequestConflicts = true,
   remainingScheduleTimes,
 
   startTime,
@@ -281,7 +281,7 @@ export function scheduleMatchUps({
       if (!enoughTime) return false;
 
       const { conflicts } = checkRequestConflicts({
-        potentials: checkPotentialConflicts,
+        potentials: checkPotentialRequestConflicts,
         averageMatchUpMinutes,
         requestConflicts,
         personRequests,

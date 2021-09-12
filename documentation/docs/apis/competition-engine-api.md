@@ -980,7 +980,7 @@ competitionEngine.scheduleMatchUps({
   averageMatchUpMinutes = 90, // optional - defaults to 90
   recoveryMinutes = 0, // optional - amount of time participants are given to recover between matchUps
   matchUpDailyLimits, // optional - policy declaration; SINGLES, DOUBLES and total limits per individual participant
-  checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
+  checkPotentialRequestConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
 });
 ```
 
@@ -995,7 +995,7 @@ const result = competitionEngine.scheduleProfileRounds({
   scheduleDates, // optional array of dates to schedule
   periodLength = 30, // optional - size of scheduling blocks
 
-  checkPotentialConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
+  checkPotentialRequestConflicts, // boolean - defaults to true - consider individual requests when matchUp participants are "potential"
 });
 
 const {
