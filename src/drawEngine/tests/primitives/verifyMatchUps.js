@@ -115,9 +115,6 @@ export function verifySideNumbers({
   drawDefinition,
   expectedDrawPositions,
 }) {
-  if (!drawDefinition) {
-    ({ drawDefinition } = drawEngine.getState());
-  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     requireParticipants: false,
