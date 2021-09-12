@@ -1,11 +1,7 @@
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
 export function getAppliedPolicies({ tournamentRecord }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const extensions = tournamentRecord.extensions || [];
   return extractAppliedPolicies({ extensions });
 }

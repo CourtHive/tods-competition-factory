@@ -139,15 +139,8 @@ export function verifySideNumbers({
 function verifyRoundCounts({ roundMatchUps, expectedRounds }) {
   expectedRounds.forEach((count, i) => {
     const roundNumber = i + 1;
-    if (!count) {
-      const matchUpCount =
-        roundMatchUps[roundNumber] && roundMatchUps[roundNumber].length;
-      expect(matchUpCount).toEqual(undefined);
-    } else {
-      const matchUpCount =
-        roundMatchUps[roundNumber] && roundMatchUps[roundNumber].length;
-      expect(matchUpCount).toEqual(count);
-    }
+    const matchUpCount = roundMatchUps?.[roundNumber]?.length;
+    expect(count && matchUpCount).toEqual(count);
   });
 }
 

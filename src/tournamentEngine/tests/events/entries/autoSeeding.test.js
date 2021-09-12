@@ -4,6 +4,7 @@ import tournamentEngine from '../../../sync';
 import { SINGLES } from '../../../../constants/eventConstants';
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 
 it('can autoSeed by Rankings', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -144,11 +145,22 @@ it('can autoSeed by Rankings', () => {
 
   // check that a timeItem was added
   expect(tournamentParticipants[0].timeItems.length).toEqual(5);
+  console.log(tournamentParticipants[0].timeItems);
+
+  result = tournamentEngine.removeSeeding({
+    scaleName: 'U18',
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.removeSeeding({
     eventId,
     scaleName: 'U18',
   });
+  expect(result.success).toEqual(true);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
+  console.log(tournamentParticipants[0].timeItems);
+  console.log('should be 1');
+  // also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
+  // expect(tournamentParticipants[0].timeItems.length).toEqual(5);
 });

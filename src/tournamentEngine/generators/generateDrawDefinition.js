@@ -37,9 +37,6 @@ import {
     automated = true, // can be true/false or "truthy" { seedsOnly: true }
  */
 export function generateDrawDefinition(params) {
-  const { tournamentRecord, event } = params;
-  let { drawName, matchUpType, structureOptions } = params;
-
   const {
     drawType = SINGLE_ELIMINATION,
     enforcePolicyLimits = true,
@@ -64,6 +61,8 @@ export function generateDrawDefinition(params) {
     uuids,
   } = params;
 
+  const { tournamentRecord, event } = params;
+  let { drawName, matchUpType, structureOptions } = params;
   const participants = tournamentRecord?.participants;
 
   const validEntriesTest =
@@ -73,14 +72,15 @@ export function generateDrawDefinition(params) {
     return validEntriesTest;
   }
 
-  const tournamentAllowedDrawTypes =
+  const allowedDrawTypes =
     !ignoreAllowedDrawTypes &&
     tournamentRecord &&
-    getAllowedDrawTypes({ tournamentRecord });
-  if (
-    tournamentAllowedDrawTypes?.length &&
-    !tournamentAllowedDrawTypes.includes(drawType)
-  ) {
+    getAllowedDrawTypes({
+      tournamentRecord,
+      categoryType: event?.categoryType,
+      categoryName: event?.categoryName,
+    });
+  if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
     return { error: INVALID_DRAW_TYPE };
   }
 

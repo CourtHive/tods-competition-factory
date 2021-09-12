@@ -124,6 +124,11 @@ it('can modify event timing for matchUpFormat codes', () => {
     policyDefinitions,
     allowReplacement: true,
   });
+  result = tournamentEngine.getAllowedMatchUpFormats({
+    categoryName: undefined,
+    categoryType: undefined,
+  });
+  expect(result.length).toBeGreaterThan(0);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
