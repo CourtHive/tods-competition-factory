@@ -296,6 +296,7 @@ export function generateTournamentRecord({
         matchUpStatusProfile,
         randomWinningSide,
         eventProfile,
+        startDate,
       });
       if (error) return { error };
       if (generatedDrawIds) drawIds.push(...generatedDrawIds);
