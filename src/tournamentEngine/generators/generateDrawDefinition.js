@@ -52,6 +52,7 @@ export function generateDrawDefinition(params) {
     seededParticipants,
     policyDefinitions,
     seedingScaleName,
+    assignSeedsCount, // used for testing bye placement next to seeds
     automated = true,
     qualifyingRound,
     seedingProfile,
@@ -309,7 +310,7 @@ export function generateDrawDefinition(params) {
         .filter(({ participantId }) =>
           enteredParticipantIds.includes(participantId)
         )
-        .slice(0, seedsCount)
+        .slice(0, assignSeedsCount || seedsCount)
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
           const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;

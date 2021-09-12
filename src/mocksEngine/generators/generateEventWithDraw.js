@@ -45,7 +45,9 @@ export function generateEventWithDraw({
     uniqueParticipants = !tournamentRecord,
     seedAssignmentProfile,
     eventType = SINGLES,
+    enforcePolicyLimits,
     policyDefinitions,
+    assignSeedsCount,
     structureOptions,
     eventExtensions,
     qualifyingRound,
@@ -170,7 +172,7 @@ export function generateEventWithDraw({
     event.category?.ageCategoryCode ||
     event.category?.categoryName ||
     eventName;
-  if (seedsCount && seedsCount < participantIds.length) {
+  if (tournamentRecord && seedsCount && seedsCount < participantIds.length) {
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
       let scaleItem = {
@@ -187,9 +189,11 @@ export function generateEventWithDraw({
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
     seedAssignmentProfile,
+    enforcePolicyLimits,
     policyDefinitions,
     tournamentRecord,
     seedingScaleName,
+    assignSeedsCount,
     structureOptions,
     qualifyingRound,
     matchUpFormat,

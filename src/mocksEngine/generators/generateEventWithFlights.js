@@ -277,6 +277,8 @@ export function generateEventWithFlights({
       if (result.error) return result;
       drawIds.push(flight.drawId);
 
+      // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
+
       const manual = drawProfile.automated === false;
       if (!manual && completeAllMatchUps) {
         const matchUpFormat = drawProfile.matchUpFormat;
@@ -284,8 +286,8 @@ export function generateEventWithFlights({
           completeAllMatchUps,
           matchUpStatusProfile,
           randomWinningSide,
-          matchUpFormat,
           drawDefinition,
+          matchUpFormat,
         });
         if (result.error) return result;
         if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {

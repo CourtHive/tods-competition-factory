@@ -35,11 +35,14 @@ export function completeMatchUp({
 
 export function findMatchUpByRoundNumberAndPosition({
   structureId,
+  drawDefinition,
   roundNumber,
   roundPosition,
   inContext,
 }) {
-  const { drawDefinition } = drawEngine.getState();
+  if (!drawDefinition) {
+    ({ drawDefinition } = drawEngine.getState());
+  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     drawDefinition,
@@ -57,12 +60,15 @@ export function findMatchUpByRoundNumberAndPosition({
 
 export function verifyMatchUps({
   structureId,
+  drawDefinition,
   requireParticipants,
   expectedRoundPending,
   expectedRoundUpcoming,
   expectedRoundCompleted,
 }) {
-  const { drawDefinition } = drawEngine.getState();
+  if (!drawDefinition) {
+    ({ drawDefinition } = drawEngine.getState());
+  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { completedMatchUps, pendingMatchUps, upcomingMatchUps } =
     getStructureMatchUps({
@@ -104,8 +110,14 @@ export function verifyMatchUps({
   }
 }
 
-export function verifySideNumbers({ structureId, expectedDrawPositions }) {
-  const { drawDefinition } = drawEngine.getState();
+export function verifySideNumbers({
+  structureId,
+  drawDefinition,
+  expectedDrawPositions,
+}) {
+  if (!drawDefinition) {
+    ({ drawDefinition } = drawEngine.getState());
+  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { matchUps } = getAllStructureMatchUps({
     requireParticipants: false,
