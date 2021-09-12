@@ -145,7 +145,6 @@ it('can autoSeed by Rankings', () => {
 
   // check that a timeItem was added
   expect(tournamentParticipants[0].timeItems.length).toEqual(5);
-  console.log(tournamentParticipants[0].timeItems);
 
   result = tournamentEngine.removeSeeding({
     scaleName: 'U18',
@@ -158,9 +157,9 @@ it('can autoSeed by Rankings', () => {
   });
   expect(result.success).toEqual(true);
 
+  // check that all seeding timeItems were removed
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
-  console.log(tournamentParticipants[0].timeItems);
-  console.log('should be 1');
+  expect(tournamentParticipants[0].timeItems.length).toEqual(2);
+
   // also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
-  // expect(tournamentParticipants[0].timeItems.length).toEqual(5);
 });
