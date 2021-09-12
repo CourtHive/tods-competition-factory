@@ -318,5 +318,5 @@ export function generateEventWithDraw({
 
   if (result.error) return { error: result.error };
 
-  return { drawId, eventId, uniqueParticipantIds };
+  return { drawId, eventId, uniqueParticipantIds, targetParticipants };
 }

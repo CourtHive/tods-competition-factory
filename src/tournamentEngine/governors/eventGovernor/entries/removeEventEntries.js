@@ -30,7 +30,7 @@ export function removeEventEntries({
     tournamentRecord,
   });
 
-  const enteredParticipantIds = tournamentParticipants.every((participant) => {
+  const enteredParticipantIds = tournamentParticipants?.every((participant) => {
     const eventObject = participant.events.find(
       (event) => event.eventId === eventId
     );
