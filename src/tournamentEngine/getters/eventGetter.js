@@ -29,15 +29,13 @@ export function getEvent({ tournamentRecord, drawDefinition, event, context }) {
 export function getEvents({ tournamentRecord, context, inContext }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
+  const { tournamentId } = tournamentRecord;
   const eventCopies = (tournamentRecord.events || []).map((event) => {
     const eventCopy = makeDeepCopy(event);
     if (context) Object.assign(eventCopy, context);
+    if (inContext) Object.assign(eventCopy, { tournamentId });
     return eventCopy;
   });
-
-  if (inContext) {
-    console.log('TODO: add context');
-  }
 
   return { events: eventCopies };
 }
@@ -47,23 +45,21 @@ export function findEvent({ tournamentRecord, eventId, drawId }) {
   const events = tournamentRecord?.events || [];
 
   if (drawId) {
-    const { event, drawDefinition } = events.reduce((result, candidate) => {
-      const drawDefinitions = (candidate && candidate.drawDefinitions) || [];
-      const drawDefinition = drawDefinitions.reduce(
-        (drawDefinition, candidate) => {
-          return candidate.drawId === drawId ? candidate : drawDefinition;
-        },
-        undefined
+    let drawDefinition;
+    const event = events.find((event) => {
+      const drawDefinitions = event?.drawDefinitions || [];
+      const targetDrawDefinition = drawDefinitions.find(
+        (drawDefinition) => drawDefinition.drawId === drawId
       );
-      return drawDefinition ? { event: candidate, drawDefinition } : result;
-    }, {});
+      if (targetDrawDefinition) drawDefinition = targetDrawDefinition;
+      return targetDrawDefinition;
+    });
 
-    if (!event) return { error: EVENT_NOT_FOUND };
-    return { event, drawDefinition };
-  } else if (eventId) {
-    const event = events.reduce((event, candidate) => {
-      return candidate.eventId === eventId ? candidate : event;
-    }, undefined);
+    if (event) return { event, drawDefinition };
+  }
+
+  if (eventId) {
+    const event = events.find((event) => event.eventId === eventId);
     if (!event) return { error: EVENT_NOT_FOUND };
     return { event };
   }
