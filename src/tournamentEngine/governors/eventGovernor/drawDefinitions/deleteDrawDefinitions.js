@@ -25,71 +25,79 @@ import {
 
 export function deleteDrawDefinitions({
   tournamentRecord,
-  eventId,
-  drawIds,
+  drawIds = [],
   auditData,
+  eventId,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   const drawId = Array.isArray(drawIds) && drawIds[0];
-  const { event } = findEvent({ tournamentRecord, eventId, drawId });
+
+  const { event, error } = findEvent({ tournamentRecord, eventId, drawId });
+  if (error) return { error };
+
   const auditTrail = [];
   const matchUpIds = [];
   const deletedDrawDetails = [];
 
-  if (event) {
-    if (!event.drawDefinitions) {
-      return { error: DRAW_DEFINITION_NOT_FOUND };
-    }
+  if (!event.drawDefinitions) return { error: DRAW_DEFINITION_NOT_FOUND };
 
-    event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
-      if (drawIds.includes(drawDefinition.drawId)) {
-        const audit = {
-          action: DELETE_DRAW_DEFINITIONS,
-          payload: {
-            drawDefinitions: [drawDefinition],
-            eventId: event.eventId,
-            auditData,
-          },
-        };
-        auditTrail.push(audit);
-        const { drawId, drawType, drawName } = drawDefinition;
-        deletedDrawDetails.push({
-          auditData,
-          drawId,
-          drawType,
-          drawName,
+  const eventDrawIds = event.drawDefinitions.map(({ drawId }) => drawId);
+  // if drawIds were not provided, assume that the intent is to delete all drawDefinitions
+  if (!drawIds.length) drawIds = eventDrawIds;
+
+  const drawDefinitionsExist = drawIds.every((drawId) =>
+    eventDrawIds.includes(drawId)
+  );
+  if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
+
+  event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
+    if (drawIds.includes(drawDefinition.drawId)) {
+      const audit = {
+        action: DELETE_DRAW_DEFINITIONS,
+        payload: {
+          drawDefinitions: [drawDefinition],
           eventId: event.eventId,
-        });
-        const { matchUps } = allDrawMatchUps({ event, drawDefinition });
-        matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
-      }
-      return !drawIds.includes(drawDefinition.drawId);
-    });
-
-    // cleanup references to drawId in schedulingProfile extension
-    checkSchedulingProfile({ tournamentRecord });
-
-    const itemType = `${PUBLISH}.${STATUS}`;
-    const publishStatus = getTimeItem({ event, itemType });
-    const drawPublished =
-      publishStatus && publishStatus.drawIds?.includes(drawId);
-    publishStatus !== HIDDEN;
-    if (drawPublished) {
-      const updatedDrawIds =
-        publishStatus.drawIds?.filter(
-          (publishedDrawId) => publishedDrawId !== drawId
-        ) || [];
-      const timeItem = {
-        itemType: `${PUBLISH}.${STATUS}`,
-        itemValue: {
-          [PUBLIC]: {
-            drawIds: updatedDrawIds,
-          },
+          auditData,
         },
       };
-      const result = addEventTimeItem({ event, timeItem });
-      if (result.error) return { error: result.error };
+      auditTrail.push(audit);
+      const { drawId, drawType, drawName } = drawDefinition;
+      deletedDrawDetails.push({
+        auditData,
+        drawId,
+        drawType,
+        drawName,
+        eventId: event.eventId,
+      });
+      const { matchUps } = allDrawMatchUps({ event, drawDefinition });
+      matchUps.forEach(({ matchUpId }) => matchUpIds.push(matchUpId));
     }
+    return !drawIds.includes(drawDefinition.drawId);
+  });
+
+  // cleanup references to drawId in schedulingProfile extension
+  checkSchedulingProfile({ tournamentRecord });
+
+  const itemType = `${PUBLISH}.${STATUS}`;
+  const publishStatus = getTimeItem({ event, itemType });
+  const drawPublished =
+    publishStatus && publishStatus.drawIds?.includes(drawId);
+  publishStatus !== HIDDEN;
+  if (drawPublished) {
+    const updatedDrawIds =
+      publishStatus.drawIds?.filter(
+        (publishedDrawId) => publishedDrawId !== drawId
+      ) || [];
+    const timeItem = {
+      itemType: `${PUBLISH}.${STATUS}`,
+      itemValue: {
+        [PUBLIC]: {
+          drawIds: updatedDrawIds,
+        },
+      },
+    };
+    const result = addEventTimeItem({ event, timeItem });
+    if (result.error) return { error: result.error };
   }
 
   if (auditTrail.length) {
