@@ -14,15 +14,20 @@ it('can generate and verify curtis structures', () => {
   let mainStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
-    playoffStructureId;
+    playoffStructureId,
+    drawDefinition;
 
-  ({ mainStructureId, consolation1stStructureId, consolation2ndStructureId } =
-    generateCurtis({
-      drawSize: 32,
-      seedsCount: 8,
-      assignSeeds: 8,
-      participantsCount: 30,
-    }));
+  ({
+    drawDefinition,
+    mainStructureId,
+    consolation1stStructureId,
+    consolation2ndStructureId,
+  } = generateCurtis({
+    drawSize: 32,
+    seedsCount: 8,
+    assignSeeds: 8,
+    participantsCount: 30,
+  }));
 
   const { seedAssignments } = drawEngine.getStructureSeedAssignments({
     structureId: mainStructureId,
@@ -30,6 +35,7 @@ it('can generate and verify curtis structures', () => {
   expect(seedAssignments.length).toEqual(8);
 
   verifyStructure({
+    drawDefinition,
     structureId: mainStructureId,
     expectedSeeds: 8,
     expectedSeedsWithByes: 2,
@@ -40,6 +46,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   verifyStructure({
+    drawDefinition,
     structureId: consolation1stStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
@@ -50,6 +57,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   verifyStructure({
+    drawDefinition,
     structureId: consolation2ndStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
@@ -60,6 +68,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   ({
+    drawDefinition,
     mainStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
@@ -72,6 +81,7 @@ it('can generate and verify curtis structures', () => {
   }));
 
   verifyStructure({
+    drawDefinition,
     structureId: mainStructureId,
     expectedSeeds: 14,
     expectedSeedsWithByes: 4,
@@ -82,6 +92,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   ({
+    drawDefinition,
     mainStructureId,
     consolation1stStructureId,
     consolation2ndStructureId,
@@ -94,6 +105,7 @@ it('can generate and verify curtis structures', () => {
   }));
 
   verifyStructure({
+    drawDefinition,
     structureId: playoffStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
@@ -104,6 +116,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   verifyStructure({
+    drawDefinition,
     structureId: consolation1stStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
@@ -114,6 +127,7 @@ it('can generate and verify curtis structures', () => {
   });
 
   verifyStructure({
+    drawDefinition,
     structureId: consolation2ndStructureId,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
@@ -199,7 +213,10 @@ function generateCurtis({
 
   drawEngine.automatedPositioning({ structureId: mainStructureId });
 
+  const { drawDefinition } = drawEngine.getState();
+
   return {
+    drawDefinition,
     mainStructureId,
     playoffStructureId,
     consolation1stStructureId,

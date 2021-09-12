@@ -1,22 +1,17 @@
-import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
-import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
 import { drawEngine } from '../../sync';
+import { mocksEngine } from '../../..';
 
 import { SUCCESS, ERROR } from '../../../constants/resultConstants';
-import { PAIR } from '../../../constants/participantTypes';
+import { DOUBLES } from '../../../constants/eventConstants';
 
 it('can add schedule items', () => {
-  const { participants } = generateParticipants({
-    participantsCount: 32,
-    participantType: PAIR,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, eventType: DOUBLES }],
   });
+  const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  const participants = tournamentRecord.participants;
 
-  generateDrawStructure({
-    drawSize: 32,
-    participants,
-    matchUpFormat: 'SET3-S:6/TB',
-  });
-
+  drawEngine.setState(drawDefinition);
   drawEngine.setParticipants(participants);
   const { matchUps } = drawEngine.allDrawMatchUps();
   let matchUp = matchUps[0];

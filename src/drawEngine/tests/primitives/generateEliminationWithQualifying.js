@@ -143,5 +143,7 @@ export function generateEliminationWithQualifying({
   drawEngine.automatedPositioning({ structureId: qualifyingStructureId });
   drawEngine.automatedPositioning({ structureId: mainStructureId });
 
-  return { qualifyingStructureId, mainStructureId };
+  const { drawDefinition } = drawEngine.getState();
+
+  return { drawDefinition, qualifyingStructureId, mainStructureId };
 }

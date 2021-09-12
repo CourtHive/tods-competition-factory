@@ -38,7 +38,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   mainDrawWithEntries({ drawSize, byesCount: 2 });
 
-  const { drawDefinition } = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
@@ -79,8 +79,11 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   }));
   expect(matchUp.drawPositions).toMatchObject([1, undefined]);
 
+  ({ drawDefinition } = drawEngine.getState());
+
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedByeAssignments: 1,
     expectedPositionsAssignedCount: 2,
   });
@@ -254,7 +257,7 @@ it('advances paired drawPosition if BYE is assigned second', () => {
 
   mainDrawWithEntries({ drawSize, byesCount: 2 });
 
-  const { drawDefinition } = drawEngine.getState();
+  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
@@ -296,8 +299,10 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   }));
   expect(matchUp.drawPositions).toMatchObject([1, undefined]);
 
+  ({ drawDefinition } = drawEngine.getState());
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedByeAssignments: 1,
     expectedPositionsAssignedCount: 2,
   });

@@ -1,17 +1,18 @@
-import { findStructure } from '../../getters/findStructure';
-import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
-import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
-import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
+import { getStructurePositionedSeeds } from '../../getters/getStructurePositionedSeeds';
+import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
+import { verifyDrawHierarchy } from '../../tests/primitives/verifyDrawHierarchy';
+import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
+import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
+import { chunkArray, generateRange } from '../../../utilities';
+import { findStructure } from '../../getters/findStructure';
 
 import { drawEngine } from '../../sync';
-import { chunkArray, generateRange } from '../../../utilities';
-import { getPairedDrawPosition } from '../../getters/getPairedDrawPosition';
 
 export function verifyStructure({
   structureId,
   expectedSeeds,
+  drawDefinition,
   hierarchyVerification,
   expectedSeedsWithByes,
   expectedByeAssignments,
@@ -20,7 +21,9 @@ export function verifyStructure({
   expectedQualifierAssignments,
   expectedPositionsAssignedCount,
 }) {
-  const { drawDefinition } = drawEngine.getState();
+  if (!drawDefinition) {
+    ({ drawDefinition } = drawEngine.getState());
+  }
   const { structure } = findStructure({ drawDefinition, structureId });
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const { seedAssignments } = getStructureSeedAssignments({

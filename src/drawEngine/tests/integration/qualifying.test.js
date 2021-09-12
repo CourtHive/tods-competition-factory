@@ -1,41 +1,44 @@
-import fs from 'fs';
-
-import { drawEngine } from '../../sync';
-
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
 import { generateEliminationWithQualifying } from '../../tests/primitives/generateEliminationWithQualifying';
+import { verifyStructure } from '../../tests/primitives/verifyStructure';
+import { mocksEngine } from '../../..';
 
 import {
   QUALIFYING,
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
-it('can generate and verify qualifying structures', () => {
-  const { structureId } = generateDrawStructure({
-    drawSize: 32,
-    seedsCount: 8,
-    assignSeeds: 5,
-    stage: QUALIFYING,
-    qualifyingRound: 2,
-    participantsCount: 17,
-    drawType: SINGLE_ELIMINATION,
-    seedAssignmentProfile: { 5: 4 },
+it.only('can generate and verify qualifying structures', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 32,
+        seedsCount: 8,
+        stage: QUALIFYING,
+        qualifyingRound: 2,
+        participantsCount: 17,
+        drawType: SINGLE_ELIMINATION,
+      },
+    ],
   });
+
+  const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  const structure = drawDefinition.structures[0];
+  const structureId = structure.structureId;
 
   verifyStructure({
     structureId,
-    expectedSeeds: 5,
-    expectedSeedsWithByes: 5,
+    drawDefinition,
+    expectedSeeds: 4,
+    expectedSeedsWithByes: 4,
     expectedByeAssignments: 15,
     expectedPositionsAssignedCount: 32,
-    expectedSeedValuesWithBye: [1, 2, 3, 4, 4],
+    expectedSeedValuesWithBye: [1, 2, 3, 4],
     expectedRoundMatchUpsCounts: [16, 8, 0, 0, 0],
   });
 });
 
 it('can generate qualifying and linked elimination structure', () => {
-  const { qualifyingStructureId, mainStructureId } =
+  const { qualifyingStructureId, mainStructureId, drawDefinition } =
     generateEliminationWithQualifying({
       qualifyingDrawSize: 16,
       qualifyingPositions: 8,
@@ -53,6 +56,7 @@ it('can generate qualifying and linked elimination structure', () => {
     });
 
   verifyStructure({
+    drawDefinition,
     structureId: qualifyingStructureId,
     expectedSeeds: 4,
     expectedSeedsWithByes: 1,
@@ -71,15 +75,4 @@ it('can generate qualifying and linked elimination structure', () => {
     expectedPositionsAssignedCount: 32,
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 1],
   });
-});
-
-it('can write to the file system', () => {
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-  const drawType = QUALIFYING;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });

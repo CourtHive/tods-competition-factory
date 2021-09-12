@@ -1,5 +1,3 @@
-import fs from 'fs';
-
 import { generateDrawStructure } from '../primitives/generateDrawStructure';
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
@@ -10,12 +8,10 @@ import {
   verifySideNumbers,
 } from '../primitives/verifyMatchUps';
 
-import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-
 it('can generate and verify elmination structures', () => {
-  let structureId;
+  let structureId, drawDefinition;
 
-  ({ structureId } = generateDrawStructure({
+  ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 32,
     seedsCount: 8,
     participantsCount: 17,
@@ -26,6 +22,7 @@ it('can generate and verify elmination structures', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 5,
     expectedSeedsWithByes: 5,
     expectedByeAssignments: 15,
@@ -33,7 +30,7 @@ it('can generate and verify elmination structures', () => {
     expectedSeedValuesWithBye: [1, 2, 3, 4, 4],
   });
 
-  ({ structureId } = generateDrawStructure({
+  ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 32,
     seedsCount: 8,
     participantsCount: 30,
@@ -42,6 +39,7 @@ it('can generate and verify elmination structures', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 8,
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 2,
@@ -67,7 +65,7 @@ it('can generate and verify elmination structures', () => {
     ],
   });
 
-  ({ structureId } = generateDrawStructure({
+  ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 2,
     participantsCount: 2,
     matchUpFormat: 'SET3-S:6/TB',
@@ -75,6 +73,7 @@ it('can generate and verify elmination structures', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 0,
     expectedSeedsWithByes: 0,
     expectedByeAssignments: 0,
@@ -88,25 +87,11 @@ it('can generate and verify elmination structures', () => {
     expectedRoundUpcoming: [1],
     expectedRoundCompleted: [0],
   });
-
-  // const { drawDefinition } = drawEngine.getState();
-  // console.log(JSON.stringify(drawDefinition, undefined, 2));
-});
-
-it('can write to the file system', () => {
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-  const drawType = SINGLE_ELIMINATION;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
 
 it('will vary bye distribution', () => {
   const iterations = generateRange(0, 10).map(() => {
-    const { structureId } = generateDrawStructure({
+    const { structureId, drawDefinition } = generateDrawStructure({
       drawSize: 32,
       seedsCount: 8,
       participantsCount: 26,
@@ -115,6 +100,7 @@ it('will vary bye distribution', () => {
 
     const { byeAssignedDrawPositions, filteredQuarters } = verifyStructure({
       structureId,
+      drawDefinition,
       expectedSeeds: 5,
       expectedByeAssignments: 6,
       expectedPositionsAssignedCount: 32,
@@ -137,20 +123,22 @@ it('will vary bye distribution', () => {
 });
 
 it('can advance participants in elmination structures', () => {
-  let structureId;
+  let structureId, drawDefinition;
 
-  ({ structureId } = generateDrawStructure({
+  ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 4,
     participantsCount: 4,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedPositionsAssignedCount: 4,
   });
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 1],
     expectedRoundUpcoming: [2, 0],
     expectedRoundCompleted: [0, 0],
@@ -158,12 +146,14 @@ it('can advance participants in elmination structures', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 1,
     winningSide: 1,
   });
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 2,
@@ -171,6 +161,7 @@ it('can advance participants in elmination structures', () => {
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 0],
     expectedRoundUpcoming: [0, 1],
     expectedRoundCompleted: [2, 0],
@@ -178,6 +169,7 @@ it('can advance participants in elmination structures', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 2,
     roundPosition: 1,
     winningSide: 1,
@@ -185,23 +177,26 @@ it('can advance participants in elmination structures', () => {
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 0],
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [2, 1],
   });
 
-  ({ structureId } = generateDrawStructure({
+  ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 16,
     participantsCount: 15,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedPositionsAssignedCount: 16,
   });
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 4],
     expectedRoundUpcoming: [7, 0],
     expectedRoundCompleted: [0, 0],
@@ -209,6 +204,7 @@ it('can advance participants in elmination structures', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 2,
@@ -216,6 +212,7 @@ it('can advance participants in elmination structures', () => {
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 3],
     expectedRoundUpcoming: [6, 1],
     expectedRoundCompleted: [1, 0],
@@ -223,6 +220,7 @@ it('can advance participants in elmination structures', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 2,
     roundPosition: 1,
     winningSide: 1,
@@ -230,6 +228,7 @@ it('can advance participants in elmination structures', () => {
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0, 3],
     expectedRoundUpcoming: [6, 0],
     expectedRoundCompleted: [1, 1],
@@ -237,18 +236,20 @@ it('can advance participants in elmination structures', () => {
 });
 
 it('can reliably generate sideNumbers', () => {
-  const { structureId } = generateDrawStructure({
+  const { structureId, drawDefinition } = generateDrawStructure({
     drawSize: 16,
     participantsCount: 16,
   });
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedPositionsAssignedCount: 16,
   });
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
@@ -256,6 +257,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 4,
     winningSide: 1,
@@ -263,6 +265,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 5,
     winningSide: 2,
@@ -270,6 +273,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 8,
     winningSide: 1,
@@ -299,6 +303,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 1,
     winningSide: 1,
@@ -306,6 +311,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 3,
     winningSide: 2,
@@ -313,6 +319,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 6,
     winningSide: 2,
@@ -320,6 +327,7 @@ it('can reliably generate sideNumbers', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 7,
     winningSide: 1,
@@ -349,18 +357,20 @@ it('can reliably generate sideNumbers', () => {
 });
 
 it('can return participantIdMatchUps', () => {
-  const { structureId } = generateDrawStructure({
+  const { structureId, drawDefinition } = generateDrawStructure({
     drawSize: 16,
     participantsCount: 14,
   });
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedPositionsAssignedCount: 16,
   });
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 2,
     winningSide: 1,
@@ -368,6 +378,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 4,
     winningSide: 1,
@@ -375,6 +386,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 5,
     winningSide: 2,
@@ -382,6 +394,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 8,
     winningSide: 1,
@@ -389,6 +402,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 1,
     winningSide: 1,
@@ -396,6 +410,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 3,
     winningSide: 2,
@@ -403,6 +418,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 6,
     winningSide: 2,
@@ -410,6 +426,7 @@ it('can return participantIdMatchUps', () => {
 
   completeMatchUp({
     structureId,
+    drawDefinition,
     roundNumber: 1,
     roundPosition: 7,
     winningSide: 1,
