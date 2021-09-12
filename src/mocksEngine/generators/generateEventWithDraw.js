@@ -42,34 +42,24 @@ export function generateEventWithDraw({
   const {
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
-    uniqueParticipants = !tournamentRecord,
-    seedAssignmentProfile,
     eventType = SINGLES,
-    enforcePolicyLimits,
-    policyDefinitions,
-    assignSeedsCount,
-    structureOptions,
     eventExtensions,
-    qualifyingRound,
     drawExtensions,
     drawSize = 32,
-    feedPolicy,
-    automated,
+    seedsCount,
     tieFormat,
-    idPrefix,
-    drawName,
     category,
     gender,
     stage,
-    uuids,
   } = drawProfile;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];
 
-  let { participantsCount, seedsCount } = drawProfile;
-  if (!participantsCount || participantsCount > drawSize)
-    participantsCount = drawSize;
+  const participantsCount =
+    !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
+      ? drawSize
+      : drawProfile.participantsCount;
 
   const eventId = UUID();
   let event = { eventId, eventName, eventType, category, tieFormat };
@@ -93,7 +83,7 @@ export function generateEventWithDraw({
   };
 
   const uniqueParticipantIds = [];
-  if (uniqueParticipants) {
+  if (drawProfile.uniqueParticipants || !tournamentRecord) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
       valuesInstanceLimit,
@@ -172,7 +162,7 @@ export function generateEventWithDraw({
     event.category?.ageCategoryCode ||
     event.category?.categoryName ||
     eventName;
-  if (tournamentRecord && seedsCount && seedsCount < participantIds.length) {
+  if (tournamentRecord && seedsCount && seedsCount <= participantIds.length) {
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
       let scaleItem = {
@@ -188,28 +178,15 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
-    seedAssignmentProfile,
-    enforcePolicyLimits,
-    policyDefinitions,
+    ...drawProfile,
     tournamentRecord,
     seedingScaleName,
-    assignSeedsCount,
-    structureOptions,
-    qualifyingRound,
     matchUpFormat,
-    seedsCount,
-    feedPolicy,
-    tieFormat,
-    automated,
-    idPrefix,
-    drawName,
     drawType,
     drawSize,
     eventId,
     goesTo,
     event,
-    stage,
-    uuids,
   });
 
   if (generationError) return { error: generationError };
@@ -225,7 +202,7 @@ export function generateEventWithDraw({
   result = addDrawDefinition({ drawDefinition, event });
   const { drawId } = drawDefinition;
 
-  const manual = automated === false;
+  const manual = drawProfile.automated === false;
   if (!manual) {
     if (drawProfile.outcomes) {
       const { matchUps } = allDrawMatchUps({
