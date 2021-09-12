@@ -112,8 +112,20 @@ export function generateDrawDefinition(params) {
   }
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
-
   setStageDrawSize({ drawDefinition, stage, drawSize });
+
+  if (drawEntries) {
+    const drawEntryStages = drawEntries
+      .reduce(
+        (stages, entry) =>
+          stages.includes(entry.entryStage)
+            ? stages
+            : stages.concat(entry.entryStage),
+        []
+      )
+      .filter((entryStage) => entryStage !== stage);
+    if (drawEntryStages.length) console.log({ drawEntryStages });
+  }
 
   if (matchUpFormat || tieFormat) {
     let equivalentInScope =
@@ -210,7 +222,6 @@ export function generateDrawDefinition(params) {
     attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
 
-  // OPTIMIZE: use drawEngine.addDrawEntries
   for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
@@ -218,9 +229,12 @@ export function generateDrawDefinition(params) {
       entryStage: entry.entryStage || MAIN,
       drawDefinition,
     };
-    // NOTE: we don't throw an error if an entry can't be added
-    // INVESTIGATE: not entirely sure why this is the case. All but one test passes when error is thrown.
-    addDrawEntry(entryData);
+    const result = addDrawEntry(entryData);
+    if (drawEntries && result.error) {
+      // only report errors with drawEntries
+      // if entries are taken from event.entries assume stageSpace is not available
+      return result;
+    }
   }
 
   const enteredParticipantIds = entries.map(
