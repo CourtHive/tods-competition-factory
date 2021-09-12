@@ -286,7 +286,7 @@ export function generateDrawDefinition(params) {
       stage,
     });
 
-    if (!scaledEntries.length && seedByRanking) {
+    if (!scaledEntries?.length && seedByRanking) {
       const rankingScaleAttributes = {
         scaleType: RANKING,
         scaleName: categoryName || ageCategoryCode,

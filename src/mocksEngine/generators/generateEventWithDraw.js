@@ -5,7 +5,6 @@ import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
-import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { validExtension } from '../../global/validation/validExtension';
@@ -18,6 +17,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { SEEDING } from '../../constants/timeItemConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -25,13 +25,13 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithDraw({
-  tournamentRecord,
-  allUniqueParticipantIds,
-  autoEntryPositions,
+  allUniqueParticipantIds = [],
+  matchUpStatusProfile,
   participantsProfile,
   completeAllMatchUps,
-  matchUpStatusProfile,
+  autoEntryPositions,
   randomWinningSide,
+  tournamentRecord,
   drawProfile,
   startDate,
   goesTo,
@@ -39,7 +39,7 @@ export function generateEventWithDraw({
   const {
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
-    uniqueParticipants = false,
+    uniqueParticipants = !tournamentRecord,
     seedAssignmentProfile,
     eventType = SINGLES,
     policyDefinitions,
@@ -60,29 +60,24 @@ export function generateEventWithDraw({
   } = drawProfile;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
-  let targetParticipants = tournamentRecord.participants;
+  let targetParticipants = tournamentRecord?.participants || [];
 
   let { participantsCount, seedsCount } = drawProfile;
   if (!participantsCount || participantsCount > drawSize)
     participantsCount = drawSize;
 
   const eventId = UUID();
-  const newEvent = { eventId, eventName, eventType, category, tieFormat };
+  let event = { eventId, eventName, eventType, category, tieFormat };
 
   let { eventAttributes } = drawProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
-  Object.assign(newEvent, eventAttributes);
+  Object.assign(event, eventAttributes);
 
   // attach any valid eventExtensions
   if (eventExtensions?.length && Array.isArray(eventExtensions)) {
     const extensions = eventExtensions.filter(validExtension);
-    if (extensions?.length) Object.assign(newEvent, { extensions });
+    if (extensions?.length) Object.assign(event, { extensions });
   }
-
-  let result = addEvent({ tournamentRecord, event: newEvent });
-  if (result.error) return result;
-
-  const { event } = result;
 
   const isEventParticipantType = (participant) => {
     const { participantType } = participant;
@@ -119,8 +114,11 @@ export function generateEventWithDraw({
       inContext,
     });
 
-    result = addParticipants({ tournamentRecord, participants: unique });
-    if (result.error) return result;
+    if (tournamentRecord) {
+      let result = addParticipants({ tournamentRecord, participants: unique });
+      if (result.error) return result;
+    }
+
     unique.forEach(({ participantId }) =>
       uniqueParticipantIds.push(participantId)
     );
@@ -135,12 +133,12 @@ export function generateEventWithDraw({
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
-  result = addEventEntries({
-    event,
-    tournamentRecord,
-    participantIds,
+  let result = addEventEntries({
     entryStage: stage,
     autoEntryPositions,
+    tournamentRecord,
+    participantIds,
+    event,
   });
   if (result.error) return result;
 
@@ -155,11 +153,11 @@ export function generateEventWithDraw({
     .map((p) => p.participantId);
   if (alternatesParticipantIds.length) {
     result = addEventEntries({
-      event,
-      tournamentRecord,
-      entryStatus: ALTERNATE,
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
+      entryStatus: ALTERNATE,
+      tournamentRecord,
+      event,
     });
     if (result.error) return { error: result.error };
   }
@@ -318,5 +316,14 @@ export function generateEventWithDraw({
 
   if (result.error) return { error: result.error };
 
-  return { drawId, eventId, uniqueParticipantIds, targetParticipants };
+  return {
+    ...SUCCESS,
+
+    uniqueParticipantIds,
+    targetParticipants,
+    drawDefinition,
+    eventId,
+    drawId,
+    event,
+  };
 }

@@ -77,11 +77,10 @@ export function addEventEntries(params) {
       })
       .map((participant) => participant.participantId) || [];
 
-  const validParticipantIds =
-    !typedParticipantIds.length ||
-    participantIds.filter((participantId) =>
-      typedParticipantIds.includes(participantId)
-    );
+  const validParticipantIds = participantIds.filter(
+    (participantId) =>
+      !typedParticipantIds.length || typedParticipantIds.includes(participantId)
+  );
 
   if (!event.entries) event.entries = [];
   const existingIds = event.entries.map(

@@ -20,6 +20,7 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
+import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 
 /**
  *
@@ -254,7 +255,7 @@ export function generateTournamentRecord({
     allUniqueParticipantIds = [];
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawId, eventId, error, uniqueParticipantIds } =
+      const { drawId, eventId, event, error, uniqueParticipantIds } =
         generateEventWithDraw({
           tournamentRecord,
           allUniqueParticipantIds,
@@ -268,6 +269,10 @@ export function generateTournamentRecord({
           goesTo,
         });
       if (error) return { error };
+
+      const result = addEvent({ tournamentRecord, event });
+      if (result.error) return result;
+
       drawIds.push(drawId);
       eventIds.push(eventId);
       if (uniqueParticipantIds?.length)
