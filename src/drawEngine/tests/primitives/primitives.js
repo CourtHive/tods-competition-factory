@@ -39,11 +39,7 @@ export function mainDrawPositions({ drawSize = 2 } = {}) {
   expect(result).toMatchObject(SUCCESS);
 }
 
-export function mainDrawWithEntries({
-  drawType,
-  drawSize = 4,
-  byesCount = 0,
-} = {}) {
+export function mainDrawWithEntries({ drawType, drawSize, byesCount = 0 }) {
   reset();
   initialize();
   result = drawEngine.setStageDrawSize({ stage: MAIN, drawSize });
