@@ -1,27 +1,19 @@
-import { generateDrawStructure } from '../../tests/primitives/generateDrawStructure';
-import { generateParticipants } from '../../../mocksEngine/generators/generateParticipants';
-
 import { drawEngine } from '../../sync';
+import { mocksEngine } from '../../..';
+
 import { SUCCESS } from '../../../constants/resultConstants';
-import { PAIR } from '../../../constants/participantConstants';
+import { DOUBLES } from '../../../constants/matchUpTypes';
 
 it('can check-in and check-out matchUp participants', () => {
-  const { participants } = generateParticipants({
-    participantsCount: 32,
-    participantType: PAIR,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      { drawSize: 32, eventType: DOUBLES, matchUpFormat: 'SET3-S:6/TB7' },
+    ],
   });
+  const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
 
-  const doublesParticipants = participants.filter(
-    (participant) => participant.participantType === PAIR
-  );
-
-  generateDrawStructure({
-    drawSize: 32,
-    participants: doublesParticipants,
-    matchUpFormat: 'SET3-S:6/TB',
-  });
-
-  drawEngine.setParticipants(participants);
+  drawEngine.setState(drawDefinition);
+  drawEngine.setParticipants(tournamentRecord.participants);
   const { matchUps } = drawEngine.allDrawMatchUps();
   const matchUp = matchUps[0];
   const { matchUpId } = matchUp;

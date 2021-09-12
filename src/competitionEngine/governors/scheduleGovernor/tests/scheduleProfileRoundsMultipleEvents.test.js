@@ -314,7 +314,7 @@ it('multiple events at multiple venues with different participants will start at
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
-  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: false });
 
   const firstVenueMatchUpScheduleTimes = scheduledMatchUps
     .filter(({ schedule: { venueId } }) => venueId === venueIds[0])

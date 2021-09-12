@@ -1,16 +1,11 @@
-import fs from 'fs';
-
-import { drawEngine } from '../../sync';
+import { generateFeedIn } from '../../tests/primitives/generateDrawStructure';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import {
-  generateFeedIn,
-  generateDrawStructure,
-} from '../../tests/primitives/generateDrawStructure';
+import { mocksEngine } from '../../..';
 
 import { FEED_IN } from '../../../constants/drawDefinitionConstants';
 
 it('can accurately generate sideNumbers', () => {
-  const { structureId } = generateFeedIn({
+  const { structureId, drawDefinition } = generateFeedIn({
     drawSize: 34,
     seedsCount: 4,
     assignSeeds: 4,
@@ -19,6 +14,7 @@ it('can accurately generate sideNumbers', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 4,
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 2,
@@ -29,49 +25,53 @@ it('can accurately generate sideNumbers', () => {
 });
 
 it('can generate and verify feed-in structures', () => {
-  let structureId;
+  let structureId, drawDefinition;
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 12,
     participantsCount: 12,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedRoundMatchUpsCounts: [4, 4, 2, 1],
   });
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 11,
     participantsCount: 11,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedRoundMatchUpsCounts: [4, 2, 2, 1],
   });
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 13,
     participantsCount: 13,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedRoundMatchUpsCounts: [4, 4, 2, 1, 1],
   });
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 11,
     participantsCount: 11,
   }));
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedRoundMatchUpsCounts: [4, 2, 2, 1],
   });
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 28,
     seedsCount: 4,
     assignSeeds: 4,
@@ -80,6 +80,7 @@ it('can generate and verify feed-in structures', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 4,
     expectedSeedsWithByes: 0,
     expectedByeAssignments: 0,
@@ -88,7 +89,7 @@ it('can generate and verify feed-in structures', () => {
     expectedRoundMatchUpsCounts: [8, 8, 4, 4, 2, 1],
   });
 
-  ({ structureId } = generateFeedIn({
+  ({ structureId, drawDefinition } = generateFeedIn({
     drawSize: 34,
     seedsCount: 4,
     assignSeeds: 4,
@@ -97,6 +98,7 @@ it('can generate and verify feed-in structures', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 4,
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 2,
@@ -107,7 +109,7 @@ it('can generate and verify feed-in structures', () => {
 });
 
 it('can generate large feedIn with many BYEs', () => {
-  const { structureId } = generateFeedIn({
+  const { structureId, drawDefinition } = generateFeedIn({
     drawSize: 63,
     seedsCount: 33,
     assignSeeds: 33,
@@ -117,6 +119,7 @@ it('can generate large feedIn with many BYEs', () => {
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedSeeds: 33,
     expectedSeedsWithByes: 2,
     expectedByeAssignments: 13,
@@ -127,31 +130,18 @@ it('can generate large feedIn with many BYEs', () => {
 });
 
 it('can generate large feedIn with many BYEs', () => {
-  const { structureId } = generateDrawStructure({
-    drawSize: 12,
-    automated: true,
-    drawType: FEED_IN,
-    participantsCount: 10,
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 12, participantsCount: 10, drawType: FEED_IN }],
   });
+
+  const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  const structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
+    drawDefinition,
     expectedByeAssignments: 2,
     expectedPositionsAssignedCount: 12,
     expectedRoundMatchUpsCounts: [4, 4, 2, 1],
   });
-
-  // TODO: test placing BYES in a FEED IN with 10 players in 12 drawSize (8 baseDrawSize)
-});
-
-it('can write to the file system', () => {
-  const writeFile = process.env.TMX_TEST_FILES;
-  const { drawDefinition } = drawEngine.getState();
-
-  const drawType = FEED_IN;
-  const fileName = `${drawType}.json`;
-  const dirPath = './src/drawEngine/generated/';
-  const output = `${dirPath}${fileName}`;
-  if (writeFile)
-    fs.writeFileSync(output, JSON.stringify(drawDefinition, undefined, 2));
 });
