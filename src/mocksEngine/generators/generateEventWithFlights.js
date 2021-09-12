@@ -35,6 +35,7 @@ export function generateEventWithFlights({
   randomWinningSide,
   eventProfile,
   startDate,
+  uuids,
 }) {
   const {
     ballType,
@@ -110,6 +111,7 @@ export function generateEventWithFlights({
       participantType: eventParticipantType,
       sex: gender,
 
+      uuids,
       valuesInstanceLimit,
       nationalityCodesCount,
       nationalityCodeType,

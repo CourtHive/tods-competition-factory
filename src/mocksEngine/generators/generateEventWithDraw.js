@@ -38,6 +38,7 @@ export function generateEventWithDraw({
   drawProfile,
   startDate,
   goesTo,
+  uuids,
 }) {
   const {
     excessParticipantAlternates = true,
@@ -99,6 +100,7 @@ export function generateEventWithDraw({
       participantsCount,
       participantType,
 
+      uuids: drawProfile.uuids || uuids,
       sex: gender || participantsProfile?.sex,
       valuesInstanceLimit,
       nationalityCodesCount,
