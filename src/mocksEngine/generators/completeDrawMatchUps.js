@@ -76,13 +76,13 @@ export function completeDrawMatchUps({
   return { ...SUCCESS };
 }
 
-export function completeMatchUp({
+export function completeDrawMatchUp({
+  drawDefinition,
   targetMatchUp,
-  scoreString,
-  winningSide,
   matchUpStatus,
   matchUpFormat,
-  drawDefinition,
+  scoreString,
+  winningSide,
 }) {
   if (!targetMatchUp || targetMatchUp.matchUpStatus === BYE) {
     return;
@@ -97,9 +97,9 @@ export function completeMatchUp({
 
   return setMatchUpStatus({
     drawDefinition,
+    matchUpFormat,
     matchUpId,
     outcome,
-    matchUpFormat,
   });
 }
 
@@ -115,7 +115,7 @@ function smartComplete(params) {
     matchUpStatusProfile = {},
   } = params;
 
-  if (scoreString || matchUpStatus) return completeMatchUp(params);
+  if (scoreString || matchUpStatus) return completeDrawMatchUp(params);
 
   const { matchUpId } = targetMatchUp || {};
   const { outcome } = generateOutcome({

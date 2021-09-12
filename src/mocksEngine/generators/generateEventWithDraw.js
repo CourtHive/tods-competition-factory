@@ -6,10 +6,13 @@ import { addExtension } from '../../tournamentEngine/governors/tournamentGoverno
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
-import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
+import {
+  completeDrawMatchUps,
+  completeDrawMatchUp,
+} from './completeDrawMatchUps';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -268,16 +271,17 @@ export function generateEventWithDraw({
           );
         });
         const targetMatchUp = targetMatchUps[matchUpIndex];
-        const result = completeMatchUp({
+        const result = completeDrawMatchUp({
           drawDefinition,
           targetMatchUp,
+          matchUpFormat,
+          matchUpStatus,
           scoreString,
           winningSide,
-          matchUpStatus,
-          matchUpFormat,
           drawId,
         });
-        if (result.error) return result;
+        // will not throw errors for BYE matchUps
+        if (result?.error) return result;
       }
     }
 
