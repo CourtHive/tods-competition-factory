@@ -16,7 +16,7 @@ it('can generate and verify elmination structures', () => {
     seedsCount: 8,
     participantsCount: 17,
     assignSeeds: 5,
-    matchUpFormat: 'SET3-S:6/TB',
+    matchUpFormat: 'SET3-S:6/TB7',
     seedAssignmentProfile: { 5: 4 },
   }));
 
@@ -68,7 +68,7 @@ it('can generate and verify elmination structures', () => {
   ({ structureId, drawDefinition } = generateDrawStructure({
     drawSize: 2,
     participantsCount: 2,
-    matchUpFormat: 'SET3-S:6/TB',
+    matchUpFormat: 'SET3-S:6/TB7',
   }));
 
   verifyStructure({
