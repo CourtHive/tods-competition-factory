@@ -52,7 +52,7 @@ import {
  * @param {number} averageMatchUpMinutes - how long the expected matchUps are expected to last, in minutes, on average
  * @param {number} recoveryMinutes - time in minutes that should be alloted for participants to recover between matches
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - maximum number of matches allowed per participant
- * @param {boolean} checkPotentialConflicts - check personRequests when person is only potentially in matchUp being scheduled
+ * @param {boolean} checkPotentialRequestConflicts - check personRequests when person is only potentially in matchUp being scheduled
  *
  * @returns scheduledMatchUpIds, individualParticipantProfiles
  */
@@ -71,7 +71,7 @@ export function scheduleMatchUps({
   matchUpPotentialParticipantIds = {},
   individualParticipantProfiles = {},
 
-  checkPotentialConflicts = true,
+  checkPotentialRequestConflicts = true,
   remainingScheduleTimes,
 
   startTime,
@@ -141,6 +141,10 @@ export function scheduleMatchUps({
       venueIds,
     });
 
+  const requestConflicts = {};
+  const skippedScheduleTimes = [];
+  const matchUpScheduleTimes = {};
+
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
   const dateScheduledMatchUps = competitionMatchUps.filter(({ matchUpId }) =>
@@ -156,6 +160,7 @@ export function scheduleMatchUps({
     });
     const scheduleTime = matchUp.schedule?.scheduledTime;
     if (scheduleTime) {
+      matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
       const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       updateTimeAfterRecovery({
         individualParticipantProfiles,
@@ -233,10 +238,6 @@ export function scheduleMatchUps({
     ({ matchUpId }) => !overLimitMatchUpIds.includes(matchUpId)
   );
 
-  const requestConflicts = {};
-  const skippedScheduleTimes = [];
-  const matchUpScheduleTimes = {};
-
   let iterations = 0;
   const failSafe = scheduleTimes?.length || 0;
 
@@ -281,7 +282,7 @@ export function scheduleMatchUps({
       if (!enoughTime) return false;
 
       const { conflicts } = checkRequestConflicts({
-        potentials: checkPotentialConflicts,
+        potentials: checkPotentialRequestConflicts,
         averageMatchUpMinutes,
         requestConflicts,
         personRequests,

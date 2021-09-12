@@ -22,8 +22,9 @@ export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
   periodLength,
+  dryRun,
 
-  checkPotentialConflicts = true,
+  checkPotentialRequestConflicts = true,
   garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -100,6 +101,7 @@ export function scheduleProfileRounds({
     const venueScheduledRoundDetails = {};
     const matchUpNotBeforeTimes = {};
 
+    // checking that matchUpDependencies are scheduled is scoped to only those matchUps that are to be scheduled on the same date
     const allDateMatchUpIds = [];
 
     // first pass through all venues is to build up an array of all matchUpIds in the schedulingProfile for current scheduleDate
@@ -158,27 +160,28 @@ export function scheduleProfileRounds({
         periodLength = roundPeriodLength || periodLength;
 
         const result = scheduleMatchUps({
+          checkPotentialRequestConflicts, // whether to consider personal requests when scheduling potential matchUps
           tournamentRecords,
-          competitionMatchUps: matchUps,
-          matchUpDependencies,
-          allDateMatchUpIds,
+          dryRun,
 
+          remainingScheduleTimes: previousRemainingScheduleTimes,
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutesMap,
           recoveryMinutes,
+          periodLength,
+          scheduleDate,
 
-          matchUpDailyLimits,
-          matchUpNotBeforeTimes,
+          // id maps
           matchUpPotentialParticipantIds,
           individualParticipantProfiles,
+          matchUpNotBeforeTimes,
+          matchUpDependencies,
+          matchUpDailyLimits,
 
-          checkPotentialConflicts,
-          remainingScheduleTimes: previousRemainingScheduleTimes,
-
+          competitionMatchUps: matchUps,
           venueIds: [venueId],
-          periodLength,
+          allDateMatchUpIds,
           matchUpIds,
-          scheduleDate,
         });
         if (result.error) return result;
 
