@@ -1,5 +1,6 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
@@ -11,11 +12,12 @@ import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEven
 import { validExtension } from '../../global/validation/validExtension';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { UUID } from '../../utilities';
+import { generateRange, UUID } from '../../utilities';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
+import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -32,6 +34,7 @@ export function generateEventWithFlights({
   matchUpStatusProfile,
   randomWinningSide,
   eventProfile,
+  startDate,
 }) {
   const {
     ballType,
@@ -246,9 +249,41 @@ export function generateEventWithFlights({
       const { drawId, drawSize, stage, drawName, drawEntries } = flight;
 
       const drawProfile = drawProfiles[index];
+      const { seedsCount } = drawProfile;
+      const drawParticipantIds = drawEntries
+        .filter(({ participantId }) => participantId)
+        .map(({ participantId }) => participantId);
+
+      const seedingScaleName =
+        event.category?.ageCategoryCode ||
+        event.category?.categoryName ||
+        eventName;
+      if (
+        tournamentRecord &&
+        seedsCount &&
+        seedsCount <= drawParticipantIds.length
+      ) {
+        const scaleValues = generateRange(1, seedsCount + 1);
+        scaleValues.forEach((scaleValue, index) => {
+          let scaleItem = {
+            scaleValue,
+            scaleName: seedingScaleName,
+            scaleType: SEEDING,
+            eventType,
+            scaleDate: startDate,
+          };
+          const participantId = drawParticipantIds[index];
+          setParticipantScaleItem({
+            tournamentRecord,
+            participantId,
+            scaleItem,
+          });
+        });
+      }
       let result = generateDrawDefinition({
         ...drawProfile,
         matchUpType: eventType,
+        seedingScaleName,
         tournamentRecord,
         drawEntries,
         drawSize,
