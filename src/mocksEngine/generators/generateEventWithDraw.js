@@ -37,11 +37,11 @@ export function generateEventWithDraw({
   goesTo,
 }) {
   const {
-    category,
-    eventType = SINGLES,
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     uniqueParticipants = false,
+    seedAssignmentProfile,
+    eventType = SINGLES,
     policyDefinitions,
     structureOptions,
     eventExtensions,
@@ -53,6 +53,7 @@ export function generateEventWithDraw({
     tieFormat,
     idPrefix,
     drawName,
+    category,
     gender,
     stage,
     uuids,
@@ -184,6 +185,7 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
+    seedAssignmentProfile,
     policyDefinitions,
     tournamentRecord,
     seedingScaleName,

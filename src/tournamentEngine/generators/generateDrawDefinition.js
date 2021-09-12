@@ -45,6 +45,7 @@ export function generateDrawDefinition(params) {
     enforcePolicyLimits = true,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
+    seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
     playoffMatchUpFormat,
     seedByRanking = true,
     qualifyingPositions,
@@ -311,7 +312,7 @@ export function generateDrawDefinition(params) {
         .slice(0, seedsCount)
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
-          const seedValue = seedNumber;
+          const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;
           // ?? attach basis of seeding information to seedAssignment ??
           const { participantId } = scaledEntry;
           assignSeed({

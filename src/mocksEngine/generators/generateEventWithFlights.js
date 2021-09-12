@@ -226,12 +226,12 @@ export function generateEventWithFlights({
       entryStatus: DIRECT_ACCEPTANCE,
     }));
     const result = addFlight({
+      drawName: drawName || drawType,
+      qualifyingPositions,
+      drawEntries,
+      drawSize,
       event,
       stage,
-      drawName: drawName || drawType,
-      drawSize,
-      drawEntries,
-      qualifyingPositions,
     });
     if (result.error) {
       return result;
@@ -244,28 +244,18 @@ export function generateEventWithFlights({
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
       const { drawId, drawSize, stage, drawName, drawEntries } = flight;
-      const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
-      const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
-      const matchUpFormat = drawProfiles[index].matchUpFormat;
-      const automated = drawProfiles[index].automated;
-      const idPrefix = drawProfiles[index].idPrefix;
-      const uuids = drawProfiles[index].uuids;
 
+      const drawProfile = drawProfiles[index];
       let result = generateDrawDefinition({
+        ...drawProfile,
         matchUpType: eventType,
         tournamentRecord,
-        matchUpFormat,
         drawEntries,
-        automated,
-        tieFormat,
         drawSize,
-        drawType,
         drawName,
-        idPrefix,
         drawId,
         event,
         stage,
-        uuids,
       });
 
       const { drawDefinition, error } = result;
@@ -287,8 +277,9 @@ export function generateEventWithFlights({
       if (result.error) return result;
       drawIds.push(flight.drawId);
 
-      const manual = automated === false;
+      const manual = drawProfile.automated === false;
       if (!manual && completeAllMatchUps) {
+        const matchUpFormat = drawProfile.matchUpFormat;
         const result = completeDrawMatchUps({
           completeAllMatchUps,
           matchUpStatusProfile,
@@ -297,7 +288,7 @@ export function generateEventWithFlights({
           drawDefinition,
         });
         if (result.error) return result;
-        if (drawProfiles[index].drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+        if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
           const mainStructure = drawDefinition.structures.find(
             (structure) => structure.stage === MAIN
           );

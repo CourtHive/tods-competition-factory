@@ -45,6 +45,7 @@ import {
  * @returns
  */
 
+// WOULDBENICE: return object containing all modified { matchUpIds, structureIds, drawIds }
 export function setMatchUpStatus(params) {
   // matchUpStatus in params is the new status
   // winningSide in params is new winningSide
