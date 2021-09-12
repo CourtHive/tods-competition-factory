@@ -4,6 +4,7 @@ import { newTournamentRecord } from '../../tournamentEngine/generators/newTourna
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
 import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
+import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
@@ -20,7 +21,6 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 
 /**
  *
@@ -57,6 +57,8 @@ export function generateTournamentRecord({
   matchUpStatusProfile,
   randomWinningSide,
   goesTo,
+
+  uuids,
 } = {}) {
   let { participantsCount, participantType = INDIVIDUAL } =
     participantsProfile || {};
@@ -218,6 +220,7 @@ export function generateTournamentRecord({
     participantsCount,
     participantType,
     personIds,
+    uuids,
 
     inContext,
   });

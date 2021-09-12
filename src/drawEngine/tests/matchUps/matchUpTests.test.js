@@ -1,5 +1,4 @@
 import { getAllStructureMatchUps } from '../../getters/getMatchUps/getAllStructureMatchUps';
-import { eliminationMatchUpsWithParticipants } from '../../tests/primitives/primitives';
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 import { setMatchUpFormat } from '../../governors/matchUpGovernor/matchUpFormat';
 import { findMatchUp } from '../../getters/getMatchUps/findMatchUp';
@@ -97,13 +96,6 @@ it('matchUps returned with context cannot modify original', () => {
   expect(retrievedMatchUp.newAttribute).toEqual(undefined);
   expect(retrievedMatchUp.drawId).toEqual(undefined);
   expect(retrievedMatchUp.structureId).toEqual(undefined);
-});
-
-it('can return matchUps from SINGLE_ELIMINATION structure with participants', () => {
-  eliminationMatchUpsWithParticipants({ drawSize: 4 });
-  eliminationMatchUpsWithParticipants({ drawSize: 8 });
-  eliminationMatchUpsWithParticipants({ drawSize: 16 });
-  eliminationMatchUpsWithParticipants({ drawSize: 32 });
 });
 
 it('can return matchUps from a ROUND_ROBIN structure', () => {

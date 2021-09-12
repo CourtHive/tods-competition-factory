@@ -73,6 +73,7 @@ it('can generate qualifying and linked elimination structure', () => {
     expectedSeedsWithByes: 0,
     expectedByeAssignments: 0,
     expectedSeedValuesWithBye: [],
+    expectedQualifierAssignments: 8,
     expectedPositionsAssignedCount: 32,
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 1],
   });

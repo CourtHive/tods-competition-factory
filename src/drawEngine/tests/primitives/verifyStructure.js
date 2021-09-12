@@ -59,9 +59,9 @@ export function verifyStructure({
     expect(byeAssignedDrawPositions.length).toEqual(expectedByeAssignments);
   }
 
-  expect(qualifierAssignedDrawPositions.length).toEqual(
-    expectedQualifierAssignments || 0
-  );
+  expect(
+    expectedQualifierAssignments && qualifierAssignedDrawPositions.length
+  ).toEqual(expectedQualifierAssignments);
 
   const seededParticipantIds = seedAssignments
     .map((assignment) => assignment.participantId)
