@@ -40,6 +40,7 @@ export function generateEventWithDraw({
   goesTo,
 }) {
   const {
+    excessParticipantAlternates = true,
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     eventType = SINGLES,
@@ -139,14 +140,17 @@ export function generateEventWithDraw({
 
   // alternates can still be taken from existing participants
   // when unique participants are used for DIRECT_ACCEPTANCE entries
-  const alternatesParticipantIds = targetParticipants
-    .filter(isEventParticipantType)
-    .filter(
-      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-    )
-    .slice(participantsCount)
-    .map((p) => p.participantId);
-  if (alternatesParticipantIds.length) {
+  const alternatesParticipantIds =
+    excessParticipantAlternates &&
+    targetParticipants
+      .filter(isEventParticipantType)
+      .filter(
+        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
+      )
+      .slice(participantsCount)
+      .map((p) => p.participantId);
+
+  if (alternatesParticipantIds?.length) {
     result = addEventEntries({
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
