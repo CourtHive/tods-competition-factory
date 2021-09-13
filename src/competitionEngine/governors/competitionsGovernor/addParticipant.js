@@ -3,7 +3,6 @@ import { addParticipant as participantAdd } from '../../../tournamentEngine/gove
 import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
 export function addParticipant({
@@ -11,7 +10,6 @@ export function addParticipant({
   tournamentId,
   participant,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };
 
   const tournamentRecord = tournamentRecords[tournamentId];

@@ -1,21 +1,20 @@
+import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
 import {
   getTournamentPenalties,
   addPenalty as penaltyAdd,
   modifyPenalty as penaltyModify,
   removePenalty as penaltyRemove,
 } from '../../../tournamentEngine/governors/participantGovernor/participantPenalties';
-import { getTournamentParticipants } from '../../../tournamentEngine/getters/participants/getTournamentParticipants';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORDS,
   PARTICIPANT_NOT_FOUND,
   PENALTY_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function addPenalty(params) {
   const { tournamentRecords, participantIds } = params;
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
 
   let penaltyId;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -51,14 +50,12 @@ export function modifyPenalty(params) {
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = penaltyModify({ tournamentRecord, ...params });
-    if (result.error && result.error !== PENALTY_NOT_FOUND)
-      error = result.error;
+    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
   }
 
-  return error ? { error } : SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function removePenalty(params) {
@@ -69,14 +66,12 @@ export function removePenalty(params) {
   )
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  let error;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = penaltyRemove({ tournamentRecord, ...params });
-    if (result.error && result.error !== PENALTY_NOT_FOUND)
-      error = result.error;
+    if (result.error && result.error !== PENALTY_NOT_FOUND) return result;
   }
 
-  return error ? { error } : SUCCESS;
+  return { ...SUCCESS };
 }
 
 export function getCompetitionPenalties({ tournamentRecords }) {

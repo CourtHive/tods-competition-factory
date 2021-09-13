@@ -5,7 +5,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
 
 export function addDrawDefinition({
@@ -16,7 +15,6 @@ export function addDrawDefinition({
   flight,
   existingDrawCount,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
   if (!eventId) return { error: MISSING_EVENT };
 

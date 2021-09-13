@@ -1,5 +1,6 @@
 import { findTournamentExtension } from '../../../tournamentEngine/governors/queryGovernor/extensionQueries';
 import { validExtension } from '../../../global/validation/validExtension';
+import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import {
   addEventExtension as addExtensionToEvent,
   addTournamentExtension,
@@ -11,31 +12,22 @@ import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 
 export function addExtension({ tournamentRecords, extension }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!validExtension(extension)) return { error: INVALID_VALUES };
 
-  let error;
-  const success = Object.values(tournamentRecords).every((tournamentRecord) => {
+  for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = addTournamentExtension({ tournamentRecord, extension });
-    if (!result.error) {
-      return true;
-    } else {
-      error = result.error;
-    }
-  });
+    if (result.error) return result;
+  }
 
-  return success ? SUCCESS : { error };
+  return { ...SUCCESS };
 }
 
 export function findExtension({ tournamentRecords, name }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
 
   let foundExtension;
@@ -53,7 +45,6 @@ export function findExtension({ tournamentRecords, name }) {
 }
 
 export function removeExtension({ tournamentRecords, name }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!name) return { error: MISSING_VALUE, message: 'Missing name' };
 
   let removed = 0;
@@ -68,7 +59,6 @@ export function removeExtension({ tournamentRecords, name }) {
 }
 
 export function addEventExtension({ tournamentRecords, eventId, extension }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof eventId !== 'string') return { error: MISSING_EVENT };
   if (!validExtension(extension)) return { error: INVALID_VALUES };
 
