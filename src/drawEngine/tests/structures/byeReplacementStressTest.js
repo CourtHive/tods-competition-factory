@@ -111,12 +111,7 @@ export function replacementTest({
   result = tournamentEngine.tournamentMatchUps();
   const { byeMatchUps, completedMatchUps } = result;
 
-  if (
-    devMode &&
-    byeMatchUps.length + completedMatchUps.length !== totalMatchUpsCount
-  ) {
-    return { error: { pendingMatchUps: result.pendingMatchUps } };
-  } else {
+  if (devMode) {
     // expect that all matchUps are either BYEs or COMPLETED
     // this is true if the combined count equals the totalMatchUpsCount
     expect(byeMatchUps.length + completedMatchUps.length).toEqual(

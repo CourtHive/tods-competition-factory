@@ -9,6 +9,10 @@ import {
   SPLIT_SHUTTLE,
   SPLIT_WATERFALL,
 } from '../../../constants/flightConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_EVENT,
+} from '../../../constants/errorConditionConstants';
 
 // turn on devContext to enable checking splitEntries value
 tournamentEngine.devContext(true);
@@ -132,9 +136,10 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     splitEntries[2].map(({ scaleValue }) => scaleValue).filter(Boolean)
   ).toEqual([3, 4, 9, 10, 15]);
 
+  // no drawDefinitions were ever generated, so expect attempts to delete them to throw errors
   result = tournamentEngine.deleteFlightProfileAndFlightDraws();
-  expect(result.error).not.toBeUndefined();
+  expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
-  expect(result.success).toEqual(true);
+  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
 });

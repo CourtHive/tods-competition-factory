@@ -2,10 +2,10 @@ import { parseScoreString } from '../../../mocksEngine/utilities/parseScoreStrin
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
 import { verifyStructure } from '../../tests/primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { drawEngine } from '../../sync';
+import { mocksEngine } from '../../..';
 import {
   completeMatchUp,
   verifyMatchUps,
@@ -36,9 +36,16 @@ it('advances paired drawPositions when BYE is assigned first', () => {
   const stage = MAIN;
   const drawSize = 8;
 
-  mainDrawWithEntries({ drawSize, byesCount: 2 });
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: drawSize - 2,
+      automated: false,
+      drawSize,
+    },
+  });
 
-  let { drawDefinition } = drawEngine.getState();
+  drawEngine.setState(drawDefinition);
+
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
@@ -57,10 +64,12 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     structureId,
   });
 
-  drawEngine.assignDrawPositionBye({
+  result = drawEngine.assignDrawPositionBye({
     structureId,
     drawPosition: unassignedPositions[1].drawPosition,
   });
+  expect(result.success).toEqual(true);
+
   let { matchUp } = findMatchUpByRoundNumberAndPosition({
     structureId,
     roundNumber: 2,
@@ -255,9 +264,15 @@ it('advances paired drawPosition if BYE is assigned second', () => {
   const stage = MAIN;
   const drawSize = 8;
 
-  mainDrawWithEntries({ drawSize, byesCount: 2 });
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: drawSize - 2,
+      automated: false,
+      drawSize,
+    },
+  });
+  drawEngine.setState(drawDefinition);
 
-  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });

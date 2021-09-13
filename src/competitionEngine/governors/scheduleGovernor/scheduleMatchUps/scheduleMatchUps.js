@@ -123,9 +123,11 @@ export function scheduleMatchUps({
   });
 
   // this must be done to preserve the order of matchUpIds
-  const targetMatchUps = matchUpIds.map((matchUpId) =>
-    competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
-  );
+  const targetMatchUps = matchUpIds
+    .map((matchUpId) =>
+      competitionMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
+    )
+    .filter(Boolean);
 
   // determines court availability taking into account already scheduled matchUps on the scheduleDate
   // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
@@ -191,7 +193,7 @@ export function scheduleMatchUps({
       RETIRED,
       WALKOVER,
     ].includes(matchUp?.matchUpStatus);
-    return !alreadyScheduled && !matchUp?.winningSide && !doNotSchedule;
+    return !alreadyScheduled && !matchUp.winningSide && !doNotSchedule;
   });
 
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps

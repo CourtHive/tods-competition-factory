@@ -35,6 +35,7 @@ export function generateParticipants({
   participantsCount = 32,
   participantType,
   personIds,
+  uuids,
 
   personData,
   personExtensions,
@@ -118,7 +119,7 @@ export function generateParticipants({
         .join('/');
 
       const groupParticipant = {
-        participantId: UUID(),
+        participantId: uuids?.pop() || UUID(),
         participantType: doubles ? PAIR : TEAM,
         participantRole: COMPETITOR,
         participantName: doubles ? pairName : teamMocks().teams[0],
@@ -160,7 +161,7 @@ export function generateParticipants({
       nationalityCode,
     });
     const participant = {
-      participantId: UUID(),
+      participantId: uuids?.pop() || UUID(),
       participantType: INDIVIDUAL,
       participantRole: COMPETITOR,
       participantName,

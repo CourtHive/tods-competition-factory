@@ -13,6 +13,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   const drawProfiles = [
     {
       drawSize: 8,
+      alternatesCount: 10,
       participantsCount: 8,
       drawType: FEED_IN_CHAMPIONSHIP,
     },
@@ -21,7 +22,6 @@ it('can remove transitive BYEs in consolation of FIC', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { participantsCount: 32 },
     inContext: true,
     drawProfiles,
   });

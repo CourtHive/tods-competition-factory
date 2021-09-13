@@ -4,17 +4,15 @@ import {
   setMatchUpStatus as setStatus,
 } from '../../../tournamentEngine/governors/eventGovernor/setMatchUpStatus';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setMatchUpStatus(params) {
   const { tournamentRecords, tournamentId } = params;
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };
 
   const tournamentRecord = tournamentRecords[tournamentId];
@@ -30,7 +28,6 @@ export function setMatchUpStatus(params) {
 
 export function bulkMatchUpStatusUpdate(params) {
   const { tournamentRecords, outcomes } = params;
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(outcomes)) return { error: MISSING_VALUE };
 
   const tournamentIds = outcomes.reduce(
@@ -56,5 +53,5 @@ export function bulkMatchUpStatusUpdate(params) {
     }
   }
 
-  return SUCCESS;
+  return { ...SUCCESS };
 }

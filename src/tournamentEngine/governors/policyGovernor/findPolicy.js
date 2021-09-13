@@ -23,7 +23,7 @@ export function findPolicy({ tournamentRecord, event, policyType }) {
     tournamentRecord,
   });
 
-  return appliedPolicies
+  return appliedPolicies?.[policyType]
     ? { policy: appliedPolicies[policyType] }
     : { error: POLICY_NOT_FOUND };
 }

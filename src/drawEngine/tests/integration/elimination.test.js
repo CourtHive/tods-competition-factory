@@ -1,24 +1,31 @@
-import { generateDrawStructure } from '../primitives/generateDrawStructure';
+import { getParticipantIdMatchUps } from '../../governors/queryGovernor/participantIdMatchUps';
 import { generateRange, instanceCount, unique } from '../../../utilities';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { drawEngine } from '../../sync';
+import { mocksEngine, tournamentEngine } from '../../..';
 import {
-  completeMatchUp,
   verifyMatchUps,
   verifySideNumbers,
 } from '../primitives/verifyMatchUps';
 
 it('can generate and verify elmination structures', () => {
-  let structureId, drawDefinition;
-
-  ({ structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 32,
-    seedsCount: 8,
-    participantsCount: 17,
-    assignSeeds: 5,
-    matchUpFormat: 'SET3-S:6/TB7',
-    seedAssignmentProfile: { 5: 4 },
-  }));
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 64,
+        seedsCount: 8,
+        assignSeedsCount: 5,
+        participantsCount: 49,
+        matchUpFormat: 'SET3-S:6/TB7',
+        seedAssignmentProfile: { 5: 4 },
+      },
+    ],
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -26,16 +33,29 @@ it('can generate and verify elmination structures', () => {
     expectedSeeds: 5,
     expectedSeedsWithByes: 5,
     expectedByeAssignments: 15,
-    expectedPositionsAssignedCount: 32,
+    expectedPositionsAssignedCount: 64,
     expectedSeedValuesWithBye: [1, 2, 3, 4, 4],
   });
+});
 
-  ({ structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 32,
-    seedsCount: 8,
-    participantsCount: 30,
-    assignSeeds: 8,
-  }));
+it('can generate and verify elmination hierarchies', () => {
+  let structureId, drawDefinition;
+
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 32,
+        seedsCount: 8,
+        participantsCount: 30,
+      },
+    ],
+  });
+  tournamentEngine.setState(tournamentRecord);
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -65,11 +85,13 @@ it('can generate and verify elmination structures', () => {
     ],
   });
 
-  ({ structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 2,
-    participantsCount: 2,
-    matchUpFormat: 'SET3-S:6/TB7',
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 2,
+      participantsCount: 2,
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -83,6 +105,7 @@ it('can generate and verify elmination structures', () => {
 
   verifyMatchUps({
     structureId,
+    drawDefinition,
     expectedRoundPending: [0],
     expectedRoundUpcoming: [1],
     expectedRoundCompleted: [0],
@@ -91,13 +114,22 @@ it('can generate and verify elmination structures', () => {
 
 it('will vary bye distribution', () => {
   const iterations = generateRange(0, 10).map(() => {
-    const { structureId, drawDefinition } = generateDrawStructure({
-      drawSize: 32,
-      seedsCount: 8,
-      participantsCount: 26,
-      assignSeeds: 5,
+    const {
+      drawIds: [drawId],
+      tournamentRecord,
+    } = mocksEngine.generateTournamentRecord({
+      drawProfiles: [
+        {
+          participantsCount: 26,
+          assignSeedsCount: 5,
+          seedsCount: 8,
+          drawSize: 32,
+        },
+      ],
     });
-
+    tournamentEngine.setState(tournamentRecord);
+    const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+    const structureId = drawDefinition.structures[0].structureId;
     const { byeAssignedDrawPositions, filteredQuarters } = verifyStructure({
       structureId,
       drawDefinition,
@@ -125,10 +157,13 @@ it('will vary bye distribution', () => {
 it('can advance participants in elmination structures', () => {
   let structureId, drawDefinition;
 
-  ({ structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 4,
-    participantsCount: 4,
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 4,
+      outcomes: [],
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -144,20 +179,24 @@ it('can advance participants in elmination structures', () => {
     expectedRoundCompleted: [0, 0],
   });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 1,
-    winningSide: 1,
-  });
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 2,
-    winningSide: 2,
-  });
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 4,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 2,
+        },
+      ],
+    },
+  }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyMatchUps({
     structureId,
@@ -167,13 +206,29 @@ it('can advance participants in elmination structures', () => {
     expectedRoundCompleted: [2, 0],
   });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 2,
-    roundPosition: 1,
-    winningSide: 1,
-  });
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 4,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          winningSide: 1,
+        },
+      ],
+    },
+  }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyMatchUps({
     structureId,
@@ -182,11 +237,19 @@ it('can advance participants in elmination structures', () => {
     expectedRoundUpcoming: [0, 0],
     expectedRoundCompleted: [2, 1],
   });
+});
 
-  ({ structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 16,
-    participantsCount: 15,
+it('can advance participants in elmination structures', () => {
+  let structureId, drawDefinition;
+
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 15,
+      drawSize: 16,
+      outcomes: [],
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -202,13 +265,20 @@ it('can advance participants in elmination structures', () => {
     expectedRoundCompleted: [0, 0],
   });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 2,
-    winningSide: 2,
-  });
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 15,
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 2,
+        },
+      ],
+    },
+  }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyMatchUps({
     structureId,
@@ -218,13 +288,25 @@ it('can advance participants in elmination structures', () => {
     expectedRoundCompleted: [1, 0],
   });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 2,
-    roundPosition: 1,
-    winningSide: 1,
-  });
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 15,
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 2,
+          roundPosition: 1,
+          winningSide: 1,
+        },
+      ],
+    },
+  }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyMatchUps({
     structureId,
@@ -236,47 +318,40 @@ it('can advance participants in elmination structures', () => {
 });
 
 it('can reliably generate sideNumbers', () => {
-  const { structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 16,
-    participantsCount: 16,
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 5,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 8,
+          winningSide: 1,
+        },
+      ],
+    },
   });
+
+  let structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
     drawDefinition,
     expectedPositionsAssignedCount: 16,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 2,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 4,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 5,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 8,
-    winningSide: 1,
   });
 
   let expectedDrawPositions = {
@@ -299,39 +374,57 @@ it('can reliably generate sideNumbers', () => {
       ],
     ],
   };
-  verifySideNumbers({ structureId, expectedDrawPositions });
+  verifySideNumbers({ structureId, drawDefinition, expectedDrawPositions });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 1,
-    winningSide: 1,
-  });
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 1,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 5,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 6,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 7,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 8,
+          winningSide: 1,
+        },
+      ],
+    },
+  }));
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 3,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 6,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 7,
-    winningSide: 1,
-  });
+  structureId = drawDefinition.structures[0].structureId;
 
   expectedDrawPositions = {
     2: [
@@ -353,86 +446,60 @@ it('can reliably generate sideNumbers', () => {
       ],
     ],
   };
-  verifySideNumbers({ structureId, expectedDrawPositions });
+
+  verifySideNumbers({ structureId, drawDefinition, expectedDrawPositions });
 });
 
 it('can return participantIdMatchUps', () => {
-  const { structureId, drawDefinition } = generateDrawStructure({
-    drawSize: 16,
-    participantsCount: 14,
+  const { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 14,
+      idPrefix: 'Foo',
+      drawSize: 16,
+      outcomes: [
+        {
+          roundNumber: 1,
+          roundPosition: 8,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 2,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 4,
+          winningSide: 1,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 5,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 3,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 6,
+          winningSide: 2,
+        },
+        {
+          roundNumber: 1,
+          roundPosition: 7,
+          winningSide: 1,
+        },
+      ],
+    },
   });
 
-  verifyStructure({
-    structureId,
+  const { participantIdMatchUps } = getParticipantIdMatchUps({
     drawDefinition,
-    expectedPositionsAssignedCount: 16,
   });
 
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 2,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 4,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 5,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 8,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 1,
-    winningSide: 1,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 3,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 6,
-    winningSide: 2,
-  });
-
-  completeMatchUp({
-    structureId,
-    drawDefinition,
-    roundNumber: 1,
-    roundPosition: 7,
-    winningSide: 1,
-  });
-
-  const { participantIdMatchUps } = drawEngine.getParticipantIdMatchUps();
   const participantIds = Object.keys(participantIdMatchUps);
   expect(participantIds.length).toEqual(14);
 

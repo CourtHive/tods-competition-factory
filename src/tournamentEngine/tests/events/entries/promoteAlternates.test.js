@@ -2,7 +2,12 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INVALID_ENTRY_STATUS } from '../../../../constants/errorConditionConstants';
+import {
+  INVALID_ENTRY_STATUS,
+  MISSING_EVENT,
+  PARTICIPANT_ENTRY_NOT_FOUND,
+  PARTICIPANT_NOT_FOUND_IN_STAGE,
+} from '../../../../constants/errorConditionConstants';
 
 it('can promote alternates', () => {
   const drawProfiles = [
@@ -11,13 +16,16 @@ it('can promote alternates', () => {
       participantsCount: 30,
     },
   ];
-  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
-  const eventId = eventIds[0];
 
   let {
     event: { entries },
@@ -29,10 +37,16 @@ it('can promote alternates', () => {
 
   let result = tournamentEngine.promoteAlternate({
     tournamentEngine,
-    eventId,
     participantId,
+    eventId,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.promoteAlternate({
+    tournamentEngine,
+    participantId,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
 
   ({
     event: { entries },
@@ -42,8 +56,8 @@ it('can promote alternates', () => {
 
   result = tournamentEngine.promoteAlternate({
     tournamentEngine,
-    eventId,
     participantId,
+    eventId,
   });
   expect(result.error).toEqual(INVALID_ENTRY_STATUS);
 
@@ -51,8 +65,16 @@ it('can promote alternates', () => {
 
   result = tournamentEngine.promoteAlternate({
     tournamentEngine,
-    eventId,
+    stageSequence: 4,
     participantId,
+    eventId,
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND_IN_STAGE);
+
+  result = tournamentEngine.promoteAlternate({
+    tournamentEngine,
+    participantId,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -61,4 +83,19 @@ it('can promote alternates', () => {
   } = tournamentEngine.getEvent({ eventId }));
   alternates = entries.filter((entry) => entry.entryStatus === ALTERNATE);
   expect(alternates.length).toEqual(0);
+
+  result = tournamentEngine.promoteAlternate({
+    tournamentEngine,
+    participantId: 'invalid',
+    eventId,
+  });
+  expect(result.error).toEqual(PARTICIPANT_ENTRY_NOT_FOUND);
+
+  result = tournamentEngine.promoteAlternate({
+    tournamentEngine,
+    participantId,
+    eventId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_ENTRY_STATUS);
 });

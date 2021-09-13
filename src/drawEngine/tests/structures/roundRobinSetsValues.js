@@ -278,8 +278,7 @@ export const valueProfiles = [
   },
 ];
 
-export function getSetValues({ groupOrder } = {}) {
-  if (!Array.isArray(groupOrder)) return undefined;
+function getSetValues({ groupOrder }) {
   const valueProfile = valueProfiles.find((valueProfile) => {
     return groupOrder.join('-') === valueProfile.groupOrder.join('-');
   });

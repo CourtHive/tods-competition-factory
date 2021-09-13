@@ -1,16 +1,26 @@
-import { generateFeedIn } from '../../tests/primitives/generateDrawStructure';
-import { verifyStructure } from '../../tests/primitives/verifyStructure';
-import { mocksEngine } from '../../..';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { mocksEngine, tournamentEngine } from '../../..';
 
 import { FEED_IN } from '../../../constants/drawDefinitionConstants';
 
 it('can accurately generate sideNumbers', () => {
-  const { structureId, drawDefinition } = generateFeedIn({
-    drawSize: 34,
-    seedsCount: 4,
-    assignSeeds: 4,
-    participantsCount: 32,
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        participantsCount: 32,
+        drawType: FEED_IN,
+        drawSize: 34,
+        seedsCount: 4,
+        assignSeeds: 4,
+      },
+    ],
   });
+  tournamentEngine.setState(tournamentRecord);
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -27,10 +37,14 @@ it('can accurately generate sideNumbers', () => {
 it('can generate and verify feed-in structures', () => {
   let structureId, drawDefinition;
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 12,
-    participantsCount: 12,
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 12,
+      drawType: FEED_IN,
+      drawSize: 12,
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -38,10 +52,14 @@ it('can generate and verify feed-in structures', () => {
     expectedRoundMatchUpsCounts: [4, 4, 2, 1],
   });
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 11,
-    participantsCount: 11,
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 11,
+      drawType: FEED_IN,
+      drawSize: 11,
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -49,34 +67,38 @@ it('can generate and verify feed-in structures', () => {
     expectedRoundMatchUpsCounts: [4, 2, 2, 1],
   });
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 13,
-    participantsCount: 13,
+  ({ drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      participantsCount: 13,
+      drawType: FEED_IN,
+      drawSize: 13,
+    },
   }));
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
     drawDefinition,
     expectedRoundMatchUpsCounts: [4, 4, 2, 1, 1],
   });
+});
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 11,
-    participantsCount: 11,
-  }));
-
-  verifyStructure({
-    structureId,
-    drawDefinition,
-    expectedRoundMatchUpsCounts: [4, 2, 2, 1],
+it('can generate feedIn structures with various seedCounts', () => {
+  let { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        enforcePolicyLimits: false,
+        participantsCount: 28,
+        assignSeedsCount: 4,
+        drawType: FEED_IN,
+        seedsCount: 4, // requires use of mocksEngine.generateTournamentRecord
+        drawSize: 28,
+      },
+    ],
   });
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 28,
-    seedsCount: 4,
-    assignSeeds: 4,
-    participantsCount: 28,
-  }));
+  let drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  let structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -89,12 +111,21 @@ it('can generate and verify feed-in structures', () => {
     expectedRoundMatchUpsCounts: [8, 8, 4, 4, 2, 1],
   });
 
-  ({ structureId, drawDefinition } = generateFeedIn({
-    drawSize: 34,
-    seedsCount: 4,
-    assignSeeds: 4,
-    participantsCount: 32,
+  ({ tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        enforcePolicyLimits: false,
+        participantsCount: 32,
+        drawType: FEED_IN,
+        drawSize: 34,
+        seedsCount: 4, // requires use of mocksEngine.generateTournamentRecord
+        assignSeedsCount: 4,
+      },
+    ],
   }));
+
+  drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,
@@ -109,13 +140,22 @@ it('can generate and verify feed-in structures', () => {
 });
 
 it('can generate large feedIn with many BYEs', () => {
-  const { structureId, drawDefinition } = generateFeedIn({
-    drawSize: 63,
-    seedsCount: 33,
-    assignSeeds: 33,
-    participantsCount: 50,
-    seedAssignmentProfile: { 5: 4 },
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawSize: 63,
+        seedsCount: 33,
+        assignSeeds: 33,
+        participantsCount: 50,
+        enforcePolicyLimits: false,
+        seedAssignmentProfile: { 5: 4 },
+        drawType: FEED_IN,
+      },
+    ],
   });
+
+  const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
+  const structureId = drawDefinition.structures[0].structureId;
 
   verifyStructure({
     structureId,

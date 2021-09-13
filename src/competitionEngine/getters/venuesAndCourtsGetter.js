@@ -39,7 +39,7 @@ export function getVenuesAndCourts({ tournamentRecords }) {
   return { courts, venues };
 }
 
-export function getCompetitionVenues({ tournamentRecords }) {
+export function getCompetitionVenues({ tournamentRecords, requireCourts }) {
   if (
     typeof tournamentRecords !== 'object' ||
     !Object.keys(tournamentRecords).length
@@ -52,8 +52,9 @@ export function getCompetitionVenues({ tournamentRecords }) {
       const tournamentRecord = tournamentRecords[tournamentId];
       const { venues } = teVenuesAndCourts({ tournamentRecord });
       venues.forEach((venue) => {
-        const { venueId } = venue;
-        if (!accumulator.venueIds.includes(venueId)) {
+        const { venueId, courts } = venue;
+        const includeVenue = !requireCourts || courts?.length;
+        if (includeVenue && !accumulator.venueIds.includes(venueId)) {
           accumulator.venues.push(venue);
           accumulator.venueIds.push(venueId);
         }

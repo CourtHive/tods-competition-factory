@@ -6,7 +6,6 @@ import {
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
   INVALID_POLICY_DEFINITION,
-  MISSING_POLICY_DEFINITION,
   MISSING_SEEDCOUNT_THRESHOLDS,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
@@ -40,12 +39,11 @@ export function getSeedsCount({
       event,
     });
     if (result.error) return result;
-    if (!result.policyDefinitions) return { error: MISSING_POLICY_DEFINITION };
     policyDefinitions = result.policyDefinitions;
   }
   if (participantCount && isNaN(participantCount))
     return { error: INVALID_VALUES };
-  if (requireParticipantCount && !participantCount)
+  if (requireParticipantCount && isNaN(participantCount))
     return { error: MISSING_PARTICIPANT_COUNT };
   if (!drawSize) {
     if (participantCount) {

@@ -1,8 +1,8 @@
 import { structureAssignedDrawPositions } from '../../getters/positionsGetter';
-import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { getDrawStructures } from '../../getters/findStructure';
 import { getStageEntries } from '../../getters/stageGetter';
 import { drawEngine } from '../../sync';
+import { mocksEngine } from '../../..';
 import {
   reset,
   initialize,
@@ -19,14 +19,22 @@ import {
   DIRECT_ACCEPTANCE,
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
+import { generateRange } from '../../../utilities';
 
 let result;
 
 it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
   const stage = MAIN;
   const drawSize = 4;
-  mainDrawWithEntries({ drawSize });
-  let { drawDefinition } = drawEngine.getState();
+
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      automated: false,
+      drawSize,
+    },
+  });
+  drawEngine.setState(drawDefinition);
+
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
@@ -46,17 +54,6 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     structureId,
   });
   expect(unassignedPositions.length).toEqual(participantIds.length);
-
-  // expect it to fail if a bogus participantId is used to assign a position
-  // NOTE: this validation check has been removed because of flighting... need to make it optional check?
-  /*
-  result = drawEngine.assignDrawPosition({
-    structureId,
-    drawPosition: 1,
-    participantId: 'bogusId',
-  });
-  expect(result).toHaveProperty(ERROR);
-  */
 
   // expect it to fail if an invalid drawPosition is attempted
   const participantId = participantIds[0];
@@ -99,9 +96,19 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
 });
 
 it('can assign ROUND_ROBIN draw drawPositions', () => {
-  mainDrawWithEntries({ drawSize: 16, drawType: ROUND_ROBIN });
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    uuids: generateRange(0, 100)
+      .reverse()
+      .map((i) => `uuid${i}`),
+    drawProfile: {
+      drawType: ROUND_ROBIN,
+      automated: false,
+      drawSize: 16,
+    },
+  });
+  drawEngine.setState(drawDefinition);
+
   const stage = MAIN;
-  let { drawDefinition } = drawEngine.getState();
   const {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
@@ -150,8 +157,9 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   groups.forEach((group, i) => {
     const positionAssignments = group.positionAssignments;
     positionAssignments.forEach((assignment, j) => {
-      const expectedParticipant = i * 4 + j;
+      const expectedParticipant = (i * 4 + j) * 2;
       const expectedUUID = `uuid${expectedParticipant}`;
+      expect(expectedUUID).not.toBeUndefined();
       expect(assignment.participantId).toEqual(expectedUUID);
     });
   });

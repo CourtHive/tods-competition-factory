@@ -1,10 +1,10 @@
 import { getStructureSeedAssignments } from '../../getters/getStructureSeedAssignments';
 import { getAppliedPolicies } from '../../governors/policyGovernor/getAppliedPolicies';
-import { mainDrawWithEntries } from '../../tests/primitives/primitives';
 import { getDrawStructures } from '../../getters/structureGetter';
 import { getValidSeedBlocks } from '../../getters/seedGetter';
 import { getStageEntries } from '../../getters/stageGetter';
 import { findStructure } from '../../getters/findStructure';
+import { mocksEngine, setSubscriptions } from '../../..';
 import { numericSort } from '../../../utilities';
 import { drawEngine } from '../../sync';
 
@@ -19,23 +19,29 @@ import {
   WILDCARD,
 } from '../../../constants/entryStatusConstants';
 
+import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { setSubscriptions } from '../../..';
-import { MODIFY_DRAW_DEFINITION } from '../../../constants/topicConstants';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;
   let seedsCount = 16;
   const stage = MAIN;
-  mainDrawWithEntries({ drawSize, seedsCount });
 
-  const { drawDefinition } = drawEngine.getState();
+  const { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      enforcePolicyLimits: false,
+      automated: false,
+      seedsCount,
+      drawSize,
+    },
+  });
+  drawEngine.setState(drawDefinition);
 
   const { structures: stageStructures } = getDrawStructures({
+    stageSequence: 1,
     drawDefinition,
     stage,
-    stageSequence: 1,
   });
   const { structureId } = stageStructures[0];
 
@@ -219,10 +225,17 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   const drawSize = 64;
   const seedsCount = 16;
   const stage = MAIN;
-  mainDrawWithEntries({ drawSize, seedsCount });
 
-  drawEngine.attachPolicies({ policyDefinitions: SEEDING_ITF });
-  const { drawDefinition } = drawEngine.getState();
+  const { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      enforcePolicyLimits: false,
+      policyDefinitions: SEEDING_ITF,
+      automated: false,
+      seedsCount,
+      drawSize,
+    },
+  });
+  drawEngine.setState(drawDefinition);
 
   const { structures: stageStructures } = getDrawStructures({
     drawDefinition,
@@ -405,13 +418,19 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   }));
   expect(seedAssignments.length).toEqual(17);
   expect(seedAssignments[16].seedValue).toEqual('yyy');
-  expect(drawModifications).toEqual(15);
+  expect(drawModifications).toEqual(12);
 });
 
 function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
-  const {
-    structure: { structureId },
-  } = mainDrawWithEntries({ drawSize });
+  let { drawDefinition } = mocksEngine.generateEventWithDraw({
+    drawProfile: {
+      automated: false,
+      drawSize,
+    },
+  });
+  drawEngine.setState(drawDefinition);
+  const structureId = drawDefinition.structures[0].structureId;
+
   const seedsCount = Math.max(
     ...[].concat(...expectedBlocks.map((b) => b.seedNumbers))
   );
@@ -419,7 +438,7 @@ function checkSeedBlocks({ drawSize, policy, expectedBlocks }) {
   drawEngine.attachPolicies({ policyDefinitions: policy });
   drawEngine.initializeStructureSeedAssignments({ structureId, seedsCount });
 
-  const { drawDefinition } = drawEngine.getState();
+  // const { drawDefinition } = drawEngine.getState();
   const { structure } = findStructure({ drawDefinition, structureId });
 
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });

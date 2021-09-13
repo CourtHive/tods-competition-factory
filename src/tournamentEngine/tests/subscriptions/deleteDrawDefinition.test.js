@@ -1,8 +1,8 @@
-import tournamentEngine from '../../sync';
+import { setSubscriptions } from '../../../global/globalState';
 import mocksEngine from '../../../mocksEngine';
+import tournamentEngine from '../../sync';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { setSubscriptions } from '../../../global/globalState';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {

@@ -133,5 +133,9 @@ export function addEventEntryPairs({
     addNotice({ topic: ADD_PARTICIPANTS, participants: newParticipants });
   }
 
-  return { ...result, message };
+  const newParticipantIds = newParticipants.map(
+    ({ participantId }) => participantId
+  );
+
+  return { ...result, message, newParticipantIds };
 }

@@ -85,13 +85,14 @@ export function isValidSchedulingProfile({
 export function tournamentRelevantSchedulingIds({
   tournamentRecord = {},
   tournamentMap = {},
+  requireCourts,
 } = {}) {
   const drawIds = [];
   const eventIds = [];
   const structureIds = [];
   const tournamentIds = [];
   const venueIds = (tournamentRecord?.venues || []).map(
-    ({ venueId }) => venueId
+    ({ venueId, courts }) => (!requireCourts || courts?.length) && venueId
   );
   const tournamentId = tournamentRecord?.tournamentId;
   if (tournamentId) {

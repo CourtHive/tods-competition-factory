@@ -1,9 +1,13 @@
-import mocksEngine from '../../../../mocksEngine';
 import { chunkArray, unique } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
-import { DOUBLES } from '../../../../constants/eventConstants';
+import {
+  INVALID_PARTICIPANT_IDS,
+  MISSING_EVENT,
+} from '../../../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantTypes';
+import { DOUBLES } from '../../../../constants/eventConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const participantsProfile = {
@@ -36,6 +40,15 @@ it('can modify entries for a DOUBLES event and create PAIR participants', () => 
   let result = tournamentEngine.addEvent({ event });
   expect(result.success).toEqual(true);
   const { eventId } = result.event;
+
+  result = tournamentEngine.modifyEventEntries({ participantIdPairs });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = tournamentEngine.modifyEventEntries({
+    participantIdPairs: ['invalid'],
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
   result = tournamentEngine.modifyEventEntries({ eventId, participantIdPairs });
   expect(result.success).toEqual(true);

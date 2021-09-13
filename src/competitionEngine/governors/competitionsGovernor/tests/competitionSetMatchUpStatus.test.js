@@ -1,6 +1,10 @@
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
+import {
+  MISSING_TOURNAMENT_RECORD,
+  MISSING_VALUE,
+} from '../../../../constants/errorConditionConstants';
 
 const asyncCompetitionEngine = competitionEngineAsync(true);
 
@@ -47,6 +51,14 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
         score,
       };
     });
+
+    result = await competitionEngine.bulkMatchUpStatusUpdate({});
+    expect(result.error).toEqual(MISSING_VALUE);
+
+    result = await competitionEngine.bulkMatchUpStatusUpdate({
+      outcomes: [{ drawId: 'bogusId' }],
+    });
+    expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
     result = await competitionEngine.bulkMatchUpStatusUpdate({ outcomes });
     expect(result.success).toEqual(true);

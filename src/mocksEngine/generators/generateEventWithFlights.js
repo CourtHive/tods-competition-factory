@@ -1,5 +1,6 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
+import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
@@ -11,11 +12,12 @@ import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEven
 import { validExtension } from '../../global/validation/validExtension';
 import { generateParticipants } from './generateParticipants';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { UUID } from '../../utilities';
+import { generateRange, UUID } from '../../utilities';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
+import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
   QUALIFYING,
@@ -32,20 +34,22 @@ export function generateEventWithFlights({
   matchUpStatusProfile,
   randomWinningSide,
   eventProfile,
+  startDate,
+  uuids,
 }) {
   const {
+    eventName = 'Generated Event',
+    tieFormat: eventTieFormat,
+    eventType = SINGLES,
+    policyDefinitions,
+    drawProfiles = [],
+    eventExtensions,
+    surfaceCategory,
+    discipline,
+    eventLevel,
     ballType,
     category,
-    discipline,
-    drawProfiles = [],
-    eventName = 'Generated Event',
-    eventLevel,
-    eventType = SINGLES,
     gender,
-    surfaceCategory,
-    tieFormat: eventTieFormat,
-    policyDefinitions,
-    eventExtensions,
   } = eventProfile;
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
@@ -53,20 +57,26 @@ export function generateEventWithFlights({
   let uniqueParticipantsCount = {};
   const stageParticipantsCount = drawProfiles.reduce(
     (stageParticipantsCount, drawProfile) => {
-      const stage = drawProfile.stage || MAIN;
+      const {
+        qualifyingPositions = 0,
+        participantsCount = 0,
+        uniqueParticipants,
+        stage = MAIN,
+        drawSize = 0,
+      } = drawProfile;
+
       if (!Object.keys(stageParticipantsCount).includes(stage))
         stageParticipantsCount[stage] = 0;
 
-      const participantsCount =
-        drawProfile.participantsCount ||
-        (drawProfile.drawSize || 0) - (drawProfile.qualifyingPositions || 0);
-      if (drawProfile.uniqueParticipants) {
+      const stageCount = participantsCount || drawSize - qualifyingPositions;
+
+      if (uniqueParticipants) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
-        uniqueParticipantsCount[stage] += participantsCount;
+        uniqueParticipantsCount[stage] += stageCount;
       } else {
         stageParticipantsCount[stage] = Math.max(
-          participantsCount,
+          stageCount,
           stageParticipantsCount[stage]
         );
       }
@@ -102,11 +112,12 @@ export function generateEventWithFlights({
     const qualifyingParticipantsCount =
       uniqueParticipantsCount[QUALIFYING] || 0;
 
-    const { participants: uniqueParticipants } = generateParticipants({
+    const { participants: uniqueFlightParticipants } = generateParticipants({
       participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
       participantType: eventParticipantType,
       sex: gender,
 
+      uuids,
       valuesInstanceLimit,
       nationalityCodesCount,
       nationalityCodeType,
@@ -119,14 +130,14 @@ export function generateEventWithFlights({
 
     let result = addParticipants({
       tournamentRecord,
-      participants: uniqueParticipants,
+      participants: uniqueFlightParticipants,
     });
     if (result.error) return result;
 
-    uniqueDrawParticipants = uniqueParticipants.filter(
+    uniqueDrawParticipants = uniqueFlightParticipants.filter(
       ({ participantType }) => participantType === eventParticipantType
     );
-    uniqueParticipants.forEach(({ participantId }) =>
+    uniqueFlightParticipants.forEach(({ participantId }) =>
       uniqueParticipantIds.push(participantId)
     );
   }
@@ -156,7 +167,7 @@ export function generateEventWithFlights({
   let { eventAttributes } = eventProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
 
-  const eventId = UUID();
+  const eventId = eventProfile.eventId || UUID();
   const newEvent = {
     ...eventAttributes,
     ballType,
@@ -193,18 +204,21 @@ export function generateEventWithFlights({
   for (const drawProfile of drawProfiles) {
     const {
       drawType = SINGLE_ELIMINATION,
-      qualifyingPositions,
+      qualifyingPositions = 0,
+      uniqueParticipants,
+      stage = MAIN,
+      drawSize = 0,
       drawName,
-      drawSize,
-      stage,
     } = drawProfile;
-    const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
+
+    const entriesCount = drawSize - qualifyingPositions;
 
     // if a drawProfile has specified uniqueParticipants...
-    const drawParticipants = drawProfile.uniqueParticipants
+    const drawParticipants = uniqueParticipants
       ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
       : stageParticipants[stage || MAIN] || [];
-    if (drawProfile.uniqueParticipants) uniqueParticipantsIndex += entriesCount;
+
+    if (uniqueParticipants) uniqueParticipantsIndex += entriesCount;
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)
@@ -212,26 +226,28 @@ export function generateEventWithFlights({
 
     if (drawParticipantIds.length) {
       const result = addEventEntries({
-        tournamentRecord,
-        event,
-        stage: stage || MAIN,
         participantIds: drawParticipantIds,
         autoEntryPositions,
+        tournamentRecord,
+        stage,
+        event,
       });
       if (result.error) return result;
     }
+
     const drawEntries = drawParticipantIds.map((participantId) => ({
-      participantId,
-      entryStage: stage || MAIN,
       entryStatus: DIRECT_ACCEPTANCE,
+      entryStage: stage,
+      participantId,
     }));
+
     const result = addFlight({
+      drawName: drawName || drawType,
+      qualifyingPositions,
+      drawEntries,
+      drawSize,
       event,
       stage,
-      drawName: drawName || drawType,
-      drawSize,
-      drawEntries,
-      qualifyingPositions,
     });
     if (result.error) {
       return result;
@@ -244,28 +260,50 @@ export function generateEventWithFlights({
   if (Array.isArray(flightProfile?.flights)) {
     for (const [index, flight] of flightProfile.flights.entries()) {
       const { drawId, drawSize, stage, drawName, drawEntries } = flight;
-      const drawType = drawProfiles[index].drawType || SINGLE_ELIMINATION;
-      const tieFormat = drawProfiles[index].tieFormat || eventTieFormat;
-      const matchUpFormat = drawProfiles[index].matchUpFormat;
-      const automated = drawProfiles[index].automated;
-      const idPrefix = drawProfiles[index].idPrefix;
-      const uuids = drawProfiles[index].uuids;
 
+      const drawProfile = drawProfiles[index];
+      const { seedsCount } = drawProfile;
+      const drawParticipantIds = drawEntries
+        .filter(({ participantId }) => participantId)
+        .map(({ participantId }) => participantId);
+
+      const seedingScaleName =
+        event.category?.ageCategoryCode ||
+        event.category?.categoryName ||
+        eventName;
+      if (
+        tournamentRecord &&
+        seedsCount &&
+        seedsCount <= drawParticipantIds.length
+      ) {
+        const scaleValues = generateRange(1, seedsCount + 1);
+        scaleValues.forEach((scaleValue, index) => {
+          let scaleItem = {
+            scaleValue,
+            scaleName: seedingScaleName,
+            scaleType: SEEDING,
+            eventType,
+            scaleDate: startDate,
+          };
+          const participantId = drawParticipantIds[index];
+          setParticipantScaleItem({
+            tournamentRecord,
+            participantId,
+            scaleItem,
+          });
+        });
+      }
       let result = generateDrawDefinition({
+        ...drawProfile,
         matchUpType: eventType,
+        seedingScaleName,
         tournamentRecord,
-        matchUpFormat,
         drawEntries,
-        automated,
-        tieFormat,
         drawSize,
-        drawType,
         drawName,
-        idPrefix,
         drawId,
         event,
         stage,
-        uuids,
       });
 
       const { drawDefinition, error } = result;
@@ -287,17 +325,20 @@ export function generateEventWithFlights({
       if (result.error) return result;
       drawIds.push(flight.drawId);
 
-      const manual = automated === false;
+      // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
+
+      const manual = drawProfile.automated === false;
       if (!manual && completeAllMatchUps) {
+        const matchUpFormat = drawProfile.matchUpFormat;
         const result = completeDrawMatchUps({
           completeAllMatchUps,
           matchUpStatusProfile,
           randomWinningSide,
-          matchUpFormat,
           drawDefinition,
+          matchUpFormat,
         });
         if (result.error) return result;
-        if (drawProfiles[index].drawType === ROUND_ROBIN_WITH_PLAYOFF) {
+        if (drawProfile.drawType === ROUND_ROBIN_WITH_PLAYOFF) {
           const mainStructure = drawDefinition.structures.find(
             (structure) => structure.stage === MAIN
           );

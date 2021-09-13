@@ -37,20 +37,19 @@ import {
     automated = true, // can be true/false or "truthy" { seedsOnly: true }
  */
 export function generateDrawDefinition(params) {
-  const { tournamentRecord, event } = params;
-  let { drawName, matchUpType, structureOptions } = params;
-
   const {
     drawType = SINGLE_ELIMINATION,
     enforcePolicyLimits = true,
     finishingPositionNaming,
     ignoreAllowedDrawTypes,
+    seedAssignmentProfile, // mainly used by mocksEngine for scenario testing
     playoffMatchUpFormat,
     seedByRanking = true,
     qualifyingPositions,
     seededParticipants,
     policyDefinitions,
     seedingScaleName,
+    assignSeedsCount, // used for testing bye placement next to seeds
     automated = true,
     qualifyingRound,
     seedingProfile,
@@ -62,6 +61,8 @@ export function generateDrawDefinition(params) {
     uuids,
   } = params;
 
+  const { tournamentRecord, event } = params;
+  let { drawName, matchUpType, structureOptions } = params;
   const participants = tournamentRecord?.participants;
 
   const validEntriesTest =
@@ -71,14 +72,15 @@ export function generateDrawDefinition(params) {
     return validEntriesTest;
   }
 
-  const tournamentAllowedDrawTypes =
+  const allowedDrawTypes =
     !ignoreAllowedDrawTypes &&
     tournamentRecord &&
-    getAllowedDrawTypes({ tournamentRecord });
-  if (
-    tournamentAllowedDrawTypes?.length &&
-    !tournamentAllowedDrawTypes.includes(drawType)
-  ) {
+    getAllowedDrawTypes({
+      tournamentRecord,
+      categoryType: event?.categoryType,
+      categoryName: event?.categoryName,
+    });
+  if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
     return { error: INVALID_DRAW_TYPE };
   }
 
@@ -110,8 +112,20 @@ export function generateDrawDefinition(params) {
   }
 
   const drawDefinition = newDrawDefinition({ drawType, drawId });
-
   setStageDrawSize({ drawDefinition, stage, drawSize });
+
+  if (drawEntries) {
+    const drawEntryStages = drawEntries
+      .reduce(
+        (stages, entry) =>
+          stages.includes(entry.entryStage)
+            ? stages
+            : stages.concat(entry.entryStage),
+        []
+      )
+      .filter((entryStage) => entryStage !== stage);
+    if (drawEntryStages.length) console.log({ drawEntryStages });
+  }
 
   if (matchUpFormat || tieFormat) {
     let equivalentInScope =
@@ -208,7 +222,6 @@ export function generateDrawDefinition(params) {
     attachPolicies({ drawDefinition, policyDefinitions: eventAvoidancePolicy });
   }
 
-  // OPTIMIZE: use drawEngine.addDrawEntries
   for (const entry of entries) {
     // convenience: assume MAIN as entryStage if none provided
     const entryData = {
@@ -216,9 +229,12 @@ export function generateDrawDefinition(params) {
       entryStage: entry.entryStage || MAIN,
       drawDefinition,
     };
-    // NOTE: we don't throw an error if an entry can't be added
-    // INVESTIGATE: not entirely sure why this is the case. All but one test passes when error is thrown.
-    addDrawEntry(entryData);
+    const result = addDrawEntry(entryData);
+    if (drawEntries && result.error) {
+      // only report errors with drawEntries
+      // if entries are taken from event.entries assume stageSpace is not available
+      return result;
+    }
   }
 
   const enteredParticipantIds = entries.map(
@@ -285,7 +301,7 @@ export function generateDrawDefinition(params) {
       stage,
     });
 
-    if (!scaledEntries.length && seedByRanking) {
+    if (!scaledEntries?.length && seedByRanking) {
       const rankingScaleAttributes = {
         scaleType: RANKING,
         scaleName: categoryName || ageCategoryCode,
@@ -308,10 +324,10 @@ export function generateDrawDefinition(params) {
         .filter(({ participantId }) =>
           enteredParticipantIds.includes(participantId)
         )
-        .slice(0, seedsCount)
+        .slice(0, assignSeedsCount || seedsCount)
         .forEach((scaledEntry, index) => {
           const seedNumber = index + 1;
-          const seedValue = seedNumber;
+          const seedValue = seedAssignmentProfile?.[seedNumber] || seedNumber;
           // ?? attach basis of seeding information to seedAssignment ??
           const { participantId } = scaledEntry;
           assignSeed({

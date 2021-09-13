@@ -5,23 +5,22 @@ import { getFlightProfile } from '../../../getters/getFlightProfile';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_EVENT,
-  EVENT_NOT_FOUND,
   MISSING_PARTICIPANT_IDS,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
 } from '../../../../constants/errorConditionConstants';
 
 export function removeEventEntries({
+  autoEntryPositions = true,
   tournamentRecord,
   participantIds,
   event,
-  autoEntryPositions = true,
 }) {
-  if (!event) return { error: MISSING_EVENT };
-  if (!participantIds || !participantIds.length)
-    return { error: MISSING_PARTICIPANT_IDS };
+  if (!event?.eventId) return { error: MISSING_EVENT };
+  if (!Array.isArray(participantIds)) return { error: MISSING_PARTICIPANT_IDS };
 
-  if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
-  if (!event.entries) event.entries = [];
+  participantIds = participantIds?.filter(Boolean);
+  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
+
   const { eventId } = event;
 
   const { tournamentParticipants } = getTournamentParticipants({
@@ -30,7 +29,7 @@ export function removeEventEntries({
     tournamentRecord,
   });
 
-  const enteredParticipantIds = tournamentParticipants.every((participant) => {
+  const enteredParticipantIds = tournamentParticipants?.every((participant) => {
     const eventObject = participant.events.find(
       (event) => event.eventId === eventId
     );
@@ -42,12 +41,9 @@ export function removeEventEntries({
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
   }
 
-  event.entries = event.entries.filter((entry) => {
-    const entryId =
-      entry.participantId ||
-      (entry.participant && entry.participant.participantId);
-    return participantIds.includes(entryId) ? false : true;
-  });
+  event.entries = (event.entries || []).filter((entry) =>
+    participantIds.includes(entry?.participantId) ? false : true
+  );
 
   if (autoEntryPositions) {
     event.entries = refreshEntryPositions({

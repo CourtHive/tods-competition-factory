@@ -1,18 +1,19 @@
-import mocksEngine from '../../../../mocksEngine';
-import { instanceCount } from '../../../../utilities';
-import tournamentEngine from '../../../../tournamentEngine/sync';
-
 import { replaceWithAlternate, replaceWithBye } from '../../testingUtilities';
+import tournamentEngine from '../../../../tournamentEngine/sync';
+import { instanceCount } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
+
+import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import {
   BYE,
   TO_BE_PLAYED,
 } from '../../../../constants/matchUpStatusConstants';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 
 it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [
     {
       drawSize: 4,
+      alternatesCount: 10,
       participantsCount: 4,
       drawType: ROUND_ROBIN,
     },
@@ -21,7 +22,6 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { participantsCount: 32 },
     drawProfiles,
   });
 

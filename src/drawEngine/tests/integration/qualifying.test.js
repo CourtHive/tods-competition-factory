@@ -7,18 +7,19 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
-it.only('can generate and verify qualifying structures', () => {
+it('can generate and verify qualifying structures', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      seedsCount: 8,
+      stage: QUALIFYING,
+      qualifyingRound: 2,
+      participantsCount: 17,
+      drawType: SINGLE_ELIMINATION,
+    },
+  ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        drawSize: 32,
-        seedsCount: 8,
-        stage: QUALIFYING,
-        qualifyingRound: 2,
-        participantsCount: 17,
-        drawType: SINGLE_ELIMINATION,
-      },
-    ],
+    eventProfiles: [{ drawProfiles }],
   });
 
   const drawDefinition = tournamentRecord.events[0].drawDefinitions[0];
@@ -72,6 +73,7 @@ it('can generate qualifying and linked elimination structure', () => {
     expectedSeedsWithByes: 0,
     expectedByeAssignments: 0,
     expectedSeedValuesWithBye: [],
+    expectedQualifierAssignments: 8,
     expectedPositionsAssignedCount: 32,
     expectedRoundMatchUpsCounts: [16, 8, 4, 2, 1],
   });

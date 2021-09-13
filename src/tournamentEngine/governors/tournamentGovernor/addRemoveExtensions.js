@@ -5,6 +5,7 @@ import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   INVALID_VALUES,
+  MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
@@ -58,7 +59,7 @@ export function addDrawDefinitionExtension({ drawDefinition, extension } = {}) {
 }
 
 export function addEventExtension({ event, extension } = {}) {
-  if (!event) return { error: EVENT_NOT_FOUND };
+  if (!event) return { error: MISSING_EVENT };
   return addExtension({ element: event, extension });
 }
 

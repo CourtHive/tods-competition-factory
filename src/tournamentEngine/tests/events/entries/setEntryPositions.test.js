@@ -1,7 +1,10 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import {
+  INVALID_VALUES,
+  MISSING_PARTICIPANT_ID,
+} from '../../../../constants/errorConditionConstants';
 import {
   ALTERNATE,
   DIRECT_ACCEPTANCE,
@@ -14,13 +17,16 @@ it('can set entryPositions', () => {
       participantsCount: 30,
     },
   ];
-  const { eventIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
-  const eventId = eventIds[0];
 
   let {
     event: { entries },
@@ -35,10 +41,25 @@ it('can set entryPositions', () => {
   ];
   let result = tournamentEngine.setEntryPositions({
     tournamentEngine,
-    eventId,
     entryPositions,
+    eventId,
   });
   expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.setEntryPositions({
+    tournamentEngine,
+    eventId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  // code coverage for single participant
+  result = tournamentEngine.setEntryPosition({
+    tournamentEngine,
+    eventId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 
   // expect success
   entryPositions = [
@@ -47,8 +68,8 @@ it('can set entryPositions', () => {
   ];
   result = tournamentEngine.setEntryPositions({
     tournamentEngine,
-    eventId,
     entryPositions,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -87,8 +108,8 @@ it('can set entryPositions', () => {
   ];
   result = tournamentEngine.setEntryPositions({
     tournamentEngine,
-    eventId,
     entryPositions,
+    eventId,
   });
   expect(result.success).toEqual(true);
 
@@ -97,8 +118,8 @@ it('can set entryPositions', () => {
   ];
   result = tournamentEngine.setEntryPositions({
     tournamentEngine,
-    eventId,
     entryPositions,
+    eventId,
   });
   expect(result.success).toEqual(true);
 });

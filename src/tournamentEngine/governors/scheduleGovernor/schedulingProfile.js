@@ -1,5 +1,6 @@
 import { getUpdatedSchedulingProfile } from '../../../competitionEngine/governors/scheduleGovernor/schedulingProfile/schedulingProfile';
 import { tournamentRelevantSchedulingIds } from '../../../global/validation/validSchedulingProfile';
+import { getEventIdsAndDrawIds } from '../../../competitionEngine/getters/getEventIdsAndDrawIds';
 import { addTournamentExtension } from '../tournamentGovernor/addRemoveExtensions';
 import { findTournamentExtension } from '../queryGovernor/extensionQueries';
 
@@ -23,12 +24,44 @@ export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
 
 export function getSchedulingProfile({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const tournamentId = tournamentRecord.tournamentId;
 
   const { extension } = findTournamentExtension({
     tournamentRecord,
     name: SCHEDULING_PROFILE,
   });
-  return { schedulingProfile: extension?.value || [] };
+
+  let schedulingProfile = extension?.value || [];
+
+  if (schedulingProfile.length) {
+    const venueIds = tournamentRecord.venues.map(
+      ({ venueId, courts }) => courts?.length && venueId
+    );
+    const { eventIds, drawIds } = getEventIdsAndDrawIds({
+      tournamentRecords: { [tournamentId]: tournamentRecord },
+    });
+
+    const { updatedSchedulingProfile, modifications, issues } =
+      getUpdatedSchedulingProfile({
+        schedulingProfile,
+        venueIds,
+        eventIds,
+        drawIds,
+      });
+
+    if (modifications) {
+      schedulingProfile = updatedSchedulingProfile;
+      const result = setSchedulingProfile({
+        tournamentRecord,
+        schedulingProfile,
+      });
+      if (result.error) return result;
+
+      return { schedulingProfile, modifications, issues };
+    }
+  }
+
+  return { schedulingProfile, modifications: 0 };
 }
 
 export function checkSchedulingProfile({ tournamentRecord }) {
@@ -36,6 +69,7 @@ export function checkSchedulingProfile({ tournamentRecord }) {
   if (schedulingProfile) {
     const { venueIds, eventIds, drawIds } = tournamentRelevantSchedulingIds({
       tournamentRecord,
+      requireCourts: true,
     });
     const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
       schedulingProfile,

@@ -8,8 +8,13 @@ import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import { UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
+import {
+  MISSING_DRAW_SIZE,
+  MISSING_EVENT,
+  UNRECOGNIZED_DRAW_TYPE,
+} from '../../../constants/errorConditionConstants';
 import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -96,6 +101,26 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     expect(result.seedsCount).toEqual(seedsCount);
     expect(result.entries.length).toEqual(drawSize);
     expect(result.stageEntries.length).toEqual(drawSize);
+
+    result = tournamentEngine.getEntriesAndSeedsCount({
+      drawId: flight.drawId,
+      policyDefinitions: SEEDING_USTA,
+    });
+    expect(result.error).toEqual(MISSING_EVENT);
+
+    result = tournamentEngine.getEntriesAndSeedsCount({
+      eventId,
+      drawDefinition,
+      policyDefinitions: SEEDING_USTA,
+    });
+    expect(result.entries.length).toEqual(32);
+
+    result = tournamentEngine.getEntriesAndSeedsCount({
+      eventId,
+      stage: QUALIFYING,
+      policyDefinitions: SEEDING_USTA,
+    });
+    expect(result.error).toEqual(MISSING_DRAW_SIZE);
   });
 });
 

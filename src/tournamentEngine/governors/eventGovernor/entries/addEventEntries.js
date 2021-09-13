@@ -48,33 +48,38 @@ export function addEventEntries(params) {
 
   if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
 
-  const typedParticipantIds = tournamentRecord?.participants
-    ?.filter((participant) => {
-      if (
-        event.eventType === SINGLES &&
-        participant.participantType === INDIVIDUAL
-      ) {
-        return true;
-      }
-      if (event.eventType === DOUBLES && participant.participantType === PAIR) {
-        return true;
-      }
-      if (
-        event.eventType === DOUBLES &&
-        participant.participantType === INDIVIDUAL &&
-        isUngrouped(entryStatus)
-      ) {
-        return true;
-      }
-      if (event.eventType === TEAM && participant.participantType === TEAM) {
-        return true;
-      }
-      return false;
-    })
-    .map((participant) => participant.participantId);
+  const typedParticipantIds =
+    tournamentRecord?.participants
+      ?.filter((participant) => {
+        if (
+          event.eventType === SINGLES &&
+          participant.participantType === INDIVIDUAL
+        ) {
+          return true;
+        }
+        if (
+          event.eventType === DOUBLES &&
+          participant.participantType === PAIR
+        ) {
+          return true;
+        }
+        if (
+          event.eventType === DOUBLES &&
+          participant.participantType === INDIVIDUAL &&
+          isUngrouped(entryStatus)
+        ) {
+          return true;
+        }
+        if (event.eventType === TEAM && participant.participantType === TEAM) {
+          return true;
+        }
+        return false;
+      })
+      .map((participant) => participant.participantId) || [];
 
-  const validParticipantIds = participantIds.filter((participantId) =>
-    typedParticipantIds.includes(participantId)
+  const validParticipantIds = participantIds.filter(
+    (participantId) =>
+      !typedParticipantIds.length || typedParticipantIds.includes(participantId)
   );
 
   if (!event.entries) event.entries = [];
@@ -119,7 +124,7 @@ export function addEventEntries(params) {
     const unpairedIndividualParticipantIds = event.entries
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
-    const tournamentParticipants = tournamentRecord.participants || [];
+    const tournamentParticipants = tournamentRecord?.participants || [];
     const pairedIndividualParticipantIds = tournamentParticipants
       .filter(
         (participant) =>

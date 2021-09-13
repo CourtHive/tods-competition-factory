@@ -99,7 +99,5 @@ export function destroyGroupEntry({
     if (result.success) participantRemoved = true;
   }
 
-  return removeGroupParticipant
-    ? { ...SUCCESS, participantRemoved }
-    : { ...SUCCESS };
+  return { ...SUCCESS, participantRemoved };
 }

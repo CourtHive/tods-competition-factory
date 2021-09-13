@@ -35,7 +35,10 @@ export function getSchedulingProfile({ tournamentRecords }) {
   let schedulingProfile = extension?.value || [];
 
   if (schedulingProfile.length) {
-    const { venueIds } = getCompetitionVenues({ tournamentRecords });
+    const { venueIds } = getCompetitionVenues({
+      tournamentRecords,
+      requireCourts: true,
+    });
     const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
 
     const { updatedSchedulingProfile, modifications, issues } =
@@ -164,9 +167,8 @@ export function getUpdatedSchedulingProfile({
               );
             return validEventIdAndDrawId;
           });
-          if (!filteredRounds.length) {
-            return;
-          }
+
+          if (!filteredRounds.length) return;
 
           return { venueId, rounds: filteredRounds };
         })
@@ -177,4 +179,30 @@ export function getUpdatedSchedulingProfile({
     .filter(Boolean);
 
   return { updatedSchedulingProfile, modifications: issues.length, issues };
+}
+
+export function checkSchedulingProfile({ tournamentRecords }) {
+  const { schedulingProfile } = getSchedulingProfile({
+    tournamentRecords,
+    requireCourts: true,
+  });
+  if (schedulingProfile) {
+    const { venueIds } = getCompetitionVenues({ tournamentRecords });
+    const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
+    const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
+      schedulingProfile,
+      venueIds,
+      eventIds,
+      drawIds,
+    });
+
+    if (modified) {
+      return setSchedulingProfile({
+        tournamentRecords,
+        schedulingProfile: updatedSchedulingProfile,
+      });
+    }
+  }
+
+  return SUCCESS;
 }

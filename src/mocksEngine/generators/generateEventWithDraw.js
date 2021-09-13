@@ -5,12 +5,14 @@ import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
-import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
-import { completeDrawMatchUps, completeMatchUp } from './completeDrawMatchUps';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateRange, intersection, UUID } from '../../utilities';
 import { generateParticipants } from './generateParticipants';
+import {
+  completeDrawMatchUps,
+  completeDrawMatchUp,
+} from './completeDrawMatchUps';
 
 import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantTypes';
@@ -18,6 +20,7 @@ import { COMPLETED } from '../../constants/matchUpStatusConstants';
 import { SINGLES, DOUBLES } from '../../constants/eventConstants';
 import { ALTERNATE } from '../../constants/entryStatusConstants';
 import { SEEDING } from '../../constants/timeItemConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 import {
   MAIN,
   ROUND_ROBIN_WITH_PLAYOFF,
@@ -25,74 +28,57 @@ import {
 } from '../../constants/drawDefinitionConstants';
 
 export function generateEventWithDraw({
-  tournamentRecord,
-  allUniqueParticipantIds,
-  autoEntryPositions,
+  allUniqueParticipantIds = [],
+  matchUpStatusProfile,
   participantsProfile,
   completeAllMatchUps,
-  matchUpStatusProfile,
+  autoEntryPositions,
   randomWinningSide,
+  tournamentRecord,
   drawProfile,
   startDate,
   goesTo,
+  uuids,
 }) {
   const {
-    category,
-    eventType = SINGLES,
+    excessParticipantAlternates = true,
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
-    uniqueParticipants = false,
-    policyDefinitions,
-    structureOptions,
+    eventType = SINGLES,
+    alternatesCount = 0,
     eventExtensions,
-    qualifyingRound,
     drawExtensions,
     drawSize = 32,
-    feedPolicy,
-    automated,
+    seedsCount,
     tieFormat,
-    idPrefix,
-    drawName,
+    category,
     gender,
     stage,
-    uuids,
   } = drawProfile;
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
-  let targetParticipants = tournamentRecord.participants;
+  let targetParticipants = tournamentRecord?.participants || [];
 
-  let { participantsCount, seedsCount } = drawProfile;
-  if (!participantsCount || participantsCount > drawSize)
-    participantsCount = drawSize;
+  const participantsCount =
+    !drawProfile.participantsCount || drawProfile.participantsCount > drawSize
+      ? drawSize
+      : drawProfile.participantsCount;
 
   const eventId = UUID();
-  const newEvent = { eventId, eventName, eventType, category, tieFormat };
+  let event = { eventId, eventName, eventType, category, tieFormat };
 
   let { eventAttributes } = drawProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
-  Object.assign(newEvent, eventAttributes);
+  Object.assign(event, eventAttributes);
 
   // attach any valid eventExtensions
   if (eventExtensions?.length && Array.isArray(eventExtensions)) {
     const extensions = eventExtensions.filter(validExtension);
-    if (extensions?.length) Object.assign(newEvent, { extensions });
+    if (extensions?.length) Object.assign(event, { extensions });
   }
 
-  let result = addEvent({ tournamentRecord, event: newEvent });
-  if (result.error) return result;
-
-  const { event } = result;
-
-  const isEventParticipantType = (participant) => {
-    const { participantType } = participant;
-    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
-    if (eventType === DOUBLES && participantType === PAIR) return true;
-    if (eventType === TEAM && participantType === TEAM) return true;
-    return false;
-  };
-
   const uniqueParticipantIds = [];
-  if (uniqueParticipants) {
+  if (drawProfile.uniqueParticipants || !tournamentRecord || gender) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
       valuesInstanceLimit,
@@ -104,9 +90,10 @@ export function generateEventWithDraw({
       inContext,
     } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
-      participantsCount,
+      participantsCount: participantsCount + alternatesCount,
       participantType,
 
+      uuids: drawProfile.uuids || uuids,
       sex: gender || participantsProfile?.sex,
       valuesInstanceLimit,
       nationalityCodesCount,
@@ -118,47 +105,70 @@ export function generateEventWithDraw({
       inContext,
     });
 
-    result = addParticipants({ tournamentRecord, participants: unique });
-    if (result.error) return result;
+    if (tournamentRecord) {
+      let result = addParticipants({ tournamentRecord, participants: unique });
+      if (result.error) return result;
+    }
+
     unique.forEach(({ participantId }) =>
       uniqueParticipantIds.push(participantId)
     );
     targetParticipants = unique;
   }
 
-  const participantIds = targetParticipants
+  const isEventParticipantType = (participant) => {
+    const { participantType } = participant;
+    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
+    if (eventType === DOUBLES && participantType === PAIR) return true;
+    if (eventType === TEAM && participantType === TEAM) return true;
+    return false;
+  };
+
+  const isEventGender = (participant) => {
+    if (!drawProfile.gender) return true;
+    if (participant.person?.sex === drawProfile.gender) return true;
+    if (participant.individualParticipants?.[0]?.sex === drawProfile.gender)
+      return true;
+  };
+
+  const consideredParticipants = targetParticipants
     .filter(isEventParticipantType)
+    .filter(isEventGender)
     .filter(
       ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-    )
+    );
+
+  const participantIds = consideredParticipants
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
-  result = addEventEntries({
-    event,
-    tournamentRecord,
-    participantIds,
+  let result = addEventEntries({
     entryStage: stage,
     autoEntryPositions,
+    tournamentRecord,
+    participantIds,
+    event,
   });
   if (result.error) return result;
 
   // alternates can still be taken from existing participants
   // when unique participants are used for DIRECT_ACCEPTANCE entries
-  const alternatesParticipantIds = targetParticipants
-    .filter(isEventParticipantType)
-    .filter(
-      ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-    )
-    .slice(participantsCount)
-    .map((p) => p.participantId);
-  if (alternatesParticipantIds.length) {
+  const alternatesParticipantIds =
+    excessParticipantAlternates &&
+    tournamentRecord?.participants
+      ?.filter(({ participantId }) => !participantIds.includes(participantId))
+      .filter(isEventParticipantType)
+      .filter(isEventGender)
+      .slice(0, alternatesCount || drawSize - participantsCount)
+      .map((p) => p.participantId);
+
+  if (alternatesParticipantIds?.length) {
     result = addEventEntries({
-      event,
-      tournamentRecord,
-      entryStatus: ALTERNATE,
       participantIds: alternatesParticipantIds,
       autoEntryPositions: false,
+      entryStatus: ALTERNATE,
+      tournamentRecord,
+      event,
     });
     if (result.error) return { error: result.error };
   }
@@ -168,7 +178,7 @@ export function generateEventWithDraw({
     event.category?.ageCategoryCode ||
     event.category?.categoryName ||
     eventName;
-  if (seedsCount && seedsCount < participantIds.length) {
+  if (tournamentRecord && seedsCount && seedsCount <= participantIds.length) {
     const scaleValues = generateRange(1, seedsCount + 1);
     scaleValues.forEach((scaleValue, index) => {
       let scaleItem = {
@@ -184,25 +194,15 @@ export function generateEventWithDraw({
   }
 
   const { drawDefinition, error: generationError } = generateDrawDefinition({
-    policyDefinitions,
+    ...drawProfile,
     tournamentRecord,
     seedingScaleName,
-    structureOptions,
-    qualifyingRound,
     matchUpFormat,
-    seedsCount,
-    feedPolicy,
-    tieFormat,
-    automated,
-    idPrefix,
-    drawName,
     drawType,
     drawSize,
     eventId,
     goesTo,
     event,
-    stage,
-    uuids,
   });
 
   if (generationError) return { error: generationError };
@@ -218,7 +218,7 @@ export function generateEventWithDraw({
   result = addDrawDefinition({ drawDefinition, event });
   const { drawId } = drawDefinition;
 
-  const manual = automated === false;
+  const manual = drawProfile.automated === false;
   if (!manual) {
     if (drawProfile.outcomes) {
       const { matchUps } = allDrawMatchUps({
@@ -268,16 +268,17 @@ export function generateEventWithDraw({
           );
         });
         const targetMatchUp = targetMatchUps[matchUpIndex];
-        const result = completeMatchUp({
+        const result = completeDrawMatchUp({
           drawDefinition,
           targetMatchUp,
+          matchUpFormat,
+          matchUpStatus,
           scoreString,
           winningSide,
-          matchUpStatus,
-          matchUpFormat,
           drawId,
         });
-        if (result.error) return result;
+        // will not throw errors for BYE matchUps
+        if (result?.error) return result;
       }
     }
 
@@ -316,5 +317,14 @@ export function generateEventWithDraw({
 
   if (result.error) return { error: result.error };
 
-  return { drawId, eventId, uniqueParticipantIds };
+  return {
+    ...SUCCESS,
+
+    uniqueParticipantIds,
+    targetParticipants,
+    drawDefinition,
+    eventId,
+    drawId,
+    event,
+  };
 }

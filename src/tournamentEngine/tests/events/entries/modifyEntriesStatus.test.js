@@ -1,20 +1,16 @@
+import { intersection, unique } from '../../../../utilities';
+import mocksEngine from '../../../../mocksEngine';
+import tournamentEngine from '../../../sync';
+
 import {
   DIRECT_ACCEPTANCE,
   LUCKY_LOSER,
-  // DIRECT_ACCEPTANCE,
   WILDCARD,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
-import mocksEngine from '../../../../mocksEngine';
-import { intersection, unique } from '../../../../utilities';
-import tournamentEngine from '../../../sync';
 
 it('can modify entryStatus within event.entries', () => {
-  const drawProfiles = [
-    {
-      drawSize: 8,
-    },
-  ];
+  const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];
   const participantsProfile = {
     participantsCount: 16,
   };
@@ -23,8 +19,8 @@ it('can modify entryStatus within event.entries', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const { tournamentParticipants } = tournamentEngine
