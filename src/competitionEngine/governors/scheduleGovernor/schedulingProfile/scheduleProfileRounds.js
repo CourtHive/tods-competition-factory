@@ -30,8 +30,11 @@ export function scheduleProfileRounds({
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
 
-  const schedulingProfile =
-    getSchedulingProfile({ tournamentRecords })?.schedulingProfile || [];
+  const {
+    schedulingProfile = [],
+    issues: schedulingProfileIssues = [],
+    modifications: schedulingProfileModifications,
+  } = getSchedulingProfile({ tournamentRecords });
 
   const { matchUpDailyLimits } = getMatchUpDailyLimits({ tournamentRecords });
 
@@ -242,6 +245,8 @@ export function scheduleProfileRounds({
   return {
     ...SUCCESS,
     iterations,
+    schedulingProfileModifications,
+    schedulingProfileIssues,
 
     scheduledDates,
     noTimeMatchUpIds,

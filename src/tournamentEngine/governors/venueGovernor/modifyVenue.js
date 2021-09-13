@@ -1,4 +1,5 @@
 import { getScheduledCourtMatchUps } from '../queryGovernor/getScheduledCourtMatchUps';
+import { checkSchedulingProfile } from '../scheduleGovernor/schedulingProfile';
 import venueTemplate from '../../generators/venueTemplate';
 import { addNotice } from '../../../global/globalState';
 import { findVenue } from '../../getters/venueGetter';
@@ -111,6 +112,8 @@ export function modifyVenue({
       }
     }
   }
+
+  checkSchedulingProfile({ tournamentRecord });
 
   addNotice({ topic: MODIFY_VENUE, payload: { venue }, key: venue.venueId });
 
