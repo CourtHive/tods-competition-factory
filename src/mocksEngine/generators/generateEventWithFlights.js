@@ -57,20 +57,26 @@ export function generateEventWithFlights({
   let uniqueParticipantsCount = {};
   const stageParticipantsCount = drawProfiles.reduce(
     (stageParticipantsCount, drawProfile) => {
-      const stage = drawProfile.stage || MAIN;
+      const {
+        qualifyingPositions = 0,
+        participantsCount = 0,
+        uniqueParticipants,
+        stage = MAIN,
+        drawSize = 0,
+      } = drawProfile;
+
       if (!Object.keys(stageParticipantsCount).includes(stage))
         stageParticipantsCount[stage] = 0;
 
-      const participantsCount =
-        drawProfile.participantsCount ||
-        (drawProfile.drawSize || 0) - (drawProfile.qualifyingPositions || 0);
-      if (drawProfile.uniqueParticipants) {
+      const stageCount = participantsCount || drawSize - qualifyingPositions;
+
+      if (uniqueParticipants) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
-        uniqueParticipantsCount[stage] += participantsCount;
+        uniqueParticipantsCount[stage] += stageCount;
       } else {
         stageParticipantsCount[stage] = Math.max(
-          participantsCount,
+          stageCount,
           stageParticipantsCount[stage]
         );
       }
@@ -106,7 +112,7 @@ export function generateEventWithFlights({
     const qualifyingParticipantsCount =
       uniqueParticipantsCount[QUALIFYING] || 0;
 
-    const { participants: uniqueParticipants } = generateParticipants({
+    const { participants: uniqueFlightParticipants } = generateParticipants({
       participantsCount: mainParticipantsCount + qualifyingParticipantsCount,
       participantType: eventParticipantType,
       sex: gender,
@@ -124,14 +130,14 @@ export function generateEventWithFlights({
 
     let result = addParticipants({
       tournamentRecord,
-      participants: uniqueParticipants,
+      participants: uniqueFlightParticipants,
     });
     if (result.error) return result;
 
-    uniqueDrawParticipants = uniqueParticipants.filter(
+    uniqueDrawParticipants = uniqueFlightParticipants.filter(
       ({ participantType }) => participantType === eventParticipantType
     );
-    uniqueParticipants.forEach(({ participantId }) =>
+    uniqueFlightParticipants.forEach(({ participantId }) =>
       uniqueParticipantIds.push(participantId)
     );
   }
@@ -198,18 +204,21 @@ export function generateEventWithFlights({
   for (const drawProfile of drawProfiles) {
     const {
       drawType = SINGLE_ELIMINATION,
-      qualifyingPositions,
+      qualifyingPositions = 0,
+      uniqueParticipants,
+      stage = MAIN,
+      drawSize = 0,
       drawName,
-      drawSize,
-      stage,
     } = drawProfile;
-    const entriesCount = (drawSize || 0) - (qualifyingPositions || 0);
+
+    const entriesCount = drawSize - qualifyingPositions;
 
     // if a drawProfile has specified uniqueParticipants...
-    const drawParticipants = drawProfile.uniqueParticipants
+    const drawParticipants = uniqueParticipants
       ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
       : stageParticipants[stage || MAIN] || [];
-    if (drawProfile.uniqueParticipants) uniqueParticipantsIndex += entriesCount;
+
+    if (uniqueParticipants) uniqueParticipantsIndex += entriesCount;
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)
@@ -217,19 +226,21 @@ export function generateEventWithFlights({
 
     if (drawParticipantIds.length) {
       const result = addEventEntries({
-        tournamentRecord,
-        event,
-        stage: stage || MAIN,
         participantIds: drawParticipantIds,
         autoEntryPositions,
+        tournamentRecord,
+        stage,
+        event,
       });
       if (result.error) return result;
     }
+
     const drawEntries = drawParticipantIds.map((participantId) => ({
-      participantId,
-      entryStage: stage || MAIN,
       entryStatus: DIRECT_ACCEPTANCE,
+      entryStage: stage,
+      participantId,
     }));
+
     const result = addFlight({
       drawName: drawName || drawType,
       qualifyingPositions,
