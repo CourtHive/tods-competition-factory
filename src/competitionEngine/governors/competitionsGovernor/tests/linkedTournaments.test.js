@@ -88,9 +88,9 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
     expect(result.success).toEqual(true);
     expect(tournamentIds.length).toEqual(2);
     await checkExtensions({
-      tournamentIds,
       unlinkedTournamentIds: [tournamentId],
       competitionEngine,
+      tournamentIds,
     });
 
     result = await competitionEngine.unlinkTournament({ tournamentId });
@@ -178,9 +178,9 @@ async function getLinkedIds(competitionEngine) {
 }
 
 async function checkExtensions({
-  tournamentIds,
   unlinkedTournamentIds,
   competitionEngine,
+  tournamentIds,
 }) {
   const { tournamentRecords } = await competitionEngine.getState();
   Object.keys(tournamentRecords).forEach((tournamentId) => {

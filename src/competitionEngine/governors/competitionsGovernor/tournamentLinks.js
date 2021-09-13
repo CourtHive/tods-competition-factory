@@ -101,7 +101,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
   // not using bulk update function here to handle scenario where
   // tournamentRecords loaded into state are not all linked
   let unlinkError;
-  const tournamentUnlinked = tournamentIds.every((currentTournamentId) => {
+  tournamentIds.every((currentTournamentId) => {
     const tournamentRecord = tournamentRecords[currentTournamentId];
 
     const { extension } = findTournamentExtension({
@@ -139,7 +139,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
     return result.success;
   });
 
-  return tournamentUnlinked ? { ...SUCCESS } : { error: unlinkError };
+  return unlinkError ? { error: unlinkError } : { ...SUCCESS };
 }
 
 function getTournamentIds(tournamentRecords) {
