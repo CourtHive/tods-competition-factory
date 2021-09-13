@@ -1,28 +1,23 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
-import { SINGLES } from '../../../../constants/eventConstants';
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
+import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_USTA';
+import { SINGLES } from '../../../../constants/eventConstants';
 
 it('can autoSeed by Rankings', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  const {
+    drawIds: [drawId],
+    eventIds: [eventId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
     participantCount: 32,
   });
-  const event = {
-    eventType: SINGLES,
-  };
 
-  let result = tournamentEngine.setState(tournamentRecord).addEvent({ event });
-  expect(result.success).toEqual(true);
-  const { event: createdEvent } = result;
-  const { eventId } = createdEvent;
-
+  tournamentEngine.setState(tournamentRecord);
   let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
-  const participantIds = tournamentParticipants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result.success).toEqual(true);
 
   const scaleValuesRating = [3.3, 4.4, 5.5, 1.1, 2.2, 6.6, 7.7, 8.8, 10.1, 9.9];
   const scaleValuesRanking = [100, 90, 80, 30, 20, 10, 70, 60, 50, 40];
@@ -50,7 +45,7 @@ it('can autoSeed by Rankings', () => {
     }
   );
 
-  result = tournamentEngine.setParticipantScaleItems({
+  let result = tournamentEngine.setParticipantScaleItems({
     scaleItemsWithParticipantIds,
   });
   expect(result.success).toEqual(true);
@@ -152,14 +147,35 @@ it('can autoSeed by Rankings', () => {
   expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.removeSeeding({
-    eventId,
     scaleName: 'U18',
+    eventId,
   });
   expect(result.success).toEqual(true);
 
   // check that all seeding timeItems were removed
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants());
   expect(tournamentParticipants[0].timeItems.length).toEqual(2);
+
+  result = tournamentEngine.removeSeeding({
+    scaleName: 'U18',
+    eventId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // now remove the flightProfile so that subsequent call can fall through to drawDefinition.entries
+  result = tournamentEngine.removeEventExtension({
+    name: 'flightProfile',
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.removeSeeding({
+    scaleName: 'U18',
+    eventId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
 
   // also need to test this with scale items that are stageEntries on a drawDefinition where the scaleAttributes include drawId-specific scaleName
 });
