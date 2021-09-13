@@ -28,8 +28,7 @@ export function bulkScheduleMatchUps({
   if (!schedule || typeof schedule !== 'object')
     return { error: MISSING_SCHEDULE };
 
-  const { matchUps, error } = allTournamentMatchUps({ tournamentRecord });
-  if (error) return { error };
+  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
   // first organize matchUpIds by drawId
   const drawIdMap = matchUps.reduce((drawIdMap, matchUp) => {
@@ -43,11 +42,10 @@ export function bulkScheduleMatchUps({
   }, {});
 
   for (const drawId of Object.keys(drawIdMap)) {
-    const { drawDefinition, error } = getDrawDefinition({
+    const { drawDefinition } = getDrawDefinition({
       tournamentRecord,
       drawId,
     });
-    if (error) return { error };
     const drawMatchUpIds = drawIdMap[drawId].filter((matchUpId) =>
       matchUpIds.includes(matchUpId)
     );

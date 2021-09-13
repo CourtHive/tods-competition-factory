@@ -1,4 +1,5 @@
 import { deleteVenue as venueDelete } from '../../../../tournamentEngine/governors/venueGovernor/deleteVenue';
+import { checkSchedulingProfile } from '../../scheduleGovernor/schedulingProfile/schedulingProfile';
 
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
@@ -19,6 +20,8 @@ export function deleteVenue({ tournamentRecords, venueId, force }) {
     if (result.error && result.error !== VENUE_NOT_FOUND) return result;
     deleted = true;
   }
+
+  checkSchedulingProfile({ tournamentRecords });
 
   return deleted ? SUCCESS : { error: VENUE_NOT_FOUND };
 }

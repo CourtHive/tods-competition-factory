@@ -2,7 +2,7 @@ import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
 
 export function getAppliedPolicies({ tournamentRecord }) {
-  const extensions = tournamentRecord.extensions || [];
+  const extensions = tournamentRecord?.extensions || [];
   return extractAppliedPolicies({ extensions });
 }
 

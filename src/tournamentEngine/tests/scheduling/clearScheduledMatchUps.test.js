@@ -6,6 +6,7 @@ import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
 
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
 const { SUCCESS } = resultConstants;
@@ -78,7 +79,13 @@ it('can clear matchUp schedules', () => {
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds.length);
 
+  result = tournamentEngine.clearScheduledMatchUps({
+    ignoreMatchUpStatuses: 'invalid value',
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
   result = tournamentEngine.clearScheduledMatchUps();
+  expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   matchUpsWithScheduledTime = matchUps.filter(

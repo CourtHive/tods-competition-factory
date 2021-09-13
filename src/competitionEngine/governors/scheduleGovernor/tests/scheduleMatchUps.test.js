@@ -5,9 +5,12 @@ import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import { OFFICIAL } from '../../../../constants/participantRoles';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  COURT_NOT_FOUND,
+  MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
+  PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
@@ -105,6 +108,15 @@ it('can add events, venues, and schedule matchUps', () => {
   result = competitionEngine.assignMatchUpCourt({
     tournamentId,
     matchUpId,
+    drawId,
+    courtId: 'bogusId',
+    courtDayDate: startDate,
+  });
+  expect(result.error).toEqual(COURT_NOT_FOUND);
+
+  result = competitionEngine.assignMatchUpCourt({
+    tournamentId,
+    matchUpId,
     courtId,
     drawId,
     courtDayDate: startDate,
@@ -177,6 +189,21 @@ it('can add events, venues, and schedule matchUps', () => {
     tournamentId,
     matchUpId,
     drawId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  result = competitionEngine.addMatchUpOfficial({
+    tournamentId,
+    matchUpId,
+    drawId,
+    participantId: 'bogusId',
+  });
+  expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
+
+  result = competitionEngine.addMatchUpOfficial({
+    tournamentId,
+    matchUpId,
+    drawId,
     participantId: officialParticipantId,
   });
   expect(result).toEqual(SUCCESS);
@@ -243,4 +270,14 @@ it('can add events, venues, and schedule matchUps', () => {
 
   ({ upcomingMatchUps } = competitionEngine.competitionMatchUps());
   expect(upcomingMatchUps[0].timeItems.length).toEqual(15);
+
+  result = competitionEngine.addMatchUpScheduleItems({
+    tournamentId,
+    matchUpId,
+    drawId,
+    schedule: {
+      scheduledDate: startDate,
+    },
+  });
+  expect(result).toEqual(SUCCESS);
 });

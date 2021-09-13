@@ -133,6 +133,18 @@ it('can bulk reschedule matchUps', () => {
 
   result = tournamentEngine.bulkRescheduleMatchUps({
     matchUpIds,
+    scheduleChange: { daysChange: 'NaN', minutesChange: 0 },
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
+    scheduleChange: { daysChange: 0, minutesChange: 'NaN' },
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.bulkRescheduleMatchUps({
+    matchUpIds,
     scheduleChange: { daysChange: 0, minutesChange: 0 },
   });
   expect(result.success).toEqual(true);
