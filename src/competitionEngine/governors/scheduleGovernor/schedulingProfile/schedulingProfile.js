@@ -65,8 +65,6 @@ export function getSchedulingProfile({ tournamentRecords }) {
 }
 
 export function setSchedulingProfile({ tournamentRecords, schedulingProfile }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-
   const profileValidity = isValidSchedulingProfile({
     tournamentRecords,
     schedulingProfile,
@@ -91,7 +89,6 @@ export function addSchedulingProfileRound({
   venueId,
   round,
 }) {
-  if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!isValidDateString(scheduleDate)) return { error: INVALID_DATE };
 
   const { extension } = findExtension({
@@ -139,9 +136,9 @@ export function getUpdatedSchedulingProfile({
   eventIds,
   drawIds,
 }) {
-  let issues = [];
+  const issues = [];
   const updatedSchedulingProfile = schedulingProfile
-    .map((dateSchedulingProfile) => {
+    ?.map((dateSchedulingProfile) => {
       const date = extractDate(dateSchedulingProfile?.scheduleDate);
       if (!date) {
         issues.push(`Invalid date: ${dateSchedulingProfile?.scheduledDate}`);
@@ -178,7 +175,8 @@ export function getUpdatedSchedulingProfile({
     })
     .filter(Boolean);
 
-  return { updatedSchedulingProfile, modifications: issues.length, issues };
+  const modifications = issues.length;
+  return { updatedSchedulingProfile, modifications, issues };
 }
 
 export function checkSchedulingProfile({ tournamentRecords }) {
@@ -189,14 +187,15 @@ export function checkSchedulingProfile({ tournamentRecords }) {
   if (schedulingProfile) {
     const { venueIds } = getCompetitionVenues({ tournamentRecords });
     const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
-    const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
-      schedulingProfile,
-      venueIds,
-      eventIds,
-      drawIds,
-    });
+    const { updatedSchedulingProfile, modifications } =
+      getUpdatedSchedulingProfile({
+        schedulingProfile,
+        venueIds,
+        eventIds,
+        drawIds,
+      });
 
-    if (modified) {
+    if (modifications) {
       return setSchedulingProfile({
         tournamentRecords,
         schedulingProfile: updatedSchedulingProfile,

@@ -9,12 +9,14 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function setSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(schedulingProfile)) return { error: INVALID_VALUES };
+  return checkSchedulingProfile({ tournamentRecord, schedulingProfile });
+}
 
+function saveSchedulingProfile({ tournamentRecord, schedulingProfile }) {
   const extension = {
     name: SCHEDULING_PROFILE,
     value: schedulingProfile,
@@ -51,7 +53,7 @@ export function getSchedulingProfile({ tournamentRecord }) {
 
     if (modifications) {
       schedulingProfile = updatedSchedulingProfile;
-      const result = setSchedulingProfile({
+      const result = saveSchedulingProfile({
         tournamentRecord,
         schedulingProfile,
       });
@@ -64,27 +66,28 @@ export function getSchedulingProfile({ tournamentRecord }) {
   return { schedulingProfile, modifications: 0 };
 }
 
-export function checkSchedulingProfile({ tournamentRecord }) {
-  const { schedulingProfile } = getSchedulingProfile({ tournamentRecord });
-  if (schedulingProfile) {
-    const { venueIds, eventIds, drawIds } = tournamentRelevantSchedulingIds({
+export function checkSchedulingProfile({
+  tournamentRecord,
+  schedulingProfile,
+  requireCourts = true,
+}) {
+  if (!schedulingProfile) {
+    const { modifications, issues } = getSchedulingProfile({
       tournamentRecord,
-      requireCourts: true,
     });
-    const { updatedSchedulingProfile, modified } = getUpdatedSchedulingProfile({
-      schedulingProfile,
-      venueIds,
-      eventIds,
-      drawIds,
-    });
-
-    if (modified) {
-      return setSchedulingProfile({
-        tournamentRecord,
-        schedulingProfile: updatedSchedulingProfile,
-      });
-    }
+    return { success: !modifications, modifications, issues };
   }
 
-  return SUCCESS;
+  const { venueIds, eventIds, drawIds } = tournamentRelevantSchedulingIds({
+    tournamentRecord,
+    requireCourts,
+  });
+  const { modifications, issues } = getUpdatedSchedulingProfile({
+    schedulingProfile,
+    venueIds,
+    eventIds,
+    drawIds,
+  });
+
+  return { success: !modifications, modifications, issues };
 }

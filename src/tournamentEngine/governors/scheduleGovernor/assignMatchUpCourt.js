@@ -2,11 +2,11 @@ import { addMatchUpTimeItem } from '../../../drawEngine/governors/matchUpGoverno
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { findCourt } from '../../getters/courtGetter';
 
+import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../../constants/errorConditionConstants';
-import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
 
 export function assignMatchUpCourt({
   tournamentRecord,
@@ -22,17 +22,14 @@ export function assignMatchUpCourt({
   if (courtId) {
     const { venue, error } = findCourt({ tournamentRecord, courtId });
     if (error) return { error };
-    const { venueId } = venue || {};
-    if (venueId) {
-      const result = assignMatchUpVenue({
-        tournamentRecord,
-        drawDefinition,
-        matchUpId,
-        venueId,
-        disableNotice,
-      });
-      if (result.error) return result;
-    }
+    const venueId = venue?.venueId;
+    assignMatchUpVenue({
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+      venueId,
+      disableNotice,
+    });
   }
 
   const timeItem = {

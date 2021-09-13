@@ -2,7 +2,6 @@ import { hasSchedule } from '../../../competitionEngine/governors/scheduleGovern
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../publishingGovernor/getTournamentInfo';
 import { allTournamentMatchUps } from '../../getters/matchUpsGetter';
-import { getVenuesAndCourts } from '../../getters/venueGetter';
 import { getDrawDefinition } from '../../getters/eventGetter';
 import {
   addMinutesToTimeString,
@@ -49,25 +48,20 @@ export function bulkRescheduleMatchUps({
   if (minutesChange && isNaN(minutesChange)) return { error: INVALID_VALUES };
   if (daysChange && isNaN(daysChange)) return { error: INVALID_VALUES };
 
-  const { matchUps, error } = allTournamentMatchUps({
+  const { matchUps } = allTournamentMatchUps({
     tournamentRecord,
     matchUpFilters: { matchUpIds },
   });
-  if (error) return { error };
 
   const notCompleted = ({ matchUpStatus }) =>
     !completedMatchUpStatuses.includes(matchUpStatus);
 
   // return success if there are no scheduled matchUps to reschedule
   const scheduledNotCompletedMatchUps = matchUps
-    .filter(hasSchedule)
+    ?.filter(hasSchedule)
     .filter(notCompleted);
   if (!scheduledNotCompletedMatchUps.length) return { ...SUCCESS };
 
-  const { courts } = getVenuesAndCourts({ tournamentRecord });
-  if (courts) {
-    /**foo */
-  }
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const { startDate, endDate } = tournamentInfo;
 

@@ -11,6 +11,8 @@ import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import {
   INVALID_DATE,
   INVALID_TIME,
+  MISSING_MATCHUP_IDS,
+  MISSING_SCHEDULE,
   VENUE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
 
@@ -85,6 +87,13 @@ it('can bulk schedule matchUps', () => {
     scheduledDate,
     venueId,
   };
+
+  result = tournamentEngine.bulkScheduleMatchUps({ schedule });
+  expect(result.error).toEqual(MISSING_MATCHUP_IDS);
+
+  result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds });
+  expect(result.error).toEqual(MISSING_SCHEDULE);
+
   result = tournamentEngine.bulkScheduleMatchUps({ matchUpIds, schedule });
   expect(result.success).toEqual(true);
 

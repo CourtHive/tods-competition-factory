@@ -192,6 +192,12 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
   await forceDelay();
 
   result = tournamentEngine.assignMatchUpVenue({
+    venueId,
+    drawId,
+  });
+  expect(result.error).toEqual(MISSING_MATCHUP_ID);
+
+  result = tournamentEngine.assignMatchUpVenue({
     matchUpId,
     venueId,
     drawId,
