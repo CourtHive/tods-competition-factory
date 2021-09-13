@@ -1,9 +1,8 @@
+import { unlinkTournament } from '../tournamentLinks';
+import { intersection } from '../../../../utilities';
 import competitionEngineAsync from '../../../async';
 import competitionEngineSync from '../../../sync';
 import mocksEngine from '../../../../mocksEngine';
-
-import { intersection } from '../../../../utilities';
-import { unlinkTournament } from '../tournamentLinks';
 
 import { LINKED_TOURNAMENTS } from '../../../../constants/extensionConstants';
 import {
@@ -93,6 +92,14 @@ test.each([competitionEngineSync, asyncCompetitionEngine])(
       unlinkedTournamentIds: [tournamentId],
       competitionEngine,
     });
+
+    result = await competitionEngine.unlinkTournament({ tournamentId });
+    expect(result.success).toEqual(true);
+
+    result = await competitionEngine.unlinkTournament({
+      tournamentId: 'bogusId',
+    });
+    expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
 
     result = await competitionEngine.unlinkTournaments();
     expect(result.success).toEqual(true);

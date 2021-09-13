@@ -5,13 +5,13 @@ import {
   removeTournamentExtension,
 } from '../../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 
+import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function getLinkedTournamentIds({ tournamentRecords }) {
   if (
@@ -104,15 +104,6 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
   const tournamentUnlinked = tournamentIds.every((currentTournamentId) => {
     const tournamentRecord = tournamentRecords[currentTournamentId];
 
-    if (currentTournamentId === tournamentId) {
-      const result = removeTournamentExtension({
-        tournamentRecord,
-        name: LINKED_TOURNAMENTS,
-      });
-      if (result.error) unlinkError = result.error;
-      return result.success;
-    }
-
     const { extension } = findTournamentExtension({
       tournamentRecord,
       name: LINKED_TOURNAMENTS,
@@ -122,12 +113,21 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
     if (!extension) return true;
 
     let linkedTournamentIds = extension?.value?.tournamentIds || [];
+
     // if there are no tournamentIds
     if (
       !linkedTournamentIds?.length ||
-      !linkedTournamentIds.includes(tournamentId)
-    )
-      return true;
+      (linkedTournamentIds.length === 1 &&
+        linkedTournamentIds.includes(tournamentId)) ||
+      currentTournamentId === tournamentId
+    ) {
+      const result = removeTournamentExtension({
+        tournamentRecord,
+        name: LINKED_TOURNAMENTS,
+      });
+      if (result.error) unlinkError = result.error;
+      return result.success;
+    }
 
     const tournamentIds = linkedTournamentIds.filter(
       (linkedTournamentId) => linkedTournamentId !== tournamentId
@@ -139,7 +139,7 @@ export function unlinkTournament({ tournamentRecords, tournamentId }) {
     return result.success;
   });
 
-  return tournamentUnlinked ? SUCCESS : { error: unlinkError };
+  return tournamentUnlinked ? { ...SUCCESS } : { error: unlinkError };
 }
 
 function getTournamentIds(tournamentRecords) {
