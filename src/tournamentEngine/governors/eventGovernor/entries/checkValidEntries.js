@@ -9,16 +9,13 @@ import {
   INVALID_ENTRIES,
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
-  UNRECOGNIZED_EVENT_TYPE,
 } from '../../../../constants/errorConditionConstants';
 
 export function checkValidEntries({ event, participants, ignoreGender }) {
-  if (!event) return { error: MISSING_EVENT };
   if (!participants) return { error: MISSING_PARTICIPANTS };
+  if (!event) return { error: MISSING_EVENT };
 
   const { eventType, gender: eventGender } = event;
-  if (![TEAM, SINGLES, DOUBLES].includes(eventType))
-    return { error: UNRECOGNIZED_EVENT_TYPE };
   const participantType =
     eventType === SINGLES ? INDIVIDUAL : eventType === DOUBLES ? PAIR : TEAM;
 

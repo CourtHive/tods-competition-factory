@@ -33,8 +33,8 @@ it('supports policyDefinitions in positionActions', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   const {

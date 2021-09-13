@@ -109,50 +109,61 @@ export function generateTournamentRecord({
     largestTeamSize = 0,
     largestTeamDraw = 0;
 
-  const processDrawProfile = ({ drawSize, eventType, tieFormat }) => {
+  const processDrawProfile = ({
+    drawSize = 0,
+    alternatesCount = 0,
+    eventType,
+    tieFormat,
+  }) => {
     const isDoubles = eventType === DOUBLES;
     const isTeam = eventType === TEAM;
     if (isTeam) {
       let teamDoublesCount = 0,
         teamSinglesCount = 0;
-      largestTeamDraw = Math.max(largestTeamDraw, drawSize);
+      largestTeamDraw = Math.max(largestTeamDraw, drawSize + alternatesCount);
       tieFormat = tieFormat || tieFormatDefaults();
       tieFormat?.collectionDefinitions?.forEach((collectionDefinition) => {
         if (collectionDefinition?.matchUpType === DOUBLES) {
           const doublesCount = collectionDefinition.matchUpCount;
           teamDoublesCount = Math.max(teamDoublesCount, doublesCount);
           if (collectionDefinition.matchUpCount > largestDoublesDraw)
-            largestDoublesDraw = doublesCount * (drawSize || 1);
+            largestDoublesDraw =
+              doublesCount * (drawSize + alternatesCount || 1);
         }
         if (collectionDefinition?.matchUpType === SINGLES) {
           const singlescount = collectionDefinition.matchUpCount;
           teamSinglesCount = Math.max(teamSinglesCount, singlescount);
           if (collectionDefinition.matchUpCount > largestSinglesDraw)
-            largestSinglesDraw = singlescount * (drawSize || 1);
+            largestSinglesDraw =
+              singlescount * (drawSize + alternatesCount || 1);
         }
       });
       const teamSize = Math.max(teamSinglesCount, teamDoublesCount * 2);
       largestTeamSize = Math.max(largestTeamSize, teamSize);
     }
-    if (isDoubles && drawSize && drawSize > largestDoublesDraw)
-      largestDoublesDraw = drawSize;
+    if (
+      isDoubles &&
+      drawSize + alternatesCount &&
+      drawSize + alternatesCount > largestDoublesDraw
+    )
+      largestDoublesDraw = drawSize + alternatesCount;
     if (!isDoubles && !isTeam && drawSize && drawSize > largestSinglesDraw)
-      largestSinglesDraw = drawSize;
+      largestSinglesDraw = drawSize + alternatesCount;
   };
 
   eventProfiles?.forEach(({ eventType, drawProfiles }) => {
     if (drawProfiles) {
       for (const drawProfile of drawProfiles) {
-        const { drawSize, tieFormat } = drawProfile;
-        processDrawProfile({ drawSize, eventType, tieFormat });
+        const { drawSize, alternatesCount, tieFormat } = drawProfile;
+        processDrawProfile({ drawSize, alternatesCount, eventType, tieFormat });
       }
     }
   });
 
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
-      const { drawSize, eventType, tieFormat } = drawProfile;
-      processDrawProfile({ drawSize, eventType, tieFormat });
+      const { drawSize, alternatesCount, eventType, tieFormat } = drawProfile;
+      processDrawProfile({ drawSize, alternatesCount, eventType, tieFormat });
     }
   }
   const individualCompetitorsCount = Math.max(

@@ -38,18 +38,18 @@ export function generateEventWithFlights({
   uuids,
 }) {
   const {
+    eventName = 'Generated Event',
+    tieFormat: eventTieFormat,
+    eventType = SINGLES,
+    policyDefinitions,
+    drawProfiles = [],
+    eventExtensions,
+    surfaceCategory,
+    discipline,
+    eventLevel,
     ballType,
     category,
-    discipline,
-    drawProfiles = [],
-    eventName = 'Generated Event',
-    eventLevel,
-    eventType = SINGLES,
     gender,
-    surfaceCategory,
-    tieFormat: eventTieFormat,
-    policyDefinitions,
-    eventExtensions,
   } = eventProfile;
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
@@ -161,7 +161,7 @@ export function generateEventWithFlights({
   let { eventAttributes } = eventProfile;
   if (typeof eventAttributes !== 'object') eventAttributes = {};
 
-  const eventId = UUID();
+  const eventId = eventProfile.eventId || UUID();
   const newEvent = {
     ...eventAttributes,
     ballType,

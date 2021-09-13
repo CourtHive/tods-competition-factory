@@ -45,6 +45,7 @@ export function generateEventWithDraw({
     matchUpFormat = FORMAT_STANDARD,
     drawType = SINGLE_ELIMINATION,
     eventType = SINGLES,
+    alternatesCount = 0,
     eventExtensions,
     drawExtensions,
     drawSize = 32,
@@ -76,16 +77,8 @@ export function generateEventWithDraw({
     if (extensions?.length) Object.assign(event, { extensions });
   }
 
-  const isEventParticipantType = (participant) => {
-    const { participantType } = participant;
-    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
-    if (eventType === DOUBLES && participantType === PAIR) return true;
-    if (eventType === TEAM && participantType === TEAM) return true;
-    return false;
-  };
-
   const uniqueParticipantIds = [];
-  if (drawProfile.uniqueParticipants || !tournamentRecord) {
+  if (drawProfile.uniqueParticipants || !tournamentRecord || gender) {
     const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
     const {
       valuesInstanceLimit,
@@ -97,7 +90,7 @@ export function generateEventWithDraw({
       inContext,
     } = participantsProfile || {};
     const { participants: unique } = generateParticipants({
-      participantsCount,
+      participantsCount: participantsCount + alternatesCount,
       participantType,
 
       uuids: drawProfile.uuids || uuids,
@@ -123,11 +116,29 @@ export function generateEventWithDraw({
     targetParticipants = unique;
   }
 
-  const participantIds = targetParticipants
+  const isEventParticipantType = (participant) => {
+    const { participantType } = participant;
+    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
+    if (eventType === DOUBLES && participantType === PAIR) return true;
+    if (eventType === TEAM && participantType === TEAM) return true;
+    return false;
+  };
+
+  const isEventGender = (participant) => {
+    if (!drawProfile.gender) return true;
+    if (participant.person?.sex === drawProfile.gender) return true;
+    if (participant.individualParticipants?.[0]?.sex === drawProfile.gender)
+      return true;
+  };
+
+  const consideredParticipants = targetParticipants
     .filter(isEventParticipantType)
+    .filter(isEventGender)
     .filter(
       ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-    )
+    );
+
+  const participantIds = consideredParticipants
     .slice(0, participantsCount)
     .map((p) => p.participantId);
 
@@ -144,12 +155,11 @@ export function generateEventWithDraw({
   // when unique participants are used for DIRECT_ACCEPTANCE entries
   const alternatesParticipantIds =
     excessParticipantAlternates &&
-    targetParticipants
+    tournamentRecord?.participants
+      ?.filter(({ participantId }) => !participantIds.includes(participantId))
       .filter(isEventParticipantType)
-      .filter(
-        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-      )
-      .slice(participantsCount)
+      .filter(isEventGender)
+      .slice(0, alternatesCount || drawSize - participantsCount)
       .map((p) => p.participantId);
 
   if (alternatesParticipantIds?.length) {

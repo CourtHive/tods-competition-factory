@@ -10,6 +10,7 @@ it('will return participant events including all entryStatuses', () => {
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles,
+    participantsProfile: { participantsCount: 32 },
   });
   tournamentEngine.setState(tournamentRecord);
 

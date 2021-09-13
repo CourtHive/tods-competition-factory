@@ -25,14 +25,13 @@ export function promoteAlternate({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
-  if (!event.entries) event.entries = [];
 
   if (event) {
     const result = promoteWithinElement({
       element: event,
       participantId,
-      stage,
       stageSequence,
+      stage,
     });
     if (result.error) return result;
   }
@@ -40,8 +39,8 @@ export function promoteAlternate({
     const result = promoteWithinElement({
       element: drawDefinition,
       participantId,
-      stage,
       stageSequence,
+      stage,
     });
     if (result.error) return result;
   }
@@ -55,7 +54,7 @@ function promoteWithinElement({
   stage,
   stageSequence,
 }) {
-  const alternates = element.entries.filter(
+  const alternates = (element.entries || []).filter(
     (entry) => entry.entryStatus === ALTERNATE
   );
 

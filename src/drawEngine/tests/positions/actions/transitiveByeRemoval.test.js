@@ -30,8 +30,8 @@ it('supports transitive BYE removal in large structures', () => {
     drawIds: [drawId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
   });
 
   tournamentEngine.setState(tournamentRecord);
