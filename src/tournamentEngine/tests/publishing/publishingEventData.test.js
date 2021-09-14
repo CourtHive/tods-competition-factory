@@ -2,12 +2,15 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
+import {
+  MISSING_EVENT,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
 import {
   COMPASS,
   CONTAINER,
@@ -120,6 +123,8 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
 
   const { drawId } = drawDefinition;
+  result = tournamentEngine.addDrawDefinition({ drawDefinition });
+  expect(result.error).toEqual(MISSING_EVENT);
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result).toEqual(SUCCESS);
 

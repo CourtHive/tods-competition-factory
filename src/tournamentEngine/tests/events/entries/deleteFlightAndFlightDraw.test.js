@@ -2,6 +2,10 @@ import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import {
+  MISSING_DRAW_ID,
+  MISSING_EVENT,
+} from '../../../../constants/errorConditionConstants';
 
 it('can delete flight and flightDrawDefinition', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -84,6 +88,10 @@ it('can delete drawDefinition when there is no flight', () => {
 
   const { drawId } = drawDefinition;
 
+  result = tournamentEngine.deleteFlightAndFlightDraw({ eventId });
+  expect(result.error).toEqual(MISSING_DRAW_ID);
+  result = tournamentEngine.deleteFlightAndFlightDraw({ drawId: 'bogusId' });
+  expect(result.error).toEqual(MISSING_EVENT);
   result = tournamentEngine.deleteFlightAndFlightDraw({ eventId, drawId });
 
   ({ event: eventResult } = tournamentEngine.getEvent({ eventId }));

@@ -2,6 +2,7 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { INDIVIDUAL } from '../../../constants/participantTypes';
+import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 
 it('can modify flightNames and drawNames', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -134,4 +135,11 @@ it('can modify drawNames when no flightProfile', () => {
     drawDefinition: { drawName },
   } = tournamentEngine.getEvent({ eventId, drawId });
   expect(drawName).toEqual(newDrawName);
+
+  result = tournamentEngine.modifyDrawName({
+    eventId,
+    drawId: 'bogusId',
+    drawName: newDrawName,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 });

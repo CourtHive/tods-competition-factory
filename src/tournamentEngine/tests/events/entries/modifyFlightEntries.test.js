@@ -4,6 +4,7 @@ import tournamentEngine from '../../../sync';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import {
+  EVENT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_IDS,
@@ -68,6 +69,12 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
     participantIds: participantIdsToAdd,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.addDrawEntries({
+    drawId: 'bogusId',
+    participantIds: participantIdsToAdd,
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
   expect(flightProfile.flights[0].drawEntries.length).toEqual(14);
