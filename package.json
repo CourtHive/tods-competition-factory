@@ -54,7 +54,7 @@
     "benchmark": "jest test --runInBand benchmark",
     "benchmark-coverage": "jest test --runInBand benchmark --collect-coverage",
     "coverage": "jest test --maxWorkers=50% --collect-coverage",
-    "lint": "tsdx eslint src",
+    "lint": "eslint src",
     "prepare": "tsdx build",
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postinstall": "husky install",
