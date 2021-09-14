@@ -16,7 +16,7 @@ import { generateRange, UUID } from '../../utilities';
 
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
-import { SINGLES, DOUBLES } from '../../constants/eventConstants';
+import { SINGLES, DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SEEDING } from '../../constants/scaleConstants';
 import {
   MAIN,
@@ -24,6 +24,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
+import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -39,7 +40,6 @@ export function generateEventWithFlights({
 }) {
   const {
     eventName = 'Generated Event',
-    tieFormat: eventTieFormat,
     eventType = SINGLES,
     policyDefinitions,
     drawProfiles = [],
@@ -51,6 +51,9 @@ export function generateEventWithFlights({
     category,
     gender,
   } = eventProfile;
+
+  const tieFormat =
+    eventProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
 
@@ -179,7 +182,7 @@ export function generateEventWithFlights({
     eventType,
     gender,
     surfaceCategory,
-    tieFormat: eventTieFormat,
+    tieFormat,
   };
 
   // attach any valid eventExtensions
