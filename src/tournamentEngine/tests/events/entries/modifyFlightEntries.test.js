@@ -7,6 +7,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const participantsProfile = {
@@ -125,4 +126,28 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
     participantIds: firstFlightParticipantIds,
   });
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
+});
+
+it('can remove entries from drawDefinitions if they are not positioned', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, participantsCount: 20 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const alternateIds = drawDefinition.entries
+    .filter(({ entryStatus }) => entryStatus === ALTERNATE)
+    .map(({ participantId }) => participantId);
+
+  const result = tournamentEngine.removeDrawEntries({
+    eventId,
+    drawId,
+    participantIds: alternateIds,
+  });
+  expect(result.success).toEqual(true);
 });
