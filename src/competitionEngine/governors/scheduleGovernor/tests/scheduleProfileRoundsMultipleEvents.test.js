@@ -200,8 +200,8 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
-  expect(result.requestConflicts).toEqual([]);
-  expect(result.noTimeMatchUpIds.length).toBeGreaterThan(0);
+  expect(result.requestConflicts[startDate]).toEqual([]);
+  expect(result.noTimeMatchUpIds[startDate].length).toBeGreaterThan(0);
   // #################################################
 
   const { matchUps: singlesMatchUps } =
@@ -300,14 +300,14 @@ it('multiple events at multiple venues with different participants will start at
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
-  expect(result.requestConflicts).toEqual([]);
-  expect(result.noTimeMatchUpIds.length).toEqual(0);
+  expect(result.requestConflicts[startDate]).toEqual([]);
+  expect(result.noTimeMatchUpIds[startDate].length).toEqual(0);
   // #################################################
 
   const firstVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[venueIds[0]][startDate];
+    result.scheduleTimesRemaining[startDate][venueIds[0]];
   const secondVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[venueIds[1]][startDate];
+    result.scheduleTimesRemaining[startDate][venueIds[1]];
   expect(firstVenueRemainingScheduleTimes.length).toBeGreaterThan(
     secondVenueRemainingScheduleTimes.length
   );

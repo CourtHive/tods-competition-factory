@@ -89,10 +89,10 @@ export function scheduleProfileRounds({
   const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
 
-  const scheduledMatchUpIds = [];
-  const overLimitMatchUpIds = [];
-  const noTimeMatchUpIds = [];
-  const requestConflicts = [];
+  const scheduledMatchUpIds = {};
+  const overLimitMatchUpIds = {};
+  const noTimeMatchUpIds = {};
+  const requestConflicts = {};
 
   let iterations = 0;
 
@@ -103,6 +103,12 @@ export function scheduleProfileRounds({
     const individualParticipantProfiles = {};
     const venueScheduledRoundDetails = {};
     const matchUpNotBeforeTimes = {};
+
+    scheduleTimesRemaining[scheduleDate] = {};
+    scheduledMatchUpIds[scheduleDate] = [];
+    overLimitMatchUpIds[scheduleDate] = [];
+    noTimeMatchUpIds[scheduleDate] = [];
+    requestConflicts[scheduleDate] = [];
 
     // checking that matchUpDependencies are scheduled is scoped to only those matchUps that are to be scheduled on the same date
     const allDateMatchUpIds = [];
@@ -136,7 +142,6 @@ export function scheduleProfileRounds({
     // ... and initiates scheduling
     for (const venue of venues) {
       let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
-      const remainingScheduleTimes = {}; // remainingScheduleTimes has to be scoped to the current venue
       const { venueId } = venue;
 
       const {
@@ -195,23 +200,23 @@ export function scheduleProfileRounds({
         }
         if (result.remainingScheduleTimes?.length) {
           // add remainingScheduleTimes for each scheduleDate and return for testing
-          remainingScheduleTimes[scheduleDate] = result.remainingScheduleTimes;
+          scheduleTimesRemaining[scheduleDate][venueId] =
+            result.remainingScheduleTimes;
         }
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
-        noTimeMatchUpIds.push(...roundNoTimeMatchUpIds);
+        noTimeMatchUpIds[scheduleDate].push(...roundNoTimeMatchUpIds);
         const roundScheduledMatchUpIds = result?.scheduledMatchUpIds || [];
-        scheduledMatchUpIds.push(...roundScheduledMatchUpIds);
+        scheduledMatchUpIds[scheduleDate].push(...roundScheduledMatchUpIds);
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
-        overLimitMatchUpIds.push(...roundOverLimitMatchUpIds);
+        overLimitMatchUpIds[scheduleDate].push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
         if (conflicts.length)
-          requestConflicts.push({ date: scheduleDate, conflicts });
+          requestConflicts[scheduleDate].push({
+            date: scheduleDate,
+            conflicts,
+          });
       }
-
-      if (!scheduleTimesRemaining[venueId])
-        scheduleTimesRemaining[venueId] = {};
-      scheduleTimesRemaining[venueId] = remainingScheduleTimes;
     }
   }
 

@@ -97,8 +97,8 @@ test.each([
     expect(result.success).toEqual(true);
     expect(result.scheduledDates).toEqual([startDate]);
     /*
-    console.log(result.scheduledMatchUpIds.length);
-    expect(scheduledRange.includes(result.scheduledMatchUpIds.length)).toEqual(
+    console.log(result.scheduledMatchUpIds[startDate].length);
+    expect(scheduledRange.includes(result.scheduledMatchUpIds[startDate].length)).toEqual(
       true
     );
     */

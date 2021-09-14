@@ -90,8 +90,8 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
-  expect(result.overLimitMatchUpIds.length).toEqual(8);
-  expect(result.scheduledMatchUpIds.length).toEqual(16);
+  expect(result.overLimitMatchUpIds[startDate].length).toEqual(8);
+  expect(result.scheduledMatchUpIds[startDate].length).toEqual(16);
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -187,8 +187,8 @@ it('can auto schedule Round Robin draws without daily limits', () => {
   });
   expect(result.success).toEqual(true);
   expect(result.scheduledDates).toEqual([startDate]);
-  expect(result.overLimitMatchUpIds.length).toEqual(0);
-  expect(result.scheduledMatchUpIds.length).toEqual(24);
+  expect(result.overLimitMatchUpIds[startDate].length).toEqual(0);
+  expect(result.scheduledMatchUpIds[startDate].length).toEqual(24);
 
   let { matchUps } = competitionEngine.allCompetitionMatchUps();
   let scheduledMatchUps = matchUps.filter(hasSchedule);
