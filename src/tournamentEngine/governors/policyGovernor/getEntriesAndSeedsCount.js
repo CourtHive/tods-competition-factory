@@ -1,8 +1,7 @@
 import { getEliminationDrawSize } from '../../../drawEngine/getters/getEliminationDrawSize';
-import { getFlightProfile } from '../../getters/getFlightProfile';
+import { getStageEntries } from '../../getters/participants/getStageEntries';
 import { getSeedsCount } from './getSeedsCount';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
 import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
 
 /**
@@ -27,6 +26,13 @@ export function getEntriesAndSeedsCount({
 }) {
   if (!event) return { error: MISSING_EVENT };
 
+  const { entries, stageEntries } = getStageEntries({
+    event,
+    stage,
+    drawDefinition,
+    drawId,
+  });
+  /*
   let entries = event.entries;
 
   if (drawId) {
@@ -46,6 +52,7 @@ export function getEntriesAndSeedsCount({
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
       STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
   );
+  */
   const participantCount = stageEntries.length;
 
   const { drawSize: eliminationDrawSize } = getEliminationDrawSize({
