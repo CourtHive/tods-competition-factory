@@ -17,7 +17,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
 } from '../../../../constants/errorConditionConstants';
 import {
-  HIDDEN,
   PUBLIC,
   PUBLISH,
   STATUS,
@@ -45,9 +44,8 @@ export function deleteDrawDefinitions({
   // if drawIds were not provided, assume that the intent is to delete all drawDefinitions
   if (!drawIds.length) drawIds = eventDrawIds;
 
-  const drawDefinitionsExist = drawIds.every((drawId) =>
-    eventDrawIds.includes(drawId)
-  );
+  const drawDefinitionsExist =
+    drawIds.length && drawIds.every((drawId) => eventDrawIds.includes(drawId));
   if (!drawDefinitionsExist) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   event.drawDefinitions = event.drawDefinitions.filter((drawDefinition) => {
@@ -79,25 +77,27 @@ export function deleteDrawDefinitions({
   checkSchedulingProfile({ tournamentRecord });
 
   const itemType = `${PUBLISH}.${STATUS}`;
-  const publishStatus = getTimeItem({ event, itemType });
-  const drawPublished =
-    publishStatus && publishStatus.drawIds?.includes(drawId);
-  publishStatus !== HIDDEN;
-  if (drawPublished) {
-    const updatedDrawIds =
-      publishStatus.drawIds?.filter(
-        (publishedDrawId) => publishedDrawId !== drawId
-      ) || [];
-    const timeItem = {
-      itemType: `${PUBLISH}.${STATUS}`,
-      itemValue: {
-        [PUBLIC]: {
-          drawIds: updatedDrawIds,
+  const { timeItem } = getTimeItem({ element: event, itemType });
+  const publishStatus = timeItem?.itemValue?.[PUBLIC];
+
+  for (const drawId of drawIds) {
+    const drawPublished = publishStatus?.drawIds?.includes(drawId);
+    if (drawPublished) {
+      const updatedDrawIds =
+        publishStatus.drawIds?.filter(
+          (publishedDrawId) => publishedDrawId !== drawId
+        ) || [];
+      const timeItem = {
+        itemType: `${PUBLISH}.${STATUS}`,
+        itemValue: {
+          [PUBLIC]: {
+            drawIds: updatedDrawIds,
+          },
         },
-      },
-    };
-    const result = addEventTimeItem({ event, timeItem });
-    if (result.error) return { error: result.error };
+      };
+      const result = addEventTimeItem({ event, timeItem });
+      if (result.error) return { error: result.error };
+    }
   }
 
   if (auditTrail.length) {
@@ -107,7 +107,7 @@ export function deleteDrawDefinitions({
       itemValue: deletedDrawDetails,
     };
     const result = addEventTimeItem({ event, timeItem });
-    if (result.error) return { error: result.error };
+    if (result.error) return result;
   }
   if (matchUpIds.length) {
     deleteMatchUpsNotice({ matchUpIds });
