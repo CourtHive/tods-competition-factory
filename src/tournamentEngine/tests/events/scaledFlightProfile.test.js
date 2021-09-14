@@ -154,5 +154,5 @@ it('can delete flightProfileAndFlightDraw', () => {
   const result = tournamentEngine.deleteFlightProfileAndFlightDraws({
     eventId,
   });
-  console.log(result);
+  expect(result.success).toEqual(true);
 });

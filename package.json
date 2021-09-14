@@ -14,9 +14,11 @@
   "jest": {
     "coverageDirectory": "./benchmarks",
     "coveragePathIgnorePatterns": [
+      "documentation",
       "benchmarks",
       "harness",
-      "index.ts"
+      "index.ts",
+      "dist"
     ],
     "watchPathIgnorePatterns": [
       "generated"
@@ -105,6 +107,5 @@
   },
   "resolutions": {
     "marked": "^3.0.0"
-  },
-  "type": "module"
+  }
 }
