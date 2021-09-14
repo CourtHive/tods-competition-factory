@@ -1,3 +1,4 @@
+import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import mocksEngine from '../../../mocksEngine';
 import { intersection } from '../../../utilities';
 import tournamentEngine from '../../sync';
@@ -31,6 +32,17 @@ it('can set and get drawRepresentatitveIds', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setDrawParticipantRepresentativeIds({
+    representativeParticipantIds: ['bogusId'],
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.setDrawParticipantRepresentativeIds({
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
 
   const { representativeParticipantIds: retrievedIds } =
     tournamentEngine.getDrawParticipantRepresentativeIds({ drawId });

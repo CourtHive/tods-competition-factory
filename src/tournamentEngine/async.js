@@ -35,8 +35,12 @@ export function tournamentEngineAsync(test) {
   if (result.error && !test) return result;
 
   const engine = {
-    getState: ({ convertExtensions } = {}) =>
-      getState({ convertExtensions, tournamentId: getTournamentId() }),
+    getState: ({ convertExtensions, removeExtensions } = {}) =>
+      getState({
+        convertExtensions,
+        removeExtensions,
+        tournamentId: getTournamentId(),
+      }),
     newTournamentRecord: (params = {}) => {
       const result = newTournamentRecord(params);
       if (result.error) return result;

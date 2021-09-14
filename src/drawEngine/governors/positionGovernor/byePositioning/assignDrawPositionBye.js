@@ -100,7 +100,6 @@ export function assignDrawPositionBye({
   if (containsBye) return { ...SUCCESS }; // nothing to be done
 
   if (filled && !containsBye) {
-    console.log('assignDrawPositionBye ##');
     return { error: DRAW_POSITION_ASSIGNED };
   }
 

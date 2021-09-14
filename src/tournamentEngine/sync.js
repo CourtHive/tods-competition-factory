@@ -31,8 +31,12 @@ import {
 
 export const tournamentEngine = (function () {
   const engine = {
-    getState: ({ convertExtensions } = {}) =>
-      getState({ convertExtensions, tournamentId: getTournamentId() }),
+    getState: ({ convertExtensions, removeExtensions } = {}) =>
+      getState({
+        convertExtensions,
+        removeExtensions,
+        tournamentId: getTournamentId(),
+      }),
     newTournamentRecord: (params = {}) => {
       const result = newTournamentRecord(params);
       if (result.error) return result;

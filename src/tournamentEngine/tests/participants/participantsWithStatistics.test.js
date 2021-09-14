@@ -2,6 +2,12 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import {
+  DRAW_POSITION_ASSIGNED,
+  MISSING_DRAW_POSITION,
+  MISSING_STRUCTURE_ID,
+  NOT_IMPLEMENTED,
+} from '../../../constants/errorConditionConstants';
 
 it('will return participant events including all entryStatuses', () => {
   const drawProfiles = [{ drawSize: 16, participantsCount: 14 }];
@@ -33,6 +39,20 @@ it('will return participant events including all entryStatuses', () => {
   let result = tournamentEngine.assignDrawPosition({
     drawId,
     structureId,
+    participantId: alternateParticipantIds[0],
+  });
+  expect(result.error).toEqual(MISSING_DRAW_POSITION);
+
+  result = tournamentEngine.assignDrawPosition({
+    drawId,
+    drawPosition: 2,
+    participantId: alternateParticipantIds[0],
+  });
+  expect(result.error).toEqual(MISSING_STRUCTURE_ID);
+
+  result = tournamentEngine.assignDrawPosition({
+    drawId,
+    structureId,
     drawPosition: 2,
     participantId: alternateParticipantIds[0],
   });
@@ -62,4 +82,20 @@ it('will return participant events including all entryStatuses', () => {
   expect(positionAssignments[0].participantId).toEqual(
     opponents[0].participantId
   );
+
+  result = tournamentEngine.assignDrawPosition({
+    drawId,
+    structureId,
+    drawPosition: 2,
+    bye: true,
+  });
+  expect(result.error).toEqual(DRAW_POSITION_ASSIGNED);
+
+  result = tournamentEngine.assignDrawPosition({
+    drawId,
+    structureId,
+    drawPosition: 2,
+    qualifier: true,
+  });
+  expect(result.error).toEqual(NOT_IMPLEMENTED);
 });

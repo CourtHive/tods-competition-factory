@@ -28,11 +28,20 @@ export function setState(tournament, deepCopyOption) {
   return tournamentRecord;
 }
 
-export function getState({ convertExtensions, tournamentId } = {}) {
+export function getState({
+  convertExtensions,
+  removeExtensions,
+  tournamentId,
+} = {}) {
   if (typeof tournamentId !== 'string') return {};
   const tournamentRecord = getTournamentRecord(tournamentId);
   return {
-    tournamentRecord: makeDeepCopy(tournamentRecord, convertExtensions),
+    tournamentRecord: makeDeepCopy(
+      tournamentRecord,
+      convertExtensions,
+      false,
+      removeExtensions
+    ),
   };
 }
 

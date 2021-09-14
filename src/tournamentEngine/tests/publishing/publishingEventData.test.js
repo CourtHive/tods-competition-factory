@@ -194,6 +194,12 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
       : names.concat(matchUp.structureName);
   }, []);
   expect(structureNames).toEqual(['Group 1', 'Group 2', 'Group 3', 'Group 4']);
+
+  result = tournamentEngine.deleteDrawDefinitions({
+    eventId,
+    drawIds: [drawId],
+  });
+  expect(result.success).toEqual(true);
 });
 
 it('can generate payload for publishing a compass draw', () => {

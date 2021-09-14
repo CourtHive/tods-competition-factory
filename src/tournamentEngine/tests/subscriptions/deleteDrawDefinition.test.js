@@ -4,6 +4,10 @@ import tournamentEngine from '../../sync';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  MISSING_VALUE,
+} from '../../../constants/errorConditionConstants';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [
@@ -40,12 +44,25 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const auditData = { userId: 'user123', reason: 'I wanted to' };
+
+  result = tournamentEngine.deleteDrawDefinitions({
+    drawIds: [],
+    auditData,
+  });
+  expect(result.error).toEqual(MISSING_VALUE);
+
+  result = tournamentEngine.deleteDrawDefinitions({
+    eventId,
+    auditData,
+  });
+  expect(result.success).toEqual(true);
+
   result = tournamentEngine.deleteDrawDefinitions({
     eventId,
     drawIds: [drawId],
     auditData,
   });
-  expect(result.success).toEqual(true);
+  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
 
   expect(notificationCounter).toEqual(1);
   expect(auditTrail.flat(Infinity)[0].payload.auditData).toEqual(auditData);
