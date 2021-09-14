@@ -6,6 +6,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
+  NOT_IMPLEMENTED,
 } from '../../../../constants/errorConditionConstants';
 
 export function assignDrawPosition({
@@ -28,8 +29,7 @@ export function assignDrawPosition({
     });
     if (result.error) return result;
   } else if (qualifier) {
-    // TODO: handle qualifier assignment
-    console.log('assign qualifier');
+    return { error: NOT_IMPLEMENTED };
   } else {
     const result = assignPosition({
       drawDefinition,
