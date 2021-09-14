@@ -105,5 +105,6 @@
   },
   "resolutions": {
     "marked": "^3.0.0"
-  }
+  },
+  "type": "module"
 }
