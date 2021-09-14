@@ -1,11 +1,12 @@
 import { deleteParticipants } from '../../participantGovernor/deleteParticipants';
+import { getStageEntries } from '../../../getters/participants/getStageEntries';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
 import { UNGROUPED } from '../../../../constants/entryStatusConstants';
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { PAIR } from '../../../../constants/participantTypes';
+import { GROUP, PAIR } from '../../../../constants/participantTypes';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,
@@ -15,6 +16,7 @@ import {
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import { indices } from '../../../../utilities/arrays';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries
@@ -35,6 +37,7 @@ export function destroyGroupEntry({
   participantId,
   entryStatus,
   drawId,
+  stage,
   event,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -45,6 +48,25 @@ export function destroyGroupEntry({
   }
 
   const tournamentParticipants = tournamentRecord.participants || [];
+  const { stageEntries } = getStageEntries({
+    entryTypes: [PAIR, GROUP],
+    drawDefinition,
+    drawId,
+    event,
+    stage,
+  });
+
+  const groupedParticipantIds = stageEntries.map(
+    ({ participantId }) => participantId
+  );
+  const individualParticipantIdsInGroups = tournamentParticipants
+    .filter(({ participantId }) =>
+      groupedParticipantIds.includes(participantId)
+    )
+    .map(({ individualParticipantIds }) => individualParticipantIds)
+    .flat()
+    .filter(Boolean);
+
   const participant = tournamentParticipants.find(
     (participant) => participant.participantId === participantId
   );
@@ -77,7 +99,12 @@ export function destroyGroupEntry({
   });
   if (result.error) return result;
 
-  const individualParticipantIds = participant.individualParticipantIds;
+  // find only those individualParticipantIds which do not occur MULTIPLE TIMES in PAIRs/GROUPs in the event.entries or drawEntries
+  // this scenario can occur in e.g. ITA tournaments where an individual participant is paired multiple times across flights
+  const individualParticipantIds = participant.individualParticipantIds.filter(
+    (participantId) =>
+      indices(participantId, individualParticipantIdsInGroups).length === 1
+  );
 
   result = addEventEntries({
     event,
