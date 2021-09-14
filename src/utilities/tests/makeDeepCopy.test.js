@@ -61,6 +61,29 @@ it('can convert extensions during deepCopy', () => {
   expect(targetParticipant.person._someExtension).toEqual('extensionValue');
 });
 
+it('can remove extensions', () => {
+  let { tournamentRecord } = mocksEngine.generateTournamentRecord();
+  tournamentEngine.setState(tournamentRecord);
+
+  const scoringPolicy = {
+    scoring: {
+      policyName: 'TEST',
+    },
+  };
+  let result = tournamentEngine.attachPolicies({
+    policyDefinitions: scoringPolicy,
+  });
+  expect(result.success).toEqual(true);
+
+  ({ tournamentRecord } = tournamentEngine.getState());
+  expect(tournamentRecord.extensions.length).toEqual(1);
+
+  ({ tournamentRecord } = tournamentEngine.getState({
+    removeExtensions: true,
+  }));
+  expect(tournamentRecord.extensions).toEqual([]);
+});
+
 it('can disable deepCopy without compromising source document', () => {
   const drawProfiles = [
     {

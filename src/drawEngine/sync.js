@@ -28,8 +28,13 @@ let tournamentParticipants = [];
 
 export const drawEngine = (function () {
   const engine = {
-    getState: ({ convertExtensions } = {}) => ({
-      drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
+    getState: ({ convertExtensions, removeExtensions } = {}) => ({
+      drawDefinition: makeDeepCopy(
+        drawDefinition,
+        convertExtensions,
+        false,
+        removeExtensions
+      ),
     }),
     version: () => factoryVersion(),
     reset: () => {

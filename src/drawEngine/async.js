@@ -32,8 +32,13 @@ export function drawEngineAsync(test) {
   if (result.error && !test) return result;
 
   const engine = {
-    getState: ({ convertExtensions } = {}) => ({
-      drawDefinition: makeDeepCopy(drawDefinition, convertExtensions),
+    getState: ({ convertExtensions, removeExtensions } = {}) => ({
+      drawDefinition: makeDeepCopy(
+        drawDefinition,
+        convertExtensions,
+        false,
+        removeExtensions
+      ),
     }),
     version: () => factoryVersion(),
     reset: () => {

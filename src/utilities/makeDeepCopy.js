@@ -8,7 +8,12 @@ import { isDateObject } from './dateTime';
  * @param {boolean} internalUse - disregard deepCopy being disabled within the engine - necessary for query results
  * @returns
  */
-export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
+export function makeDeepCopy(
+  sourceObject,
+  convertExtensions,
+  internalUse,
+  removeExtensions
+) {
   const deepCopy = deepCopyEnabled();
 
   if (
@@ -31,6 +36,8 @@ export function makeDeepCopy(sourceObject, convertExtensions, internalUse) {
     if (convertExtensions && key === 'extensions' && Array.isArray(value)) {
       const extensionConversions = extensionsToAttributes(value);
       Object.assign(targetObject, ...extensionConversions);
+    } else if (removeExtensions && key === 'extensions') {
+      targetObject[key] = [];
     } else if (internalUse && deepCopy?.stringify.includes(key)) {
       targetObject[key] =
         typeof value?.toString === 'function'

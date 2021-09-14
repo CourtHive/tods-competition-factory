@@ -14,12 +14,17 @@ import {
   INVALID_VALUES,
 } from '../constants/errorConditionConstants';
 
-export function getState({ convertExtensions }) {
+export function getState({ convertExtensions, removeExtensions }) {
   const tournamentRecords = getTournamentRecords();
   const tournamentId = getTournamentId();
   return {
     tournamentId,
-    tournamentRecords: makeDeepCopy(tournamentRecords, convertExtensions),
+    tournamentRecords: makeDeepCopy(
+      tournamentRecords,
+      convertExtensions,
+      false,
+      removeExtensions
+    ),
   };
 }
 
