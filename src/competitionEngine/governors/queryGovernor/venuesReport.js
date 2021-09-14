@@ -92,10 +92,9 @@ function getVenueReport(dates, venue, matchUps) {
       scheduledMinutes += matchUpScheduledMinutes;
     });
 
-    const percentUtilization = (
-      (scheduledMinutes / availableMinutes) *
-      100
-    ).toFixed(2);
+    const percentUtilization = availableMinutes
+      ? ((scheduledMinutes / availableMinutes) * 100).toFixed(2)
+      : '100';
     venueReport[date] = {
       scheduledMatchUpsCount: venueMatchUps.length,
       availableCourts,
