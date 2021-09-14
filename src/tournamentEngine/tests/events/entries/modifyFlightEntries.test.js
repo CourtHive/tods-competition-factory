@@ -1,13 +1,13 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_IDS,
 } from '../../../../constants/errorConditionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 
 it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const participantsProfile = {

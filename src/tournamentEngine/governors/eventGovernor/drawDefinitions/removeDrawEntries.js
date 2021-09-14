@@ -32,11 +32,9 @@ export function removeDrawEntries({
   if (someAssignedParticipantIds)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
-  const filterEntry = (entry, doNotFilterIds = []) => {
+  const filterEntry = (entry) => {
     const entryId = entry.participantId;
-    return !doNotFilterIds.includes(entryId) && participantIds.includes(entryId)
-      ? false
-      : true;
+    return participantIds.includes(entryId) ? false : true;
   };
 
   const { flightProfile } = getFlightProfile({ event });
@@ -44,9 +42,7 @@ export function removeDrawEntries({
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
-    flight.drawEntries = flight.drawEntries.filter((entry) =>
-      filterEntry(entry)
-    );
+    flight.drawEntries = flight.drawEntries.filter(filterEntry);
     if (autoEntryPositions) {
       flight.drawEntries = refreshEntryPositions({
         entries: flight.drawEntries,
@@ -55,12 +51,7 @@ export function removeDrawEntries({
   }
 
   if (drawDefinition?.entries) {
-    const assignedParticipantIds = getAssignedParticipantIds({
-      drawDefinition,
-    });
-    drawDefinition.entries = drawDefinition.entries.filter((entry) =>
-      filterEntry(entry, assignedParticipantIds)
-    );
+    drawDefinition.entries = drawDefinition.entries.filter(filterEntry);
     if (autoEntryPositions) {
       drawDefinition.entries = refreshEntryPositions({
         entries: drawDefinition.entries,
