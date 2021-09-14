@@ -22,10 +22,9 @@ export function toggleParticipantCheckInState(params) {
     inContext: true,
   });
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-  const { error, checkedInParticipantIds } = getCheckedInParticipantIds({
+  const { checkedInParticipantIds = [] } = getCheckedInParticipantIds({
     matchUp,
   });
-  if (error) return { error };
 
   if (checkedInParticipantIds.includes(participantId)) {
     return checkOutParticipant({
