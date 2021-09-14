@@ -5,7 +5,6 @@ import { overlap } from '../../../../utilities';
 
 import {
   MISSING_EVENT,
-  EVENT_NOT_FOUND,
   MISSING_PARTICIPANT_IDS,
   MISSING_DRAW_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -24,9 +23,6 @@ export function removeDrawEntries({
   if (!participantIds || !participantIds.length)
     return { error: MISSING_PARTICIPANT_IDS };
 
-  if (!event || !event.eventId) return { error: EVENT_NOT_FOUND };
-  if (!event.entries) event.entries = [];
-
   const assignedParticipantIds = getAssignedParticipantIds({ drawDefinition });
   const someAssignedParticipantIds = overlap(
     participantIds,
@@ -36,9 +32,11 @@ export function removeDrawEntries({
   if (someAssignedParticipantIds)
     return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
-  const filterEntry = (entry) => {
+  const filterEntry = (entry, doNotFilterIds = []) => {
     const entryId = entry.participantId;
-    return participantIds.includes(entryId) ? false : true;
+    return !doNotFilterIds.includes(entryId) && participantIds.includes(entryId)
+      ? false
+      : true;
   };
 
   const { flightProfile } = getFlightProfile({ event });
@@ -46,7 +44,9 @@ export function removeDrawEntries({
     (flight) => flight.drawId === drawId
   );
   if (flight?.drawEntries) {
-    flight.drawEntries = flight.drawEntries.filter(filterEntry);
+    flight.drawEntries = flight.drawEntries.filter((entry) =>
+      filterEntry(entry)
+    );
     if (autoEntryPositions) {
       flight.drawEntries = refreshEntryPositions({
         entries: flight.drawEntries,
@@ -55,7 +55,12 @@ export function removeDrawEntries({
   }
 
   if (drawDefinition?.entries) {
-    drawDefinition.entries = drawDefinition.entries.filter(filterEntry);
+    const assignedParticipantIds = getAssignedParticipantIds({
+      drawDefinition,
+    });
+    drawDefinition.entries = drawDefinition.entries.filter((entry) =>
+      filterEntry(entry, assignedParticipantIds)
+    );
     if (autoEntryPositions) {
       drawDefinition.entries = refreshEntryPositions({
         entries: drawDefinition.entries,
