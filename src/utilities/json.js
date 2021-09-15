@@ -1,7 +1,8 @@
 import { INVALID_VALUES } from '../constants/errorConditionConstants';
 
 export function JSON2CSV(arrayOfJSON, config) {
-  const { targetKeys = [], columnMap = {}, joiner = '.' } = config;
+  if (config && typeof config !== 'object') return { error: INVALID_VALUES };
+  const { targetKeys = [], columnMap = {}, joiner = '.' } = config || {};
   if (
     !Array.isArray(arrayOfJSON) ||
     !Array.isArray(targetKeys) ||
