@@ -1,5 +1,6 @@
 import { addDrawDefinition as addDefinition } from '../../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
+import { findTournamentId } from './findTournamentId';
 
 import {
   MISSING_EVENT,
@@ -15,8 +16,11 @@ export function addDrawDefinition({
   flight,
   existingDrawCount,
 }) {
-  if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
   if (!eventId) return { error: MISSING_EVENT };
+
+  tournamentId =
+    tournamentId || findTournamentId({ tournamentRecords, eventId });
+  if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
