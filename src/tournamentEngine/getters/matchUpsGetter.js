@@ -337,12 +337,21 @@ export function findMatchUp({
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
+
+  // tournamentEngine middleware should have already found drawDefinition, unless drawId was not provided
+
+  // since drawEngineFindMatchUp is being used, additional context needs to be provided
+  const context = { tournamentId: tournamentRecord.tournamentId };
+
   if (!drawId) {
     // if matchUp did not have context, find drawId by brute force
     const { matchUps } = allTournamentMatchUps({ tournamentRecord });
-    drawId = matchUps.reduce((drawId, candidate) => {
-      return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
-    }, undefined);
+
+    const inContextMatchUp = matchUps.find(
+      (matchUp) => matchUp.matchUpId === matchUpId
+    );
+    ({ eventId: context.eventId, drawId } = inContextMatchUp || {});
+
     const drawDefinitions = (tournamentRecord.events || [])
       .map((event) => event.drawDefinitions || [])
       .flat(Infinity);
@@ -351,15 +360,15 @@ export function findMatchUp({
     );
   }
 
-  // tournamentEngine middleware should have already found drawDefinition
   if (drawId) {
     const tournamentParticipants = tournamentRecord.participants || [];
     const { matchUp, structure } = drawEngineFindMatchUp({
-      drawDefinition,
-      matchUpId,
-      nextMatchUps,
       tournamentParticipants,
+      drawDefinition,
+      nextMatchUps,
+      matchUpId,
       inContext,
+      context,
     });
     return { matchUp, structure, drawDefinition };
   }

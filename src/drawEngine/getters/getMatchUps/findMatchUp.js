@@ -25,6 +25,7 @@ export function findMatchUp({
   tournamentParticipants,
   matchUpId,
   inContext,
+  context,
 
   matchUpsMap,
 }) {
@@ -38,9 +39,10 @@ export function findMatchUp({
     const { matchUps } = getAllStructureMatchUps({
       tournamentParticipants,
       drawDefinition,
+      matchUpsMap,
       inContext,
       structure,
-      matchUpsMap,
+      context,
     });
     const { matchUp } = getMatchUp({ matchUps, matchUpId });
 
