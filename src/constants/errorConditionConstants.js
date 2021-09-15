@@ -63,6 +63,7 @@ export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
 export const INVALID_MATCHUP_FORMAT = 'Invalid matchUpFormat';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
+export const MISSING_TIE_FORMAT = 'Missing tieFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
 export const MISSING_MATCHUP_IDS = 'Missing matchUpIds';
 export const MATCHUP_NOT_FOUND = 'matchUp not found';
@@ -301,6 +302,7 @@ export const errorConditionConstants = {
   MISSING_STRUCTURE,
   MISSING_STRUCTURES,
   MISSING_TARGET_LINK,
+  MISSING_TIE_FORMAT,
   MISSING_TIME_ITEM,
   MISSING_TIME_ITEMS,
   MISSING_TOURNAMENT_ID,
