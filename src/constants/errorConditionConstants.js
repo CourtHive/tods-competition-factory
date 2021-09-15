@@ -63,6 +63,7 @@ export const INCOMPATIBLE_MATCHUP_STATUS = 'Incompatible matchUpStatus';
 export const INVALID_MATCHUP_STATUS = 'Invalid matchUpStatus';
 export const INVALID_MATCHUP_FORMAT = 'Invalid matchUpFormat';
 export const MISSING_MATCHUP_FORMAT = 'Missing matchUpFormat';
+export const MISSING_COLLECTION_DEFINITION = 'Missing collectionDefinition';
 export const MISSING_TIE_FORMAT = 'Missing tieFormat';
 export const MISSING_MATCHUP_ID = 'Missing matchUpId';
 export const MISSING_MATCHUP_IDS = 'Missing matchUpIds';
@@ -258,6 +259,7 @@ export const errorConditionConstants = {
   METHOD_NOT_FOUND,
   MISSING_ASSIGNMENTS,
   MISSING_AVOIDANCE_POLICY,
+  MISSING_COLLECTION_DEFINITION,
   MISSING_COURT_ID,
   MISSING_COURTS_INFO,
   MISSING_DATE_AVAILABILITY,
