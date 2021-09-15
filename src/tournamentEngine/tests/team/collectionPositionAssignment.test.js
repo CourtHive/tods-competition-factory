@@ -112,6 +112,7 @@ it('can generate draws in TEAM events with tieFormat and assign particiapnts to 
   let teamParticipantIdSide1 = positionAssignments.find(
     (assignment) => assignment.drawPosition === side1.drawPosition
   ).participantId;
+
   let {
     tournamentParticipants: [teamParticipant],
   } = tournamentEngine.getTournamentParticipants({
