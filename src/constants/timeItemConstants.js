@@ -5,6 +5,7 @@ export const SCHEDULE = 'SCHEDULE';
 export const ASSIGN_COURT = 'SCHEDULE.ASSIGNMENT.COURT';
 export const ASSIGN_VENUE = 'SCHEDULE.ASSIGNMENT.VENUE';
 export const SCHEDULED_DATE = 'SCHEDULE.DATE';
+export const COMPLETED_DATE = 'COMPLETED.DATE'; // considering adding this timeItem on completed score entry provided date is between tournament startDate/endDate
 
 export const ASSIGN_OFFICIAL = 'SCHEDULE.ASSIGN.OFFICIAL';
 export const SCHEDULED_TIME = 'SCHEDULE.TIME.SCHEDULED';
