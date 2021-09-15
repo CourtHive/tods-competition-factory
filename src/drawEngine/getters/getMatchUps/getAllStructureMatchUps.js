@@ -23,8 +23,6 @@ import { MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../constants/eventConstants';
 
-import { getDevContext } from '../../../global/globalState';
-
 /*
   return all matchUps within a structure and its child structures
   context is used to pass in additional parameters to be assigned to each matchUp
@@ -336,13 +334,6 @@ export function getAllStructureMatchUps({
       matchUpWithContext.tieMatchUps = matchUpWithContext.tieMatchUps.map(
         (matchUp) => {
           const matchUpTieId = matchUpWithContext.matchUpId;
-
-          if (
-            getDevContext({ inContext: true }) &&
-            !Object.keys(context).length
-          ) {
-            console.log('MISSING CONTEXT');
-          }
 
           return addMatchUpContext({
             tieDrawPositions: drawPositions,
