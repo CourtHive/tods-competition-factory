@@ -328,50 +328,43 @@ export function publicFindMatchUp(params) {
 
 export function findMatchUp({
   tournamentRecord,
-  drawDefinition,
-
-  drawId,
+  nextMatchUps,
   matchUpId,
   inContext,
-  nextMatchUps,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
 
-  // tournamentEngine middleware should have already found drawDefinition, unless drawId was not provided
+  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+
+  const inContextMatchUp = matchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
 
   // since drawEngineFindMatchUp is being used, additional context needs to be provided
-  const context = { tournamentId: tournamentRecord.tournamentId };
+  const { eventId, drawId } = inContextMatchUp;
+  const context = {
+    tournamentId: tournamentRecord.tournamentId,
+    eventId,
+    drawId,
+  };
 
-  if (!drawId) {
-    // if matchUp did not have context, find drawId by brute force
-    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
+  const drawDefinitions = (tournamentRecord.events || [])
+    .map((event) => event.drawDefinitions || [])
+    .flat(Infinity);
+  const drawDefinition = drawDefinitions.find(
+    (drawDefinition) => drawDefinition.drawId === drawId
+  );
 
-    const inContextMatchUp = matchUps.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
-    );
-    ({ eventId: context.eventId, drawId } = inContextMatchUp || {});
-
-    const drawDefinitions = (tournamentRecord.events || [])
-      .map((event) => event.drawDefinitions || [])
-      .flat(Infinity);
-    drawDefinition = drawDefinitions.find(
-      (drawDefinition) => drawDefinition.drawId === drawId
-    );
-  }
-
-  if (drawId) {
-    const tournamentParticipants = tournamentRecord.participants || [];
-    const { matchUp, structure } = drawEngineFindMatchUp({
-      tournamentParticipants,
-      drawDefinition,
-      nextMatchUps,
-      matchUpId,
-      inContext,
-      context,
-    });
-    return { matchUp, structure, drawDefinition };
-  }
-
-  return { error: MATCHUP_NOT_FOUND };
+  const tournamentParticipants = tournamentRecord.participants || [];
+  const { matchUp, structure } = drawEngineFindMatchUp({
+    context: inContext && context,
+    tournamentParticipants,
+    drawDefinition,
+    nextMatchUps,
+    matchUpId,
+    inContext,
+  });
+  return { matchUp, structure, drawDefinition };
 }
