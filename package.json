@@ -4,8 +4,13 @@
   "keywords": [
     "TODS",
     "tournament",
+    "advanced-scheduling",
+    "tournament-algorithm",
+    "tournament-draw-generator",
+    "tournament-manager",
     "tournaments",
     "competition",
+    "tennis-score",
     "tennis"
   ],
   "version": "0.23.1",
