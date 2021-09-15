@@ -267,7 +267,7 @@ export function getAllStructureMatchUps({
       (event?.eventType !== TEAM && event?.eventType);
 
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
-    const { schedule } = getMatchUpScheduleDetails({
+    const { schedule, endDate } = getMatchUpScheduleDetails({
       scheduleVisibilityFilters,
       scheduleTiming,
       matchUpType,
@@ -302,21 +302,22 @@ export function getAllStructureMatchUps({
     // order is important here as Round Robin matchUps already have inContext structureId
     const matchUpWithContext = Object.assign(
       definedAttributes({
-        stage,
-        drawId,
-        drawName,
-        schedule,
-        feedRound,
-        roundName,
-        matchUpType,
-        exitProfile,
-        structureId,
-        matchUpTieId,
-        matchUpStatus,
+        endDate: matchUp.endDate || endDate,
+        drawPositionsRange,
         structureName,
         stageSequence,
         drawPositions,
-        drawPositionsRange,
+        matchUpStatus,
+        matchUpTieId,
+        matchUpType,
+        exitProfile,
+        structureId,
+        feedRound,
+        roundName,
+        drawName,
+        schedule,
+        drawId,
+        stage,
       }),
       context,
       makeDeepCopy(matchUp, true, true)

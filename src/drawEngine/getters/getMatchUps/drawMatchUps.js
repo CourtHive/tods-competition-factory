@@ -35,32 +35,31 @@ export function getAllDrawMatchUps(params) {
 }
 
 export function getDrawMatchUps({
-  event,
-  context,
-  inContext,
-  roundFilter,
-  nextMatchUps,
+  scheduleVisibilityFilters,
+  tournamentAppliedPolicies,
+  tournamentParticipants,
+  requireParticipants,
+  includeByeMatchUps,
+  policyDefinitions,
+  tournamentRecord,
   drawDefinition,
   matchUpFilters,
   contextFilters,
   scheduleTiming,
-  policyDefinitions,
-  tournamentRecord,
-  includeByeMatchUps,
-  requireParticipants,
-  tournamentParticipants,
-  tournamentAppliedPolicies,
-  scheduleVisibilityFilters,
-
+  nextMatchUps,
+  roundFilter,
   matchUpsMap,
+  inContext,
+  context,
+  event,
 }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  let allByeMatchUps = [];
-  let allPendingMatchUps = [];
-  let allUpcomingMatchUps = [];
   let allAbandonedMatchUps = [];
   let allCompletedMatchUps = [];
+  let allUpcomingMatchUps = [];
+  let allPendingMatchUps = [];
+  let allByeMatchUps = [];
 
   tournamentParticipants =
     (tournamentParticipants?.length && tournamentParticipants) ||
@@ -82,30 +81,29 @@ export function getDrawMatchUps({
       completedMatchUps,
       abandonedMatchUps,
     } = getStructureMatchUps({
-      event,
-      context,
-      structure,
-      roundFilter,
+      inContext: inContext || nextMatchUps,
+      tournamentAppliedPolicies,
+      scheduleVisibilityFilters,
+      tournamentParticipants,
+      requireParticipants,
+      includeByeMatchUps,
+      policyDefinitions,
       drawDefinition,
       matchUpFilters,
       contextFilters,
       scheduleTiming,
-      policyDefinitions,
-      includeByeMatchUps,
-      requireParticipants,
-      tournamentParticipants,
-      tournamentAppliedPolicies,
-      scheduleVisibilityFilters,
-      inContext: inContext || nextMatchUps,
-
       matchUpsMap,
+      roundFilter,
+      structure,
+      context,
+      event,
     });
 
-    allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
-    allPendingMatchUps = allPendingMatchUps.concat(...pendingMatchUps);
-    allUpcomingMatchUps = allUpcomingMatchUps.concat(...upcomingMatchUps);
     allAbandonedMatchUps = allAbandonedMatchUps.concat(...abandonedMatchUps);
     allCompletedMatchUps = allCompletedMatchUps.concat(...completedMatchUps);
+    allUpcomingMatchUps = allUpcomingMatchUps.concat(...upcomingMatchUps);
+    allPendingMatchUps = allPendingMatchUps.concat(...pendingMatchUps);
+    allByeMatchUps = allByeMatchUps.concat(...byeMatchUps);
   });
 
   const matchUpGroups = {
