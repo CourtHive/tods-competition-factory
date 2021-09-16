@@ -1,10 +1,11 @@
 import { getFlightProfile } from '../getFlightProfile';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 
 export function getStageEntries({
+  selected = true,
   drawDefinition,
-  entryTypes,
+  entryStatuses,
   drawId,
   event,
   stage,
@@ -25,11 +26,11 @@ export function getStageEntries({
 
   const stageEntries = entries.filter(
     (entry) =>
-      (!entryTypes ||
-        !entry.entryType ||
-        entryTypes.includes(entry.entryType)) &&
+      (!entryStatuses?.length ||
+        !entry.entryStatus ||
+        entryStatuses.includes(entry.entryStatus)) &&
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+      (!selected || STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus))
   );
   return { entries, stageEntries };
 }

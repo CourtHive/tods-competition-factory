@@ -39,12 +39,12 @@ export function positionUnseededParticipants({
     .filter(Boolean);
 
   const { stage, stageSequence } = structure;
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
     drawDefinition,
     stageSequence,
+    entryStatuses,
     structureId,
-    entryTypes,
     stage,
   });
   const unseededEntries = entries.filter(

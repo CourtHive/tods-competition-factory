@@ -29,7 +29,7 @@ export const WITHDRAWN = EntryStatusEnum.WITHDRAWN;
 export const UNPAIRED = EntryStatusEnum.UNPAIRED;
 export const UNGROUPED = EntryStatusEnum.UNGROUPED;
 
-export const STRUCTURE_ENTERED_TYPES = [
+export const STRUCTURE_SELECTED_STATUSES = [
   FEED_IN,
   QUALIFIER,
   WILDCARD,
@@ -38,7 +38,7 @@ export const STRUCTURE_ENTERED_TYPES = [
   ORGANISER_ACCEPTANCE,
 ];
 
-export const VALID_ENTERED_TYPES = [
+export const VALID_ENTRY_STATUSES = [
   ALTERNATE,
   WITHDRAWN,
   FEED_IN,
@@ -51,6 +51,10 @@ export const VALID_ENTERED_TYPES = [
   LUCKY_LOSER,
   ORGANISER_ACCEPTANCE,
 ];
+
+// will be deprecated
+export const STRUCTURE_ENTERED_TYPES = STRUCTURE_SELECTED_STATUSES;
+export const VALID_ENTERED_TYPES = VALID_ENTRY_STATUSES;
 
 export const entryStatusConstants = {
   FEED_IN,
@@ -66,5 +70,8 @@ export const entryStatusConstants = {
   ORGANISER_ACCEPTANCE,
 
   VALID_ENTERED_TYPES,
+  VALID_ENTRY_STATUSES,
+
   STRUCTURE_ENTERED_TYPES,
+  STRUCTURE_SELECTED_STATUSES,
 };

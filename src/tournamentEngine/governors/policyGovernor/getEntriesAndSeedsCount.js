@@ -27,32 +27,11 @@ export function getEntriesAndSeedsCount({
   if (!event) return { error: MISSING_EVENT };
 
   const { entries, stageEntries } = getStageEntries({
-    event,
-    stage,
     drawDefinition,
     drawId,
+    stage,
+    event,
   });
-  /*
-  let entries = event.entries;
-
-  if (drawId) {
-    const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.flights?.find(
-      (flight) => flight.drawId === drawId
-    );
-    if (flight) {
-      entries = flight.drawEntries;
-    } else {
-      entries = drawDefinition?.entries;
-    }
-  }
-
-  const stageEntries = entries.filter(
-    (entry) =>
-      (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
-  );
-  */
   const participantCount = stageEntries.length;
 
   const { drawSize: eliminationDrawSize } = getEliminationDrawSize({

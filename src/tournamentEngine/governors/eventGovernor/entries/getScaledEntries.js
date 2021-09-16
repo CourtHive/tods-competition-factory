@@ -1,7 +1,7 @@
 import { getParticipantScaleItem } from '../../queryGovernor/getParticipantScaleItem';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 
 /**
  *
@@ -30,7 +30,7 @@ export function getScaledEntries({
   const stageEntries = entries.filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
   const scaledEntries = stageEntries

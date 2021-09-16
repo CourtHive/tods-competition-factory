@@ -2,7 +2,7 @@ import { removeParticipantsScaleItems } from '../../participantGovernor/removeSc
 import { getFlightProfile } from '../../../getters/getFlightProfile';
 
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 
 /**
  *
@@ -41,7 +41,7 @@ export function removeScaleValues({
   const stageEntries = entries.filter(
     (entry) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
 
   const participantIds = stageEntries.map(({ participantId }) => participantId);

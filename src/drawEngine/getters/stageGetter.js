@@ -123,8 +123,8 @@ export function stageSeededEntries({ stage, drawDefinition }) {
 export function getStageEntries({
   drawDefinition,
   stageSequence,
+  entryStatuses,
   structureId,
-  entryTypes,
   stages,
   stage,
 }) {
@@ -134,7 +134,7 @@ export function getStageEntries({
         (stage && c.entryStage === stage) ||
         (stages?.length && stages.includes(c.entryStage));
       const matchesEntryType =
-        !entryTypes || entryTypes.includes(c.entryStatus);
+        !entryStatuses || entryStatuses.includes(c.entryStatus);
       const entryStageSequence = c.stageSequence || 1; // default to 1 if not present
       const sameStageSequence =
         !stageSequence || entryStageSequence === stageSequence;

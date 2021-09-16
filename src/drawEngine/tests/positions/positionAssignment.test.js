@@ -39,11 +39,11 @@ it('can assign SINGLE_ELIMINATION draw drawPositions', () => {
     structures: [structure],
   } = getDrawStructures({ drawDefinition, stage });
 
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const mainDrawEntries = getStageEntries({
-    stage,
     drawDefinition,
-    entryTypes,
+    entryStatuses,
+    stage,
   });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 
@@ -116,12 +116,12 @@ it('can assign ROUND_ROBIN draw drawPositions', () => {
   expect(structure.structureType).toEqual(CONTAINER);
   expect(structure.structures.length).toEqual(4);
 
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   ({ drawDefinition } = drawEngine.getState());
   const mainDrawEntries = getStageEntries({
-    stage,
     drawDefinition,
-    entryTypes,
+    entryStatuses,
+    stage,
   });
   const participantIds = mainDrawEntries.map((e) => e.participantId);
 

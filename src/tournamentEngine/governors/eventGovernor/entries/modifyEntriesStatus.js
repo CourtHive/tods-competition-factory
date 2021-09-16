@@ -13,7 +13,7 @@ import {
   PARTICIPANT_ASSIGNED_DRAW_POSITION,
 } from '../../../../constants/errorConditionConstants';
 import {
-  VALID_ENTERED_TYPES,
+  VALID_ENTRY_STATUSES,
   WITHDRAWN,
 } from '../../../../constants/entryStatusConstants';
 
@@ -35,7 +35,7 @@ export function modifyEntriesStatus({
       method: 'modifyEntriesStatus',
       participantIds,
     };
-  if (!VALID_ENTERED_TYPES.includes(entryStatus))
+  if (!VALID_ENTRY_STATUSES.includes(entryStatus))
     return { error: INVALID_ENTRY_STATUS };
 
   if (!drawDefinition && !event) return { error: MISSING_EVENT };
