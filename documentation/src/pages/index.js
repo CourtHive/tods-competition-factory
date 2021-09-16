@@ -14,8 +14,7 @@ const features = [
     description: (
       <>
         The Competition Factory consumes, produces, and generates ITF standard
-        TODS documents (a JSON format) and ensures that all document mutations
-        are valid.
+        TODS documents (a JSON format) ensuring that all mutations are valid.
       </>
     ),
   },
@@ -24,10 +23,9 @@ const features = [
     imageUrl: 'img/tmx.png',
     description: (
       <>
-        Based on years of experience running thousands of events for national
-        governing bodies, Competition Factory now powers the tournament
-        management platform of the USTA, the largest tennis federation in the
-        world, as well as the Intercollegiate Tennis Association (ITA).
+        Based on years of experience running thousands of events for governing
+        bodies, Competition Factory now powers the tournament management
+        platform of the USTA and the Intercollegiate Tennis Association.
       </>
     ),
   },
