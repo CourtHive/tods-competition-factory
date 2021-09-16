@@ -100,7 +100,7 @@
     "jest-environment-node": "27.2.0",
     "np": "7.5.0",
     "pinst": "2.1.6",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "prettier-eslint": "13.0.0",
     "source-map-resolve": "0.6.0",
     "tsdx": "0.14.1",
