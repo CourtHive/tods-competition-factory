@@ -11,6 +11,16 @@ it('can transform arrays of JSON objects to CSV', () => {
   );
 });
 
+it('can transform arrays of JSON objects to CSV and add context to all rows', () => {
+  const jsonObjects = [{ a: 1 }, { b: 2 }];
+  const expectations = ['contextItem,a,b', 'context,1,', 'context,,2'];
+  const config = { context: { contextItem: 'context' } };
+  const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
+  expectations.forEach((expectation, i) =>
+    expect(conversion[i]).toEqual(expectation)
+  );
+});
+
 it('can transform arrays of JSON objects to CSV and map header column names', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
   const expectations = ['first,b', '1,', ',2'];
@@ -85,7 +95,7 @@ it('can transform arrays of JSON objects to CSV and transform multiple target at
     : console.log({ conversion });
 });
 
-it.only('can transform singles and doubles matchUps to extract side1player1', () => {
+it('can transform singles and doubles matchUps to extract side1player1', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 4 }, { drawSize: 4, eventType: DOUBLES }],
     completeAllMatchUps: true,

@@ -26,6 +26,7 @@ export function JSON2CSV(arrayOfJSON, config) {
     columnAccessors = [],
     columnTransform = {},
     columnMap = {},
+    context = {},
 
     columnJoiner = ',',
     rowJoiner = '\r\n',
@@ -90,9 +91,17 @@ export function JSON2CSV(arrayOfJSON, config) {
       tranformedHeaderRow.unshift(columnName)
   );
 
+  typeof context === 'object' &&
+    Object.keys(context).forEach(
+      (columnName) =>
+        !tranformedHeaderRow.includes(columnName) &&
+        tranformedHeaderRow.unshift(columnName)
+    );
+
   const mappedHeaderRow = tranformedHeaderRow.map(
     (key) => columnMap[key] || key
   );
+
   const processRow = (row) => {
     const valueMap = Object.values(
       tranformedHeaderRow.reduce((valueMap, key) => {
@@ -100,13 +109,16 @@ export function JSON2CSV(arrayOfJSON, config) {
         valueMap[key] =
           (accessors?.length
             ? row[accessors.find((accessor) => row[accessor])]
-            : row[key]) || '';
+            : row[key]) ||
+          context?.[key] ||
+          '';
 
         return valueMap;
       }, {})
     );
     return valueMap;
   };
+
   const rows = flattened.map(processRow);
 
   return [mappedHeaderRow.join(columnJoiner), ...rows].join(rowJoiner);
