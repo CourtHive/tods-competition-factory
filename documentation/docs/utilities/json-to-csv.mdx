@@ -17,7 +17,7 @@ const config = {
   keyJoiner, // optional - defines how flattened column names are constructed; defaults to '.'
 };
 const arrayOfJSON = [{ a: 1 }, { b: 2 }];
-const csv = utilities.JSON2CSV(json, config);
+const csv = utilities.JSON2CSV(arrayOfJSON, config);
 ```
 
 :::note
