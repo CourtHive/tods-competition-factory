@@ -26,6 +26,12 @@ const csv = utilities.JSON2CSV(json, config);
 `columnMap` should not contain new columnName(s) that are `columnTransform` keys
 :::
 
+## Example converting matchUps
+
+In the following example **SINGLES** and **DOUBLES** draws are generated and all `matchUps` are completed.
+The JSON2CSV `config` defines how `participants` for each `side` of each `matchUp` is to be extracted,
+prioritizing the `accessor` for extracting `{ participantType: PAIR }`, and falling back on the `accessor` for `participantName`.
+
 ```jsx live
 function MocksEngineDemo(props) {
   const drawProfiles = [
