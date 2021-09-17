@@ -1,4 +1,5 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
+import { unique } from '../../../utilities';
 import mocksEngine from '../..';
 
 import {
@@ -13,7 +14,6 @@ import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { CLAY, HARD } from '../../../constants/surfaceConstants';
-import { unique } from '../../../utilities';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

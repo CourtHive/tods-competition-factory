@@ -132,7 +132,14 @@ export function generateEventWithDraw({
   const isEventGender = (participant) => {
     if (!drawProfile.gender) return true;
     if (participant.person?.sex === drawProfile.gender) return true;
-    if (participant.individualParticipants?.[0]?.sex === drawProfile.gender)
+    if (
+      participant.individualParticipantIds?.some((participantId) => {
+        const individualParticipant = targetParticipants.find(
+          (p) => p.participantId === participantId
+        );
+        return individualParticipant && isEventGender(individualParticipant);
+      })
+    )
       return true;
   };
 

@@ -4,7 +4,7 @@ import { intersection, unique } from '../../../../utilities';
 import { FEED_IN_CHAMPIONSHIP_TO_R16 } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 
-// import { FEMALE, MALE } from '../../../../constants/genderConstants';
+import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { PAIR } from '../../../../constants/participantTypes';
 
@@ -25,7 +25,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 32,
       eventType: DOUBLES,
       idPrefix: 'M16',
-      // gender: MALE,
+      gender: MALE,
       drawSize: 32,
       withPlayoffs,
     },
@@ -36,7 +36,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 32,
       eventType: DOUBLES,
       idPrefix: 'F16',
-      // gender: FEMALE,
+      gender: FEMALE,
       drawSize: 32,
       withPlayoffs,
     },
@@ -47,13 +47,12 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 24,
       eventType: DOUBLES,
       idPrefix: 'M18',
-      // gender: MALE,
+      gender: MALE,
       drawSize: 32,
       withPlayoffs,
     },
   ];
 
-  const participantsProfile = { participantsCount: 1 };
   const {
     drawIds,
     tournamentRecord,
@@ -61,7 +60,6 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   } = mocksEngine.generateTournamentRecord({
     venueProfiles,
     drawProfiles,
-    participantsProfile,
   });
 
   tournamentEngine.setState(tournamentRecord);
