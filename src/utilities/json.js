@@ -28,7 +28,7 @@ export function JSON2CSV(arrayOfJSON, config) {
     columnMap = {},
     context = {},
 
-    delimiter = '',
+    delimiter = '"',
     columnJoiner = ',',
     rowJoiner = '\r\n',
     keyJoiner = '.',
