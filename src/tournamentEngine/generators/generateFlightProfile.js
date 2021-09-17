@@ -14,7 +14,7 @@ import {
   EXISTING_PROFILE,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -78,7 +78,7 @@ export function generateFlightProfile({
     .filter(
       (entry) =>
         (!stage || !entry.entryStage || entry.entryStage === stage) &&
-        STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+        STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
     );
 
   const flightEntries = scaledEntries.concat(...unscaledEntries);

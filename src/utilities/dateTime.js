@@ -152,7 +152,8 @@ export function isISODateString(dateString) {
 
 function isTimeString(timeString) {
   if (typeof timeString !== 'string') return false;
-  const parts = timeString.split(':');
+  const noZ = timeString.split('Z')[0];
+  const parts = noZ.split(':');
   const isNumeric = parts.every((part) => !isNaN(part));
   if (parts.length < 2 || !isNumeric) return false;
   if (parseInt(parts[0]) > 23) return false;
@@ -177,15 +178,15 @@ export function dayMinutesToTimeString(totalMinutes) {
 }
 
 export function tidyTime(timeString) {
-  return timeString.split(':').slice(0, 2).map(zeroPad).join(':');
+  return isTimeString(timeString)
+    ? timeString.split(':').slice(0, 2).map(zeroPad).join(':')
+    : undefined;
 }
 
 export function extractTime(dateString) {
-  return isISODateString(dateString)
+  return isISODateString(dateString) && dateString.indexOf('T') > 0
     ? tidyTime(dateString.split('T').reverse()[0])
-    : isTimeString(dateString)
-    ? tidyTime(dateString)
-    : undefined;
+    : tidyTime(dateString);
 }
 
 export function extractDate(dateString) {

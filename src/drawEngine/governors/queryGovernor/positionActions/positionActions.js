@@ -145,7 +145,7 @@ export function positionActions({
     return { error: INVALID_DRAW_POSITION };
 
   const { stage, stageSequence } = structure;
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
 
   const stages = [stage];
 
@@ -156,8 +156,8 @@ export function positionActions({
   const stageEntries = getStageEntries({
     drawDefinition,
     stageSequence,
+    entryStatuses,
     structureId,
-    entryTypes,
     stages,
   });
 

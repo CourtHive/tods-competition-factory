@@ -249,8 +249,12 @@ it('can assign seedNumbers and drawPositions to seeded participants', () => {
   });
   expect(result).toMatchObject(SUCCESS);
 
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
-  const participants = getStageEntries({ drawDefinition, stage, entryTypes });
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
+  const participants = getStageEntries({
+    drawDefinition,
+    entryStatuses,
+    stage,
+  });
   const participantId = participants[0].participantId;
   const participantId2 = participants[1].participantId;
   const participantId3 = participants[2].participantId;

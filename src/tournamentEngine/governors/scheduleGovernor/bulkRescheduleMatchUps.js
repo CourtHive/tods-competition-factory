@@ -107,12 +107,14 @@ export function bulkRescheduleMatchUps({
           const newTime = currentDayMinutes + minutesChange + averageMinutes;
           doNotReschedule = newTime < 0 || newTime > dayTotalMinutes;
 
-          if (scheduledTimeDate && !doNotReschedule) {
+          if (!doNotReschedule) {
             let timeString = addMinutesToTimeString(
               scheduledTime,
               minutesChange
             );
-            newScheduledTime = `${scheduledTimeDate}T${timeString}`;
+            newScheduledTime = scheduledTimeDate
+              ? `${scheduledTimeDate}T${timeString}`
+              : timeString;
           }
         }
 

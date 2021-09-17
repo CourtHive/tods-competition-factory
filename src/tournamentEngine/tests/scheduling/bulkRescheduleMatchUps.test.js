@@ -15,7 +15,7 @@ import {
   MISSING_MATCHUP_IDS,
 } from '../../../constants/errorConditionConstants';
 
-it('can bulk reschedule matchUps', () => {
+it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   const venueProfiles = [
     {
       venueName: 'venue 1',

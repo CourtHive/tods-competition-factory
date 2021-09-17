@@ -17,6 +17,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
+import { findTournamentId } from '../../competitionsGovernor/findTournamentId';
 
 export function addMatchUpScheduleItems(params) {
   const { tournamentRecord, drawDefinition, error } = getDrawDefinition(params);
@@ -157,7 +158,11 @@ export function assignMatchUpCourt(params) {
 
 function getDrawDefinition({ tournamentRecords, tournamentId, drawId }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
-  if (typeof tournamentId !== 'string') return { error: MISSING_TOURNAMENT_ID };
+  if (typeof tournamentId !== 'string') {
+    // find tournamentId by brute force if not provided
+    tournamentId = findTournamentId({ tournamentRecords, drawId });
+    if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
+  }
 
   const tournamentRecord = tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

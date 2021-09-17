@@ -1,6 +1,10 @@
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
-import { extractTime, timeStringMinutes } from '../../utilities/dateTime';
+import {
+  extractDate,
+  extractTime,
+  timeStringMinutes,
+} from '../../utilities/dateTime';
 import { competitionEngine } from '../..';
 import fs from 'fs';
 
@@ -22,7 +26,10 @@ it('can auto schedule across multiple dates', () => {
   expect(issuesCount).toEqual(0);
 
   let result = competitionEngine.scheduleProfileRounds();
-  let scheduledIdsCount = result.scheduledMatchUpIds.length;
+  const scheduledDates = result.scheduledDates.map(extractDate);
+  const scheduledIdsCount = scheduledDates
+    .map((scheduledDate) => result.scheduledMatchUpIds[scheduledDate].length)
+    .reduce((a, b) => a + b, 0);
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);

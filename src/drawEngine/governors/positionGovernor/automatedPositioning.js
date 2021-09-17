@@ -28,13 +28,13 @@ export function automatedPositioning({
   const { structure, error } = findStructure({ drawDefinition, structureId });
   if (error) return { error };
 
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
-    drawDefinition,
-    stage: structure.stage,
     stageSequence: structure.stageSequence,
+    stage: structure.stage,
+    drawDefinition,
+    entryStatuses,
     structureId,
-    entryTypes,
   });
 
   if (!entries?.length) return SUCCESS;

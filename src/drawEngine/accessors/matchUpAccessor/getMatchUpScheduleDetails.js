@@ -1,4 +1,5 @@
 import { matchUpFormatTimes } from '../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { findEvent } from '../../../tournamentEngine/getters/eventGetter';
 import { definedAttributes } from '../../../utilities/objects';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
@@ -18,9 +19,9 @@ import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
 import { TEAM } from '../../../constants/eventConstants';
 
 export function getMatchUpScheduleDetails({
-  tournamentRecord,
   scheduleVisibilityFilters,
   afterRecoveryTimes = true,
+  tournamentRecord,
   scheduleTiming,
   matchUpType,
   matchUp,
@@ -143,5 +144,17 @@ export function getMatchUpScheduleDetails({
     });
   }
 
-  return { schedule };
+  const hasCompletedStatus = completedMatchUpStatuses.includes(
+    matchUp.matchUpStatus
+  );
+
+  const { scheduledDate } = scheduledMatchUpDate({ matchUp });
+  const { scheduledTime } = scheduledMatchUpTime({ matchUp });
+  const endDate =
+    hasCompletedStatus &&
+    (extractDate(endTime) ||
+      extractDate(scheduledDate) ||
+      extractDate(scheduledTime));
+
+  return { schedule, endDate };
 }

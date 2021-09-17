@@ -2,7 +2,7 @@ import { getPlayoffStructures } from '../../../tournamentEngine/getters/structur
 import { getStructureMatchUps } from '../../getters/getMatchUps/getStructureMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { STRUCTURE_ENTERED_TYPES } from '../../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 
 /**
  *
@@ -57,7 +57,7 @@ export function allPlayoffPositionsFilled(params) {
 
   const enteredParticipantsCount =
     drawDefinition?.entries?.filter((entry) =>
-      STRUCTURE_ENTERED_TYPES.includes(entry?.entryStatus)
+      STRUCTURE_SELECTED_STATUSES.includes(entry?.entryStatus)
     )?.length || 0;
 
   let participantIdsCount = 0;

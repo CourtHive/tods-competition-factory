@@ -1,8 +1,10 @@
 import mocksEngine from '../../../../mocksEngine';
 import tournamentEngine from '../../../sync';
 
+import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
 import {
+  EVENT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_IDS,
@@ -68,6 +70,12 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   });
   expect(result.success).toEqual(true);
 
+  result = tournamentEngine.addDrawEntries({
+    drawId: 'bogusId',
+    participantIds: participantIdsToAdd,
+  });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
+
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
   expect(flightProfile.flights[0].drawEntries.length).toEqual(14);
 
@@ -125,4 +133,28 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
     participantIds: firstFlightParticipantIds,
   });
   expect(result.error).toEqual(EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT);
+});
+
+it('can remove entries from drawDefinitions if they are not positioned', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, participantsCount: 20 }],
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const alternateIds = drawDefinition.entries
+    .filter(({ entryStatus }) => entryStatus === ALTERNATE)
+    .map(({ participantId }) => participantId);
+
+  const result = tournamentEngine.removeDrawEntries({
+    eventId,
+    drawId,
+    participantIds: alternateIds,
+  });
+  expect(result.success).toEqual(true);
 });

@@ -32,7 +32,8 @@ export function competitionEngineAsync(test) {
   if (result.error && !test) return result;
 
   const engine = {
-    getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
+    getState: ({ convertExtensions, removeExtensions } = {}) =>
+      getState({ convertExtensions, removeExtensions }),
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});

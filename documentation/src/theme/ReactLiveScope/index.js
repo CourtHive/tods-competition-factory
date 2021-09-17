@@ -7,11 +7,13 @@
 
 import React from 'react';
 import Draw from '../../../docs/components/DrawDefinition';
+import RenderCSV from '../../../docs/components/RenderCSV';
 import RenderJSON from '../../../docs/components/RenderJSON';
 import Tournament from '../../../docs/components/TournamentRecord';
 import Participants from '../../../docs/components/Participants';
 import MatchUps from '../../../docs/components/MatchUps';
 import {
+  utilities,
   drawEngine,
   mocksEngine,
   tournamentEngine,
@@ -22,6 +24,7 @@ import {
 const ReactLiveScope = {
   React,
   ...React,
+  utilities,
   drawEngine,
   mocksEngine,
   tournamentEngine,
@@ -29,6 +32,7 @@ const ReactLiveScope = {
   Participants,
   Tournament,
   RenderJSON,
+  RenderCSV,
   MatchUps,
   Draw,
 };

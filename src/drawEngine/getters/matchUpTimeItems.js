@@ -21,7 +21,6 @@ export function getCheckedInParticipantIds({ matchUp }) {
     return { error: MISSING_CONTEXT };
   }
 
-  if (!matchUp) return { error: MISSING_MATCHUP };
   if (!matchUp.sides || matchUp.sides.filter(Boolean).length !== 2) {
     return { error: INVALID_MATCHUP };
   }

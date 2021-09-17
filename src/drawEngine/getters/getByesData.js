@@ -34,12 +34,12 @@ export function getByesData({ drawDefinition, matchUpsMap, structure }) {
 
   // get stage/stageSequence Entries and qualifiers
   const { structureId, stage, stageSequence } = structure;
-  const entryTypes = [DIRECT_ACCEPTANCE, WILDCARD];
+  const entryStatuses = [DIRECT_ACCEPTANCE, WILDCARD];
   const entries = getStageEntries({
     drawDefinition,
     stageSequence,
+    entryStatuses,
     structureId,
-    entryTypes,
     stage,
   });
   const qualifiersCount = getStageQualifiersCount({ drawDefinition, stage });

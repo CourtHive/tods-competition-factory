@@ -7,10 +7,13 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { MISSING_TOURNAMENT_ID } from '../../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
-import { PAIR } from '../../../../constants/participantConstants';
 import { INDIVIDUAL } from '../../../../constants/participantTypes';
+import { PAIR } from '../../../../constants/participantConstants';
+import {
+  MISSING_EVENT,
+  MISSING_TOURNAMENT_RECORD,
+} from '../../../../constants/errorConditionConstants';
 
 it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [
@@ -78,13 +81,20 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   drawIds.push(drawDefinition.drawId);
 
   result = competitionEngine.addDrawDefinition({
+    tournamentId: 'bogusId',
     eventId: eventIds[0],
     drawDefinition,
   });
-  expect(result.error).toEqual(MISSING_TOURNAMENT_ID);
+  expect(result.error).toEqual(MISSING_TOURNAMENT_RECORD);
 
   result = competitionEngine.addDrawDefinition({
     tournamentId,
+    drawDefinition,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = competitionEngine.addDrawDefinition({
+    // tournamentId, // tournamentId can be discovered by brute force
     eventId: eventIds[0],
     drawDefinition,
   });
@@ -200,8 +210,8 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
-  expect(result.requestConflicts).toEqual([]);
-  expect(result.noTimeMatchUpIds.length).toBeGreaterThan(0);
+  expect(result.requestConflicts[startDate]).toEqual([]);
+  expect(result.noTimeMatchUpIds[startDate].length).toBeGreaterThan(0);
   // #################################################
 
   const { matchUps: singlesMatchUps } =
@@ -300,14 +310,14 @@ it('multiple events at multiple venues with different participants will start at
     scheduleDates: [startDate],
   });
   expect(result.success).toEqual(true);
-  expect(result.requestConflicts).toEqual([]);
-  expect(result.noTimeMatchUpIds.length).toEqual(0);
+  expect(result.requestConflicts[startDate]).toEqual([]);
+  expect(result.noTimeMatchUpIds[startDate].length).toEqual(0);
   // #################################################
 
   const firstVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[venueIds[0]][startDate];
+    result.scheduleTimesRemaining[startDate][venueIds[0]];
   const secondVenueRemainingScheduleTimes =
-    result.scheduleTimesRemaining[venueIds[1]][startDate];
+    result.scheduleTimesRemaining[startDate][venueIds[1]];
   expect(firstVenueRemainingScheduleTimes.length).toBeGreaterThan(
     secondVenueRemainingScheduleTimes.length
   );

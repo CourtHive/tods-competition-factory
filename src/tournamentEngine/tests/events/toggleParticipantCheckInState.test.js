@@ -1,4 +1,5 @@
 import competitionEngine from '../../../competitionEngine/sync';
+import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import drawEngine from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
@@ -112,4 +113,13 @@ it('can toggle participant check-in state', () => {
     participantId: participantIds[1],
   });
   expect(result.success).toEqual(true);
+
+  // do it a second time for testing code coverage
+  result = competitionEngine.toggleParticipantCheckInState({
+    tournamentId,
+    drawId,
+    matchUpId: 'bogusId',
+    participantId: participantIds[1],
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
 });

@@ -35,7 +35,7 @@ export function allTournamentMatchUps({
     tournamentRecord,
   });
 
-  const context = { tournamentId, contextEndDate: tournamentRecord.endDate };
+  const context = { tournamentId, endDate: tournamentRecord.endDate };
 
   const matchUps = events
     .map(
@@ -130,7 +130,7 @@ export function allEventMatchUps({
     matchUpFormat,
     tournamentId: tournamentRecord?.tournamentId,
   };
-  if (endDate) additionalContext.contextEndDate = endDate;
+  if (endDate) additionalContext.endDate = endDate;
 
   participants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
@@ -222,24 +222,26 @@ export function tournamentMatchUps({
 }
 
 export function eventMatchUps({
-  event,
-  inContext,
+  tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
+  policyDefinitions,
+  tournamentRecord,
+  matchUpFilters,
+  contextFilters,
   nextMatchUps,
   participants,
   tournamentId,
-  matchUpFilters,
-  contextFilters,
-  tournamentRecord,
-  policyDefinitions,
-  tournamentAppliedPolicies,
-  scheduleVisibilityFilters,
+  inContext,
+  event,
 }) {
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event;
 
   const context = { eventId, eventName };
-  if (endDate) context.contextEndDate = endDate;
-  if (tournamentId) context.tournamentId = tournamentId;
+  if (endDate) context.endDate = endDate;
+  if (!endDate) context.endDate = tournamentRecord?.endDate;
+  if (tournamentId || tournamentRecord.tournamentId)
+    context.tournamentId = tournamentId || tournamentRecord.tournamentId;
 
   const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
@@ -248,18 +250,18 @@ export function eventMatchUps({
   const matchUpGroupings = drawDefinitions.reduce(
     (matchUps, drawDefinition) => {
       const drawMatchUps = getDrawMatchUps({
-        event,
-        context,
-        inContext,
-        nextMatchUps,
+        tournamentAppliedPolicies,
+        scheduleVisibilityFilters,
+        tournamentParticipants,
+        policyDefinitions,
+        tournamentRecord,
         drawDefinition,
         matchUpFilters,
         contextFilters,
-        tournamentRecord,
-        policyDefinitions,
-        tournamentAppliedPolicies,
-        tournamentParticipants,
-        scheduleVisibilityFilters,
+        nextMatchUps,
+        inContext,
+        context,
+        event,
       });
       const keys = Object.keys(drawMatchUps);
       keys?.forEach((key) => {
@@ -276,41 +278,43 @@ export function eventMatchUps({
 }
 
 export function drawMatchUps({
-  event,
-  inContext,
-  nextMatchUps,
-  participants,
-  tournamentId,
+  tournamentAppliedPolicies,
+  scheduleVisibilityFilters,
+  policyDefinitions,
+  tournamentRecord,
   matchUpFilters,
   contextFilters,
   drawDefinition,
-  tournamentRecord,
-  policyDefinitions,
-  tournamentAppliedPolicies,
-  scheduleVisibilityFilters,
+  nextMatchUps,
+  participants,
+  tournamentId,
+  inContext,
+  event,
 }) {
   if (!event) return { error: MISSING_EVENT };
   const { eventId, eventName, endDate } = event;
 
   const context = { eventId, eventName };
-  if (endDate) context.contextEndDate = endDate;
-  if (tournamentId) context.tournamentId = tournamentId;
+  if (endDate) context.endDate = endDate;
+  if (!endDate) context.endDate = tournamentRecord?.endDate;
+  if (tournamentId || tournamentRecord.tournamentId)
+    context.tournamentId = tournamentId || tournamentRecord.tournamentId;
 
   const tournamentParticipants =
     participants || (tournamentRecord && getParticipants({ tournamentRecord }));
   return getDrawMatchUps({
-    event,
-    context,
-    inContext,
-    nextMatchUps,
+    tournamentAppliedPolicies,
+    scheduleVisibilityFilters,
+    tournamentParticipants,
+    policyDefinitions,
+    tournamentRecord,
     drawDefinition,
     matchUpFilters,
     contextFilters,
-    tournamentRecord,
-    policyDefinitions,
-    tournamentAppliedPolicies,
-    tournamentParticipants,
-    scheduleVisibilityFilters,
+    nextMatchUps,
+    inContext,
+    context,
+    event,
   });
 }
 
@@ -328,41 +332,44 @@ export function publicFindMatchUp(params) {
 
 export function findMatchUp({
   tournamentRecord,
-  drawDefinition,
-
-  drawId,
+  nextMatchUps,
   matchUpId,
   inContext,
-  nextMatchUps,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (typeof matchUpId !== 'string') return { error: MISSING_MATCHUP_ID };
-  if (!drawId) {
-    // if matchUp did not have context, find drawId by brute force
-    const { matchUps } = allTournamentMatchUps({ tournamentRecord });
-    drawId = matchUps.reduce((drawId, candidate) => {
-      return candidate.matchUpId === matchUpId ? candidate.drawId : drawId;
-    }, undefined);
-    const drawDefinitions = (tournamentRecord.events || [])
-      .map((event) => event.drawDefinitions || [])
-      .flat(Infinity);
-    drawDefinition = drawDefinitions.find(
-      (drawDefinition) => drawDefinition.drawId === drawId
-    );
-  }
 
-  // tournamentEngine middleware should have already found drawDefinition
-  if (drawId) {
-    const tournamentParticipants = tournamentRecord.participants || [];
-    const { matchUp, structure } = drawEngineFindMatchUp({
-      drawDefinition,
-      matchUpId,
-      nextMatchUps,
-      tournamentParticipants,
-      inContext,
-    });
-    return { matchUp, structure, drawDefinition };
-  }
+  const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
-  return { error: MATCHUP_NOT_FOUND };
+  const inContextMatchUp = matchUps.find(
+    (matchUp) => matchUp.matchUpId === matchUpId
+  );
+  if (!inContextMatchUp) return { error: MATCHUP_NOT_FOUND };
+
+  // since drawEngineFindMatchUp is being used, additional context needs to be provided
+  const { eventId, drawId } = inContextMatchUp;
+  const context = {
+    tournamentId: tournamentRecord.tournamentId,
+    endDate: tournamentRecord.endDate,
+    eventId,
+    drawId,
+  };
+
+  const drawDefinitions = (tournamentRecord.events || [])
+    .map((event) => event.drawDefinitions || [])
+    .flat(Infinity);
+  const drawDefinition = drawDefinitions.find(
+    (drawDefinition) => drawDefinition.drawId === drawId
+  );
+
+  const tournamentParticipants = tournamentRecord.participants || [];
+  const { matchUp, structure } = drawEngineFindMatchUp({
+    context: inContext && context,
+    tournamentParticipants,
+    drawDefinition,
+    nextMatchUps,
+    matchUpId,
+    inContext,
+  });
+  return { matchUp, structure, drawDefinition };
 }

@@ -22,7 +22,7 @@ export function participantScheduledMatchUps({
     .reduce((dateMatchUps, matchUp) => {
       const { schedule } = matchUp;
       const date = extractDate(schedule?.scheduledDate);
-      const time = extractTime(schedule?.scheduledDate);
+      const time = extractTime(schedule?.scheduledTime);
       if (date && time) {
         if (dateMatchUps[date]) {
           dateMatchUps[date].push(matchUp);

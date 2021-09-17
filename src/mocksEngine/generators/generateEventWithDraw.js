@@ -5,6 +5,7 @@ import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
+import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { allDrawMatchUps } from '../../tournamentEngine/getters/matchUpsGetter';
 import { validExtension } from '../../global/validation/validExtension';
 import { generateRange, intersection, UUID } from '../../utilities';
@@ -50,11 +51,13 @@ export function generateEventWithDraw({
     drawExtensions,
     drawSize = 32,
     seedsCount,
-    tieFormat,
     category,
     gender,
     stage,
   } = drawProfile;
+
+  const tieFormat =
+    drawProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
 
   let eventName = drawProfile.eventName || `Generated ${eventType}`;
   let targetParticipants = tournamentRecord?.participants || [];

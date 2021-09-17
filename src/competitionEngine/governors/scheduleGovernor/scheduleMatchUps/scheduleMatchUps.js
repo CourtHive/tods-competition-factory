@@ -66,21 +66,22 @@ export function scheduleMatchUps({
   recoveryMinutes = 0,
   recoveryMinutesMap, // for matchUpIds batched by averageMatchUpMinutes this enables varying recoveryMinutes
 
-  matchUpDailyLimits = {},
-  matchUpNotBeforeTimes = {},
   matchUpPotentialParticipantIds = {},
   individualParticipantProfiles = {},
+  matchUpNotBeforeTimes = {},
+  matchUpDailyLimits = {},
 
   checkPotentialRequestConflicts = true,
   remainingScheduleTimes,
 
+  periodLength = 30,
+  scheduleDate,
+  matchUpIds,
+  venueIds,
+
   startTime,
   endTime,
-
-  venueIds,
-  periodLength = 30,
-  matchUpIds,
-  scheduleDate,
+  dryRun,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!matchUpIds) return { error: MISSING_MATCHUP_IDS };
@@ -339,20 +340,24 @@ export function scheduleMatchUps({
                 scheduleDate
               )}T${formatTime}`;
 
-              const result = addMatchUpScheduledTime({
-                drawDefinition,
-                matchUpId,
-                scheduledTime,
-              });
-              if (result.success) scheduledMatchUpIds.push(matchUpId);
-
-              if (venueId) {
-                assignMatchUpVenue({
-                  tournamentRecord,
+              if (dryRun) {
+                scheduledMatchUpIds.push(matchUpId);
+              } else {
+                const result = addMatchUpScheduledTime({
                   drawDefinition,
                   matchUpId,
-                  venueId,
+                  scheduledTime,
                 });
+                if (result.success) scheduledMatchUpIds.push(matchUpId);
+
+                if (venueId) {
+                  assignMatchUpVenue({
+                    tournamentRecord,
+                    drawDefinition,
+                    matchUpId,
+                    venueId,
+                  });
+                }
               }
             }
           });

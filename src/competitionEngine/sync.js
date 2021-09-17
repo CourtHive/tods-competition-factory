@@ -29,7 +29,8 @@ import {
 
 export const competitionEngine = (function () {
   const engine = {
-    getState: ({ convertExtensions } = {}) => getState({ convertExtensions }),
+    getState: ({ convertExtensions, removeExtensions } = {}) =>
+      getState({ convertExtensions, removeExtensions }),
     version: () => factoryVersion(),
     reset: () => {
       setTournamentRecords({});

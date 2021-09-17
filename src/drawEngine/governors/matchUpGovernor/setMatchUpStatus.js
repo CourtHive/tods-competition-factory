@@ -144,7 +144,8 @@ export function setMatchUpStatus(params) {
       projectedWinningSide !== existingDualMatchUpWinningSide;
 
     if (dualWinningSideChange) {
-      if (getDevContext()) console.log('dualMatchUp', { projectedWinningSide });
+      if (getDevContext({ tieMatchUps: true }))
+        console.log('dualMatchUp', { projectedWinningSide });
     }
   }
 

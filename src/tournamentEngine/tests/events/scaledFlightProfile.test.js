@@ -143,3 +143,16 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
   result = tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
   expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
 });
+
+it('can delete flightProfileAndFlightDraw', () => {
+  const {
+    tournamentRecord,
+    eventIds: [eventId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles: [{ drawSize: 8 }] });
+
+  tournamentEngine.setState(tournamentRecord);
+  const result = tournamentEngine.deleteFlightProfileAndFlightDraws({
+    eventId,
+  });
+  expect(result.success).toEqual(true);
+});

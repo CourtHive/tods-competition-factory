@@ -48,6 +48,7 @@ it('can generate TEAM events', () => {
   expect(drawId).not.toBeUndefined();
 
   tournamentEngine.setState(tournamentRecord);
+  const tournamentId = tournamentRecord.tournamentId;
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     { participantFilters: { participantTypes: [TEAM] } }
@@ -129,4 +130,23 @@ it('can generate TEAM events', () => {
   // all other SINGLES/DOUBLES/TEAM matchUps are pending
   const { pendingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(pendingMatchUps.length).toEqual(65);
+
+  const { matchUp } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId,
+    inContext: true,
+  });
+
+  expect(matchUp.eventId).toEqual(eventId);
+  expect(matchUp.tournamentId).toEqual(tournamentId);
+
+  const { matchUp: dualMatchUp } = tournamentEngine.findMatchUp({
+    drawId,
+    matchUpId: upcomingMatchUps[0].matchUpId,
+    inContext: true,
+  });
+
+  expect(dualMatchUp.eventId).toEqual(eventId);
+  expect(dualMatchUp.tournamentId).toEqual(tournamentId);
+  expect(dualMatchUp.tieMatchUps[0].eventId).toEqual(eventId);
 });

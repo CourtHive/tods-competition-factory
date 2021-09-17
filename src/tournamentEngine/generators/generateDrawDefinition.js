@@ -15,7 +15,7 @@ import { newDrawDefinition } from '../../drawEngine/stateMethods';
 import { tieFormatDefaults } from './tieFormatDefaults';
 import { addNotice } from '../../global/globalState';
 
-import { STRUCTURE_ENTERED_TYPES } from '../../constants/entryStatusConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import POLICY_SEEDING_USTA from '../../fixtures/policies/POLICY_SEEDING_USTA';
 import { INVALID_DRAW_TYPE } from '../../constants/errorConditionConstants';
 import { RANKING, SEEDING } from '../../constants/scaleConstants';
@@ -105,7 +105,7 @@ export function generateDrawDefinition(params) {
   const stageEntries = entries.filter(
     (entry) =>
       (!entry.entryStage || entry.entryStage === stage) &&
-      STRUCTURE_ENTERED_TYPES.includes(entry.entryStatus)
+      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
   );
   if ([ROUND_ROBIN].includes(drawType)) {
     drawSize = stageEntries.length;
