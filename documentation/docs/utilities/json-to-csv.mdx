@@ -14,7 +14,7 @@ const config = {
   delimiter, // optional - defaults to '"'
   columnJoiner, // optional - defines how CSV columns are joined; defaults to ','
   rowJoiner, // optional - defines how CSV lines are joined; defaults to '\r\n'
-  keyJoiner, // optional - defines how flattened column names are constructed/ defaults to '.'
+  keyJoiner, // optional - defines how flattened column names are constructed; defaults to '.'
 };
 const arrayOfJSON = [{ a: 1 }, { b: 2 }];
 const csv = utilities.JSON2CSV(json, config);
