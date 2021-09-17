@@ -4,12 +4,6 @@ import { removeEventEntries } from './removeEventEntries';
 import { indices } from '../../../../utilities/arrays';
 import { addEventEntries } from './addEventEntries';
 
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-  UNGROUPED,
-  WILDCARD,
-} from '../../../../constants/entryStatusConstants';
 import { TEAM, DOUBLES } from '../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import { PAIR } from '../../../../constants/participantTypes';
@@ -22,6 +16,12 @@ import {
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import {
+  ALTERNATE,
+  DIRECT_ACCEPTANCE,
+  UNGROUPED,
+  WILDCARD,
+} from '../../../../constants/entryStatusConstants';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries
@@ -113,16 +113,18 @@ export function destroyGroupEntry({
   });
   if (result.error) return result;
 
-  result = addEventEntries({
-    event,
-    drawId,
-    drawDefinition,
-    tournamentRecord,
-    entryStage: entry.entryStage,
-    entryStatus: entryStatus || defaultEntryStatus,
-    participantIds: individualParticipantIds,
-  });
-  if (result.error) return result;
+  if (individualParticipantIds.length) {
+    result = addEventEntries({
+      event,
+      drawId,
+      drawDefinition,
+      tournamentRecord,
+      entryStage: entry.entryStage,
+      entryStatus: entryStatus || defaultEntryStatus,
+      participantIds: individualParticipantIds,
+    });
+    if (result.error) return result;
+  }
 
   let participantRemoved;
   if (removeGroupParticipant) {
