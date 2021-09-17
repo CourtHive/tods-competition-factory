@@ -39,6 +39,7 @@ export function generateEventWithFlights({
   startDate,
   uuids,
 }) {
+  let gender = eventProfile.gender;
   const {
     eventName = 'Generated Event',
     eventType = SINGLES,
@@ -50,13 +51,16 @@ export function generateEventWithFlights({
     eventLevel,
     ballType,
     category,
-    gender,
   } = eventProfile;
 
   const tieFormat =
     eventProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
+
+  for (const drawProfile of drawProfiles) {
+    if (!gender && drawProfile.gender) gender = drawProfile.gender;
+  }
 
   let uniqueParticipantsCount = {};
   const stageParticipantsCount = drawProfiles.reduce(
@@ -74,7 +78,7 @@ export function generateEventWithFlights({
 
       const stageCount = participantsCount || drawSize - qualifyingPositions;
 
-      if (uniqueParticipants) {
+      if (uniqueParticipants && gender) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
         uniqueParticipantsCount[stage] += stageCount;
@@ -222,7 +226,7 @@ export function generateEventWithFlights({
       ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
       : stageParticipants[stage || MAIN] || [];
 
-    if (uniqueParticipants) uniqueParticipantsIndex += entriesCount;
+    if (uniqueParticipants || gender) uniqueParticipantsIndex += entriesCount;
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)

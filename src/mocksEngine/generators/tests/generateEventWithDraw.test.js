@@ -1,4 +1,4 @@
-import { mocksEngine } from '../../..';
+import { mocksEngine, tournamentEngine } from '../../..';
 
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
@@ -20,6 +20,77 @@ it('can use drawProfiles to generate gendered SINGLES event', () => {
     drawProfiles,
   });
   expect(result.error).toBeUndefined();
+  const { eventIds, tournamentRecord } = result;
+  tournamentEngine.setState(tournamentRecord);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+
+  expect(tournamentParticipants.length).toEqual(64);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventIds },
+  }));
+
+  expect(tournamentParticipants.length).toEqual(32);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { positionedParticipants: true },
+  }));
+
+  expect(tournamentParticipants.length).toEqual(32);
+
+  const genders = tournamentParticipants.reduce(
+    (genders, participant) =>
+      genders.includes(participant.person?.sex)
+        ? genders
+        : genders.concat(participant.person?.sex),
+    []
+  );
+  expect(genders).toEqual([MALE]);
+});
+
+it('can use eventProfiles to generate gendered SINGLES event', () => {
+  const drawProfiles = [
+    {
+      drawSize: 32,
+      gender: MALE,
+      eventType: SINGLES,
+      uniqueParticipants: true,
+    },
+  ];
+  const eventProfiles = [{ drawProfiles }];
+  const result = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
+  expect(result.error).toBeUndefined();
+
+  const { eventIds, tournamentRecord } = result;
+  tournamentEngine.setState(tournamentRecord);
+
+  let { tournamentParticipants } = tournamentEngine.getTournamentParticipants();
+
+  expect(tournamentParticipants.length).toEqual(64);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { eventIds },
+  }));
+
+  expect(tournamentParticipants.length).toEqual(32);
+
+  ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
+    participantFilters: { positionedParticipants: true },
+  }));
+
+  expect(tournamentParticipants.length).toEqual(32);
+
+  const genders = tournamentParticipants.reduce(
+    (genders, participant) =>
+      genders.includes(participant.person?.sex)
+        ? genders
+        : genders.concat(participant.person?.sex),
+    []
+  );
+  expect(genders).toEqual([MALE]);
 });
 
 it('can use drawProfiles to generate gendered DOUBLES event', () => {
