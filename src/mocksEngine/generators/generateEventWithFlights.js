@@ -78,7 +78,7 @@ export function generateEventWithFlights({
 
       const stageCount = participantsCount || drawSize - qualifyingPositions;
 
-      if (uniqueParticipants && gender) {
+      if (uniqueParticipants || gender) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
         uniqueParticipantsCount[stage] += stageCount;
