@@ -1,5 +1,11 @@
 import { mocksEngine, tournamentEngine } from '../..';
+
 import { DOUBLES } from '../../constants/eventConstants';
+import { SINGLES } from '../../constants/matchUpTypes';
+import {
+  FORMAT_ATP_DOUBLES,
+  FORMAT_STANDARD,
+} from '../../fixtures/scoring/matchUpFormats/formatConstants';
 import { JSON2CSV } from '../json';
 
 it('can transform arrays of JSON objects to CSV', () => {
@@ -23,7 +29,7 @@ it('can transform arrays of JSON objects to CSV with custom columnJoiner', () =>
 
 it('can transform arrays of JSON objects to CSV with custom delimiter', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
-  const expectations = [];
+  const expectations = ['"a","b"', '"1",""', '"","2"'];
   const config = { delimiter: '"' };
   const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
   expectations.length
@@ -118,15 +124,20 @@ it('can transform arrays of JSON objects to CSV and transform multiple target at
 });
 
 it('can transform singles and doubles matchUps to extract side1player1', () => {
+  const endDate = '2022-12-22';
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 4 }, { drawSize: 4, eventType: DOUBLES }],
+    drawProfiles: [
+      { drawSize: 4 },
+      { drawSize: 4, eventType: DOUBLES, matchUpFormat: FORMAT_ATP_DOUBLES },
+    ],
     completeAllMatchUps: true,
+    startDate: endDate,
+    endDate,
   });
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  const expectations = [];
   const config = {
     transformAccesorFilter: true,
     columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate'],
@@ -149,9 +160,17 @@ it('can transform singles and doubles matchUps to extract side1player1', () => {
     },
   };
   const conversion = JSON2CSV(matchUps, config).split('\r\n');
-  expectations.length
-    ? expectations.forEach((expectation, i) => {
-        expect(conversion[i]).toEqual(expectation);
-      })
-    : console.log(conversion);
+
+  expect(conversion[0]).toEqual(
+    'matchUpType,endDate,matchUpFormat,scoreString,side1Participant1,side2Participant1,side1Participant2,side2Participant2'
+  );
+  conversion.slice(1).forEach((row) => {
+    const columns = row.split(',');
+    expect(columns.length).toEqual(8);
+    expect([SINGLES, DOUBLES].includes(columns[0])).toEqual(true);
+    expect(columns[1]).toEqual(endDate);
+    expect(columns[2]).toEqual(
+      columns[0] === DOUBLES ? FORMAT_ATP_DOUBLES : FORMAT_STANDARD
+    );
+  });
 });
