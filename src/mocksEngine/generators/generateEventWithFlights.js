@@ -332,6 +332,7 @@ export function generateEventWithFlights({
       if (drawProfile.withPlayoffs) {
         const structureId = drawDefinition.structures[0].structureId;
         const result = addPlayoffStructures({
+          idPrefix: drawProfile.idPrefix,
           ...drawProfile.withPlayoffs,
           tournamentRecord,
           drawDefinition,

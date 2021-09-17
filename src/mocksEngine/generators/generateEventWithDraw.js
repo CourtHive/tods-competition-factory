@@ -53,6 +53,7 @@ export function generateEventWithDraw({
     drawSize = 32,
     seedsCount,
     category,
+    idPrefix,
     gender,
     stage,
   } = drawProfile;
@@ -229,6 +230,7 @@ export function generateEventWithDraw({
       tournamentRecord,
       drawDefinition,
       structureId,
+      idPrefix,
     });
     if (result?.error) return result;
   }
