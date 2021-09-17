@@ -1,14 +1,14 @@
+import { findEvent } from '../../getters/eventGetter';
 import {
   checkInParticipant as drawEngineCheckInParticipant,
   checkOutParticipant as drawEngineCheckOutParticipant,
 } from '../../../drawEngine/governors/matchUpGovernor/checkInStatus';
-import { findEvent } from '../../getters/eventGetter';
 
+import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   PARTICIPANT_ALREADY_CHECKED_IN,
 } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 export function checkInParticipant({
   tournamentRecord,
