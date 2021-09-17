@@ -11,6 +11,28 @@ it('can transform arrays of JSON objects to CSV', () => {
   );
 });
 
+it('can transform arrays of JSON objects to CSV with custom columnJoiner', () => {
+  const jsonObjects = [{ a: 1 }, { b: 2 }];
+  const expectations = ['a;b', '1;', ';2'];
+  const config = { columnJoiner: ';' };
+  const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
+  expectations.forEach((expectation, i) =>
+    expect(conversion[i]).toEqual(expectation)
+  );
+});
+
+it('can transform arrays of JSON objects to CSV with custom delimiter', () => {
+  const jsonObjects = [{ a: 1 }, { b: 2 }];
+  const expectations = [];
+  const config = { delimiter: '"' };
+  const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
+  expectations.length
+    ? expectations.forEach((expectation, i) =>
+        expect(conversion[i]).toEqual(expectation)
+      )
+    : console.log(conversion);
+});
+
 it('can transform arrays of JSON objects to CSV and add context to all rows', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
   const expectations = ['contextItem,a,b', 'context,1,', 'context,,2'];
