@@ -258,7 +258,10 @@ it('can filter by entries', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { eventEntryStatuses: true },
   }));
-  expect(tournamentParticipants.length).toEqual(64);
+
+  // because the draw is gendered, 16 additional unique participants are generated
+  const totalExpectedParticipants = participantsCount + drawSize;
+  expect(tournamentParticipants.length).toEqual(totalExpectedParticipants);
 
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { drawEntryStatuses: true },
@@ -273,5 +276,7 @@ it('can filter by entries', () => {
   ({ tournamentParticipants } = tournamentEngine.getTournamentParticipants({
     participantFilters: { positionedParticipants: false },
   }));
-  expect(tournamentParticipants.length).toEqual(participantsCount - drawSize);
+  expect(tournamentParticipants.length).toEqual(
+    totalExpectedParticipants - drawSize
+  );
 });
