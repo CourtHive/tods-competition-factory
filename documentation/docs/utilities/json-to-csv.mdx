@@ -1,0 +1,71 @@
+---
+title: JSON2CSV
+---
+
+```js
+import { utilities } from 'tods-competition-factory';
+
+const config = {
+  transformAccesorFilter, // optional boolean - transform accessors are included with columnAccessors
+  columnAccessors, // optional - array of column accessors to include [ 'includeThis', 'andThis' ]
+  columnTransform, // optional - multiple generated column names can resolve to a single custom column, e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
+  columnMap, // optional - simple mapping from generated columnName to custom columnName, e.g. { 'columnName': 'newColumnName' }
+  context, // optional - object defining values which should be added to all rows, e.g. { 'columnName': 'columnValue '}
+  delimiter, // optional - defaults to '"'
+  columnJoiner, // optional - defines how CSV columns are joined; defaults to ','
+  rowJoiner, // optional - defines how CSV lines are joined; defaults to '\r\n'
+  keyJoiner, // optional - defines how flattened column names are constructed/ defaults to '.'
+};
+const arrayOfJSON = [{ a: 1 }, { b: 2 }];
+const csv = utilities.JSON2CSV(json, config);
+```
+
+:::note
+`columnTransform` mapped array elements are sensitive to order and will resolve to the first matching value
+
+`columnMap` should not contain new columnName(s) that are `columnTransform` keys
+:::
+
+```jsx live
+function MocksEngineDemo(props) {
+  const drawProfiles = [
+    { drawSize: 8, eventType: 'DOUBLES' },
+    { drawSize: 8, drawType: 'ROUND_ROBIN' },
+  ];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    drawProfiles,
+  });
+
+  const { matchUps } = tournamentEngine
+    .setState(tournamentRecord)
+    .allTournamentMatchUps();
+
+  const rowJoiner = '|';
+  const config = {
+    rowJoiner,
+    transformAccesorFilter: true,
+    columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate', 'roundName'],
+    columnTransform: {
+      scoreString: ['score.scoreStringSide1'],
+      side1Participant1: [
+        'sides.0.participant.individualParticipants.0.participantName',
+        'sides.0.participant.participantName',
+      ],
+      side1Participant2: [
+        'sides.0.participant.individualParticipants.1.participantName',
+      ],
+      side2Participant1: [
+        'sides.1.participant.individualParticipants.0.participantName',
+        'sides.1.participant.participantName',
+      ],
+      side2Participant2: [
+        'sides.1.participant.individualParticipants.1.participantName',
+      ],
+    },
+  };
+
+  const csvMatchUps = utilities.JSON2CSV(matchUps, config);
+  return <RenderCSV data={csvMatchUps} rowJoiner={rowJoiner} />;
+}
+```

@@ -11,13 +11,15 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  *  {string[]} columnAccessors, // [ 'includeThis', 'andThis' ]
  *  {object} columnTransform, // e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
  *  {object} columnMap, // e.g. { 'columnName': 'newColumnName' }
+ *  {object} context, // attributes which are to be added to all rows { 'columnName': 'value }
+ *  {string} delimiter, // defaults to '"'
  *  {string} columnJoiner, // defaults to ',' // defines how CSV columns are joined
  *  {string} rowJoiner, // defaults to '\r\n' // defines how CSV lines are joined
  *  {string} keyJoiner, // defaults to '.' // defines how flattened column names are constructed
  * }
  *
- * NOTE: `columnMap` should not contain newColumnName(s) that are `columnTransform` keys
  * NOTE: `columnTransform` mapped array elements are sensitive to order and will resolve to the first matching value
+ * NOTE: `columnMap` should not contain new columnName(s) that are `columnTransform` keys
  */
 export function JSON2CSV(arrayOfJSON, config) {
   if (config && typeof config !== 'object') return { error: INVALID_VALUES };
