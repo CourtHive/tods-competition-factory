@@ -7,10 +7,11 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
  * @returns {string} - joined by '\r\n' or specified line separator
  *
  * config {
- *  {boolean} transformAccesorFilter, // transform accessors are included with columnAccessors
+ *  {boolean} includeTransoformAccessors, // transform accessors are included with columnAccessors
  *  {string[]} columnAccessors, // [ 'includeThis', 'andThis' ]
  *  {object} columnTransform, // e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
  *  {object} columnMap, // e.g. { 'columnName': 'newColumnName' }
+ *  {object} valuesMap, // e.g. { 'columnName': { 'value1': 'mappedValue' }} // useful for mapping IDs
  *  {object} context, // attributes which are to be added to all rows { 'columnName': 'value }
  *  {string} delimiter, // defaults to '"'
  *  {string} columnJoiner, // defaults to ',' // defines how CSV columns are joined
@@ -24,10 +25,11 @@ import { INVALID_VALUES } from '../constants/errorConditionConstants';
 export function JSON2CSV(arrayOfJSON, config) {
   if (config && typeof config !== 'object') return { error: INVALID_VALUES };
   const {
-    transformAccesorFilter,
+    includeTransoformAccessors,
     columnAccessors = [],
     columnTransform = {},
     columnMap = {},
+    valuesMap = {},
     context = {},
 
     delimiter = '"',
@@ -39,8 +41,14 @@ export function JSON2CSV(arrayOfJSON, config) {
   if (
     !Array.isArray(arrayOfJSON) ||
     !Array.isArray(columnAccessors) ||
+    !Array.isArray(Object.keys(columnTransform || {})) ||
     !Array.isArray(Object.keys(columnMap || {})) ||
-    typeof keyJoiner !== 'string'
+    !Array.isArray(Object.keys(valuesMap || {})) ||
+    !Array.isArray(Object.keys(context || {})) ||
+    typeof columnJoiner !== 'string' ||
+    typeof rowJoiner !== 'string' ||
+    typeof keyJoiner !== 'string' ||
+    typeof delimiter !== 'string'
   )
     return { error: INVALID_VALUES };
 
@@ -49,7 +57,7 @@ export function JSON2CSV(arrayOfJSON, config) {
     .map((obj) => flatten(obj, keyJoiner));
 
   const transformColumns = Object.values(columnTransform).flat();
-  if (transformAccesorFilter) columnAccessors.push(...transformColumns);
+  if (includeTransoformAccessors) columnAccessors.push(...transformColumns);
 
   const headerRow = flattened
     .reduce(
@@ -108,21 +116,22 @@ export function JSON2CSV(arrayOfJSON, config) {
   const withDelimiter = (value) => `${delimiter}${value}${delimiter}`;
 
   const processRow = (row) => {
-    const valueMap = Object.values(
-      tranformedHeaderRow.reduce((valueMap, key) => {
-        const accessors = columnTransform[key];
+    const columnsMap = Object.values(
+      tranformedHeaderRow.reduce((columnsMap, columnName) => {
+        const accessors = columnTransform[columnName];
         const value =
           (accessors?.length
             ? row[accessors.find((accessor) => row[accessor])]
-            : row[key]) ||
-          context?.[key] ||
+            : row[columnName]) ||
+          context?.[columnName] ||
           '';
 
-        valueMap[key] = withDelimiter(value);
-        return valueMap;
+        const mappedValue = valuesMap[columnName]?.[value] || value;
+        columnsMap[columnName] = withDelimiter(mappedValue);
+        return columnsMap;
       }, {})
     );
-    return valueMap.join(columnJoiner);
+    return columnsMap.join(columnJoiner);
   };
 
   const rows = flattened.map(processRow);

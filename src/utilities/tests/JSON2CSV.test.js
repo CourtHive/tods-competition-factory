@@ -18,6 +18,18 @@ it('can transform arrays of JSON objects to CSV', () => {
   );
 });
 
+it('can transform arrays of JSON objects to CSV and remap values', () => {
+  const jsonObjects = [{ a: 1 }, { b: 2 }];
+  const expectations = ['a,b', '100,', ',2'];
+  const config = { delimiter: '', valuesMap: { a: { 1: 100, 2: 200 } } };
+  const conversion = JSON2CSV(jsonObjects, config).split('\r\n');
+  expectations.length
+    ? expectations.forEach((expectation, i) =>
+        expect(conversion[i]).toEqual(expectation)
+      )
+    : console.log(conversion);
+});
+
 it('can transform arrays of JSON objects to CSV with custom columnJoiner', () => {
   const jsonObjects = [{ a: 1 }, { b: 2 }];
   const expectations = ['a;b', '1;', ';2'];
@@ -143,7 +155,7 @@ it('can transform singles and doubles matchUps to extract side1player1', () => {
 
   const config = {
     delimiter: '',
-    transformAccesorFilter: true,
+    includeTransoformAccessors: true,
     columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate'],
     columnTransform: {
       scoreString: ['score.scoreStringSide1'],

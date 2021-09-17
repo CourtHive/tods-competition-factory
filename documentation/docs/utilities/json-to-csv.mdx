@@ -2,6 +2,10 @@
 title: JSON2CSV
 ---
 
+Converts an array of **JSON** objects into **CSV**.
+Provides custom mapping of column names and merging of column values (resolves to first found in priority order),
+as well as custom delimiter and column/row/key joiners. Context attributes can be added to all rows.
+
 ```js
 import { utilities } from 'tods-competition-factory';
 
@@ -10,6 +14,7 @@ const config = {
   columnAccessors, // optional - array of column accessors to include [ 'includeThis', 'andThis' ]
   columnTransform, // optional - multiple generated column names can resolve to a single custom column, e.g. { 'newColumnName': ['oldColumn1', 'oldColumn2' ]}
   columnMap, // optional - simple mapping from generated columnName to custom columnName, e.g. { 'columnName': 'newColumnName' }
+  valuesMap, // optional - map values for specified columns, e.g. { 'columnName': { 'value': 'mappedValue '}}
   context, // optional - object defining values which should be added to all rows, e.g. { 'columnName': 'columnValue '}
   delimiter, // optional - defaults to '"'
   columnJoiner, // optional - defines how CSV columns are joined; defaults to ','
