@@ -1,12 +1,14 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
+import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { validExtension } from '../../global/validation/validExtension';
@@ -24,7 +26,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -327,6 +328,17 @@ export function generateEventWithFlights({
       });
       if (result.error) return result;
       drawIds.push(flight.drawId);
+
+      if (drawProfile.withPlayoffs) {
+        const structureId = drawDefinition.structures[0].structureId;
+        const result = addPlayoffStructures({
+          ...drawProfile.withPlayoffs,
+          tournamentRecord,
+          drawDefinition,
+          structureId,
+        });
+        if (result?.error) return result;
+      }
 
       // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
 
