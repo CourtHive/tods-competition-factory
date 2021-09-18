@@ -123,8 +123,10 @@ export function generateDrawDefinition(params) {
             : stages.concat(entry.entryStage),
         []
       )
-      .filter((entryStage) => entryStage !== stage);
-    if (drawEntryStages.length) console.log({ drawEntryStages });
+      .filter((entryStage) => entryStage !== stage)
+      .filter(Boolean);
+
+    if (drawEntryStages.length) console.log({ drawEntryStages, drawEntries });
   }
 
   if (matchUpFormat || tieFormat) {

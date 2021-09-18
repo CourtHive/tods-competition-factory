@@ -52,7 +52,7 @@ export function addDrawDefinition({
 
   const flightConflict =
     relevantFlight && relevantFlight.drawId !== drawDefinition.drawId;
-  if (flightConflict) return { error: INVALID_DRAW_DEFINITION };
+  if (flightConflict) return { error: INVALID_DRAW_DEFINITION, relevantFlight };
 
   // check relevantFlight.drawEntries are equivalent to drawEntries
   const matchingFlighEntries = relevantFlight?.drawEntries.every(
@@ -65,7 +65,11 @@ export function addDrawDefinition({
   );
 
   if (relevantFlight && !matchingFlighEntries)
-    return { error: INVALID_DRAW_DEFINITION };
+    return {
+      error: INVALID_DRAW_DEFINITION,
+      relevantFlight,
+      matchingEventEntries,
+    };
 
   // check that all drawEntries have equivalent entryStatus to event.entries
   const matchingEventEntries =
@@ -78,7 +82,11 @@ export function addDrawDefinition({
     });
 
   if (eventEntries && !matchingEventEntries)
-    return { error: INVALID_DRAW_DEFINITION };
+    return {
+      error: INVALID_DRAW_DEFINITION,
+      eventEntries,
+      matchingEventEntries,
+    };
 
   const flightNumbers =
     flightProfile?.flights
