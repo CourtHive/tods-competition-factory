@@ -324,11 +324,14 @@ export function generateTournamentRecord({
     : [];
 
   let scheduledRounds;
-  if (schedulingProfile)
-    ({ scheduledRounds } = generateSchedulingProfile({
+  if (schedulingProfile) {
+    const result = generateSchedulingProfile({
       tournamentRecord,
       schedulingProfile,
-    }));
+    });
+    if (result.error) return result;
+    scheduledRounds = result.scheduledRounds;
+  }
 
   return definedAttributes({
     tournamentRecord,

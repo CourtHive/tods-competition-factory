@@ -2,16 +2,15 @@ import { getContainedStructures } from '../../../../tournamentEngine/governors/t
 import { mocksEngine, tournamentEngine, competitionEngine } from '../../../..';
 import { intersection, unique } from '../../../../utilities';
 
+import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
+import { FEMALE, MALE } from '../../../../constants/genderConstants';
+import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { DOUBLES } from '../../../../constants/eventConstants';
+import { PAIR } from '../../../../constants/participantTypes';
 import {
   FEED_IN_CHAMPIONSHIP_TO_R16,
   ROUND_ROBIN,
 } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../../../constants/eventConstants';
-
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import { PAIR } from '../../../../constants/participantTypes';
-import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
   const firstVenueId = 'firstVenueId';
@@ -66,7 +65,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
   const schedulingProfile = [
     {
-      scheduleDate: '2022-01-01',
+      scheduleDate: startDate,
       venues: [
         {
           venueId: firstVenueId,
@@ -212,9 +211,30 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 });
 
-it('rr', () => {
+it.only('mocksEngine can schedule Round Robin draws', () => {
+  const firstVenueId = 'firstVenueId';
+  const venueProfiles = [{ venueId: firstVenueId, courtsCount: 31 }];
+
+  const drawId = 'RRtest';
+  const drawProfiles = [{ drawId, drawType: ROUND_ROBIN, drawSize: 16 }];
+  const startDate = '2022-01-01';
+  const schedulingProfile = [
+    {
+      scheduleDate: startDate,
+      venues: [
+        {
+          venueId: firstVenueId,
+          rounds: [{ drawId: 'RRtest', roundNumber: 1 }],
+        },
+      ],
+    },
+  ];
+
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawType: ROUND_ROBIN, drawSize: 16 }],
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
   });
   tournamentEngine.setState(tournamentRecord);
   const containedStructureIds = getContainedStructures(tournamentRecord);
@@ -230,4 +250,12 @@ it('rr', () => {
   expect(structureId).not.toBeUndefined();
   expect(containerStructureId).not.toBeUndefined();
   expect(structureId).not.toEqual(containerStructureId);
+
+  const { schedulingProfile: attachedSchedulingProfile } =
+    tournamentEngine.getSchedulingProfile();
+  expect(attachedSchedulingProfile.length).toEqual(1);
+  expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(1);
+  const round = attachedSchedulingProfile[0].venues[0].rounds[0];
+  expect(round.roundNumber).toEqual(1);
+  expect(round.drawId).toEqual(drawId);
 });

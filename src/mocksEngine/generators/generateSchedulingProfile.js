@@ -72,14 +72,14 @@ export function generateSchedulingProfile({
             venueId,
             round: roundToSchedule,
           });
-          if (result.success) {
-            scheduledRounds.push({
-              drawName,
-              structureName,
-              roundName,
-              ...roundToSchedule,
-            });
-          }
+          if (result.error) return result;
+
+          scheduledRounds.push({
+            drawName,
+            structureName,
+            roundName,
+            ...roundToSchedule,
+          });
         }
       }
     }
