@@ -7,6 +7,7 @@ import {
   addMatchUpsNotice,
 } from '../../../../drawEngine/notifications/drawNotifications';
 
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../../../constants/extensionConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
@@ -21,6 +22,7 @@ import {
 export function addDrawDefinition({
   flight: flightDefinition,
   checkEntryStatus = true,
+  modifyEventEntries,
   existingDrawCount,
   drawDefinition,
   event,
@@ -31,6 +33,7 @@ export function addDrawDefinition({
   if (!event.drawDefinitions) event.drawDefinitions = [];
   const { drawId, drawName, entries: drawEntries } = drawDefinition;
   const { entries: eventEntries } = event;
+  let modifiedEventEntryStatusCount = 0;
 
   if (
     existingDrawCount !== undefined &&
@@ -72,15 +75,29 @@ export function addDrawDefinition({
       matchingEventEntries,
     };
 
+  if (modifyEventEntries) {
+    drawEntries.forEach((drawEntry) => {
+      if (STRUCTURE_SELECTED_STATUSES.includes(drawEntry.entryStatus)) {
+        const eventEntry = eventEntries.find(
+          (eventEntry) => eventEntry.participantId === drawEntry.participantId
+        );
+        if (eventEntry.entryStatus !== drawEntry.entryStatus) {
+          eventEntry.entryStatus = drawEntry.entryStatus;
+          modifiedEventEntryStatusCount += 1;
+        }
+      }
+    });
+  }
+
   // check that all drawEntries have equivalent entryStatus to event.entries
   const matchingEventEntries =
     !checkEntryStatus ||
     (eventEntries &&
       drawEntries?.every(({ participantId, entryStatus }) => {
-        const drawEntry = eventEntries.find(
-          (drawEntry) => drawEntry.participantId === participantId
+        const eventEntry = eventEntries.find(
+          (eventEntry) => eventEntry.participantId === participantId
         );
-        return drawEntry?.entryStatus === entryStatus;
+        return eventEntry?.entryStatus === entryStatus;
       }));
 
   if (eventEntries && !matchingEventEntries)
@@ -157,5 +174,5 @@ export function addDrawDefinition({
 
   addDrawNotice({ drawDefinition });
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, modifiedEventEntryStatusCount };
 }
