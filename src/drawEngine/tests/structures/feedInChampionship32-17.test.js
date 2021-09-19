@@ -4,7 +4,6 @@ import mocksEngine from '../../../mocksEngine';
 import drawEngine from '../../sync';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   CONSOLATION,
@@ -39,7 +38,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
     drawType: FEED_IN_CHAMPIONSHIP,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 

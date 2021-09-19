@@ -10,7 +10,6 @@ import {
   FIRST_ROUND_LOSER_CONSOLATION,
 } from '../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 
 it('correctly assigns positions for Elimination structure', () => {
@@ -40,7 +39,7 @@ it('correctly assigns positions for Elimination structure', () => {
     drawType: ELIMINATION,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 
@@ -82,7 +81,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 
@@ -147,7 +146,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
     drawType: FIRST_ROUND_LOSER_CONSOLATION,
   });
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 

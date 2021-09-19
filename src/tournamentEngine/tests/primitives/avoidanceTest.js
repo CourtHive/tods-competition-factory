@@ -1,14 +1,11 @@
-import { drawEngine, tournamentEngine, resultConstants } from '../../..';
+import { drawEngine, tournamentEngine, mocksEngine } from '../../..';
 
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { RANKING } from '../../../constants/scaleConstants';
 import SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import mocksEngine from '../../../mocksEngine';
 import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
-
-const { SUCCESS } = resultConstants;
 
 /**
  *
@@ -98,7 +95,7 @@ export function avoidanceTest(params) {
   );
   const participantIds = eventParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     eventId,
@@ -113,7 +110,7 @@ export function avoidanceTest(params) {
     tournamentEngine.generateDrawDefinition(values);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition).setParticipants(participants);
   const { upcomingMatchUps } = drawEngine.drawMatchUps({

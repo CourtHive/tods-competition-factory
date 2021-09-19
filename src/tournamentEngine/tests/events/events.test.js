@@ -2,7 +2,6 @@ import { tournamentEngine } from '../../sync';
 import mocksEngine from '../../../mocksEngine';
 
 import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 let result;
 
@@ -28,7 +27,7 @@ it('can add events to a tournament record', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET5-S:4/TB7';
   const values = {
@@ -42,7 +41,7 @@ it('can add events to a tournament record', () => {
   expect(drawDefinition.matchUpFormat).toEqual(matchUpFormat);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { drawId } = drawDefinition;
   const defaultMatchUpFormat = 'SET3-S:6/TB7';

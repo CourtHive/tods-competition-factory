@@ -22,7 +22,6 @@ import {
   SINGLE_ELIMINATION,
 } from '../../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 it('can generate Round Robins 32 with playoffs', () => {
@@ -183,7 +182,7 @@ it('can advance players in Round Robin with Playoffs', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -198,7 +197,7 @@ it('can advance players in Round Robin with Playoffs', () => {
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
@@ -396,7 +395,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -412,7 +411,7 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
   // expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN

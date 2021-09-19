@@ -2,14 +2,12 @@ import { getStructureRoundProfile } from '../../../drawEngine/getters/getMatchUp
 import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
-import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
 
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
-const { SUCCESS } = resultConstants;
 
 it('can clear matchUp schedules', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -41,7 +39,7 @@ it('can clear matchUp schedules', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
@@ -54,7 +52,7 @@ it('can clear matchUp schedules', () => {
   const { drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const { structureId } = drawDefinition.structures[0];
   const { roundMatchUps } = getStructureRoundProfile({

@@ -7,11 +7,9 @@ import { tournamentEngine } from '../../sync';
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
-import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
 
 const { SINGLES } = eventConstants;
-const { SUCCESS } = resultConstants;
 
 it('can generate a tournament with events and draws', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -34,7 +32,7 @@ it('can generate a tournament with events and draws', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
@@ -48,7 +46,7 @@ it('can generate a tournament with events and draws', () => {
   const { drawId } = drawDefinition;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 
