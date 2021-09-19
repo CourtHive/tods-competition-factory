@@ -10,10 +10,11 @@
             "eventId": "F75AEAA6-58FE-4310-A8EE-E3DFA373B206",
             "drawId": "48f71377-e8dc-4af3-8b44-52a29efa6a1e",
             "structureId": "11d05713-535f-4d4b-b52b-13a36398a9d9",
-            "roundNumber": 1,
             "id": "11d05713-535f-4d4b-b52b-13a36398a9d9-bdea1fe3-ab3b-4528-ab38-fbfd27469bc6",
             "eventName": "U18 Girls Singles",
+            "notBeforeTime": "",
             "roundName": "R32",
+            "roundNumber": 1,
             "sortOrder": 1
           },
           {
@@ -21,10 +22,11 @@
             "eventId": "F75AEAA6-58FE-4310-A8EE-E3DFA373B206",
             "drawId": "48f71377-e8dc-4af3-8b44-52a29efa6a1e",
             "structureId": "11d05713-535f-4d4b-b52b-13a36398a9d9",
-            "roundNumber": 2,
             "id": "11d05713-535f-4d4b-b52b-13a36398a9d9-16035215-ca57-4722-9de5-5af82c3b234c",
             "eventName": "U18 Girls Singles",
+            "notBeforeTime": "",
             "roundName": "R16",
+            "roundNumber": 2,
             "sortOrder": 2
           }
         ]
