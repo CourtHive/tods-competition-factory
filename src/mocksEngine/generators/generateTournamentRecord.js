@@ -262,6 +262,7 @@ export function generateTournamentRecord({
   const drawIds = [],
     eventIds = [],
     allUniqueParticipantIds = [];
+
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =
