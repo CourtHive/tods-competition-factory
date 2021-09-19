@@ -235,6 +235,7 @@ export function generateTournamentRecord({
 
     inContext,
   });
+
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;
 
