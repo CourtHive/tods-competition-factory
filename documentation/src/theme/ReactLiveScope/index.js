@@ -20,6 +20,9 @@ import {
   competitionEngine,
 } from 'tods-competition-factory';
 
+const cfv = tournamentEngine.version();
+console.log(`%cfactory: ${cfv}`, 'color: lightblue');
+
 // Add react-live imports you need here
 const ReactLiveScope = {
   React,
