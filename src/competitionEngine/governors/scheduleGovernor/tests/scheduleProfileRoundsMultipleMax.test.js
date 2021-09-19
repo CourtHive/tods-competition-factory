@@ -96,6 +96,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     startDate,
   });
 
+  expect(venueId).toEqual(firstVenueId);
   expect(drawIds).toEqual(['idM16', 'idF16', 'idM18']);
 
   tournamentEngine.setState(tournamentRecord);

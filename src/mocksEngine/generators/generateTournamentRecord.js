@@ -323,6 +323,7 @@ export function generateTournamentRecord({
   if (venueProfiles) {
     for (const [index, venueProfile] of venueProfiles.entries()) {
       let {
+        venueId = UUID(),
         venueName,
         courtsCount,
         dateAvailability,
@@ -330,7 +331,6 @@ export function generateTournamentRecord({
         endTime = '19:00',
       } = venueProfile;
 
-      const venueId = UUID();
       const newVenue = {
         venueId,
         venueName: venueName || `Venue ${index + 1}`,
