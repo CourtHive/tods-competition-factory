@@ -16,6 +16,7 @@ import {
 import { SCHEDULING_PROFILE } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
+  EXISTING_ROUND,
   INVALID_DATE,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../../constants/errorConditionConstants';
@@ -122,6 +123,17 @@ export function addSchedulingProfileRound({
     dateProfile.venues.push(venueOnDate);
   }
 
+  // ensure round is not already present
+  const hashRound = (r) =>
+    Object.keys(r)
+      .sort()
+      .map((k) => r[k])
+      .join('|');
+
+  const roundExists = venueOnDate.rounds.find(
+    (existingRound) => hashRound(existingRound) === hashRound(round)
+  );
+  if (roundExists) return { error: EXISTING_ROUND };
   venueOnDate.rounds.push(round);
 
   const result = setSchedulingProfile({ tournamentRecords, schedulingProfile });
