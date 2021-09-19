@@ -124,8 +124,10 @@ export function addSchedulingProfileRound({
   }
 
   // ensure round is not already present
+  const excludeKeys = ['notBeforeTime'];
   const hashRound = (r) =>
     Object.keys(r)
+      .filter((key) => !excludeKeys.includes(key))
       .sort()
       .map((k) => r[k])
       .join('|');
