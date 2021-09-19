@@ -5,9 +5,11 @@ import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaul
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { validExtension } from '../../global/validation/validExtension';
+import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
+import { definedAttributes } from '../../utilities/objects';
 import { generateRange, UUID } from '../../utilities';
 import { generateVenues } from './generateVenues';
 
@@ -16,7 +18,6 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
-import { generateSchedulingProfile } from './generateSchedulingProfile';
 
 /**
  *
@@ -322,8 +323,18 @@ export function generateTournamentRecord({
     ? generateVenues({ tournamentRecord, venueProfiles })
     : [];
 
+  let scheduledRounds;
   if (schedulingProfile)
-    generateSchedulingProfile({ tournamentRecord, schedulingProfile });
+    ({ scheduledRounds } = generateSchedulingProfile({
+      tournamentRecord,
+      schedulingProfile,
+    }));
 
-  return { tournamentRecord, drawIds, eventIds, venueIds };
+  return definedAttributes({
+    tournamentRecord,
+    scheduledRounds,
+    eventIds,
+    venueIds,
+    drawIds,
+  });
 }

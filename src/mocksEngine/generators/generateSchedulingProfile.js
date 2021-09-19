@@ -15,7 +15,7 @@ export function generateSchedulingProfile({
   const { matchUps } = allTournamentMatchUps({ tournamentRecord });
 
   const { tournamentId } = tournamentRecord;
-  let scheduledRoundsCount = 0;
+  const scheduledRounds = [];
 
   for (const dateProfile of schedulingProfile) {
     const { scheduleDate, venues } = dateProfile;
@@ -45,7 +45,8 @@ export function generateSchedulingProfile({
         const targetMatchUp = targetMatchUps[0];
 
         if (targetMatchUp) {
-          const { eventId, roundNumber } = targetMatchUp;
+          const { eventId, roundNumber, drawName, structureName, roundName } =
+            targetMatchUp;
           let structureId = targetMatchUp.structureId;
 
           if (roundNumber && !winnerFinishingPositionRange) {
@@ -65,19 +66,24 @@ export function generateSchedulingProfile({
             roundNumber,
           };
 
-          console.log({ roundToSchedule });
-
           let result = addSchedulingProfileRound({
             tournamentRecords: { [tournamentId]: tournamentRecord },
             scheduleDate,
             venueId,
             round: roundToSchedule,
           });
-          if (result.success) scheduledRoundsCount += 1;
+          if (result.success) {
+            scheduledRounds.push({
+              drawName,
+              structureName,
+              roundName,
+              ...roundToSchedule,
+            });
+          }
         }
       }
     }
   }
 
-  return { scheduledRoundsCount };
+  return { scheduledRounds };
 }

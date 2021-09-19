@@ -11,6 +11,7 @@ import { DOUBLES } from '../../../../constants/eventConstants';
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { PAIR } from '../../../../constants/participantTypes';
+import { EXISTING_ROUND } from '../../../../constants/errorConditionConstants';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
   const firstVenueId = 'firstVenueId';
@@ -87,6 +88,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
   const {
     drawIds,
+    scheduledRounds,
     tournamentRecord,
     venueIds: [venueId],
   } = mocksEngine.generateTournamentRecord({
@@ -96,11 +98,17 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     startDate,
   });
 
-  expect(venueId).toEqual(firstVenueId);
+  expect(scheduledRounds.length).toEqual(9);
   expect(drawIds).toEqual(['idM16', 'idF16', 'idM18']);
+  expect(venueId).toEqual(firstVenueId);
 
   tournamentEngine.setState(tournamentRecord);
   const { tournamentId } = tournamentRecord;
+
+  let { schedulingProfile: attachedSchedulingProfile } =
+    tournamentEngine.getSchedulingProfile();
+  expect(attachedSchedulingProfile.length).toEqual(1);
+  expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     {
@@ -171,7 +179,6 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
   // this won't work for round robin...
   const roundsToSchedule = ['1-16', '9-24', '1-8'];
 
-  let scheduledRounds = 0;
   for (const drawId of drawIds) {
     const drawMatchUps = matchUps.filter(
       (matchUp) => matchUp.drawId === drawId
@@ -193,11 +200,16 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
           venueId,
           round: { tournamentId, eventId, drawId, structureId, roundNumber },
         });
-        if (result.success) scheduledRounds += 1;
+        expect(result.error).toEqual(EXISTING_ROUND);
       }
     }
   }
-  expect(scheduledRounds).toEqual(9);
+
+  ({ schedulingProfile: attachedSchedulingProfile } =
+    tournamentEngine.getSchedulingProfile());
+
+  // should not schedule rounds which have already been scheduled
+  expect(attachedSchedulingProfile[0].venues[0].rounds.length).toEqual(9);
 });
 
 it('rr', () => {
