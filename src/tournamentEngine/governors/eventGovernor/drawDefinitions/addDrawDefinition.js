@@ -20,6 +20,7 @@ import {
 
 export function addDrawDefinition({
   flight: flightDefinition,
+  checkEntryStatus = true,
   existingDrawCount,
   drawDefinition,
   event,
@@ -73,13 +74,14 @@ export function addDrawDefinition({
 
   // check that all drawEntries have equivalent entryStatus to event.entries
   const matchingEventEntries =
-    eventEntries &&
-    drawEntries?.every(({ participantId, entryStatus }) => {
-      const drawEntry = eventEntries.find(
-        (drawEntry) => drawEntry.participantId === participantId
-      );
-      return drawEntry?.entryStatus === entryStatus;
-    });
+    !checkEntryStatus ||
+    (eventEntries &&
+      drawEntries?.every(({ participantId, entryStatus }) => {
+        const drawEntry = eventEntries.find(
+          (drawEntry) => drawEntry.participantId === participantId
+        );
+        return drawEntry?.entryStatus === entryStatus;
+      }));
 
   if (eventEntries && !matchingEventEntries)
     return {
