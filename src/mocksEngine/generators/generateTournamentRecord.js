@@ -16,6 +16,7 @@ import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
 import { DOUBLES, TEAM } from '../../constants/eventConstants';
 import { SINGLES } from '../../constants/matchUpTypes';
 import { COMPETITOR } from '../../constants/participantRoles';
+import { generateSchedulingProfile } from './generateSchedulingProfile';
 
 /**
  *
@@ -41,6 +42,7 @@ export function generateTournamentRecord({
   policyDefinitions,
   participantsProfile,
   autoEntryPositions,
+  schedulingProfile,
   drawProfiles,
   eventProfiles,
   venueProfiles,
@@ -319,6 +321,9 @@ export function generateTournamentRecord({
   const venueIds = venueProfiles?.length
     ? generateVenues({ tournamentRecord, venueProfiles })
     : [];
+
+  if (schedulingProfile)
+    generateSchedulingProfile({ tournamentRecord, schedulingProfile });
 
   return { tournamentRecord, drawIds, eventIds, venueIds };
 }
