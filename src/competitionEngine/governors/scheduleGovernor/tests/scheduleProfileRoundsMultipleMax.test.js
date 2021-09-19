@@ -1,7 +1,11 @@
-import { mocksEngine, tournamentEngine } from '../../../..';
+import { getContainedStructures } from '../../../../tournamentEngine/governors/tournamentGovernor/getContainedStructures';
+import { mocksEngine, tournamentEngine, competitionEngine } from '../../../..';
 import { intersection, unique } from '../../../../utilities';
 
-import { FEED_IN_CHAMPIONSHIP_TO_R16 } from '../../../../constants/drawDefinitionConstants';
+import {
+  FEED_IN_CHAMPIONSHIP_TO_R16,
+  ROUND_ROBIN,
+} from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES } from '../../../../constants/eventConstants';
 
 import { FEMALE, MALE } from '../../../../constants/genderConstants';
@@ -9,7 +13,8 @@ import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { PAIR } from '../../../../constants/participantTypes';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
-  const venueProfiles = [{ courtsCount: 31 }];
+  const firstVenueId = 'firstVenueId';
+  const venueProfiles = [{ venueId: firstVenueId, courtsCount: 31 }];
   const withPlayoffs = {
     roundProfiles: [{ 3: 1 }, { 4: 1 }],
     playoffAttributes: {
@@ -25,6 +30,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 32,
       eventType: DOUBLES,
       idPrefix: 'M16',
+      drawId: 'idM16',
       gender: MALE,
       drawSize: 32,
       withPlayoffs,
@@ -36,6 +42,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 32,
       eventType: DOUBLES,
       idPrefix: 'F16',
+      drawId: 'idF16',
       gender: FEMALE,
       drawSize: 32,
       withPlayoffs,
@@ -47,9 +54,34 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
       participantsCount: 24,
       eventType: DOUBLES,
       idPrefix: 'M18',
+      drawId: 'idM18',
       gender: MALE,
       drawSize: 32,
       withPlayoffs,
+    },
+  ];
+
+  const startDate = '2022-01-01';
+
+  const schedulingProfile = [
+    {
+      scheduleDate: '2022-01-01',
+      venues: [
+        {
+          venueId: firstVenueId,
+          rounds: [
+            { drawId: 'idM16', winnerFinishingPositionRange: '1-16' },
+            { drawId: 'idF16', winnerFinishingPositionRange: '1-16' },
+            { drawId: 'idM18', winnerFinishingPositionRange: '1-16' },
+            { drawId: 'idM16', winnerFinishingPositionRange: '9-24' },
+            { drawId: 'idF16', winnerFinishingPositionRange: '9-24' },
+            { drawId: 'idM18', winnerFinishingPositionRange: '9-24' },
+            { drawId: 'idM16', winnerFinishingPositionRange: '1-8' },
+            { drawId: 'idF16', winnerFinishingPositionRange: '1-8' },
+            { drawId: 'idM18', winnerFinishingPositionRange: '1-8' },
+          ],
+        },
+      ],
     },
   ];
 
@@ -58,11 +90,16 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     tournamentRecord,
     venueIds: [venueId],
   } = mocksEngine.generateTournamentRecord({
+    schedulingProfile,
     venueProfiles,
     drawProfiles,
+    startDate,
   });
 
+  expect(drawIds).toEqual(['idM16', 'idF16', 'idM18']);
+
   tournamentEngine.setState(tournamentRecord);
+  const { tournamentId } = tournamentRecord;
 
   const { tournamentParticipants } = tournamentEngine.getTournamentParticipants(
     {
@@ -72,7 +109,6 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
   // expect default of 32 + (2 * 32 unique) + (24 unique)
   expect(tournamentParticipants.length).toEqual(120);
-  console.log({ venueId });
 
   const allMatchUpIds = [];
   const nonByeMatchUpsCount = [];
@@ -128,4 +164,57 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
     intersection(eventEnteredParticipantIds[1], eventEnteredParticipantIds[2])
       .length
   ).toEqual(0);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  // this won't work for round robin...
+  const roundsToSchedule = ['1-16', '9-24', '1-8'];
+
+  let scheduledRounds = 0;
+  for (const drawId of drawIds) {
+    const drawMatchUps = matchUps.filter(
+      (matchUp) => matchUp.drawId === drawId
+    );
+
+    for (const target of roundsToSchedule) {
+      const range = target.indexOf('-') > 0 && target.split('-').map((x) => +x);
+      const matchUp = drawMatchUps.find(({ finishingPositionRange }) => {
+        let result = range
+          ? intersection(range, finishingPositionRange.winner).length === 2
+          : undefined;
+        return result;
+      });
+
+      if (matchUp) {
+        const { eventId, structureId, roundNumber } = matchUp;
+        let result = competitionEngine.addSchedulingProfileRound({
+          scheduleDate: startDate,
+          venueId,
+          round: { tournamentId, eventId, drawId, structureId, roundNumber },
+        });
+        if (result.success) scheduledRounds += 1;
+      }
+    }
+  }
+  expect(scheduledRounds).toEqual(9);
+});
+
+it('rr', () => {
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: ROUND_ROBIN, drawSize: 16 }],
+  });
+  tournamentEngine.setState(tournamentRecord);
+  const containedStructureIds = getContainedStructures(tournamentRecord);
+
+  const {
+    matchUps: [{ structureId }],
+  } = tournamentEngine.allTournamentMatchUps();
+
+  const containerStructureId = Object.keys(containedStructureIds).find(
+    (containingStructureId) =>
+      containedStructureIds[containingStructureId].includes(structureId)
+  );
+  expect(structureId).not.toBeUndefined();
+  expect(containerStructureId).not.toBeUndefined();
+  expect(structureId).not.toEqual(containerStructureId);
 });
