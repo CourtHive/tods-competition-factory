@@ -175,7 +175,7 @@ it('can schedule potential rounds properly in scenarios with recovery times grea
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // this won't work for round robin...
+  // this was coded prior to mocksEngine support and is retained to test EXISTING_ROUND error trapping
   const roundsToSchedule = ['1-16', '9-24', '1-8'];
 
   for (const drawId of drawIds) {
