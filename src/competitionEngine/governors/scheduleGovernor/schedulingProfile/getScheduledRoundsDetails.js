@@ -61,6 +61,7 @@ export function getScheduledRoundsDetails({
   // ---------------------------------------------------------
 
   const recoveryMinutesMap = {};
+  const averageMinutesMap = {};
   let greatestAverageMinutes = 0;
   const scheduledRoundsDetails = sortedRounds.map((round) => {
     const roundPeriodLength = round.periodLength || periodLength;
@@ -132,9 +133,10 @@ export function getScheduledRoundsDetails({
           matchUpStatus !== BYE
       )
       .map(({ matchUpId }) => matchUpId);
-    matchUpIds.forEach(
-      (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
-    );
+    matchUpIds.forEach((matchUpId) => {
+      recoveryMinutesMap[matchUpId] = recoveryMinutes;
+      averageMinutesMap[matchUpId] = averageMinutes;
+    });
     orderedMatchUpIds.push(...matchUpIds);
 
     greatestAverageMinutes = Math.max(
@@ -157,6 +159,7 @@ export function getScheduledRoundsDetails({
     scheduledRoundsDetails,
     greatestAverageMinutes,
     recoveryMinutesMap,
+    averageMinutesMap,
     orderedMatchUpIds,
     ...SUCCESS,
   };

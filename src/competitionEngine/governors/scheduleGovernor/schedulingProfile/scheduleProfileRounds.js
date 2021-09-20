@@ -131,30 +131,28 @@ export function scheduleProfileRounds({
 
       allDateMatchUpIds.push(...orderedMatchUpIds);
 
-      venueScheduledRoundDetails[venueId] = {
-        recoveryMinutesMap,
+      const { groupedRounds } = getGroupedRounds({
         scheduledRoundsDetails,
         greatestAverageMinutes,
+        garmanSinglePass,
+      });
+
+      venueScheduledRoundDetails[venueId] = {
+        previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
+        greatestAverageMinutes,
+        scheduledRoundsDetails,
+        recoveryMinutesMap,
+        groupedRounds,
       };
     }
 
     // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
     // ... and initiates scheduling
     for (const venue of venues) {
-      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       const { venueId } = venue;
 
-      const {
-        recoveryMinutesMap,
-        scheduledRoundsDetails,
-        greatestAverageMinutes,
-      } = venueScheduledRoundDetails[venueId];
-
-      const { groupedRounds } = getGroupedRounds({
-        scheduledRoundsDetails,
-        greatestAverageMinutes,
-        garmanSinglePass,
-      });
+      const { recoveryMinutesMap, groupedRounds } =
+        venueScheduledRoundDetails[venueId];
 
       iterations += groupedRounds.length;
 
@@ -172,7 +170,8 @@ export function scheduleProfileRounds({
           tournamentRecords,
           dryRun,
 
-          remainingScheduleTimes: previousRemainingScheduleTimes,
+          remainingScheduleTimes:
+            venueScheduledRoundDetails[venueId].previousRemainingScheduleTimes,
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutesMap,
           recoveryMinutes,
@@ -193,7 +192,8 @@ export function scheduleProfileRounds({
         });
         if (result.error) return result;
 
-        previousRemainingScheduleTimes = result.remainingScheduleTimes;
+        venueScheduledRoundDetails[venueId].previousRemainingScheduleTimes =
+          result.remainingScheduleTimes;
         if (result.skippedScheduleTimes?.length) {
           // add skippedScheduleTimes for each scheduleDate and return for testing
           skippedScheduleTimes[scheduleDate] = result.skippedScheduleTimes;

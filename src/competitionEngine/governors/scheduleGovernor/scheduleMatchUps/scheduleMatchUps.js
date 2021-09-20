@@ -378,7 +378,7 @@ export function scheduleMatchUps({
     ),
     individualParticipantProfiles,
     matchUpNotBeforeTimes,
-    participantIdsAtLimit,
+    participantIdsAtLimit, // at the moment this is only those participants at limit BEFORE scheduling begins
     skippedScheduleTimes,
     overLimitMatchUpIds,
     scheduledMatchUpIds,
