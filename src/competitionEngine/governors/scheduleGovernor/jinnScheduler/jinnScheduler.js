@@ -14,12 +14,12 @@ import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { checkRecoveryTime } from '../scheduleMatchUps/checkRecoveryTime';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
-import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
+import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
-import { getSchedulingProfile } from './schedulingProfile';
-import { getGroupedRounds } from './getGroupedRounds';
+import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
+import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
 import {
   extractDate,
   isValidDateString,
