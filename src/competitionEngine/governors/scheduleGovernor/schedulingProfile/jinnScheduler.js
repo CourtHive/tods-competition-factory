@@ -5,10 +5,12 @@ import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchU
 import { modifyParticipantMatchUpsCount } from '../scheduleMatchUps/modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from '../scheduleMatchUps/checkDependenciesScheduled';
 import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
+import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { calculateScheduleTimes } from '../scheduleMatchUps/calculateScheduleTimes';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
+import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { checkRecoveryTime } from '../scheduleMatchUps/checkRecoveryTime';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
@@ -41,7 +43,6 @@ import {
   WALKOVER,
   COMPLETED,
 } from '../../../../constants/matchUpStatusConstants';
-import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 
 export function jinnScheduler({
   checkPotentialRequestConflicts = true, // passed to checkRequestConflicts
@@ -86,6 +87,8 @@ export function jinnScheduler({
   if (!profileDates.length) {
     return { error: NO_VALID_DATES };
   }
+
+  const { courts } = getVenuesAndCourts({ tournamentRecords });
 
   const { matchUps } = allCompetitionMatchUps({
     tournamentRecords,
@@ -292,6 +295,7 @@ export function jinnScheduler({
       );
 
       venueScheduledRoundDetails[venueId] = {
+        courtsCount: courts.filter((court) => court.venueId === venueId).length,
         previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
         scheduledRoundsDetails,
         participantIdsAtLimit,
@@ -317,9 +321,10 @@ export function jinnScheduler({
         const details = venueScheduledRoundDetails[venueId];
 
         while (
-          scheduledThisPass < details.courtsCount &&
+          details.courtsCount &&
           details.scheduleTimes?.length &&
-          details.matchUpsToSchedule?.length
+          details.matchUpsToSchedule?.length &&
+          scheduledThisPass < details.courtsCount
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
           const { scheduleTime } = details.scheduleTimes.shift();
