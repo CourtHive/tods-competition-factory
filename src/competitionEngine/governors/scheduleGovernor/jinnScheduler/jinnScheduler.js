@@ -4,22 +4,22 @@ import { addTournamentTimeItem } from '../../../../tournamentEngine/governors/to
 import { addMatchUpScheduledTime } from '../../../../drawEngine/governors/matchUpGovernor/scheduleItems';
 import { modifyParticipantMatchUpsCount } from '../scheduleMatchUps/modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from '../scheduleMatchUps/checkDependenciesScheduled';
+import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
 import { calculateScheduleTimes } from '../scheduleMatchUps/calculateScheduleTimes';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
+import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
 import { processNextMatchUps } from '../scheduleMatchUps/processNextMatchUps';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
 import { checkRecoveryTime } from '../scheduleMatchUps/checkRecoveryTime';
+import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
 import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
-import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
-import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
-import { getGroupedRounds } from '../schedulingProfile/getGroupedRounds';
 import {
   extractDate,
   isValidDateString,
