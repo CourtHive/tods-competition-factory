@@ -1,12 +1,14 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { attachEventPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { generateDrawDefinition } from '../../tournamentEngine/generators/generateDrawDefinition';
 import { addFlight } from '../../tournamentEngine/governors/eventGovernor/addFlight';
+import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 import { getFlightProfile } from '../../tournamentEngine/getters/getFlightProfile';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
 import { validExtension } from '../../global/validation/validExtension';
@@ -24,7 +26,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
 } from '../../constants/drawDefinitionConstants';
-import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
 
 export function generateEventWithFlights({
   tournamentRecord,
@@ -38,6 +39,7 @@ export function generateEventWithFlights({
   startDate,
   uuids,
 }) {
+  let gender = eventProfile.gender;
   const {
     eventName = 'Generated Event',
     eventType = SINGLES,
@@ -49,13 +51,16 @@ export function generateEventWithFlights({
     eventLevel,
     ballType,
     category,
-    gender,
   } = eventProfile;
 
   const tieFormat =
     eventProfile.tieFormat || (eventType === TEAM && tieFormatDefaults());
   let targetParticipants = tournamentRecord.participants;
   let uniqueDrawParticipants = [];
+
+  for (const drawProfile of drawProfiles) {
+    if (!gender && drawProfile.gender) gender = drawProfile.gender;
+  }
 
   let uniqueParticipantsCount = {};
   const stageParticipantsCount = drawProfiles.reduce(
@@ -73,7 +78,7 @@ export function generateEventWithFlights({
 
       const stageCount = participantsCount || drawSize - qualifyingPositions;
 
-      if (uniqueParticipants) {
+      if (uniqueParticipants || gender) {
         if (!Object.keys(uniqueParticipantsCount).includes(stage))
           uniqueParticipantsCount[stage] = 0;
         uniqueParticipantsCount[stage] += stageCount;
@@ -221,7 +226,7 @@ export function generateEventWithFlights({
       ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, entriesCount)
       : stageParticipants[stage || MAIN] || [];
 
-    if (uniqueParticipants) uniqueParticipantsIndex += entriesCount;
+    if (uniqueParticipants || gender) uniqueParticipantsIndex += entriesCount;
 
     const drawParticipantIds = drawParticipants
       .slice(0, entriesCount)
@@ -327,6 +332,18 @@ export function generateEventWithFlights({
       });
       if (result.error) return result;
       drawIds.push(flight.drawId);
+
+      if (drawProfile.withPlayoffs) {
+        const structureId = drawDefinition.structures[0].structureId;
+        const result = addPlayoffStructures({
+          idPrefix: drawProfile.idPrefix,
+          ...drawProfile.withPlayoffs,
+          tournamentRecord,
+          drawDefinition,
+          structureId,
+        });
+        if (result?.error) return result;
+      }
 
       // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
 

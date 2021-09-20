@@ -1,6 +1,7 @@
 import { addDrawDefinition } from '../../tournamentEngine/governors/eventGovernor/drawDefinitions/addDrawDefinition';
 import { automatedPlayoffPositioning } from '../../tournamentEngine/governors/eventGovernor/automatedPositioning';
 import { setParticipantScaleItem } from '../../tournamentEngine/governors/participantGovernor/addScaleItems';
+import { addPlayoffStructures } from '../../tournamentEngine/governors/eventGovernor/addPlayoffStructures';
 import { addEventEntries } from '../../tournamentEngine/governors/eventGovernor/entries/addEventEntries';
 import { addExtension } from '../../tournamentEngine/governors/tournamentGovernor/addRemoveExtensions';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
@@ -52,6 +53,7 @@ export function generateEventWithDraw({
     drawSize = 32,
     seedsCount,
     category,
+    idPrefix,
     gender,
     stage,
   } = drawProfile;
@@ -130,7 +132,14 @@ export function generateEventWithDraw({
   const isEventGender = (participant) => {
     if (!drawProfile.gender) return true;
     if (participant.person?.sex === drawProfile.gender) return true;
-    if (participant.individualParticipants?.[0]?.sex === drawProfile.gender)
+    if (
+      participant.individualParticipantIds?.some((participantId) => {
+        const individualParticipant = targetParticipants.find(
+          (p) => p.participantId === participantId
+        );
+        return individualParticipant && isEventGender(individualParticipant);
+      })
+    )
       return true;
   };
 
@@ -220,6 +229,18 @@ export function generateEventWithDraw({
 
   result = addDrawDefinition({ drawDefinition, event });
   const { drawId } = drawDefinition;
+
+  if (drawProfile.withPlayoffs) {
+    const structureId = drawDefinition.structures[0].structureId;
+    const result = addPlayoffStructures({
+      ...drawProfile.withPlayoffs,
+      tournamentRecord,
+      drawDefinition,
+      structureId,
+      idPrefix,
+    });
+    if (result?.error) return result;
+  }
 
   const manual = drawProfile.automated === false;
   if (!manual) {

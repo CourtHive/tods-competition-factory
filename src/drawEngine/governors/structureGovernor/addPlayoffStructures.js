@@ -47,15 +47,16 @@ export function addPlayoffStructures(params) {
   if (sourceRoundsError) return { error: sourceRoundsError };
 
   const {
-    uuids,
-    roundNumbers,
-    roundProfiles,
-    drawDefinition,
-    playoffPositions,
-    playoffAttributes,
-    exitProfileLimit,
-    playoffStructureNameBase,
     structureId: sourceStructureId,
+    playoffStructureNameBase,
+    playoffAttributes,
+    playoffPositions,
+    exitProfileLimit,
+    drawDefinition,
+    roundProfiles,
+    roundNumbers,
+    idPrefix,
+    uuids,
   } = params;
 
   const roundProfile =
@@ -112,18 +113,19 @@ export function addPlayoffStructures(params) {
       roundProfile[roundNumber] &&
       stageSequence + roundProfile[roundNumber] - 1;
     const { structure: targetStructure } = playoff({
-      uuids,
-      drawSize,
-      sequenceLimit,
-      stageSequence,
-      roundOffset: 0,
-      drawDefinition,
-      stage: PLAY_OFF,
-      exitProfileLimit,
-      playoffAttributes,
+      exitProfile: `0-${roundNumber}`,
       playoffStructureNameBase,
       finishingPositionOffset,
-      exitProfile: `0-${roundNumber}`,
+      playoffAttributes,
+      exitProfileLimit,
+      stage: PLAY_OFF,
+      drawDefinition,
+      roundOffset: 0,
+      sequenceLimit,
+      stageSequence,
+      drawSize,
+      idPrefix,
+      uuids,
     });
 
     if (targetStructure) {

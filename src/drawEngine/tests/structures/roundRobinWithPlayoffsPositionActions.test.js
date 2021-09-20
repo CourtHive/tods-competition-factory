@@ -17,7 +17,6 @@ import {
 
 import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { LUCKY_LOSER } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 import {
@@ -65,7 +64,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   let { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -81,7 +80,7 @@ it('disables placement actions for Round Robin Playoffs until all groups are com
   expect(drawDefinition.links.length).toEqual(playoffStructuresCount);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN

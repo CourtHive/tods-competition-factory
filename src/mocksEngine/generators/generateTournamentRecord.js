@@ -2,19 +2,16 @@ import { addParticipants } from '../../tournamentEngine/governors/participantGov
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
 import tieFormatDefaults from '../../tournamentEngine/generators/tieFormatDefaults';
-import { addCourts } from '../../tournamentEngine/governors/venueGovernor/addCourt';
-import { addVenue } from '../../tournamentEngine/governors/venueGovernor/addVenue';
 import { addEvent } from '../../tournamentEngine/governors/eventGovernor/addEvent';
+import { formatDate, isValidDateString } from '../../utilities/dateTime';
 import { validExtension } from '../../global/validation/validExtension';
+import { generateSchedulingProfile } from './generateSchedulingProfile';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
 import { generateParticipants } from './generateParticipants';
+import { definedAttributes } from '../../utilities/objects';
 import { generateRange, UUID } from '../../utilities';
-import {
-  dateRange,
-  formatDate,
-  isValidDateString,
-} from '../../utilities/dateTime';
+import { generateVenues } from './generateVenues';
 
 import { INVALID_DATE } from '../../constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantTypes';
@@ -46,6 +43,7 @@ export function generateTournamentRecord({
   policyDefinitions,
   participantsProfile,
   autoEntryPositions,
+  schedulingProfile,
   drawProfiles,
   eventProfiles,
   venueProfiles,
@@ -235,6 +233,7 @@ export function generateTournamentRecord({
 
     inContext,
   });
+
   let result = addParticipants({ tournamentRecord, participants });
   if (!result.success) return result;
 
@@ -265,8 +264,8 @@ export function generateTournamentRecord({
 
   const drawIds = [],
     eventIds = [],
-    venueIds = [],
     allUniqueParticipantIds = [];
+
   if (drawProfiles) {
     for (const drawProfile of drawProfiles) {
       const { drawId, eventId, event, error, uniqueParticipantIds } =
@@ -320,45 +319,25 @@ export function generateTournamentRecord({
     }
   }
 
-  if (venueProfiles) {
-    for (const [index, venueProfile] of venueProfiles.entries()) {
-      let {
-        venueName,
-        courtsCount,
-        dateAvailability,
-        startTime = '07:00',
-        endTime = '19:00',
-      } = venueProfile;
+  const venueIds = venueProfiles?.length
+    ? generateVenues({ tournamentRecord, venueProfiles })
+    : [];
 
-      const venueId = UUID();
-      const newVenue = {
-        venueId,
-        venueName: venueName || `Venue ${index + 1}`,
-      };
-      let result = addVenue({ tournamentRecord, venue: newVenue });
-      if (result.error) return result;
-
-      venueIds.push(venueId);
-
-      const dates = dateRange(startDate, endDate);
-      dateAvailability =
-        (!Array.isArray(dateAvailability) &&
-          dates.map((date) => ({
-            date: formatDate(date),
-            startTime,
-            endTime,
-          }))) ||
-        dateAvailability;
-
-      result = addCourts({
-        tournamentRecord,
-        venueId,
-        courtsCount,
-        dateAvailability,
-      });
-      if (result.error) return result;
-    }
+  let scheduledRounds;
+  if (schedulingProfile) {
+    const result = generateSchedulingProfile({
+      tournamentRecord,
+      schedulingProfile,
+    });
+    if (result.error) return result;
+    scheduledRounds = result.scheduledRounds;
   }
 
-  return { tournamentRecord, drawIds, eventIds, venueIds };
+  return definedAttributes({
+    tournamentRecord,
+    scheduledRounds,
+    eventIds,
+    venueIds,
+    drawIds,
+  });
 }

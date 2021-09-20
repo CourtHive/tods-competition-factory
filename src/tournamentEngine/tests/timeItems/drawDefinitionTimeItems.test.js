@@ -2,7 +2,6 @@ import mocksEngine from '../../../mocksEngine';
 import tournamentEngine from '../../sync';
 
 import { MODIFICATION } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 import {
   INVALID_TIME_ITEM,
@@ -37,7 +36,7 @@ it('can add and read timeItems from events', async () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
@@ -53,7 +52,7 @@ it('can add and read timeItems from events', async () => {
   await forceDelay();
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let timeItem = undefined;
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
@@ -77,7 +76,7 @@ it('can add and read timeItems from events', async () => {
     itemValue,
   };
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { timeItem: retrievedTimeItem, message } =
     tournamentEngine.getDrawDefinitionTimeItem({

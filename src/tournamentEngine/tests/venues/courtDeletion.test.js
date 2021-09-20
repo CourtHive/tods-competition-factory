@@ -2,7 +2,6 @@ import mocksEngine from '../../../mocksEngine';
 import { tournamentEngine } from '../../sync';
 
 import { SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
   const startDate = '2020-01-01';
@@ -29,7 +28,7 @@ it('can add events, venues, and schedule matchUps', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
@@ -42,7 +41,7 @@ it('can add events, venues, and schedule matchUps', () => {
   const { drawId } = drawDefinition;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
   result = tournamentEngine
@@ -110,7 +109,7 @@ it('can add events, venues, and schedule matchUps', () => {
     venueId,
     drawId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   result = tournamentEngine.assignMatchUpCourt({
     tournamentRecord,
@@ -119,7 +118,7 @@ it('can add events, venues, and schedule matchUps', () => {
     drawId,
     courtDayDate: scheduledDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   scheduledDate = '2020-01-03T00:00';
   result = tournamentEngine.addMatchUpScheduledDate({
@@ -127,7 +126,7 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
     scheduledDate,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const scheduledTime = '2020-01-03T13:00';
   result = tournamentEngine.addMatchUpScheduledTime({
@@ -135,7 +134,7 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
     scheduledTime,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   contextFilters = { courtIds };
   ({ matchUps } = tournamentEngine.allTournamentMatchUps({ contextFilters }));

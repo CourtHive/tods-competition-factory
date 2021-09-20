@@ -14,7 +14,6 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '../../../constants/drawDefinitionConstants';
 
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/eventConstants';
 
 export function roundRobinWithPlayoffsTest({
@@ -52,7 +51,7 @@ export function roundRobinWithPlayoffsTest({
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -68,7 +67,7 @@ export function roundRobinWithPlayoffsTest({
   expect(drawDefinition.links.length).toEqual(playoffGroups.length);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
@@ -188,7 +187,7 @@ export function roundRobinWithPlayoffsTest({
     drawId,
     structureId: mainStructure.structureId,
   });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   let { drawDefinition: updatedDrawDefinition } =
     tournamentEngine.getDrawDefinition({ drawId });

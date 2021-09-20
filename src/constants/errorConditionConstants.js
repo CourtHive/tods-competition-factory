@@ -36,6 +36,7 @@ export const INVALID_SEED_POSITION = 'Invalid seedPosition';
 
 export const MISSING_TARGET_LINK = 'Missing targetLink';
 
+export const EXISTING_ROUND = 'Existing round';
 export const MISSING_ROUND_NUMBER = 'Missing roundNumber';
 export const MISSING_STRUCTURE_ID = 'Missing structureId';
 export const STRUCTURE_NOT_FOUND = 'structure not found';
@@ -217,6 +218,7 @@ export const errorConditionConstants = {
   EXISTING_PARTICIPANT,
   EXISTING_POLICY_TYPE,
   EXISTING_PROFILE,
+  EXISTING_ROUND,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_BOOKINGS,
   INVALID_CONFIGURATION,

@@ -1,5 +1,4 @@
 import { getAppliedPolicies } from '../../../drawEngine/governors/policyGovernor/getAppliedPolicies';
-import { resultConstants } from '../../../constants/resultConstants';
 import { eventConstants } from '../../../constants/eventConstants';
 import { drawEngine } from '../../../drawEngine/sync';
 import mocksEngine from '../../../mocksEngine';
@@ -9,7 +8,6 @@ import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants'
 import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
-const { SUCCESS } = resultConstants;
 
 it('can aggrgate participant finishingPositions', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -31,7 +29,7 @@ it('can aggrgate participant finishingPositions', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const values = {
     automated: true,
@@ -45,7 +43,7 @@ it('can aggrgate participant finishingPositions', () => {
   const { drawId } = drawDefinition;
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   drawEngine.setState(drawDefinition);
 

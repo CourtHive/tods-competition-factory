@@ -1,4 +1,5 @@
 import tournamentEngine from '../../../tournamentEngine/sync';
+import { unique } from '../../../utilities';
 import mocksEngine from '../..';
 
 import {
@@ -13,7 +14,6 @@ import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { CLAY, HARD } from '../../../constants/surfaceConstants';
-import { unique } from '../../../utilities';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -195,7 +195,10 @@ test('eventProfiles and participantsProfile work as expected', () => {
     participantFilters: { participantTypes: [PAIR] },
   }));
 
-  expect(tournamentParticipants.length).toEqual(doublesDrawSize);
+  // because the doubles draw is gendered the participants must be unique
+  // unique participants are generated in addition to the calculated number
+  // of participants that would be required without unique participants
+  expect(tournamentParticipants.length).toEqual(doublesDrawSize * 2);
 
   eventIds.forEach((eventId) => {
     const { event } = tournamentEngine.getEvent({ eventId });

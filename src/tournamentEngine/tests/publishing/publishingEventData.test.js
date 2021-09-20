@@ -4,7 +4,6 @@ import tournamentEngine from '../../sync';
 import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { INDIVIDUAL } from '../../../constants/participantTypes';
 import { PUBLIC } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
 import {
@@ -108,7 +107,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -126,7 +125,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
   result = tournamentEngine.addDrawDefinition({ drawDefinition });
   expect(result.error).toEqual(MISSING_EVENT);
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN
@@ -282,7 +281,7 @@ it('can generate payload for publishing a compass draw', () => {
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -295,7 +294,7 @@ it('can generate payload for publishing a compass draw', () => {
   expect(drawDefinition.links.length).toEqual(7);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN && structure.stageSequence === 1
@@ -415,7 +414,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
 
   const participantIds = participants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const matchUpFormat = 'SET3-S:6/TB7';
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -428,7 +427,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   expect(drawDefinition.links.length).toEqual(2);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
-  expect(result).toEqual(SUCCESS);
+  expect(result.success).toEqual(true);
 
   const mainStructure = drawDefinition.structures.find(
     (structure) => structure.stage === MAIN && structure.stageSequence === 1

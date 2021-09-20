@@ -11,22 +11,24 @@ export function addPlayoffStructures({
   playoffAttributes,
   playoffPositions,
   exitProfileLimit,
-  roundNumbers,
   roundProfiles,
+  roundNumbers,
   structureId,
+  idPrefix,
   uuids,
 }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const result = addPlayoffs({
-    drawDefinition,
-    structureId,
-    roundNumbers,
-    roundProfiles,
-    playoffPositions,
-    playoffAttributes,
     playoffStructureNameBase,
+    playoffAttributes,
+    playoffPositions,
     exitProfileLimit,
+    drawDefinition,
+    roundProfiles,
+    roundNumbers,
+    structureId,
+    idPrefix,
     uuids,
   });
 
