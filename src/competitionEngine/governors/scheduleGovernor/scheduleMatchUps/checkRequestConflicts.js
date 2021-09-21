@@ -1,6 +1,7 @@
 import { getIndividualParticipants } from './getIndividualParticipants';
 import {
   addMinutes,
+  extractDate,
   extractTime,
   sameDay,
   timeToDate,
@@ -22,7 +23,7 @@ import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
  * @returns
  */
 export function checkRequestConflicts({
-  averageMatchUpMinutes,
+  averageMatchUpMinutes = 90,
   requestConflicts = {},
   potentials = true,
   personRequests,
@@ -54,7 +55,10 @@ export function checkRequestConflicts({
 
   const conflicts = [];
   const matchUpId = matchUp?.matchUpId;
-  const scheduleStart = timeToDate(scheduleTime, scheduleDate);
+  const scheduleStart = timeToDate(
+    extractTime(scheduleTime),
+    extractDate(scheduleDate)
+  );
   const averageEnd = extractTime(
     addMinutes(scheduleStart, averageMatchUpMinutes).toISOString()
   );
