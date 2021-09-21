@@ -1,5 +1,4 @@
 import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
-import { jinnScheduler } from '../../competitionEngine/governors/scheduleGovernor/jinnScheduler/jinnScheduler';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
@@ -337,9 +336,7 @@ export function generateTournamentRecord({
       const { tournamentId } = tournamentRecord;
       const tournamentRecords = { [tournamentId]: tournamentRecord };
 
-      schedulerResult = jinn
-        ? jinnScheduler({ tournamentRecords })
-        : scheduleProfileRounds({ tournamentRecords });
+      schedulerResult = scheduleProfileRounds({ tournamentRecords, jinn });
     }
   }
 

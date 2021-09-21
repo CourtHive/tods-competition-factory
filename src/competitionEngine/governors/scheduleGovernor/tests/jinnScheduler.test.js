@@ -14,6 +14,7 @@ import {
 
 it.each([
   {
+    jinn: true,
     rounds: [
       { drawId: 'idM16', winnerFinishingPositionRange: '1-16' },
       { drawId: 'idF16', winnerFinishingPositionRange: '1-16' },
@@ -38,10 +39,11 @@ it.each([
 ])(
   'can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times',
   ({
-    rounds,
     dependencyDeferredCount,
     recoveryDeferredCount,
     timeProfiles,
+    rounds,
+    jinn,
   }) => {
     const firstVenueId = 'firstVenueId';
     const venueProfiles = [
@@ -116,7 +118,7 @@ it.each([
         venueProfiles,
         drawProfiles,
         startDate,
-        jinn: true,
+        jinn,
       });
 
     tournamentEngine.setState(tournamentRecord);
@@ -125,6 +127,13 @@ it.each([
       schedulerResult.dependencyDeferredMatchUpIds?.[startDate];
     const recovery =
       schedulerResult.recoveryTimeDeferredMatchUpIds?.[startDate];
+
+    if (jinn) {
+      expect(dependency).not.toBeUndefined();
+      expect(recovery).not.toBeUndefined();
+      expect(schedulerResult.jinn).toEqual(true);
+    }
+
     const dependencyDeferred =
       dependency &&
       Object.keys(dependency)

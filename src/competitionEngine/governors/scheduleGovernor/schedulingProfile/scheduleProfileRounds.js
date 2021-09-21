@@ -17,18 +17,28 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
 } from '../../../../constants/errorConditionConstants';
+import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 
 export function scheduleProfileRounds({
+  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
+  checkPotentialRequestConflicts = true,
   tournamentRecords,
   scheduleDates = [],
   periodLength,
   dryRun,
-
-  checkPotentialRequestConflicts = true,
-  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
+  jinn,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
+
+  if (jinn)
+    return jinnScheduler({
+      checkPotentialRequestConflicts,
+      tournamentRecords,
+      scheduleDates,
+      periodLength,
+      dryRun,
+    });
 
   const {
     schedulingProfile = [],

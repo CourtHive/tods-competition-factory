@@ -531,12 +531,13 @@ export function jinnScheduler({
     scheduleTimesRemaining,
     skippedScheduleTimes,
 
-    dependencyDeferredMatchUpIds,
     recoveryTimeDeferredMatchUpIds,
+    dependencyDeferredMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
     noTimeMatchUpIds,
     requestConflicts,
     scheduledDates,
+    jinn: true,
   };
 }
