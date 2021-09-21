@@ -546,11 +546,13 @@ function annotateParticipant({
         roundNumber,
         roundPosition,
         structureName,
+        matchUpType,
         drawId,
       } = matchUp;
 
       scheduleItems.push({
         drawId,
+        matchUpType,
         matchUpId,
         structureName,
         roundNumber,

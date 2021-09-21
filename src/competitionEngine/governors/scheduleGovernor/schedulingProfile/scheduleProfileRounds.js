@@ -7,6 +7,7 @@ import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
+import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getGroupedRounds } from './getGroupedRounds';
 
@@ -19,16 +20,25 @@ import {
 } from '../../../../constants/errorConditionConstants';
 
 export function scheduleProfileRounds({
+  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
+  checkPotentialRequestConflicts = true,
   tournamentRecords,
   scheduleDates = [],
   periodLength,
   dryRun,
-
-  checkPotentialRequestConflicts = true,
-  garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
+  jinn,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
+
+  if (jinn)
+    return jinnScheduler({
+      checkPotentialRequestConflicts,
+      tournamentRecords,
+      scheduleDates,
+      periodLength,
+      dryRun,
+    });
 
   const {
     schedulingProfile = [],
@@ -88,6 +98,8 @@ export function scheduleProfileRounds({
 
   const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
+  const recoveryTimeDeferredMatchUpIds = {};
+  const dependencyDeferredMatchUpIds = {};
 
   const scheduledMatchUpIds = {};
   const overLimitMatchUpIds = {};
@@ -104,7 +116,10 @@ export function scheduleProfileRounds({
     const venueScheduledRoundDetails = {};
     const matchUpNotBeforeTimes = {};
 
+    recoveryTimeDeferredMatchUpIds[scheduleDate] = {};
+    dependencyDeferredMatchUpIds[scheduleDate] = {};
     scheduleTimesRemaining[scheduleDate] = {};
+    skippedScheduleTimes[scheduleDate] = {};
     scheduledMatchUpIds[scheduleDate] = [];
     overLimitMatchUpIds[scheduleDate] = [];
     noTimeMatchUpIds[scheduleDate] = [];
@@ -117,10 +132,11 @@ export function scheduleProfileRounds({
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
       const {
-        orderedMatchUpIds,
-        recoveryMinutesMap,
         scheduledRoundsDetails,
         greatestAverageMinutes,
+        recoveryMinutesMap,
+        orderedMatchUpIds,
+        minutesMap,
       } = getScheduledRoundsDetails({
         tournamentRecords,
         containedStructureIds,
@@ -131,30 +147,29 @@ export function scheduleProfileRounds({
 
       allDateMatchUpIds.push(...orderedMatchUpIds);
 
-      venueScheduledRoundDetails[venueId] = {
-        recoveryMinutesMap,
+      const { groupedRounds } = getGroupedRounds({
         scheduledRoundsDetails,
         greatestAverageMinutes,
+        garmanSinglePass,
+      });
+
+      venueScheduledRoundDetails[venueId] = {
+        previousRemainingScheduleTimes: [], // keep track of sheduleTimes not used on previous iteration
+        greatestAverageMinutes,
+        scheduledRoundsDetails,
+        recoveryMinutesMap,
+        groupedRounds,
+        minutesMap,
       };
     }
 
     // second pass groups the rounds where possible, or groups all rounds if { garmanSinglePass: true }
     // ... and initiates scheduling
     for (const venue of venues) {
-      let previousRemainingScheduleTimes = []; // keep track of sheduleTimes not used on previous iteration
       const { venueId } = venue;
 
-      const {
-        recoveryMinutesMap,
-        scheduledRoundsDetails,
-        greatestAverageMinutes,
-      } = venueScheduledRoundDetails[venueId];
-
-      const { groupedRounds } = getGroupedRounds({
-        scheduledRoundsDetails,
-        greatestAverageMinutes,
-        garmanSinglePass,
-      });
+      const { recoveryMinutesMap, groupedRounds } =
+        venueScheduledRoundDetails[venueId];
 
       iterations += groupedRounds.length;
 
@@ -172,7 +187,8 @@ export function scheduleProfileRounds({
           tournamentRecords,
           dryRun,
 
-          remainingScheduleTimes: previousRemainingScheduleTimes,
+          remainingScheduleTimes:
+            venueScheduledRoundDetails[venueId].previousRemainingScheduleTimes,
           averageMatchUpMinutes: averageMinutes,
           recoveryMinutesMap,
           recoveryMinutes,
@@ -193,16 +209,15 @@ export function scheduleProfileRounds({
         });
         if (result.error) return result;
 
-        previousRemainingScheduleTimes = result.remainingScheduleTimes;
-        if (result.skippedScheduleTimes?.length) {
-          // add skippedScheduleTimes for each scheduleDate and return for testing
-          skippedScheduleTimes[scheduleDate] = result.skippedScheduleTimes;
-        }
-        if (result.remainingScheduleTimes?.length) {
-          // add remainingScheduleTimes for each scheduleDate and return for testing
-          scheduleTimesRemaining[scheduleDate][venueId] =
-            result.remainingScheduleTimes;
-        }
+        venueScheduledRoundDetails[venueId].previousRemainingScheduleTimes =
+          result.remainingScheduleTimes;
+
+        // add skippedScheduleTimes for each scheduleDate and return for testing
+        skippedScheduleTimes[scheduleDate][venueId] =
+          result.skippedScheduleTimes;
+        // add scheduleTimesRemaining for each scheduleDate and return for testing
+        scheduleTimesRemaining[scheduleDate][venueId] =
+          result.remainingScheduleTimes;
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
         noTimeMatchUpIds[scheduleDate].push(...roundNoTimeMatchUpIds);
@@ -211,11 +226,21 @@ export function scheduleProfileRounds({
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds[scheduleDate].push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
-        if (conflicts.length)
+        if (conflicts.length) {
           requestConflicts[scheduleDate].push({
             date: scheduleDate,
             conflicts,
           });
+        }
+
+        if (result.recoveryTimeDeferred) {
+          recoveryTimeDeferredMatchUpIds[scheduleDate] =
+            result.recoveryTimeDeferred;
+        }
+        if (result.dependencyDeferred) {
+          dependencyDeferredMatchUpIds[scheduleDate] =
+            result.dependencyDeferred;
+        }
       }
     }
   }
@@ -261,5 +286,7 @@ export function scheduleProfileRounds({
     requestConflicts,
     skippedScheduleTimes,
     scheduleTimesRemaining,
+    dependencyDeferredMatchUpIds,
+    recoveryTimeDeferredMatchUpIds,
   };
 }

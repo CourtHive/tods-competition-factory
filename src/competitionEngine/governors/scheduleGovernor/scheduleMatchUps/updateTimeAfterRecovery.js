@@ -1,4 +1,3 @@
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { processNextMatchUps } from './processNextMatchUps';
 import {
   addParticipantPotentialRecovery,
@@ -40,8 +39,11 @@ export function updateTimeAfterRecovery({
   const participantIdDependencies =
     matchUpDependencies?.[matchUp.matchUpId]?.participantIds || [];
 
-  const { potentialIndividualParticipantIds } =
-    getIndividualParticipantIds(matchUp);
+  const potentialIndividualParticipantIds = (
+    (matchUp.roundPosition &&
+      matchUpPotentialParticipantIds[matchUp.matchUpId]) ||
+    []
+  ).flat();
 
   participantIdDependencies.forEach((participantId) => {
     checkParticipantProfileInitialization({
@@ -72,10 +74,11 @@ export function updateTimeAfterRecovery({
           : timeAfterRecovery;
     }
   });
+
   processNextMatchUps({
-    matchUp,
-    timeAfterRecovery,
-    matchUpNotBeforeTimes,
     matchUpPotentialParticipantIds,
+    matchUpNotBeforeTimes,
+    timeAfterRecovery,
+    matchUp,
   });
 }

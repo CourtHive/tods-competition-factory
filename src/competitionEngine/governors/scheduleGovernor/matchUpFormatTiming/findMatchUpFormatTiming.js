@@ -50,5 +50,9 @@ export function findMatchUpFormatTiming({
   return {
     averageMinutes: timing?.averageMinutes || defaultAverageMinutes,
     recoveryMinutes: timing?.recoveryMinutes || defaultRecoveryMinutes,
+    typeChangeRecoveryMinutes:
+      timing?.typeChangeRecoveryMinutes ||
+      timing?.recoveryMinutes ||
+      defaultRecoveryMinutes,
   };
 }

@@ -60,7 +60,9 @@ export function getScheduledRoundsDetails({
   }
   // ---------------------------------------------------------
 
+  const minutesMap = {};
   const recoveryMinutesMap = {};
+  const averageMinutesMap = {};
   let greatestAverageMinutes = 0;
   const scheduledRoundsDetails = sortedRounds.map((round) => {
     const roundPeriodLength = round.periodLength || periodLength;
@@ -102,19 +104,24 @@ export function getScheduledRoundsDetails({
 
     const tournamentRecord = tournamentRecords[round.tournamentId];
     const { drawDefinition, event } = findEvent({
-      tournamentRecord,
       drawId: round.drawId,
+      tournamentRecord,
     });
     const { matchUpFormat } = getMatchUpFormat({
-      tournamentRecord,
       structureId: round.structureId,
+      tournamentRecord,
       drawDefinition,
       event,
     });
 
     const { eventType, category } = event || {};
     const { categoryName, ageCategoryCode } = category || {};
-    const { averageMinutes, recoveryMinutes, error } = findMatchUpFormatTiming({
+    const {
+      typeChangeRecoveryMinutes,
+      recoveryMinutes,
+      averageMinutes,
+      error,
+    } = findMatchUpFormatTiming({
       tournamentRecords,
       categoryName: categoryName || ageCategoryCode,
       tournamentId: round.tournamentId,
@@ -132,9 +139,15 @@ export function getScheduledRoundsDetails({
           matchUpStatus !== BYE
       )
       .map(({ matchUpId }) => matchUpId);
-    matchUpIds.forEach(
-      (matchUpId) => (recoveryMinutesMap[matchUpId] = recoveryMinutes)
-    );
+    matchUpIds.forEach((matchUpId) => {
+      minutesMap[matchUpId] = {
+        typeChangeRecoveryMinutes,
+        recoveryMinutes,
+        averageMinutes,
+      };
+      recoveryMinutesMap[matchUpId] = recoveryMinutes;
+      averageMinutesMap[matchUpId] = averageMinutes;
+    });
     orderedMatchUpIds.push(...matchUpIds);
 
     greatestAverageMinutes = Math.max(
@@ -145,11 +158,11 @@ export function getScheduledRoundsDetails({
     if (!hashes.includes(hash)) hashes.push(hash);
 
     return {
-      hash,
-      matchUpIds,
-      averageMinutes,
-      recoveryMinutes,
       roundPeriodLength,
+      recoveryMinutes,
+      averageMinutes,
+      matchUpIds,
+      hash,
     };
   });
 
@@ -157,7 +170,9 @@ export function getScheduledRoundsDetails({
     scheduledRoundsDetails,
     greatestAverageMinutes,
     recoveryMinutesMap,
+    averageMinutesMap,
     orderedMatchUpIds,
+    minutesMap,
     ...SUCCESS,
   };
 }

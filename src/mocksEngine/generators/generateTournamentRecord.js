@@ -1,3 +1,4 @@
+import { scheduleProfileRounds } from '../../competitionEngine/governors/scheduleGovernor/schedulingProfile/scheduleProfileRounds';
 import { addParticipants } from '../../tournamentEngine/governors/participantGovernor/addParticipants';
 import { attachPolicies } from '../../tournamentEngine/governors/policyGovernor/policyManagement';
 import { newTournamentRecord } from '../../tournamentEngine/generators/newTournamentRecord';
@@ -36,27 +37,25 @@ import { COMPETITOR } from '../../constants/participantRoles';
  *
  */
 export function generateTournamentRecord({
-  endDate,
-  startDate,
   tournamentName = 'Mock Tournament',
-
-  policyDefinitions,
-  participantsProfile,
-  autoEntryPositions,
-  schedulingProfile,
-  drawProfiles,
-  eventProfiles,
-  venueProfiles,
-
   tournamentExtensions,
   tournamentAttributes,
-
-  completeAllMatchUps,
   matchUpStatusProfile,
+  participantsProfile,
+  completeAllMatchUps,
+  autoEntryPositions,
   randomWinningSide,
+  policyDefinitions,
+  schedulingProfile,
+  eventProfiles,
+  venueProfiles,
+  drawProfiles,
+  autoSchedule,
+  startDate,
+  endDate,
   goesTo,
-
   uuids,
+  jinn,
 } = {}) {
   let { participantsCount, participantType = INDIVIDUAL } =
     participantsProfile || {};
@@ -324,18 +323,27 @@ export function generateTournamentRecord({
     : [];
 
   let scheduledRounds;
+  let schedulerResult = {};
   if (schedulingProfile) {
     const result = generateSchedulingProfile({
-      tournamentRecord,
       schedulingProfile,
+      tournamentRecord,
     });
     if (result.error) return result;
     scheduledRounds = result.scheduledRounds;
+
+    if (autoSchedule) {
+      const { tournamentId } = tournamentRecord;
+      const tournamentRecords = { [tournamentId]: tournamentRecord };
+
+      schedulerResult = scheduleProfileRounds({ tournamentRecords, jinn });
+    }
   }
 
   return definedAttributes({
     tournamentRecord,
     scheduledRounds,
+    schedulerResult,
     eventIds,
     venueIds,
     drawIds,

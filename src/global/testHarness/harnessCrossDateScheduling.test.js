@@ -1,11 +1,11 @@
-import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
+import { competitionEngine } from '../..';
 import {
   extractDate,
   extractTime,
   timeStringMinutes,
 } from '../../utilities/dateTime';
-import { competitionEngine } from '../..';
 import fs from 'fs';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
@@ -25,7 +25,17 @@ it('can auto schedule across multiple dates', () => {
   const { issuesCount } = competitionEngine.getSchedulingProfileIssues();
   expect(issuesCount).toEqual(0);
 
-  let result = competitionEngine.scheduleProfileRounds();
+  const jinn = true;
+  let result = competitionEngine.scheduleProfileRounds({ jinn });
+
+  // prettier-ignore
+  expect(result.skippedScheduleTimes['2021-09-10']).toEqual({
+    'ED4DF4E1-4074-4297-952E-56210FA162FD': [
+      '10:00', '10:00', '10:00', '10:00', '11:00', '11:00', '11:00',
+      '11:30', '11:30', '11:30', '12:30', '13:00', '13:00', '13:00',
+      '13:00', '13:30', '13:30', '13:30'
+    ],
+  });
   const scheduledDates = result.scheduledDates.map(extractDate);
   const scheduledIdsCount = scheduledDates
     .map((scheduledDate) => result.scheduledMatchUpIds[scheduledDate].length)
@@ -65,5 +75,6 @@ it('can auto schedule across multiple dates', () => {
       withEvents: false,
       withDraws: false,
     });
+
   expect(participantIdsWithConflicts.length).toEqual(0);
 });

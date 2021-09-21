@@ -6,8 +6,8 @@ import { intersection } from '../../utilities';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
 
 export function generateSchedulingProfile({
-  tournamentRecord,
   schedulingProfile,
+  tournamentRecord,
 }) {
   if (typeof schedulingProfile !== 'object') return { error: INVALID_VALUES };
 
