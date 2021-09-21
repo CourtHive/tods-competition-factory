@@ -2,6 +2,7 @@ import { checkParticipantProfileInitialization } from './checkParticipantProfile
 import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 
 export function checkRecoveryTime({
+  // matchUpPotentialParticipantIds,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
   matchUpDependencies,

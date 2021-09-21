@@ -1,11 +1,11 @@
-import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../competitionEngine/governors/scheduleGovernor/scheduleMatchUps/hasSchedule';
+import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
+import { competitionEngine } from '../..';
 import {
   extractDate,
   extractTime,
   timeStringMinutes,
 } from '../../utilities/dateTime';
-import { competitionEngine } from '../..';
 import fs from 'fs';
 
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
@@ -25,7 +25,8 @@ it('can auto schedule across multiple dates', () => {
   const { issuesCount } = competitionEngine.getSchedulingProfileIssues();
   expect(issuesCount).toEqual(0);
 
-  let result = competitionEngine.scheduleProfileRounds();
+  const jinn = false;
+  let result = competitionEngine.scheduleProfileRounds({ jinn });
   const scheduledDates = result.scheduledDates.map(extractDate);
   const scheduledIdsCount = scheduledDates
     .map((scheduledDate) => result.scheduledMatchUpIds[scheduledDate].length)
@@ -58,12 +59,24 @@ it('can auto schedule across multiple dates', () => {
   );
   expect(scheduleConflicts.length).toEqual(0);
 
-  const { participantIdsWithConflicts } =
+  const { competitionParticipants, participantIdsWithConflicts } =
     competitionEngine.getCompetitionParticipants({
       withScheduleItems: true,
       scheduleAnalysis: true,
       withEvents: false,
       withDraws: false,
     });
-  expect(participantIdsWithConflicts.length).toEqual(0);
+  if (participantIdsWithConflicts.length) {
+    competitionParticipants
+      .filter(({ scheduleItems }) => scheduleItems.length)
+      .filter(({ participantId }) =>
+        participantIdsWithConflicts.includes(participantId)
+      )
+      .map(({ scheduleItems, scheduleConflicts }) => ({
+        scheduleItems,
+        scheduleConflicts,
+      }))
+      .forEach((conflict) => console.log(conflict));
+  }
+  if (!jinn) expect(participantIdsWithConflicts.length).toEqual(0);
 });

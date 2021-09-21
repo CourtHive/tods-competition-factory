@@ -1,10 +1,11 @@
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { unique } from '../../../../utilities';
 
 export function processNextMatchUps({
-  matchUp,
-  timeAfterRecovery,
-  matchUpNotBeforeTimes,
   matchUpPotentialParticipantIds,
+  matchUpNotBeforeTimes,
+  timeAfterRecovery,
+  matchUp,
 }) {
   const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
   timeAfterRecovery = timeAfterRecovery || matchUp.schedule?.timeAfterRecovery;
@@ -15,8 +16,10 @@ export function processNextMatchUps({
 
     // push potentials as an array so that if any have progressed to target matchUp
     // others in the array can be identfied as no longer potentials
-    matchUpPotentialParticipantIds[targetMatchUpId].push(
-      individualParticipantIds
+    matchUpPotentialParticipantIds[targetMatchUpId] = unique(
+      matchUpPotentialParticipantIds[targetMatchUpId].concat(
+        ...individualParticipantIds
+      )
     );
   };
 

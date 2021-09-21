@@ -115,6 +115,7 @@ export function scheduleProfileRounds({
     const matchUpNotBeforeTimes = {};
 
     scheduleTimesRemaining[scheduleDate] = {};
+    skippedScheduleTimes[scheduleDate] = {};
     scheduledMatchUpIds[scheduleDate] = [];
     overLimitMatchUpIds[scheduleDate] = [];
     noTimeMatchUpIds[scheduleDate] = [];
@@ -204,15 +205,13 @@ export function scheduleProfileRounds({
 
         venueScheduledRoundDetails[venueId].previousRemainingScheduleTimes =
           result.remainingScheduleTimes;
-        if (result.skippedScheduleTimes?.length) {
-          // add skippedScheduleTimes for each scheduleDate and return for testing
-          skippedScheduleTimes[scheduleDate] = result.skippedScheduleTimes;
-        }
-        if (result.remainingScheduleTimes?.length) {
-          // add remainingScheduleTimes for each scheduleDate and return for testing
-          scheduleTimesRemaining[scheduleDate][venueId] =
-            result.remainingScheduleTimes;
-        }
+
+        // add skippedScheduleTimes for each scheduleDate and return for testing
+        skippedScheduleTimes[scheduleDate][venueId] =
+          result.skippedScheduleTimes;
+        // add scheduleTimesRemaining for each scheduleDate and return for testing
+        scheduleTimesRemaining[scheduleDate][venueId] =
+          result.remainingScheduleTimes;
 
         const roundNoTimeMatchUpIds = result?.noTimeMatchUpIds || [];
         noTimeMatchUpIds[scheduleDate].push(...roundNoTimeMatchUpIds);
