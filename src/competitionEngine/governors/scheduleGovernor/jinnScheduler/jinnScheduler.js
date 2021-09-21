@@ -7,7 +7,6 @@ import { checkDependenciesScheduled } from '../scheduleMatchUps/checkDependencie
 import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 import { updateTimeAfterRecovery } from '../scheduleMatchUps/updateTimeAfterRecovery';
 import { getDrawDefinition } from '../../../../tournamentEngine/getters/eventGetter';
-import { calculateScheduleTimes } from '../scheduleMatchUps/calculateScheduleTimes';
 import { getMatchUpDependencies } from '../scheduleMatchUps/getMatchUpDependencies';
 import { checkRequestConflicts } from '../scheduleMatchUps/checkRequestConflicts';
 import { getSchedulingProfile } from '../schedulingProfile/schedulingProfile';
@@ -20,6 +19,7 @@ import { checkDailyLimits } from '../scheduleMatchUps/checkDailyLimits';
 import { getPersonRequests } from '../scheduleMatchUps/personRequests';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
+import { generateScheduleTimes } from './generateScheduleTimes';
 import {
   extractDate,
   isValidDateString,
@@ -189,15 +189,13 @@ export function jinnScheduler({
       // determines court availability taking into account already scheduled matchUps on the scheduleDate
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      const { scheduleTimes, dateScheduledMatchUpIds } = calculateScheduleTimes(
-        {
-          tournamentRecords,
-          scheduleDate: extractDate(scheduleDate),
-          averageMatchUpMinutes: groupedRounds[0].averageMinutes,
-          venueIds: [venue.venueId],
-          periodLength,
-        }
-      );
+      const { scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
+        tournamentRecords,
+        scheduleDate: extractDate(scheduleDate),
+        averageMatchUpMinutes: groupedRounds[0].averageMinutes,
+        venueIds: [venue.venueId],
+        periodLength,
+      });
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
       // based on already scheduled matchUps
