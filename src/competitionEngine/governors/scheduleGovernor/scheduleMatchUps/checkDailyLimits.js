@@ -11,17 +11,18 @@ import { TOTAL } from '../../../../constants/scheduleConstants';
  * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - counters
  * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
  * @returns {string[]} participantIdsAtLimit - array of participantIds who are at or beyond daily matchUp limit
+ * @returns {string[]} relevantParticipantIds - array of participantIds relevant to current matchUp
  * @modifies individualParticipantProfiles - increments counters
  */
-export function checkDailyLimits(
+export function checkDailyLimits({
   individualParticipantProfiles,
   matchUpPotentialParticipantIds,
   matchUpDailyLimits = {},
-  scheduleDate,
-  matchUp
-) {
+  matchUp,
+}) {
   const { matchUpId, matchUpType } = matchUp;
-  const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
+  const { enteredIndividualParticipantIds } =
+    getIndividualParticipantIds(matchUp);
 
   // don't include potentials if matchUp is in round robin
   // this is because potentials uses { sidesTo } attribute which must be present for other calculations
@@ -30,11 +31,18 @@ export function checkDailyLimits(
     []
   ).flat();
 
-  const relevantParticipantids = unique(
-    individualParticipantIds.concat(...potentialParticipantIds)
+  const relevantParticipantIds = unique(
+    enteredIndividualParticipantIds.concat(...potentialParticipantIds)
   );
 
-  const participantIdsAtLimit = relevantParticipantids.filter(
+  relevantParticipantIds.forEach((participantId) => {
+    checkParticipantProfileInitialization({
+      individualParticipantProfiles,
+      participantId,
+    });
+  });
+
+  const participantIdsAtLimit = relevantParticipantIds.filter(
     (participantId) => {
       const profile = individualParticipantProfiles[participantId];
       if (profile) {
@@ -51,19 +59,5 @@ export function checkDailyLimits(
     }
   );
 
-  if (!participantIdsAtLimit.length) {
-    relevantParticipantids.forEach((participantId) => {
-      checkParticipantProfileInitialization({
-        individualParticipantProfiles,
-        participantId,
-      });
-      const counters = individualParticipantProfiles[participantId].counters;
-      if (counters[matchUpType]) counters[matchUpType] += 1;
-      else counters[matchUpType] = 1;
-      if (counters[TOTAL]) counters[TOTAL] += 1;
-      else counters[TOTAL] = 1;
-    });
-  }
-
-  return participantIdsAtLimit;
+  return { participantIdsAtLimit, relevantParticipantIds };
 }

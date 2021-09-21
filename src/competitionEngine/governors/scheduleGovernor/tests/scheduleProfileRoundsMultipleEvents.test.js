@@ -208,6 +208,7 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   // #################################################
   result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
+    jinn: true,
   });
   expect(result.success).toEqual(true);
   expect(result.requestConflicts[startDate]).toEqual([]);
@@ -228,13 +229,12 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
 
   const singlesScheduled = singlesMatchUps.filter(hasSchedule);
   const doublesScheduled = doublesMatchUps.filter(hasSchedule);
+  const totalScheduledMatchUps =
+    singlesScheduled.length + doublesScheduled.length;
 
-  expect(singlesScheduled.length).toEqual(24);
-
-  // because the same participants are in SINGLES and DOUBLES it is not possible to schedule
-  // all of the doubles matchUps at the second venue, give the courts startTime/endTime
-  expect(doublesScheduled.length).toBeGreaterThan(0);
-  expect(doublesScheduled.length).toBeLessThan(8);
+  expect(singlesScheduled.length).toBeGreaterThanOrEqual(15);
+  expect(doublesScheduled.length).toBeGreaterThanOrEqual(6);
+  expect(totalScheduledMatchUps).toBeGreaterThanOrEqual(25);
 });
 
 it('multiple events at multiple venues with different participants will start at venue startTimes ', () => {

@@ -7,6 +7,7 @@ import { scheduleMatchUps } from '../scheduleMatchUps/scheduleMatchUps';
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { addNotice, getTopics } from '../../../../global/globalState';
 import { getMatchUpDailyLimits } from '../getMatchUpDailyLimits';
+import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 import { getSchedulingProfile } from './schedulingProfile';
 import { getGroupedRounds } from './getGroupedRounds';
 
@@ -17,7 +18,6 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_DATES,
 } from '../../../../constants/errorConditionConstants';
-import { jinnScheduler } from '../jinnScheduler/jinnScheduler';
 
 export function scheduleProfileRounds({
   garmanSinglePass = true, // forces all rounds to have greatestAverageMinutes
@@ -98,6 +98,8 @@ export function scheduleProfileRounds({
 
   const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
+  const recoveryTimeDeferredMatchUpIds = {};
+  const dependencyDeferredMatchUpIds = {};
 
   const scheduledMatchUpIds = {};
   const overLimitMatchUpIds = {};
@@ -114,6 +116,8 @@ export function scheduleProfileRounds({
     const venueScheduledRoundDetails = {};
     const matchUpNotBeforeTimes = {};
 
+    recoveryTimeDeferredMatchUpIds[scheduleDate] = {};
+    dependencyDeferredMatchUpIds[scheduleDate] = {};
     scheduleTimesRemaining[scheduleDate] = {};
     skippedScheduleTimes[scheduleDate] = {};
     scheduledMatchUpIds[scheduleDate] = [];
@@ -128,10 +132,11 @@ export function scheduleProfileRounds({
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
       const {
-        orderedMatchUpIds,
-        recoveryMinutesMap,
         scheduledRoundsDetails,
         greatestAverageMinutes,
+        recoveryMinutesMap,
+        orderedMatchUpIds,
+        minutesMap,
       } = getScheduledRoundsDetails({
         tournamentRecords,
         containedStructureIds,
@@ -154,6 +159,7 @@ export function scheduleProfileRounds({
         scheduledRoundsDetails,
         recoveryMinutesMap,
         groupedRounds,
+        minutesMap,
       };
     }
 
@@ -220,11 +226,21 @@ export function scheduleProfileRounds({
         const roundOverLimitMatchUpIds = result?.overLimitMatchUpIds || [];
         overLimitMatchUpIds[scheduleDate].push(...roundOverLimitMatchUpIds);
         const conflicts = result?.requestConflicts || [];
-        if (conflicts.length)
+        if (conflicts.length) {
           requestConflicts[scheduleDate].push({
             date: scheduleDate,
             conflicts,
           });
+        }
+
+        if (result.recoveryTimeDeferred) {
+          recoveryTimeDeferredMatchUpIds[scheduleDate] =
+            result.recoveryTimeDeferred;
+        }
+        if (result.dependencyDeferred) {
+          dependencyDeferredMatchUpIds[scheduleDate] =
+            result.dependencyDeferred;
+        }
       }
     }
   }
@@ -270,5 +286,7 @@ export function scheduleProfileRounds({
     requestConflicts,
     skippedScheduleTimes,
     scheduleTimesRemaining,
+    dependencyDeferredMatchUpIds,
+    recoveryTimeDeferredMatchUpIds,
   };
 }
