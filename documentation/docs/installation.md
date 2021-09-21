@@ -8,7 +8,7 @@ yarn install tods-competition-factory
 
 ## Test
 
-The **Competition Factory** is built following a Test Driven Development process. There are more than 250 test suites and more than 800 individual tests that run before every release.
+The **Competition Factory** is built following a Test Driven Development process. There are ~300 test suites and more than 825 individual tests that run before every release.
 
 These tests are good references for how to use the APIs provided by the `drawEngine`, `tournamentEngine`, `competitionEngine` and `mocksEngine`.
 
