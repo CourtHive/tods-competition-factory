@@ -119,6 +119,8 @@ export function jinnScheduler({
   const scheduleTimesRemaining = {};
   const skippedScheduleTimes = {};
 
+  const recoveryTimeDeferredMatchUpIds = {};
+  const dependencyDeferredMatchUpIds = {};
   const scheduleDateRequestConflicts = {};
   const scheduledMatchUpIds = {};
   const overLimitMatchUpIds = {};
@@ -133,8 +135,11 @@ export function jinnScheduler({
     const venueScheduledRoundDetails = {};
     const matchUpScheduleTimes = {};
 
+    recoveryTimeDeferredMatchUpIds[scheduleDate] = {};
+    dependencyDeferredMatchUpIds[scheduleDate] = {};
     scheduleTimesRemaining[scheduleDate] = {};
-    scheduledMatchUpIds[scheduleDate] = [];
+    skippedScheduleTimes[scheduleDate] = {};
+    scheduledMatchUpIds[scheduleDate] = []; // will not be in scheduled order
     overLimitMatchUpIds[scheduleDate] = [];
     noTimeMatchUpIds[scheduleDate] = [];
     requestConflicts[scheduleDate] = [];
@@ -161,11 +166,10 @@ export function jinnScheduler({
     for (const venue of venues) {
       const { rounds = [], venueId } = venue;
       const {
-        orderedMatchUpIds,
-        averageMinutesMap,
-        recoveryMinutesMap,
         scheduledRoundsDetails,
         greatestAverageMinutes,
+        orderedMatchUpIds,
+        minutesMap,
       } = getScheduledRoundsDetails({
         tournamentRecords,
         containedStructureIds,
@@ -211,8 +215,11 @@ export function jinnScheduler({
         const scheduleTime = matchUp.schedule?.scheduledTime;
         if (scheduleTime) {
           matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
-          const recoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
-          const averageMatchUpMinutes = averageMinutesMap?.[matchUp.matchUpId];
+          const recoveryMinutes =
+            minutesMap?.[matchUp.matchUpId]?.recoveryMinutes;
+          const averageMatchUpMinutes =
+            minutesMap?.[matchUp.matchUpId]?.averageMinutes;
+
           updateTimeAfterRecovery({
             individualParticipantProfiles,
             matchUpPotentialParticipantIds,
@@ -300,17 +307,16 @@ export function jinnScheduler({
         scheduledRoundsDetails,
         participantIdsAtLimit,
         matchUpsToSchedule,
-        recoveryMinutesMap,
         scheduleTimes,
         groupedRounds,
+        minutesMap,
         matchUpMap,
       };
 
       overLimitMatchUpIds[scheduleDate] = overLimitMatchUpIds;
     }
 
-    // next generation scheduler // is single pass
-    const failSafe = 1;
+    const failSafe = 100;
     let schedulingComplete;
     let schedulingIterations = 0;
 
@@ -324,25 +330,38 @@ export function jinnScheduler({
           details.courtsCount &&
           details.scheduleTimes?.length &&
           details.matchUpsToSchedule?.length &&
-          scheduledThisPass < details.courtsCount
+          scheduledThisPass <= details.courtsCount
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
           const { scheduleTime } = details.scheduleTimes.shift();
           const scheduledMatchUp = details.matchUpsToSchedule.find(
             (matchUp) => {
-              const { dependenciesScheduled } = checkDependenciesScheduled({
-                matchUps,
-                matchUpScheduleTimes,
-                matchUpDependencies,
-                allDateMatchUpIds,
-                matchUp,
-              });
-              if (!dependenciesScheduled) return false;
+              const { matchUpId } = matchUp;
+              const { dependenciesScheduled, remainingDependencies } =
+                checkDependenciesScheduled({
+                  matchUpScheduleTimes,
+                  matchUpDependencies,
+                  allDateMatchUpIds,
+                  matchUps,
+                  matchUp,
+                });
+              if (!dependenciesScheduled) {
+                if (!dependencyDeferredMatchUpIds[scheduleDate][matchUpId])
+                  dependencyDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+                dependencyDeferredMatchUpIds[scheduleDate][matchUpId].push({
+                  scheduleTime,
+                  remainingDependencies,
+                });
+                return false;
+              }
 
               const recoveryMinutes =
-                details.recoveryMinutesMap?.[matchUp.matchUpId];
+                details.minutesMap?.[matchUp.matchUpId]?.recoveryMinutes;
               const averageMatchUpMinutes =
-                details.averageMinutesMap?.[matchUp.matchUpId];
+                details.minutesMap?.[matchUp.matchUpId]?.averageMinutes;
+              // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
+              // CHECK: if the matchUpType has changed for ALL PARTICIPANTS from SINGLE/DOUBLES use typeChangeRecoveryMinutes
+
               const { enoughTime } = checkRecoveryTime({
                 individualParticipantProfiles,
                 matchUpPotentialParticipantIds,
@@ -355,7 +374,14 @@ export function jinnScheduler({
                 scheduleDate,
                 matchUp,
               });
-              if (!enoughTime) return false;
+              if (!enoughTime) {
+                if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
+                  recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
+                recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId].push({
+                  scheduleTime,
+                });
+                return false;
+              }
 
               const { conflicts } = checkRequestConflicts({
                 potentials: checkPotentialRequestConflicts,
@@ -384,7 +410,9 @@ export function jinnScheduler({
           );
 
           if (!scheduledMatchUp) {
-            skippedScheduleTimes[scheduleDate].push(scheduleTime);
+            if (!skippedScheduleTimes[scheduleDate][venueId])
+              skippedScheduleTimes[scheduleDate][venueId] = [];
+            skippedScheduleTimes[scheduleDate][venueId].push(scheduleTime);
           } else {
             scheduledThisPass += 1;
           }
@@ -404,6 +432,9 @@ export function jinnScheduler({
         ) || schedulingIterations === failSafe;
     }
 
+    // assign scheduledTime and venue to each matchUp
+    // because this is done in an optimized fashion from hash of assignments
+    // scheduledMatchUpIds[scheduleDate] will not be in the order that scheduleTimes were assigned
     for (const { venueId } of venues) {
       const matchUpMap = venueScheduledRoundDetails[venueId].matchUpMap;
 
@@ -497,14 +528,15 @@ export function jinnScheduler({
     ...SUCCESS,
     schedulingProfileModifications,
     schedulingProfileIssues,
+    scheduleTimesRemaining,
+    skippedScheduleTimes,
 
-    scheduledDates,
-    noTimeMatchUpIds,
+    dependencyDeferredMatchUpIds,
+    recoveryTimeDeferredMatchUpIds,
     scheduledMatchUpIds,
     overLimitMatchUpIds,
-
+    noTimeMatchUpIds,
     requestConflicts,
-    skippedScheduleTimes,
-    scheduleTimesRemaining,
+    scheduledDates,
   };
 }

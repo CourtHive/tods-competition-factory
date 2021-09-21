@@ -42,6 +42,7 @@ export function checkRecoveryTime({
           }),
         0
       );
+
       const dateTimeAfterRecovery = timeToDate(profile.timeAfterRecovery);
       const comparisonDateTime = potentialRecoveryDateTime
         ? Math.max(potentialRecoveryDateTime, dateTimeAfterRecovery)

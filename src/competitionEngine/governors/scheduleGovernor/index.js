@@ -44,6 +44,9 @@ import {
   assignMatchUpCourt,
 } from './scheduleMatchUps/addScheduleItems';
 
+// experimental
+import { jinnScheduler } from './jinnScheduler/jinnScheduler';
+
 const scheduleGovernor = {
   scheduleMatchUps,
   scheduleProfileRounds,
@@ -51,6 +54,8 @@ const scheduleGovernor = {
   bulkRescheduleMatchUps,
   getScheduledRoundsDetails,
   getMatchUpDependencies,
+
+  jinnScheduler,
 
   matchUpScheduleChange,
   calculateScheduleTimes,
