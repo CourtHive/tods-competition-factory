@@ -25,8 +25,8 @@ export function scheduleProfileRounds({
   tournamentRecords,
   scheduleDates = [],
   periodLength,
+  jinn = true,
   dryRun,
-  jinn,
 }) {
   if (!tournamentRecords) return { error: MISSING_TOURNAMENT_RECORDS };
   if (!Array.isArray(scheduleDates)) return { error: INVALID_VALUES };
