@@ -9,10 +9,12 @@ export function checkDependenciesScheduled({
     matchUpDependencies?.[matchUp.matchUpId]?.matchUpIds || []
   ).filter((matchUpId) => allDateMatchUpIds.includes(matchUpId));
 
-  // when true all the matchUps on which this matchUp is dependent have already been scheduled
-  const dependenciesScheduled = matchUpIdDependencies.every((matchUpId) => {
-    return matchUpScheduleTimes[matchUpId];
-  });
+  const remainingDependencies = matchUpIdDependencies.filter(
+    (matchUpId) => !matchUpScheduleTimes[matchUpId]
+  );
 
-  return { dependenciesScheduled };
+  // when true all the matchUps on which this matchUp is dependent have already been scheduled
+  const dependenciesScheduled = !remainingDependencies?.length;
+
+  return { dependenciesScheduled, remainingDependencies };
 }
