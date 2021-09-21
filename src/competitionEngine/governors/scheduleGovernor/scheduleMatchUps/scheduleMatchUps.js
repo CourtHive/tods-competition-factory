@@ -269,17 +269,11 @@ export function scheduleMatchUps({
       });
       if (!dependenciesScheduled) return false;
 
-      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
       const { enoughTime } = checkRecoveryTime({
         individualParticipantProfiles,
-        matchUpPotentialParticipantIds,
         matchUpNotBeforeTimes,
         matchUpDependencies,
-
-        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
-        averageMatchUpMinutes,
         scheduleTime,
-        scheduleDate,
         matchUp,
       });
       if (!enoughTime) return false;
@@ -295,6 +289,20 @@ export function scheduleMatchUps({
       });
 
       if (conflicts?.length) return false;
+
+      const mappedRecoveryMinutes = recoveryMinutesMap?.[matchUp.matchUpId];
+
+      updateTimeAfterRecovery({
+        matchUpPotentialParticipantIds,
+        individualParticipantProfiles,
+        matchUpNotBeforeTimes,
+        averageMatchUpMinutes,
+        matchUpDependencies,
+        recoveryMinutes: mappedRecoveryMinutes || recoveryMinutes,
+        scheduleDate,
+        scheduleTime,
+        matchUp,
+      });
 
       matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
       return true;

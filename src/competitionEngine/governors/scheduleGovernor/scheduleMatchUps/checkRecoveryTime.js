@@ -1,16 +1,10 @@
-import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
+import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
 
 export function checkRecoveryTime({
-  matchUpPotentialParticipantIds,
   individualParticipantProfiles,
   matchUpNotBeforeTimes,
   matchUpDependencies,
-
-  averageMatchUpMinutes,
-  recoveryMinutes,
-  scheduleDate,
   scheduleTime,
   matchUp,
 }) {
@@ -69,21 +63,6 @@ export function checkRecoveryTime({
 
   const enoughTime =
     sufficientTimeForIndiiduals && sufficientTimeBetweenMatchUps;
-
-  if (enoughTime) {
-    updateTimeAfterRecovery({
-      individualParticipantProfiles,
-      matchUpPotentialParticipantIds,
-      matchUpNotBeforeTimes,
-      matchUpDependencies,
-
-      averageMatchUpMinutes,
-      recoveryMinutes,
-      scheduleDate,
-      scheduleTime,
-      matchUp,
-    });
-  }
 
   return { enoughTime };
 }

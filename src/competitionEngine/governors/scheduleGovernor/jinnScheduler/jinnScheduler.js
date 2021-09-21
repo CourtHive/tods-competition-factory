@@ -285,9 +285,9 @@ export function jinnScheduler({
 
             // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
             processNextMatchUps({
-              matchUp,
-              matchUpNotBeforeTimes,
               matchUpPotentialParticipantIds,
+              matchUpNotBeforeTimes,
+              matchUp,
             });
 
             return aggregator;
@@ -372,6 +372,7 @@ export function jinnScheduler({
                 scheduleDate,
                 matchUp,
               });
+
               if (!enoughTime) {
                 if (!recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId])
                   recoveryTimeDeferredMatchUpIds[scheduleDate][matchUpId] = [];
@@ -397,6 +398,18 @@ export function jinnScheduler({
                 scheduleDateRequestConflicts[scheduleDate].push(...conflicts);
                 return false;
               }
+
+              updateTimeAfterRecovery({
+                matchUpPotentialParticipantIds,
+                individualParticipantProfiles,
+                matchUpNotBeforeTimes,
+                averageMatchUpMinutes,
+                matchUpDependencies,
+                recoveryMinutes,
+                scheduleDate,
+                scheduleTime,
+                matchUp,
+              });
 
               matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
               return true;
