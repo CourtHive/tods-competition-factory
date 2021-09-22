@@ -203,11 +203,12 @@ export function jinnScheduler({
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
       const { scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
-        tournamentRecords,
-        scheduleDate: extractDate(scheduleDate),
         averageMatchUpMinutes: groupedRounds[0].averageMinutes,
+        scheduleDate: extractDate(scheduleDate),
         venueIds: [venue.venueId],
+        tournamentRecords,
         periodLength,
+        matchUps,
       });
 
       // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
