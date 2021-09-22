@@ -135,10 +135,18 @@ it('properly schedules 2nd round of 128 single elimination draw with 30 courts',
   expect(result.scheduledDates).toEqual([startDate]);
 
   // prettier-ignore
-  expect(result.skippedScheduleTimes[startDate][venueId]).toEqual([
-    '11:00', '11:00', '11:30', '11:30', '11:30', '11:30', '11:30', '12:00',
-    '12:00', '12:00', '12:00', '12:00', '12:30', '12:30', '12:30', '12:30',
-    '12:30',
+  expect(result.skippedScheduleTimes[startDate][venueId].map(({scheduleTime}) => scheduleTime)).toEqual([
+    '12:30', '12:30', '12:30', '12:30', '12:30',
+  ]);
+
+  // prettier-ignore
+  expect(
+    result.scheduleTimesRemaining[startDate][venueId].filter(
+      ({ attempts }) => attempts
+    ).map(({scheduleTime}) => scheduleTime)
+  ).toEqual([
+    // these times were previously in skippedScheduleTimes
+    '11:00', '11:00', '11:30', '11:30', '11:30', '11:30', '11:30', '12:00', '12:00', '12:00', '12:00', '12:00'
   ]);
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();

@@ -16,7 +16,7 @@ export function findExtension({ element, name }) {
     (extension) => extension?.name === name
   );
 
-  const message = !extension && NOT_FOUND;
+  const message = !extension ? NOT_FOUND : undefined;
 
   return { extension, message };
 }

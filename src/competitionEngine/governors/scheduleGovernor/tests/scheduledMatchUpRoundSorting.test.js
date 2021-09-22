@@ -1,3 +1,4 @@
+import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import mocksEngine from '../../../../mocksEngine';
 import competitionEngine from '../../../sync';
@@ -5,20 +6,20 @@ import competitionEngine from '../../../sync';
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
 
 test.each([
-  [16, 8, 2, [12]],
-  [16, 16, 3, [18]],
-  [16, 32, 4, [26]],
+  [16, 8, 8, 18],
+  [16, 16, 8, 24],
+  [16, 32, 8, 36],
 ])(
   'sorts scheduled matchUps according to schedulingProfile',
-  async (
-    drawSize1,
-    drawSize2,
-    courtsCount
-    // scheduledRange
-  ) => {
+  async (drawSize1, drawSize2, courtsCount, scheduledMatchUps) => {
     const drawProfiles = [
-      { drawSize: drawSize1, drawName: 'Draw 1' },
-      { drawSize: drawSize2, drawName: 'Draw 2' },
+      { drawId: 'first', drawSize: drawSize1, drawName: 'Draw 1' },
+      {
+        drawId: 'second',
+        drawSize: drawSize2,
+        drawName: 'Draw 2',
+        uniqueParticipants: true,
+      },
     ];
     const venueProfiles = [
       {
@@ -32,23 +33,20 @@ test.each([
     const startDate = '2022-01-01';
     const endDate = '2022-01-07';
     let result = mocksEngine.generateTournamentRecord({
-      drawProfiles,
+      policyDefinitions: POLICY_SCHEDULING_USTA,
       venueProfiles,
+      drawProfiles,
       startDate,
       endDate,
     });
 
     const {
-      tournamentRecord,
       drawIds,
+      tournamentRecord,
       venueIds: [venueId],
     } = result;
-    competitionEngine.setState(tournamentRecord);
 
-    result = competitionEngine.attachPolicies({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
-    });
-    expect(result.success).toEqual(true);
+    competitionEngine.setState(tournamentRecord);
 
     let { matchUpDailyLimits } = tournamentEngine.getMatchUpDailyLimits();
     expect(matchUpDailyLimits).not.toBeUndefined();
@@ -96,29 +94,33 @@ test.each([
 
     expect(result.success).toEqual(true);
     expect(result.scheduledDates).toEqual([startDate]);
-    /*
-    console.log(result.scheduledMatchUpIds[startDate].length);
-    expect(scheduledRange.includes(result.scheduledMatchUpIds[startDate].length)).toEqual(
-      true
+    expect(result.scheduledMatchUpIds[startDate].length).toEqual(
+      scheduledMatchUps
     );
-    */
 
     const matchUpFilters = { scheduledDate: startDate };
     result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
 
-    // this is a list of scheduled matchUps which has been sorted according to the schedulingProfile
-    // the difference here is that matchUps were first retrieved from each drawDefinition, whereas
-    // scheduledTimeOrder is an ordered array produced as scheduledTimes are assigned
-    /*
-    const sortedDateMatchUps = result.dateMatchUps.map(
-      ({ drawId, roundNumber }) => [drawId, roundNumber]
+    const drawsRounds = result.dateMatchUps.reduce(
+      (drawsRounds, { drawId, roundNumber }) => {
+        const drawRound = [drawId, roundNumber].join('|');
+        return drawsRounds.includes(drawRound)
+          ? drawsRounds
+          : drawsRounds.concat(drawRound);
+      },
+      []
     );
-    console.log(sortedDateMatchUps.length);
-    */
-    // expect(scheduledRange.includes(sortedDateMatchUps.length)).toEqual(true);
-    // TODO: 3rd test case is not properly sorted
-    // TODO: number of scheduled matches in 3rd test case occasionally varies, presumably because of player conflicts
+    expect(drawsRounds).toEqual(['first|1', 'second|1', 'first|2', 'second|2']);
+
+    const scheduleMap = result.dateMatchUps.map(({ schedule }) =>
+      extractTime(schedule.scheduledTime)
+    );
+    scheduleMap.forEach((scheduledTime, i) => {
+      expect(i && timeStringMinutes(scheduledTime)).toBeGreaterThanOrEqual(
+        i && timeStringMinutes(scheduleMap[i - 1])
+      );
+    });
   }
 );

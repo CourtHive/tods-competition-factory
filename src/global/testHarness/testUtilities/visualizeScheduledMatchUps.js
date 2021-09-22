@@ -59,12 +59,14 @@ export function visualizeScheduledMatchUps({
         pushGlobalLog(
           {
             matchUpId,
-            scheduledTime,
-            scheduledDate: schedule.scheduledDate,
+            time: scheduledTime,
+            date: schedule.scheduledDate,
+            venue: schedule.venueId,
             keyColors: {
-              scheduledTime: 'brightcyan',
-              scheduledDate: 'brightcyan',
+              time: 'brightcyan',
+              date: 'brightcyan',
               matchUpId: 'yellow',
+              venue: 'magenta',
             },
           },
           true
