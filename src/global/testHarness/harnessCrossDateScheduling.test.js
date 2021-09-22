@@ -25,17 +25,26 @@ it('can auto schedule across multiple dates', () => {
   const { issuesCount } = competitionEngine.getSchedulingProfileIssues();
   expect(issuesCount).toEqual(0);
 
-  const jinn = true;
-  let result = competitionEngine.scheduleProfileRounds({ jinn });
+  let result = competitionEngine.scheduleProfileRounds();
 
+  const startDate = '2021-09-10';
+  const venueId = 'ED4DF4E1-4074-4297-952E-56210FA162FD';
   // prettier-ignore
-  expect(result.skippedScheduleTimes['2021-09-10']).toEqual({
-    'ED4DF4E1-4074-4297-952E-56210FA162FD': [
-      '10:00', '10:00', '10:00', '10:00', '11:00', '11:00', '11:00',
-      '11:30', '11:30', '11:30', '12:30', '13:00', '13:00', '13:00',
-      '13:00', '13:30', '13:30', '13:30'
-    ],
-  });
+  expect(result.skippedScheduleTimes[startDate][venueId].map(({scheduleTime}) => scheduleTime)).toEqual(
+    [
+      '12:30', '13:00', '13:00', '13:00', '13:00', '13:30', '13:30', '13:30'
+    ]
+  );
+  // prettier-ignore
+  expect(
+    result.scheduleTimesRemaining[startDate][venueId].filter(
+      ({ attempts }) => attempts
+    ).map(({scheduleTime}) => scheduleTime)
+  ).toEqual([
+    // these times were previously in skippedScheduleTimes
+    '10:00', '10:00', '10:00', '10:00', '11:00', '11:00', '11:00', '11:30', '11:30', '11:30',
+  ]);
+
   const scheduledDates = result.scheduledDates.map(extractDate);
   const scheduledIdsCount = scheduledDates
     .map((scheduledDate) => result.scheduledMatchUpIds[scheduledDate].length)
