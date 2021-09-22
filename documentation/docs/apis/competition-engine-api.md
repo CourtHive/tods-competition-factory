@@ -699,6 +699,20 @@ const {
 
 ---
 
+## generateBookings
+
+This methods is used internally for creating a "virtual" view of court availability.
+
+```js
+const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
+  scheduleDate, // optional - only consider matchUps scheduled on scheduleDate
+  venueIds, // optional - only consider matchUps at specific venue(s)
+  matchUps,
+});
+```
+
+---
+
 ## getVenuesAndCourts
 
 Returns an aggregate view of venues and courts across all tournamentRecords loaded into `competitionEngine`.

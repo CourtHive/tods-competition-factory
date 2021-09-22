@@ -203,7 +203,7 @@ export function jinnScheduler({
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
       const { scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
-        averageMatchUpMinutes: groupedRounds[0].averageMinutes,
+        averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
         scheduleDate: extractDate(scheduleDate),
         venueIds: [venue.venueId],
         tournamentRecords,
@@ -230,7 +230,7 @@ export function jinnScheduler({
           const recoveryMinutes =
             minutesMap?.[matchUp.matchUpId]?.recoveryMinutes;
           const averageMatchUpMinutes = greatestAverageMinutes;
-          // minutesMap?.[matchUp.matchUpId]?.averageMinutes;
+          // minutesMap?.[matchUp.matchUpId]?.averageMinutes; // for the future when variable averageMinutes supported
 
           updateTimeAfterRecovery({
             individualParticipantProfiles,

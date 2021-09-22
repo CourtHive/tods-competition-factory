@@ -10,11 +10,13 @@ import { calculateScheduleTimes } from './scheduleMatchUps/calculateScheduleTime
 import { scheduleProfileRounds } from './schedulingProfile/scheduleProfileRounds';
 import { removeEventMatchUpFormatTiming } from './removeEventMatchUpFormatTiming';
 import { toggleParticipantCheckInState } from './toggleParticipantCheckInState';
+import { generateVirtualCourts } from './jinnScheduler/generateVirtualCourts';
 import { removeMatchUpCourtAssignment } from './removeMatchUpCourtAssignment';
 import { getMatchUpDailyLimitsUpdate } from './getMatchUpDailyLimitsUpdate';
 import { bulkUpdateCourtAssignments } from './bulkUpdateCourtAssignments';
 import { scheduleMatchUps } from './scheduleMatchUps/scheduleMatchUps';
 import { reorderUpcomingMatchUps } from './reorderUpcomingMatchUps';
+import { generateBookings } from './jinnScheduler/generateBookings';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { bulkRescheduleMatchUps } from './bulkRescheduleMatchUps';
 import { setMatchUpDailyLimits } from './setMatchUpDailyLimits';
@@ -51,6 +53,8 @@ const scheduleGovernor = {
   bulkRescheduleMatchUps,
   getScheduledRoundsDetails,
   getMatchUpDependencies,
+  generateVirtualCourts,
+  generateBookings,
 
   matchUpScheduleChange,
   calculateScheduleTimes,

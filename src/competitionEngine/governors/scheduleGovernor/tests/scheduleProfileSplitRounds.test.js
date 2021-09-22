@@ -203,3 +203,101 @@ it('Can split rounds across multiple venues', () => {
     result.schedulerResult.scheduleTimesRemaining[startDate].second.length
   ).toEqual(7);
 });
+
+it('Can split rounds with multiple BYEs', () => {
+  const startDate = '2022-01-01';
+  const endDate = '2022-01-07';
+  const firstVenueId = 'first';
+  const secondVenueId = 'second';
+  const venueProfiles = [
+    {
+      venueId: firstVenueId,
+      venueName: 'venue 1',
+      startTime: '08:00',
+      endTime: '20:00',
+      courtsCount: 4,
+    },
+    {
+      venueId: secondVenueId,
+      venueName: 'venue 2',
+      startTime: '08:00',
+      endTime: '20:00',
+      courtsCount: 2,
+    },
+  ];
+
+  const drawProfiles = [
+    {
+      drawName: 'U16 Boys Singles',
+      participantsCount: 18,
+      idPrefix: 'M16',
+      drawId: 'idM16',
+      drawSize: 32,
+    },
+  ];
+  const schedulingProfile = [
+    {
+      scheduleDate: startDate,
+      venues: [
+        {
+          venueId: firstVenueId,
+          rounds: [
+            {
+              drawId: 'idM16',
+              winnerFinishingPositionRange: '1-16',
+              roundSegment: { segmentNumber: 1, segmentsCount: 2 },
+            },
+          ],
+        },
+        {
+          venueId: secondVenueId,
+          rounds: [
+            {
+              drawId: 'idM16',
+              winnerFinishingPositionRange: '1-16',
+              roundSegment: { segmentNumber: 2, segmentsCount: 2 },
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  let result = mocksEngine.generateTournamentRecord({
+    policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+    endDate,
+  });
+
+  tournamentEngine.setState(result.tournamentRecord);
+
+  const { extension } = tournamentEngine.findTournamentExtension({
+    name: APPLIED_POLICIES,
+  });
+  expect(extension.name).toEqual(APPLIED_POLICIES);
+
+  const { schedulingProfile: attachedSchedulingProfile } =
+    tournamentEngine.getSchedulingProfile();
+
+  expect(attachedSchedulingProfile[0].venues[0].rounds[0].roundNumber).toEqual(
+    1
+  );
+  expect(attachedSchedulingProfile[0].venues[1].rounds[0].roundNumber).toEqual(
+    1
+  );
+  expect(
+    attachedSchedulingProfile[0].venues[0].rounds[0].roundSegment.segmentNumber
+  ).toEqual(1);
+  expect(
+    attachedSchedulingProfile[0].venues[1].rounds[0].roundSegment.segmentNumber
+  ).toEqual(2);
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const scheduledMatchUps = matchUps.filter(hasSchedule);
+
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+});

@@ -11,7 +11,7 @@ export function findMatchUpFormatTiming({
   tournamentRecords,
 
   defaultAverageMinutes,
-  defaultRecoveryMinutes,
+  defaultRecoveryMinutes = 0,
 
   matchUpFormat,
   categoryName,

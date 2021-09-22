@@ -18,7 +18,7 @@ export function generateSchedulingProfile({
   const scheduledRounds = [];
 
   for (const dateProfile of schedulingProfile) {
-    const { scheduleDate, venues } = dateProfile;
+    const { scheduleDate, venues = [] } = dateProfile;
 
     for (const venue of venues) {
       const { rounds, venueId } = venue;
