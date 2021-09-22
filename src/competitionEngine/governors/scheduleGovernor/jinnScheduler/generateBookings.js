@@ -5,6 +5,10 @@ import {
   addMinutesToTimeString,
   extractTime,
 } from '../../../../utilities/dateTime';
+import {
+  MISSING_MATCHUPS,
+  MISSING_TOURNAMENT_RECORDS,
+} from '../../../../constants/errorConditionConstants';
 
 /**
  * generates bookings objects which may be used for generating "virtual" views of court availability
@@ -25,6 +29,10 @@ export function generateBookings({
   scheduleDate,
   matchUps,
 }) {
+  if (typeof tournamentRecords !== 'object')
+    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Array.isArray(matchUps)) return { error: MISSING_MATCHUPS };
+
   // get a mapping of eventIds to category details
   const eventDetails = Object.assign(
     {},
@@ -49,7 +57,7 @@ export function generateBookings({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  const relevantMatchUps = matchUps.filter(
+  const relevantMatchUps = matchUps?.filter(
     (matchUp) =>
       hasSchedule(matchUp) &&
       (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) &&
