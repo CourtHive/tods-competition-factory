@@ -5,6 +5,8 @@ import { mocksEngine, competitionEngine } from '../../../..';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
+const showGlobalLog = false;
+
 it('can create virtual courts with overlapping bookings', () => {
   const drawId = 'drawId';
   const venueId = 'venueId';
@@ -42,7 +44,7 @@ it('can create virtual courts with overlapping bookings', () => {
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
 
-  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
+  visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
   const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
     scheduleDate: startDate,
@@ -59,13 +61,12 @@ it('can create virtual courts with overlapping bookings', () => {
     venueIds: [venueId],
   });
 
-  const { virtualCourts } = competitionEngine.generateVirtualCourts({
+  // const { virtualCourts } = competitionEngine.generateVirtualCourts({
+  competitionEngine.generateVirtualCourts({
     scheduleDate: startDate,
-    startTime,
-    endTime,
     bookings,
     courts,
   });
 
-  console.log({ virtualCourts });
+  // console.log(result);
 });
