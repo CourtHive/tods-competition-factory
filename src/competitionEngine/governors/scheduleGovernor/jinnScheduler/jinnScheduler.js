@@ -24,6 +24,7 @@ import {
   extractDate,
   isValidDateString,
   sameDay,
+  timeStringMinutes,
   zeroPad,
 } from '../../../../utilities/dateTime';
 
@@ -306,11 +307,10 @@ export function jinnScheduler({
       };
     }
 
-    // console.log(Object.keys(matchUpPotentialParticipantIds));
-
-    const failSafe = 100;
+    const failSafe = 10;
     let schedulingComplete;
     let schedulingIterations = 0;
+    let maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
 
     while (!schedulingComplete) {
       // for each venue schedule a round
@@ -325,7 +325,7 @@ export function jinnScheduler({
           scheduledThisPass <= details.courtsCount
         ) {
           // attempt to schedule a round or at least venue.courts.length matchUps
-          const { scheduleTime } = details.scheduleTimes.shift();
+          const { scheduleTime, attempts = 0 } = details.scheduleTimes.shift();
           const scheduledMatchUp = details.matchUpsToSchedule.find(
             (matchUp) => {
               const { matchUpId, matchUpType } = matchUp;
@@ -417,7 +417,8 @@ export function jinnScheduler({
                 matchUp,
               });
 
-              matchUpScheduleTimes[matchUp.matchUpId] = scheduleTime;
+              matchUpScheduleTimes[matchUpId] = scheduleTime;
+
               return true;
             }
           );
@@ -429,10 +430,23 @@ export function jinnScheduler({
           if (!scheduledMatchUp) {
             if (!skippedScheduleTimes[scheduleDate][venueId])
               skippedScheduleTimes[scheduleDate][venueId] = [];
-            skippedScheduleTimes[scheduleDate][venueId].push(scheduleTime);
+            skippedScheduleTimes[scheduleDate][venueId].push({
+              scheduleTime,
+              attempts: attempts + 1,
+            });
           } else {
             scheduledThisPass += 1;
           }
+        }
+
+        if (details.matchUpsToSchedule?.length) {
+          skippedScheduleTimes[scheduleDate][venueId] = skippedScheduleTimes[
+            scheduleDate
+          ][venueId]?.filter((unused) => {
+            const tryAgain = unused.attempts < maxScheduleTimeAttempts;
+            if (tryAgain) details.scheduleTimes.push(unused);
+            return !tryAgain;
+          });
         }
 
         if (
@@ -507,9 +521,12 @@ export function jinnScheduler({
       noTimeMatchUpIds[scheduleDate] = venueScheduledRoundDetails[
         venueId
       ].matchUpsToSchedule.map(({ matchUpId }) => matchUpId);
+
       scheduleTimesRemaining[scheduleDate][venueId] =
-        venueScheduledRoundDetails[venueId].scheduleTimes.map(
-          ({ scheduleTime }) => scheduleTime
+        venueScheduledRoundDetails[venueId].scheduleTimes.sort(
+          (a, b) =>
+            timeStringMinutes(a.scheduleTime) -
+            timeStringMinutes(b.scheduleTime)
         );
     }
   }
