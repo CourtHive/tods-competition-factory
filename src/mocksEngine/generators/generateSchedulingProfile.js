@@ -24,7 +24,7 @@ export function generateSchedulingProfile({
       const { rounds, venueId } = venue;
 
       for (const round of rounds) {
-        const { drawId, winnerFinishingPositionRange } = round;
+        const { drawId, winnerFinishingPositionRange, roundSegment } = round;
 
         const targetMatchUps = matchUps.filter((matchUp) => {
           const targetRange =
@@ -64,6 +64,7 @@ export function generateSchedulingProfile({
             drawId,
             structureId,
             roundNumber,
+            roundSegment,
           };
 
           let result = addSchedulingProfileRound({
