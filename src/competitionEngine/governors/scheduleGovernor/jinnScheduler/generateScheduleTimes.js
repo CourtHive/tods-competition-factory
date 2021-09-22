@@ -1,7 +1,7 @@
 import { matchUpFormatTimes } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '../../../../tournamentEngine/governors/scheduleGovernor/matchUpFormatTiming/getScheduleTiming';
-import { competitionScheduleMatchUps } from '../../../getters/matchUpsGetter';
 import { getVenuesAndCourts } from '../../../getters/venuesAndCourtsGetter';
+import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
 import { getScheduleTimes } from '../garman/getScheduleTimes';
 import {
   addMinutesToTimeString,
@@ -27,18 +27,18 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorCondition
  * @returns
  */
 export function generateScheduleTimes({
-  tournamentRecords,
-  remainingScheduleTimes,
-
   calculateStartTimeFromCourts = true,
   defaultRecoveryMinutes = 60,
   averageMatchUpMinutes = 90,
   periodLength = 30,
+  tournamentRecords,
   scheduleDate,
   startTime,
+  venueIds,
+  matchUps,
   endTime,
 
-  venueIds,
+  remainingScheduleTimes,
 }) {
   if (
     typeof tournamentRecords !== 'object' ||
@@ -111,17 +111,11 @@ export function generateScheduleTimes({
 
   // Get an array of all matchUps scheduled for the date
   // some of them may have courts assigned and some may only have venueIds
-  // need to reduce courts available for a given time period by the number of matchUps scheduled at a given venue
-  const matchUpFilters = { scheduledDate: scheduleDate, venueIds };
-  const matchUpsWithSchedule = competitionScheduleMatchUps({
-    tournamentRecords,
-    sortDateMatchUps: false, // unnecessary for extracting bookings; reduce processing overhead;
-    matchUpFilters,
-  });
-
-  const relevantMatchUps = [].concat(
-    ...(matchUpsWithSchedule.dateMatchUps || []),
-    ...(matchUpsWithSchedule.completedMatchUps || [])
+  const relevantMatchUps = matchUps.filter(
+    (matchUp) =>
+      hasSchedule(matchUp) &&
+      venueIds.includes(matchUp.schedule.venueId) &&
+      matchUp.schedule.scheduledDate === scheduleDate
   );
 
   const defaultTiming = {
