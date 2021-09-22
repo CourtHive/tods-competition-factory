@@ -4,6 +4,7 @@ import { getMatchUpFormat } from '../../../../tournamentEngine/getters/getMatchU
 import { findMatchUpFormatTiming } from '../matchUpFormatTiming/findMatchUpFormatTiming';
 import { findEvent } from '../../../../tournamentEngine/getters/eventGetter';
 import { allCompetitionMatchUps } from '../../../getters/matchUpsGetter';
+import { matchUpSort } from '../../../../drawEngine/getters/matchUpSort';
 import { isConvertableInteger } from '../../../../utilities/math';
 import { isPowerOf2 } from '../../../../utilities';
 
@@ -81,7 +82,7 @@ export function getScheduledRoundsDetails({
       matchUps,
       processContext: true,
       ...roundMatchUpFilters,
-    });
+    }).sort(matchUpSort);
 
     // filter by roundSegment
     const { segmentNumber, segmentsCount } = round.roundSegment || {};
