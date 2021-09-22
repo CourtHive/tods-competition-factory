@@ -85,6 +85,7 @@ export function getScheduledRoundsDetails({
 
     // filter by roundSegment
     const { segmentNumber, segmentsCount } = round.roundSegment || {};
+
     if (
       isConvertableInteger(segmentNumber) &&
       isPowerOf2(roundMatchUps?.length) &&
