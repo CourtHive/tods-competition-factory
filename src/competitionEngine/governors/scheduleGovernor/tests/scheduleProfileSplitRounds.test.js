@@ -5,6 +5,8 @@ import mocksEngine from '../../../../mocksEngine';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { APPLIED_POLICIES } from '../../../../constants/extensionConstants';
+import competitionEngine from '../../../sync';
+import { getScheduledRoundsDetails } from '../schedulingProfile/getScheduledRoundsDetails';
 
 const showGlobalLog = false;
 
@@ -283,21 +285,28 @@ it('Can split rounds with multiple BYEs', () => {
   const { schedulingProfile: attachedSchedulingProfile } =
     tournamentEngine.getSchedulingProfile();
 
-  expect(attachedSchedulingProfile[0].venues[0].rounds[0].roundNumber).toEqual(
-    1
-  );
-  expect(attachedSchedulingProfile[0].venues[1].rounds[0].roundNumber).toEqual(
-    1
-  );
-  expect(
-    attachedSchedulingProfile[0].venues[0].rounds[0].roundSegment.segmentNumber
-  ).toEqual(1);
-  expect(
-    attachedSchedulingProfile[0].venues[1].rounds[0].roundSegment.segmentNumber
-  ).toEqual(2);
+  const venues = attachedSchedulingProfile[0].venues;
+  expect(venues[0].rounds[0].roundNumber).toEqual(1);
+  expect(venues[1].rounds[0].roundNumber).toEqual(1);
+  expect(venues[0].rounds[0].roundSegment.segmentNumber).toEqual(1);
+  expect(venues[1].rounds[0].roundSegment.segmentNumber).toEqual(2);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
+  expect(scheduledMatchUps.length).toEqual(2);
+  expect(scheduledMatchUps[0].schedule.venueId).not.toEqual(
+    scheduledMatchUps[1].schedule.venueId
+  );
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
+
+  const { tournamentRecords } = competitionEngine.getState();
+
+  for (const index of [0, 1]) {
+    const { scheduledRoundsDetails } = getScheduledRoundsDetails({
+      tournamentRecords,
+      rounds: venues[index].rounds,
+    });
+    expect(scheduledRoundsDetails[0].matchUpIds.length).toEqual(1);
+  }
 });
