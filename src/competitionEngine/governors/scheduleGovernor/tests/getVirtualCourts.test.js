@@ -8,9 +8,11 @@ import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POL
 it('can create virtual courts with overlapping bookings', () => {
   const drawId = 'drawId';
   const venueId = 'venueId';
+  const startTime = '08:00';
+  const endTime = '20:00';
   const startDate = extractDate(new Date().toISOString());
-  const drawProfiles = [{ drawId, drawSize: 32 }];
-  const venueProfiles = [{ venueId, courtsCount: 31, startTime: '08:00' }];
+  const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
+  const venueProfiles = [{ venueId, courtsCount: 8, startTime, endTime }];
   const schedulingProfile = [
     {
       scheduleDate: startDate,
@@ -36,10 +38,34 @@ it('can create virtual courts with overlapping bookings', () => {
       startDate,
     });
   competitionEngine.setState(tournamentRecord);
-  console.log({ startDate, schedulerResult });
 
   const { matchUps } = competitionEngine.allCompetitionMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog: true });
+
+  const { bookings, relevantMatchUps } = competitionEngine.generateBookings({
+    scheduleDate: startDate,
+    venueIds: [venueId],
+    matchUps,
+  });
+
+  const scheduledMatchUpsCount =
+    schedulerResult.scheduledMatchUpIds[startDate].length;
+  expect(relevantMatchUps.length).toEqual(scheduledMatchUpsCount);
+  expect(bookings.length).toEqual(scheduledMatchUpsCount);
+
+  const { courts } = competitionEngine.getVenuesAndCourts({
+    venueIds: [venueId],
+  });
+
+  const { virtualCourts } = competitionEngine.generateVirtualCourts({
+    scheduleDate: startDate,
+    startTime,
+    endTime,
+    bookings,
+    courts,
+  });
+
+  console.log({ virtualCourts });
 });
