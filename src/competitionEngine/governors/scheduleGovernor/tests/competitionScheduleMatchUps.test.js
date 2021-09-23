@@ -3,6 +3,7 @@ import mocksEngine from '../../../../mocksEngine';
 import competitionEngineSync from '../../../sync';
 
 import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
+import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 
 test.each([competitionEngineSync])(
   'correctly enumerates participantProfiles for { eventType: DOUBLES }',
@@ -43,8 +44,8 @@ test.each([competitionEngineSync])(
   'auto schedules venue if only one venue provided',
   async (competitionEngine) => {
     const drawProfiles = [
-      { drawSize: 16, eventType: DOUBLES },
-      { drawSize: 64, eventType: SINGLES },
+      { idPrefix: 'dbl', drawId: 'dubs', drawSize: 16, eventType: DOUBLES },
+      { idPrefix: 'sgl', drawId: 'sing', drawSize: 64, eventType: SINGLES },
     ];
     const venueProfiles = [{ courtsCount: 3 }];
 
@@ -101,6 +102,10 @@ test.each([competitionEngineSync])(
     result = competitionEngine.competitionScheduleMatchUps({
       matchUpFilters,
     });
+    visualizeScheduledMatchUps({
+      scheduledMatchUps: result.dateMatchUps,
+      showGlobalLog: false,
+    });
 
     const reorderedMatchUpContextIds = result.dateMatchUps
       .slice(3, 6)
@@ -139,6 +144,13 @@ test.each([competitionEngineSync])(
       scheduleDate: startDate,
       matchUpIds,
     });
+    if (result.scheduledMatchUpIds?.[0]?.length) {
+      const { matchUps } = competitionEngine.allCompetitionMatchUps();
+      const scheduledMatchUp = matchUps.find(
+        ({ matchUpId }) => matchUpId === result.scheduledMatchUpIds[0]
+      );
+      console.log({ matchUpIds }, scheduledMatchUp.schedule);
+    }
     expect(result.scheduledMatchUpIds.length).toEqual(0);
   }
 );

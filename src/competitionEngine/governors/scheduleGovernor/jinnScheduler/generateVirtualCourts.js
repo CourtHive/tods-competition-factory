@@ -42,7 +42,7 @@ export function generateVirtualCourts({
   );
 
   const { sameDate } = getCourtDateFilters({ date: scheduleDate });
-  const virtualCourts = courts.map(({ courtId, dateAvailability }, index) => {
+  const inProcessCourts = courts.map(({ courtId, dateAvailability }, index) => {
     const bookingsThisCourt = courtBookings[courtId] || [];
     const availabillity = dateAvailability.find(sameDate) || {};
     const {
@@ -79,7 +79,7 @@ export function generateVirtualCourts({
   );
 
   const getCourtTimeSlots = () =>
-    virtualCourts
+    inProcessCourts
       .map((court) => {
         const courtDate = court.dateAvailability;
         const timeSlots = generateTimeSlots({ courtDate });
@@ -122,14 +122,18 @@ export function generateVirtualCourts({
         endTime,
       };
       assignedBookings.push(booking);
-      const virtualCourt = virtualCourts.find(
+      const virtualCourt = inProcessCourts.find(
         ({ courtId }) => courtId === bestCourt.courtId
       );
       virtualCourt.dateAvailability.bookings.push(booking);
     }
   }
-  console.log(
-    virtualCourts.map(({ dateAvailability }) => dateAvailability.bookings)
+
+  const virtualCourts = inProcessCourts.map(
+    ({ courtId, dateAvailability }) => ({
+      courtId,
+      dateAvailability: [dateAvailability],
+    })
   );
 
   return { virtualCourts };

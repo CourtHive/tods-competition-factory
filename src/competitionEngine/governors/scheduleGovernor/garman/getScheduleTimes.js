@@ -1,4 +1,6 @@
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
+import { generateVirtualCourts } from '../jinnScheduler/generateVirtualCourts';
+import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { getVirtualCourts } from './getVirtualCourts';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';
@@ -38,6 +40,7 @@ export function getScheduleTimes({
   courtsCount,
   bookings,
   courts,
+  genV,
 } = {}) {
   // standardize date as YYYY-MM-DD
   date = extractDate(date);
@@ -65,16 +68,35 @@ export function getScheduleTimes({
     courts = courtGenerator({ startTime, endTime, count: courtsCount, date });
   }
 
-  const { virtualCourts, firstTimeSlotStartTime } = getVirtualCourts({
-    remainingScheduleTimes,
-    averageMatchUpMinutes,
-    periodLength,
-    startTime,
-    endTime,
-    bookings,
-    courts,
-    date,
-  });
+  let firstTimeSlotStartTime, virtualCourts;
+  if (genV) {
+    ({ virtualCourts } = generateVirtualCourts({
+      remainingScheduleTimes,
+      scheduleDate: date,
+      periodLength,
+      bookings,
+      courts,
+    }));
+
+    ({ firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
+      averageMinutes: averageMatchUpMinutes,
+      courts: virtualCourts,
+      startTime,
+      endTime,
+      date,
+    }));
+  } else {
+    ({ virtualCourts, firstTimeSlotStartTime } = getVirtualCourts({
+      remainingScheduleTimes,
+      averageMatchUpMinutes,
+      periodLength,
+      startTime,
+      endTime,
+      bookings,
+      courts,
+      date,
+    }));
+  }
 
   if (calculateStartTimeFromCourts && firstTimeSlotStartTime) {
     startTime = firstTimeSlotStartTime || startTime;

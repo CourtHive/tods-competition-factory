@@ -61,12 +61,12 @@ it('can create virtual courts with overlapping bookings', () => {
     venueIds: [venueId],
   });
 
-  // const { virtualCourts } = competitionEngine.generateVirtualCourts({
-  competitionEngine.generateVirtualCourts({
+  const { virtualCourts } = competitionEngine.generateVirtualCourts({
     scheduleDate: startDate,
+    periodLengh: 30,
     bookings,
     courts,
   });
 
-  // console.log(result);
+  console.log(virtualCourts[0]);
 });
