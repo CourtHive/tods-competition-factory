@@ -103,7 +103,8 @@ export function generateVirtualCourts({
           const endFits = endMinutes <= timeStringMinutes(endTime);
           return (
             endFits &&
-            startDifference + periodLength >= 0 &&
+            best.startDifference !== 0 &&
+            (startDifference === 0 || startDifference + periodLength >= 0) &&
             (best.startDifference === undefined ||
               startDifference < best.startDifference)
           );
@@ -129,6 +130,9 @@ export function generateVirtualCourts({
     }
   }
 
+  console.log(
+    inProcessCourts.map(({ dateAvailability }) => dateAvailability.bookings)
+  );
   const virtualCourts = inProcessCourts.map(
     ({ courtId, dateAvailability }) => ({
       courtId,
