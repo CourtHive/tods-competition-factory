@@ -121,6 +121,7 @@ it.each([
       expect(result.success).toEqual(true);
     }
 
+    competitionEngine.devContext({ virtual: true });
     // Scheduled Profile Rounds ##############################
     let result = competitionEngine.scheduleProfileRounds({
       scheduleDates: [startDate],

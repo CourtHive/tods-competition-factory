@@ -1,6 +1,6 @@
 import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
-import { extractDate } from '../../../../utilities/dateTime';
+import { extractDate, timeStringMinutes } from '../../../../utilities/dateTime';
 import { mocksEngine, competitionEngine } from '../../../..';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
@@ -68,5 +68,24 @@ it('can create virtual courts with overlapping bookings', () => {
     courts,
   });
 
-  console.log(virtualCourts[0]);
+  const hasOverlap = findOverlappingBooking(virtualCourts);
+  expect(hasOverlap).toEqual(true);
 });
+
+function findOverlappingBooking(virtualCourts) {
+  for (const virtualCourt of virtualCourts) {
+    const bookings = virtualCourt.dateAvailability[0].bookings;
+    for (const booking of bookings) {
+      const startMinutes = timeStringMinutes(booking.startTime);
+      const endMinutes = timeStringMinutes(booking.endTime);
+      const overlap = bookings.some(({ startTime }) => {
+        const bookingStartMinutes = timeStringMinutes(startTime);
+        const hasOverlap =
+          bookingStartMinutes > startMinutes &&
+          bookingStartMinutes < endMinutes;
+        return hasOverlap;
+      });
+      if (overlap) return true;
+    }
+  }
+}

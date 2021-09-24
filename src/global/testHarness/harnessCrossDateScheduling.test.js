@@ -64,7 +64,7 @@ it('can auto schedule across multiple dates', () => {
       expect(averagePlusRecovery).toEqual(150);
     } else if (matchUpType === DOUBLES) {
       expect(schedule.recoveryMinutes).toEqual(30);
-      expect(averagePlusRecovery).toEqual(120);
+      expect(averagePlusRecovery).toEqual(90);
     } else {
       expect('a bird in hand').toEqual('two in the bush');
     }
