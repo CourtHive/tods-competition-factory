@@ -208,7 +208,6 @@ it('auto schedules multiple events at multiple venues and tracks participants ac
   // #################################################
   result = competitionEngine.scheduleProfileRounds({
     scheduleDates: [startDate],
-    jinn: true,
   });
   expect(result.success).toEqual(true);
   expect(result.requestConflicts[startDate]).toEqual([]);
