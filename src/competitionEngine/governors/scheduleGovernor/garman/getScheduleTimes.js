@@ -11,6 +11,7 @@ import {
   timeStringMinutes,
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
+import { getDevContext } from '../../../../global/globalState';
 
 /**
  *
@@ -40,7 +41,6 @@ export function getScheduleTimes({
   courtsCount,
   bookings,
   courts,
-  genV,
 } = {}) {
   // standardize date as YYYY-MM-DD
   date = extractDate(date);
@@ -69,34 +69,40 @@ export function getScheduleTimes({
   }
 
   let firstTimeSlotStartTime, virtualCourts;
-  if (genV) {
-    ({ virtualCourts } = generateVirtualCourts({
-      remainingScheduleTimes,
-      scheduleDate: date,
-      periodLength,
-      bookings,
-      courts,
-    }));
+  ({ virtualCourts } = generateVirtualCourts({
+    remainingScheduleTimes,
+    scheduleDate: date,
+    periodLength,
+    bookings,
+    courts,
+  }));
 
-    ({ firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
-      averageMinutes: averageMatchUpMinutes,
-      courts: virtualCourts,
-      startTime,
-      endTime,
-      date,
-    }));
-  } else {
-    ({ virtualCourts, firstTimeSlotStartTime } = getVirtualCourts({
-      remainingScheduleTimes,
-      averageMatchUpMinutes,
-      periodLength,
-      startTime,
-      endTime,
-      bookings,
-      courts,
-      date,
-    }));
-  }
+  ({ firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
+    averageMinutes: averageMatchUpMinutes,
+    courts: virtualCourts,
+    startTime,
+    endTime,
+    date,
+  }));
+
+  const { virtualCourts: vc, firstTimeSlotStartTime: fts } = getVirtualCourts({
+    remainingScheduleTimes,
+    averageMatchUpMinutes,
+    periodLength,
+    startTime,
+    endTime,
+    bookings,
+    courts,
+    date,
+  });
+
+  if (fts !== firstTimeSlotStartTime && getDevContext({ virtual: true }))
+    console.log(
+      { bookings: bookings.length },
+      { fts, firstTimeSlotStartTime },
+      vc.map((c) => c.dateAvailability[0].bookings),
+      virtualCourts.map((c) => c.dateAvailability[0].bookings)
+    );
 
   if (calculateStartTimeFromCourts && firstTimeSlotStartTime) {
     startTime = firstTimeSlotStartTime || startTime;

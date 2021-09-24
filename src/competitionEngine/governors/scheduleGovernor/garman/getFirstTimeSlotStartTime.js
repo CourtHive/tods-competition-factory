@@ -53,5 +53,5 @@ export function getFirstTimeSlotStartTime({
     });
   }
 
-  return firstTimeSlotStartTime;
+  return { firstTimeSlotStartTime };
 }

@@ -1,10 +1,7 @@
+import { minutesDifference, timeToDate } from '../../../../utilities/dateTime';
+import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { getCourtDateFilters } from './courtDateFilters';
 import { generateTimeSlots } from './generateTimeSlots';
-import {
-  extractTime,
-  minutesDifference,
-  timeToDate,
-} from '../../../../utilities/dateTime';
 
 /**
  *
@@ -115,46 +112,14 @@ export function getVirtualCourts({
       });
     });
   });
-  // console.log({ assignedBookings });
 
-  // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes
-  let firstTimeSlotStartTime;
-  if (startTime && endTime) {
-    const dateStartTime = timeToDate(startTime);
-    const dateEndTime = timeToDate(endTime);
-    virtualCourts.every((court) => {
-      if (!Array.isArray(court.dateAvailability)) return false;
-      const dateAvailability = court.dateAvailability.filter(sameDate);
-      return dateAvailability.find((courtDate) => {
-        const timeSlots = generateTimeSlots({ courtDate });
-        return timeSlots.find((timeSlot) => {
-          const timeSlotStartTime = timeToDate(timeSlot.startTime);
-          const timeSlotEndTime = timeToDate(timeSlot.endTime);
-          if (
-            timeSlotStartTime > dateEndTime ||
-            timeSlotStartTime < dateStartTime
-          )
-            return false;
-          if (timeSlotEndTime < dateStartTime) return false;
-          const timeSlotMinutes = minutesDifference(
-            timeSlotStartTime,
-            timeSlotEndTime
-          );
-          const available = timeSlotMinutes >= averageMatchUpMinutes;
-          if (available) {
-            const timeString = extractTime(timeSlotStartTime.toISOString());
-            if (
-              !firstTimeSlotStartTime ||
-              timeString < firstTimeSlotStartTime
-            ) {
-              firstTimeSlotStartTime = timeString;
-            }
-          }
-          return available;
-        });
-      });
-    });
-  }
+  const { firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
+    averageMinutes: averageMatchUpMinutes,
+    startTime,
+    endTime,
+    courts: virtualCourts,
+    date,
+  });
 
   return { virtualCourts, firstTimeSlotStartTime };
 }

@@ -12,6 +12,8 @@ import {
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 
+import { getDevContext } from '../../../../global/globalState';
+
 export function generateVirtualCourts({
   remainingScheduleTimes = [],
   periodLength = 30,
@@ -93,7 +95,7 @@ export function generateVirtualCourts({
     const { startTime, endTime, averageMinutes, recoveryMinutes, matchUpId } =
       unassignedBooking;
     const startMinutes = timeStringMinutes(startTime);
-    const endMinutes = timeStringMinutes(endTime) + recoveryMinutes;
+    const endMinutes = timeStringMinutes(endTime);
     const courtTimeSlots = getCourtTimeSlots();
     const bestCourt = courtTimeSlots.reduce(
       (best, { courtId, timeSlots }) => {
@@ -127,12 +129,20 @@ export function generateVirtualCourts({
         ({ courtId }) => courtId === bestCourt.courtId
       );
       virtualCourt.dateAvailability.bookings.push(booking);
+    } else {
+      console.log({ unassignedBooking });
     }
   }
 
-  console.log(
-    inProcessCourts.map(({ dateAvailability }) => dateAvailability.bookings)
-  );
+  if (getDevContext({ virtual: true })) {
+    const bookingsMap = inProcessCourts.map(
+      ({ dateAvailability }) => dateAvailability.bookings
+    );
+    if (bookingsMap.flat(Infinity).length) {
+      console.log(bookingsMap);
+    }
+  }
+
   const virtualCourts = inProcessCourts.map(
     ({ courtId, dateAvailability }) => ({
       courtId,
