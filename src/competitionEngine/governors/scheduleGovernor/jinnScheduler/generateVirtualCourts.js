@@ -12,8 +12,6 @@ import {
   INVALID_VALUES,
 } from '../../../../constants/errorConditionConstants';
 
-import { getDevContext } from '../../../../global/globalState';
-
 export function generateVirtualCourts({
   remainingScheduleTimes = [],
   periodLength = 30,
@@ -131,15 +129,6 @@ export function generateVirtualCourts({
       virtualCourt.dateAvailability.bookings.push(booking);
     } else {
       console.log({ unassignedBooking });
-    }
-  }
-
-  if (getDevContext({ virtual: true })) {
-    const bookingsMap = inProcessCourts.map(
-      ({ dateAvailability }) => dateAvailability.bookings
-    );
-    if (bookingsMap.flat(Infinity).length) {
-      console.log(bookingsMap);
     }
   }
 

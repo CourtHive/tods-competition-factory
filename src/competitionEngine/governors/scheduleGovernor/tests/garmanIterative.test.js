@@ -1,3 +1,4 @@
+import { visualizeScheduledMatchUps } from '../../../../global/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../../../utilities/dateTime';
 import tournamentEngine from '../../../../tournamentEngine/sync';
 import { hasSchedule } from '../scheduleMatchUps/hasSchedule';
@@ -7,7 +8,8 @@ import competitionEngine from '../../../sync';
 
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats/formatConstants';
 import POLICY_SCHEDULING_USTA from '../../../../fixtures/policies/POLICY_SCHEDULING_USTA';
-import { SINGLES } from '../../../../constants/eventConstants';
+
+const showGlobalLog = false;
 
 it.each([
   {
@@ -27,7 +29,7 @@ it.each([
     iterations: 4,
   },
 ])(
-  'can clear scheduled matchUps',
+  'can schedule iteratively',
   ({
     startTime,
     endTime,
@@ -36,74 +38,72 @@ it.each([
     matchUpFormatB,
     iterations,
   }) => {
+    const startDate = '2022-01-01';
+    const endDate = '2022-01-07';
     const venueProfiles = [
       {
+        venueId: 'venueId',
+        courtsCount,
         startTime,
         endTime,
-        courtsCount,
       },
     ];
 
-    const eventProfiles = [
+    const drawProfiles = [
       {
-        eventExtensions: [],
-        eventAttributes: {},
-        eventName: 'Event Test',
-        eventType: SINGLES,
-        drawProfiles: [
+        drawSize: 4,
+        drawName: 'A',
+        idPrefix: 'A',
+        drawId: 'firstDraw',
+        uniqueParticipants: true,
+        matchUpFormat: matchUpFormatA,
+        drawExtensions: [],
+      },
+      {
+        drawSize: 4,
+        drawName: 'B',
+        idPrefix: 'B',
+        drawId: 'secondDraw',
+        matchUpFormat: matchUpFormatB,
+      },
+    ];
+    const schedulingProfile = [
+      {
+        scheduleDate: startDate,
+        venues: [
           {
-            drawSize: 4,
-            drawName: 'A',
-            uniqueParticipants: true,
-            matchUpFormat: matchUpFormatA,
-            drawExtensions: [],
-          },
-          {
-            drawSize: 4,
-            drawName: 'B',
-            matchUpFormat: matchUpFormatB,
+            venueId: 'venueId',
+            rounds: [
+              { drawId: 'firstDraw', winnerFinishingPositionRange: '1-2' },
+              { drawId: 'secondDraw', winnerFinishingPositionRange: '1-2' },
+            ],
           },
         ],
       },
     ];
-    const startDate = '2022-01-01';
-    const endDate = '2022-01-07';
+
     const {
       drawIds,
       venueIds: [venueId],
       tournamentRecord,
     } = mocksEngine.generateTournamentRecord({
+      policyDefinitions: POLICY_SCHEDULING_USTA,
       tournamentExtensions: [],
       tournamentAttributes: {},
-      eventProfiles,
+      autoSchedule: true,
+      schedulingProfile,
       venueProfiles,
+      drawProfiles,
       startDate,
       endDate,
     });
 
     competitionEngine.setState(tournamentRecord);
-
-    competitionEngine.attachPolicies({
-      policyDefinitions: POLICY_SCHEDULING_USTA,
-    });
-
     const { tournamentId } = tournamentRecord;
 
-    // add first round of each draw to scheduling profile
-    for (const drawId of drawIds) {
-      const {
-        event: { eventId },
-        drawDefinition: {
-          structures: [{ structureId }],
-        },
-      } = tournamentEngine.getEvent({ drawId });
-      const result = competitionEngine.addSchedulingProfileRound({
-        scheduleDate: startDate,
-        venueId,
-        round: { tournamentId, eventId, drawId, structureId, roundNumber: 1 },
-      });
-      expect(result.success).toEqual(true);
-    }
+    let { matchUps } = competitionEngine.allCompetitionMatchUps();
+    let scheduledMatchUps = matchUps.filter(hasSchedule);
+    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
     // add second round of each draw to scheduling profile
     for (const drawId of drawIds) {
@@ -126,12 +126,16 @@ it.each([
     let result = competitionEngine.scheduleProfileRounds({
       scheduleDates: [startDate],
       garmanSinglePass: false,
-      jinn: false,
+      jinn: true,
     });
     expect(result.success).toEqual(true);
     if (result.iterations) expect(result.iterations).toEqual(iterations);
     expect(result.scheduledDates).toEqual([startDate]);
     // #######################################################
+
+    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    scheduledMatchUps = matchUps.filter(hasSchedule);
+    visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
     // get the participantIds for each draw
     const drawEnteredParticipantIds = [];
@@ -149,8 +153,8 @@ it.each([
         .length
     ).toEqual(0);
 
-    let { matchUps } = competitionEngine.allCompetitionMatchUps();
-    let scheduledMatchUps = matchUps.filter(hasSchedule);
+    ({ matchUps } = competitionEngine.allCompetitionMatchUps());
+    scheduledMatchUps = matchUps.filter(hasSchedule);
 
     const roundMap = scheduledMatchUps
       .map(({ roundNumber, roundPosition, drawName, schedule }) => [

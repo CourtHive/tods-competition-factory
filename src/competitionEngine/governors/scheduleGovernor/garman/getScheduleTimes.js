@@ -1,7 +1,6 @@
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
 import { generateVirtualCourts } from '../jinnScheduler/generateVirtualCourts';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
-import { getVirtualCourts } from './getVirtualCourts';
 import { generateRange } from '../../../../utilities/arrays';
 import { courtGenerator } from './courtGenerator';
 import {
@@ -11,7 +10,6 @@ import {
   timeStringMinutes,
   dayMinutesToTimeString,
 } from '../../../../utilities/dateTime';
-import { getDevContext } from '../../../../global/globalState';
 
 /**
  *
@@ -68,41 +66,21 @@ export function getScheduleTimes({
     courts = courtGenerator({ startTime, endTime, count: courtsCount, date });
   }
 
-  let firstTimeSlotStartTime, virtualCourts;
-  ({ virtualCourts } = generateVirtualCourts({
+  const { virtualCourts } = generateVirtualCourts({
     remainingScheduleTimes,
     scheduleDate: date,
     periodLength,
     bookings,
     courts,
-  }));
+  });
 
-  ({ firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
+  const { firstTimeSlotStartTime } = getFirstTimeSlotStartTime({
     averageMinutes: averageMatchUpMinutes,
     courts: virtualCourts,
     startTime,
     endTime,
     date,
-  }));
-
-  const { virtualCourts: vc, firstTimeSlotStartTime: fts } = getVirtualCourts({
-    remainingScheduleTimes,
-    averageMatchUpMinutes,
-    periodLength,
-    startTime,
-    endTime,
-    bookings,
-    courts,
-    date,
   });
-
-  if (fts !== firstTimeSlotStartTime && getDevContext({ virtual: true }))
-    console.log(
-      { bookings: bookings.length },
-      { fts, firstTimeSlotStartTime },
-      vc.map((c) => c.dateAvailability[0].bookings),
-      virtualCourts.map((c) => c.dateAvailability[0].bookings)
-    );
 
   if (calculateStartTimeFromCourts && firstTimeSlotStartTime) {
     startTime = firstTimeSlotStartTime || startTime;
